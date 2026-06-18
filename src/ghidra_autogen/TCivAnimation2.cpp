@@ -26,23 +26,22 @@ CRuntimeClass * __thiscall TCivAnimation2::GetTAnimationClassNamePointer(TCivAni
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F6A0
 // GHIDRA_NAME TCivAnimation2::ConstructTCivAnimation2BaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimation2BaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimation2BaseState(undefined4 param_1, undefined4 * param_2, int param_3, undefined4 param_4)
 
-void __thiscall TCivAnimation2::ConstructTCivAnimation2BaseState(TCivAnimation2 *this)
+void __thiscall
+TCivAnimation2::ConstructTCivAnimation2BaseState
+          (TCivAnimation2 *this,undefined4 param_1,undefined4 *param_2,int param_3,
+          undefined4 param_4)
 
 {
   undefined2 uVar1;
   undefined4 uVar2;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  int in_stack_0000000c;
-  undefined4 in_stack_00000010;
   undefined4 local_48 [18];
   
   local_48[0xb] = 10;
   local_48[0x10] = 10;
   local_48[0x11] = 10;
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x4 = param_1;
   local_48[10] = 0xf;
   local_48[0xd] = 0xf;
   local_48[0xe] = 0xf;
@@ -51,26 +50,26 @@ void __thiscall TCivAnimation2::ConstructTCivAnimation2BaseState(TCivAnimation2 
   local_48[9] = 5;
   local_48[0] = 14000;
   local_48[1] = 0x36b5;
-  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
+  *(undefined4 *)&this->field_0x1c = *param_2;
   local_48[2] = 0x36bb;
   local_48[3] = 0x36bf;
-  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
+  *(undefined4 *)&this->field_0x20 = param_2[1];
   local_48[4] = 0x36c5;
   local_48[5] = 0x36ca;
-  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
+  *(undefined4 *)&this->field_0x24 = param_2[2];
   local_48[6] = 0x36ce;
   local_48[7] = 0x36d3;
-  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
+  *(undefined4 *)&this->field_0x28 = param_2[3];
   local_48[8] = 0x36d8;
-  uVar1 = *(undefined2 *)(local_48 + in_stack_0000000c);
+  uVar1 = *(undefined2 *)(local_48 + param_3);
   *(undefined2 *)&this->field_0x8 = 0;
   *(undefined2 *)&this->field_0xa = 0;
   *(undefined4 *)&this->field_0x10 = 0;
-  uVar2 = local_48[in_stack_0000000c + 9];
+  uVar2 = local_48[param_3 + 9];
   *(undefined2 *)&this->field_0xc = uVar1;
   *(undefined4 *)&this->field_0x14 = uVar2;
-  *(undefined4 *)&this->field_0x18 = in_stack_00000010;
-  *(short *)&this->field_0x2c = (short)in_stack_0000000c;
+  *(undefined4 *)&this->field_0x18 = param_4;
+  *(short *)&this->field_0x2c = (short)param_3;
   return;
 }
 
@@ -153,13 +152,14 @@ LAB_0049f86f:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F8E0
 // GHIDRA_NAME TCivAnimation2::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void __thiscall TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this)
+void __thiscall
+TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int *param_1)
 
 {
   short sVar1;
-  undefined2 auStack_d00d8 [425980];
+  undefined2 auStackY_d00d8 [425978];
   undefined2 local_d8 [108];
   
   local_d8[0] = 0;
@@ -272,7 +272,7 @@ void __thiscall TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnim
   local_d8[0x4a] = 2;
   local_d8[0x5b] = 2;
   *(undefined2 *)&this->field_0x8 = local_d8[(int)sVar1 + *(short *)&this->field_0x2c * 0xc];
-  TAnimation::RenderBattleReportInsetWithPaletteShift((TAnimation *)this);
+  TAnimation::RenderBattleReportInsetWithPaletteShift((TAnimation *)this,param_1);
   *(short *)&this->field_0x8 = sVar1;
   return;
 }
@@ -290,23 +290,22 @@ void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0D30
 // GHIDRA_NAME TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-// GHIDRA_PROTO undefined __thiscall FindLinkedListNodeByIdFieldAt18(void)
+// GHIDRA_PROTO undefined __thiscall FindLinkedListNodeByIdFieldAt18(int param_1)
 
-int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 *this)
+int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 *this,int param_1)
 
 {
   int iVar1;
   int iVar2;
-  int in_stack_00000004;
   
   if (this != (TCivAnimation2 *)0x0) {
     iVar1 = InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();
-    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != in_stack_00000004))) {
+    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != param_1))) {
       iVar1 = AdvanceLinkedListCursor();
       iVar2 = LinkedListCursorHasCurrent();
     }
-    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == in_stack_00000004)) {
+    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == param_1)) {
       return iVar1;
     }
   }

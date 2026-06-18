@@ -59,16 +59,14 @@ TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842D0
 // GHIDRA_NAME TTradePolicyCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTradePolicyCluster * __thiscall
-TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this)
+TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,22 +74,21 @@ TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
 // GHIDRA_NAME TTradePolicyCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TTradePolicyCluster::OrphanRetStub_0059add0(TTradePolicyCluster *this)
+void __thiscall
+TTradePolicyCluster::OrphanRetStub_0059add0
+          (TTradePolicyCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TTradePolicyClusterVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
   int *piVar3;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  if (in_stack_00000004 != 0x67) {
+  if (param_1 != 0x67) {
     TMapEditCluster::thunk_DispatchPanelControlEvent
-              ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+              ((TMapEditCluster *)this,param_1,param_2,param_3);
     return;
   }
   pTVar1 = this->vftable;

@@ -48,15 +48,13 @@ TDeluxeText * __thiscall TDeluxeText::ConstructUiColorTextResourceEntry(TDeluxeT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004309E0
 // GHIDRA_NAME TDeluxeText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDeluxeText * __thiscall TDeluxeText::_scalar_deleting_destructor_(TDeluxeText *this)
+TDeluxeText * __thiscall TDeluxeText::_scalar_deleting_destructor_(TDeluxeText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -120,6 +118,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
   LONG local_cc;
   int iStack_c8;
   tagRECT tStack_c0;
+  undefined1 auStack_b0 [12];
   undefined1 local_a4 [4];
   uint uStack_a0;
   undefined1 local_9c;
@@ -355,7 +354,8 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
     unaff_EBX = 0;
-    ConstructTDeluxeTextBaseState(pTVar14);
+    ConstructTDeluxeTextBaseState
+              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)
               (0x1c20,CONCAT22((short)((uint)psVar21 >> 0x10),sVar9) + 3);
@@ -408,7 +408,8 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     stack0xffffff30 = 0;
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    ConstructTDeluxeTextBaseState(pTVar14);
+    ConstructTDeluxeTextBaseState
+              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,1);
     (*pTVar3[0x3f].GetTEventHandlerClassNamePointer)(0);
@@ -490,7 +491,8 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     stack0xffffff30 = 0;
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    ConstructTDeluxeTextBaseState(pTVar14);
+    ConstructTDeluxeTextBaseState
+              (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,2);
     (*pTVar3[0x3f].GetTEventHandlerClassNamePointer)(0);
@@ -856,15 +858,17 @@ CRuntimeClass * __thiscall TDeluxeText::GetTEventHandlerClassNamePointer(TDeluxe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FF0
 // GHIDRA_NAME TDeluxeText::ConstructTDeluxeTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDeluxeTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDeluxeTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 * param_4, int param_5)
 
-void __thiscall TDeluxeText::ConstructTDeluxeTextBaseState(TDeluxeText *this)
+void __thiscall
+TDeluxeText::ConstructTDeluxeTextBaseState
+          (TDeluxeText *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 *param_4,int param_5)
 
 {
-  int in_stack_00000014;
-  
-  TTEView::ConstructTTEViewBaseState((TTEView *)this);
-  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(in_stack_00000014 + 6);
+  TTEView::ConstructTTEViewBaseState
+            ((TTEView *)this,0,param_1,param_2,param_3,5,(undefined4 *)0x5,param_4,(short)param_5);
+  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(param_5 + 6);
   (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(0);
   return;
 }
@@ -884,28 +888,26 @@ void __thiscall TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920(TDeluxeText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B60A0
 // GHIDRA_NAME TDeluxeText::OrphanCallChain_C1_I08_005b60a0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_005b60a0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_005b60a0(char param_1)
 
-void __thiscall TDeluxeText::OrphanCallChain_C1_I08_005b60a0(TDeluxeText *this)
+void __thiscall TDeluxeText::OrphanCallChain_C1_I08_005b60a0(TDeluxeText *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  this->field_0x94 = in_stack_00000004;
-  (*this->vftable[0x15].GetTEventHandlerClassNamePointer)((int)in_stack_00000004,0);
+  this->field_0x94 = param_1;
+  (*this->vftable[0x15].GetTEventHandlerClassNamePointer)((int)param_1,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B60D0
 // GHIDRA_NAME TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl
-// GHIDRA_PROTO undefined __thiscall InitializeTechHistoryViewTitleAndMapKeyControls_Impl(void)
+// GHIDRA_PROTO undefined __thiscall InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
-void __thiscall TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *this)
+void __thiscall
+TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *this,short param_1)
 
 {
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
   CString CStack_18;
   CString local_10;
   undefined4 uStack_c;
@@ -919,7 +921,7 @@ void __thiscall TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Imp
   CStack_18.m_pchData = (char *)0x5b60f2;
   local_10.m_pchData = (char *)this;
   CString::CString(&local_10);
-  CStack_18.m_pchData = (char *)(int)in_stack_00000004;
+  CStack_18.m_pchData = (char *)(int)param_1;
   local_4 = 0;
   InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440(&local_10);
   CStack_18.m_pchData = (char *)0x1;
@@ -972,20 +974,19 @@ void __thiscall TDeluxeText::OrphanTiny_ReturnZero_0048a730(TDeluxeText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B62A0
 // GHIDRA_NAME TDeluxeText::ConstructTMapKeyBaseState_Impl
-// GHIDRA_PROTO undefined __thiscall ConstructTMapKeyBaseState_Impl(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
-void __thiscall TDeluxeText::ConstructTMapKeyBaseState_Impl(TDeluxeText *this)
+void __thiscall
+TDeluxeText::ConstructTMapKeyBaseState_Impl(TDeluxeText *this,int param_1,undefined4 param_2)
 
 {
   undefined4 uVar1;
-  int in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 uVar2;
   
-  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(in_stack_00000004 + 6);
+  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(param_1 + 6);
   uVar2 = 0xf;
-  uVar1 = NoOpUiStyleBridge_004862b0(0xf);
-  CallThisVslot1B4NoArgs(0,uVar1,uVar2,in_stack_00000004,in_stack_00000008);
+  uVar1 = NoOpUiStyleBridge_004862b0(0xf,param_1,param_2);
+  CallThisVslot1B4NoArgs(0,uVar1,uVar2,param_1,param_2);
   return;
 }
 
@@ -1017,15 +1018,15 @@ TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(TDeluxeText 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6360
 // GHIDRA_NAME TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(void)
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1)
 
 void __thiscall
-TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(TDeluxeText *this)
+TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
+          (TDeluxeText *this,CString param_1)
 
 {
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -1034,9 +1035,9 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(TD
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00638fb8;
   *unaff_FS_OFFSET = &uStack_c;
-  CString::CString(&stack0x00000004,in_stack_00000004.m_pchData);
+  CString::CString(&param_1,param_1.m_pchData);
   uStack_4 = 0;
-  (*this->vftable[0x3e].GetTEventHandlerClassNamePointer)(&stack0x00000004);
+  (*this->vftable[0x3e].GetTEventHandlerClassNamePointer)(&param_1);
   puStack_8 = (undefined1 *)0xffffffff;
   CString::~CString((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -1045,10 +1046,10 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(TD
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B63E0
 // GHIDRA_NAME TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate
-// GHIDRA_PROTO undefined __thiscall RecenterTextFromMeasuredWidthAndMaybeInvalidate(void)
+// GHIDRA_PROTO undefined __thiscall RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
 undefined4 __thiscall
-TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this)
+TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this,char param_1)
 
 {
   short sVar1;
@@ -1056,7 +1057,6 @@ TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this)
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined2 uVar3;
-  char in_stack_00000004;
   undefined4 local_10;
   int local_c;
   int local_8;
@@ -1080,7 +1080,7 @@ TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this)
   local_4 = local_4 - local_c;
   NoOpTextPostLayoutHook(&local_10);
   uVar3 = extraout_var;
-  if (in_stack_00000004 != '\0') {
+  if (param_1 != '\0') {
     (*this->vftable[0x1c].slot_0x04)();
     uVar3 = extraout_var_00;
   }
@@ -1089,31 +1089,28 @@ TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6480
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)
 
 void __thiscall
-TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(TDeluxeText *this)
+TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
+          (TDeluxeText *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  UpdateTextEntrySharedStringIfChanged(in_stack_00000004);
+  UpdateTextEntrySharedStringIfChanged(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64A0
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)
 
 void __thiscall
-TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(TDeluxeText *this)
+TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
+          (TDeluxeText *this,undefined4 param_1,char param_2)
 
 {
-  undefined4 in_stack_00000004;
-  char in_stack_00000008;
-  
-  UpdateTextEntrySharedStringIfChanged(in_stack_00000004);
-  if (in_stack_00000008 != '\0') {
+  UpdateTextEntrySharedStringIfChanged(param_1);
+  if (param_2 != '\0') {
     (*this->vftable[0x1c].slot_0x04)();
   }
   return;
@@ -1121,14 +1118,13 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(TD
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64E0
 // GHIDRA_NAME TDeluxeText::BuildCityViewProductionControls_Impl
-// GHIDRA_PROTO undefined __thiscall BuildCityViewProductionControls_Impl(void)
+// GHIDRA_PROTO undefined __thiscall BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
 
-void __thiscall TDeluxeText::BuildCityViewProductionControls_Impl(TDeluxeText *this)
+void __thiscall
+TDeluxeText::BuildCityViewProductionControls_Impl(TDeluxeText *this,undefined4 param_1,int param_2)
 
 {
   int *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   CString CStack_1c;
   CString *pCStack_18;
   CString local_10;
@@ -1144,9 +1140,9 @@ void __thiscall TDeluxeText::BuildCityViewProductionControls_Impl(TDeluxeText *t
   local_10.m_pchData = (char *)this;
   CString::CString(&local_10);
   pCStack_18 = &local_10;
-  CStack_1c.m_pchData = (char *)(in_stack_00000008 + -1);
+  CStack_1c.m_pchData = (char *)(param_2 + -1);
   local_4 = 0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(in_stack_00000004);
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(param_1);
   UpdateTextEntrySharedStringIfChanged(&CStack_1c);
   (*this->vftable[0x1c].slot_0x04)();
   local_10.m_pchData = (char *)0xffffffff;

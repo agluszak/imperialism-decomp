@@ -25,15 +25,13 @@ CRuntimeClass * __thiscall TUnit::GetTUnitClassNamePointer(TUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C24E0
 // GHIDRA_NAME TUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(byte param_1)
 
-TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this)
+TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTUnitAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -94,7 +92,7 @@ void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
 
 {
   int iVar1;
-  int iVar2;
+  int *piVar2;
   
   if (this->field_0x1c == '\0') {
     iVar1 = *(int *)&g_apNationStates[*(short *)&this->field_0x18]->field_0x89c;
@@ -103,9 +101,10 @@ void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
     iVar1 = *(int *)&g_apTerrainTypeDescriptorTable[*(short *)&this->field_0x18]->field_0x44;
   }
   if (iVar1 != 0) {
-    iVar2 = TAutoGreatPower::Find((TAutoGreatPower *)(iVar1 + 4));
-    if (iVar2 != 0) {
-      TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)(iVar1 + 4));
+    piVar2 = (int *)TAutoGreatPower::Find
+                              ((TAutoGreatPower *)(iVar1 + 4),(int)this,(undefined4 *)0x0);
+    if (piVar2 != (int *)0x0) {
+      TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)(iVar1 + 4),piVar2);
     }
   }
   if (this != (TUnit *)0x0) {

@@ -5,41 +5,39 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B4F0
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot02
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot02(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot02(int param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this,int param_1)
 
 {
   TAutoGreatPower *this_00;
-  int iVar1;
-  int in_stack_00000004;
+  int *piVar1;
   
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  iVar1 = TAutoGreatPower::Find(this_00);
-  if (iVar1 != 0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00);
+  piVar1 = (int *)TAutoGreatPower::Find(this_00,param_1,(undefined4 *)0x0);
+  if (piVar1 != (int *)0x0) {
+    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(*(undefined4 *)(in_stack_00000004 + 0x38));
+  WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(*(undefined4 *)(param_1 + 0x38));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B540
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot03
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot03(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot03(int * param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this,int *param_1)
 
 {
   int *piVar1;
-  int *in_stack_00000004;
   
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4));
-  (**(code **)(*in_stack_00000004 + 0x3c))();
-  piVar1 = (int *)in_stack_00000004[0xe];
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  (**(code **)(*param_1 + 0x3c))();
+  piVar1 = (int *)param_1[0xe];
   *(short *)(piVar1 + 6) = (short)*(undefined4 *)&this->field_0x1c;
   (**(code **)(*piVar1 + 0x28))(*(undefined4 *)(*(int *)&this->field_0x14 + 0x38));
   WrapperFor_AllocateWithFallbackHandler_At004a7b20(piVar1);
-  in_stack_00000004[0xd] = in_stack_00000004[1];
+  param_1[0xd] = param_1[1];
   return;
 }
 
@@ -70,15 +68,14 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059C3C0
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot07
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot07(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot07(undefined4 param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this,undefined4 param_1)
 
 {
   int iVar1;
   int iVar2;
   int iVar3;
-  undefined4 in_stack_00000004;
   
   iVar3 = 1;
   do {
@@ -92,7 +89,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this)
     this->field_0x10 = 1;
     return;
   }
-  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,in_stack_00000004);
+  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,param_1);
   return;
 }
 
@@ -353,19 +350,18 @@ CRuntimeClass * __thiscall TArmyTacUnit::GetTTacticalUnitClassNamePointer(TArmyT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5F20
 // GHIDRA_NAME TArmyTacUnit::ConstructTArmyTacUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyTacUnitBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyTacUnitBaseState(int param_1)
 
-void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,int param_1)
 
 {
   short sVar1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined1 uVar3;
-  int in_stack_00000004;
   
   uVar3 = 0;
-  *(int *)&this->field_0xc = (int)*(short *)(in_stack_00000004 + 4);
+  *(int *)&this->field_0xc = (int)*(short *)(param_1 + 4);
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
   this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x1c = 0;
@@ -373,17 +369,17 @@ void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this)
   *(uint *)&this->field_0x28 = CONCAT31(extraout_var,uVar2);
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x30 = 0;
-  sVar1 = *(short *)(in_stack_00000004 + 0x34);
+  sVar1 = *(short *)(param_1 + 0x34);
   *(int *)&this->field_0x4 = (int)sVar1;
   *(int *)&this->field_0x34 = (int)sVar1;
-  sVar1 = *(short *)(in_stack_00000004 + 0x38);
+  sVar1 = *(short *)(param_1 + 0x38);
   *(int *)&this->field_0x10 =
        (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
                    (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
-  *(int *)&this->field_0x14 = (int)*(short *)(in_stack_00000004 + 0x18);
+  *(int *)&this->field_0x14 = (int)*(short *)(param_1 + 0x18);
   *(undefined4 *)&this->field_0x40 = 0xffffffff;
-  *(int *)&this->field_0x38 = in_stack_00000004;
-  if ((*(int *)(in_stack_00000004 + 8) == 2) &&
+  *(int *)&this->field_0x38 = param_1;
+  if ((*(int *)(param_1 + 8) == 2) &&
      (*(short *)(&DAT_00669858 + *(int *)&this->field_0xc * 2) == 0)) {
     uVar3 = 1;
   }
@@ -475,61 +471,57 @@ float10 __thiscall TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TArmyTacUnit *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060962A
 // GHIDRA_NAME TArmyTacUnit::SetScrollRange
-// GHIDRA_PROTO undefined __thiscall SetScrollRange(void)
+// GHIDRA_PROTO undefined __thiscall SetScrollRange(int param_1, int param_2, int param_3, BOOL param_4)
 
-void __thiscall TArmyTacUnit::SetScrollRange(TArmyTacUnit *this)
+void __thiscall
+TArmyTacUnit::SetScrollRange(TArmyTacUnit *this,int param_1,int param_2,int param_3,BOOL param_4)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  BOOL in_stack_00000010;
   HWND hWnd;
   
-  uVar1 = (*this->vftable[0xe].GetTTacticalUnitClassNamePointer)();
+  uVar1 = (*this->vftable[0xe].GetTTacticalUnitClassNamePointer)(param_1);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     hWnd = *(HWND *)&this->field_0x1c;
   }
   else {
-    in_stack_00000004 = 2;
+    param_1 = 2;
     hWnd = *(HWND *)(CONCAT31(extraout_var,uVar1) + 0x1c);
   }
-  ::SetScrollRange(hWnd,in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+  ::SetScrollRange(hWnd,param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060968D
 // GHIDRA_NAME TArmyTacUnit::EnableScrollBarCtrl
-// GHIDRA_PROTO undefined __thiscall EnableScrollBarCtrl(void)
+// GHIDRA_PROTO undefined __thiscall EnableScrollBarCtrl(int param_1)
 
-void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this,int param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int wBar;
-  int in_stack_00000004;
   
-  wBar = in_stack_00000004;
-  if (in_stack_00000004 == 3) {
-    EnableScrollBarCtrl(this);
+  wBar = param_1;
+  if (param_1 == 3) {
+    EnableScrollBarCtrl(this,0);
     wBar = 1;
   }
   uVar1 = (*this->vftable[0xe].GetTTacticalUnitClassNamePointer)(wBar);
   if (CONCAT31(extraout_var,uVar1) == 0) {
-    ShowScrollBar(*(HWND *)&this->field_0x1c,wBar,in_stack_00000004);
+    ShowScrollBar(*(HWND *)&this->field_0x1c,wBar,param_1);
   }
   else {
-    FUN_0060753b(in_stack_00000004);
+    FUN_0060753b(param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006097AE
 // GHIDRA_NAME TArmyTacUnit::ScrollWindow
-// GHIDRA_PROTO undefined __thiscall ScrollWindow(void)
+// GHIDRA_PROTO undefined __thiscall ScrollWindow(int param_1, int param_2, RECT * param_3, RECT * param_4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Scrolls client area by delta or repositions child windows when invisible/no clip rects.
 // GHIDRA_COMMENT Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60).
@@ -538,59 +530,53 @@ void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this)
 /* Scrolls client area by delta or repositions child windows when invisible/no clip rects.
    Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60). */
 
-void __thiscall TArmyTacUnit::ScrollWindow(TArmyTacUnit *this)
+void __thiscall
+TArmyTacUnit::ScrollWindow(TArmyTacUnit *this,int param_1,int param_2,RECT *param_3,RECT *param_4)
 
 {
   BOOL BVar1;
   HWND hWnd;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  RECT *in_stack_0000000c;
-  RECT *in_stack_00000010;
   undefined1 local_14 [16];
   
   BVar1 = IsWindowVisible(*(HWND *)&this->field_0x1c);
-  if (((BVar1 == 0) && (in_stack_0000000c == (RECT *)0x0)) && (in_stack_00000010 == (RECT *)0x0)) {
+  if (((BVar1 == 0) && (param_3 == (RECT *)0x0)) && (param_4 == (RECT *)0x0)) {
     for (hWnd = GetWindow(*(HWND *)&this->field_0x1c,5); hWnd != (HWND)0x0; hWnd = GetWindow(hWnd,2)
         ) {
       GetWindowRect(hWnd,(LPRECT)local_14);
       ScreenToClient(*(HWND *)&this->field_0x1c,(LPPOINT)local_14);
       ScreenToClient(*(HWND *)&this->field_0x1c,(LPPOINT)(local_14 + 8));
-      SetWindowPos(hWnd,(HWND)0x0,local_14._0_4_ + in_stack_00000004,
-                   local_14._4_4_ + in_stack_00000008,0,0,0x15);
+      SetWindowPos(hWnd,(HWND)0x0,local_14._0_4_ + param_1,local_14._4_4_ + param_2,0,0,0x15);
     }
   }
   else {
-    ::ScrollWindow(*(HWND *)&this->field_0x1c,in_stack_00000004,in_stack_00000008,in_stack_0000000c,
-                   in_stack_00000010);
+    ::ScrollWindow(*(HWND *)&this->field_0x1c,param_1,param_2,param_3,param_4);
   }
-  if ((*(int **)&this->field_0x34 != (int *)0x0) && (in_stack_0000000c == (RECT *)0x0)) {
-    (**(code **)(**(int **)&this->field_0x34 + 0x60))(in_stack_00000004,in_stack_00000008);
+  if ((*(int **)&this->field_0x34 != (int *)0x0) && (param_3 == (RECT *)0x0)) {
+    (**(code **)(**(int **)&this->field_0x34 + 0x60))(param_1,param_2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614F95
 // GHIDRA_NAME TArmyTacUnit::SetScaleToFitSize
-// GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(void)
+// GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TArmyTacUnit::SetScaleToFitSize(TArmyTacUnit *this)
+void __thiscall
+TArmyTacUnit::SetScaleToFitSize(TArmyTacUnit *this,undefined4 param_1,undefined4 param_2)
 
 {
   uint uVar1;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   tagRECT local_14;
   
   *(undefined4 *)&this->field_0x40 = 0xffffffff;
-  *(undefined4 *)&this->field_0x44 = in_stack_00000004;
-  *(undefined4 *)&this->field_0x48 = in_stack_00000008;
+  *(undefined4 *)&this->field_0x44 = param_1;
+  *(undefined4 *)&this->field_0x48 = param_2;
   if (*(int *)&this->field_0x1c != 0) {
     uVar1 = GetStyle();
     if ((uVar1 & 0x300000) != 0) {
       SetScrollPos(0,0,1);
       SetScrollPos(1,0,1);
-      EnableScrollBarCtrl(this);
+      EnableScrollBarCtrl(this,3);
     }
   }
   GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
@@ -713,34 +699,34 @@ void TArmyTacUnit::ScrollToPosition(void)
   else if (iVar3 < *(int *)(unaff_EBP + 0xc)) {
     *(int *)(unaff_EBP + 0xc) = iVar3;
   }
-  ScrollToDevicePosition(this);
+  ScrollToDevicePosition(this,*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615329
 // GHIDRA_NAME TArmyTacUnit::ScrollToDevicePosition
-// GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(void)
+// GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(int param_1, int param_2)
 
-void __thiscall TArmyTacUnit::ScrollToDevicePosition(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::ScrollToDevicePosition(TArmyTacUnit *this,int param_1,int param_2)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
+  int iVar1;
+  int iVar2;
   
-  FUN_00609602(0);
-  SetScrollPos(0,in_stack_00000004,1);
-  FUN_00609602(1);
-  SetScrollPos(1,in_stack_00000008,1);
-  ScrollWindow(this);
+  iVar1 = FUN_00609602(0);
+  SetScrollPos(0,param_1,1);
+  iVar2 = FUN_00609602(1);
+  SetScrollPos(1,param_2,1);
+  ScrollWindow(this,iVar1 - param_1,iVar2 - param_2,(RECT *)0x0,(RECT *)0x0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006155ED
 // GHIDRA_NAME TArmyTacUnit::GetScrollBarSizes
-// GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(void)
+// GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(int * param_1)
 
-void __thiscall TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this)
+void __thiscall TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this,int *param_1)
 
 {
   TArmyTacUnit_GetTTacticalUnitClassNamePointer_0x00 *pTVar1;
@@ -748,50 +734,46 @@ void __thiscall TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this)
   uint uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  int *in_stack_00000004;
   
-  in_stack_00000004[1] = 0;
-  *in_stack_00000004 = 0;
+  param_1[1] = 0;
+  *param_1 = 0;
   uVar3 = GetStyle();
   pTVar1 = this->vftable[0xe].GetTTacticalUnitClassNamePointer;
   uVar2 = (*pTVar1)(1);
-  if ((CONCAT31(extraout_var,uVar2) == 0) &&
-     (*in_stack_00000004 = DAT_006a7d00, (uVar3 & 0x800000) != 0)) {
-    *in_stack_00000004 = *in_stack_00000004 + -1;
+  if ((CONCAT31(extraout_var,uVar2) == 0) && (*param_1 = DAT_006a7d00, (uVar3 & 0x800000) != 0)) {
+    *param_1 = *param_1 + -1;
   }
   uVar2 = (*pTVar1)(0);
-  if ((CONCAT31(extraout_var_00,uVar2) == 0) &&
-     (in_stack_00000004[1] = DAT_006a7d04, (uVar3 & 0x800000) != 0)) {
-    in_stack_00000004[1] = in_stack_00000004[1] + -1;
+  if ((CONCAT31(extraout_var_00,uVar2) == 0) && (param_1[1] = DAT_006a7d04, (uVar3 & 0x800000) != 0)
+     ) {
+    param_1[1] = param_1[1] + -1;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615647
 // GHIDRA_NAME TArmyTacUnit::GetTrueClientSize
-// GHIDRA_PROTO undefined __thiscall GetTrueClientSize(void)
+// GHIDRA_PROTO undefined __thiscall GetTrueClientSize(int * param_1, int * param_2)
 
-undefined4 __thiscall TArmyTacUnit::GetTrueClientSize(TArmyTacUnit *this)
+undefined4 __thiscall TArmyTacUnit::GetTrueClientSize(TArmyTacUnit *this,int *param_1,int *param_2)
 
 {
   uint uVar1;
   undefined4 uVar2;
-  int *in_stack_00000004;
-  int *in_stack_00000008;
   tagRECT local_14;
   
   GetClientRect(*(HWND *)&this->field_0x1c,&local_14);
-  *in_stack_00000004 = local_14.right;
-  in_stack_00000004[1] = local_14.bottom;
+  *param_1 = local_14.right;
+  param_1[1] = local_14.bottom;
   uVar1 = GetStyle();
-  GetScrollBarSizes(this);
-  if ((*in_stack_00000008 != 0) && ((uVar1 & 0x200000) != 0)) {
-    *in_stack_00000004 = *in_stack_00000004 + *in_stack_00000008;
+  GetScrollBarSizes(this,param_2);
+  if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
+    *param_1 = *param_1 + *param_2;
   }
-  if ((in_stack_00000008[1] != 0) && ((uVar1 & 0x100000) != 0)) {
-    in_stack_00000004[1] = in_stack_00000004[1] + in_stack_00000008[1];
+  if ((param_2[1] != 0) && ((uVar1 & 0x100000) != 0)) {
+    param_1[1] = param_1[1] + param_2[1];
   }
-  if ((*in_stack_00000008 < *in_stack_00000004) && (in_stack_00000008[1] < in_stack_00000004[1])) {
+  if ((*param_2 < *param_1) && (param_2[1] < param_1[1])) {
     uVar2 = 1;
   }
   else {
@@ -802,57 +784,60 @@ undefined4 __thiscall TArmyTacUnit::GetTrueClientSize(TArmyTacUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006156BC
 // GHIDRA_NAME TArmyTacUnit::GetScrollBarState
-// GHIDRA_PROTO undefined __thiscall GetScrollBarState(void)
+// GHIDRA_PROTO undefined __thiscall GetScrollBarState(int param_1, int param_2, uint * param_3, int * param_4, int * param_5, int param_6)
 
-void __thiscall TArmyTacUnit::GetScrollBarState(TArmyTacUnit *this)
+void __thiscall
+TArmyTacUnit::GetScrollBarState
+          (TArmyTacUnit *this,int param_1,int param_2,uint *param_3,int *param_4,int *param_5,
+          int param_6)
 
 {
   int iVar1;
   int *piVar2;
-  uint uVar3;
+  int *piVar3;
   uint uVar4;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  uint *in_stack_0000000c;
-  int *in_stack_00000010;
-  int *in_stack_00000014;
-  int in_stack_00000018;
+  uint uVar5;
+  TArmyTacUnit *local_c;
+  TArmyTacUnit *local_8;
   
-  GetScrollBarSizes(this);
+  local_c = this;
+  local_8 = this;
+  GetScrollBarSizes(this,(int *)&local_c);
+  piVar2 = param_4;
   iVar1 = *(int *)&this->field_0x50;
-  *in_stack_00000010 = *(int *)&this->field_0x4c - in_stack_00000004;
-  in_stack_00000010[1] = iVar1 - in_stack_00000008;
-  piVar2 = (int *)TControl::GetDeviceScrollPosition((TControl *)this);
-  *in_stack_00000014 = *piVar2;
-  in_stack_00000014[1] = piVar2[1];
-  uVar3 = (uint)(0 < *in_stack_00000010);
-  if (uVar3 == 0) {
-    *in_stack_00000014 = 0;
-  }
-  else if (in_stack_00000018 != 0) {
-    in_stack_00000010[1] = (int)&this->vftable + in_stack_00000010[1];
-  }
-  uVar4 = (uint)(0 < in_stack_00000010[1]);
+  *param_4 = *(int *)&this->field_0x4c - param_1;
+  param_4[1] = iVar1 - param_2;
+  piVar3 = (int *)TControl::GetDeviceScrollPosition((TControl *)this,&param_1);
+  *param_5 = *piVar3;
+  param_5[1] = piVar3[1];
+  uVar4 = (uint)(0 < *piVar2);
   if (uVar4 == 0) {
-    in_stack_00000014[1] = 0;
+    *param_5 = 0;
   }
-  else if (in_stack_00000018 != 0) {
-    *in_stack_00000010 = (int)&this->vftable + *in_stack_00000010;
+  else if (param_6 != 0) {
+    piVar2[1] = (int)&local_8->vftable + piVar2[1];
   }
-  if (((uVar4 != 0) && (uVar3 == 0)) && (0 < *in_stack_00000010)) {
-    in_stack_00000010[1] = (int)&this->vftable + in_stack_00000010[1];
-    uVar3 = 1;
+  uVar5 = (uint)(0 < piVar2[1]);
+  if (uVar5 == 0) {
+    param_5[1] = 0;
   }
-  iVar1 = *in_stack_00000010;
-  if ((0 < iVar1) && (iVar1 <= *in_stack_00000014)) {
-    *in_stack_00000014 = iVar1;
+  else if (param_6 != 0) {
+    *piVar2 = (int)&local_c->vftable + *piVar2;
   }
-  iVar1 = in_stack_00000010[1];
-  if ((0 < iVar1) && (iVar1 <= in_stack_00000014[1])) {
-    in_stack_00000014[1] = iVar1;
+  if (((uVar5 != 0) && (uVar4 == 0)) && (0 < *piVar2)) {
+    piVar2[1] = (int)&local_8->vftable + piVar2[1];
+    uVar4 = 1;
   }
-  *in_stack_0000000c = uVar3;
-  in_stack_0000000c[1] = uVar4;
+  iVar1 = *piVar2;
+  if ((0 < iVar1) && (iVar1 <= *param_5)) {
+    *param_5 = iVar1;
+  }
+  iVar1 = piVar2[1];
+  if ((0 < iVar1) && (iVar1 <= param_5[1])) {
+    param_5[1] = iVar1;
+  }
+  *param_3 = uVar4;
+  param_3[1] = uVar5;
   return;
 }
 
@@ -876,9 +861,13 @@ void __thiscall TArmyTacUnit::UpdateBars(TArmyTacUnit *this)
   int local_3c;
   int local_38;
   int local_34;
+  int local_30;
+  int local_2c;
+  int local_28;
+  int local_24;
   int local_20;
   int local_1c;
-  int local_18;
+  uint local_18;
   int local_14;
   int local_10;
   int local_c;
@@ -897,46 +886,46 @@ void __thiscall TArmyTacUnit::UpdateBars(TArmyTacUnit *this)
     local_8 = 0;
   }
   if (local_8 == 0) {
-    GetScrollBarSizes(this);
+    GetScrollBarSizes(this,&local_20);
     local_10 = local_38 - local_40;
     local_c = local_34 - local_3c;
   }
   else {
-    iVar2 = GetTrueClientSize(this);
+    iVar2 = GetTrueClientSize(this,&local_10,&local_20);
     if (iVar2 == 0) {
       GetClientRect(*(HWND *)&this->field_0x1c,&local_50);
       if ((0 < local_50.right) && (0 < local_50.bottom)) {
-        EnableScrollBarCtrl(this);
+        EnableScrollBarCtrl(this,3);
       }
       goto LAB_006158e6;
     }
   }
-  GetScrollBarState(this);
+  GetScrollBarState(this,local_10,local_c,&local_18,&local_30,&local_28,local_8);
   if (local_18 != 0) {
     local_c = local_c - local_1c;
   }
   if (local_14 != 0) {
     local_10 = local_10 - local_20;
   }
-  ScrollToDevicePosition(this);
+  ScrollToDevicePosition(this,local_28,local_24);
   local_68 = 3;
   local_64 = 0;
-  EnableScrollBarCtrl(this);
+  EnableScrollBarCtrl(this,0);
   if (local_18 != 0) {
     local_5c = local_10;
     local_60 = *(int *)&this->field_0x4c + -1;
     iVar2 = SetScrollInfo(0,local_6c,1);
     if (iVar2 == 0) {
-      SetScrollRange(this);
+      SetScrollRange(this,0,0,local_30,1);
     }
   }
-  EnableScrollBarCtrl(this);
+  EnableScrollBarCtrl(this,1);
   if (local_14 != 0) {
     local_5c = local_c;
     local_60 = *(int *)&this->field_0x50 + -1;
     iVar2 = SetScrollInfo(1,local_6c,1);
     if (iVar2 == 0) {
-      SetScrollRange(this);
+      SetScrollRange(this,1,0,local_2c,1);
     }
   }
 LAB_006158e6:

@@ -28,15 +28,14 @@ void __thiscall TCountingStream::ConstructTCountingStreamBaseState(TCountingStre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489440
 // GHIDRA_NAME TCountingStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
 
-TCountingStream * __thiscall TCountingStream::ConstructTStreamBaseState(TCountingStream *this)
+TCountingStream * __thiscall
+TCountingStream::ConstructTStreamBaseState(TCountingStream *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ~TCountingStream(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -66,17 +65,15 @@ undefined4 __thiscall TCountingStream::OrphanTiny_ReturnZero_00488ad0(TCountingS
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004894D0
 // GHIDRA_NAME TCountingStream::OrphanRetStub_00488e30
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(int param_1)
 
-void __thiscall TCountingStream::OrphanRetStub_00488e30(TCountingStream *this)
+void __thiscall TCountingStream::OrphanRetStub_00488e30(TCountingStream *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (*(int *)&this->field_0x8 < in_stack_00000004) {
-    in_stack_00000004 = *(int *)&this->field_0x8;
+  if (*(int *)&this->field_0x8 < param_1) {
+    param_1 = *(int *)&this->field_0x8;
   }
-  *(int *)&this->field_0x4 = in_stack_00000004;
+  *(int *)&this->field_0x4 = param_1;
   return;
 }
 
@@ -92,25 +89,23 @@ undefined4 __thiscall TCountingStream::OrphanTiny_ReturnZero_00488af0(TCountingS
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489520
 // GHIDRA_NAME TCountingStream::OrphanRetStub_00488e50
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(int param_1)
 
-void __thiscall TCountingStream::OrphanRetStub_00488e50(TCountingStream *this)
+void __thiscall TCountingStream::OrphanRetStub_00488e50(TCountingStream *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 < *(int *)&this->field_0x4) {
-    *(int *)&this->field_0x4 = in_stack_00000004;
+  if (param_1 < *(int *)&this->field_0x4) {
+    *(int *)&this->field_0x4 = param_1;
   }
-  *(int *)&this->field_0x8 = in_stack_00000004;
+  *(int *)&this->field_0x8 = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489550
 // GHIDRA_NAME TCountingStream::OrphanRetStub_00488e70
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(int param_1)
 
-void __thiscall TCountingStream::OrphanRetStub_00488e70(TCountingStream *this)
+void __thiscall TCountingStream::OrphanRetStub_00488e70(TCountingStream *this,int param_1)
 
 {
   int iVar1;

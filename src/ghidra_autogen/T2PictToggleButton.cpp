@@ -59,16 +59,14 @@ T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584960
 // GHIDRA_NAME T2PictToggleButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 T2PictToggleButton * __thiscall
-T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this)
+T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -88,19 +86,18 @@ T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(T2PictToggleButton 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849D0
 // GHIDRA_NAME T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1)
 
 void __thiscall
-T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(T2PictToggleButton *this)
+T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(T2PictToggleButton *this,char param_1)
 
 {
   short sVar1;
   T2PictToggleButtonVtbl *pTVar2;
-  char in_stack_00000004;
   
   sVar1 = *(short *)&this->field_0x84;
-  if (((in_stack_00000004 == '\0') && (this->field3c < (int)sVar1)) ||
-     ((in_stack_00000004 == '\x01' && ((int)sVar1 < this->field3c)))) {
+  if (((param_1 == '\0') && (this->field3c < (int)sVar1)) ||
+     ((param_1 == '\x01' && ((int)sVar1 < this->field3c)))) {
     (*this->vftable[0x39].GetTEventHandlerClassNamePointer)
               (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
     this->field3c = (int)sVar1;

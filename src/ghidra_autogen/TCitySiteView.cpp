@@ -64,15 +64,14 @@ CRuntimeClass * __thiscall TCitySiteView::GetTEventHandlerClassNamePointer(TCity
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BFA0
 // GHIDRA_NAME TCitySiteView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCitySiteView * __thiscall TCitySiteView::_scalar_deleting_destructor_(TCitySiteView *this)
+TCitySiteView * __thiscall
+TCitySiteView::_scalar_deleting_destructor_(TCitySiteView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -146,15 +145,16 @@ void __thiscall TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920(TCitySiteView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C2A0
 // GHIDRA_NAME TCitySiteView::OrphanRetStub_005966a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(undefined4 param_1)
 
-void __thiscall TCitySiteView::OrphanRetStub_005966a0(TCitySiteView *this)
+void __thiscall TCitySiteView::OrphanRetStub_005966a0(TCitySiteView *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
+  TCitySiteView *pTStack_4;
   
-  TMapDialog::thunk_SplitTileIndexToRowAndColumn();
-  (*this->vftable[0x3c].slot_0x04)(this,in_stack_00000004);
+  pTStack_4 = this;
+  TMapDialog::thunk_SplitTileIndexToRowAndColumn(param_1,&param_1,&pTStack_4);
+  (*this->vftable[0x3c].slot_0x04)(pTStack_4,param_1);
   return;
 }
 
@@ -171,12 +171,26 @@ void __thiscall TCitySiteView::OrphanRetStub_00596680(TCitySiteView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051C320
 // GHIDRA_NAME TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)
 
-void __thiscall TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCitySiteView *this)
+void __thiscall
+TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TCitySiteView *this,int param_1,undefined4 param_2)
 
 {
-  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this);
+  if ((int)(short)param_1 < *(int *)&this->field_0x368) {
+    param_1 = CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)&this->field_0x368);
+  }
+  if ((int)(short)param_2 < *(int *)&this->field_0x370) {
+    param_2 = CONCAT22((short)((uint)param_2 >> 0x10),*(undefined2 *)&this->field_0x370);
+  }
+  if (*(int *)&this->field_0x36c < (int)(short)param_1) {
+    param_1 = CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)&this->field_0x36c);
+  }
+  if (*(int *)&this->field_0x374 < (int)(short)param_2) {
+    param_2 = CONCAT22((short)((uint)param_2 >> 0x10),*(undefined2 *)&this->field_0x374);
+  }
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1,param_2);
   return;
 }
 

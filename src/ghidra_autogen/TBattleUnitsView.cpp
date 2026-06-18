@@ -19,15 +19,14 @@ TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(TBattleUnitsView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430B80
 // GHIDRA_NAME TBattleUnitsView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleUnitsView * __thiscall TBattleUnitsView::_scalar_deleting_destructor_(TBattleUnitsView *this)
+TBattleUnitsView * __thiscall
+TBattleUnitsView::_scalar_deleting_destructor_(TBattleUnitsView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -145,7 +144,7 @@ switchD_004b071e_default:
       local_4._0_1_ = 1;
       local_14 = 0xec;
       local_10 = 0x31;
-      TLineData::SetLineDataRowAndBounds(pTVar2);
+      TLineData::SetLineDataRowAndBounds(pTVar2,0,0,&local_14);
       pTVar2[1].vftable = param_2;
       *(TLineData_GetTLineDataClassNamePointer_0x00 **)&pTVar2[1].field_0x4 =
            (&param_2[0x4a].GetTLineDataClassNamePointer)[param_3] + iVar4;

@@ -26,7 +26,7 @@ undefined4 * TList::CreateTListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -46,15 +46,13 @@ CRuntimeClass * __thiscall TList::OnActivateView(TList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488870
 // GHIDRA_NAME TList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TList * __thiscall TList::_scalar_deleting_destructor_(TList *this)
+TList * __thiscall TList::_scalar_deleting_destructor_(TList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_DestructCPtrListBaseState_At004888a0();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -62,9 +60,12 @@ TList * __thiscall TList::_scalar_deleting_destructor_(TList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6C20
 // GHIDRA_NAME TList::InitializeNationMinisterSubsystemsByPolicyIds
-// GHIDRA_PROTO undefined __thiscall InitializeNationMinisterSubsystemsByPolicyIds(void)
+// GHIDRA_PROTO undefined __thiscall InitializeNationMinisterSubsystemsByPolicyIds(undefined4 param_1, undefined4 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
-void __thiscall TList::InitializeNationMinisterSubsystemsByPolicyIds(TList *this)
+void __thiscall
+TList::InitializeNationMinisterSubsystemsByPolicyIds
+          (TList *this,undefined4 param_1,undefined4 param_2,undefined2 param_3,undefined2 param_4,
+          undefined2 param_5)
 
 {
   TNapoleonMinister *this_00;
@@ -88,11 +89,6 @@ void __thiscall TList::InitializeNationMinisterSubsystemsByPolicyIds(TList *this
   int iVar4;
   undefined4 *puVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined2 in_stack_00000014;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -101,12 +97,12 @@ void __thiscall TList::InitializeNationMinisterSubsystemsByPolicyIds(TList *this
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00632678;
   *unaff_FS_OFFSET = &uStack_c;
-  TGreatPower::InitializeNationStateRuntimeSubsystems(in_stack_00000004,in_stack_00000008);
+  TGreatPower::InitializeNationStateRuntimeSubsystems(param_1,param_2);
   *(undefined4 *)&this->field_0x10 = 10000;
   *(undefined4 *)&this[0x4b].field_0x4 = 0;
   *(undefined4 *)&this[0x4b].field_0x8 = 0;
   *(undefined4 *)&this[0x4b].field_0xc = 0;
-  switch(in_stack_00000014) {
+  switch(param_5) {
   case 0:
     this_00 = (TNapoleonMinister *)AllocateWithFallbackHandler(0x94);
     local_4 = 0;
@@ -180,7 +176,7 @@ void __thiscall TList::InitializeNationMinisterSubsystemsByPolicyIds(TList *this
   }
   *(undefined4 *)&this[4].field_0x1c = uVar1;
 switchD_004e6c77_default:
-  switch(in_stack_00000010) {
+  switch(param_4) {
   case 0:
     this_05 = (TArmsForeignMinister *)AllocateWithFallbackHandler(0x80);
     local_4 = 5;
@@ -229,7 +225,7 @@ LAB_004e6ef0:
   thunk_InitializeTForeignMinisterStateAndCounters(this);
   *(undefined4 *)&this[4].field_0x14 = uVar1;
 switchD_004e6de7_default:
-  switch(in_stack_0000000c) {
+  switch(param_3) {
   case 0:
     this_11 = (TSteelCityMinister *)AllocateWithFallbackHandler(0x1c4);
     local_4 = 0xb;
@@ -309,7 +305,7 @@ switchD_004e6f12_default:
   else {
     pTVar3->OnActivateView = (TList_OnActivateView_0x00 *)&RefCountedObjectBase::_vftable_;
     local_4 = 0x10;
-    TGreatPower::CPtrList((TGreatPower *)&pTVar3->slot_0x04);
+    TGreatPower::CPtrList((TGreatPower *)&pTVar3->slot_0x04,10);
     pTVar3->OnActivateView = (TList_OnActivateView_0x00 *)&_vftable_;
   }
   this[0x5b].vftable = pTVar3;

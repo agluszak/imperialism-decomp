@@ -15,12 +15,11 @@ undefined ** TObject::OrphanVtableAssignStub_00479ed0(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485C90
 // GHIDRA_NAME TObject::CreateTObjectInstance
-// GHIDRA_PROTO undefined __thiscall CreateTObjectInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTObjectInstance(int param_1)
 
-void __thiscall TObject::CreateTObjectInstance(TObject *this)
+void __thiscall TObject::CreateTObjectInstance(TObject *this,int param_1)
 
 {
-  int in_stack_00000004;
   undefined4 local_2c;
   undefined4 local_28;
   int local_24;
@@ -30,7 +29,7 @@ void __thiscall TObject::CreateTObjectInstance(TObject *this)
   CWnd::Default((CWnd *)this);
   local_2c = 0x2c;
   GetWindowPlacementFromThisHwnd(&local_2c);
-  if ((in_stack_00000004 == 0) && (local_24 != 2)) {
+  if ((param_1 == 0) && (local_24 != 2)) {
     local_24 = 2;
     local_1c = 0xfffffc18;
     local_20 = 0xfffffc18;

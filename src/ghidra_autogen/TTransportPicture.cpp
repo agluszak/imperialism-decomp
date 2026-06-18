@@ -71,16 +71,14 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591EC0
 // GHIDRA_NAME TTransportPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTransportPicture * __thiscall
-TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this)
+TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -88,10 +86,10 @@ TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591F10
 // GHIDRA_NAME TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
-TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPicture *this)
+TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPicture *this,int param_1)
 
 {
   TGreatPower *pTVar1;
@@ -112,12 +110,10 @@ TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPictur
   undefined2 extraout_var_03;
   undefined2 extraout_var_04;
   undefined4 unaff_EBX;
-  int in_stack_00000004;
-  undefined4 uVar12;
   
   uVar4 = (undefined2)((uint)unaff_EBX >> 0x10);
   bVar3 = false;
-  if ((in_stack_00000004 < 100) || (0x65 < in_stack_00000004)) goto LAB_00592108;
+  if ((param_1 < 100) || (0x65 < param_1)) goto LAB_00592108;
   sVar7 = UiRuntimeContext::GetActiveNationId();
   iVar11 = (int)*(short *)&this->field_0x92;
   pTVar1 = g_apNationStates[sVar7];
@@ -133,7 +129,7 @@ TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPictur
     wVar8 = pTVar1->needTargetByType[iVar11];
     wVar10 = pTVar1->needCurrentByType[iVar11];
   }
-  if (in_stack_00000004 == 100) {
+  if (param_1 == 100) {
     if (((short)wVar8 < (short)wVar10) && (pTVar1->needCapA6 != pTVar1->needsOverCapFlag)) {
       sVar7 = 1;
 LAB_00591fc3:
@@ -146,7 +142,7 @@ LAB_00591fc3:
     goto LAB_00591fc3;
   }
   if (bVar3) {
-    uVar12 = 7000;
+    iVar11 = 7000;
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
     sVar7 = *(short *)&this->field_0x92;
     if (sVar7 == 0) {
@@ -158,12 +154,13 @@ LAB_00591fc3:
       if ((short)wVar8 < (short)*(ushort *)&this->field_0x94) {
         pTVar2 = pTVar1->vftable[0x22].slot_0x04;
         (*pTVar2)(uVar9,CONCAT22(uVar4,wVar8));
-        (*pTVar2)(uVar12,CONCAT22(extraout_var_04,*(short *)&this->field_0x94 - wVar8));
+        param_1 = iVar11;
+        (*pTVar2)(iVar11,CONCAT22(extraout_var_04,*(short *)&this->field_0x94 - wVar8));
       }
       else {
         pTVar2 = pTVar1->vftable[0x22].slot_0x04;
         (*pTVar2)(uVar9,(uint)*(ushort *)&this->field_0x94);
-        (*pTVar2)(uVar12,0);
+        (*pTVar2)(iVar11,0);
       }
     }
     else if (sVar7 == 0x13) {
@@ -171,6 +168,7 @@ LAB_00591fc3:
       if ((short)wVar8 < *(short *)&this->field_0x94) {
         pTVar2 = pTVar1->vftable[0x22].slot_0x04;
         (*pTVar2)(0x13,CONCAT22(uVar4,wVar8));
+        param_1 = iVar11;
         (*pTVar2)(0x14,CONCAT22(extraout_var_02,*(short *)&this->field_0x94 - wVar8));
       }
       else {
@@ -187,7 +185,7 @@ LAB_00591fc3:
     (*this->vftable[0x1c].slot_0x04)();
   }
 LAB_00592108:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

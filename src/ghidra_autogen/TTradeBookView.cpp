@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435690
 // GHIDRA_NAME TTradeBookView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeBookView * __thiscall TTradeBookView::_scalar_deleting_destructor_(TTradeBookView *this)
+TTradeBookView * __thiscall
+TTradeBookView::_scalar_deleting_destructor_(TTradeBookView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -165,27 +164,27 @@ void __thiscall TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(TTradeBookView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE370
 // GHIDRA_NAME TTradeBookView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TTradeBookView::OrphanRetStub_0059add0(TTradeBookView *this)
+void __thiscall
+TTradeBookView::OrphanRetStub_0059add0
+          (TTradeBookView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x72636f72) {
+  if (param_1 == 10) {
+    if (*(int *)(param_2 + 0x1c) == 0x72636f72) {
       iVar1 = *(int *)&this->field_0x74 + 1;
     }
     else {
-      if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c636f72) goto LAB_005be3a6;
+      if (*(int *)(param_2 + 0x1c) != 0x6c636f72) goto LAB_005be3a6;
       iVar1 = *(int *)&this->field_0x74 + -1;
     }
     UpdatePagerButtonStatesAndRefreshPanels(iVar1);
   }
 LAB_005be3a6:
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 

@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D49A0
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(void)
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(byte param_1)
 
-TLandSaleEvent * __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this)
+TLandSaleEvent * __thiscall
+TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructLandSaleEventToBase();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -112,9 +111,10 @@ void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLan
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00549FF0
 // GHIDRA_NAME TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32
-// GHIDRA_PROTO undefined __thiscall HandleTurnEventCodes28_2E_2F_30_31_32(void)
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventCodes28_2E_2F_30_31_32(int * param_1)
 
-void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this)
+void __thiscall
+TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this,int *param_1)
 
 {
   int iVar1;
@@ -133,7 +133,6 @@ void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleE
   undefined4 unaff_EBP;
   int *piVar12;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   undefined1 local_28 [12];
   char cStack_1c;
   undefined4 local_18;
@@ -149,7 +148,7 @@ void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleE
   local_18 = 0x74696d65;
   uVar3 = UiRuntimeContext::GetActiveNationId();
   local_14 = CONCAT31(local_14._1_3_,uVar3);
-  iVar1 = *in_stack_00000004;
+  iVar1 = *param_1;
   (**(code **)(iVar1 + 0x3c))(local_28,0x1c);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
     sVar5 = -1;
@@ -171,24 +170,24 @@ void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleE
       pTVar11->vftable = (TTacticalBattleVtbl *)&TArmyBattleVtbl_0064ca68;
     }
     uStack_c = 0xffffffff;
-    (*pTVar11->vftable[3].GetTTacticalBattleClassNamePointer)(in_stack_00000004);
+    (*pTVar11->vftable[3].GetTTacticalBattleClassNamePointer)(param_1);
     CallObjectOffset18Vslot28();
     break;
   case 0x2e:
-    DeserializeNavyOrderListsByNation(in_stack_00000004,iVar6);
+    DeserializeNavyOrderListsByNation(param_1,iVar6);
     RefreshMapActionContextNationOverlaysAndOrderRanks();
     break;
   case 0x2f:
-    CreateMilitaryRecruitOrdersForSelectedTerrain(in_stack_00000004,iVar6);
+    CreateMilitaryRecruitOrdersForSelectedTerrain(param_1,iVar6);
     break;
   case 0x30:
-    CreateCivilianWorkOrdersForSelectedNations(in_stack_00000004,iVar6);
+    CreateCivilianWorkOrdersForSelectedNations(param_1,iVar6);
     break;
   case 0x31:
     pcVar2 = *(code **)(iVar1 + 0x50);
     iVar6 = (*pcVar2)();
     if (iVar6 == 0x61726d79) {
-      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(in_stack_00000004);
+      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(param_1);
     }
     else if (iVar6 == 0x73746172) {
       iVar6 = (*pcVar2)();
@@ -222,7 +221,7 @@ void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleE
       uVar8 = UiRuntimeContext::GetActiveNationId();
       InitializeFrogCityMarkerFields(&g_szEmptyString,0,0,uVar8);
       iVar1 = *piVar7;
-      (**(code **)(iVar1 + 0x18))(in_stack_00000004);
+      (**(code **)(iVar1 + 0x18))(param_1);
       uVar4 = (*g_pGlobalMapState->vftable[0x1b].GetTMapMgrClassNamePointer)
                         (CONCAT22(extraout_var_00,(short)piVar7[5]));
       if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
@@ -240,7 +239,7 @@ void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleE
     }
     break;
   case 0x32:
-    (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(in_stack_00000004);
+    (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(param_1);
     sVar5 = UiRuntimeContext::GetActiveNationId();
     (*g_apNationStates[sVar5]->vftable[0x2e].GetTCountryClassNamePointer)();
   }

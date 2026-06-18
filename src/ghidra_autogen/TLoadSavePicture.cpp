@@ -32,15 +32,14 @@ TLoadSavePicture::ConstructUiBaseBackdropPictureEntry(TLoadSavePicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DA40
 // GHIDRA_NAME TLoadSavePicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoadSavePicture * __thiscall TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this)
+TLoadSavePicture * __thiscall
+TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -172,7 +171,7 @@ void __thiscall TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920(TLoadSavePict
       FormatStringWithVarArgsToSharedRef();
     }
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-              ((TToolBarCluster *)&stack0xffffff90);
+              ((TToolBarCluster *)&stack0xffffff90,s_Save__00698724);
     uStack_1c = 4;
     AssignStringSharedRefFromPointer();
     uStack_1c = 2;
@@ -225,7 +224,7 @@ LAB_0056c0cb:
     this_00 = (TLoadSavePicture *)(**(code **)(iVar9 + 0x94))();
     (*this_00->vftable[1].slot_0x04)();
     CStack_a4.m_pchData = (char *)0x56c108;
-    RasterizeHexNeighborTerrainPaletteMap(this_00);
+    RasterizeHexNeighborTerrainPaletteMap(this_00,0);
     sVar5 = UiRuntimeContext::GetActiveNationId();
     *(int *)&this_00->field_0x68 = (int)sVar5;
     ApplyPaletteMaskToTileBufferByEventCode();
@@ -412,9 +411,10 @@ code_r0x0056c450:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056C740
 // GHIDRA_NAME TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLoadSavePictureAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTLoadSavePictureAndMaybeFree(int param_1)
 
-void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this)
+void __thiscall
+TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,int param_1)
 
 {
   TLoadSavePicture_slot_0x04_0x04 *pTVar1;
@@ -428,7 +428,6 @@ void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSave
   undefined4 unaff_EBP;
   char *text;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   CString local_a0;
   undefined1 local_9c [52];
   int iStack_68;
@@ -455,9 +454,9 @@ void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSave
   }
   CString::CString(&local_a0);
   local_4._0_1_ = 1;
-  if (in_stack_00000004 == 0xa1) {
+  if (param_1 == 0xa1) {
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-              ((TToolBarCluster *)local_9c);
+              ((TToolBarCluster *)local_9c,&DAT_0069872c);
     local_4._0_1_ = 2;
     AssignStringSharedRefFromPointer();
     local_4._0_1_ = 1;
@@ -467,7 +466,7 @@ void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSave
     FormatStringWithVarArgsToSharedRef();
   }
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)local_9c);
+            ((TToolBarCluster *)local_9c,s_Save__00698724);
   local_4._0_1_ = 3;
   AssignStringSharedRefFromPointer();
   local_4._0_1_ = 1;
@@ -498,7 +497,7 @@ void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSave
     this_00 = (TLoadSavePicture *)CONCAT31(extraout_var,uVar3);
     local_9c._8_4_ = this_00->vftable;
     (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 8))->slot_0x04)();
-    RasterizeHexNeighborTerrainPaletteMap(this_00);
+    RasterizeHexNeighborTerrainPaletteMap(this_00,iVar4);
     *(int *)&this_00->field_0x68 = (int)local_9c[7];
     ApplyPaletteMaskToTileBufferByEventCode();
     (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 0xe0))->slot_0x04)();
@@ -564,24 +563,24 @@ void __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSave
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056CD10
 // GHIDRA_NAME TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
 
 void __thiscall
-TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoadSavePicture *this)
+TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TLoadSavePicture *this,int param_1,CString param_2)
 
 {
   short sVar1;
   int iVar2;
-  undefined uVar3;
+  CString CVar3;
+  undefined uVar4;
   undefined3 extraout_var;
   TEditText *this_00;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  short sVar4;
-  int *piVar5;
+  short sVar5;
+  int *piVar6;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
   RECT RStack_3c;
   RECT RStack_2c;
   tagRECT tStack_1c;
@@ -589,49 +588,49 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoadSavePicture 
   undefined1 *puStack_8;
   int iStack_4;
   
+  CVar3.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   iStack_4 = -1;
   puStack_8 = &LAB_00635f72;
   *unaff_FS_OFFSET = &uStack_c;
-  if (in_stack_00000004 == 0xd) {
+  if (param_1 == 0xd) {
     sVar1 = *(short *)&this->field_0x92;
-    sVar4 = (short)*(int *)(in_stack_00000008.m_pchData + 0x1c) + -0x7430;
-    if (sVar4 != sVar1) {
+    sVar5 = *(short *)(param_2.m_pchData + 0x1c) + -0x7430;
+    if (sVar5 != sVar1) {
       if (this->field_0x90 == '\0') {
         if (sVar1 == -1) {
-          CString::CString(&stack0x00000008);
-          piVar5 = (int *)0x0;
+          CString::CString(&param_2);
+          piVar6 = (int *)0x0;
           iStack_4 = 0;
-          (**(code **)(*(int *)in_stack_00000008.m_pchData + 0xc))();
+          (**(code **)(*(int *)CVar3.m_pchData + 0xc))();
           this_00 = (TEditText *)AllocateWithFallbackHandler(0xa0);
           iStack_4._0_1_ = 1;
           if (this_00 != (TEditText *)0x0) {
-            piVar5 = (int *)TEditText::thunk_ConstructUiNumericTextEntryBase(this_00);
+            piVar6 = (int *)TEditText::thunk_ConstructUiNumericTextEntryBase(this_00);
           }
           iStack_4 = (uint)iStack_4._1_3_ << 8;
           WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
-                    (this,in_stack_00000008.m_pchData + 0x24,in_stack_00000008.m_pchData + 0x34,0x1f
-                    );
-          *(short *)&this->field_0x92 = sVar4;
-          iVar2 = *(int *)in_stack_00000008.m_pchData;
+                    (this,CVar3.m_pchData + 0x24,CVar3.m_pchData + 0x34,0x1f);
+          *(short *)&this->field_0x92 = sVar5;
+          iVar2 = *(int *)CVar3.m_pchData;
           (**(code **)(iVar2 + 0xa4))(0,1);
           (**(code **)(iVar2 + 0x1d0))(&stack0x00000000);
-          iVar2 = *piVar5;
+          iVar2 = *piVar6;
           (**(code **)(iVar2 + 0x1b4))(&this->field_0x9e,0);
           (**(code **)(iVar2 + 0x1e0))(&uStack_c,0);
           (**(code **)(iVar2 + 0xf8))();
           (**(code **)(iVar2 + 0x7c))();
           (**(code **)(iVar2 + 0x1d8))(0,*(undefined4 *)(tStack_1c.right + -8),0);
-          piVar5[7] = 0x736c6f74;
+          piVar6[7] = 0x736c6f74;
           (**(code **)(g_pUiRuntimeContext->vftable + 0x30))(0x10);
           iStack_4 = -1;
-          CString::~CString(&stack0x00000008);
+          CString::~CString(&param_2);
         }
       }
       else {
         if ((sVar1 != -1) && (sVar1 != 0xa1)) {
-          uVar3 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
-          iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+          uVar4 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
+          iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
           (**(code **)(iVar2 + 0xc))();
           (**(code **)(iVar2 + 0x1b4))(&this->field_0x9e,0);
           (**(code **)(iStack_4 + 300))(&stack0xffffffb8);
@@ -642,7 +641,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoadSavePicture 
           CopyRect(&tStack_1c,&RStack_2c);
           thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
         }
-        iVar2 = *(int *)in_stack_00000008.m_pchData;
+        iVar2 = *(int *)CVar3.m_pchData;
         (**(code **)(iVar2 + 0x1b4))(&this->field_0x94,0);
         (**(code **)(iVar2 + 300))(&stack0xffffffbc);
         RStack_2c.top = RStack_3c.top;
@@ -651,27 +650,26 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoadSavePicture 
         RStack_2c.bottom = RStack_3c.bottom;
         CopyRect(&tStack_1c,&RStack_2c);
         thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
-        *(short *)&this->field_0x92 = sVar4;
-        DestructTLoadSavePictureAndMaybeFree(this);
+        *(short *)&this->field_0x92 = sVar5;
+        DestructTLoadSavePictureAndMaybeFree(this,(int)sVar5);
       }
     }
     if (1 < *(int *)&g_pApplicationUiRootController->field_0x24) {
-      uVar3 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
-      if (CONCAT31(extraout_var_00,uVar3) != 0) {
-        thunk_QueueDeferredUiEventPacket(this,10,CONCAT31(extraout_var_00,uVar3));
+      uVar4 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
+      if (CONCAT31(extraout_var_00,uVar4) != 0) {
+        thunk_QueueDeferredUiEventPacket(this,10,CONCAT31(extraout_var_00,uVar4));
       }
     }
   }
-  else if (in_stack_00000004 == 0x14) {
-    if (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x636e636c) {
+  else if (param_1 == 0x14) {
+    if (*(int *)(param_2.m_pchData + 0x1c) == 0x636e636c) {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
     }
-    if ((this->field_0x90 != '\0') && (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x6f74746f))
-    {
+    if ((this->field_0x90 != '\0') && (*(int *)(CVar3.m_pchData + 0x1c) == 0x6f74746f)) {
       sVar1 = *(short *)&this->field_0x92;
       if ((sVar1 != -1) && (sVar1 != 0xa1)) {
-        uVar3 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
-        iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
+        uVar4 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
+        iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
         (**(code **)(iVar2 + 0xc))();
         (**(code **)(iVar2 + 0x1b4))(&this->field_0x9e,0);
         (**(code **)(iVar2 + 300))(&RStack_3c.top);
@@ -683,11 +681,10 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoadSavePicture 
         thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
       }
       *(undefined2 *)&this->field_0x92 = 0xa1;
-      DestructTLoadSavePictureAndMaybeFree(this);
+      DestructTLoadSavePictureAndMaybeFree(this,0xa1);
     }
   }
-  else if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x6f6b6179)
-          ) {
+  else if ((param_1 == 10) && (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179)) {
     (*this->vftable[0x39].slot_0x04)();
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -717,9 +714,9 @@ void __thiscall TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC(TLoa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056D1E0
 // GHIDRA_NAME TLoadSavePicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePicture *this)
+void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePicture *this,int param_1)
 
 {
   short sVar1;
@@ -728,10 +725,9 @@ void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePictur
   undefined3 extraout_var;
   int iVar4;
   undefined2 extraout_var_01;
-  int in_stack_00000004;
   undefined3 extraout_var_00;
   
-  sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+  sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     uVar3 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
     iVar4 = CONCAT31(extraout_var_00,uVar3);
@@ -872,9 +868,10 @@ LAB_0056d50c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578C10
 // GHIDRA_NAME TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap
-// GHIDRA_PROTO undefined __thiscall RasterizeHexNeighborTerrainPaletteMap(void)
+// GHIDRA_PROTO undefined __thiscall RasterizeHexNeighborTerrainPaletteMap(int param_1)
 
-void __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSavePicture *this)
+void __thiscall
+TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSavePicture *this,int param_1)
 
 {
   uint uVar1;
@@ -889,7 +886,6 @@ void __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSav
   uint uVar10;
   int iVar11;
   int iVar12;
-  int in_stack_00000004;
   int local_20;
   uint local_1c;
   int local_18;
@@ -914,7 +910,7 @@ void __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSav
     local_1c = local_1c * 3;
     ComputeHexNeighborTileIndices((short)iVar9,local_10,'\x01');
     local_4 = (short)iVar9;
-    if (in_stack_00000004 == 0) {
+    if (param_1 == 0) {
       psVar7 = local_10;
       iVar9 = 7;
       do {
@@ -937,7 +933,7 @@ void __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSav
           sVar8 = -1;
         }
         else {
-          sVar8 = (short)*(char *)(in_stack_00000004 + *psVar7);
+          sVar8 = (short)*(char *)(param_1 + *psVar7);
         }
         *psVar7 = sVar8;
         psVar7 = psVar7 + 1;

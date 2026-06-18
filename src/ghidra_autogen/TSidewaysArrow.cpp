@@ -58,15 +58,14 @@ TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B80
 // GHIDRA_NAME TSidewaysArrow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSidewaysArrow * __thiscall TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this)
+TSidewaysArrow * __thiscall
+TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,33 +73,29 @@ TSidewaysArrow * __thiscall TSidewaysArrow::_scalar_deleting_destructor_(TSidewa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583BD0
 // GHIDRA_NAME TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, void * param_2, void * param_3, void * param_4)
 
-void __thiscall TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit(TSidewaysArrow *this)
+void __thiscall
+TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TSidewaysArrow *this,int param_1,void *param_2,void *param_3,void *param_4)
 
 {
   TSidewaysArrowVtbl *pTVar1;
   char cVar2;
   uint uVar3;
   int iVar4;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  void *in_stack_0000000c;
-  void *in_stack_00000010;
   
-  TControl::thunk_DispatchPictureResourceCommand
-            ((TControl *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c,
-             in_stack_00000010);
-  if (in_stack_00000004 != 2) {
+  TControl::thunk_DispatchPictureResourceCommand((TControl *)this,param_1,param_2,param_3,param_4);
+  if (param_1 != 2) {
     uVar3 = thunk_GetTickCountDiv16();
     if (*(int *)&this->field_0x94 + 5U <= uVar3) {
       iVar4 = thunk_GetTickCountDiv16();
       *(int *)&this->field_0x94 = iVar4;
-      if (in_stack_00000004 == 0) {
+      if (param_1 == 0) {
         *(int *)&this->field_0x94 = iVar4 + 10;
       }
       pTVar1 = this->vftable;
-      cVar2 = (*pTVar1[0x2d].slot_0x04)();
+      cVar2 = (*pTVar1[0x2d].slot_0x04)(param_4);
       if (cVar2 != '\0') {
         if (this->controlTag == 0x72676874) {
           (*pTVar1[8].GetTEventHandlerClassNamePointer)(100);

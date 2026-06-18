@@ -15,15 +15,14 @@ void __thiscall TNominationView::OrphanRetStub_004305c0(TNominationView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004305E0
 // GHIDRA_NAME TNominationView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNominationView * __thiscall TNominationView::_scalar_deleting_destructor_(TNominationView *this)
+TNominationView * __thiscall
+TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -167,18 +166,16 @@ void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB990
 // GHIDRA_NAME TNominationView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TNominationView::OrphanRetStub_0059add0(TNominationView *this)
+void __thiscall TNominationView::OrphanRetStub_0059add0(TNominationView *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 10) {
+  if (param_1 == 10) {
     thunk_PostTurnEventCodeMessage2420(0x7e0);
     return;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

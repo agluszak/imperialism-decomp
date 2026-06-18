@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF980
 // GHIDRA_NAME TItemBoyView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TItemBoyView * __thiscall TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this)
+TItemBoyView * __thiscall
+TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -78,7 +77,7 @@ void __thiscall TItemBoyView::OrphanTiny_ReturnZero_0048a730(TItemBoyView *this)
   uStack_c = CONCAT31(uStack_c._1_3_,3);
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c);
   scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_30.m_pchData);
-  DestructTItemBoyViewAndMaybeFree(this);
+  DestructTItemBoyViewAndMaybeFree(this,&CStack_24);
   local_18.m_pchData._0_1_ = 2;
   CString::~CString(&CStack_30);
   local_18.m_pchData._0_1_ = 1;
@@ -93,22 +92,22 @@ void __thiscall TItemBoyView::OrphanTiny_ReturnZero_0048a730(TItemBoyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFB60
 // GHIDRA_NAME TItemBoyView::DestructTItemBoyViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTItemBoyViewAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
 
-void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this)
+void __thiscall
+TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this,undefined4 param_1)
 
 {
   int iVar1;
   short *psVar2;
   int iVar3;
   int iVar4;
-  undefined4 in_stack_00000004;
   RECT local_20;
   RECT local_10;
   
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6a);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(in_stack_00000004);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(param_1);
   psVar2 = *(short **)&this->field_0x60;
   iVar1 = (this->field34 + -0x3a) / (int)psVar2[1];
   if (0x20 < iVar1) {

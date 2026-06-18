@@ -57,15 +57,14 @@ TArmyUnitLine * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyU
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D60
 // GHIDRA_NAME TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTArmyUnitLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTArmyUnitLineAndMaybeFree(byte param_1)
 
-TArmyUnitLine * __thiscall TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this)
+TArmyUnitLine * __thiscall
+TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTArmyUnitLineAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -73,9 +72,9 @@ TArmyUnitLine * __thiscall TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArm
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8DF0
 // GHIDRA_NAME TArmyUnitLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
 
-void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this)
+void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int param_1)
 
 {
   short sVar1;
@@ -90,7 +89,6 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this)
   int iVar9;
   char *unaff_EDI;
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
   CString *pCStack_68;
   TControl *pTStack_64;
   int *piStack_60;
@@ -117,7 +115,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this)
   puStack_8 = &LAB_006303d0;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  uVar2 = *(undefined4 *)(in_stack_00000004 + 0x84);
+  uVar2 = *(undefined4 *)(param_1 + 0x84);
   uStack_50 = 100;
   CStack_54.m_pchData = (char *)0x4a8e23;
   pTVar7 = (TView *)AllocateWithFallbackHandler();
@@ -136,6 +134,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this)
   CStack_54.m_pchData = (char *)0x5;
   pCStack_5c = (CString *)&this->field_0x8;
   uStack_58 = (CString *)0x5;
+  pTStack_64 = (TControl *)param_1;
   pCStack_68 = (CString *)0x0;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();

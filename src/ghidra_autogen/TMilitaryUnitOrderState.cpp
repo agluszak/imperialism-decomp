@@ -49,7 +49,7 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
 // GHIDRA_NAME TMilitaryUnitOrderState::InitializeRecruitOrderState
-// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(void)
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(short param_1, short param_2, short param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes military recruit order object state after allocation.
 // GHIDRA_COMMENT
@@ -70,20 +70,18 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
    
    Used by recruitment commit path for non-civilian branch. */
 
-void __thiscall TMilitaryUnitOrderState::InitializeRecruitOrderState(TMilitaryUnitOrderState *this)
+void __thiscall
+TMilitaryUnitOrderState::InitializeRecruitOrderState
+          (TMilitaryUnitOrderState *this,short param_1,short param_2,short param_3)
 
 {
-  short in_stack_00000004;
-  short in_stack_0000000c;
-  
   this[0x1c] = (TMilitaryUnitOrderState)0x1;
   *(undefined2 *)(this + 6) = 0xffff;
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this);
-  *(short *)(this + 0x36) =
-       (short)((int)((int)in_stack_00000004 + ((int)in_stack_00000004 >> 0x1f & 7U)) >> 3);
-  if (0x1a < in_stack_00000004) {
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this,param_1,param_2);
+  *(short *)(this + 0x36) = (short)((int)((int)param_1 + ((int)param_1 >> 0x1f & 7U)) >> 3);
+  if (0x1a < param_1) {
     TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
-              ((TAdmiral *)g_apTerrainTypeDescriptorTable[in_stack_0000000c]);
+              ((TAdmiral *)g_apTerrainTypeDescriptorTable[param_3]);
   }
   (**(code **)(*(int *)this + 0x38))();
   return;

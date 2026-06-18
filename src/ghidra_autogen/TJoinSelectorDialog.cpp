@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044FAB0
 // GHIDRA_NAME TJoinSelectorDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TJoinSelectorDialog * __thiscall
-TJoinSelectorDialog::_scalar_deleting_destructor_(TJoinSelectorDialog *this)
+TJoinSelectorDialog::_scalar_deleting_destructor_(TJoinSelectorDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -89,27 +87,24 @@ void __thiscall TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920(TJoinSelec
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E9A0
 // GHIDRA_NAME TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TJoinSelectorDialog *this)
+TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TJoinSelectorDialog *this,int param_1,int param_2)
 
 {
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (((((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22))
-      || (in_stack_00000004 == 0xd)) &&
-     (((iVar1 = *(int *)(in_stack_00000008 + 0x1c), iVar1 == 0x63616e63 || (iVar1 == 0x636e636c)) ||
+  if (((((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) || (param_1 == 0xd)) &&
+     (((iVar1 = *(int *)(param_2 + 0x1c), iVar1 == 0x63616e63 || (iVar1 == 0x636e636c)) ||
       (iVar1 == 0x6f6b6179)))) {
     uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))
-              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

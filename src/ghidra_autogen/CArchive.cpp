@@ -5,60 +5,54 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D04
 // GHIDRA_NAME CArchive::WriteByteToSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall WriteByteToSerializedBuffer(void)
+// GHIDRA_PROTO undefined __thiscall WriteByteToSerializedBuffer(byte param_1)
 
-CArchive * __thiscall CArchive::WriteByteToSerializedBuffer(CArchive *this)
+CArchive * __thiscall CArchive::WriteByteToSerializedBuffer(CArchive *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
     Flush();
   }
-  *this->m_lpBufCur = in_stack_00000004;
+  *this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
 // GHIDRA_NAME CArchive::ReadWordFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadWordFromSerializedBuffer(void)
+// GHIDRA_PROTO undefined __thiscall ReadWordFromSerializedBuffer(undefined2 * param_1)
 
-CArchive * __thiscall CArchive::ReadWordFromSerializedBuffer(CArchive *this)
+CArchive * __thiscall CArchive::ReadWordFromSerializedBuffer(CArchive *this,undefined2 *param_1)
 
 {
-  undefined2 *in_stack_00000004;
-  
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
-    FillBuffer(this);
+    FillBuffer(this,(uint)(this->m_lpBufCur + (2 - (int)this->m_lpBufMax)));
   }
-  *in_stack_00000004 = *(undefined2 *)this->m_lpBufCur;
+  *param_1 = *(undefined2 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 2;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DD6
 // GHIDRA_NAME CArchive::ReadDwordFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadDwordFromSerializedBuffer(void)
+// GHIDRA_PROTO undefined __thiscall ReadDwordFromSerializedBuffer(undefined4 * param_1)
 
-CArchive * __thiscall CArchive::ReadDwordFromSerializedBuffer(CArchive *this)
+CArchive * __thiscall CArchive::ReadDwordFromSerializedBuffer(CArchive *this,undefined4 *param_1)
 
 {
-  undefined4 *in_stack_00000004;
-  
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
-    FillBuffer(this);
+    FillBuffer(this,(uint)(this->m_lpBufCur + (4 - (int)this->m_lpBufMax)));
   }
-  *in_stack_00000004 = *(undefined4 *)this->m_lpBufCur;
+  *param_1 = *(undefined4 *)this->m_lpBufCur;
   this->m_lpBufCur = this->m_lpBufCur + 4;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D26
 // GHIDRA_NAME CArchive::ReadBytesFromSerializedBuffer
-// GHIDRA_PROTO undefined __thiscall ReadBytesFromSerializedBuffer(void)
+// GHIDRA_PROTO undefined __thiscall ReadBytesFromSerializedBuffer(int param_1, uint param_2)
 
-int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this)
+int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this,int param_1,uint param_2)
 
 {
   int iVar1;
@@ -66,30 +60,28 @@ int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this)
   byte *pbVar3;
   uint uVar4;
   uint uVar5;
-  int in_stack_00000004;
-  uint in_stack_00000008;
   byte *local_c;
   uint local_8;
   
-  if (in_stack_00000008 == 0) {
+  if (param_2 == 0) {
     iVar1 = 0;
   }
   else {
     uVar4 = (int)this->m_lpBufMax - (int)this->m_lpBufCur;
-    if (in_stack_00000008 < uVar4) {
-      uVar4 = in_stack_00000008;
+    if (param_2 < uVar4) {
+      uVar4 = param_2;
     }
-    CopyMemoryPossiblyOverlapping();
+    CopyMemoryPossiblyOverlapping(param_1,this->m_lpBufCur,uVar4);
     this->m_lpBufCur = this->m_lpBufCur + uVar4;
-    in_stack_00000004 = in_stack_00000004 + uVar4;
-    uVar4 = in_stack_00000008 - uVar4;
+    param_1 = param_1 + uVar4;
+    uVar4 = param_2 - uVar4;
     if (uVar4 != 0) {
       iVar1 = uVar4 - uVar4 % (uint)this->m_nBufSize;
       local_c = (byte *)0x0;
       local_8 = iVar1;
       do {
-        iVar2 = (**(code **)(*(int *)this->m_pFile + 0x3c))(in_stack_00000004,local_8);
-        in_stack_00000004 = in_stack_00000004 + iVar2;
+        iVar2 = (**(code **)(*(int *)this->m_pFile + 0x3c))(param_1,local_8);
+        param_1 = param_1 + iVar2;
         local_c = (byte *)((int)local_c + iVar2);
         local_8 = local_8 - iVar2;
         if (iVar2 == 0) break;
@@ -124,21 +116,21 @@ int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this)
         if (uVar4 < uVar5) {
           uVar5 = uVar4;
         }
-        CopyMemoryPossiblyOverlapping(in_stack_00000004,pbVar3,uVar5);
+        CopyMemoryPossiblyOverlapping(param_1,pbVar3,uVar5);
         this->m_lpBufCur = this->m_lpBufCur + uVar5;
         uVar4 = uVar4 - uVar5;
       }
     }
-    iVar1 = in_stack_00000008 - uVar4;
+    iVar1 = param_2 - uVar4;
   }
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
 // GHIDRA_NAME CArchive::FillBuffer
-// GHIDRA_PROTO undefined __thiscall FillBuffer(void)
+// GHIDRA_PROTO undefined __thiscall FillBuffer(uint param_1)
 
-void __thiscall CArchive::FillBuffer(CArchive *this)
+void __thiscall CArchive::FillBuffer(CArchive *this,uint param_1)
 
 {
   byte *pbVar1;
@@ -146,12 +138,11 @@ void __thiscall CArchive::FillBuffer(CArchive *this)
   int iVar3;
   int iVar4;
   byte *pbVar5;
-  uint in_stack_00000004;
   uint local_8;
   
   pbVar1 = this->m_lpBufCur;
   local_8 = (int)this->m_lpBufMax - (int)pbVar1;
-  uVar2 = in_stack_00000004 + local_8;
+  uVar2 = param_1 + local_8;
   if (this->m_bDirectBuffer == 0) {
     pbVar5 = this->m_lpBufStart;
     if (pbVar5 < pbVar1) {
@@ -169,7 +160,7 @@ void __thiscall CArchive::FillBuffer(CArchive *this)
         pbVar5 = pbVar5 + iVar3;
         iVar4 = iVar4 - iVar3;
         if ((iVar3 == 0) || (iVar4 == 0)) break;
-      } while (local_8 < in_stack_00000004);
+      } while (local_8 < param_1);
       this->m_lpBufCur = this->m_lpBufStart;
       this->m_lpBufMax = this->m_lpBufStart + local_8;
     }

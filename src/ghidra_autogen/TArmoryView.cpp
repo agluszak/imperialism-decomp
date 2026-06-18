@@ -29,15 +29,13 @@ TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CEDD0
 // GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this)
+TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -248,7 +246,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CF350
 // GHIDRA_NAME TArmoryView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles Armory view UI command routing for selection and +/- adjustments.
 // GHIDRA_COMMENT - command 0x0C: updates selected row index from control id range 0x7630..0x7638 and notifies slot +0x1E4.
@@ -265,7 +263,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
    - refreshes numeric controls and invalidates the affected rect after successful step changes.
    - all other commands are delegated to HandleCityDialogToggleCommandOrForward. */
 
-void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this)
+void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this,int param_1,int param_2)
 
 {
   TArmoryViewVtbl *pTVar1;
@@ -279,21 +277,19 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this)
   int *piVar6;
   int unaff_EBP;
   int *unaff_EDI;
-  int in_stack_00000004;
-  int in_stack_00000008;
   RECT local_34;
   tagRECT atStack_24 [2];
   
-  uVar7 = (undefined2)((uint)in_stack_00000008 >> 0x10);
-  if (in_stack_00000004 == 0xc) {
-    sVar5 = *(short *)(in_stack_00000008 + 0x1c) + -0x7630;
+  uVar7 = (undefined2)((uint)param_2 >> 0x10);
+  if (param_1 == 0xc) {
+    sVar5 = *(short *)(param_2 + 0x1c) + -0x7630;
     if ((-1 < sVar5) && (sVar5 < 9)) {
       *(short *)&this->field_0xa4 = sVar5;
       (*this->vftable[0x3c].slot_0x04)(CONCAT22(uVar7,sVar5));
     }
   }
-  else if (in_stack_00000004 == 10) {
-    sVar5 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000;
+  else if (param_1 == 10) {
+    sVar5 = *(short *)(*(int *)(param_2 + 0x20) + 0x1c) + -30000;
     if ((-1 < sVar5) && (sVar5 < 9)) {
       if (*(short *)&this->field_0xa4 != sVar5) {
         pTVar1 = this->vftable;
@@ -305,7 +301,7 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this)
         (**(code **)(iVar2 + 0x1c8))(sVar5 + 0x63697630);
       }
       local_34.left = *(LONG *)&this->field_0xa8;
-      if (*(int *)(in_stack_00000008 + 0x1c) == 0x706c7573) {
+      if (*(int *)(param_2 + 0x1c) == 0x706c7573) {
         sVar5 = (short)*(int *)(local_34.left + 4) + 1;
       }
       else {
@@ -335,7 +331,7 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this)
       }
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

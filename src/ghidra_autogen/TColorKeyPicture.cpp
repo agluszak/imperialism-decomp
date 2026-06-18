@@ -62,15 +62,14 @@ TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572E10
 // GHIDRA_NAME TColorKeyPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyPicture * __thiscall TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this)
+TColorKeyPicture * __thiscall
+TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -155,20 +154,19 @@ void __thiscall TColorKeyPicture::OrphanTiny_ReturnZero_0048a730(TColorKeyPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573040
 // GHIDRA_NAME TColorKeyPicture::SetPictureResourceIdAndRefresh
-// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void __thiscall TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this)
+void __thiscall
+TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this,short param_1,bool param_2)
 
 {
-  short in_stack_00000004;
-  bool in_stack_00000008;
+  undefined2 unaff_DI;
   
   if (*(int *)&this->field_0x94 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
   }
   *(undefined4 *)&this->field_0x94 = 0;
-  TPicture::thunk_SetPictureResourceIdAndRefresh
-            ((TPicture *)this,in_stack_00000004,in_stack_00000008);
+  TPicture::thunk_SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_DI);
   return;
 }
 

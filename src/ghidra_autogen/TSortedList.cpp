@@ -26,7 +26,7 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -53,7 +53,7 @@ TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TSortedListVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4);
+  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4,10);
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return this;

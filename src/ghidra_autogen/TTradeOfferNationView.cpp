@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD1A0
 // GHIDRA_NAME TTradeOfferNationView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTradeOfferNationView * __thiscall
-TTradeOfferNationView::_scalar_deleting_destructor_(TTradeOfferNationView *this)
+TTradeOfferNationView::_scalar_deleting_destructor_(TTradeOfferNationView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

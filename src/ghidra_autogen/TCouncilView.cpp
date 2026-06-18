@@ -31,15 +31,14 @@ TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(TCouncilView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430660
 // GHIDRA_NAME TCouncilView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCouncilView * __thiscall TCouncilView::_scalar_deleting_destructor_(TCouncilView *this)
+TCouncilView * __thiscall
+TCouncilView::_scalar_deleting_destructor_(TCouncilView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -47,10 +46,11 @@ TCouncilView * __thiscall TCouncilView::_scalar_deleting_destructor_(TCouncilVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004307A0
 // GHIDRA_NAME TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(undefined1 param_1)
 
 void __thiscall
-TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(TCouncilView *this)
+TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0
+          (TCouncilView *this,undefined1 param_1)
 
 {
   int iVar1;
@@ -58,7 +58,6 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(TCo
   uint uVar3;
   int iVar4;
   uint uVar5;
-  undefined1 in_stack_00000004;
   
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
@@ -82,23 +81,23 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0(TCo
   if ((uint)this->field0c <= uVar2) {
     this->field0c = uVar2 + 1;
   }
-  *(undefined1 *)(this->field04 + uVar2) = in_stack_00000004;
+  *(undefined1 *)(this->field04 + uVar2) = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430830
 // GHIDRA_NAME TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(undefined4 param_1)
 
 void __thiscall
-TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(TCouncilView *this)
+TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
+          (TCouncilView *this,undefined4 param_1)
 
 {
   int iVar1;
   uint uVar2;
   int iVar3;
   uint uVar4;
-  undefined4 in_stack_00000004;
   
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
@@ -121,7 +120,7 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(TCo
   if ((uint)this->field0c <= uVar2) {
     this->field0c = uVar2 + 1;
   }
-  *(undefined4 *)(this->field04 + uVar2 * 4) = in_stack_00000004;
+  *(undefined4 *)(this->field04 + uVar2 * 4) = param_1;
   return;
 }
 
@@ -183,15 +182,14 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E980
 // GHIDRA_NAME TCouncilView::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(TTEView * param_1)
 
-void __thiscall TCouncilView::DeserializeCityProductionQueueCommand(TCouncilView *this)
+void __thiscall
+TCouncilView::DeserializeCityProductionQueueCommand(TCouncilView *this,TTEView *param_1)
 
 {
-  TTEView *in_stack_00000004;
-  
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)();
-  TTEView::DeflateRect(in_stack_00000004);
+  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(param_1);
+  TTEView::DeflateRect(param_1,(int *)&this->field_0x68);
   return;
 }
 
@@ -244,16 +242,16 @@ void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F7130
 // GHIDRA_NAME TCouncilView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
-void __thiscall TCouncilView::OrphanTiny_ReturnZero_0048a730(TCouncilView *this)
+void __thiscall TCouncilView::OrphanTiny_ReturnZero_0048a730(TCouncilView *this,undefined4 param_1)
 
 {
   if (*(int *)&this->field_0xb8 == 5) {
-    (**(code **)(**(int **)&this->field_0xb4 + 0x48))();
+    (**(code **)(**(int **)&this->field_0xb4 + 0x48))(param_1);
     return;
   }
-  TControl::thunk_ForwardCityDialogParamToChildSlot48((TControl *)this);
+  TControl::thunk_ForwardCityDialogParamToChildSlot48((TControl *)this,param_1);
   return;
 }
 
@@ -410,52 +408,52 @@ void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this)
+void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this,int param_1,int param_2)
 
 {
   int *piVar1;
-  int iVar2;
-  int in_stack_00000004;
-  int in_stack_00000008;
+  undefined *puVar2;
+  undefined *unaff_ESI;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x73746172) {
+  if (param_1 == 10) {
+    if (*(int *)(param_2 + 0x1c) == 0x73746172) {
       TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
                 ((TCouncilTickerAnimation *)this);
       return;
     }
   }
-  else if (in_stack_00000004 == 0x14) {
-    iVar2 = 0;
+  else if (param_1 == 0x14) {
+    puVar2 = (undefined *)0x0;
     piVar1 = &DAT_00696978;
     do {
-      if (*(int *)(in_stack_00000008 + 0x1c) == *piVar1) break;
+      if (*(int *)(param_2 + 0x1c) == *piVar1) break;
       piVar1 = piVar1 + 1;
-      iVar2 = iVar2 + 1;
+      puVar2 = puVar2 + 1;
     } while ((int)piVar1 < 0x696990);
-    if (iVar2 < 6) {
-      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(iVar2);
+    if ((int)puVar2 < 6) {
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
       return;
     }
   }
   else {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC950
 // GHIDRA_NAME TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(undefined4 * param_1, undefined4 param_2)
 
 void __thiscall
 TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-          (TCouncilView *this)
+          (TCouncilView *this,undefined4 *param_1,undefined4 param_2)
 
 {
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this);
+  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+            ((TControl *)this,param_1,param_2);
   if ((int)*(short *)&this->field_0x528 < *(short *)&this->field_0x24c8 + 2) {
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
   }

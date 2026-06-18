@@ -56,8 +56,10 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
       (**(code **)(unaff_ESI + 0x74))(iVar8,iVar6,6,0);
     }
     (*g_apTerrainTypeDescriptorTable[iVar6]->vftable[0x12].slot_0x04)(iVar8,0x131);
-    TCountry::thunk_QueueInterNationEventRecordDeduped((TCountry *)g_pInterNationEventQueueManager);
-    TCountry::thunk_QueueInterNationEventRecordDeduped((TCountry *)g_pInterNationEventQueueManager);
+    TCountry::thunk_QueueInterNationEventRecordDeduped
+              ((TCountry *)g_pInterNationEventQueueManager,1,iVar6,iVar8,'\0');
+    TCountry::thunk_QueueInterNationEventRecordDeduped
+              ((TCountry *)g_pInterNationEventQueueManager,0,iVar8,iVar6,'\0');
     if (iVar6 < 7) {
       (*g_apNationStates[iVar8]->vftable[0x12].slot_0x04)(iVar6,200);
     }
@@ -137,16 +139,14 @@ void __thiscall TNextDiplomationCommand::OrphanRetStub_00487a00(TNextDiplomation
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F0DD0
 // GHIDRA_NAME TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
 TNextDiplomationCommand * __thiscall
-TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470(TNextDiplomationCommand *this)
+TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470(TNextDiplomationCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

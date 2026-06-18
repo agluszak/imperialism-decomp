@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B20
 // GHIDRA_NAME TNetGameSelectPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TNetGameSelectPicture * __thiscall
-TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this)
+TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -45,10 +43,11 @@ void __thiscall TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920(TNetGame
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
 // GHIDRA_NAME TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TNetGameSelectPicture *this)
+TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TNetGameSelectPicture *this,int param_1,int param_2)
 
 {
   int iVar1;
@@ -57,11 +56,9 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TNetGameSele
   undefined3 extraout_var;
   undefined4 uVar4;
   undefined3 extraout_var_00;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
-    iVar1 = *(int *)(in_stack_00000008 + 0x1c);
+  if (((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) {
+    iVar1 = *(int *)(param_2 + 0x1c);
     if (iVar1 == 0x636e636c) {
       ResetGameFlowStateAndPostTurnEvent5DCAlt();
     }
@@ -79,7 +76,7 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TNetGameSele
                 (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c));
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

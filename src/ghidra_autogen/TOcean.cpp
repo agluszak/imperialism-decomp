@@ -5,41 +5,318 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562140
 // GHIDRA_NAME TOcean::DestroyTPortZoneManager
-// GHIDRA_PROTO undefined __thiscall DestroyTPortZoneManager(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTPortZoneManager(byte param_1)
 
-TOcean * __thiscall TOcean::DestroyTPortZoneManager(TOcean *this)
+TOcean * __thiscall TOcean::DestroyTPortZoneManager(TOcean *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTPortZoneManagerToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562190
-// GHIDRA_NAME TOcean::GetTOceanClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTOceanClassNamePointer(void)
+// GHIDRA_NAME TOcean::GetRuntimeClass
+// GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * __thiscall TOcean::GetTOceanClassNamePointer(TOcean *this)
+CRuntimeClass * __thiscall TOcean::GetRuntimeClass(TOcean *this)
 
 {
   return &classRuntimeClass;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00562340
+// GHIDRA_NAME TOcean::ReadFrom
+// GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
+
+void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
+
+{
+  word *pwVar1;
+  code *pcVar2;
+  short sVar3;
+  TZone *pTVar4;
+  int *piVar5;
+  int *piVar6;
+  dword dVar7;
+  int iVar8;
+  int unaff_EBP;
+  int unaff_ESI;
+  int iVar9;
+  int unaff_EDI;
+  int *unaff_FS_OFFSET;
+  int iVar10;
+  TZone *pTVar11;
+  undefined1 *puVar12;
+  word *pwVar13;
+  short *psStack_14;
+  TZone *pTStack_c;
+  undefined1 *puStack_8;
+  short *psStack_4;
+  
+  psStack_4 = (short *)0xffffffff;
+  puStack_8 = &LAB_00635855;
+  pTStack_c = (TZone *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&pTStack_c;
+  if (g_pMapActionContextDistanceCache != (void *)0x0) {
+    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
+    g_pMapActionContextDistanceCache = (void *)0x0;
+    g_nMapActionContextCount = -1;
+  }
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  pwVar1 = &this->nationCount;
+  iVar8 = 0;
+  if (0 < (short)*pwVar1) {
+    iVar9 = 0;
+    do {
+      pTVar4 = (TZone *)(iVar9 + (int)this->contextArray);
+      if (g_pMapActionContextListHead == pTVar4) {
+        g_pMapActionContextListHead = *(TZone **)&pTVar4->field_0x18;
+      }
+      if (*(int *)&pTVar4->field_0x18 != 0) {
+        *(undefined4 *)(*(int *)&pTVar4->field_0x18 + 0x1c) = *(undefined4 *)&pTVar4->field_0x1c;
+      }
+      if (*(int *)&pTVar4->field_0x1c != 0) {
+        *(undefined4 *)(*(int *)&pTVar4->field_0x1c + 0x18) = *(undefined4 *)&pTVar4->field_0x18;
+      }
+      *(undefined4 *)&pTVar4->field_0x1c = 0;
+      *(undefined4 *)&pTVar4->field_0x18 = 0;
+      iVar8 = iVar8 + 1;
+      iVar9 = iVar9 + 0x48;
+    } while (iVar8 < (short)*pwVar1);
+  }
+  if (this->contextArray != (dword *)0x0) {
+    (**(code **)(*this->contextArray + 4))(3);
+  }
+  while (pTVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
+    do {
+      iVar8 = CObject::IsKindOf((CObject *)pTVar4);
+      if (iVar8 != 0) break;
+      pTVar4 = *(TZone **)&pTVar4->field_0x18;
+    } while (pTVar4 != (TZone *)0x0);
+    pTVar11 = g_pMapActionContextListHead;
+    if (pTVar4 == (TZone *)0x0) break;
+    while ((pTVar11 != (TZone *)0x0 && (iVar8 = CObject::IsKindOf((CObject *)pTVar11), iVar8 == 0)))
+    {
+      pTVar11 = *(TZone **)&pTVar11->field_0x18;
+    }
+    (*pTVar11->vftable[3].SetNationPendingActionStateAndPayload)();
+  }
+  pcVar2 = *(code **)(*param_1 + 0x3c);
+  pwVar13 = pwVar1;
+  (*pcVar2)(pwVar1,2);
+  iVar8 = (int)(short)*pwVar1;
+  piVar5 = (int *)AllocateWithFallbackHandler(iVar8 * 0x48 + 4);
+  pTStack_c = (TZone *)0x0;
+  if (piVar5 == (int *)0x0) {
+    piVar6 = (int *)0x0;
+  }
+  else {
+    piVar6 = piVar5 + 1;
+    *piVar5 = iVar8;
+    CallCallbackRepeatedly
+              (piVar6,0x48,iVar8,TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
+  }
+  iVar8 = 0;
+  pTStack_c = (TZone *)0xffffffff;
+  *(int **)(unaff_EBP + 8) = piVar6;
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
+  }
+  iVar9 = 0;
+  if (0 < *psStack_4) {
+    do {
+      (**(code **)(*(int *)(*(int *)(unaff_EBP + 8) + iVar8) + 0x18))(param_1);
+      iVar9 = iVar9 + 1;
+      iVar8 = iVar8 + 0x48;
+    } while (iVar9 < *psStack_4);
+  }
+  puVar12 = &stack0xffffffe4;
+  (*pcVar2)(puVar12,2);
+  sVar3 = (short)unaff_ESI;
+  while (unaff_ESI = unaff_ESI + -1, sVar3 != 0) {
+    pTVar4 = (TZone *)AllocateWithFallbackHandler(0x4c);
+    pTStack_c = pTVar4;
+    if (pTVar4 == (TZone *)0x0) {
+      pTVar4 = (TZone *)0x0;
+    }
+    else {
+      TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(pTVar4);
+      *(undefined2 *)&pTVar4[1].vftable = 0xffff;
+      pTVar4->vftable = (TZoneVtbl *)&TPortZone::_vftable_;
+    }
+    psStack_14 = (short *)0xffffffff;
+    (*pTVar4->vftable[3].DispatchNationPendingActionEventCodes)(param_1);
+    sVar3 = (short)unaff_ESI;
+  }
+  pTVar4 = (TZone *)(unaff_EDI + 0xc);
+  pTVar11 = pTVar4;
+  pTStack_c = pTVar4;
+  (*pcVar2)(pTVar4,2);
+  FreeHeapBufferIfNotNull(*(undefined4 *)(unaff_EDI + 0x10));
+  dVar7 = AllocateWithFallbackHandler((int)*(short *)&pTVar4->vftable << 4);
+  if (dVar7 == 0) {
+    dVar7 = 0;
+  }
+  *(dword *)(pwVar13 + 8) = dVar7;
+  if (dVar7 == 0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
+  }
+  iVar8 = 0;
+  if (0 < *(short *)&pTVar4->vftable) {
+    iVar9 = 0;
+    do {
+      iVar10 = iVar9 + 4 + *(dword *)(pwVar13 + 8);
+      (*pcVar2)(iVar10,4);
+      (*pcVar2)(iVar9 + *(int *)(puVar12 + 0x10),4);
+      (*pcVar2)(iVar9 + 0xc + *(int *)&pTVar11->field_0x10,4);
+      (*pcVar2)(iVar9 + 8 + *(int *)(iVar10 + 0x10),4);
+      iVar8 = iVar8 + 1;
+      iVar9 = iVar9 + 0x10;
+    } while (iVar8 < *psStack_14);
+  }
+  pTVar4 = g_pMapActionContextListHead;
+  if (DAT_00695278 < 0xd) {
+    for (; pTVar4 != (TZone *)0x0; pTVar4 = *(TZone **)&pTVar4->field_0x18) {
+      iVar8 = *(int *)&pTVar4->field_0x28;
+      if (iVar8 != 0) {
+        *(undefined4 *)&pTVar4->field_0x28 = 0;
+        *(undefined4 *)&pTVar4->field_0x2c = 0;
+        *(undefined4 *)&pTVar4->field_0x30 = 0;
+        FreeHeapBlockWithAllocatorTracking(iVar8);
+      }
+      iVar8 = *(int *)&pTVar4->field_0x38;
+      if (iVar8 != 0) {
+        *(undefined4 *)&pTVar4->field_0x38 = 0;
+        *(undefined4 *)&pTVar4->field_0x3c = 0;
+        *(undefined4 *)&pTVar4->field_0x40 = 0;
+        FreeHeapBlockWithAllocatorTracking(iVar8);
+      }
+    }
+  }
+  RefreshPortZoneNeighborContextLinksAndFallbacks();
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005628F0
+// GHIDRA_NAME TOcean::WriteTo
+// GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
+
+void __thiscall TOcean::WriteTo(TOcean *this,int *param_1)
+
+{
+  word *pwVar1;
+  TZone *pTVar2;
+  int iVar3;
+  int iVar4;
+  TZone *this_00;
+  TZone *pTVar5;
+  code *unaff_EDI;
+  word *pwVar6;
+  code *pcVar7;
+  word *pwVar8;
+  code *pcVar9;
+  
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  pwVar1 = &this->nationCount;
+  pwVar8 = pwVar1;
+  (**(code **)(*param_1 + 0x78))(pwVar1,2);
+  iVar4 = 0;
+  if (0 < (short)*pwVar1) {
+    iVar3 = 0;
+    do {
+      (**(code **)(*(int *)((int)this->contextArray + iVar3) + 0x14))(param_1);
+      iVar4 = iVar4 + 1;
+      iVar3 = iVar3 + 0x48;
+    } while (iVar4 < (short)this->nationCount);
+  }
+  pcVar9 = (code *)0x0;
+  pTVar5 = g_pMapActionContextListHead;
+  if (g_pMapActionContextListHead != (TZone *)0x0) {
+    do {
+      iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+      if (iVar4 != 0) break;
+      pTVar5 = *(TZone **)&pTVar5->field_0x18;
+    } while (pTVar5 != (TZone *)0x0);
+joined_r0x0056295f:
+    if (pTVar5 != (TZone *)0x0) {
+      pcVar9 = pcVar9 + 1;
+      pTVar5 = *(TZone **)&pTVar5->field_0x18;
+      if (pTVar5 == (TZone *)0x0) goto LAB_0056298c;
+      do {
+        iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+        if (iVar4 != 0) break;
+        pTVar5 = *(TZone **)&pTVar5->field_0x18;
+      } while (pTVar5 != (TZone *)0x0);
+      goto joined_r0x0056295f;
+    }
+  }
+LAB_0056298c:
+  pcVar7 = (code *)&stack0xfffffff4;
+  (*(code *)this)(pcVar7,2);
+  pTVar5 = g_pMapActionContextListHead;
+  while ((this_00 = pTVar5, pTVar5 != (TZone *)0x0 &&
+         (iVar4 = CObject::IsKindOf((CObject *)pTVar5), iVar4 == 0))) {
+    pTVar5 = *(TZone **)&pTVar5->field_0x18;
+  }
+  do {
+    pTVar2 = this_00;
+    if ((pTVar2 == (TZone *)0x0) ||
+       (this_00 = *(TZone **)&pTVar2->field_0x18, pTVar5 = pTVar2, this_00 == (TZone *)0x0)) break;
+    do {
+      iVar4 = CObject::IsKindOf((CObject *)this_00);
+      if (iVar4 != 0) break;
+      this_00 = *(TZone **)&this_00->field_0x18;
+    } while (this_00 != (TZone *)0x0);
+  } while( true );
+joined_r0x005629ea:
+  if (pTVar5 == (TZone *)0x0) {
+LAB_00562a16:
+    pwVar1 = &this->field0c;
+    pwVar6 = pwVar1;
+    (*pcVar9)(pwVar1,2);
+    iVar4 = 0;
+    if (0 < (short)*pwVar1) {
+      iVar3 = 0;
+      do {
+        (*unaff_EDI)(iVar3 + 4 + this->keyMask,4);
+        (*(code *)pwVar8)(iVar3 + this->keyMask,4);
+        (*pcVar7)(iVar3 + 0xc + this->keyMask,4);
+        (*(code *)pwVar6)(iVar3 + 8 + this->keyMask,4);
+        iVar4 = iVar4 + 1;
+        iVar3 = iVar3 + 0x10;
+      } while (iVar4 < (short)this->field0c);
+    }
+    return;
+  }
+  (*pTVar5->vftable[2].SetNationPendingActionStateAndPayload)(param_1);
+  pTVar5 = *(TZone **)&pTVar5->field_0x1c;
+  if (pTVar5 == (TZone *)0x0) goto LAB_00562a16;
+  do {
+    iVar4 = CObject::IsKindOf((CObject *)pTVar5);
+    if (iVar4 != 0) break;
+    pTVar5 = *(TZone **)&pTVar5->field_0x1c;
+  } while (pTVar5 != (TZone *)0x0);
+  goto joined_r0x005629ea;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057C9A0
 // GHIDRA_NAME TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
-// GHIDRA_PROTO undefined __thiscall RecreateActiveMapContextAndInitializeGlobalMapState(void)
+// GHIDRA_PROTO undefined __thiscall RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
 
-void __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOcean *this)
+void __thiscall
+TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOcean *this,short param_1)
 
 {
   TMapMgr *this_00;
   int *unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
   undefined *puVar1;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -49,7 +326,7 @@ void __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOce
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636dda;
   *unaff_FS_OFFSET = &uStack_c;
-  this[0xb].field0c = in_stack_00000004 + 1;
+  this[0xb].field0c = param_1 + 1;
   if (g_pActiveMapOrderContext != (TOcean *)0x0) {
     (*g_pActiveMapOrderContext->vftable[3].DestroyTPortZoneManager)();
     g_pActiveMapOrderContext = (TOcean *)0x0;

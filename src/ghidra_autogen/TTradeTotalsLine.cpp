@@ -58,16 +58,14 @@ TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1930
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree(byte param_1)
 
 TTradeTotalsLine * __thiscall
-TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this)
+TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTradeTotalsLineAndMaybeFree_Impl(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -87,16 +85,16 @@ void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTra
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C19C0
 // GHIDRA_NAME TTradeTotalsLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TTradeTotalsLine::OrphanRetStub_0056f460(TTradeTotalsLine *this)
+void __thiscall
+TTradeTotalsLine::OrphanRetStub_0056f460
+          (TTradeTotalsLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   undefined2 uVar1;
   TView *this_00;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -116,8 +114,7 @@ void __thiscall TTradeTotalsLine::OrphanRetStub_0056f460(TTradeTotalsLine *this)
   }
   uVar1 = *(undefined2 *)&this->field_0x10;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
   *(undefined2 *)&this_00[1].vftable = uVar1;
   *unaff_FS_OFFSET = local_c;
   return;

@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615A34
 // GHIDRA_NAME CScrollView::DoMouseWheel
-// GHIDRA_PROTO undefined __thiscall DoMouseWheel(void)
+// GHIDRA_PROTO undefined __thiscall DoMouseWheel(short param_1)
 
-int __thiscall CScrollView::DoMouseWheel(CScrollView *this)
+int __thiscall CScrollView::DoMouseWheel(CScrollView *this,short param_1)
 
 {
   int iVar1;

@@ -76,7 +76,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E90
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Vtable slot +0x08 handler.
 // GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
@@ -86,11 +86,10 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
    Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
    +0x14 (clear) or +0x18 (set). */
 
-void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1)
 
 {
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
   TFileStream local_1c;
   undefined **local_14;
   int local_10;
@@ -101,13 +100,13 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
   puStack_8 = &LAB_0062ea00;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  local_10 = in_stack_00000004;
+  local_10 = param_1;
   local_14 = &PTR_LAB_00645f98;
   local_4 = 0;
   TFileStream::ConstructTFileStreamBaseState(&local_1c);
   local_4 = CONCAT31(local_4._1_3_,1);
-  TFileStream::SetBackingArchive(&local_1c);
-  if ((~*(uint *)(in_stack_00000004 + 0x14) & 1) != 0) {
+  TFileStream::SetBackingArchive(&local_1c,&local_14);
+  if ((~*(uint *)(param_1 + 0x14) & 1) != 0) {
     (*this->vftable[2].ConstructTTaskBaseState)();
     *unaff_FS_OFFSET = local_10;
     return;
@@ -119,25 +118,25 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B30
 // GHIDRA_NAME TCityTask::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
 
-int __thiscall TCityTask::GetTEventHandlerClassNamePointer(TCityTask *this)
+int __thiscall
+TCityTask::GetTEventHandlerClassNamePointer(TCityTask *this,uint param_1,uint param_2)
 
 {
-  uint in_stack_00000004;
-  uint in_stack_00000008;
-  
-  if (in_stack_00000008 < in_stack_00000004) {
+  if (param_2 < param_1) {
     return 1;
   }
-  return -(uint)(in_stack_00000004 < in_stack_00000008);
+  return -(uint)(param_1 < param_2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B60
 // GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
-// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
+// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void __thiscall
+TCityTask::ApplyProductionDistributionToCitySlots
+          (TCityTask *this,int param_1,int param_2,undefined4 param_3)
 
 {
   TCityTaskVtbl *pTVar1;
@@ -146,101 +145,104 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
   undefined3 extraout_var;
   int unaff_EBX;
   undefined4 unaff_EBP;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  undefined4 in_stack_0000000c;
+  undefined4 uVar4;
   
-  if (in_stack_00000004 < in_stack_00000008) {
+  if (param_1 < param_2) {
     pTVar1 = this->vftable;
-    uVar3 = (*pTVar1[0xf].GetTTaskClassNamePointer)();
+    uVar4 = param_3;
+    uVar3 = (*pTVar1[0xf].GetTTaskClassNamePointer)(param_1,param_2,param_3);
     pTVar2 = pTVar1[0xe].GetTTaskClassNamePointer;
-    (*pTVar2)(unaff_EBP,CONCAT31(extraout_var,uVar3));
-    (*pTVar2)(unaff_EBX + 1,in_stack_0000000c);
+    (*pTVar2)(unaff_EBP,CONCAT31(extraout_var,uVar3),param_3);
+    (*pTVar2)(unaff_EBX + 1,uVar4,param_3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487BD0
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(undefined * param_1, int param_2)
 
-int __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+int __thiscall
+TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TCityTask *this,undefined *param_1,int param_2)
 
 {
   TCityTask_ConstructTTaskBaseState_0x04 *pTVar1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
-  code *pcVar4;
-  code *pcVar5;
-  code *in_stack_00000004;
-  int in_stack_00000008;
-  code *pcStack_20;
+  undefined *puVar4;
+  undefined *puVar5;
+  undefined *puStack_20;
   code *pcStack_1c;
   undefined4 uStack_4;
   
-  if (in_stack_00000008 <= (int)in_stack_00000004) {
-    return in_stack_00000008;
+  if (param_2 <= (int)param_1) {
+    return param_2;
   }
-  pcStack_1c = in_stack_00000004;
+  pcStack_1c = (code *)param_1;
   pTVar1 = this->vftable[9].ConstructTTaskBaseState;
-  pcStack_20 = (code *)0x487bfa;
+  puStack_20 = (undefined *)0x487bfa;
   (*pTVar1)();
-  pcVar5 = in_stack_00000004 + -1;
-  pcVar4 = (code *)(in_stack_00000008 + 1);
+  puVar5 = param_1 + -1;
+  puVar4 = (undefined *)(param_2 + 1);
   while( true ) {
     do {
-      pcVar4 = pcVar4 + -1;
-      pcStack_20 = pcVar4;
+      puVar4 = puVar4 + -1;
+      puStack_20 = puVar4;
       uVar2 = (*pTVar1)();
-      sVar3 = (*in_stack_00000004)(uStack_4,uVar2,in_stack_00000008);
+      sVar3 = (*(code *)param_1)(uStack_4,uVar2,param_2);
     } while (sVar3 < 0);
     do {
-      pcVar5 = pcVar5 + 1;
-      pcStack_20 = pcVar5;
+      puVar5 = puVar5 + 1;
+      puStack_20 = puVar5;
       uVar2 = (*pTVar1)();
-      sVar3 = (*in_stack_00000004)(uStack_4,uVar2,in_stack_00000008);
+      sVar3 = (*(code *)param_1)(uStack_4,uVar2,param_2);
     } while (0 < sVar3);
-    if ((int)pcVar4 <= (int)pcVar5) break;
-    pcStack_20 = pcVar5;
+    if ((int)puVar4 <= (int)puVar5) break;
+    puStack_20 = puVar5;
     (*pTVar1)();
-    uVar2 = (*pTVar1)(pcVar4);
+    uVar2 = (*pTVar1)(puVar4);
     uStack_4 = CONCAT31(extraout_var,uVar2);
-    (*this->vftable[0xc].GetTTaskClassNamePointer)(pcVar5,&uStack_4,1);
-    (*pcStack_1c)(pcVar4,&pcStack_20,1);
+    (*this->vftable[0xc].GetTTaskClassNamePointer)(puVar5,&uStack_4,1);
+    (*pcStack_1c)(puVar4,&puStack_20,1);
   }
-  return (int)pcVar4;
+  return (int)puVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487CC0
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(int param_1, int param_2)
 
-void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1,int param_2)
 
 {
   TCityTaskVtbl *pTVar1;
   TCityTask_ConstructTTaskBaseState_0x04 *pTVar2;
-  undefined uVar3;
+  int iVar3;
+  undefined uVar4;
   undefined3 extraout_var;
-  int iVar4;
+  int iVar5;
+  uint uVar6;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-  int in_stack_00000004;
-  int in_stack_00000008;
+  int iStack_4;
   
-  if (in_stack_00000004 != in_stack_00000008) {
-    GenerateThreadLocalRandom15();
+  iVar3 = param_1;
+  if (param_1 != param_2) {
+    iVar5 = GenerateThreadLocalRandom15();
+    uVar6 = param_2 - param_1 >> 0x1f;
+    param_1 = iVar5 % (int)((param_2 - param_1 ^ uVar6) - uVar6) + param_1;
   }
   pTVar1 = this->vftable;
   pTVar2 = pTVar1[9].ConstructTTaskBaseState;
-  (*pTVar2)();
-  uVar3 = (*pTVar2)(unaff_retaddr);
-  iVar4 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
-  *(uint *)(iVar4 + 8) = CONCAT31(extraout_var,uVar3);
-  iVar4 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
-  *(undefined4 *)(iVar4 + 8) = unaff_EBX;
-  (*pTVar1[0xe].ConstructTTaskBaseState)();
+  (*pTVar2)(iVar3);
+  uVar4 = (*pTVar2)(unaff_retaddr);
+  iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iVar3 + -1);
+  *(uint *)(iVar5 + 8) = CONCAT31(extraout_var,uVar4);
+  iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iStack_4 + -1);
+  *(undefined4 *)(iVar5 + 8) = unaff_EBX;
+  (*pTVar1[0xe].ConstructTTaskBaseState)(iVar3,unaff_retaddr,param_1,param_2);
   return;
 }
 
@@ -269,9 +271,10 @@ void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487DD0
 // GHIDRA_NAME TCityTask::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this)
+void __thiscall
+TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this,undefined4 param_1,undefined4 param_2)
 
 {
   TCityTaskVtbl *pTVar1;
@@ -279,14 +282,12 @@ void __thiscall TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this)
   undefined uVar3;
   int3 extraout_var;
   undefined3 extraout_var_00;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   pTVar2 = pTVar1[9].GetTTaskClassNamePointer;
   uVar3 = (*pTVar2)();
   if (CONCAT31(extraout_var,uVar3) != 0 && -1 < extraout_var) {
-    uVar3 = (*pTVar2)(in_stack_00000004,in_stack_00000008);
+    uVar3 = (*pTVar2)(param_1,param_2);
     (*pTVar1[0xe].GetTTaskClassNamePointer)(1,CONCAT31(extraout_var_00,uVar3));
   }
   return;
@@ -299,7 +300,9 @@ void __thiscall TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this)
 void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
 
 {
-  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -321,7 +324,9 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
 {
-  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -354,8 +359,9 @@ undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *t
 
 {
   int iVar1;
+  int in_stack_00000004;
   
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,in_stack_00000004 + -1);
   return *(undefined4 *)(iVar1 + 8);
 }
 
@@ -366,8 +372,12 @@ undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *t
 void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
 
 {
-  CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
-  TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&this->field_0x4);
+  int *piVar1;
+  int in_stack_00000004;
+  
+  piVar1 = (int *)CPtrList::GetNodeAtZeroBasedIndex
+                            ((CPtrList *)&this->field_0x4,in_stack_00000004 + -1);
+  TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&this->field_0x4,piVar1);
   return;
 }
 
@@ -451,15 +461,16 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488840
 // GHIDRA_NAME TCityTask::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1)
 
-void __thiscall TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this)
+void __thiscall
+TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this,undefined4 *param_1)
 
 {
   int iVar1;
   undefined4 *in_stack_00000008;
   
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,(int)param_1 + -1);
   *(undefined4 *)(iVar1 + 8) = *in_stack_00000008;
   return;
 }
@@ -487,15 +498,13 @@ void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD40
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
 
-TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
+TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestroyTCityTask_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -649,9 +658,9 @@ bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE010
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
-// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(int * param_1)
 
-void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
 
 {
   short sVar1;
@@ -660,7 +669,6 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
   int iVar4;
   undefined4 *puVar5;
   short sVar6;
-  int *in_stack_00000004;
   
   piVar2 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
   (**(code **)(*piVar2 + 0x30))();
@@ -680,7 +688,7 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
     uVar3 = *(undefined4 *)&this->field_0x8;
     *(short *)(puVar5 + 3) = sVar6;
     puVar5[2] = uVar3;
-    iVar4 = *in_stack_00000004;
+    iVar4 = *param_1;
     *(undefined2 *)(puVar5 + 1) = 10;
     *(undefined2 *)((int)puVar5 + 0xe) = 0;
     *(undefined1 *)(puVar5 + 4) = 1;

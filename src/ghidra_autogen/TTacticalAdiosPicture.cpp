@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D430
 // GHIDRA_NAME TTacticalAdiosPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTacticalAdiosPicture * __thiscall
-TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this)
+TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -168,23 +166,21 @@ void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTactica
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD650
 // GHIDRA_NAME TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTacticalAdiosPicture *this)
+TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TTacticalAdiosPicture *this,int param_1,int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179)) {
+  if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))
-              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

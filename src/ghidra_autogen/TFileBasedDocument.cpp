@@ -58,16 +58,14 @@ TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004865E0
 // GHIDRA_NAME TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTFileBasedDocumentAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTFileBasedDocumentAndMaybeFree(byte param_1)
 
 TFileBasedDocument * __thiscall
-TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(TFileBasedDocument *this)
+TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(TFileBasedDocument *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TCommandHandler::CreateTCommandHandlerInstance((TCommandHandler *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

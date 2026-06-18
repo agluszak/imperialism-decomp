@@ -57,15 +57,13 @@ TDealLine * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0DB0
 // GHIDRA_NAME TDealLine::DestructTDealLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDealLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTDealLineAndMaybeFree(byte param_1)
 
-TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this)
+TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDealLineAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -73,9 +71,9 @@ TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0E50
 // GHIDRA_NAME TDealLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int * param_1)
 
-void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
+void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this,int *param_1)
 
 {
   int iVar1;
@@ -99,7 +97,7 @@ void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
   short sVar7;
   CString CVar8;
   CString CStack_7c;
-  undefined4 uStack_78;
+  int *piStack_78;
   CString CStack_74;
   TMyStaticText **ppTStack_70;
   CString *pCStack_6c;
@@ -172,6 +170,7 @@ void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
   ppTStack_70 = &local_28;
   pCStack_6c = (CString *)0x5;
   CStack_74.m_pchData = (char *)&local_20;
+  piStack_78 = param_1;
   local_4 = CONCAT31(local_4._1_3_,5);
   CStack_7c.m_pchData = "hj+";
   InitializeTextEntryBaseAndOptionalStringResource();
@@ -191,7 +190,7 @@ void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
   ppTStack_70 = (TMyStaticText **)&stack0xffffffae;
   CStack_74.m_pchData = &stack0xffffffac;
   uVar6 = (undefined2)((uint)CStack_74.m_pchData >> 0x10);
-  uStack_78 = CONCAT22(uVar6,*(undefined2 *)&this->field_0x14);
+  piStack_78 = (int *)CONCAT22(uVar6,*(undefined2 *)&this->field_0x14);
   CStack_7c.m_pchData = (char *)CONCAT22(uVar6,*(undefined2 *)&this->field_0x10);
   (*g_apNationStates[*(short *)&this->field_0x12]->vftable[0x37].slot_0x04)();
   CStack_84.m_pchData = (char *)&local_18;
@@ -255,7 +254,7 @@ void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
     uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
     if (unaff_EDI == (char *)(int)(short)CONCAT31(extraout_var,uVar2)) {
       CStack_8c.m_pchData = (char *)&CStack_74;
-      if ((short)uStack_78 == 1) {
+      if ((short)piStack_78 == 1) {
         CStack_90.m_pchData = (char *)0x14;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740);
         scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);

@@ -26,15 +26,14 @@ void __thiscall TTacNavyToolbar::OrphanRetStub_005ad0f0(TTacNavyToolbar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD110
 // GHIDRA_NAME TTacNavyToolbar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacNavyToolbar * __thiscall TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this)
+TTacNavyToolbar * __thiscall
+TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,25 +63,34 @@ void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolba
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD1B0
 // GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this)
+void __thiscall
+TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this,int param_1,void *param_2,int param_3)
 
 {
   int iVar1;
   uint commandTag;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
+  undefined4 uVar2;
   
-  if ((in_stack_00000004 == 0xc) &&
-     (((iVar1 = *(int *)((int)in_stack_00000008 + 0x1c), iVar1 == 0x63726577 ||
-       (iVar1 == 0x68756c6c)) || (iVar1 == 0x7361696c)))) {
+  if (param_1 == 0xc) {
+    iVar1 = *(int *)((int)param_2 + 0x1c);
+    if (iVar1 == 0x63726577) {
+      uVar2 = 1;
+    }
+    else if (iVar1 == 0x68756c6c) {
+      uVar2 = 0;
+    }
+    else {
+      if (iVar1 != 0x7361696c) goto LAB_005ad1ef;
+      uVar2 = 2;
+    }
     TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
-              (*(TacticalBattleView **)&this->field_0x88);
+              (*(TacticalBattleView **)&this->field_0x88,uVar2);
   }
-  if (in_stack_00000004 != 10) goto LAB_005ad237;
-  commandTag = *(uint *)((int)in_stack_00000008 + 0x1c);
+LAB_005ad1ef:
+  if (param_1 != 10) goto LAB_005ad237;
+  commandTag = *(uint *)((int)param_2 + 0x1c);
   if (commandTag < 0x646f6e66) {
     if ((commandTag != 0x646f6e65) && (commandTag != 0x6175746f)) goto LAB_005ad237;
   }
@@ -96,8 +104,7 @@ void __thiscall TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this)
   TacticalBattleView::thunk_HandleTacticalBattleCommandTag
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005ad237:
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
   (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
   return;
 }

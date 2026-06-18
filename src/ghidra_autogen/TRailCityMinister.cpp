@@ -65,15 +65,14 @@ TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6330
 // GHIDRA_NAME TRailCityMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TRailCityMinister * __thiscall TRailCityMinister::DeletingDestructTMinister(TRailCityMinister *this)
+TRailCityMinister * __thiscall
+TRailCityMinister::DeletingDestructTMinister(TRailCityMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTRailCityMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

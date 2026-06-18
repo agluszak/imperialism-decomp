@@ -63,16 +63,15 @@ TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E60
 // GHIDRA_NAME TBuildingConstructionView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TBuildingConstructionView * __thiscall
-TBuildingConstructionView::_scalar_deleting_destructor_(TBuildingConstructionView *this)
+TBuildingConstructionView::_scalar_deleting_destructor_
+          (TBuildingConstructionView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -650,7 +649,7 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
     if (g_pMapActionContextListHead != (TZone *)0x0) {
 LAB_005997b8:
       while( true ) {
-        cVar1 = TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(this_00);
+        cVar1 = TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(this_00,-1,'\0');
         if (cVar1 != '\0') break;
         this_00 = (TCivToolbar *)this_00->field18;
         if (this_00 == (TCivToolbar *)0x0) {

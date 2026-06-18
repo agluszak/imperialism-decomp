@@ -15,15 +15,14 @@ CRuntimeClass * __thiscall TPictureLine::GetTLineDataClassNamePointer(TPictureLi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700A0
 // GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPictureLineBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTPictureLineBaseState(byte param_1)
 
-TPictureLine * __thiscall TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this)
+TPictureLine * __thiscall
+TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTPictureLineAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -42,9 +41,10 @@ void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570130
 // GHIDRA_NAME TPictureLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TPictureLine::OrphanRetStub_0056f460(TPictureLine *this)
+void __thiscall
+TPictureLine::OrphanRetStub_0056f460(TPictureLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   thunk_TPictureButton *this_00;
@@ -52,8 +52,6 @@ void __thiscall TPictureLine::OrphanRetStub_0056f460(TPictureLine *this)
   undefined2 extraout_var_00;
   undefined2 uVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -71,8 +69,7 @@ void __thiscall TPictureLine::OrphanRetStub_0056f460(TPictureLine *this)
   }
   local_4 = 0xffffffff;
   InitializePictureEntryBaseAndRefresh
-            (in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,
-             CONCAT22(uVar1,*(undefined2 *)&this->field_0x10));
+            (param_1,param_2,&this->field_0x8,5,5,CONCAT22(uVar1,*(undefined2 *)&this->field_0x10));
   *unaff_FS_OFFSET = local_c;
   return;
 }

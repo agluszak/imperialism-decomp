@@ -31,15 +31,14 @@ void __thiscall THandleStream::ConstructTHandleStreamBaseState(THandleStream *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489610
 // GHIDRA_NAME THandleStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
 
-THandleStream * __thiscall THandleStream::ConstructTStreamBaseState(THandleStream *this)
+THandleStream * __thiscall
+THandleStream::ConstructTStreamBaseState(THandleStream *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ~THandleStream(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -100,82 +99,76 @@ undefined4 __thiscall THandleStream::OrphanTiny_ReturnZero_00488af0(THandleStrea
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489720
 // GHIDRA_NAME THandleStream::OrphanLeaf_NoCall_Ins06_00489720
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_00489720(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_00489720(int param_1)
 
-int __thiscall THandleStream::OrphanLeaf_NoCall_Ins06_00489720(THandleStream *this)
+int __thiscall THandleStream::OrphanLeaf_NoCall_Ins06_00489720(THandleStream *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
   iVar1 = *(int *)&this->field_0x10;
-  if (*(int *)&this->field_0x10 <= in_stack_00000004) {
-    iVar1 = in_stack_00000004;
+  if (*(int *)&this->field_0x10 <= param_1) {
+    iVar1 = param_1;
   }
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489740
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e30
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(undefined4 param_1)
 
-void __thiscall THandleStream::OrphanRetStub_00488e30(THandleStream *this)
+void __thiscall THandleStream::OrphanRetStub_00488e30(THandleStream *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x8 = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489760
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e50
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(SIZE_T param_1)
 
-void __thiscall THandleStream::OrphanRetStub_00488e50(THandleStream *this)
+void __thiscall THandleStream::OrphanRetStub_00488e50(THandleStream *this,SIZE_T param_1)
 
 {
-  SIZE_T in_stack_00000004;
-  
-  GlobalReAlloc(*(HGLOBAL *)&this->field_0x4,in_stack_00000004,0);
-  if ((int)in_stack_00000004 < *(int *)&this->field_0x8) {
-    *(SIZE_T *)&this->field_0x8 = in_stack_00000004;
+  GlobalReAlloc(*(HGLOBAL *)&this->field_0x4,param_1,0);
+  if ((int)param_1 < *(int *)&this->field_0x8) {
+    *(SIZE_T *)&this->field_0x8 = param_1;
   }
-  *(SIZE_T *)&this->field_0xc = in_stack_00000004;
+  *(SIZE_T *)&this->field_0xc = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004897A0
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488b40
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(undefined4 param_1, int param_2)
 
-void __thiscall THandleStream::OrphanRetStub_00488b40(THandleStream *this)
+void __thiscall
+THandleStream::OrphanRetStub_00488b40(THandleStream *this,undefined4 param_1,int param_2)
 
 {
   int iVar1;
   LPVOID pvVar2;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   
   iVar1 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
-  if (iVar1 < in_stack_00000008) {
-    in_stack_00000008 = iVar1;
+  if (iVar1 < param_2) {
+    param_2 = iVar1;
   }
-  if (0 < in_stack_00000008) {
+  if (0 < param_2) {
     pvVar2 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-    MoveMemoryOverlapSafe
-              (in_stack_00000004,(int)pvVar2 + *(int *)&this->field_0x8,in_stack_00000008);
+    MoveMemoryOverlapSafe(param_1,(int)pvVar2 + *(int *)&this->field_0x8,param_2);
     GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
-    *(int *)&this->field_0x8 = *(int *)&this->field_0x8 + in_stack_00000008;
+    *(int *)&this->field_0x8 = *(int *)&this->field_0x8 + param_2;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489810
 // GHIDRA_NAME THandleStream::OrphanRetStub_00488e70
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(undefined4 param_1, int param_2)
 
-void __thiscall THandleStream::OrphanRetStub_00488e70(THandleStream *this)
+void __thiscall
+THandleStream::OrphanRetStub_00488e70(THandleStream *this,undefined4 param_1,int param_2)
 
 {
   THandleStreamVtbl *pTVar1;
@@ -183,19 +176,17 @@ void __thiscall THandleStream::OrphanRetStub_00488e70(THandleStream *this)
   int iVar3;
   undefined3 extraout_var;
   LPVOID pvVar4;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   
   iVar3 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
-  if (iVar3 < in_stack_00000008) {
+  if (iVar3 < param_2) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0x18].ConstructTStreamBaseState)(in_stack_00000008 - iVar3);
+    uVar2 = (*pTVar1[0x18].ConstructTStreamBaseState)(param_2 - iVar3);
     (*pTVar1[6].ConstructTStreamBaseState)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
   }
   pvVar4 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-  MoveMemoryOverlapSafe((int)pvVar4 + *(int *)&this->field_0x8,in_stack_00000004);
+  MoveMemoryOverlapSafe((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);
   GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
-  iVar3 = *(int *)&this->field_0x8 + in_stack_00000008;
+  iVar3 = *(int *)&this->field_0x8 + param_2;
   *(int *)&this->field_0x8 = iVar3;
   if (*(int *)&this->field_0xc < iVar3) {
     *(int *)&this->field_0xc = iVar3;

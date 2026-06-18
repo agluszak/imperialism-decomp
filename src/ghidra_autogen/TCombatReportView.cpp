@@ -64,16 +64,14 @@ _ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z_imperialism
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C900
 // GHIDRA_NAME TCombatReportView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TCombatReportView * __thiscall
-TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this)
+TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -81,11 +79,12 @@ TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C950
 // GHIDRA_NAME TCombatReportView::BuildCombatReportLossesSummaryText
-// GHIDRA_PROTO undefined __thiscall BuildCombatReportLossesSummaryText(void)
+// GHIDRA_PROTO undefined __thiscall BuildCombatReportLossesSummaryText(char * param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this)
+void __thiscall
+TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,char *param_1)
 
 {
   char cVar1;
@@ -102,7 +101,6 @@ void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatRep
   int unaff_EBX;
   int iVar10;
   undefined4 *unaff_FS_OFFSET;
-  char *in_stack_00000004;
   CString CStack_b0;
   CString CStack_ac;
   CString CStack_a8;
@@ -143,9 +141,9 @@ void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatRep
   CStack_3c.m_pchData = (char *)0x58c986;
   CString::CString(&local_28);
   sVar5 = 0;
-  *(char **)&this->field_0x90 = in_stack_00000004;
+  *(char **)&this->field_0x90 = param_1;
   local_18 = 0;
-  iVar7 = *(int *)(in_stack_00000004 + 8);
+  iVar7 = *(int *)(param_1 + 8);
   local_4 = CONCAT31(local_4._1_3_,1);
   cVar1 = *(char *)(iVar7 + 0x14);
   iVar6 = iVar7;
@@ -163,14 +161,14 @@ void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatRep
     local_20 = local_18;
   }
   iVar10 = local_20;
-  iVar7 = *(int *)(in_stack_00000004 + 0xc);
+  iVar7 = *(int *)(param_1 + 0xc);
   sVar5 = 0;
   local_14 = 0;
   cVar1 = *(char *)(iVar7 + 0x14);
   while (cVar1 != -1) {
     local_14 = local_14 + *(int *)(iVar7 + 0x18);
     sVar5 = sVar5 + 1;
-    iVar7 = *(int *)(in_stack_00000004 + 0xc) + sVar5 * 0x20;
+    iVar7 = *(int *)(param_1 + 0xc) + sVar5 * 0x20;
     cVar1 = *(char *)(iVar7 + 0x14);
   }
   *(short *)&this->field_0x9a = sVar5;
@@ -199,7 +197,7 @@ void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatRep
   FormatOverlayTerrainLabelText();
   CString::AssignFromCStr(&CStack_3c,&DAT_00699330);
   sVar5 = UiRuntimeContext::GetActiveNationId();
-  cVar1 = *in_stack_00000004;
+  cVar1 = *param_1;
   pTVar2 = g_pLocalizationTable->vftable;
   GenerateThreadLocalRandom15();
   pcStack_60 = (code *)0x58cb6b;
@@ -273,7 +271,7 @@ void __thiscall TCombatReportView::BuildCombatReportLossesSummaryText(TCombatRep
   pCStack_78 = &CStack_64;
   pTVar2 = g_pLocalizationTable->vftable;
   CStack_7c.m_pchData = (char *)0x58ccc5;
-  CVar3.m_pchData = (char *)((in_stack_00000004[1] != sVar5) + 0x2721);
+  CVar3.m_pchData = (char *)((param_1[1] != sVar5) + 0x2721);
   iVar7 = GenerateThreadLocalRandom15();
   pcStack_80 = CVar3.m_pchData;
   CStack_7c.m_pchData = (char *)(iVar7 % 6);
@@ -559,10 +557,11 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058D950
 // GHIDRA_NAME TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCombatReportView *this)
+TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TCombatReportView *this,int param_1,int param_2)
 
 {
   short sVar1;
@@ -580,8 +579,6 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCombatReportVie
   int iVar5;
   char *pcVar6;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
   CString CStack_40;
   CString CStack_3c;
   CString CStack_38;
@@ -597,8 +594,8 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCombatReportVie
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00637d28;
   *unaff_FS_OFFSET = &uStack_c;
-  if (in_stack_00000004 != 10) goto LAB_0058dd08;
-  if (*(int *)(in_stack_00000008 + 0x1c) == 0x70677570) {
+  if (param_1 != 10) goto LAB_0058dd08;
+  if (*(int *)(param_2 + 0x1c) == 0x70677570) {
     if (*(short *)&this->field_0x94 < 2) {
       *(undefined2 *)&this->field_0x94 = 0;
       pcVar6 = s_ltitoperssoledro_00698ed0;
@@ -638,7 +635,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCombatReportVie
 LAB_0058dbdf:
     thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
   }
-  else if (*(int *)(in_stack_00000008 + 0x1c) == 0x7067646e) {
+  else if (*(int *)(param_2 + 0x1c) == 0x7067646e) {
     sVar1 = *(short *)&this->field_0x94;
     if (sVar1 == 0) {
       *(undefined2 *)&this->field_0x94 = 1;
@@ -711,7 +708,7 @@ LAB_0058dbdf:
     CString::~CString(&CStack_3c);
   }
 LAB_0058dd08:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

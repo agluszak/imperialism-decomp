@@ -5,17 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED7C0
 // GHIDRA_NAME TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
 float10 __thiscall
-TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBismarckMinister *this)
+TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
+          (TBismarckMinister *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (in_stack_00000004 != '\0') {
+  if (param_1 != '\0') {
     return (float10)_DAT_006548f8;
   }
   return (float10)_DAT_00654900;
@@ -47,15 +46,14 @@ TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED840
 // GHIDRA_NAME TBismarckMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TBismarckMinister * __thiscall TBismarckMinister::DeletingDestructTMinister(TBismarckMinister *this)
+TBismarckMinister * __thiscall
+TBismarckMinister::DeletingDestructTMinister(TBismarckMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTBismarckMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

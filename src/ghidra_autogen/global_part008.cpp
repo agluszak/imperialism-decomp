@@ -1050,7 +1050,7 @@ void __thiscall RebuildMapOrderEntryChildrenForContext(int param_1,int param_2,i
           iVar2 = 0;
         }
         else {
-          iVar2 = TTaskForce::ConstructTTaskForce(this);
+          iVar2 = TTaskForce::ConstructTTaskForce(this,param_2,*(undefined2 *)(param_1 + 4));
         }
         uStack_4 = 0xffffffff;
         *param_3 = iVar2;
@@ -1085,7 +1085,7 @@ void __fastcall ProcessMapOrderEntryContextMode(int *param_1)
   iVar2 = param_1[9];
   if (iVar2 != 0) {
     *(undefined1 *)(iVar2 + 0xc) = 0;
-    TScatteredShipsMission::SetMapOrderEntryChildFlags(*(TScatteredShipsMission **)(iVar2 + 4));
+    TScatteredShipsMission::SetMapOrderEntryChildFlags(*(TScatteredShipsMission **)(iVar2 + 4),0);
   }
   iVar2 = param_1[10];
   if (iVar2 == 0) {
@@ -1164,9 +1164,11 @@ undefined4 __fastcall GetMissionOrderBudgetByMode(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005370F0
 // GHIDRA_NAME QueueMissionOrderEntriesAcrossSelectionRange
-// GHIDRA_PROTO undefined QueueMissionOrderEntriesAcrossSelectionRange()
+// GHIDRA_PROTO undefined QueueMissionOrderEntriesAcrossSelectionRange(int param_1, int * param_2, int * param_3)
 
-void QueueMissionOrderEntriesAcrossSelectionRange(int *param_1)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void QueueMissionOrderEntriesAcrossSelectionRange(int param_1,int *param_2,int *param_3)
 
 {
   short sVar1;
@@ -1194,7 +1196,7 @@ void QueueMissionOrderEntriesAcrossSelectionRange(int *param_1)
     *(undefined1 *)((int)pvVar3 + 0xc) = 1;
     pvVar3 = TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(this);
     if (*(int **)(this + 8) == in_stack_0000001c) {
-      thunk_SetMapOrderType9AndQueue(pvVar3,param_1);
+      thunk_SetMapOrderType9AndQueue(pvVar3,(int *)param_1);
     }
     else {
       PromoteMapOrderChainAndQueue(pvVar3,in_stack_0000001c);
@@ -1206,12 +1208,15 @@ void QueueMissionOrderEntriesAcrossSelectionRange(int *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053714F
 // GHIDRA_NAME QueueMissionOrderEntryAndPropagateSelectionRange
-// GHIDRA_PROTO undefined QueueMissionOrderEntryAndPropagateSelectionRange()
+// GHIDRA_PROTO undefined QueueMissionOrderEntryAndPropagateSelectionRange(int param_1, undefined4 * param_2)
 
-void __thiscall QueueMissionOrderEntryAndPropagateSelectionRange(void *param_1)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void QueueMissionOrderEntryAndPropagateSelectionRange(int param_1,undefined4 *param_2)
 
 {
   void *pvVar1;
+  void *in_ECX;
   TScatteredShipsMission *unaff_EBX;
   int *unaff_EBP;
   TScatteredShipsMission *unaff_ESI;
@@ -1220,7 +1225,7 @@ void __thiscall QueueMissionOrderEntryAndPropagateSelectionRange(void *param_1)
   undefined4 *in_stack_0000001c;
   
   do {
-    thunk_SetMapOrderType9AndQueue(param_1,unaff_retaddr);
+    thunk_SetMapOrderType9AndQueue(in_ECX,unaff_retaddr);
     while( true ) {
       unaff_ESI = unaff_ESI + (((int)unaff_EBX - (int)*in_stack_0000001c) / 0x38) * 0x38;
       if (((unaff_ESI != (TScatteredShipsMission *)*in_stack_0000001c) && (unaff_ESI != unaff_EBX))
@@ -1230,9 +1235,9 @@ void __thiscall QueueMissionOrderEntryAndPropagateSelectionRange(void *param_1)
       pvVar1 = ObjectPool::FindMissionOrderNodeById
                          (*(ObjectPool **)(in_stack_00000010 + 0x24),(int)unaff_ESI);
       *(undefined1 *)((int)pvVar1 + 0xc) = 1;
-      param_1 = TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(unaff_ESI);
+      in_ECX = TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(unaff_ESI);
       if (*(int **)(unaff_ESI + 8) == unaff_EBP) break;
-      PromoteMapOrderChainAndQueue(param_1,unaff_EBP);
+      PromoteMapOrderChainAndQueue(in_ECX,unaff_EBP);
     }
   } while( true );
 }
@@ -3199,7 +3204,7 @@ undefined4 __fastcall AllocateAndConstructTArmyMissionWithNodeKey(undefined4 par
   this = (TMission *)AllocateWithFallbackHandler(0x30,param_1);
   local_4 = 0;
   if (this != (TMission *)0x0) {
-    uVar1 = TMission::ConstructTArmyMissionWithNodeKey(this);
+    uVar1 = TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
     *unaff_FS_OFFSET = local_c;
     return uVar1;
   }
@@ -3387,12 +3392,12 @@ void __thiscall ReleaseMissionOwnerLinkAtOffset40(int param_1,int param_2)
 
 {
   TAutoGreatPower *this;
-  int iVar1;
+  int *piVar1;
   
   this = (TAutoGreatPower *)(*(int *)(param_1 + 0x18) + 4);
-  iVar1 = TAutoGreatPower::Find(this);
-  if (iVar1 != 0) {
-    TAutoGreatPower::RemoveAt_60217d(this);
+  piVar1 = (int *)TAutoGreatPower::Find(this,param_2,(undefined4 *)0x0);
+  if (piVar1 != (int *)0x0) {
+    TAutoGreatPower::RemoveAt_60217d(this,piVar1);
   }
   *(undefined4 *)(param_2 + 0x40) = 0;
   return;
@@ -7143,10 +7148,10 @@ void CreateMilitaryRecruitOrdersForSelectedTerrain(int *param_1,int param_2)
         this_00 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(this);
       }
       uStack_4 = 0xffffffff;
-      TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00);
-      iVar6 = *(int *)this_00;
-      (**(code **)(iVar6 + 0x18))(param_1);
-      (**(code **)(iVar6 + 0xc))();
+      TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00,0,-1,(short)iVar6);
+      iVar4 = *(int *)this_00;
+      (**(code **)(iVar4 + 0x18))(param_1);
+      (**(code **)(iVar4 + 0xc))();
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -8197,19 +8202,21 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
 
 {
   TGreatPower *pTVar1;
-  undefined4 uVar2;
-  TPtrList *pTVar3;
-  TCity *pTVar4;
-  TGreatPowerVtbl *pTVar5;
+  TPtrList *pTVar2;
+  TCity *pTVar3;
+  TGreatPowerVtbl *pTVar4;
+  ushort uVar5;
   char cVar6;
   short sVar7;
-  TAutoGreatPower *this;
-  undefined4 *puVar8;
+  int iVar8;
   int iVar9;
+  undefined4 uVar10;
+  TAutoGreatPower *this;
+  undefined4 *puVar11;
   TGreatPower *this_00;
-  word *pwVar10;
-  word *pwVar11;
-  undefined4 *puVar12;
+  word *pwVar12;
+  word *pwVar13;
+  undefined4 *puVar14;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_2c;
   undefined4 local_28;
@@ -8243,9 +8250,10 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
     }
     pTVar1 = g_apNationStates[param_2];
     if (((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 != '\0')) && (param_2 != sVar7)) {
-      GenerateThreadLocalRandom15();
-      GenerateThreadLocalRandom15();
-      GenerateThreadLocalRandom15();
+      iVar8 = GenerateThreadLocalRandom15();
+      iVar9 = GenerateThreadLocalRandom15();
+      uVar10 = GenerateThreadLocalRandom15();
+      uVar5 = (ushort)((int)uVar10 >> 0x1f);
       this = (TAutoGreatPower *)AllocateWithFallbackHandler(0xb70);
       this_00 = (TGreatPower *)0x0;
       local_4 = 0;
@@ -8253,195 +8261,197 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
         this_00 = (TGreatPower *)TAutoGreatPower::ConstructTAutoGreatPowerBaseState(this);
       }
       local_4 = 0xffffffff;
-      TList::InitializeNationMinisterSubsystemsByPolicyIds((TList *)this_00);
+      TList::InitializeNationMinisterSubsystemsByPolicyIds
+                ((TList *)this_00,param_2,2,(((ushort)uVar10 ^ uVar5) - uVar5 & 3 ^ uVar5) - uVar5,
+                 (short)(iVar9 % 6),(short)(iVar8 % 5));
       CString::AssignFromPtr((CString *)&this_00->field_0x4,(CString *)&pTVar1->field_0x4);
       CString::AssignFromPtr((CString *)&this_00->field_0x8,(CString *)&pTVar1->field_0x8);
       *(undefined2 *)&this_00->field_0xc = *(undefined2 *)&pTVar1->field_0xc;
       *(undefined2 *)&this_00->field_0xe = *(undefined2 *)&pTVar1->field_0xe;
       *(undefined4 *)&this_00->field_0x10 = *(undefined4 *)&pTVar1->field_0x10;
-      puVar8 = (undefined4 *)&pTVar1->field_0x14;
-      puVar12 = (undefined4 *)&this_00->field_0x14;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      puVar11 = (undefined4 *)&pTVar1->field_0x14;
+      puVar14 = (undefined4 *)&this_00->field_0x14;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      uVar2 = *(undefined4 *)&pTVar1->field_0x44;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      uVar10 = *(undefined4 *)&pTVar1->field_0x44;
       *(undefined4 *)&pTVar1->field_0x44 = *(undefined4 *)&this_00->field_0x44;
-      *(undefined4 *)&this_00->field_0x44 = uVar2;
-      puVar8 = (undefined4 *)&pTVar1->field_0x48;
-      puVar12 = (undefined4 *)&this_00->field_0x48;
-      for (iVar9 = 0xf; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined4 *)&this_00->field_0x44 = uVar10;
+      puVar11 = (undefined4 *)&pTVar1->field_0x48;
+      puVar14 = (undefined4 *)&this_00->field_0x48;
+      for (iVar8 = 0xf; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
       *(undefined2 *)&this_00->field_0x84 = *(undefined2 *)&pTVar1->field_0x84;
       *(dword *)&this_00->field_0x88 = *(dword *)&pTVar1->field_0x88;
       *(undefined4 *)&this_00->field_0x8c = *(undefined4 *)&pTVar1->field_0x8c;
-      pTVar3 = *(TPtrList **)&pTVar1->field_0x90;
+      pTVar2 = *(TPtrList **)&pTVar1->field_0x90;
       *(TPtrList **)&pTVar1->field_0x90 = *(TPtrList **)&this_00->field_0x90;
-      *(TPtrList **)&this_00->field_0x90 = pTVar3;
+      *(TPtrList **)&this_00->field_0x90 = pTVar2;
       *(undefined2 *)&this_00->field_0xa2 = *(undefined2 *)&pTVar1->field_0xa2;
       *(undefined2 *)&this_00->field_0xa4 = *(undefined2 *)&pTVar1->field_0xa4;
       this_00->needCapA6 = pTVar1->needCapA6;
       this_00->needsOverCapFlag = pTVar1->needsOverCapFlag;
       *(undefined4 *)&this_00->field_0xac = *(undefined4 *)&pTVar1->field_0xac;
       *(undefined2 *)&this_00->field_0xb0 = *(undefined2 *)&pTVar1->field_0xb0;
-      puVar8 = (undefined4 *)&pTVar1->field_0xb2;
-      puVar12 = (undefined4 *)&this_00->field_0xb2;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      puVar11 = (undefined4 *)&pTVar1->field_0xb2;
+      puVar14 = (undefined4 *)&this_00->field_0xb2;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0xe0;
-      puVar12 = (undefined4 *)&this_00->field_0xe0;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0xe0;
+      puVar14 = (undefined4 *)&this_00->field_0xe0;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      pwVar10 = pTVar1->needCurrentByType;
-      pwVar11 = this_00->needCurrentByType;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *(undefined4 *)pwVar11 = *(undefined4 *)pwVar10;
-        pwVar10 = pwVar10 + 2;
-        pwVar11 = pwVar11 + 2;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      pwVar12 = pTVar1->needCurrentByType;
+      pwVar13 = this_00->needCurrentByType;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *(undefined4 *)pwVar13 = *(undefined4 *)pwVar12;
+        pwVar12 = pwVar12 + 2;
+        pwVar13 = pwVar13 + 2;
       }
-      *pwVar11 = *pwVar10;
-      pwVar10 = pTVar1->needTargetByType;
-      pwVar11 = this_00->needTargetByType;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *(undefined4 *)pwVar11 = *(undefined4 *)pwVar10;
-        pwVar10 = pwVar10 + 2;
-        pwVar11 = pwVar11 + 2;
+      *pwVar13 = *pwVar12;
+      pwVar12 = pTVar1->needTargetByType;
+      pwVar13 = this_00->needTargetByType;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *(undefined4 *)pwVar13 = *(undefined4 *)pwVar12;
+        pwVar12 = pwVar12 + 2;
+        pwVar13 = pwVar13 + 2;
       }
-      *pwVar11 = *pwVar10;
-      puVar8 = (undefined4 *)&pTVar1->field_0x16a;
-      puVar12 = (undefined4 *)&this_00->field_0x16a;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *pwVar13 = *pwVar12;
+      puVar11 = (undefined4 *)&pTVar1->field_0x16a;
+      puVar14 = (undefined4 *)&this_00->field_0x16a;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x198;
-      puVar12 = (undefined4 *)&this_00->field_0x198;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x198;
+      puVar14 = (undefined4 *)&this_00->field_0x198;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x1c6;
-      puVar12 = (undefined4 *)&this_00->field_0x1c6;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x1c6;
+      puVar14 = (undefined4 *)&this_00->field_0x1c6;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x1f4;
-      puVar12 = (undefined4 *)&this_00->field_0x1f4;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x1f4;
+      puVar14 = (undefined4 *)&this_00->field_0x1f4;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x222;
-      puVar12 = (undefined4 *)&this_00->field_0x222;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x222;
+      puVar14 = (undefined4 *)&this_00->field_0x222;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x250;
-      puVar12 = (undefined4 *)&this_00->field_0x250;
-      for (iVar9 = 0xb; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x250;
+      puVar14 = (undefined4 *)&this_00->field_0x250;
+      for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      puVar8 = (undefined4 *)&pTVar1->field_0x280;
-      puVar12 = (undefined4 *)&this_00->field_0x280;
-      for (iVar9 = 0x170; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      puVar11 = (undefined4 *)&pTVar1->field_0x280;
+      puVar14 = (undefined4 *)&this_00->field_0x280;
+      for (iVar8 = 0x170; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      iVar9 = 0x11;
+      iVar8 = 0x11;
       *(undefined4 *)&this_00->field_0x840 = *(undefined4 *)&pTVar1->field_0x840;
       *(undefined4 *)&this_00->field_0x844 = *(undefined4 *)&pTVar1->field_0x844;
-      uVar2 = *(undefined4 *)&pTVar1->field_0x848;
+      uVar10 = *(undefined4 *)&pTVar1->field_0x848;
       *(undefined4 *)&pTVar1->field_0x848 = *(undefined4 *)&this_00->field_0x848;
-      *(undefined4 *)&this_00->field_0x848 = uVar2;
-      uVar2 = *(undefined4 *)&pTVar1->field_0x84c;
+      *(undefined4 *)&this_00->field_0x848 = uVar10;
+      uVar10 = *(undefined4 *)&pTVar1->field_0x84c;
       *(undefined4 *)&pTVar1->field_0x84c = *(undefined4 *)&this_00->field_0x84c;
-      *(undefined4 *)&this_00->field_0x84c = uVar2;
-      puVar8 = (undefined4 *)&pTVar1->field_0x850;
+      *(undefined4 *)&this_00->field_0x84c = uVar10;
+      puVar11 = (undefined4 *)&pTVar1->field_0x850;
       do {
-        uVar2 = *puVar8;
-        *puVar8 = *(undefined4 *)(((int)this_00 - (int)pTVar1) + (int)puVar8);
-        *(undefined4 *)(((int)this_00 - (int)pTVar1) + (int)puVar8) = uVar2;
-        puVar8 = puVar8 + 1;
-        iVar9 = iVar9 + -1;
-      } while (iVar9 != 0);
-      pTVar4 = pTVar1->city;
+        uVar10 = *puVar11;
+        *puVar11 = *(undefined4 *)(((int)this_00 - (int)pTVar1) + (int)puVar11);
+        *(undefined4 *)(((int)this_00 - (int)pTVar1) + (int)puVar11) = uVar10;
+        puVar11 = puVar11 + 1;
+        iVar8 = iVar8 + -1;
+      } while (iVar8 != 0);
+      pTVar3 = pTVar1->city;
       pTVar1->city = this_00->city;
-      this_00->city = pTVar4;
-      if (pTVar4 != (TCity *)0x0) {
-        *(TGreatPower **)&pTVar4->field_0xac = this_00;
+      this_00->city = pTVar3;
+      if (pTVar3 != (TCity *)0x0) {
+        *(TGreatPower **)&pTVar3->field_0xac = this_00;
       }
-      uVar2 = *(undefined4 *)&pTVar1->field_0x898;
+      uVar10 = *(undefined4 *)&pTVar1->field_0x898;
       *(undefined4 *)&pTVar1->field_0x898 = *(undefined4 *)&this_00->field_0x898;
-      *(undefined4 *)&this_00->field_0x898 = uVar2;
-      uVar2 = *(undefined4 *)&pTVar1->field_0x89c;
+      *(undefined4 *)&this_00->field_0x898 = uVar10;
+      uVar10 = *(undefined4 *)&pTVar1->field_0x89c;
       *(undefined4 *)&pTVar1->field_0x89c = *(undefined4 *)&this_00->field_0x89c;
-      *(undefined4 *)&this_00->field_0x89c = uVar2;
-      puVar8 = (undefined4 *)&pTVar1->field_0x8a0;
-      puVar12 = (undefined4 *)&this_00->field_0x8a0;
-      for (iVar9 = 5; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      *(undefined4 *)&this_00->field_0x89c = uVar10;
+      puVar11 = (undefined4 *)&pTVar1->field_0x8a0;
+      puVar14 = (undefined4 *)&this_00->field_0x8a0;
+      for (iVar8 = 5; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
-      *(undefined1 *)((int)puVar12 + 2) = *(undefined1 *)((int)puVar8 + 2);
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
+      *(undefined1 *)((int)puVar14 + 2) = *(undefined1 *)((int)puVar11 + 2);
       *(undefined4 *)&this_00->field_0x8c8 = *(undefined4 *)&pTVar1->field_0x8c8;
       *(undefined4 *)&this_00->field_0x8cc = *(undefined4 *)&pTVar1->field_0x8cc;
       *(undefined4 *)&this_00->field_0x8d0 = *(undefined4 *)&pTVar1->field_0x8d0;
       this_00->field_0x8d4 = pTVar1->field_0x8d4;
-      puVar8 = (undefined4 *)&pTVar1->field_0x8d6;
-      puVar12 = (undefined4 *)&this_00->field_0x8d6;
-      for (iVar9 = 6; iVar9 != 0; iVar9 = iVar9 + -1) {
-        *puVar12 = *puVar8;
-        puVar8 = puVar8 + 1;
-        puVar12 = puVar12 + 1;
+      puVar11 = (undefined4 *)&pTVar1->field_0x8d6;
+      puVar14 = (undefined4 *)&this_00->field_0x8d6;
+      for (iVar8 = 6; iVar8 != 0; iVar8 = iVar8 + -1) {
+        *puVar14 = *puVar11;
+        puVar11 = puVar11 + 1;
+        puVar14 = puVar14 + 1;
       }
-      *(undefined2 *)puVar12 = *(undefined2 *)puVar8;
+      *(undefined2 *)puVar14 = *(undefined2 *)puVar11;
       *(undefined4 *)&this_00->field_0x900 = *(undefined4 *)&pTVar1->field_0x900;
       this_00->field_0x904 = pTVar1->field_0x904;
       g_apNationStates[param_2] = this_00;
       g_apTerrainTypeDescriptorTable[param_2] = (TCountry *)this_00;
       QueueMapActionMissionsForPortZoneCandidates();
-      iVar9 = 0;
+      iVar8 = 0;
       do {
-        cVar6 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(param_2,iVar9);
+        cVar6 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(param_2,iVar8);
         if (cVar6 != '\0') {
-          (&this_00->field_0x8a0)[iVar9] = 1;
+          (&this_00->field_0x8a0)[iVar8] = 1;
         }
-        iVar9 = iVar9 + 1;
-      } while (iVar9 < 0x17);
-      pTVar5 = pTVar1->vftable;
+        iVar8 = iVar8 + 1;
+      } while (iVar8 < 0x17);
+      pTVar4 = pTVar1->vftable;
       *(undefined2 *)(&g_pLocalizationTable->field_0xda + param_2 * 2) = 2;
-      (*pTVar5[3].slot_0x04)();
+      (*pTVar4[3].slot_0x04)();
     }
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) && (param_2 != sVar7)) {
       NotifyIfNationMatchesSessionActiveNation((&param_1[3].vftable)[param_2]);
@@ -9249,7 +9259,7 @@ void __fastcall RefreshMapAndMessageControlsForCurrentContext(int *param_1)
   this = (TLoadSavePicture *)(*pcVar2)();
   pTVar3 = this->vftable;
   (*pTVar3[1].slot_0x04)();
-  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this);
+  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this,0);
   ApplyPaletteMaskToTileBufferByEventCode();
   (*pTVar3[0x25].slot_0x04)(&uStack_30);
   uStack_20 = uStack_30;
@@ -10006,13 +10016,14 @@ undefined4 __fastcall GetOrderNodeDescriptorWord20ByResourceType(int param_1)
 // GHIDRA_NAME ComputeOrderNodeDistanceQuotientByDescriptorWord24
 // GHIDRA_PROTO undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()
 
-int __fastcall ComputeOrderNodeDistanceQuotientByDescriptorWord24(int param_1)
+int __thiscall
+ComputeOrderNodeDistanceQuotientByDescriptorWord24(int param_1,TScatteredShipsMission *param_2)
 
 {
   short sVar1;
   
   sVar1 = TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
-                    (*(TScatteredShipsMission **)(param_1 + 8));
+                    (*(TScatteredShipsMission **)(param_1 + 8),param_2);
   return (*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24) + -1 + (int)sVar1) /
          (int)*(short *)(&DAT_00698124 + *(short *)(param_1 + 4) * 0x24);
 }

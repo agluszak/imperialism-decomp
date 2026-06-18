@@ -19,16 +19,14 @@ TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DA10
 // GHIDRA_NAME TFlagOptionsPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TFlagOptionsPicture * __thiscall
-TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this)
+TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -77,26 +75,24 @@ TFlagOptionsPicture::GetTEventHandlerClassNamePointer(TFlagOptionsPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
 // GHIDRA_NAME TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, undefined1 * param_2)
 
 void __thiscall
-TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TFlagOptionsPicture *this)
+TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TFlagOptionsPicture *this,CString param_1,undefined1 *param_2)
 
 {
   uint uVar1;
-  undefined1 *puVar2;
-  undefined uVar3;
-  char cVar4;
+  undefined uVar2;
+  char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
   undefined3 extraout_var_03;
   undefined3 extraout_var_04;
-  TSimMgrVtbl *pTVar5;
+  TSimMgrVtbl *pTVar4;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  undefined1 *in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -105,24 +101,24 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TFlagOptionsPi
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d50;
   *unaff_FS_OFFSET = &local_c;
-  if (in_stack_00000004.m_pchData != (char *)0xa) {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (param_1.m_pchData != (char *)0xa) {
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward
+              ((TMapDialog *)this,(int)param_1.m_pchData);
     *unaff_FS_OFFSET = local_c;
     return;
   }
-  CString::CString(&stack0x00000004);
-  puVar2 = in_stack_00000008;
+  CString::CString(&param_1);
   local_4 = 0;
-  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+  uVar1 = *(uint *)(param_2 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1b4))();
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1b4))();
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))();
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
@@ -130,17 +126,17 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TFlagOptionsPi
   else if (uVar1 < 0x6e657768) {
     if (uVar1 == 0x6e657767) {
 LAB_0056b474:
-      cVar4 = DispatchGameStateEventIfLocalizedPromptAccepted();
-      if (cVar4 != '\0') {
-        uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-        (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x1b4))();
+      cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted();
+      if (cVar3 != '\0') {
+        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
           if (g_pGameFlowState->field_0xf4 != '\0') {
             thunk_TrySaveGameAndMaybeShowFailureDialog();
           }
           thunk_DispatchTaggedGameStateEvent1F20();
         }
-        else if (*(int *)(puVar2 + 0x1c) == 0x71756974) {
+        else if (*(int *)(param_2 + 0x1c) == 0x71756974) {
           PostWmCloseToMainThreadWindow();
         }
         else {
@@ -154,30 +150,29 @@ LAB_0056b474:
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1b4))();
-      pTVar5 = g_pLocalizationTable->vftable;
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
+      pTVar4 = g_pLocalizationTable->vftable;
       goto LAB_0056b526;
     }
   }
   else {
     if (uVar1 == 0x70726566) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar3) + 0x1b4))();
-      pTVar5 = g_pLocalizationTable->vftable;
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar2) + 0x1b4))();
+      pTVar4 = g_pLocalizationTable->vftable;
 LAB_0056b526:
-      (*pTVar5[9].GetTSimMgrClassNamePointer)();
+      (*pTVar4[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0x1b4))();
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
       if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
         CString::CString((CString *)&stack0x0000000c);
         local_4._0_1_ = 1;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        in_stack_00000008 = &stack0xffffffdc;
         thunk_AssignStringSharedRefAndReturnThis(&stack0x0000000c);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
@@ -189,10 +184,10 @@ LAB_0056b526:
       goto LAB_0056b529;
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,10);
 LAB_0056b529:
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }

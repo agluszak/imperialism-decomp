@@ -18,15 +18,13 @@ TGrantsView * __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(TGra
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004303D0
 // GHIDRA_NAME TGrantsView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGrantsView * __thiscall TGrantsView::_scalar_deleting_destructor_(TGrantsView *this)
+TGrantsView * __thiscall TGrantsView::_scalar_deleting_destructor_(TGrantsView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,15 +72,14 @@ CRuntimeClass * __thiscall TGrantsView::GetTEventHandlerClassNamePointer(TGrants
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8080
 // GHIDRA_NAME TGrantsView::OrphanCallChain_C6_I49_004875d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(CString param_1)
 
-void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this)
+void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,CString param_1)
 
 {
   TGrantsView_slot_0x04_0x04 *pTVar1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   undefined1 *puStack_2c;
   CString local_14;
   undefined1 *puStack_10;
@@ -106,18 +103,18 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this)
     (*pTVar1)();
     puStack_2c = &stack0xffffffe8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 0x3e);
-    in_stack_00000004.m_pchData = (char *)&puStack_2c;
+    param_1.m_pchData = (char *)&puStack_2c;
     thunk_AssignStringSharedRefAndReturnThis(&local_14);
     InitializeAndRunMainRoutine();
     iVar2 = iVar2 + 1;
   } while (iVar2 < 8);
   puStack_2c = (undefined1 *)0x4f811f;
-  CString::CString(&stack0x00000004,(char *)&g_szEmptyString);
+  CString::CString(&param_1,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_2c = (undefined1 *)0x4f8132;
-  CString::AssignFromPtr(&local_14,&stack0x00000004);
+  CString::AssignFromPtr(&local_14,&param_1);
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   puStack_10 = (undefined1 *)&puStack_2c;
   thunk_AssignStringSharedRefAndReturnThis(&local_14);
   InitializeAndRunMainRoutine();
@@ -300,7 +297,7 @@ void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
   uVar1 = (*this->vftable[0x12].slot_0x04)();
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_18);
+            ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);
   InitializeAndRunMainRoutine();
   piStack_14 = (int *)0x646f6330;
   pTStack_18 = (TToolBarClusterVtbl *)0x4f860f;
@@ -312,17 +309,16 @@ void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8650
 // GHIDRA_NAME TGrantsView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TGrantsView::OrphanRetStub_0059add0(TGrantsView *this)
+void __thiscall
+TGrantsView::OrphanRetStub_0059add0(TGrantsView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   ushort uVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 == 0xc) {
-    uVar1 = *(short *)(in_stack_00000008 + 0x1c) + 0x9cd0;
+  if (param_1 == 0xc) {
+    uVar1 = *(short *)(param_2 + 0x1c) + 0x9cd0;
     if ((uVar1 & 1) == 0) {
       *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 7;
     }
@@ -331,7 +327,7 @@ void __thiscall TGrantsView::OrphanRetStub_0059add0(TGrantsView *this)
     }
     *(short *)(*(int *)&this->field_0x60 + 0xc0) = (short)uVar1 / 2;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 

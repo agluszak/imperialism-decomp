@@ -59,16 +59,15 @@ TProvinceDesirabilityList::ConstructObArrayWithVtable653810(TProvinceDesirabilit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D65C0
 // GHIDRA_NAME TProvinceDesirabilityList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TProvinceDesirabilityList * __thiscall
-TProvinceDesirabilityList::_scalar_deleting_destructor_(TProvinceDesirabilityList *this)
+TProvinceDesirabilityList::_scalar_deleting_destructor_
+          (TProvinceDesirabilityList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CObArray::thunk_DestructCObArray();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,20 +75,20 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_(TProvinceDesirabilityLis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6630
 // GHIDRA_NAME TProvinceDesirabilityList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-int __thiscall TProvinceDesirabilityList::OrphanRetStub_0059add0(TProvinceDesirabilityList *this)
+int __thiscall
+TProvinceDesirabilityList::OrphanRetStub_0059add0
+          (TProvinceDesirabilityList *this,int param_1,int param_2)
 
 {
   uint uVar1;
   uint uVar2;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (*(short *)(in_stack_00000008 + 2) < *(short *)(in_stack_00000004 + 2)) {
+  if (*(short *)(param_2 + 2) < *(short *)(param_1 + 2)) {
     return 1;
   }
-  if (*(short *)(in_stack_00000004 + 2) < *(short *)(in_stack_00000008 + 2)) {
+  if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 0xffff;
   }
   uVar1 = GenerateThreadLocalRandom15();

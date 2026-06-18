@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3390
 // GHIDRA_NAME TMinorRelationshipDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TMinorRelationshipDialog * __thiscall
-TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog *this)
+TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

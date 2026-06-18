@@ -108,15 +108,14 @@ TMapUberPicture::ConstructTMapUberPictureBaseState(TMapUberPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596A30
 // GHIDRA_NAME TMapUberPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapUberPicture * __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this)
+TMapUberPicture * __thiscall
+TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -208,23 +207,21 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597340
 // GHIDRA_NAME TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapUberPicture *this)
+void __thiscall
+TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TMapUberPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
   ushort uVar2;
   int unaff_ESI;
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
   undefined1 auStack_30 [4];
   undefined *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
-  int iStack_20;
-  undefined4 uStack_1c;
   undefined1 *puVar3;
   int iStack_c;
   undefined1 *puStack_8;
@@ -234,68 +231,59 @@ void __thiscall TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TM
   puStack_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_006383e8;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  if (in_stack_00000004 == 10) {
-    uStack_1c = 0x597370;
+  if (param_1 == 10) {
     uVar2 = GetAsyncKeyState(0x11);
     if (((uVar2 & 0x8000) != 0) &&
-       ((*(int *)(in_stack_00000008 + 0x1c) == 0x5a6d496e ||
-        (*(int *)(in_stack_00000008 + 0x1c) == 0x5a6d4f74)))) {
+       ((*(int *)(param_2 + 0x1c) == 0x5a6d496e || (*(int *)(param_2 + 0x1c) == 0x5a6d4f74)))) {
       ComposeAndDispatchTurnSummaryLocalizedMessage();
       *unaff_FS_OFFSET = iStack_c;
       return;
     }
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+    uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x5a6d4f75) {
       if (uVar1 == 0x5a6d4f74) {
-        uStack_1c = 0x5973d8;
         CommitPendingUiModeChangeAndRefreshViews();
         *unaff_FS_OFFSET = iStack_c;
         return;
       }
       if (uVar1 == 0x5a6d496e) {
-        uStack_1c = 0x5973bd;
-        TacticalBattleView::EnterMapInteractionOverlayMode((TacticalBattleView *)this);
+        TacticalBattleView::EnterMapInteractionOverlayMode
+                  ((TacticalBattleView *)this,(int *)param_2);
         *unaff_FS_OFFSET = iStack_c;
         return;
       }
     }
     else {
       if (uVar1 == 0x63616e63) {
-        if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-          CString::CString((CString *)&stack0x0000000c);
-          puVar3 = &stack0x0000000c;
-          uStack_1c = 0x25;
-          iStack_20 = 0x2742;
-          puStack_4 = (undefined1 *)0x0;
-          uStack_24 = 0x5974a2;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-          uStack_24 = 0;
-          uStack_28 = 0;
-          puStack_2c = &DAT_006a45c0;
-          puStack_4 = auStack_30;
-          thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-          thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-          uStack_24 = 0x5974d8;
-          CString::~CString((CString *)&stack0x00000000);
-          *unaff_FS_OFFSET = (int)puVar3;
+        if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+          thunk_ReinitializeGameFlowAndPostTurnEventCode();
+          *unaff_FS_OFFSET = iStack_c;
           return;
         }
-        uStack_1c = 0x5974f5;
-        thunk_ReinitializeGameFlowAndPostTurnEventCode();
-        *unaff_FS_OFFSET = iStack_c;
+        CString::CString((CString *)&stack0x0000000c);
+        puVar3 = &stack0x0000000c;
+        puStack_4 = (undefined1 *)0x0;
+        uStack_24 = 0x5974a2;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        uStack_24 = 0;
+        uStack_28 = 0;
+        puStack_2c = &DAT_006a45c0;
+        puStack_4 = auStack_30;
+        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        uStack_24 = 0x5974d8;
+        CString::~CString((CString *)&stack0x00000000);
+        *unaff_FS_OFFSET = (int)puVar3;
         return;
       }
       if (uVar1 == 0x73656e64) {
-        uStack_1c = 0x59740a;
         uVar2 = GetAsyncKeyState(0x11);
         if ((uVar2 & 0x8000) == 0) {
-          uStack_1c = 0x597450;
           RefreshPoseMessageDialogNationSelectionControls();
           *unaff_FS_OFFSET = iStack_c;
           return;
         }
         if (g_pGameFlowState->field_0xf4 != '\0') {
-          uStack_1c = 0x597430;
           (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
           *unaff_FS_OFFSET = unaff_ESI;
           return;
@@ -303,22 +291,17 @@ void __thiscall TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TM
         goto LAB_00597559;
       }
     }
-    iStack_20 = 10;
+    param_1 = 10;
   }
-  else if (in_stack_00000004 == 0xc) {
-    if (((0x6167722f < *(uint *)(in_stack_00000008 + 0x1c)) &&
-        (*(uint *)(in_stack_00000008 + 0x1c) < 0x61677233)) &&
+  else if (param_1 == 0xc) {
+    if (((0x6167722f < *(uint *)(param_2 + 0x1c)) && (*(uint *)(param_2 + 0x1c) < 0x61677233)) &&
        (g_pActiveMapOrderContext->field14 != 0)) {
-      uStack_1c = 0x59753d;
       SetTaskForceOwnerPointer();
     }
-    iStack_20 = 0xc;
-  }
-  else {
-    iStack_20 = in_stack_00000004;
+    param_1 = 0xc;
   }
   uStack_24 = 0x597559;
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
 LAB_00597559:
   *unaff_FS_OFFSET = iStack_c;
   return;
@@ -326,9 +309,9 @@ LAB_00597559:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597600
 // GHIDRA_NAME TMapUberPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this)
+void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,int param_1)
 
 {
   short sVar1;
@@ -338,9 +321,8 @@ void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *t
   undefined4 uVar5;
   undefined3 extraout_var;
   int iVar6;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 0x406) {
+  if (param_1 == 0x406) {
     sVar1 = *(short *)&this->field_0x96;
     switch(sVar1) {
     case 0:
@@ -405,16 +387,19 @@ void __thiscall TMapUberPicture::OrphanTiny_ReturnZero_0048a730(TMapUberPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005977A0
 // GHIDRA_NAME TMapUberPicture::OrphanRetStub_0045d2a0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(byte param_1)
 
-void __thiscall TMapUberPicture::OrphanRetStub_0045d2a0(TMapUberPicture *this)
+void __thiscall TMapUberPicture::OrphanRetStub_0045d2a0(TMapUberPicture *this,byte param_1)
 
 {
+  undefined3 in_stack_00000005;
+  
   if (this->field_0x94 == '\0') {
-    TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(*(TOceanDialog **)&this->field_0xa4);
+    TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
+              (*(TOceanDialog **)&this->field_0xa4,param_1);
   }
   else {
-    (**(code **)(**(int **)&this->field_0xa8 + 0x290))();
+    (**(code **)(**(int **)&this->field_0xa8 + 0x290))(_param_1);
   }
   if (*(int **)&this->field_0xc0 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0xc0 + 0xe4))();
@@ -452,19 +437,18 @@ bool __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10(TMapUberPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00598870
 // GHIDRA_NAME TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1)
 
 void __thiscall
-TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(TMapUberPicture *this)
+TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
+          (TMapUberPicture *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   if (this->field_0x94 != '\0') {
-    (**(code **)(**(int **)&this->field_0xa8 + 0x200))();
+    (**(code **)(**(int **)&this->field_0xa8 + 0x200))(param_1);
     return;
   }
-  WrapperFor_InvalidateCityDialogRectRegion_At00565fc0(in_stack_00000004);
+  WrapperFor_InvalidateCityDialogRectRegion_At00565fc0(param_1);
   return;
 }
 
@@ -484,15 +468,14 @@ void __thiscall TMapUberPicture::OrphanCallChain_C2_I18_005988c0(TMapUberPicture
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00598910
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C2_I11_00598910
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I11_00598910(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I11_00598910(undefined4 param_1)
 
-void __thiscall TMapUberPicture::OrphanCallChain_C2_I11_00598910(TMapUberPicture *this)
+void __thiscall
+TMapUberPicture::OrphanCallChain_C2_I11_00598910(TMapUberPicture *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   (*this->vftable[0x1f].GetTEventHandlerClassNamePointer)();
-  (**(code **)(**(int **)&this->field_0xac + 0x1a0))(in_stack_00000004);
+  (**(code **)(**(int **)&this->field_0xac + 0x1a0))(param_1);
   return;
 }
 

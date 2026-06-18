@@ -33,15 +33,14 @@ TInfoBarText * __thiscall TInfoBarText::ConstructUiCursorTextResourceEntry(TInfo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004293C0
 // GHIDRA_NAME TInfoBarText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarText * __thiscall TInfoBarText::_scalar_deleting_destructor_(TInfoBarText *this)
+TInfoBarText * __thiscall
+TInfoBarText::_scalar_deleting_destructor_(TInfoBarText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -98,9 +97,9 @@ CRuntimeClass * __thiscall TInfoBarText::GetTEventHandlerClassNamePointer(TInfoB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B66B0
 // GHIDRA_NAME TInfoBarText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
 
-void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this)
+void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,RECT *param_1)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -122,11 +121,11 @@ void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this)
     *(LONG *)&this->field_0xac = in_stack_00000008->right;
     *(LONG *)&this->field_0xb0 = in_stack_00000008->bottom;
     pTVar1 = this->vftable;
-    (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&stack0x00000004);
+    (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&param_1);
     (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(1);
   }
   uStack_4 = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

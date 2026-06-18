@@ -37,15 +37,14 @@ TApplication * __thiscall TApplication::ConstructGlobalUiRootControllerState(TAp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004867B0
 // GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTApplicationAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTApplicationAndMaybeFree(byte param_1)
 
-TApplication * __thiscall TApplication::DestructTApplicationAndMaybeFree(TApplication *this)
+TApplication * __thiscall
+TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -90,14 +89,13 @@ TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486880
 // GHIDRA_NAME TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_20_00486880(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
 
-void __thiscall TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this)
+void __thiscall
+TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x20 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x20 = param_1;
   return;
 }
 
@@ -113,9 +111,11 @@ undefined4 __thiscall TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0(TAp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004869B0
 // GHIDRA_NAME TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_AllocateAndLinkBlockHead_At004869b0(void)
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_AllocateAndLinkBlockHead_At004869b0(int param_1, char param_2)
 
-void __thiscall TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0(TApplication *this)
+void __thiscall
+TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
+          (TApplication *this,int param_1,char param_2)
 
 {
   undefined4 uVar1;
@@ -123,10 +123,8 @@ void __thiscall TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0(TA
   undefined4 *puVar3;
   int *piVar4;
   int iVar5;
-  int in_stack_00000004;
-  char in_stack_00000008;
   
-  if (in_stack_00000008 != '\0') {
+  if (param_2 != '\0') {
     uVar1 = *(undefined4 *)&this->field_0x30;
     if (*(int *)&this->field_0x3c == 0) {
       iVar2 = AllocateAndLinkBlockHead(&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
@@ -147,7 +145,7 @@ void __thiscall TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0(TA
     *puVar3 = uVar1;
     *(int *)&this->field_0x38 = *(int *)&this->field_0x38 + 1;
     puVar3[2] = 0;
-    puVar3[2] = in_stack_00000004;
+    puVar3[2] = param_1;
     if (*(int *)&this->field_0x30 == 0) {
       *(undefined4 **)&this->field_0x34 = puVar3;
       *(undefined4 **)&this->field_0x30 = puVar3;
@@ -158,7 +156,7 @@ void __thiscall TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0(TA
     return;
   }
   for (piVar4 = *(int **)&this->field_0x30; piVar4 != (int *)0x0; piVar4 = (int *)*piVar4) {
-    if (piVar4[2] == in_stack_00000004) goto LAB_00486a4b;
+    if (piVar4[2] == param_1) goto LAB_00486a4b;
   }
   piVar4 = (int *)0x0;
 LAB_00486a4b:
@@ -196,19 +194,18 @@ LAB_00486a4b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486B50
 // GHIDRA_NAME TApplication::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(LPARAM param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Posts custom message 0xBC0 with caller-supplied lParam to main thread window.
 // GHIDRA_COMMENT_END
 
 /* Posts custom message 0xBC0 with caller-supplied lParam to main thread window. */
 
-void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this)
+void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this,LPARAM param_1)
 
 {
   CWinThread *pCVar1;
   int iVar2;
-  LPARAM in_stack_00000004;
   
   pCVar1 = AfxGetThread();
   if (pCVar1 == (CWinThread *)0x0) {
@@ -218,22 +215,22 @@ void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this)
     pCVar1 = AfxGetThread();
     iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
   }
-  PostMessageA(*(HWND *)(iVar2 + 0x1c),0xbc0,0,in_stack_00000004);
+  PostMessageA(*(HWND *)(iVar2 + 0x1c),0xbc0,0,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486BA0
 // GHIDRA_NAME TApplication::DispatchReflectedControlMessageOrFallback
-// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(void)
+// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(undefined4 param_1)
 
-void __thiscall TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this)
+void __thiscall
+TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this,undefined4 param_1)
 
 {
   CWinThread *pCVar1;
   int iVar2;
-  undefined4 in_stack_00000004;
   
-  switch(in_stack_00000004) {
+  switch(param_1) {
   case 1:
     pCVar1 = AfxGetThread();
     if (pCVar1 == (CWinThread *)0x0) {
@@ -246,7 +243,7 @@ void __thiscall TApplication::DispatchReflectedControlMessageOrFallback(TApplica
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe140,0);
     return;
   default:
-    TMapDialog::thunk_ForwardCityDialogParamToChildSlot44((TMapDialog *)this);
+    TMapDialog::thunk_ForwardCityDialogParamToChildSlot44((TMapDialog *)this,param_1);
     return;
   case 10:
   case 0xb:
@@ -338,70 +335,75 @@ void __thiscall TApplication::DispatchReflectedControlMessageOrFallback(TApplica
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486DF0
 // GHIDRA_NAME TApplication::SerializeRecordList_0x0C_WithBlockPool_B
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_B(void)
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_B(CArchive * param_1)
 
-void __thiscall TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this)
+void __thiscall
+TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this,CArchive *param_1)
 
 {
   undefined4 uVar1;
-  int iVar2;
+  CArchive *this_00;
+  CArchive *pCVar2;
   int iVar3;
-  undefined4 *puVar4;
-  int iVar5;
-  int *piVar6;
-  CArchive *in_stack_00000004;
+  int iVar4;
+  undefined4 *puVar5;
+  int iVar6;
+  int *piVar7;
   
-  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+  this_00 = param_1;
+  if ((~param_1->m_nMode & 1U) == 0) {
+    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+      if ((~this_00->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
       }
+      pCVar2 = param_1;
       uVar1 = this->padding_08_to_0b;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar3 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
-        iVar5 = *(int *)&this->field_0x18;
-        puVar4 = (undefined4 *)(iVar3 + -8 + iVar5 * 0xc);
-        if (-1 < iVar5 + -1) {
+        iVar4 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar6 = *(int *)&this->field_0x18;
+        puVar5 = (undefined4 *)(iVar4 + -8 + iVar6 * 0xc);
+        if (-1 < iVar6 + -1) {
           do {
-            *puVar4 = *(undefined4 *)&this->field_0x10;
-            *(undefined4 **)&this->field_0x10 = puVar4;
-            puVar4 = puVar4 + -3;
-            iVar5 = iVar5 + -1;
-          } while (iVar5 != 0);
+            *puVar5 = *(undefined4 *)&this->field_0x10;
+            *(undefined4 **)&this->field_0x10 = puVar5;
+            puVar5 = puVar5 + -3;
+            iVar6 = iVar6 + -1;
+          } while (iVar6 != 0);
         }
       }
-      puVar4 = *(undefined4 **)&this->field_0x10;
-      *(undefined4 *)&this->field_0x10 = *puVar4;
-      puVar4[1] = uVar1;
-      *puVar4 = 0;
+      puVar5 = *(undefined4 **)&this->field_0x10;
+      *(undefined4 *)&this->field_0x10 = *puVar5;
+      puVar5[1] = uVar1;
+      *puVar5 = 0;
       this->field0c = this->field0c + 1;
-      puVar4[2] = 0;
-      puVar4[2] = in_stack_00000004;
+      puVar5[2] = 0;
+      puVar5[2] = pCVar2;
       if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
-        this->field04 = (int)puVar4;
+        this->field04 = (int)puVar5;
       }
       else {
-        *(undefined4 *)this->padding_08_to_0b = puVar4;
+        *(undefined4 *)this->padding_08_to_0b = puVar5;
       }
-      this->padding_08_to_0b = puVar4;
+      this->padding_08_to_0b = puVar5;
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
-    piVar6 = (int *)this->field04;
-    if (piVar6 != (int *)0x0) {
+    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
+    ;
+    piVar7 = (int *)this->field04;
+    if (piVar7 != (int *)0x0) {
       do {
-        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        if ((~this_00->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar7 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar7 + 2),4);
         }
-        piVar6 = (int *)*piVar6;
-      } while (piVar6 != (int *)0x0);
+        piVar7 = (int *)*piVar7;
+      } while (piVar7 != (int *)0x0);
       return;
     }
   }
@@ -410,16 +412,14 @@ void __thiscall TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplicat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F60
 // GHIDRA_NAME TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486f60(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
 
 TApplication * __thiscall
-TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(TApplication *this)
+TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(TApplication *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TBehavior::CreateTBehaviorInstance((TBehavior *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

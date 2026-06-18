@@ -15,16 +15,14 @@ void __thiscall TMapUberUberPicture::OrphanRetStub_0045d2a0(TMapUberUberPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D2C0
 // GHIDRA_NAME TMapUberUberPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TMapUberUberPicture * __thiscall
-TMapUberUberPicture::_scalar_deleting_destructor_(TMapUberUberPicture *this)
+TMapUberUberPicture::_scalar_deleting_destructor_(TMapUberUberPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

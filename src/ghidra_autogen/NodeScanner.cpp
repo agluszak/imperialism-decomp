@@ -27,9 +27,9 @@ CRuntimeClass * NodeScanner::ReadClass(void)
     AfxThrowNotSupportedException();
   }
   TNetMgr::MapObject(0);
-  CArchive::ReadWordFromSerializedBuffer(this_01);
+  CArchive::ReadWordFromSerializedBuffer(this_01,(undefined2 *)(unaff_EBP + -0xe));
   if (*(short *)(unaff_EBP + -0xe) == 0x7fff) {
-    CArchive::ReadDwordFromSerializedBuffer(this_01);
+    CArchive::ReadDwordFromSerializedBuffer(this_01,(undefined4 *)(unaff_EBP + -0x18));
   }
   else {
     *(uint *)(unaff_EBP + -0x18) =
@@ -62,14 +62,14 @@ CRuntimeClass * NodeScanner::ReadClass(void)
               pvVar2 = (void *)0x0;
             }
             else {
-              pvVar2 = (void *)TNetMgr::CMapPtrToPtr_ctor(this_00);
+              pvVar2 = (void *)TNetMgr::CMapPtrToPtr_ctor(this_00,(TNetMgrVtbl *)0xa);
             }
             *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
             this_01->m_pSchemaMap = pvVar2;
           }
           uVar1 = *(undefined4 *)(unaff_EBP + -0x14);
-          puVar3 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_01->m_pSchemaMap)
-          ;
+          puVar3 = (undefined4 *)
+                   TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_01->m_pSchemaMap,(int)this);
           *puVar3 = uVar1;
         }
       }
@@ -87,13 +87,13 @@ CRuntimeClass * NodeScanner::ReadClass(void)
       }
       this = *(CRuntimeClass **)(*(int *)((int)this_01->m_pLoadArrayOrStoreMap + 4) + uVar4 * 4);
       if ((this_01->m_pSchemaMap == (CWnd *)0x0) ||
-         (uVar4 = CWnd::GetValueAt(this_01->m_pSchemaMap), uVar4 == 0)) {
+         (uVar4 = CWnd::GetValueAt(this_01->m_pSchemaMap,(uint)this), uVar4 == 0)) {
         uVar4 = this->m_wSchema & 0x7fffffff;
       }
       *(uint *)(unaff_EBP + -0x14) = uVar4;
     }
     if (*(int *)(unaff_EBP + 8) != 0) {
-      iVar5 = CRuntimeClass::IsDerivedFrom(this);
+      iVar5 = CRuntimeClass::IsDerivedFrom(this,*(CRuntimeClass **)(unaff_EBP + 8));
       if (iVar5 == 0) {
         AfxThrowArchiveException(6,(this_01->m_strFileName).m_pchData);
       }

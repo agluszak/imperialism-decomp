@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD810
 // GHIDRA_NAME TNewTownView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewTownView * __thiscall TNewTownView::_scalar_deleting_destructor_(TNewTownView *this)
+TNewTownView * __thiscall
+TNewTownView::_scalar_deleting_destructor_(TNewTownView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -31,9 +30,9 @@ CRuntimeClass * __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD880
 // GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
-// GHIDRA_PROTO undefined __thiscall BuildCityDialogMinisterControls(void)
+// GHIDRA_PROTO undefined __thiscall BuildCityDialogMinisterControls(int * param_1)
 
-void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this)
+void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
 
 {
   TNewTownViewVtbl *pTVar1;
@@ -45,7 +44,6 @@ void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this
   TIconBar *pTVar5;
   int iVar6;
   int *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   undefined1 *puVar7;
   code *pcVar8;
   short *psVar9;
@@ -67,11 +65,11 @@ void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this
   iVar6 = 0;
   CString::CString((CString *)&local_3c);
   local_4 = 0;
-  *(int **)&this->field_0x60 = in_stack_00000004;
-  (**(code **)(*in_stack_00000004 + 0x28))();
+  *(int **)&this->field_0x60 = param_1;
+  (**(code **)(*param_1 + 0x28))();
   iVar3 = 0;
   do {
-    if (*(short *)((int)in_stack_00000004 + (short)iVar3 * 2 + 0x1e) != 0) {
+    if (*(short *)((int)param_1 + (short)iVar3 * 2 + 0x1e) != 0) {
       iVar6 = iVar6 + 1;
     }
     iVar3 = iVar3 + 1;

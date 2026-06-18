@@ -64,15 +64,14 @@ TTraderAmtBar * __thiscall TTraderAmtBar::ConstructBaseState(TTraderAmtBar *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AF30
 // GHIDRA_NAME TTraderAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTraderAmtBar * __thiscall TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this)
+TTraderAmtBar * __thiscall
+TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState_0058AF60((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -140,28 +139,26 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B070
 // GHIDRA_NAME TTraderAmtBar::ApplyMoveClamp
-// GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(void)
+// GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1, short param_2)
 
-undefined2 __thiscall TTraderAmtBar::ApplyMoveClamp(TTraderAmtBar *this)
+undefined2 __thiscall
+TTraderAmtBar::ApplyMoveClamp(TTraderAmtBar *this,undefined2 param_1,short param_2)
 
 {
   undefined uVar1;
   short sVar2;
   undefined3 extraout_var;
-  undefined2 in_stack_00000004;
-  short in_stack_00000008;
   
-  if (0 < in_stack_00000008) {
+  if (0 < param_2) {
     sVar2 = UiRuntimeContext::GetActiveNationId();
-    if ((int)in_stack_00000008 < this->field34 / (int)*(short *)&g_apNationStates[sVar2]->field_0xa4
-       ) {
+    if ((int)param_2 < this->field34 / (int)*(short *)&g_apNationStates[sVar2]->field_0xa4) {
       uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x53656c6c);
       if (CONCAT31(extraout_var,uVar1) != 0) {
-        in_stack_00000004 = 1;
+        param_1 = 1;
       }
     }
   }
-  return in_stack_00000004;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B0F0
@@ -175,10 +172,11 @@ void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTr
   char cVar2;
   undefined uVar3;
   TDropShadowText *this_00;
+  HRGN pHVar4;
   undefined2 extraout_var_00;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  LONG *pLVar4;
+  LONG *pLVar5;
   undefined **local_54;
   undefined4 uStack_50;
   undefined4 uStack_4c;
@@ -204,8 +202,8 @@ void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTr
   if (cVar2 != '\0') {
     cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
     if (cVar2 != '\0') {
-      pLVar4 = &LStack_2c;
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(pLVar4);
+      pLVar5 = &LStack_2c;
+      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(pLVar5);
       RStack_44.right = LStack_2c;
       RStack_44.top = LStack_30;
       RStack_44.bottom = LStack_28;
@@ -215,9 +213,9 @@ void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTr
       local_54 = &CBrush::_vftable_;
       uStack_c._0_1_ = 1;
       this_00 = (TDropShadowText *)NoOpQuickDrawContextSelectionHook();
-      CreateRectRgnIndirect(&RStack_44);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_54);
-      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00);
+      pHVar4 = CreateRectRgnIndirect(&RStack_44);
+      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_54,(int)pHVar4);
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00,(int)&local_54);
       DeleteObject();
       local_54 = &PTR_LAB_00671054;
       uStack_c._0_1_ = 2;
@@ -236,11 +234,11 @@ void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTr
         thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,0);
         ResetQuickDrawStrokeState();
       }
-      SnapshotHitRegionToClipCache(pLVar4);
+      SnapshotHitRegionToClipCache(pLVar5);
       uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
       local_4 = local_4 & 0xffffff00;
-      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00);
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00,0);
     }
   }
   local_4 = 0xffffffff;

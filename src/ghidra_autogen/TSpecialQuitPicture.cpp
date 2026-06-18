@@ -15,16 +15,14 @@ void __thiscall TSpecialQuitPicture::OrphanRetStub_0045acb0(TSpecialQuitPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045ACD0
 // GHIDRA_NAME TSpecialQuitPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TSpecialQuitPicture * __thiscall
-TSpecialQuitPicture::_scalar_deleting_destructor_(TSpecialQuitPicture *this)
+TSpecialQuitPicture::_scalar_deleting_destructor_(TSpecialQuitPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

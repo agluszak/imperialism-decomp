@@ -27,16 +27,14 @@ void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProduction
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F20
 // GHIDRA_NAME TProductionOrder::DestructTProductionOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTProductionOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTProductionOrderAndMaybeFree(byte param_1)
 
 TProductionOrder * __thiscall
-TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this)
+TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTProductionOrderAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -44,17 +42,17 @@ TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4FE0
 // GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(int * param_1)
 
 void __thiscall
-TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(TProductionOrder *this)
+TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
+          (TProductionOrder *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x40,2);
@@ -66,17 +64,17 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(TProductionOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5060
 // GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(int * param_1)
 
 void __thiscall
-TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(TProductionOrder *this)
+TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
+          (TProductionOrder *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x40,2);
@@ -98,18 +96,18 @@ undefined2 __thiscall TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TProduc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5100
 // GHIDRA_NAME TProductionOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this)
+undefined4 __thiscall
+TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this,short param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  short in_stack_00000004;
   
   uVar1 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
-  if ((in_stack_00000004 <= (short)CONCAT31(extraout_var,uVar1)) && (-1 < in_stack_00000004)) {
-    *(short *)&this->field_0x4 = in_stack_00000004;
+  if ((param_1 <= (short)CONCAT31(extraout_var,uVar1)) && (-1 < param_1)) {
+    *(short *)&this->field_0x4 = param_1;
     return CONCAT31(extraout_var,1);
   }
   return 0;
@@ -137,23 +135,23 @@ void __thiscall TProductionOrder::OrphanRetStub_004b5160(TProductionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5180
 // GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
-// GHIDRA_PROTO undefined __thiscall InitializeCityOrderItemWorkingBuffers(void)
+// GHIDRA_PROTO undefined __thiscall InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
 
-void __thiscall TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this)
+void __thiscall
+TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this,undefined4 *param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  undefined4 *in_stack_00000004;
   
-  puVar2 = in_stack_00000004;
+  puVar2 = param_1;
   for (iVar1 = 0x1e; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)in_stack_00000004 + 0x7a) = 0;
-  *(undefined2 *)(in_stack_00000004 + 0x1f) = 0;
+  *(undefined2 *)((int)param_1 + 0x7a) = 0;
+  *(undefined2 *)(param_1 + 0x1f) = 0;
   return;
 }
 

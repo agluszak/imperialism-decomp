@@ -216,15 +216,13 @@ THQButton * __thiscall THQButton::THQButton(THQButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B690
 // GHIDRA_NAME THQButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this)
+THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -252,9 +250,9 @@ void __thiscall THQButton::OrphanLeaf_NoCall_Ins07_004d8920(THQButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B750
 // GHIDRA_NAME THQButton::SetModeAndBitmapBySelectionState
-// GHIDRA_PROTO undefined __thiscall SetModeAndBitmapBySelectionState(void)
+// GHIDRA_PROTO undefined __thiscall SetModeAndBitmapBySelectionState(char param_1)
 
-void __thiscall THQButton::SetModeAndBitmapBySelectionState(THQButton *this)
+void __thiscall THQButton::SetModeAndBitmapBySelectionState(THQButton *this,char param_1)
 
 {
   undefined2 uVar1;
@@ -265,13 +263,12 @@ void __thiscall THQButton::SetModeAndBitmapBySelectionState(THQButton *this)
   undefined4 in_EDX;
   THQButtonVtbl *pTVar4;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 == this->field_0x64) {
+  if (param_1 == this->field_0x64) {
     return;
   }
-  this->field_0x64 = in_stack_00000004;
-  if (in_stack_00000004 == '\0') {
+  this->field_0x64 = param_1;
+  if (param_1 == '\0') {
     if (*(short *)&this->field_0x98 != 0) {
       pTVar4 = this->vftable;
       if (*(short *)&this->field_0x98 == 1) {
@@ -301,23 +298,21 @@ LAB_0058b7a7:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B7F0
 // GHIDRA_NAME THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButton *this)
+void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButton *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0xc) {
+  if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x39].slot_0x04)(1,1);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
     return;
   }
-  if (in_stack_00000004 != 0x1f) {
-    if (in_stack_00000004 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (param_1 != 0x1f) {
+    if (param_1 != 0x20) {
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x39].slot_0x04)(0,1);
@@ -329,46 +324,44 @@ void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButto
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B890
 // GHIDRA_NAME THQButton::InvokeSlot1CCIfSlot28Enabled
-// GHIDRA_PROTO undefined __thiscall InvokeSlot1CCIfSlot28Enabled(void)
+// GHIDRA_PROTO undefined __thiscall InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 param_2)
 
-void __thiscall THQButton::InvokeSlot1CCIfSlot28Enabled(THQButton *this)
+void __thiscall
+THQButton::InvokeSlot1CCIfSlot28Enabled(THQButton *this,undefined4 param_1,undefined4 param_2)
 
 {
   THQButtonVtbl *pTVar1;
   char cVar2;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,in_stack_00000008);
+    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B8D0
 // GHIDRA_NAME THQButton::SetSelectionStateAndRefreshBitmap
-// GHIDRA_PROTO undefined __thiscall SetSelectionStateAndRefreshBitmap(void)
+// GHIDRA_PROTO undefined __thiscall SetSelectionStateAndRefreshBitmap(short param_1)
 
-void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this)
+void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this,short param_1)
 
 {
   undefined4 in_EAX;
   undefined4 uVar1;
   undefined4 in_EDX;
   THQButtonVtbl *pTVar2;
-  short in_stack_00000004;
   
-  *(short *)&this->field_0x98 = in_stack_00000004;
+  *(short *)&this->field_0x98 = param_1;
   this->field_0x64 = 0;
-  if (in_stack_00000004 == 0) {
+  if (param_1 == 0) {
     uVar1 = CONCAT22((short)((uint)in_EAX >> 0x10),*(undefined2 *)&this->field_0x90);
     pTVar2 = this->vftable;
   }
   else {
     pTVar2 = this->vftable;
-    if (in_stack_00000004 == 1) {
+    if (param_1 == 1) {
       uVar1 = CONCAT22((short)((uint)this >> 0x10),*(undefined2 *)&this->field_0x94);
     }
     else {
@@ -376,7 +369,7 @@ void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this)
     }
   }
   (*pTVar2[0x39].GetTEventHandlerClassNamePointer)(uVar1,1);
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)(in_stack_00000004 != 2),0);
+  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)(param_1 != 2),0);
   return;
 }
 

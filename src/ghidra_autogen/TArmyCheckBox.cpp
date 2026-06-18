@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9400
 // GHIDRA_NAME TArmyCheckBox::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyCheckBox * __thiscall TArmyCheckBox::_scalar_deleting_destructor_(TArmyCheckBox *this)
+TArmyCheckBox * __thiscall
+TArmyCheckBox::_scalar_deleting_destructor_(TArmyCheckBox *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,19 +63,18 @@ CRuntimeClass * __thiscall TArmyCheckBox::GetTEventHandlerClassNamePointer(TArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9FE0
 // GHIDRA_NAME TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyCheckBoxBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyCheckBoxBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
-void __thiscall TArmyCheckBox::ConstructTArmyCheckBoxBaseState(TArmyCheckBox *this)
+void __thiscall
+TArmyCheckBox::ConstructTArmyCheckBoxBaseState
+          (TArmyCheckBox *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4,undefined4 param_5)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
   undefined4 in_stack_00000018;
   undefined4 in_stack_0000001c;
   
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008,in_stack_0000000c,4,4,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,4,4,0);
   *(undefined4 *)&this->field_0x90 = in_stack_00000018;
   *(undefined4 *)&this->field_0x88 = in_stack_0000001c;
   return;
@@ -84,13 +82,12 @@ void __thiscall TArmyCheckBox::ConstructTArmyCheckBoxBaseState(TArmyCheckBox *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA030
 // GHIDRA_NAME TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTArmyCheckBoxAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTArmyCheckBoxAndMaybeFree(char param_1)
 
-void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *this)
+void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *this,char param_1)
 
 {
   TArmyCheckBoxVtbl *pTVar1;
-  char in_stack_00000004;
   
   if ((this->field_0x84 == '\0') && (this->field_0x64 == '\0')) {
     if (*(int *)&this->field_0x8c != 0) {
@@ -98,7 +95,7 @@ void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *
       *(int *)&this->field_0x88 = *(int *)&this->field_0x88 - this->field34;
       *(undefined4 *)&this->field_0x8c = 0;
       (*pTVar1[0x1c].slot_0x04)();
-      if (in_stack_00000004 != '\0') {
+      if (param_1 != '\0') {
         (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
         return;
       }
@@ -109,7 +106,7 @@ void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *
     *(undefined4 *)&this->field_0x8c = 1;
     *(int *)&this->field_0x88 = *(int *)&this->field_0x88 + this->field34;
     (*pTVar1[0x1c].slot_0x04)();
-    if (in_stack_00000004 != '\0') {
+    if (param_1 != '\0') {
       (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
     }
   }
@@ -118,27 +115,26 @@ void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA100
 // GHIDRA_NAME TArmyCheckBox::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int * param_1)
 
-void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *this)
+void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *this,int *param_1)
 
 {
   int iVar1;
   int iVar2;
   int iVar3;
-  int *in_stack_00000004;
   tagRECT local_30;
   tagRECT local_20;
   int local_4;
   
-  iVar3 = *in_stack_00000004;
-  iVar1 = in_stack_00000004[1];
-  iVar2 = in_stack_00000004[2];
-  local_4 = in_stack_00000004[3];
-  local_20.left = *in_stack_00000004;
-  local_20.top = in_stack_00000004[1];
-  local_20.right = in_stack_00000004[2];
-  local_20.bottom = in_stack_00000004[3];
+  iVar3 = *param_1;
+  iVar1 = param_1[1];
+  iVar2 = param_1[2];
+  local_4 = param_1[3];
+  local_20.left = *param_1;
+  local_20.top = param_1[1];
+  local_20.right = param_1[2];
+  local_20.bottom = param_1[3];
   if (*(int *)&this->field_0x90 != 0) {
     ResetQuickDrawStrokeState();
     local_30.left = iVar3 + *(int *)&this->field_0x88;
@@ -173,21 +169,20 @@ void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA280
 // GHIDRA_NAME TArmyCheckBox::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this)
+void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this,int param_1)
 
 {
   ushort uVar1;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 0x21) {
+  if (param_1 == 0x21) {
     uVar1 = GetAsyncKeyState(0x11);
     if (((uVar1 & 0x8000) == 0) || (this->field_0x84 != '\0')) {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1);
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
@@ -204,15 +199,13 @@ void __thiscall TArmyCheckBox::OrphanCallChain_C6_I49_004875d0(TArmyCheckBox *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA310
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C1_I10_004aa310
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_004aa310(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_004aa310(char param_1)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(TArmyCheckBox *this)
+void __thiscall TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(TArmyCheckBox *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (in_stack_00000004 != this->field_0x64) {
-    this->field_0x64 = in_stack_00000004;
+  if (param_1 != this->field_0x64) {
+    this->field_0x64 = param_1;
     (*this->vftable[0x39].slot_0x04)();
   }
   return;
@@ -246,22 +239,21 @@ void __thiscall TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0(TArmyCheckBox *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA3E0
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_004aa3e0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(TArmyCheckBox *this)
+void __thiscall
+TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(TArmyCheckBox *this,char param_1,undefined4 param_2)
 
 {
   TArmyCheckBoxVtbl *pTVar1;
   TArmyCheckBox_slot_0x04_0x04 *pTVar2;
   char cVar3;
-  char in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   pTVar2 = pTVar1[0x38].slot_0x04;
   cVar3 = (*pTVar2)();
-  if (cVar3 == in_stack_00000004) {
-    cVar3 = (*pTVar2)(in_stack_00000008);
+  if (cVar3 == param_1) {
+    cVar3 = (*pTVar2)(param_2);
     (*pTVar1[0x39].GetTEventHandlerClassNamePointer)((uint)(cVar3 == '\0'));
   }
   return;

@@ -5,17 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F9D0
 // GHIDRA_NAME TMyNumberText::CloneCityDialogStateWithSharedStringInit
-// GHIDRA_PROTO undefined __thiscall CloneCityDialogStateWithSharedStringInit(void)
+// GHIDRA_PROTO undefined __thiscall CloneCityDialogStateWithSharedStringInit(int param_1)
 
 TMyNumberText * __thiscall
-TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this)
+TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this,int param_1)
 
 {
   undefined2 uVar1;
   CString *pCVar2;
   CString *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -24,23 +23,23 @@ TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this)
   puStack_8 = &LAB_0062f053;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CopyCityDialogStateFromSourceAndCloneChildLinks(in_stack_00000004);
-  *(undefined4 *)&this->field_0x60 = *(undefined4 *)(in_stack_00000004 + 0x60);
-  this->field_0x64 = *(undefined1 *)(in_stack_00000004 + 100);
-  *(undefined4 *)&this->field_0x68 = *(undefined4 *)(in_stack_00000004 + 0x68);
-  *(undefined4 *)&this->field_0x6c = *(undefined4 *)(in_stack_00000004 + 0x6c);
-  *(undefined4 *)&this->field_0x70 = *(undefined4 *)(in_stack_00000004 + 0x70);
-  *(undefined4 *)&this->field_0x74 = *(undefined4 *)(in_stack_00000004 + 0x74);
-  *(undefined4 *)&this->field_0x78 = *(undefined4 *)(in_stack_00000004 + 0x78);
-  *(undefined4 *)&this->field_0x7c = *(undefined4 *)(in_stack_00000004 + 0x7c);
-  uVar1 = *(undefined2 *)(in_stack_00000004 + 0x80);
+  CopyCityDialogStateFromSourceAndCloneChildLinks(param_1);
+  *(undefined4 *)&this->field_0x60 = *(undefined4 *)(param_1 + 0x60);
+  this->field_0x64 = *(undefined1 *)(param_1 + 100);
+  *(undefined4 *)&this->field_0x68 = *(undefined4 *)(param_1 + 0x68);
+  *(undefined4 *)&this->field_0x6c = *(undefined4 *)(param_1 + 0x6c);
+  *(undefined4 *)&this->field_0x70 = *(undefined4 *)(param_1 + 0x70);
+  *(undefined4 *)&this->field_0x74 = *(undefined4 *)(param_1 + 0x74);
+  *(undefined4 *)&this->field_0x78 = *(undefined4 *)(param_1 + 0x78);
+  *(undefined4 *)&this->field_0x7c = *(undefined4 *)(param_1 + 0x7c);
+  uVar1 = *(undefined2 *)(param_1 + 0x80);
   this->vftable = (TMyNumberTextVtbl *)&TControl::_vftable_;
   *(undefined2 *)&this->field_0x80 = uVar1;
   *(undefined4 *)&this->field_0x84 = 0;
-  *(undefined4 *)&this->field_0x88 = *(undefined4 *)(in_stack_00000004 + 0x88);
-  *(undefined4 *)&this->field_0x8c = *(undefined4 *)(in_stack_00000004 + 0x8c);
+  *(undefined4 *)&this->field_0x88 = *(undefined4 *)(param_1 + 0x88);
+  *(undefined4 *)&this->field_0x8c = *(undefined4 *)(param_1 + 0x8c);
   local_4 = 0;
-  *(undefined2 *)&this->field_0x90 = *(undefined2 *)(in_stack_00000004 + 0x90);
+  *(undefined2 *)&this->field_0x90 = *(undefined2 *)(param_1 + 0x90);
   this->vftable = (TMyNumberTextVtbl *)&TStaticText::_vftable_;
   pCVar2 = (CString *)AllocateWithFallbackHandler(4);
   local_4._0_1_ = 1;
@@ -53,7 +52,7 @@ TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this)
   }
   *(CString **)&this->field_0x84 = pCVar2;
   local_4 = (uint)local_4._1_3_ << 8;
-  CString::AssignFromPtr(pCVar2,*(CString **)(in_stack_00000004 + 0x84));
+  CString::AssignFromPtr(pCVar2,*(CString **)(param_1 + 0x84));
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -113,15 +112,14 @@ TMyNumberText * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNum
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5000
 // GHIDRA_NAME TMyNumberText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMyNumberText * __thiscall TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this)
+TMyNumberText * __thiscall
+TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTEditTextAndMaybeFree((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

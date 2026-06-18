@@ -4806,7 +4806,7 @@ RebuildLocaleWideCharClassificationTables_005f6af9
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005F6D2D
 // GHIDRA_NAME thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue
-// GHIDRA_PROTO undefined thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue()
+// GHIDRA_PROTO undefined thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue(undefined4 param_1)
 
 undefined4 thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue(void)
 
@@ -4822,7 +4822,7 @@ undefined4 thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005F6D33
 // GHIDRA_NAME OrphanTail_FreeFourSavedPointersAndReturnTrue
-// GHIDRA_PROTO undefined OrphanTail_FreeFourSavedPointersAndReturnTrue()
+// GHIDRA_PROTO undefined OrphanTail_FreeFourSavedPointersAndReturnTrue(undefined4 param_1)
 
 undefined4 OrphanTail_FreeFourSavedPointersAndReturnTrue(void)
 
@@ -5990,9 +5990,11 @@ undefined4 PopulateNarrowEnvironmentFromWideList(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005F8770
 // GHIDRA_NAME AdjustFileDescriptorLengthWithZeroFill
-// GHIDRA_PROTO undefined AdjustFileDescriptorLengthWithZeroFill()
+// GHIDRA_PROTO undefined AdjustFileDescriptorLengthWithZeroFill(undefined4 param_1, int param_2)
 
-int AdjustFileDescriptorLengthWithZeroFill(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+int AdjustFileDescriptorLengthWithZeroFill(undefined4 param_1,int param_2)
 
 {
   int iVar1;
@@ -6044,7 +6046,7 @@ int AdjustFileDescriptorLengthWithZeroFill(void)
     if (iVar2 < 0x1000) {
       iVar9 = iVar2;
     }
-    iVar9 = WriteToFileDescriptorUnlocked(in_stack_00001008,&stack0x00000004,iVar9);
+    iVar9 = WriteToFileDescriptorUnlocked(in_stack_00001008,&param_1,iVar9);
     if (iVar9 == -1) break;
     iVar2 = iVar2 - iVar9;
     if (iVar2 < 1) {
@@ -7498,7 +7500,7 @@ void FilterToolTipMessage(void)
   }
   if (iVar4 != extraout_ECX) goto LAB_005fb0c4;
 LAB_005fae7d:
-  iVar4 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar4 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   *(int *)(unaff_EBP + -0x18) = iVar4;
   this = *(CWnd **)(iVar4 + 0xcc);
   uVar6 = GetParentOwner();
@@ -7914,7 +7916,7 @@ TControl * CFileDialog(void)
   
   EstablishSehFrameProlog();
   *(TControl **)(unaff_EBP + -0x10) = this;
-  TControl::InitializeDialogTemplateFromId(this);
+  TControl::InitializeDialogTemplateFromId(this,0,*(undefined4 *)(unaff_EBP + 0x1c));
   this->vftable = (TControlVtbl *)&PTR_LAB_006729c4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)&this[1].field_0x28);
@@ -8625,20 +8627,22 @@ void DestructCPtrListBaseState(void)
 int __fastcall RemoveHead(TAutoGreatPower *param_1)
 
 {
-  int iVar1;
+  int *piVar1;
   int iVar2;
+  int iVar3;
   
-  iVar1 = **(int **)&param_1->field_0x4;
-  iVar2 = (*(int **)&param_1->field_0x4)[2];
-  *(int *)&param_1->field_0x4 = iVar1;
-  if (iVar1 == 0) {
+  piVar1 = *(int **)&param_1->field_0x4;
+  iVar2 = *piVar1;
+  iVar3 = piVar1[2];
+  *(int *)&param_1->field_0x4 = iVar2;
+  if (iVar2 == 0) {
     *(undefined4 *)&param_1->field_0x8 = 0;
   }
   else {
-    *(undefined4 *)(iVar1 + 4) = 0;
+    *(undefined4 *)(iVar2 + 4) = 0;
   }
-  TAutoGreatPower::FreeNode(param_1);
-  return iVar2;
+  TAutoGreatPower::FreeNode(param_1,piVar1);
+  return iVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006020DD
@@ -8649,19 +8653,21 @@ undefined4 __fastcall RemoveTailNodeAndReturnPayload(TAutoGreatPower *param_1)
 
 {
   undefined4 *puVar1;
-  undefined4 uVar2;
+  undefined4 *puVar2;
+  undefined4 uVar3;
   
-  puVar1 = *(undefined4 **)(*(int *)&param_1->field_0x8 + 4);
-  uVar2 = *(undefined4 *)(*(int *)&param_1->field_0x8 + 8);
-  *(undefined4 **)&param_1->field_0x8 = puVar1;
-  if (puVar1 == (undefined4 *)0x0) {
+  puVar1 = *(undefined4 **)&param_1->field_0x8;
+  puVar2 = (undefined4 *)puVar1[1];
+  uVar3 = puVar1[2];
+  *(undefined4 **)&param_1->field_0x8 = puVar2;
+  if (puVar2 == (undefined4 *)0x0) {
     *(undefined4 *)&param_1->field_0x4 = 0;
   }
   else {
-    *puVar1 = 0;
+    *puVar2 = 0;
   }
-  TAutoGreatPower::FreeNode(param_1);
-  return uVar2;
+  TAutoGreatPower::FreeNode(param_1,puVar1);
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00602101
@@ -8674,10 +8680,10 @@ void __thiscall InsertNodeBeforeAndSetPayload(CPtrList *param_1,int param_2,unde
   void *pvVar1;
   
   if (param_2 == 0) {
-    CPtrList::AddHead(param_1);
+    CPtrList::AddHead(param_1,param_3);
   }
   else {
-    pvVar1 = (void *)CPtrList::NewNode(param_1);
+    pvVar1 = (void *)CPtrList::NewNode(param_1,*(undefined4 *)(param_2 + 4),param_2);
     *(undefined4 *)((int)pvVar1 + 8) = param_3;
     if (*(int **)(param_2 + 4) == (int *)0x0) {
       param_1->m_pNodeHead = pvVar1;
@@ -8700,10 +8706,10 @@ void __thiscall InsertNodeAfterAndSetPayload(CPtrList *param_1,int *param_2,unde
   void *pvVar1;
   
   if (param_2 == (int *)0x0) {
-    CPtrList::AddTail(param_1);
+    CPtrList::AddTail(param_1,param_3);
   }
   else {
-    pvVar1 = (void *)CPtrList::NewNode(param_1);
+    pvVar1 = (void *)CPtrList::NewNode(param_1,param_2,*param_2);
     *(undefined4 *)((int)pvVar1 + 8) = param_3;
     if (*param_2 == 0) {
       param_1->m_pNodeTail = pvVar1;
@@ -9495,8 +9501,10 @@ int DoModal_6051b9(void)
   HWND hWnd;
   BOOL BVar3;
   undefined4 uVar4;
-  HWND pHVar5;
+  uint uVar5;
+  HWND pHVar6;
   TMovieView *this;
+  byte bVar7;
   HMODULE hModule;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -9527,9 +9535,12 @@ int DoModal_6051b9(void)
     AfxUnhookWindowCreate();
     FromHandle(hWnd);
     *(undefined4 *)(unaff_EBP + -0x1c) = 0;
-    if ((hWnd != (HWND)0x0) && (BVar3 = IsWindowEnabled(hWnd), BVar3 != 0)) {
-      EnableWindow(hWnd,0);
-      *(undefined4 *)(unaff_EBP + -0x1c) = 1;
+    if (hWnd != (HWND)0x0) {
+      BVar3 = IsWindowEnabled(hWnd);
+      if (BVar3 != 0) {
+        EnableWindow(hWnd,0);
+        *(undefined4 *)(unaff_EBP + -0x1c) = 1;
+      }
     }
     *(undefined4 *)(unaff_EBP + -4) = 0;
     AfxHookWindowCreate(this);
@@ -9537,8 +9548,12 @@ int DoModal_6051b9(void)
     iVar1 = CreateDlgIndirect_604e5e(*(undefined4 *)(unaff_EBP + -0x14),uVar4,hModule);
     if (iVar1 != 0) {
       if ((this->ownerOffsetX & 0x10) != 0) {
-        GetStyle();
-        TMovieView::RunModalLoop(this);
+        bVar7 = 4;
+        uVar5 = GetStyle();
+        if ((uVar5 & 0x100) != 0) {
+          bVar7 = 5;
+        }
+        TMovieView::RunModalLoop(this,bVar7);
       }
       if (this->controlTag != 0) {
         SetWindowPos(0,0,0,0,0,0x97);
@@ -9548,8 +9563,11 @@ int DoModal_6051b9(void)
     if (*(int *)(unaff_EBP + -0x1c) != 0) {
       EnableWindow(hWnd,1);
     }
-    if ((hWnd != (HWND)0x0) && (pHVar5 = GetActiveWindow(), pHVar5 == (HWND)this->controlTag)) {
-      SetActiveWindow(hWnd);
+    if (hWnd != (HWND)0x0) {
+      pHVar6 = GetActiveWindow();
+      if (pHVar6 == (HWND)this->controlTag) {
+        SetActiveWindow(hWnd);
+      }
     }
     (*this->vftable[0xc].GetTEventHandlerClassNamePointer)();
     PostModal();
@@ -9606,8 +9624,8 @@ undefined4 __fastcall OnInitDialog(int param_1)
     if (iVar1 != 0) {
       this = (CFrameWnd *)GetDlgItem(0xe146);
       if (this != (CFrameWnd *)0x0) {
-        AfxHelpEnabled();
-        CFrameWnd::ShowWindow(this);
+        iVar1 = AfxHelpEnabled();
+        CFrameWnd::ShowWindow(this,-(uint)(iVar1 != 0) & 5);
       }
       return 1;
     }
@@ -9629,14 +9647,16 @@ void WrapperFor_EndDialog_At006054c3(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605613
 // GHIDRA_NAME HandleWndProcExceptionWithNodeTypeDispatch_00605613
-// GHIDRA_PROTO undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613()
+// GHIDRA_PROTO undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613(CException * param_1)
 
-long __fastcall
-HandleWndProcExceptionWithNodeTypeDispatch_00605613(undefined4 param_1,tagMSG *param_2)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+long HandleWndProcExceptionWithNodeTypeDispatch_00605613(CException *param_1)
 
 {
   int in_EAX;
   int iVar1;
+  tagMSG *in_EDX;
   long lVar2;
   int unaff_ESI;
   undefined4 uVar3;
@@ -9644,13 +9664,13 @@ HandleWndProcExceptionWithNodeTypeDispatch_00605613(undefined4 param_1,tagMSG *p
   undefined4 uVar4;
   
   if ((unaff_ESI == 1) || (unaff_ESI == 0xf)) {
-    lVar2 = AfxInternalProcessWndProcException(in_stack_00000010,param_2);
+    lVar2 = AfxInternalProcessWndProcException(in_stack_00000010,in_EDX);
   }
   else {
     lVar2 = 0;
     uVar3 = 0xf108;
     if (in_EAX == 0x111) {
-      if (param_2->lParam == 0) {
+      if (in_EDX->lParam == 0) {
         uVar3 = 0xf109;
       }
       lVar2 = 1;

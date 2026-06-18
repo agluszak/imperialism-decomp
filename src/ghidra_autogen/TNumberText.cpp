@@ -24,15 +24,13 @@ TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00429530
 // GHIDRA_NAME TNumberText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberText * __thiscall TNumberText::_scalar_deleting_destructor_(TNumberText *this)
+TNumberText * __thiscall TNumberText::_scalar_deleting_destructor_(TNumberText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTEditTextAndMaybeFree((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -114,57 +112,55 @@ CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumber
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491060
 // GHIDRA_NAME TNumberText::ConstructTNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNumberTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
-void __thiscall TNumberText::ConstructTNumberTextBaseState(TNumberText *this)
+void __thiscall
+TNumberText::ConstructTNumberTextBaseState
+          (TNumberText *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4,undefined4 param_5)
 
 {
   TNumberTextVtbl *pTVar1;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
   
-  InitializeTextEntryBaseAndOptionalStringResource
-            (in_stack_00000004,in_stack_00000008,in_stack_0000000c,5,5,0xffffffff,0);
+  InitializeTextEntryBaseAndOptionalStringResource(param_1,param_2,param_3,5,5,0xffffffff,0);
   pTVar1 = this->vftable;
   *(undefined2 *)&this->field_0x9c = 0xff;
   (*pTVar1[5].slot_0x04)(1);
-  *(undefined4 *)&this->field_0xa8 = in_stack_00000014;
-  *(undefined4 *)&this->field_0xa4 = in_stack_00000010;
-  (*pTVar1[0x3c].slot_0x04)(in_stack_0000000c,0);
+  *(undefined4 *)&this->field_0xa8 = param_5;
+  *(undefined4 *)&this->field_0xa4 = param_4;
+  (*pTVar1[0x3c].slot_0x04)(param_3,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004910E0
 // GHIDRA_NAME TNumberText::DestructTNumberTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTNumberTextAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
 
-void __thiscall TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this)
+void __thiscall
+TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,CString param_1,undefined4 param_2)
 
 {
+  CString CVar1;
   uint unaff_ESI;
   uint *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  undefined4 in_stack_00000008;
   CString local_10;
   uint uStack_c;
   undefined1 *puStack_8;
   CString local_4;
   
+  CVar1.m_pchData = param_1.m_pchData;
   local_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_0062f250;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (uint)&uStack_c;
-  *(char **)&this->field_0xa0 = in_stack_00000004.m_pchData;
+  *(char **)&this->field_0xa0 = param_1.m_pchData;
   local_10.m_pchData = (char *)this;
-  CString::CString(&stack0x00000004);
+  CString::CString(&param_1);
   local_4.m_pchData = (char *)0x0;
-  FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat);
-  CString::StringSharedRef_AssignFromPtr(&local_10,&stack0x00000004);
+  FormatStringWithVarArgsToSharedRef(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
+  CString::StringSharedRef_AssignFromPtr(&local_10,&param_1);
   local_4.m_pchData._0_1_ = 1;
-  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)(&local_10,in_stack_00000008);
+  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)(&local_10,param_2);
   uStack_c = uStack_c & 0xffffff00;
   CString::~CString((CString *)&stack0xffffffe8);
   uStack_c = 0xffffffff;

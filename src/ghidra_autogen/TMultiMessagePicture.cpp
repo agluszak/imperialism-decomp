@@ -19,16 +19,14 @@ TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044f
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044FB10
 // GHIDRA_NAME TMultiMessagePicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TMultiMessagePicture * __thiscall
-TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this)
+TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -47,26 +45,25 @@ TMultiMessagePicture::GetTEventHandlerClassNamePointer(TMultiMessagePicture *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECC0
 // GHIDRA_NAME TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, CString param_2, TMultiMessagePicture_slot_0x04_0x04 * param_3)
 
 void __thiscall
-TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMultiMessagePicture *this)
+TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TMultiMessagePicture *this,CString param_1,CString param_2,
+          TMultiMessagePicture_slot_0x04_0x04 *param_3)
 
 {
-  int iVar1;
-  TApplicationVtbl *pTVar2;
-  undefined uVar3;
-  char cVar4;
+  TMultiMessagePicture_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  TApplicationVtbl *pTVar3;
+  undefined uVar4;
+  char cVar5;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  undefined4 uVar5;
+  undefined4 uVar6;
   undefined3 extraout_var_01;
-  int iVar6;
-  TMultiMessagePicture_slot_0x04_0x04 *pTVar7;
+  int iVar7;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  CString in_stack_00000008;
-  TMultiMessagePicture_slot_0x04_0x04 *in_stack_0000000c;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -75,44 +72,42 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMultiMessage
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634fc8;
   *unaff_FS_OFFSET = &local_c;
-  if (((in_stack_00000004.m_pchData == (char *)0x14) || (in_stack_00000004.m_pchData == (char *)0xa)
-      ) || (in_stack_00000004.m_pchData == (char *)0x22)) {
-    iVar6 = *(int *)(in_stack_00000008.m_pchData + 0x1c);
-    if ((iVar6 != 0x63616e63) && (iVar6 != 0x636e636c)) {
-      if (iVar6 != 0x6f6b6179) {
-        TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (((param_1.m_pchData == (char *)0x14) || (param_1.m_pchData == (char *)0xa)) ||
+     (param_1.m_pchData == (char *)0x22)) {
+    iVar7 = *(int *)(param_2.m_pchData + 0x1c);
+    if ((iVar7 != 0x63616e63) && (iVar7 != 0x636e636c)) {
+      if (iVar7 != 0x6f6b6179) {
+        TMapDialog::thunk_HandleCityDialogToggleCommandOrForward
+                  ((TMapDialog *)this,(int)param_1.m_pchData);
         goto LAB_0054edfd;
       }
-      pTVar7 = this->vftable[0x12].slot_0x04;
-      in_stack_0000000c = pTVar7;
-      uVar3 = (*pTVar7)(0x6d657367);
-      iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
-      (**(code **)(iVar6 + 0xc))();
-      CString::CString(&stack0x00000004);
+      pTVar1 = this->vftable[0x12].slot_0x04;
+      uVar4 = (*pTVar1)(0x6d657367);
+      iVar7 = *(int *)CONCAT31(extraout_var,uVar4);
+      (**(code **)(iVar7 + 0xc))();
+      CString::CString(&param_1);
       puStack_8 = (undefined1 *)0x0;
-      (**(code **)(iVar6 + 0x1dc))(&stack0x00000004);
-      iVar6 = 0;
-      in_stack_00000004.m_pchData = (char *)0x0;
+      (**(code **)(iVar7 + 0x1dc))(&param_1);
+      iVar7 = 0;
+      param_1.m_pchData = (char *)0x0;
       do {
-        uVar3 = (*pTVar7)(iVar6 + 0x626f7830);
-        iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
-        (**(code **)(iVar1 + 0xc))();
-        cVar4 = (**(code **)(iVar1 + 0x28))();
-        if ((cVar4 != '\0') && (cVar4 = (**(code **)(iVar1 + 0x1d0))(), cVar4 != '\0')) {
-          in_stack_00000004.m_pchData = in_stack_00000004.m_pchData | 1 << ((byte)iVar6 & 0x1f);
+        uVar4 = (*pTVar1)(iVar7 + 0x626f7830);
+        iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
+        (**(code **)(iVar2 + 0xc))();
+        cVar5 = (**(code **)(iVar2 + 0x28))();
+        if ((cVar5 != '\0') && (cVar5 = (**(code **)(iVar2 + 0x1d0))(), cVar5 != '\0')) {
+          param_1.m_pchData = param_1.m_pchData | 1 << ((byte)iVar7 & 0x1f);
         }
-        iVar6 = iVar6 + 1;
-        pTVar7 = in_stack_0000000c;
-      } while (iVar6 < 7);
-      uVar5 = FindActiveNationSlotIndexInGameFlowList();
-      CreateAndSendTurnEvent0C_Text256AndTwoFlags
-                (&stack0x00000008,in_stack_00000004.m_pchData,uVar5);
+        iVar7 = iVar7 + 1;
+      } while (iVar7 < 7);
+      uVar6 = FindActiveNationSlotIndexInGameFlowList();
+      CreateAndSendTurnEvent0C_Text256AndTwoFlags(&param_2,param_1.m_pchData,uVar6);
       uStack_4 = 0xffffffff;
-      CString::~CString(&stack0x00000008);
+      CString::~CString(&param_2);
     }
-    pTVar2 = g_pGlobalUiRootController->vftable;
-    uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-    (*pTVar2[0x16].slot_0x04)(CONCAT31(extraout_var_01,uVar3));
+    pTVar3 = g_pGlobalUiRootController->vftable;
+    uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (*pTVar3[0x16].slot_0x04)(CONCAT31(extraout_var_01,uVar4));
   }
 LAB_0054edfd:
   *unaff_FS_OFFSET = local_c;

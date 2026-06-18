@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A5C50
 // GHIDRA_NAME TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte param_1)
 
 TArmyBattle * __thiscall
-TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(TArmyBattle *this)
+TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(TArmyBattle *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -41,7 +39,7 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = local_c;
@@ -102,7 +100,7 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     uStack_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
     *(undefined4 **)&this->field_0x20 = puVar1;
     *unaff_FS_OFFSET = uStack_c;
@@ -115,23 +113,29 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990
 // GHIDRA_NAME TArmyBattle::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int * param_1)
 
-void __thiscall TArmyBattle::OrphanCallChain_C11_I88_004874b0(TArmyBattle *this)
+void __thiscall TArmyBattle::OrphanCallChain_C11_I88_004874b0(TArmyBattle *this,int *param_1)
 
 {
-  short sVar1;
-  code *pcVar2;
-  undefined1 uVar3;
-  int iVar4;
-  int *piVar5;
-  int iVar6;
-  TArmyStack *pTVar7;
+  code *pcVar1;
+  undefined1 uVar2;
+  int iVar3;
+  int *piVar4;
+  int iVar5;
+  TArmyStack *pTVar6;
   short unaff_BP;
   TArmyStack *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
-  undefined1 **ppuVar8;
+  undefined1 uVar7;
+  short sVar8;
+  undefined2 uVar9;
+  undefined2 uVar10;
+  undefined1 **ppuVar11;
+  undefined4 *puVar12;
+  undefined2 uVar13;
+  undefined4 uVar14;
+  TArmyBattle **ppTVar15;
   undefined1 *puStack_7c;
   undefined4 uStack_78;
   undefined1 *puStack_74;
@@ -155,139 +159,152 @@ void __thiscall TArmyBattle::OrphanCallChain_C11_I88_004874b0(TArmyBattle *this)
   *unaff_FS_OFFSET = &uStack_c;
   pTStack_50 = (TArmyBattleVtbl *)0x4;
   puStack_54 = &this->field_0xc;
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   uStack_58 = 0x5a49c6;
   local_3c[0] = this;
-  (*pcVar2)();
+  (*pcVar1)();
   puStack_5c = &this->field_0x10;
   uStack_58 = 4;
   uStack_60 = 0x5a49d0;
-  (*pcVar2)();
+  (*pcVar1)();
   puStack_64 = &stack0xffffffb8;
   uStack_60 = 4;
   uStack_68 = 0x5a49db;
-  (*pcVar2)();
+  (*pcVar1)();
   puStack_6c = &stack0xffffffc0;
   uStack_68 = 4;
   uStack_70 = 0x5a49e6;
-  (*pcVar2)();
+  (*pcVar1)();
   puStack_74 = &stack0xffffffb4;
   uStack_70 = 4;
   uStack_78 = 0x5a49f1;
-  (*pcVar2)();
+  (*pcVar1)();
   puStack_7c = &stack0xffffffbc;
   uStack_78 = 4;
-  (*pcVar2)();
-  (*pcVar2)();
-  (*pcVar2)(&puStack_5c,4);
-  (*pcVar2)(local_3c,2);
+  (*pcVar1)();
+  (*pcVar1)();
+  (*pcVar1)(&puStack_5c,4);
+  ppTVar15 = local_3c;
+  (*pcVar1)(ppTVar15,2);
   while (unaff_BP != 0) {
     unaff_BP = unaff_BP + -1;
-    ppuVar8 = &puStack_7c;
-    (*pcVar2)(ppuVar8,4);
-    iVar4 = InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
+    ppuVar11 = &puStack_7c;
+    (*pcVar1)(ppuVar11,4);
+    iVar3 = InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
                       ((TArmyBattle *)&pTStack_50);
-    piVar5 = (int *)AllocateWithFallbackHandler(0x58);
-    if (piVar5 == (int *)0x0) {
-      piVar5 = (int *)0x0;
+    piVar4 = (int *)AllocateWithFallbackHandler(0x58);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)0x0;
     }
     else {
-      *piVar5 = (int)&TArmyTacUnitVtbl_00669660;
+      *piVar4 = (int)&TArmyTacUnitVtbl_00669660;
     }
-    piVar5[3] = (int)*(short *)(iVar4 + 4);
-    piVar5[2] = -2;
-    *(undefined1 *)(piVar5 + 6) = 0;
-    piVar5[7] = 0;
-    iVar6 = (**(code **)(*piVar5 + 0x28))();
-    piVar5[10] = iVar6;
-    piVar5[0xb] = 0;
-    piVar5[0xc] = 0;
-    sVar1 = *(short *)(iVar4 + 0x34);
-    piVar5[1] = (int)sVar1;
-    piVar5[0xd] = (int)sVar1;
-    sVar1 = *(short *)(iVar4 + 0x38);
-    piVar5[4] = (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
-                            (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
-    piVar5[5] = (int)*(short *)(iVar4 + 0x18);
-    piVar5[0x10] = -1;
-    piVar5[0xe] = iVar4;
-    if ((*(int *)(iVar4 + 8) == 2) && (*(short *)(&DAT_00669858 + piVar5[3] * 2) == 0)) {
-      uVar3 = 1;
+    piVar4[3] = (int)*(short *)(iVar3 + 4);
+    piVar4[2] = -2;
+    *(undefined1 *)(piVar4 + 6) = 0;
+    piVar4[7] = 0;
+    iVar5 = (**(code **)(*piVar4 + 0x28))();
+    piVar4[10] = iVar5;
+    piVar4[0xb] = 0;
+    piVar4[0xc] = 0;
+    sVar8 = *(short *)(iVar3 + 0x34);
+    piVar4[1] = (int)sVar8;
+    piVar4[0xd] = (int)sVar8;
+    sVar8 = *(short *)(iVar3 + 0x38);
+    piVar4[4] = (int)(short)((sVar8 / 100 + (sVar8 >> 0xf)) -
+                            (short)((longlong)(int)sVar8 * 0x51eb851f >> 0x3f));
+    piVar4[5] = (int)*(short *)(iVar3 + 0x18);
+    piVar4[0x10] = -1;
+    piVar4[0xe] = iVar3;
+    if ((*(int *)(iVar3 + 8) == 2) && (*(short *)(&DAT_00669858 + piVar4[3] * 2) == 0)) {
+      uVar2 = 1;
     }
     else {
-      uVar3 = 0;
+      uVar2 = 0;
     }
-    *(undefined1 *)(piVar5 + 0xf) = uVar3;
-    (*pcVar2)(piVar5 + 8,4);
-    (*pcVar2)(piVar5 + 9,2);
-    (**(code **)(*(int *)ppuVar8[8] + 0x30))(piVar5);
+    *(undefined1 *)(piVar4 + 0xf) = uVar2;
+    (*pcVar1)(piVar4 + 8,4);
+    (*pcVar1)(piVar4 + 9,2);
+    (**(code **)(*(int *)ppuVar11[8] + 0x30))(piVar4);
     this = (TArmyBattle *)&pTStack_50;
   }
-  (*pcVar2)(&uStack_78,4);
+  puVar12 = &uStack_78;
+  uVar14 = 4;
+  (*pcVar1)();
   puStack_64 = *(undefined1 **)&this->field_0x20;
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar6 = LinkedListCursorHasCurrent();
-  while (iVar6 != 0) {
-    if ((iVar4 == 0) || (*(int *)(iVar4 + 0x38) == 0)) {
-      iVar6 = 0;
+  iVar3 = InitializeLinkedListCursorFromOwnerHead();
+  iVar5 = LinkedListCursorHasCurrent();
+  while( true ) {
+    uVar10 = SUB42(puVar12,0);
+    uVar13 = (undefined2)uVar14;
+    uVar2 = SUB41(ppTVar15,0);
+    if (iVar5 == 0) break;
+    if ((iVar3 == 0) || (*(int *)(iVar3 + 0x38) == 0)) {
+      iVar5 = 0;
     }
     else {
-      iVar6 = *(int *)(*(int *)(iVar4 + 0x38) + 0x20);
+      iVar5 = *(int *)(*(int *)(iVar3 + 0x38) + 0x20);
     }
-    if (iVar6 == 4) goto LAB_005a4b8e;
-    iVar4 = AdvanceLinkedListCursor();
-    iVar6 = LinkedListCursorHasCurrent();
+    if (iVar5 == 4) goto LAB_005a4b8e;
+    iVar3 = AdvanceLinkedListCursor();
+    iVar5 = LinkedListCursorHasCurrent();
   }
-  iVar4 = 0;
+  iVar3 = 0;
 LAB_005a4b8e:
-  *(int *)&this->field_0x1c = iVar4;
-  (*pcVar2)(&this->field_0x38,4);
-  (*pcVar2)(&this->field_0x44,4);
-  (*pcVar2)(&this->field_0x49);
-  (*pcVar2)(&this->field_0x4c,4);
-  (*pcVar2)(&this->field_0x50,4);
-  pTVar7 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  *(int *)&this->field_0x1c = iVar3;
+  sVar8 = (short)this + 0x38;
+  uVar9 = 4;
+  (*pcVar1)();
+  (*pcVar1)(&this->field_0x44,4);
+  uVar7 = 1;
+  (*pcVar1)(&this->field_0x49);
+  (*pcVar1)(&this->field_0x4c,4);
+  (*pcVar1)(&this->field_0x50,4);
+  pTVar6 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
   this_00 = (TArmyStack *)0x0;
   puStack_7c = (undefined1 *)0x0;
-  if (pTVar7 != (TArmyStack *)0x0) {
-    this_00 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar7);
+  if (pTVar6 != (TArmyStack *)0x0) {
+    this_00 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar6);
   }
   puStack_7c = (undefined1 *)0xffffffff;
-  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(this_00);
-  pTVar7 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
+  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+            (this_00,uVar7,uVar9,sVar8);
+  pTVar6 = (TArmyStack *)AllocateWithFallbackHandler(0x1c);
   puStack_7c = (undefined1 *)0x1;
-  if (pTVar7 == (TArmyStack *)0x0) {
-    pTVar7 = (TArmyStack *)0x0;
+  if (pTVar6 == (TArmyStack *)0x0) {
+    pTVar6 = (TArmyStack *)0x0;
   }
   else {
-    pTVar7 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar7);
+    pTVar6 = (TArmyStack *)TArmyStack::ConstructTArmyStackBaseState(pTVar6);
   }
   puStack_7c = (undefined1 *)0xffffffff;
-  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(pTVar7);
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar6 = LinkedListCursorHasCurrent();
-  while (iVar6 != 0) {
-    WrapperFor_AllocateWithFallbackHandler_At004a7b20(*(undefined4 *)(iVar4 + 0x38));
-    iVar4 = AdvanceLinkedListCursor();
-    iVar6 = LinkedListCursorHasCurrent();
+  TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
+            (pTVar6,uVar2,uVar13,uVar10);
+  iVar3 = InitializeLinkedListCursorFromOwnerHead();
+  iVar5 = LinkedListCursorHasCurrent();
+  while (iVar5 != 0) {
+    WrapperFor_AllocateWithFallbackHandler_At004a7b20(*(undefined4 *)(iVar3 + 0x38));
+    iVar3 = AdvanceLinkedListCursor();
+    iVar5 = LinkedListCursorHasCurrent();
   }
-  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8((TArmyPlayer *)this);
+  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
+            ((TArmyPlayer *)this,(int)this_00,(int)pTVar6,*(undefined4 *)&this->field_0x50,
+             (int)(char)this->field_0x49,*(undefined4 *)&this->field_0x38);
   *unaff_FS_OFFSET = 4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4DA0
 // GHIDRA_NAME TArmyBattle::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(int * param_1)
 
-void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this)
+void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this,int *param_1)
 
 {
   code *pcVar1;
   int *piVar2;
   int iVar3;
   int iVar4;
-  int *in_stack_00000004;
   int *piStack_60;
   undefined4 uStack_5c;
   undefined1 *puStack_58;
@@ -307,7 +324,7 @@ void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this)
   
   iStack_2c = 4;
   puStack_30 = &this->field_0xc;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   iStack_34 = 0x5a4dbc;
   (*pcVar1)();
   puStack_38 = &this->field_0x10;
@@ -380,22 +397,20 @@ void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A51E0
 // GHIDRA_NAME TArmyBattle::OrphanRetStub_0059f710
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(int * param_1, int param_2)
 
-int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this)
+int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this,int *param_1,int param_2)
 
 {
   int *piVar1;
   undefined4 uVar2;
   int iVar3;
-  int *in_stack_00000004;
-  int in_stack_00000008;
   
-  (**(code **)(*in_stack_00000004 + 0xc))();
-  piVar1 = (int *)(in_stack_00000008 / 0x1d);
-  iVar3 = in_stack_00000008 % 0x1d;
-  if (((0x1c < in_stack_00000008) &&
-      (piVar1 = (int *)(*(int *)&this->field_0x4 + in_stack_00000008 * 0x14), *piVar1 != 4)) &&
+  (**(code **)(*param_1 + 0xc))();
+  piVar1 = (int *)(param_2 / 0x1d);
+  iVar3 = param_2 % 0x1d;
+  if (((0x1c < param_2) &&
+      (piVar1 = (int *)(*(int *)&this->field_0x4 + param_2 * 0x14), *piVar1 != 4)) &&
      (piVar1[1] == 0)) {
     if (*(int *)&this->field_0xc == 0) {
       if (iVar3 < 3) {
@@ -414,7 +429,7 @@ int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this)
         return (int *)((int)piVar1 + -5);
       }
     }
-    thunk_HandleTacticalCommandTag_depl(in_stack_00000004,in_stack_00000008,0);
+    thunk_HandleTacticalCommandTag_depl(param_1,param_2,0);
     uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
     thunk_ApplyTacticalDoneSelectionAndRefreshUi(uVar2);
     iVar3 = 0;
@@ -441,23 +456,22 @@ int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5320
 // GHIDRA_NAME TArmyBattle::CreateTTacticalBattleInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(undefined4 param_1)
 
-void __thiscall TArmyBattle::CreateTTacticalBattleInstance(TArmyBattle *this)
+void __thiscall TArmyBattle::CreateTTacticalBattleInstance(TArmyBattle *this,undefined4 param_1)
 
 {
   int *piVar1;
   int *piVar2;
   int iVar3;
   int *piVar4;
-  undefined4 in_stack_00000004;
   
   piVar1 = *(int **)&this->field_0x14;
   *(undefined4 *)&this->field_0x44 = 1;
   (**(code **)(*piVar1 + 0xc))();
   piVar2 = *(int **)&this->field_0x18;
   (**(code **)(*piVar2 + 0xc))();
-  TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem);
+  TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\0');
   if (*(int *)&this->field_0x8 != 0) {
     piVar4 = (int *)(**(code **)(**(int **)(*(int *)&this->field_0x8 + 0x20) + 0x94))(0x746f6f6c);
     iVar3 = *piVar4;
@@ -466,7 +480,7 @@ void __thiscall TArmyBattle::CreateTTacticalBattleInstance(TArmyBattle *this)
     (**(code **)(iVar3 + 0x1cc))(0);
   }
   WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl
-            (piVar1[10],piVar2[10],in_stack_00000004,*(undefined4 *)&this->field_0x38);
+            (piVar1[10],piVar2[10],param_1,*(undefined4 *)&this->field_0x38);
   return;
 }
 

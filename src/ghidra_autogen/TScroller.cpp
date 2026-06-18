@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CAD0
 // GHIDRA_NAME TScroller::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this)
+TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTScrollerInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -59,31 +57,28 @@ CRuntimeClass * __thiscall TScroller::GetTEventHandlerClassNamePointer(TScroller
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CBB0
 // GHIDRA_NAME TScroller::ConstructTScrollerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTScrollerBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTScrollerBaseState(int * param_1, int * param_2, int * param_3)
 
-void __thiscall TScroller::ConstructTScrollerBaseState(TScroller *this)
+void __thiscall
+TScroller::ConstructTScrollerBaseState(TScroller *this,int *param_1,int *param_2,int *param_3)
 
 {
   int iVar1;
-  int *in_stack_00000004;
-  int *in_stack_00000008;
-  int *in_stack_0000000c;
   
   iVar1 = 0;
-  if ((in_stack_00000004 != (int *)0x0) &&
-     (iVar1 = in_stack_00000004[0x10], in_stack_00000004 != (int *)0x0)) {
-    this->field50 = in_stack_00000004[0x14];
+  if ((param_1 != (int *)0x0) && (iVar1 = param_1[0x10], param_1 != (int *)0x0)) {
+    this->field50 = param_1[0x14];
   }
   this->controlTag = 0x20202020;
   this->field04 = 1;
   this->padding_08_to_0b = 1;
-  this->field0c = (int)in_stack_00000004;
-  this->ownerOffsetX = *in_stack_00000008;
-  this->ownerOffsetY = in_stack_00000008[1];
-  this->field34 = *in_stack_0000000c;
-  this->field38 = in_stack_0000000c[1];
-  if (in_stack_00000004 != (int *)0x0) {
-    (**(code **)(*in_stack_00000004 + 0x170))(this,0);
+  this->field0c = (int)param_1;
+  this->ownerOffsetX = *param_2;
+  this->ownerOffsetY = param_2[1];
+  this->field34 = *param_3;
+  this->field38 = param_3[1];
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 0x170))(this,0);
   }
   this->padding_40_to_43 = iVar1;
   return;

@@ -27,16 +27,14 @@ TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0(TClientGreatPower *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005412F0
 // GHIDRA_NAME TClientGreatPower::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TClientGreatPower * __thiscall
-TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this)
+TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTClientGreatPower(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -166,9 +164,10 @@ void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005415C0
 // GHIDRA_NAME TClientGreatPower::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(char param_1)
 
-int __thiscall TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this)
+int __thiscall
+TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this,char param_1)
 
 {
   int iVar1;
@@ -179,10 +178,11 @@ int __thiscall TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatP
   undefined4 local_14;
   undefined1 local_10;
   undefined1 local_8;
+  char local_7;
   undefined1 local_5;
   undefined1 local_3;
   
-  iVar1 = TGreatPower::GetTEventHandlerClassNamePointer((TGreatPower *)this);
+  iVar1 = TGreatPower::GetTEventHandlerClassNamePointer((TGreatPower *)this,param_1);
   local_14 = 0x74696d65;
   local_10 = UiRuntimeContext::GetActiveNationId();
   local_20 = 0;
@@ -192,6 +192,7 @@ int __thiscall TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatP
   thunk_SetTimeEmitPacketGameFlowTurnId();
   local_1c = 0xffffffff;
   local_8 = UiRuntimeContext::GetActiveNationId();
+  local_7 = param_1;
   local_3 = iVar1 == 1;
   local_5 = 0x61;
   thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);

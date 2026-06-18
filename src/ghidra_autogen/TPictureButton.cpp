@@ -114,15 +114,14 @@ TPictureButton * __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570820
 // GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureButton * __thiscall TPictureButton::_scalar_deleting_destructor_(TPictureButton *this)
+TPictureButton * __thiscall
+TPictureButton::_scalar_deleting_destructor_(TPictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -130,19 +129,18 @@ TPictureButton * __thiscall TPictureButton::_scalar_deleting_destructor_(TPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570870
 // GHIDRA_NAME TPictureButton::OrphanCallChain_C2_I24_00570870
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
 
-void __thiscall TPictureButton::OrphanCallChain_C2_I24_00570870(TPictureButton *this)
+void __thiscall TPictureButton::OrphanCallChain_C2_I24_00570870(TPictureButton *this,char param_1)
 
 {
   TPictureButtonVtbl *pTVar1;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != this->field_0x64) {
+  if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
-    this->field_0x64 = in_stack_00000004;
-    (*pTVar1[0x14].slot_0x04)((uint)(in_stack_00000004 != '\0'),1);
+    this->field_0x64 = param_1;
+    (*pTVar1[0x14].slot_0x04)((uint)(param_1 != '\0'),1);
     if (unaff_retaddr != '\0') {
       (*pTVar1[0x39].slot_0x04)();
     }
@@ -177,8 +175,8 @@ void __thiscall TPictureButton::_scalar_deleting_destructor_(TPictureButton *thi
   undefined4 in_EDX;
   
   (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0,1);
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
   return;
 }
 

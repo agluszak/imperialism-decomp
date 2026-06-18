@@ -45,15 +45,14 @@ CRuntimeClass * __thiscall TMiniCivLine::GetTLineDataClassNamePointer(TMiniCivLi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB740
 // GHIDRA_NAME TMiniCivLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this)
+void __thiscall
+TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   TControl *this_00;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -72,7 +71,7 @@ void __thiscall TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this)
   }
   local_4 = 0xffffffff;
   TMiniCivView::ConstructTMiniCivViewBaseState
-            (in_stack_00000004,in_stack_00000008,&this->field_0x8,*(undefined4 *)&this->field_0x10);
+            (param_1,param_2,&this->field_0x8,*(undefined4 *)&this->field_0x10);
   *unaff_FS_OFFSET = local_c;
   return;
 }

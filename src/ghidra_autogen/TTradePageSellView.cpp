@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004355C0
 // GHIDRA_NAME TTradePageSellView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTradePageSellView * __thiscall
-TTradePageSellView::_scalar_deleting_destructor_(TTradePageSellView *this)
+TTradePageSellView::_scalar_deleting_destructor_(TTradePageSellView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,9 +62,10 @@ TTradePageSellView::GetTEventHandlerClassNamePointer(TTradePageSellView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BCC30
 // GHIDRA_NAME TTradePageSellView::ConstructTTradePageSellViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTradePageSellViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTradePageSellViewBaseState(short param_1)
 
-void __thiscall TTradePageSellView::ConstructTTradePageSellViewBaseState(TTradePageSellView *this)
+void __thiscall
+TTradePageSellView::ConstructTTradePageSellViewBaseState(TTradePageSellView *this,short param_1)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -80,7 +79,6 @@ void __thiscall TTradePageSellView::ConstructTTradePageSellViewBaseState(TTradeP
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined2 unaff_retaddr;
-  short in_stack_00000004;
   TTextLine *pTStack_28;
   undefined4 uStack_24;
   undefined4 local_20;
@@ -100,10 +98,10 @@ void __thiscall TTradePageSellView::ConstructTTradePageSellViewBaseState(TTradeP
   *unaff_FS_OFFSET = &local_c;
   local_20 = 0xe0;
   local_1c = 0x30;
-  if (in_stack_00000004 == *(short *)&this->field_0x84) goto LAB_005bce9f;
-  *(short *)&this->field_0x84 = in_stack_00000004;
+  if (param_1 == *(short *)&this->field_0x84) goto LAB_005bce9f;
+  *(short *)&this->field_0x84 = param_1;
   (*this->vftable[0x36].slot_0x04)();
-  if (in_stack_00000004 == -1) {
+  if (param_1 == -1) {
 LAB_005bcdec:
     this_01 = (TTextLine *)AllocateWithFallbackHandler(0x20);
     uStack_4 = 2;
@@ -129,11 +127,11 @@ LAB_005bcdec:
   else {
     pTVar1 = g_pNationInteractionStateManager->vftable;
     sVar4 = UiRuntimeContext::GetActiveNationId();
-    cVar3 = (*pTVar1[0xf].GetTTradeMgrClassNamePointer)((int)in_stack_00000004,(int)sVar4);
+    cVar3 = (*pTVar1[0xf].GetTTradeMgrClassNamePointer)((int)param_1,(int)sVar4);
     if (cVar3 == '\0') {
       pTVar1 = g_pNationInteractionStateManager->vftable;
       sVar4 = UiRuntimeContext::GetActiveNationId();
-      cVar3 = (*pTVar1[0xf].slot_0x04)((int)in_stack_00000004,(int)sVar4);
+      cVar3 = (*pTVar1[0xf].slot_0x04)((int)param_1,(int)sVar4);
       if (cVar3 == '\0') goto LAB_005bcdec;
     }
     pTStack_28 = (TTextLine *)AllocateWithFallbackHandler(0x20);
@@ -170,7 +168,7 @@ LAB_005bcdec:
           this_00->vftable = (TLineDataVtbl *)&TTradeOfferNationLineVtbl_0066e2b8;
         }
         puStack_8 = (undefined1 *)0xffffffff;
-        TLineData::SetLineDataRowAndBounds(this_00);
+        TLineData::SetLineDataRowAndBounds(this_00,0,0,&uStack_24);
         *(short *)((int)&this_00[1].vftable + 2) = (short)iVar6;
         *(undefined2 *)&this_00[1].vftable = unaff_retaddr;
         (**(code **)(**(int **)&this->field_0x7c + 0x30))(this_00);
@@ -189,16 +187,14 @@ LAB_005bce9f:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BCF70
 // GHIDRA_NAME TTradePageSellView::DestructTTradePageSellViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTradePageSellViewAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTradePageSellViewAndMaybeFree(byte param_1)
 
 TTradePageSellView * __thiscall
-TTradePageSellView::DestructTTradePageSellViewAndMaybeFree(TTradePageSellView *this)
+TTradePageSellView::DestructTTradePageSellViewAndMaybeFree(TTradePageSellView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTradePageSellViewAndMaybeFree_Impl(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

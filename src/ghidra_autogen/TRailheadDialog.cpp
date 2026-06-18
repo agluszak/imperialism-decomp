@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BCFD0
 // GHIDRA_NAME TRailheadDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailheadDialog * __thiscall TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this)
+TRailheadDialog * __thiscall
+TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -31,11 +30,12 @@ CRuntimeClass * __thiscall TRailheadDialog::GetTEventHandlerClassNamePointer(TRa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD040
 // GHIDRA_NAME TRailheadDialog::ConstructTRailheadDialogBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTRailheadDialogBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTRailheadDialogBaseState(int param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this)
+void __thiscall
+TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int param_1)
 
 {
   int iVar1;
@@ -43,9 +43,8 @@ void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDial
   undefined uVar3;
   undefined3 extraout_var;
   int *piVar4;
-  int in_stack_00000004;
   
-  *(int *)&this->field_0x60 = in_stack_00000004;
+  *(int *)&this->field_0x60 = param_1;
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -54,7 +53,7 @@ void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDial
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar1 + 0x1c8))(TradeSummarySelectionMap_006960e0.summaryTags[0]);
-  if (*(short *)(in_stack_00000004 + 10) == 0) {
+  if (*(short *)(param_1 + 10) == 0) {
     pcVar2 = *(code **)(iVar1 + 0x94);
     piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[3]);
     if (piVar4 == (int *)0x0) {
@@ -98,18 +97,18 @@ void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDial
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD260
 // GHIDRA_NAME TRailheadDialog::DestructTRailheadDialogAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTRailheadDialogAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTRailheadDialogAndMaybeFree(int param_1)
 
-void __thiscall TRailheadDialog::DestructTRailheadDialogAndMaybeFree(TRailheadDialog *this)
+void __thiscall
+TRailheadDialog::DestructTRailheadDialogAndMaybeFree(TRailheadDialog *this,int param_1)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   dword dVar2;
   int iVar3;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 0x6f6b6179) {
+  if (param_1 == 0x6f6b6179) {
     uVar1 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
     if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

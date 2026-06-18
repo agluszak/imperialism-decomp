@@ -5,35 +5,30 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1710
 // GHIDRA_NAME TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
-// GHIDRA_PROTO undefined __thiscall ConstructNumericEntryDialogCoreAndValueLabel(void)
+// GHIDRA_PROTO undefined __thiscall ConstructNumericEntryDialogCoreAndValueLabel(int * param_1, undefined4 param_2, short param_3, int param_4)
 
-void __thiscall TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(TGPCheater *this)
+void __thiscall
+TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
+          (TGPCheater *this,int *param_1,undefined4 param_2,short param_3,int param_4)
 
 {
   TNumberText *pTVar1;
   TStaticText *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
-  undefined4 in_stack_00000008;
-  int in_stack_00000010;
   TNumberText *local_24;
   int local_20;
-  int local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
+  int local_1c [5];
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d84;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_1c = 0x20;
-  local_18 = 0x16;
-  local_14 = 0x80;
-  local_10 = 0x18;
+  local_1c[4] = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = local_1c + 4;
+  local_1c[0] = 0x20;
+  local_1c[1] = 0x16;
+  local_1c[2] = 0x80;
+  local_1c[3] = 0x18;
   pTVar1 = (TNumberText *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
   local_24 = pTVar1;
@@ -46,35 +41,32 @@ void __thiscall TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(TGPChea
     pTVar1->vftable = (TNumberTextVtbl *)&DAT_0063e8b0;
   }
   local_4 = 0xffffffff;
-  TNumberText::ConstructTNumberTextBaseState(pTVar1);
-  pTVar1->controlTag = in_stack_00000010;
+  TNumberText::ConstructTNumberTextBaseState(pTVar1,this,param_1,local_1c,(int)param_3,0xffff8ad0);
+  pTVar1->controlTag = param_4;
   this_00 = (TStaticText *)AllocateWithFallbackHandler(0x94);
   local_4 = 1;
   if (this_00 != (TStaticText *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
   }
-  local_24 = (TNumberText *)(*in_stack_00000004 + local_1c);
-  local_20 = in_stack_00000004[1];
+  local_24 = (TNumberText *)(*param_1 + local_1c[0]);
+  local_20 = param_1[1];
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource
-            (this,&local_24,&local_14,5,5,
-             CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->field_0x60),
-             in_stack_00000008);
-  *unaff_FS_OFFSET = local_c;
+            (this,&local_24,local_1c + 2,5,5,
+             CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->field_0x60),param_2);
+  *unaff_FS_OFFSET = local_1c[4];
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A20
 // GHIDRA_NAME TGPCheater::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGPCheater * __thiscall TGPCheater::_scalar_deleting_destructor_(TGPCheater *this)
+TGPCheater * __thiscall TGPCheater::_scalar_deleting_destructor_(TGPCheater *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -104,7 +96,7 @@ void __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *param_1,und
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_24;
   undefined4 local_20;
-  undefined4 local_1c;
+  int local_1c;
   undefined4 local_18;
   undefined4 uStack_14;
   undefined4 uStack_c;
@@ -133,19 +125,19 @@ void __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *param_1,und
   *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
   local_1c = 2;
   local_18 = 0x40;
-  ConstructNumericEntryDialogCoreAndValueLabel(param_1);
+  ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,2,0,0x74726561);
   local_1c = 2;
   local_18 = 0x58;
-  ConstructNumericEntryDialogCoreAndValueLabel(param_1);
+  ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,3,0,0x6d657263);
   local_1c = 2;
   local_18 = 0x70;
-  ConstructNumericEntryDialogCoreAndValueLabel(param_1);
+  ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,4,0,0x74636170);
   local_1c = 2;
   local_18 = 0x88;
-  ConstructNumericEntryDialogCoreAndValueLabel(param_1);
+  ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,5,0,0x73616c65);
   local_1c = 2;
   local_18 = 0x9e;
-  ConstructNumericEntryDialogCoreAndValueLabel(param_1);
+  ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,6,0,0x70757263);
   uVar1 = (*param_1->vftable[0xb].GetTEventHandlerClassNamePointer)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar1);
   (**(code **)(iVar2 + 300))(&local_1c);

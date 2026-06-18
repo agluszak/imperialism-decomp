@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EBB0
 // GHIDRA_NAME TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(byte param_1)
 
 TNavyPlayer * __thiscall
-TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this)
+TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTNavyPlayerInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -53,15 +51,14 @@ undefined4 __thiscall TNavyPlayer::ConstructTNavyPlayerBaseState(TNavyPlayer *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ED80
 // GHIDRA_NAME TNavyPlayer::DestructTNavyPlayerAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTNavyPlayerAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTNavyPlayerAndMaybeFree(byte param_1)
 
-TNavyPlayer * __thiscall TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this)
+TNavyPlayer * __thiscall
+TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTNavyPlayerAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -99,29 +96,30 @@ TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(TNavyPlayer 
 
 {
   TAutoGreatPower *this_00;
-  int iVar1;
+  int *piVar1;
+  int in_stack_00000004;
   
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  iVar1 = TAutoGreatPower::Find(this_00);
-  if (iVar1 != 0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00);
+  piVar1 = (int *)TAutoGreatPower::Find(this_00,in_stack_00000004,(undefined4 *)0x0);
+  if (piVar1 != (int *)0x0) {
+    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EEA0
 // GHIDRA_NAME TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters
-// GHIDRA_PROTO undefined __thiscall AddOrderNodeToHeadAndReassignNationCounters(void)
+// GHIDRA_PROTO undefined __thiscall AddOrderNodeToHeadAndReassignNationCounters(int * param_1)
 
-void __thiscall TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters(TNavyPlayer *this)
+void __thiscall
+TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters(TNavyPlayer *this,int *param_1)
 
 {
   int iVar1;
   undefined2 extraout_var;
-  int *in_stack_00000004;
   
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4));
-  iVar1 = *in_stack_00000004;
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  iVar1 = *param_1;
   (**(code **)(iVar1 + 0x3c))();
   (**(code **)(iVar1 + 0x40))();
   ReassignOrderNodeNationAndRebindParentCounters

@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD370
 // GHIDRA_NAME TTransportView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransportView * __thiscall TTransportView::_scalar_deleting_destructor_(TTransportView *this)
+TTransportView * __thiscall
+TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -31,9 +30,10 @@ CRuntimeClass * __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTra
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD3E0
 // GHIDRA_NAME TTransportView::ApplyCityDialogMinisterValues
-// GHIDRA_PROTO undefined __thiscall ApplyCityDialogMinisterValues(void)
+// GHIDRA_PROTO undefined __thiscall ApplyCityDialogMinisterValues(undefined4 param_1)
 
-void __thiscall TTransportView::ApplyCityDialogMinisterValues(TTransportView *this)
+void __thiscall
+TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 param_1)
 
 {
   code *pcVar1;
@@ -44,7 +44,6 @@ void __thiscall TTransportView::ApplyCityDialogMinisterValues(TTransportView *th
   short sVar5;
   dword *pdVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   code *pcStack_1c;
   CString local_10;
   undefined4 uStack_c;
@@ -56,7 +55,7 @@ void __thiscall TTransportView::ApplyCityDialogMinisterValues(TTransportView *th
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&local_10);
-  *(undefined4 *)&this->field_0x60 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x60 = param_1;
   sVar5 = 0;
   local_4 = 0;
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x73757070);

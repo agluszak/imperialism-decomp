@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004600F0
 // GHIDRA_NAME TTechStorePage::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechStorePage * __thiscall TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this)
+TTechStorePage * __thiscall
+TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -41,16 +40,14 @@ undefined ** __thiscall TTechStorePage::OrphanVtableAssignStub_00479460(TTechSto
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004796E0
 // GHIDRA_NAME TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
 
 TTechStorePage * __thiscall
-TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(TTechStorePage *this)
+TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(TTechStorePage *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -58,15 +55,15 @@ TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(TTechStorePage *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004797D0
 // GHIDRA_NAME TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
-// GHIDRA_PROTO undefined __thiscall InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
+// GHIDRA_PROTO undefined __thiscall InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(int param_1)
 
 void __thiscall
-TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(TTechStorePage *this)
+TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
+          (TTechStorePage *this,int param_1)
 
 {
   int *piVar1;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uVar2;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -84,10 +81,10 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(TTechSt
     piVar1 = (int *)0x0;
   }
   else {
-    piVar1[1] = in_stack_00000004;
+    piVar1[1] = param_1;
     *piVar1 = (int)&PTR_LAB_00645f98;
   }
-  if ((~*(uint *)(in_stack_00000004 + 0x14) & 1) == 0) {
+  if ((~*(uint *)(param_1 + 0x14) & 1) == 0) {
     uVar2 = 0;
     (**(code **)(*(int *)this->field50 + 0x28))(piVar1);
   }
@@ -155,6 +152,7 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
   TLineData *this;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -177,8 +175,9 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
         this->vftable = (TLineDataVtbl *)&TTechItemLineVtbl_0066aec8;
       }
       local_4 = 0xffffffff;
+      local_14 = 0x232;
       local_10 = 0x3f;
-      TLineData::SetLineDataRowAndBounds(this);
+      TLineData::SetLineDataRowAndBounds(this,0,0,&local_14);
       iVar1 = *param_1;
       this[1].vftable = param_2;
       *(int *)&this[1].field_0x4 = iVar2;
@@ -197,15 +196,14 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1040
 // GHIDRA_NAME TTechStorePage::DestructTTechStorePageAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTechStorePageAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTechStorePageAndMaybeFree(byte param_1)
 
-TTechStorePage * __thiscall TTechStorePage::DestructTTechStorePageAndMaybeFree(TTechStorePage *this)
+TTechStorePage * __thiscall
+TTechStorePage::DestructTTechStorePageAndMaybeFree(TTechStorePage *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTechStorePageAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

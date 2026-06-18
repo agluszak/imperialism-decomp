@@ -5,28 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488470
 // GHIDRA_NAME TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt
-// GHIDRA_PROTO undefined __thiscall InsertCopiedRecordAtFrontOfPtrListAlt(void)
+// GHIDRA_PROTO undefined __thiscall InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 * param_1)
 
-void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this)
+void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this,undefined4 *param_1)
 
 {
   short sVar1;
   undefined4 *puVar2;
   uint uVar3;
   undefined4 *puVar4;
-  undefined4 *in_stack_00000004;
   
   puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
   sVar1 = *(short *)&this->field_0x14;
   puVar4 = puVar2;
   for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *puVar4 = *in_stack_00000004;
-    in_stack_00000004 = in_stack_00000004 + 1;
+    *puVar4 = *param_1;
+    param_1 = param_1 + 1;
     puVar4 = puVar4 + 1;
   }
   for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *(undefined1 *)puVar4 = *(undefined1 *)in_stack_00000004;
-    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
+    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
+    param_1 = (undefined4 *)((int)param_1 + 1);
     puVar4 = (undefined4 *)((int)puVar4 + 1);
   }
   InsertAt(0,puVar2,1);
@@ -35,15 +34,13 @@ void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004884C0
 // GHIDRA_NAME TPtrList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this)
+TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CObArray::thunk_DestructCObArray();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

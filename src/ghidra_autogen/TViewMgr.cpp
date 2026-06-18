@@ -49,9 +49,11 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot068(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401730
 // GHIDRA_NAME TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-// GHIDRA_PROTO undefined __thiscall thunk_RunControlStringProviderAndDispatchLocalizedMessage(void)
+// GHIDRA_PROTO undefined __thiscall thunk_RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
 
-void __thiscall TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this)
+void __thiscall
+TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
+          (TViewMgr *this,undefined4 *param_1)
 
 {
   undefined uVar1;
@@ -77,11 +79,11 @@ void __thiscall TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMess
   uStack_1c = in_stack_00000008;
   uStack_20 = in_stack_00000008;
   in_stack_00000008 = &uStack_20;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0x00000004);
+  thunk_AssignStringSharedRefAndReturnThis(&param_1);
   thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   uStack_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -121,7 +123,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot043(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D3A60
 // GHIDRA_NAME TViewMgr::HandleEngineerConstructionAction
-// GHIDRA_PROTO bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
+// GHIDRA_PROTO bool __thiscall HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handle engineer construction actions from map tile click context.
 // GHIDRA_COMMENT Algorithm:
@@ -155,7 +157,8 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot043(TViewMgr *this)
    Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses
    g_adwEngineerRailBuildCostByTerrainType. */
 
-bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex)
+bool __thiscall
+TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
 
 {
   uint uVar1;
@@ -467,7 +470,7 @@ void __thiscall TViewMgr::ConstructGlobalTurnEventState(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D50B0
 // GHIDRA_NAME TViewMgr::DestroyTurnEventState
-// GHIDRA_PROTO undefined __thiscall DestroyTurnEventState(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTurnEventState(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deleting-destructor wrapper for TurnEventState object. Calls SetTurnEventStateBaseVtable and frees memory when delete flag bit0 is set.
 // GHIDRA_COMMENT_END
@@ -475,13 +478,11 @@ void __thiscall TViewMgr::ConstructGlobalTurnEventState(TViewMgr *this)
 /* Deleting-destructor wrapper for TurnEventState object. Calls SetTurnEventStateBaseVtable and
    frees memory when delete flag bit0 is set. */
 
-TViewMgr * __thiscall TViewMgr::DestroyTurnEventState(TViewMgr *this)
+TViewMgr * __thiscall TViewMgr::DestroyTurnEventState(TViewMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   SetTurnEventStateBaseVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -575,27 +576,26 @@ void __thiscall TViewMgr::SerializeTurnEventDispatchState(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5750
 // GHIDRA_NAME TViewMgr::ApplyTurnEventPaletteColorByEventCode
-// GHIDRA_PROTO undefined __thiscall ApplyTurnEventPaletteColorByEventCode(void)
+// GHIDRA_PROTO undefined __thiscall ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes palette index from turn-event code and applies resulting color via FUN_004950F0 path.
 // GHIDRA_COMMENT_END
 
 /* Computes palette index from turn-event code and applies resulting color via FUN_004950F0 path. */
 
-void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this)
+void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
-  undefined4 in_stack_00000004;
   
-  uVar1 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(in_stack_00000004);
+  uVar1 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_1);
   SetQuickDrawFillColorFromPaletteIndex(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5780
 // GHIDRA_NAME TViewMgr::UpdatePaletteIndexFromTurnEventCode
-// GHIDRA_PROTO undefined __thiscall UpdatePaletteIndexFromTurnEventCode(void)
+// GHIDRA_PROTO undefined __thiscall UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes palette index from turn-event code and updates current palette index state with fallback handling.
 // GHIDRA_COMMENT_END
@@ -603,13 +603,12 @@ void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this)
 /* Computes palette index from turn-event code and updates current palette index state with fallback
    handling. */
 
-void __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this)
+void __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,undefined4 param_1)
 
 {
   uint palette_index;
-  undefined4 in_stack_00000004;
   
-  palette_index = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(in_stack_00000004);
+  palette_index = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_1);
   UpdatePaletteIndexWithDefaultFallback(palette_index);
   return;
 }
@@ -721,9 +720,10 @@ undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5A70
 // GHIDRA_NAME TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
-// GHIDRA_PROTO undefined __thiscall RunControlStringProviderAndDispatchLocalizedMessage(void)
+// GHIDRA_PROTO undefined __thiscall RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
 
-void __thiscall TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this)
+void __thiscall
+TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this,undefined4 *param_1)
 
 {
   undefined uVar1;
@@ -749,11 +749,11 @@ void __thiscall TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TV
   uStack_1c = in_stack_00000008;
   uStack_20 = in_stack_00000008;
   in_stack_00000008 = &uStack_20;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0x00000004);
+  thunk_AssignStringSharedRefAndReturnThis(&param_1);
   thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

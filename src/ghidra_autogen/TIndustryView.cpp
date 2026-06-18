@@ -30,15 +30,14 @@ TIndustryView * __thiscall TIndustryView::ConstructTIndustryViewBaseState(TIndus
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC7D0
 // GHIDRA_NAME TIndustryView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryView * __thiscall TIndustryView::_scalar_deleting_destructor_(TIndustryView *this)
+TIndustryView * __thiscall
+TIndustryView::_scalar_deleting_destructor_(TIndustryView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -280,18 +279,16 @@ void __thiscall TIndustryView::OrphanRetStub_004c6fd0(TIndustryView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CCF30
 // GHIDRA_NAME TIndustryView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TIndustryView::OrphanRetStub_0059add0(TIndustryView *this)
+void __thiscall TIndustryView::OrphanRetStub_0059add0(TIndustryView *this,int param_1,int param_2)
 
 {
   TIndustryView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
   int iVar2;
   int iVar3;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x65787061)) {
+  if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x65787061)) {
     pTVar1 = this->vftable[0xb].GetTEventHandlerClassNamePointer;
     (*pTVar1)();
     iVar2 = FUN_0060753b(0);
@@ -308,7 +305,7 @@ void __thiscall TIndustryView::OrphanRetStub_0059add0(TIndustryView *this)
     FUN_0060753b(iVar2 == 0);
     return;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

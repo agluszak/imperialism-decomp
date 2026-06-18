@@ -30,16 +30,14 @@ undefined4 * CFileException::ConstructCFileException(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABEC
 // GHIDRA_NAME CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(byte param_1)
 
 CFileException * __thiscall
-CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(CFileException *this)
+CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(CFileException *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCFileException();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -96,16 +94,14 @@ void CFileException::DestructFileExceptionAndReleaseMessageString(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
 // GHIDRA_NAME CFileException::CMemFile
-// GHIDRA_PROTO undefined __thiscall CMemFile(void)
+// GHIDRA_PROTO undefined __thiscall CMemFile(undefined4 param_1)
 
-CFileException * __thiscall CFileException::CMemFile(CFileException *this)
+CFileException * __thiscall CFileException::CMemFile(CFileException *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   ConstructCFileException();
   this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
-  *(undefined4 *)&this->field_0x10 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x10 = param_1;
   this[1].vftable = (CFileExceptionVtbl *)0x0;
   *(undefined4 *)&this[1].field_0x4 = 0;
   *(undefined4 *)&this[1].field_0x8 = 0;
@@ -116,23 +112,20 @@ CFileException * __thiscall CFileException::CMemFile(CFileException *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
 // GHIDRA_NAME CFileException::CMemFile_619af8
-// GHIDRA_PROTO undefined __thiscall CMemFile_619af8(void)
+// GHIDRA_PROTO undefined __thiscall CMemFile_619af8(undefined4 param_1, uint param_2, int param_3)
 
-CFileException * __thiscall CFileException::CMemFile_619af8(CFileException *this)
+CFileException * __thiscall
+CFileException::CMemFile_619af8(CFileException *this,undefined4 param_1,uint param_2,int param_3)
 
 {
-  undefined4 in_stack_00000004;
-  uint in_stack_00000008;
-  int in_stack_0000000c;
-  
   ConstructCFileException();
   this[1].vftable = (CFileExceptionVtbl *)0x0;
-  *(int *)&this->field_0x10 = in_stack_0000000c;
+  *(int *)&this->field_0x10 = param_3;
   *(undefined4 *)&this[1].field_0x10 = 0;
   this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
-  *(uint *)&this[1].field_0x8 = ~-(uint)(in_stack_0000000c != 0) & in_stack_00000008;
-  *(undefined4 *)&this[1].field_0xc = in_stack_00000004;
-  *(uint *)&this[1].field_0x4 = in_stack_00000008;
+  *(uint *)&this[1].field_0x8 = ~-(uint)(param_3 != 0) & param_2;
+  *(undefined4 *)&this[1].field_0xc = param_1;
+  *(uint *)&this[1].field_0x4 = param_2;
   return this;
 }
 

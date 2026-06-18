@@ -66,16 +66,14 @@ TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5D20
 // GHIDRA_NAME TShipBuilderCityMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TShipBuilderCityMinister * __thiscall
-TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *this)
+TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTShipBuilderCityMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

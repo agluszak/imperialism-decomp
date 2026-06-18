@@ -55,16 +55,14 @@ TInfoBarPictureText::GetTEventHandlerClassNamePointer(TInfoBarPictureText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C60
 // GHIDRA_NAME TInfoBarPictureText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TInfoBarPictureText * __thiscall
-TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this)
+TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTInfoBarPictureTextAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -110,9 +108,10 @@ TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5CB0
 // GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
 
-void __thiscall TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPictureText *this)
+void __thiscall
+TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPictureText *this,RECT *param_1)
 
 {
   TInfoBarPictureTextVtbl *pTVar1;
@@ -149,7 +148,7 @@ void __thiscall TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPict
     (*pTVar1[0x1c].slot_0x04)();
   }
   local_4 = 0xffffffff;
-  CString::~CString((CString *)&stack0x00000004);
+  CString::~CString((CString *)&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

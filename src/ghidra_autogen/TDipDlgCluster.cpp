@@ -57,15 +57,14 @@ TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584110
 // GHIDRA_NAME TDipDlgCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDipDlgCluster * __thiscall TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this)
+TDipDlgCluster * __thiscall
+TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -65,16 +65,14 @@ void __thiscall TTacticalPlayer::OrphanRetStub_0059ae10(TTacticalPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE30
 // GHIDRA_NAME TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(byte param_1)
 
 TTacticalPlayer * __thiscall
-TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *this)
+TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTTacticalPlayerInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -131,27 +129,26 @@ TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(TTactica
 
 {
   TAutoGreatPower *this_00;
-  int iVar1;
+  int *piVar1;
+  int in_stack_00000004;
   
   this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
-  iVar1 = TAutoGreatPower::Find(this_00);
-  if (iVar1 != 0) {
-    TAutoGreatPower::RemoveAt_60217d(this_00);
+  piVar1 = (int *)TAutoGreatPower::Find(this_00,in_stack_00000004,(undefined4 *)0x0);
+  if (piVar1 != (int *)0x0) {
+    TAutoGreatPower::RemoveAt_60217d(this_00,piVar1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AFE0
 // GHIDRA_NAME TTacticalPlayer::WrapperFor_AddHead_At0059afe0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(int * param_1)
 
-void __thiscall TTacticalPlayer::WrapperFor_AddHead_At0059afe0(TTacticalPlayer *this)
+void __thiscall TTacticalPlayer::WrapperFor_AddHead_At0059afe0(TTacticalPlayer *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
-  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4));
-  (**(code **)(*in_stack_00000004 + 0x3c))();
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);
+  (**(code **)(*param_1 + 0x3c))();
   return;
 }
 

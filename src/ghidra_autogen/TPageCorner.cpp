@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004302D0
 // GHIDRA_NAME TPageCorner::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *this)
+TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -75,24 +73,27 @@ CRuntimeClass * __thiscall TPageCorner::GetTEventHandlerClassNamePointer(TPageCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F850
 // GHIDRA_NAME TPageCorner::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-uint __thiscall TPageCorner::SetForeignMinisterReadyFlag14(TPageCorner *this)
+uint __thiscall
+TPageCorner::SetForeignMinisterReadyFlag14
+          (TPageCorner *this,int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   uint uVar1;
-  int *in_stack_00000004;
   
   if (this->controlTag == 0x6c636f72) {
-    if (*in_stack_00000004 < in_stack_00000004[1]) {
-      uVar1 = TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+    if (*param_1 < param_1[1]) {
+      uVar1 = TView::thunk_DispatchUiMouseMoveToChildren
+                        ((TView *)this,param_1,param_2,param_3,param_4);
       return uVar1;
     }
   }
-  else if (this->field38 - in_stack_00000004[1] < *in_stack_00000004) {
-    uVar1 = TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+  else if (this->field38 - param_1[1] < *param_1) {
+    uVar1 = TView::thunk_DispatchUiMouseMoveToChildren
+                      ((TView *)this,param_1,param_2,param_3,param_4);
     return uVar1;
   }
-  return (uint)in_stack_00000004 & 0xffffff00;
+  return (uint)param_1 & 0xffffff00;
 }
 

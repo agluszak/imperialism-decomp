@@ -105,7 +105,7 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
   this_00 = (TLoadSavePicture *)CONCAT31(extraout_var_02,uVar4);
   pTVar3 = this_00->vftable;
   (*pTVar3[1].slot_0x04)();
-  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00);
+  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,0);
   *(char **)&this_00->field_0x64 = CStack_30.m_pchData;
   (*pTVar3[0x1c].slot_0x04)();
   puStack_44._0_1_ = 2;
@@ -132,15 +132,13 @@ CRuntimeClass * __thiscall TTask::GetTTaskClassNamePointer(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBB0
 // GHIDRA_NAME TTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
 
-TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this)
+TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTaskAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -170,16 +168,15 @@ bool __thiscall TTask::OrphanLeaf_NoCall_Ins04_005adc30(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC50
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int * param_1)
 
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *this)
+void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   return;
@@ -187,16 +184,15 @@ void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC90
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int * param_1)
 
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *this)
+void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   return;

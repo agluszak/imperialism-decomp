@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A54D0
 // GHIDRA_NAME TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte param_1)
 
 TNavyBattle * __thiscall
-TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this)
+TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTNavyBattleInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -201,9 +199,10 @@ LAB_005a58fd:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A59F0
 // GHIDRA_NAME TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
-// GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(void)
+// GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
-void __thiscall TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this)
+void __thiscall
+TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this,int param_1)
 
 {
   int iVar1;
@@ -213,13 +212,12 @@ void __thiscall TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNa
   short *psVar5;
   int *piVar6;
   short *psVar7;
-  int in_stack_00000004;
   int local_28;
   int local_24;
   int local_1c;
   int local_18 [6];
   
-  iVar1 = *(int *)(in_stack_00000004 + 0x28);
+  iVar1 = *(int *)(param_1 + 0x28);
   iVar4 = 0;
   psVar2 = *(short **)&this->field_0x24;
   psVar5 = psVar2;
@@ -230,7 +228,7 @@ void __thiscall TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNa
       psVar5 = psVar5 + 1;
     } while (iVar4 < *(int *)&this->field_0x3c);
   }
-  psVar2[*(int *)(in_stack_00000004 + 8)] = 0;
+  psVar2[*(int *)(param_1 + 8)] = 0;
   local_1c = 0;
   if (-1 < iVar1) {
     do {
@@ -246,7 +244,7 @@ void __thiscall TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNa
             do {
               iVar4 = *piVar6;
               if ((iVar4 != -1) && (*(int *)(*(int *)&this->field_0x4 + 4 + iVar4 * 0x14) == 0)) {
-                if (*(int *)(in_stack_00000004 + 0xc) < 2) {
+                if (*(int *)(param_1 + 0xc) < 2) {
                   sVar3 = *psVar5 + *psVar7;
                 }
                 else {
@@ -318,21 +316,20 @@ TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TNavyBatt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5C50
 // GHIDRA_NAME TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
-// GHIDRA_PROTO undefined __thiscall MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(void)
+// GHIDRA_PROTO undefined __thiscall MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1, undefined4 param_2)
 
 void __thiscall
-TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(TNavyBattle *this)
+TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
+          (TNavyBattle *this,int param_1,undefined4 param_2)
 
 {
   short sVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
-  undefined4 in_stack_00000008;
   int aiStack_18 [6];
   
-  thunk_MoveTacticalUnitTowardTile(in_stack_00000004,in_stack_00000008);
-  if (*(char *)(in_stack_00000004 + 0x18) == '\0') {
+  thunk_MoveTacticalUnitTowardTile(param_1,param_2);
+  if (*(char *)(param_1 + 0x18) == '\0') {
     thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
     iVar3 = 0;
     piVar2 = aiStack_18;
@@ -347,7 +344,7 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(TNavyB
       }
     }
   }
-  if ((*(int *)(in_stack_00000004 + 0x1c) != 0) || (*(int *)&this->field_0x44 != 0)) {
+  if ((*(int *)(param_1 + 0x1c) != 0) || (*(int *)&this->field_0x44 != 0)) {
     TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   }
   return;

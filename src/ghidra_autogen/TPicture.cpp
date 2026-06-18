@@ -15,15 +15,13 @@ CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F050
 // GHIDRA_NAME TPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this)
+TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -100,7 +98,7 @@ void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(TPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F570
 // GHIDRA_NAME TPicture::SetPictureResourceIdAndRefresh
-// GHIDRA_PROTO void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
+// GHIDRA_PROTO void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow, undefined2 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
 // GHIDRA_COMMENT_END
@@ -108,7 +106,8 @@ void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(TPicture *this)
 /* Setting prototype: void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) */
 
 void __thiscall
-TPicture::SetPictureResourceIdAndRefresh(TPicture *this,short nPictureId,bool fRefreshNow)
+TPicture::SetPictureResourceIdAndRefresh
+          (TPicture *this,short nPictureId,bool fRefreshNow,undefined2 param_3)
 
 {
   TPictureVtbl *pTVar1;

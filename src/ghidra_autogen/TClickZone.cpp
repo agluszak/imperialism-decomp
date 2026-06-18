@@ -75,15 +75,13 @@ TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZon
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572440
 // GHIDRA_NAME TClickZone::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this)
+TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -99,8 +97,8 @@ void __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this)
   undefined4 in_EDX;
   
   (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x84),0,1);
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x84),0);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
   return;
 }
 

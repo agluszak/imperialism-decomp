@@ -19,16 +19,14 @@ TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d7
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D7A0
 // GHIDRA_NAME TTerrainHelpPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTerrainHelpPicture * __thiscall
-TTerrainHelpPicture::_scalar_deleting_destructor_(TTerrainHelpPicture *this)
+TTerrainHelpPicture::_scalar_deleting_destructor_(TTerrainHelpPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -620,21 +618,19 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005059D0
 // GHIDRA_NAME TTerrainHelpPicture::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this)
+void __thiscall
+TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this,int param_1,int param_2)
 
 {
   undefined2 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
-  if (((in_stack_00000004 == 0xd) && (0x69303060 < *(uint *)(in_stack_00000008 + 0x1c))) &&
-     (*(uint *)(in_stack_00000008 + 0x1c) < 0x6930306d)) {
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  if (((param_1 == 0xd) && (0x69303060 < *(uint *)(param_2 + 0x1c))) &&
+     (*(uint *)(param_2 + 0x1c) < 0x6930306d)) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-    (*this->vftable[0x39].slot_0x04)
-              (CONCAT22(extraout_var,*(short *)(in_stack_00000008 + 0x1c) + -0x3061));
+    (*this->vftable[0x39].slot_0x04)(CONCAT22(extraout_var,*(short *)(param_2 + 0x1c) + -0x3061));
   }
   return;
 }

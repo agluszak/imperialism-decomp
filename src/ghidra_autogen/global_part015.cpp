@@ -425,7 +425,7 @@ CCmdTarget * CDocTemplate(void)
         DAT_006a6124 = (CPtrList *)0x0;
       }
       else {
-        DAT_006a6124 = (CPtrList *)TGreatPower::CPtrList(this);
+        DAT_006a6124 = (CPtrList *)TGreatPower::CPtrList(this,10);
       }
       *(undefined1 *)(unaff_EBP + -4) = 1;
     }
@@ -441,7 +441,7 @@ CCmdTarget * CDocTemplate(void)
       }
       *(undefined1 *)(unaff_EBP + -4) = 1;
     }
-    CPtrList::AddTail(DAT_006a6124);
+    CPtrList::AddTail(DAT_006a6124,this_00);
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return this_00;
@@ -574,20 +574,18 @@ void __fastcall DestructCViewAndResetVtable_0067358c(undefined4 *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614EBF
 // GHIDRA_NAME OnPrepareDC_614ebf
-// GHIDRA_PROTO undefined __thiscall OnPrepareDC_614ebf(void)
+// GHIDRA_PROTO undefined __thiscall OnPrepareDC_614ebf(int * param_1, undefined4 param_2)
 
-void __thiscall OnPrepareDC_614ebf(void *this)
+void __thiscall OnPrepareDC_614ebf(void *this,int *param_1,undefined4 param_2)
 
 {
   int iVar1;
   int *piVar2;
-  int *in_stack_00000004;
-  undefined4 in_stack_00000008;
   tagRECT local_1c;
   int local_c;
   int local_8;
   
-  iVar1 = *in_stack_00000004;
+  iVar1 = *param_1;
   if (*(int *)((int)this + 0x40) == -1) {
     (**(code **)(iVar1 + 0x3c))(8);
     (**(code **)(iVar1 + 0x50))
@@ -600,8 +598,8 @@ void __thiscall OnPrepareDC_614ebf(void *this)
   }
   local_c = 0;
   local_8 = 0;
-  if (in_stack_00000004[3] == 0) {
-    piVar2 = (int *)TControl::GetDeviceScrollPosition(this);
+  if (param_1[3] == 0) {
+    piVar2 = (int *)TControl::GetDeviceScrollPosition(this,&local_1c.right);
     local_c = -*piVar2;
     local_8 = -piVar2[1];
     if (*(int *)((int)this + 100) != 0) {
@@ -615,7 +613,7 @@ void __thiscall OnPrepareDC_614ebf(void *this)
     }
   }
   (**(code **)(iVar1 + 0x40))(&local_1c.right,local_c,local_8);
-  FUN_0061416e(in_stack_00000004,in_stack_00000008);
+  FUN_0061416e(param_1,param_2);
   return;
 }
 
@@ -1649,7 +1647,7 @@ void DDX_Control(int param_1,undefined4 param_2,CWnd *param_3)
       iVar2 = *(int *)(param_1 + 4);
       pHVar3 = GetParent(param_3->m_hWnd);
       if (*(HWND *)(iVar2 + 0x1c) != pHVar3) {
-        CWnd::AttachControlSite_607673(param_3);
+        CWnd::AttachControlSite_607673(param_3,iVar2);
       }
     }
   }
@@ -2404,7 +2402,7 @@ void __thiscall FlushPendingOrAppendDocTemplate(int *param_1,int *param_2)
   }
   else {
     (**(code **)(*param_2 + 0x58))();
-    CPtrList::AddTail((CPtrList *)(param_1 + 1));
+    CPtrList::AddTail((CPtrList *)(param_1 + 1),param_2);
   }
   return;
 }
@@ -2565,7 +2563,7 @@ undefined4 OnDDECommand(void)
 LAB_0061a3e4:
     CString::~CString((CString *)(unaff_EBP + -0x14));
 LAB_0061a456:
-    iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8));
+    iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
     if (iVar2 != -1) {
       pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x14,iVar2);
       *(undefined1 *)(unaff_EBP + -4) = 5;
@@ -2602,7 +2600,7 @@ LAB_0061a456:
           BVar5 = IsIconic(this->m_hWnd);
           iVar2 = (-(uint)(BVar5 != 0) & 4) + 5;
         }
-        CFrameWnd::ShowWindow(this);
+        CFrameWnd::ShowWindow(this,iVar2);
         if (iVar2 != 6) {
           SetForegroundWindow(this->m_hWnd);
         }
@@ -2626,7 +2624,7 @@ LAB_0061a456:
           CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
           *(undefined1 *)(unaff_EBP + -4) = 1;
           CString::~CString((CString *)(unaff_EBP + -0x18));
-          iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8));
+          iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
           if (iVar2 != -1) {
             pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
             *(undefined1 *)(unaff_EBP + -4) = 8;
@@ -2649,7 +2647,7 @@ LAB_0061a456:
               CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
               *(undefined1 *)(unaff_EBP + -4) = 1;
               CString::~CString((CString *)(unaff_EBP + -0x18));
-              iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8));
+              iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
               if (iVar2 != -1) {
                 pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
                 *(undefined1 *)(unaff_EBP + -4) = 0xb;
@@ -2674,7 +2672,7 @@ LAB_0061a456:
                   CString::AssignFromPtr((CString *)(unaff_EBP + 8),pCVar3);
                   *(undefined1 *)(unaff_EBP + -4) = 1;
                   CString::~CString((CString *)(unaff_EBP + -0x18));
-                  iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8));
+                  iVar2 = TMacViewMgr::Find_605e12((TMacViewMgr *)(unaff_EBP + 8),0x22);
                   if (iVar2 != -1) {
                     pCVar3 = (CString *)FUN_005fedad(unaff_EBP + -0x18,iVar2);
                     *(undefined1 *)(unaff_EBP + -4) = 0xe;
@@ -2783,7 +2781,7 @@ void OnFileNew_61a8dd(void)
   else {
     piVar2 = *(int **)(*(int *)(extraout_ECX + 8) + 8);
     if (1 < *(int *)(extraout_ECX + 0x10)) {
-      TControl::InitializeDialogTemplateFromId((TControl *)(unaff_EBP + -0x70));
+      TControl::InitializeDialogTemplateFromId((TControl *)(unaff_EBP + -0x70),0x7801,0);
       *(undefined4 *)(unaff_EBP + -0x10) = 0;
       *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
       *(int *)(unaff_EBP + -0x14) = extraout_ECX + 4;
@@ -3067,14 +3065,14 @@ LAB_0061c5ba:
 // GHIDRA_NAME AddFrameWnd
 // GHIDRA_PROTO undefined AddFrameWnd()
 
-void AddFrameWnd(void)
+void __fastcall AddFrameWnd(TMacViewMgrVtbl *param_1)
 
 {
   int iVar1;
   
   iVar1 = AfxGetModuleState();
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070));
-  TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(iVar1 + 8));
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070),CreateObject);
+  TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(iVar1 + 8),param_1);
   return;
 }
 
@@ -3088,7 +3086,7 @@ void __fastcall RemoveFrameWnd(undefined4 param_1)
   int iVar1;
   
   iVar1 = AfxGetModuleState();
-  TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070));
+  TMacViewMgr::GetData((TMacViewMgr *)(iVar1 + 0x1070),CreateObject);
   RemoveNodeFromOffsetLinkedList(param_1);
   return;
 }
@@ -4804,7 +4802,7 @@ void __thiscall SetRegistryKey_623099(TControl *param_1,undefined4 param_2)
   undefined1 local_104 [256];
   
   AfxLoadString(param_2,local_104,0x100);
-  TControl::SetRegistryKey(param_1);
+  TControl::SetRegistryKey(param_1,local_104);
   return;
 }
 
@@ -4866,7 +4864,7 @@ WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e(undefined4 param_1,by
 void AfxGetThreadState(void)
 
 {
-  TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   return;
 }
 
@@ -4903,11 +4901,11 @@ undefined4 * AFX_MODULE_THREAD_STATE(void)
   *(undefined4 *)(unaff_EBP + -4) = 0;
   extraout_ECX[2] = 0;
   extraout_ECX[3] = 0;
-  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0xc));
+  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0xc),(TNetMgrVtbl *)0xa);
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0x13));
+  TNetMgr::CMapPtrToPtr_ctor((TNetMgr *)(extraout_ECX + 0x13),(TNetMgrVtbl *)0xa);
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 0x1a));
+  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 0x1a),10);
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006236f6_00670c5c;
   extraout_ECX[3] = 0x54;
@@ -4987,7 +4985,7 @@ void AfxGetModuleState(void)
 {
   int iVar1;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   if (*(int *)(iVar1 + 4) == 0) {
     GetData_6240b8(AllocateMfcModuleStateNode_1074);
   }
@@ -5343,44 +5341,49 @@ LAB_00623d59:
 void __thiscall SetValue(DWORD *param_1,int param_2,int param_3)
 
 {
-  undefined4 *lpTlsValue;
-  HLOCAL pvVar1;
+  TMacViewMgrVtbl *lpTlsValue;
+  TMacViewMgr_slot_0x04_0x04 *pTVar1;
   
   lpTlsValue = TlsGetValue(*param_1);
-  if (lpTlsValue == (undefined4 *)0x0) {
+  if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
 LAB_00623e14:
-    lpTlsValue = (undefined4 *)WrapperFor_ThrowMfcResourceException_At00623baa(0x10);
-    if (lpTlsValue == (undefined4 *)0x0) {
-      lpTlsValue = (undefined4 *)0x0;
+    lpTlsValue = (TMacViewMgrVtbl *)WrapperFor_ThrowMfcResourceException_At00623baa(0x10);
+    if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
+      lpTlsValue = (TMacViewMgrVtbl *)0x0;
     }
     else {
-      *lpTlsValue = &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2_0067303c;
+      lpTlsValue->GetTMacViewMgrClassNamePointer =
+           (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)
+           &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2_0067303c;
     }
-    lpTlsValue[2] = 0;
-    lpTlsValue[3] = 0;
-    TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(param_1 + 5));
+    lpTlsValue[1].GetTMacViewMgrClassNamePointer =
+         (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)0x0;
+    lpTlsValue[1].slot_0x04 = (TMacViewMgr_slot_0x04_0x04 *)0x0;
+    TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(param_1 + 5),lpTlsValue);
   }
   else {
-    if ((param_2 < (int)lpTlsValue[2]) || (param_3 == 0)) goto LAB_00623e9e;
-    if (lpTlsValue == (undefined4 *)0x0) goto LAB_00623e14;
+    if ((param_2 < (int)lpTlsValue[1].GetTMacViewMgrClassNamePointer) || (param_3 == 0))
+    goto LAB_00623e9e;
+    if (lpTlsValue == (TMacViewMgrVtbl *)0x0) goto LAB_00623e14;
   }
-  if ((HLOCAL)lpTlsValue[3] == (HLOCAL)0x0) {
-    pvVar1 = LocalAlloc(0,param_1[3] << 2);
+  if (lpTlsValue[1].slot_0x04 == (TMacViewMgr_slot_0x04_0x04 *)0x0) {
+    pTVar1 = LocalAlloc(0,param_1[3] << 2);
   }
   else {
-    pvVar1 = LocalReAlloc((HLOCAL)lpTlsValue[3],param_1[3] << 2,2);
+    pTVar1 = LocalReAlloc(lpTlsValue[1].slot_0x04,param_1[3] << 2,2);
   }
-  lpTlsValue[3] = pvVar1;
-  if (pvVar1 == (HLOCAL)0x0) {
+  lpTlsValue[1].slot_0x04 = pTVar1;
+  if (pTVar1 == (TMacViewMgr_slot_0x04_0x04 *)0x0) {
     AfxThrowMemoryException();
   }
   CDocTemplate::memset
-            ((void *)(lpTlsValue[3] + lpTlsValue[2] * 4),0,
-             (lpTlsValue[2] * 0x3fffffff + param_1[3]) * 4);
-  lpTlsValue[2] = param_1[3];
+            (lpTlsValue[1].slot_0x04 + (int)lpTlsValue[1].GetTMacViewMgrClassNamePointer * 4,0,
+             ((int)lpTlsValue[1].GetTMacViewMgrClassNamePointer * 0x3fffffff + param_1[3]) * 4);
+  lpTlsValue[1].GetTMacViewMgrClassNamePointer =
+       (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)param_1[3];
   TlsSetValue(*param_1,lpTlsValue);
 LAB_00623e9e:
-  *(int *)(lpTlsValue[3] + param_2 * 4) = param_3;
+  *(int *)(lpTlsValue[1].slot_0x04 + param_2 * 4) = param_3;
   return;
 }
 
@@ -5889,7 +5892,7 @@ undefined4 * CDocManager(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 1));
+  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 1),10);
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_LAB_0067326c;
   *unaff_FS_OFFSET = uVar1;

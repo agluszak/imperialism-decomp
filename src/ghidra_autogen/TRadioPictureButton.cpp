@@ -69,16 +69,14 @@ TRadioPictureButton * __thiscall TRadioPictureButton::TRadioPictureButton(TRadio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571800
 // GHIDRA_NAME TRadioPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TRadioPictureButton * __thiscall
-TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this)
+TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -86,24 +84,23 @@ TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571850
 // GHIDRA_NAME TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
-TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TRadioPictureButton *this)
+TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TRadioPictureButton *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0xc) {
+  if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
     return;
   }
-  if (in_stack_00000004 != 0x1f) {
-    if (in_stack_00000004 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (param_1 != 0x1f) {
+    if (param_1 != 0x20) {
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,0);
@@ -115,20 +112,20 @@ TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TRadioPictureB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005718F0
 // GHIDRA_NAME TRadioPictureButton::OrphanCallChain_C2_I16_005718f0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_005718f0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_005718f0(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TRadioPictureButton::OrphanCallChain_C2_I16_005718f0(TRadioPictureButton *this)
+void __thiscall
+TRadioPictureButton::OrphanCallChain_C2_I16_005718f0
+          (TRadioPictureButton *this,undefined4 param_1,undefined4 param_2)
 
 {
   TRadioPictureButtonVtbl *pTVar1;
   char cVar2;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,in_stack_00000008);
+    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
   }
   return;
 }

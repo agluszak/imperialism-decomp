@@ -59,16 +59,14 @@ TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586040
 // GHIDRA_NAME TUnitToolbarCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TUnitToolbarCluster * __thiscall
-TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this)
+TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,23 +74,20 @@ TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
 // GHIDRA_NAME TUnitToolbarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TUnitToolbarCluster::OrphanRetStub_0059add0(TUnitToolbarCluster *this)
+void __thiscall
+TUnitToolbarCluster::OrphanRetStub_0059add0
+          (TUnitToolbarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
-  if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (in_stack_00000004 == 0x68))
-      || (in_stack_00000004 == 0x67)) || ((in_stack_00000004 == 10 || (in_stack_00000004 == 0xc))))
-  {
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (param_1 == 0x68)) ||
+      (param_1 == 0x67)) || ((param_1 == 10 || (param_1 == 0xc)))) {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x6d61696e);
     if (piVar2 == (int *)0x0) {
@@ -100,7 +95,7 @@ void __thiscall TUnitToolbarCluster::OrphanRetStub_0059add0(TUnitToolbarCluster 
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x57b);
     }
-    (**(code **)(*piVar2 + 0x3c))();
+    (**(code **)(*piVar2 + 0x3c))(param_1,param_2,param_3);
   }
   return;
 }
@@ -118,9 +113,10 @@ TUnitToolbarCluster::OrphanVtableAssignStub_005714e0(TUnitToolbarCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586170
 // GHIDRA_NAME TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void __thiscall TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this)
+void __thiscall
+TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this,int param_1)
 
 {
   undefined uVar1;
@@ -128,14 +124,13 @@ void __thiscall TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolba
   int iVar3;
   undefined3 extraout_var;
   int *piVar4;
-  int in_stack_00000004;
   
   InitializeSelectableTextOptionEntryIteratorContext(this);
   piVar4 = (int *)0x0;
   piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
   iVar3 = IsSelectableTextOptionEntryIteratorValid();
   while (iVar3 != 0) {
-    if (piVar2[7] == in_stack_00000004) {
+    if (piVar2[7] == param_1) {
       (**(code **)(*piVar2 + 0x3c))(0x1f,this,0);
       piVar4 = piVar2;
     }
@@ -145,7 +140,7 @@ void __thiscall TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolba
     piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
     iVar3 = IsSelectableTextOptionEntryIteratorValid();
   }
-  *(int *)&this->field_0x84 = in_stack_00000004;
+  *(int *)&this->field_0x84 = param_1;
   if (piVar4 != (int *)0x0) {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444c4f47);

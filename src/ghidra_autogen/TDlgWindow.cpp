@@ -63,20 +63,18 @@ TDlgWindow * __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500350
 // GHIDRA_NAME TDlgWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Destructor wrapper for static-backdrop turn-event window entry.
 // GHIDRA_COMMENT_END
 
 /* Destructor wrapper for static-backdrop turn-event window entry. */
 
-TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *this)
+TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

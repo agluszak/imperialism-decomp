@@ -60,15 +60,14 @@ TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC3F0
 // GHIDRA_NAME TPurchaseCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPurchaseCluster * __thiscall TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this)
+TPurchaseCluster * __thiscall
+TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,17 +75,15 @@ TPurchaseCluster * __thiscall TPurchaseCluster::_scalar_deleting_destructor_(TPu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC440
 // GHIDRA_NAME TPurchaseCluster::OrphanCallChain_C1_I08_004cc440
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_004cc440(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_004cc440(int param_1)
 
-void __thiscall TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(TPurchaseCluster *this)
+void __thiscall
+TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(TPurchaseCluster *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(int *)&this->field_0x88 = in_stack_00000004;
+  *(int *)&this->field_0x88 = param_1;
   (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_stack_00000004 >> 0x10),
-                      *(undefined2 *)(in_stack_00000004 + 4)),1);
+            (CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)(param_1 + 4)),1);
   return;
 }
 
@@ -102,9 +99,11 @@ void __thiscall TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC490
 // GHIDRA_NAME TPurchaseCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TPurchaseCluster::OrphanRetStub_0059add0(TPurchaseCluster *this)
+void __thiscall
+TPurchaseCluster::OrphanRetStub_0059add0
+          (TPurchaseCluster *this,int param_1,void *param_2,int param_3)
 
 {
   undefined uVar1;
@@ -114,19 +113,16 @@ void __thiscall TPurchaseCluster::OrphanRetStub_0059add0(TPurchaseCluster *this)
   undefined2 extraout_var_01;
   int iVar3;
   TPurchaseClusterVtbl *pTVar4;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)((int)in_stack_00000008 + 0x1c) == 0x6c61726f) {
+  if (param_1 == 10) {
+    if (*(int *)((int)param_2 + 0x1c) == 0x6c61726f) {
       pTVar4 = this->vftable;
       iVar3 = **(int **)&this->field_0x88;
       uVar1 = (*pTVar4[0x3a].slot_0x04)();
       iVar2 = CONCAT31(extraout_var,uVar1) + -1;
     }
     else {
-      if (*(int *)((int)in_stack_00000008 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
+      if (*(int *)((int)param_2 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
       pTVar4 = this->vftable;
       iVar3 = **(int **)&this->field_0x88;
       uVar1 = (*pTVar4[0x3a].slot_0x04)();
@@ -137,8 +133,7 @@ void __thiscall TPurchaseCluster::OrphanRetStub_0059add0(TPurchaseCluster *this)
               (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   }
 LAB_004cc4fb:
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 

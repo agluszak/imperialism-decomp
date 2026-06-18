@@ -34,15 +34,14 @@ void __thiscall TCreditsPicture::OrphanRetStub_0043d9f0(TCreditsPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DAD0
 // GHIDRA_NAME TCreditsPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCreditsPicture * __thiscall TCreditsPicture::_scalar_deleting_destructor_(TCreditsPicture *this)
+TCreditsPicture * __thiscall
+TCreditsPicture::_scalar_deleting_destructor_(TCreditsPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -146,9 +145,11 @@ void __thiscall TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TCreditsPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EFC0
 // GHIDRA_NAME TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, TCreditsPicture * param_2)
 
-void __thiscall TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCreditsPicture *this)
+void __thiscall
+TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TCreditsPicture *this,int param_1,TCreditsPicture *param_2)
 
 {
   TCreditsPicture_slot_0x04_0x04 *pTVar1;
@@ -157,8 +158,6 @@ void __thiscall TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TC
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int unaff_EDI;
-  int in_stack_00000004;
-  TCreditsPicture *in_stack_00000008;
   int *piStack_24;
   int iStack_10;
   undefined1 auStack_c [6];
@@ -168,7 +167,7 @@ void __thiscall TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TC
   undefined1 uStack_3;
   int *piVar4;
   
-  if ((in_stack_00000004 == 10) && (in_stack_00000008 == this)) {
+  if ((param_1 == 10) && (param_2 == this)) {
     if (DAT_006a4084 == 0) {
       piStack_24 = &iStack_10;
       DAT_006a4084 = 1;
@@ -213,7 +212,7 @@ void __thiscall TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TC
       thunk_SelectAndScheduleRandomAudioCue();
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

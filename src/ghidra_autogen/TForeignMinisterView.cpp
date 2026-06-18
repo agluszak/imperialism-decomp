@@ -60,16 +60,14 @@ TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3000
 // GHIDRA_NAME TForeignMinisterView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TForeignMinisterView * __thiscall
-TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this)
+TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -77,20 +75,20 @@ TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3050
 // GHIDRA_NAME TForeignMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TForeignMinisterView::OrphanRetStub_0059add0(TForeignMinisterView *this)
+void __thiscall
+TForeignMinisterView::OrphanRetStub_0059add0
+          (TForeignMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   uint uVar1;
   TForeignMinisterViewVtbl *pTVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
-  if (in_stack_00000004 == 0x14) {
+  uVar1 = *(uint *)(param_2 + 0x1c);
+  if (param_1 == 0x14) {
     if (uVar1 < 0x65787070) {
       if (uVar1 == 0x6578706f) {
         (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x2300);
@@ -120,13 +118,13 @@ void __thiscall TForeignMinisterView::OrphanRetStub_0059add0(TForeignMinisterVie
     }
     return;
   }
-  if (in_stack_00000004 != 10) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  if (param_1 != 10) {
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
     return;
   }
   if (uVar1 != 0x6261636b) {
     if (uVar1 != 0x6f6b6179) {
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,10,param_2,param_3);
       return;
     }
     pTVar2 = this->vftable;

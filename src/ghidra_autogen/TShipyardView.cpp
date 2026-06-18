@@ -88,15 +88,14 @@ TShipyardView * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82F0
 // GHIDRA_NAME TShipyardView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardView * __thiscall TShipyardView::_scalar_deleting_destructor_(TShipyardView *this)
+TShipyardView * __thiscall
+TShipyardView::_scalar_deleting_destructor_(TShipyardView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -341,9 +340,9 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fb0(TShipyardView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8AC0
 // GHIDRA_NAME TShipyardView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this)
+void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this,int param_1,int param_2)
 
 {
   TShipyardViewVtbl *pTVar1;
@@ -359,23 +358,21 @@ void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this)
   undefined2 extraout_var_00;
   undefined2 uVar10;
   code *unaff_ESI;
-  int in_stack_00000004;
-  int in_stack_00000008;
   code *apcStack_20 [3];
   TShipyardView_GetTEventHandlerClassNamePointer_0x00 *pTStack_14;
   int iStack_4;
   
   uVar10 = (undefined2)((uint)this >> 0x10);
-  if (in_stack_00000004 == 0xc) {
-    sVar6 = *(short *)(in_stack_00000008 + 0x1c) + -0x7430;
+  if (param_1 == 0xc) {
+    sVar6 = *(short *)(param_2 + 0x1c) + -0x7430;
     if ((-1 < sVar6) && (sVar6 < 8)) {
       *(short *)&this->field_0xa0 = sVar6;
       (*this->vftable[0x3e].GetTEventHandlerClassNamePointer)
                 (CONCAT22(uVar10,*(undefined2 *)(&this->field_0xa4 + sVar6 * 2)));
     }
   }
-  else if (((in_stack_00000004 == 10) &&
-           (sVar6 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000, -1 < sVar6)) &&
+  else if (((param_1 == 10) &&
+           (sVar6 = *(short *)(*(int *)(param_2 + 0x20) + 0x1c) + -30000, -1 < sVar6)) &&
           (sVar6 < 8)) {
     pTVar1 = this->vftable;
     *(short *)&this->field_0xa0 = sVar6;
@@ -423,7 +420,7 @@ void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this)
                             *(undefined2 *)(&this->field_0xa4 + *(short *)&this->field_0xa0 * 2)));
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
@@ -618,15 +615,15 @@ switchD_004c9540_default:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C97C0
 // GHIDRA_NAME TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
-// GHIDRA_PROTO undefined __thiscall BuildIndustryActionCostSummaryTextByActionIndex(void)
+// GHIDRA_PROTO undefined __thiscall BuildIndustryActionCostSummaryTextByActionIndex(CString * param_1, short param_2)
 
-void __thiscall TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex(TShipyardView *this)
+void __thiscall
+TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
+          (TShipyardView *this,CString *param_1,short param_2)
 
 {
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
-  CString *in_stack_00000004;
-  short in_stack_00000008;
   CString local_1c;
   CString local_18;
   CString local_14;
@@ -647,17 +644,17 @@ void __thiscall TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex(T
   local_4._0_1_ = 2;
   CString::CString(&local_10,PTR_g_szEmptyString_00651028);
   local_4._0_1_ = 3;
-  CString::AssignFromPtr(in_stack_00000004,&local_10);
+  CString::AssignFromPtr(param_1,&local_10);
   local_4 = CONCAT31(local_4._1_3_,2);
   CString::~CString(&local_10);
-  iVar1 = in_stack_00000008 * 2;
+  iVar1 = param_2 * 2;
   if (*(short *)(&g_industryActionCostWeightResCode09 + iVar1) != 0) {
     FormatStringWithVarArgsToSharedRef
               (&local_14,&g_szDecimalFormat,
                (int)*(short *)(&g_industryActionCostWeightResCode09 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(9,&local_18);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,&stack0xffffffdc);
-    scanBracketExpressions(g_pLocalizationTable,in_stack_00000004,local_1c.m_pchData);
+    scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   if (*(short *)(&g_industryActionCostWeightResCode08 + iVar1) != 0) {
     FormatStringWithVarArgsToSharedRef
@@ -665,7 +662,7 @@ void __thiscall TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex(T
                (int)*(short *)(&g_industryActionCostWeightResCode08 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(8,&local_18);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,&stack0xffffffdc);
-    scanBracketExpressions(g_pLocalizationTable,in_stack_00000004,local_1c.m_pchData);
+    scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   if (*(short *)(&g_industryActionCostWeightResCode10 + iVar1) != 0) {
     FormatStringWithVarArgsToSharedRef
@@ -673,7 +670,7 @@ void __thiscall TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex(T
                (int)*(short *)(&g_industryActionCostWeightResCode10 + iVar1));
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)(0x10,&local_18);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,&stack0xffffffdc);
-    scanBracketExpressions(g_pLocalizationTable,in_stack_00000004,local_1c.m_pchData);
+    scanBracketExpressions(g_pLocalizationTable,param_1,local_1c.m_pchData);
   }
   local_4._0_1_ = 1;
   CString::~CString(&local_1c);
@@ -799,15 +796,14 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9D20
 // GHIDRA_NAME TShipyardView::OrphanCallChain_C1_I15_004c9d20
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I15_004c9d20(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I15_004c9d20(int param_1)
 
-void __thiscall TShipyardView::OrphanCallChain_C1_I15_004c9d20(TShipyardView *this)
+void __thiscall TShipyardView::OrphanCallChain_C1_I15_004c9d20(TShipyardView *this,int param_1)
 
 {
   ushort uVar1;
-  int in_stack_00000004;
   
-  uVar1 = *(byte *)(in_stack_00000004 + 0x1c) & 0xf;
+  uVar1 = *(byte *)(param_1 + 0x1c) & 0xf;
   if ((uVar1 != *(ushort *)&this->field_0xa2) &&
      (*(short *)(&this->field_0xa4 + (short)uVar1 * 2) != 0)) {
     *(ushort *)&this->field_0xa2 = uVar1;

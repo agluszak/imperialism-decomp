@@ -60,16 +60,14 @@ TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F36C0
 // GHIDRA_NAME TInteriorMinisterView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TInteriorMinisterView * __thiscall
-TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this)
+TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -77,9 +75,11 @@ TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3710
 // GHIDRA_NAME TInteriorMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TInteriorMinisterView::OrphanRetStub_0059add0(TInteriorMinisterView *this)
+void __thiscall
+TInteriorMinisterView::OrphanRetStub_0059add0
+          (TInteriorMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
@@ -87,11 +87,9 @@ void __thiscall TInteriorMinisterView::OrphanRetStub_0059add0(TInteriorMinisterV
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = *(int *)(in_stack_00000008 + 0x1c);
-  if (in_stack_00000004 == 0x14) {
+  iVar1 = *(int *)(param_2 + 0x1c);
+  if (param_1 == 0x14) {
     if (iVar1 == 0x72656363) {
       (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x25ee);
     }
@@ -108,8 +106,8 @@ void __thiscall TInteriorMinisterView::OrphanRetStub_0059add0(TInteriorMinisterV
     }
     return;
   }
-  if (in_stack_00000004 != 10) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  if (param_1 != 10) {
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
     return;
   }
   if (iVar1 == 0x6261636b) {
@@ -117,7 +115,7 @@ void __thiscall TInteriorMinisterView::OrphanRetStub_0059add0(TInteriorMinisterV
     return;
   }
   if (iVar1 != 0x6f6b6179) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,10,param_2,param_3);
     return;
   }
   pTVar2 = this->vftable;

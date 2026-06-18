@@ -60,16 +60,14 @@ TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5210
 // GHIDRA_NAME TPictureNumberText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TPictureNumberText * __thiscall
-TPictureNumberText::_scalar_deleting_destructor_(TPictureNumberText *this)
+TPictureNumberText::_scalar_deleting_destructor_(TPictureNumberText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTEditTextAndMaybeFree((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

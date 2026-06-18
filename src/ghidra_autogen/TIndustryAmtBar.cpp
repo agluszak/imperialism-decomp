@@ -64,15 +64,14 @@ TIndustryAmtBar * __thiscall TIndustryAmtBar::ConstructBaseState(TIndustryAmtBar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589210
 // GHIDRA_NAME TIndustryAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryAmtBar * __thiscall TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this)
+TIndustryAmtBar * __thiscall
+TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -186,15 +185,16 @@ TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TIndustryAmtBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589540
 // GHIDRA_NAME TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA
-// GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantA(void)
+// GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantA(undefined2 param_1)
 
-void __thiscall TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA(TIndustryAmtBar *this)
+void __thiscall
+TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA
+          (TIndustryAmtBar *this,undefined2 param_1)
 
 {
   TIndustryAmtBarVtbl *pTVar1;
   char cVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
   undefined4 local_28;
   int iStack_24;
   int iStack_20;
@@ -212,7 +212,7 @@ void __thiscall TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA(TIn
   *unaff_FS_OFFSET = &uStack_c;
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
-  *(undefined2 *)&this->field_0x62 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x62 = param_1;
   ApplyHitRegionToClipState(local_28);
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[0x1d].slot_0x04)();
@@ -237,9 +237,11 @@ void __thiscall TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA(TIn
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005899F0
 // GHIDRA_NAME TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
-// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromScaledDrag(void)
+// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromScaledDrag(short param_1, char param_2)
 
-void __thiscall TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag(TIndustryAmtBar *this)
+void __thiscall
+TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
+          (TIndustryAmtBar *this,short param_1,char param_2)
 
 {
   TIndustryAmtBar_slot_0x04_0x04 *pTVar1;
@@ -252,8 +254,6 @@ void __thiscall TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag(TIndustry
   code *pcVar8;
   int *piVar9;
   undefined4 uVar10;
-  short in_stack_00000004;
-  char in_stack_00000008;
   LONG LStack_58;
   undefined1 auStack_40 [12];
   LONG LStack_34;
@@ -265,14 +265,14 @@ void __thiscall TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag(TIndustry
   undefined3 extraout_var_00;
   
   sVar6 = *(short *)((int)&this[1].ownerContext + 2);
-  LStack_58 = (((int)sVar6 / 2 + (int)in_stack_00000004) / (int)sVar6) *
+  LStack_58 = (((int)sVar6 / 2 + (int)param_1) / (int)sVar6) *
               CONCAT22((short)((uint)this >> 0x10),sVar6);
   piVar7 = (int *)this[1].controlTag;
   iVar4 = piVar7[1];
   if (piVar7 != (int *)0x0) {
     (**(code **)(*piVar7 + 0x2c))();
   }
-  if ((in_stack_00000008 != '\0') || (*(short *)(this[1].controlTag + 4) != (short)iVar4)) {
+  if ((param_2 != '\0') || (*(short *)(this[1].controlTag + 4) != (short)iVar4)) {
     LStack_58 = 0x6d6f7665;
     pTVar1 = this->vftable[0x12].slot_0x04;
     uVar5 = (*pTVar1)();

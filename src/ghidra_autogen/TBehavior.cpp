@@ -61,15 +61,13 @@ void __thiscall TBehavior::ConstructTBehaviorBaseState(TBehavior *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487210
 // GHIDRA_NAME TBehavior::DestructTBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTBehaviorAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTBehaviorAndMaybeFree(byte param_1)
 
-TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this)
+TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTBehaviorAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -77,14 +75,13 @@ TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487280
 // GHIDRA_NAME TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_8_00487280(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_8_00487280(undefined4 param_1)
 
-void __thiscall TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(TBehavior *this)
+void __thiscall
+TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(TBehavior *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x8 = param_1;
   return;
 }
 

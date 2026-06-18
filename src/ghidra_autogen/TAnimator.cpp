@@ -62,15 +62,13 @@ TAnimator * __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AD0
 // GHIDRA_NAME TAnimator::DestructTAnimatorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTAnimatorAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTAnimatorAndMaybeFree(byte param_1)
 
-TAnimator * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this)
+TAnimator * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTAnimatorAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -90,18 +88,17 @@ void __thiscall TAnimator::OrphanCallChain_C2_I13_004a0c00(TAnimator *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0C30
 // GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this)
+uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int param_1)
 
 {
   char cVar1;
   uint in_EAX;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 1) {
+  if (param_1 == 1) {
     if ((*(int **)&this->field_0x2c != (int *)0x0) &&
        (cVar1 = (**(code **)(**(int **)&this->field_0x2c + 0x1ec))(), cVar1 != '\0')) {
       iVar3 = *(int *)&this->field_0x28 + 1;
@@ -142,16 +139,15 @@ void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimato
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0E10
 // GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
+void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this,int *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  int *in_stack_00000004;
   
-  iVar1 = *in_stack_00000004;
+  iVar1 = *param_1;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x10 = 0x7fffffff;
   uVar2 = (**(code **)(iVar1 + 0x50))();
@@ -162,14 +158,12 @@ void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0E50
 // GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this)
+void __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
-  (**(code **)(*in_stack_00000004 + 0x8c))(*(undefined4 *)&this->field_0x10);
+  (**(code **)(*param_1 + 0x8c))(*(undefined4 *)&this->field_0x10);
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
   return;
 }

@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435540
 // GHIDRA_NAME TDealTabControl::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealTabControl * __thiscall TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this)
+TDealTabControl * __thiscall
+TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -65,24 +64,23 @@ CRuntimeClass * __thiscall TDealTabControl::GetTEventHandlerClassNamePointer(TDe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC780
 // GHIDRA_NAME TDealTabControl::ConstructTDealTabControlBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(int param_1, char param_2)
 
-void __thiscall TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this)
+void __thiscall
+TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int param_1,char param_2)
 
 {
   undefined4 uVar1;
-  int in_stack_00000004;
-  char in_stack_00000008;
   
-  if (in_stack_00000008 == '\0') {
+  if (param_2 == '\0') {
     *(undefined2 *)&this->field_0x88 = 0xf;
   }
   else {
-    in_stack_00000004 = in_stack_00000004 + 1;
+    param_1 = param_1 + 1;
   }
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004);
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1);
   *(undefined4 *)&this->field_0x8c = uVar1;
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004 + 4);
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1 + 4);
   *(undefined4 *)&this->field_0x90 = uVar1;
   *(undefined2 *)&this->field_0x86 = 0x19;
   return;
@@ -152,9 +150,10 @@ void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabContro
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC9F0
 // GHIDRA_NAME TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
-void __thiscall TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *this)
+void __thiscall
+TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *this,int param_1)
 
 {
   TDealTabControlVtbl *pTVar1;

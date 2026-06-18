@@ -26,7 +26,7 @@ undefined4 * TaskList::CreateTaskListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TTaskListVtbl_0066aa48;
     puVar2 = puVar1;
   }
@@ -51,7 +51,7 @@ TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
   *unaff_FS_OFFSET = &local_c;
   *(undefined ***)this = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList((TGreatPower *)(this + 4));
+  TGreatPower::CPtrList((TGreatPower *)(this + 4),10);
   *(TTaskListVtbl **)this = &TTaskListVtbl_0066aa48;
   *unaff_FS_OFFSET = local_c;
   return this;

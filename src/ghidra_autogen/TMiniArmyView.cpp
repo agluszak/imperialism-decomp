@@ -15,15 +15,14 @@ void __thiscall TMiniArmyView::OrphanRetStub_004aad20(TMiniArmyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAD40
 // GHIDRA_NAME TMiniArmyView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniArmyView * __thiscall TMiniArmyView::_scalar_deleting_destructor_(TMiniArmyView *this)
+TMiniArmyView * __thiscall
+TMiniArmyView::_scalar_deleting_destructor_(TMiniArmyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -161,63 +160,48 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB1D0
 // GHIDRA_NAME TMiniArmyView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, CString param_2)
 
-void __thiscall TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this)
+void __thiscall
+TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this,int param_1,CString param_2)
 
 {
   int iVar1;
   TView *pTVar2;
-  char cVar3;
-  int *piVar4;
+  CString CVar3;
+  char cVar4;
+  int *piVar5;
   int *unaff_FS_OFFSET;
-  CString in_stack_00000008;
-  int in_stack_0000000c;
   TToolBarClusterVtbl *pTStack_30;
-  undefined *puStack_2c;
-  undefined4 uStack_28;
-  undefined4 *puStack_24;
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
   
+  CVar3.m_pchData = param_2.m_pchData;
   local_4 = -1;
   puStack_8 = &LAB_006305f8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  if (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x75706772) {
-    puStack_24 = (undefined4 *)0x4ab208;
-    cVar3 = ApplyEraCapabilityCostAndSetSelection();
-    if (cVar3 == '\0') {
-      puStack_24 = (undefined4 *)0x4ab276;
-      CString::CString(&stack0x00000008);
-      puStack_24 = &stack0x00000008.m_pchData;
-      uStack_28 = 3;
-      puStack_2c = (undefined *)0x2745;
+  if (*(int *)(param_2.m_pchData + 0x1c) == 0x75706772) {
+    cVar4 = ApplyEraCapabilityCostAndSetSelection();
+    if (cVar4 == '\0') {
+      CString::CString(&param_2);
       local_4 = 0;
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab298;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      puStack_24 = (undefined4 *)0x0;
-      uStack_28 = 2;
-      puStack_2c = &DAT_006a2318;
-      thunk_AssignStringSharedRefAndReturnThis(&stack0x00000008);
+      thunk_AssignStringSharedRefAndReturnThis(&param_2);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = -1;
-      puStack_24 = (undefined4 *)0x4ab2ce;
-      CString::~CString(&stack0x00000008);
+      CString::~CString(&param_2);
     }
     else {
-      puStack_24 = (undefined4 *)0x1;
-      uStack_28 = 0;
-      puStack_2c = (undefined *)0x4ab21a;
-      (**(code **)(*(int *)in_stack_00000008.m_pchData + 0xa4))();
+      (**(code **)(*(int *)CVar3.m_pchData + 0xa4))();
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                ((TToolBarCluster *)&pTStack_30);
+                ((TToolBarCluster *)&pTStack_30,PTR_g_szEmptyString_0064cb18);
       EnableAndProcessFlagWithSharedStringCleanup();
-      puStack_2c = (undefined *)0x74627231;
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab24b;
-      piVar4 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
-      iVar1 = *piVar4;
+      piVar5 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
+      iVar1 = *piVar5;
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab254;
       (**(code **)(iVar1 + 0xc))();
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab25f;
@@ -225,15 +209,13 @@ void __thiscall TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this)
       (**(code **)(iVar1 + 0x1d0))();
     }
   }
-  else if ((TMiniArmyView *)in_stack_00000008.m_pchData == this) {
+  else if ((TMiniArmyView *)param_2.m_pchData == this) {
     pTVar2 = this->ownerContext;
-    puStack_24 = (undefined4 *)0x4ab2de;
     (*pTVar2->vftable[1].slot_0x04)();
     *(undefined2 *)&pTVar2[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
-  puStack_24 = (undefined4 *)in_stack_0000000c;
   pTStack_30 = (TToolBarClusterVtbl *)0x4ab301;
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = iStack_c;
   return;
 }

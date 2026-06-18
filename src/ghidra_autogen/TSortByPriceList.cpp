@@ -28,15 +28,14 @@ TSortByPriceList * __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534740
 // GHIDRA_NAME TSortByPriceList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSortByPriceList * __thiscall TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this)
+TSortByPriceList * __thiscall
+TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ~TSortByPriceList();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -67,14 +66,12 @@ void TSortByPriceList::~TSortByPriceList(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005347B0
 // GHIDRA_NAME TSortByPriceList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-int __thiscall TSortByPriceList::OrphanRetStub_0059add0(TSortByPriceList *this)
+int __thiscall
+TSortByPriceList::OrphanRetStub_0059add0(TSortByPriceList *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  return ((*(short *)(in_stack_00000004 + 2) <= *(short *)(in_stack_00000008 + 2)) - 1 & 2) - 1;
+  return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 2) - 1;
 }
 

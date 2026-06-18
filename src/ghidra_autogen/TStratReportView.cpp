@@ -63,15 +63,14 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3F0
 // GHIDRA_NAME TStratReportView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStratReportView * __thiscall TStratReportView::_scalar_deleting_destructor_(TStratReportView *this)
+TStratReportView * __thiscall
+TStratReportView::_scalar_deleting_destructor_(TStratReportView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,14 +78,14 @@ TStratReportView * __thiscall TStratReportView::_scalar_deleting_destructor_(TSt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E440
 // GHIDRA_NAME TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_60_0058e440(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_60_0058e440(undefined4 param_1)
 
-void __thiscall TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440(TStratReportView *this)
+void __thiscall
+TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
+          (TStratReportView *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x60 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x60 = param_1;
   return;
 }
 

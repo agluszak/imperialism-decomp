@@ -191,16 +191,14 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A80
 // GHIDRA_NAME TRemoteGreatPower::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TRemoteGreatPower * __thiscall
-TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this)
+TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTRemoteGreatPower(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

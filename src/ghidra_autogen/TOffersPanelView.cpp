@@ -32,15 +32,14 @@ TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8FA0
 // GHIDRA_NAME TOffersPanelView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOffersPanelView * __thiscall TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this)
+TOffersPanelView * __thiscall
+TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -185,29 +184,28 @@ void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelVi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9300
 // GHIDRA_NAME TOffersPanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TOffersPanelView::OrphanRetStub_0059add0(TOffersPanelView *this)
+void __thiscall
+TOffersPanelView::OrphanRetStub_0059add0
+          (TOffersPanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = *(int *)(in_stack_00000008 + 0x1c);
-  if (((in_stack_00000004 != 5) && (in_stack_00000004 == 10)) &&
-     ((iVar1 == 0x61636365 || (iVar1 == 0x72656a65)))) {
+  iVar1 = *(int *)(param_2 + 0x1c);
+  if (((param_1 != 5) && (param_1 == 10)) && ((iVar1 == 0x61636365 || (iVar1 == 0x72656a65)))) {
     *(int *)&this->field_0x64 = iVar1;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9350
 // GHIDRA_NAME TOffersPanelView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelView *this)
+void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelView *this,int param_1)
 
 {
   short sVar1;
@@ -215,10 +213,9 @@ void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelVie
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
-  int in_stack_00000004;
   int iVar3;
   
-  sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+  sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     uVar2 = (*this->vftable[0x12].slot_0x04)(0x61636365);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
@@ -243,21 +240,25 @@ void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9420
 // GHIDRA_NAME TOffersPanelView::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TOffersPanelView::InvalidateWindowRectFromHandleField1C(TOffersPanelView *this)
+void __thiscall
+TOffersPanelView::InvalidateWindowRectFromHandleField1C
+          (TOffersPanelView *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9450
 // GHIDRA_NAME TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
-// GHIDRA_PROTO undefined __thiscall RunDiplomacyNegotiationPopupAndAwaitResponse(void)
+// GHIDRA_PROTO undefined __thiscall RunDiplomacyNegotiationPopupAndAwaitResponse(short param_1, short param_2)
 
 undefined4 __thiscall
-TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView *this)
+TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
+          (TOffersPanelView *this,short param_1,short param_2)
 
 {
   bool bVar1;
@@ -278,8 +279,6 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView 
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short unaff_retaddr;
-  short in_stack_00000004;
-  short in_stack_00000008;
   CString CStack_54;
   CString CStack_28;
   CString CStack_24;
@@ -311,8 +310,8 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView 
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
   FormatOverlayTerrainLabelText();
   FormatOverlayTerrainLabelText();
-  *(short *)(*(int *)&this->field_0x60 + 0x98) = in_stack_00000004;
-  iVar6 = (int)in_stack_00000008;
+  *(short *)(*(int *)&this->field_0x60 + 0x98) = param_1;
+  iVar6 = (int)param_2;
   if (iVar6 < 0x29b) {
     if (iVar6 == 0x29a) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -327,7 +326,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView 
         iVar6 = 0;
         do {
           if (6 < iVar6) break;
-          if (((iVar6 != unaff_retaddr) && (iVar6 != in_stack_00000004)) &&
+          if (((iVar6 != unaff_retaddr) && (iVar6 != param_1)) &&
              ((cVar2 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(), cVar2 != '\0' &&
               (cVar2 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(), cVar2 == '\0')))) {
             bVar1 = true;
@@ -353,7 +352,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(TOffersPanelView 
         iVar6 = 0;
         do {
           if (6 < iVar6) break;
-          if ((((iVar6 != unaff_retaddr) && (iVar6 != in_stack_00000004)) &&
+          if ((((iVar6 != unaff_retaddr) && (iVar6 != param_1)) &&
               (uVar3 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer
                        )(), (short)CONCAT31(extraout_var,uVar3) == 2)) &&
              (cVar2 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(), cVar2 != '\0')) {

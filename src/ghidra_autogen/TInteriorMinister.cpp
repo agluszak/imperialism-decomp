@@ -5,26 +5,24 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE150
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined2 param_1)
 
-undefined2 __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this)
+undefined2 __thiscall
+TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  return in_stack_00000004;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE170
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined2 param_1)
 
-undefined2 __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this)
+undefined2 __thiscall
+TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  return in_stack_00000004;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE190
@@ -64,15 +62,14 @@ TInteriorMinister::ConstructTInteriorMinisterBaseState(TInteriorMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE200
 // GHIDRA_NAME TInteriorMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TInteriorMinister * __thiscall TInteriorMinister::DeletingDestructTMinister(TInteriorMinister *this)
+TInteriorMinister * __thiscall
+TInteriorMinister::DeletingDestructTMinister(TInteriorMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTInteriorMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -80,19 +77,19 @@ TInteriorMinister * __thiscall TInteriorMinister::DeletingDestructTMinister(TInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE290
 // GHIDRA_NAME TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this)
+void __thiscall
+TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  int *in_stack_00000004;
   
-  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this);
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
+  pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0x10,2);
   (*pcVar2)(&this->field_0x12,2);
   (*pcVar2)(&this->field_0x14,2);
@@ -112,9 +109,10 @@ void __thiscall TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE320
 // GHIDRA_NAME TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this)
+void __thiscall
+TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -123,16 +121,13 @@ void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInter
   undefined4 extraout_EDX_00;
   int iVar3;
   undefined2 *puVar4;
-  int *in_stack_00000004;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  undefined4 uStack_14;
   
   puStack_18 = (undefined1 *)0x4be330;
-  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this);
+  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_18 = &this->field_0x10;
-  uStack_14 = 2;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   uStack_1c = 0x4be33f;
   (*pcVar1)();
   uStack_1c = 2;
@@ -157,15 +152,14 @@ void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInter
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE3C0
 // GHIDRA_NAME TInteriorMinister::DispatchNationStateEventCode10
-// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
+// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-int __thiscall TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this)
+int __thiscall
+TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  if (g_apNationStates[in_stack_00000004] != (TGreatPower *)0x0) {
-    return (int)(short)g_apNationStates[in_stack_00000004]->needCapA6;
+  if (g_apNationStates[param_1] != (TGreatPower *)0x0) {
+    return (int)(short)g_apNationStates[param_1]->needCapA6;
   }
   return 0;
 }
@@ -290,10 +284,11 @@ void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C02C0
 // GHIDRA_NAME TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4
-// GHIDRA_PROTO undefined __thiscall UpdateDiplomatProgressFromProductionSlots2And4(void)
+// GHIDRA_PROTO undefined __thiscall UpdateDiplomatProgressFromProductionSlots2And4(void * param_1, int * param_2)
 
 void __thiscall
-TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4(TInteriorMinister *this)
+TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4
+          (TInteriorMinister *this,void *param_1,int *param_2)
 
 {
   short sVar1;
@@ -306,8 +301,6 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4(TInteriorMinis
   short sVar7;
   short sVar8;
   undefined4 *unaff_FS_OFFSET;
-  void *in_stack_00000004;
-  int *in_stack_00000008;
   short sVar9;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -318,8 +311,8 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4(TInteriorMinis
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   sVar7 = 1;
-  iVar4 = *(int *)(*(int *)((int)in_stack_00000004 + 0x1d8) + 0x10);
-  iVar5 = *in_stack_00000008;
+  iVar4 = *(int *)(*(int *)((int)param_1 + 0x1d8) + 0x10);
+  iVar5 = *param_2;
   sVar9 = *(short *)(iVar4 + 6);
   sVar1 = *(short *)(iVar4 + 4);
   sVar8 = *(short *)(iVar4 + 8);
@@ -375,8 +368,8 @@ TInteriorMinister::UpdateDiplomatProgressFromProductionSlots2And4(TInteriorMinis
     sVar9 = 0x17;
   }
   uStack_4 = 0xffffffff;
-  InitializeCityProductionQueueCommand(this_00,sVar9,in_stack_00000004,sVar8);
-  DispatchCityProductionQueueCommand(in_stack_00000008,this_00);
+  InitializeCityProductionQueueCommand(this_00,sVar9,param_1,sVar8);
+  DispatchCityProductionQueueCommand(param_2,this_00);
 LAB_004c0456:
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -384,9 +377,11 @@ LAB_004c0456:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C18A0
 // GHIDRA_NAME TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined2 param_1)
 
-void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this)
+void __thiscall
+TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
+          (TInteriorMinister *this,undefined2 param_1)
 
 {
   int iVar1;
@@ -394,7 +389,6 @@ void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInter
   uint uVar3;
   int iVar4;
   undefined4 uVar5;
-  undefined2 in_stack_00000004;
   uint local_4;
   
   uVar2 = *(uint *)&this->field_0xc;
@@ -419,22 +413,20 @@ void __thiscall TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInter
   if (*(uint *)&this->field_0xc <= uVar2) {
     *(uint *)&this->field_0xc = uVar2 + 1;
   }
-  *(undefined2 *)(*(int *)&this->field_0x4 + uVar2 * 2) = in_stack_00000004;
+  *(undefined2 *)(*(int *)&this->field_0x4 + uVar2 * 2) = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6AA0
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TInteriorMinister * __thiscall
-TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this)
+TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

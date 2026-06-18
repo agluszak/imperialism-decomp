@@ -80,7 +80,7 @@ TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivMgr *this,int *pUnitOrd
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D4310
 // GHIDRA_NAME TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles
-// GHIDRA_PROTO void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)
+// GHIDRA_PROTO void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry, undefined2 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Relink civilian order to a new tile and invalidate strategic-map tile visuals.
 // GHIDRA_COMMENT Algorithm:
@@ -111,7 +111,7 @@ TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivMgr *this,int *pUnitOrd
 
 void __thiscall
 TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles
-          (TCivMgr *this,short nNewTileIndex,int *pCivOrderEntry)
+          (TCivMgr *this,short nNewTileIndex,int *pCivOrderEntry,undefined2 param_3)
 
 {
   short sVar1;

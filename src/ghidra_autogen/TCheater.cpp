@@ -15,15 +15,13 @@ void __thiscall TCheater::OrphanRetStub_004b1410(TCheater *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1430
 // GHIDRA_NAME TCheater::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this)
+TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

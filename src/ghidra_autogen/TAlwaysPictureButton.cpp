@@ -61,16 +61,14 @@ TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButto
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570A20
 // GHIDRA_NAME TAlwaysPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TAlwaysPictureButton * __thiscall
-TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this)
+TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -78,21 +76,21 @@ TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570A70
 // GHIDRA_NAME TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
 
-void __thiscall TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(TAlwaysPictureButton *this)
+void __thiscall
+TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(TAlwaysPictureButton *this,char param_1)
 
 {
   TAlwaysPictureButtonVtbl *pTVar1;
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != this->field_0x64) {
+  if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
-    this->field_0x64 = in_stack_00000004;
-    if (in_stack_00000004 == '\0') {
+    this->field_0x64 = param_1;
+    if (param_1 == '\0') {
       uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + 100);
     }
     else {
@@ -108,14 +106,15 @@ void __thiscall TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(TAlwaysPic
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570AE0
 // GHIDRA_NAME TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(char param_1, char param_2)
 
 void __thiscall
 TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-          (TAlwaysPictureButton *this)
+          (TAlwaysPictureButton *this,char param_1,char param_2)
 
 {
-  TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject((TSoundPlayer *)this);
+  TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
+            ((TSoundPlayer *)this,(int)param_1,(int)param_2);
   return;
 }
 

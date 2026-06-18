@@ -57,15 +57,14 @@ TWorldView * TMapEditView::CreateTMapEditViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CBF0
 // GHIDRA_NAME TMapEditView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditView * __thiscall TMapEditView::_scalar_deleting_destructor_(TMapEditView *this)
+TMapEditView * __thiscall
+TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -239,19 +238,18 @@ TMapEditView::HandleMapClickByInteractionMode
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CFA0
 // GHIDRA_NAME TMapEditView::InvokeDialogHooks1D8ThenE4
-// GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(void)
+// GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(short param_1)
 
-void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this)
+void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this,short param_1)
 
 {
   short sVar1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  short in_stack_00000004;
   
   if (*(int *)&this->field_0x368 == 1) {
-    sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + in_stack_00000004 * 0x24);
+    sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
     if (sVar1 != -1) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f2,0,1);
       uVar3 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
@@ -270,7 +268,7 @@ void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051D060
 // GHIDRA_NAME TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches
-// GHIDRA_PROTO undefined __thiscall ApplyCityInfluenceTierAndInvalidateTileCaches(void)
+// GHIDRA_PROTO undefined __thiscall ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies city influence tier to all tiles of the same city ID and invalidates icon caches.
 // GHIDRA_COMMENT Algorithm:
@@ -299,7 +297,8 @@ void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this)
    Returns:
    - void */
 
-void __thiscall TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMapEditView *this)
+void __thiscall
+TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMapEditView *this,short param_1)
 
 {
   ushort uVar1;
@@ -314,9 +313,8 @@ void __thiscall TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMap
   TMapEditView *pTVar8;
   TMapEditView *pTVar9;
   int iVar10;
-  short in_stack_00000004;
   
-  uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + in_stack_00000004 * 0x24);
+  uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
   pTVar8 = (TMapEditView *)(uint)uVar1;
   uVar3 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
   iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -564,9 +562,9 @@ TMapEditView::ApplyTileIconOverlayFromEditorSelection
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051DEB0
 // GHIDRA_NAME TMapEditView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TMapEditView::OrphanTiny_ReturnZero_0048a730(TMapEditView *this)
+void __thiscall TMapEditView::OrphanTiny_ReturnZero_0048a730(TMapEditView *this,int param_1)
 
 {
   int iVar1;
@@ -574,9 +572,8 @@ void __thiscall TMapEditView::OrphanTiny_ReturnZero_0048a730(TMapEditView *this)
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int iVar3;
-  int in_stack_00000004;
   
-  switch(*(undefined2 *)(in_stack_00000004 + 0x1c)) {
+  switch(*(undefined2 *)(param_1 + 0x1c)) {
   case 0x2c:
   case 0x3c:
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);

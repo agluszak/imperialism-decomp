@@ -62,16 +62,14 @@ TNumberedArrowButton::TNumberedArrowButton(TNumberedArrowButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C2E0
 // GHIDRA_NAME TNumberedArrowButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TNumberedArrowButton * __thiscall
-TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this)
+TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,19 +77,16 @@ TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C330
 // GHIDRA_NAME TNumberedArrowButton::?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z
-// GHIDRA_PROTO undefined __thiscall ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z(void)
+// GHIDRA_PROTO undefined __thiscall ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z(undefined2 param_1, char param_2)
 
 void __thiscall
 TNumberedArrowButton::
 _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialismincludegame_ui_widget_shared_h141796978__HFD_Z
-          (TNumberedArrowButton *this)
+          (TNumberedArrowButton *this,undefined2 param_1,char param_2)
 
 {
-  undefined2 in_stack_00000004;
-  char in_stack_00000008;
-  
-  *(undefined2 *)&this->field_0x84 = in_stack_00000004;
-  if (in_stack_00000008 != '\0') {
+  *(undefined2 *)&this->field_0x84 = param_1;
+  if (param_2 != '\0') {
     (*this->vftable[0x1c].slot_0x04)();
   }
   return;
@@ -164,10 +159,11 @@ void __thiscall TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730(TNumberedAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C640
 // GHIDRA_NAME TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
 void __thiscall
-TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit(TNumberedArrowButton *this)
+TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TNumberedArrowButton *this,int param_1)
 
 {
   TNumberedArrowButtonVtbl *pTVar1;
@@ -223,24 +219,27 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit(TNumberedArro
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C7C0
 // GHIDRA_NAME TNumberedArrowButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
 
-void __thiscall TNumberedArrowButton::SetForeignMinisterReadyFlag14(TNumberedArrowButton *this)
+void __thiscall
+TNumberedArrowButton::SetForeignMinisterReadyFlag14
+          (TNumberedArrowButton *this,undefined4 *param_1,undefined4 param_2)
 
 {
   char cVar1;
-  int in_stack_00000004;
   
   cVar1 = (*this->vftable[0x1d].slot_0x04)();
   if (cVar1 != '\0') {
-    if (*(int *)(in_stack_00000004 + 4) < this->field38 / 2) {
+    if ((int)param_1[1] < this->field38 / 2) {
       this->field4e = 0x100;
-      TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this);
+      TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+                ((TControl *)this,param_1,param_2);
       return;
     }
     this->field4e = -1;
   }
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this);
+  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+            ((TControl *)this,param_1,param_2);
   return;
 }
 

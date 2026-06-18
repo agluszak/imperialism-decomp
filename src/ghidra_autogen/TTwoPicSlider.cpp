@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D650
 // GHIDRA_NAME TTwoPicSlider::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTwoPicSlider * __thiscall TTwoPicSlider::_scalar_deleting_destructor_(TTwoPicSlider *this)
+TTwoPicSlider * __thiscall
+TTwoPicSlider::_scalar_deleting_destructor_(TTwoPicSlider *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -85,14 +84,13 @@ CRuntimeClass * __thiscall TTwoPicSlider::GetTEventHandlerClassNamePointer(TTwoP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E200
 // GHIDRA_NAME TTwoPicSlider::ConstructTTwoPicSliderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTwoPicSliderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTwoPicSliderBaseState(int param_1)
 
-void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *this)
+void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *this,int param_1)
 
 {
   undefined4 uVar1;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 local_1c;
   undefined4 local_18;
   int local_14;
@@ -106,9 +104,9 @@ void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *th
   *unaff_FS_OFFSET = &uStack_c;
   DAT_006a1890 = DAT_006a1890 + 1;
   local_4 = 0;
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004 + 1);
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1 + 1);
   *(undefined4 *)&this->field_0x84 = uVar1;
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_1);
   local_14 = this->field34;
   local_10 = this->field38;
   *(undefined4 *)&this->field_0x88 = uVar1;
@@ -220,16 +218,17 @@ void __thiscall TTwoPicSlider::OrphanTiny_ReturnZero_0048a730(TTwoPicSlider *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E640
 // GHIDRA_NAME TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
-void __thiscall TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TTwoPicSlider *this)
+void __thiscall
+TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TTwoPicSlider *this,int param_1,int param_2)
 
 {
   TTwoPicSliderVtbl *pTVar1;
   short sVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   int in_stack_00000010;
   undefined4 uStack_34;
   undefined4 uStack_30;
@@ -243,8 +242,8 @@ void __thiscall TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TTwo
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636178;
   *unaff_FS_OFFSET = &uStack_c;
-  if (0 < in_stack_00000004) {
-    if (2 < in_stack_00000004) goto LAB_0056e7b7;
+  if (0 < param_1) {
+    if (2 < param_1) goto LAB_0056e7b7;
     iVar3 = (int)*(short *)(in_stack_00000010 + 4);
     if (this->field38 <= (int)*(short *)(in_stack_00000010 + 4)) {
       iVar3 = this->field38;
@@ -276,7 +275,7 @@ void __thiscall TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TTwo
       thunk_DestroyScopedMapQuickDrawContext();
     }
   }
-  if ((in_stack_00000004 == 2) && (*(int *)&this->field_0x94 == 2)) {
+  if ((param_1 == 2) && (*(int *)&this->field_0x94 == 2)) {
     if (*(short *)&this->field_0x90 < 0xc) {
       sVar2 = 0;
     }

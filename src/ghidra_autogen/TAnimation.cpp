@@ -54,15 +54,14 @@ TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F050
 // GHIDRA_NAME TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte param_1)
 
-TAnimation * __thiscall TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this)
+TAnimation * __thiscall
+TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -91,29 +90,25 @@ CRuntimeClass * __thiscall TAnimation::GetTAnimationClassNamePointer(TAnimation 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTAnimationBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
-void __thiscall TAnimation::ConstructTAnimationBaseState(TAnimation *this)
+void __thiscall
+TAnimation::ConstructTAnimationBaseState
+          (TAnimation *this,undefined4 param_1,undefined4 *param_2,undefined2 param_3,
+          undefined2 param_4,undefined4 param_5,undefined4 param_6)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
-  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
-  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
-  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
-  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
-  *(undefined2 *)&this->field_0xa = in_stack_0000000c;
-  *(undefined2 *)&this->field_0xc = in_stack_00000010;
+  *(undefined4 *)&this->field_0x4 = param_1;
+  *(undefined4 *)&this->field_0x1c = *param_2;
+  *(undefined4 *)&this->field_0x20 = param_2[1];
+  *(undefined4 *)&this->field_0x24 = param_2[2];
+  *(undefined4 *)&this->field_0x28 = param_2[3];
+  *(undefined2 *)&this->field_0xa = param_3;
+  *(undefined2 *)&this->field_0xc = param_4;
   *(undefined2 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x10 = 0;
-  *(undefined4 *)&this->field_0x14 = in_stack_00000014;
-  *(undefined4 *)&this->field_0x18 = in_stack_00000018;
+  *(undefined4 *)&this->field_0x14 = param_5;
+  *(undefined4 *)&this->field_0x18 = param_6;
   return;
 }
 
@@ -141,23 +136,22 @@ void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F190
 // GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this)
+void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this,int *param_1)
 
 {
   int iVar1;
   int iVar2;
-  int *in_stack_00000004;
   tagRECT tStack_20;
   tagRECT tStack_10;
   
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
   (*this->vftable[6].GetTAnimationClassNamePointer)();
-  tStack_20.top = *(int *)&this->field_0x20 + in_stack_00000004[1];
-  tStack_20.bottom = *(int *)&this->field_0x28 + in_stack_00000004[1];
-  tStack_20.right = *(int *)&this->field_0x24 + *in_stack_00000004;
-  tStack_20.left = *(int *)&this->field_0x1c + *in_stack_00000004;
+  tStack_20.top = *(int *)&this->field_0x20 + param_1[1];
+  tStack_20.bottom = *(int *)&this->field_0x28 + param_1[1];
+  tStack_20.right = *(int *)&this->field_0x24 + *param_1;
+  tStack_20.left = *(int *)&this->field_0x1c + *param_1;
   tStack_10.right = tStack_20.right - tStack_20.left;
   tStack_10.bottom = tStack_20.bottom - tStack_20.top;
   tStack_10.left = 0;
@@ -206,11 +200,26 @@ void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
 
 {
   int iVar1;
+  uint uVar2;
   TAnimation *this_00;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
   
-  TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator);
+  TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator,0x2711)
+  ;
   iVar1 = *(int *)(*(int *)&this[2].field_0x8 + 0x1c);
-  if ((iVar1 != 0) && (-1 < *(int *)(iVar1 + 8))) {
+  if ((iVar1 != 0) && (iVar1 = *(int *)(iVar1 + 8), -1 < iVar1)) {
+    uVar2 = iVar1 / *(int *)&this[2].field_0x28;
+    local_8 = *(int *)&this[3].field_0x4;
+    local_10 = (iVar1 % *(int *)&this[2].field_0x28) * local_8 - (int)*(short *)&this[2].field_0x20;
+    if ((uVar2 & 1) != 0) {
+      local_10 = local_10 + local_8 / 2;
+    }
+    local_8 = local_10 + local_8;
+    local_c = uVar2 * *(int *)&this[3].field_0x8;
+    local_4 = local_c + *(int *)&this[3].field_0x8;
     this_00 = (TAnimation *)AllocateWithFallbackHandler(0x2c);
     if (this_00 == (TAnimation *)0x0) {
       this_00 = (TAnimation *)0x0;
@@ -218,7 +227,7 @@ void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
     else {
       this_00->vftable = &TAnimationVtbl_0064c300;
     }
-    ConstructTAnimationBaseState(this_00);
+    ConstructTAnimationBaseState(this_00,this,&local_10,2,0,10,0x2711);
     TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
   }
   return;

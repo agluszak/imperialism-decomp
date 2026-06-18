@@ -63,15 +63,13 @@ _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivRep
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C60
 // GHIDRA_NAME TCivReport::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this)
+TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,12 +77,12 @@ TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590CB0
 // GHIDRA_NAME TCivReport::?BuildCivReportNationEntryDetailTextBlock@@YIXPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@HPAX@Z
-// GHIDRA_PROTO undefined __thiscall ?BuildCivReportNationEntryDetailTextBlock@@YIXPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@HPAX@Z(void)
+// GHIDRA_PROTO undefined __thiscall ?BuildCivReportNationEntryDetailTextBlock@@YIXPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@HPAX@Z(int param_1)
 
 void __thiscall
 TCivReport::
 _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__HPAX_Z
-          (TCivReport *this)
+          (TCivReport *this,int param_1)
 
 {
   short sVar1;
@@ -98,7 +96,6 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   int iVar8;
   short sVar9;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uVar10;
   CString CStack_78;
   CString CStack_74;
@@ -145,7 +142,7 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   CString::CString(&local_3c);
   pCStack_68 = &local_50;
   cVar7 = '\x01';
-  sVar1 = *(short *)(in_stack_00000004 + 6);
+  sVar1 = *(short *)(param_1 + 6);
   uStack_6c = 0;
   uStack_70 = 0x2724;
   local_4 = CONCAT31(local_4._1_3_,5);
@@ -153,13 +150,12 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_74.m_pchData = &stack0xffffffa0;
   CStack_78.m_pchData =
-       (char *)CONCAT22((short)((uint)CStack_74.m_pchData >> 0x10),
-                        *(undefined2 *)(in_stack_00000004 + 4));
+       (char *)CONCAT22((short)((uint)CStack_74.m_pchData >> 0x10),*(undefined2 *)(param_1 + 4));
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   thunk_AssignSharedStringFromIndexedA8EntryNameField();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff9c,(char *)pCStack_68);
   AppendSingleByteToSharedStringFromArg();
-  switch(*(undefined4 *)(in_stack_00000004 + 8)) {
+  switch(*(undefined4 *)(param_1 + 8)) {
   case 1:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     AssignStringSharedFromRef();
@@ -198,7 +194,7 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
     CString::~CString(&local_40);
     break;
   case 10:
-    if ((*(short *)(in_stack_00000004 + 4) == 0) &&
+    if ((*(short *)(param_1 + 4) == 0) &&
        (cVar4 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(), cVar4 == '\0')) {
       sVar9 = 0;
       sVar11 = 0;
@@ -226,7 +222,7 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
       CString::~CString(&local_3c);
       cVar7 = cStack_14;
     }
-    else if (*(short *)(in_stack_00000004 + 4) == 7) {
+    else if (*(short *)(param_1 + 4) == 7) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
       scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);

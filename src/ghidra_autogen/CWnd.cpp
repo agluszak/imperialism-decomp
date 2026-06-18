@@ -16,7 +16,7 @@ void __thiscall CWnd::thunk_Default(CWnd *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00603516
 // GHIDRA_NAME CWnd::GetValueAt
-// GHIDRA_PROTO undefined __thiscall GetValueAt(void)
+// GHIDRA_PROTO undefined __thiscall GetValueAt(uint param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object pointer.
 // GHIDRA_COMMENT_END
@@ -24,19 +24,18 @@ void __thiscall CWnd::thunk_Default(CWnd *this)
 /* Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object
    pointer. */
 
-undefined4 __thiscall CWnd::GetValueAt(CWnd *this)
+undefined4 __thiscall CWnd::GetValueAt(CWnd *this,uint param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  uint in_stack_00000004;
   
   iVar1 = (this->ccmdTarget).m_dwRef;
   if (iVar1 != 0) {
     for (puVar2 = *(undefined4 **)
-                   (iVar1 + ((in_stack_00000004 >> 4) % (uint)(this->ccmdTarget).m_pOuterUnknown) *
-                            4); puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
-      if (puVar2[1] == in_stack_00000004) {
+                   (iVar1 + ((param_1 >> 4) % (uint)(this->ccmdTarget).m_pOuterUnknown) * 4);
+        puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
+      if (puVar2[1] == param_1) {
         return puVar2[2];
       }
     }
@@ -46,18 +45,17 @@ undefined4 __thiscall CWnd::GetValueAt(CWnd *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607673
 // GHIDRA_NAME CWnd::AttachControlSite_607673
-// GHIDRA_PROTO undefined __thiscall AttachControlSite_607673(void)
+// GHIDRA_PROTO undefined __thiscall AttachControlSite_607673(int param_1)
 
-void __thiscall CWnd::AttachControlSite_607673(CWnd *this)
+void __thiscall CWnd::AttachControlSite_607673(CWnd *this,int param_1)
 
 {
   int iVar1;
   void *pvVar2;
-  int in_stack_00000004;
   
-  if ((((this != (CWnd *)0x0) && (this->m_pCtrlSite == (void *)0x0)) && (in_stack_00000004 != 0)) &&
-     (*(int *)(in_stack_00000004 + 0x34) != 0)) {
-    pvVar2 = (void *)GetValueAt((CWnd *)(*(int *)(in_stack_00000004 + 0x34) + 0x20));
+  if ((((this != (CWnd *)0x0) && (this->m_pCtrlSite == (void *)0x0)) && (param_1 != 0)) &&
+     (*(int *)(param_1 + 0x34) != 0)) {
+    pvVar2 = (void *)GetValueAt((CWnd *)(*(int *)(param_1 + 0x34) + 0x20),(uint)this->m_hWnd);
     if (pvVar2 != (void *)0x0) {
       iVar1 = *(int *)((int)pvVar2 + 0x24);
       if ((iVar1 != 0) && (*(void **)(iVar1 + 0x38) == pvVar2)) {
@@ -123,7 +121,7 @@ void __thiscall CWnd::Default(CWnd *this)
 {
   int iVar1;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   (*(this->ccmdTarget).vftable[0xe].SetForeignMinisterReadyFlag14)
             (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
              *(undefined4 *)(iVar1 + 0x40));

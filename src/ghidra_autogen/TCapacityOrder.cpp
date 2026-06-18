@@ -15,15 +15,14 @@ CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
 // GHIDRA_NAME TCapacityOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(byte param_1)
 
-TCapacityOrder * __thiscall TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this)
+TCapacityOrder * __thiscall
+TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTCapacityOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -42,22 +41,20 @@ void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D50
 // GHIDRA_NAME TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b8d50(void)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b8d50(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
-void __thiscall TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(TCapacityOrder *this)
+void __thiscall
+TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
+          (TCapacityOrder *this,int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4
+          ,undefined2 param_5)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined2 in_stack_00000014;
   
-  *(int *)&this->field_0x8 = in_stack_00000004;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)&this->field_0x48 = in_stack_00000008;
+  *(int *)&this->field_0x8 = param_1;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = param_2;
   *(undefined2 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -66,12 +63,12 @@ void __thiscall TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(TC
   }
   *(undefined2 *)puVar2 = 0;
   *(undefined4 *)&this->field_0x44 = 0;
-  *(undefined2 *)&this->field_0x4e = in_stack_0000000c;
+  *(undefined2 *)&this->field_0x4e = param_3;
   *(undefined2 *)&this->field_0x40 = 0;
   *(undefined2 *)&this->field_0x3e = 0;
   *(undefined2 *)&this->field_0x4c = 0;
-  *(undefined2 *)&this->field_0x50 = in_stack_00000010;
-  *(undefined2 *)&this->field_0x52 = in_stack_00000014;
+  *(undefined2 *)&this->field_0x50 = param_4;
+  *(undefined2 *)&this->field_0x52 = param_5;
   return;
 }
 

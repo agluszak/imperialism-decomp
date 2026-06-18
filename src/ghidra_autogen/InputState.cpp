@@ -111,13 +111,14 @@ void __thiscall
 InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,short param_2)
 
 {
-  int *piVar1;
-  undefined4 *puVar2;
-  int iVar3;
+  short sVar1;
+  int *piVar2;
+  undefined4 *puVar3;
   int iVar4;
+  int iVar5;
   int iteration_count;
-  int *piVar5;
-  undefined4 *puVar6;
+  int *piVar6;
+  undefined4 *puVar7;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -132,46 +133,46 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
     (**(code **)(**(int **)(param_1 + 8) + 4))(3);
   }
   iteration_count = (int)param_2;
-  piVar1 = (int *)AllocateWithFallbackHandler(iteration_count * 0x48 + 4);
+  piVar2 = (int *)AllocateWithFallbackHandler(iteration_count * 0x48 + 4);
   uStack_4 = 0;
-  if (piVar1 == (int *)0x0) {
-    piVar5 = (int *)0x0;
+  if (piVar2 == (int *)0x0) {
+    piVar6 = (int *)0x0;
   }
   else {
-    piVar5 = piVar1 + 1;
-    *piVar1 = iteration_count;
+    piVar6 = piVar2 + 1;
+    *piVar2 = iteration_count;
     CallCallbackRepeatedly
-              (piVar5,0x48,iteration_count,
+              (piVar6,0x48,iteration_count,
                TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
   }
   uStack_4 = 0xffffffff;
-  *(int **)(param_1 + 8) = piVar5;
-  if (piVar5 == (int *)0x0) {
+  *(int **)(param_1 + 8) = piVar6;
+  if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
   }
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
-  puVar6 = puVar2;
-  for (iVar3 = 0xca8; iVar3 != 0; iVar3 = iVar3 + -1) {
-    *puVar6 = 0;
-    puVar6 = puVar6 + 1;
+  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
+  puVar7 = puVar3;
+  for (iVar4 = 0xca8; iVar4 != 0; iVar4 = iVar4 + -1) {
+    *puVar7 = 0;
+    puVar7 = puVar7 + 1;
   }
-  iVar3 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
-  while (iVar3 != 0) {
-    iVar3 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
+  iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar3);
+  while (iVar4 != 0) {
+    iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar3);
   }
-  iVar3 = 0;
+  iVar4 = 0;
   if (0 < iteration_count) {
-    iVar4 = 0;
+    iVar5 = 0;
     do {
-      thunk_SelectBestSeedTileForNationFromCostField(puVar2,iVar3 + 0x17);
+      sVar1 = thunk_SelectBestSeedTileForNationFromCostField(puVar3,iVar4 + 0x17);
       TZone::SetMapActionContextTargetTileAndRefreshMarkers
-                ((TZone *)(*(int *)(param_1 + 8) + iVar4));
-      iVar3 = iVar3 + 1;
-      iVar4 = iVar4 + 0x48;
-    } while (iVar3 < iteration_count);
+                ((TZone *)(*(int *)(param_1 + 8) + iVar5),iVar4 + 0x17,sVar1);
+      iVar4 = iVar4 + 1;
+      iVar5 = iVar5 + 0x48;
+    } while (iVar4 < iteration_count);
   }
-  FreeHeapBufferIfNotNull(puVar2);
+  FreeHeapBufferIfNotNull(puVar3);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

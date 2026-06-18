@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF150
 // GHIDRA_NAME TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ff150(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ff150(byte param_1)
 
-TColorFill * __thiscall TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this)
+TColorFill * __thiscall
+TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTColorFillInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

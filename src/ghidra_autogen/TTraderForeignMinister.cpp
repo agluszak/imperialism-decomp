@@ -45,16 +45,14 @@ TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533910
 // GHIDRA_NAME TTraderForeignMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TTraderForeignMinister * __thiscall
-TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this)
+TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTraderForeignMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -269,10 +267,11 @@ void __thiscall TTraderForeignMinister::SetForeignMinisterReadyFlag14(TTraderFor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533DB0
 // GHIDRA_NAME TTraderForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
 
 void __thiscall
-TTraderForeignMinister::UpdateControlCachedIntFromWindowText(TTraderForeignMinister *this)
+TTraderForeignMinister::UpdateControlCachedIntFromWindowText
+          (TTraderForeignMinister *this,undefined4 param_1,undefined4 param_2,short param_3)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -281,20 +280,19 @@ TTraderForeignMinister::UpdateControlCachedIntFromWindowText(TTraderForeignMinis
   undefined4 uVar4;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   short in_stack_00000010;
   
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
-    TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this);
+    TForeignMinister::UpdateControlCachedIntFromWindowText
+              ((TForeignMinister *)this,param_1,(short)param_2);
     return;
   }
   sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
-  if ((short)in_stack_00000004 <= sVar3) {
+  if ((short)param_1 <= sVar3) {
     (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
               (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
-               in_stack_00000004,in_stack_00000008);
+                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,param_1,
+               param_2);
     return;
   }
   pTVar1 = g_pNationInteractionStateManager->vftable;
@@ -351,15 +349,13 @@ TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533F50
 // GHIDRA_NAME TTraderForeignMinister::IncrementTraderCounter60ByThree
-// GHIDRA_PROTO undefined __thiscall IncrementTraderCounter60ByThree(void)
+// GHIDRA_PROTO undefined __thiscall IncrementTraderCounter60ByThree(int param_1)
 
 void __thiscall
-TTraderForeignMinister::IncrementTraderCounter60ByThree(TTraderForeignMinister *this)
+TTraderForeignMinister::IncrementTraderCounter60ByThree(TTraderForeignMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(short *)(in_stack_00000004 + 0x60) = *(short *)(in_stack_00000004 + 0x60) + 3;
+  *(short *)(param_1 + 0x60) = *(short *)(param_1 + 0x60) + 3;
   return;
 }
 

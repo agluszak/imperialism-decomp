@@ -45,16 +45,14 @@ TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMiniste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533180
 // GHIDRA_NAME TTextileForeignMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TTextileForeignMinister * __thiscall
-TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this)
+TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTextileForeignMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -264,10 +262,11 @@ TTextileForeignMinister::SetForeignMinisterReadyFlag14(TTextileForeignMinister *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533670
 // GHIDRA_NAME TTextileForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
 
 void __thiscall
-TTextileForeignMinister::UpdateControlCachedIntFromWindowText(TTextileForeignMinister *this)
+TTextileForeignMinister::UpdateControlCachedIntFromWindowText
+          (TTextileForeignMinister *this,undefined4 param_1,undefined4 param_2,short param_3)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -276,12 +275,11 @@ TTextileForeignMinister::UpdateControlCachedIntFromWindowText(TTextileForeignMin
   undefined4 uVar4;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   short in_stack_00000010;
   
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
-    TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this);
+    TForeignMinister::UpdateControlCachedIntFromWindowText
+              ((TForeignMinister *)this,param_1,(short)param_2);
     return;
   }
   if ((in_stack_00000010 == 0) || (in_stack_00000010 == 1)) {
@@ -290,11 +288,11 @@ TTextileForeignMinister::UpdateControlCachedIntFromWindowText(TTextileForeignMin
   else {
     sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
   }
-  if ((short)in_stack_00000004 <= sVar3) {
+  if ((short)param_1 <= sVar3) {
     (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
               (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
-               in_stack_00000004,in_stack_00000008);
+                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,param_1,
+               param_2);
     return;
   }
   pTVar1 = g_pNationInteractionStateManager->vftable;
@@ -307,31 +305,28 @@ TTextileForeignMinister::UpdateControlCachedIntFromWindowText(TTextileForeignMin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533780
 // GHIDRA_NAME TTextileForeignMinister::UpdateTextileProgressFromProductionSlots1And2
-// GHIDRA_PROTO undefined __thiscall UpdateTextileProgressFromProductionSlots1And2(void)
+// GHIDRA_PROTO undefined __thiscall UpdateTextileProgressFromProductionSlots1And2(TCity * param_1)
 
 void __thiscall
 TTextileForeignMinister::UpdateTextileProgressFromProductionSlots1And2
-          (TTextileForeignMinister *this)
+          (TTextileForeignMinister *this,TCity *param_1)
 
 {
   short sVar1;
   int iVar2;
-  TCity *in_stack_00000004;
   
-  *(short *)&in_stack_00000004->field_0x60 = *(short *)&in_stack_00000004->field_0x60 + 2;
-  *(short *)&in_stack_00000004->field_0x5e = *(short *)&in_stack_00000004->field_0x5e + 1;
-  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,2);
+  *(short *)&param_1->field_0x60 = *(short *)&param_1->field_0x60 + 2;
+  *(short *)&param_1->field_0x5e = *(short *)&param_1->field_0x5e + 1;
+  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
   sVar1 = (short)iVar2 + 2;
-  *(short *)&in_stack_00000004->field_0x200 =
-       *(short *)&in_stack_00000004->field_0x200 +
-       (sVar1 - *(short *)&in_stack_00000004->field_0x1e0);
-  *(short *)&in_stack_00000004->field_0x1e0 = sVar1;
-  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,1);
+  *(short *)&param_1->field_0x200 =
+       *(short *)&param_1->field_0x200 + (sVar1 - *(short *)&param_1->field_0x1e0);
+  *(short *)&param_1->field_0x1e0 = sVar1;
+  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,1);
   sVar1 = (short)iVar2 + 1;
-  *(short *)&in_stack_00000004->field_0x1fe =
-       *(short *)&in_stack_00000004->field_0x1fe +
-       (sVar1 - *(short *)&in_stack_00000004->field_0x1de);
-  *(short *)&in_stack_00000004->field_0x1de = sVar1;
+  *(short *)&param_1->field_0x1fe =
+       *(short *)&param_1->field_0x1fe + (sVar1 - *(short *)&param_1->field_0x1de);
+  *(short *)&param_1->field_0x1de = sVar1;
   return;
 }
 

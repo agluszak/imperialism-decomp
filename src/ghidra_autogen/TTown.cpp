@@ -30,15 +30,13 @@ CRuntimeClass * __thiscall TTown::GetTTownClassNamePointer(TTown *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6C80
 // GHIDRA_NAME TTown::DestructTTownAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTownAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTownAndMaybeFree(byte param_1)
 
-TTown * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this)
+TTown * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTownAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -46,19 +44,18 @@ TTown * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6D70
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int * param_1)
 
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *this)
+void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *this,int *param_1)
 
 {
   code *pcVar1;
   undefined1 uVar2;
   undefined1 *puVar3;
   int iVar4;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,0x10);
   (*pcVar1)(&this->field_0x14,2);
   (*pcVar1)(&this->field_0x16,2);
@@ -89,26 +86,26 @@ void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6E60
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int * param_1)
 
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *this)
+void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *this,int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   undefined2 *puVar3;
-  int *in_stack_00000004;
   int iVar4;
   undefined4 uStack_2c;
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  undefined4 uStack_1c;
+  int *piStack_1c;
   
+  piStack_1c = param_1;
   puStack_20 = (undefined1 *)0x5b6e73;
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  uStack_1c = 0x10;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  piStack_1c = (int *)0x10;
+  pcVar1 = *(code **)(*param_1 + 0x78);
   puStack_20 = &this->field_0x4;
   uStack_24 = 0x5b6e86;
   (*pcVar1)();
@@ -397,9 +394,9 @@ void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B77E0
 // GHIDRA_NAME TTown::OrphanLeaf_NoCall_Ins29_005b77e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins29_005b77e0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins29_005b77e0(char * param_1)
 
-void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this)
+void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this,char *param_1)
 
 {
   char cVar1;
@@ -409,10 +406,9 @@ void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this)
   uint uVar5;
   char *pcVar6;
   char *pcVar7;
-  char *in_stack_00000004;
   
   uVar4 = 0xffffffff;
-  pcVar6 = in_stack_00000004;
+  pcVar6 = param_1;
   do {
     if (uVar4 == 0) break;
     uVar4 = uVar4 - 1;
@@ -422,12 +418,12 @@ void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this)
   if (~uVar4 - 1 < 0x10) {
     uVar4 = 0xffffffff;
     do {
-      pcVar6 = in_stack_00000004;
+      pcVar6 = param_1;
       if (uVar4 == 0) break;
       uVar4 = uVar4 - 1;
-      pcVar6 = in_stack_00000004 + 1;
-      cVar1 = *in_stack_00000004;
-      in_stack_00000004 = pcVar6;
+      pcVar6 = param_1 + 1;
+      cVar1 = *param_1;
+      param_1 = pcVar6;
     } while (cVar1 != '\0');
     uVar4 = ~uVar4;
     pcVar6 = pcVar6 + -uVar4;

@@ -58,15 +58,14 @@ TArrowsControl * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839A0
 // GHIDRA_NAME TArrowsControl::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArrowsControl * __thiscall TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this)
+TArrowsControl * __thiscall
+TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,24 +73,25 @@ TArrowsControl * __thiscall TArrowsControl::_scalar_deleting_destructor_(TArrows
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839F0
 // GHIDRA_NAME TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
-void __thiscall TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit(TArrowsControl *this)
+void __thiscall
+TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TArrowsControl *this,int param_1,int param_2)
 
 {
   TArrowsControlVtbl *pTVar1;
   char cVar2;
   uint uVar3;
   int iVar4;
-  int in_stack_00000004;
   int in_stack_00000010;
   
-  if (in_stack_00000004 != 2) {
+  if (param_1 != 2) {
     uVar3 = thunk_GetTickCountDiv16();
     if (*(int *)&this->field_0x90 + 5U <= uVar3) {
       iVar4 = thunk_GetTickCountDiv16();
       *(int *)&this->field_0x90 = iVar4;
-      if (in_stack_00000004 == 0) {
+      if (param_1 == 0) {
         *(int *)&this->field_0x90 = iVar4 + 10;
       }
       pTVar1 = this->vftable;

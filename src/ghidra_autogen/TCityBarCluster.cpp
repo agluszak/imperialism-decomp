@@ -58,15 +58,14 @@ TCityBarCluster::ConstructTCityBarClusterBaseState(TCityBarCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586660
 // GHIDRA_NAME TCityBarCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityBarCluster * __thiscall TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this)
+TCityBarCluster * __thiscall
+TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,9 +73,10 @@ TCityBarCluster * __thiscall TCityBarCluster::_scalar_deleting_destructor_(TCity
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005866B0
 // GHIDRA_NAME TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord
-// GHIDRA_PROTO undefined __thiscall UpdateTradeSummaryMetricControlsFromRecord(void)
+// GHIDRA_PROTO undefined __thiscall UpdateTradeSummaryMetricControlsFromRecord(int param_1)
 
-void __thiscall TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *this)
+void __thiscall
+TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *this,int param_1)
 
 {
   int iVar1;
@@ -88,10 +88,9 @@ void __thiscall TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCit
   undefined3 extraout_var_02;
   int unaff_EBX;
   int unaff_ESI;
-  int in_stack_00000004;
   int iVar4;
   
-  iVar1 = *(int *)(in_stack_00000004 + 0xac);
+  iVar1 = *(int *)(param_1 + 0xac);
   pTVar2 = this->vftable[0x12].slot_0x04;
   uVar3 = (*pTVar2)(0x74726561);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {

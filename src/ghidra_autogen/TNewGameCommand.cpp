@@ -22,15 +22,14 @@ void __thiscall TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DDD0
 // GHIDRA_NAME TNewGameCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TNewGameCommand * __thiscall TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this)
+TNewGameCommand * __thiscall
+TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTNewGameCommandInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -90,7 +89,7 @@ TApplication * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E320
 // GHIDRA_NAME TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO undefined __thiscall HandleTurnEventViewportEdgeAutoScroll(void)
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventViewportEdgeAutoScroll(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise forwards to base handler.
 // GHIDRA_COMMENT_END
@@ -98,15 +97,15 @@ TApplication * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
 /* Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise
    forwards to base handler. */
 
-void __thiscall TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameCommand *this)
+void __thiscall
+TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
+          (TNewGameCommand *this,int param_1,int param_2)
 
 {
   short sVar1;
   int iVar2;
   int iVar3;
   byte bVar4;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int local_8;
   int local_4;
   
@@ -116,8 +115,8 @@ void __thiscall TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameC
       ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
     iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
     if (iVar3 == 0) {
-      local_8 = in_stack_00000004;
-      local_4 = in_stack_00000008;
+      local_8 = param_1;
+      local_4 = param_2;
       (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x144))(&local_8);
       if ((-200 < local_8) && (-200 < local_4)) {
         iVar3 = *(int *)(*(int *)(DAT_006a2158 + 4) + 0x34);
@@ -154,19 +153,19 @@ void __thiscall TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
 // GHIDRA_NAME TNewGameCommand::InitializeBasicCityOrderContext
-// GHIDRA_PROTO undefined __thiscall InitializeBasicCityOrderContext(void)
+// GHIDRA_PROTO undefined __thiscall InitializeBasicCityOrderContext(int param_1, undefined2 param_2)
 
-void __thiscall TNewGameCommand::InitializeBasicCityOrderContext(TNewGameCommand *this)
+void __thiscall
+TNewGameCommand::InitializeBasicCityOrderContext
+          (TNewGameCommand *this,int param_1,undefined2 param_2)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
   
-  *(int *)&this->field_0x8 = in_stack_00000004;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)&this[3].vftable = in_stack_00000008;
+  *(int *)&this->field_0x8 = param_1;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
+  *(undefined2 *)&this[3].vftable = param_2;
   *(undefined2 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {

@@ -5,9 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050EC90
 // GHIDRA_NAME TSpaceCommand::BuildOrLoadGlobalMapStateForSession
-// GHIDRA_PROTO undefined __thiscall BuildOrLoadGlobalMapStateForSession(void)
+// GHIDRA_PROTO undefined __thiscall BuildOrLoadGlobalMapStateForSession(CString param_1, char * param_2)
 
-undefined4 __thiscall TSpaceCommand::BuildOrLoadGlobalMapStateForSession(TSpaceCommand *this)
+undefined4 __thiscall
+TSpaceCommand::BuildOrLoadGlobalMapStateForSession
+          (TSpaceCommand *this,CString param_1,char *param_2)
 
 {
   TSpaceCommandVtbl *pTVar1;
@@ -19,13 +21,12 @@ undefined4 __thiscall TSpaceCommand::BuildOrLoadGlobalMapStateForSession(TSpaceC
   TMapMaker *this_00;
   undefined4 uVar7;
   int iVar8;
-  char *pcVar9;
-  char *pcVar10;
+  int iVar9;
+  int iVar10;
   int iVar11;
   int iVar12;
+  int iVar13;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  char *in_stack_00000008;
   TSpaceCommand *pTStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -86,18 +87,20 @@ undefined4 __thiscall TSpaceCommand::BuildOrLoadGlobalMapStateForSession(TSpaceC
     *(undefined4 *)&pTStack_14->field_0x8 = *(undefined4 *)&this->field_0xc;
     (*pTStack_14->vftable[0xc].OrphanCallChain_C1_I17_00487470)(1);
   }
-  else if (in_stack_00000004.m_pchData == (char *)0x0) {
-    if (in_stack_00000008 == (char *)0x0) {
+  else if (param_1.m_pchData == (char *)0x0) {
+    if (param_2 == (char *)0x0) {
       GenerateMappedFlavorTextByCurrentContextNation(&this->field_0x1c);
     }
     else {
-      CString::CString(&stack0x00000004,in_stack_00000008);
+      CString::CString(&param_1,param_2);
       uStack_4 = 1;
-      CString::AssignFromPtr((CString *)&this->field_0x1c,&stack0x00000004);
+      CString::AssignFromPtr((CString *)&this->field_0x1c,&param_1);
       uStack_4 = 0xffffffff;
-      CString::~CString(&stack0x00000004);
+      CString::~CString(&param_1);
     }
-    GenerateMapFromTuningStringAndApplyScenarioOverrides(pTStack_14);
+    GenerateMapFromTuningStringAndApplyScenarioOverrides
+              (pTStack_14,*(undefined4 *)&this->field_0xc,*(undefined4 **)&this->field_0x10,
+               (undefined4 *)&this->field_0x1c);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
@@ -119,26 +122,29 @@ undefined4 __thiscall TSpaceCommand::BuildOrLoadGlobalMapStateForSession(TSpaceC
   }
   RebuildTileOwnerNeighborCachesAndFallbackAssignments();
   if (bVar5) {
+    iVar12 = 0;
     iVar11 = 0;
-    pcVar9 = (char *)0x0;
     do {
-      iVar12 = *(int *)&this->field_0x10 + iVar11;
-      pcVar10 = pcVar9;
-      if (((*(short *)(iVar12 + 0x42) != -1) && (*(char *)(iVar12 + 0xa3) == -1)) &&
-         (pcVar10 = pcVar9 + 1, in_stack_00000008 = pcVar9,
-         (char *)(int)*(char *)(iVar12 + 0xa3) != pcVar9)) {
-        *(char *)(iVar12 + 0xa3) = (char)pcVar9;
-        iVar12 = 0;
-        if ('\0' < *(char *)(iVar11 + 8 + *(int *)&this->field_0x10)) {
+      iVar9 = *(int *)&this->field_0x10 + iVar12;
+      iVar8 = iVar11;
+      if (((*(short *)(iVar9 + 0x42) != -1) && (*(char *)(iVar9 + 0xa3) == -1)) &&
+         (iVar8 = iVar11 + 1, *(char *)(iVar9 + 0xa3) != iVar11)) {
+        *(char *)(iVar9 + 0xa3) = (char)iVar11;
+        iVar9 = *(int *)&this->field_0x10;
+        iVar13 = 0;
+        if ('\0' < *(char *)(iVar12 + 8 + iVar9)) {
+          iVar10 = iVar12 + 10;
           do {
-            SetMapRecordFlagA3AndPropagateToChildren(this);
-            iVar12 = iVar12 + 1;
-          } while (iVar12 < *(char *)(iVar11 + 8 + *(int *)&this->field_0x10));
+            SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar10 + iVar9),iVar11);
+            iVar9 = *(int *)&this->field_0x10;
+            iVar13 = iVar13 + 1;
+            iVar10 = iVar10 + 2;
+          } while (iVar13 < *(char *)(iVar12 + 8 + iVar9));
         }
       }
-      iVar11 = iVar11 + 0xa8;
-      pcVar9 = pcVar10;
-    } while (iVar11 < 0xfc00);
+      iVar12 = iVar12 + 0xa8;
+      iVar11 = iVar8;
+    } while (iVar12 < 0xfc00);
   }
   iVar11 = 0;
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
@@ -185,25 +191,30 @@ LAB_0050efe5:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050F6B0
 // GHIDRA_NAME TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren
-// GHIDRA_PROTO undefined __thiscall SetMapRecordFlagA3AndPropagateToChildren(void)
+// GHIDRA_PROTO undefined __thiscall SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
-void __thiscall TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this)
+void __thiscall
+TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int param_1,int param_2)
 
 {
   int iVar1;
   int iVar2;
-  int in_stack_00000004;
-  int in_stack_00000008;
+  int iVar3;
+  int iVar4;
   
-  iVar1 = in_stack_00000004 * 0xa8;
-  if (*(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar1) != in_stack_00000008) {
-    *(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar1) = (char)in_stack_00000008;
-    iVar2 = 0;
-    if ('\0' < *(char *)(*(int *)&this->field_0x10 + 8 + iVar1)) {
+  iVar3 = param_1 * 0xa8;
+  if (*(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) != param_2) {
+    *(char *)(*(int *)&this->field_0x10 + 0xa3 + iVar3) = (char)param_2;
+    iVar1 = *(int *)&this->field_0x10;
+    iVar4 = 0;
+    if ('\0' < *(char *)(iVar1 + 8 + iVar3)) {
+      iVar2 = iVar3 + 10;
       do {
-        SetMapRecordFlagA3AndPropagateToChildren(this);
-        iVar2 = iVar2 + 1;
-      } while (iVar2 < *(char *)(*(int *)&this->field_0x10 + 8 + iVar1));
+        SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar2 + iVar1),param_2);
+        iVar1 = *(int *)&this->field_0x10;
+        iVar4 = iVar4 + 1;
+        iVar2 = iVar2 + 2;
+      } while (iVar4 < *(char *)(iVar1 + 8 + iVar3));
     }
   }
   return;
@@ -211,10 +222,11 @@ void __thiscall TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525A30
 // GHIDRA_NAME TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
-// GHIDRA_PROTO undefined __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(void)
+// GHIDRA_PROTO undefined __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
 
 void __thiscall
-TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides(TSpaceCommand *this)
+TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
+          (TSpaceCommand *this,undefined4 param_1,undefined4 *param_2,undefined4 *param_3)
 
 {
   TSpaceCommandVtbl *pTVar1;
@@ -228,14 +240,11 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides(TSpaceComman
   uint uVar9;
   int iVar10;
   bool bVar11;
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined4 *in_stack_0000000c;
   
-  *(undefined4 *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x8 = param_1;
   iVar10 = 0x96;
   iVar8 = 0xfa;
-  *(undefined4 **)&this->field_0xc = in_stack_00000008;
+  *(undefined4 **)&this->field_0xc = param_2;
   DAT_006a38bc = 200;
   DAT_006a3470 = 0x96;
   DAT_006a38c0 = 0xfa;
@@ -244,7 +253,7 @@ TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides(TSpaceComman
   DAT_006a38e4 = 10;
   DAT_006a38ec = 0xe;
   DAT_006a38f0 = 8;
-  pcVar5 = (char *)*in_stack_0000000c;
+  pcVar5 = (char *)*param_3;
   bVar11 = false;
   uVar9 = 1000;
   cVar2 = *pcVar5;
@@ -332,7 +341,7 @@ LAB_00525acd:
     DAT_006a38e0 = (undefined4)((ulonglong)(uVar9 * iVar10) / (ulonglong)(longlong)(int)uVar6);
   }
   DAT_006a38e8 = 0x6e616461;
-  pcVar5 = (char *)*in_stack_0000000c;
+  pcVar5 = (char *)*param_3;
   cVar2 = *pcVar5;
   while (cVar2 != '\0') {
     DAT_006a38e8 = ((int)DAT_006a38e8 >> 0x10) + DAT_006a38e8 * 2 + (int)cVar2;
@@ -406,7 +415,7 @@ LAB_00525acd:
       UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     (*pTVar1[0xc].OrphanCallChain_C1_I17_00487470)(0);
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     uVar9 = DAT_006a38e8;
     if (DAT_006976d8 != '\0') {
       iVar10 = 0x6976d9 - (int)pcVar5;
@@ -432,7 +441,7 @@ LAB_00525acd:
       } while (iVar10 != 0);
     }
 LAB_00525e16:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Congo_006976d0[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Congo_006976d0[0];
@@ -458,7 +467,7 @@ LAB_00525e16:
       } while (iVar10 != 0);
     }
 LAB_00525e87:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Mirkwood_006976c4[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Mirkwood_006976c4[0];
@@ -485,7 +494,7 @@ LAB_00525e87:
       } while (iVar10 != 0);
     }
 LAB_00525f13:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     pcVar4 = pcVar5;
     if (s_Yucatan_006976b8[0] != '\0') {
       cVar2 = s_Yucatan_006976b8[0];
@@ -525,7 +534,7 @@ LAB_00525f43:
       if ((*pcVar5 == '\0') || (*pcVar5 == ' ')) goto LAB_00525f6d;
     }
 LAB_00525fb0:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Antarctica_0069769c[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Antarctica_0069769c[0];
@@ -551,7 +560,7 @@ LAB_00525fb0:
       } while (iVar10 != 0);
     }
 LAB_00526021:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Kansas_00697694[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Kansas_00697694[0];
@@ -576,7 +585,7 @@ LAB_00526021:
       } while (iVar10 != 0);
     }
 LAB_0052608e:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (DAT_0069768c != '\0') {
       iVar10 = 0x69768d - (int)pcVar5;
       cVar2 = DAT_0069768c;
@@ -601,7 +610,7 @@ LAB_0052608e:
       } while (iVar10 != 0);
     }
 LAB_005260fb:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Everglades_0069767c[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Everglades_0069767c[0];
@@ -626,7 +635,7 @@ LAB_005260fb:
       } while (iVar10 != 0);
     }
 LAB_00526168:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Nepal_00697674[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Nepal_00697674[0];
@@ -651,7 +660,7 @@ LAB_00526168:
       } while (iVar10 != 0);
     }
 LAB_005261d5:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Scotland_00697668[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Scotland_00697668[0];
@@ -676,7 +685,7 @@ LAB_005261d5:
       } while (iVar10 != 0);
     }
 LAB_00526242:
-    pcVar5 = (char *)*in_stack_00000008;
+    pcVar5 = (char *)*param_2;
     if (s_Eclectia_0069765c[0] != '\0') {
       iVar10 = 1 - (int)pcVar5;
       cVar2 = s_Eclectia_0069765c[0];
@@ -736,15 +745,14 @@ void __thiscall TSpaceCommand::OrphanRetStub_00487a00(TSpaceCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575210
 // GHIDRA_NAME TSpaceCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TSpaceCommand * __thiscall TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this)
+TSpaceCommand * __thiscall
+TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTSpaceCommandInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -803,15 +811,16 @@ TNoHilitePicture * TSpaceCommand::ConstructTSpaceCommandBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578230
 // GHIDRA_NAME TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
-// GHIDRA_PROTO undefined __thiscall CreateTurnEventPacket_Vtbl00661b10WithInitParam(void)
+// GHIDRA_PROTO undefined __thiscall CreateTurnEventPacket_Vtbl00661b10WithInitParam(undefined1 param_1)
 
-void __thiscall TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam(TSpaceCommand *this)
+void __thiscall
+TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
+          (TSpaceCommand *this,undefined1 param_1)
 
 {
   TCommand *this_00;
   TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 in_stack_00000004;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -833,7 +842,7 @@ void __thiscall TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam(T
   local_4 = 0xffffffff;
   InitializeRangePairAndResetCursor(0x4e415341,g_pGlobalUiRootController,0,0,0);
   pTVar1[1].vftable = (TCommandVtbl *)this;
-  pTVar1[1].field_0x4 = in_stack_00000004;
+  pTVar1[1].field_0x4 = param_1;
   (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
   *unaff_FS_OFFSET = this_00;
   return;
@@ -863,19 +872,6 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
   CString CStack_9c;
   undefined4 uStack_98;
   undefined4 uStack_94;
-  undefined4 uStack_90;
-  undefined4 uStack_8c;
-  code *pcStack_88;
-  undefined4 uStack_84;
-  code *pcStack_80;
-  undefined4 uStack_7c;
-  undefined4 uStack_78;
-  TLoadSavePicture **ppTStack_74;
-  code *pcStack_70;
-  code *pcStack_6c;
-  int *piStack_68;
-  code *pcStack_64;
-  undefined4 uStack_60;
   CString CStack_5c;
   int *piStack_58;
   int iStack_54;
@@ -906,7 +902,6 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
   CStack_5c.m_pchData = &stack0xffffffc0;
   piStack_58 = (int *)0x2758;
   puStack_8 = (undefined1 *)0x0;
-  uStack_60 = 0x57838f;
   thunk_LoadUiStringResourceByGroupAndIndex();
   pcStack_24 = *(code **)(iVar2 + 0x1ec);
   piStack_58 = (int *)&stack0xffffffc0;
@@ -914,105 +909,65 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
   CStack_5c.m_pchData = (char *)0x5783a4;
   (*pcStack_24)();
   CStack_5c.m_pchData = (char *)0x1;
-  uStack_60 = 0x5783ae;
   (**(code **)(iVar2 + 0x1f8))();
-  uStack_60 = 0x636f756e;
-  pcStack_64 = (code *)0x5783b7;
   uVar3 = (*pTVar1)();
-  pcStack_64 = (code *)0x5783c0;
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
-  pcStack_64 = (code *)0x0;
-  piStack_68 = (int *)0x0;
-  pcStack_6c = (code *)0x5783d4;
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xa4))();
-  pcStack_6c = (code *)0x73747566;
-  pcStack_70 = (code *)0x5783dd;
   uVar3 = (*pTVar1)();
   piStack_58 = (int *)CONCAT31(extraout_var_01,uVar3);
   iStack_54 = *piStack_58;
-  pcStack_70 = (code *)0x5783ec;
   (**(code **)(iStack_54 + 0xc))();
-  ppTStack_74 = &pTStack_3c;
-  pcStack_70 = (code *)0x0;
   uStack_34 = 0x120;
   uStack_30 = 4;
   pTStack_3c = (TLoadSavePicture *)0x7d0;
   uStack_38 = 0x898;
-  uStack_78 = 0x578427;
   (**(code **)(iStack_54 + 0xf0))();
-  uStack_78 = 1;
-  uStack_7c = 0x1195;
-  pcStack_80 = (code *)0x57843e;
   (*this->vftable[0x39].GetTEventClassNamePointer)();
-  pcStack_80 = (code *)0x636f6174;
-  uStack_84 = 0x578447;
   uVar3 = (*pTVar1)();
-  piStack_68 = (int *)CONCAT31(extraout_var_02,uVar3);
-  pcStack_64 = (code *)*piStack_68;
-  uStack_84 = 0x578456;
-  (**(code **)((int)pcStack_64 + 0xc))();
-  uStack_84 = 1;
-  pcStack_88 = (code *)0x11cd;
-  pcStack_64 = *(code **)((int)pcStack_64 + 0x1c8);
-  uStack_8c = 0x578471;
-  (*pcStack_64)();
+  iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  (**(code **)(iVar2 + 0xc))();
+  (**(code **)(iVar2 + 0x1c8))();
   if ((char)uStack_38 != '\0') {
-    uStack_8c = 0x578480;
     uVar3 = (*this->vftable[0xb].GetTEventClassNamePointer)();
-    uStack_8c = 0x57848a;
     (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
   }
-  uStack_8c = 0x578495;
   DAT_006a4268 = this;
   uVar4 = thunk_GetTickCountDiv16();
   *(undefined4 *)&this[4].field_0x1c = uVar4;
   this[5].vftable = (TSpaceCommandVtbl *)0x0;
-  uStack_8c = 0x5784ac;
-  uVar4 = UpdateMapGenerationProgressSpinnerFrame(this);
-  uStack_8c = CONCAT31((int3)((uint)uVar4 >> 8),this[4].field_0x18);
-  uStack_90 = *(undefined4 *)&this[4].field_0x14;
+  UpdateMapGenerationProgressSpinnerFrame(this);
   uStack_94 = 1;
   uStack_98 = 0x5784c7;
   thunk_RebuildMapContextAndGlobalMapState();
   DAT_006a4268 = (TSpaceCommand *)0x0;
-  uStack_8c = 0x5784d8;
   UpdateMapGenerationProgressSpinnerFrame(this);
-  uStack_8c = 0x6d617020;
-  uStack_90 = 0x5784e1;
   uVar3 = (*pTVar1)();
   pTStack_3c = (TLoadSavePicture *)CONCAT31(extraout_var_04,uVar3);
-  uStack_90 = 0x5784ec;
   (*pTStack_3c->vftable[1].slot_0x04)();
-  uStack_90 = 0;
   uStack_94 = 0x5784f7;
-  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(pTStack_3c);
-  uStack_90 = 0x578500;
+  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(pTStack_3c,0);
   ApplyPaletteMaskToTileBufferByEventCode();
-  uStack_90 = 0;
   uStack_94 = 1;
   uStack_98 = 0x57850a;
-  (*pcStack_6c)();
+  (*(code *)0x73747566)();
   CStack_9c.m_pchData = (char *)&CStack_5c;
   uStack_98 = 0;
   uStack_a0 = 0x578519;
-  (*pcStack_70)();
+  (*(code *)0x0)();
   uStack_a0 = 1;
   CStack_a4.m_pchData = (char *)0x11bc;
-  (*(code *)ppTStack_74)();
-  (*pcStack_88)(*(short *)&this[4].field_0x1a + 0x11c6,1);
+  (*(code *)&pTStack_3c)();
+  (*(code *)0x11cd)(*(short *)&this[4].field_0x1a + 0x11c6,1);
   CString::CString(&CStack_5c,(char *)&g_szEmptyString);
-  pcStack_64._0_1_ = 1;
   CString::AssignFromPtr(&CStack_9c,&CStack_5c);
-  pcStack_64 = (code *)((uint)pcStack_64._1_3_ << 8);
   CString::~CString(&CStack_5c);
-  (*pcStack_80)(&CStack_9c,1);
+  (*(code *)0x636f6174)(&CStack_9c,1);
   if ((this[5].field_0x4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
     uVar3 = (*pTVar1)(0x636f756e);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
   }
-  pcStack_6c = (code *)0xffffffff;
   CString::~CString(&CStack_a4);
-  *unaff_FS_OFFSET = ppTStack_74;
+  *unaff_FS_OFFSET = &pTStack_3c;
   return;
 }
 

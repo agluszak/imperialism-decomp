@@ -27,7 +27,7 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   puStack_8 = &LAB_0063031a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  RenderUiBitmapOnRuntimeSurfaceContext(param_1);
+  RenderUiBitmapOnRuntimeSurfaceContext(param_1,0xdb8);
   CString::CString(&local_18);
   local_4 = 0;
   CString::CString(&local_1c);
@@ -53,7 +53,7 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
       local_4._0_1_ = 1;
       local_14 = 0xec;
       local_10 = 0x31;
-      SetLineDataRowAndBounds(this);
+      SetLineDataRowAndBounds(this,0,0,&local_14);
       pTVar1 = param_1->vftable;
       this[1].vftable = pTVar2;
       (*pTVar1[0x34].GetTLineDataClassNamePointer)(this);
@@ -70,24 +70,23 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6F30
 // GHIDRA_NAME TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-// GHIDRA_PROTO undefined __thiscall ApplyCityViewSelectionPayloadAndRefreshControls(void)
+// GHIDRA_PROTO undefined __thiscall ApplyCityViewSelectionPayloadAndRefreshControls(undefined4 param_1, undefined1 param_2, undefined4 param_3, undefined2 param_4)
 
-void __thiscall TLineData::ApplyCityViewSelectionPayloadAndRefreshControls(TLineData *this)
+void __thiscall
+TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
+          (TLineData *this,undefined4 param_1,undefined1 param_2,undefined4 param_3,
+          undefined2 param_4)
 
 {
   TLineDataVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  undefined4 in_stack_00000004;
-  undefined1 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined2 in_stack_00000010;
   
   pTVar1 = this->vftable;
-  *(undefined4 *)&this[9].field_0x4 = in_stack_00000004;
-  this[9].field_0xc = in_stack_00000008;
-  *(undefined4 *)&this[9].field_0x8 = in_stack_0000000c;
-  *(undefined2 *)&this[9].field_0xe = in_stack_00000010;
+  *(undefined4 *)&this[9].field_0x4 = param_1;
+  this[9].field_0xc = param_2;
+  *(undefined4 *)&this[9].field_0x8 = param_3;
+  *(undefined2 *)&this[9].field_0xe = param_4;
   uVar2 = (*pTVar1[0xb].GetTLineDataClassNamePointer)();
   *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 0x3c) = 0x65;
   (*pTVar1[0x3a].slot_0x04)();
@@ -97,9 +96,9 @@ void __thiscall TLineData::ApplyCityViewSelectionPayloadAndRefreshControls(TLine
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564A60
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_PROTO undefined __thiscall RenderUiBitmapOnRuntimeSurfaceContext(void)
+// GHIDRA_PROTO undefined __thiscall RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
-void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this)
+void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this,undefined4 param_1)
 
 {
   byte *pbVar1;
@@ -110,7 +109,6 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
   undefined1 uVar5;
   int *piVar6;
   undefined4 uVar7;
-  undefined4 in_stack_00000004;
   undefined4 uStack_18;
   undefined4 uStack_14;
   undefined4 uStack_10;
@@ -121,7 +119,7 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
   *(int *)&this[8].field_0x4 = piVar6[0xd4];
   *(undefined1 *)(piVar6 + 0xd3) = 1;
   (**(code **)(iVar2 + 0x1f8))();
-  piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(in_stack_00000004);
+  piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
   uStack_10 = 0;
   uStack_c = 0;
   thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
@@ -156,9 +154,10 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564DC0
 // GHIDRA_NAME TLineData::InitializePagedListLineDataControlsAndHeaderBitmap
-// GHIDRA_PROTO undefined __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(void)
+// GHIDRA_PROTO undefined __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
 
-void __thiscall TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this)
+void __thiscall
+TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,undefined4 param_1)
 
 {
   TLineData_GetTLineDataClassNamePointer_0x00 *pTVar1;
@@ -167,8 +166,8 @@ void __thiscall TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TL
   int iVar4;
   undefined4 *puVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   int local_18;
+  undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -178,9 +177,9 @@ void __thiscall TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TL
   puStack_8 = &LAB_0063591a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  RenderUiBitmapOnRuntimeSurfaceContext(this);
+  RenderUiBitmapOnRuntimeSurfaceContext(this,0xdba);
   iVar4 = 0x636c7330;
-  *(undefined4 *)&this[8].field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this[8].field_0x8 = param_1;
   pTVar3 = this + 9;
   local_18 = 4;
   do {
@@ -209,11 +208,12 @@ void __thiscall TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TL
         pTVar3->vftable = (TLineDataVtbl *)&TShipLineVtbl_0065cde8;
       }
       uStack_4 = 0xffffffff;
+      uStack_14 = 0xec;
       uStack_10 = 0x31;
-      SetLineDataRowAndBounds(pTVar3);
+      SetLineDataRowAndBounds(pTVar3,0,0,&uStack_14);
       *(undefined4 **)&pTVar3[1].field_0x4 = puVar5;
       pTVar2 = (TLineDataVtbl *)*puVar5;
-      *(undefined4 *)&pTVar3[1].field_0x8 = in_stack_00000004;
+      *(undefined4 *)&pTVar3[1].field_0x8 = param_1;
       pTVar3[1].vftable = pTVar2;
       (*pTVar1)(pTVar3);
       puVar5 = (undefined4 *)puVar5[1];
@@ -252,15 +252,13 @@ void __thiscall TLineData::ConstructTLineDataBaseState(TLineData *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3D0
 // GHIDRA_NAME TLineData::DestructTLineDataAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLineDataAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTLineDataAndMaybeFree(byte param_1)
 
-TLineData * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this)
+TLineData * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTLineDataAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -268,19 +266,17 @@ TLineData * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F420
 // GHIDRA_NAME TLineData::SetLineDataRowAndBounds
-// GHIDRA_PROTO undefined __thiscall SetLineDataRowAndBounds(void)
+// GHIDRA_PROTO undefined __thiscall SetLineDataRowAndBounds(undefined2 param_1, undefined2 param_2, undefined4 * param_3)
 
-void __thiscall TLineData::SetLineDataRowAndBounds(TLineData *this)
+void __thiscall
+TLineData::SetLineDataRowAndBounds
+          (TLineData *this,undefined2 param_1,undefined2 param_2,undefined4 *param_3)
 
 {
-  undefined2 in_stack_00000004;
-  undefined2 in_stack_00000008;
-  undefined4 *in_stack_0000000c;
-  
-  *(undefined2 *)&this->field_0x4 = in_stack_00000008;
-  *(undefined4 *)&this->field_0x8 = *in_stack_0000000c;
-  *(undefined4 *)&this->field_0xc = in_stack_0000000c[1];
-  *(undefined2 *)&this->field_0x6 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x4 = param_2;
+  *(undefined4 *)&this->field_0x8 = *param_3;
+  *(undefined4 *)&this->field_0xc = param_3[1];
+  *(undefined2 *)&this->field_0x6 = param_1;
   return;
 }
 
@@ -455,7 +451,7 @@ LAB_005bb355:
         iStack_1c = 0xffffffff;
         CStack_48.m_pchData = (char *)0xc8;
         iStack_44 = 0x1e;
-        SetLineDataRowAndBounds(pTVar4);
+        SetLineDataRowAndBounds(pTVar4,0,0x1e,&CStack_48);
         *(undefined2 *)&pTVar4[1].vftable = uVar8;
         (**(code **)(**(int **)&this[9].field_0x8 + 0x1a4))(pTVar4);
         CStack_48.m_pchData = (char *)(int)sVar11;
@@ -475,7 +471,7 @@ LAB_005bb355:
           uStack_4 = 0xffffffff;
           CStack_40.m_pchData = (char *)0xc8;
           uStack_3c = 0x1e;
-          SetLineDataRowAndBounds((TLineData *)pTVar5);
+          SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_64.m_pchData,0,&CStack_40);
           *(undefined2 *)&pTVar5->field_0x10 = uVar8;
           *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
           *(short *)&pTVar5->field_0x14 = sVar11;
@@ -500,7 +496,7 @@ LAB_005bb355:
         iStack_1c = 0xffffffff;
         local_68 = 200;
         local_64.m_pchData = (char *)0x1e;
-        SetLineDataRowAndBounds(pTVar4);
+        SetLineDataRowAndBounds(pTVar4,0,0x1e,&local_68);
         *(undefined2 *)&pTVar4[1].vftable = uVar8;
         (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(pTVar4);
         CStack_48.m_pchData = (char *)(int)sVar11;
@@ -520,7 +516,7 @@ LAB_005bb355:
           uStack_4 = 0xffffffff;
           pTStack_58 = (TLineData *)0xc8;
           uStack_54 = 0x1e;
-          SetLineDataRowAndBounds((TLineData *)pTVar5);
+          SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_68,0,&pTStack_58);
           *(undefined2 *)&pTVar5->field_0x10 = uVar8;
           *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
           *(short *)&pTVar5->field_0x14 = sVar11;
@@ -579,7 +575,7 @@ LAB_005bb355:
         uStack_4 = CONCAT31(uStack_4._1_3_,4);
         uStack_28 = 200;
         uStack_24 = 0x1e;
-        SetLineDataRowAndBounds(this_00);
+        SetLineDataRowAndBounds(this_00,0,0x1e,&uStack_28);
         *(short *)&this_00[1].vftable = (short)iVar9;
         (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(this_00);
         iVar10 = 7;
@@ -628,7 +624,7 @@ LAB_005bb355:
           }
           iVar10 = iVar10 + 1;
           ppTStack_5c = ppTStack_5c + 1;
-          pTStack_58 = (TLineData *)((int)pTStack_58 + 0x17);
+          pTStack_58 = (TLineData *)&pTStack_58[1].field_0x7;
         } while ((short)iVar10 < 0x17);
       }
       iStack_44 = iVar9 + 1;
@@ -651,7 +647,7 @@ LAB_005bb355:
   uStack_4 = 0xffffffff;
   uStack_20 = 200;
   iStack_1c = (('\0' < (char)g_apNationStates[sVar11]->field_0x8fc) + 4) * 0x1e;
-  SetLineDataRowAndBounds((TLineData *)pTVar5);
+  SetLineDataRowAndBounds((TLineData *)pTVar5,0,0,&uStack_20);
   *(short *)&pTVar5->field_0x10 = sVar11;
   (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(pTVar5);
   (**(code **)(**(int **)&this[9].field_0x8 + 0x1ac))();

@@ -114,7 +114,7 @@ TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMake
         *(undefined1 *)(this->field0c + 0x11 + psVar6[iVar12] * 0x24) = 3;
       }
       *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
-      uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this);
+      uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this,psVar6[iVar12]);
       *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar12] * 0x24) = uVar4;
     }
     if (local_28 == 0) {
@@ -137,7 +137,7 @@ TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMake
         if (cVar2 == '\t') {
           *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar12] * 0x24) = 4;
           *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
-          uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this);
+          uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this,psVar6[iVar12]);
           *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar12] * 0x24) = uVar4;
           goto LAB_00511d8b;
         }
@@ -155,7 +155,7 @@ TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMake
         *(undefined1 *)(this->field0c + 0x11 + psVar6[iVar12] * 0x24) = 4;
       }
       *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar12] * 0x24) = 0xff;
-      uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this);
+      uVar4 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex((TMapMgr *)this,psVar6[iVar12]);
       *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar12] * 0x24) = uVar4;
     }
 LAB_00511d8b:
@@ -169,10 +169,11 @@ LAB_00511d8b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00511F30
 // GHIDRA_NAME TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
-// GHIDRA_PROTO undefined __thiscall TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(void)
+// GHIDRA_PROTO undefined __thiscall TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1, short param_2)
 
 uint __thiscall
-TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(TMapMaker *this)
+TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+          (TMapMaker *this,short param_1,short param_2)
 
 {
   TCountry *pTVar1;
@@ -192,10 +193,8 @@ TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(TMapMaker
   int iVar9;
   int iVar10;
   int iVar11;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
-  iVar9 = (int)in_stack_00000004;
+  iVar9 = (int)param_1;
   iVar10 = 1;
   uVar3 = (*g_apTerrainTypeDescriptorTable[iVar9]->ownedRegionList->vftable[5].
             GetTEventHandlerClassNamePointer)();
@@ -233,7 +232,7 @@ TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(TMapMaker
     }
     iVar10 = iVar10 + 4;
   } while (iVar10 < 0x40);
-  iVar9 = (int)in_stack_00000008;
+  iVar9 = (int)param_2;
   iVar10 = 1;
   uVar3 = (*g_apTerrainTypeDescriptorTable[iVar9]->ownedRegionList->vftable[5].
             GetTEventHandlerClassNamePointer)();
@@ -308,15 +307,13 @@ void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525990
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTMapMaker(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -335,18 +332,16 @@ void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00526BA0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint * param_1, uint * param_2)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+void __thiscall
+TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,uint *param_1,uint *param_2)
 
 {
-  uint *in_stack_00000004;
-  uint *in_stack_00000008;
-  
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-  *in_stack_00000004 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0x1b;
+  *param_1 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0x1b;
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-  *in_stack_00000008 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0xf;
+  *param_2 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0xf;
   return;
 }
 
@@ -505,9 +500,10 @@ void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMake
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527040
 // GHIDRA_NAME TMapMaker::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 
-int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
+int __thiscall
+TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this,int param_1,int param_2)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -527,18 +523,18 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
   int iVar10;
   int iVar11;
   int iVar12;
-  char cStack00000004;
-  int in_stack_00000008;
   int in_stack_0000000c;
   int iVar13;
   int iStack_34;
   int iStack_2c;
-  char acStack_28 [8];
+  char acStack_28 [4];
+  int local_24;
   int aiStack_20 [7];
   int iStack_4;
   
-  if ((((in_stack_00000008 != 0) && (0 < _cStack00000004 / 0x1b)) && (_cStack00000004 / 0x1b < 0xe))
-     && (*(char *)((int)&this->field10 + _cStack00000004) == -1)) {
+  local_24 = param_2;
+  if ((((param_2 != 0) && (0 < param_1 / 0x1b)) && (param_1 / 0x1b < 0xe)) &&
+     (*(char *)((int)&this->field10 + param_1) == -1)) {
     if (in_stack_0000000c < 7) {
       cVar4 = (*this->vftable[6].slot_0x04)();
       if (cVar4 == '\0') {
@@ -546,20 +542,20 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
       }
     }
     else {
-      cVar4 = (*this->vftable[8].GetTEventHandlerClassNamePointer)();
+      cVar4 = (*this->vftable[8].GetTEventHandlerClassNamePointer)(param_1);
       if (cVar4 == '\0') {
         return 0;
       }
     }
     pTVar1 = this->vftable;
-    iVar10 = in_stack_00000008 + -1;
-    *(char *)((int)&this->field10 + _cStack00000004) = (char)in_stack_0000000c;
+    iVar10 = param_2 + -1;
+    *(char *)((int)&this->field10 + param_1) = (char)in_stack_0000000c;
     pTVar2 = pTVar1[0xe].slot_0x04;
     iVar13 = 6;
     iVar9 = 0;
     do {
-      uVar5 = (*pTVar2)();
-      if ((CONCAT31(extraout_var,uVar5) == -1) || (iVar9 == in_stack_00000008)) {
+      uVar5 = (*pTVar2)(param_1,iVar9);
+      if ((CONCAT31(extraout_var,uVar5) == -1) || (iVar9 == param_2)) {
         acStack_28[iVar9] = '\x01';
         iVar13 = iVar13 + -1;
       }
@@ -567,7 +563,7 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
         acStack_28[iVar9] = '\0';
       }
       iVar9 = iVar9 + 1;
-      iVar12 = _cStack00000004;
+      iVar12 = param_1;
     } while (iVar9 < 6);
     for (; (iVar10 != 0 && (iVar13 != 0)); iVar13 = iVar13 + -1) {
       iVar9 = 0;
@@ -577,11 +573,11 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
         if (acStack_28[iVar9] == '\0') {
           uVar5 = (*pTVar2)(iVar12,iVar9);
           iVar11 = 0;
-          *piVar8 = (-(uint)(iVar9 != in_stack_00000008) & 8) + 2;
+          *piVar8 = (-(uint)(iVar9 != param_2) & 8) + 2;
           do {
             uVar6 = (*pTVar2)((int)(short)CONCAT31(extraout_var_00,uVar5),iVar11);
             sVar7 = (short)CONCAT31(extraout_var_01,uVar6);
-            if ((sVar7 != -1) && (*(char *)((int)&this->field10 + (int)sVar7) == cStack00000004)) {
+            if ((sVar7 != -1) && (*(char *)((int)&this->field10 + (int)sVar7) == (char)param_1)) {
               *piVar8 = *piVar8 + 10;
             }
             iVar11 = iVar11 + 1;
@@ -609,7 +605,7 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
           *piVar8 = iVar3 + iVar11;
         } while (iVar3 + iVar11 < iVar9);
       }
-      uVar5 = (*pTVar2)(iStack_4,iVar12,iVar10,_cStack00000004,iVar12);
+      uVar5 = (*pTVar2)(iStack_4,iVar12,iVar10,param_1,iVar12);
       uVar5 = (*this->vftable[6].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var_02,uVar5));
       iVar10 = iVar10 - CONCAT31(extraout_var_03,uVar5);
       acStack_28[iVar12] = '\x01';
@@ -622,9 +618,9 @@ int __thiscall TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527300
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, int param_2)
 
-uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
+uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,undefined4 param_1,int param_2)
 
 {
   TMapMaker_slot_0x04_0x04 *pTVar1;
@@ -635,14 +631,12 @@ uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
   int iVar5;
   int *piVar6;
   int iVar7;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   int local_8;
   
   local_8 = 0;
   pTVar1 = this->vftable[0xe].slot_0x04;
   do {
-    uVar3 = (*pTVar1)(in_stack_00000004,local_8);
+    uVar3 = (*pTVar1)(param_1,local_8);
     if (CONCAT31(extraout_var,uVar3) == -1) {
       uVar4 = CONCAT31(extraout_var,0xff);
     }
@@ -650,8 +644,8 @@ uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
       uVar4 = CONCAT31(extraout_var,
                        *(undefined1 *)((int)&this->field10 + CONCAT31(extraout_var,uVar3)));
     }
-    if (((char)uVar4 != -1) && (iVar7 = (int)(char)uVar4, iVar7 != in_stack_00000008)) {
-      uVar4 = *(uint *)(&this->field_0x200 + in_stack_00000008 * 4);
+    if (((char)uVar4 != -1) && (iVar7 = (int)(char)uVar4, iVar7 != param_2)) {
+      uVar4 = *(uint *)(&this->field_0x200 + param_2 * 4);
       uVar2 = *(uint *)(&this->field_0x200 + iVar7 * 4);
       if (uVar4 == 0xffffffff) {
 LAB_005273b0:
@@ -659,10 +653,9 @@ LAB_005273b0:
           if (uVar4 != 0xffffffff) goto LAB_0052743c;
           iVar5 = *(int *)&this->field_0x1fc;
           *(int *)&this->field_0x1fc = iVar5 + 1;
-          *(int *)(&this->field_0x1b4 + iVar5 * 0xc) = in_stack_00000008;
+          *(int *)(&this->field_0x1b4 + iVar5 * 0xc) = param_2;
           *(int *)(&this->field_0x1ac + *(int *)&this->field_0x1fc * 0xc) = iVar7;
-          *(undefined4 *)(&this->field_0x200 + in_stack_00000008 * 4) =
-               *(undefined4 *)&this->field_0x1fc;
+          *(undefined4 *)(&this->field_0x200 + param_2 * 4) = *(undefined4 *)&this->field_0x1fc;
           uVar4 = *(uint *)&this->field_0x1fc;
           *(uint *)(&this->field_0x200 + iVar7 * 4) = uVar4;
         }
@@ -678,8 +671,8 @@ LAB_005273b0:
           }
           if (uVar4 == 3) goto LAB_0052745a;
           uVar4 = uVar4 + uVar2 * 3;
-          *(int *)(&this->field_0x1a8 + uVar4 * 4) = in_stack_00000008;
-          *(uint *)(&this->field_0x200 + in_stack_00000008 * 4) = uVar2;
+          *(int *)(&this->field_0x1a8 + uVar4 * 4) = param_2;
+          *(uint *)(&this->field_0x200 + param_2 * 4) = uVar2;
         }
       }
       else if (uVar2 == 0xffffffff) {
@@ -714,9 +707,10 @@ LAB_0052745a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005274D0
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
 
-uint __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
+uint __thiscall
+TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,undefined4 param_1,int param_2)
 
 {
   TMapMaker_slot_0x04_0x04 *pTVar1;
@@ -727,30 +721,28 @@ uint __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
   int iVar5;
   int iVar6;
   int iVar7;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   
   iVar7 = 0;
   pTVar1 = this->vftable[0xe].slot_0x04;
   do {
-    cVar3 = (*pTVar1)(in_stack_00000004,iVar7);
+    cVar3 = (*pTVar1)(param_1,iVar7);
     if (CONCAT31(extraout_var,cVar3) != -1) {
       cVar3 = *(char *)((int)&this->field10 + CONCAT31(extraout_var,cVar3));
     }
     uVar4 = CONCAT31(extraout_var,cVar3);
-    if ((cVar3 != -1) && (iVar6 = (int)cVar3, iVar6 != in_stack_00000008)) {
-      uVar4 = *(uint *)(&this->field_0x200 + in_stack_00000008 * 4);
+    if ((cVar3 != -1) && (iVar6 = (int)cVar3, iVar6 != param_2)) {
+      uVar4 = *(uint *)(&this->field_0x200 + param_2 * 4);
       uVar2 = *(uint *)(&this->field_0x200 + iVar6 * 4);
       if (uVar4 == 0xffffffff) {
         if (uVar2 == 0xffffffff) {
           iVar5 = *(int *)&this->field_0x1fc + 1;
           *(int *)&this->field_0x1fc = iVar5;
-          *(int *)(&this->field_0x200 + in_stack_00000008 * 4) = iVar5;
+          *(int *)(&this->field_0x200 + param_2 * 4) = iVar5;
           uVar4 = *(uint *)&this->field_0x1fc;
           *(uint *)(&this->field_0x200 + iVar6 * 4) = uVar4;
         }
         else {
-          *(uint *)(&this->field_0x200 + in_stack_00000008 * 4) = uVar2;
+          *(uint *)(&this->field_0x200 + param_2 * 4) = uVar2;
         }
       }
       else if (uVar4 != uVar2) {
@@ -1123,9 +1115,11 @@ LAB_00527dfc:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527ED0
 // GHIDRA_NAME TMapMaker::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(int param_1, int param_2, int param_3, char param_4)
 
-uint __thiscall TMapMaker::InvalidateWindowRectFromHandleField1C(TMapMaker *this)
+uint __thiscall
+TMapMaker::InvalidateWindowRectFromHandleField1C
+          (TMapMaker *this,int param_1,int param_2,int param_3,char param_4)
 
 {
   undefined4 uVar1;
@@ -1138,38 +1132,35 @@ uint __thiscall TMapMaker::InvalidateWindowRectFromHandleField1C(TMapMaker *this
   int iVar8;
   int iVar9;
   int unaff_EDI;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  char cStack0000000c;
-  int in_stack_00000010;
+  undefined3 in_stack_00000011;
   char in_stack_00000014;
   uint uVar5;
   
-  iVar7 = in_stack_00000004;
-  iVar4 = in_stack_00000004 * 0x24;
+  iVar7 = param_1;
+  iVar4 = param_1 * 0x24;
   pcVar6 = (char *)(this->padding_08_to_0b + iVar4);
   sVar3 = (short)*pcVar6;
   uVar5 = CONCAT22((short)((uint)iVar4 >> 0x10),sVar3);
-  in_stack_00000004 = CONCAT31(in_stack_00000004._1_3_,sVar3 == 2);
-  if (((pcVar6[2] != '\0') || ((sVar3 == 3 && (in_stack_00000010 != 0)))) ||
+  param_1 = CONCAT31(param_1._1_3_,sVar3 == 2);
+  if (((pcVar6[2] != '\0') || ((sVar3 == 3 && (_param_4 != 0)))) ||
      ((sVar3 == 2 && (in_stack_00000014 == '\0')))) goto LAB_00528081;
   if (sVar3 == 5) {
-    if (4 < in_stack_00000010) {
-      pcVar6[2] = cStack0000000c + '\x10';
+    if (4 < _param_4) {
+      pcVar6[2] = (char)param_3 + '\x10';
       return CONCAT31((int3)(uVar5 >> 8),1);
     }
     goto LAB_00528081;
   }
-  iVar9 = in_stack_00000008;
-  if (_cStack0000000c < 6) {
-    iVar8 = _cStack0000000c + 3;
-    if (5 < _cStack0000000c + 3) {
-      iVar8 = _cStack0000000c + -3;
+  iVar9 = param_2;
+  if (param_3 < 6) {
+    iVar8 = param_3 + 3;
+    if (5 < param_3 + 3) {
+      iVar8 = param_3 + -3;
     }
     do {
-      _cStack0000000c = iVar8;
+      param_3 = iVar8;
       DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-      iVar8 = in_stack_00000008 - (DAT_006a38e8 >> 0xc & 0x7fff) % 3;
+      iVar8 = param_2 - (DAT_006a38e8 >> 0xc & 0x7fff) % 3;
       iVar9 = iVar8 + 1;
       if (iVar9 < 6) {
         if (iVar9 < 0) {
@@ -1179,8 +1170,8 @@ uint __thiscall TMapMaker::InvalidateWindowRectFromHandleField1C(TMapMaker *this
       else {
         iVar9 = iVar8 + -5;
       }
-      iVar8 = _cStack0000000c;
-    } while (*(int *)(&DAT_00697568 + (_cStack0000000c + iVar9 * 6) * 4) == 0);
+      iVar8 = param_3;
+    } while (*(int *)(&DAT_00697568 + (param_3 + iVar9 * 6) * 4) == 0);
   }
   uVar5 = iVar7 / 0x6c;
   if ((uVar5 & 1) == 0) {
@@ -1208,14 +1199,14 @@ LAB_0052801a:
     iVar8 = -1;
   }
   cVar2 = (*this->vftable[0xc].GetTEventHandlerClassNamePointer)
-                    (iVar8,in_stack_00000008,iVar9,in_stack_00000010 + 1,in_stack_00000004);
+                    (iVar8,param_2,iVar9,_param_4 + 1,param_1);
   uVar5 = CONCAT31(extraout_var,cVar2);
   if (cVar2 != '\0') {
     if (iVar4 == 0) {
       *(char *)(unaff_EDI + 2 + this->padding_08_to_0b) = (char)(iVar9 + 10);
       return CONCAT31((int3)((uint)(iVar9 + 10) >> 8),1);
     }
-    uVar1 = *(undefined4 *)(&DAT_00697568 + (_cStack0000000c + iVar9 * 6) * 4);
+    uVar1 = *(undefined4 *)(&DAT_00697568 + (param_3 + iVar9 * 6) * 4);
     *(char *)(unaff_EDI + 2 + this->padding_08_to_0b) = (char)uVar1;
     return CONCAT31((int3)((uint)uVar1 >> 8),1);
   }
@@ -1225,9 +1216,10 @@ LAB_00528081:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528140
 // GHIDRA_NAME TMapMaker::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int param_1, int param_2, char param_3)
 
-int __thiscall TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this)
+int __thiscall
+TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this,int param_1,int param_2,char param_3)
 
 {
   uint uVar1;
@@ -1239,17 +1231,15 @@ int __thiscall TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this)
   int iVar6;
   int iVar7;
   int iVar8;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  char in_stack_0000000c;
+  undefined3 in_stack_0000000d;
   
-  iVar2 = in_stack_00000008;
+  iVar2 = param_2;
   iVar7 = this->padding_08_to_0b;
-  iVar8 = in_stack_00000004 * 0x24;
+  iVar8 = param_1 * 0x24;
   if (*(char *)(iVar7 + iVar8) != '\0') {
     return 0;
   }
-  uVar1 = in_stack_00000004 / 0x6c;
+  uVar1 = param_1 / 0x6c;
   iVar6 = 0;
   do {
     if ((uVar1 & 1) == 0) {
@@ -1258,7 +1248,7 @@ int __thiscall TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this)
     else {
       iVar4 = *(int *)((int)&DAT_00697480 + iVar6);
     }
-    iVar4 = in_stack_00000004 % 0x6c + iVar4;
+    iVar4 = param_1 % 0x6c + iVar4;
     iVar5 = uVar1 + *(int *)((int)&DAT_00697468 + iVar6);
     if (g_pGlobalMapState->field_0x20 == '\0') {
       if (iVar4 < 0) {
@@ -1282,13 +1272,13 @@ LAB_005281d9:
     iVar6 = iVar6 + 4;
   } while (iVar6 < 0x18);
   *(undefined1 *)(iVar7 + iVar8) = 1;
-  if (in_stack_0000000c == '\0') {
+  if (param_3 == '\0') {
     *(undefined1 *)(this->padding_08_to_0b + 0x13 + iVar8) = 0xd;
   }
   else {
     *(undefined1 *)(this->padding_08_to_0b + 0x13 + iVar8) = 0xf;
   }
-  in_stack_00000008 = in_stack_00000008 + -1;
+  param_2 = param_2 + -1;
   iVar7 = 0;
   do {
     if ((uVar1 & 1) == 0) {
@@ -1297,7 +1287,7 @@ LAB_005281d9:
     else {
       iVar8 = *(int *)((int)&DAT_00697480 + iVar7);
     }
-    iVar8 = in_stack_00000004 % 0x6c + iVar8;
+    iVar8 = param_1 % 0x6c + iVar8;
     iVar6 = uVar1 + *(int *)((int)&DAT_00697468 + iVar7);
     if (g_pGlobalMapState->field_0x20 == '\0') {
       if (iVar8 < 0) {
@@ -1316,44 +1306,42 @@ LAB_00528295:
       iVar8 = -1;
     }
     DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-    if (((DAT_006a38e8 >> 0xc & 0x7fff) % 100 < 0x46) && (in_stack_00000008 != 0)) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)(iVar8,1);
-      in_stack_00000008 = in_stack_00000008 - CONCAT31(extraout_var,uVar3);
+    if (((DAT_006a38e8 >> 0xc & 0x7fff) % 100 < 0x46) && (param_2 != 0)) {
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)(iVar8,1,_param_3);
+      param_2 = param_2 - CONCAT31(extraout_var,uVar3);
     }
     iVar7 = iVar7 + 4;
     if (0x17 < iVar7) {
-      return iVar2 - in_stack_00000008;
+      return iVar2 - param_2;
     }
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005283C0
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int param_3)
 
-int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
+int __thiscall
+TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2,int param_3)
 
 {
   uint uVar1;
   undefined uVar2;
   int iVar3;
-  int iVar4;
   undefined3 extraout_var;
-  ushort uVar5;
+  ushort uVar4;
+  int iVar5;
   int iVar6;
   int iVar7;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
   
-  if ((in_stack_00000004 < 0) || (0x1950 < in_stack_00000004)) {
+  if ((param_1 < 0) || (0x1950 < param_1)) {
     return 0;
   }
-  iVar4 = this->padding_08_to_0b;
-  if (*(char *)(iVar4 + in_stack_00000004 * 0x24) != '\0') {
+  iVar6 = this->padding_08_to_0b;
+  if (*(char *)(iVar6 + param_1 * 0x24) != '\0') {
     return 0;
   }
-  uVar1 = in_stack_00000004 / 0x6c;
+  uVar1 = param_1 / 0x6c;
   iVar7 = 0;
   do {
     if ((uVar1 & 1) == 0) {
@@ -1362,8 +1350,8 @@ int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
     else {
       iVar3 = *(int *)((int)&DAT_00697480 + iVar7);
     }
-    iVar3 = in_stack_00000004 % 0x6c + iVar3;
-    iVar6 = uVar1 + *(int *)((int)&DAT_00697468 + iVar7);
+    iVar3 = param_1 % 0x6c + iVar3;
+    iVar5 = uVar1 + *(int *)((int)&DAT_00697468 + iVar7);
     if (g_pGlobalMapState->field_0x20 == '\0') {
       if (iVar3 < 0) {
         iVar3 = iVar3 + 0x6c;
@@ -1372,78 +1360,79 @@ int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
         iVar3 = iVar3 + -0x6c;
       }
 LAB_005285b6:
-      if ((iVar6 < 0) || (0x3b < iVar6)) goto LAB_00528455;
-      iVar3 = iVar3 + iVar6 * 0x6c;
+      if ((iVar5 < 0) || (0x3b < iVar5)) goto LAB_00528455;
+      iVar3 = iVar3 + iVar5 * 0x6c;
     }
     else {
       if ((-1 < iVar3) && (iVar3 < 0x6c)) goto LAB_005285b6;
 LAB_00528455:
       iVar3 = -1;
     }
-    if (*(char *)(iVar4 + iVar3 * 0x24) == '\x05') {
+    if (*(char *)(iVar6 + iVar3 * 0x24) == '\x05') {
       return 0;
     }
     iVar7 = iVar7 + 4;
   } while (iVar7 < 0x18);
   iVar7 = 1;
-  *(undefined1 *)(iVar4 + in_stack_00000004 * 0x24) = 3;
-  if ((in_stack_0000000c == 1) || (in_stack_0000000c == 4)) {
+  *(undefined1 *)(iVar6 + param_1 * 0x24) = 3;
+  iVar6 = param_3;
+  if ((param_3 == 1) || (param_3 == 4)) {
     DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-    uVar5 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
-    if (0x27 < uVar5) {
-      if (uVar5 < 0x46) goto LAB_005284f1;
-      if (in_stack_0000000c != 5) goto LAB_0052850a;
-      in_stack_0000000c = 0;
+    uVar4 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (0x27 < uVar4) {
+      if (uVar4 < 0x46) goto LAB_005284f1;
+      if (param_3 != 5) goto LAB_0052850a;
+      iVar6 = 0;
     }
   }
   else {
     DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-    uVar5 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
-    if (0x3b < uVar5) {
-      if (uVar5 < 0x50) {
+    uVar4 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (0x3b < uVar4) {
+      if (uVar4 < 0x50) {
 LAB_005284f1:
-        if (in_stack_0000000c == 0) {
-          in_stack_0000000c = 5;
+        if (param_3 == 0) {
+          iVar6 = 5;
         }
         else {
-          in_stack_0000000c = in_stack_0000000c + -1;
+          iVar6 = param_3 + -1;
         }
       }
-      else if (in_stack_0000000c == 5) {
-        in_stack_0000000c = 0;
+      else if (param_3 == 5) {
+        iVar6 = 0;
       }
       else {
 LAB_0052850a:
-        in_stack_0000000c = in_stack_0000000c + 1;
+        iVar6 = param_3 + 1;
       }
     }
   }
   if ((uVar1 & 1) == 0) {
-    iVar4 = *(int *)(&DAT_00697450 + in_stack_0000000c * 4);
+    iVar3 = *(int *)(&DAT_00697450 + iVar6 * 4);
   }
   else {
-    iVar4 = (&DAT_00697480)[in_stack_0000000c];
+    iVar3 = (&DAT_00697480)[iVar6];
   }
-  iVar4 = in_stack_00000004 % 0x6c + iVar4;
-  iVar3 = uVar1 + (&DAT_00697468)[in_stack_0000000c];
+  iVar3 = param_1 % 0x6c + iVar3;
+  iVar6 = uVar1 + (&DAT_00697468)[iVar6];
   if (g_pGlobalMapState->field_0x20 == '\0') {
-    if (iVar4 < 0) {
-      iVar4 = iVar4 + 0x6c;
+    if (iVar3 < 0) {
+      iVar3 = iVar3 + 0x6c;
     }
-    else if (0x6b < iVar4) {
-      iVar4 = iVar4 + -0x6c;
+    else if (0x6b < iVar3) {
+      iVar3 = iVar3 + -0x6c;
     }
 LAB_0052855d:
-    if ((-1 < iVar3) && (iVar3 < 0x3c)) {
-      iVar4 = iVar4 + iVar3 * 0x6c;
+    if ((-1 < iVar6) && (iVar6 < 0x3c)) {
+      iVar3 = iVar3 + iVar6 * 0x6c;
       goto LAB_00528574;
     }
   }
-  else if ((-1 < iVar4) && (iVar4 < 0x6c)) goto LAB_0052855d;
-  iVar4 = -1;
+  else if ((-1 < iVar3) && (iVar3 < 0x6c)) goto LAB_0052855d;
+  iVar3 = -1;
 LAB_00528574:
-  if ((in_stack_00000008 != 1) && (-1 < iVar4)) {
-    uVar2 = (*this->vftable[9].GetTEventHandlerClassNamePointer)(iVar4,in_stack_00000008 + -1);
+  if ((param_2 != 1) && (-1 < iVar3)) {
+    uVar2 = (*this->vftable[9].GetTEventHandlerClassNamePointer)(iVar3,param_2 + -1,param_3);
     iVar7 = CONCAT31(extraout_var,uVar2) + 1;
   }
   return iVar7;
@@ -1506,9 +1495,9 @@ void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528780
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
 
-int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
+int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2)
 
 {
   char cVar1;
@@ -1517,13 +1506,11 @@ int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
   uint uVar4;
   int iVar5;
   int iVar6;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int iStack_4;
   
-  iVar5 = in_stack_00000004;
+  iVar5 = param_1;
   iVar6 = 0;
-  in_stack_00000004 = 0;
+  param_1 = 0;
   pcVar2 = (char *)(this->padding_08_to_0b + iVar5 * 0xf30);
   cVar1 = *pcVar2;
   for (iVar5 = 0; (cVar1 != '\x05' && (iVar5 < 0x6c)); iVar5 = iVar5 + 1) {
@@ -1547,9 +1534,9 @@ int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this)
     if (iVar6 == 1) {
       if ((*pcVar3 == '\0') &&
          (uVar4 = uVar4 * 0x15a4e35 + 1, DAT_006a38e8 = uVar4,
-         (int)((uVar4 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
+         (int)((uVar4 >> 0xc & 0x7fff) % 100) < param_2)) {
         *pcVar3 = '\x06';
-        in_stack_00000004 = in_stack_00000004 + 1;
+        param_1 = param_1 + 1;
         pcVar2[0x37] = '\f';
         uVar4 = DAT_006a38e8;
       }
@@ -1568,16 +1555,16 @@ joined_r0x00528843:
     iStack_4 = iStack_4 + -1;
     pcVar2 = pcVar3;
     if (iStack_4 == 0) {
-      return in_stack_00000004;
+      return param_1;
     }
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005288A0
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1,int param_2)
 
 {
   char cVar1;
@@ -1588,14 +1575,12 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
   char *pcVar6;
   int iVar7;
   int iVar8;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int local_14;
   int local_10;
   int local_4;
   
   local_14 = 0;
-  pcVar5 = (char *)(this->padding_08_to_0b + in_stack_00000004 * 0xf30);
+  pcVar5 = (char *)(this->padding_08_to_0b + param_1 * 0xf30);
   iVar2 = 0;
   cVar1 = *pcVar5;
   for (local_10 = 0; (cVar1 != '\x05' && (local_10 < 0x6c)); local_10 = local_10 + 1) {
@@ -1619,8 +1604,8 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
     if (local_14 == 1) {
       if ((*pcVar6 == '\0') &&
          (uVar4 = uVar4 * 0x15a4e35 + 1, DAT_006a38e8 = uVar4,
-         (int)((uVar4 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
-        iVar7 = local_10 + in_stack_00000004 * 0x6c;
+         (int)((uVar4 >> 0xc & 0x7fff) % 100) < param_2)) {
+        iVar7 = local_10 + param_1 * 0x6c;
         *pcVar6 = '\x06';
         pcVar5[0x37] = '\v';
         iVar8 = DAT_00697494;
@@ -1648,7 +1633,7 @@ LAB_005289d4:
         iVar3 = iVar2 + 1;
         if ((*(char *)(this->padding_08_to_0b + iVar8 * 0x24) == '\0') &&
            (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1,
-           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
+           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < param_2)) {
           *(undefined1 *)(this->padding_08_to_0b + iVar8 * 0x24) = 6;
           pcVar5[0x37] = '\v';
           iVar3 = iVar2 + 2;
@@ -1679,7 +1664,7 @@ LAB_00528a9e:
         uVar4 = DAT_006a38e8;
         if ((*(char *)(this->padding_08_to_0b + iVar8 * 0x24) == '\0') &&
            (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1, uVar4 = DAT_006a38e8,
-           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
+           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < param_2)) {
           *(undefined1 *)(this->padding_08_to_0b + iVar8 * 0x24) = 6;
           pcVar5[0x37] = '\v';
           iVar2 = iVar2 + 1;
@@ -1703,24 +1688,22 @@ LAB_00528a9e:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528CE0
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1,int param_2)
 
 {
   int iVar1;
   int iVar2;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if ((in_stack_00000004 / 0x1b & 1U) == 0) {
-    iVar1 = *(int *)(&DAT_00697498 + in_stack_00000008 * 4);
+  if ((param_1 / 0x1b & 1U) == 0) {
+    iVar1 = *(int *)(&DAT_00697498 + param_2 * 4);
   }
   else {
-    iVar1 = *(int *)(&DAT_006974c8 + in_stack_00000008 * 4);
+    iVar1 = *(int *)(&DAT_006974c8 + param_2 * 4);
   }
-  iVar1 = in_stack_00000004 % 0x1b + iVar1;
-  iVar2 = in_stack_00000004 / 0x1b + *(int *)(&DAT_006974b0 + in_stack_00000008 * 4);
+  iVar1 = param_1 % 0x1b + iVar1;
+  iVar2 = param_1 / 0x1b + *(int *)(&DAT_006974b0 + param_2 * 4);
   if (iVar1 < 0) {
     iVar1 = iVar1 + 0x1b;
   }
@@ -1959,9 +1942,10 @@ void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005296A0
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(short param_1, short param_2, short param_3)
 
-void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
+void __thiscall
+TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,short param_1,short param_2,short param_3)
 
 {
   undefined uVar1;
@@ -1969,15 +1953,14 @@ void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
   int iVar3;
   undefined4 *puVar4;
   undefined4 *puVar5;
-  short in_stack_00000004;
-  short in_stack_0000000c;
+  undefined2 in_stack_00000006;
   short in_stack_00000010;
   undefined4 *puVar2;
   
-  uVar1 = (*this->vftable[0x10].slot_0x04)();
+  uVar1 = (*this->vftable[0x10].slot_0x04)(_param_1);
   puVar2 = (undefined4 *)CONCAT31(extraout_var,uVar1);
   puVar4 = puVar2 + -0x3c3;
-  if (in_stack_0000000c == in_stack_00000004) {
+  if (param_3 == param_1) {
     DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
     if ((DAT_006a38e8 >> 0xc & 1) != 0) {
       puVar4 = puVar2;
@@ -2025,7 +2008,7 @@ LAB_00529772:
     puVar5 = puVar5 + 1;
   }
 LAB_0052977b:
-  if (in_stack_00000010 != in_stack_00000004) {
+  if (in_stack_00000010 != param_1) {
     puVar4 = puVar2 + -0x3ba;
     puVar2 = puVar2 + 0x1b;
     for (iVar3 = 9; iVar3 != 0; iVar3 = iVar3 + -1) {
@@ -2039,9 +2022,9 @@ LAB_0052977b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005297E0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -2053,15 +2036,15 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
   undefined4 *puVar5;
   undefined4 *puVar6;
   undefined4 *puVar7;
-  short in_stack_00000004;
+  undefined2 in_stack_00000006;
   undefined3 extraout_var_00;
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0xe].slot_0x04)();
+  uVar2 = (*pTVar1[0xe].slot_0x04)(_param_1,2);
   uVar2 = (*pTVar1[0x10].slot_0x04)(CONCAT31(extraout_var,uVar2));
   puVar3 = (undefined4 *)CONCAT31(extraout_var_00,uVar2);
   puVar6 = puVar3 + -0x3cc;
-  if (in_stack_00000004 == unaff_SI) {
+  if (param_1 == unaff_SI) {
     for (iVar4 = 9; iVar4 != 0; iVar4 = iVar4 + -1) {
       *puVar3 = *puVar6;
       puVar6 = puVar6 + 1;
@@ -2092,17 +2075,16 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005298A0
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
-  iVar1 = ((int)(short)(in_stack_00000004 % 0x1b) + (short)(in_stack_00000004 / 0x1b) * 0x6c) * 0x90
-          + this->padding_08_to_0b;
-  if ((in_stack_00000004 / 0x1b & 1U) != 0) {
+  iVar1 = ((int)(short)(param_1 % 0x1b) + (short)(param_1 / 0x1b) * 0x6c) * 0x90 +
+          this->padding_08_to_0b;
+  if ((param_1 / 0x1b & 1U) != 0) {
     iVar1 = iVar1 + -0x48;
   }
   return iVar1;
@@ -2110,17 +2092,16 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00529F60
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(char param_1)
 
-void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this)
+void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,char param_1)
 
 {
   int iVar1;
   int iVar2;
   undefined4 *puVar3;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 == '\0') {
+  if (param_1 == '\0') {
     GenerateCityRegionIdsBySeedAndNeighborPropagation();
   }
   else {
@@ -2211,9 +2192,12 @@ void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052C0A0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+void __thiscall
+TMapMaker::GetTEventHandlerClassNamePointer
+          (TMapMaker *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   int iVar1;
@@ -2221,10 +2205,6 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
   int iVar3;
   uint uVar4;
   undefined4 *puVar5;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   uVar2 = this->field0c;
   if ((uint)this->padding_08_to_0b <= uVar2) {
@@ -2248,10 +2228,10 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
     this->field0c = uVar2 + 1;
   }
   puVar5 = (undefined4 *)(uVar2 * 0x10 + this->field04);
-  *puVar5 = in_stack_00000004;
-  puVar5[1] = in_stack_00000008;
-  puVar5[2] = in_stack_0000000c;
-  puVar5[3] = in_stack_00000010;
+  *puVar5 = param_1;
+  puVar5[1] = param_2;
+  puVar5[2] = param_3;
+  puVar5[3] = param_4;
   return;
 }
 
@@ -2286,9 +2266,9 @@ undefined4 __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052E890
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -2298,13 +2278,12 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
   undefined3 extraout_var;
   int iVar5;
   int iVar6;
-  short in_stack_00000004;
   
-  iVar5 = (int)in_stack_00000004;
+  iVar5 = (int)param_1;
   iVar6 = 0;
   pTVar1 = this->vftable;
   *(undefined1 *)((int)&this->field10 + iVar5) = 0xf7;
-  _in_stack_00000004 = 6;
+  _param_1 = 6;
   pTVar2 = pTVar1[0xe].slot_0x04;
   do {
     uVar3 = (*pTVar2)(iVar5,iVar6);
@@ -2313,8 +2292,8 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
       (*this->vftable[0xe].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var,uVar3));
     }
     iVar6 = iVar6 + 1;
-    _in_stack_00000004 = _in_stack_00000004 + -1;
-  } while (_in_stack_00000004 != 0);
+    _param_1 = _param_1 + -1;
+  } while (_param_1 != 0);
   return;
 }
 

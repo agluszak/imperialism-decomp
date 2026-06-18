@@ -59,16 +59,14 @@ TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B170
 // GHIDRA_NAME TTerrainInfoDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTerrainInfoDialog * __thiscall
-TTerrainInfoDialog::_scalar_deleting_destructor_(TTerrainInfoDialog *this)
+TTerrainInfoDialog::_scalar_deleting_destructor_(TTerrainInfoDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

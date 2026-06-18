@@ -16,16 +16,14 @@ TTradeScreenPicture::GetTEventHandlerClassNamePointer(TTradeScreenPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA750
 // GHIDRA_NAME TTradeScreenPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTradeScreenPicture * __thiscall
-TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this)
+TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -33,9 +31,10 @@ TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA7A0
 // GHIDRA_NAME TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(CString param_1)
 
-void __thiscall TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this)
+void __thiscall
+TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this,CString param_1)
 
 {
   TSimMgrVtbl *pTVar1;
@@ -48,7 +47,6 @@ void __thiscall TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreen
   char *pcVar5;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   TTradeScreenPicture_slot_0x04_0x04 *local_30;
   int iStack_2c;
   int iStack_28;
@@ -64,10 +62,10 @@ void __thiscall TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreen
   puStack_8 = &LAB_00639100;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_1c.left = *(LONG *)in_stack_00000004.m_pchData;
-  local_1c.top = *(LONG *)(in_stack_00000004.m_pchData + 4);
-  local_1c.right = *(LONG *)(in_stack_00000004.m_pchData + 8);
-  local_1c.bottom = *(LONG *)(in_stack_00000004.m_pchData + 0xc);
+  local_1c.left = *(LONG *)param_1.m_pchData;
+  local_1c.top = *(LONG *)(param_1.m_pchData + 4);
+  local_1c.right = *(LONG *)(param_1.m_pchData + 8);
+  local_1c.bottom = *(LONG *)(param_1.m_pchData + 0xc);
   if ((*(short *)(DAT_006a2158 + 0x1c) == 0x7d9) || (*(short *)(DAT_006a2158 + 0x1c) == 0x7da)) {
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
@@ -81,7 +79,7 @@ void __thiscall TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreen
     pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
     local_30 = this->vftable[0x12].slot_0x04;
     do {
-      CString::CString(&stack0x00000004);
+      CString::CString(&param_1);
       local_4 = 0;
       uVar2 = (*local_30)(*(undefined4 *)pcVar5);
       iVar4 = CONCAT31(extraout_var,uVar2);
@@ -125,10 +123,10 @@ void __thiscall TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreen
         (*pTVar1[0xe].slot_0x04)((int)(short)CONCAT31(extraout_var_02,uVar2));
         iStack_20 = iStack_20 + -5;
         iStack_28 = iStack_28 + -5;
-        RenderTradeScreenCommoditySummaryRows_Impl(&stack0x00000004,&iStack_2c,0xffffffff,0);
+        RenderTradeScreenCommoditySummaryRows_Impl(&param_1,&iStack_2c,0xffffffff,0);
       }
       local_4 = 0xffffffff;
-      CString::~CString(&stack0x00000004);
+      CString::~CString(&param_1);
       pcVar5 = pcVar5 + 4;
       iVar6 = iVar6 + 1;
     } while ((int)pcVar5 < 0x66db14);

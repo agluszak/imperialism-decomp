@@ -15,15 +15,14 @@ void __thiscall TMiniCivView::OrphanRetStub_004ab800(TMiniCivView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB820
 // GHIDRA_NAME TMiniCivView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniCivView * __thiscall TMiniCivView::_scalar_deleting_destructor_(TMiniCivView *this)
+TMiniCivView * __thiscall
+TMiniCivView::_scalar_deleting_destructor_(TMiniCivView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTMiniCivLineAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -111,7 +110,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   *(undefined4 *)(param_1 + 0x60) = 0x22;
   param_5.m_pchData = &stack0xffffffb8;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&stack0xffffffb8);
+            ((TToolBarCluster *)&stack0xffffffb8,PTR_g_szEmptyString_0064cb18);
   InitializeAndRunMainRoutine();
   CString::CString(&param_3);
   local_4 = 0;
@@ -330,20 +329,20 @@ void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC320
 // GHIDRA_NAME TMiniCivView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)
 
-void __thiscall TMiniCivView::OrphanRetStub_0059add0(TMiniCivView *this)
+void __thiscall
+TMiniCivView::OrphanRetStub_0059add0(TMiniCivView *this,int param_1,TMiniCivView *param_2)
 
 {
   TView *pTVar1;
-  TMiniCivView *in_stack_00000008;
   
-  if (in_stack_00000008 == this) {
+  if (param_2 == this) {
     pTVar1 = this->ownerContext;
     (*pTVar1->vftable[1].slot_0x04)();
     *(undefined2 *)&pTVar1[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

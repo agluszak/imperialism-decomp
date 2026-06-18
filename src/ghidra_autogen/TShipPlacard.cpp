@@ -57,15 +57,14 @@ TShipPlacard * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlac
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005692A0
 // GHIDRA_NAME TShipPlacard::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipPlacard * __thiscall TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this)
+TShipPlacard * __thiscall
+TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

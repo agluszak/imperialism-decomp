@@ -58,15 +58,13 @@ void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this)
+TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -85,42 +83,36 @@ void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ECC0
 // GHIDRA_NAME TMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *this)
+void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0xc,2);
+  (**(code **)(*param_1 + 0x3c))(&this->field_0xc,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ECF0
 // GHIDRA_NAME TMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *this)
+void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  (**(code **)(*in_stack_00000004 + 0x78))(&this->field_0xc,2);
+  (**(code **)(*param_1 + 0x78))(&this->field_0xc,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ED20
 // GHIDRA_NAME TMinister::DispatchNationStateEventCode10
-// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
+// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this)
+void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  (*g_apNationStates[in_stack_00000004]->vftable[0xf].GetTCountryClassNamePointer)(0x10);
+  (*g_apNationStates[param_1]->vftable[0xf].GetTCountryClassNamePointer)(0x10);
   return;
 }
 

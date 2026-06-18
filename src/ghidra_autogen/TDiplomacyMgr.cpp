@@ -30,15 +30,14 @@ void __thiscall TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE700
 // GHIDRA_NAME TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMgrAndMaybeFree(byte param_1)
 
-TDiplomacyMgr * __thiscall TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this)
+TDiplomacyMgr * __thiscall
+TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At004ee730();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -167,19 +166,20 @@ void __thiscall TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback(TDiploma
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EF540
 // GHIDRA_NAME TDiplomacyMgr::IsNationPairAtWar
-// GHIDRA_PROTO undefined __thiscall IsNationPairAtWar(void)
+// GHIDRA_PROTO undefined __thiscall IsNationPairAtWar(short param_1, short param_2)
 
-undefined4 __thiscall TDiplomacyMgr::IsNationPairAtWar(TDiplomacyMgr *this)
+undefined4 __thiscall
+TDiplomacyMgr::IsNationPairAtWar(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  short in_stack_00000004;
-  short in_stack_00000008;
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
   
-  if ((g_apTerrainTypeDescriptorTable[in_stack_00000004] != (TCountry *)0x0) &&
-     (g_apTerrainTypeDescriptorTable[in_stack_00000008] != (TCountry *)0x0)) {
-    uVar1 = (*this->vftable[0xe].GetTDiplomacyMgrClassNamePointer)();
+  if ((g_apTerrainTypeDescriptorTable[param_1] != (TCountry *)0x0) &&
+     (g_apTerrainTypeDescriptorTable[param_2] != (TCountry *)0x0)) {
+    uVar1 = (*this->vftable[0xe].GetTDiplomacyMgrClassNamePointer)(_param_1,_param_2);
     return CONCAT31(extraout_var,(short)CONCAT31(extraout_var,uVar1) == 6);
   }
   return 0;
@@ -210,48 +210,41 @@ undefined1 __thiscall TDiplomacyMgr::HasAnyWarRelationForNation(TDiplomacyMgr *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EF6A0
 // GHIDRA_NAME TDiplomacyMgr::IsNationSlotInPrimaryGroupA
-// GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupA(void)
+// GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupA(short param_1, short param_2)
 
-undefined4 __thiscall TDiplomacyMgr::IsNationSlotInPrimaryGroupA(TDiplomacyMgr *this)
+undefined4 __thiscall
+TDiplomacyMgr::IsNationSlotInPrimaryGroupA(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
-  short in_stack_00000004;
-  short in_stack_00000008;
-  
-  return CONCAT31((int3)(char)((ushort)in_stack_00000008 >> 8),
-                  *(short *)(&this->field_0x1886 + in_stack_00000008 * 2) == in_stack_00000004);
+  return CONCAT31((int3)(char)((ushort)param_2 >> 8),
+                  *(short *)(&this->field_0x1886 + param_2 * 2) == param_1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EF6D0
 // GHIDRA_NAME TDiplomacyMgr::IsNationSlotInPrimaryGroupB
-// GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupB(void)
+// GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupB(short param_1, short param_2)
 
-undefined4 __thiscall TDiplomacyMgr::IsNationSlotInPrimaryGroupB(TDiplomacyMgr *this)
+undefined4 __thiscall
+TDiplomacyMgr::IsNationSlotInPrimaryGroupB(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
-  short in_stack_00000004;
-  short in_stack_00000008;
-  
-  return CONCAT31((int3)(char)((ushort)in_stack_00000008 >> 8),
-                  *(short *)(&this->field_0x18a6 + in_stack_00000008 * 2) == in_stack_00000004);
+  return CONCAT31((int3)(char)((ushort)param_2 >> 8),
+                  *(short *)(&this->field_0x18a6 + param_2 * 2) == param_1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F1970
 // GHIDRA_NAME TDiplomacyMgr::HasState300LinkBetweenNationPair
-// GHIDRA_PROTO undefined __thiscall HasState300LinkBetweenNationPair(void)
+// GHIDRA_PROTO undefined __thiscall HasState300LinkBetweenNationPair(short param_1, short param_2)
 
-int __thiscall TDiplomacyMgr::HasState300LinkBetweenNationPair(TDiplomacyMgr *this)
+int __thiscall
+TDiplomacyMgr::HasState300LinkBetweenNationPair(TDiplomacyMgr *this,short param_1,short param_2)
 
 {
   uint3 uVar1;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
-  uVar1 = (uint3)(char)((ushort)in_stack_00000004 >> 8);
-  if ((*(short *)(&g_apTerrainTypeDescriptorTable[in_stack_00000004]->field_0x14 +
-                 in_stack_00000008 * 2) != 300) &&
-     (*(short *)(&g_apTerrainTypeDescriptorTable[in_stack_00000008]->field_0x14 +
-                in_stack_00000004 * 2) != 300)) {
+  uVar1 = (uint3)(char)((ushort)param_1 >> 8);
+  if ((*(short *)(&g_apTerrainTypeDescriptorTable[param_1]->field_0x14 + param_2 * 2) != 300) &&
+     (*(short *)(&g_apTerrainTypeDescriptorTable[param_2]->field_0x14 + param_1 * 2) != 300)) {
     return (uint)uVar1 << 8;
   }
   return CONCAT31(uVar1,1);
@@ -259,13 +252,11 @@ int __thiscall TDiplomacyMgr::HasState300LinkBetweenNationPair(TDiplomacyMgr *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F1F50
 // GHIDRA_NAME TDiplomacyMgr::IsPrimaryNationSlotIndex
-// GHIDRA_PROTO undefined __thiscall IsPrimaryNationSlotIndex(void)
+// GHIDRA_PROTO undefined __thiscall IsPrimaryNationSlotIndex(short param_1)
 
-bool __thiscall TDiplomacyMgr::IsPrimaryNationSlotIndex(TDiplomacyMgr *this)
+bool __thiscall TDiplomacyMgr::IsPrimaryNationSlotIndex(TDiplomacyMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return in_stack_00000004 < 7;
+  return param_1 < 7;
 }
 

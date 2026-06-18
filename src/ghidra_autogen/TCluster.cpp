@@ -83,15 +83,13 @@ TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491480
 // GHIDRA_NAME TCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this)
+TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTClusterAndMaybeFree_Impl((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -180,14 +178,13 @@ undefined4 __thiscall TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(TCluste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491790
 // GHIDRA_NAME TCluster::OrphanCallChain_C2_I51_00491790
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this)
+void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this,int param_1)
 
 {
   int *piVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
   
   if (this->field44 == 0) {
     puVar2 = (undefined4 *)0x0;
@@ -204,7 +201,7 @@ void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this)
     puVar2 = (undefined4 *)*puVar2;
   }
   while (piVar1 != (int *)0x0) {
-    if (piVar1[7] == in_stack_00000004) {
+    if (piVar1[7] == param_1) {
       (**(code **)(*piVar1 + 0x3c))(0x1f,this,0);
     }
     else {
@@ -219,7 +216,7 @@ void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this)
       puVar2 = (undefined4 *)*puVar2;
     }
   }
-  *(int *)&this->field_0x84 = in_stack_00000004;
+  *(int *)&this->field_0x84 = param_1;
   return;
 }
 

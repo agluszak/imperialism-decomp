@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D360
 // GHIDRA_NAME TTacticalToolbar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalToolbar * __thiscall TTacticalToolbar::_scalar_deleting_destructor_(TTacticalToolbar *this)
+TTacticalToolbar * __thiscall
+TTacticalToolbar::_scalar_deleting_destructor_(TTacticalToolbar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -128,12 +127,12 @@ void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalTool
   puStack_10 = (undefined1 *)&pTStack_24;
   pTStack_20 = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_24);
+            ((TToolBarCluster *)&pTStack_24,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   pTStack_20 = (TTacticalToolbar *)this->ownerContext;
   puStack_10 = (undefined1 *)&pTStack_24;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_24);
+            ((TToolBarCluster *)&pTStack_24,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   return;
 }
@@ -208,10 +207,11 @@ int __thiscall TTacticalToolbar::OrphanCallChain_C11_I88_004874b0(TTacticalToolb
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACB50
 // GHIDRA_NAME TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
-// GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)
+// GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int * param_1)
 
 void __thiscall
-TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacticalToolbar *this)
+TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+          (TTacticalToolbar *this,int *param_1)
 
 {
   int iVar1;
@@ -219,7 +219,6 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacti
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   undefined4 uStack_18;
   undefined4 uStack_c;
   CString CStack_8;
@@ -229,21 +228,21 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacti
   uStack_4 = 0xffffffff;
   CStack_8.m_pchData = &LAB_006387f8;
   *unaff_FS_OFFSET = &uStack_c;
-  *(int **)&this->field_0x8c = in_stack_00000004;
+  *(int **)&this->field_0x8c = param_1;
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x63757272);
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar2 + 0xc))();
-  if (in_stack_00000004 != (int *)0x0) {
-    iVar1 = in_stack_00000004[3] * 2 + 0xf1e;
+  if (param_1 != (int *)0x0) {
+    iVar1 = param_1[3] * 2 + 0xf1e;
     (**(code **)(iVar2 + 0x1c8))
-              (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + (short)in_stack_00000004[8]),1);
+              (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + (short)param_1[8]),1);
   }
-  (**(code **)(iVar2 + 0xa4))(in_stack_00000004 != (int *)0x0,1);
+  (**(code **)(iVar2 + 0xa4))(param_1 != (int *)0x0,1);
   thunk_InvalidateCityDialogRectRegion(&stack0xffffffd8,1);
   CString::CString(&CStack_8);
-  if (in_stack_00000004 != (int *)0x0) {
-    (**(code **)(*in_stack_00000004 + 0xc))();
-    CString::AssignFromPtr(&CStack_8,(CString *)(in_stack_00000004[0xe] + 0x24));
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 0xc))();
+    CString::AssignFromPtr(&CStack_8,(CString *)(param_1[0xe] + 0x24));
   }
   AssignSharedStringToTaggedControlAndProcessState(CStack_8.m_pchData,0x444c4f47);
   CString::~CString(&CStack_8);
@@ -253,47 +252,45 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacti
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACC90
 // GHIDRA_NAME TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005acc90(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1)
 
 void __thiscall
-TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90(TTacticalToolbar *this)
+TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
+          (TTacticalToolbar *this,int param_1)
 
 {
   int iVar1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
-  int in_stack_00000004;
   
-  *(int *)&this->field_0x90 = in_stack_00000004;
+  *(int *)&this->field_0x90 = param_1;
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x74706963);
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar2 + 0xc))();
-  if (in_stack_00000004 != 0) {
-    iVar1 = *(int *)(in_stack_00000004 + 0xc) * 2 + 0xf1e;
+  if (param_1 != 0) {
+    iVar1 = *(int *)(param_1 + 0xc) * 2 + 0xf1e;
     (**(code **)(iVar2 + 0x1c8))
-              (CONCAT22((short)((uint)iVar1 >> 0x10),
-                        (short)iVar1 + *(short *)(in_stack_00000004 + 0x20)),1);
+              (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + *(short *)(param_1 + 0x20)),1);
   }
-  (**(code **)(iVar2 + 0xa4))(in_stack_00000004 != 0,1);
+  (**(code **)(iVar2 + 0xa4))(param_1 != 0,1);
   thunk_InvalidateCityDialogRectRegion(&stack0xffffffe4,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACF90
 // GHIDRA_NAME TTacticalToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TTacticalToolbar::OrphanRetStub_0059add0(TTacticalToolbar *this)
+void __thiscall
+TTacticalToolbar::OrphanRetStub_0059add0
+          (TTacticalToolbar *this,int param_1,void *param_2,int param_3)
 
 {
   uint commandTag;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  if (in_stack_00000004 != 10) goto LAB_005acfe5;
-  commandTag = *(uint *)((int)in_stack_00000008 + 0x1c);
+  if (param_1 != 10) goto LAB_005acfe5;
+  commandTag = *(uint *)((int)param_2 + 0x1c);
   if (commandTag < 0x646f6e66) {
     if ((commandTag != 0x646f6e65) && (commandTag != 0x6175746f)) goto LAB_005acfe5;
   }
@@ -307,8 +304,7 @@ void __thiscall TTacticalToolbar::OrphanRetStub_0059add0(TTacticalToolbar *this)
   TacticalBattleView::thunk_HandleTacticalBattleCommandTag
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005acfe5:
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
   (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
   return;
 }

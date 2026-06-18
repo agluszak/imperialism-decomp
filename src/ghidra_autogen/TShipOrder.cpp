@@ -15,15 +15,13 @@ CRuntimeClass * __thiscall TShipOrder::GetTProductionOrderClassNamePointer(TShip
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84E0
 // GHIDRA_NAME TShipOrder::ConstructTShipOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTShipOrderBaseState(byte param_1)
 
-TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this)
+TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTShipOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -154,9 +152,9 @@ int __thiscall TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TShipOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8800
 // GHIDRA_NAME TShipOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TShipOrder::OrphanCallChain_C1_I16_004b5100(TShipOrder *this)
+undefined4 __thiscall TShipOrder::OrphanCallChain_C1_I16_004b5100(TShipOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -166,15 +164,14 @@ undefined4 __thiscall TShipOrder::OrphanCallChain_C1_I16_004b5100(TShipOrder *th
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-  short in_stack_00000004;
   
-  sVar6 = in_stack_00000004 - *(short *)&this->field_0x4;
+  sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
-  if (((short)CONCAT31(extraout_var,uVar4) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+  if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
     cVar5 = '\0';
   }
   else {
-    *(short *)&this->field_0x4 = in_stack_00000004;
+    *(short *)&this->field_0x4 = param_1;
     cVar5 = '\x01';
   }
   if (cVar5 == '\0') {

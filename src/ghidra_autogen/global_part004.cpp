@@ -158,7 +158,7 @@ void WrapperFor_ftol_At0047cfa0(void)
 // GHIDRA_NAME InitializeDialogTemplateC2WithTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateC2WithTextState()
 
-TControl * __fastcall InitializeDialogTemplateC2WithTextState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateC2WithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -170,7 +170,7 @@ TControl * __fastcall InitializeDialogTemplateC2WithTextState(TControl *param_1)
   puStack_8 = &LAB_0062e163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xc2,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -260,7 +260,7 @@ undefined ** OrphanVtableAssignStub_0047d1a0(void)
 // GHIDRA_NAME InitializeDialogTemplateD2WithTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateD2WithTextState()
 
-TControl * __fastcall InitializeDialogTemplateD2WithTextState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateD2WithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -272,7 +272,7 @@ TControl * __fastcall InitializeDialogTemplateD2WithTextState(TControl *param_1)
   puStack_8 = &LAB_0062e1b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xd2,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -356,7 +356,7 @@ undefined ** OrphanVtableAssignStub_0047d340(void)
 // GHIDRA_NAME InitializeDialogTemplateDBWithTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateDBWithTextState()
 
-TControl * __fastcall InitializeDialogTemplateDBWithTextState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -368,7 +368,7 @@ TControl * __fastcall InitializeDialogTemplateDBWithTextState(TControl *param_1)
   puStack_8 = &LAB_0062e1f8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xdb,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -424,10 +424,10 @@ undefined ** OrphanVtableAssignStub_0047d450(void)
 // GHIDRA_NAME InitializeDialogTemplateDCBaseState
 // GHIDRA_PROTO undefined InitializeDialogTemplateDCBaseState()
 
-TControl * __fastcall InitializeDialogTemplateDCBaseState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xdc,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646520;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -480,10 +480,10 @@ undefined ** OrphanVtableAssignStub_0047d520(void)
 // GHIDRA_NAME InitializeDialogTemplateDDPictureState
 // GHIDRA_PROTO undefined InitializeDialogTemplateDDPictureState()
 
-TControl * __fastcall InitializeDialogTemplateDDPictureState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateDDPictureState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xdd,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e6b0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -534,14 +534,15 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
   HGDIOBJ h_00;
   int iVar4;
   undefined4 uVar5;
+  HRGN pHVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar6;
   undefined4 uVar7;
   undefined4 uVar8;
   undefined4 uVar9;
   undefined4 uVar10;
   undefined4 uVar11;
-  CPaintDC *pCVar12;
+  undefined4 uVar12;
+  CPaintDC *pCVar13;
   undefined **local_70;
   uint local_6c;
   undefined **local_68;
@@ -573,10 +574,10 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
       StretchDibitsFromStoredBitmapToHdc(local_60,&local_68);
     }
     else {
-      pCVar12 = local_60;
-      TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pCVar12);
+      pCVar13 = local_60;
+      TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pCVar13);
       TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-                (pCVar12,uVar5);
+                (pCVar13,uVar5);
       hdc = CreateCompatibleDC((HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x60) &
                                     (uint)local_5c));
       h_00 = SelectObject(hdc,h);
@@ -603,15 +604,15 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
     if (iVar2 < 1) {
       iVar2 = -iVar2;
     }
+    uVar11 = 0;
     uVar10 = 0;
     uVar9 = 0;
     uVar8 = 0;
-    uVar7 = 0;
-    uVar6 = 0x10;
-    uVar11 = uVar5;
+    uVar7 = 0x10;
+    uVar12 = uVar5;
     uVar3 = FromHandle_612736(-(uint)(&stack0x00000000 != (undefined1 *)0x60) & (uint)local_5c);
     StretchDibitsWithCopiedPaletteTable
-              (uVar3,uVar6,uVar7,uVar8,uVar5,iVar2,uVar9,uVar10,uVar11,iVar1);
+              (uVar3,uVar7,uVar8,uVar9,uVar5,iVar2,uVar10,uVar11,uVar12,iVar1);
   }
   if (*(int *)(*(int *)(param_1 + 0x74) + 8) == 0) {
     DeleteObject(h);
@@ -630,8 +631,9 @@ void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_
     local_6c = 0;
     local_70 = &CBrush::_vftable_;
     local_4._0_1_ = 3;
-    CreatePolygonRgn((POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c),2);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_70);
+    pHVar6 = CreatePolygonRgn((POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c),2)
+    ;
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_70,(int)pHVar6);
     FUN_00613b5f(0xff);
     local_4._0_1_ = 4;
     FillRgn(local_5c,(HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x70) & local_6c),
@@ -726,7 +728,7 @@ undefined4 __fastcall UpdateCursorHelperWindowLayoutAndMask(int param_1)
 // GHIDRA_NAME InitializeDialogTemplateDEWithTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateDEWithTextState()
 
-TControl * __fastcall InitializeDialogTemplateDEWithTextState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -738,7 +740,7 @@ TControl * __fastcall InitializeDialogTemplateDEWithTextState(TControl *param_1)
   puStack_8 = &LAB_0062e2d8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xde,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -797,10 +799,10 @@ undefined ** OrphanVtableAssignStub_0047dcc0(void)
 // GHIDRA_NAME InitializeDialogTemplateDFBaseState
 // GHIDRA_PROTO undefined InitializeDialogTemplateDFBaseState()
 
-TControl * __fastcall InitializeDialogTemplateDFBaseState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateDFBaseState(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xdf,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_00646740;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -918,7 +920,8 @@ undefined ** OrphanVtableAssignStub_0047dfb0(void)
 // GHIDRA_NAME InitializeDialogTemplateFBWithDualTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateFBWithDualTextState()
 
-TControl * __fastcall InitializeDialogTemplateFBWithDualTextState(TControl *param_1)
+TControl * __thiscall
+InitializeDialogTemplateFBWithDualTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -930,7 +933,7 @@ TControl * __fastcall InitializeDialogTemplateFBWithDualTextState(TControl *para
   puStack_8 = &LAB_0062e343;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xfb,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -1084,8 +1087,9 @@ undefined4 __thiscall BuildPaletteFromBitmapColorTable(CBrush *param_1,int param
   int iVar2;
   undefined2 *puVar3;
   undefined1 *puVar4;
-  undefined4 uVar5;
-  int iVar6;
+  HPALETTE pHVar5;
+  undefined4 uVar6;
+  int iVar7;
   
   iVar1 = *(int *)(param_2 + 0x24);
   if (iVar1 == 0) {
@@ -1103,21 +1107,21 @@ undefined4 __thiscall BuildPaletteFromBitmapColorTable(CBrush *param_1,int param
   *puVar3 = 0x300;
   *(short *)(*(int *)(param_1 + 8) + 2) = (short)iVar1;
   if (iVar1 != 0) {
-    iVar6 = -1 - iVar2;
+    iVar7 = -1 - iVar2;
     puVar4 = (undefined1 *)(iVar2 + 1);
     param_2 = iVar1;
     do {
       puVar4[*(int *)(param_1 + 8) + (3 - iVar2)] = puVar4[1];
-      puVar4[*(int *)(param_1 + 8) + 5 + iVar6] = *puVar4;
-      puVar4[*(int *)(param_1 + 8) + 6 + iVar6] = puVar4[-1];
-      puVar4[*(int *)(param_1 + 8) + 7 + iVar6] = 0;
+      puVar4[*(int *)(param_1 + 8) + 5 + iVar7] = *puVar4;
+      puVar4[*(int *)(param_1 + 8) + 6 + iVar7] = puVar4[-1];
+      puVar4[*(int *)(param_1 + 8) + 7 + iVar7] = 0;
       param_2 = param_2 + -1;
       puVar4 = puVar4 + 4;
     } while (param_2 != 0);
   }
-  CreatePalette(*(LOGPALETTE **)(param_1 + 8));
-  uVar5 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1);
-  return uVar5;
+  pHVar5 = CreatePalette(*(LOGPALETTE **)(param_1 + 8));
+  uVar6 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar5);
+  return uVar6;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047E590
@@ -1385,7 +1389,8 @@ LoadPaletteChunkFromMmioAndRegisterPaletteHandle(CBrush *param_1,HMMIO param_2)
   MMRESULT MVar1;
   LOGPALETTE *plpal;
   DWORD DVar2;
-  undefined4 uVar3;
+  HPALETTE pHVar3;
+  undefined4 uVar4;
   _MMCKINFO local_28;
   _MMCKINFO local_14;
   
@@ -1416,9 +1421,9 @@ LoadPaletteChunkFromMmioAndRegisterPaletteHandle(CBrush *param_1,HMMIO param_2)
     FreeHeapBlockWithAllocatorTracking();
     return 0;
   }
-  CreatePalette(plpal);
-  uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1);
-  return uVar3;
+  pHVar3 = CreatePalette(plpal);
+  uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar3);
+  return uVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047EEA0
@@ -2427,9 +2432,11 @@ undefined4 ShowRuntimeSelectionDialogAndReturnRecord(undefined4 *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004805E6
 // GHIDRA_NAME CopyListBoxItemDataStructByIndex
-// GHIDRA_PROTO undefined CopyListBoxItemDataStructByIndex()
+// GHIDRA_PROTO undefined CopyListBoxItemDataStructByIndex(int param_1, undefined4 param_2, undefined4 * param_3)
 
-undefined4 __thiscall CopyListBoxItemDataStructByIndex(undefined4 param_1)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+undefined4 CopyListBoxItemDataStructByIndex(int param_1,undefined4 param_2,undefined4 *param_3)
 
 {
   undefined4 *puVar1;
@@ -2437,17 +2444,21 @@ undefined4 __thiscall CopyListBoxItemDataStructByIndex(undefined4 param_1)
   undefined4 *unaff_FS_OFFSET;
   int in_stack_00000064;
   undefined4 in_stack_000000b0;
+  undefined4 uStack000000b8;
   undefined4 *in_stack_000000c0;
   
-  puVar1 = (undefined4 *)(*unaff_EDI)(param_1,0x199);
+  puVar1 = (undefined4 *)(*unaff_EDI)();
   *in_stack_000000c0 = *puVar1;
   in_stack_000000c0[1] = puVar1[1];
   in_stack_000000c0[2] = puVar1[2];
   in_stack_000000c0[3] = puVar1[3];
+  uStack000000b8 = 2;
   Dtor_CListBox_FID_61e8cb();
+  uStack000000b8 = 3;
   if (in_stack_00000064 != 0) {
     WrapperFor_CleanupDialogModalCreateState_At0049d510();
   }
+  uStack000000b8 = 0xffffffff;
   CDialog::~CDialog((CDialog *)&stack0x00000000);
   *unaff_FS_OFFSET = in_stack_000000b0;
   return 1;
@@ -2457,10 +2468,11 @@ undefined4 __thiscall CopyListBoxItemDataStructByIndex(undefined4 param_1)
 // GHIDRA_NAME InitializeDialogTemplateBaseState
 // GHIDRA_PROTO undefined InitializeDialogTemplateBaseState()
 
-TControl * __fastcall InitializeDialogTemplateBaseState(TControl *param_1)
+TControl * __thiscall
+InitializeDialogTemplateBaseState(TControl *param_1,uint param_2,undefined4 param_3)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,param_2,param_3);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -2888,7 +2900,8 @@ void WrapperFor_ftol_At00481370(void)
 /* Initializes HotKey dialog template A1 object with three shared text state blocks.
    Used by HandleTurnEventVtableSlot2CInitializeHotKeyDialog before RunDialogModalFromTemplate. */
 
-TControl * __fastcall InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1)
+TControl * __thiscall
+InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2900,7 +2913,7 @@ TControl * __fastcall InitializeHotKeyDialogTemplateA1WithTripleTextState(TContr
   puStack_8 = &LAB_0062e5c1;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xa1,param_2);
   local_4 = 0;
   ConstructObjectVtable00670b4cBase();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_006714cc;
@@ -3768,9 +3781,9 @@ Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0(int param_1,RECT 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482FC0
 // GHIDRA_NAME UpdateAndRenderMapTileHintOverlayQueue
-// GHIDRA_PROTO undefined __thiscall UpdateAndRenderMapTileHintOverlayQueue(void)
+// GHIDRA_PROTO undefined __thiscall UpdateAndRenderMapTileHintOverlayQueue(int param_1)
 
-void __thiscall UpdateAndRenderMapTileHintOverlayQueue(void *this)
+void __thiscall UpdateAndRenderMapTileHintOverlayQueue(void *this,int param_1)
 
 {
   undefined4 *puVar1;
@@ -3780,7 +3793,6 @@ void __thiscall UpdateAndRenderMapTileHintOverlayQueue(void *this)
   HDC pHVar5;
   int iVar6;
   int *piVar7;
-  int in_stack_00000004;
   undefined4 uVar8;
   undefined1 local_30 [8];
   undefined1 local_28 [8];
@@ -3820,8 +3832,8 @@ LAB_00482ffc:
         pRVar2 = (RECT *)0x0;
 LAB_0048309c:
         if (pRVar2 == (RECT *)0x0) {
-          iVar6 = in_stack_00000004;
-          if (in_stack_00000004 == 0) {
+          iVar6 = param_1;
+          if (param_1 == 0) {
             pHVar5 = GetDC(*(HWND *)((int)this + 0x1c));
             iVar6 = FromHandle_612736(pHVar5);
           }
@@ -3854,7 +3866,7 @@ LAB_0048309c:
             BlitMapDialogSurfaceToHdcWithClipBounds(iVar6,&local_10);
           }
 LAB_0048316b:
-          if (in_stack_00000004 == 0) {
+          if (param_1 == 0) {
             ReleaseDC(*(HWND *)((int)this + 0x1c),*(HDC *)(iVar6 + 4));
           }
           return;
@@ -3970,8 +3982,8 @@ undefined4 __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow(int param_1
       pCVar4 = AfxGetThread();
       this = (TMacViewMgr *)(**(code **)(*(int *)pCVar4 + 0x7c))();
     }
-    ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl();
-    piVar5 = (int *)TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(this);
+    uVar1 = ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl();
+    piVar5 = (int *)TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(this,uVar1);
     if (piVar5 != (int *)0x0) {
       (**(code **)(*piVar5 + 4))(1);
     }
@@ -4107,37 +4119,41 @@ void __fastcall InitializeChildWindowSurfaceAndTickTimer(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004838B0
 // GHIDRA_NAME HandleIncludeViewPointerUpdateAndNotifyChildren
-// GHIDRA_PROTO undefined __thiscall HandleIncludeViewPointerUpdateAndNotifyChildren(void)
+// GHIDRA_PROTO undefined __thiscall HandleIncludeViewPointerUpdateAndNotifyChildren(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall HandleIncludeViewPointerUpdateAndNotifyChildren(void *this)
+void __thiscall
+HandleIncludeViewPointerUpdateAndNotifyChildren
+          (void *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  int iVar1;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
+  undefined4 uVar1;
+  undefined4 uVar2;
+  int iVar3;
   
+  uVar2 = param_3;
+  uVar1 = param_2;
   if (*(int *)((int)this + 0x90) != 0) {
-    NotifyCaptureOwnerState1AndMaybeUpdateCoords
-              (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+    NotifyCaptureOwnerState1AndMaybeUpdateCoords(param_1,param_2,param_3);
     if (*(int *)((int)this + 0x74) != 0) {
       if (DAT_006a17c4 == 0) {
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_IncludeView_cpp_00694d10,0x2b7);
       }
-      (**(code **)(**(int **)((int)this + 0x74) + 0x19c))(&stack0x00000008);
+      param_2 = uVar1;
+      param_3 = uVar2;
+      (**(code **)(**(int **)((int)this + 0x74) + 0x19c))(&param_2);
       *(undefined4 *)((int)this + 0x80) = *(undefined4 *)((int)this + 0x88);
       *(undefined4 *)((int)this + 0x84) = *(undefined4 *)((int)this + 0x8c);
-      *(undefined4 *)((int)this + 0x88) = in_stack_00000004;
-      *(undefined4 *)((int)this + 0x8c) = in_stack_00000008;
+      *(undefined4 *)((int)this + 0x88) = param_1;
+      *(undefined4 *)((int)this + 0x8c) = param_2;
       (**(code **)(**(int **)((int)this + 0x74) + 0x1a0))
                 (1,(int)this + 0x78,(undefined4 *)((int)this + 0x80),
                  (undefined4 *)((int)this + 0x88),1);
     }
-    (*g_pGlobalUiRootController->vftable[0x15].slot_0x04)();
+    (*g_pGlobalUiRootController->vftable[0x15].slot_0x04)(uVar1,uVar2,0);
     if (*(int *)((int)this + 0x40) != 0) {
-      iVar1 = NoOpRuntimeCallback_00489a70();
-      if (iVar1 != 0) {
+      iVar3 = NoOpRuntimeCallback_00489a70();
+      if (iVar3 != 0) {
         (**(code **)(**(int **)((int)this + 0x40) + 0xd4))(&stack0xfffffffc,0);
       }
     }
@@ -4342,7 +4358,7 @@ WrapperFor_RouteCommandByIdWithUiProbe_At00483e80
       (**(code **)(**(int **)(param_1 + 0x40) + 0x13c))();
     }
   }
-  TTooltipRelayWindowState::OnCommand(param_1);
+  TTooltipRelayWindowState::OnCommand(param_1,param_2,(int)param_3);
   return;
 }
 
@@ -5070,7 +5086,7 @@ void __thiscall AssignTextFromResourceIdAndMaybeInvalidate(TStaticText *param_1,
   local_4 = 0;
   CString::StringSharedRef_AssignFromPtr(&param_2,src_ref);
   local_4._0_1_ = 1;
-  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(param_1);
+  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(param_1,&param_2,'\0');
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&param_2);
   local_4 = 0xffffffff;
@@ -5083,10 +5099,10 @@ void __thiscall AssignTextFromResourceIdAndMaybeInvalidate(TStaticText *param_1,
 // GHIDRA_NAME UpdateTextEntrySharedStringIfChanged
 // GHIDRA_PROTO undefined UpdateTextEntrySharedStringIfChanged()
 
-void __fastcall UpdateTextEntrySharedStringIfChanged(TStaticText *param_1)
+void __thiscall UpdateTextEntrySharedStringIfChanged(TStaticText *param_1,CString *param_2)
 
 {
-  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(param_1);
+  TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(param_1,param_2,'\0');
   return;
 }
 
@@ -5102,7 +5118,7 @@ undefined2 NoOpUiStyleBridge_004862b0(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004862D0
 // GHIDRA_NAME CallThisVslot1B4NoArgs
-// GHIDRA_PROTO undefined CallThisVslot1B4NoArgs()
+// GHIDRA_PROTO undefined CallThisVslot1B4NoArgs(undefined4 param_1, undefined4 param_2)
 
 void __thiscall CallThisVslot1B4NoArgs(int *param_1)
 

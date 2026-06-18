@@ -30,16 +30,14 @@ TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715D0
 // GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TUpDownPictureButton * __thiscall
-TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this)
+TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -47,22 +45,22 @@ TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571620
 // GHIDRA_NAME TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne
-// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(void)
+// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(char param_1)
 
 void __thiscall
-TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne(TUpDownPictureButton *this)
+TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne
+          (TUpDownPictureButton *this,char param_1)
 
 {
   TUpDownPictureButtonVtbl *pTVar1;
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != this->field_0x64) {
+  if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
-    this->field_0x64 = in_stack_00000004;
-    if (in_stack_00000004 == '\0') {
+    this->field_0x64 = param_1;
+    if (param_1 == '\0') {
       uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + -1);
     }
     else {
@@ -103,8 +101,8 @@ void __thiscall TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictur
   undefined4 in_EDX;
   
   (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0,1);
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
   return;
 }
 

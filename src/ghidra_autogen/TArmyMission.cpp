@@ -15,15 +15,13 @@ undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C1D0
 // GHIDRA_NAME TArmyMission::DestroyTArmyMission
-// GHIDRA_PROTO undefined __thiscall DestroyTArmyMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTArmyMission(byte param_1)
 
-TArmyMission * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
+TArmyMission * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTArmyMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

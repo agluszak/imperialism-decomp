@@ -76,15 +76,13 @@ void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF300
 // GHIDRA_NAME TAssetMgr::DestructTAssetMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTAssetMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTAssetMgrAndMaybeFree(byte param_1)
 
-TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this)
+TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -155,17 +153,17 @@ void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df780(TAssetMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DFC10
 // GHIDRA_NAME TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
-// GHIDRA_PROTO undefined __thiscall PlayMovieClipAndDispatchTurnStateFollowup(void)
+// GHIDRA_PROTO undefined __thiscall PlayMovieClipAndDispatchTurnStateFollowup(CString param_1, undefined4 param_2)
 
-void __thiscall TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(TAssetMgr *this)
+void __thiscall
+TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
+          (TAssetMgr *this,CString param_1,undefined4 param_2)
 
 {
   char cVar1;
   undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 *puVar3;
+  CString *pCVar3;
   CString local_14;
   CString local_10;
   undefined4 local_c;
@@ -176,18 +174,17 @@ void __thiscall TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(TAssetMgr *
   puStack_8 = &LAB_0063a738;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  uVar2 = AssignSharedStringConcatCStrAndRef
-                    (&local_10,s_Movies__0069b7c8,in_stack_00000004.m_pchData);
+  uVar2 = AssignSharedStringConcatCStrAndRef(&local_10,s_Movies__0069b7c8,param_1.m_pchData);
   local_4 = 0;
-  AssignSharedStringConcatRefAndCStr(&stack0x00000004,uVar2,&DAT_0069b7c0);
+  AssignSharedStringConcatRefAndCStr(&param_1,uVar2,&DAT_0069b7c0);
   local_4._0_1_ = 2;
   CString::~CString(&local_10);
-  puVar3 = &stack0x00000004.m_pchData;
-  uVar2 = DetectImperialismInstallDriveAndSetPathPrefix(puVar3);
-  AssignSharedStringConcatCStrAndRef(&local_14,uVar2,puVar3);
+  pCVar3 = &param_1;
+  uVar2 = DetectImperialismInstallDriveAndSetPathPrefix(pCVar3);
+  AssignSharedStringConcatCStrAndRef(&local_14,uVar2,pCVar3);
   local_4 = CONCAT31(local_4._1_3_,3);
-  *(undefined4 *)&g_pUiRuntimeContext->field_0xf4 = in_stack_00000008;
-  cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(in_stack_00000004.m_pchData);
+  *(undefined4 *)&g_pUiRuntimeContext->field_0xf4 = param_2;
+  cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(param_1.m_pchData);
   if (cVar1 == '\0') {
     cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(local_14.m_pchData);
     if (cVar1 == '\0') {
@@ -202,7 +199,7 @@ LAB_005dfce3:
   local_4 = CONCAT31(local_4._1_3_,2);
   CString::~CString(&local_14);
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }

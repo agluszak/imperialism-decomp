@@ -129,7 +129,7 @@ BOOL __fastcall CCmdTarget::OrphanCallChain_C1_I09_0048ff70(int param_1)
     return 0;
   }
   this = (CWnd *)afxMapHWND(0);
-  iVar1 = CWnd::GetValueAt(this);
+  iVar1 = CWnd::GetValueAt(this,*(uint *)(param_1 + 0x1c));
   if (*(int **)(param_1 + 0x38) == (int *)0x0) {
     BVar2 = DestroyWindow(*(HWND *)(param_1 + 0x1c));
   }
@@ -219,7 +219,7 @@ CCmdTarget::OrphanCallChain_C2_I39_0048d900(CWnd *param_1,undefined4 param_2,int
   int *piVar4;
   
   if (*param_3 == 1) {
-    iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+    iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
     if (*(HWND *)(iVar1 + 0x50) == param_1->m_hWnd) {
       pHVar2 = *(HMENU *)(iVar1 + 0x54);
     }
@@ -331,7 +331,7 @@ CCmdTarget::UpdateControlCachedIntFromWindowText
   local_8 = GetDlgCtrlID(hWnd);
   local_8 = local_8 & 0xffff;
   uVar1 = param_3[2];
-  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   if ((*(int *)(iVar2 + 0xb8) != param_1[7]) && (iVar2 = ReflectLastMsg(hWnd,param_4), iVar2 == 0))
   {
     local_10 = param_4;
@@ -364,7 +364,7 @@ void __thiscall CCmdTarget::InitDialogWindowAndSyncTitleIfChanged(int param_1,un
 void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *param_1,int param_2)
 
 {
-  GetTEventHandlerClassNamePointer(param_1);
+  GetTEventHandlerClassNamePointer(param_1,param_2);
   param_1[3].m_xDispatch = param_2;
   return;
 }
@@ -373,10 +373,10 @@ void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *param_1
 // GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined ConstructTTaskBaseState()
 
-void __fastcall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *param_1)
+void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *param_1,int param_2)
 
 {
-  OrphanRetStub_0059add0(param_1);
+  OrphanRetStub_0059add0(param_1,param_2);
   param_1[3].m_xDispatch = 0;
   return;
 }
@@ -524,29 +524,26 @@ void CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613E49
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this)
+undefined4 __thiscall
+CCmdTarget::GetTEventHandlerClassNamePointer
+          (CCmdTarget *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   undefined4 uVar1;
   int iVar2;
   undefined4 uVar3;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   iVar2 = TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
-                    ((TTooltipRelayWindowState *)this);
+                    ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
   if (iVar2 == 0) {
     uVar3 = 0;
     if (this[2].m_dwRef != 0) {
-      iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+      iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
       uVar1 = *(undefined4 *)(iVar2 + 0xc0);
       *(CCmdTarget **)(iVar2 + 0xc0) = this;
-      uVar3 = (**(code **)(*(int *)this[2].m_dwRef + 0x14))
-                        (in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+      uVar3 = (**(code **)(*(int *)this[2].m_dwRef + 0x14))(param_1,param_2,param_3,param_4);
       *(undefined4 *)(iVar2 + 0xc0) = uVar1;
     }
   }
@@ -558,24 +555,24 @@ undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061404D
 // GHIDRA_NAME CCmdTarget::RenderControlStateTextBySelectionCode
-// GHIDRA_PROTO undefined __thiscall RenderControlStateTextBySelectionCode(void)
+// GHIDRA_PROTO undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
 
-undefined4 __thiscall CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this)
+undefined4 __thiscall
+CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this,int param_1)
 
 {
   uint uVar1;
   int iVar2;
   uint uVar3;
   undefined4 uVar4;
-  int in_stack_00000004;
   
   uVar1 = GetStyle();
-  if ((((-(uint)(in_stack_00000004 != 0) & 0x100000) + 0x100000 & uVar1) == 0) &&
+  if ((((-(uint)(param_1 != 0) & 0x100000) + 0x100000 & uVar1) == 0) &&
      (iVar2 = FUN_00613fef(this,1), iVar2 != 0)) {
     uVar1 = GetDlgCtrlID((HWND)this[1].vftable);
     uVar3 = uVar1 & 0xffff;
     if ((0xe8ff < uVar3) && (uVar3 < 0xea00)) {
-      if (in_stack_00000004 == 0) {
+      if (param_1 == 0) {
         iVar2 = (uVar1 & 0xf) + 0xea00;
       }
       else {
@@ -634,41 +631,35 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A04
 // GHIDRA_NAME CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(undefined4 param_1, undefined4 param_2)
 
-void __thiscall CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this)
+void __thiscall
+CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this,undefined4 param_1,undefined4 param_2)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  
-  AfxExtractSubString(in_stack_00000004,this[3].m_xInnerUnknown,in_stack_00000008,10);
+  AfxExtractSubString(param_1,this[3].m_xInnerUnknown,param_2,10);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A19
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
 
-void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this)
+void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(CCmdTarget **)(in_stack_00000004 + 0x24) = this;
+  *(CCmdTarget **)(param_1 + 0x24) = this;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A23
 // GHIDRA_NAME CCmdTarget::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
 
-void __thiscall CCmdTarget::OrphanRetStub_0059add0(CCmdTarget *this)
+void __thiscall CCmdTarget::OrphanRetStub_0059add0(CCmdTarget *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(undefined4 *)(in_stack_00000004 + 0x24) = 0;
+  *(undefined4 *)(param_1 + 0x24) = 0;
   return;
 }
 
@@ -767,15 +758,15 @@ uint __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614BEF
 // GHIDRA_NAME CCmdTarget::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(undefined4 param_1, undefined4 param_2)
 
-void __thiscall CCmdTarget::GetTMinisterClassNamePointer(CCmdTarget *this)
+void __thiscall
+CCmdTarget::GetTMinisterClassNamePointer(CCmdTarget *this,undefined4 param_1,undefined4 param_2)
 
 {
-  undefined4 in_stack_00000008;
   undefined4 in_stack_0000000c;
   
-  FUN_0061d143(in_stack_00000008,in_stack_0000000c);
+  FUN_0061d143(param_2,in_stack_0000000c);
   return;
 }
 
@@ -869,23 +860,22 @@ void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614CA9
 // GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-void __thiscall CCmdTarget::SetForeignMinisterReadyFlag14(CCmdTarget *this)
+void __thiscall
+CCmdTarget::SetForeignMinisterReadyFlag14
+          (CCmdTarget *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int *piVar1;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   piVar1 = (int *)AfxDynamicDownCast(&classRuntimeClass,this[1].m_dwRef);
-  if ((in_stack_00000008 == -4) && (piVar1 != (int *)0x0)) {
-    (**(code **)(*piVar1 + 0x14))(in_stack_00000004,0xfffffffc,in_stack_0000000c,in_stack_00000010);
+  if ((param_2 == 0xfffffffc) && (piVar1 != (int *)0x0)) {
+    (**(code **)(*piVar1 + 0x14))(param_1,0xfffffffc,param_3,param_4);
   }
   else {
-    TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain((TTooltipRelayWindowState *)this);
+    TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
+              ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
   }
   return;
 }
@@ -913,7 +903,8 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 {
   CWnd::Default((CWnd *)this);
   if (this[2].m_pOuterUnknown == (void *)0xffffffff) {
-    TArmyTacUnit::SetScaleToFitSize((TArmyTacUnit *)this);
+    TArmyTacUnit::SetScaleToFitSize
+              ((TArmyTacUnit *)this,this[2].m_xInnerUnknown,this[2].m_xDispatch);
   }
   else {
     TArmyTacUnit::UpdateBars((TArmyTacUnit *)this);
@@ -923,9 +914,10 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006158EE
 // GHIDRA_NAME CCmdTarget::LoadUiStringAndDispatchViaVslot1C8
-// GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(void)
+// GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(LPRECT param_1, int param_2)
 
-void __thiscall CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this)
+void __thiscall
+CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this,LPRECT param_1,int param_2)
 
 {
   int iVar1;
@@ -934,24 +926,26 @@ void __thiscall CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this)
   int iVar4;
   uint uVar5;
   int iVar6;
-  LPRECT in_stack_00000004;
-  int in_stack_00000008;
   BOOL bMenu;
+  CCmdTarget *local_c;
+  TArmyTacUnit *local_8;
   
-  if (in_stack_00000008 == 1) {
+  local_c = this;
+  local_8 = (TArmyTacUnit *)this;
+  if (param_2 == 1) {
     DVar3 = GetExStyle();
-    AdjustWindowRectEx(in_stack_00000004,0,0,DVar3);
+    AdjustWindowRectEx(param_1,0,0,DVar3);
     if (this[2].m_pOuterUnknown != (void *)0xffffffff) {
-      iVar4 = in_stack_00000004->right - in_stack_00000004->left;
+      iVar4 = param_1->right - param_1->left;
       iVar1 = this[2].m_bResultExpected;
-      iVar6 = in_stack_00000004->bottom - in_stack_00000004->top;
+      iVar6 = param_1->bottom - param_1->top;
       iVar2 = this[2].m_xConnPtContainer;
-      TArmyTacUnit::GetScrollBarSizes((TArmyTacUnit *)this);
+      TArmyTacUnit::GetScrollBarSizes(local_8,(int *)&local_c);
       if (iVar2 != iVar6 && -1 < iVar2 - iVar6) {
-        in_stack_00000004->right = (int)&this->vftable + in_stack_00000004->right;
+        param_1->right = (int)&local_c->vftable + param_1->right;
       }
       if (iVar1 != iVar4 && -1 < iVar1 - iVar4) {
-        in_stack_00000004->bottom = (int)&this->vftable + in_stack_00000004->bottom;
+        param_1->bottom = (int)&local_8->vftable + param_1->bottom;
       }
     }
   }
@@ -960,7 +954,7 @@ void __thiscall CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this)
     uVar5 = uVar5 & 0xfffffdff;
     bMenu = 0;
     DVar3 = GetStyle();
-    AdjustWindowRectEx(in_stack_00000004,DVar3,bMenu,uVar5);
+    AdjustWindowRectEx(param_1,DVar3,bMenu,uVar5);
   }
   return;
 }
@@ -1025,13 +1019,13 @@ CCmdTarget::SetEditSelectionAndScrollCaret(int *param_1,byte param_2,undefined4 
    
    Library: Visual Studio 2003 Release */
 
-int __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this,uint param_1)
+int __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this,ushort param_1)
 
 {
   int iVar1;
   
   if (((param_1 & 0xc) == 0) && (iVar1 = FUN_00613fef(this,1), iVar1 == 0)) {
-    iVar1 = CScrollView::DoMouseWheel((CScrollView *)this);
+    iVar1 = CScrollView::DoMouseWheel((CScrollView *)this,param_1);
     return iVar1;
   }
   return 0;

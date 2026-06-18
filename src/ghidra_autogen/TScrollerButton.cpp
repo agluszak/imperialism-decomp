@@ -58,15 +58,14 @@ TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F70
 // GHIDRA_NAME TScrollerButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollerButton * __thiscall TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this)
+TScrollerButton * __thiscall
+TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

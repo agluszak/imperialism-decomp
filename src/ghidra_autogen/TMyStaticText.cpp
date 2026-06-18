@@ -58,15 +58,14 @@ TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5450
 // GHIDRA_NAME TMyStaticText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMyStaticText * __thiscall TMyStaticText::_scalar_deleting_destructor_(TMyStaticText *this)
+TMyStaticText * __thiscall
+TMyStaticText::_scalar_deleting_destructor_(TMyStaticText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

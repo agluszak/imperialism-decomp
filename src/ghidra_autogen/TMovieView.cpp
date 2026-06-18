@@ -5,17 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485990
 // GHIDRA_NAME TMovieView::SetFieldC0AndInvalidateWindowIfChanged
-// GHIDRA_PROTO undefined __thiscall SetFieldC0AndInvalidateWindowIfChanged(void)
+// GHIDRA_PROTO undefined __thiscall SetFieldC0AndInvalidateWindowIfChanged(int param_1)
 
-int __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *this)
+int __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
   iVar1 = this[1].field2c;
-  if (iVar1 != in_stack_00000004) {
-    this[1].field2c = in_stack_00000004;
+  if (iVar1 != param_1) {
+    this[1].field2c = param_1;
     InvalidateRect((HWND)this->controlTag,(RECT *)0x0,1);
   }
   return iVar1;
@@ -23,14 +22,13 @@ int __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593C10
 // GHIDRA_NAME TMovieView::HandleBlinkStateAndScheduleTimerTick
-// GHIDRA_PROTO undefined __thiscall HandleBlinkStateAndScheduleTimerTick(void)
+// GHIDRA_PROTO undefined __thiscall HandleBlinkStateAndScheduleTimerTick(char param_1)
 
-void __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(TMovieView *this)
+void __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(TMovieView *this,char param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  char in_stack_00000004;
   
   iVar1 = (**(code **)(**(int **)&this->field_0x6c + 0x28))();
   if (0 < iVar1) {
@@ -38,7 +36,7 @@ void __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(TMovieView *thi
     (**(code **)(**(int **)&this->field_0x70 + 0x30))();
   }
   if (this->field_0x78 != '\0') {
-    if (in_stack_00000004 != '\0') {
+    if (param_1 != '\0') {
       if (*(int *)&this->field_0x7c == 0) {
         uVar2 = thunk_GetTickCountDiv16();
         *(undefined4 *)&this->field_0x7c = uVar2;
@@ -83,16 +81,16 @@ thunk_TPictureButton * TMovieView::CreateTMovieViewInstance(void)
   *(TMovieViewVtbl **)this = &TMovieViewVtbl_0066f708;
   local_4 = CONCAT31(local_4._1_3_,1);
   (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
-  HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem);
+  HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
   pCVar1 = AfxGetThread();
   if (pCVar1 != (CWinThread *)0x0) {
     pCVar1 = AfxGetThread();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar1 + 0x7c))();
-    SetFieldC0AndInvalidateWindowIfChanged(this_00);
+    SetFieldC0AndInvalidateWindowIfChanged(this_00,0x1000000);
     *unaff_FS_OFFSET = local_c;
     return this;
   }
-  SetFieldC0AndInvalidateWindowIfChanged((TMovieView *)0x0);
+  SetFieldC0AndInvalidateWindowIfChanged((TMovieView *)0x0,0x1000000);
   *unaff_FS_OFFSET = local_c;
   return this;
 }
@@ -129,7 +127,7 @@ TMovieView * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *thi
   this->vftable = &TMovieViewVtbl_0066f708;
   local_4 = 0;
   (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
-  HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem);
+  HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
   pCVar1 = AfxGetThread();
   if (pCVar1 == (CWinThread *)0x0) {
     this_00 = (TMovieView *)0x0;
@@ -138,22 +136,20 @@ TMovieView * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *thi
     pCVar1 = AfxGetThread();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar1 + 0x7c))();
   }
-  SetFieldC0AndInvalidateWindowIfChanged(this_00);
+  SetFieldC0AndInvalidateWindowIfChanged(this_00,0x1000000);
   *unaff_FS_OFFSET = uStack_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E22F0
 // GHIDRA_NAME TMovieView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMovieView * __thiscall TMovieView::_scalar_deleting_destructor_(TMovieView *this)
+TMovieView * __thiscall TMovieView::_scalar_deleting_destructor_(TMovieView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructMovieViewAndCloseOwnedWindow(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -192,7 +188,7 @@ void __thiscall TMovieView::DestructMovieViewAndCloseOwnedWindow(TMovieView *thi
     pCVar2 = AfxGetThread();
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar2 + 0x7c))();
   }
-  SetFieldC0AndInvalidateWindowIfChanged(this_00);
+  SetFieldC0AndInvalidateWindowIfChanged(this_00,0x100005f);
   (*g_pSfxPlaybackSystem->vftable[0x14].GetTEventHandlerClassNamePointer)();
   local_4 = 0xffffffff;
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
@@ -255,21 +251,24 @@ void __thiscall TMovieView::OrphanTiny_ReturnZero_0048a730(TMovieView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2520
 // GHIDRA_NAME TMovieView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TMovieView::SetForeignMinisterReadyFlag14(TMovieView *this)
+void __thiscall
+TMovieView::SetForeignMinisterReadyFlag14
+          (TMovieView *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   if (*(int *)&this->field_0x90 != 0) {
     SendMessage808AndCacheResult();
   }
-  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A60A
 // GHIDRA_NAME TMovieView::RunModalLoop
-// GHIDRA_PROTO undefined __thiscall RunModalLoop(void)
+// GHIDRA_PROTO undefined __thiscall RunModalLoop(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Runs modal loop with idle/message pumping.
 // GHIDRA_COMMENT Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A notifications, and exits on modal completion.
@@ -279,7 +278,7 @@ void __thiscall TMovieView::SetForeignMinisterReadyFlag14(TMovieView *this)
    Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A
    notifications, and exits on modal completion. */
 
-int __thiscall TMovieView::RunModalLoop(TMovieView *this)
+int __thiscall TMovieView::RunModalLoop(TMovieView *this,byte param_1)
 
 {
   bool bVar1;
@@ -294,12 +293,11 @@ int __thiscall TMovieView::RunModalLoop(TMovieView *this)
   int iVar9;
   undefined3 extraout_var;
   LPMSG lpMsg;
-  byte in_stack_00000004;
   int local_c;
   
   bVar1 = true;
   local_c = 0;
-  if ((in_stack_00000004 & 4) != 0) {
+  if ((param_1 & 4) != 0) {
     uVar4 = GetStyle();
     bVar2 = true;
     if ((uVar4 & 0x10000000) == 0) goto LAB_0060a63b;
@@ -320,7 +318,7 @@ LAB_0060a65c:
         return -1;
       }
       if ((bVar2) && ((*(int *)(pCVar5 + 0x34) == 0x118 || (*(int *)(pCVar5 + 0x34) == 0x104)))) {
-        CFrameWnd::ShowWindow((CFrameWnd *)this);
+        CFrameWnd::ShowWindow((CFrameWnd *)this,1);
         UpdateWindow((HWND)this->controlTag);
         bVar2 = false;
       }
@@ -339,14 +337,14 @@ LAB_0060a65c:
     } while (BVar6 != 0);
   }
   if (bVar2) {
-    CFrameWnd::ShowWindow((CFrameWnd *)this);
+    CFrameWnd::ShowWindow((CFrameWnd *)this,1);
     UpdateWindow((HWND)this->controlTag);
     bVar2 = false;
   }
-  if ((((in_stack_00000004 & 1) == 0) && (hWnd != (HWND)0x0)) && (local_c == 0)) {
+  if ((((param_1 & 1) == 0) && (hWnd != (HWND)0x0)) && (local_c == 0)) {
     SendMessageA(hWnd,0x121,0,this->controlTag);
   }
-  if ((in_stack_00000004 & 2) == 0) goto code_r0x0060a6b6;
+  if ((param_1 & 2) == 0) goto code_r0x0060a6b6;
   goto LAB_0060a6ce;
 code_r0x0060a6b6:
   iVar9 = local_c + 1;

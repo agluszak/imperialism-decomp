@@ -30,14 +30,13 @@ undefined4 __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocumen
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004796C0
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
 
-void __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this)
+void __thiscall
+CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x44 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x44 = param_1;
   return;
 }
 
@@ -191,7 +190,7 @@ undefined4 * CDocument::CDocument(void)
   *(undefined1 *)(unaff_EBP + -4) = 1;
   CString::CString((CString *)(extraout_ECX + 8));
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 10));
+  TGreatPower::CPtrList((TGreatPower *)(extraout_ECX + 10),10);
   extraout_ECX[9] = 0;
   extraout_ECX[0x11] = 0;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
@@ -204,15 +203,13 @@ undefined4 * CDocument::CDocument(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006109CF
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CDocument * __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
+CDocument * __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCDocumentBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -282,14 +279,12 @@ void __thiscall CDocument::DisconnectViews(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A80
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
 
-void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this)
+void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this,char *param_1)
 
 {
-  char *in_stack_00000004;
-  
-  CString::CopyFromCStr((CString *)&this->field_0x1c,in_stack_00000004);
+  CString::CopyFromCStr((CString *)&this->field_0x1c,param_1);
   (*this->vftable[0x15].SetForeignMinisterReadyFlag14)();
   return;
 }
@@ -406,26 +401,25 @@ void __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocumen
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610C0B
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
 
-void __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
+void __thiscall
+CDocument::_scalar_deleting_destructor_(CDocument *this,undefined4 param_1,int param_2)
 
 {
   undefined4 uVar1;
   int iVar2;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   undefined1 local_208 [256];
   char local_108 [260];
   
-  AfxFullPath(local_108,in_stack_00000004);
+  AfxFullPath(local_108,param_1);
   CString::CopyFromCStr((CString *)&this->field_0x20,local_108);
   *(undefined4 *)&this->field_0x4c = 0;
   iVar2 = AfxGetFileTitle(local_108,local_208,0x100);
   if (iVar2 == 0) {
     (*this->vftable[0xb].SetForeignMinisterReadyFlag14)(local_208);
   }
-  if (in_stack_00000008 != 0) {
+  if (param_2 != 0) {
     uVar1 = *(undefined4 *)&this->field_0x20;
     iVar2 = AfxGetModuleState();
     (**(code **)(**(int **)(iVar2 + 4) + 0x88))(uVar1);
@@ -698,23 +692,21 @@ int * __thiscall CDocument::GetFile(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006113F7
 // GHIDRA_NAME CDocument::ReleaseFileObjectCloseOrAbort
-// GHIDRA_PROTO undefined __thiscall ReleaseFileObjectCloseOrAbort(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseFileObjectCloseOrAbort(int * param_1, int param_2)
 
-void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this)
+void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,int *param_1,int param_2)
 
 {
   int iVar1;
-  int *in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = *in_stack_00000004;
-  if (in_stack_00000008 == 0) {
+  iVar1 = *param_1;
+  if (param_2 == 0) {
     (**(code **)(iVar1 + 0x54))();
   }
   else {
     (**(code **)(iVar1 + 0x4c))();
   }
-  if (in_stack_00000004 != (int *)0x0) {
+  if (param_1 != (int *)0x0) {
     (**(code **)(iVar1 + 4))(1);
   }
   return;
@@ -881,41 +873,37 @@ void __thiscall CDocument::CreateChildWindowFromRect(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611810
 // GHIDRA_NAME CDocument::AddView
-// GHIDRA_PROTO undefined __thiscall AddView(void)
+// GHIDRA_PROTO undefined __thiscall AddView(int param_1)
 
-void __thiscall CDocument::AddView(CDocument *this)
+void __thiscall CDocument::AddView(CDocument *this,int param_1)
 
 {
   CDocumentVtbl *pCVar1;
-  int in_stack_00000004;
   
-  CPtrList::AddTail((CPtrList *)&this->field_0x28);
+  CPtrList::AddTail((CPtrList *)&this->field_0x28,param_1);
   pCVar1 = this->vftable;
-  *(CDocument **)(in_stack_00000004 + 0x3c) = this;
+  *(CDocument **)(param_1 + 0x3c) = this;
   (*pCVar1[0xe].SetForeignMinisterReadyFlag14)();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006118ED
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
-undefined4 __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
+undefined4 __thiscall
+CDocument::_scalar_deleting_destructor_
+          (CDocument *this,uint param_1,uint param_2,int param_3,undefined4 param_4)
 
 {
   int iVar1;
   undefined4 uVar2;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   iVar1 = TTooltipRelayWindowState::DispatchCommandToAfxMessageMapChain
-                    ((TTooltipRelayWindowState *)this);
+                    ((TTooltipRelayWindowState *)this,param_1,param_2,param_3,param_4);
   if (iVar1 == 0) {
     if (*(int **)&this->field_0x24 != (int *)0x0) {
-      iVar1 = (**(code **)(**(int **)&this->field_0x24 + 0x14))
-                        (in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+      iVar1 = (**(code **)(**(int **)&this->field_0x24 + 0x14))(param_1,param_2,param_3,param_4);
       if (iVar1 != 0) goto LAB_00611924;
     }
     uVar2 = 0;

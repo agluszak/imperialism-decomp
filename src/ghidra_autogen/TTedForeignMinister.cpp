@@ -45,16 +45,14 @@ TTedForeignMinister::ConstructTTedForeignMinister(TTedForeignMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531240
 // GHIDRA_NAME TTedForeignMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TTedForeignMinister * __thiscall
-TTedForeignMinister::DeletingDestructTMinister(TTedForeignMinister *this)
+TTedForeignMinister::DeletingDestructTMinister(TTedForeignMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTedForeignMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -293,9 +291,12 @@ LAB_0053167c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531770
 // GHIDRA_NAME TTedForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, int param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TTedForeignMinister::UpdateControlCachedIntFromWindowText(TTedForeignMinister *this)
+void __thiscall
+TTedForeignMinister::UpdateControlCachedIntFromWindowText
+          (TTedForeignMinister *this,undefined4 param_1,int param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -304,20 +305,16 @@ void __thiscall TTedForeignMinister::UpdateControlCachedIntFromWindowText(TTedFo
   undefined4 uVar4;
   undefined4 unaff_EBP;
   undefined2 uVar5;
-  short sVar6;
   undefined4 unaff_retaddr;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
+  short sVar6;
   
-  sVar2 = (short)in_stack_00000010;
+  sVar2 = (short)param_4;
+  sVar6 = (short)param_2;
   if (*(short *)(&this->field_0x1e + sVar2 * 2) != 0) {
-    TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this);
+    TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this,param_1,sVar6);
     return;
   }
   uVar5 = (undefined2)((uint)this >> 0x10);
-  sVar6 = (short)in_stack_00000008;
   if ((sVar2 == 0) || (sVar2 == 1)) {
     sVar2 = (short)(*(int **)&this->field_0x4)[0x29];
     if (sVar2 < 0xf) {
@@ -327,39 +324,39 @@ void __thiscall TTedForeignMinister::UpdateControlCachedIntFromWindowText(TTedFo
       iVar3 = (0x1d < sVar2) + 2;
     }
     if (sVar6 < (short)iVar3) {
-      iVar3 = in_stack_00000008;
+      iVar3 = param_2;
     }
-    sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+    sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))(param_4);
     if ((short)iVar3 <= sVar2) {
       (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
                 (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                           *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,iVar3,
-                 in_stack_00000008);
+                 param_2,param_4,0,0);
       return;
     }
     pTVar1 = g_pNationInteractionStateManager->vftable;
     iVar3 = (*(int **)&this->field_0x4)[3];
-    uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+    uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))(param_4,param_2,param_4,0,0);
     (*pTVar1[0xc].GetTTradeMgrClassNamePointer)(CONCAT22(uVar5,(short)iVar3),unaff_EBP,uVar4);
   }
   else {
     if (((sVar2 == 2) || (sVar2 == 4)) || (sVar2 == 6)) {
-      sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
-      if ((short)in_stack_00000004 <= sVar2) {
+      sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))(param_4);
+      if ((short)param_1 <= sVar2) {
         (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
                   (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                            *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
-                   in_stack_00000004,in_stack_00000008);
+                            *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,param_1,
+                   param_2,param_4,0,0);
         return;
       }
       pTVar1 = g_pNationInteractionStateManager->vftable;
       iVar3 = (*(int **)&this->field_0x4)[3];
-      uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+      uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))(param_4,param_2,param_4,0,0);
       (*pTVar1[0xc].GetTTradeMgrClassNamePointer)(CONCAT22(uVar5,(short)iVar3),unaff_EBP,uVar4);
       return;
     }
     if (sVar2 == 3) {
-      iVar3 = CONCAT31((int3)(char)((uint)in_stack_00000010 >> 8),this->field_0x4c);
+      iVar3 = CONCAT31((int3)(char)((uint)param_4 >> 8),this->field_0x4c);
       if (this->field_0x4c != '\0') {
         sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))(3);
         this->field_0x4c = 0;
@@ -369,16 +366,15 @@ void __thiscall TTedForeignMinister::UpdateControlCachedIntFromWindowText(TTedFo
       if (sVar6 <= *(short *)&this->field_0x16) {
         (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
                   (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                            *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),in_stack_00000004,
-                   in_stack_00000008,in_stack_0000000c,3,0,0);
+                            *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),param_1,param_2,param_3
+                   ,3,0,0);
         *(short *)&this->field_0x16 = *(short *)&this->field_0x16 - sVar6;
         return;
       }
       (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
                 (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                          *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),in_stack_00000004,
-                 CONCAT22((short)((uint)iVar3 >> 0x10),*(short *)&this->field_0x16),
-                 in_stack_0000000c,3,1,0);
+                          *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),param_1,
+                 CONCAT22((short)((uint)iVar3 >> 0x10),*(short *)&this->field_0x16),param_3,3,1,0);
       *(undefined2 *)&this->field_0x16 = 0;
       return;
     }
@@ -444,14 +440,12 @@ void __thiscall TTedForeignMinister::_scalar_deleting_destructor_(TTedForeignMin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531B10
 // GHIDRA_NAME TTedForeignMinister::SetTedCounter60ToThree
-// GHIDRA_PROTO undefined __thiscall SetTedCounter60ToThree(void)
+// GHIDRA_PROTO undefined __thiscall SetTedCounter60ToThree(int param_1)
 
-void __thiscall TTedForeignMinister::SetTedCounter60ToThree(TTedForeignMinister *this)
+void __thiscall TTedForeignMinister::SetTedCounter60ToThree(TTedForeignMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(undefined2 *)(in_stack_00000004 + 0x60) = 3;
+  *(undefined2 *)(param_1 + 0x60) = 3;
   return;
 }
 

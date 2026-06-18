@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00460140
 // GHIDRA_NAME TTechHistoryView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechHistoryView * __thiscall TTechHistoryView::_scalar_deleting_destructor_(TTechHistoryView *this)
+TTechHistoryView * __thiscall
+TTechHistoryView::_scalar_deleting_destructor_(TTechHistoryView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -190,7 +189,8 @@ void __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistor
   uStack_48 = 0;
   uStack_44 = 0;
   aiStack_40[0] = 0;
-  TDeluxeText::ConstructTDeluxeTextBaseState(this_00);
+  TDeluxeText::ConstructTDeluxeTextBaseState
+            (this_00,piVar8,&stack0xffffffa0,&pTStack_6c,&uStack_4c,(int)&stack0xffffffa8);
   pTVar5 = this_00->vftable;
   *(int **)&this_00->field_0x98 = piVar10;
   (*pTVar5[0x3b].slot_0x04)(iStack_1c + 0x8fc);

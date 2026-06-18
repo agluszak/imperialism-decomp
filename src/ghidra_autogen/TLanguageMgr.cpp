@@ -90,15 +90,14 @@ TLanguageMgr * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguage
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507D80
 // GHIDRA_NAME TLanguageMgr::DestructTLanguageMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLanguageMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTLanguageMgrAndMaybeFree(byte param_1)
 
-TLanguageMgr * __thiscall TLanguageMgr::DestructTLanguageMgrAndMaybeFree(TLanguageMgr *this)
+TLanguageMgr * __thiscall
+TLanguageMgr::DestructTLanguageMgrAndMaybeFree(TLanguageMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -49,7 +49,7 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_10 = 1;
     puStack_8 = puVar1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   *(undefined4 **)(param_1 + 0x24) = puVar1;
@@ -60,16 +60,14 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B140
 // GHIDRA_NAME TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)
 
 TArmyPlayer * __thiscall
-TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this)
+TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTArmyPlayerInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -98,15 +96,14 @@ CRuntimeClass * __thiscall TArmyPlayer::GetTTacticalPlayerClassNamePointer(TArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B390
 // GHIDRA_NAME TArmyPlayer::ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(byte param_1)
 
-TArmyPlayer * __thiscall TArmyPlayer::ConstructTTacticalPlayerBaseState(TArmyPlayer *this)
+TArmyPlayer * __thiscall
+TArmyPlayer::ConstructTTacticalPlayerBaseState(TArmyPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTArmyPlayerAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -258,36 +255,43 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ae10(TArmyPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4790
 // GHIDRA_NAME TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupAndMaybeDispatchTurnEventED8(void)
+// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupAndMaybeDispatchTurnEventED8(int param_1, int param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
-void __thiscall TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyPlayer *this)
+void __thiscall
+TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
+          (TArmyPlayer *this,int param_1,int param_2,undefined4 param_3,undefined4 param_4,
+          undefined4 param_5)
 
 {
   char cVar1;
-  char cVar2;
+  undefined4 *puVar2;
   undefined4 *puVar3;
-  undefined4 *puVar4;
+  int iVar4;
   TTacArmyView *this_00;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
+  char cVar5;
   
   *(undefined4 *)&this->field_0x3c = 0x1b3;
   *(undefined4 *)&this->field_0x40 = 0x1d;
+  cVar5 = '\0';
   cVar1 = '\0';
-  cVar2 = '\0';
   if ((*(short *)&g_pLocalizationTable->field_0x48 != 0) &&
      (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
-    cVar1 = g_apNationStates[*(char *)(in_stack_00000004 + 8)]->field_0xa0;
-    if (*(char *)(in_stack_00000008 + 8) < '\a') {
-      cVar2 = g_apNationStates[*(char *)(in_stack_00000008 + 8)]->field_0xa0;
+    cVar5 = g_apNationStates[*(char *)(param_1 + 8)]->field_0xa0;
+    if (*(char *)(param_2 + 8) < '\a') {
+      cVar1 = g_apNationStates[*(char *)(param_2 + 8)]->field_0xa0;
     }
     else {
-      cVar2 = '\0';
+      cVar1 = '\0';
     }
   }
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x54);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar2 = &TArmyPlayerVtbl_006695f0;
+  }
+  InitializeTacticalSideFromArmyUnitList(param_1,1,cVar5,(int)*(char *)(param_1 + 8));
   puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x54);
   if (puVar3 == (undefined4 *)0x0) {
     puVar3 = (undefined4 *)0x0;
@@ -295,26 +299,18 @@ void __thiscall TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8(T
   else {
     *puVar3 = &TArmyPlayerVtbl_006695f0;
   }
-  InitializeTacticalSideFromArmyUnitList
-            (in_stack_00000004,1,cVar1,(int)*(char *)(in_stack_00000004 + 8));
-  puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x54);
-  if (puVar4 == (undefined4 *)0x0) {
-    puVar4 = (undefined4 *)0x0;
-  }
-  else {
-    *puVar4 = &TArmyPlayerVtbl_006695f0;
-  }
-  InitializeTacticalSideFromArmyUnitList
-            (in_stack_00000008,0,cVar2,(int)*(char *)(in_stack_00000008 + 8));
-  BuildTacticalBattleStateFromBothSides(puVar3,puVar4);
-  *(undefined4 *)&this->field_0x38 = in_stack_00000014;
-  LoadBattleSetupTabDataByIndex(in_stack_0000000c,in_stack_00000010);
-  *(undefined4 *)&this->field_0x50 = in_stack_0000000c;
-  this->field_0x49 = (char)in_stack_00000010;
-  if (((DAT_006a4758 != '\0') || (cVar2 != '\0')) || (cVar1 != '\0')) {
+  InitializeTacticalSideFromArmyUnitList(param_2,0,cVar1,(int)*(char *)(param_2 + 8));
+  BuildTacticalBattleStateFromBothSides(puVar2,puVar3);
+  *(undefined4 *)&this->field_0x38 = param_5;
+  LoadBattleSetupTabDataByIndex(param_3,param_4);
+  *(undefined4 *)&this->field_0x50 = param_3;
+  this->field_0x49 = (char)param_4;
+  if (((DAT_006a4758 != '\0') || (cVar1 != '\0')) || (cVar5 != '\0')) {
+    cVar5 = '\0';
     g_nTurnCooldownDeferCounter006A43C4 = 0;
-    GenerateThreadLocalRandom15(0);
-    TOceanDialog::RequestAudioPresetChangeWithDeferredApply((TOceanDialog *)g_pSfxPlaybackSystem);
+    iVar4 = GenerateThreadLocalRandom15();
+    TOceanDialog::RequestAudioPresetChangeWithDeferredApply
+              ((TOceanDialog *)g_pSfxPlaybackSystem,iVar4 % 3 + 6,cVar5);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0xed8,0);
     this_00 = (TTacArmyView *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
     (*this_00->vftable[1].slot_0x04)();
@@ -326,22 +322,21 @@ void __thiscall TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A61C0
 // GHIDRA_NAME TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit
-// GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
+// GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)
 
-void __thiscall TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(TArmyPlayer *this)
+void __thiscall
+TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(TArmyPlayer *this,int param_1,int param_2)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = *(int *)&this->field_0x34 - in_stack_00000008;
+  iVar1 = *(int *)&this->field_0x34 - param_2;
   *(int *)&this->field_0x34 = iVar1;
   if (iVar1 < 1) {
     *(undefined4 *)&this->field_0x34 = 0;
     *(undefined4 *)&this->field_0x1c = 1;
   }
-  iVar1 = *(int *)&this->field_0x4 - in_stack_00000004;
+  iVar1 = *(int *)&this->field_0x4 - param_1;
   *(int *)&this->field_0x4 = iVar1;
   if (iVar1 < 1) {
     *(undefined4 *)&this->field_0x4 = 0;

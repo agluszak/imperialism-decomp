@@ -5,14 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBF0
 // GHIDRA_NAME TIndexAndRankList::InitializeTMinisterBaseOrderArray
-// GHIDRA_PROTO undefined __thiscall InitializeTMinisterBaseOrderArray(void)
+// GHIDRA_PROTO undefined __thiscall InitializeTMinisterBaseOrderArray(undefined4 param_1)
 
-void __thiscall TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this)
+void __thiscall
+TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this,undefined4 param_1)
 
 {
   TIndexAndRankList *this_00;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -21,7 +21,7 @@ void __thiscall TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRa
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006340ba;
   *unaff_FS_OFFSET = &local_c;
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x4 = param_1;
   this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
   if (this_00 == (TIndexAndRankList *)0x0) {
@@ -63,16 +63,14 @@ TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005348A0
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TIndexAndRankList * __thiscall
-TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this)
+TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTIndexAndRankList();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -103,19 +101,16 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534910
 // GHIDRA_NAME TIndexAndRankList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-int __thiscall TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this)
+int __thiscall
+TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  if (*(short *)(in_stack_00000004 + 2) < *(short *)(in_stack_00000008 + 2)) {
+  if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 1;
   }
-  return ((*(short *)(in_stack_00000004 + 2) <= *(short *)(in_stack_00000008 + 2)) - 1 & 0xfffffffe)
-         + 1;
+  return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 0xfffffffe) + 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B710
@@ -200,16 +195,14 @@ void __thiscall TIndexAndRankList::CPtrArray(TIndexAndRankList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BC1
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TIndexAndRankList * __thiscall
-TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this)
+TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CObArray::DestructCObArray();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

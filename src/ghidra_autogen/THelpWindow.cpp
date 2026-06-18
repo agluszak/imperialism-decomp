@@ -63,15 +63,13 @@ THelpWindow * __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(TH
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504C20
 // GHIDRA_NAME THelpWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *this)
+THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

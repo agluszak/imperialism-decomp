@@ -12,7 +12,8 @@ TCivWorkOrderState::thunk_InitializeCivWorkOrderState
           (TCivWorkOrderState *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this);
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+            ((TUnitOrderState *)this,(short)nOrderType,(short)pOwnerContext);
   *(undefined2 *)(this + 0x24) = 0;
   *(undefined2 *)(this + 0x26) = 0xffff;
   return;

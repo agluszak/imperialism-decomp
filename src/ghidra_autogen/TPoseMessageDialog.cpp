@@ -808,7 +808,7 @@ LAB_005464fd:
     uVar17 = 1;
     break;
   case 0xd:
-    TSimMgr::EmitTurnEventEAnd9SessionContextPackets(param_1);
+    TSimMgr::EmitTurnEventEAnd9SessionContextPackets(param_1,(int)param_2);
     uVar17 = 1;
     break;
   case 0xe:
@@ -862,7 +862,8 @@ LAB_005464fd:
       if ((uVar37 < 0x73636e30) || (0x73637a39 < uVar37)) goto LAB_005485d8;
       RebuildGlobalOrderManagersAndCapabilityState();
       cVar13 = TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
-                         ((TOcean *)g_pLocalizationTable);
+                         ((TOcean *)g_pLocalizationTable,
+                          (short)*(undefined4 *)&param_1->field_0xe0 + -0x6e30);
       if (cVar13 == '\0') {
         CString::CString(&local_1d4);
         local_4 = 0x10;
@@ -1527,12 +1528,15 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x20:
-    TCountry::thunk_QueueInterNationEventRecordDeduped((TCountry *)g_pInterNationEventQueueManager);
+    TCountry::thunk_QueueInterNationEventRecordDeduped
+              ((TCountry *)g_pInterNationEventQueueManager,(int)*(short *)(param_2 + 6),
+               (int)*(char *)((int)param_2 + 0x1a),(int)*(char *)((int)param_2 + 0x1b),'\x01');
     uVar17 = 1;
     break;
   case 0x21:
     TInterNationEventQueueManager::thunk_QueueInterNationEventType0FWithBitmaskMerge
-              (g_pInterNationEventQueueManager);
+              (g_pInterNationEventQueueManager,(int)*(char *)(param_2 + 6),
+               (int)*(char *)((int)param_2 + 0x19),(int)*(char *)((int)param_2 + 0x1a),'\x01');
     uVar17 = 1;
     break;
   case 0x22:
@@ -1678,14 +1682,14 @@ LAB_0054833b:
     }
     local_4 = 0xffffffff;
     AttachGlobalMemoryHandleAndResetPosition();
-    TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32((TLandSaleEvent *)param_1);
+    TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32((TLandSaleEvent *)param_1,piVar25);
     (**(code **)(*piVar25 + 0x1c))();
     DAT_00695278 = 0xffffffff;
     uVar17 = 1;
     break;
   case 0x29:
     (*DAT_006a475c->vftable[1].slot_0x04)();
-    SeekLinkedListCursorByNestedId();
+    iVar35 = SeekLinkedListCursorByNestedId();
     uVar37 = param_2[6];
     if (uVar37 < 0x64696768) {
       if (uVar37 == 0x64696767) {
@@ -1713,7 +1717,8 @@ LAB_0054833b:
     }
     else {
       if (uVar37 == 0x72616c79) {
-        TArmyStack::thunk_HandleTacticalCommandTag_raly(this_01);
+        TArmyStack::thunk_HandleTacticalCommandTag_raly(this_01,iVar35,param_2[8],param_2[9],'\x01')
+        ;
         uVar17 = 1;
         break;
       }
@@ -1898,16 +1903,14 @@ void __thiscall TPoseMessageDialog::OrphanRetStub_00487a00(TPoseMessageDialog *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054B010
 // GHIDRA_NAME TPoseMessageDialog::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
 TPoseMessageDialog * __thiscall
-TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(TPoseMessageDialog *this)
+TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(TPoseMessageDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructPoseMessageDialogTurnEventPacket();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

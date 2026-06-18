@@ -5,41 +5,39 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2340
 // GHIDRA_NAME TCity::CreateTCityInstance
-// GHIDRA_PROTO undefined __thiscall CreateTCityInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTCityInstance(int param_1, short param_2)
 
-undefined2 __thiscall TCity::CreateTCityInstance(TCity *this)
+undefined2 __thiscall TCity::CreateTCityInstance(TCity *this,int param_1,short param_2)
 
 {
   short sVar1;
   short sVar2;
-  int in_stack_00000004;
-  short in_stack_00000008;
   
   sVar1 = *(short *)&this->field_0x8;
-  if (in_stack_00000008 <= sVar1) {
-    *(short *)&this->field_0x8 = sVar1 - in_stack_00000008;
-    *(short *)(in_stack_00000004 + 8) = *(short *)(in_stack_00000004 + 8) + in_stack_00000008;
+  if (param_2 <= sVar1) {
+    *(short *)&this->field_0x8 = sVar1 - param_2;
+    *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + param_2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 8) = *(short *)(in_stack_00000004 + 8) + sVar1;
-  sVar2 = in_stack_00000008 - *(short *)&this->field_0x8;
+  *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + sVar1;
+  sVar2 = param_2 - *(short *)&this->field_0x8;
   sVar1 = *(short *)&this->field_0x6;
   *(undefined2 *)&this->field_0x8 = 0;
   if (sVar2 <= sVar1) {
     *(short *)&this->field_0x6 = sVar1 - sVar2;
-    *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar2;
+    *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + sVar2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar1;
+  *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + sVar1;
   sVar2 = sVar2 - *(short *)&this->field_0x6;
   sVar1 = *(short *)&this->field_0x4;
   *(undefined2 *)&this->field_0x6 = 0;
   if (sVar2 <= sVar1) {
     *(short *)&this->field_0x4 = sVar1 - sVar2;
-    *(short *)(in_stack_00000004 + 4) = *(short *)(in_stack_00000004 + 4) + sVar2;
+    *(short *)(param_1 + 4) = *(short *)(param_1 + 4) + sVar2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 4) = sVar1;
+  *(short *)(param_1 + 4) = sVar1;
   *(undefined2 *)&this->field_0x4 = 0;
   return 0;
 }
@@ -85,15 +83,13 @@ void __thiscall TCity::TCity(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2520
 // GHIDRA_NAME TCity::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this)
+TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ~TCity(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -112,7 +108,7 @@ void __thiscall TCity::~TCity(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B30A0
 // GHIDRA_NAME TCity::DeserializeCityProductionState
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionState(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionState(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserializes city production state from save/archive stream.
 // GHIDRA_COMMENT Includes load of slot production arrays at +0x1DC and +0x1FC, then restores entry objects/queue state.
@@ -124,7 +120,7 @@ void __thiscall TCity::~TCity(TCity *this)
    state.
    This is a core persistence load path for remembered production orders. */
 
-void __thiscall TCity::DeserializeCityProductionState(TCity *this)
+void __thiscall TCity::DeserializeCityProductionState(TCity *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -138,7 +134,6 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
   word *pwVar8;
   void **ppvVar9;
   int *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   int iStack_bc;
   undefined1 *puStack_b8;
   undefined1 *puStack_b4;
@@ -175,7 +170,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
   undefined1 *puStack_38;
   undefined4 uStack_34;
   undefined1 *puStack_30;
-  undefined4 uStack_2c;
+  int *piStack_2c;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -184,11 +179,12 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
   puStack_8 = &LAB_00630ee4;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
+  piStack_2c = param_1;
   puStack_30 = (undefined1 *)0x4b30f4;
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   puStack_30 = &this->field_0x4;
-  uStack_2c = 1;
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  piStack_2c = (int *)0x1;
+  pcVar2 = *(code **)(*param_1 + 0x3c);
   uStack_34 = 0x4b3103;
   (*pcVar2)();
   puStack_38 = &this->field_0x7c;
@@ -376,13 +372,13 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
   else {
     (*pcVar2)(&this->field_0x78,4);
   }
-  (**(code **)(**(int **)&this->field_0x1d8 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x1d8 + 0x18))(param_1);
   if (0 < (int)puStack_b4) {
     ppvVar9 = this->orderSlotsE4;
     puStack_a0 = puStack_b4;
     do {
       if (*ppvVar9 != (int *)0x0) {
-        (**(code **)(*(int *)*ppvVar9 + 0x18))();
+        (**(code **)(*(int *)*ppvVar9 + 0x18))(param_1);
       }
       ppvVar9 = ppvVar9 + 1;
       puStack_a0 = puStack_a0 + -1;
@@ -399,7 +395,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
       iStack_bc = iStack_bc + 1;
     } while (iStack_bc <= (int)puStack_b8);
   }
-  (**(code **)(**(int **)&this->field_0x270 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x270 + 0x18))(param_1);
   (*pcVar2)(&iStack_bc,4);
   do {
     (*pcVar2)(&uStack_ac,1);
@@ -412,7 +408,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
       }
       iStack_bc = -1;
       InitializeCityProductionQueueCommand(piVar5,0,this,0);
-      (**(code **)(*piVar5 + 0x18))();
+      (**(code **)(*piVar5 + 0x18))(param_1);
     }
     else {
       this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x18);
@@ -425,18 +421,18 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
       }
       iStack_bc = -1;
       InitializeOrderRecordFieldsFromArgs(0,this,0);
-      (**(code **)(*piVar5 + 0x18))();
+      (**(code **)(*piVar5 + 0x18))(param_1);
     }
     DispatchCityProductionQueueCommand(*(void **)&this->field_0x270,piVar5);
   } while ((int)((int)&this_00->vftable + 1) < 0x2f);
-  (**(code **)(**(int **)&this->field_0x274 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x274 + 0x18))(param_1);
   *unaff_FS_OFFSET = (int)&this->field_0x24c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B35D0
 // GHIDRA_NAME TCity::SerializeCityProductionState
-// GHIDRA_PROTO undefined __thiscall SerializeCityProductionState(void)
+// GHIDRA_PROTO undefined __thiscall SerializeCityProductionState(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serializes city production state to save/archive stream.
 // GHIDRA_COMMENT Writes slot production arrays (+0x1DC current values, +0x1FC delta/mirror values) and related entry/queue objects.
@@ -448,7 +444,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this)
    entry/queue objects.
    This is a core persistence save path for remembered production orders. */
 
-void __thiscall TCity::SerializeCityProductionState(TCity *this)
+void __thiscall TCity::SerializeCityProductionState(TCity *this,int *param_1)
 
 {
   code *pcVar1;
@@ -469,7 +465,6 @@ void __thiscall TCity::SerializeCityProductionState(TCity *this)
   undefined2 *puVar5;
   void **ppvVar6;
   int iVar7;
-  int *in_stack_00000004;
   undefined1 *puVar8;
   undefined1 *puStack_60;
   undefined4 uStack_5c;
@@ -488,13 +483,14 @@ void __thiscall TCity::SerializeCityProductionState(TCity *this)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  undefined4 uStack_1c;
+  int *piStack_1c;
   
+  piStack_1c = param_1;
   puStack_20 = (undefined1 *)0x4b35e3;
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
   puStack_20 = &this->field_0x4;
-  uStack_1c = 1;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  piStack_1c = (int *)0x1;
+  pcVar1 = *(code **)(*param_1 + 0x78);
   uStack_24 = 0x4b35f2;
   (*pcVar1)();
   puStack_28 = &this->field_0x7c;
@@ -645,31 +641,31 @@ void __thiscall TCity::SerializeCityProductionState(TCity *this)
     iStack_4c = iStack_4c + -1;
     uVar3 = extraout_ECX_09;
   } while (iStack_4c != 0);
-  WriteWordArrayToOutputCallbackLE();
+  WriteWordArrayToOutputCallbackLE(param_1,&this->field_0x2a6,0x17);
   puVar8 = &this->field_0x78;
   (*pcVar1)(puVar8,4);
-  (**(code **)(**(int **)&this->field_0x1d8 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x1d8 + 0x14))(param_1);
   ppvVar6 = this->orderSlotsE4;
   puStack_50 = (undefined1 *)0x3d;
   do {
     if (*ppvVar6 != (int *)0x0) {
-      (**(code **)(*(int *)*ppvVar6 + 0x14))();
+      (**(code **)(*(int *)*ppvVar6 + 0x14))(param_1);
     }
     ppvVar6 = ppvVar6 + 1;
     puStack_50 = (undefined1 *)((int)puStack_50 + -1);
   } while (puStack_50 != (undefined1 *)0x0);
-  (**(code **)(**(int **)&this->field_0x270 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x270 + 0x14))(param_1);
   puStack_60 = (undefined1 *)(**(code **)(**(int **)&this->field_0x270 + 0x48))();
   (*pcVar1)(&puStack_60,4);
   iVar7 = 1;
   if (0 < (int)puVar8) {
     do {
       piVar2 = (int *)(**(code **)(**(int **)&this->field_0x270 + 0x4c))(iVar7);
-      (**(code **)(*piVar2 + 0x14))();
+      (**(code **)(*piVar2 + 0x14))(param_1);
       iVar7 = iVar7 + 1;
     } while (iVar7 <= (int)puVar8);
   }
-  (**(code **)(**(int **)&this->field_0x274 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x274 + 0x14))(param_1);
   return;
 }
 
@@ -713,14 +709,12 @@ void __thiscall TCity::Call1C(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3B20
 // GHIDRA_NAME TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_b0_004b3b20(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
 
-void __thiscall TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(TCity *this)
+void __thiscall TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(TCity *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0xb0 = in_stack_00000004;
+  *(undefined4 *)&this->field_0xb0 = param_1;
   return;
 }
 
@@ -947,20 +941,19 @@ void __thiscall TCity::RefreshOrderStateSlot0C(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3FB0
 // GHIDRA_NAME TCity::AddNeedVectorSplitSlot34
-// GHIDRA_PROTO undefined __thiscall AddNeedVectorSplitSlot34(void)
+// GHIDRA_PROTO undefined __thiscall AddNeedVectorSplitSlot34(short * param_1)
 
-void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this)
+void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this,short *param_1)
 
 {
   short sVar1;
   word *pwVar2;
   short *psVar3;
   int iVar4;
-  short *in_stack_00000004;
   
   pwVar2 = this->fieldB6;
   iVar4 = 7;
-  psVar3 = in_stack_00000004;
+  psVar3 = param_1;
   do {
     sVar1 = *psVar3;
     psVar3 = psVar3 + 1;
@@ -968,7 +961,7 @@ void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this)
     pwVar2 = pwVar2 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
-  psVar3 = in_stack_00000004 + 7;
+  psVar3 = param_1 + 7;
   pwVar2 = this->fieldB6 + 7;
   iVar4 = 6;
   do {
@@ -979,7 +972,7 @@ void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this)
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   pwVar2 = this->fieldB6 + 0xd;
-  psVar3 = in_stack_00000004 + 0xd;
+  psVar3 = param_1 + 0xd;
   iVar4 = 4;
   do {
     sVar1 = *psVar3;
@@ -993,21 +986,20 @@ void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4040
 // GHIDRA_NAME TCity::AddNeedVectorSlot3C
-// GHIDRA_PROTO undefined __thiscall AddNeedVectorSlot3C(void)
+// GHIDRA_PROTO undefined __thiscall AddNeedVectorSlot3C(short * param_1)
 
-void __thiscall TCity::AddNeedVectorSlot3C(TCity *this)
+void __thiscall TCity::AddNeedVectorSlot3C(TCity *this,short *param_1)
 
 {
   short sVar1;
   word *pwVar2;
   int iVar3;
-  short *in_stack_00000004;
   
   pwVar2 = this->fieldB6;
   iVar3 = 0x17;
   do {
-    sVar1 = *in_stack_00000004;
-    in_stack_00000004 = in_stack_00000004 + 1;
+    sVar1 = *param_1;
+    param_1 = param_1 + 1;
     *pwVar2 = *pwVar2 + sVar1;
     pwVar2 = pwVar2 + 1;
     iVar3 = iVar3 + -1;
@@ -1042,29 +1034,31 @@ void __thiscall TCity::AddOwnerNeedTargetsSlot38(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B40E0
 // GHIDRA_NAME TCity::AllocateNeedFromOwnerSlot4C
-// GHIDRA_PROTO undefined __thiscall AllocateNeedFromOwnerSlot4C(void)
+// GHIDRA_PROTO undefined __thiscall AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
 
-short __thiscall TCity::AllocateNeedFromOwnerSlot4C(TCity *this)
+short __thiscall TCity::AllocateNeedFromOwnerSlot4C(TCity *this,short param_1,short param_2)
 
 {
   int iVar1;
-  short sVar2;
-  int iVar3;
-  short in_stack_00000004;
-  short in_stack_00000008;
+  int iVar2;
+  short sVar3;
+  int iVar4;
+  undefined2 in_stack_00000006;
   
-  iVar3 = (int)in_stack_00000004;
-  iVar1 = *(int *)&this->field_0xac;
-  sVar2 = *(short *)(iVar1 + 0x10e + iVar3 * 2) - *(short *)(iVar3 * 2 + 0x13c + iVar1);
-  if (sVar2 < in_stack_00000008) {
-    in_stack_00000008 = sVar2;
+  iVar4 = (int)param_1;
+  iVar2 = *(int *)&this->field_0xac;
+  iVar1 = iVar4 * 2 + 0x13c;
+  sVar3 = *(short *)(iVar2 + 0x10e + iVar4 * 2) - *(short *)(iVar1 + iVar2);
+  if (sVar3 < param_2) {
+    param_2 = sVar3;
   }
-  if ((short)(*(short *)(iVar1 + 0xa6) - *(short *)(iVar1 + 0xa8)) < in_stack_00000008) {
-    in_stack_00000008 = *(short *)(iVar1 + 0xa6) - *(short *)(iVar1 + 0xa8);
+  if ((short)(*(short *)(iVar2 + 0xa6) - *(short *)(iVar2 + 0xa8)) < param_2) {
+    param_2 = *(short *)(iVar2 + 0xa6) - *(short *)(iVar2 + 0xa8);
   }
-  this->fieldB6[iVar3] = this->fieldB6[iVar3] + in_stack_00000008;
-  (**(code **)(**(int **)&this->field_0xac + 0x114))();
-  return in_stack_00000008;
+  this->fieldB6[iVar4] = this->fieldB6[iVar4] + param_2;
+  (**(code **)(**(int **)&this->field_0xac + 0x114))
+            (_param_1,*(short *)(iVar1 + (int)*(int **)&this->field_0xac) + param_2);
+  return param_2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4180
@@ -1123,14 +1117,12 @@ int __thiscall TCity::OrphanLeaf_NoCall_Ins07_004b4230(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4260
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins04_004b4260
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004b4260(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
 
-void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this)
+void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)(*(int *)&this->field_0xac + 0xa6) = in_stack_00000004;
+  *(undefined2 *)(*(int *)&this->field_0xac + 0xa6) = param_1;
   return;
 }
 
@@ -1245,16 +1237,15 @@ void __thiscall TCity::OrphanLeaf_NoCall_Ins03_004b46c0(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B46E0
 // GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
-// GHIDRA_PROTO undefined __thiscall GetCityBuildingDisplayCapacityBySlot(void)
+// GHIDRA_PROTO undefined __thiscall GetCityBuildingDisplayCapacityBySlot(short param_1)
 
-int __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this)
+int __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this,short param_1)
 
 {
   short sVar1;
   int iVar2;
-  short in_stack_00000004;
   
-  if (in_stack_00000004 == 0xf) {
+  if (param_1 == 0xf) {
     iVar2 = *(int *)&this->field_0xac;
     if (*(char *)(iVar2 + 0x8d1) < '3') {
       iVar2 = (**(code **)(**(int **)(iVar2 + 0x90) + 0x28))();
@@ -1275,12 +1266,11 @@ int __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this)
     iVar2 = 1;
   }
   else {
-    iVar2 = CONCAT22(in_stack_00000004 >> 0xf,
-                     *(undefined2 *)((int)this->orderSlotsE4 + in_stack_00000004 * 2 + 0xf8));
+    iVar2 = CONCAT22(param_1 >> 0xf,*(undefined2 *)((int)this->orderSlotsE4 + param_1 * 2 + 0xf8));
   }
 LAB_004b4795:
   sVar1 = (short)iVar2;
-  switch(in_stack_00000004) {
+  switch(param_1) {
   case 0:
   case 2:
   case 4:
@@ -1316,19 +1306,19 @@ LAB_004b4795:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B48A0
 // GHIDRA_NAME TCity::GetBuildingCapacityTierSlot58
-// GHIDRA_PROTO undefined __thiscall GetBuildingCapacityTierSlot58(void)
+// GHIDRA_PROTO undefined __thiscall GetBuildingCapacityTierSlot58(short param_1)
 
-char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this)
+char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this,short param_1)
 
 {
   undefined uVar1;
   short sVar2;
   undefined3 extraout_var;
-  short in_stack_00000004;
+  undefined2 in_stack_00000006;
   
-  uVar1 = (*this->vftable[10].slot_0x04)();
+  uVar1 = (*this->vftable[10].slot_0x04)(_param_1);
   sVar2 = (short)CONCAT31(extraout_var,uVar1);
-  if (((in_stack_00000004 == 1) || (in_stack_00000004 == 3)) || (in_stack_00000004 == 5)) {
+  if (((param_1 == 1) || (param_1 == 3)) || (param_1 == 5)) {
     if (sVar2 < 4) {
       return '\x01';
     }
@@ -1348,18 +1338,17 @@ char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4940
 // GHIDRA_NAME TCity::WrapperFor_GetActiveNationId_At004b4940
-// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At004b4940(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At004b4940(short param_1)
 
-int __thiscall TCity::WrapperFor_GetActiveNationId_At004b4940(TCity *this)
+int __thiscall TCity::WrapperFor_GetActiveNationId_At004b4940(TCity *this,short param_1)
 
 {
   char cVar1;
   short sVar2;
   int iVar3;
   ushort uVar4;
-  short in_stack_00000004;
   
-  if (in_stack_00000004 == 0xf) {
+  if (param_1 == 0xf) {
     iVar3 = **(int **)(*(int *)&this->field_0xac + 0x90);
     if (*(char *)(*(int *)&this->field_0xac + 0x8d1) < '3') {
       iVar3 = (**(code **)(iVar3 + 0x28))();
@@ -1380,12 +1369,11 @@ LAB_004b49e2:
     }
   }
   else {
-    iVar3 = CONCAT22(in_stack_00000004 >> 0xf,
-                     *(undefined2 *)((int)this->orderSlotsE4 + in_stack_00000004 * 2 + 0xf8));
+    iVar3 = CONCAT22(param_1 >> 0xf,*(undefined2 *)((int)this->orderSlotsE4 + param_1 * 2 + 0xf8));
   }
   uVar4 = (ushort)((uint)iVar3 >> 0x10);
   sVar2 = (short)iVar3;
-  switch(in_stack_00000004) {
+  switch(param_1) {
   case 0:
   case 2:
   case 4:
@@ -1440,55 +1428,49 @@ switchD_004b4a00_default:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4C80
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins08_004b4c80
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins08_004b4c80(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins08_004b4c80(short param_1, undefined1 param_2, undefined2 param_3, undefined2 param_4)
 
-void __thiscall TCity::OrphanLeaf_NoCall_Ins08_004b4c80(TCity *this)
+void __thiscall
+TCity::OrphanLeaf_NoCall_Ins08_004b4c80
+          (TCity *this,short param_1,undefined1 param_2,undefined2 param_3,undefined2 param_4)
 
 {
   int iVar1;
-  short in_stack_00000004;
-  undefined1 in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
   
-  iVar1 = (int)in_stack_00000004;
-  *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138) = in_stack_00000008;
-  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148) = in_stack_0000000c;
-  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168) = in_stack_00000010;
+  iVar1 = (int)param_1;
+  *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138) = param_2;
+  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148) = param_3;
+  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168) = param_4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4CC0
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins11_004b4cc0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins11_004b4cc0(short param_1, undefined2 * param_2, undefined2 * param_3)
 
-undefined4 __thiscall TCity::OrphanLeaf_NoCall_Ins11_004b4cc0(TCity *this)
+undefined4 __thiscall
+TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
+          (TCity *this,short param_1,undefined2 *param_2,undefined2 *param_3)
 
 {
   int iVar1;
-  short in_stack_00000004;
-  undefined2 *in_stack_00000008;
-  undefined2 *in_stack_0000000c;
   
-  iVar1 = (int)in_stack_00000004;
-  *in_stack_00000008 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148);
-  *in_stack_0000000c = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168);
-  return CONCAT31((int3)(char)((ushort)in_stack_00000004 >> 8),
+  iVar1 = (int)param_1;
+  *param_2 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148);
+  *param_3 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168);
+  return CONCAT31((int3)(char)((ushort)param_1 >> 8),
                   *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4D00
 // GHIDRA_NAME TCity::IsBasicResourceSlot78
-// GHIDRA_PROTO undefined __thiscall IsBasicResourceSlot78(void)
+// GHIDRA_PROTO undefined __thiscall IsBasicResourceSlot78(short param_1)
 
-undefined2 __thiscall TCity::IsBasicResourceSlot78(TCity *this)
+undefined2 __thiscall TCity::IsBasicResourceSlot78(TCity *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  if (((((in_stack_00000004 != 0) && (in_stack_00000004 != 1)) && (in_stack_00000004 != 2)) &&
-      ((in_stack_00000004 != 3 && (in_stack_00000004 != 4)))) &&
-     ((in_stack_00000004 != 5 && ((in_stack_00000004 != 6 && (in_stack_00000004 != 0xb)))))) {
+  if (((((param_1 != 0) && (param_1 != 1)) && (param_1 != 2)) && ((param_1 != 3 && (param_1 != 4))))
+     && ((param_1 != 5 && ((param_1 != 6 && (param_1 != 0xb)))))) {
     return 0;
   }
   return 1;

@@ -58,15 +58,14 @@ TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FA0
 // GHIDRA_NAME TColorKeyButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyButton * __thiscall TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this)
+TColorKeyButton * __thiscall
+TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,21 +73,20 @@ TColorKeyButton * __thiscall TColorKeyButton::_scalar_deleting_destructor_(TColo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FF0
 // GHIDRA_NAME TColorKeyButton::OrphanCallChain_C2_I28_00571ff0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I28_00571ff0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I28_00571ff0(char param_1)
 
-void __thiscall TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(TColorKeyButton *this)
+void __thiscall TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(TColorKeyButton *this,char param_1)
 
 {
   TColorKeyButtonVtbl *pTVar1;
   undefined4 in_EAX;
   undefined4 uVar2;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != this->field_0x64) {
+  if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
-    this->field_0x64 = in_stack_00000004;
-    if (in_stack_00000004 == '\0') {
+    this->field_0x64 = param_1;
+    if (param_1 == '\0') {
       uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + -1);
     }
     else {

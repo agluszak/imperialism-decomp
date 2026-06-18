@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AE90
 // GHIDRA_NAME TScenarioChooser::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScenarioChooser * __thiscall TScenarioChooser::_scalar_deleting_destructor_(TScenarioChooser *this)
+TScenarioChooser * __thiscall
+TScenarioChooser::_scalar_deleting_destructor_(TScenarioChooser *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -279,10 +278,11 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057A050
 // GHIDRA_NAME TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScenarioChooser *this)
+TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TScenarioChooser *this,int param_1,int param_2)
 
 {
   TScenarioChooser_slot_0x04_0x04 *pTVar1;
@@ -295,11 +295,9 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScenarioChooser 
   uint uVar5;
   undefined2 extraout_var_02;
   int *unaff_EBX;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int *piVar4;
   
-  if (in_stack_00000004 == 4) {
+  if (param_1 == 4) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
     (**(code **)(*unaff_EBX + 0xc))();
@@ -308,7 +306,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScenarioChooser 
     hCursor = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
     SetCursor(hCursor);
   }
-  else if (in_stack_00000004 == 0x7069636b) {
+  else if (param_1 == 0x7069636b) {
     pTVar1 = this->vftable[0x12].slot_0x04;
     uVar3 = (*pTVar1)(0x706d6170);
     piVar4 = (int *)CONCAT31(extraout_var,uVar3);
@@ -329,12 +327,12 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScenarioChooser 
       (**(code **)(iVar2 + 0xe4))();
     }
   }
-  else if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x73746172) {
+  else if (param_1 == 10) {
+    if (*(int *)(param_2 + 0x1c) == 0x73746172) {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
     }
   }
-  else if ((in_stack_00000004 == 0xd) && (*(int *)(in_stack_00000008 + 0x1c) == 0x6d6f7265)) {
+  else if ((param_1 == 0xd) && (*(int *)(param_2 + 0x1c) == 0x6d6f7265)) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
     uVar3 = (*this->vftable[0x12].slot_0x04)(0x6c697374);
     piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
@@ -344,10 +342,10 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScenarioChooser 
     piVar4[0x419] = (piVar4[0x418] < (int)uVar5) - 1 & uVar5;
     (**(code **)(iVar2 + 0xe4))();
   }
-  else if ((in_stack_00000004 == 0x14) && (*(int *)(in_stack_00000008 + 0x1c) == 0x65786974)) {
+  else if ((param_1 == 0x14) && (*(int *)(param_2 + 0x1c) == 0x65786974)) {
     (*this->vftable[0x3a].slot_0x04)();
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
@@ -375,7 +373,7 @@ TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057A310
 // GHIDRA_NAME TScenarioChooser::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles scenario-selection key input.
 // GHIDRA_COMMENT - Enter-like keys (3, 0x0D): invoke virtual +0x1D0 action.
@@ -386,13 +384,12 @@ TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser
    - Enter-like keys (3, 0x0D): invoke virtual +0x1D0 action.
    - Escape key (0x1B): invoke virtual +0x1D4 cancel action. */
 
-void __thiscall TScenarioChooser::OrphanTiny_ReturnZero_0048a730(TScenarioChooser *this)
+void __thiscall TScenarioChooser::OrphanTiny_ReturnZero_0048a730(TScenarioChooser *this,int param_1)
 
 {
   short sVar1;
-  int in_stack_00000004;
   
-  sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+  sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
   }
@@ -466,7 +463,8 @@ void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TSce
     piStack_58 = (int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(*piStack_58 + 0xc))();
     RebuildGlobalOrderManagersAndCapabilityState(1);
-    TOcean::RecreateActiveMapContextAndInitializeGlobalMapState((TOcean *)g_pLocalizationTable);
+    TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
+              ((TOcean *)g_pLocalizationTable,*(short *)&this->field_0x142);
     SetStateCodeAndUpdateZeroOrOutOfRangeFlag
               (*(undefined4 *)(&this->field_0x144 + piStack_58[0x1a] * 4));
     piVar2 = piStack_58;

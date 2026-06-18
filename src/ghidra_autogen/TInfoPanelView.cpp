@@ -19,15 +19,14 @@ TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60(TInfoPanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004304D0
 // GHIDRA_NAME TInfoPanelView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoPanelView * __thiscall TInfoPanelView::_scalar_deleting_destructor_(TInfoPanelView *this)
+TInfoPanelView * __thiscall
+TInfoPanelView::_scalar_deleting_destructor_(TInfoPanelView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -431,7 +430,7 @@ void __thiscall TInfoPanelView::OrphanRetStub_00430550(TInfoPanelView *this)
   (**(code **)(iVar2 + 0xc))();
   piStack_1c = (int *)CONCAT31(extraout_var,uVar3);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_20);
+            ((TToolBarCluster *)&pTStack_20,PTR_g_szEmptyString_00654ec8);
   InitializeAndRunMainRoutine();
   piStack_1c = (int *)0x6f767230;
   pTStack_20 = (TToolBarClusterVtbl *)0x4fad08;
@@ -442,44 +441,44 @@ void __thiscall TInfoPanelView::OrphanRetStub_00430550(TInfoPanelView *this)
   uVar3 = (*pTVar1)();
   (*((TControl *)CONCAT31(extraout_var_00,uVar3))->vftable[1].slot_0x04)();
   TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
-            ((TControl *)CONCAT31(extraout_var_00,uVar3));
+            ((TControl *)CONCAT31(extraout_var_00,uVar3),0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FAD60
 // GHIDRA_NAME TInfoPanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TInfoPanelView::OrphanRetStub_0059add0(TInfoPanelView *this)
+void __thiscall
+TInfoPanelView::OrphanRetStub_0059add0
+          (TInfoPanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  int iVar3;
-  int in_stack_00000004;
-  int in_stack_00000008;
+  short sVar3;
   
-  if (in_stack_00000004 == 0xc) {
+  if (param_1 == 0xc) {
     iVar1 = *(int *)&this->field_0x60;
-    iVar3 = (int)(short)(*(short *)(in_stack_00000008 + 0x1c) + -0x7230);
-    *(int *)(iVar1 + 0x94) = iVar3;
+    sVar3 = *(short *)(param_2 + 0x1c) + -0x7230;
+    *(int *)(iVar1 + 0x94) = (int)sVar3;
     thunk_InvalidateCityDialogRectRegion(iVar1 + 0x514,1);
-    *(int *)&this->field_0x6c = iVar3;
+    *(int *)&this->field_0x6c = (int)sVar3;
     uVar2 = (*this->vftable[0x12].slot_0x04)(0x6d6b6579);
     (*((TControl *)CONCAT31(extraout_var,uVar2))->vftable[1].slot_0x04)();
     TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
-              ((TControl *)CONCAT31(extraout_var,uVar2));
+              ((TControl *)CONCAT31(extraout_var,uVar2),sVar3);
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FAE00
 // GHIDRA_NAME TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins97_004fae00(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
 
-void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView *this)
+void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView *this,short param_1)
 
 {
   short *psVar1;
@@ -492,7 +491,6 @@ void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView 
   short sVar8;
   int iVar9;
   int iVar10;
-  short in_stack_00000004;
   short asStack_10020 [8];
   short asStack_10010 [32750];
   short local_20 [6];
@@ -503,9 +501,9 @@ void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView 
   *(undefined4 *)puVar6 = 0xffffffff;
   sVar8 = 0;
   *(undefined4 *)&this->field_0x68 = 0xffffffff;
-  if (6 < in_stack_00000004) {
+  if (6 < param_1) {
     sVar8 = 0;
-    pTVar3 = g_apSecondaryNationStateSlots[in_stack_00000004];
+    pTVar3 = g_apSecondaryNationStateSlots[param_1];
     do {
       iVar7 = (int)sVar8;
       local_20[iVar7] = *(short *)(&pTVar3->field_0x13c + iVar7 * 2);
@@ -553,7 +551,7 @@ void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView 
     return;
   }
   sVar4 = 0xd;
-  iVar7 = in_stack_00000004 * 2 + 0x898;
+  iVar7 = param_1 * 2 + 0x898;
   do {
     if (*(short *)((int)&g_pNationInteractionStateManager->vftable + iVar7) != 0) {
       iVar9 = (int)sVar8;

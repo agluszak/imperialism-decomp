@@ -29,15 +29,13 @@ void __thiscall TMission::ConstructTMission(TMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535050
 // GHIDRA_NAME TMission::DeletingDestructTMission
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMission(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMission(byte param_1)
 
-TMission * __thiscall TMission::DeletingDestructTMission(TMission *this)
+TMission * __thiscall TMission::DeletingDestructTMission(TMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTMission(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -56,15 +54,14 @@ void __thiscall TMission::DestructTMission(TMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539A20
 // GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
-// GHIDRA_PROTO undefined __thiscall ConstructTEscortMissionForPortContext(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTEscortMissionForPortContext(undefined4 param_1)
 
-TMission * __thiscall TMission::ConstructTEscortMissionForPortContext(TMission *this)
+TMission * __thiscall
+TMission::ConstructTEscortMissionForPortContext(TMission *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   ConstructTMission(this);
-  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x14) = param_1;
   *(undefined4 *)(this + 0x18) = 0;
   *(undefined4 *)(this + 0x1c) = 0;
   *(undefined4 *)(this + 0x20) = 0;
@@ -135,14 +132,13 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C0A0
 // GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyMissionWithNodeKey(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
-TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this)
+TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,undefined2 param_1)
 
 {
   undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -154,7 +150,7 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this)
   ConstructTMission(this);
   local_4 = 0;
   *(undefined ***)this = &g_vtblTArmyMission;
-  *(undefined2 *)(this + 0x14) = in_stack_00000004;
+  *(undefined2 *)(this + 0x14) = param_1;
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
@@ -162,7 +158,7 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this)
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = CONCAT31(local_4._1_3_,2);
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = local_4 & 0xffffff00;
@@ -183,15 +179,15 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F2D0
 // GHIDRA_NAME TMission::ConstructTInvadeMissionWithOptionalBeachhead
-// GHIDRA_PROTO undefined __thiscall ConstructTInvadeMissionWithOptionalBeachhead(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTInvadeMissionWithOptionalBeachhead(int param_1, undefined2 param_2)
 
-TMission * __thiscall TMission::ConstructTInvadeMissionWithOptionalBeachhead(TMission *this)
+TMission * __thiscall
+TMission::ConstructTInvadeMissionWithOptionalBeachhead
+          (TMission *this,int param_1,undefined2 param_2)
 
 {
   TMission *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -200,13 +196,13 @@ TMission * __thiscall TMission::ConstructTInvadeMissionWithOptionalBeachhead(TMi
   puStack_8 = &LAB_006344d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  ConstructTArmyMissionWithNodeKey(this);
+  ConstructTArmyMissionWithNodeKey(this,0xffff);
   *(undefined2 *)(this + 0x32) = 0xffff;
-  *(undefined2 *)(this + 0x30) = in_stack_00000008;
+  *(undefined2 *)(this + 0x30) = param_2;
   local_4 = 0;
   *(undefined4 *)(this + 0x34) = 0;
   *(undefined ***)this = &PTR_LAB_0065aec0;
-  if (in_stack_00000004 != 0) {
+  if (param_1 != 0) {
     this_00 = (TMission *)AllocateWithFallbackHandler(0x40);
     local_4 = CONCAT31(local_4._1_3_,1);
     if (this_00 == (TMission *)0x0) {
@@ -214,7 +210,7 @@ TMission * __thiscall TMission::ConstructTInvadeMissionWithOptionalBeachhead(TMi
     }
     else {
       ConstructTMission(this_00);
-      *(int *)(this_00 + 0x14) = in_stack_00000004;
+      *(int *)(this_00 + 0x14) = param_1;
       *(undefined4 *)(this_00 + 0x18) = 0;
       *(undefined4 *)(this_00 + 0x1c) = 0;
       *(undefined4 *)(this_00 + 0x20) = 0;

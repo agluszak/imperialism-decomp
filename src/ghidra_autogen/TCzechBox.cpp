@@ -73,15 +73,13 @@ TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C60
 // GHIDRA_NAME TCzechBox::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this)
+TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -89,17 +87,15 @@ TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571CB0
 // GHIDRA_NAME TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBox *this)
+void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBox *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0x21) {
+  if (param_1 == 0x21) {
     (*this->vftable[0x3b].slot_0x04)(1);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
@@ -116,15 +112,13 @@ void __thiscall TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920(TCzechBox *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571D10
 // GHIDRA_NAME TCzechBox::SetPressedStateAdjustPictureBitmapByOne
-// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(void)
+// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(char param_1)
 
-void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *this)
+void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (in_stack_00000004 != this->field_0x64) {
-    this->field_0x64 = in_stack_00000004;
+  if (param_1 != this->field_0x64) {
+    this->field_0x64 = param_1;
     (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
   }
   return;
@@ -132,16 +126,16 @@ void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571D40
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C4_I45_00571d40
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(char param_1)
 
-void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this)
+void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this,char param_1)
 
 {
   ushort uVar1;
   TCzechBoxVtbl *pTVar2;
   undefined4 in_EAX;
   undefined2 uVar3;
-  char in_stack_00000004;
+  undefined3 in_stack_00000005;
   
   uVar3 = (undefined2)((uint)in_EAX >> 0x10);
   if ((this->field_0x94 == '\0') && (this->field_0x64 == '\0')) {
@@ -149,8 +143,8 @@ void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this)
     if ((uVar1 & 1) != 0) {
       pTVar2 = this->vftable;
       (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
-                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) & 0xfffffffe);
-      if (in_stack_00000004 != '\0') {
+                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) & 0xfffffffe,_param_1);
+      if (param_1 != '\0') {
         (*pTVar2[0x39].slot_0x04)();
         return;
       }
@@ -161,8 +155,8 @@ void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this)
     if ((uVar1 & 1) == 0) {
       pTVar2 = this->vftable;
       (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
-                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) | 1);
-      if (in_stack_00000004 != '\0') {
+                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) | 1,_param_1);
+      if (param_1 != '\0') {
         (*pTVar2[0x39].slot_0x04)();
       }
     }
@@ -182,15 +176,13 @@ undefined1 __thiscall TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0(TCzechBox *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571E00
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C1_I10_00571e00
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_00571e00(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_00571e00(char param_1)
 
-void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this)
+void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (this->field_0x94 != in_stack_00000004) {
-    this->field_0x94 = in_stack_00000004;
+  if (this->field_0x94 != param_1) {
+    this->field_0x94 = param_1;
     (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
   }
   return;
@@ -214,22 +206,21 @@ void __thiscall TCzechBox::OrphanCallChain_C2_I16_00571e40(TCzechBox *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571E80
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C3_I23_00571e80
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_00571e80(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2)
 
-void __thiscall TCzechBox::OrphanCallChain_C3_I23_00571e80(TCzechBox *this)
+void __thiscall
+TCzechBox::OrphanCallChain_C3_I23_00571e80(TCzechBox *this,char param_1,undefined4 param_2)
 
 {
   TCzechBoxVtbl *pTVar1;
   TCzechBox_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
   char cVar3;
-  char in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   pTVar2 = pTVar1[0x3a].GetTEventHandlerClassNamePointer;
   cVar3 = (*pTVar2)();
-  if (cVar3 == in_stack_00000004) {
-    cVar3 = (*pTVar2)(in_stack_00000008);
+  if (cVar3 == param_1) {
+    cVar3 = (*pTVar2)(param_2);
     (*pTVar1[0x3a].slot_0x04)((uint)(cVar3 == '\0'));
   }
   return;

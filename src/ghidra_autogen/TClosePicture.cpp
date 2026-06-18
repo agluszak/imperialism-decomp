@@ -57,15 +57,14 @@ TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClose
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BA0
 // GHIDRA_NAME TClosePicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClosePicture * __thiscall TClosePicture::_scalar_deleting_destructor_(TClosePicture *this)
+TClosePicture * __thiscall
+TClosePicture::_scalar_deleting_destructor_(TClosePicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -73,16 +72,20 @@ TClosePicture * __thiscall TClosePicture::_scalar_deleting_destructor_(TClosePic
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BF0
 // GHIDRA_NAME TClosePicture::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-undefined1 __thiscall TClosePicture::InvalidateWindowRectFromHandleField1C(TClosePicture *this)
+undefined1 __thiscall
+TClosePicture::InvalidateWindowRectFromHandleField1C
+          (TClosePicture *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   undefined1 uVar1;
   undefined uVar2;
   undefined3 extraout_var;
   
-  uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf
+                    ((TControl *)this,param_1,param_2,param_3,param_4);
   uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(this->controlTag,1);
   return uVar1;

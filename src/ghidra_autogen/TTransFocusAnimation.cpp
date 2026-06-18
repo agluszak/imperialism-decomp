@@ -267,16 +267,15 @@ TTransFocusAnimation * __cdecl TTransFocusAnimation::CreateObject(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0430
 // GHIDRA_NAME TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0430(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0430(byte param_1)
 
 TTransFocusAnimation * __thiscall
-TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430(TTransFocusAnimation *this)
+TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
+          (TTransFocusAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTTransFocusAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -307,43 +306,40 @@ TTransFocusAnimation::GetTAnimationClassNamePointer(TTransFocusAnimation *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A04A0
 // GHIDRA_NAME TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTransFocusAnimationBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTransFocusAnimationBaseState(undefined4 param_1, int * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
-TTransFocusAnimation::ConstructTTransFocusAnimationBaseState(TTransFocusAnimation *this)
+TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
+          (TTransFocusAnimation *this,undefined4 param_1,int *param_2,undefined2 param_3,
+          undefined2 param_4,undefined4 param_5,undefined4 param_6)
 
 {
   int iVar1;
   undefined4 uVar2;
-  undefined4 in_stack_00000004;
-  int *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
+  undefined2 in_stack_00000012;
   undefined4 local_10;
   undefined4 local_c;
   int local_8;
   int local_4;
   
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
-  *(int *)&this->field_0x1c = *in_stack_00000008;
-  *(int *)&this->field_0x20 = in_stack_00000008[1];
-  *(int *)&this->field_0x24 = in_stack_00000008[2];
-  iVar1 = in_stack_00000008[3];
-  *(undefined2 *)&this->field_0xc = in_stack_00000010;
+  *(undefined4 *)&this->field_0x4 = param_1;
+  *(int *)&this->field_0x1c = *param_2;
+  *(int *)&this->field_0x20 = param_2[1];
+  *(int *)&this->field_0x24 = param_2[2];
+  iVar1 = param_2[3];
+  *(undefined2 *)&this->field_0xc = param_4;
   *(int *)&this->field_0x28 = iVar1;
-  *(undefined2 *)&this->field_0xa = in_stack_0000000c;
-  *(undefined4 *)&this->field_0x14 = in_stack_00000014;
-  *(undefined4 *)&this->field_0x18 = in_stack_00000018;
+  *(undefined2 *)&this->field_0xa = param_3;
+  *(undefined4 *)&this->field_0x14 = param_5;
+  *(undefined4 *)&this->field_0x18 = param_6;
   *(undefined2 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x10 = 0;
   local_10 = 0;
   local_c = 0;
-  local_8 = in_stack_00000008[2] - *in_stack_00000008;
-  local_4 = in_stack_00000008[3] - in_stack_00000008[1];
+  local_8 = param_2[2] - *param_2;
+  local_4 = param_2[3] - param_2[1];
   (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x30,8,&local_10);
-  uVar2 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
+  uVar2 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(_param_4);
   *(undefined4 *)&this->field_0x34 = uVar2;
   return;
 }

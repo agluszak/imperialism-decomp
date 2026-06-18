@@ -5,20 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E640
 // GHIDRA_NAME TNumberedItem::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this)
+void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,undefined4 *param_1)
 
 {
   undefined4 uVar1;
   undefined4 uVar2;
   HWND pHVar3;
-  undefined4 *in_stack_00000004;
   
-  uVar1 = *in_stack_00000004;
-  uVar2 = in_stack_00000004[1];
+  uVar1 = *param_1;
+  uVar2 = param_1[1];
   g_McAppUiMouseCaptureControl_006A1A80 = this;
   pHVar3 = SetCapture(*(HWND *)(this->field50 + 0x1c));
   FromHandle(pHVar3);
@@ -56,9 +55,9 @@ void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1880
 // GHIDRA_NAME TNumberedItem::BuildCityViewResourceRows
-// GHIDRA_PROTO undefined __thiscall BuildCityViewResourceRows(void)
+// GHIDRA_PROTO undefined __thiscall BuildCityViewResourceRows(int * param_1)
 
-void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this)
+void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int *param_1)
 
 {
   TNumberedItemVtbl *pTVar1;
@@ -76,7 +75,6 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this)
   TNumberedItem *pTVar11;
   code *unaff_EDI;
   int *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   CString CStack_cc;
   undefined1 *puStack_c8;
   CString CStack_c4;
@@ -103,13 +101,13 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this)
   CString::CString((CString *)&tStack_4c.top);
   sVar9 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
-  iVar8 = *in_stack_00000004;
+  iVar8 = *param_1;
   local_22 = 0;
   local_21 = 0;
   local_20 = (uint)local_20._2_2_ << 0x10;
-  *(int **)&this->field_0x90 = in_stack_00000004;
+  *(int **)&this->field_0x90 = param_1;
   (**(code **)(iVar8 + 0x30))();
-  tStack_4c.bottom = (int)in_stack_00000004 + 0x1e;
+  tStack_4c.bottom = (int)param_1 + 0x1e;
   iVar8 = 0x17;
   psVar5 = (short *)tStack_4c.bottom;
   do {
@@ -305,15 +303,14 @@ TNumberedItem * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumbe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507800
 // GHIDRA_NAME TNumberedItem::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedItem * __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this)
+TNumberedItem * __thiscall
+TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -391,16 +388,14 @@ void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573690
 // GHIDRA_NAME TNumberedItem::OrphanCallChain_C1_I08_00573690
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00573690(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)
 
-void __thiscall TNumberedItem::OrphanCallChain_C1_I08_00573690(TNumberedItem *this)
+void __thiscall
+TNumberedItem::OrphanCallChain_C1_I08_00573690(TNumberedItem *this,undefined2 param_1,char param_2)
 
 {
-  undefined2 in_stack_00000004;
-  char in_stack_00000008;
-  
-  *(undefined2 *)&this->field_0x98 = in_stack_00000004;
-  if (in_stack_00000008 != '\0') {
+  *(undefined2 *)&this->field_0x98 = param_1;
+  if (param_2 != '\0') {
     (*this->vftable[0x1c].slot_0x04)();
   }
   return;
@@ -408,22 +403,20 @@ void __thiscall TNumberedItem::OrphanCallChain_C1_I08_00573690(TNumberedItem *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005736C0
 // GHIDRA_NAME TNumberedItem::OrphanCallChain_C1_I14_005736c0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I14_005736c0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2, char param_3)
 
-void __thiscall TNumberedItem::OrphanCallChain_C1_I14_005736c0(TNumberedItem *this)
+void __thiscall
+TNumberedItem::OrphanCallChain_C1_I14_005736c0
+          (TNumberedItem *this,ushort param_1,char param_2,char param_3)
 
 {
-  ushort in_stack_00000004;
-  char in_stack_00000008;
-  char in_stack_0000000c;
-  
-  if (in_stack_00000008 == '\0') {
-    *(ushort *)&this->field_0x98 = *(short *)&this->field_0x98 - in_stack_00000004;
+  if (param_2 == '\0') {
+    *(ushort *)&this->field_0x98 = *(short *)&this->field_0x98 - param_1;
   }
   else {
-    *(ushort *)&this->field_0x98 = *(ushort *)&this->field_0x98 & in_stack_00000004;
+    *(ushort *)&this->field_0x98 = *(ushort *)&this->field_0x98 & param_1;
   }
-  if (in_stack_0000000c != '\0') {
+  if (param_3 != '\0') {
     (*this->vftable[0x1c].slot_0x04)();
   }
   return;

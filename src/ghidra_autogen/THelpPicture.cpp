@@ -66,15 +66,14 @@ THelpPicture * __thiscall THelpPicture::ConstructPictureResourceEntryType57080(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503CC0
 // GHIDRA_NAME THelpPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpPicture * __thiscall THelpPicture::_scalar_deleting_destructor_(THelpPicture *this)
+THelpPicture * __thiscall
+THelpPicture::_scalar_deleting_destructor_(THelpPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -91,8 +90,11 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
   undefined uVar2;
   undefined3 extraout_var;
   TDeluxeText *this_00;
-  undefined4 *puVar3;
+  undefined4 *puVar4;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  undefined1 auStack_2c [4];
   undefined1 local_28 [6];
   undefined1 local_22;
   undefined1 local_21;
@@ -104,6 +106,7 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
+  int *piVar3;
   
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633602;
@@ -115,7 +118,8 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
   local_20 = (uint)local_20._2_2_ << 0x10;
   thunk_InitializeUiTextStyleDescriptor(local_28,0,0xc,0x2b67,3);
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x7377696e);
-  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
+  piVar3 = (int *)CONCAT31(extraout_var,uVar2);
+  (**(code **)(*piVar3 + 0xc))();
   this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
   puStack_8 = (undefined1 *)0x0;
   if (this_00 == (TDeluxeText *)0x0) {
@@ -133,8 +137,8 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
     this_00->field_0x9f = 0;
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
     this_00->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar3 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
-    uVar1 = *puVar3;
+    puVar4 = (undefined4 *)SetColorRgbAndClearAlphaByte(0,0,0);
+    uVar1 = *puVar4;
     this_00->field_0xa0 = 0;
     *(undefined4 *)&this_00->field_0x98 = uVar1;
   }
@@ -143,9 +147,12 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
   uStack_1c = 0;
   uStack_18 = 0;
   uStack_14 = 0;
-  TDeluxeText::ConstructTDeluxeTextBaseState(this_00);
+  uStack_34 = 0;
+  uStack_30 = 0;
+  TDeluxeText::ConstructTDeluxeTextBaseState
+            (this_00,piVar3,&uStack_34,&stack0xffffffc4,&local_20,(int)auStack_2c);
   *(TDeluxeText **)&this->field_0x94 = this_00;
-  ((int *)CONCAT31(extraout_var,uVar2))[0x18] = (int)this_00;
+  piVar3[0x18] = (int)this_00;
   SyncBoundedValueAndToggleControlStates();
   *unaff_FS_OFFSET = uStack_10;
   return;
@@ -153,18 +160,16 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503ED0
 // GHIDRA_NAME THelpPicture::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall THelpPicture::OrphanRetStub_0059add0(THelpPicture *this)
+void __thiscall THelpPicture::OrphanRetStub_0059add0(THelpPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
-  if (in_stack_00000004 == 0xd) {
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  if (param_1 == 0xd) {
+    uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x6e616d32) {
       if (uVar1 == 0x6e616d31) {
         (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);

@@ -29,16 +29,14 @@ void __thiscall TModalMessageCommand::OrphanRetStub_00487a00(TModalMessageComman
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD50
 // GHIDRA_NAME TModalMessageCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
 TModalMessageCommand * __thiscall
-TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this)
+TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTModalMessageCommandInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

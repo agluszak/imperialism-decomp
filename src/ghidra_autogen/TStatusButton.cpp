@@ -73,15 +73,14 @@ TStatusButton * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005863B0
 // GHIDRA_NAME TStatusButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusButton * __thiscall TStatusButton::_scalar_deleting_destructor_(TStatusButton *this)
+TStatusButton * __thiscall
+TStatusButton::_scalar_deleting_destructor_(TStatusButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -89,11 +88,12 @@ TStatusButton * __thiscall TStatusButton::_scalar_deleting_destructor_(TStatusBu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586400
 // GHIDRA_NAME TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TStatusButton *this)
+void __thiscall
+TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TStatusButton *this,int param_1)
 
 {
   TStatusButtonVtbl *pTVar1;
@@ -103,7 +103,6 @@ void __thiscall TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSta
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   CString local_14;
   CString local_10;
   undefined4 uStack_c;
@@ -120,7 +119,7 @@ void __thiscall TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSta
   pTVar1 = this->vftable;
   local_4 = CONCAT31(local_4._1_3_,1);
   uVar2 = (*pTVar1[0x17].slot_0x04)();
-  if ((in_stack_00000004 == CONCAT31(extraout_var,uVar2)) &&
+  if ((param_1 == CONCAT31(extraout_var,uVar2)) &&
      (cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
     cVar3 = (*pTVar1[0x37].slot_0x04)();
     if (cVar3 != '\0') goto LAB_0058650a;
@@ -144,7 +143,7 @@ void __thiscall TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSta
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0xa0))();
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
 LAB_0058650a:
   local_4 = local_4 & 0xffffff00;
   CString::~CString(&local_14);

@@ -57,15 +57,14 @@ TUberCluster * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberClus
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571490
 // GHIDRA_NAME TUberCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUberCluster * __thiscall TUberCluster::_scalar_deleting_destructor_(TUberCluster *this)
+TUberCluster * __thiscall
+TUberCluster::_scalar_deleting_destructor_(TUberCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

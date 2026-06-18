@@ -50,16 +50,14 @@ TRadioTextCluster::GetTEventHandlerClassNamePointer(TRadioTextCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005796F0
 // GHIDRA_NAME TRadioTextCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TRadioTextCluster * __thiscall
-TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this)
+TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,7 +77,7 @@ void __thiscall TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRadioTextCl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579770
 // GHIDRA_NAME TRadioTextCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Event-dispatch helper for selectable option controls.
 // GHIDRA_COMMENT
@@ -91,18 +89,15 @@ void __thiscall TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRadioTextCl
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
-void __thiscall TRadioTextCluster::OrphanRetStub_0059add0(TRadioTextCluster *this)
+void __thiscall
+TRadioTextCluster::OrphanRetStub_0059add0
+          (TRadioTextCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
-  
-  if (in_stack_00000004 == 0xd) {
-    thunk_SetSelectedTextOptionByTag(*(undefined4 *)((int)in_stack_00000008 + 0x1c),1);
+  if (param_1 == 0xd) {
+    thunk_SetSelectedTextOptionByTag(*(undefined4 *)((int)param_2 + 0x1c),1);
   }
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 

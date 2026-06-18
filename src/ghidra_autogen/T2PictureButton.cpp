@@ -66,15 +66,14 @@ T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BE0
 // GHIDRA_NAME T2PictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-T2PictureButton * __thiscall T2PictureButton::_scalar_deleting_destructor_(T2PictureButton *this)
+T2PictureButton * __thiscall
+T2PictureButton::_scalar_deleting_destructor_(T2PictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -82,25 +81,24 @@ T2PictureButton * __thiscall T2PictureButton::_scalar_deleting_destructor_(T2Pic
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570C30
 // GHIDRA_NAME T2PictureButton::OrphanCallChain_C3_I43_00570c30
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I43_00570c30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I43_00570c30(char param_1)
 
-void __thiscall T2PictureButton::OrphanCallChain_C3_I43_00570c30(T2PictureButton *this)
+void __thiscall T2PictureButton::OrphanCallChain_C3_I43_00570c30(T2PictureButton *this,char param_1)
 
 {
   short sVar1;
   T2PictureButtonVtbl *pTVar2;
   char unaff_BP;
-  char in_stack_00000004;
   
   sVar1 = *(short *)&this->field_0x84;
-  if (((in_stack_00000004 == '\x01') && (this->field3c < (int)sVar1)) ||
-     ((in_stack_00000004 == '\0' && ((int)sVar1 < this->field3c)))) {
+  if (((param_1 == '\x01') && (this->field3c < (int)sVar1)) ||
+     ((param_1 == '\0' && ((int)sVar1 < this->field3c)))) {
     pTVar2 = this->vftable;
     (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
               (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
     this->field3c = (int)sVar1;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)in_stack_00000004,0);
-    (*pTVar2[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),(int)unaff_BP);
+    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)param_1,0);
+    (*pTVar2[0x14].slot_0x04)((uint)(param_1 == '\0'),(int)unaff_BP);
   }
   return;
 }

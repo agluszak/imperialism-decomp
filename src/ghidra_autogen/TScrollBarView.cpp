@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573DF0
 // GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollBarView * __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this)
+TScrollBarView * __thiscall
+TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -180,53 +179,52 @@ void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005747C0
 // GHIDRA_NAME TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScrollBarView *this)
+void __thiscall
+TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TScrollBarView *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
   undefined4 uVar1;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x73637570) {
+  if (param_1 == 10) {
+    if (*(int *)(param_2 + 0x1c) == 0x73637570) {
       uVar1 = 0xc;
     }
     else {
-      if (*(int *)(in_stack_00000008 + 0x1c) != 0x7363646e) goto LAB_005747fc;
+      if (*(int *)(param_2 + 0x1c) != 0x7363646e) goto LAB_005747fc;
       uVar1 = 0xfffffff4;
     }
     AdjustCityDialogScrollRangeByDeltaAndClamp(0,uVar1);
   }
 LAB_005747fc:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574830
 // GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(POINT * param_1)
 
-void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this)
+void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,POINT *param_1)
 
 {
   int iVar1;
   BOOL BVar2;
   undefined2 extraout_var;
-  POINT *in_stack_00000004;
   RECT local_10;
   
   local_10.top = (LONG)*(short *)&this->field_0x8c;
   local_10.right = this->field34;
   local_10.bottom = local_10.top + 0x12;
   local_10.left = 0;
-  BVar2 = PtInRect(&local_10,*in_stack_00000004);
+  BVar2 = PtInRect(&local_10,*param_1);
   if (BVar2 != 0) {
-    TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+    TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,&param_1->x);
     return;
   }
-  iVar1 = in_stack_00000004->y;
+  iVar1 = param_1->y;
   if ((*(short *)&this->field_0x88 <= iVar1) && (iVar1 < *(short *)&this->field_0x8c)) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
     AdjustCityDialogScrollRangeByDeltaAndClamp
@@ -243,13 +241,12 @@ void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574970
 // GHIDRA_NAME TScrollBarView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *this)
+void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *this,LONG *param_1)
 
 {
   int iVar1;
-  LONG *in_stack_00000004;
   tagRECT local_20;
   tagRECT local_10;
   
@@ -325,10 +322,10 @@ void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *t
   BlitRectWithOptionalTransparency
             ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 4),
              (astruct_18 *)(*(int *)&this->field_0x90 + 4),&local_20,&local_10,0,(astruct_19 *)0x0);
-  local_20.left = *in_stack_00000004;
-  local_20.top = in_stack_00000004[1];
-  local_20.right = in_stack_00000004[2];
-  local_20.bottom = in_stack_00000004[3];
+  local_20.left = *param_1;
+  local_20.top = param_1[1];
+  local_20.right = param_1[2];
+  local_20.bottom = param_1[3];
   BlitRectWithOptionalTransparency
             ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
              (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_20,&local_20,0,
@@ -338,22 +335,23 @@ void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574D10
 // GHIDRA_NAME TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
-void __thiscall TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit(TScrollBarView *this)
+void __thiscall
+TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TScrollBarView *this,int param_1,int param_2)
 
 {
   int *piVar1;
   short sVar2;
   short sVar3;
   int iVar4;
-  int in_stack_00000004;
   int in_stack_00000010;
   int iStack_8;
   int iStack_4;
   
   sVar3 = *(short *)(in_stack_00000010 + 4) + -9;
-  if ((0 < in_stack_00000004) && (in_stack_00000004 < 3)) {
+  if ((0 < param_1) && (param_1 < 3)) {
     sVar2 = *(short *)&this->field_0x8a;
     if ((*(short *)&this->field_0x8a < sVar3) ||
        (sVar2 = *(short *)&this->field_0x88, sVar3 < *(short *)&this->field_0x88)) {
@@ -363,7 +361,7 @@ void __thiscall TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit(TSc
       *(short *)&this->field_0x8c = sVar3;
       RefreshCityDialogScrollableViewportWithQuickDrawContext();
     }
-    if (in_stack_00000004 == 2) {
+    if (param_1 == 2) {
       piVar1 = *(int **)(*(int *)&this->field_0x84 + 0x60);
       if ((piVar1 != (int *)0x0) &&
          (sVar3 = (short)piVar1[0xe] - *(short *)(*(int *)&this->field_0x84 + 0x38), 0 < sVar3)) {

@@ -64,16 +64,14 @@ TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A30
 // GHIDRA_NAME TOnOffRadioButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TOnOffRadioButton * __thiscall
-TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this)
+TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -81,24 +79,22 @@ TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
 // GHIDRA_NAME TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
-TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButton *this)
+TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButton *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0xc) {
+  if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
     return;
   }
-  if (in_stack_00000004 != 0x1f) {
-    if (in_stack_00000004 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (param_1 != 0x1f) {
+    if (param_1 != 0x20) {
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,1);
@@ -110,20 +106,20 @@ TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButto
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571B20
 // GHIDRA_NAME TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571b20(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571b20(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20(TOnOffRadioButton *this)
+void __thiscall
+TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
+          (TOnOffRadioButton *this,undefined4 param_1,undefined4 param_2)
 
 {
   TOnOffRadioButtonVtbl *pTVar1;
   char cVar2;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,in_stack_00000008);
+    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
   }
   return;
 }

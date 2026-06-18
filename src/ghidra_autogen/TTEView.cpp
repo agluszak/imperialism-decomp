@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AD70
 // GHIDRA_NAME TTEView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTEView * __thiscall TTEView::_scalar_deleting_destructor_(TTEView *this)
+TTEView * __thiscall TTEView::_scalar_deleting_destructor_(TTEView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -61,31 +59,27 @@ CRuntimeClass * __thiscall TTEView::GetTEventHandlerClassNamePointer(TTEView *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486050
 // GHIDRA_NAME TTEView::ConstructTTEViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTEViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTEViewBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 * param_6, undefined4 * param_7, undefined2 param_8)
 
-void __thiscall TTEView::ConstructTTEViewBaseState(TTEView *this)
+void __thiscall
+TTEView::ConstructTTEViewBaseState
+          (TTEView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4
+          ,undefined4 param_5,undefined4 *param_6,undefined4 *param_7,undefined2 param_8)
 
 {
   undefined2 uVar1;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  undefined4 *in_stack_0000001c;
-  undefined4 *in_stack_00000020;
+  undefined2 in_stack_00000022;
   undefined2 in_stack_00000024;
   
   InitializeTextEntryBaseAndOptionalStringResource
-            (in_stack_00000008,in_stack_0000000c,in_stack_00000010,in_stack_00000014,
-             in_stack_00000018,0xffffffff,0);
-  *(undefined4 *)&this->field_0x68 = *in_stack_0000001c;
-  *(undefined4 *)&this->field_0x6c = in_stack_0000001c[1];
-  *(undefined4 *)&this->field_0x70 = in_stack_0000001c[2];
-  *(undefined4 *)&this->field_0x74 = in_stack_0000001c[3];
-  *(undefined4 *)&this->field_0x78 = *in_stack_00000020;
-  *(undefined4 *)&this->field_0x7c = in_stack_00000020[1];
-  uVar1 = *(undefined2 *)(in_stack_00000020 + 2);
+            (param_2,param_3,param_4,param_5,param_6,0xffffffff,0);
+  *(undefined4 *)&this->field_0x68 = *param_7;
+  *(undefined4 *)&this->field_0x6c = param_7[1];
+  *(undefined4 *)&this->field_0x70 = param_7[2];
+  *(undefined4 *)&this->field_0x74 = param_7[3];
+  *(undefined4 *)&this->field_0x78 = *_param_8;
+  *(undefined4 *)&this->field_0x7c = _param_8[1];
+  uVar1 = *(undefined2 *)(_param_8 + 2);
   *(undefined2 *)&this->field_0x90 = in_stack_00000024;
   *(undefined2 *)&this->field_0x80 = uVar1;
   return;
@@ -98,10 +92,11 @@ void __thiscall TTEView::ConstructTTEViewBaseState(TTEView *this)
 int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
 
 {
+  HDC pHVar1;
+  HGDIOBJ pvVar2;
   int unaff_ESI;
   int *unaff_FS_OFFSET;
   TTEViewVtbl *pTStack_40;
-  undefined1 *puStack_3c;
   undefined1 local_2c [20];
   int iStack_18;
   TView *pTStack_c;
@@ -114,24 +109,17 @@ int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
   *unaff_FS_OFFSET = (int)&pTStack_c;
   CDC::CDC((CDC *)local_2c);
   local_4 = 0;
-  puStack_3c = (undefined1 *)0x486115;
-  CreateCompatibleDC((HDC)0x0);
-  puStack_3c = (undefined1 *)0x48611f;
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)local_2c);
-  puStack_3c = (undefined1 *)0x486128;
-  UpdateGlobalFontPresetAndRebuildCachedFontIfDirty();
-  puStack_3c = (undefined1 *)0x486135;
-  SelectObject_6129d7((TTEView *)local_2c);
-  puStack_3c = (undefined1 *)0x486146;
+  pHVar1 = CreateCompatibleDC((HDC)0x0);
+  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)local_2c,(int)pHVar1);
+  pvVar2 = (HGDIOBJ)UpdateGlobalFontPresetAndRebuildCachedFontIfDirty();
+  pvVar2 = (HGDIOBJ)SelectObject_6129d7((TTEView *)local_2c,pvVar2);
   (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)();
-  puStack_3c = &this->field_0x68;
   pTStack_40 = (TTEViewVtbl *)0x486153;
-  DeflateRect((TTEView *)(local_2c + 0xc));
+  DeflateRect((TTEView *)(local_2c + 0xc),(int *)&this->field_0x68);
   pTStack_40 = (TTEViewVtbl *)(local_2c + 0xc);
-  puStack_3c = (undefined1 *)0xd10;
   (**(code **)(unaff_ESI + 0x70))
             (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8));
-  SelectObject_6129d7((TTEView *)&pTStack_40);
+  SelectObject_6129d7((TTEView *)&pTStack_40,pvVar2);
   iStack_18 = -1;
   DestroyCDCAndDeleteOwnedHdc();
   *unaff_FS_OFFSET = local_2c._12_4_;
@@ -448,9 +436,10 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055DF50
 // GHIDRA_NAME TTEView::AppendInterNationEventSummaryTextEntry
-// GHIDRA_PROTO undefined __thiscall AppendInterNationEventSummaryTextEntry(void)
+// GHIDRA_PROTO undefined __thiscall AppendInterNationEventSummaryTextEntry(int param_1, undefined4 * param_2)
 
-int __thiscall TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this)
+int __thiscall
+TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefined4 *param_2)
 
 {
   char *pcVar1;
@@ -462,13 +451,15 @@ int __thiscall TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this)
   char *text_or_resource_id;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   char *pcStack00000010;
+  int in_stack_00000014;
   undefined4 *in_stack_0000001c;
   CString local_44;
   TDeluxeText *local_40;
   undefined4 local_3c;
-  int local_38 [8];
+  undefined4 *local_38 [6];
+  int local_20;
+  undefined4 local_1c;
   int local_18;
   undefined4 uStack_14;
   undefined4 local_c;
@@ -479,9 +470,9 @@ int __thiscall TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this)
   puStack_8 = &LAB_006356aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_38[0] = 0x18;
-  local_38[1] = 0xe2;
-  local_38[2] = 0x1ac;
+  local_38[0] = (undefined4 *)0x18;
+  local_38[1] = (undefined4 *)0xe2;
+  local_38[2] = (undefined4 *)0x1ac;
   this_00 = (TDeluxeText *)AllocateWithFallbackHandler();
   local_4 = 0;
   if (this_00 == (TDeluxeText *)0x0) {
@@ -500,15 +491,17 @@ int __thiscall TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this)
     this_00->field_0xa0 = 0;
     *(undefined4 *)&this_00->field_0x98 = uVar5;
   }
-  local_38[3] = 4;
-  local_38[4] = 4;
-  local_38[0] = local_38[in_stack_00000004];
-  local_38[5] = 4;
-  local_38[6] = 4;
+  local_38[3] = (undefined4 *)0x4;
+  local_38[4] = (undefined4 *)0x4;
+  local_38[0] = local_38[param_1];
+  local_38[5] = (undefined4 *)0x4;
+  local_20 = 4;
+  local_38[1] = param_2;
   local_4 = 0xffffffff;
   local_40 = (TDeluxeText *)0xbc;
   local_3c = 0x18c;
-  TDeluxeText::ConstructTDeluxeTextBaseState(this_00);
+  TDeluxeText::ConstructTDeluxeTextBaseState
+            (this_00,this,local_38,&local_40,local_38 + 3,in_stack_00000014);
   uVar5 = AllocateWithFallbackHandler();
   InvokeVtableSlot30OnTargetObject(*(undefined4 *)&this->field_0x94);
   thunk_ReadResourceStreamIntoBufferAndAdvance(*(undefined4 *)&this->field_0x94,uVar5);
@@ -531,35 +524,34 @@ int __thiscall TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this)
   (*pTVar3[0x3e].GetTEventHandlerClassNamePointer)();
   FreeHeapBlockWithAllocatorTracking(text_or_resource_id);
   iVar6 = DestructTTEViewAndMaybeFree((TTEView *)this_00);
-  (*pTVar3[0x25].slot_0x04)(local_38 + 6);
-  local_18 = iVar6 + 8 + local_38[6];
+  (*pTVar3[0x25].slot_0x04)(&local_20);
+  local_18 = iVar6 + 8 + local_20;
   (*pTVar3[0x2d].GetTEventHandlerClassNamePointer)(local_38 + 5,0);
   uStack_14 = 0xffffffff;
   CString::~CString((CString *)&stack0xffffffac);
-  *unaff_FS_OFFSET = local_38[7];
+  *unaff_FS_OFFSET = local_1c;
   return iVar6 + 8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006129D7
 // GHIDRA_NAME TTEView::SelectObject_6129d7
-// GHIDRA_PROTO undefined __thiscall SelectObject_6129d7(void)
+// GHIDRA_PROTO undefined __thiscall SelectObject_6129d7(HGDIOBJ param_1)
 
-void __thiscall TTEView::SelectObject_6129d7(TTEView *this)
+void __thiscall TTEView::SelectObject_6129d7(TTEView *this,HGDIOBJ param_1)
 
 {
   HGDIOBJ pvVar1;
   HGDIOBJ h;
-  HGDIOBJ in_stack_00000004;
   
-  pvVar1 = in_stack_00000004;
+  pvVar1 = param_1;
   if ((HDC)this->field04 != (HDC)this->padding_08_to_0b) {
-    if (in_stack_00000004 == (HGDIOBJ)0x0) {
+    if (param_1 == (HGDIOBJ)0x0) {
       h = (HGDIOBJ)0x0;
     }
     else {
-      h = *(HGDIOBJ *)((int)in_stack_00000004 + 4);
+      h = *(HGDIOBJ *)((int)param_1 + 4);
     }
-    in_stack_00000004 = SelectObject((HDC)this->field04,h);
+    param_1 = SelectObject((HDC)this->field04,h);
   }
   if ((HDC)this->padding_08_to_0b != (HDC)0x0) {
     if (pvVar1 == (HGDIOBJ)0x0) {
@@ -568,26 +560,23 @@ void __thiscall TTEView::SelectObject_6129d7(TTEView *this)
     else {
       pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
     }
-    in_stack_00000004 = SelectObject((HDC)this->padding_08_to_0b,pvVar1);
+    param_1 = SelectObject((HDC)this->padding_08_to_0b,pvVar1);
   }
-  FromHandle_613a36(in_stack_00000004);
+  FromHandle_613a36(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F342
 // GHIDRA_NAME TTEView::DeflateRect
-// GHIDRA_PROTO undefined __thiscall DeflateRect(void)
+// GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
 
-void __thiscall TTEView::DeflateRect(TTEView *this)
+void __thiscall TTEView::DeflateRect(TTEView *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
-  this->vftable =
-       (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *in_stack_00000004);
-  this->field04 = this->field04 + in_stack_00000004[1];
-  this->padding_08_to_0b = this->padding_08_to_0b - in_stack_00000004[2];
-  this->field0c = this->field0c - in_stack_00000004[3];
+  this->vftable = (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *param_1);
+  this->field04 = this->field04 + param_1[1];
+  this->padding_08_to_0b = this->padding_08_to_0b - param_1[2];
+  this->field0c = this->field0c - param_1[3];
   return;
 }
 

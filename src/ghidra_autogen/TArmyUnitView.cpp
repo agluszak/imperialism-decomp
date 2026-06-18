@@ -57,15 +57,14 @@ TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyU
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9510
 // GHIDRA_NAME TArmyUnitView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyUnitView * __thiscall TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this)
+TArmyUnitView * __thiscall
+TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -169,7 +168,7 @@ void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9990
 // GHIDRA_NAME TArmyUnitView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, CString param_2, undefined4 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches Cross_UArmyViews command tags.
 // GHIDRA_COMMENT - Handles 'chec' by cycling/checking selected entry and then calling g_pUiRuntimeContext vfunc +0x48 with a computed state code.
@@ -190,83 +189,87 @@ void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *thi
    Note: this function updates turn-flow state via +0x48; it is not a direct +0x4C event-code
    dispatch producer. */
 
-void __thiscall TArmyUnitView::OrphanRetStub_0059add0(TArmyUnitView *this)
+void __thiscall
+TArmyUnitView::OrphanRetStub_0059add0
+          (TArmyUnitView *this,undefined4 param_1,CString param_2,undefined4 param_3)
 
 {
   int iVar1;
-  char cVar2;
-  undefined uVar3;
-  ushort uVar4;
-  int *piVar5;
+  CString CVar2;
+  char cVar3;
+  undefined uVar4;
+  ushort uVar5;
+  int *piVar6;
   undefined3 extraout_var;
-  undefined4 uVar6;
+  undefined4 uVar7;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
+  CVar2.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630448;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = *(int *)(in_stack_00000008.m_pchData + 0x1c);
+  iVar1 = *(int *)(param_2.m_pchData + 0x1c);
   if (iVar1 == 0x63686563) {
-    uVar4 = GetAsyncKeyState(0x11);
-    piVar5 = *(int **)&this->field_0x60;
-    if ((uVar4 & 0x8000) == 0) {
-      if (piVar5[2] == 0) {
-        (**(code **)(*piVar5 + 0x34))();
+    uVar5 = GetAsyncKeyState(0x11);
+    piVar6 = *(int **)&this->field_0x60;
+    if ((uVar5 & 0x8000) == 0) {
+      if (piVar6[2] == 0) {
+        (**(code **)(*piVar6 + 0x34))();
       }
       else {
-        (**(code **)(*piVar5 + 0x34))();
+        (**(code **)(*piVar6 + 0x34))();
       }
     }
-    else if (piVar5[2] != 0xe) {
-      (**(code **)(*piVar5 + 0x34))();
+    else if (piVar6[2] != 0xe) {
+      (**(code **)(*piVar6 + 0x34))();
     }
     thunk_InvalidateCityDialogRectRegion();
-    piVar5 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
+    piVar6 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
                       *(short *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x96) * 4);
-    if (piVar5 != (int *)0x0) {
-      piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
-      (**(code **)(*piVar5 + 0x1c4))();
+    if (piVar6 != (int *)0x0) {
+      piVar6 = (int *)(**(code **)(*piVar6 + 0x94))();
+      (**(code **)(*piVar6 + 0x1c4))();
       (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
     }
   }
   else if (iVar1 == 0x75706772) {
-    cVar2 = ApplyEraCapabilityCostAndSetSelection();
-    if (cVar2 == '\0') {
-      CString::CString(&stack0x00000008);
+    cVar3 = ApplyEraCapabilityCostAndSetSelection();
+    if (cVar3 == '\0') {
+      CString::CString(&param_2);
       local_4 = 0;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      thunk_AssignStringSharedRefAndReturnThis(&stack0x00000008);
+      thunk_AssignStringSharedRefAndReturnThis(&param_2);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
-      CString::~CString(&stack0x00000008);
+      CString::~CString(&param_2);
     }
     else {
-      (**(code **)(*(int *)in_stack_00000008.m_pchData + 0xa4))();
-      uVar3 = (*this->vftable[0x12].slot_0x04)();
-      piVar5 = (int *)CONCAT31(extraout_var,uVar3);
-      if (piVar5 == (int *)0x0) {
+      (**(code **)(*(int *)CVar2.m_pchData + 0xa4))();
+      uVar4 = (*this->vftable[0x12].slot_0x04)();
+      piVar6 = (int *)CONCAT31(extraout_var,uVar4);
+      if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyViews_cpp_00695858)
         ;
       }
-      piVar5[0x22] = (piVar5[0x23] + *(short *)(*(int *)&this->field_0x60 + 4) * 2) * 0x40;
-      (**(code **)(*piVar5 + 0xe4))();
-      piVar5 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
-      iVar1 = *piVar5;
+      piVar6[0x22] = (piVar6[0x23] + *(short *)(*(int *)&this->field_0x60 + 4) * 2) * 0x40;
+      (**(code **)(*piVar6 + 0xe4))();
+      piVar6 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
+      iVar1 = *piVar6;
       (**(code **)(iVar1 + 0xc))();
-      uVar6 = UiRuntimeContext::GetActiveNationId();
-      (**(code **)(iVar1 + 0x1d0))(uVar6);
+      uVar7 = UiRuntimeContext::GetActiveNationId();
+      (**(code **)(iVar1 + 0x1d0))(uVar7);
     }
   }
   else if (iVar1 == 0x6e616d65) {
     thunk_HandleCrossUArmyViewsNameCommand();
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+            ((TView *)this,param_1,CVar2.m_pchData,param_3);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

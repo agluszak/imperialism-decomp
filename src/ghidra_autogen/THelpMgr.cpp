@@ -38,15 +38,13 @@ void __thiscall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500630
 // GHIDRA_NAME THelpMgr::DestructTHelpMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTHelpMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTHelpMgrAndMaybeFree(byte param_1)
 
-THelpMgr * __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(THelpMgr *this)
+THelpMgr * __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(THelpMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTHelpMgrAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -361,22 +359,22 @@ void __thiscall THelpMgr::OrphanCallChain_C1_I22_00500f10(THelpMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500F50
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int * param_1)
 
-void __thiscall THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this)
+void __thiscall
+THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this,int *param_1)
 
 {
   undefined1 uVar1;
   undefined1 *puVar2;
   int iVar3;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   (**(code **)(**(int **)&this->field_0x4 + 0x20))();
-  (**(code **)(**(int **)&this->field_0x4 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x4 + 0x18))(param_1);
   if (0x2a < DAT_00695278) {
     puVar2 = &this->field_0x10;
-    (**(code **)(*in_stack_00000004 + 0x3c))(puVar2,10);
+    (**(code **)(*param_1 + 0x3c))(puVar2,10);
     iVar3 = 5;
     do {
       uVar1 = *puVar2;
@@ -387,27 +385,27 @@ void __thiscall THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelp
     } while (iVar3 != 0);
   }
   if (0x36 < DAT_00695278) {
-    (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x2e,2);
+    (**(code **)(*param_1 + 0x3c))(&this->field_0x2e,2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500FE0
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int * param_1)
 
-void __thiscall THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this)
+void __thiscall
+THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this,int *param_1)
 
 {
   code *pcVar1;
   int unaff_EBX;
   int iVar2;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  (**(code **)(**(int **)&this->field_0x4 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x4 + 0x14))(param_1);
   iVar2 = 5;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   do {
     (*pcVar1)(&stack0x00000000,2);
     iVar2 = iVar2 + -1;

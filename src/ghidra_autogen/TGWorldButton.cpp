@@ -58,15 +58,14 @@ TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572160
 // GHIDRA_NAME TGWorldButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldButton * __thiscall TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this)
+TGWorldButton * __thiscall
+TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,18 +73,17 @@ TGWorldButton * __thiscall TGWorldButton::_scalar_deleting_destructor_(TGWorldBu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572200
 // GHIDRA_NAME TGWorldButton::OrphanCallChain_C2_I25_00572200
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_00572200(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
 
-void __thiscall TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this)
+void __thiscall
+TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this,char param_1,char param_2)
 
 {
   TGWorldButtonVtbl *pTVar1;
-  char in_stack_00000004;
-  char in_stack_00000008;
   
-  if (in_stack_00000004 != this->field_0x64) {
-    this->field_0x64 = in_stack_00000004;
-    if (in_stack_00000004 == '\0') {
+  if (param_1 != this->field_0x64) {
+    this->field_0x64 = param_1;
+    if (param_1 == '\0') {
       *(short *)&this->field_0x84 = *(short *)&this->field_0x84 - (short)this->field34;
     }
     else {
@@ -93,7 +91,7 @@ void __thiscall TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *th
     }
     pTVar1 = this->vftable;
     (*pTVar1[0x1c].slot_0x04)();
-    if (in_stack_00000008 != '\0') {
+    if (param_2 != '\0') {
       (*pTVar1[0x27].slot_0x04)();
     }
   }

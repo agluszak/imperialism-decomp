@@ -63,15 +63,14 @@ _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592930
 // GHIDRA_NAME TWarningView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarningView * __thiscall TWarningView::_scalar_deleting_destructor_(TWarningView *this)
+TWarningView * __thiscall
+TWarningView::_scalar_deleting_destructor_(TWarningView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,25 +78,25 @@ TWarningView * __thiscall TWarningView::_scalar_deleting_destructor_(TWarningVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592980
 // GHIDRA_NAME TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWarningView *this)
+void __thiscall
+TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TWarningView *this,int param_1,int param_2)
 
 {
   TSimMgrVtbl *pTVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   undefined4 uVar2;
   
-  if (in_stack_00000004 == 0x22) {
-    switch(*(undefined4 *)(in_stack_00000008 + 0x1c)) {
+  if (param_1 == 0x22) {
+    switch(*(undefined4 *)(param_2 + 0x1c)) {
     case 0x70696331:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0x22);
       return;
     case 0x70696332:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0x22);
       return;
     case 0x70696333:
       uVar2 = 0x6a;
@@ -117,7 +116,7 @@ void __thiscall TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWarn
     (*pTVar1[9].GetTSimMgrClassNamePointer)(uVar2);
   }
 switchD_0059299f_default:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

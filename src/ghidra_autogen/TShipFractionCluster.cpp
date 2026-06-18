@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A720
 // GHIDRA_NAME TShipFractionCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TShipFractionCluster * __thiscall
-TShipFractionCluster::_scalar_deleting_destructor_(TShipFractionCluster *this)
+TShipFractionCluster::_scalar_deleting_destructor_(TShipFractionCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -114,7 +112,7 @@ void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFrac
     (*pTVar1[0x14].slot_0x04)();
     pTStack_30 = this;
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-              ((TToolBarCluster *)&pTStack_34);
+              ((TToolBarCluster *)&pTStack_34,PTR_g_szEmptyString_0065c830);
     InitializeAndRunMainRoutine();
   }
   else {
@@ -136,15 +134,17 @@ void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFrac
   pTStack_34 = (TToolBarClusterVtbl *)0xffffffff;
   *(undefined4 *)&this->field_0x90 = uVar6;
   *(undefined2 *)&this->field_0x88 = 1;
-  TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue((TToolBarCluster *)this);
+  TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue((TToolBarCluster *)this,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568EB0
 // GHIDRA_NAME TShipFractionCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TShipFractionCluster::OrphanRetStub_0059add0(TShipFractionCluster *this)
+void __thiscall
+TShipFractionCluster::OrphanRetStub_0059add0
+          (TShipFractionCluster *this,int param_1,void *param_2,int param_3)
 
 {
   int iVar1;
@@ -152,12 +152,9 @@ void __thiscall TShipFractionCluster::OrphanRetStub_0059add0(TShipFractionCluste
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined2 uVar3;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   undefined4 uVar4;
   
-  if (in_stack_00000004 == 100) {
+  if (param_1 == 100) {
     if ((short)*(ushort *)&this->field_0x94 < *(short *)&this->field_0x88) {
       iVar2 = *(ushort *)&this->field_0x94 + 1;
       iVar1 = **(int **)&this->field_0x90;
@@ -172,7 +169,7 @@ LAB_00568f19:
       return;
     }
   }
-  else if (in_stack_00000004 == 0x65) {
+  else if (param_1 == 0x65) {
     if (0 < (short)*(ushort *)&this->field_0x94) {
       iVar2 = *(ushort *)&this->field_0x94 - 1;
       iVar1 = **(int **)&this->field_0x90;
@@ -185,7 +182,7 @@ LAB_00568f19:
   }
   else {
     TMapEditCluster::thunk_DispatchPanelControlEvent
-              ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+              ((TMapEditCluster *)this,param_1,param_2,param_3);
   }
   return;
 }

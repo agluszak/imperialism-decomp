@@ -5,32 +5,33 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402EEB
 // GHIDRA_NAME TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
-// GHIDRA_PROTO undefined __thiscall thunk_RegisterUnitOrderWithOwnerManager(void)
+// GHIDRA_PROTO undefined __thiscall thunk_RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
 
-void __thiscall TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(TUnitOrderState *this)
+void __thiscall
+TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+          (TUnitOrderState *this,undefined2 param_1,short param_2)
 
 {
   int iVar1;
   int *piVar2;
-  undefined2 in_stack_00000004;
-  short in_stack_00000008;
+  undefined2 in_stack_0000000a;
   
-  *(undefined2 *)(this + 4) = in_stack_00000004;
+  *(undefined2 *)(this + 4) = param_1;
   *(undefined4 *)(this + 8) = 0;
-  (**(code **)(*(int *)this + 0x28))();
+  (**(code **)(*(int *)this + 0x28))(_param_2);
   if (this[0x1c] == (TUnitOrderState)0x0) {
-    piVar2 = *(int **)&g_apNationStates[in_stack_00000008]->field_0x89c;
+    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
   }
   else {
-    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[in_stack_00000008]->field_0x44;
+    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
   }
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
   }
   (**(code **)(*piVar2 + 0x30))(this);
-  *(short *)(this + 0x18) = in_stack_00000008;
-  *(short *)(this + 0x1a) = in_stack_00000008;
+  *(short *)(this + 0x18) = param_2;
+  *(short *)(this + 0x1a) = param_2;
   *(undefined2 *)(this + 0xc) = 0xffff;
   iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
   *(int *)&g_pLocalizationTable->field_0x64 = iVar1;
@@ -40,7 +41,7 @@ void __thiscall TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(TUnitOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2530
 // GHIDRA_NAME TUnitOrderState::RegisterUnitOrderWithOwnerManager
-// GHIDRA_PROTO undefined __thiscall RegisterUnitOrderWithOwnerManager(void)
+// GHIDRA_PROTO undefined __thiscall RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Registers a newly created unit-order object with its owner manager and initializes core identity fields.
 // GHIDRA_COMMENT
@@ -71,30 +72,31 @@ void __thiscall TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(TUnitOr
    - This is the key insertion point for newly created recruit/unit objects before map tile linking.
     */
 
-void __thiscall TUnitOrderState::RegisterUnitOrderWithOwnerManager(TUnitOrderState *this)
+void __thiscall
+TUnitOrderState::RegisterUnitOrderWithOwnerManager
+          (TUnitOrderState *this,undefined2 param_1,short param_2)
 
 {
   int iVar1;
   int *piVar2;
-  undefined2 in_stack_00000004;
-  short in_stack_00000008;
+  undefined2 in_stack_0000000a;
   
-  *(undefined2 *)(this + 4) = in_stack_00000004;
+  *(undefined2 *)(this + 4) = param_1;
   *(undefined4 *)(this + 8) = 0;
-  (**(code **)(*(int *)this + 0x28))();
+  (**(code **)(*(int *)this + 0x28))(_param_2);
   if (this[0x1c] == (TUnitOrderState)0x0) {
-    piVar2 = *(int **)&g_apNationStates[in_stack_00000008]->field_0x89c;
+    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
   }
   else {
-    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[in_stack_00000008]->field_0x44;
+    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
   }
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
   }
   (**(code **)(*piVar2 + 0x30))(this);
-  *(short *)(this + 0x18) = in_stack_00000008;
-  *(short *)(this + 0x1a) = in_stack_00000008;
+  *(short *)(this + 0x18) = param_2;
+  *(short *)(this + 0x1a) = param_2;
   *(undefined2 *)(this + 0xc) = 0xffff;
   iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
   *(int *)&g_pLocalizationTable->field_0x64 = iVar1;

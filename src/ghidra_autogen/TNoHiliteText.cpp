@@ -77,15 +77,14 @@ TNoHiliteText * __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHili
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A30
 // GHIDRA_NAME TNoHiliteText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNoHiliteText * __thiscall TNoHiliteText::_scalar_deleting_destructor_(TNoHiliteText *this)
+TNoHiliteText * __thiscall
+TNoHiliteText::_scalar_deleting_destructor_(TNoHiliteText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

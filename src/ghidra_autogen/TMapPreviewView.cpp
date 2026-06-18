@@ -25,15 +25,14 @@ TMapPreviewView::ConstructUiPlanetListResourceEntry(TMapPreviewView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D5C0
 // GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapPreviewView * __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this)
+TMapPreviewView * __thiscall
+TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -125,9 +124,9 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005789E0
 // GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this)
+void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,int *param_1)
 
 {
   byte bVar1;
@@ -137,14 +136,12 @@ void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *t
   int iVar5;
   int *piVar6;
   int iVar7;
-  int *in_stack_00000004;
   
   uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar5 = GetSurfaceHeaderFromSurfaceObject(uVar4);
   piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar7 = 0;
-  bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * in_stack_00000004[1] + iVar5 +
-                   *in_stack_00000004);
+  bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * param_1[1] + iVar5 + *param_1);
   do {
     uVar3 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(iVar7);
     if (uVar3 == bVar1) {

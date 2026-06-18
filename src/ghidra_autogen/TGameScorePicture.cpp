@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AFB0
 // GHIDRA_NAME TGameScorePicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TGameScorePicture * __thiscall
-TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this)
+TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -244,7 +242,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B620
 // GHIDRA_NAME TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Command callback helper: runs completion handler and, for command-id 10 with tag 'done', reinitializes game flow and posts turn-event code 0x5E0.
 // GHIDRA_COMMENT_END
@@ -253,14 +251,12 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
    reinitializes game flow and posts turn-event code 0x5E0. */
 
 void __thiscall
-TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameScorePicture *this)
+TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TGameScorePicture *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
-  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x646f6e65)) {
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x646f6e65)) {
     thunk_ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
   }
   return;

@@ -60,15 +60,14 @@ TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588B20
 // GHIDRA_NAME TIndustryCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryCluster * __thiscall TIndustryCluster::_scalar_deleting_destructor_(TIndustryCluster *this)
+TIndustryCluster * __thiscall
+TIndustryCluster::_scalar_deleting_destructor_(TIndustryCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -125,9 +124,11 @@ void __thiscall TIndustryCluster::OrphanRetStub_00586ff0(TIndustryCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588FF0
 // GHIDRA_NAME TIndustryCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TIndustryCluster::OrphanRetStub_0059add0(TIndustryCluster *this)
+void __thiscall
+TIndustryCluster::OrphanRetStub_0059add0
+          (TIndustryCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TIndustryClusterVtbl *pTVar1;
@@ -135,9 +136,8 @@ void __thiscall TIndustryCluster::OrphanRetStub_0059add0(TIndustryCluster *this)
   undefined3 extraout_var;
   int iVar3;
   undefined3 extraout_var_00;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 100) {
+  if (param_1 == 100) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
@@ -149,8 +149,8 @@ void __thiscall TIndustryCluster::OrphanRetStub_0059add0(TIndustryCluster *this)
     (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar3 + 1);
     return;
   }
-  if (in_stack_00000004 != 0x65) {
-    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this);
+  if (param_1 != 0x65) {
+    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,param_1,param_2,param_3);
     return;
   }
   pTVar1 = this->vftable;

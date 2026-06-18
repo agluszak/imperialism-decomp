@@ -57,15 +57,13 @@ TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506020
 // GHIDRA_NAME TIconBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this)
+TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -127,46 +125,42 @@ TIconBar::AddCityCommodityIconControl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005060C0
 // GHIDRA_NAME TIconBar::SetPictureResourceIdAndRefresh
-// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this)
+void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this,short param_1,bool param_2)
 
 {
-  short in_stack_00000004;
-  bool in_stack_00000008;
+  undefined2 unaff_retaddr;
   
-  *(short *)&this->field_0x94 = in_stack_00000004 + -700;
-  TPicture::thunk_SetPictureResourceIdAndRefresh
-            ((TPicture *)this,in_stack_00000004,in_stack_00000008);
+  *(short *)&this->field_0x94 = param_1 + -700;
+  TPicture::thunk_SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_retaddr);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005060F0
 // GHIDRA_NAME TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void __thiscall TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconBar *this)
+void __thiscall TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconBar *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)&this->field_0x96 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x96 = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506110
 // GHIDRA_NAME TIconBar::OrphanCallChain_C2_I15_00506110
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00506110(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00506110(char param_1)
 
-void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this)
+void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this,char param_1)
 
 {
   TIconBarVtbl *pTVar1;
-  char in_stack_00000004;
+  undefined3 in_stack_00000005;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x3a].slot_0x04)();
-  if (in_stack_00000004 != '\0') {
+  (*pTVar1[0x3a].slot_0x04)(_param_1);
+  if (param_1 != '\0') {
     (*pTVar1[0x1c].slot_0x04)();
   }
   return;

@@ -47,22 +47,25 @@ CRuntimeClass * __thiscall TSuperCivRoster::GetTEventHandlerClassNamePointer(TSu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB470
 // GHIDRA_NAME TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSuperCivRosterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRoster *this)
+void __thiscall
+TSuperCivRoster::ConstructTSuperCivRosterBaseState
+          (TSuperCivRoster *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
   TSuperCivRoster_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
   TSuperCivRosterVtbl *pTVar2;
-  TLineDataVtbl *pTVar3;
-  int iVar4;
+  short sVar3;
+  TLineDataVtbl *pTVar4;
+  int iVar5;
   TLineData *this_00;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
   byte bFreeMemory;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -71,15 +74,15 @@ void __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRost
   puStack_8 = &LAB_0063063a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008,in_stack_0000000c,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
   this->controlTag = 0x70616765;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
-  UiRuntimeContext::GetActiveNationId();
-  pTVar3 = (TLineDataVtbl *)InitializeLinkedListCursorFromOwnerHead();
-  iVar4 = LinkedListCursorHasCurrent();
+  sVar3 = UiRuntimeContext::GetActiveNationId();
+  local_14 = *(undefined4 *)&g_apNationStates[sVar3]->field_0x89c;
+  pTVar4 = (TLineDataVtbl *)InitializeLinkedListCursorFromOwnerHead();
+  iVar5 = LinkedListCursorHasCurrent();
   bFreeMemory = (byte)unaff_EDI;
-  if (iVar4 != 0) {
+  if (iVar5 != 0) {
     pTVar1 = this->vftable[0x34].GetTEventHandlerClassNamePointer;
     do {
       this_00 = (TLineData *)AllocateWithFallbackHandler(0x14);
@@ -92,13 +95,15 @@ void __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRost
         this_00->vftable = (TLineDataVtbl *)&TMiniCivLineVtbl_0064d990;
       }
       local_4 = 0xffffffff;
-      TLineData::SetLineDataRowAndBounds(this_00);
-      this_00[1].vftable = pTVar3;
+      local_20 = 0xec;
+      local_1c = 0x40;
+      TLineData::SetLineDataRowAndBounds(this_00,0,0,&local_20);
+      this_00[1].vftable = pTVar4;
       (*pTVar1)(this_00);
-      pTVar3 = (TLineDataVtbl *)AdvanceLinkedListCursor();
-      iVar4 = LinkedListCursorHasCurrent();
+      pTVar4 = (TLineDataVtbl *)AdvanceLinkedListCursor();
+      iVar5 = LinkedListCursorHasCurrent();
       bFreeMemory = (byte)unaff_EDI;
-    } while (iVar4 != 0);
+    } while (iVar5 != 0);
   }
   pTVar2 = this->vftable;
   *(undefined2 *)&this->field_0x64 = 2;
@@ -112,16 +117,14 @@ void __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(TSuperCivRost
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB620
 // GHIDRA_NAME TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSuperCivRosterAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTSuperCivRosterAndMaybeFree(byte param_1)
 
 TSuperCivRoster * __thiscall
-TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this)
+TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTSuperCivRosterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -55,7 +55,7 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   _DAT_006a1354 = SetGlobalCallback6A7FACAndReturnPrevious(&LAB_004025f9);
-  TControl::SetRegistryKey((TControl *)this);
+  TControl::SetRegistryKey((TControl *)this,PTR_DAT_0063e038);
   CString::CString(&local_5c);
   local_4 = 0;
   CCommandLineInfo();
@@ -93,17 +93,21 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
       else {
         _DAT_006a1350 = ShowAutoResolutionDialogIfNeeded();
         thunk_ApplyAutoResolutionModeAndPersist(_DAT_006a1350);
-        iVar2 = LoadModuleLibrarySlotWithErrorDialog(g_pModuleLibraryCacheState);
+        iVar2 = LoadModuleLibrarySlotWithErrorDialog
+                          (g_pModuleLibraryCacheState,(LPCSTR)this[1].vftable,(CString)0x0);
         if (iVar2 == 0) {
           local_4._0_1_ = 8;
         }
         else {
-          iVar2 = LoadModuleLibrarySlotWithErrorDialog(g_pModuleLibraryCacheState);
+          iVar2 = LoadModuleLibrarySlotWithErrorDialog
+                            (g_pModuleLibraryCacheState,s_Data_PictPaid_gob_00694238,(CString)0x1);
           if (iVar2 == 0) {
             local_4._0_1_ = 9;
           }
           else {
-            iVar2 = LoadModuleLibrarySlotWithErrorDialog(g_pModuleLibraryCacheState);
+            iVar2 = LoadModuleLibrarySlotWithErrorDialog
+                              (g_pModuleLibraryCacheState,s_Data_PictUniv_gob_00694220,(CString)0x3)
+            ;
             if (iVar2 == 0) {
               local_4._0_1_ = 10;
             }
@@ -244,16 +248,15 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004135F0
 // GHIDRA_NAME CMainFrame::AdjustWindowRectForClientAndScrollStyles
-// GHIDRA_PROTO undefined __thiscall AdjustWindowRectForClientAndScrollStyles(void)
+// GHIDRA_PROTO undefined __thiscall AdjustWindowRectForClientAndScrollStyles(byte param_1)
 
-CMainFrame * __thiscall CMainFrame::AdjustWindowRectForClientAndScrollStyles(CMainFrame *this)
+CMainFrame * __thiscall
+CMainFrame::AdjustWindowRectForClientAndScrollStyles(CMainFrame *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
             ((TApplication *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -271,18 +274,17 @@ void __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(CMainFrame *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486B10
 // GHIDRA_NAME CMainFrame::OnEndPrintPreview
-// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(void)
+// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(undefined4 param_1)
 
-void __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
+void __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this,undefined4 param_1)
 
 {
   undefined4 *puVar1;
-  undefined4 in_stack_00000004;
   
   puVar1 = this->m_pDropTarget;
   while (puVar1 != (undefined4 *)0x0) {
     puVar1 = (undefined4 *)*puVar1;
-    WrapperFor_thunk_GetTickCountDiv16_At0048a410(in_stack_00000004);
+    WrapperFor_thunk_GetTickCountDiv16_At0048a410(param_1);
   }
   return;
 }
@@ -344,7 +346,7 @@ void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004992A0
 // GHIDRA_NAME CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-// GHIDRA_PROTO undefined __thiscall LoadModuleLibrarySlotWithErrorDialog(void)
+// GHIDRA_PROTO undefined __thiscall LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
 // GHIDRA_COMMENT - Frees previous module in the slot if present.
@@ -359,38 +361,37 @@ void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame
    - On failure, builds and shows a formatted missing-file error message.
    Returns nonzero if slot module handle is valid. */
 
-bool __thiscall CMainFrame::LoadModuleLibrarySlotWithErrorDialog(CMainFrame *this)
+bool __thiscall
+CMainFrame::LoadModuleLibrarySlotWithErrorDialog(CMainFrame *this,LPCSTR param_1,CString param_2)
 
 {
   int iVar1;
   CString CVar2;
   HMODULE pHVar3;
   undefined4 *unaff_FS_OFFSET;
-  LPCSTR in_stack_00000004;
-  CString in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
-  CVar2.m_pchData = in_stack_00000008.m_pchData;
+  CVar2.m_pchData = param_2.m_pchData;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f948;
   *unaff_FS_OFFSET = &local_c;
-  if (*(HMODULE *)(&this->field_0x3c + (int)in_stack_00000008.m_pchData * 4) != (HMODULE)0x0) {
-    FreeLibrary(*(HMODULE *)(&this->field_0x3c + (int)in_stack_00000008.m_pchData * 4));
+  if (*(HMODULE *)(&this->field_0x3c + (int)param_2.m_pchData * 4) != (HMODULE)0x0) {
+    FreeLibrary(*(HMODULE *)(&this->field_0x3c + (int)param_2.m_pchData * 4));
     *(undefined4 *)(&this->field_0x3c + (int)CVar2.m_pchData * 4) = 0;
   }
-  pHVar3 = LoadLibraryExA(in_stack_00000004,(HANDLE)0x0,2);
+  pHVar3 = LoadLibraryExA(param_1,(HANDLE)0x0,2);
   *(HMODULE *)(&this->field_0x3c + (int)CVar2.m_pchData * 4) = pHVar3;
   if (pHVar3 == (HMODULE)0x0) {
-    CString::CString(&stack0x00000008);
+    CString::CString(&param_2);
     local_4 = 0;
     FormatStringWithVarArgsToSharedRef
-              (&stack0x00000008,s_A_file_required_by_the_program____00695188,in_stack_00000004);
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(in_stack_00000008.m_pchData,0,0);
+              (&param_2,s_A_file_required_by_the_program____00695188,param_1);
+    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
-    CString::~CString(&stack0x00000008);
+    CString::~CString(&param_2);
   }
   iVar1 = *(int *)(&this->field_0x3c + (int)CVar2.m_pchData * 4);
   *unaff_FS_OFFSET = local_c;

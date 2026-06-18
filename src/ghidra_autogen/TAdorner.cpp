@@ -216,15 +216,14 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DAB0
 // GHIDRA_NAME TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
 
-TAdorner * __thiscall TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(TAdorner *this)
+TAdorner * __thiscall
+TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(TAdorner *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

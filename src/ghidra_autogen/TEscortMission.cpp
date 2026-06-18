@@ -44,15 +44,13 @@ TMission * TEscortMission::CreateTEscortMission(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539960
 // GHIDRA_NAME TEscortMission::DestroyTEscortMission
-// GHIDRA_PROTO undefined __thiscall DestroyTEscortMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTEscortMission(byte param_1)
 
-TEscortMission * __thiscall TEscortMission::DestroyTEscortMission(TEscortMission *this)
+TEscortMission * __thiscall TEscortMission::DestroyTEscortMission(TEscortMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTEscortMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -323,17 +321,16 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A250
 // GHIDRA_NAME TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
-// GHIDRA_PROTO undefined __thiscall HandleBeachheadMissionActionType0Or3ForTargetPort(void)
+// GHIDRA_PROTO undefined __thiscall HandleBeachheadMissionActionType0Or3ForTargetPort(int param_1, int param_2)
 
 undefined4 __thiscall
-TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort(TEscortMission *this)
+TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
+          (TEscortMission *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
   int in_stack_0000000c;
   
-  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 3)) &&
-     (in_stack_0000000c == *(int *)(this + 0x14))) {
+  if (((param_1 == 0) || (param_1 == 3)) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
   return 0;
@@ -352,7 +349,7 @@ TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context(TEscortM
   iVar1 = *(int *)(this + 0x24);
   if (iVar1 != 0) {
     *(undefined1 *)(iVar1 + 0xc) = 0;
-    TScatteredShipsMission::SetMapOrderEntryChildFlags(*(TScatteredShipsMission **)(iVar1 + 4));
+    TScatteredShipsMission::SetMapOrderEntryChildFlags(*(TScatteredShipsMission **)(iVar1 + 4),0);
   }
   (**(code **)(*(int *)this + 0xa4))(*(undefined4 *)(this + 0x14));
   return;

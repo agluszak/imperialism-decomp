@@ -15,69 +15,73 @@ void __thiscall TView::thunk_NoOpUiLifecycleHook(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00479BE0
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(CArchive * param_1)
 
-void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
+void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this,CArchive *param_1)
 
 {
   int iVar1;
-  int iVar2;
+  CArchive *this_00;
+  CArchive *pCVar2;
   int iVar3;
-  int *piVar4;
-  int iVar5;
-  CArchive *in_stack_00000004;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
   
-  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+  this_00 = param_1;
+  if ((~param_1->m_nMode & 1U) == 0) {
+    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+      if ((~this_00->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
       }
+      pCVar2 = param_1;
       iVar1 = this->padding_08_to_0b;
       if (this->field10 == 0) {
-        iVar3 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
-        iVar5 = this->field18;
-        piVar4 = (int *)(iVar3 + -8 + iVar5 * 0xc);
-        if (-1 < iVar5 + -1) {
+        iVar4 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar6 = this->field18;
+        piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
+        if (-1 < iVar6 + -1) {
           do {
-            *piVar4 = this->field10;
-            this->field10 = (int)piVar4;
-            piVar4 = piVar4 + -3;
-            iVar5 = iVar5 + -1;
-          } while (iVar5 != 0);
+            *piVar5 = this->field10;
+            this->field10 = (int)piVar5;
+            piVar5 = piVar5 + -3;
+            iVar6 = iVar6 + -1;
+          } while (iVar6 != 0);
         }
       }
-      piVar4 = (int *)this->field10;
-      this->field10 = *piVar4;
-      piVar4[1] = iVar1;
-      *piVar4 = 0;
+      piVar5 = (int *)this->field10;
+      this->field10 = *piVar5;
+      piVar5[1] = iVar1;
+      *piVar5 = 0;
       this->field0c = this->field0c + 1;
-      piVar4[2] = 0;
-      piVar4[2] = (int)in_stack_00000004;
+      piVar5[2] = 0;
+      piVar5[2] = (int)pCVar2;
       if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
-        this->field04 = (int)piVar4;
+        this->field04 = (int)piVar5;
       }
       else {
-        *(undefined4 *)this->padding_08_to_0b = piVar4;
+        *(undefined4 *)this->padding_08_to_0b = piVar5;
       }
-      this->padding_08_to_0b = piVar4;
+      this->padding_08_to_0b = piVar5;
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
-    piVar4 = (int *)this->field04;
-    if (piVar4 != (int *)0x0) {
+    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
+    ;
+    piVar5 = (int *)this->field04;
+    if (piVar5 != (int *)0x0) {
       do {
-        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        if ((~this_00->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar5 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar5 + 2),4);
         }
-        piVar4 = (int *)*piVar4;
-      } while (piVar4 != (int *)0x0);
+        piVar5 = (int *)*piVar5;
+      } while (piVar5 != (int *)0x0);
       return;
     }
   }
@@ -86,21 +90,18 @@ void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A280
 // GHIDRA_NAME TView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall TView::OrphanRetStub_0059add0(TView *this)
+void __thiscall
+TView::OrphanRetStub_0059add0(TView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
   
   uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
-              (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))(param_1,param_2,param_3);
   }
   return;
 }
@@ -185,15 +186,13 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A9A0
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * __thiscall TView::_scalar_deleting_destructor_(TView *this)
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   thunk_DestructEngineerDialogBaseState(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -229,15 +228,13 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ADA0
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * __thiscall TView::_scalar_deleting_destructor_(TView *this)
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -353,7 +350,7 @@ void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C450
 // GHIDRA_NAME TView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches mouse-move style input to child UI elements first, then to the current widget.
 // GHIDRA_COMMENT Returns 1 when a child/current widget consumes the event, otherwise 0.
@@ -362,7 +359,9 @@ void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
 /* Dispatches mouse-move style input to child UI elements first, then to the current widget.
    Returns 1 when a child/current widget consumes the event, otherwise 0. */
 
-undefined4 __thiscall TView::SetForeignMinisterReadyFlag14(TView *this)
+undefined4 __thiscall
+TView::SetForeignMinisterReadyFlag14
+          (TView *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int iVar1;
@@ -370,10 +369,6 @@ undefined4 __thiscall TView::SetForeignMinisterReadyFlag14(TView *this)
   char cVar3;
   int iVar4;
   int *piVar5;
-  undefined4 *in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   TView *local_c;
   undefined4 local_8;
   undefined4 local_4;
@@ -394,15 +389,13 @@ undefined4 __thiscall TView::SetForeignMinisterReadyFlag14(TView *this)
     iVar4 = *(int *)(iVar4 + 4);
   }
   while (piVar5 != (int *)0x0) {
-    local_4 = in_stack_00000004[1];
-    local_8 = *in_stack_00000004;
+    local_4 = param_1[1];
+    local_8 = *param_1;
     iVar1 = *piVar5;
     (**(code **)(iVar1 + 0x144))(&local_8);
     cVar3 = (**(code **)(iVar1 + 0x16c))(&local_c);
     if ((cVar3 != '\0') &&
-       (cVar3 = (**(code **)(iVar1 + 0x118))
-                          (&local_8,in_stack_00000008,in_stack_0000000c,in_stack_00000010),
-       cVar3 != '\0')) {
+       (cVar3 = (**(code **)(iVar1 + 0x118))(&local_8,param_2,param_3,param_4), cVar3 != '\0')) {
       return 1;
     }
     if (iVar4 == 0) {
@@ -417,9 +410,9 @@ undefined4 __thiscall TView::SetForeignMinisterReadyFlag14(TView *this)
   pTVar2 = local_c->vftable;
   cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
   if ((cVar3 != '\0') && (cVar3 = (*pTVar2[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
-    local_8 = *in_stack_00000004;
-    local_4 = in_stack_00000004[1];
-    (*pTVar2[0x23].slot_0x04)(&local_8,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+    local_8 = *param_1;
+    local_4 = param_1[1];
+    (*pTVar2[0x23].slot_0x04)(&local_8,param_2,param_3,param_4);
     return 1;
   }
   return 0;

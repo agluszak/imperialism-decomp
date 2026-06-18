@@ -5,18 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F8D
 // GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot116
-// GHIDRA_PROTO undefined __thiscall TToggleButton_VtblSlot116(void)
+// GHIDRA_PROTO undefined __thiscall TToggleButton_VtblSlot116(char param_1, char param_2)
 
-void __thiscall TToggleButton::TToggleButton_VtblSlot116(TToggleButton *this)
+void __thiscall
+TToggleButton::TToggleButton_VtblSlot116(TToggleButton *this,char param_1,char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
-  char in_stack_00000004;
-  char in_stack_00000008;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x14].slot_0x04)((int)in_stack_00000004,(int)in_stack_00000008);
-  if (in_stack_00000004 != '\0') {
+  (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+  if (param_1 != '\0') {
     (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
   }
   (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
@@ -78,15 +77,14 @@ TToggleButton * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571120
 // GHIDRA_NAME TToggleButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TToggleButton * __thiscall TToggleButton::_scalar_deleting_destructor_(TToggleButton *this)
+TToggleButton * __thiscall
+TToggleButton::_scalar_deleting_destructor_(TToggleButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -94,22 +92,23 @@ TToggleButton * __thiscall TToggleButton::_scalar_deleting_destructor_(TToggleBu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571170
 // GHIDRA_NAME TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)
 
-void __thiscall TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TToggleButton *this)
+void __thiscall
+TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TToggleButton *this,int param_1,undefined4 param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
   uint uVar2;
   char cVar3;
-  int in_stack_00000004;
   undefined4 in_stack_0000000c;
   
-  if (in_stack_00000004 != 0x20) {
-    if (in_stack_00000004 == 0x1f) {
+  if (param_1 != 0x20) {
+    if (param_1 == 0x1f) {
       return;
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
     return;
   }
   pTVar1 = this->vftable;
@@ -200,18 +199,18 @@ void __thiscall TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(TToggleB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571350
 // GHIDRA_NAME TToggleButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
 
-void __thiscall TToggleButton::HandleToggleButtonStateChangeAndRefresh(TToggleButton *this)
+void __thiscall
+TToggleButton::HandleToggleButtonStateChangeAndRefresh
+          (TToggleButton *this,char param_1,char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
-  char in_stack_00000004;
-  char in_stack_00000008;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x14].slot_0x04)((int)in_stack_00000004,(int)in_stack_00000008);
-  if (in_stack_00000004 != '\0') {
+  (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+  if (param_1 != '\0') {
     (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
   }
   (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();

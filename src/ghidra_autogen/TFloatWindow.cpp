@@ -86,15 +86,14 @@ CRuntimeClass * __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492110
 // GHIDRA_NAME TFloatWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFloatWindow * __thiscall TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this)
+TFloatWindow * __thiscall
+TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowAndUnlinkGlobalWindowNode((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -164,69 +163,74 @@ void __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492670
 // GHIDRA_NAME TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(void)
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(CArchive * param_1)
 
-void __thiscall TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWindow *this)
+void __thiscall
+TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWindow *this,CArchive *param_1)
 
 {
   int iVar1;
-  int iVar2;
+  CArchive *this_00;
+  CArchive *pCVar2;
   int iVar3;
-  int *piVar4;
-  int iVar5;
-  CArchive *in_stack_00000004;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
   
-  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+  this_00 = param_1;
+  if ((~param_1->m_nMode & 1U) == 0) {
+    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+      if ((~this_00->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
       }
+      pCVar2 = param_1;
       iVar1 = this->padding_08_to_0b;
       if (this->field10 == 0) {
-        iVar3 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
-        iVar5 = this->field18;
-        piVar4 = (int *)(iVar3 + -8 + iVar5 * 0xc);
-        if (-1 < iVar5 + -1) {
+        iVar4 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar6 = this->field18;
+        piVar5 = (int *)(iVar4 + -8 + iVar6 * 0xc);
+        if (-1 < iVar6 + -1) {
           do {
-            *piVar4 = this->field10;
-            this->field10 = (int)piVar4;
-            piVar4 = piVar4 + -3;
-            iVar5 = iVar5 + -1;
-          } while (iVar5 != 0);
+            *piVar5 = this->field10;
+            this->field10 = (int)piVar5;
+            piVar5 = piVar5 + -3;
+            iVar6 = iVar6 + -1;
+          } while (iVar6 != 0);
         }
       }
-      piVar4 = (int *)this->field10;
-      this->field10 = *piVar4;
-      piVar4[1] = iVar1;
-      *piVar4 = 0;
+      piVar5 = (int *)this->field10;
+      this->field10 = *piVar5;
+      piVar5[1] = iVar1;
+      *piVar5 = 0;
       this->field0c = this->field0c + 1;
-      piVar4[2] = 0;
-      piVar4[2] = (int)in_stack_00000004;
+      piVar5[2] = 0;
+      piVar5[2] = (int)pCVar2;
       if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
-        this->field04 = (int)piVar4;
+        this->field04 = (int)piVar5;
       }
       else {
-        *(undefined4 *)this->padding_08_to_0b = piVar4;
+        *(undefined4 *)this->padding_08_to_0b = piVar5;
       }
-      this->padding_08_to_0b = piVar4;
+      this->padding_08_to_0b = piVar5;
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
-    piVar4 = (int *)this->field04;
-    if (piVar4 != (int *)0x0) {
+    TNetMgr::WriteCount((TNetMgr *)param_1,(TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this->field0c)
+    ;
+    piVar5 = (int *)this->field04;
+    if (piVar5 != (int *)0x0) {
       do {
-        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        if ((~this_00->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar5 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar5 + 2),4);
         }
-        piVar4 = (int *)*piVar4;
-      } while (piVar4 != (int *)0x0);
+        piVar5 = (int *)*piVar5;
+      } while (piVar5 != (int *)0x0);
       return;
     }
   }
@@ -235,16 +239,14 @@ void __thiscall TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492950
 // GHIDRA_NAME TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
 
 TFloatWindow * __thiscall
-TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(TFloatWindow *this)
+TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(TFloatWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

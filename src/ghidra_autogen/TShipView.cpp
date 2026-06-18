@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005653B0
 // GHIDRA_NAME TShipView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this)
+TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -172,9 +170,10 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005658D0
 // GHIDRA_NAME TShipView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefined4 param_3)
 
-void __thiscall TShipView::OrphanRetStub_0059add0(TShipView *this)
+void __thiscall
+TShipView::OrphanRetStub_0059add0(TShipView *this,undefined4 param_1,int param_2,undefined4 param_3)
 
 {
   int *piVar1;
@@ -184,9 +183,8 @@ void __thiscall TShipView::OrphanRetStub_0059add0(TShipView *this)
   undefined2 extraout_var;
   int iVar5;
   short sVar6;
-  int in_stack_00000008;
   
-  if (*(int *)(in_stack_00000008 + 0x1c) == 0x63686563) {
+  if (*(int *)(param_2 + 0x1c) == 0x63686563) {
     pvVar3 = ObjectPool::FindMissionOrderNodeById
                        (*(ObjectPool **)(*(int *)&this->field_0x64 + 0x10),*(int *)&this->field_0x60
                        );
@@ -218,10 +216,10 @@ void __thiscall TShipView::OrphanRetStub_0059add0(TShipView *this)
       }
     }
   }
-  else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6e616d65) {
+  else if (*(int *)(param_2 + 0x1c) == 0x6e616d65) {
     RunEngineerOrderNameEditDialogAndApply();
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 

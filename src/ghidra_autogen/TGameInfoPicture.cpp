@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B800
 // GHIDRA_NAME TGameInfoPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameInfoPicture * __thiscall TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this)
+TGameInfoPicture * __thiscall
+TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -32,9 +31,10 @@ TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B870
 // GHIDRA_NAME TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
-void __thiscall TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this)
+void __thiscall
+TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this,CString param_1)
 
 {
   TGameInfoPicture_slot_0x04_0x04 *pTVar1;
@@ -42,7 +42,6 @@ void __thiscall TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPict
   undefined3 extraout_var;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -52,13 +51,13 @@ void __thiscall TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPict
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
   TView::thunk_NoOpUiLifecycleHook((TView *)this);
-  CString::CString(&stack0x00000004);
+  CString::CString(&param_1);
   uStack_4 = 0;
   iVar3 = 0;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&stack0x00000004);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&param_1);
     RefreshActiveControlThenApplyThemeStyleAndCaption
-              (iVar3 + 0x68647230,0,0xc,0x2b67,1,in_stack_00000004.m_pchData);
+              (iVar3 + 0x68647230,0,0xc,0x2b67,1,param_1.m_pchData);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
   iVar3 = 0;
@@ -68,21 +67,22 @@ void __thiscall TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPict
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&stack0x00000000);
     RefreshActiveControlThenApplyThemeStyleAndCaption
-              (iVar3 + 0x74787461,0,10,0x2b67,1,in_stack_00000004.m_pchData);
+              (iVar3 + 0x74787461,0,10,0x2b67,1,param_1.m_pchData);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
   uStack_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B9B0
 // GHIDRA_NAME TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture *this)
+TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TGameInfoPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -90,8 +90,6 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture 
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
   CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -104,8 +102,8 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture 
   local_10.m_pchData = (char *)this;
   CString::CString(&local_10);
   local_4 = 0;
-  if (in_stack_00000004 == 10) {
-    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+  if (param_1 == 10) {
+    uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x6f6b617a) {
       if (uVar1 == 0x6f6b6179) {
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
@@ -130,7 +128,7 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture 
             }
             goto LAB_0056bb37;
           }
-          goto LAB_0056bb30;
+          goto LAB_0056bb1b;
         }
         UiRuntimeContext::GetActiveNationId();
         cVar2 = ScanMapContextActionEntriesForCodeMatch();
@@ -144,9 +142,10 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture 
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056bb37;
     }
+LAB_0056bb1b:
+    param_1 = 10;
   }
-LAB_0056bb30:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
 LAB_0056bb37:
   local_4 = 0xffffffff;
   CString::~CString(&local_10);

@@ -19,16 +19,14 @@ TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D4B0
 // GHIDRA_NAME TTacticalHolaPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTacticalHolaPicture * __thiscall
-TTacticalHolaPicture::_scalar_deleting_destructor_(TTacticalHolaPicture *this)
+TTacticalHolaPicture::_scalar_deleting_destructor_(TTacticalHolaPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -57,15 +57,14 @@ TCommodityLine * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14F0
 // GHIDRA_NAME TCommodityLine::DestructTCommodityLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCommodityLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTCommodityLineAndMaybeFree(byte param_1)
 
-TCommodityLine * __thiscall TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this)
+TCommodityLine * __thiscall
+TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTCommodityLineAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

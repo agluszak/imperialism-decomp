@@ -110,15 +110,13 @@ TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492DE0
 // GHIDRA_NAME TCtlMgr::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCtlMgr * __thiscall TCtlMgr::_scalar_deleting_destructor_(TCtlMgr *this)
+TCtlMgr * __thiscall TCtlMgr::_scalar_deleting_destructor_(TCtlMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

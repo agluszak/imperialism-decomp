@@ -19,16 +19,14 @@ TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(TCouncilPanelView *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430570
 // GHIDRA_NAME TCouncilPanelView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TCouncilPanelView * __thiscall
-TCouncilPanelView::_scalar_deleting_destructor_(TCouncilPanelView *this)
+TCouncilPanelView::_scalar_deleting_destructor_(TCouncilPanelView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

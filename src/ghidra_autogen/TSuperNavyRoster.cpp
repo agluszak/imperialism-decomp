@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569870
 // GHIDRA_NAME TSuperNavyRoster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperNavyRoster * __thiscall TSuperNavyRoster::_scalar_deleting_destructor_(TSuperNavyRoster *this)
+TSuperNavyRoster * __thiscall
+TSuperNavyRoster::_scalar_deleting_destructor_(TSuperNavyRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -32,22 +31,23 @@ TSuperNavyRoster::GetTEventHandlerClassNamePointer(TSuperNavyRoster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005698E0
 // GHIDRA_NAME TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
-// GHIDRA_PROTO undefined __thiscall PopulateNavyOrderPageEntriesByMapContext(void)
+// GHIDRA_PROTO undefined __thiscall PopulateNavyOrderPageEntriesByMapContext(int param_1, CString param_2)
 
-void __thiscall TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TSuperNavyRoster *this)
+void __thiscall
+TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
+          (TSuperNavyRoster *this,int param_1,CString param_2)
 
 {
   TSuperNavyRosterVtbl *pTVar1;
   TZone *pTVar2;
-  short sVar3;
-  TLineDataVtbl *pTVar4;
-  undefined4 uVar5;
-  TLineData *this_00;
+  bool bVar3;
+  short sVar4;
+  TLineDataVtbl *pTVar5;
+  TTextLine *this_00;
+  undefined4 uVar6;
+  TLineData *this_01;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
-  char cStack0000000c;
-  undefined3 uStack0000000d;
+  undefined4 in_stack_0000000c;
   undefined4 local_1c;
   undefined4 local_18;
   undefined4 uStack_14;
@@ -60,57 +60,57 @@ void __thiscall TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TSupe
   puStack_8 = &LAB_00635bec;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008.m_pchData,_cStack0000000c,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2.m_pchData,in_stack_0000000c,5,5,0)
+  ;
   this->controlTag = 0x70616765;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
-  sVar3 = UiRuntimeContext::GetActiveNationId();
-  in_stack_00000004 = (int)sVar3;
+  sVar4 = UiRuntimeContext::GetActiveNationId();
+  param_1 = (int)sVar4;
   for (pTVar2 = g_pMapActionContextListHead; pTVar2 != (TZone *)0x0;
       pTVar2 = *(TZone **)&pTVar2->field_0x18) {
-    _cStack0000000c = (TTextLine *)((uint)_cStack0000000c & 0xffffff00);
-    for (pTVar4 = (TLineDataVtbl *)thunk_GetNavyPrimaryOrderListHead();
-        pTVar4 != (TLineDataVtbl *)0x0; pTVar4 = (TLineDataVtbl *)pTVar4[4].slot_0x04) {
-      if (((TZone *)pTVar4[1].GetTLineDataClassNamePointer == pTVar2) &&
-         (*(short *)&pTVar4[2].slot_0x04 == in_stack_00000004)) {
-        if (cStack0000000c == '\0') {
-          CString::CString(&stack0x00000008);
+    bVar3 = false;
+    for (pTVar5 = (TLineDataVtbl *)thunk_GetNavyPrimaryOrderListHead();
+        pTVar5 != (TLineDataVtbl *)0x0; pTVar5 = (TLineDataVtbl *)pTVar5[4].slot_0x04) {
+      if (((TZone *)pTVar5[1].GetTLineDataClassNamePointer == pTVar2) &&
+         (*(short *)&pTVar5[2].slot_0x04 == param_1)) {
+        if (!bVar3) {
+          CString::CString(&param_2);
           local_4 = 0;
-          _cStack0000000c = (TTextLine *)AllocateWithFallbackHandler(0x20);
+          this_00 = (TTextLine *)AllocateWithFallbackHandler(0x20);
           local_4._0_1_ = 1;
-          if (_cStack0000000c == (TTextLine *)0x0) {
-            uVar5 = 0;
+          if (this_00 == (TTextLine *)0x0) {
+            uVar6 = 0;
           }
           else {
-            uVar5 = TTextLine::ConstructTTextLineBaseState(_cStack0000000c);
+            uVar6 = TTextLine::ConstructTTextLineBaseState(this_00);
           }
           local_4 = (uint)local_4._1_3_ << 8;
           local_1c = 0xec;
           local_18 = 0x12;
           WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
-          (*pTVar2->vftable[5].SetNationPendingActionStateAndPayload)(&stack0x00000008);
-          WrapperFor_StringShared_AssignFromPtr_At00570420(&stack0x00000004);
-          (*this->vftable[0x34].GetTEventHandlerClassNamePointer)(uVar5);
-          _cStack0000000c = (TTextLine *)CONCAT31(uStack0000000d,1);
+          (*pTVar2->vftable[5].SetNationPendingActionStateAndPayload)(&param_2);
+          WrapperFor_StringShared_AssignFromPtr_At00570420(&param_1);
+          (*this->vftable[0x34].GetTEventHandlerClassNamePointer)(uVar6);
+          bVar3 = true;
           local_4 = 0xffffffff;
-          CString::~CString(&stack0x00000008);
+          CString::~CString(&param_2);
         }
-        this_00 = (TLineData *)AllocateWithFallbackHandler(0x14);
+        this_01 = (TLineData *)AllocateWithFallbackHandler(0x14);
         local_4 = 2;
-        if (this_00 == (TLineData *)0x0) {
-          this_00 = (TLineData *)0x0;
+        if (this_01 == (TLineData *)0x0) {
+          this_01 = (TLineData *)0x0;
         }
         else {
-          TLineData::ConstructTLineDataBaseState(this_00);
-          this_00->vftable = (TLineDataVtbl *)&TMiniShipLineVtbl_0065db28;
+          TLineData::ConstructTLineDataBaseState(this_01);
+          this_01->vftable = (TLineDataVtbl *)&TMiniShipLineVtbl_0065db28;
         }
         local_4 = 0xffffffff;
         uStack_14 = 0xec;
         uStack_10 = 0x12;
-        TLineData::SetLineDataRowAndBounds(this_00);
+        TLineData::SetLineDataRowAndBounds(this_01,0,0,&uStack_14);
         pTVar1 = this->vftable;
-        this_00[1].vftable = pTVar4;
-        (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(this_00);
+        this_01[1].vftable = pTVar5;
+        (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(this_01);
       }
     }
   }
@@ -126,16 +126,14 @@ void __thiscall TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TSupe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569B60
 // GHIDRA_NAME TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSuperNavyRosterAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTSuperNavyRosterAndMaybeFree(byte param_1)
 
 TSuperNavyRoster * __thiscall
-TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(TSuperNavyRoster *this)
+TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(TSuperNavyRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTSuperNavyRosterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

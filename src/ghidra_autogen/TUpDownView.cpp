@@ -58,15 +58,13 @@ TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D80
 // GHIDRA_NAME TUpDownView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *this)
+TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,24 +72,24 @@ TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DD0
 // GHIDRA_NAME TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
-void __thiscall TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(TUpDownView *this)
+void __thiscall
+TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(TUpDownView *this,int param_1,int param_2)
 
 {
   TUpDownViewVtbl *pTVar1;
   char cVar2;
   uint uVar3;
   int iVar4;
-  int in_stack_00000004;
   int in_stack_00000010;
   
-  if (in_stack_00000004 != 2) {
+  if (param_1 != 2) {
     uVar3 = thunk_GetTickCountDiv16();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {
       iVar4 = thunk_GetTickCountDiv16();
       *(int *)&this->field_0x84 = iVar4;
-      if (in_stack_00000004 == 0) {
+      if (param_1 == 0) {
         *(int *)&this->field_0x84 = iVar4 + 10;
       }
       pTVar1 = this->vftable;

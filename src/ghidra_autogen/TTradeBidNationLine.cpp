@@ -46,17 +46,17 @@ TTradeBidNationLine::GetTLineDataClassNamePointer(TTradeBidNationLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDA20
 // GHIDRA_NAME TTradeBidNationLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1, undefined4 param_2)
 
-void __thiscall TTradeBidNationLine::OrphanRetStub_0056f460(TTradeBidNationLine *this)
+void __thiscall
+TTradeBidNationLine::OrphanRetStub_0056f460
+          (TTradeBidNationLine *this,int param_1,undefined4 param_2)
 
 {
   undefined2 uVar1;
   undefined2 uVar2;
   TView *this_00;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -78,8 +78,7 @@ void __thiscall TTradeBidNationLine::OrphanRetStub_0056f460(TTradeBidNationLine 
   uVar2 = *(undefined2 *)&this->field_0x12;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent
-            (*(undefined4 *)(in_stack_00000004 + 0x40),in_stack_00000004,in_stack_00000008,
-             &this->field_0x8,5,5,0);
+            (*(undefined4 *)(param_1 + 0x40),param_1,param_2,&this->field_0x8,5,5,0);
   *(undefined2 *)((int)&this_00[1].vftable + 2) = uVar2;
   *(undefined2 *)&this_00[1].vftable = uVar1;
   *unaff_FS_OFFSET = local_c;

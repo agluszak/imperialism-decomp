@@ -59,16 +59,14 @@ TGameSetupPicture::ConstructTGameSetupPictureBaseState(TGameSetupPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575890
 // GHIDRA_NAME TGameSetupPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TGameSetupPicture * __thiscall
-TGameSetupPicture::_scalar_deleting_destructor_(TGameSetupPicture *this)
+TGameSetupPicture::_scalar_deleting_destructor_(TGameSetupPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -100,6 +98,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TGameSetupPicture *this,int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
 
 {
+  int iVar1;
   char fModalAccepted;
   ushort wShiftState;
   int nMapTileIndex;
@@ -110,6 +109,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined4 uStack_4;
   uint dwCommandTag;
   
+  iVar1 = nDialogEventCode;
   uStack_4 = 0xffffffff;
   pTStack_8 = (TMapMgr *)&LAB_00636802;
   local_c = *unaff_FS_OFFSET;
@@ -238,7 +238,7 @@ LAB_00575d30:
     }
   }
 LAB_00575d3b:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,iVar1);
 LAB_00575d4f:
   *unaff_FS_OFFSET = local_c;
   return;

@@ -86,15 +86,13 @@ TIconSlider * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506430
 // GHIDRA_NAME TIconSlider::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *this)
+TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -129,27 +127,24 @@ void __thiscall TIconSlider::OrphanCallChain_C6_I49_004875d0(TIconSlider *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506560
 // GHIDRA_NAME TIconSlider::OrphanLeaf_NoCall_Ins04_00506560
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_00506560(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_00506560(short param_1)
 
-void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this)
+void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  *(short *)&this->field_0xb6 = *(short *)&this->field_0x98 * in_stack_00000004;
+  *(short *)&this->field_0xb6 = *(short *)&this->field_0x98 * param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506590
 // GHIDRA_NAME TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void __thiscall TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this)
+void __thiscall
+TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)&this->field_0x96 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x96 = param_1;
   return;
 }
 
@@ -171,24 +166,25 @@ void __thiscall TIconSlider::OrphanCallChain_C2_I15_005065b0(TIconSlider *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005065F0
 // GHIDRA_NAME TIconSlider::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3)
 
-undefined4 __thiscall TIconSlider::SetForeignMinisterReadyFlag14(TIconSlider *this)
+undefined4 __thiscall
+TIconSlider::SetForeignMinisterReadyFlag14
+          (TIconSlider *this,int *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   TIconSliderVtbl *pTVar1;
   char cVar2;
   int iVar3;
-  int *in_stack_00000004;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x3b].slot_0x04)();
+  cVar2 = (*pTVar1[0x3b].slot_0x04)(param_1);
   if (cVar2 != '\0') {
-    TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+    TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_1,param_2,param_3);
     return 1;
   }
-  iVar3 = *in_stack_00000004;
-  if ((int)*(short *)&this->field_0xb6 < *in_stack_00000004) {
+  iVar3 = *param_1;
+  if ((int)*(short *)&this->field_0xb6 < *param_1) {
     iVar3 = (int)*(short *)&this->field_0xb6;
   }
   *(short *)&this->field_0x9c = (short)iVar3 / *(short *)&this->field_0x98;
@@ -229,28 +225,28 @@ TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506710
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C1_I36_00506710
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I36_00506710(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I36_00506710(LPRECT param_1)
 
-void __thiscall TIconSlider::OrphanCallChain_C1_I36_00506710(TIconSlider *this)
+void __thiscall TIconSlider::OrphanCallChain_C1_I36_00506710(TIconSlider *this,LPRECT param_1)
 
 {
-  LPRECT in_stack_00000004;
-  
-  in_stack_00000004->left = *(LONG *)&this->field_0xa4;
-  in_stack_00000004->top = *(LONG *)&this->field_0xa8;
-  in_stack_00000004->right = *(LONG *)&this->field_0xac;
-  in_stack_00000004->bottom = *(LONG *)&this->field_0xb0;
-  OffsetRect(in_stack_00000004,
-             (int)(short)((*(short *)&this->field_0x9c * *(short *)&this->field_0x98 -
-                          *(short *)&this->field_0xba / 2) + *(short *)&this->field_0x98 / 2),0);
+  param_1->left = *(LONG *)&this->field_0xa4;
+  param_1->top = *(LONG *)&this->field_0xa8;
+  param_1->right = *(LONG *)&this->field_0xac;
+  param_1->bottom = *(LONG *)&this->field_0xb0;
+  OffsetRect(param_1,(int)(short)((*(short *)&this->field_0x9c * *(short *)&this->field_0x98 -
+                                  *(short *)&this->field_0xba / 2) + *(short *)&this->field_0x98 / 2
+                                 ),0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005067A0
 // GHIDRA_NAME TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int * param_1, int * param_2, int * param_3)
 
-void __thiscall TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TIconSlider *this)
+void __thiscall
+TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TIconSlider *this,int *param_1,int *param_2,int *param_3)
 
 {
   int iVar1;
@@ -258,9 +254,6 @@ void __thiscall TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TIconS
   int iVar3;
   code *unaff_EBX;
   int unaff_retaddr;
-  int *in_stack_00000004;
-  int *in_stack_00000008;
-  int *in_stack_0000000c;
   tagRECT local_44;
   tagRECT tStack_34;
   int iStack_24;
@@ -275,8 +268,8 @@ void __thiscall TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TIconS
   local_44.bottom = tStack_34.bottom;
   local_44.left = tStack_34.left;
   iVar3 = *(short *)&this->field_0xb4 - tStack_34.left;
-  iVar1 = *in_stack_00000008 - *in_stack_00000004;
-  if (*in_stack_00000008 - *in_stack_00000004 <= iVar3) {
+  iVar1 = *param_2 - *param_1;
+  if (*param_2 - *param_1 <= iVar3) {
     iVar1 = iVar3;
   }
   iVar3 = *(short *)&this->field_0xb6 - tStack_34.left;
@@ -285,8 +278,8 @@ void __thiscall TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TIconS
   }
   OffsetRect(&tStack_34,(int)(short)iVar3,0);
   iVar3 = *(short *)&this->field_0xb4 - local_44.left;
-  iVar1 = *in_stack_0000000c - *in_stack_00000004;
-  if (*in_stack_0000000c - *in_stack_00000004 <= iVar3) {
+  iVar1 = *param_3 - *param_1;
+  if (*param_3 - *param_1 <= iVar3) {
     iVar1 = iVar3;
   }
   iVar3 = *(short *)&this->field_0xb6 - local_44.left;

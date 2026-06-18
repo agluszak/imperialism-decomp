@@ -58,15 +58,14 @@ TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F60
 // GHIDRA_NAME TRightLeftView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRightLeftView * __thiscall TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this)
+TRightLeftView * __thiscall
+TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,24 +73,25 @@ TRightLeftView * __thiscall TRightLeftView::_scalar_deleting_destructor_(TRightL
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583FB0
 // GHIDRA_NAME TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, undefined4 param_2)
 
-void __thiscall TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit(TRightLeftView *this)
+void __thiscall
+TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TRightLeftView *this,int param_1,undefined4 param_2)
 
 {
   TRightLeftViewVtbl *pTVar1;
   char cVar2;
   uint uVar3;
   int iVar4;
-  int in_stack_00000004;
   undefined4 in_stack_00000010;
   
-  if (in_stack_00000004 != 2) {
+  if (param_1 != 2) {
     uVar3 = thunk_GetTickCountDiv16();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {
       iVar4 = thunk_GetTickCountDiv16();
       *(int *)&this->field_0x84 = iVar4;
-      if (in_stack_00000004 == 0) {
+      if (param_1 == 0) {
         *(int *)&this->field_0x84 = iVar4 + 10;
       }
       pTVar1 = this->vftable;

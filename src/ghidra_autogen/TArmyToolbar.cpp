@@ -63,15 +63,14 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DF10
 // GHIDRA_NAME TArmyToolbar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyToolbar * __thiscall TArmyToolbar::_scalar_deleting_destructor_(TArmyToolbar *this)
+TArmyToolbar * __thiscall
+TArmyToolbar::_scalar_deleting_destructor_(TArmyToolbar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,11 +78,11 @@ TArmyToolbar * __thiscall TArmyToolbar::_scalar_deleting_destructor_(TArmyToolba
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DF60
 // GHIDRA_NAME TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60(void)
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60(short param_1)
 
 void __thiscall
 TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
-          (TArmyToolbar *this)
+          (TArmyToolbar *this,short param_1)
 
 {
   short sVar1;
@@ -100,7 +99,6 @@ TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650
   undefined2 extraout_var_03;
   int *piVar8;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
   CString local_60;
   int local_5c [6];
   undefined2 auStack_44 [8];
@@ -123,18 +121,18 @@ TArmyToolbar::Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650
   }
   local_4 = 0;
   bVar4 = 0;
-  *(short *)&this->field_0x88 = in_stack_00000004;
+  *(short *)&this->field_0x88 = param_1;
   piVar8 = local_5c;
   for (iVar7 = 10; iVar7 != 0; iVar7 = iVar7 + -1) {
     *piVar8 = 0;
     piVar8 = piVar8 + 1;
   }
-  if (in_stack_00000004 != -1) {
-    if ((in_stack_00000004 < 0) || (0x17f < in_stack_00000004)) {
+  if (param_1 != -1) {
+    if ((param_1 < 0) || (0x17f < param_1)) {
       iVar7 = 0;
     }
     else {
-      iVar7 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + in_stack_00000004 * 0xa8);
+      iVar7 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
     }
     for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x14)) {
       sVar1 = *(short *)(iVar7 + 8);
@@ -182,9 +180,9 @@ LAB_0058e021:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E1C0
 // GHIDRA_NAME TArmyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int * param_2)
 
-void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this)
+void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int param_1,int *param_2)
 
 {
   uint uVar1;
@@ -192,20 +190,18 @@ void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this)
   undefined4 uVar3;
   undefined2 extraout_var;
   TArmyMgrVtbl *pTVar4;
-  int in_stack_00000004;
-  int *in_stack_00000008;
   
-  uVar1 = in_stack_00000008[7];
+  uVar1 = param_2[7];
   if ((0x6172722f < uVar1) && (uVar1 < 0x6172723a)) {
-    uVar3 = CONCAT22((short)(uVar1 >> 0x10),(short)in_stack_00000008[7] + -0x7230);
-    if (in_stack_00000004 == 100) {
+    uVar3 = CONCAT22((short)(uVar1 >> 0x10),(short)param_2[7] + -0x7230);
+    if (param_1 == 100) {
       uVar3 = ActivateFirstActiveTacticalUnitByCategoryAtTile
                         (uVar3,*(undefined2 *)&this->field_0x88);
     }
     else {
       uVar3 = ActivateFirstIdleTacticalUnitByCategoryAtTile(uVar3,*(undefined2 *)&this->field_0x88);
     }
-    (**(code **)(*in_stack_00000008 + 0x1c4))(uVar3,1);
+    (**(code **)(*param_2 + 0x1c4))(uVar3,1);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
     return;
   }

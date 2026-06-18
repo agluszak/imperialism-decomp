@@ -66,16 +66,15 @@ TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(TDropShadowTe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B10D0
 // GHIDRA_NAME TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDropShadowTextBehaviorAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTDropShadowTextBehaviorAndMaybeFree(byte param_1)
 
 TDropShadowTextBehavior * __thiscall
-TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree(TDropShadowTextBehavior *this)
+TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
+          (TDropShadowTextBehavior *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDropShadowTextBehaviorAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

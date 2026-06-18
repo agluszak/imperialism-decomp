@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D310
 // GHIDRA_NAME TTacArmyView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacArmyView * __thiscall TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this)
+TTacArmyView * __thiscall
+TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -169,7 +168,7 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
     *(int *)&this_01->field_0x88 = iStack_4;
     *(undefined4 *)&this_01->field_0x94 = *(undefined4 *)&this->field_0x68;
     (*this_01->vftable[0x39].slot_0x04)(*(undefined4 *)(*(int *)&this->field_0x60 + 0x1c));
-    ConfigureTacticalTargetDoneRetreatAutoControls(this_01);
+    ConfigureTacticalTargetDoneRetreatAutoControls(this_01,0);
     *(TTacArmyView **)&this->field_0xd0 = this_01;
     uVar6 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x636f6174);
     iVar9 = *(int *)CONCAT31(extraout_var_00,uVar6);
@@ -191,16 +190,15 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA2E0
 // GHIDRA_NAME TTacArmyView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int * param_1)
 
-void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *this)
+void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *this,int *param_1)
 
 {
   TTacArmyView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
   short sVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   undefined4 local_54;
   undefined1 *puStack_50;
   RECT local_4c;
@@ -215,10 +213,10 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
   puStack_8 = &LAB_006387b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_4c.left = *in_stack_00000004;
-  local_4c.top = in_stack_00000004[1];
-  local_4c.right = in_stack_00000004[2];
-  local_4c.bottom = in_stack_00000004[3];
+  local_4c.left = *param_1;
+  local_4c.top = param_1[1];
+  local_4c.right = param_1[2];
+  local_4c.bottom = param_1[3];
   thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
   thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
   thunk_GetSurfaceObjectAtContextOffset24();
@@ -296,9 +294,9 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA900
 // GHIDRA_NAME TTacArmyView::OrphanRetStub_005a83c0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(int param_1)
 
-void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this)
+void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this,int param_1)
 
 {
   byte bVar1;
@@ -321,7 +319,6 @@ void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this)
   int iVar16;
   short sVar17;
   int iVar18;
-  int in_stack_00000004;
   astruct_16 aStack_148;
   char local_135;
   astruct_15 aStack_134;
@@ -360,10 +357,9 @@ void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this)
   local_135 = '\0';
   local_124 = 0;
   local_11c.right = *(LONG *)&this->field_0x88;
-  uVar8 = in_stack_00000004 / *(int *)&this->field_0x80;
+  uVar8 = param_1 / *(int *)&this->field_0x80;
   local_11c.left =
-       (in_stack_00000004 % *(int *)&this->field_0x80) * local_11c.right -
-       (int)*(short *)&this->field_0x78;
+       (param_1 % *(int *)&this->field_0x80) * local_11c.right - (int)*(short *)&this->field_0x78;
   if ((uVar8 & 1) != 0) {
     local_11c.left = local_11c.left + local_11c.right / 2;
   }
@@ -388,12 +384,12 @@ void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this)
   local_c0 = ptVar9->right;
   local_c4 = ptVar9->top;
   local_bc = ptVar9->bottom;
-  uVar8 = in_stack_00000004 / 0x1d;
+  uVar8 = param_1 / 0x1d;
   local_fc = (char *)(uVar8 & 1);
-  local_e4 = local_fc + (in_stack_00000004 % 0x1d) * 2;
+  local_e4 = local_fc + (param_1 % 0x1d) * 2;
   if ((uVar8 & 1) == 0) {
-    if (0 < in_stack_00000004) {
-      iVar10 = *(int *)(*(int *)&this->field_0x60 + 4) + in_stack_00000004 * 0x14;
+    if (0 < param_1) {
+      iVar10 = *(int *)(*(int *)&this->field_0x60 + 4) + param_1 * 0x14;
       if (*(int *)(iVar10 + 8) < 2) {
         if (1 < *(int *)(iVar10 + -0xc)) {
           local_124 = 2;
@@ -407,7 +403,7 @@ LAB_005aaa96:
     sVar5 = (short)local_124;
   }
   else {
-    if (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 8 + in_stack_00000004 * 0x14) < 2)
+    if (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 8 + param_1 * 0x14) < 2)
     goto LAB_005aaa96;
     sVar5 = 3;
     local_124 = 3;
@@ -422,12 +418,12 @@ LAB_005aaa96:
   sVar7 = 0;
   if (sVar5 != 0) {
     if (sVar5 == 1) {
-      iVar10 = in_stack_00000004 + 0x1d;
+      iVar10 = param_1 + 0x1d;
     }
     else {
-      iVar10 = in_stack_00000004 + 0x1c;
+      iVar10 = param_1 + 0x1c;
       if (sVar5 != 2) {
-        iVar10 = in_stack_00000004;
+        iVar10 = param_1;
       }
     }
     cVar3 = TArmyBattle::CreateTArmyBattleInstance();
@@ -442,7 +438,7 @@ LAB_005aaa96:
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     cVar3 = ApplyGridColumnSelectionGuard();
     if ((cVar3 != '\0') &&
-       (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 4 + in_stack_00000004 * 0x14) == 0)) {
+       (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 4 + param_1 * 0x14) == 0)) {
       local_108 = &stack0xfffffea0;
       iVar18 = *(int *)&this->field_0x8c / 2 + local_11c.top;
       iVar15 = *(int *)&this->field_0x88 / 2 + local_11c.left;
@@ -463,7 +459,7 @@ LAB_005aaa96:
       sVar7 = (short)local_124;
     }
   }
-  local_108 = (undefined1 *)(in_stack_00000004 * 0x14);
+  local_108 = (undefined1 *)(param_1 * 0x14);
   pcVar12 = local_e4;
   if (*(char *)(*(int *)(*(int *)&this->field_0x60 + 4) + 0x10 + (int)local_108) != '\0') {
     local_a0[0] = 0;
@@ -607,10 +603,10 @@ LAB_005aaa96:
     pcVar12 = (char *)(uint)uVar6;
   }
   sVar5 = (short)pcVar12;
-  thunk_ComputeHexNeighborTileIndices(in_stack_00000004);
+  thunk_ComputeHexNeighborTileIndices(param_1);
   if (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 8 + (int)local_108) == 1) {
     sVar5 = TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-                      ((TCivDescription *)this);
+                      ((TCivDescription *)this,param_1);
     iVar15 = (int)sVar5;
     local_e8 = iVar15 * 3;
     aStack_134.field1_0x4 = 0;
@@ -675,7 +671,7 @@ LAB_005ab0bd:
       aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)&this->field_0x90;
       aStack_134.field3_0xc = *(int *)&this->field_0x94 + aStack_134.field1_0x4;
       TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-                ((TacticalBattleView *)this);
+                ((TacticalBattleView *)this,iVar10,(LPRECT)&aStack_148);
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
       uVar11 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
@@ -847,7 +843,7 @@ LAB_005ab40d:
   if (iVar10 != 0) {
     if (iVar10 == *(int *)(*(int *)&this->field_0x60 + 0x1c)) {
       local_fc = (char *)0x13;
-      TCivAnimation2::FindLinkedListNodeByIdFieldAt18((TCivAnimation2 *)g_pUiAnimator);
+      TCivAnimation2::FindLinkedListNodeByIdFieldAt18((TCivAnimation2 *)g_pUiAnimator,0x2711);
       iStack_f8 = local_11c.left;
       iStack_f4 = local_11c.top;
       iStack_f0 = local_11c.right;
@@ -871,7 +867,7 @@ LAB_005ab40d:
     aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)&this->field_0x90;
     aStack_134.field3_0xc = *(int *)&this->field_0x94 + aStack_134.field1_0x4;
     TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this);
+              ((TacticalBattleView *)this,iVar10,(LPRECT)&aStack_148);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     uVar11 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
@@ -1040,7 +1036,8 @@ LAB_005abc46:
     sVar7 = (short)local_124;
     if (iVar10 == 0) goto LAB_005abc46;
   }
-  piVar13 = (int *)TCivAnimation2::FindLinkedListNodeByIdFieldAt18((TCivAnimation2 *)g_pUiAnimator);
+  piVar13 = (int *)TCivAnimation2::FindLinkedListNodeByIdFieldAt18
+                             ((TCivAnimation2 *)g_pUiAnimator,param_1);
   if (piVar13 != (int *)0x0) {
     puStack_104 = (undefined1 *)0x0;
     iStack_100 = 0;
@@ -1063,7 +1060,7 @@ LAB_005abc78:
     aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)&this->field_0x90;
     aStack_134.field3_0xc = *(int *)&this->field_0x94 + aStack_134.field1_0x4;
     TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this);
+              ((TacticalBattleView *)this,iVar10,(LPRECT)&aStack_148);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     uVar11 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
@@ -1108,7 +1105,7 @@ LAB_005abc78:
     aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)&this->field_0x90;
     aStack_134.field3_0xc = *(int *)&this->field_0x94 + aStack_134.field1_0x4;
     TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this);
+              ((TacticalBattleView *)this,iVar10,(LPRECT)&aStack_148);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     uVar11 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
@@ -1155,7 +1152,7 @@ LAB_005abc78:
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
-  if (0 < *(short *)(*(int *)(*(int *)&this->field_0x60 + 0x24) + in_stack_00000004 * 2)) {
+  if (0 < *(short *)(*(int *)(*(int *)&this->field_0x60 + 0x24) + param_1 * 2)) {
     puStack_104 = &stack0xfffffea0;
     iVar10 = *(int *)&this->field_0x88 / 2 + local_11c.left;
     SetQuickDrawFillColor();
@@ -1170,7 +1167,7 @@ LAB_005abc78:
         (*(int *)(iVar15 + 0xc) == 1)))) {
       SetQuickDrawFillColorFromPaletteIndex();
     }
-    else if (*(char *)(*(int *)(iVar15 + 0x28) + in_stack_00000004) == '\0') {
+    else if (*(char *)(*(int *)(iVar15 + 0x28) + param_1) == '\0') {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
     else {
@@ -1187,9 +1184,10 @@ LAB_005abc78:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACD60
 // GHIDRA_NAME TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
-// GHIDRA_PROTO undefined __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(void)
+// GHIDRA_PROTO undefined __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
 
-void __thiscall TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this)
+void __thiscall
+TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,int param_1)
 
 {
   TTacArmyView_slot_0x04_0x04 *pTVar1;
@@ -1203,9 +1201,8 @@ void __thiscall TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTa
   undefined3 extraout_var_04;
   undefined3 extraout_var_05;
   undefined3 extraout_var_06;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 0) {
+  if (param_1 == 0) {
     pTVar1 = this->vftable[0x12].slot_0x04;
     uVar3 = (*pTVar1)(0x74617267);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);

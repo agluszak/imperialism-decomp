@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00447353
 // GHIDRA_NAME TNavyRoster::BuildNavyRosterDialogUiResourceTree
-// GHIDRA_PROTO undefined BuildNavyRosterDialogUiResourceTree()
+// GHIDRA_PROTO undefined BuildNavyRosterDialogUiResourceTree(undefined4 param_1)
 
 int * TNavyRoster::BuildNavyRosterDialogUiResourceTree(void)
 
@@ -151,15 +151,13 @@ TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564D70
 // GHIDRA_NAME TNavyRoster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *this)
+TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -59,15 +59,14 @@ TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1B40
 // GHIDRA_NAME TTradeTotalsView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeTotalsView * __thiscall TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this)
+TTradeTotalsView * __thiscall
+TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

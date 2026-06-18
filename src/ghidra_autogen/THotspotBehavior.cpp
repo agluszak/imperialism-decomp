@@ -58,16 +58,14 @@ THotspotBehavior::ConstructTHotspotBehaviorBaseState(THotspotBehavior *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0BB0
 // GHIDRA_NAME THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTHotspotBehaviorAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTHotspotBehaviorAndMaybeFree(byte param_1)
 
 THotspotBehavior * __thiscall
-THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(THotspotBehavior *this)
+THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(THotspotBehavior *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTHotspotBehaviorAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

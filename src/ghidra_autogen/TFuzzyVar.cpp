@@ -15,15 +15,13 @@ CRuntimeClass * __thiscall TFuzzyVar::GetTFuzzyVarClassNamePointer(TFuzzyVar *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF4D0
 // GHIDRA_NAME TFuzzyVar::ConstructTFuzzyVarBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFuzzyVarBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTFuzzyVarBaseState(byte param_1)
 
-TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this)
+TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TFuzzySet::CreateTFuzzySetInstance((TFuzzySet *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -31,16 +29,15 @@ TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0
 // GHIDRA_NAME TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-// GHIDRA_PROTO undefined __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(void)
+// GHIDRA_PROTO undefined __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(TFuzzyVar *this)
+void __thiscall
+TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+          (TFuzzyVar *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   undefined4 *puVar1;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   if (puVar1 == (undefined4 *)0x0) {
@@ -49,10 +46,10 @@ void __thiscall TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(TFuzzyVar *
   else {
     *puVar1 = &TFuzzyVarVtbl_00656998;
   }
-  puVar1[1] = in_stack_00000004;
-  puVar1[2] = in_stack_00000008;
-  puVar1[3] = in_stack_0000000c;
-  puVar1[4] = in_stack_00000010;
+  puVar1[1] = param_1;
+  puVar1[2] = param_2;
+  puVar1[3] = param_3;
+  puVar1[4] = param_4;
   *(undefined4 **)(&this->field_0x8 + *(int *)&this->field_0x4 * 4) = puVar1;
   *(int *)&this->field_0x4 = *(int *)&this->field_0x4 + 1;
   return;

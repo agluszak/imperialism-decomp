@@ -60,16 +60,15 @@ TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F60
 // GHIDRA_NAME TGameSetupMultiplayerPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TGameSetupMultiplayerPicture * __thiscall
-TGameSetupMultiplayerPicture::_scalar_deleting_destructor_(TGameSetupMultiplayerPicture *this)
+TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
+          (TGameSetupMultiplayerPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -141,7 +140,7 @@ TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultipl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576230
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches setup/menu command tags and posts follow-up turn-event codes (load/random/scenario/join/multiplayer paths).
 // GHIDRA_COMMENT_END
@@ -151,7 +150,7 @@ TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultipl
 
 void __thiscall
 TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-          (TGameSetupMultiplayerPicture *this)
+          (TGameSetupMultiplayerPicture *this,int param_1,CString param_2)
 
 {
   uint uVar1;
@@ -164,8 +163,6 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var_01;
   CString *this_00;
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
   CString local_1c;
   CString local_18;
   CString local_14;
@@ -178,9 +175,8 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   local_4 = -1;
   puStack_8 = &LAB_00636878;
   *unaff_FS_OFFSET = (int)&local_c;
-  if ((((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) ||
-     (in_stack_00000004 == 0xd)) {
-    uVar1 = *(uint *)(in_stack_00000008.m_pchData + 0x1c);
+  if ((((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) || (param_1 == 0xd)) {
+    uVar1 = *(uint *)(param_2.m_pchData + 0x1c);
     if (uVar1 < 0x6c6f6165) {
       if (uVar1 == 0x6c6f6164) goto LAB_005762a1;
       if (uVar1 != 0x6a6f696e) goto LAB_005764ac;
@@ -192,13 +188,13 @@ LAB_005763d6:
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0xc))();
       cVar3 = ValidateGameFlowNameAndSelectionContext();
       if (cVar3 == '\0') {
-        CString::CString(&stack0x00000008);
+        CString::CString(&param_2);
         local_4 = 3;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000008);
+        thunk_AssignStringSharedRefAndReturnThis(&param_2);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         ResetGameFlowStateAndPostTurnEvent5DC();
-        this_00 = &stack0x00000008;
+        this_00 = &param_2;
 LAB_00576781:
         local_4 = -1;
         CString::~CString(this_00);
@@ -239,7 +235,7 @@ LAB_005762a1:
           goto LAB_005763d6;
         }
         thunk_LoadUiStringResourceByGroupAndIndex();
-        in_stack_00000008.m_pchData = &stack0xffffffc4;
+        param_2.m_pchData = &stack0xffffffc4;
         thunk_AssignStringSharedRefAndReturnThis(&local_1c);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       }
@@ -249,7 +245,7 @@ LAB_005762a1:
       goto LAB_00576781;
     }
 LAB_005764ac:
-    uVar1 = *(uint *)(in_stack_00000008.m_pchData + 0x1c);
+    uVar1 = *(uint *)(param_2.m_pchData + 0x1c);
     if (uVar1 < 0x6c6f6165) {
       if (uVar1 == 0x6c6f6164) {
         *(undefined4 *)&g_pGameFlowState->field_0xe0 = 0x6c6f6164;
@@ -311,7 +307,7 @@ LAB_0057670d:
       (**(code **)(iVar5 + 0xa8))();
       local_10 = &stack0xffffffcc;
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                ((TToolBarCluster *)&stack0xffffffcc);
+                ((TToolBarCluster *)&stack0xffffffcc,(char *)&g_szEmptyString);
       InitializeAndRunMainRoutine();
       local_4._0_1_ = 5;
       CString::~CString(&local_18);
@@ -321,7 +317,7 @@ LAB_0057670d:
       CString::~CString(&local_14);
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
 LAB_00576786:
   *unaff_FS_OFFSET = local_c;
   return;

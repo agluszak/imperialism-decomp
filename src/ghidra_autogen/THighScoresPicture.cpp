@@ -15,16 +15,14 @@ void __thiscall THighScoresPicture::UniversityDialogMethod_00405623(THighScoresP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045ADC0
 // GHIDRA_NAME THighScoresPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 THighScoresPicture * __thiscall
-THighScoresPicture::_scalar_deleting_destructor_(THighScoresPicture *this)
+THighScoresPicture::_scalar_deleting_destructor_(THighScoresPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -43,9 +41,10 @@ THighScoresPicture::GetTEventHandlerClassNamePointer(THighScoresPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575320
 // GHIDRA_NAME THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
-void __thiscall THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScoresPicture *this)
+void __thiscall
+THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScoresPicture *this,CString param_1)
 
 {
   int iVar1;
@@ -54,7 +53,6 @@ void __thiscall THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScores
   undefined4 *puVar4;
   undefined1 *puVar5;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -64,13 +62,13 @@ void __thiscall THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScores
   puStack_8 = &LAB_00636778;
   *unaff_FS_OFFSET = &local_c;
   TView::thunk_NoOpUiLifecycleHook((TView *)this);
-  CString::CString(&stack0x00000004);
+  CString::CString(&param_1);
   local_4 = 0;
   thunk_ResetDualAudioCuePools();
   thunk_PushCueToDualAudioCuePools(0xb);
   thunk_SelectAndScheduleRandomAudioCue();
-  AssignScoresDatPathToSharedString(&stack0x00000004);
-  iVar1 = OpenBufferedStreamWithMode40(in_stack_00000004.m_pchData,&DAT_00698720);
+  AssignScoresDatPathToSharedString(&param_1);
+  iVar1 = OpenBufferedStreamWithMode40(param_1.m_pchData,&DAT_00698720);
   if (iVar1 == 0) {
     puVar4 = (undefined4 *)&this->field_0x94;
     for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -97,7 +95,7 @@ void __thiscall THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScores
     CloseBufferedStreamAndReleaseResources(iVar1);
   }
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -185,7 +183,7 @@ void __thiscall THighScoresPicture::OrphanTiny_ReturnZero_0048a730(THighScoresPi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575770
 // GHIDRA_NAME THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles command-id 10 path: posts turn-event code 0x5DC and executes follow-up UI reset/sync thunks (00593730/00593760/00593790).
 // GHIDRA_COMMENT_END
@@ -194,12 +192,11 @@ void __thiscall THighScoresPicture::OrphanTiny_ReturnZero_0048a730(THighScoresPi
    thunks (00593730/00593760/00593790). */
 
 void __thiscall
-THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(THighScoresPicture *this)
+THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (THighScoresPicture *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 10) {
+  if (param_1 == 10) {
     thunk_PostTurnEventCodeMessage2420(0x5dc);
     thunk_ResetDualAudioCuePools();
     thunk_PushCueToDualAudioCuePools(0xb);

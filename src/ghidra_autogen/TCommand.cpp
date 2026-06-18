@@ -5,16 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(void)
+// GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
-TCommandVtbl * __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this)
+TCommandVtbl * __thiscall
+TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,uint param_1)
 
 {
   TCommandVtbl *pTVar1;
-  uint in_stack_00000004;
   
   pTVar1 = this[6].vftable;
-  this[6].vftable = (TCommandVtbl *)(in_stack_00000004 & 0xff);
+  this[6].vftable = (TCommandVtbl *)(param_1 & 0xff);
   return pTVar1;
 }
 
@@ -148,15 +148,13 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488160
 // GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-undefined4 __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
+undefined4 __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 <= *(int *)&this->field_0x8) {
-    return *(undefined4 *)(*(int *)&this->field_0x4 + -4 + in_stack_00000004 * 4);
+  if (param_1 <= *(int *)&this->field_0x8) {
+    return *(undefined4 *)(*(int *)&this->field_0x4 + -4 + param_1 * 4);
   }
   return 0;
 }
@@ -169,9 +167,10 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 {
   undefined uVar1;
+  int in_stack_00000004;
   
   uVar1 = (*this->vftable[5].OrphanCallChain_C1_I17_00487470)();
-  CPtrArray::RemoveAt((CPtrArray *)this);
+  CPtrArray::RemoveAt((CPtrArray *)this,in_stack_00000004 + -1,1);
   FreeHeapBufferIfNotNull(uVar1);
   return;
 }
@@ -246,56 +245,57 @@ void __thiscall TCommand::SetForeignMinisterReadyFlag14(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004882C0
 // GHIDRA_NAME TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 * param_1)
 
-void __thiscall TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCommand *this)
-
-{
-  short sVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  undefined4 *in_stack_00000004;
-  
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
-  sVar1 = *(short *)&this->field_0x14;
-  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *puVar2 = *in_stack_00000004;
-    in_stack_00000004 = in_stack_00000004 + 1;
-    puVar2 = puVar2 + 1;
-  }
-  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *(undefined1 *)puVar2 = *(undefined1 *)in_stack_00000004;
-    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
-    puVar2 = (undefined4 *)((int)puVar2 + 1);
-  }
-  CPtrArray::SetAtGrow((CPtrArray *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488310
-// GHIDRA_NAME TCommand::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
-
-void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this)
+void __thiscall
+TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCommand *this,undefined4 *param_1)
 
 {
   short sVar1;
   undefined4 *puVar2;
   uint uVar3;
   undefined4 *puVar4;
-  undefined4 *in_stack_00000004;
   
   puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
   sVar1 = *(short *)&this->field_0x14;
   puVar4 = puVar2;
   for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *puVar4 = *in_stack_00000004;
-    in_stack_00000004 = in_stack_00000004 + 1;
+    *puVar4 = *param_1;
+    param_1 = param_1 + 1;
     puVar4 = puVar4 + 1;
   }
   for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
-    *(undefined1 *)puVar4 = *(undefined1 *)in_stack_00000004;
-    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
+    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
+    param_1 = (undefined4 *)((int)param_1 + 1);
+    puVar4 = (undefined4 *)((int)puVar4 + 1);
+  }
+  CPtrArray::SetAtGrow((CPtrArray *)this,*(int *)&this->field_0x8,puVar2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488310
+// GHIDRA_NAME TCommand::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 * param_1)
+
+void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this,undefined4 *param_1)
+
+{
+  short sVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  undefined4 *puVar4;
+  
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+  sVar1 = *(short *)&this->field_0x14;
+  puVar4 = puVar2;
+  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *puVar4 = *param_1;
+    param_1 = param_1 + 1;
+    puVar4 = puVar4 + 1;
+  }
+  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *(undefined1 *)puVar4 = *(undefined1 *)param_1;
+    param_1 = (undefined4 *)((int)param_1 + 1);
     puVar4 = (undefined4 *)((int)puVar4 + 1);
   }
   InsertAt(0,puVar2,1);
@@ -304,31 +304,26 @@ void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488360
 // GHIDRA_NAME TCommand::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(uint param_1, uint param_2)
 
-int __thiscall TCommand::OrphanRetStub_0059add0(TCommand *this)
+int __thiscall TCommand::OrphanRetStub_0059add0(TCommand *this,uint param_1,uint param_2)
 
 {
-  uint in_stack_00000004;
-  uint in_stack_00000008;
-  
-  if (in_stack_00000008 < in_stack_00000004) {
+  if (param_2 < param_1) {
     return 1;
   }
-  return -(uint)(in_stack_00000004 < in_stack_00000008);
+  return -(uint)(param_1 < param_2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488390
 // GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CObArray::thunk_DestructCObArray();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -351,7 +346,9 @@ CRuntimeClass * __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *
 void __thiscall TCommand::InvalidateWindowRectFromHandleField1C(TCommand *this)
 
 {
-  CPtrList::AddHead((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddHead((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -362,7 +359,9 @@ void __thiscall TCommand::InvalidateWindowRectFromHandleField1C(TCommand *this)
 void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
 
 {
-  CPtrList::AddHead((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddHead((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -373,7 +372,9 @@ void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
 void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 {
-  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
@@ -384,21 +385,21 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
 {
-  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  undefined4 in_stack_00000004;
+  
+  CPtrList::AddTail((CPtrList *)&this->field_0x4,in_stack_00000004);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004888F0
 // GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStream::CreateTStreamInstance((TStream *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -406,9 +407,9 @@ TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E1E50
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this,int *param_1)
 
 {
   undefined1 *puVar1;
@@ -417,9 +418,8 @@ void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
   code *unaff_EBX;
   code *unaff_EBP;
   short sVar4;
-  int *in_stack_00000004;
   
-  iVar2 = *in_stack_00000004;
+  iVar2 = *param_1;
   puVar1 = &this->field_0x14;
   (**(code **)(iVar2 + 0x3c))(puVar1,2);
   iVar2 = (**(code **)(iVar2 + 0x50))();
@@ -438,9 +438,9 @@ void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E1F10
 // GHIDRA_NAME TCommand::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,int *param_1)
 
 {
   TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
@@ -448,9 +448,8 @@ void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
   int iVar3;
   short sVar4;
   code *unaff_EDI;
-  int *in_stack_00000004;
   
-  iVar3 = *in_stack_00000004;
+  iVar3 = *param_1;
   (**(code **)(iVar3 + 0x78))(&this->field_0x14,2);
   (**(code **)(iVar3 + 0x8c))(*(undefined4 *)&this->field_0x8);
   sVar4 = 1;

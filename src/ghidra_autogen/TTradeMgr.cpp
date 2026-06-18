@@ -26,15 +26,13 @@ void __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A40
 // GHIDRA_NAME TTradeMgr::DestructTTradeMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTradeMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTradeMgrAndMaybeFree(byte param_1)
 
-TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this)
+TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTradeMgrAndMaybeFree_Impl(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -79,77 +77,79 @@ void __thiscall TTradeMgr::OrphanCallChain_C2_I25_005b7bc0(TTradeMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7C10
 // GHIDRA_NAME TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int * param_1)
 
-void __thiscall TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(TTradeMgr *this)
+void __thiscall
+TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(TTradeMgr *this,int *param_1)
 
 {
   undefined1 uVar1;
   code *pcVar2;
-  undefined1 *puVar3;
-  int iVar4;
-  undefined1 *puVar5;
-  undefined4 *puVar6;
-  int *in_stack_00000004;
+  int *piVar3;
+  undefined1 *puVar4;
+  int iVar5;
+  undefined1 *puVar6;
+  undefined4 *puVar7;
   
+  piVar3 = param_1;
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   if (DAT_00695278 < 0x27) {
-    (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x8,0xaa0);
+    (**(code **)(*param_1 + 0x3c))(&this->field_0x8,0xaa0);
   }
   else {
-    pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
-    puVar5 = &this->field_0xa;
-    in_stack_00000004 = (int *)0x11;
+    pcVar2 = *(code **)(*param_1 + 0x3c);
+    puVar6 = &this->field_0xa;
+    param_1 = (int *)0x11;
     do {
-      (*pcVar2)(puVar5 + -2,2);
-      (*pcVar2)(puVar5,2);
-      (*pcVar2)(puVar5 + 2,2);
-      (*pcVar2)(puVar5 + 4,2);
-      (*pcVar2)(puVar5 + 6,8);
-      (*pcVar2)(puVar5 + 0xe,2);
-      (*pcVar2)(puVar5 + 0x10,2);
-      puVar3 = puVar5 + 0x12;
-      (*pcVar2)(puVar3,0x2e);
-      iVar4 = 0x17;
+      (*pcVar2)(puVar6 + -2,2);
+      (*pcVar2)(puVar6,2);
+      (*pcVar2)(puVar6 + 2,2);
+      (*pcVar2)(puVar6 + 4,2);
+      (*pcVar2)(puVar6 + 6,8);
+      (*pcVar2)(puVar6 + 0xe,2);
+      (*pcVar2)(puVar6 + 0x10,2);
+      puVar4 = puVar6 + 0x12;
+      (*pcVar2)(puVar4,0x2e);
+      iVar5 = 0x17;
       do {
-        uVar1 = *puVar3;
-        *puVar3 = puVar3[1];
-        puVar3[1] = uVar1;
-        puVar3 = puVar3 + 2;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-      puVar3 = puVar5 + 0x40;
-      (*pcVar2)(puVar3,0x2e);
-      iVar4 = 0x17;
+        uVar1 = *puVar4;
+        *puVar4 = puVar4[1];
+        puVar4[1] = uVar1;
+        puVar4 = puVar4 + 2;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
+      puVar4 = puVar6 + 0x40;
+      (*pcVar2)(puVar4,0x2e);
+      iVar5 = 0x17;
       do {
-        uVar1 = *puVar3;
-        *puVar3 = puVar3[1];
-        puVar3[1] = uVar1;
-        puVar3 = puVar3 + 2;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-      puVar3 = puVar5 + 0x6e;
-      (*pcVar2)(puVar3,0x2e);
-      iVar4 = 0x17;
+        uVar1 = *puVar4;
+        *puVar4 = puVar4[1];
+        puVar4[1] = uVar1;
+        puVar4 = puVar4 + 2;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
+      puVar4 = puVar6 + 0x6e;
+      (*pcVar2)(puVar4,0x2e);
+      iVar5 = 0x17;
       do {
-        uVar1 = *puVar3;
-        *puVar3 = puVar3[1];
-        puVar3[1] = uVar1;
-        puVar3 = puVar3 + 2;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-      puVar5 = puVar5 + 0xa0;
-      in_stack_00000004 = (int *)((int)in_stack_00000004 + -1);
-    } while (in_stack_00000004 != (int *)0x0);
+        uVar1 = *puVar4;
+        *puVar4 = puVar4[1];
+        puVar4[1] = uVar1;
+        puVar4 = puVar4 + 2;
+        iVar5 = iVar5 + -1;
+      } while (iVar5 != 0);
+      puVar6 = puVar6 + 0xa0;
+      param_1 = (int *)((int)param_1 + -1);
+    } while (param_1 != (int *)0x0);
   }
-  puVar6 = (undefined4 *)&this->field_0xaa8;
-  iVar4 = 0x11;
+  puVar7 = (undefined4 *)&this->field_0xaa8;
+  iVar5 = 0x11;
   do {
-    (**(code **)(*(int *)*puVar6 + 0x1c))();
-    (**(code **)(*(int *)*puVar6 + 0x18))();
-    puVar6 = puVar6 + 1;
-    iVar4 = iVar4 + -1;
-  } while (iVar4 != 0);
+    (**(code **)(*(int *)*puVar7 + 0x1c))();
+    (**(code **)(*(int *)*puVar7 + 0x18))(piVar3);
+    puVar7 = puVar7 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
   return;
 }
 
@@ -637,22 +637,21 @@ void __thiscall TTradeMgr::DispatchNationMetricUpdatePassForAllSlots(TTradeMgr *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8AD0
 // GHIDRA_NAME TTradeMgr::ComputeNationMetricBaselineValueForSlot
-// GHIDRA_PROTO undefined __thiscall ComputeNationMetricBaselineValueForSlot(void)
+// GHIDRA_PROTO undefined __thiscall ComputeNationMetricBaselineValueForSlot(short param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TTradeMgr::ComputeNationMetricBaselineValueForSlot(TTradeMgr *this)
+void __thiscall TTradeMgr::ComputeNationMetricBaselineValueForSlot(TTradeMgr *this,short param_1)
 
 {
   short sVar1;
   int iVar2;
   int iVar3;
   int iVar4;
-  short in_stack_00000004;
   
-  iVar4 = in_stack_00000004 * 0xa0;
+  iVar4 = param_1 * 0xa0;
   *(undefined2 *)(&this->field_0x8 + iVar4) = *(undefined2 *)(&this->field_0xa + iVar4);
-  switch((int)in_stack_00000004) {
+  switch((int)param_1) {
   case 8:
     iVar3 = (int)*(short *)&this->field_0xa + (int)*(short *)&this->field_0xaa;
     sVar1 = *(short *)&this->field_0x82a;
@@ -704,34 +703,32 @@ LAB_005b8c49:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8D40
 // GHIDRA_NAME TTradeMgr::GetNationMetricWeightedScoreForSlot
-// GHIDRA_PROTO undefined __thiscall GetNationMetricWeightedScoreForSlot(void)
+// GHIDRA_PROTO undefined __thiscall GetNationMetricWeightedScoreForSlot(short param_1)
 
-float10 __thiscall TTradeMgr::GetNationMetricWeightedScoreForSlot(TTradeMgr *this)
+float10 __thiscall TTradeMgr::GetNationMetricWeightedScoreForSlot(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return (float10)*(double *)(&this->field_0x10 + in_stack_00000004 * 0xa0);
+  return (float10)*(double *)(&this->field_0x10 + param_1 * 0xa0);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8D70
 // GHIDRA_NAME TTradeMgr::GetNationMetricAuxWordForSlot
-// GHIDRA_PROTO undefined __thiscall GetNationMetricAuxWordForSlot(void)
+// GHIDRA_PROTO undefined __thiscall GetNationMetricAuxWordForSlot(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricAuxWordForSlot(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::GetNationMetricAuxWordForSlot(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return CONCAT22((short)((uint)(in_stack_00000004 * 0xa0) >> 0x10),
-                  *(undefined2 *)(&this->field_0x18 + in_stack_00000004 * 0xa0));
+  return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
+                  *(undefined2 *)(&this->field_0x18 + param_1 * 0xa0));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8DA0
 // GHIDRA_NAME TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale
-// GHIDRA_PROTO undefined __thiscall ComputeNationMetricDispatchScoreAndResolveScale(void)
+// GHIDRA_PROTO undefined __thiscall ComputeNationMetricDispatchScoreAndResolveScale(short param_1, short param_2)
 
-int __thiscall TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(TTradeMgr *this)
+int __thiscall
+TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale
+          (TTradeMgr *this,short param_1,short param_2)
 
 {
   char cVar1;
@@ -739,14 +736,14 @@ int __thiscall TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(TTrade
   int iVar3;
   int iVar4;
   short unaff_retaddr;
-  short in_stack_00000004;
-  short in_stack_00000008;
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
   
-  cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)();
+  cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(_param_1,_param_2);
   if (cVar1 != '\0') {
     return -1;
   }
-  iVar4 = (int)in_stack_00000008;
+  iVar4 = (int)param_2;
   sVar2 = *(short *)&g_apTerrainTypeDescriptorTable[iVar4]->field_0xe;
   if (sVar2 < 200) {
     if (sVar2 < 100) {
@@ -759,13 +756,13 @@ int __thiscall TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(TTrade
   else {
     sVar2 = sVar2 + -200;
   }
-  if (sVar2 == in_stack_00000004) {
-    if (in_stack_00000004 < in_stack_00000008) {
-      return (int)in_stack_00000004;
+  if (sVar2 == param_1) {
+    if (param_1 < param_2) {
+      return (int)param_1;
     }
   }
   else {
-    iVar3 = (int)in_stack_00000004;
+    iVar3 = (int)param_1;
     sVar2 = *(short *)&g_apTerrainTypeDescriptorTable[iVar3]->field_0xe;
     if (sVar2 < 200) {
       if (sVar2 < 100) {
@@ -778,8 +775,8 @@ int __thiscall TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(TTrade
     else {
       sVar2 = sVar2 + -200;
     }
-    if (sVar2 != in_stack_00000008) {
-      cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+    if (sVar2 != param_2) {
+      cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(_param_2);
       if (cVar1 == '\0') {
         if (*(short *)(&g_apNationStates[iVar3]->field_0x14 + iVar4 * 2) == 100) goto LAB_005b8f0a;
         if (*(short *)(&g_apNationStates[iVar3]->field_0x14 + iVar4 * 2) != 300) {
@@ -799,77 +796,70 @@ LAB_005b8f0a:
       }
       return -1;
     }
-    if (in_stack_00000008 < in_stack_00000004) {
-      return (int)in_stack_00000004;
+    if (param_2 < param_1) {
+      return (int)param_1;
     }
   }
-  return (int)in_stack_00000008;
+  return (int)param_2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8F80
 // GHIDRA_NAME TTradeMgr::GetNationMetricRosterWordAtOffset0E
-// GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0E(void)
+// GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0E(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0E(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0E(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return CONCAT22((short)((uint)(in_stack_00000004 * 0xa0) >> 0x10),
-                  *(undefined2 *)(&this->field_0xe + in_stack_00000004 * 0xa0));
+  return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
+                  *(undefined2 *)(&this->field_0xe + param_1 * 0xa0));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8FB0
 // GHIDRA_NAME TTradeMgr::GetNationMetricRosterWordAtOffset0C
-// GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0C(void)
+// GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0C(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0C(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0C(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return CONCAT22((short)((uint)(in_stack_00000004 * 0xa0) >> 0x10),
-                  *(undefined2 *)(&this->field_0xc + in_stack_00000004 * 0xa0));
+  return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
+                  *(undefined2 *)(&this->field_0xc + param_1 * 0xa0));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B8FE0
 // GHIDRA_NAME TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A
-// GHIDRA_PROTO undefined __thiscall ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(void)
+// GHIDRA_PROTO undefined __thiscall ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(short param_1)
 
 undefined4 __thiscall
-TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(TTradeMgr *this)
+TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  if (in_stack_00000004 == 0x16) {
+  if (param_1 == 0x16) {
     return 200;
   }
-  if (in_stack_00000004 == 0x15) {
+  if (param_1 == 0x15) {
     return 500;
   }
-  return CONCAT22((short)((uint)(in_stack_00000004 * 0xa0) >> 0x10),
-                  *(undefined2 *)(&this->field_0xa + in_stack_00000004 * 0xa0));
+  return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
+                  *(undefined2 *)(&this->field_0xa + param_1 * 0xa0));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9030
 // GHIDRA_NAME TTradeMgr::GetNationMetricBucketValueByIndex
-// GHIDRA_PROTO undefined __thiscall GetNationMetricBucketValueByIndex(void)
+// GHIDRA_PROTO undefined __thiscall GetNationMetricBucketValueByIndex(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricBucketValueByIndex(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::GetNationMetricBucketValueByIndex(TTradeMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  return CONCAT22((short)((uint)(in_stack_00000004 * 0xa0) >> 0x10),
-                  *(undefined2 *)(&this->field_0x1a + in_stack_00000004 * 0xa0));
+  return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
+                  *(undefined2 *)(&this->field_0x1a + param_1 * 0xa0));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9060
 // GHIDRA_NAME TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
-// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(void)
+// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short param_1)
 
-void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(TTradeMgr *this)
+void __thiscall
+TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(TTradeMgr *this,short param_1)
 
 {
   int *piVar1;
@@ -885,10 +875,10 @@ void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
   short sVar9;
   undefined2 extraout_var_02;
   undefined2 extraout_var_03;
-  short in_stack_00000004;
+  undefined2 in_stack_00000006;
   undefined4 uVar8;
   
-  piVar1 = *(int **)(&this->field_0xaa8 + in_stack_00000004 * 4);
+  piVar1 = *(int **)(&this->field_0xaa8 + param_1 * 4);
   iVar6 = 1;
   sVar5 = 1;
   if (0 < piVar1[2]) {
@@ -896,7 +886,7 @@ void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
     do {
       psVar7 = (short *)(*pcVar2)(iVar6);
       uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable[0xe].GetTCountryClassNamePointer)
-                        ();
+                        (_param_1);
       uVar8 = CONCAT31(extraout_var,uVar3);
       cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                         (CONCAT22(extraout_var_02,psVar7[1]));
@@ -911,7 +901,7 @@ void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
       if (0 < (short)uVar8) {
         sVar9 = *psVar7 >> 0xf;
         (*g_apTerrainTypeDescriptorTable[*psVar7]->vftable[0x11].GetTCountryClassNamePointer)
-                  (CONCAT22(sVar9,psVar7[1]),uVar8,CONCAT22(sVar9,psVar7[4]));
+                  (CONCAT22(sVar9,psVar7[1]),uVar8,CONCAT22(sVar9,psVar7[4]),_param_1);
       }
       sVar5 = sVar5 + 1;
       iVar6 = (int)sVar5;
@@ -1001,75 +991,86 @@ void __thiscall TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline(TTrad
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B94D0
 // GHIDRA_NAME TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
-// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(void)
+// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, char param_6, char param_7)
 
-void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(TTradeMgr *this)
+void __thiscall
+TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
+          (TTradeMgr *this,undefined4 param_1,undefined4 param_2,int param_3,undefined4 param_4,
+          undefined4 param_5,char param_6,char param_7)
 
 {
   char cVar1;
   short sVar2;
+  int iVar3;
   int unaff_EBX;
+  int iVar4;
   int unaff_EBP;
-  short nSourceClass;
-  undefined4 unaff_EDI;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  char in_stack_00000018;
-  char in_stack_0000001c;
+  short unaff_DI;
+  short sVar5;
+  undefined2 uVar6;
+  undefined4 uVar7;
+  undefined4 uVar8;
   
-  if ((in_stack_0000001c == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
+  if ((param_7 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
     CreateAndSendTurnEvent1C_BoolAndSixShorts
-              (1,in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010,
-               in_stack_00000014,(short)in_stack_00000018);
+              (1,param_1,param_2,param_3,param_4,param_5,(short)param_6);
     return;
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     CreateAndSendTurnEvent1C_BoolAndSixShorts
-              (0,in_stack_00000004,in_stack_00000008,in_stack_0000000c,in_stack_00000010,
-               in_stack_00000014,
-               CONCAT22((short)((uint)g_pLocalizationTable >> 0x10),(short)in_stack_00000018));
+              (0,param_1,param_2,param_3,param_4,param_5,
+               CONCAT22((short)((uint)g_pLocalizationTable >> 0x10),(short)param_6));
   }
-  nSourceClass = (short)in_stack_00000004;
-  if (in_stack_00000018 != '\0') {
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+  sVar2 = (short)param_1;
+  if (param_6 != '\0') {
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[nSourceClass]->vftable[0x35].slot_0x04)();
+      (*g_apNationStates[sVar2]->vftable[0x35].slot_0x04)(param_5);
     }
   }
-  if ((short)in_stack_0000000c < 1) {
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+  if ((short)param_3 < 1) {
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[nSourceClass]->vftable[0x36].GetTCountryClassNamePointer)
-                (1,in_stack_00000004);
+      (*g_apNationStates[sVar2]->vftable[0x36].GetTCountryClassNamePointer)
+                (1,param_1,param_3,param_5,(int)(short)param_3);
     }
   }
   else {
-    (*g_apTerrainTypeDescriptorTable[nSourceClass]->vftable[0x10].GetTCountryClassNamePointer)();
-    (*g_apTerrainTypeDescriptorTable[(short)unaff_EBX]->vftable[0x10].GetTCountryClassNamePointer)()
-    ;
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(unaff_EDI);
+    iVar4 = (int)sVar2;
+    uVar8 = param_5;
+    (*g_apTerrainTypeDescriptorTable[iVar4]->vftable[0x10].GetTCountryClassNamePointer)
+              (param_5,param_3,param_4);
+    uVar7 = param_5;
+    (*g_apTerrainTypeDescriptorTable[(short)unaff_EBX]->vftable[0x10].GetTCountryClassNamePointer)
+              (param_5,-param_3,param_1);
+    uVar6 = (undefined2)uVar7;
+    sVar5 = unaff_DI;
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
     if (cVar1 != '\0') {
-      cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+      cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
       if (cVar1 == '\0') {
-        (*g_apTerrainTypeDescriptorTable[unaff_EBX]->vftable[0xd].slot_0x04)();
+        (*g_apTerrainTypeDescriptorTable[unaff_EBX]->vftable[0xd].slot_0x04)(param_3);
       }
     }
     sVar2 = TControl::thunk_LookupOrderCompatibilityMatrixValue
-                      ((TControl *)g_pDiplomacyTurnStateManager,nSourceClass,(short)unaff_EBX);
+                      ((TControl *)g_pDiplomacyTurnStateManager,sVar2,(short)unaff_EBX,sVar5,uVar6);
     if (0 < sVar2) {
-      (*g_pDiplomacyTurnStateManager->vftable[5].GetTDiplomacyMgrClassNamePointer)();
+      iVar3 = iVar4 * 0x17 + unaff_EBX;
+      (*g_pDiplomacyTurnStateManager->vftable[5].GetTDiplomacyMgrClassNamePointer)
+                (param_1,param_4,
+                 CONCAT22((short)((uint)iVar3 >> 0x10),
+                          *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c + iVar3 * 2) + 1));
     }
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(in_stack_00000010);
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_4);
+    sVar2 = (short)param_4;
     if (cVar1 != '\0') {
-      (*g_apNationStates[unaff_EBP]->vftable[0x36].GetTCountryClassNamePointer)(0);
+      (*g_apNationStates[unaff_EBP]->vftable[0x36].GetTCountryClassNamePointer)
+                (0,param_1,param_3,param_5,(int)unaff_DI);
     }
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[nSourceClass]->vftable[0x36].GetTCountryClassNamePointer)
-                (1,in_stack_00000014);
+      (*g_apNationStates[iVar4]->vftable[0x36].GetTCountryClassNamePointer)
+                (1,uVar8,param_3,param_5,(int)sVar2);
       return;
     }
   }
@@ -1078,15 +1079,13 @@ void __thiscall TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9790
 // GHIDRA_NAME TTradeMgr::SetNationMetricCellValueByIndex
-// GHIDRA_PROTO undefined __thiscall SetNationMetricCellValueByIndex(void)
+// GHIDRA_PROTO undefined __thiscall SetNationMetricCellValueByIndex(short param_1, undefined2 param_2)
 
-void __thiscall TTradeMgr::SetNationMetricCellValueByIndex(TTradeMgr *this)
+void __thiscall
+TTradeMgr::SetNationMetricCellValueByIndex(TTradeMgr *this,short param_1,undefined2 param_2)
 
 {
-  short in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(undefined2 *)(&this->field_0xa + in_stack_00000004 * 0xa0) = in_stack_00000008;
+  *(undefined2 *)(&this->field_0xa + param_1 * 0xa0) = param_2;
   return;
 }
 
@@ -1453,23 +1452,22 @@ void __thiscall TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9F30
 // GHIDRA_NAME TTradeMgr::ComputeNationMetricPowerScale
-// GHIDRA_PROTO undefined __thiscall ComputeNationMetricPowerScale(void)
+// GHIDRA_PROTO undefined __thiscall ComputeNationMetricPowerScale(double param_1, short param_2)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall TTradeMgr::ComputeNationMetricPowerScale(TTradeMgr *this)
+float10 __thiscall
+TTradeMgr::ComputeNationMetricPowerScale(TTradeMgr *this,double param_1,short param_2)
 
 {
   int iVar1;
   float10 fVar2;
-  double in_stack_00000004;
-  short in_stack_0000000c;
   
   fVar2 = (float10)_DAT_0066d8e0;
-  if (0 < in_stack_0000000c) {
-    iVar1 = (int)in_stack_0000000c;
+  if (0 < param_2) {
+    iVar1 = (int)param_2;
     do {
-      fVar2 = fVar2 * (float10)in_stack_00000004;
+      fVar2 = fVar2 * (float10)param_1;
       iVar1 = iVar1 + -1;
     } while (iVar1 != 0);
   }
@@ -1478,40 +1476,37 @@ float10 __thiscall TTradeMgr::ComputeNationMetricPowerScale(TTradeMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9F70
 // GHIDRA_NAME TTradeMgr::IsNationMetricCellNegative
-// GHIDRA_PROTO undefined __thiscall IsNationMetricCellNegative(void)
+// GHIDRA_PROTO undefined __thiscall IsNationMetricCellNegative(int param_1, int param_2)
 
-undefined4 __thiscall TTradeMgr::IsNationMetricCellNegative(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::IsNationMetricCellNegative(TTradeMgr *this,int param_1,int param_2)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = in_stack_00000004 * 0x50 + in_stack_00000008;
+  iVar1 = param_1 * 0x50 + param_2;
   return CONCAT31((int3)((uint)iVar1 >> 8),*(short *)(&this->field_0x1c + iVar1 * 2) < 0);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9FA0
 // GHIDRA_NAME TTradeMgr::IsNationMetricCellPositive
-// GHIDRA_PROTO undefined __thiscall IsNationMetricCellPositive(void)
+// GHIDRA_PROTO undefined __thiscall IsNationMetricCellPositive(int param_1, int param_2)
 
-undefined4 __thiscall TTradeMgr::IsNationMetricCellPositive(TTradeMgr *this)
+undefined4 __thiscall TTradeMgr::IsNationMetricCellPositive(TTradeMgr *this,int param_1,int param_2)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar1 = in_stack_00000004 * 0x50 + in_stack_00000008;
+  iVar1 = param_1 * 0x50 + param_2;
   return CONCAT31((int3)((uint)iVar1 >> 8),0 < *(short *)(&this->field_0x1c + iVar1 * 2));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B9FD0
 // GHIDRA_NAME TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter
-// GHIDRA_PROTO undefined __thiscall AllocateAndPopulateLinkedValueCollectionFromRosterFilter(void)
+// GHIDRA_PROTO undefined __thiscall AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int param_1, int param_2)
 
 int * __thiscall
-TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(TTradeMgr *this)
+TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter
+          (TTradeMgr *this,int param_1,int param_2)
 
 {
   int *piVar1;
@@ -1519,8 +1514,6 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(TTradeMgr *t
   int iVar3;
   short *psVar4;
   short sVar5;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int *piStack_4;
   
   piStack_4 = (int *)AllocateWithFallbackHandler(0x1c);
@@ -1537,13 +1530,13 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(TTradeMgr *t
     *piStack_4 = (int)&CObjectVtbl_00650a08;
   }
   sVar5 = 1;
-  piVar1 = *(int **)(&this->field_0xaa8 + in_stack_00000004 * 4);
+  piVar1 = *(int **)(&this->field_0xaa8 + param_1 * 4);
   if (0 < piVar1[2]) {
     iVar3 = 1;
     pcVar2 = *(code **)(*piVar1 + 0x2c);
     do {
       psVar4 = (short *)(*pcVar2)(iVar3);
-      if (psVar4[1] == in_stack_00000008) {
+      if (psVar4[1] == param_2) {
         (**(code **)(*piStack_4 + 0x14))((int)*psVar4);
       }
       sVar5 = sVar5 + 1;
@@ -1555,22 +1548,20 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(TTradeMgr *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA090
 // GHIDRA_NAME TTradeMgr::SelectPreferredNationMetricCodeFromLookup
-// GHIDRA_PROTO undefined __thiscall SelectPreferredNationMetricCodeFromLookup(void)
+// GHIDRA_PROTO undefined __thiscall SelectPreferredNationMetricCodeFromLookup(short param_1, short param_2)
 
-short __thiscall TTradeMgr::SelectPreferredNationMetricCodeFromLookup(TTradeMgr *this)
+short __thiscall
+TTradeMgr::SelectPreferredNationMetricCodeFromLookup(TTradeMgr *this,short param_1,short param_2)
 
 {
   short sVar1;
   short *psVar2;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
   psVar2 = &DAT_0066d810;
-  while ((sVar1 = in_stack_00000004, *psVar2 != in_stack_00000004 &&
-         (sVar1 = in_stack_00000008, *psVar2 != in_stack_00000008))) {
+  while ((sVar1 = param_1, *psVar2 != param_1 && (sVar1 = param_2, *psVar2 != param_2))) {
     psVar2 = psVar2 + 1;
     if (0x66d831 < (int)psVar2) {
-      return in_stack_00000004;
+      return param_1;
     }
   }
   return sVar1;

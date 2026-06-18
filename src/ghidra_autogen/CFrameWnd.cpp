@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004829F0
 // GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004829f0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte param_1)
 
-CFrameWnd * __thiscall CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this)
+CFrameWnd * __thiscall
+CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -54,9 +53,9 @@ CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484610
 // GHIDRA_NAME CFrameWnd::SerializeRecordList_0x18_WithBlockPool
-// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x18_WithBlockPool(void)
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x18_WithBlockPool(CArchive * param_1)
 
-void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *this)
+void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *this,CArchive *param_1)
 
 {
   undefined4 uVar1;
@@ -67,16 +66,15 @@ void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *thi
   int *piVar6;
   undefined4 *puVar7;
   undefined4 *puVar8;
-  CArchive *in_stack_00000004;
   undefined4 local_18 [6];
   
-  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+  if ((~param_1->m_nMode & 1U) == 0) {
     for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      if ((~param_1->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(param_1,(int)local_18,0x18);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)local_18,0x18);
       }
       uVar1 = *(undefined4 *)&this->field_0x8;
       if (*(int *)&this->field_0x10 == 0) {
@@ -119,15 +117,16 @@ void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *thi
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    TNetMgr::WriteCount((TNetMgr *)param_1,
+                        *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
     piVar6 = *(int **)&this->field_0x4;
     if (piVar6 != (int *)0x0) {
       do {
-        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        if ((~param_1->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(param_1,(int)(piVar6 + 2),0x18);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)(piVar6 + 2),0x18);
         }
         piVar6 = (int *)*piVar6;
       } while (piVar6 != (int *)0x0);
@@ -139,15 +138,14 @@ void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004847A0
 // GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004847a0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004847a0(byte param_1)
 
-CFrameWnd * __thiscall CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this)
+CFrameWnd * __thiscall
+CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -188,7 +186,7 @@ CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006074F9
 // GHIDRA_NAME CFrameWnd::ShowWindow
-// GHIDRA_PROTO undefined __thiscall ShowWindow(void)
+// GHIDRA_PROTO undefined __thiscall ShowWindow(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8).
 // GHIDRA_COMMENT_END
@@ -196,23 +194,21 @@ CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(C
 /* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
    to site virtual Show handler (+0xA8). */
 
-void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this)
+void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
   if (this->m_pCtrlSite == (int *)0x0) {
-    ::ShowWindow(this->m_hWnd,in_stack_00000004);
+    ::ShowWindow(this->m_hWnd,param_1);
   }
   else {
-    (**(code **)(*(int *)this->m_pCtrlSite + 0xa8))();
+    (**(code **)(*(int *)this->m_pCtrlSite + 0xa8))(param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061419F
 // GHIDRA_NAME CFrameWnd::OnEndPrintPreview
-// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(void)
+// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Activates target view in frame context, updates active view focus/state, sends WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update.
 // GHIDRA_COMMENT_END
@@ -220,7 +216,7 @@ void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this)
 /* Activates target view in frame context, updates active view focus/state, sends
    WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
 
-void __thiscall CFrameWnd::OnEndPrintPreview(CFrameWnd *this)
+void __thiscall CFrameWnd::OnEndPrintPreview(CFrameWnd *this,int *param_1)
 
 {
   CFrameWndVtbl *pCVar1;
@@ -232,7 +228,7 @@ void __thiscall CFrameWnd::OnEndPrintPreview(CFrameWnd *this)
   int *in_stack_00000014;
   
   if ((int *)in_stack_00000014[0x1c] != (int *)0x0) {
-    (**(code **)(*(int *)in_stack_00000014[0x1c] + 0x108))();
+    (**(code **)(*(int *)in_stack_00000014[0x1c] + 0x108))(param_1);
   }
   uVar2 = GetParentFrame();
   this_00 = (CFrameWnd *)AfxDynamicDownCast(&classRuntimeClass,uVar2);
@@ -259,16 +255,13 @@ LAB_006141f0:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
 // GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
-// GHIDRA_PROTO undefined __thiscall OnEnterIdle_61ddc2(void)
+// GHIDRA_PROTO undefined __thiscall OnEnterIdle_61ddc2(int param_1, undefined4 param_2)
 
-void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this)
+void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this,int param_1,undefined4 param_2)
 
 {
-  int in_stack_00000004;
-  undefined4 in_stack_00000008;
-  
-  OnEnterIdle(in_stack_00000004,in_stack_00000008);
-  if ((in_stack_00000004 == 2) && (*(int *)&this->field_0x90 != *(int *)&this->field_0x94)) {
+  OnEnterIdle(param_1,param_2);
+  if ((param_1 == 2) && (*(int *)&this->field_0x90 != *(int *)&this->field_0x94)) {
     SetMessageText(*(int *)&this->field_0x90);
   }
   return;

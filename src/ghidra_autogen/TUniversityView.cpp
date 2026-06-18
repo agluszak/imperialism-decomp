@@ -61,15 +61,14 @@ TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC90
 // GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUniversityView * __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *this)
+TUniversityView * __thiscall
+TUniversityView::_scalar_deleting_destructor_(TUniversityView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -319,9 +318,10 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB8A0
 // GHIDRA_NAME TUniversityView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TUniversityView::OrphanRetStub_0059add0(TUniversityView *this)
+void __thiscall
+TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int param_2)
 
 {
   TUniversityViewVtbl *pTVar1;
@@ -334,22 +334,20 @@ void __thiscall TUniversityView::OrphanRetStub_0059add0(TUniversityView *this)
   undefined3 extraout_var;
   int *piVar8;
   undefined4 unaff_EDI;
-  int in_stack_00000004;
-  int in_stack_00000008;
   code *pcStack_38;
   RECT RStack_34;
   tagRECT atStack_24 [2];
   int iStack_4;
   
-  if (in_stack_00000004 == 0xc) {
-    sVar7 = *(short *)(in_stack_00000008 + 0x1c) + -0x7630;
+  if (param_1 == 0xc) {
+    sVar7 = *(short *)(param_2 + 0x1c) + -0x7630;
     if ((-1 < sVar7) && (sVar7 < 9)) {
       *(short *)&this->field_0xa4 = sVar7;
-      (*this->vftable[0x3c].slot_0x04)(CONCAT22((short)((uint)in_stack_00000008 >> 0x10),sVar7));
+      (*this->vftable[0x3c].slot_0x04)(CONCAT22((short)((uint)param_2 >> 0x10),sVar7));
     }
   }
-  else if (in_stack_00000004 == 10) {
-    sVar7 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000;
+  else if (param_1 == 10) {
+    sVar7 = *(short *)(*(int *)(param_2 + 0x20) + 0x1c) + -30000;
     if ((-1 < sVar7) && (sVar7 < 9)) {
       pTVar1 = this->vftable;
       *(short *)&this->field_0xa4 = sVar7;
@@ -392,7 +390,7 @@ void __thiscall TUniversityView::OrphanRetStub_0059add0(TUniversityView *this)
       }
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

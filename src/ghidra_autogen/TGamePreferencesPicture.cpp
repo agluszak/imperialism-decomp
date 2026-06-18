@@ -25,16 +25,14 @@ TGamePreferencesPicture::ConstructTurnEventMainPictureEntry_1036
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DA70
 // GHIDRA_NAME TGamePreferencesPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TGamePreferencesPicture * __thiscall
-TGamePreferencesPicture::_scalar_deleting_destructor_(TGamePreferencesPicture *this)
+TGamePreferencesPicture::_scalar_deleting_destructor_(TGamePreferencesPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -524,10 +522,11 @@ LAB_0056a843:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056AE10
 // GHIDRA_NAME TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2, int * param_3)
 
 void __thiscall
-TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGamePreferencesPicture *this)
+TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TGamePreferencesPicture *this,int param_1,CString param_2,int *param_3)
 
 {
   TGamePreferencesPicture_slot_0x04_0x04 *pTVar1;
@@ -545,22 +544,19 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGamePrefe
   undefined3 extraout_var_04;
   CString CVar9;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
-  int *in_stack_0000000c;
   short sStack_14;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   undefined3 extraout_var_01;
   
+  CVar9.m_pchData = param_2.m_pchData;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635d08;
   *unaff_FS_OFFSET = &uStack_c;
-  if (in_stack_00000004 == 10) {
-    CVar9.m_pchData = in_stack_00000008.m_pchData;
-    if (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x63616e63) {
+  if (param_1 == 10) {
+    if (*(int *)(param_2.m_pchData + 0x1c) == 0x63616e63) {
       (*g_pSfxPlaybackSystem->vftable[0x15].slot_0x04)
                 (CONCAT22(0x6361,*(undefined2 *)&this->field_0x90));
       *(undefined2 *)&g_pLocalizationTable->field_0x4e = *(undefined2 *)&this->field_0x90;
@@ -573,12 +569,12 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGamePrefe
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
       }
     }
-    else if (*(int *)(in_stack_00000008.m_pchData + 0x1c) == 0x6f6b6179) {
-      in_stack_0000000c = &DAT_0065dde0;
+    else if (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179) {
+      param_3 = &DAT_0065dde0;
       pTVar1 = this->vftable[0x12].slot_0x04;
       iVar8 = 0x6f707461;
       do {
-        iVar3 = *in_stack_0000000c;
+        iVar3 = *param_3;
         uVar5 = (*pTVar1)(iVar8);
         if ((CONCAT31(extraout_var,uVar5) != 0) && (iVar3 != -1)) {
           uVar5 = (*pTVar1)(iVar8);
@@ -588,7 +584,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGamePrefe
           sStack_14 = (short)iVar3;
           *(short *)(&g_pLocalizationTable->field_0x48 + sStack_14 * 2) = (short)cVar4;
         }
-        in_stack_0000000c = in_stack_0000000c + 1;
+        param_3 = param_3 + 1;
         iVar3 = iVar8 + -0x6f707460;
         iVar8 = iVar8 + 1;
       } while (iVar3 < 5);
@@ -626,37 +622,37 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGamePrefe
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar5) + 0xc))();
       iVar8 = thunk_ApplyAutoResolutionModeAndPersist
                         (((int *)CONCAT31(extraout_var_03,uVar5))[0x22] == 0x79657373);
-      CVar9.m_pchData = in_stack_00000008.m_pchData;
+      CVar9 = param_2;
       if (iVar8 == 0) {
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2763,7,2,0);
-        CVar9.m_pchData = in_stack_00000008.m_pchData;
+        CVar9 = param_2;
       }
     }
     else {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,10);
     }
   }
   else {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
-    CVar9.m_pchData = in_stack_00000008.m_pchData;
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+    CVar9 = param_2;
   }
-  if (((in_stack_00000004 == 4) && (0x6f707460 < *(uint *)((int)CVar9.m_pchData + 0x1c))) &&
+  if (((param_1 == 4) && (0x6f707460 < *(uint *)((int)CVar9.m_pchData + 0x1c))) &&
      (*(uint *)((int)CVar9.m_pchData + 0x1c) < 0x6f70747b)) {
-    CString::CString(&stack0x00000008);
+    CString::CString(&param_2);
     iVar8 = *(int *)((int)CVar9.m_pchData + 0x1c);
     iVar3 = *(int *)CVar9.m_pchData;
     uStack_4 = 0;
     (**(code **)(iVar3 + 0xc))();
     cVar4 = (**(code **)(iVar3 + 0x1d0))();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-              (0x2743,(0x11 - (uint)(cVar4 != '\0')) + (iVar8 + -0x6f707461) * 2,&stack0x00000008);
+              (0x2743,(0x11 - (uint)(cVar4 != '\0')) + (iVar8 + -0x6f707461) * 2,&param_2);
     uVar5 = (*this->vftable[0x12].slot_0x04)(iVar8 + 0x5080000);
     iVar8 = *(int *)CONCAT31(extraout_var_04,uVar5);
     (**(code **)(iVar8 + 0xc))();
     (**(code **)(iVar8 + 0x1ec))(&puStack_8,1);
     (**(code **)(iVar8 + 0x1f8))(1);
     uStack_4 = 0xffffffff;
-    CString::~CString(&stack0x00000008);
+    CString::~CString(&param_2);
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

@@ -15,15 +15,14 @@ undefined1 __thiscall THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(TH
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540F40
 // GHIDRA_NAME THostGreatPower::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THostGreatPower * __thiscall THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this)
+THostGreatPower * __thiscall
+THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTHostGreatPower(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -66,54 +65,51 @@ CRuntimeClass * __thiscall THostGreatPower::GetTCountryClassNamePointer(THostGre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541000
 // GHIDRA_NAME THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
-// GHIDRA_PROTO undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
 
 void __thiscall
-THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower *this)
+THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
-  TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders((TGreatPower *)this);
+  TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
+            ((TGreatPower *)this,(undefined *)param_1);
   if (0x3c < DAT_00695278) {
-    (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x964,1);
+    (**(code **)(*param_1 + 0x3c))(&this->field_0x964,1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541040
 // GHIDRA_NAME THostGreatPower::HandleCityDialogHintClusterUpdate
-// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(void)
+// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(int * param_1)
 
-void __thiscall THostGreatPower::HandleCityDialogHintClusterUpdate(THostGreatPower *this)
+void __thiscall
+THostGreatPower::HandleCityDialogHintClusterUpdate(THostGreatPower *this,int *param_1)
 
 {
-  int *in_stack_00000004;
-  
-  TCountry::HandleCityDialogHintClusterUpdate((TCountry *)this);
-  (**(code **)(*in_stack_00000004 + 0x78))(&this->field_0x964,1);
+  TCountry::HandleCityDialogHintClusterUpdate((TCountry *)this,param_1);
+  (**(code **)(*param_1 + 0x78))(&this->field_0x964,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541080
 // GHIDRA_NAME THostGreatPower::ReturnFalseNationStateActionStub
-// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateActionStub(void)
+// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-undefined4 __thiscall THostGreatPower::ReturnFalseNationStateActionStub(THostGreatPower *this)
+undefined4 __thiscall
+THostGreatPower::ReturnFalseNationStateActionStub
+          (THostGreatPower *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   char cVar1;
   undefined2 extraout_var;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  undefined4 in_stack_00000010;
   
-  cVar1 = TGreatPower::ReturnFalseNationStateActionStub((TGreatPower *)this);
+  cVar1 = TGreatPower::ReturnFalseNationStateActionStub((TGreatPower *)this,param_1,param_2);
   if (cVar1 != '\0') {
     thunk_DispatchTurnEvent1AWithNationActionPayload
-              (CONCAT22(extraout_var,*(undefined2 *)&this->field_0xc),in_stack_00000004,
-               in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+              (CONCAT22(extraout_var,*(undefined2 *)&this->field_0xc),param_1,param_2,param_3,
+               param_4);
     return 1;
   }
   return 0;

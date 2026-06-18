@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EDD0
 // GHIDRA_NAME TRadio::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this)
+TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTRadioInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -103,17 +101,17 @@ TView * TRadio::ConstructTRadioBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F080
 // GHIDRA_NAME TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(void)
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(int param_1)
 
 TRadio * __thiscall
-TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080(TRadio *this)
+TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048f080
+          (TRadio *this,int param_1)
 
 {
   undefined2 uVar1;
   short sVar2;
   undefined4 uVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -122,23 +120,23 @@ TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048
   puStack_8 = &LAB_0062ef98;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CopyCityDialogStateFromSourceAndCloneChildLinks(in_stack_00000004);
-  *(undefined4 *)&this->field_0x60 = *(undefined4 *)(in_stack_00000004 + 0x60);
-  this->field_0x64 = *(undefined1 *)(in_stack_00000004 + 100);
-  *(undefined4 *)&this->field_0x68 = *(undefined4 *)(in_stack_00000004 + 0x68);
-  *(undefined4 *)&this->field_0x6c = *(undefined4 *)(in_stack_00000004 + 0x6c);
-  *(undefined4 *)&this->field_0x70 = *(undefined4 *)(in_stack_00000004 + 0x70);
-  *(undefined4 *)&this->field_0x74 = *(undefined4 *)(in_stack_00000004 + 0x74);
-  *(undefined4 *)&this->field_0x78 = *(undefined4 *)(in_stack_00000004 + 0x78);
-  *(undefined4 *)&this->field_0x7c = *(undefined4 *)(in_stack_00000004 + 0x7c);
-  uVar1 = *(undefined2 *)(in_stack_00000004 + 0x80);
+  CopyCityDialogStateFromSourceAndCloneChildLinks(param_1);
+  *(undefined4 *)&this->field_0x60 = *(undefined4 *)(param_1 + 0x60);
+  this->field_0x64 = *(undefined1 *)(param_1 + 100);
+  *(undefined4 *)&this->field_0x68 = *(undefined4 *)(param_1 + 0x68);
+  *(undefined4 *)&this->field_0x6c = *(undefined4 *)(param_1 + 0x6c);
+  *(undefined4 *)&this->field_0x70 = *(undefined4 *)(param_1 + 0x70);
+  *(undefined4 *)&this->field_0x74 = *(undefined4 *)(param_1 + 0x74);
+  *(undefined4 *)&this->field_0x78 = *(undefined4 *)(param_1 + 0x78);
+  *(undefined4 *)&this->field_0x7c = *(undefined4 *)(param_1 + 0x7c);
+  uVar1 = *(undefined2 *)(param_1 + 0x80);
   this->vftable = (TRadioVtbl *)&TControl::_vftable_;
   *(undefined2 *)&this->field_0x80 = uVar1;
-  sVar2 = *(short *)(in_stack_00000004 + 0x84);
+  sVar2 = *(short *)(param_1 + 0x84);
   local_4 = 0;
   *(short *)&this[1].vftable = sVar2;
-  this[1].field04 = *(int *)(in_stack_00000004 + 0x88);
-  uVar3 = *(undefined4 *)(in_stack_00000004 + 0x8c);
+  this[1].field04 = *(int *)(param_1 + 0x88);
+  uVar3 = *(undefined4 *)(param_1 + 0x8c);
   this[1].padding_08_to_0b = uVar3;
   this->vftable = (TRadioVtbl *)&TPictureVtbl_0064a930;
   if (sVar2 != -1) {

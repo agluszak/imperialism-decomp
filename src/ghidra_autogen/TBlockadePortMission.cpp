@@ -44,16 +44,14 @@ TMission * TBlockadePortMission::CreateTBlockadePortMission(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AA90
 // GHIDRA_NAME TBlockadePortMission::DestroyTBlockadePortMission
-// GHIDRA_PROTO undefined __thiscall DestroyTBlockadePortMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTBlockadePortMission(byte param_1)
 
 TBlockadePortMission * __thiscall
-TBlockadePortMission::DestroyTBlockadePortMission(TBlockadePortMission *this)
+TBlockadePortMission::DestroyTBlockadePortMission(TBlockadePortMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTBlockadePortMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -71,17 +69,17 @@ undefined ** TBlockadePortMission::GetTBlockadePortMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AC60
 // GHIDRA_NAME TBlockadePortMission::SerializeTBlockadePortMission
-// GHIDRA_PROTO undefined __thiscall SerializeTBlockadePortMission(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTBlockadePortMission(int * param_1)
 
-void __thiscall TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePortMission *this)
+void __thiscall
+TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePortMission *this,int *param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
-  int *in_stack_00000004;
   
-  SerializeTNavyMissionCommon(in_stack_00000004);
-  iVar1 = *in_stack_00000004;
+  SerializeTNavyMissionCommon(param_1);
+  iVar1 = *param_1;
   uVar2 = thunk_GetShortAtOffset14OrInvalid();
   (**(code **)(iVar1 + 0x88))(uVar2);
   return;
@@ -89,16 +87,16 @@ void __thiscall TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053ACA0
 // GHIDRA_NAME TBlockadePortMission::DeserializeTBlockadePortMission
-// GHIDRA_PROTO undefined __thiscall DeserializeTBlockadePortMission(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeTBlockadePortMission(int * param_1)
 
-void __thiscall TBlockadePortMission::DeserializeTBlockadePortMission(TBlockadePortMission *this)
+void __thiscall
+TBlockadePortMission::DeserializeTBlockadePortMission(TBlockadePortMission *this,int *param_1)
 
 {
   undefined4 uVar1;
-  int *in_stack_00000004;
   
-  DeserializeTNavyMissionCommon(in_stack_00000004);
-  uVar1 = (**(code **)(*in_stack_00000004 + 0x4c))();
+  DeserializeTNavyMissionCommon(param_1);
+  uVar1 = (**(code **)(*param_1 + 0x4c))();
   uVar1 = FindMapActionContextByNodeId(uVar1);
   *(undefined4 *)(this + 0x3c) = uVar1;
   return;
@@ -378,16 +376,16 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BA10
 // GHIDRA_NAME TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
-// GHIDRA_PROTO undefined __thiscall HandleBlockadePortMissionActionType4ForTargetPort(void)
+// GHIDRA_PROTO undefined __thiscall HandleBlockadePortMissionActionType4ForTargetPort(int param_1, int param_2)
 
 undefined4 __thiscall
-TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort(TBlockadePortMission *this)
+TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
+          (TBlockadePortMission *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
   int in_stack_0000000c;
   
-  if ((in_stack_00000004 == 4) && (in_stack_0000000c == *(int *)(this + 0x14))) {
+  if ((param_1 == 4) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
   return 0;

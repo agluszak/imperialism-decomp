@@ -86,15 +86,13 @@ TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595040
 // GHIDRA_NAME TWorldView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *this)
+TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -113,22 +111,23 @@ void __thiscall TWorldView::OrphanLeaf_NoCall_Ins07_004d8920(TWorldView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005950B0
 // GHIDRA_NAME TWorldView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall TWorldView::OrphanRetStub_0059add0(TWorldView *this)
+void __thiscall
+TWorldView::OrphanRetStub_0059add0
+          (TWorldView *this,int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   undefined *puVar1;
   undefined4 uVar2;
   undefined2 extraout_var;
-  int in_stack_00000004;
   
-  if ((in_stack_00000004 == 0x78) && (*(short *)&this->field_0x7a != -1)) {
+  if ((param_1 == 0x78) && (*(short *)&this->field_0x7a != -1)) {
     puVar1 = g_pUiRuntimeContext->vftable;
     uVar2 = UiRuntimeContext::GetActiveNationId();
     (**(code **)(puVar1 + 0xe0))(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x7a),uVar2);
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 
@@ -321,7 +320,8 @@ LAB_005952db:
   case 0x5a:
   case 0x7a:
     if ((char)this->ownerContext[1].field34 == '\0') {
-      TacticalBattleView::EnterMapInteractionOverlayMode((TacticalBattleView *)this->ownerContext);
+      TacticalBattleView::EnterMapInteractionOverlayMode
+                ((TacticalBattleView *)this->ownerContext,(int *)0x0);
     }
     else {
       CommitPendingUiModeChangeAndRefreshViews();
@@ -335,7 +335,7 @@ LAB_005952db:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595810
 // GHIDRA_NAME TWorldView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT If current hit-test index maps to a runtime cursor slot, sets mapped cursor; otherwise loads and sets default arrow cursor.
 // GHIDRA_COMMENT_END
@@ -343,7 +343,8 @@ LAB_005952db:
 /* If current hit-test index maps to a runtime cursor slot, sets mapped cursor; otherwise loads and
    sets default arrow cursor. */
 
-void __thiscall TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this)
+void __thiscall
+TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this,undefined4 param_1,undefined4 param_2)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -352,16 +353,14 @@ void __thiscall TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this)
   int iVar3;
   HCURSOR hCursor;
   short sVar4;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined1 auStack_8 [8];
   
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[0x15].slot_0x04)();
   sVar4 = (short)CONCAT31(extraout_var,uVar2);
   if (sVar4 != -1) {
-    (*pTVar1[0x29].GetTEventHandlerClassNamePointer)(auStack_8,in_stack_00000004);
-    iVar3 = IsPointInsideHitRegion(auStack_8,in_stack_00000008);
+    (*pTVar1[0x29].GetTEventHandlerClassNamePointer)(auStack_8,param_1);
+    iVar3 = IsPointInsideHitRegion(auStack_8,param_2);
     if (iVar3 != 0) {
       SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + sVar4 * 4 + -0xf8c));
       return;
@@ -545,9 +544,9 @@ void __thiscall TWorldView::OrphanRetStub_005960e0(TWorldView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596100
 // GHIDRA_NAME TWorldView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 param_1)
 
-undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
+undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this,undefined4 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -557,7 +556,6 @@ undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this
   undefined4 unaff_ESI;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   undefined4 local_1c;
   undefined1 local_18 [4];
   undefined1 local_14 [8];
@@ -572,7 +570,7 @@ undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this
   AcquireReusableQuickDrawSurface();
   pTVar1 = this->vftable;
   local_4 = 0;
-  (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,local_14,local_18,&local_1c);
+  (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,local_14,local_18,&local_1c);
   thunk_NormalizeWrappedMapCoord108x60(&stack0xffffffdc,&stack0xffffffd8);
   uVar3 = ComputeStridedRecordAddress6C(unaff_EBP,unaff_ESI);
   if (*(int *)(puStack_8 + 0x24) == 1) {
@@ -621,11 +619,12 @@ void __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(TWorldView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005962A0
 // GHIDRA_NAME TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79
-// GHIDRA_PROTO undefined __thiscall HandleMapTileClickSetOrderContextAndDispatchEvent79(void)
+// GHIDRA_PROTO undefined __thiscall HandleMapTileClickSetOrderContextAndDispatchEvent79(short param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this)
+void __thiscall
+TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this,short param_1)
 
 {
   TCivToolbar *this_00;
@@ -633,7 +632,6 @@ void __thiscall TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(
   undefined4 *puVar2;
   void *pvVar3;
   undefined4 *puVar4;
-  short in_stack_00000004;
   
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   puVar4 = (undefined4 *)0x0;
@@ -645,8 +643,8 @@ void __thiscall TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(
     *puVar2 = &TEventVtbl_00649770;
     puVar4 = puVar2;
   }
-  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + in_stack_00000004 * 0x24) == '\x05') {
-    pvVar3 = thunk_GetMapActionContextByTileIndex(in_stack_00000004);
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24) == '\x05') {
+    pvVar3 = thunk_GetMapActionContextByTileIndex(param_1);
     this_00 = (TCivToolbar *)this->ownerContext;
     TCivToolbar::thunk_SetMapInteractionMode(this_00,2);
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
@@ -664,7 +662,7 @@ void __thiscall TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(
     }
     TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pvVar3);
   }
-  _DAT_006a4608 = (int)in_stack_00000004;
+  _DAT_006a4608 = (int)param_1;
   puVar4[2] = 0x79;
   puVar4[1] = 0x79;
   pTVar1 = this->vftable;
@@ -676,14 +674,14 @@ void __thiscall TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005963D0
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 param_1)
 
-void __thiscall TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TWorldView *this)
+void __thiscall
+TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TWorldView *this,undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
   undefined4 *puVar2;
-  undefined2 in_stack_00000004;
   
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   if (puVar2 == (undefined4 *)0x0) {
@@ -701,21 +699,21 @@ void __thiscall TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TW
   puVar2[1] = 0x78;
   puVar2[3] = this;
   puVar2[4] = this;
-  *(undefined2 *)&this->field_0x7a = in_stack_00000004;
+  *(undefined2 *)&this->field_0x7a = param_1;
   (*pTVar1[6].slot_0x04)(puVar2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596440
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 param_1)
 
-void __thiscall TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this)
+void __thiscall
+TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this,undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
   undefined4 *puVar2;
-  undefined2 in_stack_00000004;
   
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   if (puVar2 == (undefined4 *)0x0) {
@@ -733,7 +731,7 @@ void __thiscall TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TW
   puVar2[1] = 0x78;
   puVar2[3] = this;
   puVar2[4] = this;
-  *(undefined2 *)&this->field_0x7a = in_stack_00000004;
+  *(undefined2 *)&this->field_0x7a = param_1;
   (*pTVar1[6].slot_0x04)(puVar2);
   return;
 }

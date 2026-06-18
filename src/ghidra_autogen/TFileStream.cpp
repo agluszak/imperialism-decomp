@@ -5,26 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489070
 // GHIDRA_NAME TFileStream::CreateTFileStreamInstance
-// GHIDRA_PROTO undefined __thiscall CreateTFileStreamInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTFileStreamInstance(char * param_1)
 
-void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this)
+void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this,char *param_1)
 
 {
   char cVar1;
   TFileStreamVtbl *pTVar2;
   uint uVar3;
-  char *in_stack_00000004;
+  char *pcVar4;
   
   uVar3 = 0xffffffff;
   pTVar2 = this->vftable;
+  pcVar4 = param_1;
   do {
     if (uVar3 == 0) break;
     uVar3 = uVar3 - 1;
-    cVar1 = *in_stack_00000004;
-    in_stack_00000004 = in_stack_00000004 + 1;
+    cVar1 = *pcVar4;
+    pcVar4 = pcVar4 + 1;
   } while (cVar1 != '\0');
   (*pTVar2[0x11].GetTStreamClassNamePointer)(~uVar3 - 1);
-  (*pTVar2[0xf].GetTStreamClassNamePointer)();
+  (*pTVar2[0xf].GetTStreamClassNamePointer)(param_1,~uVar3 - 1);
   return;
 }
 
@@ -52,15 +53,13 @@ void __thiscall TFileStream::ConstructTFileStreamBaseState(TFileStream *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489130
 // GHIDRA_NAME TFileStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
 
-TFileStream * __thiscall TFileStream::ConstructTStreamBaseState(TFileStream *this)
+TFileStream * __thiscall TFileStream::ConstructTStreamBaseState(TFileStream *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TObject::DestructTObjectAndMaybeFree((TObject *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -68,14 +67,12 @@ TFileStream * __thiscall TFileStream::ConstructTStreamBaseState(TFileStream *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489160
 // GHIDRA_NAME TFileStream::SetBackingArchive
-// GHIDRA_PROTO undefined __thiscall SetBackingArchive(void)
+// GHIDRA_PROTO undefined __thiscall SetBackingArchive(undefined4 param_1)
 
-void __thiscall TFileStream::SetBackingArchive(TFileStream *this)
+void __thiscall TFileStream::SetBackingArchive(TFileStream *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x4 = param_1;
   return;
 }
 
@@ -134,11 +131,15 @@ void __thiscall TFileStream::OrphanRetStub_00488e50(TFileStream *this)
 void __thiscall TFileStream::OrphanRetStub_00488b40(TFileStream *this)
 
 {
+  int in_stack_00000004;
+  uint in_stack_00000008;
+  
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
   }
-  CArchive::ReadBytesFromSerializedBuffer(*(CArchive **)(*(int *)&this->field_0x4 + 4));
+  CArchive::ReadBytesFromSerializedBuffer
+            (*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
 
@@ -149,26 +150,30 @@ void __thiscall TFileStream::OrphanRetStub_00488b40(TFileStream *this)
 void __thiscall TFileStream::OrphanRetStub_00488e70(TFileStream *this)
 
 {
+  int in_stack_00000004;
+  uint in_stack_00000008;
+  
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
   }
-  TNetMgr::WriteBytesToSerializedBuffer(*(TNetMgr **)(*(int *)&this->field_0x4 + 4));
+  TNetMgr::WriteBytesToSerializedBuffer
+            (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489300
 // GHIDRA_NAME TFileStream::OrphanLeaf_NoCall_Ins02_00489980
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(undefined4 * param_1)
 
-undefined4 __thiscall TFileStream::OrphanLeaf_NoCall_Ins02_00489980(TFileStream *this)
+undefined4 __thiscall
+TFileStream::OrphanLeaf_NoCall_Ins02_00489980(TFileStream *this,undefined4 *param_1)
 
 {
   undefined4 uVar1;
-  undefined4 *in_stack_00000004;
   
   uVar1 = ReadObject(0);
-  *in_stack_00000004 = uVar1;
+  *param_1 = uVar1;
   return 1;
 }
 
@@ -179,34 +184,31 @@ undefined4 __thiscall TFileStream::OrphanLeaf_NoCall_Ins02_00489980(TFileStream 
 void __thiscall TFileStream::OrphanRetStub_004899a0(TFileStream *this)
 
 {
-  TNetMgr::WriteObject(*(TNetMgr **)(*(int *)&this->field_0x4 + 4));
+  int *in_stack_00000004;
+  
+  TNetMgr::WriteObject(*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489360
 // GHIDRA_NAME TFileStream::WrapperFor_operator_At00489360
-// GHIDRA_PROTO undefined __thiscall WrapperFor_operator_At00489360(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_operator_At00489360(undefined4 param_1)
 
-void __thiscall TFileStream::WrapperFor_operator_At00489360(TFileStream *this)
+void __thiscall TFileStream::WrapperFor_operator_At00489360(TFileStream *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  FUN_006119aa(*(undefined4 *)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
+  FUN_006119aa(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489390
 // GHIDRA_NAME TFileStream::OrphanCallChain_C2_I21_00489030
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(undefined4 param_1)
 
-void __thiscall TFileStream::OrphanCallChain_C2_I21_00489030(TFileStream *this)
+void __thiscall TFileStream::OrphanCallChain_C2_I21_00489030(TFileStream *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  WriteVariableLengthPrefixedByteBuffer
-            (*(undefined4 *)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
+  WriteVariableLengthPrefixedByteBuffer(*(undefined4 *)(*(int *)&this->field_0x4 + 4),param_1);
   return;
 }
 

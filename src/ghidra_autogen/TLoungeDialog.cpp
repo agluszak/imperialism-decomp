@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044FAE0
 // GHIDRA_NAME TLoungeDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoungeDialog * __thiscall TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this)
+TLoungeDialog * __thiscall
+TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -38,7 +37,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
 {
   if (DAT_00695278 != 0x4d6f696c) {
     TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-              ((TMultiplayerMgr *)g_pGameFlowState);
+              ((TMultiplayerMgr *)g_pGameFlowState,this,'\0');
   }
   TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
   return;
@@ -63,7 +62,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
   
   TView::thunk_NoOpUiLifecycleHook((TView *)this);
   TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-            ((TMultiplayerMgr *)g_pGameFlowState);
+            ((TMultiplayerMgr *)g_pGameFlowState,this,'\x01');
   pTVar1 = this->vftable;
   (*pTVar1[10].slot_0x04)(3);
   uVar2 = (*pTVar1[0x12].slot_0x04)(0x6c61626c);
@@ -98,7 +97,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
       RefreshMapAndMessageControlsForCurrentContext();
       DispatchTurnEventCode9WithTwoTextTokens
                 (0xfffffff3,0,PTR_g_szEmptyString_0065c160,PTR_g_szEmptyString_0065c160);
-      TSimMgr::EmitTurnEventEAnd9SessionContextPackets((TSimMgr *)g_pGameFlowState);
+      TSimMgr::EmitTurnEventEAnd9SessionContextPackets((TSimMgr *)g_pGameFlowState,0);
     }
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742,0xc,0x6d657373);
   }
@@ -311,9 +310,11 @@ uint __thiscall TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0
 // GHIDRA_NAME TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int * param_2)
 
-void __thiscall TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLoungeDialog *this)
+void __thiscall
+TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TLoungeDialog *this,int param_1,int *param_2)
 
 {
   uint uVar1;
@@ -324,23 +325,21 @@ void __thiscall TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLou
   undefined3 extraout_var;
   int iVar6;
   int iVar7;
-  int in_stack_00000004;
-  int *in_stack_00000008;
   
-  if (in_stack_00000004 == 0x29a) {
+  if (param_1 == 0x29a) {
     uVar4 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
     iVar6 = *(int *)CONCAT31(extraout_var,uVar4);
     (**(code **)(iVar6 + 0xc))();
     (**(code **)(iVar6 + 0xa8))(0,0);
     (**(code **)(iVar6 + 0xa4))(0,0);
   }
-  if (in_stack_00000004 == 0x7069636b) {
-    (**(code **)(*in_stack_00000008 + 0xc))();
-    TryInvokeNationStateReplacementForSlot(in_stack_00000008[0x1b]);
+  if (param_1 == 0x7069636b) {
+    (**(code **)(*param_2 + 0xc))();
+    TryInvokeNationStateReplacementForSlot(param_2[0x1b]);
   }
-  if ((((in_stack_00000004 != 0x14) && (in_stack_00000004 != 10)) && (in_stack_00000004 != 0x22)) &&
-     (in_stack_00000004 != 0xd)) goto LAB_0054e36b;
-  uVar1 = in_stack_00000008[7];
+  if ((((param_1 != 0x14) && (param_1 != 10)) && (param_1 != 0x22)) && (param_1 != 0xd))
+  goto LAB_0054e36b;
+  uVar1 = param_2[7];
   if (uVar1 < 0x636e636d) {
     if ((uVar1 == 0x636e636c) || (uVar1 == 0x63616e63)) {
       cVar5 = IsSpecialNationDialogModeActive();
@@ -405,7 +404,7 @@ void __thiscall TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TLou
     TryInvokeNationStateReplacementForSlot(uVar1 + 0x8d9e9bd0);
   }
 LAB_0054e36b:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

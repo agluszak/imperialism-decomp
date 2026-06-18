@@ -48,15 +48,14 @@ TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5600
 // GHIDRA_NAME TDropShadowText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDropShadowText * __thiscall TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this)
+TDropShadowText * __thiscall
+TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -71,6 +70,7 @@ void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText 
 {
   TDropShadowTextVtbl *pTVar1;
   TDropShadowText *this_00;
+  HRGN pHVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined **ppuStack_38;
   int iStack_34;
@@ -98,9 +98,9 @@ void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText 
   ppuStack_38 = &CBrush::_vftable_;
   puStack_8 = (undefined1 *)0x0;
   this_00 = (TDropShadowText *)NoOpQuickDrawContextSelectionHook();
-  CreateRectRgnIndirect(&RStack_20);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_38);
-  SelectClipRegionOnPrimaryAndSecondaryDc(this_00);
+  pHVar2 = CreateRectRgnIndirect(&RStack_20);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_38,(int)pHVar2);
+  SelectClipRegionOnPrimaryAndSecondaryDc(this_00,(int)&ppuStack_38);
   DeleteObject();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &CBrush::_vftable_;
@@ -122,31 +122,31 @@ void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText 
   RStack_20.left = CONCAT31(RStack_20.left._1_3_,1);
   CString::~CString((CString *)&RStack_20.right);
   RStack_20.left = -1;
-  SelectClipRegionOnPrimaryAndSecondaryDc(this_00);
+  SelectClipRegionOnPrimaryAndSecondaryDc(this_00,0);
   *unaff_FS_OFFSET = uStack_28;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612EAA
 // GHIDRA_NAME TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc
-// GHIDRA_PROTO undefined __thiscall SelectClipRegionOnPrimaryAndSecondaryDc(void)
+// GHIDRA_PROTO undefined __thiscall SelectClipRegionOnPrimaryAndSecondaryDc(int param_1)
 
-int __thiscall TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(TDropShadowText *this)
+int __thiscall
+TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(TDropShadowText *this,int param_1)
 
 {
   int iVar1;
   HRGN pHVar2;
-  int in_stack_00000004;
   
-  iVar1 = in_stack_00000004;
+  iVar1 = param_1;
   if ((HDC)this->field04 != (HDC)this->padding_08_to_0b) {
-    if (in_stack_00000004 == 0) {
+    if (param_1 == 0) {
       pHVar2 = (HRGN)0x0;
     }
     else {
-      pHVar2 = *(HRGN *)(in_stack_00000004 + 4);
+      pHVar2 = *(HRGN *)(param_1 + 4);
     }
-    in_stack_00000004 = SelectClipRgn((HDC)this->field04,pHVar2);
+    param_1 = SelectClipRgn((HDC)this->field04,pHVar2);
   }
   if ((HDC)this->padding_08_to_0b != (HDC)0x0) {
     if (iVar1 == 0) {
@@ -155,8 +155,8 @@ int __thiscall TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(TDropSha
     else {
       pHVar2 = *(HRGN *)(iVar1 + 4);
     }
-    in_stack_00000004 = SelectClipRgn((HDC)this->padding_08_to_0b,pHVar2);
+    param_1 = SelectClipRgn((HDC)this->padding_08_to_0b,pHVar2);
   }
-  return in_stack_00000004;
+  return param_1;
 }
 

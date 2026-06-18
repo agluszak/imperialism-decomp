@@ -55,7 +55,8 @@ void __thiscall
 InitializeCivWorkOrderState(void *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(this);
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+            (this,(short)nOrderType,(short)pOwnerContext);
   *(undefined2 *)((int)this + 0x24) = 0;
   *(undefined2 *)((int)this + 0x26) = 0xffff;
   return;
@@ -9873,7 +9874,9 @@ void FormatAndAssignTurnStateSharedTextFromTemplate
                ,char *param_6,char *param_7)
 
 {
+  undefined4 *extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 *puVar1;
   CString local_1c;
   CString local_18;
   CString local_14;
@@ -9913,9 +9916,10 @@ void FormatAndAssignTurnStateSharedTextFromTemplate
   CString::AssignFromCStr(&local_1c,param_6);
   CString::AssignFromCStr(&local_1c,&DAT_0069b648);
   CString::AssignFromCStr(&local_1c,param_7);
+  puVar1 = extraout_ECX;
   thunk_AssignStringSharedRefAndReturnThis(&local_1c);
   TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-            ((TViewMgr *)g_pUiRuntimeContext);
+            ((TViewMgr *)g_pUiRuntimeContext,puVar1);
   local_4._0_1_ = 2;
   CString::~CString(&local_1c);
   local_4._0_1_ = 1;
@@ -10313,7 +10317,7 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   param_3 = &pTStack_28;
   local_4._0_1_ = 1;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_28);
+            ((TToolBarCluster *)&pTStack_28,(char *)&g_szEmptyString);
   local_4 = (uint)local_4._1_3_ << 8;
   uVar1 = thunk_DispatchLocalizedUiMessageWithTemplate(3);
   local_4 = -1;
@@ -10329,8 +10333,8 @@ DispatchLocalizedUiMessageWithTemplateA13A0
 
 undefined1
 DispatchLocalizedUiMessageWithTemplate
-          (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
-          undefined4 param_5,undefined1 *param_6)
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+          undefined1 *param_6)
 
 {
   undefined1 uVar1;
@@ -11100,10 +11104,10 @@ void WrapperFor_ftol_At005dee20(void)
    
    Initializes CDialog-derived instance with template ID 0xE0 and vtable for this dialog type. */
 
-TControl * __fastcall InitializeDialogTemplateE0(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateE0(TControl *param_1,undefined4 param_2)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xe0,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0064b960;
   return param_1;
 }
@@ -11271,7 +11275,7 @@ int * LoadTableResourceStreamByName(CString param_1)
     this = (CFileException *)AllocateWithFallbackHandler(0x28);
     local_4._0_1_ = 1;
     if (this != (CFileException *)0x0) {
-      piVar4 = (int *)CFileException::CMemFile(this);
+      piVar4 = (int *)CFileException::CMemFile(this,0x400);
     }
     local_4 = (uint)local_4._1_3_ << 8;
     pvVar1 = LockResource(hResData);
@@ -11570,7 +11574,8 @@ void EnsurePictWvDataGobLoadedBySlot(CString param_1)
   CString::CString(&local_14);
   local_4 = 0;
   FormatStringWithVarArgsToSharedRef(&local_14,s_Data_PictWv_d_gob_00698bf4,param_1.m_pchData);
-  iVar1 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog(g_pModuleLibraryCacheState);
+  iVar1 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
+                    (g_pModuleLibraryCacheState,local_14.m_pchData,(CString)0x2);
   if (iVar1 == 0) {
     uVar2 = AssignSharedStringConcatCStrAndRef
                       (&local_10,s_A_file_required_by_the_program____0069b820,&local_14);
@@ -12519,7 +12524,7 @@ void WrapperFor_ftol_At005e1b90(void)
 // GHIDRA_NAME InitializeDialogTemplate98WithSharedText
 // GHIDRA_PROTO undefined InitializeDialogTemplate98WithSharedText()
 
-TControl * __fastcall InitializeDialogTemplate98WithSharedText(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplate98WithSharedText(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -12531,7 +12536,7 @@ TControl * __fastcall InitializeDialogTemplate98WithSharedText(TControl *param_1
   puStack_8 = &LAB_0063a893;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0x98,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -12714,7 +12719,7 @@ void WrapperFor_ftol_At005e26a0(void)
 void InitializeRuntimeClassState_0066FA50_AndRegisterAtExit(void)
 
 {
-  InitializeRuntimeClassVtablePointer_0066FA50_State(&DAT_006a5f40);
+  InitializeRuntimeClassVtablePointer_0066FA50_State(&DAT_006a5f40,10);
   AppendPointerToGlobalVectorAsStatus(DestroyRuntimeClassState_0066FA50_AtExit);
   return;
 }
@@ -12803,35 +12808,35 @@ void __fastcall ReleaseSharedStringRefOnly_005e2850(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2900
 // GHIDRA_NAME WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900
-// GHIDRA_PROTO undefined WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900()
+// GHIDRA_PROTO undefined WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900(int param_1)
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 undefined4 WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900(int param_1)
 
 {
   int iVar1;
   int iVar2;
-  int iVar3;
-  undefined4 uVar4;
+  undefined4 uVar3;
   int in_stack_00000014;
   undefined4 local_4;
   
-  iVar2 = in_stack_00000014;
   iVar1 = param_1;
   local_4 = 4;
-  iVar3 = WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
+  iVar2 = WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl
                     (param_1,&param_1,&local_4);
-  if (iVar3 == 0) {
-    ReportWNetManagerErrorCodeAndNotifyUi(*(undefined4 *)(iVar2 + 0xc));
-    uVar4 = 0;
+  if (iVar2 == 0) {
+    ReportWNetManagerErrorCodeAndNotifyUi(*(undefined4 *)(in_stack_00000014 + 0xc));
+    uVar3 = 0;
   }
   else {
-    uVar4 = 1;
+    uVar3 = 1;
     if (param_1 == 1) {
-      *(int *)(iVar2 + 100) = iVar1;
+      *(int *)(in_stack_00000014 + 100) = iVar1;
       return 0;
     }
   }
-  return uVar4;
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2980
@@ -13248,15 +13253,17 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   int iVar7;
   undefined4 uVar8;
   int *piVar9;
+  undefined4 *puVar10;
   undefined1 local_10 [16];
   int *piVar3;
   
   if (DAT_006a5f30 < 1) {
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-              ((TToolBarCluster *)&stack0xffffffe0);
+              ((TToolBarCluster *)&stack0xffffffe0,s_No_games_found_to_join__0069b8c8);
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
     return false;
   }
+  puVar10 = (undefined4 *)0x5e3;
   uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   iVar7 = *piVar3;
@@ -13287,10 +13294,10 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   iVar4 = (**(code **)(*piVar3 + 0x1ac))();
   puVar6 = (undefined4 *)GetSelectedJoinableGameTag();
   if (iVar4 == 0x6f6b6179) {
-    uRam000005e3 = *puVar6;
-    uRam000005e7 = puVar6[1];
-    uRam000005eb = puVar6[2];
-    uRam000005ef = puVar6[3];
+    *puVar10 = *puVar6;
+    puVar10[1] = puVar6[1];
+    puVar10[2] = puVar6[2];
+    puVar10[3] = puVar6[3];
     (**(code **)(iVar7 + 0x1dc))(uVar8);
   }
   iVar7 = 0;
@@ -13375,10 +13382,10 @@ undefined1 ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
 void ReportWNetManagerErrorCodeAndNotifyUi(CString param_1)
 
 {
-  char *extraout_ECX;
-  char *extraout_ECX_00;
+  undefined4 *extraout_ECX;
+  undefined4 *extraout_ECX_00;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
-  char *pcStack_1c;
   char *text;
   CString local_14;
   undefined1 *local_10;
@@ -13390,7 +13397,6 @@ void ReportWNetManagerErrorCodeAndNotifyUi(CString param_1)
   puStack_8 = &LAB_0063aa00;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pcStack_1c = (char *)0x5e3516;
   CString::CString(&local_14,s_DirectPlay_Error__0069bcd4);
   local_4 = 0;
   if ((int)param_1.m_pchData < -0x7ff8fff1) {
@@ -13559,14 +13565,12 @@ void ReportWNetManagerErrorCodeAndNotifyUi(CString param_1)
     else {
       if (param_1.m_pchData != (char *)0x88770410) {
 LAB_005e3803:
-        pcStack_1c = (char *)0x5e3811;
         CString::CString(&param_1,s_A_network_error_has_occured_0069b91c);
         local_4._0_1_ = 1;
-        pcStack_1c = (char *)0x5e3824;
         CString::AssignFromPtr(&local_14,&param_1);
         local_4 = (uint)local_4._1_3_ << 8;
         CString::~CString(&param_1);
-        pcStack_1c = extraout_ECX;
+        puVar1 = extraout_ECX;
         goto LAB_005e3849;
       }
       text = s_DPERR_NOSERVICEPROVIDER_0069b960;
@@ -13579,16 +13583,14 @@ LAB_005e3803:
     if (param_1.m_pchData != (char *)0x0) goto LAB_005e3803;
     text = s_DP_OK_0069b914;
   }
-  pcStack_1c = (char *)0x5e3849;
   CString::AssignFromCStr(&local_14,text);
-  pcStack_1c = extraout_ECX_00;
+  puVar1 = extraout_ECX_00;
 LAB_005e3849:
-  local_10 = (undefined1 *)&pcStack_1c;
+  local_10 = &stack0xffffffe4;
   thunk_AssignStringSharedRefAndReturnThis(&local_14);
   TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-            ((TViewMgr *)g_pUiRuntimeContext);
+            ((TViewMgr *)g_pUiRuntimeContext,puVar1);
   if (DAT_006a601c == 0) {
-    pcStack_1c = s_D__Ambit_WNetMgr_cpp_0069b8e4;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   local_4 = 0xffffffff;
@@ -14088,20 +14090,18 @@ int ProbeNationReachabilityAndMarkAwolBitmask(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4540
 // GHIDRA_NAME InitializeRuntimeClassVtablePointer_0066FA50_State
-// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(void)
+// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(undefined4 param_1)
 
-void __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(void *this)
+void __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(void *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   *(undefined4 *)((int)this + 0xc) = 0;
   *(undefined4 *)((int)this + 0x10) = 0;
   *(undefined4 *)((int)this + 8) = 0;
   *(undefined4 *)((int)this + 4) = 0;
   *(undefined4 *)((int)this + 0x14) = 0;
   *(CObjectVtbl **)this = &CObjectVtbl_0066fa50;
-  *(undefined4 *)((int)this + 0x18) = in_stack_00000004;
+  *(undefined4 *)((int)this + 0x18) = param_1;
   return;
 }
 
@@ -14577,7 +14577,8 @@ void DrawSingle(void)
 {
   int iVar1;
   undefined4 uVar2;
-  HDC pHVar3;
+  HRGN pHVar3;
+  HDC pHVar4;
   TDropShadowText *this;
   int extraout_ECX;
   int unaff_EBP;
@@ -14590,11 +14591,11 @@ void DrawSingle(void)
     *(undefined4 *)(unaff_EBP + -0x10) = 0;
     *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x24));
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14));
-    pHVar3 = GetDC(*(HWND *)(extraout_ECX + 0x1c));
-    this = (TDropShadowText *)FromHandle_612736(pHVar3);
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this);
+    pHVar3 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x24));
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
+    pHVar4 = GetDC(*(HWND *)(extraout_ECX + 0x1c));
+    this = (TDropShadowText *)FromHandle_612736(pHVar4);
+    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this,unaff_EBP + -0x14);
     SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x198,*(WPARAM *)(unaff_EBP + 8),unaff_EBP + -0x24);
     iVar1 = *(int *)(unaff_EBP + -0x20);
     *(int *)(unaff_EBP + -0x20) = *(int *)(unaff_EBP + -0x20) + -2;

@@ -29,15 +29,13 @@ void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D8B0
 // GHIDRA_NAME TDialogView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this)
+TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

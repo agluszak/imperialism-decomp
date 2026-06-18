@@ -59,16 +59,14 @@ TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D70
 // GHIDRA_NAME TTerrainHelpWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTerrainHelpWindow * __thiscall
-TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this)
+TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

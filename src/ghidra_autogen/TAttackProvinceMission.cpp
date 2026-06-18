@@ -5,25 +5,26 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E8B50
 // GHIDRA_NAME TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// GHIDRA_PROTO undefined __thiscall SetMapStateByteFlag970WithRuntimeGate(void)
+// GHIDRA_PROTO undefined __thiscall SetMapStateByteFlag970WithRuntimeGate(int param_1, int param_2)
 
 void __thiscall
-TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(TAttackProvinceMission *this)
+TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
+          (TAttackProvinceMission *this,int param_1,int param_2)
 
 {
   char cVar1;
+  undefined4 in_EDX;
   TAttackProvinceMission TVar2;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  TVar2 = SUB41(in_stack_00000008,0);
-  if (in_stack_00000008 == 1) {
-    cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)();
+  TVar2 = SUB41(param_2,0);
+  if (param_2 == 1) {
+    cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                      (param_1,CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)(this + 0xc)));
     if (cVar1 != '\0') {
       TVar2 = (TAttackProvinceMission)0x0;
     }
   }
-  this[in_stack_00000004 + 0x970] = TVar2;
+  this[param_1 + 0x970] = TVar2;
   return;
 }
 
@@ -49,7 +50,7 @@ TMission * TAttackProvinceMission::CreateTAttackProvinceMission(void)
   local_4 = 0;
   pTVar1 = (TMission *)0x0;
   if (this != (TMission *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(this);
+    TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
     *(undefined2 *)(this + 0x30) = 0xffff;
     *(undefined2 *)(this + 0x32) = 0xffff;
     *(undefined ***)this = &PTR_LAB_0065adf8;
@@ -71,34 +72,30 @@ undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D780
 // GHIDRA_NAME TAttackProvinceMission::ConstructTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall ConstructTAttackProvinceMission(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTAttackProvinceMission(undefined2 param_1, undefined2 param_2)
 
 TAttackProvinceMission * __thiscall
-TAttackProvinceMission::ConstructTAttackProvinceMission(TAttackProvinceMission *this)
+TAttackProvinceMission::ConstructTAttackProvinceMission
+          (TAttackProvinceMission *this,undefined2 param_1,undefined2 param_2)
 
 {
-  undefined2 in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  TMission::ConstructTArmyMissionWithNodeKey((TMission *)this);
-  *(undefined2 *)(this + 0x30) = in_stack_00000004;
-  *(undefined2 *)(this + 0x32) = in_stack_00000008;
+  TMission::ConstructTArmyMissionWithNodeKey((TMission *)this,0xffff);
+  *(undefined2 *)(this + 0x30) = param_1;
+  *(undefined2 *)(this + 0x32) = param_2;
   *(undefined ***)this = &PTR_LAB_0065adf8;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D7C0
 // GHIDRA_NAME TAttackProvinceMission::DestroyTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall DestroyTAttackProvinceMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTAttackProvinceMission(byte param_1)
 
 TAttackProvinceMission * __thiscall
-TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *this)
+TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTAttackProvinceMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -106,17 +103,16 @@ TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D810
 // GHIDRA_NAME TAttackProvinceMission::SerializeTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall SerializeTAttackProvinceMission(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTAttackProvinceMission(int * param_1)
 
 void __thiscall
-TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *this)
+TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
-  SerializeTArmyMission(in_stack_00000004);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  SerializeTArmyMission(param_1);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(this + 0x30,2);
   (*pcVar1)(this + 0x32,2);
   return;
@@ -124,17 +120,16 @@ TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D850
 // GHIDRA_NAME TAttackProvinceMission::DeserializeTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall DeserializeTAttackProvinceMission(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeTAttackProvinceMission(int * param_1)
 
 void __thiscall
-TAttackProvinceMission::DeserializeTAttackProvinceMission(TAttackProvinceMission *this)
+TAttackProvinceMission::DeserializeTAttackProvinceMission(TAttackProvinceMission *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
-  DeserializeTArmyMission(in_stack_00000004);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  DeserializeTArmyMission(param_1);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(this + 0x30,2);
   (*pcVar1)(this + 0x32,2);
   return;
@@ -155,7 +150,8 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
   
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable[1].slot_0x04)();
-  SetMapStateByteFlag970WithRuntimeGate((TAttackProvinceMission *)this_00);
+  SetMapStateByteFlag970WithRuntimeGate
+            ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -289,18 +285,14 @@ TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetPr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E5B0
 // GHIDRA_NAME TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-// GHIDRA_PROTO undefined __thiscall HandleDefendProvinceMissionActionType01ForTargetTile(void)
+// GHIDRA_PROTO undefined __thiscall HandleDefendProvinceMissionActionType01ForTargetTile(int param_1, int param_2)
 
 undefined4 __thiscall
 TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-          (TAttackProvinceMission *this)
+          (TAttackProvinceMission *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 1)) &&
-     (in_stack_00000008 == *(short *)(this + 0x30))) {
+  if (((param_1 == 0) || (param_1 == 1)) && (param_2 == *(short *)(this + 0x30))) {
     return 1;
   }
   return 0;

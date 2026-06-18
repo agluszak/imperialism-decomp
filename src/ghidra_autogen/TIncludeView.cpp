@@ -15,15 +15,14 @@ CRuntimeClass * __thiscall TIncludeView::GetTEventHandlerClassNamePointer(TInclu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CE40
 // GHIDRA_NAME TIncludeView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIncludeView * __thiscall TIncludeView::_scalar_deleting_destructor_(TIncludeView *this)
+TIncludeView * __thiscall
+TIncludeView::_scalar_deleting_destructor_(TIncludeView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTIncludeViewAndMaybeFree_Impl((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

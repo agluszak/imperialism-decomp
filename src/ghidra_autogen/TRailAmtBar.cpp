@@ -64,15 +64,13 @@ TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589FD0
 // GHIDRA_NAME TRailAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *this)
+TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -80,9 +78,9 @@ TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A020
 // GHIDRA_NAME TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this)
+void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this,int param_1)
 
 {
   uint uVar1;
@@ -92,7 +90,6 @@ void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this)
   short sVar5;
   undefined2 uVar6;
   TCity *pTVar7;
-  int in_stack_00000004;
   
   sVar4 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar4] == (TGreatPower *)0x0) {
@@ -104,29 +101,29 @@ void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this)
   uVar1 = this->ownerContext->controlTag;
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
-      in_stack_00000004 = 0x3c;
+      param_1 = 0x3c;
     }
     else if (uVar1 == 0x666f6f64) {
-      in_stack_00000004 = 7;
+      param_1 = 7;
     }
   }
   else if (uVar1 < 0x70726f67) {
     if (uVar1 == 0x70726f66) {
-      in_stack_00000004 = 0x18;
+      param_1 = 0x18;
     }
     else if (uVar1 == 0x706f7765) {
-      in_stack_00000004 = 0x34;
+      param_1 = 0x34;
     }
   }
   else if (uVar1 == 0x7261696c) {
-    in_stack_00000004 = 0x33;
+    param_1 = 0x33;
   }
   else if (uVar1 == 0x74726169) {
-    in_stack_00000004 = 0x17;
+    param_1 = 0x17;
   }
-  piVar2 = pTVar7->orderSlotsE4[(short)in_stack_00000004];
+  piVar2 = pTVar7->orderSlotsE4[(short)param_1];
   *(int **)&this->field_0x68 = piVar2;
-  if ((in_stack_00000004 == 0x33) || (in_stack_00000004 == 7)) {
+  if ((param_1 == 0x33) || (param_1 == 7)) {
     iVar3 = *(int *)(*(int *)&pTVar7->field_0x1d8 + 0x14);
     sVar4 = (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
                     *(short *)(*(int *)&pTVar7->field_0x1d8 + 0x1e) + *(short *)(iVar3 + 4)) / 2;
@@ -220,15 +217,15 @@ void __thiscall TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TRail
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A3B0
 // GHIDRA_NAME TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB
-// GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantB(void)
+// GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1)
 
-void __thiscall TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAmtBar *this)
+void __thiscall
+TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAmtBar *this,undefined2 param_1)
 
 {
   TRailAmtBarVtbl *pTVar1;
   char cVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
   undefined4 local_28;
   int iStack_24;
   int iStack_20;
@@ -246,7 +243,7 @@ void __thiscall TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAm
   *unaff_FS_OFFSET = &uStack_c;
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
-  *(undefined2 *)&this->field_0x62 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x62 = param_1;
   ApplyHitRegionToClipState(local_28);
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[0x1d].slot_0x04)();

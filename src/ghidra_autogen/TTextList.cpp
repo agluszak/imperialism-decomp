@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AF30
 // GHIDRA_NAME TTextList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this)
+TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -136,21 +134,20 @@ void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AF20
 // GHIDRA_NAME TTextList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this)
+void __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,int param_1)
 
 {
   TTextListVtbl *pTVar1;
   int iVar2;
-  int in_stack_00000004;
   LONG LStack_30;
   LONG LStack_2c;
   LONG LStack_28;
   RECT RStack_24;
   tagRECT tStack_14;
   
-  iVar2 = (int)(short)(*(int *)(in_stack_00000004 + 4) / (int)*(short *)&this->field_0x106c) +
+  iVar2 = (int)(short)(*(int *)(param_1 + 4) / (int)*(short *)&this->field_0x106c) +
           *(int *)&this->field_0x1064;
   if (iVar2 < *(int *)&this->field_0x1060) {
     pTVar1 = this->vftable;

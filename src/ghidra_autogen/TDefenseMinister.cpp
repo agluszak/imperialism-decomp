@@ -54,15 +54,14 @@ TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC110
 // GHIDRA_NAME TDefenseMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TDefenseMinister * __thiscall TDefenseMinister::DeletingDestructTMinister(TDefenseMinister *this)
+TDefenseMinister * __thiscall
+TDefenseMinister::DeletingDestructTMinister(TDefenseMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDefenseMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -70,19 +69,18 @@ TDefenseMinister * __thiscall TDefenseMinister::DeletingDestructTMinister(TDefen
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC1D0
 // GHIDRA_NAME TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(int * param_1)
 
 void __thiscall
-TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister *this)
+TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister *this,int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   int unaff_EDI;
-  int *in_stack_00000004;
   
-  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,2);
   (*pcVar1)(&this->field_0x12,2);
   iVar2 = 0x1e;
@@ -104,19 +102,19 @@ TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC2F0
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
+void __thiscall
+TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  int *in_stack_00000004;
   
-  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this);
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
+  pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0x10,2);
   (*pcVar2)(&this->field_0x12,2);
   puVar3 = &this->field_0x14;
@@ -148,9 +146,10 @@ void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC3D0
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-undefined2 __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
+undefined2 __thiscall
+TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
 
 {
   int *piVar1;
@@ -159,12 +158,11 @@ undefined2 __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefens
   int iVar4;
   undefined2 uVar5;
   int iVar7;
-  short in_stack_00000004;
   int iVar6;
   
   iVar6 = 0;
   uVar5 = 0;
-  piVar1 = *(int **)&g_apNationStates[in_stack_00000004]->field_0x44;
+  piVar1 = *(int **)&g_apNationStates[param_1]->field_0x44;
   sVar3 = (**(code **)(*piVar1 + 0x48))();
   iVar7 = 1;
   if (0 < sVar3) {
@@ -302,7 +300,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   else {
     *piVar7 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x1;
-    TGreatPower::CPtrList((TGreatPower *)(piVar7 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(piVar7 + 1),10);
     *piVar7 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -318,7 +316,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   else {
     *piStack_3c = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x3;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_3c + 1));
+    TGreatPower::CPtrList((TGreatPower *)(piStack_3c + 1),10);
     *piStack_3c = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -334,7 +332,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   else {
     *piStack_34 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x5;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_34 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(piStack_34 + 1),10);
     *piStack_34 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -482,10 +480,10 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ECBB0
 // GHIDRA_NAME TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int * param_1)
 
 undefined4 * __thiscall
-TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister *this)
+TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister *this,int *param_1)
 
 {
   char cVar1;
@@ -500,12 +498,11 @@ TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister 
   int iVar9;
   int iVar10;
   undefined4 *puVar11;
-  int *in_stack_00000004;
   int local_10;
   short asStack_c [6];
   
   sVar4 = *(short *)(*(int *)&this->field_0x4 + 0xc);
-  iVar9 = *in_stack_00000004;
+  iVar9 = *param_1;
   iVar5 = (**(code **)(iVar9 + 0x28))();
   puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
   if (puVar6 == (undefined4 *)0x0) {
@@ -679,9 +676,9 @@ int * __thiscall TDefenseMinister::UpdateControlCachedIntFromWindowText(TDefense
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED050
 // GHIDRA_NAME TDefenseMinister::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(char param_1)
 
-int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this)
+int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this,char param_1)
 
 {
   short sVar1;
@@ -700,7 +697,6 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
   int iVar13;
   undefined4 unaff_EDI;
   int iVar14;
-  char in_stack_00000004;
   int iStack_58;
   int iStack_54;
   int iStack_44;
@@ -748,7 +744,7 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
   piVar8 = piVar7;
   do {
     sVar5 = (short)*(char *)(*(int *)&pTVar11->field_0xc + 4 + iStack_58);
-    if (((acStack_18[sVar5] != '\0') && (in_stack_00000004 == '\0')) || (sVar5 == sVar1)) {
+    if (((acStack_18[sVar5] != '\0') && (param_1 == '\0')) || (sVar5 == sVar1)) {
       if ((nCenterTileIndex < 0) || (0x17f < nCenterTileIndex)) {
         iVar12 = 0;
       }
@@ -837,16 +833,16 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED620
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this)
+void __thiscall
+TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
   undefined4 unaff_ESI;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   TMilitaryUnitOrderState *pTStack_8;
   undefined4 uStack_4;
@@ -855,8 +851,8 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
   uStack_4 = 0xffffffff;
   pTStack_8 = (TMilitaryUnitOrderState *)&LAB_006327b4;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(10,4,0);
-  *(undefined2 *)(in_stack_00000004 + 0x62) = 1;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(10,4,0);
+  *(undefined2 *)(param_1 + 0x62) = 1;
   iVar2 = 3;
   do {
     pTStack_8 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
@@ -867,7 +863,8 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
       pTVar1 = (TMilitaryUnitOrderState *)
                TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTStack_8);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,2,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
@@ -881,7 +878,8 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
       pTVar1 = (TMilitaryUnitOrderState *)
                TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTStack_8);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,4,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
@@ -891,16 +889,16 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED950
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this)
+void __thiscall
+TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -909,8 +907,8 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
   piStack_8 = (int *)&LAB_006327fa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(9,4,1);
-  *(undefined2 *)(in_stack_00000004 + 0x62) = 1;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(9,4,1);
+  *(undefined2 *)(param_1 + 0x62) = 1;
   iVar2 = 2;
   do {
     pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
@@ -920,7 +918,8 @@ void __thiscall TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinis
     else {
       pTVar1 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar1);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,2,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
@@ -1000,26 +999,26 @@ void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EE20
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-short __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
+short __thiscall
+TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
 
 {
   short *psVar1;
   int *piVar2;
   short sVar3;
   int iVar4;
-  short in_stack_00000004;
   
   iVar4 = 1;
   piVar2 = *(int **)&this->field_0x8;
-  sVar3 = in_stack_00000004;
+  sVar3 = param_1;
   if (piVar2[2] < 1) {
-    return in_stack_00000004;
+    return param_1;
   }
   do {
     psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
-    if (*psVar1 == in_stack_00000004) {
+    if (*psVar1 == param_1) {
       sVar3 = psVar1[2];
       iVar4 = *(int *)(*(int *)&this->field_0x8 + 8) + 10;
     }
@@ -1031,26 +1030,26 @@ short __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EEA0
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(short param_1)
 
-short __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this)
+short __thiscall
+TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short param_1)
 
 {
   short *psVar1;
   int *piVar2;
   short sVar3;
   int iVar4;
-  short in_stack_00000004;
   
   iVar4 = 1;
   piVar2 = *(int **)&this->field_0x8;
-  sVar3 = in_stack_00000004;
+  sVar3 = param_1;
   if (piVar2[2] < 1) {
-    return in_stack_00000004;
+    return param_1;
   }
   do {
     psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
-    if (psVar1[2] == in_stack_00000004) {
+    if (psVar1[2] == param_1) {
       sVar3 = *psVar1;
       iVar4 = *(int *)(*(int *)&this->field_0x8 + 8) + 10;
     }
@@ -1062,43 +1061,43 @@ short __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EF20
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(short param_1)
 
-undefined2 __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this)
+undefined2 __thiscall
+TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short param_1)
 
 {
   int iVar1;
-  short in_stack_00000004;
   
-  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)in_stack_00000004);
+  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *(undefined2 *)(iVar1 + 4);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EF50
 // GHIDRA_NAME TDefenseMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(short param_1)
 
-undefined2 __thiscall TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this)
+undefined2 __thiscall
+TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this,short param_1)
 
 {
   int iVar1;
-  short in_stack_00000004;
   
-  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)in_stack_00000004);
+  iVar1 = (**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *(undefined2 *)(iVar1 + 2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EF80
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
-undefined2 __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
+undefined2 __thiscall
+TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
 
 {
   undefined2 *puVar1;
-  short in_stack_00000004;
   
-  puVar1 = (undefined2 *)(**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)in_stack_00000004);
+  puVar1 = (undefined2 *)(**(code **)(**(int **)&this->field_0x8 + 0x2c))((int)param_1);
   return *puVar1;
 }
 

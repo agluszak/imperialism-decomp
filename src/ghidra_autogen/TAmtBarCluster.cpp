@@ -5,42 +5,39 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586A60
 // GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8c
-// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(void)
+// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(undefined2 param_1)
 
-void __thiscall TAmtBarCluster::SetTAmtBarClusterWordField8c(TAmtBarCluster *this)
+void __thiscall
+TAmtBarCluster::SetTAmtBarClusterWordField8c(TAmtBarCluster *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)&this[1].field04 = in_stack_00000004;
+  *(undefined2 *)&this[1].field04 = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586A80
 // GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_00586a80(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_00586a80(undefined4 param_1, int param_2)
 
-void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80(TAmtBarCluster *this)
+void __thiscall
+TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80
+          (TAmtBarCluster *this,undefined4 param_1,int param_2)
 
 {
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
-  
-  this[1].padding_08_to_0b = in_stack_00000004;
-  this[1].field0c = in_stack_00000008;
+  this[1].padding_08_to_0b = param_1;
+  this[1].field0c = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586AB0
 // GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8e
-// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(void)
+// GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(undefined2 param_1)
 
-void __thiscall TAmtBarCluster::SetTAmtBarClusterWordField8e(TAmtBarCluster *this)
+void __thiscall
+TAmtBarCluster::SetTAmtBarClusterWordField8e(TAmtBarCluster *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)((int)&this[1].field04 + 2) = in_stack_00000004;
+  *(undefined2 *)((int)&this[1].field04 + 2) = param_1;
   return;
 }
 
@@ -99,15 +96,14 @@ TAmtBarCluster::ConstructTradeMoveControlPanelBasic(TAmtBarCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D10
 // GHIDRA_NAME TAmtBarCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBarCluster * __thiscall TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this)
+TAmtBarCluster * __thiscall
+TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -149,9 +145,10 @@ void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E70
 // GHIDRA_NAME TAmtBarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this)
+void __thiscall
+TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TAmtBarClusterVtbl *pTVar1;
@@ -162,11 +159,8 @@ void __thiscall TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this)
   int iVar5;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
   
-  if (in_stack_00000004 == 100) {
+  if (param_1 == 100) {
     pTVar1 = this->vftable;
     pTVar2 = pTVar1[0x12].slot_0x04;
     uVar3 = (*pTVar2)(0x6d6f7665);
@@ -187,7 +181,7 @@ void __thiscall TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this)
       (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)((undefined1 *)((int)&this->vftable + 1));
     }
   }
-  else if (in_stack_00000004 == 0x65) {
+  else if (param_1 == 0x65) {
     pTVar1 = this->vftable;
     uVar3 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
@@ -200,8 +194,7 @@ void __thiscall TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this)
       (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar5 + -1);
     }
   }
-  TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 

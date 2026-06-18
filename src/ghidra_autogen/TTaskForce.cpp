@@ -15,16 +15,14 @@ CRuntimeClass * __thiscall TTaskForce::GetTTaskForceClassNamePointer(TTaskForce 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
-void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this)
+void __thiscall
+TTaskForce::ConstructTTaskForce(TTaskForce *this,undefined4 param_1,undefined2 param_2)
 
 {
-  undefined4 in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(undefined4 *)&this->field_0x18 = in_stack_00000004;
-  *(undefined2 *)&this->field_0x1c = in_stack_00000008;
+  *(undefined4 *)&this->field_0x18 = param_1;
+  *(undefined2 *)&this->field_0x1c = param_2;
   *(undefined4 *)&this->field_0x4 = 1;
   *(undefined4 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0xc = 0;
@@ -41,15 +39,13 @@ void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552870
 // GHIDRA_NAME TTaskForce::DestroyTTaskForce
-// GHIDRA_PROTO undefined __thiscall DestroyTTaskForce(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTTaskForce(byte param_1)
 
-TTaskForce * __thiscall TTaskForce::DestroyTTaskForce(TTaskForce *this)
+TTaskForce * __thiscall TTaskForce::DestroyTTaskForce(TTaskForce *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTTaskForceToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

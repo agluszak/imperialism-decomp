@@ -53,15 +53,14 @@ void __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(TDisplayMgr *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7F0
 // GHIDRA_NAME TDisplayMgr::DestructTDisplayMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTDisplayMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTDisplayMgrAndMaybeFree(byte param_1)
 
-TDisplayMgr * __thiscall TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this)
+TDisplayMgr * __thiscall
+TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDisplayMgrAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -174,9 +173,7 @@ void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplay
 
 {
   undefined4 *unaff_FS_OFFSET;
-  TDisplayMgr **ppTStack00000008;
-  TDisplayMgr *pTStack_14;
-  undefined4 uStack_10;
+  undefined1 *puStack00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -184,14 +181,12 @@ void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplay
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00633288;
   *unaff_FS_OFFSET = &local_c;
-  ppTStack00000008 = &pTStack_14;
+  puStack00000008 = &stack0xffffffec;
   local_4 = 0;
-  pTStack_14 = this;
   thunk_AssignStringSharedRefAndReturnThis(&stack0x00000004);
   TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-            ((TViewMgr *)g_pUiRuntimeContext);
+            ((TViewMgr *)g_pUiRuntimeContext,&this->vftable);
   local_4 = 0xffffffff;
-  uStack_10 = 0x4feccf;
   CString::~CString((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
   return;
@@ -225,15 +220,13 @@ void __thiscall TDisplayMgr::OrphanRetStub_004fed50(TDisplayMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FED70
 // GHIDRA_NAME TDisplayMgr::AssertUDisplayMgrLines614And616
-// GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLines614And616(void)
+// GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLines614And616(char param_1)
 
-void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this)
+void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
   if (*(short *)&this->field_0xa != 0) {
-    if (in_stack_00000004 != '\0') {
+    if (param_1 != '\0') {
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x266);
       return;
@@ -246,16 +239,16 @@ void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEDC0
 // GHIDRA_NAME TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState
-// GHIDRA_PROTO undefined __thiscall LoadMainViewClipSnapshotIntoQuickDrawState(void)
+// GHIDRA_PROTO undefined __thiscall LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
 
-void __thiscall TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this)
+void __thiscall
+TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,undefined2 param_1)
 
 {
   int iVar1;
   undefined4 uVar2;
   int *piVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
   undefined4 uStack_38;
   undefined4 uStack_34;
   undefined4 uStack_30;
@@ -302,7 +295,7 @@ void __thiscall TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplay
     thunk_NoOpQuickDrawLifecycleHookB(uVar2);
     thunk_SetActiveQuickDrawSurfaceContext(uStack_30,uStack_38);
     SnapshotHitRegionToClipCache(uStack_34);
-    *(undefined2 *)&this->field_0x1c = in_stack_00000004;
+    *(undefined2 *)&this->field_0x1c = param_1;
     uStack_4 = 0xffffffff;
     ReleaseOrCacheQuickDrawSurface();
   }
@@ -312,7 +305,7 @@ void __thiscall TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplay
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEFC0
 // GHIDRA_NAME TDisplayMgr::SetMapTileIconVariantTriplet
-// GHIDRA_PROTO undefined __thiscall SetMapTileIconVariantTriplet(void)
+// GHIDRA_PROTO undefined __thiscall SetMapTileIconVariantTriplet(undefined1 * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Sets tile icon variant triplet at tile-state offset +0x10..+0x12 from input profile bytes.
 // GHIDRA_COMMENT Calls icon-cache update helper after write.
@@ -323,14 +316,12 @@ void __thiscall TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplay
    Calls icon-cache update helper after write.
    Returns: void. */
 
-void __thiscall TDisplayMgr::SetMapTileIconVariantTriplet(TDisplayMgr *this)
+void __thiscall TDisplayMgr::SetMapTileIconVariantTriplet(TDisplayMgr *this,undefined1 *param_1)
 
 {
-  undefined1 *in_stack_00000004;
-  
-  this->field_0x10 = *in_stack_00000004;
-  this->field_0x11 = in_stack_00000004[1];
-  this->field_0x12 = in_stack_00000004[2];
+  this->field_0x10 = *param_1;
+  this->field_0x11 = param_1[1];
+  this->field_0x12 = param_1[2];
   NoOpCallback_00498ca0(&this->field_0x10);
   return;
 }

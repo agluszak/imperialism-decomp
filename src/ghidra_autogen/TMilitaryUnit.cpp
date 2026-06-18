@@ -66,15 +66,14 @@ CRuntimeClass * __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(TMili
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2ED0
 // GHIDRA_NAME TMilitaryUnit::DestroyMilitaryUnitOrderObject
-// GHIDRA_PROTO undefined __thiscall DestroyMilitaryUnitOrderObject(void)
+// GHIDRA_PROTO undefined __thiscall DestroyMilitaryUnitOrderObject(byte param_1)
 
-TMilitaryUnit * __thiscall TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this)
+TMilitaryUnit * __thiscall
+TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -82,19 +81,18 @@ TMilitaryUnit * __thiscall TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilita
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2FD0
 // GHIDRA_NAME TMilitaryUnit::DeserializeMilitaryUnitOrderState
-// GHIDRA_PROTO undefined __thiscall DeserializeMilitaryUnitOrderState(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeMilitaryUnitOrderState(int * param_1)
 
-void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *this)
+void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
 
 {
   undefined1 uVar1;
   code *pcVar2;
   undefined1 *puVar3;
   int iVar4;
-  int *in_stack_00000004;
   
-  TUnit::DeserializeUnitOrderCoreState((TUnit *)this,in_stack_00000004);
-  iVar4 = *in_stack_00000004;
+  TUnit::DeserializeUnitOrderCoreState((TUnit *)this,param_1);
+  iVar4 = *param_1;
   (**(code **)(iVar4 + 0x70))(&this->field_0x24,0x20);
   pcVar2 = *(code **)(iVar4 + 0x3c);
   puVar3 = &this->field_0x28;
@@ -126,18 +124,17 @@ void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C30A0
 // GHIDRA_NAME TMilitaryUnit::SerializeMilitaryUnitOrderState
-// GHIDRA_PROTO undefined __thiscall SerializeMilitaryUnitOrderState(void)
+// GHIDRA_PROTO undefined __thiscall SerializeMilitaryUnitOrderState(int * param_1)
 
-void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *this)
+void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
 
 {
   code *pcVar1;
   int unaff_EBX;
   int iVar2;
-  int *in_stack_00000004;
   
-  TUnit::SerializeUnitOrderCoreState((TUnit *)this,in_stack_00000004);
-  iVar2 = *in_stack_00000004;
+  TUnit::SerializeUnitOrderCoreState((TUnit *)this,param_1);
+  iVar2 = *param_1;
   (**(code **)(iVar2 + 0xac))(&this->field_0x24);
   pcVar1 = *(code **)(iVar2 + 0x78);
   iVar2 = 3;
@@ -177,9 +174,9 @@ void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3200
 // GHIDRA_NAME TMilitaryUnit::RelinkMilitaryUnitByTileIndex
-// GHIDRA_PROTO undefined __thiscall RelinkMilitaryUnitByTileIndex(void)
+// GHIDRA_PROTO undefined __thiscall RelinkMilitaryUnitByTileIndex(short param_1)
 
-void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this)
+void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this,short param_1)
 
 {
   short sVar1;
@@ -188,7 +185,6 @@ void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this
   int iVar4;
   int iVar5;
   int iVar6;
-  short in_stack_00000004;
   
   sVar1 = *(short *)&this->field_0x6;
   if (sVar1 != -1) {
@@ -208,24 +204,24 @@ void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this
     *(undefined4 *)&this->field_0x10 = 0;
     *(undefined4 *)&this->field_0x14 = 0;
   }
-  if (in_stack_00000004 != -1) {
-    if ((in_stack_00000004 < 0) || (0x17f < in_stack_00000004)) {
+  if (param_1 != -1) {
+    if ((param_1 < 0) || (0x17f < param_1)) {
       iVar5 = 0;
     }
     else {
-      iVar5 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + in_stack_00000004 * 0xa8);
+      iVar5 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
     }
     if (iVar5 != 0) {
       if (*(short *)(&DAT_00695528 + *(short *)&this->field_0x4 * 2) <=
           *(short *)(&DAT_00695528 + *(short *)(iVar5 + 4) * 2)) {
-        if ((-1 < in_stack_00000004) && (in_stack_00000004 < 0x180)) {
-          *(TMilitaryUnit **)
-           (*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + in_stack_00000004 * 0xa8) = this;
+        if ((-1 < param_1) && (param_1 < 0x180)) {
+          *(TMilitaryUnit **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8) = this
+          ;
         }
         *(TMilitaryUnit **)(iVar5 + 0x10) = this;
         *(undefined4 *)&this->field_0x10 = 0;
         *(int *)&this->field_0x14 = iVar5;
-        *(short *)&this->field_0x6 = in_stack_00000004;
+        *(short *)&this->field_0x6 = param_1;
         *(undefined2 *)&this->field_0xc = 0xffff;
         return;
       }
@@ -246,21 +242,20 @@ void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this
       *(TMilitaryUnit **)(iVar5 + 0x14) = this;
       if (*(int *)&this->field_0x14 != 0) {
         *(TMilitaryUnit **)(*(int *)&this->field_0x14 + 0x10) = this;
-        *(short *)&this->field_0x6 = in_stack_00000004;
+        *(short *)&this->field_0x6 = param_1;
         *(undefined2 *)&this->field_0xc = 0xffff;
         return;
       }
       goto LAB_005c32cc;
     }
-    if ((-1 < in_stack_00000004) && (in_stack_00000004 < 0x180)) {
-      *(TMilitaryUnit **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + in_stack_00000004 * 0xa8)
-           = this;
+    if ((-1 < param_1) && (param_1 < 0x180)) {
+      *(TMilitaryUnit **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8) = this;
     }
   }
   *(undefined4 *)&this->field_0x10 = 0;
   *(undefined4 *)&this->field_0x14 = 0;
 LAB_005c32cc:
-  *(short *)&this->field_0x6 = in_stack_00000004;
+  *(short *)&this->field_0x6 = param_1;
   *(undefined2 *)&this->field_0xc = 0xffff;
   return;
 }

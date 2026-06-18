@@ -19,15 +19,14 @@ TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(TGWorl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045B030
 // GHIDRA_NAME TGWorldPartView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPartView * __thiscall TGWorldPartView::_scalar_deleting_destructor_(TGWorldPartView *this)
+TGWorldPartView * __thiscall
+TGWorldPartView::_scalar_deleting_destructor_(TGWorldPartView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

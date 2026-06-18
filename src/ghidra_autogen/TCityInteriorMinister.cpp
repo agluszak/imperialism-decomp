@@ -25,16 +25,15 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE450
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined2 param_1, undefined2 param_2)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
+          (TCityInteriorMinister *this,undefined2 param_1,undefined2 param_2)
 
 {
-  undefined2 in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(undefined2 *)&this->field_0x12 = in_stack_00000004;
-  *(undefined2 *)&this->field_0x10 = in_stack_00000008;
+  *(undefined2 *)&this->field_0x12 = param_1;
+  *(undefined2 *)&this->field_0x10 = param_2;
   return;
 }
 
@@ -155,40 +154,35 @@ void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE7B0
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
 undefined2 __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  return *(undefined2 *)(&this->field_0x12a + in_stack_00000004 * 2);
+  return *(undefined2 *)(&this->field_0x12a + param_1 * 2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE7D0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
 
 undefined2 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  return *(undefined2 *)(&this->field_0x158 + in_stack_00000004 * 2);
+  return *(undefined2 *)(&this->field_0x158 + param_1 * 2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE7F0
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(undefined2 *)(&this->field_0x158 + in_stack_00000004 * 2) = 0;
+  *(undefined2 *)(&this->field_0x158 + param_1 * 2) = 0;
   return;
 }
 
@@ -205,16 +199,14 @@ TCityInteriorMinister::GetTMinisterClassNamePointer(TCityInteriorMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE880
 // GHIDRA_NAME TCityInteriorMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TCityInteriorMinister * __thiscall
-TCityInteriorMinister::DeletingDestructTMinister(TCityInteriorMinister *this)
+TCityInteriorMinister::DeletingDestructTMinister(TCityInteriorMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestroyTCityInteriorMinister_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -222,16 +214,14 @@ TCityInteriorMinister::DeletingDestructTMinister(TCityInteriorMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEC10
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TCityInteriorMinister * __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -303,10 +293,10 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEE20
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
 
 undefined4 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,short param_1)
 
 {
   word wVar1;
@@ -314,12 +304,11 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
   TGreatPower *pTVar3;
   short sVar4;
   TCity *this_00;
-  short in_stack_00000004;
   int iVar5;
   
   iVar5 = 0;
   sVar4 = 0;
-  pTVar3 = g_apNationStates[in_stack_00000004];
+  pTVar3 = g_apNationStates[param_1];
   if (pTVar3 == (TGreatPower *)0x0) {
     this_00 = (TCity *)0x0;
   }
@@ -334,8 +323,8 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
       sVar4 = sVar4 + 1;
     } while (sVar4 < 7);
     sVar4 = (short)iVar5;
-    if (g_apNationStates[in_stack_00000004] != (TGreatPower *)0x0) {
-      wVar1 = g_apNationStates[in_stack_00000004]->needCapA6;
+    if (g_apNationStates[param_1] != (TGreatPower *)0x0) {
+      wVar1 = g_apNationStates[param_1]->needCapA6;
       return CONCAT22((short)wVar1 >> 0xf,sVar4 + wVar1);
     }
     pTVar3 = (TGreatPower *)0x0;
@@ -345,63 +334,60 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEEB0
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(short param_1)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
   if (*(short *)&this->field_0x32 == 0) {
-    *(ushort *)&this->field_0x32 = (in_stack_00000004 == 2) + 1;
+    *(ushort *)&this->field_0x32 = (param_1 == 2) + 1;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEEE0
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(short param_1)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  (**(code **)(**(int **)&this->field_0x190 + 0x14))(in_stack_00000004 + 0x1e);
+  (**(code **)(**(int **)&this->field_0x190 + 0x14))(param_1 + 0x1e);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEF10
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined2 param_1)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  *(undefined2 *)&this->field_0x36 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x36 = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEF30
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(short param_1)
 
-void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  (**(code **)(**(int **)&this->field_0x190 + 0x14))((int)in_stack_00000004);
+  (**(code **)(**(int **)&this->field_0x190 + 0x14))((int)param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BEF60
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
 
 {
   code *pcVar1;
@@ -420,11 +406,11 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   undefined4 extraout_EDX_02;
   undefined2 *puVar3;
   int iVar4;
-  int *in_stack_00000004;
   undefined4 uStack_9c;
-  int iStack_98;
+  int *piStack_98;
   undefined4 *puStack_94;
-  int aiStack_90 [2];
+  int iStack_90;
+  int *piStack_8c;
   undefined4 *puStack_88;
   int iStack_84;
   undefined4 *puStack_80;
@@ -452,13 +438,11 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   undefined4 uStack_28;
   int iStack_24;
   undefined1 *puStack_20;
-  undefined4 uStack_1c;
   
   puStack_20 = (undefined1 *)0x4bef73;
-  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this);
+  TMinister::SerializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_20 = &this->field_0x10;
-  uStack_1c = 2;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   iStack_24 = 0x4bef82;
   (*pcVar1)();
   uStack_28 = &this->field_0x12;
@@ -552,7 +536,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     uStack_70 = (undefined1 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_70),
                          uStack_70._1_1_);
-    aiStack_90[1] = 0x4bf0a6;
+    piStack_8c = (int *)0x4bf0a6;
     (*pcVar1)();
     puVar3 = puVar3 + 1;
     iStack_6c = iStack_6c + -1;
@@ -568,7 +552,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     uStack_70 = (undefined1 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_70),
                          uStack_70._1_1_);
-    aiStack_90[1] = 0x4bf0e5;
+    piStack_8c = (int *)0x4bf0e5;
     (*pcVar1)();
     puVar3 = puVar3 + 1;
     iStack_6c = iStack_6c + -1;
@@ -584,7 +568,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     uStack_70 = (undefined1 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_70),
                          uStack_70._1_1_);
-    aiStack_90[1] = 0x4bf124;
+    piStack_8c = (int *)0x4bf124;
     (*pcVar1)();
     puVar3 = puVar3 + 1;
     iStack_6c = iStack_6c + -1;
@@ -600,7 +584,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     uStack_70 = (undefined1 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_70),
                          uStack_70._1_1_);
-    aiStack_90[1] = 0x4bf163;
+    piStack_8c = (int *)0x4bf163;
     (*pcVar1)();
     puVar3 = puVar3 + 1;
     iStack_6c = iStack_6c + -1;
@@ -608,27 +592,29 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   } while (iStack_6c != 0);
   puStack_88 = (undefined4 *)&this->field_0x186;
   iStack_84 = 2;
-  aiStack_90[1] = 0x4bf17e;
+  piStack_8c = (int *)0x4bf17e;
   (*pcVar1)();
-  aiStack_90[0] = 0x4bf187;
+  piStack_8c = param_1;
+  iStack_90 = 0x4bf187;
   (**(code **)(**(int **)&this->field_0x28 + 0x1c))();
-  aiStack_90[0] = 0x4bf18f;
+  iStack_90 = 0x4bf18f;
   uStack_70 = (undefined1 *)(**(code **)(**(int **)&this->field_0x28 + 0x28))();
   puStack_94 = &uStack_70;
-  aiStack_90[0] = 4;
-  iStack_98 = 0x4bf19e;
+  iStack_90 = 4;
+  piStack_98 = (int *)0x4bf19e;
   (*pcVar1)();
   iVar4 = 1;
   if (0 < (int)puStack_78) {
     do {
       uStack_9c = 0x4bf1b4;
-      iStack_98 = iVar4;
+      piStack_98 = (int *)iVar4;
       iStack_84 = (**(code **)(**(int **)&this->field_0x28 + 0x24))();
       uStack_9c = 4;
       (*pcVar1)(&iStack_84);
       iVar4 = iVar4 + 1;
     } while (iVar4 <= (int)puStack_78);
   }
+  piStack_98 = param_1;
   uStack_9c = 0x4bf1d5;
   (**(code **)(**(int **)&this->field_0x2c + 0x1c))();
   uStack_9c = 0x4bf1dd;
@@ -638,23 +624,23 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   iVar4 = 1;
   if (0 < iStack_84) {
     do {
-      aiStack_90[0] = (**(code **)(**(int **)&this->field_0x2c + 0x24))(iVar4);
-      (*pcVar1)(aiStack_90,4);
+      iStack_90 = (**(code **)(**(int **)&this->field_0x2c + 0x24))(iVar4);
+      (*pcVar1)(&iStack_90,4);
       iVar4 = iVar4 + 1;
     } while (iVar4 <= iStack_84);
   }
-  (**(code **)(**(int **)&this->field_0x190 + 0x1c))();
+  (**(code **)(**(int **)&this->field_0x190 + 0x1c))(param_1);
   puStack_88 = (undefined4 *)(**(code **)(**(int **)&this->field_0x190 + 0x28))();
   (*pcVar1)(&puStack_88,4);
   iVar4 = 1;
   uVar2 = extraout_ECX_04;
-  if (0 < aiStack_90[0]) {
+  if (0 < iStack_90) {
     do {
       uStack_9c = (**(code **)(**(int **)&this->field_0x190 + 0x24))(iVar4);
       (*pcVar1)(&uStack_9c,4);
       iVar4 = iVar4 + 1;
       uVar2 = extraout_ECX_05;
-    } while (iVar4 <= aiStack_90[0]);
+    } while (iVar4 <= iStack_90);
   }
   puVar3 = (undefined2 *)&this->field_0x194;
   iVar4 = 0x17;
@@ -673,9 +659,10 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BF390
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1)
 
-void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -683,7 +670,6 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
   undefined1 *puVar3;
   int iVar4;
   undefined1 *puVar5;
-  int *in_stack_00000004;
   undefined4 *puStack_d0;
   int *piStack_cc;
   undefined4 *puStack_c8;
@@ -728,13 +714,11 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
   undefined1 *puStack_2c;
   undefined4 uStack_28;
   undefined1 *puStack_24;
-  undefined4 uStack_20;
   
   puStack_24 = (undefined1 *)0x4bf3cf;
-  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this);
+  TMinister::DeserializeTMinisterBaseOrderArrayHeader((TMinister *)this,param_1);
   puStack_24 = &this->field_0x10;
-  uStack_20 = 2;
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar2 = *(code **)(*param_1 + 0x3c);
   uStack_28 = 0x4bf3de;
   (*pcVar2)();
   puStack_2c = &this->field_0x12;
@@ -877,7 +861,7 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
     piStack_c0 = (int *)0x4bf562;
     (**(code **)(**(int **)&this->field_0x28 + 0x30))();
   }
-  piStack_c0 = in_stack_00000004;
+  piStack_c0 = param_1;
   uStack_c4 = 0x4bf56b;
   (**(code **)(**(int **)&this->field_0x28 + 0x20))();
   puStack_c8 = &uStack_a0;
@@ -900,7 +884,7 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
     piStack_cc = (int *)0x4bf5b8;
     (**(code **)(**(int **)&this->field_0x2c + 0x30))();
   }
-  piStack_cc = in_stack_00000004;
+  piStack_cc = param_1;
   puStack_d0 = (undefined4 *)0x4bf5c1;
   (**(code **)(**(int **)&this->field_0x2c + 0x20))();
   puStack_d0 = (undefined4 *)0x4;
@@ -917,13 +901,13 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
   if (iVar4 != 0) {
     (**(code **)(**(int **)&this->field_0x190 + 0x30))();
   }
-  (**(code **)(**(int **)&this->field_0x190 + 0x20))();
+  (**(code **)(**(int **)&this->field_0x190 + 0x20))(param_1);
   (*pcVar2)(&uStack_b8,4);
   iVar4 = 1;
   if (0 < (int)piStack_c0) {
     do {
       (*pcVar2)(&puStack_d0,4);
-      (**(code **)(**(int **)&this->field_0x190 + 0x14))(in_stack_00000004);
+      (**(code **)(**(int **)&this->field_0x190 + 0x14))(param_1);
       iVar4 = iVar4 + 1;
     } while (iVar4 <= (int)piStack_c0);
   }
@@ -1003,7 +987,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BF8A0
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
 /* WARNING: Removing unreachable block (ram,0x004bf95b) */
 /* WARNING: Removing unreachable block (ram,0x004bf96f) */
@@ -1015,14 +999,14 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 /* WARNING: Removing unreachable block (ram,0x004bf9ad) */
 /* WARNING: Removing unreachable block (ram,0x004bf9bb) */
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
 
 {
   int iVar1;
   int unaff_EBX;
   int iVar2;
   short *psVar3;
-  int in_stack_00000004;
   undefined1 auStack_8 [4];
   undefined1 auStack_4 [4];
   
@@ -1040,51 +1024,50 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     iVar2 = iVar2 + 1;
     psVar3 = psVar3 + 1;
   } while ((short)iVar2 < 7);
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x3c))(auStack_8,auStack_4);
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x3c))(auStack_8,auStack_4);
   (**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x94) + 0x54))(7,unaff_EBX + -1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BFA50
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  if ((*(char *)(in_stack_00000004 + 0x7c) == '\0') || (*(char *)(in_stack_00000004 + 0x7d) != '\0')
-     ) {
-    if ((*(char *)(in_stack_00000004 + 0x7c) == '\0') &&
-       (*(char *)(in_stack_00000004 + 0x7d) != '\0')) {
-      (*this->vftable[0x13].GetTMinisterClassNamePointer)();
+  if ((*(char *)(param_1 + 0x7c) == '\0') || (*(char *)(param_1 + 0x7d) != '\0')) {
+    if ((*(char *)(param_1 + 0x7c) == '\0') && (*(char *)(param_1 + 0x7d) != '\0')) {
+      (*this->vftable[0x13].GetTMinisterClassNamePointer)(param_1);
     }
   }
   else {
-    (*this->vftable[0x12].DeletingDestructTMinister)();
+    (*this->vftable[0x12].DeletingDestructTMinister)(param_1);
   }
   if (*(short *)&this->field_0x3e != 0) {
-    (*this->vftable[0x15].DeletingDestructTMinister)();
+    (*this->vftable[0x15].DeletingDestructTMinister)(param_1);
   }
   if (*(short *)&this->field_0x32 != 0) {
-    (*this->vftable[0x14].GetTMinisterClassNamePointer)();
+    (*this->vftable[0x14].GetTMinisterClassNamePointer)(param_1);
   }
   if (-1 < *(short *)&this->field_0x36) {
-    (*this->vftable[0x14].DeletingDestructTMinister)();
+    (*this->vftable[0x14].DeletingDestructTMinister)(param_1);
   }
   if (-1 < *(short *)&this->field_0x38) {
-    (*this->vftable[0x15].GetTMinisterClassNamePointer)();
+    (*this->vftable[0x15].GetTMinisterClassNamePointer)(param_1);
   }
-  (*this->vftable[0x11].DeletingDestructTMinister)();
+  (*this->vftable[0x11].DeletingDestructTMinister)(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BFB20
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(TCity * param_1, int * param_2)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_
+          (TCityInteriorMinister *this,TCity *param_1,int *param_2)
 
 {
   short sVar1;
@@ -1095,8 +1078,6 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   void *pvVar6;
   short sVar7;
   undefined4 *unaff_FS_OFFSET;
-  TCity *in_stack_00000004;
-  int *in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -1105,13 +1086,12 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   puStack_8 = &LAB_0063126c;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  if ((0xe < (short)in_stack_00000004->fieldB6[0]) || (0xe < (short)in_stack_00000004->fieldB6[1]))
-  {
+  if ((0xe < (short)param_1->fieldB6[0]) || (0xe < (short)param_1->fieldB6[1])) {
     sVar7 = *(short *)(*(int *)&this->field_0x4 + 0x110);
     sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x10e);
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,0);
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,0);
     sVar7 = (short)(sVar7 + sVar1) / 2 - (short)iVar3;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x35), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x35), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       pvVar6 = (void *)0x0;
       uStack_4 = 0;
@@ -1119,16 +1099,15 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x35,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x35,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
-  if ((0xe < (short)in_stack_00000004->fieldB6[3]) && (0xe < (short)in_stack_00000004->fieldB6[4]))
-  {
+  if ((0xe < (short)param_1->fieldB6[3]) && (0xe < (short)param_1->fieldB6[4])) {
     sVar7 = *(short *)(*(int *)&this->field_0x4 + 0x114);
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,2);
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
     sVar7 = sVar7 - (short)iVar3;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x37), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x37), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       uStack_4 = 1;
       if (pTVar4 == (TCityTask *)0x0) {
@@ -1138,15 +1117,15 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x37,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x37,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
-  if (0xe < (short)in_stack_00000004->fieldB6[2]) {
+  if (0xe < (short)param_1->fieldB6[2]) {
     sVar7 = *(short *)(*(int *)&this->field_0x4 + 0x112);
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,4);
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,4);
     sVar7 = sVar7 / 2 - (short)iVar3;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x39), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x39), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       uStack_4 = 2;
       if (pTVar4 == (TCityTask *)0x0) {
@@ -1156,15 +1135,15 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x39,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x39,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
-  if (0xe < (short)in_stack_00000004->fieldB6[8]) {
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,0);
-    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,1);
+  if (0xe < (short)param_1->fieldB6[8]) {
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,0);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,1);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x36), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x36), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       uStack_4 = 3;
       if (pTVar4 == (TCityTask *)0x0) {
@@ -1174,15 +1153,15 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x36,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x36,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
-  if (0xe < (short)in_stack_00000004->fieldB6[0xb]) {
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,2);
-    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,3);
+  if (0xe < (short)param_1->fieldB6[0xb]) {
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,3);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x38), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x38), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       uStack_4 = 4;
       if (pTVar4 == (TCityTask *)0x0) {
@@ -1192,15 +1171,15 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x38,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x38,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
-  if (0xe < (short)in_stack_00000004->fieldB6[9]) {
-    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,4);
-    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,5);
+  if (0xe < (short)param_1->fieldB6[9]) {
+    iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,4);
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,5);
     sVar7 = (short)iVar3 / 2 - (short)iVar5;
-    if ((0 < sVar7) && (cVar2 = (**(code **)(*in_stack_00000008 + 0x7c))(0x3a), cVar2 == '\0')) {
+    if ((0 < sVar7) && (cVar2 = (**(code **)(*param_2 + 0x7c))(0x3a), cVar2 == '\0')) {
       pTVar4 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       uStack_4 = 5;
       if (pTVar4 == (TCityTask *)0x0) {
@@ -1210,8 +1189,8 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
         pvVar6 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTVar4);
       }
       uStack_4 = 0xffffffff;
-      InitializeCityProductionQueueCommand(pvVar6,0x3a,in_stack_00000004,sVar7);
-      DispatchCityProductionQueueCommand(in_stack_00000008,pvVar6);
+      InitializeCityProductionQueueCommand(pvVar6,0x3a,param_1,sVar7);
+      DispatchCityProductionQueueCommand(param_2,pvVar6);
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -1230,21 +1209,22 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BFF80
 // GHIDRA_NAME TCityInteriorMinister::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int * param_1)
 
-void __thiscall TCityInteriorMinister::OrphanRetStub_0059add0(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanRetStub_0059add0(TCityInteriorMinister *this,int *param_1)
 
 {
   char cVar1;
   int iVar2;
+  TCityTask *this_00;
   short sVar3;
   undefined4 unaff_EBX;
   short sVar4;
   short nRequestedAmount;
-  void *this_00;
+  void *this_01;
   undefined4 *unaff_FS_OFFSET;
   void *unaff_retaddr;
-  TCityTask *pTStack00000004;
   int *in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -1272,16 +1252,16 @@ void __thiscall TCityInteriorMinister::OrphanRetStub_0059add0(TCityInteriorMinis
     if ((int)sVar4 < (int)sVar3 + (int)nRequestedAmount) {
       nRequestedAmount = sVar4 - sVar3;
     }
-    this_00 = (void *)0x0;
+    this_01 = (void *)0x0;
     if (0 < nRequestedAmount) {
-      pTStack00000004 = (TCityTask *)AllocateWithFallbackHandler(0x14);
+      this_00 = (TCityTask *)AllocateWithFallbackHandler(0x14);
       puStack_8 = (undefined1 *)0x0;
-      if (pTStack00000004 != (TCityTask *)0x0) {
-        this_00 = (void *)TCityTask::InitializeCityOrderCommandVtable(pTStack00000004);
+      if (this_00 != (TCityTask *)0x0) {
+        this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
       }
       puStack_8 = (undefined1 *)0xffffffff;
-      InitializeCityProductionQueueCommand(this_00,0x33,unaff_retaddr,nRequestedAmount);
-      DispatchCityProductionQueueCommand(in_stack_00000008,this_00);
+      InitializeCityProductionQueueCommand(this_01,0x33,unaff_retaddr,nRequestedAmount);
+      DispatchCityProductionQueueCommand(in_stack_00000008,this_01);
     }
   }
   *unaff_FS_OFFSET = unaff_EBX;
@@ -1290,10 +1270,11 @@ void __thiscall TCityInteriorMinister::OrphanRetStub_0059add0(TCityInteriorMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C0090
 // GHIDRA_NAME TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(TCity * param_1, void * param_2)
 
 void __thiscall
-TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinister *this)
+TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
+          (TCityInteriorMinister *this,TCity *param_1,void *param_2)
 
 {
   short sVar1;
@@ -1306,8 +1287,6 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinis
   short sVar6;
   void *this_01;
   undefined4 *unaff_FS_OFFSET;
-  TCity *in_stack_00000004;
-  void *in_stack_00000008;
   int local_40;
   uint local_3c;
   undefined4 local_2c;
@@ -1329,7 +1308,7 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinis
   local_24 = 0;
   local_20 = 0;
   do {
-    iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,sVar1);
+    iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,sVar1);
     iVar4 = iVar4 + iVar2;
     sVar1 = sVar1 + 1;
   } while (sVar1 < 7);
@@ -1355,8 +1334,8 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinis
             this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
           }
           uStack_4 = 0xffffffff;
-          InitializeCityProductionQueueCommand(this_01,sVar1 + 0x35,in_stack_00000004,sVar6);
-          DispatchCityProductionQueueCommand(in_stack_00000008,this_01);
+          InitializeCityProductionQueueCommand(this_01,sVar1 + 0x35,param_1,sVar6);
+          DispatchCityProductionQueueCommand(param_2,this_01);
         }
         sVar1 = sVar1 + 1;
         psVar5 = psVar5 + 1;
@@ -1376,9 +1355,8 @@ switchD_004c0143_caseD_0:
     case 1:
     case 3:
     case 5:
-      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot
-                        (in_stack_00000004,nBuildingSlotId + -1);
-      iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,nBuildingSlotId);
+      iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId + -1);
+      iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId);
       if ((int)(short)iVar2 < (int)(short)iVar4 / 2) goto switchD_004c0143_caseD_0;
     }
     if (bVar3) {
@@ -1397,10 +1375,11 @@ switchD_004c0143_caseD_0:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C04E0
 // GHIDRA_NAME TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void * param_1, void * param_2)
 
 void __thiscall
-TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinister *this)
+TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
+          (TCityInteriorMinister *this,void *param_1,void *param_2)
 
 {
   ushort uVar1;
@@ -1408,8 +1387,6 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinis
   TCityTask *this_00;
   void *this_01;
   undefined4 *unaff_FS_OFFSET;
-  void *in_stack_00000004;
-  void *in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -1428,18 +1405,19 @@ TCityInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TCityInteriorMinis
   }
   local_4 = 0xffffffff;
   InitializeCityProductionQueueCommand
-            (this_01,((((ushort)uVar2 ^ uVar1) - uVar1 & 3 ^ uVar1) - uVar1) + 0x19,
-             in_stack_00000004,1);
-  DispatchCityProductionQueueCommand(in_stack_00000008,this_01);
+            (this_01,((((ushort)uVar2 ^ uVar1) - uVar1 & 3 ^ uVar1) - uVar1) + 0x19,param_1,1);
+  DispatchCityProductionQueueCommand(param_2,this_01);
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C05A0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 param_1, int * param_2)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer
+          (TCityInteriorMinister *this,undefined4 param_1,int *param_2)
 
 {
   code *pcVar1;
@@ -1450,8 +1428,6 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   short sVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  int *in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -1460,7 +1436,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   puStack_8 = &LAB_0063132a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar5 = *in_stack_00000008;
+  iVar5 = *param_2;
   sVar4 = 1;
   pcVar1 = *(code **)(iVar5 + 0x48);
   iVar3 = (*pcVar1)();
@@ -1484,8 +1460,8 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
     pCommandQueue = (void *)TShipBuildingTask::ConstructTShipBuildingTaskBaseState(this_00);
   }
   uStack_4 = 0xffffffff;
-  InitializeOrderRecordFieldsFromArgs(0x2b,in_stack_00000004,*(undefined2 *)&this->field_0x32);
-  DispatchCityProductionQueueCommand(in_stack_00000008,pCommandQueue);
+  InitializeOrderRecordFieldsFromArgs(0x2b,param_1,*(undefined2 *)&this->field_0x32);
+  DispatchCityProductionQueueCommand(param_2,pCommandQueue);
   *(undefined2 *)&this->field_0x32 = 0;
 LAB_004c0649:
   *unaff_FS_OFFSET = uStack_c;
@@ -1494,17 +1470,17 @@ LAB_004c0649:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C0690
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void * param_1, void * param_2)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_
+          (TCityInteriorMinister *this,void *param_1,void *param_2)
 
 {
   short sVar1;
   TCityTask *this_00;
   void *this_01;
   undefined4 *unaff_FS_OFFSET;
-  void *in_stack_00000004;
-  void *in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -1521,8 +1497,8 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
     this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
   }
   local_4 = 0xffffffff;
-  InitializeCityProductionQueueCommand(this_01,sVar1 + 0x22,in_stack_00000004,1);
-  DispatchCityProductionQueueCommand(in_stack_00000008,this_01);
+  InitializeCityProductionQueueCommand(this_01,sVar1 + 0x22,param_1,1);
+  DispatchCityProductionQueueCommand(param_2,this_01);
   *(undefined2 *)&this->field_0x36 = 0xffff;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1530,17 +1506,17 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C0730
 // GHIDRA_NAME TCityInteriorMinister::DispatchNationStateEventCode10
-// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
+// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void * param_1, void * param_2)
 
-void __thiscall TCityInteriorMinister::DispatchNationStateEventCode10(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::DispatchNationStateEventCode10
+          (TCityInteriorMinister *this,void *param_1,void *param_2)
 
 {
   short sVar1;
   TCityTask *this_00;
   void *this_01;
   undefined4 *unaff_FS_OFFSET;
-  void *in_stack_00000004;
-  void *in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -1557,8 +1533,8 @@ void __thiscall TCityInteriorMinister::DispatchNationStateEventCode10(TCityInter
     this_01 = (void *)TCityTask::InitializeCityOrderCommandVtable(this_00);
   }
   local_4 = 0xffffffff;
-  InitializeCityProductionQueueCommand(this_01,sVar1 + 0x19,in_stack_00000004,1);
-  DispatchCityProductionQueueCommand(in_stack_00000008,this_01);
+  InitializeCityProductionQueueCommand(this_01,sVar1 + 0x19,param_1,1);
+  DispatchCityProductionQueueCommand(param_2,this_01);
   *(undefined2 *)&this->field_0x38 = 0xffff;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1566,9 +1542,10 @@ void __thiscall TCityInteriorMinister::DispatchNationStateEventCode10(TCityInter
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C07D0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(TCity * param_1)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,TCity *param_1)
 
 {
   TCity_slot_0x04_0x04 *pTVar1;
@@ -1597,7 +1574,6 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   code *unaff_ESI;
   int unaff_EDI;
   int *piVar17;
-  TCity *in_stack_00000004;
   int *piVar18;
   int iStack_a0;
   TCityInteriorMinister *local_9c;
@@ -1609,13 +1585,13 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   
   *(undefined2 *)&this->field_0x3e = 0;
   local_90 = 1;
-  sVar4 = *(short *)(*(int *)&in_stack_00000004->field_0x1d8 + 0x1c);
+  sVar4 = *(short *)(*(int *)&param_1->field_0x1d8 + 0x1c);
   iVar16 = local_90;
   iVar12 = local_88;
   while ((local_90 = iVar16, 1 < sVar4 &&
          (iVar6 = (**(code **)(**(int **)&this->field_0x28 + 0x28))(), iVar16 <= iVar6))) {
     sVar4 = (**(code **)(**(int **)&this->field_0x28 + 0x24))();
-    piVar17 = in_stack_00000004->orderSlotsE4[sVar4];
+    piVar17 = param_1->orderSlotsE4[sVar4];
     iVar6 = *piVar17;
     local_88 = iVar6;
     (**(code **)(iVar6 + 0xc))();
@@ -1624,16 +1600,15 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
     }
     pcStack_8c = *(code **)(iVar6 + 0x30);
     iVar6 = (*pcStack_8c)();
-    this = (TCityInteriorMinister *)in_stack_00000004->vftable[9].slot_0x04;
+    this = (TCityInteriorMinister *)param_1->vftable[9].slot_0x04;
     unaff_EBX = (code *)CONCAT22((short)((uint)unaff_EBX >> 0x10),(short)piVar17[0x12]);
     iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot
-                      (in_stack_00000004,*(short *)((int)piVar17 + 0x52));
+                      (param_1,*(short *)((int)piVar17 + 0x52));
     (*(code *)this)(unaff_EBX,iVar7);
     if ((short)piVar17[0x10] == 0) {
       iVar7 = CONCAT22(*(short *)((int)piVar17 + 0x52) >> 0xf,
                        *(undefined2 *)
-                        ((int)in_stack_00000004->orderSlotsE4 +
-                        *(short *)((int)piVar17 + 0x52) * 2 + 0x118));
+                        ((int)param_1->orderSlotsE4 + *(short *)((int)piVar17 + 0x52) * 2 + 0x118));
       if ((short)piVar17[0x12] == 8) {
         unaff_ESI = (code *)((iVar7 - iVar6) * 2);
         iVar6 = GenerateThreadLocalRandom15();
@@ -1644,8 +1619,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
         if ((short)iVar6 < (short)iVar16) {
           iVar7 = (*unaff_ESI)(iStack_a0,iVar16 - iVar6);
           if ((short)(iVar6 + iVar7) < (short)iVar16) {
-            (*in_stack_00000004->vftable[9].GetTCityClassNamePointer)
-                      (uVar13,iVar16 - (iVar6 + iVar7));
+            (*param_1->vftable[9].GetTCityClassNamePointer)(uVar13,iVar16 - (iVar6 + iVar7));
             iVar6 = *(int *)(unaff_EDI + 4);
             iVar7 = (int)(short)(ushort)bVar2;
             sVar4 = ((*(short *)(iVar6 + 0x10e + iVar7 * 2) -
@@ -1656,8 +1630,8 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
               *(short *)(unaff_EDI + 0x3e) = *(short *)(unaff_EDI + 0x3e) + sVar4;
             }
             if (sVar4 < (short)iVar16) {
-              *(short *)(&in_stack_00000004->field_0x278 + (short)iVar12 * 2) =
-                   *(short *)(&in_stack_00000004->field_0x278 + (short)iVar12 * 2) + 1;
+              *(short *)(&param_1->field_0x278 + (short)iVar12 * 2) =
+                   *(short *)(&param_1->field_0x278 + (short)iVar12 * 2) + 1;
             }
           }
         }
@@ -1691,8 +1665,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
             sVar4 = (short)*piVar9 - sVar4;
             piVar17 = unaff_EBP;
             if (0 < sVar4) {
-              (*in_stack_00000004->vftable[9].GetTCityClassNamePointer)
-                        (iVar12,CONCAT22((short)uVar13,sVar4));
+              (*param_1->vftable[9].GetTCityClassNamePointer)(iVar12,CONCAT22((short)uVar13,sVar4));
               sVar11 = (short)iVar12;
               iVar16 = (int)sVar11;
               sVar5 = *(short *)(*(int *)(unaff_EDI + 4) + 0x10e + iVar16 * 2) -
@@ -1705,8 +1678,8 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
                   *(short *)(unaff_EDI + 0x3e) = *(short *)(unaff_EDI + 0x3e) + sVar5;
                 }
                 if (sVar5 < sVar4) {
-                  *(short *)(&in_stack_00000004->field_0x278 + iVar16 * 2) =
-                       *(short *)(&in_stack_00000004->field_0x278 + iVar16 * 2) + 1;
+                  *(short *)(&param_1->field_0x278 + iVar16 * 2) =
+                       *(short *)(&param_1->field_0x278 + iVar16 * 2) + 1;
                 }
               }
             }
@@ -1721,13 +1694,13 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
       iVar6 = ((int)*(short *)((int)unaff_EBP + 0x3a) * (int)(short)iVar6) / 100;
     }
     (**(code **)(local_90 + 0x2c))(iVar6);
-    sVar4 = *(short *)(*(int *)&in_stack_00000004->field_0x1d8 + 0x1c);
+    sVar4 = *(short *)(*(int *)&param_1->field_0x1d8 + 0x1c);
     iVar16 = local_90 + 1;
   }
   iVar16 = *(int *)&this->field_0x4;
   uVar13 = (uint)(ushort)(*(short *)(iVar16 + 0xa6) - *(short *)(iVar16 + 0xa8));
-  if ((short)in_stack_00000004->fieldB6[5] < 5) {
-    uVar3 = (*in_stack_00000004->vftable[9].slot_0x04)
+  if ((short)param_1->fieldB6[5] < 5) {
+    uVar3 = (*param_1->vftable[9].slot_0x04)
                       (5,CONCAT22((short)((uint)iVar16 >> 0x10),*(undefined2 *)(iVar16 + 0x118)));
     iVar16 = CONCAT31(extraout_var,uVar3);
     uVar13 = uVar13 - iVar16;
@@ -1742,7 +1715,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
       iVar16 = 0x14 - iStack_94;
     }
     if (0 < (short)iVar16) {
-      uVar3 = (*in_stack_00000004->vftable[9].slot_0x04)(iVar12,iVar16);
+      uVar3 = (*param_1->vftable[9].slot_0x04)(iVar12,iVar16);
       iVar16 = CONCAT31(extraout_var_00,uVar3);
       iStack_94 = iStack_94 + iVar16;
     }
@@ -1759,15 +1732,15 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
         do {
           if (sVar4 == 0) goto LAB_004c0c1d;
           sVar5 = (**(code **)(**(int **)&this->field_0x28 + 0x24))(local_90);
-          piVar17 = in_stack_00000004->orderSlotsE4[sVar5];
+          piVar17 = param_1->orderSlotsE4[sVar5];
           iVar16 = *piVar17;
           (**(code **)(iVar16 + 0xc))();
           iVar12 = TCity::thunk_GetCityBuildingProductionValueBySlot
-                             (in_stack_00000004,*(short *)((int)piVar17 + 0x52));
+                             (param_1,*(short *)((int)piVar17 + 0x52));
           (**(code **)(iVar16 + 0x40))(auStack_84,iVar12);
           iVar16 = 0;
           ppcVar14 = &pcStack_8c;
-          pTVar1 = in_stack_00000004->vftable[9].slot_0x04;
+          pTVar1 = param_1->vftable[9].slot_0x04;
           uVar10 = extraout_EDX;
           do {
             (*pTVar1)(iVar16,CONCAT22((short)((uint)uVar10 >> 0x10),*(undefined2 *)ppcVar14));
@@ -1788,7 +1761,7 @@ LAB_004c0c1d:
   uVar8 = 0;
   while ((0 < sVar4 && ((short)uVar8 != (short)uVar13))) {
     iVar16 = 0;
-    pTVar1 = in_stack_00000004->vftable[9].slot_0x04;
+    pTVar1 = param_1->vftable[9].slot_0x04;
     uVar15 = uVar13;
     do {
       uVar3 = (*pTVar1)(iVar16,1);
@@ -1821,35 +1794,40 @@ void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C0DE0
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(short param_1, short param_2, short param_3)
 
-short __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+uint __thiscall
+TCityInteriorMinister::SetForeignMinisterReadyFlag14
+          (TCityInteriorMinister *this,short param_1,short param_2,short param_3)
 
 {
-  int *piVar1;
-  short sVar2;
-  short in_stack_00000004;
-  short in_stack_00000008;
-  short in_stack_0000000c;
+  short sVar1;
+  int *piVar2;
+  short sVar3;
+  undefined4 in_EDX;
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
+  undefined2 in_stack_0000000e;
   
-  piVar1 = *(int **)&this->field_0x4;
-  sVar2 = *(short *)((int)piVar1 + in_stack_00000004 * 2 + 0x10e) -
-          *(short *)((int)piVar1 + in_stack_00000004 * 2 + 0x13c);
-  if (sVar2 < in_stack_00000008) {
-    in_stack_00000008 = sVar2;
+  piVar2 = *(int **)&this->field_0x4;
+  sVar1 = *(short *)((int)piVar2 + param_1 * 2 + 0x13c);
+  sVar3 = *(short *)((int)piVar2 + param_1 * 2 + 0x10e) - sVar1;
+  if (sVar3 < param_2) {
+    _param_2 = CONCAT22(param_1 >> 0xf,sVar3);
   }
-  if (in_stack_0000000c < in_stack_00000008) {
-    in_stack_00000008 = in_stack_0000000c;
+  if (param_3 < (short)_param_2) {
+    _param_2 = _param_3;
   }
-  (**(code **)(*piVar1 + 0x114))();
-  return in_stack_00000008;
+  (**(code **)(*piVar2 + 0x114))(_param_1,CONCAT22((short)((uint)in_EDX >> 0x10),sVar1) + _param_2);
+  return _param_2 & 0xffff;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C0E50
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+short __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
 
 {
   TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *this_00;
@@ -1876,7 +1854,6 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
   int unaff_EDI;
   int *piVar11;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   int iVar12;
   code *pcVar13;
   code *pcVar14;
@@ -1891,7 +1868,7 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
   puStack_8 = &LAB_0063138a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar3 = (**(code **)(*in_stack_00000004 + 0x74))();
+  iVar3 = (**(code **)(*param_1 + 0x74))();
   if (*(int *)&this->field_0x4 == 0) {
     pcVar7 = (code *)0x0;
   }
@@ -1914,7 +1891,7 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
      (iVar9 = (**(code **)(unaff_EBX + 0x48))
                         (0x11,CONCAT22(extraout_var_01,*(short *)(iVar3 + 0x22)) - iVar9),
      (short)pcVar7 != 0)) {
-    *(short *)((int)in_stack_00000004 + 0x29a) = *(short *)((int)in_stack_00000004 + 0x29a) + 1;
+    *(short *)((int)param_1 + 0x29a) = *(short *)((int)param_1 + 0x29a) + 1;
   }
   iVar9 = CONCAT22((short)((uint)iVar9 >> 0x10),*(undefined2 *)(iVar3 + 0x24));
   pcVar14 = pcVar7;
@@ -1924,7 +1901,7 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
      ((**(code **)(unaff_EDI + 0x48))
                 (0x12,CONCAT22(extraout_var_02,*(short *)(iVar3 + 0x24)) - iVar4),
      (short)pcVar7 != 0)) {
-    *(short *)(in_stack_00000004 + 0xa7) = (short)in_stack_00000004[0xa7] + 1;
+    *(short *)(param_1 + 0xa7) = (short)param_1[0xa7] + 1;
   }
   iVar10 = CONCAT22((short)((uint)iVar3 >> 0x10),*(undefined2 *)(iVar3 + 0x28));
   iVar12 = 0x14;
@@ -1935,11 +1912,11 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
   iVar3 = ((int)pcVar7 - iVar3) - iVar4;
   if (((short)iVar4 < (short)iVar10) && ((*pcRam0000005a)(0x14,iVar10 - iVar4), (short)iVar3 != 0))
   {
-    *(short *)(in_stack_00000004 + 0xa8) = (short)in_stack_00000004[0xa8] + 1;
+    *(short *)(param_1 + 0xa8) = (short)param_1[0xa8] + 1;
   }
   psVar5 = (short *)(iVar9 + 0x1a);
   iVar9 = 0xd;
-  piVar11 = in_stack_00000004 + 0x34;
+  piVar11 = param_1 + 0x34;
   pcVar7 = pcRam00000092;
   do {
     sVar2 = (short)*piVar11;
@@ -2582,7 +2559,9 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   undefined2 extraout_var_02;
   undefined4 unaff_EBX;
   int iVar18;
+  undefined4 unaff_ESI;
   int iVar19;
+  undefined4 unaff_EDI;
   float *pfVar20;
   undefined4 uStack_f8;
   int iStack_f0;
@@ -2773,8 +2752,8 @@ LAB_004c237a:
          ((((&DAT_00650650)[*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar18)] !=
             '\0' && (sVar8 = TControl::thunk_LookupOrderCompatibilityMatrixValue
                                        ((TControl *)g_pDiplomacyTurnStateManager,
-                                        *(short *)(*(int *)&this->field_0x4 + 0xc),nTargetClass),
-                    sVar8 == 2)) &&
+                                        *(short *)(*(int *)&this->field_0x4 + 0xc),nTargetClass,
+                                        (short)unaff_EDI,(short)unaff_ESI), sVar8 == 2)) &&
           (pcVar1 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar18),
           *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x18 + iVar18) == -1)))) {
         cVar6 = *pcVar1;
@@ -3015,23 +2994,23 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C2D50
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int param_1, int param_2)
 
-void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::SetForeignMinisterReadyFlag14
+          (TCityInteriorMinister *this,int param_1,int param_2)
 
 {
   char cVar1;
   int iVar2;
   int iVar3;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
   iVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   if (iVar3 != 0) {
     while ((*(char *)(iVar2 + 0x4c) != '\0' ||
-           (('\v' < *(char *)(in_stack_00000004 + *(short *)(iVar2 + 0x14)) &&
-            ((cVar1 = *(char *)(in_stack_00000008 + *(short *)(iVar2 + 0x14)), '\a' < cVar1 ||
+           (('\v' < *(char *)(param_1 + *(short *)(iVar2 + 0x14)) &&
+            ((cVar1 = *(char *)(param_2 + *(short *)(iVar2 + 0x14)), '\a' < cVar1 ||
              (cVar1 < '\x03'))))))) {
       iVar2 = AdvanceLinkedListCursor();
       iVar3 = LinkedListCursorHasCurrent();
@@ -3046,9 +3025,11 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C2E10
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1, int param_2, int param_3)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_
+          (TCityInteriorMinister *this,int *param_1,int param_2,int param_3)
 
 {
   char cVar1;
@@ -3072,39 +3053,36 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   undefined2 extraout_var_06;
   undefined2 *puVar10;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
   undefined4 uVar12;
   undefined4 uStack_c;
   TTown *pTStack_8;
   undefined4 uStack_4;
   int nTileIndex;
   
-  iVar3 = in_stack_00000008;
+  iVar3 = param_2;
   uVar11 = (undefined2)((uint)in_EDX >> 0x10);
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   pTStack_8 = (TTown *)&LAB_0063141a;
   *unaff_FS_OFFSET = &uStack_c;
   nTileIndex = CONCAT22((short)((uint)uStack_c >> 0x10),*(short *)&this->field_0x3c);
-  cVar1 = *(char *)(in_stack_00000008 + *(short *)&this->field_0x3c);
+  cVar1 = *(char *)(param_2 + *(short *)&this->field_0x3c);
   if ((cVar1 == '\0') || ('\t' < cVar1)) {
     cVar4 = TDeluxeText::CanBuildPortAtTile((TDeluxeText *)g_pGlobalMapState,nTileIndex);
     nTileIndex = CONCAT31(extraout_var,cVar4);
     uVar11 = extraout_var_05;
     if (cVar4 == '\0') {
-      if (*(char *)(in_stack_0000000c + *(short *)&this->field_0x3c) < '\x03') {
+      if (*(char *)(param_3 + *(short *)&this->field_0x3c) < '\x03') {
         *(undefined2 *)&this->field_0x3c = 0xffff;
       }
       else {
         uVar6 = TraceDescendingTileScoreGradientToSource
-                          (*(short *)&this->field_0x3c,in_stack_0000000c,&stack0x00000008);
+                          (*(short *)&this->field_0x3c,param_3,&param_2);
         piVar7 = TCivToolbar::thunk_GetTileUnitEntryByOwner
                            ((TCivToolbar *)g_pGlobalMapState,(short)uVar6,
                             *(short *)(*(int *)&this->field_0x4 + 0xc));
         if (piVar7 == (int *)0x0) {
-          iVar3 = *in_stack_00000004;
+          iVar3 = *param_1;
           (**(code **)(iVar3 + 0x28))(uVar6);
           (**(code **)(iVar3 + 0x34))(7,uVar6);
         }
@@ -3119,23 +3097,22 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
                        CONCAT22(uVar11,*(undefined2 *)&this->field_0x3c));
     if ((cVar4 == '\0') || ((uVar8 = extraout_var_00, cVar1 < '\a' && (cVar1 != '\0')))) {
       uVar6 = TraceDescendingTileScoreGradientToSource
-                        (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x3c),iVar3,
-                         &stack0x00000008);
+                        (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x3c),iVar3,&param_2);
       uVar2 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + (short)uVar6 * 0x24);
       if (((uVar2 & 4) == 0) || ((uVar2 & 0x10) != 0)) {
-        iVar3 = *in_stack_00000004;
-        (**(code **)(iVar3 + 0x28))(in_stack_00000008);
+        iVar3 = *param_1;
+        (**(code **)(iVar3 + 0x28))(param_2);
         (**(code **)(iVar3 + 0x34))(5,uVar6);
       }
       else {
-        iVar3 = *in_stack_00000004;
+        iVar3 = *param_1;
         (**(code **)(iVar3 + 0x28))(uVar6);
         (**(code **)(iVar3 + 0x34))(6,uVar6);
       }
       goto LAB_004c2ffc;
     }
   }
-  iVar3 = *in_stack_00000004;
+  iVar3 = *param_1;
   (**(code **)(iVar3 + 0x28))(CONCAT22(uVar8,*(undefined2 *)&this->field_0x3c));
   if (cVar1 == '\x01') {
     uVar6 = CONCAT22(extraout_var_06,*(undefined2 *)&this->field_0x3c);
@@ -3180,9 +3157,11 @@ LAB_004c2ffc:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3170
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1, int param_2, int param_3, int param_4)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer
+          (TCityInteriorMinister *this,short param_1,int param_2,int param_3,int param_4)
 
 {
   short nTileIndex;
@@ -3203,10 +3182,6 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   int iVar11;
   undefined4 uVar12;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  int in_stack_00000010;
   int *local_34;
   int *local_30;
   int local_20;
@@ -3220,7 +3195,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   puStack_8 = &LAB_0063143a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = *(int *)(in_stack_00000008 + 0xc);
+  iVar1 = *(int *)(param_2 + 0xc);
   this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
   uVar9 = 0;
   local_4 = 0;
@@ -3252,8 +3227,8 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
     local_1c = 2;
     this_01 = (TDeluxeText *)g_pGlobalMapState;
     do {
-      if (local_20 - 1U < *(uint *)(in_stack_00000008 + 0xc)) {
-        psVar7 = (short *)(*(int *)(in_stack_00000008 + 4) + local_1c + -2);
+      if (local_20 - 1U < *(uint *)(param_2 + 0xc)) {
+        psVar7 = (short *)(*(int *)(param_2 + 4) + local_1c + -2);
       }
       else {
         psVar7 = (short *)0x0;
@@ -3261,13 +3236,11 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
       nTileIndex = *psVar7;
       iVar11 = (int)nTileIndex;
       if ((*(char *)(this_01->field0c + 5 + iVar11 * 0x24) == -1) &&
-         (((('\0' < *(char *)(in_stack_0000000c + iVar11) &&
-            (*(char *)(in_stack_0000000c + iVar11) < '\t')) ||
+         (((('\0' < *(char *)(param_3 + iVar11) && (*(char *)(param_3 + iVar11) < '\t')) ||
            (cVar5 = TDeluxeText::CanBuildPortAtTile
-                              (this_01,CONCAT22((short)((uint)in_stack_00000008 >> 0x10),nTileIndex)
-                              ), this_01 = (TDeluxeText *)g_pGlobalMapState, cVar5 != '\0')) ||
-          (('\x02' < *(char *)(in_stack_00000010 + iVar11) &&
-           (*(char *)(in_stack_00000010 + iVar11) < '\x06')))))) {
+                              (this_01,CONCAT22((short)((uint)param_2 >> 0x10),nTileIndex)),
+           this_01 = (TDeluxeText *)g_pGlobalMapState, cVar5 != '\0')) ||
+          (('\x02' < *(char *)(param_4 + iVar11) && (*(char *)(param_4 + iVar11) < '\x06')))))) {
         bVar4 = true;
         ComputeHexNeighborTileIndices(nTileIndex,local_18,*(char *)&this_01->ownerContext);
         psVar7 = local_18;
@@ -3286,7 +3259,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
           *(short *)(local_30 + 5) = nTileIndex;
           (**(code **)(*local_30 + 0x2c))();
           this_01 = (TDeluxeText *)g_pGlobalMapState;
-          if (*(short *)((int)local_30 + in_stack_00000004 * 2 + 0x1e) != 0) {
+          if (*(short *)((int)local_30 + param_1 * 2 + 0x1e) != 0) {
             (**(code **)(*local_34 + 0x14))(iVar11);
             this_01 = (TDeluxeText *)g_pGlobalMapState;
           }
@@ -3301,22 +3274,22 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   if (iVar11 != 0) {
     iVar10 = 1;
     uVar12 = 0xffffffff;
-    in_stack_00000004 = 0xffff;
+    param_1 = -1;
     if (0 < iVar11) {
       pcVar2 = *(code **)(iVar1 + 0x24);
       pTVar3 = this->vftable[0x1c].DeletingDestructTMinister;
-      in_stack_00000004 = 0xffff;
+      param_1 = -1;
       do {
         uVar8 = (*pcVar2)(iVar10);
         uVar6 = (*pTVar3)(uVar8);
         if ((short)uVar12 < (short)CONCAT31(extraout_var,uVar6)) {
-          in_stack_00000004 = (*pcVar2)(iVar10);
+          param_1 = (*pcVar2)(iVar10);
           uVar12 = CONCAT31(extraout_var,uVar6);
         }
         iVar10 = iVar10 + 1;
       } while (iVar10 <= iVar11);
     }
-    *(short *)&this->field_0x3c = in_stack_00000004;
+    *(short *)&this->field_0x3c = param_1;
   }
   if (local_30 != (int *)0x0) {
     (**(code **)(*local_30 + 0x1c))();
@@ -3330,9 +3303,10 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3490
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
 
-short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+short __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined4 param_1)
 
 {
   int iVar1;
@@ -3348,7 +3322,6 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
   int *piVar8;
   int *piVar9;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -3374,7 +3347,7 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
   }
   local_4 = 0xffffffff;
   InitializeFrogCityMarkerFields
-            (s_Bleah_006964d8,in_stack_00000004,1,
+            (s_Bleah_006964d8,param_1,1,
              CONCAT22(uVar7,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)));
   iVar4 = (**(code **)(*piVar8 + 0x74))();
   iVar1 = *piVar9;
@@ -3409,23 +3382,24 @@ short __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteri
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3620
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1, int param_2)
 
-int __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+int __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer
+          (TCityInteriorMinister *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
   int in_stack_0000000c;
   
-  return in_stack_0000000c * in_stack_00000004;
+  return in_stack_0000000c * param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3640
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
 undefined4 * __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
 
 {
   short sVar1;
@@ -3439,7 +3413,6 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
   undefined4 *puVar8;
   int iVar9;
   int unaff_retaddr;
-  int in_stack_00000004;
   int local_28;
   int iStack_24;
   int local_1c;
@@ -3452,7 +3425,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
   undefined1 local_e;
   undefined1 local_d;
   
-  iVar9 = *(int *)(in_stack_00000004 + 0xc);
+  iVar9 = *(int *)(param_1 + 0xc);
   sVar1 = *(short *)(*(int *)&this->field_0x4 + 0xc);
   local_14 = 1;
   local_13 = 1;
@@ -3478,8 +3451,8 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
   if (0 < iStack_24) {
     iVar7 = 2;
     do {
-      if (iVar5 - 1U < *(uint *)(in_stack_00000004 + 0xc)) {
-        psVar4 = (short *)(*(int *)(in_stack_00000004 + 4) + iVar7 + -2);
+      if (iVar5 - 1U < *(uint *)(param_1 + 0xc)) {
+        psVar4 = (short *)(*(int *)(param_1 + 4) + iVar7 + -2);
       }
       else {
         psVar4 = (short *)0x0;
@@ -3499,8 +3472,8 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
     if (0 < iStack_24) {
       local_28 = 2;
       do {
-        if (iVar9 - 1U < *(uint *)(in_stack_00000004 + 0xc)) {
-          psVar4 = (short *)(*(int *)(in_stack_00000004 + 4) + local_28 + -2);
+        if (iVar9 - 1U < *(uint *)(param_1 + 0xc)) {
+          psVar4 = (short *)(*(int *)(param_1 + 4) + local_28 + -2);
         }
         else {
           psVar4 = (short *)0x0;
@@ -3524,7 +3497,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
             psVar4 = psVar4 + 1;
             iVar7 = iVar7 + -1;
           } while (iVar7 != 0);
-          in_stack_00000004 = unaff_retaddr;
+          param_1 = unaff_retaddr;
           if (cVar6 != '\0') {
             unaff_EBX = unaff_EBX + -1;
             *(char *)((int)puVar3 + iVar5) = cVar6 + '\x01';
@@ -3543,10 +3516,10 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3910
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
 
 undefined4 * __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
 
 {
   char *pcVar1;
@@ -3561,7 +3534,6 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
   int iVar10;
   undefined4 *puVar11;
   int iVar12;
-  int in_stack_00000004;
   int local_24;
   int local_1c;
   short local_18;
@@ -3573,7 +3545,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
   short local_c [6];
   
   sVar2 = *(short *)(*(int *)&this->field_0x4 + 0xc);
-  iVar3 = *(int *)(in_stack_00000004 + 0xc);
+  iVar3 = *(int *)(param_1 + 0xc);
   local_14[2] = (&g_pCityOrderCapabilityState->field_0x273)[sVar2 * 0x1d] == '\x02';
   local_14[3] = (&g_pCityOrderCapabilityState->field_0x27b)[sVar2 * 0x1d] == '\x02';
   local_10 = (&g_pCityOrderCapabilityState->field_0x26d)[sVar2 * 0x1d] == '\x02';
@@ -3599,8 +3571,8 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
   if (0 < iVar3) {
     iVar10 = 2;
     do {
-      if (iVar12 - 1U < *(uint *)(in_stack_00000004 + 0xc)) {
-        psVar7 = (short *)(*(int *)(in_stack_00000004 + 4) + iVar10 + -2);
+      if (iVar12 - 1U < *(uint *)(param_1 + 0xc)) {
+        psVar7 = (short *)(*(int *)(param_1 + 4) + iVar10 + -2);
       }
       else {
         psVar7 = (short *)0x0;
@@ -3624,8 +3596,8 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
     if (0 < iVar3) {
       local_1c = 2;
       do {
-        if (iVar10 - 1U < *(uint *)(in_stack_00000004 + 0xc)) {
-          psVar7 = (short *)(*(int *)(in_stack_00000004 + 4) + local_1c + -2);
+        if (iVar10 - 1U < *(uint *)(param_1 + 0xc)) {
+          psVar7 = (short *)(*(int *)(param_1 + 4) + local_1c + -2);
         }
         else {
           psVar7 = (short *)0x0;
@@ -3671,9 +3643,10 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C3C00
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
 
 {
   TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar1;
@@ -3696,12 +3669,11 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   undefined2 extraout_var_11;
   undefined2 extraout_var_12;
   int iVar6;
-  int *in_stack_00000004;
   int iVar7;
   int iVar8;
   
   iVar6 = 0;
-  iVar3 = (**(code **)(*in_stack_00000004 + 0x74))();
+  iVar3 = (**(code **)(*param_1 + 0x74))();
   pTVar1 = this->vftable[0x23].GetTMinisterClassNamePointer;
   uVar2 = (*pTVar1)(0x11,CONCAT22(extraout_var_12,*(undefined2 *)(iVar3 + 0x22)),7);
   if ((short)CONCAT31(extraout_var,uVar2) < *(short *)(iVar3 + 0x22)) {
@@ -4750,70 +4722,76 @@ LAB_004c54ab:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C65D0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(CArchive * param_1)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer
+          (TCityInteriorMinister *this,CArchive *param_1)
 
 {
   undefined4 uVar1;
-  int iVar2;
+  CArchive *this_00;
+  CArchive *pCVar2;
   int iVar3;
-  undefined4 *puVar4;
-  int iVar5;
-  int *piVar6;
-  CArchive *in_stack_00000004;
+  int iVar4;
+  undefined4 *puVar5;
+  int iVar6;
+  int *piVar7;
   
-  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
-      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+  this_00 = param_1;
+  if ((~param_1->m_nMode & 1U) == 0) {
+    for (iVar3 = FUN_0061202e(); iVar3 != 0; iVar3 = iVar3 + -1) {
+      if ((~this_00->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&param_1,4);
       }
       else {
-        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&param_1,4);
       }
+      pCVar2 = param_1;
       uVar1 = *(undefined4 *)&this->field_0x8;
       if (*(int *)&this->field_0x10 == 0) {
-        iVar3 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
-        iVar5 = *(int *)&this->field_0x18;
-        puVar4 = (undefined4 *)(iVar3 + -8 + iVar5 * 0xc);
-        if (-1 < iVar5 + -1) {
+        iVar4 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar6 = *(int *)&this->field_0x18;
+        puVar5 = (undefined4 *)(iVar4 + -8 + iVar6 * 0xc);
+        if (-1 < iVar6 + -1) {
           do {
-            *puVar4 = *(undefined4 *)&this->field_0x10;
-            *(undefined4 **)&this->field_0x10 = puVar4;
-            puVar4 = puVar4 + -3;
-            iVar5 = iVar5 + -1;
-          } while (iVar5 != 0);
+            *puVar5 = *(undefined4 *)&this->field_0x10;
+            *(undefined4 **)&this->field_0x10 = puVar5;
+            puVar5 = puVar5 + -3;
+            iVar6 = iVar6 + -1;
+          } while (iVar6 != 0);
         }
       }
-      puVar4 = *(undefined4 **)&this->field_0x10;
-      *(undefined4 *)&this->field_0x10 = *puVar4;
-      puVar4[1] = uVar1;
-      *puVar4 = 0;
+      puVar5 = *(undefined4 **)&this->field_0x10;
+      *(undefined4 *)&this->field_0x10 = *puVar5;
+      puVar5[1] = uVar1;
+      *puVar5 = 0;
       *(int *)&this->field_0xc = *(int *)&this->field_0xc + 1;
-      puVar4[2] = 0;
-      puVar4[2] = in_stack_00000004;
+      puVar5[2] = 0;
+      puVar5[2] = pCVar2;
       if (*(undefined4 **)&this->field_0x8 == (undefined4 *)0x0) {
-        *(undefined4 **)&this->field_0x4 = puVar4;
+        *(undefined4 **)&this->field_0x4 = puVar5;
       }
       else {
-        **(undefined4 **)&this->field_0x8 = puVar4;
+        **(undefined4 **)&this->field_0x8 = puVar5;
       }
-      *(undefined4 **)&this->field_0x8 = puVar4;
+      *(undefined4 **)&this->field_0x8 = puVar5;
     }
   }
   else {
-    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
-    piVar6 = *(int **)&this->field_0x4;
-    if (piVar6 != (int *)0x0) {
+    TNetMgr::WriteCount((TNetMgr *)param_1,
+                        *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)&this->field_0xc);
+    piVar7 = *(int **)&this->field_0x4;
+    if (piVar7 != (int *)0x0) {
       do {
-        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        if ((~this_00->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(piVar7 + 2),4);
         }
         else {
-          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(piVar7 + 2),4);
         }
-        piVar6 = (int *)*piVar6;
-      } while (piVar6 != (int *)0x0);
+        piVar7 = (int *)*piVar7;
+      } while (piVar7 != (int *)0x0);
       return;
     }
   }
@@ -4822,16 +4800,16 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6740
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  undefined4 in_stack_00000004;
   
   uVar1 = *(undefined4 *)&this->field_0x8;
   if (*(int *)&this->field_0x10 == 0) {
@@ -4853,7 +4831,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
   *puVar3 = 0;
   *(int *)&this->field_0xc = *(int *)&this->field_0xc + 1;
   puVar3[2] = 0;
-  puVar3[2] = in_stack_00000004;
+  puVar3[2] = param_1;
   if (*(undefined4 **)&this->field_0x8 == (undefined4 *)0x0) {
     *(undefined4 **)&this->field_0x4 = puVar3;
     *(undefined4 **)&this->field_0x8 = puVar3;
@@ -4866,16 +4844,17 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C67E0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 param_1)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::GetTEventHandlerClassNamePointer
+          (TCityInteriorMinister *this,undefined4 param_1)
 
 {
   undefined4 uVar1;
   int iVar2;
   undefined4 *puVar3;
   int iVar4;
-  undefined4 in_stack_00000004;
   
   uVar1 = *(undefined4 *)&this->field_0x8;
   if (*(int *)&this->field_0x10 == 0) {
@@ -4897,7 +4876,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
   *puVar3 = 0;
   *(int *)&this->field_0xc = *(int *)&this->field_0xc + 1;
   puVar3[2] = 0;
-  puVar3[2] = in_stack_00000004;
+  puVar3[2] = param_1;
   if (*(undefined4 **)&this->field_0x8 == (undefined4 *)0x0) {
     *(undefined4 **)&this->field_0x4 = puVar3;
     *(undefined4 **)&this->field_0x8 = puVar3;
@@ -4910,18 +4889,18 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6880
 // GHIDRA_NAME TCityInteriorMinister::OrphanRetStub_004be6d0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(int param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-undefined4 __thiscall TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinister *this)
+undefined4 __thiscall
+TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinister *this,int param_1)
 
 {
   undefined4 *puVar1;
   int iVar2;
-  int in_stack_00000004;
   
-  iVar2 = in_stack_00000004 + -1;
+  iVar2 = param_1 + -1;
   if (*(int *)&this->field_0xc <= iVar2) {
     return _DAT_00000008;
   }
@@ -4945,17 +4924,17 @@ TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C68E0
 // GHIDRA_NAME TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this,int param_1)
 
 {
   undefined4 *puVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
   
-  iVar3 = in_stack_00000004 + -1;
+  iVar3 = param_1 + -1;
   if (iVar3 < *(int *)&this->field_0xc) {
     piVar2 = *(int **)&this->field_0x4;
     for (; iVar3 != 0; iVar3 = iVar3 + -1) {
@@ -5018,18 +4997,18 @@ void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C69E0
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(int param_1)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this)
+void __thiscall
+TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this,int param_1)
 
 {
   undefined4 *puVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
   
   for (piVar2 = *(int **)&this->field_0x4; piVar2 != (int *)0x0; piVar2 = (int *)*piVar2) {
-    if (piVar2[2] == in_stack_00000004) goto LAB_004c6a00;
+    if (piVar2[2] == param_1) goto LAB_004c6a00;
   }
   piVar2 = (int *)0x0;
 LAB_004c6a00:

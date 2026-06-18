@@ -58,15 +58,14 @@ TTownNameDialog::ConstructTTownNameDialogBaseState(TTownNameDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BB40
 // GHIDRA_NAME TTownNameDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTownNameDialog * __thiscall TTownNameDialog::_scalar_deleting_destructor_(TTownNameDialog *this)
+TTownNameDialog * __thiscall
+TTownNameDialog::_scalar_deleting_destructor_(TTownNameDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

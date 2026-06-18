@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3050
 // GHIDRA_NAME TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004b3050(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004b3050(byte param_1)
 
 TPopGrowthOrder * __thiscall
-TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *this)
+TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -33,17 +31,17 @@ TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8160
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(int param_1)
 
-void __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this)
+void __thiscall
+TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
   
-  *(int *)&this->field_0x8 = in_stack_00000004;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(int *)&this->field_0x8 = param_1;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 1;
   *(undefined2 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x10;
@@ -93,9 +91,10 @@ short __thiscall TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPopGrowthOrd
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8230
 // GHIDRA_NAME TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowthOrder *this)
+undefined4 __thiscall
+TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowthOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -105,15 +104,14 @@ undefined4 __thiscall TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowt
   char cVar5;
   undefined3 extraout_var;
   short sVar6;
-  short in_stack_00000004;
   
-  sVar6 = in_stack_00000004 - *(short *)&this->field_0x4;
+  sVar6 = param_1 - *(short *)&this->field_0x4;
   uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
-  if (((short)CONCAT31(extraout_var,uVar4) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+  if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
     cVar5 = '\0';
   }
   else {
-    *(short *)&this->field_0x4 = in_stack_00000004;
+    *(short *)&this->field_0x4 = param_1;
     cVar5 = '\x01';
   }
   if (cVar5 == '\0') {

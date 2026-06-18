@@ -68,31 +68,29 @@ void __thiscall CAmbitDocument::SetForeignMinisterReadyFlag14(CAmbitDocument *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00413A20
 // GHIDRA_NAME CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(undefined4 param_1)
 
 void __thiscall
-CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(CAmbitDocument *this)
+CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
+          (CAmbitDocument *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  RefreshBackdropOnInputMessages();
-  FUN_00606640(in_stack_00000004);
+  RefreshBackdropOnInputMessages(param_1);
+  FUN_00606640(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004145F0
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
-undefined4 __thiscall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this)
+undefined4 __thiscall
+CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  FUN_0060567e(in_stack_00000004);
-  if (in_stack_00000004 == 0) {
-    (*g_pGlobalUiRootController->vftable[0x15].GetTEventHandlerClassNamePointer)();
+  FUN_0060567e(param_1);
+  if (param_1 == 0) {
+    (*g_pGlobalUiRootController->vftable[0x15].GetTEventHandlerClassNamePointer)(0);
   }
   (*g_pGlobalUiRootController->vftable[0x15].GetTEventHandlerClassNamePointer)(1);
   return 1;
@@ -163,24 +161,23 @@ void __fastcall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606451
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
-undefined4 __thiscall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this)
+undefined4 __thiscall
+CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
-  iVar1 = *(int *)(in_stack_00000004 + 4);
+  iVar1 = *(int *)(param_1 + 4);
   if ((iVar1 == 0x200) || (iVar1 == 0xa0)) {
-    if ((this[1].m_pOuterUnknown == *(void **)(in_stack_00000004 + 0x14)) &&
-       ((this[1].m_xInnerUnknown == *(int *)(in_stack_00000004 + 0x18) &&
-        (iVar1 == this[1].m_xDispatch)))) {
+    if ((this[1].m_pOuterUnknown == *(void **)(param_1 + 0x14)) &&
+       ((this[1].m_xInnerUnknown == *(int *)(param_1 + 0x18) && (iVar1 == this[1].m_xDispatch)))) {
       return 0;
     }
-    this[1].m_pOuterUnknown = *(void **)(in_stack_00000004 + 0x14);
-    this[1].m_xInnerUnknown = *(int *)(in_stack_00000004 + 0x18);
-    this[1].m_xDispatch = *(int *)(in_stack_00000004 + 4);
+    this[1].m_pOuterUnknown = *(void **)(param_1 + 0x14);
+    this[1].m_xInnerUnknown = *(int *)(param_1 + 0x18);
+    this[1].m_xDispatch = *(int *)(param_1 + 4);
   }
   else if ((iVar1 == 0xf) || (iVar1 == 0x118)) {
     return 0;
@@ -190,10 +187,11 @@ undefined4 __thiscall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDoc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006067A2
 // GHIDRA_NAME CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(int param_1, undefined4 * param_2)
 
 undefined4 __thiscall
-CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive(CAmbitDocument *this)
+CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive
+          (CAmbitDocument *this,int param_1,undefined4 *param_2)
 
 {
   CAmbitDocument *pCVar1;
@@ -202,46 +200,41 @@ CAmbitDocument::SerializeNodeMapEntries_Key16Value32_WithArchive(CAmbitDocument 
   int iVar4;
   undefined3 extraout_var;
   undefined4 *puVar5;
-  int in_stack_00000004;
-  undefined4 *in_stack_00000008;
   HWND hWnd;
   undefined4 local_24 [7];
   CAmbitDocument *local_8;
   
-  if (in_stack_00000008 == (undefined4 *)0x0) {
+  if (param_2 == (undefined4 *)0x0) {
     return 0;
   }
   local_8 = this;
-  if (in_stack_00000004 != 0) {
-    if (in_stack_00000004 != 2) {
+  if (param_1 != 0) {
+    if (param_1 != 2) {
       return 0;
     }
-    iVar3 = FromHandle(*in_stack_00000008);
+    iVar3 = FromHandle(*param_2);
     if (((((iVar3 != 0) && (iVar3 = GetTopLevelFrame(), iVar3 != 0)) &&
          (iVar4 = IsTracking(), iVar4 != 0)) &&
         ((*(int *)(iVar3 + 0x50) != 0 &&
          (iVar3 = AfxGetMainWnd(), *(int *)&local_8->field_0x1c != 0)))) &&
-       (((in_stack_00000008[1] == 0x100 && (in_stack_00000008[2] == 0xd)) ||
-        (in_stack_00000008[1] == 0x202)))) {
+       (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
       hWnd = *(HWND *)(iVar3 + 0x1c);
       goto LAB_0060685d;
     }
   }
   iVar3 = AfxGetMainWnd();
-  if (((0x332 < DAT_006a7d54) || (iVar3 == 0)) ||
-     (iVar4 = FUN_006068e9(in_stack_00000008), iVar4 == 0)) {
-    if ((((in_stack_00000004 != 0) || (*(int *)&local_8->field_0x20 == 0)) ||
-        ((uint)in_stack_00000008[1] < 0x100)) ||
-       ((0x108 < (uint)in_stack_00000008[1] ||
-        (iVar3 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50), *(int *)(iVar3 + 0xbc) != 0))))
-    {
+  if (((0x332 < DAT_006a7d54) || (iVar3 == 0)) || (iVar4 = FUN_006068e9(param_2), iVar4 == 0)) {
+    if ((((param_1 != 0) || (*(int *)&local_8->field_0x20 == 0)) || ((uint)param_2[1] < 0x100)) ||
+       ((0x108 < (uint)param_2[1] ||
+        (iVar3 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c),
+        *(int *)(iVar3 + 0xbc) != 0)))) {
       return 0;
     }
     *(undefined4 *)(iVar3 + 0xbc) = 1;
     puVar5 = local_24;
     for (iVar4 = 7; pCVar1 = local_8, iVar4 != 0; iVar4 = iVar4 + -1) {
-      *puVar5 = *in_stack_00000008;
-      in_stack_00000008 = in_stack_00000008 + 1;
+      *puVar5 = *param_2;
+      param_2 = param_2 + 1;
       puVar5 = puVar5 + 1;
     }
     iVar4 = IsWindowEnabled();
@@ -340,9 +333,11 @@ void __thiscall CAmbitDocument::OrphanRetStub_0059add0(int param_1,int param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061852A
 // GHIDRA_NAME CAmbitDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(LPCSTR param_1, uint param_2, int param_3)
 
-int __thiscall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(CAmbitDocument *this)
+int __thiscall
+CAmbitDocument::OrphanCallChain_C11_I88_004874b0
+          (CAmbitDocument *this,LPCSTR param_1,uint param_2,int param_3)
 
 {
   int iVar1;
@@ -351,9 +346,6 @@ int __thiscall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(CAmbitDocument *
   uint uVar4;
   HWND hWnd;
   int *piVar5;
-  LPCSTR in_stack_00000004;
-  uint in_stack_00000008;
-  int in_stack_0000000c;
   CAmbitDocument *local_8;
   
   local_8 = this;
@@ -368,19 +360,19 @@ int __thiscall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(CAmbitDocument *
     }
   }
   iVar3 = *piVar5;
-  if (in_stack_0000000c != 0) {
-    *piVar5 = in_stack_0000000c + 0x30000;
+  if (param_3 != 0) {
+    *piVar5 = param_3 + 0x30000;
   }
-  if (((in_stack_00000008 & 0xf0) == 0) &&
-     ((uVar4 = in_stack_00000008 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
-    in_stack_00000008 = in_stack_00000008 | 0x30;
+  if (((param_2 & 0xf0) == 0) &&
+     ((uVar4 = param_2 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
+    param_2 = param_2 | 0x30;
   }
   AfxGetThreadState();
   hWnd = (HWND)0x0;
   if (iVar1 != 0) {
     hWnd = *(HWND *)(iVar1 + 0x1c);
   }
-  iVar1 = MessageBoxA(hWnd,in_stack_00000004,*(LPCSTR *)&this[1].field_0x24,in_stack_00000008);
+  iVar1 = MessageBoxA(hWnd,param_1,*(LPCSTR *)&this[1].field_0x24,param_2);
   *piVar5 = iVar3;
   if (local_8 != (CAmbitDocument *)0x0) {
     EnableWindow((HWND)local_8,1);
@@ -409,16 +401,17 @@ undefined4 __fastcall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(int param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006186B7
 // GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
 
-void __thiscall CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CAmbitDocument *this)
+void __thiscall
+CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (CAmbitDocument *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
   undefined1 local_108 [260];
   
   if (this[2].vftable != (CAmbitDocumentVtbl *)0x0) {
-    AfxFullPath(local_108,in_stack_00000004);
+    AfxFullPath(local_108,param_1);
     (**(code **)((this[2].vftable)->OnEndPrintPreview + 4))(local_108);
   }
   return;

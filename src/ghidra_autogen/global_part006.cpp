@@ -125,16 +125,16 @@ void WrapperFor_AllocateWithFallbackHandler_At0049cc60(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049CCA0
 // GHIDRA_NAME InitializeGlobalBackdropWindowWithDefaultBmp3B6
-// GHIDRA_PROTO undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()
+// GHIDRA_PROTO undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds/initializes global fallback backdrop window object (DAT_006A2050) and loads default bitmap id 0x3B6; tears down object if window creation fails.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Builds/initializes global fallback backdrop window object (DAT_006A2050) and loads default bitmap
    id 0x3B6; tears down object if window creation fails. */
 
-void InitializeGlobalBackdropWindowWithDefaultBmp3B6
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void InitializeGlobalBackdropWindowWithDefaultBmp3B6(int param_1)
 
 {
   int iVar1;
@@ -145,6 +145,8 @@ void InitializeGlobalBackdropWindowWithDefaultBmp3B6
   int *piVar5;
   undefined4 uVar6;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_0000000c;
+  undefined4 in_stack_00000010;
   undefined4 uStack00000018;
   int in_stack_00000020;
   undefined4 uVar7;
@@ -185,18 +187,19 @@ void InitializeGlobalBackdropWindowWithDefaultBmp3B6
     uVar8 = 0x90000000;
     uVar7 = 0;
     uVar3 = AfxRegisterWndClass(0,pHVar2,0,0);
-    iVar4 = CreateEx_608115(0,uVar3,uVar7,uVar8,uVar9,uVar10,unaff_ESI,param_3,uVar6,uVar11,uVar12);
+    iVar4 = CreateEx_608115(0,uVar3,uVar7,uVar8,uVar9,uVar10,unaff_ESI,in_stack_0000000c,uVar6,
+                            uVar11,uVar12);
   }
   if (iVar4 == 0) {
     if (DAT_006a2050 != (int *)0x0) {
       (**(code **)(*DAT_006a2050 + 4))(1);
     }
     DAT_006a2050 = (int *)0x0;
-    *unaff_FS_OFFSET = param_4;
+    *unaff_FS_OFFSET = in_stack_00000010;
     return;
   }
   UpdateWindow((HWND)DAT_006a2050[7]);
-  *unaff_FS_OFFSET = param_4;
+  *unaff_FS_OFFSET = in_stack_00000010;
   return;
 }
 
@@ -790,6 +793,7 @@ void __thiscall TranslateListRectsAndDropNonIntersectingEntries(int param_1,int 
   char cVar1;
   int *piVar2;
   int iVar3;
+  int *piVar4;
   undefined1 local_10 [16];
   
   if (param_1 != 0) {
@@ -803,9 +807,9 @@ void __thiscall TranslateListRectsAndDropNonIntersectingEntries(int param_1,int 
       cVar1 = IntersectRectWrapper(piVar2 + 7,&stack0x0000000c,local_10);
       if (cVar1 == '\0') {
         this = (TAutoGreatPower *)(*(int *)(param_1 + 0x24) + 4);
-        iVar3 = TAutoGreatPower::Find(this);
-        if (iVar3 != 0) {
-          TAutoGreatPower::RemoveAt_60217d(this);
+        piVar4 = (int *)TAutoGreatPower::Find(this,(int)piVar2,(undefined4 *)0x0);
+        if (piVar4 != (int *)0x0) {
+          TAutoGreatPower::RemoveAt_60217d(this,piVar4);
         }
         (**(code **)(*piVar2 + 0x1c))();
       }
@@ -2439,10 +2443,12 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short param_1)
 
 undefined4 __thiscall
 CreateTacticalBattleViewAndInitializeBattleSetup
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+          (int param_1,int param_2,int param_3,undefined4 param_4)
 
 {
+  undefined4 uVar1;
   TTacticalBattle *this;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -2452,7 +2458,11 @@ CreateTacticalBattleViewAndInitializeBattleSetup
   puStack_8 = &LAB_006300ea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  CreateTacticalBattleViewAndInitializeBattleSetup_Impl(param_4);
+  uVar1 = CreateTacticalBattleViewAndInitializeBattleSetup_Impl(param_4);
+  iVar2 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 + (short)param_4 * 0xa8);
+  if (0 < iVar2) {
+    iVar2 = iVar2 + 1;
+  }
   this = (TTacticalBattle *)AllocateWithFallbackHandler(0x78);
   local_4 = 0;
   if (this == (TTacticalBattle *)0x0) {
@@ -2464,9 +2474,10 @@ CreateTacticalBattleViewAndInitializeBattleSetup
   }
   local_4 = 0xffffffff;
   TArmyBattle::ConstructTArmyBattleBaseState((TArmyBattle *)this);
-  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8((TArmyPlayer *)this);
-  *(undefined4 *)(param_1 + 0x39c) = param_2;
-  *(undefined4 *)(param_1 + 0x3a0) = param_3;
+  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
+            ((TArmyPlayer *)this,param_2,param_3,uVar1,iVar2,param_4);
+  *(int *)(param_1 + 0x39c) = param_2;
+  *(int *)(param_1 + 0x3a0) = param_3;
   *(TTacticalBattle **)(param_1 + 0x3a4) = this;
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     NoOpCallbackRet4(this);
@@ -3249,8 +3260,8 @@ void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
-  undefined4 *puVar10;
-  int *piVar11;
+  int *piVar10;
+  undefined4 *puVar11;
   char *pcVar12;
   undefined4 *puVar13;
   uint uVar14;
@@ -3309,9 +3320,11 @@ void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2
       uVar6 = (*pTVar2)();
       iVar8 = GenerateThreadLocalRandom15();
       uVar6 = (*local_34->vftable[9].slot_0x04)(iVar8 % CONCAT31(extraout_var_00,uVar6) + 1);
-      iVar8 = TAutoGreatPower::Find((TAutoGreatPower *)&local_34->field_0x4);
-      if (iVar8 != 0) {
-        TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&local_34->field_0x4);
+      piVar10 = (int *)TAutoGreatPower::Find
+                                 ((TAutoGreatPower *)&local_34->field_0x4,
+                                  CONCAT31(extraout_var_01,uVar6),(undefined4 *)0x0);
+      if (piVar10 != (int *)0x0) {
+        TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&local_34->field_0x4,piVar10);
       }
       sVar7 = GetCityActionGateValueFromOrderTemplate();
       iVar16 = iVar16 - sVar7;
@@ -3323,43 +3336,43 @@ void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2
     sVar7 = *(short *)(param_3 + uVar15 * 2 + 0x24a) + (short)param_2.m_pchData;
     iVar16 = (int)sVar7;
     *(short *)(param_3 + uVar15 * 2 + 0x24a) = sVar7;
-    puVar10 = (undefined4 *)AllocateWithFallbackHandler(iVar16 * 0x2c);
-    if (puVar10 == (undefined4 *)0x0) {
-      puVar10 = (undefined4 *)0x0;
+    puVar11 = (undefined4 *)AllocateWithFallbackHandler(iVar16 * 0x2c);
+    if (puVar11 == (undefined4 *)0x0) {
+      puVar11 = (undefined4 *)0x0;
     }
     else if (-1 < iVar16 + -1) {
-      puVar13 = puVar10 + 1;
+      puVar13 = puVar11 + 1;
       do {
         *(undefined1 *)puVar13 = 0;
         puVar13 = puVar13 + 0xb;
         iVar16 = iVar16 + -1;
       } while (iVar16 != 0);
     }
-    *(undefined4 **)(param_3 + uVar15 * 4 + 0x250) = puVar10;
+    *(undefined4 **)(param_3 + uVar15 * 4 + 0x250) = puVar11;
     for (uVar14 = iVar8 * 0xb & 0x3fffffff; uVar14 != 0; uVar14 = uVar14 - 1) {
-      *puVar10 = *puVar17;
+      *puVar11 = *puVar17;
       puVar17 = puVar17 + 1;
-      puVar10 = puVar10 + 1;
+      puVar11 = puVar11 + 1;
     }
     for (iVar16 = 0; iVar16 != 0; iVar16 = iVar16 + -1) {
-      *(undefined1 *)puVar10 = *(undefined1 *)puVar17;
+      *(undefined1 *)puVar11 = *(undefined1 *)puVar17;
       puVar17 = (undefined4 *)((int)puVar17 + 1);
-      puVar10 = (undefined4 *)((int)puVar10 + 1);
+      puVar11 = (undefined4 *)((int)puVar11 + 1);
     }
     if (param_2.m_pchData != (char *)0x0) {
       local_2c = param_2.m_pchData;
       do {
-        piVar11 = (int *)InitializeLinkedListCursorFromOwnerHead();
+        piVar10 = (int *)InitializeLinkedListCursorFromOwnerHead();
         iVar16 = LinkedListCursorHasCurrent();
         if (iVar16 != 0) {
           local_30 = iVar8 * 0x2c;
           do {
-            if ((short)piVar11[0xd] == -0x56) {
-              *(undefined2 *)(piVar11 + 0xd) = 0;
+            if ((short)piVar10[0xd] == -0x56) {
+              *(undefined2 *)(piVar10 + 0xd) = 0;
               puVar18 = (undefined2 *)(local_30 + *(int *)(param_3 + uVar15 * 4 + 0x250));
               local_30 = local_30 + 0x2c;
               iVar8 = iVar8 + 1;
-              iVar16 = piVar11[1];
+              iVar16 = piVar10[1];
               puVar18[1] = 0xffaa;
               pcVar1 = (char *)(puVar18 + 2);
               *puVar18 = (short)iVar16;
@@ -3374,7 +3387,7 @@ void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2
               } while (iVar16 < 0x20);
               CString::CString(&param_2);
               local_4 = 1;
-              CString::AssignFromPtr(&param_2,(CString *)(piVar11 + 9));
+              CString::AssignFromPtr(&param_2,(CString *)(piVar10 + 9));
               iVar16 = 0;
               do {
                 cVar5 = param_2.m_pchData[iVar16];
@@ -3382,18 +3395,18 @@ void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2
                 if (cVar5 == '\0') break;
                 iVar16 = iVar16 + 1;
               } while (iVar16 < 0x20);
-              sVar7 = (short)piVar11[0xe];
+              sVar7 = (short)piVar10[0xe];
               *(undefined4 *)(puVar18 + 0x14) = 0x61726d79;
               puVar18[0x12] =
                    (sVar7 / 100 + (sVar7 >> 0xf)) -
                    (short)((longlong)(int)sVar7 * 0x51eb851f >> 0x3f);
-              iVar16 = *piVar11;
+              iVar16 = *piVar10;
               (**(code **)(iVar16 + 0x30))();
               (**(code **)(iVar16 + 0x1c))();
               local_4 = 0xffffffff;
               CString::~CString(&param_2);
             }
-            piVar11 = (int *)AdvanceLinkedListCursor();
+            piVar10 = (int *)AdvanceLinkedListCursor();
             iVar16 = LinkedListCursorHasCurrent();
           } while (iVar16 != 0);
         }
@@ -4530,7 +4543,7 @@ LAB_004b2693:
   else {
     this->vftable = (TLaborPoolVtbl *)&TPopulationMgrVtbl_0064f9b0;
   }
-  TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(this);
+  TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(this,param_1);
   *(TLaborPool **)(param_1 + 0x1d8) = this;
   puVar9 = (undefined4 *)(param_1 + 0xe4);
   for (iVar7 = 0x3d; iVar7 != 0; iVar7 = iVar7 + -1) {
@@ -5629,7 +5642,7 @@ void __fastcall DestroyTCityInteriorMinister_Impl(undefined4 *param_1)
 // GHIDRA_NAME InitializeCityInteriorMinister
 // GHIDRA_PROTO undefined InitializeCityInteriorMinister()
 
-void __fastcall InitializeCityInteriorMinister(TIndexAndRankList *param_1)
+void __thiscall InitializeCityInteriorMinister(TIndexAndRankList *param_1,undefined4 param_2)
 
 {
   undefined4 *puVar1;
@@ -5646,7 +5659,7 @@ void __fastcall InitializeCityInteriorMinister(TIndexAndRankList *param_1)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006311fc;
   *unaff_FS_OFFSET = &uStack_c;
-  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1);
+  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1,param_2);
   *(undefined2 *)&param_1->field_0x10 = 0;
   *(undefined2 *)&param_1->field_0x12 = 0;
   param_1[1].vftable = (TIndexAndRankListVtbl *)0x0;
@@ -5693,7 +5706,7 @@ void __fastcall InitializeCityInteriorMinister(TIndexAndRankList *param_1)
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
@@ -5757,10 +5770,14 @@ void __fastcall InitializeCityInteriorMinister(TIndexAndRankList *param_1)
   local_4 = 0xffffffff;
   *(undefined4 *)&param_1[0x10].field_0x8 = uVar3;
   InitializeCityInteriorMinister_Impl();
-  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
-  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
-  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
-  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+            (*(TFuzzyVar **)&param_1[0x10].field_0x8,0xccbebc20,0xc7c35000,0xc69c4000,0xc61c4000);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+            (*(TFuzzyVar **)&param_1[0x10].field_0x8,0xc66a6000,0xc59c4000,0xc59c4000,0x447a0000);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+            (*(TFuzzyVar **)&param_1[0x10].field_0x8,0,0x459c4000,0x461c4000,0x466a6000);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
+            (*(TFuzzyVar **)&param_1[0x10].field_0x8,0x461c4000,0x469c4000,0x49742400,0x4e6e6b28);
   *(undefined2 *)&param_1[0x12].field_0x12 = 0;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -6011,9 +6028,11 @@ void __thiscall UpdateMinisterProductionMetricsForResourceIndex(int *param_1,sho
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C4C4C
 // GHIDRA_NAME OrphanCallChain_C1_I20_004c4c4c
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I20_004c4c4c()
+// GHIDRA_PROTO undefined OrphanCallChain_C1_I20_004c4c4c(short param_1, int param_2)
 
-void OrphanCallChain_C1_I20_004c4c4c(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void OrphanCallChain_C1_I20_004c4c4c(short param_1,int param_2)
 
 {
   short *psVar1;
@@ -6255,7 +6274,7 @@ WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20(
 
 void UpdateCityViewCountControlAndRefreshSelection
                (code *param_1,undefined4 param_2,code *param_3,undefined4 param_4,int param_5,
-               undefined4 param_6,undefined4 param_7,LONG param_8,undefined4 param_9,
+               undefined4 param_6,undefined4 param_7,int param_8,undefined4 param_9,
                undefined4 param_10)
 
 {
@@ -6284,7 +6303,7 @@ void UpdateCityViewCountControlAndRefreshSelection
   (*param_3)(CONCAT22(extraout_var,
                       *(undefined2 *)(&unaff_ESI->field_0xa4 + *(short *)&unaff_ESI->field_0xa0 * 2)
                      ));
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,param_8);
   return;
 }
 
@@ -6294,7 +6313,7 @@ void UpdateCityViewCountControlAndRefreshSelection
 
 void UpdateCityViewCountControlAndRefreshSelectionAlt
                (undefined4 param_1,code *param_2,undefined4 param_3,code *param_4,undefined4 param_5
-               ,int param_6,undefined4 param_7,undefined4 param_8,LONG param_9,undefined4 param_10,
+               ,int param_6,undefined4 param_7,undefined4 param_8,int param_9,undefined4 param_10,
                undefined4 param_11)
 
 {
@@ -6317,7 +6336,7 @@ void UpdateCityViewCountControlAndRefreshSelectionAlt
   (*param_4)(CONCAT22(extraout_var,
                       *(undefined2 *)(&unaff_ESI->field_0xa4 + *(short *)&unaff_ESI->field_0xa0 * 2)
                      ));
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,param_9);
   return;
 }
 
@@ -6353,11 +6372,11 @@ TCivilianButton * AllocateUiClickablePictureResourceEntry_Vtbl643A40(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB9CD
 // GHIDRA_NAME UpdateUniversityCountControlAndRefreshView
-// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshView()
+// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshView(int param_1, undefined4 param_2, undefined4 param_3)
 
-void UpdateUniversityCountControlAndRefreshView
-               (undefined4 param_1,undefined4 param_2,LONG param_3,LONG param_4,int param_5,
-               LONG param_6,LONG param_7,LONG param_8,LONG param_9,LONG param_10)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void UpdateUniversityCountControlAndRefreshView(int param_1,undefined4 param_2,LONG param_3)
 
 {
   int iVar1;
@@ -6365,9 +6384,14 @@ void UpdateUniversityCountControlAndRefreshView
   code *unaff_EBP;
   TMapDialog *unaff_ESI;
   int *unaff_EDI;
-  undefined4 in_stack_00000040;
-  undefined4 in_stack_00000044;
-  undefined4 in_stack_00000048;
+  LONG in_stack_00000010;
+  int in_stack_00000014;
+  LONG in_stack_00000018;
+  LONG LStack0000001c;
+  LONG LStack00000020;
+  int iStack00000024;
+  LONG LStack00000028;
+  int in_stack_00000040;
   
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
   piVar2 = (int *)(**(code **)(*unaff_EDI + 0x94))();
@@ -6377,53 +6401,47 @@ void UpdateUniversityCountControlAndRefreshView
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
   }
   iVar1 = *piVar2;
-  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_5 + 4),0);
-  (**(code **)(iVar1 + 300))(&param_4);
-  param_8 = param_4;
-  param_9 = param_5;
-  param_7 = param_3;
-  param_10 = param_6;
-  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&param_7);
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(in_stack_00000014 + 4),0);
+  (**(code **)(iVar1 + 300))(&stack0x00000010);
+  LStack00000020 = in_stack_00000010;
+  iStack00000024 = in_stack_00000014;
+  LStack0000001c = param_3;
+  LStack00000028 = in_stack_00000018;
+  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&stack0x0000001c);
   thunk_InvalidateCityDialogRectRegion(&stack0x0000002c,1);
   (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,in_stack_00000040);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CBA03
 // GHIDRA_NAME UpdateUniversityCountControlAndRefreshViewAlt
-// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshViewAlt()
+// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshViewAlt(LONG param_1, LONG param_2, int param_3, LONG param_4, LONG param_5, LONG param_6, LONG param_7, LONG param_8, int param_9, undefined4 param_10, undefined4 param_11)
 
-void UpdateUniversityCountControlAndRefreshViewAlt(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void UpdateUniversityCountControlAndRefreshViewAlt
+               (LONG param_1,LONG param_2,int param_3,LONG param_4,LONG param_5,LONG param_6,
+               LONG param_7,LONG param_8,int param_9,LONG param_10,LONG param_11)
 
 {
   int iVar1;
   int *unaff_EBX;
   TMapDialog *unaff_ESI;
-  LONG in_stack_00000010;
-  LONG in_stack_00000014;
-  int in_stack_00000018;
-  LONG in_stack_0000001c;
-  LONG in_stack_00000020;
-  LONG in_stack_00000024;
-  LONG in_stack_00000028;
-  LONG in_stack_0000002c;
-  undefined4 in_stack_00000044;
-  undefined4 in_stack_00000048;
-  undefined4 in_stack_0000004c;
+  int in_stack_00000044;
   
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
   iVar1 = *unaff_EBX;
-  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(in_stack_00000018 + 4));
-  (**(code **)(iVar1 + 300))(&stack0x00000014);
-  in_stack_00000024 = in_stack_00000014;
-  in_stack_00000028 = in_stack_00000018;
-  in_stack_00000020 = in_stack_00000010;
-  in_stack_0000002c = in_stack_0000001c;
-  CopyRect((LPRECT)&stack0x00000030,(RECT *)&stack0x00000020);
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_6 + 4));
+  (**(code **)(iVar1 + 300))(&param_5);
+  param_9 = param_5;
+  param_10 = param_6;
+  param_8 = param_4;
+  param_11 = param_7;
+  CopyRect((LPRECT)&stack0x00000030,(RECT *)&param_8);
   thunk_InvalidateCityDialogRectRegion(&stack0x00000030,1);
   (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,in_stack_00000044);
   return;
 }
 
@@ -7092,7 +7110,7 @@ LAB_004ce31a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CE2C8
 // GHIDRA_NAME UpdateUniversityRequirementBadgeStateUntV
-// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateUntV()
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateUntV(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Updates university requirement badge states for untV and traV.
 // GHIDRA_COMMENT Algorithm:
@@ -7104,6 +7122,7 @@ LAB_004ce31a:
 // GHIDRA_COMMENT - void.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Updates university requirement badge states for untV and traV.
    Algorithm:
    1. Toggle untV using min(orderCount, availablePoolA) > 0.
@@ -7113,7 +7132,7 @@ LAB_004ce31a:
    Returns:
    - void. */
 
-void UpdateUniversityRequirementBadgeStateUntV(void)
+void UpdateUniversityRequirementBadgeStateUntV(int param_1,int param_2)
 
 {
   short sVar1;
@@ -7177,7 +7196,7 @@ LAB_004ce31a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CE341
 // GHIDRA_NAME UpdateUniversityRequirementBadgeStateTraV
-// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateTraV()
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateTraV(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Updates university requirement badge state for traV only.
 // GHIDRA_COMMENT Algorithm:
@@ -7189,6 +7208,7 @@ LAB_004ce31a:
 // GHIDRA_COMMENT - void.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Updates university requirement badge state for traV only.
    Algorithm:
    1. Compute available training capacity from selected order and workforce pool.
@@ -7198,7 +7218,7 @@ LAB_004ce31a:
    Returns:
    - void. */
 
-void UpdateUniversityRequirementBadgeStateTraV(void)
+void UpdateUniversityRequirementBadgeStateTraV(int param_1)
 
 {
   char cVar1;
@@ -7301,11 +7321,11 @@ TNoHilitePicture * CreateArmoryView(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CF46F
 // GHIDRA_NAME UpdateUniversitySpecialistCountControlAndRefreshView
-// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshView()
+// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshView(int param_1, undefined4 param_2, undefined4 param_3)
 
-void UpdateUniversitySpecialistCountControlAndRefreshView
-               (undefined4 param_1,LONG param_2,LONG param_3,int param_4,LONG param_5,LONG param_6,
-               LONG param_7,LONG param_8,LONG param_9)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void UpdateUniversitySpecialistCountControlAndRefreshView(int param_1,LONG param_2,LONG param_3)
 
 {
   int iVar1;
@@ -7313,9 +7333,13 @@ void UpdateUniversitySpecialistCountControlAndRefreshView
   code *unaff_EBP;
   TMapDialog *unaff_ESI;
   int *unaff_EDI;
-  undefined4 in_stack_0000003c;
-  undefined4 in_stack_00000040;
-  undefined4 in_stack_00000044;
+  int in_stack_00000010;
+  LONG in_stack_00000014;
+  LONG LStack00000018;
+  LONG LStack0000001c;
+  int iStack00000020;
+  LONG LStack00000024;
+  int in_stack_0000003c;
   
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
   piVar2 = (int *)(**(code **)(*unaff_EDI + 0x94))();
@@ -7325,47 +7349,53 @@ void UpdateUniversitySpecialistCountControlAndRefreshView
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb88);
   }
   iVar1 = *piVar2;
-  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_4 + 4),0);
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(in_stack_00000010 + 4),0);
   (**(code **)(iVar1 + 300))(&param_3);
-  param_7 = param_3;
-  param_8 = param_4;
-  param_6 = param_2;
-  param_9 = param_5;
-  CopyRect((LPRECT)&stack0x00000028,(RECT *)&param_6);
+  LStack0000001c = param_3;
+  iStack00000020 = in_stack_00000010;
+  LStack00000018 = param_2;
+  LStack00000024 = in_stack_00000014;
+  CopyRect((LPRECT)&stack0x00000028,(RECT *)&stack0x00000018);
   thunk_InvalidateCityDialogRectRegion(&stack0x00000028,1);
   (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,in_stack_0000003c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CF4A5
 // GHIDRA_NAME UpdateUniversitySpecialistCountControlAndRefreshViewAlt
-// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt()
+// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt(int param_1, undefined4 param_2, undefined4 param_3)
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
 void UpdateUniversitySpecialistCountControlAndRefreshViewAlt
-               (undefined4 param_1,undefined4 param_2,LONG param_3,LONG param_4,int param_5,
-               LONG param_6,LONG param_7,LONG param_8,LONG param_9,LONG param_10)
+               (int param_1,undefined4 param_2,LONG param_3)
 
 {
   int iVar1;
   int *unaff_EBX;
   TMapDialog *unaff_ESI;
-  undefined4 in_stack_00000040;
-  undefined4 in_stack_00000044;
-  undefined4 in_stack_00000048;
+  LONG in_stack_00000010;
+  int in_stack_00000014;
+  LONG in_stack_00000018;
+  LONG LStack0000001c;
+  LONG LStack00000020;
+  int iStack00000024;
+  LONG LStack00000028;
+  int in_stack_00000040;
   
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
   iVar1 = *unaff_EBX;
-  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_5 + 4));
-  (**(code **)(iVar1 + 300))(&param_4);
-  param_8 = param_4;
-  param_9 = param_5;
-  param_7 = param_3;
-  param_10 = param_6;
-  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&param_7);
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(in_stack_00000014 + 4));
+  (**(code **)(iVar1 + 300))(&stack0x00000010);
+  LStack00000020 = in_stack_00000010;
+  iStack00000024 = in_stack_00000014;
+  LStack0000001c = param_3;
+  LStack00000028 = in_stack_00000018;
+  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&stack0x0000001c);
   thunk_InvalidateCityDialogRectRegion(&stack0x0000002c,1);
   (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI,in_stack_00000040);
   return;
 }
 
@@ -8989,7 +9019,7 @@ void __thiscall InitializeNationStateIdentityAndOwnedRegionList(int param_1,unde
   else {
     InitializeRefCountedObjectBaseVtable();
     local_4 = CONCAT31(local_4._1_3_,4);
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   *(undefined4 **)(param_1 + 0x44) = puVar1;
@@ -9975,8 +10005,10 @@ void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(int *param_1,und
   int iVar6;
   int iVar7;
   TMapMgr *pTVar8;
+  undefined4 unaff_EDI;
   int iVar9;
   undefined4 *unaff_FS_OFFSET;
+  undefined2 uVar10;
   int local_20;
   int *local_1c;
   CString CStack_18;
@@ -10068,6 +10100,7 @@ void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(int *param_1,und
           (**(code **)(*local_1c + 0x14))(iVar7);
         }
       }
+      uVar10 = (undefined2)unaff_EDI;
       iVar9 = iVar9 + 1;
       iVar7 = iVar7 + 1;
       iVar6 = iVar6 + 0x24;
@@ -10087,7 +10120,7 @@ void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(int *param_1,und
     if (local_1c != (int *)0x0) {
       (**(code **)(*local_1c + 0x38))();
     }
-    thunk_EnsurePortZoneForTile((short)param_1[0x22]);
+    thunk_EnsurePortZoneForTile((short)param_1[0x22],uVar10);
     local_4._0_1_ = 1;
     CString::~CString(&CStack_18);
     local_4 = (uint)local_4._1_3_ << 8;
@@ -10477,7 +10510,7 @@ void __fastcall QueueMapActionMissionsForPortZoneCandidates(TGreatPower *param_1
       cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
                         (iVar3,CONCAT22(extraout_var_01,*(undefined2 *)&param_1->field_0xc));
       (&param_1[1].field_0xc)[iVar3] = cVar1 == '\0';
-      TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+      TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1,3,iVar3,0,-1);
       iVar6 = iVar6 + 1;
       iVar3 = (**(code **)(**(int **)&param_1->field_0x90 + 0x28))();
       uVar5 = extraout_var_00;
@@ -10500,13 +10533,14 @@ void __fastcall QueueMapActionMissionsForPortZoneCandidates(TGreatPower *param_1
   if (*(int *)(iVar3 + 0x30) == 0) {
     *(undefined4 *)(iVar3 + 0x30) = 1;
   }
+  iVar6 = **(int **)(iVar3 + 0x28);
   sVar2 = thunk_GetShortAtOffset14OrInvalid();
   *(undefined1 *)((int)param_1[1].needTargetByType + sVar2 + 0x50) = 1;
-  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1,3,-1,iVar6,-1);
   sVar2 = thunk_GetShortAtOffset14OrInvalid();
   *(undefined1 *)((int)param_1[1].needTargetByType + sVar2 + 0x50) = 1;
-  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
-  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1,3,-1,iVar3,-1);
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1,5,-1,0,-1);
   return;
 }
 
@@ -11080,6 +11114,7 @@ void __fastcall IterateLinkedListCursorAndRelinkNodeOwners_004ea990(int param_1)
   bool bVar1;
   int *piVar2;
   int iVar3;
+  int *piVar4;
   
   do {
     bVar1 = false;
@@ -11087,9 +11122,9 @@ void __fastcall IterateLinkedListCursorAndRelinkNodeOwners_004ea990(int param_1)
     iVar3 = LinkedListCursorHasCurrent();
     if (iVar3 != 0) {
       this = (TAutoGreatPower *)(*(int *)(param_1 + 0xb60) + 4);
-      iVar3 = TAutoGreatPower::Find(this);
-      if (iVar3 != 0) {
-        TAutoGreatPower::RemoveAt_60217d(this);
+      piVar4 = (int *)TAutoGreatPower::Find(this,(int)piVar2,(undefined4 *)0x0);
+      if (piVar4 != (int *)0x0) {
+        TAutoGreatPower::RemoveAt_60217d(this,piVar4);
       }
       (**(code **)(*piVar2 + 0x1c))();
       bVar1 = true;
@@ -11753,13 +11788,14 @@ void __fastcall DestructTDefenseMinisterAndMaybeFree_Impl(undefined4 *param_1)
 // GHIDRA_NAME InitializeTMinisterBaseOrderArrayMetrics
 // GHIDRA_PROTO undefined InitializeTMinisterBaseOrderArrayMetrics()
 
-void __fastcall InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1)
+void __thiscall
+InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1,undefined4 param_2)
 
 {
   undefined2 *puVar1;
   int iVar2;
   
-  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1);
+  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1,param_2);
   puVar1 = (undefined2 *)&param_1->field_0x14;
   *(undefined2 *)&param_1->field_0x10 = 0;
   *(undefined2 *)&param_1->field_0x12 = 0;

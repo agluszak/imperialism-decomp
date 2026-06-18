@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005355F0
 // GHIDRA_NAME TControlSeaZoneMission::DestroyTControlSeaZoneMission
-// GHIDRA_PROTO undefined __thiscall DestroyTControlSeaZoneMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTControlSeaZoneMission(byte param_1)
 
 TControlSeaZoneMission * __thiscall
-TControlSeaZoneMission::DestroyTControlSeaZoneMission(TControlSeaZoneMission *this)
+TControlSeaZoneMission::DestroyTControlSeaZoneMission(TControlSeaZoneMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTControlSeaZoneMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -167,18 +165,16 @@ TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539600
 // GHIDRA_NAME TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-// GHIDRA_PROTO undefined __thiscall HandleControlSeaZoneMissionActionType0Or3ForTargetPort(void)
+// GHIDRA_PROTO undefined __thiscall HandleControlSeaZoneMissionActionType0Or3ForTargetPort(int param_1, int param_2)
 
 undefined4 __thiscall
 TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-          (TControlSeaZoneMission *this)
+          (TControlSeaZoneMission *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
   int in_stack_0000000c;
   
-  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 3)) &&
-     (in_stack_0000000c == *(int *)(this + 0x14))) {
+  if (((param_1 == 0) || (param_1 == 3)) && (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
   return 0;

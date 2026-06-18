@@ -68,15 +68,14 @@ TOceanDialog * __thiscall TOceanDialog::ConstructTOceanDialogBaseState(TOceanDia
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565EE0
 // GHIDRA_NAME TOceanDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOceanDialog * __thiscall TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this)
+TOceanDialog * __thiscall
+TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -97,9 +96,11 @@ void __thiscall TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920(TOceanDialog *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005661D0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_005960c0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960c0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960c0(int * param_1, short * param_2, ushort * param_3, undefined2 * param_4)
 
-void __thiscall TOceanDialog::OrphanRetStub_005960c0(TOceanDialog *this)
+void __thiscall
+TOceanDialog::OrphanRetStub_005960c0
+          (TOceanDialog *this,int *param_1,short *param_2,ushort *param_3,undefined2 *param_4)
 
 {
   char cVar1;
@@ -108,33 +109,28 @@ void __thiscall TOceanDialog::OrphanRetStub_005960c0(TOceanDialog *this)
   int iVar4;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  int *in_stack_00000004;
-  short *in_stack_00000008;
-  ushort *in_stack_0000000c;
-  undefined2 *in_stack_00000010;
   
   uVar2 = *(short *)&this->field_0x7c +
-          (short)((int)((in_stack_00000004[1] >> 0x1f & 0xfU) + in_stack_00000004[1]) >> 4);
-  *in_stack_0000000c = uVar2;
-  iVar4 = *in_stack_00000004;
+          (short)((int)((param_1[1] >> 0x1f & 0xfU) + param_1[1]) >> 4);
+  *param_3 = uVar2;
+  iVar4 = *param_1;
   if ((uVar2 & 1) == 0) {
     iVar4 = iVar4 + 8;
   }
-  *in_stack_00000008 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 0xfU)) >> 4);
-  *in_stack_00000008 = *in_stack_00000008 + *(short *)&this->field_0x7e;
-  thunk_NormalizeWrappedMapCoord108x60();
-  *in_stack_00000010 = 2;
+  *param_2 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 0xfU)) >> 4);
+  *param_2 = *param_2 + *(short *)&this->field_0x7e;
+  thunk_NormalizeWrappedMapCoord108x60(param_2,param_3);
+  *param_4 = 2;
   if (*(short *)((int)&this->ownerContext[1].field34 + 2) == 0) {
     sVar3 = ComputeStridedRecordAddress6C
-                      (CONCAT22(extraout_var,*in_stack_00000008),
-                       CONCAT22(extraout_var_00,*in_stack_0000000c));
+                      (CONCAT22(extraout_var,*param_2),CONCAT22(extraout_var_00,*param_3));
     iVar4 = sVar3 * 0x24;
     if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar4) & 1) != 0) {
       cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar4 + 4);
       sVar3 = UiRuntimeContext::GetActiveNationId();
       if ((cVar1 == sVar3) ||
          ('\x06' < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar4))) {
-        *in_stack_00000010 = 1;
+        *param_4 = 1;
       }
     }
   }
@@ -193,22 +189,20 @@ void __thiscall TOceanDialog::OrphanRetStub_00596080(TOceanDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00566750
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_005966c0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(short param_1)
 
-void __thiscall TOceanDialog::OrphanRetStub_005966c0(TOceanDialog *this)
+void __thiscall TOceanDialog::OrphanRetStub_005966c0(TOceanDialog *this,short param_1)
 
 {
   uint uVar1;
-  short in_stack_00000004;
   int iStack_10;
   int iStack_c;
   int iStack_8;
   int iStack_4;
   
-  if (-1 < in_stack_00000004) {
-    uVar1 = (int)in_stack_00000004 / 0x6c;
-    iStack_10 = ((((int)in_stack_00000004 - (int)*(short *)&this->field_0x7e) + 0x6c) % 0x6c) * 0x10
-    ;
+  if (-1 < param_1) {
+    uVar1 = (int)param_1 / 0x6c;
+    iStack_10 = ((((int)param_1 - (int)*(short *)&this->field_0x7e) + 0x6c) % 0x6c) * 0x10;
     if ((uVar1 & 1) == 0) {
       iStack_10 = iStack_10 + -8;
     }
@@ -947,17 +941,16 @@ LAB_00566ad9:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00567FA0
 // GHIDRA_NAME TOceanDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3)
 
-void __thiscall TOceanDialog::OrphanTiny_ReturnZero_0048a730(TOceanDialog *this)
+void __thiscall
+TOceanDialog::OrphanTiny_ReturnZero_0048a730
+          (TOceanDialog *this,int param_1,short param_2,short param_3)
 
 {
   int iVar1;
   short sVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  short in_stack_00000008;
-  short in_stack_0000000c;
   undefined4 local_30;
   RECT local_2c;
   RECT local_1c;
@@ -969,14 +962,14 @@ void __thiscall TOceanDialog::OrphanTiny_ReturnZero_0048a730(TOceanDialog *this)
   puStack_8 = &LAB_00635aa8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_2c.left = (LONG)in_stack_0000000c;
-  local_2c.top = (LONG)in_stack_00000008;
+  local_2c.left = (LONG)param_3;
+  local_2c.top = (LONG)param_2;
   local_2c.right = local_2c.left + 0x10;
   local_2c.bottom = local_2c.top + 0x10;
   sVar2 = 0xe0;
   if (this->field_0x74 == '\0') {
     iVar1 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
-                          *(short *)(in_stack_00000004 + 6) * 0x24);
+                          *(short *)(param_1 + 6) * 0x24);
     if (0x17 < iVar1) {
       iVar1 = 0x17;
     }
@@ -1006,9 +999,11 @@ void __thiscall TOceanDialog::OrphanTiny_ReturnZero_0048a730(TOceanDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568120
 // GHIDRA_NAME TOceanDialog::DispatchReflectedControlMessageOrFallback
-// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(void)
+// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(short param_1, RECT * param_2)
 
-void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDialog *this)
+void __thiscall
+TOceanDialog::DispatchReflectedControlMessageOrFallback
+          (TOceanDialog *this,short param_1,RECT *param_2)
 
 {
   undefined uVar1;
@@ -1016,8 +1011,7 @@ void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDi
   int iVar2;
   short sVar3;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
-  RECT *in_stack_00000008;
+  undefined2 in_stack_00000006;
   undefined4 uStack_20;
   RECT RStack_1c;
   undefined4 uStack_c;
@@ -1028,7 +1022,7 @@ void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDi
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635ac8;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar3 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + in_stack_00000004 * 0x24);
+  sVar3 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
   if ((sVar3 < 0) || (0x17f < sVar3)) {
     iVar2 = 0;
   }
@@ -1036,17 +1030,17 @@ void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDi
     iVar2 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar3 * 0xa8);
   }
   if (iVar2 != 0) {
-    uVar1 = (*g_pGlobalMapState->vftable[0x24].GetTMapMgrClassNamePointer)();
+    uVar1 = (*g_pGlobalMapState->vftable[0x24].GetTMapMgrClassNamePointer)(_param_1);
     sVar3 = (short)CONCAT31(extraout_var,uVar1);
     if (this->field_0x74 == '\0') {
-      iVar2 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + in_stack_00000004 * 0x24);
+      iVar2 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + param_1 * 0x24);
       if (0x17 < iVar2) {
         iVar2 = 0x17;
       }
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
       uStack_4 = 0;
       SetQuickDrawFillColorFromPaletteIndex((&DAT_006985b8)[iVar2]);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(in_stack_00000008);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(param_2);
       uStack_4 = 0xffffffff;
       thunk_DispatchHandleMapLookupWithReadPtrProbe(uStack_20,0);
     }
@@ -1061,7 +1055,7 @@ void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDi
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(iVar2 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
-               &RStack_1c,in_stack_00000008,0x24,(astruct_19 *)0x0);
+               &RStack_1c,param_2,0x24,(astruct_19 *)0x0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -1070,9 +1064,9 @@ void __thiscall TOceanDialog::DispatchReflectedControlMessageOrFallback(TOceanDi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005682D0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596060
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(short param_1, RECT * param_2)
 
-void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
+void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short param_1,RECT *param_2)
 
 {
   astruct_17 *srcSurface;
@@ -1080,8 +1074,6 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
   int iVar2;
   short sVar3;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
-  RECT *in_stack_00000008;
   undefined4 local_34;
   RECT local_2c;
   RECT RStack_1c;
@@ -1093,7 +1085,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
   puStack_8 = &LAB_00635af8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + in_stack_00000004 * 0x24);
+  cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + param_1 * 0x24);
   if ((-1 < cVar1) && (cVar1 < '\x13')) {
     iVar2 = *(int *)(g_pStrategicMapViewSystem + 0x68c);
     sVar3 = cVar1 * 0x10;
@@ -1101,7 +1093,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
       local_4 = 0;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset();
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(param_2);
       puStack_8 = (undefined1 *)0xffffffff;
       thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
     }
@@ -1116,13 +1108,13 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
     srcSurface = (astruct_17 *)(iVar2 + 4);
     BlitRectWithOptionalTransparency
               (srcSurface,(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_2c,
-               in_stack_00000008,0x24,(astruct_19 *)0x0);
+               param_2,0x24,(astruct_19 *)0x0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
     if (cVar1 != '\x0e') {
-      RStack_1c.bottom = in_stack_00000008->top;
+      RStack_1c.bottom = param_2->top;
       RStack_1c.top = RStack_1c.bottom + -0x10;
-      RStack_1c.left = in_stack_00000008->left + -8;
-      RStack_1c.right = in_stack_00000008->left + 8;
+      RStack_1c.left = param_2->left + -8;
+      RStack_1c.right = param_2->left + 8;
       thunk_ApplyRectClipRegionToGlobalClipState(&RStack_1c);
       if (this->field_0x74 == '\0') {
         WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
@@ -1141,10 +1133,10 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
                 (srcSurface,(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_2c,
                  &RStack_1c,0x24,(astruct_19 *)0x0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
-      RStack_1c.bottom = in_stack_00000008->top;
+      RStack_1c.bottom = param_2->top;
       RStack_1c.top = RStack_1c.bottom + -0x10;
-      RStack_1c.left = in_stack_00000008->left + 8;
-      RStack_1c.right = in_stack_00000008->left + 0x18;
+      RStack_1c.left = param_2->left + 8;
+      RStack_1c.right = param_2->left + 0x18;
       thunk_ApplyRectClipRegionToGlobalClipState(&RStack_1c);
       if (this->field_0x74 == '\0') {
         WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
@@ -1171,41 +1163,40 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568640
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_005960e0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(short param_1, short * param_2, short * param_3)
 
-void __thiscall TOceanDialog::OrphanRetStub_005960e0(TOceanDialog *this)
+void __thiscall
+TOceanDialog::OrphanRetStub_005960e0(TOceanDialog *this,short param_1,short *param_2,short *param_3)
 
 {
   short sVar1;
   int iVar2;
-  short in_stack_00000004;
-  short *in_stack_0000000c;
   short *in_stack_00000010;
   
   sVar1 = *(short *)&this->field_0x7e;
-  iVar2 = (int)in_stack_00000004 / 0x6c;
-  *in_stack_0000000c = ((short)iVar2 - *(short *)&this->field_0x7c) * 0x10;
+  iVar2 = (int)param_1 / 0x6c;
+  *param_3 = ((short)iVar2 - *(short *)&this->field_0x7c) * 0x10;
   *in_stack_00000010 =
-       (short)((((int)in_stack_00000004 - (int)sVar1) + 0x6c) % 0x6c << 4) +
+       (short)((((int)param_1 - (int)sVar1) + 0x6c) % 0x6c << 4) +
        ((short)(char)~(byte)iVar2 & 1U) * -8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005687B0
 // GHIDRA_NAME TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(short param_1)
 
-undefined4 __thiscall TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialog *this)
+undefined4 __thiscall
+TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialog *this,short param_1)
 
 {
   short sVar1;
   short sVar2;
   short sVar3;
-  short in_stack_00000004;
   
-  sVar3 = (in_stack_00000004 / 0x6c + (in_stack_00000004 >> 0xf)) -
-          (short)((longlong)(int)in_stack_00000004 * 0x4bda12f7 >> 0x3f);
-  sVar2 = in_stack_00000004 % 0x6c;
+  sVar3 = (param_1 / 0x6c + (param_1 >> 0xf)) - (short)((longlong)(int)param_1 * 0x4bda12f7 >> 0x3f)
+  ;
+  sVar2 = param_1 % 0x6c;
   if (sVar2 < *(short *)&this->field_0x7e) {
     sVar2 = sVar2 + 0x6c;
   }
@@ -1221,41 +1212,39 @@ undefined4 __thiscall TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005688D0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(short param_1, short param_2)
 
-void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this)
+void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this,short param_1,short param_2)
 
 {
   short sVar1;
-  short in_stack_00000004;
-  short in_stack_00000008;
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined4 uStack_8;
   undefined4 uStack_4;
   
   if (g_pGlobalMapState->field_0x20 != '\0') {
-    if (in_stack_00000004 < 0x4d) {
-      if (in_stack_00000004 < 0) {
-        in_stack_00000004 = 0;
+    if (param_1 < 0x4d) {
+      if (param_1 < 0) {
+        param_1 = 0;
       }
     }
     else {
-      in_stack_00000004 = 0x4c;
+      param_1 = 0x4c;
     }
   }
-  *(short *)&this->field_0x7e = in_stack_00000004;
-  while (in_stack_00000004 < 0) {
+  *(short *)&this->field_0x7e = param_1;
+  while (param_1 < 0) {
     *(short *)&this->field_0x7e = *(short *)&this->field_0x7e + 0x6c;
-    in_stack_00000004 = *(short *)&this->field_0x7e;
+    param_1 = *(short *)&this->field_0x7e;
   }
   sVar1 = *(short *)&this->field_0x7e;
   while (0x6b < sVar1) {
     *(short *)&this->field_0x7e = *(short *)&this->field_0x7e + -0x6c;
     sVar1 = *(short *)&this->field_0x7e;
   }
-  *(short *)&this->field_0x7c = in_stack_00000008;
-  if (in_stack_00000008 < 0) {
+  *(short *)&this->field_0x7c = param_2;
+  if (param_2 < 0) {
     *(undefined2 *)&this->field_0x7c = 0;
   }
   if (0x20 < *(short *)&this->field_0x7c) {
@@ -1276,43 +1265,40 @@ void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005689F0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00594fc0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(short param_1)
 
-void __thiscall TOceanDialog::OrphanRetStub_00594fc0(TOceanDialog *this)
+void __thiscall TOceanDialog::OrphanRetStub_00594fc0(TOceanDialog *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  (*this->vftable[0x3c].slot_0x04)
-            ((int)in_stack_00000004 % 0x6c + -0x10,(int)in_stack_00000004 / 0x6c + -0xe);
+  (*this->vftable[0x3c].slot_0x04)((int)param_1 % 0x6c + -0x10,(int)param_1 / 0x6c + -0xe);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568A40
 // GHIDRA_NAME TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
-// GHIDRA_PROTO undefined __thiscall ApplyDirectionalNudgeAndRefreshDisplay(void)
+// GHIDRA_PROTO undefined __thiscall ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
 
-void __thiscall TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(TOceanDialog *this)
+void __thiscall
+TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(TOceanDialog *this,byte param_1)
 
 {
   undefined4 in_EAX;
   int iVar1;
   undefined4 unaff_ESI;
   int iVar2;
-  byte in_stack_00000004;
   
   iVar1 = CONCAT22((short)((uint)in_EAX >> 0x10),*(undefined2 *)&this->field_0x7e);
   iVar2 = CONCAT22((short)((uint)unaff_ESI >> 0x10),*(undefined2 *)&this->field_0x7c);
-  if ((in_stack_00000004 & 1) == 0) {
-    if ((in_stack_00000004 & 2) != 0) {
+  if ((param_1 & 1) == 0) {
+    if ((param_1 & 2) != 0) {
       iVar2 = iVar2 + 4;
     }
   }
   else {
     iVar2 = iVar2 + -4;
   }
-  if ((in_stack_00000004 & 4) == 0) {
-    if ((in_stack_00000004 & 8) != 0) {
+  if ((param_1 & 4) == 0) {
+    if ((param_1 & 8) != 0) {
       iVar1 = iVar1 + -4;
     }
   }
@@ -1343,15 +1329,15 @@ int __thiscall TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E(TOceanD
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593920
 // GHIDRA_NAME TOceanDialog::RequestAudioPresetChangeWithDeferredApply
-// GHIDRA_PROTO undefined __thiscall RequestAudioPresetChangeWithDeferredApply(void)
+// GHIDRA_PROTO undefined __thiscall RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
 
-void __thiscall TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this)
+void __thiscall
+TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this,int param_1,char param_2)
 
 {
   char cVar1;
-  undefined4 uVar2;
-  int in_stack_00000004;
-  char in_stack_00000008;
+  short sVar2;
+  undefined4 uVar3;
   
   if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
     cVar1 = thunk_IsTurnCooldownCounterActiveOrResetFlag();
@@ -1361,18 +1347,19 @@ void __thiscall TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDi
         *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
         return;
       }
-      if (in_stack_00000004 != *(short *)&this->field_0x74) {
-        if ((in_stack_00000008 == '\0') || (*(short *)&this->field_0x74 < 1)) {
-          *(short *)&this->field_0x74 = (short)in_stack_00000004;
-          TSimMgr::ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc);
+      if (param_1 != *(short *)&this->field_0x74) {
+        sVar2 = (short)param_1;
+        if ((param_2 == '\0') || (*(short *)&this->field_0x74 < 1)) {
+          *(short *)&this->field_0x74 = sVar2;
+          TSimMgr::ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc,(int)sVar2);
           ApplyAuxOutputVolumeFromScalar((int)*(short *)&g_pLocalizationTable->field_0x4e << 8);
           this->field_0x78 = 1;
         }
         else {
-          *(short *)&this->field_0x76 = (short)in_stack_00000004;
+          *(short *)&this->field_0x76 = sVar2;
           if (*(int *)&this->field_0x7c == 0) {
-            uVar2 = thunk_GetTickCountDiv16();
-            *(undefined4 *)&this->field_0x7c = uVar2;
+            uVar3 = thunk_GetTickCountDiv16();
+            *(undefined4 *)&this->field_0x7c = uVar3;
             ScheduleTimerSlotCallbackWithInterval(&LAB_00406dd4,6,0);
             return;
           }

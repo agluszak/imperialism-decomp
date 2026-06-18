@@ -45,16 +45,15 @@ CRuntimeClass * __thiscall TMiniShipLine::GetTLineDataClassNamePointer(TMiniShip
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C80
 // GHIDRA_NAME TMiniShipLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this)
+void __thiscall
+TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   TControlVtbl *pTVar1;
   TControl *this_00;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -74,8 +73,7 @@ void __thiscall TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this)
   }
   pTVar1 = *(TControlVtbl **)&this->field_0x10;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
   this_00[1].vftable = pTVar1;
   this_00->hasCommandTagResource = 0x22;
   *unaff_FS_OFFSET = local_c;

@@ -49,16 +49,14 @@ float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TTacticalUnit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5DC0
 // GHIDRA_NAME TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byte param_1)
 
 TTacticalUnit * __thiscall
-TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this)
+TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTTacticalUnitInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -107,15 +105,14 @@ void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E70
 // GHIDRA_NAME TTacticalUnit::DestructTTacticalUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTacticalUnitAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTacticalUnitAndMaybeFree(int param_1)
 
-void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this)
+void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
-  iVar1 = *(int *)&this->field_0x4 - in_stack_00000004;
+  iVar1 = *(int *)&this->field_0x4 - param_1;
   *(int *)&this->field_0x4 = iVar1;
   if (iVar1 < 1) {
     *(undefined4 *)&this->field_0x4 = 0;

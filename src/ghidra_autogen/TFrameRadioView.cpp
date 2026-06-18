@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FDF50
 // GHIDRA_NAME TFrameRadioView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFrameRadioView * __thiscall TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this)
+TFrameRadioView * __thiscall
+TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -54,21 +53,20 @@ void __thiscall TFrameRadioView::OrphanTiny_ReturnZero_0048a730(TFrameRadioView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE060
 // GHIDRA_NAME TFrameRadioView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this)
+void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,int param_1)
 
 {
   TFrameRadioViewVtbl *pTVar1;
   char cVar2;
-  undefined4 in_stack_00000004;
   
-  switch(in_stack_00000004) {
+  switch(param_1) {
   case 10:
     (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1f,this,0);
     return;
   default:
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
     break;
   case 0xc:
     if (this->field_0x64 == '\0') {
@@ -78,7 +76,7 @@ void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this)
         (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(1,0);
       }
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
     return;
   case 0x1f:
     pTVar1 = this->vftable;
@@ -101,17 +99,15 @@ void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE190
 // GHIDRA_NAME TFrameRadioView::OrphanCallChain_C2_I18_004fe190
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_004fe190(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_004fe190(char param_1, char param_2)
 
-void __thiscall TFrameRadioView::OrphanCallChain_C2_I18_004fe190(TFrameRadioView *this)
+void __thiscall
+TFrameRadioView::OrphanCallChain_C2_I18_004fe190(TFrameRadioView *this,char param_1,char param_2)
 
 {
   TFrameRadioViewVtbl *pTVar1;
-  char in_stack_00000004;
-  char in_stack_00000008;
   
-  if ((in_stack_00000004 != this->field_0x64) &&
-     (this->field_0x64 = in_stack_00000004, in_stack_00000008 != '\0')) {
+  if ((param_1 != this->field_0x64) && (this->field_0x64 = param_1, param_2 != '\0')) {
     pTVar1 = this->vftable;
     (*pTVar1[0x1c].slot_0x04)();
     (*pTVar1[0x27].slot_0x04)();

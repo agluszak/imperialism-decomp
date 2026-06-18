@@ -57,15 +57,14 @@ TTradeCluster * __thiscall TTradeCluster::ConstructTradeSellControlPanel(TTradeC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005870E0
 // GHIDRA_NAME TTradeCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeCluster * __thiscall TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this)
+TTradeCluster * __thiscall
+TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -158,9 +157,10 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005873E0
 // GHIDRA_NAME TTradeCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
+void __thiscall
+TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TTradeClusterVtbl *pTVar1;
@@ -183,13 +183,11 @@ void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
   char *pcVar9;
   int iVar10;
   int unaff_EBP;
-  undefined4 in_stack_00000004;
-  int iStack00000008;
   
   pTVar1 = this->vftable;
   uVar4 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
   piVar8 = (int *)CONCAT31(extraout_var,uVar4);
-  switch(in_stack_00000004) {
+  switch(param_1) {
   case 100:
     cVar5 = (*pTVar1[0x3b].slot_0x04)();
     if (cVar5 != '\0') {
@@ -230,14 +228,14 @@ void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
     }
     break;
   default:
-    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this);
+    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,param_1,param_2,param_3);
     break;
   case 0x67:
     (**(code **)(g_pUiRuntimeContext->vftable + 0x68))(0xffffffff);
     sVar6 = (**(code **)(g_pUiRuntimeContext->vftable + 0x54))();
     if (sVar6 == 3) {
       pcVar9 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-      iStack00000008 = 0x11;
+      param_2 = (void *)0x11;
       pcVar2 = *(code **)(*piVar8 + 0x94);
       do {
         piVar8 = (int *)(*pcVar2)(*(undefined4 *)pcVar9);
@@ -249,8 +247,8 @@ void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
           }
         }
         pcVar9 = pcVar9 + 4;
-        iStack00000008 = iStack00000008 + -1;
-      } while (iStack00000008 != 0);
+        param_2 = (void *)((int)param_2 + -1);
+      } while (param_2 != (void *)0x0);
       return;
     }
     break;
@@ -259,7 +257,7 @@ void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
     sVar6 = (**(code **)(g_pUiRuntimeContext->vftable + 0x54))();
     if (sVar6 == 4) {
       pcVar9 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-      iStack00000008 = 0x11;
+      param_2 = (void *)0x11;
       pcVar2 = *(code **)(*piVar8 + 0x94);
       do {
         piVar8 = (int *)(*pcVar2)(*(undefined4 *)pcVar9);
@@ -271,8 +269,8 @@ void __thiscall TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this)
           }
         }
         pcVar9 = pcVar9 + 4;
-        iStack00000008 = iStack00000008 + -1;
-      } while (iStack00000008 != 0);
+        param_2 = (void *)((int)param_2 + -1);
+      } while (param_2 != (void *)0x0);
       return;
     }
     break;

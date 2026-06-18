@@ -75,15 +75,14 @@ TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B410
 // GHIDRA_NAME TCivilianButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivilianButton * __thiscall TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this)
+TCivilianButton * __thiscall
+TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -91,23 +90,23 @@ TCivilianButton * __thiscall TCivilianButton::_scalar_deleting_destructor_(TCivi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B460
 // GHIDRA_NAME TCivilianButton::SetSelectionAndEnableByMappedValue
-// GHIDRA_PROTO undefined __thiscall SetSelectionAndEnableByMappedValue(void)
+// GHIDRA_PROTO undefined __thiscall SetSelectionAndEnableByMappedValue(int param_1)
 
-void __thiscall TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this)
+void __thiscall
+TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int param_1)
 
 {
   TCivilianButtonVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  int in_stack_00000004;
   
   *(undefined4 *)&this->field_0x60 = 0xc;
-  *(int *)&this->field_0x9c = in_stack_00000004;
-  if (in_stack_00000004 != 0) {
+  *(int *)&this->field_0x9c = param_1;
+  if (param_1 != 0) {
     pTVar1 = this->vftable;
     (*pTVar1[0x14].slot_0x04)(1,0);
     (*pTVar1[0x15].GetTEventHandlerClassNamePointer)(1,0);
-    uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)();
+    uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)(param_1);
     *(short *)&this->field_0x98 = (short)CONCAT31(extraout_var,uVar2);
     return;
   }

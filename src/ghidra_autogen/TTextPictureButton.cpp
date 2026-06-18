@@ -16,16 +16,14 @@ TTextPictureButton::GetTEventHandlerClassNamePointer(TTextPictureButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572670
 // GHIDRA_NAME TTextPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTextPictureButton * __thiscall
-TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this)
+TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTextPictureButtonAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

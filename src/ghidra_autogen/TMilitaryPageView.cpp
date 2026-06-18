@@ -60,16 +60,14 @@ TMilitaryPageView::ConstructTMilitaryPageViewBaseState(TMilitaryPageView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564950
 // GHIDRA_NAME TMilitaryPageView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TMilitaryPageView * __thiscall
-TMilitaryPageView::_scalar_deleting_destructor_(TMilitaryPageView *this)
+TMilitaryPageView::_scalar_deleting_destructor_(TMilitaryPageView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -98,7 +96,7 @@ void __thiscall TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920(TMilitaryPag
   LoadUiStringByGroupAndIndexToControlObject(0x2730);
   pTStack_c = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_10);
+            ((TToolBarCluster *)&pTStack_10,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   return;
 }

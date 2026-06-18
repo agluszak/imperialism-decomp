@@ -22,16 +22,14 @@ TIdleMeAnimation * __cdecl TIdleMeAnimation::CreateObject(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC950
 // GHIDRA_NAME TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ac950(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ac950(byte param_1)
 
 TIdleMeAnimation * __thiscall
-TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation *this)
+TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTIdleMeAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -61,13 +59,25 @@ CRuntimeClass * __thiscall TIdleMeAnimation::GetTAnimationClassNamePointer(TIdle
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC9C0
 // GHIDRA_NAME TIdleMeAnimation::ConstructTIdleMeAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTIdleMeAnimationBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTIdleMeAnimationBaseState(undefined4 param_1)
 
-void __thiscall TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this)
+void __thiscall
+TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this,undefined4 param_1)
 
 {
+  undefined4 uVar1;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  uVar1 = s_0TUATIdleMeAnimation_00695934._0_4_;
   s_0TUATIdleMeAnimation_00695934._0_4_ = s_0TUATIdleMeAnimation_00695934._0_4_ + 1;
-  TAnimation::ConstructTAnimationBaseState((TAnimation *)this);
+  local_10 = 0;
+  local_c = 0;
+  local_8 = 0;
+  local_4 = 0;
+  TAnimation::ConstructTAnimationBaseState((TAnimation *)this,param_1,&local_10,0,0,0,uVar1);
   TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
   return;
 }
@@ -83,7 +93,8 @@ void __thiscall TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree(TIdleMeAn
   
   cVar1 = (**(code **)(**(int **)&this->field_0x4 + 0x4c))(1);
   if ((cVar1 != '\0') && (this != (TIdleMeAnimation *)0x0)) {
-    TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator);
+    TBattleReportView::RemoveUiTransientRegistryObjectByTag
+              ((TBattleReportView *)g_pUiAnimator,*(int *)&this->field_0x18);
   }
   return;
 }

@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435640
 // GHIDRA_NAME TTradePageBuyView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TTradePageBuyView * __thiscall
-TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this)
+TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,9 +62,10 @@ TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD690
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTradePageBuyViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTradePageBuyViewBaseState(short param_1)
 
-void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this)
+void __thiscall
+TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,short param_1)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -78,7 +77,7 @@ void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePag
   TTradePageBuyViewVtbl *pTVar7;
   int iVar8;
   undefined4 *unaff_FS_OFFSET;
-  short in_stack_00000004;
+  undefined4 auStack_28 [2];
   undefined4 local_20;
   uint local_1c;
   undefined1 uStack_18;
@@ -93,18 +92,18 @@ void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePag
   *unaff_FS_OFFSET = &local_c;
   local_20 = 0xe0;
   local_1c = 0x24;
-  if (in_stack_00000004 == *(short *)&this->field_0x84) goto LAB_005bd863;
+  if (param_1 == *(short *)&this->field_0x84) goto LAB_005bd863;
   pTVar7 = this->vftable;
-  *(short *)&this->field_0x84 = in_stack_00000004;
+  *(short *)&this->field_0x84 = param_1;
   (*pTVar7[0x36].slot_0x04)();
-  if (in_stack_00000004 != -1) {
+  if (param_1 != -1) {
     pTVar1 = g_pNationInteractionStateManager->vftable;
     sVar4 = UiRuntimeContext::GetActiveNationId();
-    cVar3 = (*pTVar1[0xf].GetTTradeMgrClassNamePointer)((int)in_stack_00000004,(int)sVar4);
+    cVar3 = (*pTVar1[0xf].GetTTradeMgrClassNamePointer)((int)param_1,(int)sVar4);
     if (cVar3 == '\0') {
       pTVar1 = g_pNationInteractionStateManager->vftable;
       sVar4 = UiRuntimeContext::GetActiveNationId();
-      cVar3 = (*pTVar1[0xf].slot_0x04)((int)in_stack_00000004,(int)sVar4);
+      cVar3 = (*pTVar1[0xf].slot_0x04)((int)param_1,(int)sVar4);
       if (cVar3 != '\0') goto LAB_005bd73a;
     }
     else {
@@ -130,7 +129,7 @@ LAB_005bd73a:
       (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
       do {
         cVar3 = (*g_pNationInteractionStateManager->vftable[0xf].GetTTradeMgrClassNamePointer)
-                          ((int)in_stack_00000004,iVar8);
+                          ((int)param_1,iVar8);
         if (cVar3 != '\0') {
           pTVar6 = (TTextLine *)AllocateWithFallbackHandler(0x14);
           local_c = 1;
@@ -143,9 +142,9 @@ LAB_005bd73a:
             pTVar6->vftable = (TTextLineVtbl *)&TTradeBidNationLineVtbl_0066e4f0;
           }
           local_c = 0xffffffff;
-          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar6);
+          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar6,0,0,auStack_28);
           *(short *)&pTVar6->field_0x12 = (short)iVar8;
-          *(short *)&pTVar6->field_0x10 = in_stack_00000004;
+          *(short *)&pTVar6->field_0x10 = param_1;
           (**(code **)(**(int **)&this->field_0x7c + 0x30))(pTVar6);
         }
         iVar8 = iVar8 + 1;
@@ -163,16 +162,14 @@ LAB_005bd863:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD900
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree(byte param_1)
 
 TTradePageBuyView * __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this)
+TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTradePageBuyViewAndMaybeFree_Impl(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

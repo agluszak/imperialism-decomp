@@ -42,15 +42,14 @@ TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDE10
 // GHIDRA_NAME TDefenderMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TDefenderMinister * __thiscall TDefenderMinister::DeletingDestructTMinister(TDefenderMinister *this)
+TDefenderMinister * __thiscall
+TDefenderMinister::DeletingDestructTMinister(TDefenderMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDefenderMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -58,17 +57,17 @@ TDefenderMinister * __thiscall TDefenderMinister::DeletingDestructTMinister(TDef
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDF20
 // GHIDRA_NAME TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(int param_1)
 
 void __thiscall
-TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(TDefenderMinister *this)
+TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
+          (TDefenderMinister *this,int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -77,8 +76,8 @@ TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(TDefender
   piStack_8 = (int *)&LAB_0063287a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(8,4,1);
-  *(undefined2 *)(in_stack_00000004 + 100) = 1;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(8,4,1);
+  *(undefined2 *)(param_1 + 100) = 1;
   iVar2 = 3;
   do {
     pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
@@ -88,7 +87,8 @@ TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(TDefender
     else {
       pTVar1 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar1);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,2,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);

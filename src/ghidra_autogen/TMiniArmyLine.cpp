@@ -45,9 +45,10 @@ CRuntimeClass * __thiscall TMiniArmyLine::GetTLineDataClassNamePointer(TMiniArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA960
 // GHIDRA_NAME TMiniArmyLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this)
+void __thiscall
+TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   TControlVtbl *pTVar1;
@@ -56,8 +57,6 @@ void __thiscall TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this)
   int *piVar4;
   short unaff_SI;
   int *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   TView *pTStack_48;
   TControl *pTStack_44;
   CString CStack_34;
@@ -95,13 +94,12 @@ void __thiscall TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this)
   pTStack_44 = (TControl *)0x0;
   pTStack_48 = (TView *)0x5;
   local_4 = -1;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008,&this->field_0x8,5);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5);
   pTVar3[1].vftable = pTVar1;
   pTVar3->hasCommandTagResource = 0x22;
   pTStack_44 = pTVar3;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_48);
+            ((TToolBarCluster *)&pTStack_48,PTR_g_szEmptyString_0064cb18);
   InitializeAndRunMainRoutine();
   pTStack_44 = (TControl *)0x4aaa05;
   cVar2 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();

@@ -31,15 +31,13 @@ TRadioText * __thiscall TRadioText::ConstructSelectableTextOptionEntry(TRadioTex
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043DAA0
 // GHIDRA_NAME TRadioText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *this)
+TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TStaticText::~TStaticText((TStaticText *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

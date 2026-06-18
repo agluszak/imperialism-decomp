@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA360
 // GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO undefined __thiscall SetArmyUnitLineActiveFlagAndNotify(void)
+// GHIDRA_PROTO undefined __thiscall SetArmyUnitLineActiveFlagAndNotify(char param_1)
 
-void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this)
+void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (this[4].field_0x14 != in_stack_00000004) {
-    this[4].field_0x14 = in_stack_00000004;
+  if (this[4].field_0x14 != param_1) {
+    this[4].field_0x14 = param_1;
     (*this->vftable[0x39].slot_0x04)();
   }
   return;
@@ -21,15 +19,14 @@ void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564F90
 // GHIDRA_NAME TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00564f90(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_1)
 
-TShipLine * __thiscall TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(TShipLine *this)
+TShipLine * __thiscall
+TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(TShipLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -77,23 +74,15 @@ CRuntimeClass * __thiscall TShipLine::GetTLineDataClassNamePointer(TShipLine *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
 // GHIDRA_NAME TShipLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
 
-void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
+void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this,int param_1)
 
 {
   TView *this_00;
   TArmyCheckBox *this_01;
   int iVar1;
-  undefined4 extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  TView *pTStack_54;
-  undefined4 *puStack_50;
-  TView **ppTStack_4c;
-  undefined1 *puStack_48;
-  undefined1 *puStack_44;
-  undefined4 uStack_40;
   CString CStack_3c;
   TView *local_24;
   undefined4 local_20;
@@ -109,9 +98,8 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_1c = *(undefined4 *)(in_stack_00000004 + 0x84);
+  local_1c = *(undefined4 *)(param_1 + 0x84);
   CStack_3c.m_pchData = (char *)0x68;
-  uStack_40 = 0x565133;
   this_00 = (TView *)AllocateWithFallbackHandler();
   local_4 = (TClickZone *)0x0;
   if (this_00 == (TView *)0x0) {
@@ -126,16 +114,11 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
   local_24 = *(TView **)&this->field_0x10;
   iVar1 = *(int *)&this->field_0x18;
   CStack_3c.m_pchData = (char *)0x0;
-  uStack_40 = 5;
-  puStack_48 = &this->field_0x8;
-  puStack_44 = (undefined1 *)0x5;
-  pTStack_54 = (TView *)0x0;
   local_4 = (TClickZone *)0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
   CStack_3c.m_pchData = (char *)0x94;
   this_00[1].vftable = (TViewVtbl *)local_24;
   this_00[1].field04 = iVar1;
-  uStack_40 = 0x565199;
   this_01 = (TArmyCheckBox *)AllocateWithFallbackHandler();
   local_4 = (TClickZone *)0x1;
   if (this_01 == (TArmyCheckBox *)0x0) {
@@ -155,41 +138,23 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
   local_20 = 0x2d;
   CStack_3c.m_pchData =
        (char *)(int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)&this->field_0x10 + 4) * 2);
-  uStack_40 = local_1c;
-  puStack_44 = (undefined1 *)0x5;
-  ppTStack_4c = &local_24;
-  puStack_48 = (undefined1 *)0x5;
-  puStack_50 = &local_14;
   local_14 = 0;
   local_10 = (undefined1 *)0x0;
-  pTStack_54 = this_00;
-  TArmyCheckBox::ConstructTArmyCheckBoxBaseState(this_01);
+  TArmyCheckBox::ConstructTArmyCheckBoxBaseState(this_01,this_00,&local_14,&local_24,5,5);
   this_01->controlTag = 0x63686563;
   *(undefined4 *)&this_01->field_0x60 = 4;
   CStack_3c.m_pchData = (char *)0x0;
-  uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),
-                       *(undefined1 *)(*(int *)&this->field_0x14 + 0xc));
-  puStack_44 = (undefined1 *)0x565245;
   (*this_01->vftable[0x39].GetTEventHandlerClassNamePointer)();
-  puStack_44 = (undefined1 *)0x56524e;
   CString::CString((CString *)&stack0xffffffd0);
-  puStack_44 = (undefined1 *)0x88;
   uStack_c = 2;
-  puStack_48 = (undefined1 *)0x565260;
   local_4 = (TClickZone *)AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
   if (local_4 == (TClickZone *)0x0) {
     iVar1 = 0;
   }
   else {
-    puStack_44 = (undefined1 *)0x565277;
     iVar1 = TClickZone::thunk_ConstructUiCommandTagResourceEntry(local_4);
   }
-  puStack_44 = (undefined1 *)0x0;
-  puStack_48 = (undefined1 *)0x4;
-  puStack_50 = &local_1c;
-  ppTStack_4c = (TView **)0x4;
-  pTStack_54 = (TView *)&local_24;
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
@@ -197,17 +162,11 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
   local_20 = 0;
   thunk_InitializeUiResourceEntryFrameAndParent(0,this_00);
   *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
-  puStack_44 = &stack0xffffffd0;
-  puStack_48 = (undefined1 *)0x4;
-  ppTStack_4c = (TView **)0x2746;
-  puStack_50 = (undefined4 *)0x5652d7;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  local_10 = (undefined1 *)&pTStack_54;
-  puStack_50 = (undefined4 *)iVar1;
+  local_10 = &stack0xffffffac;
   thunk_AssignStringSharedRefAndReturnThis(&CStack_3c);
   InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
-  puStack_50 = (undefined4 *)0x565302;
   CString::~CString(&CStack_3c);
   *unaff_FS_OFFSET = local_20;
   return;

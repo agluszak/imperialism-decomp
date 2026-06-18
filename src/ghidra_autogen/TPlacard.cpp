@@ -58,15 +58,13 @@ TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA40
 // GHIDRA_NAME TPlacard::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this)
+TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -90,25 +88,25 @@ void __thiscall TPlacard::OrphanLeaf_NoCall_Ins07_004d8920(TPlacard *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BB50
 // GHIDRA_NAME TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(short param_1, char param_2)
 
-void __thiscall TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(TPlacard *this)
+void __thiscall
+TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
+          (TPlacard *this,short param_1,char param_2)
 
 {
-  short in_stack_00000004;
-  char in_stack_00000008;
   RECT local_20;
   tagRECT tStack_10;
   
-  if (in_stack_00000004 != *(short *)&this->field_0x90) {
-    if (in_stack_00000004 == 0) {
-      (*this->vftable[0x14].slot_0x04)(0,(int)in_stack_00000008);
+  if (param_1 != *(short *)&this->field_0x90) {
+    if (param_1 == 0) {
+      (*this->vftable[0x14].slot_0x04)(0,(int)param_2);
     }
     else if (*(short *)&this->field_0x90 == 0) {
-      (*this->vftable[0x14].slot_0x04)(1,(int)in_stack_00000008);
+      (*this->vftable[0x14].slot_0x04)(1,(int)param_2);
     }
-    *(short *)&this->field_0x90 = in_stack_00000004;
-    if (in_stack_00000008 != '\0') {
+    *(short *)&this->field_0x90 = param_1;
+    if (param_2 != '\0') {
       local_20.top = this->field38 + -0xc;
       local_20.left = (LONG)(short)((short)(this->field34 / 2) + -10);
       local_20.right = local_20.left + 0x14;

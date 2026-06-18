@@ -68,15 +68,14 @@ TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapV
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A3F0
 // GHIDRA_NAME TMiniMapView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniMapView * __thiscall TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this)
+TMiniMapView * __thiscall
+TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -213,20 +212,21 @@ LAB_0059a792:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A920
 // GHIDRA_NAME TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)
 
-void __thiscall TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit(TMiniMapView *this)
+void __thiscall
+TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
+          (TMiniMapView *this,int param_1,int *param_2)
 
 {
   TMiniMapViewVtbl *pTVar1;
   char cVar2;
   int iVar3;
   int iVar4;
-  int in_stack_00000004;
   int *in_stack_00000010;
   
-  if (-1 < in_stack_00000004) {
-    if (in_stack_00000004 < 2) {
+  if (-1 < param_1) {
+    if (param_1 < 2) {
       pTVar1 = this->vftable;
       cVar2 = (*pTVar1[0x2d].slot_0x04)();
       if (cVar2 != '\0') {
@@ -238,7 +238,7 @@ void __thiscall TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit(TMini
         DAT_006993e8 = 1;
       }
     }
-    else if (in_stack_00000004 == 2) {
+    else if (param_1 == 2) {
       DAT_006993e8 = 1;
       iVar4 = CONCAT22((short)((uint)(*in_stack_00000010 / 2) >> 0x10),
                        (short)(*in_stack_00000010 / 2) + *(short *)&this->field_0x88) -

@@ -22,15 +22,14 @@ TDocument * __cdecl TDocument::CreateObject(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486350
 // GHIDRA_NAME TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486350(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_1)
 
-TDocument * __thiscall TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this)
+TDocument * __thiscall
+TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTDocumentInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -59,15 +58,13 @@ CRuntimeClass * __thiscall TDocument::GetTDocumentClassNamePointer(TDocument *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863F0
 // GHIDRA_NAME TDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
 
-TDocument * __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this)
+TDocument * __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TFileBasedDocument::CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

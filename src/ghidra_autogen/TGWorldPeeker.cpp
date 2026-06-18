@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF280
 // GHIDRA_NAME TGWorldPeeker::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPeeker * __thiscall TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this)
+TGWorldPeeker * __thiscall
+TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -31,24 +30,23 @@ CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
 // GHIDRA_NAME TGWorldPeeker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(TGWorldPeeker *this)
+void __thiscall TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(TGWorldPeeker *this,LONG *param_1)
 
 {
-  LONG *in_stack_00000004;
   RECT local_20;
   RECT local_10;
   
   if (*(int *)&this->field_0x60 != 0) {
-    local_10.left = *in_stack_00000004;
-    local_10.top = in_stack_00000004[1];
-    local_10.right = in_stack_00000004[2];
-    local_20.left = *in_stack_00000004;
-    local_10.bottom = in_stack_00000004[3];
-    local_20.right = in_stack_00000004[2];
-    local_20.top = in_stack_00000004[1];
-    local_20.bottom = in_stack_00000004[3];
+    local_10.left = *param_1;
+    local_10.top = param_1[1];
+    local_10.right = param_1[2];
+    local_20.left = *param_1;
+    local_10.bottom = param_1[3];
+    local_20.right = param_1[2];
+    local_20.top = param_1[1];
+    local_20.bottom = param_1[3];
     ResetQuickDrawStrokeState();
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)&this->field_0x60 + 4),

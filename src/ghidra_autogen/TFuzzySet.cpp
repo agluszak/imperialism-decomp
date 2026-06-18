@@ -37,15 +37,13 @@ void __thiscall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF700
 // GHIDRA_NAME TFuzzySet::DestructTFuzzySetAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTFuzzySetAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTFuzzySetAndMaybeFree(byte param_1)
 
-TFuzzySet * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this)
+TFuzzySet * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTFuzzySetAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

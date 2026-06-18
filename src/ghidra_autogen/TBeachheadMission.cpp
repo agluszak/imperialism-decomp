@@ -55,17 +55,15 @@ undefined ** TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A490
 // GHIDRA_NAME TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-// GHIDRA_PROTO undefined __thiscall ConstructTBeachheadMissionWithNodeAndParent(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTBeachheadMissionWithNodeAndParent(undefined4 param_1, undefined4 param_2)
 
 TBeachheadMission * __thiscall
-TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent(TBeachheadMission *this)
+TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
+          (TBeachheadMission *this,undefined4 param_1,undefined4 param_2)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  
   TMission::ConstructTMission((TMission *)this);
-  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x14) = param_1;
   *(undefined4 *)(this + 0x18) = 0;
   *(undefined4 *)(this + 0x1c) = 0;
   *(undefined4 *)(this + 0x20) = 0;
@@ -75,7 +73,7 @@ TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent(TBeachheadMission
   *(undefined4 *)(this + 0x30) = 0;
   *(undefined4 *)(this + 0x34) = 0;
   *(undefined4 *)(this + 0x38) = 0;
-  *(undefined4 *)(this + 0x3c) = in_stack_00000008;
+  *(undefined4 *)(this + 0x3c) = param_2;
   *(undefined ***)this = &g_vtblTBeachheadMission;
   return this;
 }
@@ -185,19 +183,15 @@ TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeach
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A7B0
 // GHIDRA_NAME TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
-// GHIDRA_PROTO undefined __thiscall HandleBlockadePortMissionActionType2ForBeachheadTarget(void)
+// GHIDRA_PROTO undefined __thiscall HandleBlockadePortMissionActionType2ForBeachheadTarget(int param_1, int param_2, int param_3)
 
 undefined4 __thiscall
-TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget(TBeachheadMission *this)
+TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
+          (TBeachheadMission *this,int param_1,int param_2,int param_3)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  
-  if ((((in_stack_00000004 == 2) && (in_stack_00000008 != -1)) &&
-      (in_stack_00000008 == *(short *)(*(int *)(this + 0x3c) + 0x30))) &&
-     (in_stack_0000000c == *(int *)(this + 0x14))) {
+  if ((((param_1 == 2) && (param_2 != -1)) && (param_2 == *(short *)(*(int *)(this + 0x3c) + 0x30)))
+     && (param_3 == *(int *)(this + 0x14))) {
     return 1;
   }
   return 0;

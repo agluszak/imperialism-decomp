@@ -124,15 +124,13 @@ TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1F0
 // GHIDRA_NAME TDealList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this)
+TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CObArray::thunk_DestructCObArray();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -140,9 +138,9 @@ TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA260
 // GHIDRA_NAME TDealList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(short * param_1, short * param_2)
 
-int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this)
+int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this,short *param_1,short *param_2)
 
 {
   short sVar1;
@@ -151,32 +149,29 @@ int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this)
   int iVar4;
   int iVar5;
   int iVar6;
-  short *in_stack_00000004;
-  short *in_stack_00000008;
   
-  sVar1 = in_stack_00000004[6];
+  sVar1 = param_1[6];
   if ((sVar1 < 0xd) || (0x10 < sVar1)) {
     bVar3 = false;
   }
   else {
     bVar3 = true;
   }
-  iVar2 = *(int *)(in_stack_00000004 + 4);
-  iVar4 = (int)in_stack_00000004[3];
+  iVar2 = *(int *)(param_1 + 4);
+  iVar4 = (int)param_1[3];
   if (bVar3) {
     iVar5 = (0xff - iVar4) * iVar2;
-    iVar6 = (0xff - in_stack_00000008[3]) * *(int *)(in_stack_00000008 + 4);
+    iVar6 = (0xff - param_2[3]) * *(int *)(param_2 + 4);
   }
   else {
     iVar5 = -(iVar2 * iVar4);
-    iVar6 = -(*(int *)(in_stack_00000008 + 4) * (int)in_stack_00000008[3]);
+    iVar6 = -(*(int *)(param_2 + 4) * (int)param_2[3]);
   }
   if (iVar5 == iVar6) {
-    iVar5 = ((int)in_stack_00000004[2] * (int)*in_stack_00000004 +
-             iVar2 + in_stack_00000004[1] * iVar4 + (int)sVar1) % 7;
-    iVar6 = ((int)in_stack_00000008[6] +
-            (int)in_stack_00000008[2] * (int)*in_stack_00000008 + *(int *)(in_stack_00000008 + 4) +
-            (int)in_stack_00000008[1] * (int)in_stack_00000008[3]) % 7;
+    iVar5 = ((int)param_1[2] * (int)*param_1 + iVar2 + param_1[1] * iVar4 + (int)sVar1) % 7;
+    iVar6 = ((int)param_2[6] +
+            (int)param_2[2] * (int)*param_2 + *(int *)(param_2 + 4) +
+            (int)param_2[1] * (int)param_2[3]) % 7;
   }
   return ((iVar5 <= iVar6) - 1 & 2) - 1;
 }

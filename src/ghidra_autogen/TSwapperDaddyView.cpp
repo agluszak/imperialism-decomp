@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC650
 // GHIDRA_NAME TSwapperDaddyView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TSwapperDaddyView * __thiscall
-TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this)
+TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -33,28 +31,28 @@ TSwapperDaddyView::GetTEventHandlerClassNamePointer(TSwapperDaddyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6C0
 // GHIDRA_NAME TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSwapperDaddyViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTSwapperDaddyViewBaseState(int param_1)
 
-int * __thiscall TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this)
+int * __thiscall
+TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,int param_1)
 
 {
   byte bVar1;
   int *piVar2;
   int iVar3;
   int *piVar4;
-  int in_stack_00000004;
   undefined4 local_24;
   undefined4 local_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
   
-  if (in_stack_00000004 != *(int *)&this->field_0x60) {
+  if (param_1 != *(int *)&this->field_0x60) {
     piVar4 = (int *)0x0;
     InitializeSelectableTextOptionEntryIteratorContext(this);
     piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
     iVar3 = IsSelectableTextOptionEntryIteratorValid();
     while (iVar3 != 0) {
-      if (piVar2[7] == in_stack_00000004) {
+      if (piVar2[7] == param_1) {
         local_24 = 0;
         local_20 = 0;
         (**(code **)(*piVar2 + 0xf0))(&local_24,1);
@@ -68,10 +66,10 @@ int * __thiscall TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapper
       piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
       iVar3 = IsSelectableTextOptionEntryIteratorValid();
     }
-    *(int *)&this->field_0x60 = in_stack_00000004;
+    *(int *)&this->field_0x60 = param_1;
     return piVar4;
   }
-  bVar1 = (*this->vftable[0x12].slot_0x04)();
+  bVar1 = (*this->vftable[0x12].slot_0x04)(param_1);
   return (int *)(uint)bVar1;
 }
 

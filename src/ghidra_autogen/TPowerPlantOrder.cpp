@@ -16,16 +16,14 @@ TPowerPlantOrder::GetTProductionOrderClassNamePointer(TPowerPlantOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A60
 // GHIDRA_NAME TPowerPlantOrder::ConstructTPowerPlantOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPowerPlantOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTPowerPlantOrderBaseState(byte param_1)
 
 TPowerPlantOrder * __thiscall
-TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this)
+TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTPowerPlantOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -45,17 +43,17 @@ void __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerPla
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7AB0
 // GHIDRA_NAME TPowerPlantOrder::InitializeCityProductionState_Impl
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl(void)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl(int param_1)
 
-void __thiscall TPowerPlantOrder::InitializeCityProductionState_Impl(TPowerPlantOrder *this)
+void __thiscall
+TPowerPlantOrder::InitializeCityProductionState_Impl(TPowerPlantOrder *this,int param_1)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
   
-  *(int *)&this->field_0x8 = in_stack_00000004;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(int *)&this->field_0x8 = param_1;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
   *(undefined2 *)&this->field_0x48 = 0;
   *(undefined2 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x10;
@@ -87,9 +85,10 @@ int __thiscall TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPowerPlantOrd
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7B30
 // GHIDRA_NAME TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(TPowerPlantOrder *this)
+undefined4 __thiscall
+TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(TPowerPlantOrder *this,short param_1)
 
 {
   short sVar1;
@@ -100,15 +99,14 @@ undefined4 __thiscall TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(TPowerPl
   char cVar6;
   undefined3 extraout_var;
   short sVar7;
-  short in_stack_00000004;
   
-  sVar7 = in_stack_00000004 - *(short *)&this->field_0x4;
+  sVar7 = param_1 - *(short *)&this->field_0x4;
   uVar5 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
-  if (((short)CONCAT31(extraout_var,uVar5) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+  if (((short)CONCAT31(extraout_var,uVar5) < param_1) || (param_1 < 0)) {
     cVar6 = '\0';
   }
   else {
-    *(short *)&this->field_0x4 = in_stack_00000004;
+    *(short *)&this->field_0x4 = param_1;
     cVar6 = '\x01';
   }
   if (cVar6 == '\0') {
@@ -173,31 +171,29 @@ void __thiscall TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(TPowerPlant
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7C90
 // GHIDRA_NAME TPowerPlantOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(int param_1)
 
-void __thiscall TPowerPlantOrder::CreateTItemOrderInstance(TPowerPlantOrder *this)
+void __thiscall TPowerPlantOrder::CreateTItemOrderInstance(TPowerPlantOrder *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  (*this->vftable[7].ConstructTPowerPlantOrderBaseState)();
-  *(short *)(in_stack_00000004 + 0x18) = (short)in_stack_00000004 * 6;
+  (*this->vftable[7].ConstructTPowerPlantOrderBaseState)(param_1);
+  *(short *)(param_1 + 0x18) = (short)param_1 * 6;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7CC0
 // GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(int * param_1)
 
 void __thiscall
-TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(TPowerPlantOrder *this)
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
+          (TPowerPlantOrder *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x40,2);
@@ -210,17 +206,17 @@ TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(TPowerPlantOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7D40
 // GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(int * param_1)
 
 void __thiscall
-TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(TPowerPlantOrder *this)
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
+          (TPowerPlantOrder *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x40,2);

@@ -27,15 +27,14 @@ void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00551430
 // GHIDRA_NAME TAdmiral::TAdmiral
-// GHIDRA_PROTO undefined __thiscall TAdmiral(void)
+// GHIDRA_PROTO undefined __thiscall TAdmiral(undefined2 param_1)
 
-TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this)
+TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
 
 {
   TAdmiral *pTVar1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined2 in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -45,7 +44,7 @@ TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this)
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TAdmiralVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  *(undefined2 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x4 = param_1;
   *(undefined4 *)&this->field_0x8 = 0;
   CString::CString((CString *)&this->field_0xc);
   *(undefined2 *)&this->field_0x10 = 0;

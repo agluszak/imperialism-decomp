@@ -5,17 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE080
 // GHIDRA_NAME TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
 float10 __thiscall
-TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBullyMinister *this)
+TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBullyMinister *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (in_stack_00000004 != '\0') {
+  if (param_1 != '\0') {
     return (float10)_DAT_00654910;
   }
   return (float10)_DAT_00654918;
@@ -46,15 +44,14 @@ TBullyMinister * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE100
 // GHIDRA_NAME TBullyMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TBullyMinister * __thiscall TBullyMinister::DeletingDestructTMinister(TBullyMinister *this)
+TBullyMinister * __thiscall
+TBullyMinister::DeletingDestructTMinister(TBullyMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTBullyMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -62,17 +59,17 @@ TBullyMinister * __thiscall TBullyMinister::DeletingDestructTMinister(TBullyMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE210
 // GHIDRA_NAME TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(int param_1)
 
 void __thiscall
-TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBullyMinister *this)
+TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
+          (TBullyMinister *this,int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
   undefined4 unaff_EBP;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -81,8 +78,8 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBul
   piStack_8 = (int *)&LAB_006328c4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(10,4,0);
-  *(undefined2 *)(in_stack_00000004 + 100) = 2;
+  (**(code **)(**(int **)(param_1 + 0x1d8) + 0x2c))(10,4,0);
+  *(undefined2 *)(param_1 + 100) = 2;
   iVar2 = 2;
   do {
     pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
@@ -92,7 +89,8 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBul
     else {
       pTVar1 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar1);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,2,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
@@ -105,7 +103,8 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBul
     else {
       pTVar1 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar1);
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
+              (pTVar1,4,0,*(short *)(*(int *)&this->field_0x4 + 0xc));
     *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);

@@ -30,15 +30,13 @@ void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601F40
 // GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this)
+CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCPtrListBaseState();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -46,16 +44,14 @@ CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601FAF
 // GHIDRA_NAME CPtrList::NewNode
-// GHIDRA_PROTO undefined __thiscall NewNode(void)
+// GHIDRA_PROTO undefined __thiscall NewNode(undefined4 param_1, undefined4 param_2)
 
-void __thiscall CPtrList::NewNode(CPtrList *this)
+void __thiscall CPtrList::NewNode(CPtrList *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;
   undefined4 *puVar2;
   int iVar3;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   
   if (this->m_pNodeFree == (void *)0x0) {
     iVar1 = AllocateAndLinkBlockHead(&this->m_pBlocks,this->m_nBlockSize,0xc);
@@ -72,8 +68,8 @@ void __thiscall CPtrList::NewNode(CPtrList *this)
   }
   puVar2 = this->m_pNodeFree;
   this->m_pNodeFree = (void *)*puVar2;
-  puVar2[1] = in_stack_00000004;
-  *puVar2 = in_stack_00000008;
+  puVar2[1] = param_1;
+  *puVar2 = param_2;
   this->m_nCount = this->m_nCount + 1;
   puVar2[2] = 0;
   return;
@@ -81,17 +77,16 @@ void __thiscall CPtrList::NewNode(CPtrList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006021B4
 // GHIDRA_NAME CPtrList::GetNodeAtZeroBasedIndex
-// GHIDRA_PROTO undefined __thiscall GetNodeAtZeroBasedIndex(void)
+// GHIDRA_PROTO undefined __thiscall GetNodeAtZeroBasedIndex(int param_1)
 
-undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this)
+undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this,int param_1)
 
 {
   undefined4 *puVar1;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 < this->m_nCount) {
+  if (param_1 < this->m_nCount) {
     puVar1 = this->m_pNodeHead;
-    for (; in_stack_00000004 != 0; in_stack_00000004 = in_stack_00000004 + -1) {
+    for (; param_1 != 0; param_1 = param_1 + -1) {
       puVar1 = (undefined4 *)*puVar1;
     }
   }

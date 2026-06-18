@@ -60,15 +60,14 @@ TShipyardCluster::ConstructTradeMoveArrowControlPanel(TShipyardCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A5C0
 // GHIDRA_NAME TShipyardCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardCluster * __thiscall TShipyardCluster::_scalar_deleting_destructor_(TShipyardCluster *this)
+TShipyardCluster * __thiscall
+TShipyardCluster::_scalar_deleting_destructor_(TShipyardCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -166,9 +165,11 @@ void __thiscall TShipyardCluster::OrphanRetStub_00586ff0(TShipyardCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A940
 // GHIDRA_NAME TShipyardCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TShipyardCluster::OrphanRetStub_0059add0(TShipyardCluster *this)
+void __thiscall
+TShipyardCluster::OrphanRetStub_0059add0
+          (TShipyardCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TShipyardClusterVtbl *pTVar1;
@@ -176,11 +177,9 @@ void __thiscall TShipyardCluster::OrphanRetStub_0059add0(TShipyardCluster *this)
   undefined3 extraout_var;
   int iVar3;
   undefined3 extraout_var_00;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 == 10) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x72676874) {
+  if (param_1 == 10) {
+    if (*(int *)((int)param_2 + 0x1c) == 0x72676874) {
       pTVar1 = this->vftable;
       uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
       if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
@@ -192,8 +191,8 @@ void __thiscall TShipyardCluster::OrphanRetStub_0059add0(TShipyardCluster *this)
       (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar3 + 1);
       return;
     }
-    if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c656674) {
-      TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this);
+    if (*(int *)((int)param_2 + 0x1c) != 0x6c656674) {
+      TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,10,param_2,param_3);
       return;
     }
     pTVar1 = this->vftable;
@@ -210,7 +209,7 @@ void __thiscall TShipyardCluster::OrphanRetStub_0059add0(TShipyardCluster *this)
     }
   }
   else {
-    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this);
+    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,param_1,param_2,param_3);
   }
   return;
 }

@@ -102,15 +102,13 @@ TPageView * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FA00
 // GHIDRA_NAME TPageView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPageView * __thiscall TPageView::_scalar_deleting_destructor_(TPageView *this)
+TPageView * __thiscall TPageView::_scalar_deleting_destructor_(TPageView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -144,7 +142,7 @@ void __thiscall TPageView::OrphanLeaf_NoCall_Ins07_004d8920(TPageView *this)
   else {
     InitializeRefCountedObjectBaseVtable();
     local_4 = CONCAT31(local_4._1_3_,1);
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
@@ -157,7 +155,7 @@ void __thiscall TPageView::OrphanLeaf_NoCall_Ins07_004d8920(TPageView *this)
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 3;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TList::_vftable_;
   }
   local_4 = 0xffffffff;
@@ -283,9 +281,9 @@ LAB_0056fd44:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FDB0
 // GHIDRA_NAME TPageView::OrphanCallChain_C8_I118_0056fdb0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I118_0056fdb0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I118_0056fdb0(short param_1)
 
-void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this)
+void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this,short param_1)
 
 {
   short sVar1;
@@ -300,15 +298,14 @@ void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this)
   int iVar10;
   int *piVar11;
   int iVar12;
-  short in_stack_00000004;
   int iStack_8;
   int iStack_4;
   
   sVar5 = 0;
-  if ((0 < in_stack_00000004) && (in_stack_00000004 <= *(short *)&this->field_0x60)) {
+  if ((0 < param_1) && (param_1 <= *(short *)&this->field_0x60)) {
     pTVar4 = this->vftable;
     (*pTVar4[0x35].GetTEventHandlerClassNamePointer)();
-    iVar12 = (int)in_stack_00000004;
+    iVar12 = (int)param_1;
     if (iVar12 < *(short *)&this->field_0x64 + iVar12) {
       do {
         iVar9 = (**(code **)(**(int **)&this->field_0x80 + 0x28))();
@@ -334,8 +331,8 @@ void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this)
               bVar6 = true;
             }
             else {
-              iStack_8 = (int)(short)((short)(iVar9 / (int)sVar1) *
-                                      ((short)iVar12 - in_stack_00000004) + sVar2);
+              iStack_8 = (int)(short)((short)(iVar9 / (int)sVar1) * ((short)iVar12 - param_1) +
+                                     sVar2);
               iStack_4 = (int)sVar8;
               (**(code **)(*piVar11 + 0x28))(this,&iStack_8);
               sVar8 = sVar8 + (short)piVar11[3];
@@ -344,9 +341,9 @@ void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this)
           } while (!bVar6);
         }
         iVar12 = iVar12 + 1;
-      } while (iVar12 < (int)*(short *)&this->field_0x64 + (int)in_stack_00000004);
+      } while (iVar12 < (int)*(short *)&this->field_0x64 + (int)param_1);
     }
-    *(short *)&this->field_0x62 = in_stack_00000004;
+    *(short *)&this->field_0x62 = param_1;
     (*pTVar4[0x1c].slot_0x04)();
   }
   return;

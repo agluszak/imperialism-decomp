@@ -58,15 +58,14 @@ TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72E0
 // GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarehouseView * __thiscall TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this)
+TWarehouseView * __thiscall
+TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,12 +73,13 @@ TWarehouseView * __thiscall TWarehouseView::_scalar_deleting_destructor_(TWareho
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7330
 // GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
-void __thiscall TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this)
+void __thiscall
+TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,undefined4 *param_1)
 
 {
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,param_1);
   return;
 }
 
@@ -127,7 +127,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   undefined4 *unaff_FS_OFFSET;
   CString CStack_f8;
   TViewVtbl *pTStack_f4;
-  undefined *puStack_f0;
   TViewVtbl TStack_ec;
   undefined1 *puStack_e4;
   TViewVtbl TStack_e0;
@@ -206,7 +205,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   TStack_ec.GetTEventHandlerClassNamePointer =
        (TView_GetTEventHandlerClassNamePointer_0x00 *)&stack0xffffff58;
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
-  puStack_f0 = (undefined *)0x4c742f;
   thunk_BuildUiTextStyleDescriptor();
   pdVar10 = TradeSummarySelectionMap_006960e0.summaryTags;
   puVar12 = (undefined4 *)&this->field_0xa0;
@@ -227,7 +225,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
       TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
       TStack_ec.GetTEventHandlerClassNamePointer =
            (TView_GetTEventHandlerClassNamePointer_0x00 *)0x1;
-      puStack_f0 = (undefined *)0x4c7471;
       (**(code **)(*(int *)*puVar12 + 0x1c4))();
     }
     pdVar10 = pdVar10 + 1;
@@ -247,7 +244,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
          (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c74a6;
     (**(code **)(*piVar9 + 0x1b4))();
     TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x0;
-    puStack_f0 = (undefined *)0x1;
     pTStack_f4 = (TViewVtbl *)0x4c74b8;
     (**(code **)(**(int **)&this->field_0xfc + 0x1c4))();
   }
@@ -260,9 +256,7 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
     TStack_ec.GetTEventHandlerClassNamePointer =
          (TView_GetTEventHandlerClassNamePointer_0x00 *)&stack0xffffff50;
     TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
-    puStack_f0 = (undefined *)0x4c74dc;
     (**(code **)(*piVar9 + 0x1b4))();
-    puStack_f0 = (undefined *)0x0;
     pTStack_f4 = (TViewVtbl *)0x1;
     CStack_f8.m_pchData = (char *)0x4c74ee;
     (**(code **)(**(int **)&this->field_0x100 + 0x1c4))();
@@ -277,7 +271,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
          (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c751d;
     (**(code **)((int)pcStack_c0 + 300))();
     TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x1;
-    puStack_f0 = (undefined *)0x1;
     pTStack_f4 = (TViewVtbl *)0x4c752f;
     (**(code **)(**(int **)&this->field_0xb8 + 0xa4))();
     pTStack_f4 = (TViewVtbl *)0x1;
@@ -313,7 +306,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
       TStack_ec.GetTEventHandlerClassNamePointer =
            (TView_GetTEventHandlerClassNamePointer_0x00 *)&local_a0;
       iVar2 = *(int *)CONCAT31(extraout_var_04,uVar7);
-      puStack_f0 = (undefined *)0x4c767a;
       (**(code **)(iVar2 + 300))();
       TStack_94.slot_0x04 =
            (TView_slot_0x04_0x04 *)
@@ -323,7 +315,6 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
       pcStack_88 = CStack_c8.m_pchData + iStack_98;
       pTStack_f4 = &TStack_94;
       pTStack_8c = local_a0.slot_0x04;
-      puStack_f0 = (undefined *)0x0;
       CStack_f8.m_pchData = (char *)0x4c76b1;
       (**(code **)(iVar2 + 0x168))();
       ppcVar11 = ppcVar11 + 1;
@@ -345,16 +336,13 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   CString::CString(&CStack_c4);
   TStack_d4.slot_0x04 = (TView_slot_0x04_0x04 *)&TStack_ec;
   uStack_34 = 3;
-  puStack_f0 = PTR_g_szEmptyString_00651028;
   pTStack_f4 = (TViewVtbl *)0x4c772b;
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&TStack_ec);
-  puStack_f0 = (undefined *)0x4c7730;
+            ((TToolBarCluster *)&TStack_ec,PTR_g_szEmptyString_00651028);
   InitializeAndRunMainRoutine();
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_bc;
   TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x20;
-  puStack_f0 = (undefined *)0x2734;
   pTStack_f4 = (TViewVtbl *)0x4c774d;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   pTStack_cc = (TView *)&this->field_0xa0;

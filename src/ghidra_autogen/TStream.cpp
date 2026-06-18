@@ -37,15 +37,13 @@ CRuntimeClass * __thiscall TStream::GetTStreamClassNamePointer(TStream *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A10
 // GHIDRA_NAME TStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
 
-TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this)
+TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTStreamAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -169,17 +167,16 @@ undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b90(TStream *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488BC0
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I08_00488bc0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00488bc0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00488bc0(undefined2 * param_1)
 
-void __thiscall TStream::OrphanCallChain_C1_I08_00488bc0(TStream *this)
+void __thiscall TStream::OrphanCallChain_C1_I08_00488bc0(TStream *this,undefined2 *param_1)
 
 {
   TStreamVtbl *pTVar1;
-  undefined2 *in_stack_00000004;
   
   pTVar1 = this->vftable;
-  *in_stack_00000004 = 0;
-  (*pTVar1[7].ConstructTStreamBaseState)((int)in_stack_00000004 + 1,1);
+  *param_1 = 0;
+  (*pTVar1[7].ConstructTStreamBaseState)((int)param_1 + 1,1);
   return;
 }
 
@@ -215,10 +212,11 @@ undefined1 * __thiscall TStream::ReadDwordFromStreamViaVtableSlot3C(TStream *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488C50
 // GHIDRA_NAME TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
-// GHIDRA_PROTO undefined __thiscall Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(void)
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(CString * param_1)
 
 void __thiscall
-TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(TStream *this)
+TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
+          (TStream *this,CString *param_1)
 
 {
   TStreamVtbl *pTVar1;
@@ -227,12 +225,11 @@ TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(TStream
   int iVar3;
   CString *unaff_EBX;
   int iVar4;
-  CString *in_stack_00000004;
   
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
   iVar4 = (int)(short)CONCAT31(extraout_var,uVar2);
-  iVar3 = CString::EnsureCapacityPreserveLength(in_stack_00000004,iVar4 + 1);
+  iVar3 = CString::EnsureCapacityPreserveLength(param_1,iVar4 + 1);
   (*pTVar1[7].ConstructTStreamBaseState)(iVar3,iVar4);
   *(undefined1 *)(iVar3 + iVar4) = 0;
   CString::SetLengthAndTerminator(unaff_EBX,-1);
@@ -241,20 +238,19 @@ TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(TStream
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488CA0
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I19_00488ca0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_00488ca0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_00488ca0(int param_1)
 
-void __thiscall TStream::OrphanCallChain_C2_I19_00488ca0(TStream *this)
+void __thiscall TStream::OrphanCallChain_C2_I19_00488ca0(TStream *this,int param_1)
 
 {
   TStreamVtbl *pTVar1;
   undefined uVar2;
   undefined1 extraout_AH;
-  int in_stack_00000004;
   
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
-  (*pTVar1[7].ConstructTStreamBaseState)(in_stack_00000004,(int)CONCAT11(extraout_AH,uVar2));
-  *(undefined1 *)(CONCAT11(extraout_AH,uVar2) + in_stack_00000004) = 0;
+  (*pTVar1[7].ConstructTStreamBaseState)(param_1,(int)CONCAT11(extraout_AH,uVar2));
+  *(undefined1 *)(CONCAT11(extraout_AH,uVar2) + param_1) = 0;
   return;
 }
 
@@ -541,19 +537,18 @@ void __thiscall TStream::OrphanCallChain_C2_I18_00488ff0(TStream *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489030
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I21_00489030
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(int * param_1)
 
-void __thiscall TStream::OrphanCallChain_C2_I21_00489030(TStream *this)
+void __thiscall TStream::OrphanCallChain_C2_I21_00489030(TStream *this,int *param_1)
 
 {
   TStreamVtbl *pTVar1;
   undefined4 uVar2;
-  int *in_stack_00000004;
   
   pTVar1 = this->vftable;
-  uVar2 = *(undefined4 *)(*in_stack_00000004 + -8);
+  uVar2 = *(undefined4 *)(*param_1 + -8);
   (*pTVar1[0x11].GetTStreamClassNamePointer)(uVar2);
-  (*pTVar1[0xf].GetTStreamClassNamePointer)(*in_stack_00000004,uVar2);
+  (*pTVar1[0xf].GetTStreamClassNamePointer)(*param_1,uVar2);
   return;
 }
 

@@ -45,16 +45,14 @@ TDiplomatForeignMinister::ConstructTDiplomatForeignMinister(TDiplomatForeignMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005327F0
 // GHIDRA_NAME TDiplomatForeignMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
 TDiplomatForeignMinister * __thiscall
-TDiplomatForeignMinister::DeletingDestructTMinister(TDiplomatForeignMinister *this)
+TDiplomatForeignMinister::DeletingDestructTMinister(TDiplomatForeignMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTDiplomatForeignMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -404,17 +402,16 @@ TDiplomatForeignMinister::SetForeignMinisterReadyFlag14(TDiplomatForeignMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532F70
 // GHIDRA_NAME TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(int param_1, undefined4 param_2, short param_3)
 
 void __thiscall
-TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText(TDiplomatForeignMinister *this)
+TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText
+          (TDiplomatForeignMinister *this,int param_1,undefined4 param_2,short param_3)
 
 {
   short sVar1;
   int iVar2;
   undefined4 unaff_retaddr;
-  int in_stack_00000004;
-  undefined4 in_stack_00000008;
   short in_stack_00000010;
   
   if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) == 0) {
@@ -429,30 +426,30 @@ TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText(TDiplomatForeignM
     if (sVar1 < (short)iVar2) {
       iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
     }
-    if ((short)in_stack_00000004 <= (short)iVar2) {
-      iVar2 = in_stack_00000004;
+    if ((short)param_1 <= (short)iVar2) {
+      iVar2 = param_1;
     }
     (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
               (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,iVar2,
-               in_stack_00000008);
+                        *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,iVar2,param_2
+              );
     return;
   }
-  TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this);
+  TForeignMinister::UpdateControlCachedIntFromWindowText
+            ((TForeignMinister *)this,param_1,(short)param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533050
 // GHIDRA_NAME TDiplomatForeignMinister::IncrementDiplomatCounter5EByFive
-// GHIDRA_PROTO undefined __thiscall IncrementDiplomatCounter5EByFive(void)
+// GHIDRA_PROTO undefined __thiscall IncrementDiplomatCounter5EByFive(int param_1)
 
 void __thiscall
-TDiplomatForeignMinister::IncrementDiplomatCounter5EByFive(TDiplomatForeignMinister *this)
+TDiplomatForeignMinister::IncrementDiplomatCounter5EByFive
+          (TDiplomatForeignMinister *this,int param_1)
 
 {
-  int in_stack_00000004;
-  
-  *(short *)(in_stack_00000004 + 0x5e) = *(short *)(in_stack_00000004 + 0x5e) + 5;
+  *(short *)(param_1 + 0x5e) = *(short *)(param_1 + 0x5e) + 5;
   return;
 }
 

@@ -32,7 +32,7 @@ undefined4 * CWinThread::CWinApp(void)
     extraout_ECX[0x1e] = uVar1;
   }
   iVar2 = AfxGetModuleState();
-  iVar3 = TMacViewMgr::GetData((TMacViewMgr *)(iVar2 + 0x1070));
+  iVar3 = TMacViewMgr::GetData((TMacViewMgr *)(iVar2 + 0x1070),CreateObject);
   *(undefined4 **)(iVar3 + 4) = extraout_ECX;
   pvVar4 = GetCurrentThread();
   extraout_ECX[10] = pvVar4;

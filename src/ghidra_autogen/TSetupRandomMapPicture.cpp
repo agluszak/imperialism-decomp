@@ -43,16 +43,14 @@ TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMap
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576E00
 // GHIDRA_NAME TSetupRandomMapPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TSetupRandomMapPicture * __thiscall
-TSetupRandomMapPicture::_scalar_deleting_destructor_(TSetupRandomMapPicture *this)
+TSetupRandomMapPicture::_scalar_deleting_destructor_(TSetupRandomMapPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTSetupRandomMapPictureBaseState(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -485,23 +483,23 @@ TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920(TSetupRandomMapPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005779C0
 // GHIDRA_NAME TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
 
 void __thiscall
-TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSetupRandomMapPicture *this)
+TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TSetupRandomMapPicture *this,int param_1,CString param_2)
 
 {
-  CString CVar1;
-  undefined uVar2;
-  ushort uVar3;
+  char cVar1;
+  CString CVar2;
+  undefined uVar3;
+  ushort uVar4;
   undefined3 extraout_var;
-  int *piVar4;
-  int iVar5;
+  int *piVar5;
+  int iVar6;
   code *unaff_EBP;
-  uint uVar6;
+  uint uVar7;
   int *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
   CString CStack_40;
   CString CStack_3c;
   CString aCStack_38 [5];
@@ -510,53 +508,55 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSetupRando
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
-  CVar1.m_pchData = in_stack_00000008.m_pchData;
+  CVar2.m_pchData = param_2.m_pchData;
   iStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006369c8;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  if (in_stack_00000004 == 0x7069636b) {
-    iVar5 = *(int *)in_stack_00000008.m_pchData;
-    (**(code **)(iVar5 + 0xc))();
-    *(int *)(CVar1.m_pchData + 0x68) = *(int *)(CVar1.m_pchData + 0x6c);
+  if (param_1 == 0x7069636b) {
+    iVar6 = *(int *)param_2.m_pchData;
+    (**(code **)(iVar6 + 0xc))();
+    *(undefined4 *)(CVar2.m_pchData + 0x68) = *(undefined4 *)(CVar2.m_pchData + 0x6c);
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0);
-    *(short *)&this->field_0x9a = (short)*(int *)(CVar1.m_pchData + 0x68);
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x666c6167);
-    puStack_8 = *(undefined1 **)CONCAT31(extraout_var,uVar2);
+    cVar1 = CVar2.m_pchData[0x69];
+    this->field_0x9a = CVar2.m_pchData[0x68];
+    this->field_0x9b = cVar1;
+    uVar3 = (*this->vftable[0x12].slot_0x04)(0x666c6167);
+    puStack_8 = *(undefined1 **)CONCAT31(extraout_var,uVar3);
     (**(code **)(puStack_8 + 0xc))();
     UpdateRectFromGridIndicesAndTileSize((int)*(short *)&this->field_0x9a,0);
     (**(code **)(puStack_8 + 0xe4))();
-    piVar4 = (int *)(*unaff_EBP)(0x636f6174);
-    iStack_c = *piVar4;
+    piVar5 = (int *)(*unaff_EBP)(0x636f6174);
+    iStack_c = *piVar5;
     (**(code **)(iStack_c + 0xc))();
     (**(code **)(iStack_c + 0x1c8))(*(short *)&this->field_0x9a + 0x11c6,1);
     RefreshSetupRandomMapCountryControlIfApplicable();
     ApplyPaletteMaskToTileBufferByEventCode();
-    (**(code **)(iVar5 + 0x128))(&stack0xffffffb0);
-    ConstructScopedMapQuickDrawContext(CVar1.m_pchData);
+    (**(code **)(iVar6 + 0x128))(&stack0xffffffb0);
+    ConstructScopedMapQuickDrawContext(CVar2.m_pchData);
     uStack_24 = 0;
-    (**(code **)(iVar5 + 0x110))(&stack0xffffffac);
+    (**(code **)(iVar6 + 0x110))(&stack0xffffffac);
     uStack_4 = 0xffffffff;
     thunk_DestroyScopedMapQuickDrawContext();
   }
-  uVar6 = *(uint *)(CVar1.m_pchData + 0x1c);
-  if (uVar6 == 0x676c6f62) {
-    uVar3 = GetAsyncKeyState(0x11);
-    if ((uVar3 & 0x8000) != 0) {
-      uVar6 = 0x706c616e;
+  uVar7 = *(uint *)(CVar2.m_pchData + 0x1c);
+  if (uVar7 == 0x676c6f62) {
+    uVar4 = GetAsyncKeyState(0x11);
+    if ((uVar4 & 0x8000) != 0) {
+      uVar7 = 0x706c616e;
     }
   }
-  if ((((in_stack_00000004 != 0x14) && (in_stack_00000004 != 10)) && (in_stack_00000004 != 0x22)) &&
-     (in_stack_00000004 != 0xd)) goto LAB_00577ce4;
-  if (uVar6 < 0x636e636d) {
-    if ((uVar6 == 0x636e636c) || (uVar6 == 0x63616e63)) {
+  if ((((param_1 != 0x14) && (param_1 != 10)) && (param_1 != 0x22)) && (param_1 != 0xd))
+  goto LAB_00577ce4;
+  if (uVar7 < 0x636e636d) {
+    if ((uVar7 == 0x636e636c) || (uVar7 == 0x63616e63)) {
       (*this->vftable[0x3a].slot_0x04)();
     }
     goto LAB_00577ce4;
   }
-  if (uVar6 < 0x6b657921) {
-    if (uVar6 != 0x6b657920) {
-      if (uVar6 == 0x676c6f62) {
+  if (uVar7 < 0x6b657921) {
+    if (uVar7 != 0x6b657920) {
+      if (uVar7 == 0x676c6f62) {
         GenerateMappedFlavorTextByCurrentContextNation();
         TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview((TSpaceCommand *)this);
       }
@@ -564,13 +564,13 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSetupRando
     }
   }
   else {
-    if (uVar6 == 0x6f6b6179) {
+    if (uVar7 == 0x6f6b6179) {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
       goto LAB_00577ce4;
     }
-    if (uVar6 != 0x706c616e) goto LAB_00577ce4;
+    if (uVar7 != 0x706c616e) goto LAB_00577ce4;
   }
-  CString::StringSharedRef_AssignFromPtr(&stack0x00000008,(CString *)&this->field_0x94);
+  CString::StringSharedRef_AssignFromPtr(&param_2,(CString *)&this->field_0x94);
   uStack_4 = 1;
   CString::CString(&CStack_40);
   uStack_4._0_1_ = 2;
@@ -581,17 +581,17 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSetupRando
   thunk_LoadUiStringResourceByGroupAndIndex(&CStack_40,0x2758);
   thunk_LoadUiStringResourceByGroupAndIndex(aCStack_38,0x2758);
   thunk_LoadUiStringResourceByGroupAndIndex(&CStack_3c,0x2758);
-  iVar5 = RunTaggedOptionDialogAndReturnSelectionTag(CStack_40.m_pchData,&stack0x00000008,0,0,0);
-  this->field_0x98 = iVar5 == 0x6f6e6531;
-  iVar5 = CompareAnsiStringsWithMbcsAwareness(in_stack_00000008.m_pchData);
-  if (iVar5 == 0) {
+  iVar6 = RunTaggedOptionDialogAndReturnSelectionTag(CStack_40.m_pchData,&param_2,0,0,0);
+  this->field_0x98 = iVar6 == 0x6f6e6531;
+  iVar6 = CompareAnsiStringsWithMbcsAwareness(param_2.m_pchData);
+  if (iVar6 == 0) {
 LAB_00577c8c:
     g_pGlobalMapState->field_0x20 = this->field_0x98;
   }
   else {
-    iVar5 = CompareAnsiStringsWithMbcsAwareness(in_stack_00000008.m_pchData);
-    if (iVar5 == 0) goto LAB_00577c8c;
-    CString::AssignFromPtr((CString *)&this->field_0x94,&stack0x00000008);
+    iVar6 = CompareAnsiStringsWithMbcsAwareness(param_2.m_pchData);
+    if (iVar6 == 0) goto LAB_00577c8c;
+    CString::AssignFromPtr((CString *)&this->field_0x94,&param_2);
     TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview((TSpaceCommand *)this);
   }
   uStack_4._0_1_ = 3;
@@ -601,9 +601,9 @@ LAB_00577c8c:
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   CString::~CString(&CStack_40);
   uStack_4 = 0xffffffff;
-  CString::~CString(&stack0x00000008);
+  CString::~CString(&param_2);
 LAB_00577ce4:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = iStack_c;
   return;
 }
@@ -632,15 +632,15 @@ TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPictu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005782F0
 // GHIDRA_NAME TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(TSetupRandomMapPicture *this)
+void __thiscall
+TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(TSetupRandomMapPicture *this,int param_1)
 
 {
   short sVar1;
-  int in_stack_00000004;
   
-  sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+  sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
   }

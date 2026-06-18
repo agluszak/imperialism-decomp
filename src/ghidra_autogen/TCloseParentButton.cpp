@@ -75,16 +75,14 @@ TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584CE0
 // GHIDRA_NAME TCloseParentButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TCloseParentButton * __thiscall
-TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this)
+TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -92,10 +90,11 @@ TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D30
 // GHIDRA_NAME TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
-TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCloseParentButton *this)
+TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TCloseParentButton *this,int param_1)
 
 {
   TCloseParentButtonVtbl *pTVar1;
@@ -103,11 +102,10 @@ TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCloseParentBut
   char cVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  int in_stack_00000004;
   
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1[0x17].slot_0x04)();
-  if (in_stack_00000004 == CONCAT31(extraout_var,uVar2)) {
+  if (param_1 == CONCAT31(extraout_var,uVar2)) {
     cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
     if (cVar3 != '\0') {
       cVar3 = (*pTVar1[0x37].slot_0x04)();

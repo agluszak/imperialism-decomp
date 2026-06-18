@@ -26,15 +26,13 @@ void __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(TTechMgr *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEFA0
 // GHIDRA_NAME TTechMgr::DestructTTechMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTechMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTechMgrAndMaybeFree(byte param_1)
 
-TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this)
+TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTTechMgrAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -42,7 +40,7 @@ TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AF460
 // GHIDRA_NAME TTechMgr::DeserializeCityOrderCapabilityState
-// GHIDRA_PROTO undefined __thiscall DeserializeCityOrderCapabilityState(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeCityOrderCapabilityState(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
 // GHIDRA_COMMENT
@@ -73,19 +71,18 @@ TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this)
    
    This function is a key source for persisted city/university capability state. */
 
-void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this)
+void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this,int *param_1)
 
 {
   undefined1 uVar1;
   undefined1 *puVar2;
   int iVar3;
   code *pcVar4;
-  int *in_stack_00000004;
   undefined4 uVar5;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   if (DAT_00695278 < 0x27) {
-    pcVar4 = *(code **)(*in_stack_00000004 + 0x3c);
+    pcVar4 = *(code **)(*param_1 + 0x3c);
     (*pcVar4)(&this->field_0x4,0x3a);
     (*pcVar4)(&this->field_0x3e,0x2e);
     (*pcVar4)(&this->field_0x1d2,2);
@@ -98,7 +95,7 @@ void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this)
   }
   else {
     puVar2 = &this->field_0x4;
-    pcVar4 = *(code **)(*in_stack_00000004 + 0x3c);
+    pcVar4 = *(code **)(*param_1 + 0x3c);
     (*pcVar4)(puVar2,0x3a);
     iVar3 = 0x1d;
     do {

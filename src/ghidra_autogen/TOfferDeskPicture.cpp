@@ -64,16 +64,14 @@ TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE5B0
 // GHIDRA_NAME TOfferDeskPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TOfferDeskPicture * __thiscall
-TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this)
+TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -92,9 +90,8 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   uint3 uVar4;
   undefined uVar5;
   undefined uVar6;
-  undefined uVar7;
   undefined3 extraout_var;
-  TView *pTVar8;
+  TView *pTVar7;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
   undefined3 extraout_var_03;
@@ -104,22 +101,14 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   undefined3 extraout_var_07;
   undefined3 extraout_var_08;
   undefined3 extraout_var_09;
+  int *piVar8;
   undefined3 extraout_var_10;
   undefined3 extraout_var_11;
   undefined3 extraout_var_12;
-  undefined3 extraout_var_13;
-  int *piVar9;
-  undefined3 extraout_var_14;
-  undefined3 extraout_var_15;
-  undefined3 extraout_var_16;
   undefined4 extraout_ECX;
-  TViewVtbl *pTStack_78;
-  TToolBarClusterVtbl *pTStack_74;
-  TToolBarClusterVtbl *pTStack_70;
   TToolBarClusterVtbl *pTStack_6c;
   int iStack_68;
   uint uStack_64;
-  undefined4 *puStack_60;
   TToolBarClusterVtbl *pTStack_5c;
   TOfferDeskPicture *pTStack_58;
   TView *pTStack_54;
@@ -155,8 +144,8 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   piStack_28 = (int *)0x6d436170;
   pTStack_2c = (TView *)0x5be64d;
   uVar5 = (*pTVar1)();
-  pTVar8 = (TView *)CONCAT31(extraout_var_00,uVar5);
-  pTVar2 = pTVar8->vftable;
+  pTVar7 = (TView *)CONCAT31(extraout_var_00,uVar5);
+  pTVar2 = pTVar7->vftable;
   pTStack_2c = (TView *)0x5be657;
   (*pTVar2[1].slot_0x04)();
   pTStack_2c = (TView *)0x2b6b;
@@ -164,12 +153,12 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   iStack_34 = 0xc;
   piStack_38 = (int *)0x0;
   puStack_40 = (undefined1 *)0x5be66b;
-  pTStack_3c = pTVar8;
+  pTStack_3c = pTVar7;
   ApplyControlTextStyleDescriptorFromThemeCode();
   puStack_30 = (undefined1 *)0x1;
   iStack_34 = 0x2740;
   piStack_38 = (int *)0x5be67b;
-  pTStack_2c = pTVar8;
+  pTStack_2c = pTVar7;
   LoadUiStringByGroupAndIndexToControlObject();
   pTStack_2c = (TView *)0x1;
   puStack_30 = (undefined1 *)0x0;
@@ -204,12 +193,11 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   pTStack_4c = (TView *)0x5be701;
   uVar6 = (*pTVar1)();
   pTStack_4c = (TView *)0x5be70a;
-  (**(code **)(((TToolBarClusterVtbl *)CONCAT31(extraout_var_03,uVar6))->
-               GetTEventHandlerClassNamePointer + 0xc))();
+  (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar6) + 0xc))();
   pTStack_4c = (TView *)0x636c7573;
   pTStack_50 = (TView *)0x5be713;
-  uVar7 = (*pTVar1)();
-  piStack_28 = (int *)CONCAT31(extraout_var_04,uVar7);
+  uVar6 = (*pTVar1)();
+  piStack_28 = (int *)CONCAT31(extraout_var_04,uVar6);
   pTStack_3c = (TView *)*piStack_28;
   pTStack_50 = (TView *)0x5be722;
   (*(code *)pTStack_3c->field0c)();
@@ -218,15 +206,12 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   pTStack_58 = (TOfferDeskPicture *)0x5be734;
   (*(code *)pTStack_3c[1].field48)();
   puStack_30 = (undefined1 *)&pTStack_5c;
-  puStack_60 = &g_szEmptyString;
   uStack_64 = 0x5be746;
   pTStack_58 = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_5c);
-  puStack_60 = (undefined4 *)0x5be74b;
+            ((TToolBarCluster *)&pTStack_5c,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   pTStack_5c = (TToolBarClusterVtbl *)0x2;
-  puStack_60 = (undefined4 *)0x2740;
   uStack_64 = 0x5be75b;
   pTStack_58 = (TOfferDeskPicture *)CONCAT31(extraout_var_01,uVar5);
   LoadUiStringByGroupAndIndexToControlObject();
@@ -234,106 +219,81 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   pTStack_5c = (TToolBarClusterVtbl *)0x5be767;
   uVar5 = (*pTVar1)();
   pTStack_5c = (TToolBarClusterVtbl *)CONCAT31(extraout_var_05,uVar5);
-  puStack_60 = (undefined4 *)0x5;
   uStack_64 = 0x2740;
   iStack_68 = 0x5be774;
   LoadUiStringByGroupAndIndexToControlObject();
   pTStack_5c = (TToolBarClusterVtbl *)0x72656a65;
-  puStack_60 = (undefined4 *)0x5be780;
-  uVar5 = (*pTVar1)();
-  puStack_60 = (undefined4 *)CONCAT31(extraout_var_06,uVar5);
+  (*pTVar1)();
   uStack_64 = 6;
   iStack_68 = 0x2740;
   pTStack_6c = (TToolBarClusterVtbl *)0x5be78d;
   LoadUiStringByGroupAndIndexToControlObject();
-  puStack_60 = (undefined4 *)0x61636365;
   uStack_64 = 0x5be799;
   uVar5 = (*pTVar1)();
-  uStack_64 = CONCAT31(extraout_var_07,uVar5);
+  uStack_64 = CONCAT31(extraout_var_06,uVar5);
   iStack_68 = 7;
   pTStack_6c = (TToolBarClusterVtbl *)0x2740;
-  pTStack_70 = (TToolBarClusterVtbl *)0x5be7a6;
   LoadUiStringByGroupAndIndexToControlObject();
   uStack_64 = 0x73686565;
   iStack_68 = 0x5be7b2;
   uVar5 = (*pTVar1)();
-  iStack_68 = CONCAT31(extraout_var_08,uVar5);
+  iStack_68 = CONCAT31(extraout_var_07,uVar5);
   puStack_40 = (undefined1 *)&pTStack_6c;
-  pTStack_70 = (TToolBarClusterVtbl *)&g_szEmptyString;
-  pTStack_74 = (TToolBarClusterVtbl *)0x5be7c4;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_6c);
-  pTStack_70 = (TToolBarClusterVtbl *)0x5be7c9;
+            ((TToolBarCluster *)&pTStack_6c,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   iStack_68 = 0x77616974;
   pTStack_6c = (TToolBarClusterVtbl *)0x5be7d5;
   uVar5 = (*pTVar1)();
-  pTStack_6c = (TToolBarClusterVtbl *)CONCAT31(extraout_var_09,uVar5);
-  puStack_44 = (undefined1 *)&pTStack_70;
-  pTStack_74 = (TToolBarClusterVtbl *)&g_szEmptyString;
-  pTStack_78 = (TViewVtbl *)0x5be7e7;
+  pTStack_6c = (TToolBarClusterVtbl *)CONCAT31(extraout_var_08,uVar5);
+  puStack_44 = &stack0xffffff90;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_70);
-  pTStack_74 = (TToolBarClusterVtbl *)0x5be7ec;
+            ((TToolBarCluster *)&stack0xffffff90,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   pTStack_6c = (TToolBarClusterVtbl *)0x626f6f6b;
-  pTStack_70 = (TToolBarClusterVtbl *)0x5be7f8;
-  uVar5 = (*pTVar1)();
-  pTStack_70 = (TToolBarClusterVtbl *)CONCAT31(extraout_var_10,uVar5);
-  puStack_48 = (undefined1 *)&pTStack_74;
-  pTStack_78 = (TViewVtbl *)&g_szEmptyString;
+  (*pTVar1)();
+  puStack_48 = &stack0xffffff8c;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_74);
-  pTStack_78 = (TViewVtbl *)0x5be80f;
+            ((TToolBarCluster *)&stack0xffffff8c,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
-  pTStack_74 = (TToolBarClusterVtbl *)0x1;
-  pTStack_78 = (TViewVtbl *)0x2740;
-  pTStack_70 = (TToolBarClusterVtbl *)CONCAT31(extraout_var_03,uVar6);
   LoadUiStringByGroupAndIndexToControlObject();
-  pTStack_70 = (TToolBarClusterVtbl *)0x6c697374;
-  pTStack_74 = (TToolBarClusterVtbl *)0x5be82b;
-  uVar5 = (*pTVar1)();
-  pTStack_74 = (TToolBarClusterVtbl *)CONCAT31(extraout_var_11,uVar5);
-  pTStack_4c = (TView *)&pTStack_78;
+  (*pTVar1)();
+  pTStack_4c = (TView *)&stack0xffffff88;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_78);
+            ((TToolBarCluster *)&stack0xffffff88,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
-  pTStack_74 = (TToolBarClusterVtbl *)0x71756572;
-  pTStack_78 = (TViewVtbl *)0x5be84e;
-  uVar5 = (*pTVar1)();
-  pTStack_78 = (TViewVtbl *)CONCAT31(extraout_var_12,uVar5);
+  (*pTVar1)();
   LoadUiStringByGroupAndIndexToControlObject(0x2730,3);
-  pTStack_78 = (TViewVtbl *)0x77616974;
   uVar5 = (*pTVar1)();
-  piVar9 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_13,uVar5) + 0x94))(0x74657874);
-  iVar3 = *piVar9;
+  piVar8 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_09,uVar5) + 0x94))(0x74657874);
+  iVar3 = *piVar8;
   (**(code **)(iVar3 + 0xc))();
   uVar4 = (uint3)uStack_64;
   uStack_64 = (uint)(uVar4 & 0xffff);
-  puStack_60 = (undefined4 *)((uint)puStack_60 & 0xffff0000);
   thunk_BuildUiTextStyleDescriptor(&iStack_68,0,0xe,0x2b67);
   (**(code **)(iVar3 + 0x1b4))(&iStack_68,0);
   (**(code **)(iVar3 + 0x1c4))(1,0);
   uVar5 = (*pTVar1)(0x61636365);
-  (**(code **)(*(int *)CONCAT31(extraout_var_14,uVar5) + 0xc))();
-  *(undefined2 *)((int)CONCAT31(extraout_var_14,uVar5) + 0x92) = 5000;
+  (**(code **)(*(int *)CONCAT31(extraout_var_10,uVar5) + 0xc))();
+  *(undefined2 *)((int)CONCAT31(extraout_var_10,uVar5) + 0x92) = 5000;
   uVar5 = (*pTVar1)(0x72656a65);
-  (**(code **)(*(int *)CONCAT31(extraout_var_15,uVar5) + 0xc))();
-  *(undefined2 *)((int)CONCAT31(extraout_var_15,uVar5) + 0x92) = 5000;
+  (**(code **)(*(int *)CONCAT31(extraout_var_11,uVar5) + 0xc))();
+  *(undefined2 *)((int)CONCAT31(extraout_var_11,uVar5) + 0x92) = 5000;
   uVar5 = (*pTVar1)(0x466f724d);
-  piVar9 = (int *)CONCAT31(extraout_var_16,uVar5);
-  (**(code **)(*piVar9 + 0xc))();
-  *(undefined2 *)((int)piVar9 + 0x92) = 7000;
-  LoadUiStringByGroupAndIndexToControlObject(0x2764,0x12,piVar9);
+  piVar8 = (int *)CONCAT31(extraout_var_12,uVar5);
+  (**(code **)(*piVar8 + 0xc))();
+  *(undefined2 *)((int)piVar8 + 0x92) = 7000;
+  LoadUiStringByGroupAndIndexToControlObject(0x2764,0x12,piVar8);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF740
 // GHIDRA_NAME TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
-TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOfferDeskPicture *this)
+TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TOfferDeskPicture *this,int param_1,int param_2)
 
 {
   undefined2 uVar1;
@@ -341,12 +301,10 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOfferDeskPictur
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 unaff_EBX;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  iVar2 = *(int *)(in_stack_00000008 + 0x1c);
-  if (in_stack_00000004 < 11000) {
-    if (in_stack_00000004 == 10) {
+  iVar2 = *(int *)(param_2 + 0x1c);
+  if (param_1 < 11000) {
+    if (param_1 == 10) {
       if ((iVar2 == 0x61636365) || (iVar2 == 0x72656a65)) {
         TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt((TNextTradeCommand *)this);
       }
@@ -355,16 +313,17 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOfferDeskPictur
         RefreshSelectedNationOrderCompatibilityInfo();
       }
     }
-    else if ((in_stack_00000004 == 0x14) && (iVar2 == 0x646f6e65)) {
-      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged((TToolBarCluster *)this);
+    else if ((param_1 == 0x14) && (iVar2 == 0x646f6e65)) {
+      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged((TToolBarCluster *)this,'\0');
     }
   }
   else {
     uVar1 = *(undefined2 *)
-             (&DAT_00668568 +
-             (in_stack_00000004 + (char)g_pCityOrderCapabilityState->field_0x193 * 0x11) * 2);
+             (&DAT_00668568 + (param_1 + (char)g_pCityOrderCapabilityState->field_0x193 * 0x11) * 2)
+    ;
     if (this->field_0x9e == '\0') {
-      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged((TToolBarCluster *)this);
+      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
+                ((TToolBarCluster *)this,'\x01');
     }
     else {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f0,0,1);
@@ -374,15 +333,16 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOfferDeskPictur
               ((TControl *)CONCAT31(extraout_var,uVar3),
                (astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF860
 // GHIDRA_NAME TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this)
+void __thiscall
+TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int param_1)
 
 {
   short sVar1;
@@ -390,10 +350,9 @@ void __thiscall TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPict
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
-  int in_stack_00000004;
   int iVar3;
   
-  sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+  sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
     uVar2 = (*this->vftable[0x12].slot_0x04)(0x61636365);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
@@ -418,9 +377,12 @@ void __thiscall TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPict
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0930
 // GHIDRA_NAME TOfferDeskPicture::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TOfferDeskPicture::UpdateControlCachedIntFromWindowText(TOfferDeskPicture *this)
+void __thiscall
+TOfferDeskPicture::UpdateControlCachedIntFromWindowText
+          (TOfferDeskPicture *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
   char cVar1;
@@ -437,7 +399,7 @@ void __thiscall TOfferDeskPicture::UpdateControlCachedIntFromWindowText(TOfferDe
       (**(code **)(**(int **)&this->field_0xa4 + 0xa4))(0,1);
     }
   }
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,param_1,param_2,param_3,param_4);
   return;
 }
 

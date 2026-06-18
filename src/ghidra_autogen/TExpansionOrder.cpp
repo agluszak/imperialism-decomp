@@ -16,15 +16,14 @@ TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FC0
 // GHIDRA_NAME TExpansionOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(byte param_1)
 
-TExpansionOrder * __thiscall TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this)
+TExpansionOrder * __thiscall
+TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTExpansionOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -44,23 +43,20 @@ void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionO
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9010
 // GHIDRA_NAME TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(void)
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
-TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(TExpansionOrder *this)
+TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
+          (TExpansionOrder *this,int param_1,undefined2 param_2,undefined2 param_3,
+          undefined2 param_4,undefined2 param_5)
 
 {
   int iVar1;
   undefined4 *puVar2;
-  int in_stack_00000004;
-  undefined2 in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined2 in_stack_00000014;
   
-  *(int *)&this->field_0x8 = in_stack_00000004;
-  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
-  *(undefined2 *)&this->field_0x48 = in_stack_00000008;
+  *(int *)&this->field_0x8 = param_1;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(param_1 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = param_2;
   *(undefined2 *)&this->field_0x4 = 0;
   puVar2 = (undefined4 *)&this->field_0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -69,12 +65,12 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(TExpansionOrder *
   }
   *(undefined2 *)puVar2 = 0;
   *(undefined4 *)&this->field_0x44 = 0;
-  *(undefined2 *)&this->field_0x4e = in_stack_0000000c;
+  *(undefined2 *)&this->field_0x4e = param_3;
   *(undefined2 *)&this->field_0x40 = 0;
   *(undefined2 *)&this->field_0x3e = 0;
   *(undefined2 *)&this->field_0x4c = 0;
-  *(undefined2 *)&this->field_0x50 = in_stack_00000010;
-  *(undefined2 *)&this->field_0x52 = in_stack_00000014;
+  *(undefined2 *)&this->field_0x50 = param_4;
+  *(undefined2 *)&this->field_0x52 = param_5;
   return;
 }
 
@@ -171,9 +167,10 @@ uint __thiscall TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TExpansionOrde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9260
 // GHIDRA_NAME TExpansionOrder::OrphanCallChain_C1_I16_004b5100
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this)
+undefined4 __thiscall
+TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this,short param_1)
 
 {
   short *psVar1;
@@ -182,15 +179,14 @@ undefined4 __thiscall TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansio
   char cVar4;
   undefined3 extraout_var;
   short sVar5;
-  short in_stack_00000004;
   
-  sVar5 = in_stack_00000004 - *(short *)&this->field_0x4;
+  sVar5 = param_1 - *(short *)&this->field_0x4;
   uVar3 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
-  if (((short)CONCAT31(extraout_var,uVar3) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+  if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
     cVar4 = '\0';
   }
   else {
-    *(short *)&this->field_0x4 = in_stack_00000004;
+    *(short *)&this->field_0x4 = param_1;
     cVar4 = '\x01';
   }
   if (cVar4 == '\0') {

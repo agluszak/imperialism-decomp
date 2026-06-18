@@ -125,7 +125,7 @@ undefined4 AfxThreadEntry(void)
   iVar3 = AfxGetThreadState();
   *(undefined4 *)(iVar3 + 4) = *(undefined4 *)(*piVar1 + 4);
   iVar3 = AfxGetModuleState();
-  iVar3 = TMacViewMgr::GetData((TMacViewMgr *)(iVar3 + 0x1070));
+  iVar3 = TMacViewMgr::GetData((TMacViewMgr *)(iVar3 + 0x1070),CreateObject);
   *(int **)(iVar3 + 4) = piVar2;
   *(int *)(iVar3 + 0x28) = piVar1[3];
   AfxInitThread();
@@ -257,7 +257,9 @@ void AfxInitThread(void)
       iVar3 = AfxGetModuleState();
       (**(code **)(iVar1 + 0x14))(*(undefined4 *)(iVar3 + 8));
     }
-    TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7d70);
+    TMacViewMgr::GetData
+              ((TMacViewMgr *)&DAT_006a7d70,
+               WrapperFor_WrapperFor_ThrowMfcResourceException_At00623baa_At005e5470);
   }
   return;
 }
@@ -362,7 +364,7 @@ void DispatchMfcMsgFilterHookProc(int param_1,WPARAM param_2,LPARAM param_3)
     (**(code **)(*(int *)pCVar2 + 0x78))(param_1,param_3);
     return;
   }
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   CallNextHookEx(*(HHOOK *)(iVar1 + 0x30),param_1,param_2,param_3);
   return;
 }
@@ -1201,7 +1203,7 @@ undefined4 AfxCallWndProc(void)
   
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffc0;
-  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(int *)(unaff_EBP + -0x14) = iVar2;
   puVar5 = (undefined4 *)(iVar2 + 0x34);
@@ -1296,7 +1298,7 @@ int GetCurrentMessage(void)
   LONG LVar2;
   DWORD DVar3;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   LVar2 = GetMessageTime();
   *(LONG *)(iVar1 + 0x44) = LVar2;
   DVar3 = GetMessagePos();
@@ -1383,7 +1385,7 @@ CWnd * FromHandle(undefined4 param_1)
 // GHIDRA_NAME FromHandlePermanent_607b57
 // GHIDRA_PROTO undefined FromHandlePermanent_607b57()
 
-undefined4 FromHandlePermanent_607b57(void)
+undefined4 FromHandlePermanent_607b57(uint param_1)
 
 {
   CWnd *this;
@@ -1392,7 +1394,7 @@ undefined4 FromHandlePermanent_607b57(void)
   this = (CWnd *)afxMapHWND(0);
   uVar1 = 0;
   if (this != (CWnd *)0x0) {
-    uVar1 = CWnd::GetValueAt(this);
+    uVar1 = CWnd::GetValueAt(this,param_1);
   }
   return uVar1;
 }
@@ -1410,7 +1412,8 @@ bool __thiscall AttachWindowHandleToCWndAndSite(CWnd *param_1,void *param_2)
   if (param_2 != (void *)0x0) {
     this = (CHandleMap *)afxMapHWND(1);
     param_1->m_hWnd = param_2;
-    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this);
+    puVar1 = (undefined4 *)
+             TNetMgr::GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this,(int)param_2);
     *puVar1 = param_1;
     CWnd::AttachControlSite(param_1,this);
   }
@@ -1437,7 +1440,7 @@ int __fastcall DetachWindowHandleFromMap(int param_1)
   if (iVar1 != 0) {
     this = (TTooltipRelayWindowState *)afxMapHWND(0);
     if (this != (TTooltipRelayWindowState *)0x0) {
-      TTooltipRelayWindowState::RemoveKey(this);
+      TTooltipRelayWindowState::RemoveKey(this,*(uint *)(param_1 + 0x1c));
     }
     *(undefined4 *)(param_1 + 0x1c) = 0;
   }
@@ -1641,7 +1644,7 @@ LRESULT AfxCbtFilterHook(int param_1,HWND param_2,int *param_3)
   HANDLE pvVar8;
   code *dwNewLong_00;
   
-  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar2 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   if (param_1 != 3) {
     LVar3 = CallNextHookEx(*(HHOOK *)(iVar2 + 0x2c),param_1,(WPARAM)param_2,(LPARAM)param_3);
     return LVar3;
@@ -1716,7 +1719,7 @@ void AfxHookWindowCreate(int param_1)
   DWORD dwThreadId;
   HHOOK pHVar2;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   if (*(int *)(iVar1 + 0x14) != param_1) {
     if (*(int *)(iVar1 + 0x2c) == 0) {
       dwThreadId = GetCurrentThreadId();
@@ -1747,7 +1750,7 @@ undefined4 AfxUnhookWindowCreate(void)
   int iVar1;
   int iVar2;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   iVar2 = AfxGetModuleState();
   if ((*(char *)(iVar2 + 0x14) != '\0') && (*(HHOOK *)(iVar1 + 0x2c) != (HHOOK)0x0)) {
     UnhookWindowsHookEx(*(HHOOK *)(iVar1 + 0x2c));
@@ -2453,7 +2456,8 @@ LAB_00608d4a:
     iVar4 = FromHandlePermanent_607b57(uVar15);
     if (iVar4 == 0) {
       if ((extraout_ECX[0xd] != 0) &&
-         (iVar4 = CWnd::GetValueAt((CWnd *)(extraout_ECX[0xd] + 0x20)), iVar4 != 0)) {
+         (iVar4 = CWnd::GetValueAt((CWnd *)(extraout_ECX[0xd] + 0x20),*(uint *)(unaff_EBP + -0x44)),
+         iVar4 != 0)) {
         *(int *)(unaff_EBP + -0x28) = iVar4;
       }
       iVar4 = unaff_EBP + -0x60;
@@ -3139,7 +3143,7 @@ void __thiscall SendChildNotifyLastMsg(int *param_1,undefined4 param_2)
 {
   int iVar1;
   
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   (**(code **)(*param_1 + 0xb0))
             (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
              *(undefined4 *)(iVar1 + 0x40),param_2);
@@ -3156,7 +3160,8 @@ undefined4 ReflectLastMsg(void)
   HWND hWnd;
   CWnd *this;
   int iVar1;
-  undefined4 uVar2;
+  HWND pHVar2;
+  undefined4 uVar3;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
@@ -3164,20 +3169,21 @@ undefined4 ReflectLastMsg(void)
   this = (CWnd *)afxMapHWND(0);
   if (this != (CWnd *)0x0) {
     hWnd = *(HWND *)(unaff_EBP + 8);
-    iVar1 = CWnd::GetValueAt(this);
+    iVar1 = CWnd::GetValueAt(this,(uint)hWnd);
     if (iVar1 != 0) {
-      uVar2 = SendChildNotifyLastMsg(*(undefined4 *)(unaff_EBP + 0xc));
+      uVar3 = SendChildNotifyLastMsg(*(undefined4 *)(unaff_EBP + 0xc));
       goto LAB_00609c27;
     }
-    GetParent(hWnd);
-    iVar1 = CWnd::GetValueAt(this);
+    pHVar2 = GetParent(hWnd);
+    iVar1 = CWnd::GetValueAt(this,(uint)pHVar2);
     if ((iVar1 != 0) && (*(int *)(iVar1 + 0x34) != 0)) {
-      iVar1 = CWnd::GetValueAt((CWnd *)(*(int *)(iVar1 + 0x34) + 0x20));
+      iVar1 = CWnd::GetValueAt((CWnd *)(*(int *)(iVar1 + 0x34) + 0x20),(uint)hWnd);
       if (iVar1 != 0) {
-        CDocTemplate::ConstructObjectVtable00670b4cWithArg((CDocTemplate *)(unaff_EBP + -0x48));
+        CDocTemplate::ConstructObjectVtable00670b4cWithArg((CDocTemplate *)(unaff_EBP + -0x48),hWnd)
+        ;
         *(undefined4 *)(unaff_EBP + -4) = 0;
         *(int *)(unaff_EBP + -0x10) = iVar1;
-        uVar2 = SendChildNotifyLastMsg(*(undefined4 *)(unaff_EBP + 0xc));
+        uVar3 = SendChildNotifyLastMsg(*(undefined4 *)(unaff_EBP + 0xc));
         *(undefined4 *)(unaff_EBP + -0x2c) = 0;
         *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
         CWnd::~CWnd((CWnd *)(unaff_EBP + -0x48));
@@ -3185,10 +3191,10 @@ undefined4 ReflectLastMsg(void)
       }
     }
   }
-  uVar2 = 0;
+  uVar3 = 0;
 LAB_00609c27:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar2;
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00609C37
@@ -3895,7 +3901,7 @@ int AfxGetExceptionContext(void)
   int iVar1;
   
   dwErrCode = GetLastError();
-  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+  iVar1 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
   SetLastError(dwErrCode);
   return iVar1 + 0x10;
 }
@@ -4676,7 +4682,7 @@ undefined4 GetFileName_60b7dd(void)
   
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  CDocTemplate::GetStatus(this);
+  CDocTemplate::GetStatus(this,(int *)(unaff_EBP + -300));
   CString::CString((CString *)(unaff_EBP + -0x10));
   uVar2 = 0x100;
   *(undefined4 *)(unaff_EBP + -4) = 1;
@@ -4708,7 +4714,7 @@ undefined4 GetFileTitle_60b85f(void)
   
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
-  CDocTemplate::GetStatus(this);
+  CDocTemplate::GetStatus(this,(int *)(unaff_EBP + -300));
   CString::CString((CString *)(unaff_EBP + -0x10));
   uVar2 = 0x100;
   *(undefined4 *)(unaff_EBP + -4) = 1;
@@ -5412,7 +5418,7 @@ void FromHandle_60d0c8(undefined4 param_1)
 // GHIDRA_NAME LookupCMenuByHandleNoCreate
 // GHIDRA_PROTO undefined LookupCMenuByHandleNoCreate()
 
-undefined4 LookupCMenuByHandleNoCreate(void)
+undefined4 LookupCMenuByHandleNoCreate(uint param_1)
 
 {
   CWnd *this;
@@ -5421,7 +5427,7 @@ undefined4 LookupCMenuByHandleNoCreate(void)
   this = (CWnd *)afxMapHIMAGELIST_60d058(0);
   uVar1 = 0;
   if (this != (CWnd *)0x0) {
-    uVar1 = CWnd::GetValueAt(this);
+    uVar1 = CWnd::GetValueAt(this,param_1);
   }
   return uVar1;
 }
@@ -5472,7 +5478,7 @@ bool AfxUnlockTempMaps(int param_1)
       DeleteTempMap_607aab();
       DeleteTempMap();
     }
-    iVar4 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+    iVar4 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50,CreateObject_5e540c);
     if (((iVar2 != 0) &&
         ((*(int *)(iVar4 + 0xc) == 0 ||
          (uVar5 = QueryAllocationSizeWithCustomAllocatorFallback(*(int *)(iVar4 + 0xc)),
@@ -5507,11 +5513,11 @@ TNetMgr * CHandleMap(void)
   
   EstablishSehFrameProlog();
   *(TNetMgr **)(unaff_EBP + -0x10) = this;
-  TNetMgr::CMapPtrToPtr_ctor(this);
+  TNetMgr::CMapPtrToPtr_ctor(this,(TNetMgrVtbl *)0xa);
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  TNetMgr::CMapPtrToPtr_ctor(this + 7);
+  TNetMgr::CMapPtrToPtr_ctor(this + 7,(TNetMgrVtbl *)0x4);
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  TNetMgr::InitHashTable(this + 7);
+  TNetMgr::InitHashTable(this + 7,(TNetMgrVtbl *)0x7,0);
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   this[0xe].vftable = *(TNetMgrVtbl **)(unaff_EBP + 8);
   this[0xf].vftable = *(TNetMgrVtbl **)(unaff_EBP + 0xc);
@@ -5527,27 +5533,27 @@ TNetMgr * CHandleMap(void)
 int FromHandle_60d2c0(void)
 
 {
-  int iVar1;
+  uint uVar1;
   CCmdTargetVtbl *pCVar2;
   int iVar3;
   undefined4 uVar4;
   undefined4 *puVar5;
-  int *piVar6;
+  uint *puVar6;
   CWnd *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  iVar1 = *(int *)(unaff_EBP + 8);
+  uVar1 = *(uint *)(unaff_EBP + 8);
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe0;
   *(CWnd **)(unaff_EBP + -0x1c) = this;
-  if (iVar1 == 0) {
+  if (uVar1 == 0) {
     iVar3 = 0;
   }
   else {
-    iVar3 = CWnd::GetValueAt(this);
+    iVar3 = CWnd::GetValueAt(this,uVar1);
     if (iVar3 == 0) {
-      iVar3 = CWnd::GetValueAt((CWnd *)&this->m_hWnd);
+      iVar3 = CWnd::GetValueAt((CWnd *)&this->m_hWnd,uVar1);
       if (iVar3 == 0) {
         uVar4 = AfxSetNewHandler(EnsureMfcModuleThreadBufferCapacity);
         *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -5558,23 +5564,23 @@ int FromHandle_60d2c0(void)
           AfxThrowMemoryException();
         }
         puVar5 = (undefined4 *)
-                 TNetMgr::GetOrCreateHandleMapEntryValueByKey((TNetMgr *)&this->m_hWnd);
+                 TNetMgr::GetOrCreateHandleMapEntryValueByKey((TNetMgr *)&this->m_hWnd,uVar1);
         *puVar5 = *(undefined4 *)(unaff_EBP + -0x14);
         *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
         AfxSetNewHandler(*(undefined4 *)(unaff_EBP + -0x18));
-        piVar6 = (int *)((int)&(this[1].ccmdTarget.vftable)->SetForeignMinisterReadyFlag14 +
-                        *(int *)(unaff_EBP + -0x14));
-        *piVar6 = iVar1;
+        puVar6 = (uint *)((int)&(this[1].ccmdTarget.vftable)->SetForeignMinisterReadyFlag14 +
+                         *(int *)(unaff_EBP + -0x14));
+        *puVar6 = uVar1;
         if (this[1].ccmdTarget.m_dwRef == 2) {
-          piVar6[1] = iVar1;
+          puVar6[1] = uVar1;
         }
         iVar3 = *(int *)(unaff_EBP + -0x14);
       }
       else {
         pCVar2 = this[1].ccmdTarget.vftable;
-        *(int *)((int)&pCVar2->SetForeignMinisterReadyFlag14 + iVar3) = iVar1;
+        *(uint *)((int)&pCVar2->SetForeignMinisterReadyFlag14 + iVar3) = uVar1;
         if (this[1].ccmdTarget.m_dwRef == 2) {
-          *(int *)((int)&pCVar2->slot_0x04 + iVar3) = iVar1;
+          *(uint *)((int)&pCVar2->slot_0x04 + iVar3) = uVar1;
         }
       }
     }
@@ -5843,19 +5849,23 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006113aa(undefined4 p
 CArchive * WriteVariableLengthPrefixedByteBuffer(CArchive *param_1,int *param_2)
 
 {
-  if (*(int *)(*param_2 + -8) < 0xff) {
-    CArchive::WriteByteToSerializedBuffer(param_1);
+  int iVar1;
+  
+  iVar1 = *(int *)(*param_2 + -8);
+  if (iVar1 < 0xff) {
+    CArchive::WriteByteToSerializedBuffer(param_1,*(byte *)(*param_2 + -8));
   }
-  else if (*(int *)(*param_2 + -8) < 0xfffe) {
-    CArchive::WriteByteToSerializedBuffer(param_1);
-    TNetMgr::WriteWordToSerializedBuffer((TNetMgr *)param_1);
+  else if (iVar1 < 0xfffe) {
+    CArchive::WriteByteToSerializedBuffer(param_1,0xff);
+    TNetMgr::WriteWordToSerializedBuffer((TNetMgr *)param_1,*(undefined2 *)(*param_2 + -8));
   }
   else {
-    CArchive::WriteByteToSerializedBuffer(param_1);
-    TNetMgr::WriteWordToSerializedBuffer((TNetMgr *)param_1);
-    TNetMgr::WriteDwordToSerializedBuffer((TNetMgr *)param_1);
+    CArchive::WriteByteToSerializedBuffer(param_1,0xff);
+    TNetMgr::WriteWordToSerializedBuffer((TNetMgr *)param_1,0xffff);
+    TNetMgr::WriteDwordToSerializedBuffer
+              ((TNetMgr *)param_1,*(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)(*param_2 + -8));
   }
-  TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1);
+  TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)param_1,*param_2,*(uint *)(*param_2 + -8));
   return param_1;
 }
 
@@ -5895,11 +5905,11 @@ undefined4 * FindThreadHandleMapEntryBySerializedName(CArchive *param_1,uint *pa
   ushort local_8;
   ushort local_6;
   
-  CArchive::ReadWordFromSerializedBuffer(param_1);
+  CArchive::ReadWordFromSerializedBuffer(param_1,&local_8);
   *param_2 = (uint)local_8;
-  CArchive::ReadWordFromSerializedBuffer(param_1);
+  CArchive::ReadWordFromSerializedBuffer(param_1,&local_6);
   if (local_6 < 0x40) {
-    uVar1 = CArchive::ReadBytesFromSerializedBuffer(param_1);
+    uVar1 = CArchive::ReadBytesFromSerializedBuffer(param_1,(int)local_48,(uint)local_6);
     if (uVar1 == local_6) {
       local_48[local_6] = '\0';
       iVar2 = AfxGetModuleState();
@@ -5922,15 +5932,18 @@ undefined4 * FindThreadHandleMapEntryBySerializedName(CArchive *param_1,uint *pa
 // GHIDRA_NAME Store
 // GHIDRA_PROTO undefined Store()
 
-void __thiscall Store(undefined4 *param_1,TNetMgr *param_2)
+void __thiscall Store(int *param_1,TNetMgr *param_2)
 
 {
+  undefined2 uVar1;
   TNetMgr *this;
+  uint uVar2;
   
-  lstrlenA((LPCSTR)*param_1);
-  this = (TNetMgr *)TNetMgr::WriteWordToSerializedBuffer(param_2);
-  TNetMgr::WriteWordToSerializedBuffer(this);
-  TNetMgr::WriteBytesToSerializedBuffer(param_2);
+  uVar2 = lstrlenA((LPCSTR)*param_1);
+  uVar1 = (undefined2)uVar2;
+  this = (TNetMgr *)TNetMgr::WriteWordToSerializedBuffer(param_2,(short)param_1[2]);
+  TNetMgr::WriteWordToSerializedBuffer(this,uVar1);
+  TNetMgr::WriteBytesToSerializedBuffer(param_2,*param_1,uVar2 & 0xffff);
   return;
 }
 
@@ -6201,7 +6214,7 @@ int __fastcall DetachHdcFromDcWrapper(int *param_1)
   if (iVar1 != 0) {
     this = (TTooltipRelayWindowState *)afxMapHDC(0);
     if (this != (TTooltipRelayWindowState *)0x0) {
-      TTooltipRelayWindowState::RemoveKey(this);
+      TTooltipRelayWindowState::RemoveKey(this,param_1[1]);
     }
   }
   (**(code **)(*param_1 + 0x1c))();
@@ -6591,7 +6604,8 @@ TCivDescription * ConstructCClientDCFromViewHandle(void)
 
 {
   HWND hWnd;
-  int iVar1;
+  HDC pHVar1;
+  int iVar2;
   TCivDescription *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6599,17 +6613,17 @@ TCivDescription * ConstructCClientDCFromViewHandle(void)
   EstablishSehFrameProlog();
   *(TCivDescription **)(unaff_EBP + -0x10) = this;
   CDC::CDC((CDC *)this);
-  iVar1 = *(int *)(unaff_EBP + 8);
+  iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   this->vftable = (TCivDescriptionVtbl *)&CClientDC::_vftable_;
   hWnd = (HWND)0x0;
-  if (iVar1 != 0) {
-    hWnd = *(HWND *)(iVar1 + 0x1c);
+  if (iVar2 != 0) {
+    hWnd = *(HWND *)(iVar2 + 0x1c);
   }
   this->field10 = (int)hWnd;
-  GetDC(hWnd);
-  iVar1 = TCivDescription::AttachHdcToDcWrapper(this);
-  if (iVar1 == 0) {
+  pHVar1 = GetDC(hWnd);
+  iVar2 = TCivDescription::AttachHdcToDcWrapper(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -6648,7 +6662,8 @@ TCivDescription * CWindowDC(void)
 
 {
   HWND hWnd;
-  int iVar1;
+  HDC pHVar1;
+  int iVar2;
   TCivDescription *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6656,17 +6671,17 @@ TCivDescription * CWindowDC(void)
   EstablishSehFrameProlog();
   *(TCivDescription **)(unaff_EBP + -0x10) = this;
   CDC::CDC((CDC *)this);
-  iVar1 = *(int *)(unaff_EBP + 8);
+  iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   this->vftable = (TCivDescriptionVtbl *)&PTR_LAB_0067251c;
   hWnd = (HWND)0x0;
-  if (iVar1 != 0) {
-    hWnd = *(HWND *)(iVar1 + 0x1c);
+  if (iVar2 != 0) {
+    hWnd = *(HWND *)(iVar2 + 0x1c);
   }
   this->field10 = (int)hWnd;
-  GetWindowDC(hWnd);
-  iVar1 = TCivDescription::AttachHdcToDcWrapper(this);
-  if (iVar1 == 0) {
+  pHVar1 = GetWindowDC(hWnd);
+  iVar2 = TCivDescription::AttachHdcToDcWrapper(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -6719,7 +6734,8 @@ TCivDescription * CPaintDC(void)
 
 {
   HWND hWnd;
-  int iVar1;
+  HDC pHVar1;
+  int iVar2;
   TCivDescription *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6727,14 +6743,14 @@ TCivDescription * CPaintDC(void)
   EstablishSehFrameProlog();
   *(TCivDescription **)(unaff_EBP + -0x10) = this;
   CDC::CDC((CDC *)this);
-  iVar1 = *(int *)(unaff_EBP + 8);
+  iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   this->vftable = (TCivDescriptionVtbl *)&PTR_LAB_0067259c;
-  hWnd = *(HWND *)(iVar1 + 0x1c);
+  hWnd = *(HWND *)(iVar2 + 0x1c);
   this->field10 = (int)hWnd;
-  BeginPaint(hWnd,(LPPAINTSTRUCT)&this->field14);
-  iVar1 = TCivDescription::AttachHdcToDcWrapper(this);
-  if (iVar1 == 0) {
+  pHVar1 = BeginPaint(hWnd,(LPPAINTSTRUCT)&this->field14);
+  iVar2 = TCivDescription::AttachHdcToDcWrapper(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -6820,7 +6836,7 @@ int __fastcall DetachRegionHandleFromClipStateAndUnregister(int param_1)
   if (iVar1 != 0) {
     this = (TTooltipRelayWindowState *)afxMapHIMAGELIST_6139c6(0);
     if (this != (TTooltipRelayWindowState *)0x0) {
-      TTooltipRelayWindowState::RemoveKey(this);
+      TTooltipRelayWindowState::RemoveKey(this,*(uint *)(param_1 + 4));
     }
   }
   *(undefined4 *)(param_1 + 4) = 0;
@@ -6853,7 +6869,8 @@ CBrush * CPen_613b09(void)
 
 {
   DWORD *pstyle;
-  int iVar1;
+  HPEN pHVar1;
+  int iVar2;
   CBrush *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6864,10 +6881,10 @@ CBrush * CPen_613b09(void)
   pstyle = *(DWORD **)(unaff_EBP + 0x18);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_0067261c;
-  ExtCreatePen(*(DWORD *)(unaff_EBP + 8),*(DWORD *)(unaff_EBP + 0xc),
-               *(LOGBRUSH **)(unaff_EBP + 0x10),*(DWORD *)(unaff_EBP + 0x14),pstyle);
-  iVar1 = CBrush::AttachRegionHandleToClipStateAndRegister(this);
-  if (iVar1 == 0) {
+  pHVar1 = ExtCreatePen(*(DWORD *)(unaff_EBP + 8),*(DWORD *)(unaff_EBP + 0xc),
+                        *(LOGBRUSH **)(unaff_EBP + 0x10),*(DWORD *)(unaff_EBP + 0x14),pstyle);
+  iVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -6882,7 +6899,8 @@ CBrush * CBrush_613ba9(void)
 
 {
   COLORREF color;
-  int iVar1;
+  HBRUSH pHVar1;
+  int iVar2;
   CBrush *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6893,9 +6911,9 @@ CBrush * CBrush_613ba9(void)
   color = *(COLORREF *)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
-  CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
-  iVar1 = CBrush::AttachRegionHandleToClipStateAndRegister(this);
-  if (iVar1 == 0) {
+  pHVar1 = CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
+  iVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -6909,7 +6927,8 @@ CBrush * CBrush_613ba9(void)
 CBrush * CBrush_613bf6(void)
 
 {
-  int iVar1;
+  HBRUSH pHVar1;
+  int iVar2;
   CBrush *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -6917,12 +6936,12 @@ CBrush * CBrush_613bf6(void)
   EstablishSehFrameProlog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
-  iVar1 = *(int *)(unaff_EBP + 8);
+  iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
-  CreatePatternBrush(*(HBITMAP *)(iVar1 + 4));
-  iVar1 = CBrush::AttachRegionHandleToClipStateAndRegister(this);
-  if (iVar1 == 0) {
+  pHVar1 = CreatePatternBrush(*(HBITMAP *)(iVar2 + 4));
+  iVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  if (iVar2 == 0) {
     AfxThrowResourceException();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -7043,7 +7062,7 @@ undefined4 __thiscall OnCreate_613d76(CWnd *param_1,int *param_2)
   }
   else {
     if ((*param_2 != 0) && (this = *(CDocument **)(*param_2 + 4), this != (CDocument *)0x0)) {
-      CDocument::AddView(this);
+      CDocument::AddView(this,(int)param_1);
     }
     uVar2 = 0;
   }

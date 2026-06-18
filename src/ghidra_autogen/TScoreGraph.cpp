@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE240
 // GHIDRA_NAME TScoreGraph::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this)
+TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,7 +62,7 @@ void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
   ppTStack00000004 = &pTStack_14;
   pTStack_10 = pTStack_14;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_14);
+            ((TToolBarCluster *)&pTStack_14,(char *)&g_szEmptyString);
   InitializeAndRunMainRoutine();
   pTStack_10 = (TView *)0x4fe323;
   uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();

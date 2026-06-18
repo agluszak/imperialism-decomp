@@ -62,15 +62,14 @@ TMegaPicture * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPict
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005731D0
 // GHIDRA_NAME TMegaPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMegaPicture * __thiscall TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this)
+TMegaPicture * __thiscall
+TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -78,26 +77,25 @@ TMegaPicture * __thiscall TMegaPicture::_scalar_deleting_destructor_(TMegaPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573270
 // GHIDRA_NAME TMegaPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this)
+void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this,LONG *param_1)
 
 {
   TMegaPicture_slot_0x04_0x04 *pTVar1;
   LONG unaff_ESI;
   byte blitFlags;
   LONG unaff_EDI;
-  LONG *in_stack_00000004;
   uint palette_index;
   LONG local_30;
   LONG local_2c;
   RECT local_28;
   RECT RStack_18;
   
-  local_30 = *in_stack_00000004;
-  local_2c = in_stack_00000004[1];
-  local_28.left = in_stack_00000004[2];
-  local_28.top = in_stack_00000004[3];
+  local_30 = *param_1;
+  local_2c = param_1[1];
+  local_28.left = param_1[2];
+  local_28.top = param_1[3];
   pTVar1 = this->vftable[0x29].slot_0x04;
   (*pTVar1)(&local_30,&RStack_18.right);
   if (*(int *)&this->field_0x94 != 0) {
@@ -142,9 +140,9 @@ void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573430
 // GHIDRA_NAME TMegaPicture::SetPictureResourceIdAndRefresh
-// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(undefined4 param_1)
 
-void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
+void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this,undefined4 param_1)
 
 {
   undefined1 *puVar1;
@@ -155,7 +153,8 @@ void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
   undefined4 uVar5;
   undefined4 unaff_EBP;
   undefined4 unaff_ESI;
-  undefined4 in_stack_00000004;
+  undefined2 uVar6;
+  undefined1 *puVar7;
   undefined1 auStack_28 [4];
   undefined1 auStack_24 [4];
   LONG LStack_20;
@@ -171,7 +170,7 @@ void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
   }
   *(undefined4 *)puVar1 = 0;
   (*this->vftable[0x38].slot_0x04)();
-  uVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130(in_stack_00000004);
+  uVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
   *(undefined4 *)&this->field_0x88 = uVar5;
   NoOpRuntimeCallback_00497c00(uVar5);
   if (**(int **)&this->field_0x88 != 0) {
@@ -185,7 +184,9 @@ void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
     LStack_14 = LStack_4;
     *(LONG *)&this->field_0xa8 = LStack_4;
     thunk_GetActiveQuickDrawSurfaceContextAndFlags(auStack_24,auStack_28);
+    puVar7 = puVar1;
     (**(code **)(*DAT_006a2158 + 0x2c))(puVar1,8,&LStack_20);
+    uVar6 = SUB42(puVar7,0);
     thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
     uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
     thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
@@ -213,7 +214,7 @@ void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
       thunk_NoOpQuickDrawLifecycleHookB(uVar5);
       thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
       TPicture::thunk_SetPictureResourceIdAndRefresh
-                ((TPicture *)this,auStack_10._8_2_,(bool)(undefined1)LStack_4);
+                ((TPicture *)this,auStack_10._8_2_,(bool)(undefined1)LStack_4,uVar6);
     }
   }
   return;

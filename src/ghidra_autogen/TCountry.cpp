@@ -5,64 +5,63 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406758
 // GHIDRA_NAME TCountry::thunk_QueueInterNationEventRecordDeduped
-// GHIDRA_PROTO undefined __thiscall thunk_QueueInterNationEventRecordDeduped(void)
+// GHIDRA_PROTO undefined __thiscall thunk_QueueInterNationEventRecordDeduped(int param_1, int param_2, int param_3, char param_4)
 
-void __thiscall TCountry::thunk_QueueInterNationEventRecordDeduped(TCountry *this)
+void __thiscall
+TCountry::thunk_QueueInterNationEventRecordDeduped
+          (TCountry *this,int param_1,int param_2,int param_3,char param_4)
 
 {
   bool bVar1;
   int *piVar2;
   int iVar3;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  char in_stack_00000010;
-  undefined1 auStack_10 [8];
+  int iStack_10;
+  int iStack_c;
   int iStack_8;
   
   if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((in_stack_00000010 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
       if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-        CreateAndSendTurnEvent20_ShortAndTwoBytes
-                  (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+        CreateAndSendTurnEvent20_ShortAndTwoBytes(param_1,param_2,param_3);
         return;
       }
     }
     else {
-      if ((in_stack_00000004 < 5) || (0x15 < in_stack_00000004)) {
+      if ((param_1 < 5) || (0x15 < param_1)) {
         bVar1 = false;
       }
       else {
         bVar1 = true;
       }
       if (bVar1) {
-        AddOrUpdateBilateralActionRelationEntry
-                  (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+        AddOrUpdateBilateralActionRelationEntry(param_1,param_2,param_3);
         return;
       }
       piVar2 = (int *)SetPlaybackState2AndNotifyOwnerCallback();
       iVar3 = NoOpPlaybackCallback_005e1fd0();
       while (iVar3 != 0) {
-        if (*piVar2 == in_stack_00000004) {
-          if ((piVar2[1] == in_stack_00000008) &&
-             ((piVar2[2] & 1 << ((byte)in_stack_0000000c & 0x1f)) != 0)) {
+        if (*piVar2 == param_1) {
+          if ((piVar2[1] == param_2) && ((piVar2[2] & 1 << ((byte)param_3 & 0x1f)) != 0)) {
             return;
           }
-          if ((piVar2[1] == in_stack_0000000c) &&
-             ((piVar2[2] & 1 << ((byte)in_stack_00000008 & 0x1f)) != 0)) {
+          if ((piVar2[1] == param_3) && ((piVar2[2] & 1 << ((byte)param_2 & 0x1f)) != 0)) {
             return;
           }
         }
         piVar2 = (int *)IncrementPlaybackCounterAndNotifyOwnerCallback();
         iVar3 = NoOpPlaybackCallback_005e1fd0();
       }
-      if (in_stack_00000008 < 7) {
-        iStack_8 = 1 << ((byte)in_stack_0000000c & 0x1f);
-        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(auStack_10);
+      if (param_2 < 7) {
+        iStack_10 = param_1;
+        iStack_8 = 1 << ((byte)param_3 & 0x1f);
+        iStack_c = param_2;
+        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
       }
-      if (((in_stack_0000000c < 7) && (1 < in_stack_00000004)) && (in_stack_00000004 < 0x19)) {
-        iStack_8 = 1 << ((byte)in_stack_00000008 & 0x1f);
-        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(auStack_10);
+      if (((param_3 < 7) && (1 < param_1)) && (param_1 < 0x19)) {
+        iStack_10 = param_1;
+        iStack_8 = 1 << ((byte)param_2 & 0x1f);
+        iStack_c = param_3;
+        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
       }
     }
   }
@@ -71,10 +70,11 @@ void __thiscall TCountry::thunk_QueueInterNationEventRecordDeduped(TCountry *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409089
 // GHIDRA_NAME TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
-// GHIDRA_PROTO undefined __thiscall thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void)
+// GHIDRA_PROTO undefined __thiscall thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(int * param_1)
 
 void __thiscall
-TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCountry *this)
+TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
+          (TCountry *this,int *param_1)
 
 {
   undefined1 uVar1;
@@ -85,9 +85,8 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
   int iVar5;
   TMilitaryUnitOrderState *this_00;
   int *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   undefined4 uStack_7c;
-  undefined4 uStack_78;
+  int *piStack_78;
   undefined1 *puStack_74;
   int iStack_70;
   TMilitaryUnitOrderState *pTStack_6c;
@@ -114,7 +113,7 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
   puStack_8 = &LAB_00631e2a;
   *unaff_FS_OFFSET = (int)&iStack_c;
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  iVar5 = *in_stack_00000004;
+  iVar5 = *param_1;
   (**(code **)(iVar5 + 0x70))();
   puStack_34 = (undefined1 *)0x4d6c3d;
   CString::AssignFromPtr
@@ -163,7 +162,7 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
   (*pcVar2)();
   puVar4 = &this->field_0x14;
   iStack_70 = 0x2e;
-  uStack_78 = 0x4d6cbe;
+  piStack_78 = (int *)0x4d6cbe;
   puStack_74 = puVar4;
   (*pcVar2)();
   iVar5 = 0x17;
@@ -174,12 +173,13 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
     puVar4 = puVar4 + 2;
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
-  uStack_78 = 0x4d6cdd;
+  piStack_78 = (int *)0x4d6cdd;
   iVar5 = (**(code **)(**(int **)&this->field_0x44 + 0x48))();
   if (iVar5 != 0) {
-    uStack_78 = 0x4d6ce9;
+    piStack_78 = (int *)0x4d6ce9;
     (**(code **)(**(int **)&this->field_0x44 + 0x54))();
   }
+  piStack_78 = param_1;
   uStack_7c = 0x4d6cf2;
   (**(code **)(**(int **)&this->field_0x44 + 0x18))();
   uStack_7c = 4;
@@ -195,8 +195,8 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
                   TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTStack_6c);
       }
       uStack_60 = 0xffffffff;
-      TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00);
-      (**(code **)(*(int *)this_00 + 0x18))();
+      TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00,0,-1,*(short *)&this->field_0xc);
+      (**(code **)(*(int *)this_00 + 0x18))(param_1);
       iStack_70 = iStack_70 + 1;
     } while (iStack_70 <= iStack_58);
   }
@@ -205,12 +205,12 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(TCount
   if (CONCAT31(extraout_var,uVar3) != 0) {
     (*this->ownedRegionList->vftable[6].GetTEventHandlerClassNamePointer)();
   }
-  (*this->ownedRegionList->vftable[4].GetTEventHandlerClassNamePointer)();
+  (*this->ownedRegionList->vftable[4].GetTEventHandlerClassNamePointer)(param_1);
   (*pcVar2)(&puStack_5c,4);
   if (0 < (int)pdStack_64) {
     do {
       (*pcVar2)(&uStack_7c,4);
-      (*this->ownedRegionList->vftable[2].slot_0x04)(in_stack_00000004);
+      (*this->ownedRegionList->vftable[2].slot_0x04)(param_1);
       iVar5 = iVar5 + 1;
     } while (iVar5 <= (int)pdStack_64);
   }
@@ -295,15 +295,13 @@ TCountry * __thiscall TCountry::ConstructTCountryBaseState(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6850
 // GHIDRA_NAME TCountry::DestructTCountryAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCountryAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTCountryAndMaybeFree(byte param_1)
 
-TCountry * __thiscall TCountry::DestructTCountryAndMaybeFree(TCountry *this)
+TCountry * __thiscall TCountry::DestructTCountryAndMaybeFree(TCountry *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -311,9 +309,10 @@ TCountry * __thiscall TCountry::DestructTCountryAndMaybeFree(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6E60
 // GHIDRA_NAME TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int * param_1)
 
-void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCountry *this)
+void __thiscall
+TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCountry *this,int *param_1)
 
 {
   code *pcVar1;
@@ -328,9 +327,8 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
   undefined4 extraout_EDX_00;
   undefined2 *puVar5;
   int iVar6;
-  int *in_stack_00000004;
   undefined4 *puStack_58;
-  undefined4 uStack_54;
+  int *piStack_54;
   undefined1 *puStack_50;
   int iStack_4c;
   dword *pdStack_48;
@@ -344,12 +342,13 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined4 uStack_20;
-  undefined1 *puStack_1c;
+  int *piStack_1c;
   
+  piStack_1c = param_1;
   uStack_20 = (undefined1 *)0x4d6e73;
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  iVar6 = *in_stack_00000004;
-  puStack_1c = &this->field_0x4;
+  iVar6 = *param_1;
+  piStack_1c = (int *)&this->field_0x4;
   pcVar1 = *(code **)(iVar6 + 0xac);
   uStack_20 = (undefined1 *)0x4d6e83;
   (*pcVar1)();
@@ -366,7 +365,7 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
   uStack_34 = 0x4d6ea2;
   (*pcVar1)();
   puVar5 = (undefined2 *)&this->field_0x48;
-  puStack_1c = (undefined1 *)0x1e;
+  piStack_1c = (int *)0x1e;
   uVar4 = extraout_ECX;
   do {
     uStack_34 = 2;
@@ -379,9 +378,9 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
     iStack_3c = 0x4d6ed0;
     (*pcVar1)();
     puVar5 = puVar5 + 1;
-    puStack_1c = (undefined1 *)((int)puStack_1c + -1);
+    piStack_1c = (int *)((int)piStack_1c + -1);
     uVar4 = extraout_ECX_00;
-  } while (puStack_1c != (undefined1 *)0x0);
+  } while (piStack_1c != (int *)0x0);
   puStack_38 = (undefined4 *)&this->field_0x84;
   uStack_34 = 2;
   iStack_3c = 0x4d6eeb;
@@ -396,13 +395,13 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
   (*pcVar1)();
   puStack_50 = &this->field_0x8c;
   iStack_4c = 4;
-  uStack_54 = 0x4d6f0f;
+  piStack_54 = (int *)0x4d6f0f;
   (*pcVar1)();
   puVar5 = (undefined2 *)&this->field_0x14;
   iStack_3c = 0x17;
   uVar4 = extraout_EDX;
   do {
-    uStack_54 = 2;
+    piStack_54 = (int *)0x2;
     uStack_40._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
     uStack_40._0_1_ = (undefined1)*puVar5;
     puStack_58 = &uStack_40;
@@ -413,6 +412,7 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
     iStack_3c = iStack_3c + -1;
     uVar4 = extraout_EDX_00;
   } while (iStack_3c != 0);
+  piStack_54 = param_1;
   puStack_58 = (undefined4 *)0x4d6f54;
   (**(code **)(**(int **)&this->field_0x44 + 0x14))();
   puStack_58 = (undefined4 *)0x4d6f5c;
@@ -423,11 +423,11 @@ void __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCoun
   if (0 < (int)uStack_40) {
     do {
       piVar3 = (int *)(**(code **)(**(int **)&this->field_0x44 + 0x4c))(iVar6);
-      (**(code **)(*piVar3 + 0x14))();
+      (**(code **)(*piVar3 + 0x14))(param_1);
       iVar6 = iVar6 + 1;
     } while (iVar6 <= (int)uStack_40);
   }
-  (*this->ownedRegionList->vftable[3].slot_0x04)();
+  (*this->ownedRegionList->vftable[3].slot_0x04)(param_1);
   uVar2 = (*this->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
   uStack_44 = CONCAT31(extraout_var,uVar2);
   (*pcVar1)(&uStack_44,4);
@@ -453,25 +453,63 @@ undefined1 __thiscall TCountry::ReturnFalseNationStateActionStub(TCountry *this)
   return 0;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7B20
+// GHIDRA_NAME TCountry::ApplyJoinEmpireModeForTargetNation
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_2)
+
+void __thiscall
+TCountry::ApplyJoinEmpireModeForTargetNation(TCountry *this,undefined4 param_1,int param_2)
+
+{
+  undefined4 in_EDX;
+  undefined2 uVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  
+  uVar1 = (undefined2)((uint)in_EDX >> 0x10);
+  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    thunk_DispatchJoinEmpireModeEventPacket24_27((int)*(short *)&this->field_0xc,param_1,param_2);
+    uVar1 = extraout_var;
+  }
+  if (param_2 == 1) {
+    (*g_pDiplomacyTurnStateManager->vftable[0xf].GetTDiplomacyMgrClassNamePointer)
+              (CONCAT22(uVar1,*(undefined2 *)&this->field_0xc),param_1,5);
+    (*g_pDiplomacyTurnStateManager->vftable[0xf].GetTDiplomacyMgrClassNamePointer)
+              (param_1,CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0xc),5);
+  }
+  if (*(short *)&this->field_0xc < 7) {
+    DecrementField30Value();
+  }
+  if (param_2 == 0) {
+    (*this->vftable[10].GetTCountryClassNamePointer)(param_1);
+    return;
+  }
+  if (param_2 == 1) {
+    (*this->vftable[10].slot_0x04)(param_1);
+    return;
+  }
+  (*this->vftable[0xb].GetTCountryClassNamePointer)();
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7C00
 // GHIDRA_NAME TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers
-// GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
+// GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
 
-void __thiscall TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this)
+void __thiscall
+TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this,int param_1)
 
 {
   char cVar1;
   TCountry **ppTVar2;
   int iVar3;
-  int in_stack_00000004;
   
   iVar3 = 0;
-  *(short *)&this->field_0xe = (short)in_stack_00000004 + 100;
+  *(short *)&this->field_0xe = (short)param_1 + 100;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
   do {
     cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar3);
-    if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != in_stack_00000004))
-    {
+    if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
       (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,100);
     }
     ppTVar2 = ppTVar2 + 1;
@@ -483,24 +521,22 @@ void __thiscall TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCou
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7C90
 // GHIDRA_NAME TCountry::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(void)
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(int param_1)
 
-void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this)
+void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this,int param_1)
 
 {
   char cVar1;
   TCountry **ppTVar2;
   int iVar3;
-  int in_stack_00000004;
   
-  *(short *)&this->field_0xe = (short)in_stack_00000004 + 200;
-  (*this->vftable[9].GetTCountryClassNamePointer)();
+  *(short *)&this->field_0xe = (short)param_1 + 200;
+  (*this->vftable[9].GetTCountryClassNamePointer)(param_1,100);
   iVar3 = 0;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
   do {
     cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar3);
-    if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != in_stack_00000004))
-    {
+    if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
       (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,200);
     }
     ppTVar2 = ppTVar2 + 1;
@@ -512,16 +548,15 @@ void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7D20
 // GHIDRA_NAME TCountry::IsDiplomacyTargetClassCode200Match
-// GHIDRA_PROTO undefined __thiscall IsDiplomacyTargetClassCode200Match(void)
+// GHIDRA_PROTO undefined __thiscall IsDiplomacyTargetClassCode200Match(int param_1)
 
-undefined4 __thiscall TCountry::IsDiplomacyTargetClassCode200Match(TCountry *this)
+undefined4 __thiscall TCountry::IsDiplomacyTargetClassCode200Match(TCountry *this,int param_1)
 
 {
   int iVar1;
-  int in_stack_00000004;
   
   iVar1 = *(short *)&this->field_0xe + -200;
-  return CONCAT31((int3)((uint)iVar1 >> 8),iVar1 == in_stack_00000004);
+  return CONCAT31((int3)((uint)iVar1 >> 8),iVar1 == param_1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7D50
@@ -559,38 +594,36 @@ void __thiscall TCountry::AddRegionIdToNationOwnedRegionList(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7DD0
 // GHIDRA_NAME TCountry::SetNationPercentFieldByModeAndDescriptorLinks
-// GHIDRA_PROTO undefined __thiscall SetNationPercentFieldByModeAndDescriptorLinks(void)
+// GHIDRA_PROTO undefined __thiscall SetNationPercentFieldByModeAndDescriptorLinks(int param_1, int param_2)
 
-void __thiscall TCountry::SetNationPercentFieldByModeAndDescriptorLinks(TCountry *this)
+void __thiscall
+TCountry::SetNationPercentFieldByModeAndDescriptorLinks(TCountry *this,int param_1,int param_2)
 
 {
   short sVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000008 == 500) {
-    *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) = 100;
+  if (param_2 == 500) {
+    *(undefined2 *)(&this->field_0x14 + param_1 * 2) = 100;
     return;
   }
-  if (in_stack_00000008 != 200) {
-    *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) = 100;
+  if (param_2 != 200) {
+    *(undefined2 *)(&this->field_0x14 + param_1 * 2) = 100;
     return;
   }
-  sVar1 = *(short *)&g_apTerrainTypeDescriptorTable[in_stack_00000004]->field_0xe;
+  sVar1 = *(short *)&g_apTerrainTypeDescriptorTable[param_1]->field_0xe;
   if (199 < sVar1) {
-    *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) =
+    *(undefined2 *)(&this->field_0x14 + param_1 * 2) =
          *(undefined2 *)(&this->field_0x14 + (short)(sVar1 + -200) * 2);
     return;
   }
   if (99 < sVar1) {
-    *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) =
+    *(undefined2 *)(&this->field_0x14 + param_1 * 2) =
          *(undefined2 *)(&this->field_0x14 + (short)(sVar1 + -100) * 2);
     return;
   }
-  *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) =
+  *(undefined2 *)(&this->field_0x14 + param_1 * 2) =
        *(undefined2 *)
-        (&this->field_0x14 +
-        *(short *)&g_apTerrainTypeDescriptorTable[in_stack_00000004]->field_0xc * 2);
+        (&this->field_0x14 + *(short *)&g_apTerrainTypeDescriptorTable[param_1]->field_0xc * 2);
   return;
 }
 
@@ -788,25 +821,23 @@ void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount(TCountry *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D8920
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_2)
 
-void __thiscall TCountry::OrphanLeaf_NoCall_Ins07_004d8920(TCountry *this)
+void __thiscall
+TCountry::OrphanLeaf_NoCall_Ins07_004d8920(TCountry *this,short param_1,undefined2 param_2)
 
 {
-  short in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  if (in_stack_00000004 != *(short *)&this->field_0xc) {
-    *(undefined2 *)(&this->field_0x14 + in_stack_00000004 * 2) = in_stack_00000008;
+  if (param_1 != *(short *)&this->field_0xc) {
+    *(undefined2 *)(&this->field_0x14 + param_1 * 2) = param_2;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D9C70
 // GHIDRA_NAME TCountry::HandleCityDialogHintClusterUpdate
-// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(void)
+// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(int * param_1)
 
-void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
+void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this,int *param_1)
 
 {
   code *pcVar1;
@@ -831,7 +862,6 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
   undefined2 *puVar7;
   undefined4 *puVar8;
   int iVar9;
-  int *in_stack_00000004;
   undefined1 *puVar10;
   undefined1 *puStack_ac;
   undefined4 uStack_a8;
@@ -842,14 +872,14 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
   dword *pdStack_94;
   int iStack_90;
   undefined4 **ppuStack_8c;
-  undefined4 uStack_88;
-  int iStack_84;
+  int *piStack_88;
+  int *piStack_84;
   int *piStack_80;
   undefined4 uStack_7c;
-  undefined4 uStack_78;
-  uint uStack_74;
+  int *piStack_78;
+  int *piStack_74;
   int *piStack_70;
-  undefined4 uStack_6c;
+  int *piStack_6c;
   undefined4 *puStack_68;
   int iStack_64;
   undefined1 *puStack_60;
@@ -869,12 +899,10 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  undefined4 uStack_1c;
   
   puStack_20 = (undefined1 *)0x4d9c83;
-  WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(this);
-  uStack_1c = 1;
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(this,param_1);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   puStack_20 = &this[1].field_0xc;
   uStack_24 = 0x4d9c95;
   (*pcVar1)();
@@ -1083,40 +1111,42 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
     uVar2 = CONCAT11((undefined1)uStack_50,uStack_50._1_1_);
     puStack_68 = &uStack_50;
     uStack_50 = (undefined1 *)CONCAT22(uVar2,CONCAT11(uStack_50._2_1_,uStack_50._3_1_));
-    uStack_6c = 0x4d9fa8;
+    piStack_6c = (int *)0x4d9fa8;
     (*pcVar1)();
     puVar8 = puVar8 + 1;
     iStack_4c = iStack_4c + -1;
   } while (iStack_4c != 0);
   puStack_68 = (undefined4 *)&this[0xf].field_0x1c;
   iStack_64 = 0xd;
-  uStack_6c = 0x4d9fc3;
+  piStack_6c = (int *)0x4d9fc3;
   (*pcVar1)();
   puVar7 = (undefined2 *)&this[0xf].field_0x2a;
   iStack_54 = 0xd;
   uVar5 = extraout_EDX;
   do {
-    uStack_6c = 2;
+    piStack_6c = (int *)0x2;
     uStack_58._1_1_ = (undefined1)((ushort)*puVar7 >> 8);
     uStack_58._0_1_ = (undefined1)*puVar7;
     piStack_70 = &uStack_58;
     uStack_58._0_2_ = CONCAT11((undefined1)uStack_58,uStack_58._1_1_);
     uStack_58 = (undefined4 *)CONCAT22((short)((uint)uVar5 >> 0x10),(undefined2)uStack_58);
-    uStack_74 = 0x4d9ff3;
+    piStack_74 = (int *)0x4d9ff3;
     (*pcVar1)();
     puVar7 = puVar7 + 1;
     iStack_54 = iStack_54 + -1;
     uVar5 = extraout_EDX_00;
   } while (iStack_54 != 0);
+  piStack_6c = param_1;
   piStack_70 = (int *)0x4da00d;
   (**(code **)(**(int **)&this[0xe].field_0x30 + 0x14))();
-  piStack_70 = in_stack_00000004;
-  uStack_74 = 0x4da019;
+  piStack_70 = param_1;
+  piStack_74 = (int *)0x4da019;
   (**(code **)(**(int **)&this[0xe].field_0x34 + 0x14))();
   puVar8 = (undefined4 *)&this[0xe].field_0x38;
   iStack_5c = 0x11;
   do {
-    uStack_78 = 0x4da02f;
+    piStack_74 = param_1;
+    piStack_78 = (int *)0x4da02f;
     (**(code **)(*(int *)*puVar8 + 0x14))();
     puVar8 = puVar8 + 1;
     iStack_5c = iStack_5c + -1;
@@ -1135,50 +1165,57 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
   if (*(int *)&this[0xe].field_0x7c != 0) {
     puStack_60 = (undefined1 *)((uint)puStack_60 | 8);
   }
-  uStack_74 = (uint)puStack_60;
-  uStack_78 = 0x4da08a;
-  (**(code **)(*in_stack_00000004 + 0x7c))();
+  piStack_74 = (int *)puStack_60;
+  piStack_78 = (int *)0x4da08a;
+  (**(code **)(*param_1 + 0x7c))();
   if (this[1].vftable != (TCountryVtbl *)0x0) {
+    piStack_78 = param_1;
     uStack_7c = 0x4da09a;
     (**(code **)((this[1].vftable)->GetTCountryClassNamePointer + 0x14))();
   }
   if (*(int **)&this[1].field_0x4 != (int *)0x0) {
+    piStack_78 = param_1;
     uStack_7c = 0x4da0aa;
     (**(code **)(**(int **)&this[1].field_0x4 + 0x14))();
   }
   if (*(int **)&this[1].field_0x8 != (int *)0x0) {
+    piStack_78 = param_1;
     uStack_7c = 0x4da0ba;
     (**(code **)(**(int **)&this[1].field_0x8 + 0x14))();
   }
   if (*(int **)&this[0xe].field_0x7c != (int *)0x0) {
+    piStack_78 = param_1;
     uStack_7c = 0x4da0ca;
     (**(code **)(**(int **)&this[0xe].field_0x7c + 0x14))();
   }
+  piStack_78 = param_1;
   uStack_7c = 0x4da0d6;
   (**(code **)(**(int **)&this[0xe].field_0x80 + 0x14))();
   uStack_7c = 0x4da0e1;
   iStack_5c = (**(code **)(**(int **)&this[0xe].field_0x80 + 0x48))();
   piStack_80 = &iStack_5c;
   uStack_7c = 4;
-  iStack_84 = 0x4da0f0;
+  piStack_84 = (int *)0x4da0f0;
   (*pcVar1)();
   iVar9 = 1;
   if (0 < iStack_64) {
     do {
-      uStack_88 = 0x4da109;
-      iStack_84 = iVar9;
+      piStack_88 = (int *)0x4da109;
+      piStack_84 = (int *)iVar9;
       piVar4 = (int *)(**(code **)(**(int **)&this[0xe].field_0x80 + 0x4c))();
+      piStack_88 = param_1;
       ppuStack_8c = (undefined4 **)0x4da111;
       (**(code **)(*piVar4 + 0x14))();
       iVar9 = iVar9 + 1;
     } while (iVar9 <= iStack_64);
   }
-  uStack_88 = 0x4da126;
+  piStack_84 = param_1;
+  piStack_88 = (int *)0x4da126;
   (**(code **)(**(int **)&this[0xe].field_0x84 + 0x14))();
-  uStack_88 = 0x4da131;
+  piStack_88 = (int *)0x4da131;
   puStack_68 = (undefined4 *)(**(code **)(**(int **)&this[0xe].field_0x84 + 0x48))();
   ppuStack_8c = &puStack_68;
-  uStack_88 = 4;
+  piStack_88 = (int *)0x4;
   iStack_90 = 0x4da140;
   (*pcVar1)();
   iVar9 = 1;
@@ -1187,6 +1224,7 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
       pdStack_94 = (dword *)0x4da159;
       iStack_90 = iVar9;
       piVar4 = (int *)(**(code **)(**(int **)&this[0xe].field_0x84 + 0x4c))();
+      pdStack_94 = (dword *)param_1;
       uStack_98 = 0x4da161;
       (**(code **)(*piVar4 + 0x14))();
       iVar9 = iVar9 + 1;
@@ -1211,7 +1249,7 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this)
   (*pcVar1)(puVar10,1);
   (*pcVar1)(&this[0xf].field_0x54,4);
   (*pcVar1)(&this[0xf].field_0x58);
-  (**(code **)(**(int **)&this[0xf].field_0x60 + 0x14))();
+  (**(code **)(**(int **)&this[0xf].field_0x60 + 0x14))(param_1);
   puStack_ac = (undefined1 *)(**(code **)(**(int **)&this[0xf].field_0x60 + 0x48))();
   (*pcVar1)(&puStack_ac,4);
   iVar9 = 1;
@@ -1411,21 +1449,20 @@ void __thiscall TCountry::HandleNetworkPortConstructionOrder(TCountry *this,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E5A40
 // GHIDRA_NAME TCountry::SetNationRowDisplayValueByDiplomacyPredicate
-// GHIDRA_PROTO undefined __thiscall SetNationRowDisplayValueByDiplomacyPredicate(void)
+// GHIDRA_PROTO undefined __thiscall SetNationRowDisplayValueByDiplomacyPredicate(int param_1)
 
-void __thiscall TCountry::SetNationRowDisplayValueByDiplomacyPredicate(TCountry *this)
+void __thiscall TCountry::SetNationRowDisplayValueByDiplomacyPredicate(TCountry *this,int param_1)
 
 {
   char cVar1;
   int iVar2;
-  int in_stack_00000004;
   
   iVar2 = 0;
   do {
-    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)();
+    cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(param_1,iVar2);
     if ((cVar1 == '\0') &&
        ((iVar2 == *(short *)&this->field_0xc ||
-        ((&g_apNationStates[in_stack_00000004]->field_0x918)[iVar2] == '\0')))) {
+        ((&g_apNationStates[param_1]->field_0x918)[iVar2] == '\0')))) {
       (*this->vftable[9].GetTCountryClassNamePointer)(iVar2,100);
     }
     else {
@@ -1520,7 +1557,9 @@ void __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(TCou
     if ((*ppTVar10 != (TGreatPower *)0x0) && (local_10[iVar5] != '\0')) {
       (*(*ppTVar10)->vftable[0x12].slot_0x04)
                 (CONCAT22((short)((uint)uVar7 >> 0x10),*(undefined2 *)&this->field_0xc),0x137);
-      thunk_QueueInterNationEventRecordDeduped((TCountry *)g_pInterNationEventQueueManager);
+      thunk_QueueInterNationEventRecordDeduped
+                ((TCountry *)g_pInterNationEventQueueManager,0x17,iVar5,
+                 (int)*(short *)&this->field_0xc,'\0');
       uVar7 = extraout_EDX_01;
     }
     ppTVar10 = ppTVar10 + 1;
@@ -1531,9 +1570,10 @@ void __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(TCou
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E5D90
 // GHIDRA_NAME TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects
-// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyRelationMaskToProvinceLinkedObjects(void)
+// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyRelationMaskToProvinceLinkedObjects(int param_1)
 
-void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCountry *this)
+void __thiscall
+TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCountry *this,int param_1)
 
 {
   int *piVar1;
@@ -1549,13 +1589,12 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
   int iVar9;
   int iVar10;
   TCountry **ppTVar11;
-  int in_stack_00000004;
   short sStack_14;
   TCountry *local_c;
   char acStack_8 [8];
   
-  iVar10 = in_stack_00000004;
-  if (in_stack_00000004 == -1) {
+  iVar10 = param_1;
+  if (param_1 == -1) {
     sVar5 = *(short *)&this->field_0xe;
     if (sVar5 < 200) {
       if (sVar5 < 100) {
@@ -1571,7 +1610,7 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
     iVar7 = (int)sVar5;
   }
   else {
-    iVar7 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + in_stack_00000004 * 0xa8);
+    iVar7 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + param_1 * 0xa8);
   }
   iVar9 = 0;
   ppTVar11 = g_apTerrainTypeDescriptorTable;
@@ -1587,7 +1626,7 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
     ppTVar11 = ppTVar11 + 1;
     iVar9 = iVar9 + 1;
   } while ((int)ppTVar11 < 0x6a432c);
-  if (in_stack_00000004 == -1) {
+  if (param_1 == -1) {
     iVar10 = 1;
     uVar4 = (*this->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
     if (0 < CONCAT31(extraout_var,uVar4)) {
@@ -1620,7 +1659,7 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
     }
   }
   else {
-    in_stack_00000004 = 0;
+    param_1 = 0;
     pTVar6 = (TCountry *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar10 * 0xa8);
     local_c = pTVar6;
     if ('\0' < *(char *)((int)pTVar6 + 0x3a)) {
@@ -1645,8 +1684,8 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
           }
         }
         psVar8 = psVar8 + 1;
-        in_stack_00000004 = in_stack_00000004 + 1;
-      } while (in_stack_00000004 < *(char *)((int)pTVar6 + 0x3a));
+        param_1 = param_1 + 1;
+      } while (param_1 < *(char *)((int)pTVar6 + 0x3a));
       return;
     }
   }
@@ -1655,9 +1694,10 @@ void __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCou
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F5E00
 // GHIDRA_NAME TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget
-// GHIDRA_PROTO undefined __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(void)
+// GHIDRA_PROTO undefined __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(POINT * param_1)
 
-int __thiscall TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this)
+int __thiscall
+TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,POINT *param_1)
 
 {
   char cVar1;
@@ -1665,7 +1705,6 @@ int __thiscall TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry
   int iVar3;
   TCountry **ppTVar4;
   int iVar5;
-  POINT *in_stack_00000004;
   undefined1 local_18 [8];
   RECT local_10;
   
@@ -1679,14 +1718,14 @@ int __thiscall TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry
     AppendPointerToGlobalVectorAsStatus(&DAT_004f5f70);
   }
   iVar3 = 0;
-  BVar2 = PtInRect((RECT *)&DAT_006a3008,*in_stack_00000004);
+  BVar2 = PtInRect((RECT *)&DAT_006a3008,*param_1);
   if (BVar2 == 0) {
     return 0;
   }
   if (this[1].vftable == (TCountryVtbl *)0x5) {
     return 0;
   }
-  (*this->vftable[0x29].GetTCountryClassNamePointer)(local_18,in_stack_00000004);
+  (*this->vftable[0x29].GetTCountryClassNamePointer)(local_18,param_1);
   iVar5 = 0;
   ppTVar4 = g_apTerrainTypeDescriptorTable;
   do {
@@ -1736,6 +1775,7 @@ TCountry::SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTileTran
   int extraout_EAX_00;
   int iVar2;
   int iVar3;
+  undefined2 unaff_DI;
   
   iVar2 = *(int *)&this->field_0xc;
   iVar3 = nTileIndex * 0x24;
@@ -1748,7 +1788,7 @@ TCountry::SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTileTran
   *(ushort *)(*(int *)&this->field_0xc + 0x1c + iVar3) = wTileTransportFlags;
   if ((wTileTransportFlags & 4) != 0) {
                     /* New tile flags include bit 0x04: ensure/create matching TPortZone context. */
-    thunk_EnsurePortZoneForTile(nTileIndex);
+    thunk_EnsurePortZoneForTile(nTileIndex,unaff_DI);
     iVar2 = extraout_EAX_00;
   }
   if ((wTileTransportFlags & 3) != 0) {

@@ -58,15 +58,14 @@ TNumberedIcon * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumbe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073D0
 // GHIDRA_NAME TNumberedIcon::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedIcon * __thiscall TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this)
+TNumberedIcon * __thiscall
+TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -100,9 +99,12 @@ TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedI
 
 {
   TNumberTextVtbl *pTVar1;
-  TMyNumberText *this_00;
-  TNumberText *this_01;
+  TNumberText *this_00;
   undefined4 *unaff_FS_OFFSET;
+  TMyNumberText *pTStack_28;
+  undefined4 uStack_24;
+  undefined4 uStack_20;
+  undefined4 uStack_1c;
   undefined2 uStack_18;
   undefined2 uStack_16;
   undefined2 uStack_14;
@@ -117,17 +119,22 @@ TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedI
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)&this->field_0xac == 0) {
     uStack_12 = 0;
-    this_00 = (TMyNumberText *)AllocateWithFallbackHandler(0xac);
+    pTStack_28 = (TMyNumberText *)AllocateWithFallbackHandler(0xac);
     uStack_4 = 0;
-    if (this_00 == (TMyNumberText *)0x0) {
-      this_01 = (TNumberText *)0x0;
+    if (pTStack_28 == (TMyNumberText *)0x0) {
+      this_00 = (TNumberText *)0x0;
     }
     else {
-      this_01 = (TNumberText *)TMyNumberText::ConstructTMyNumberTextBaseState(this_00);
+      this_00 = (TNumberText *)TMyNumberText::ConstructTMyNumberTextBaseState(pTStack_28);
     }
+    pTStack_28 = (TMyNumberText *)0x1;
+    uStack_24 = 1;
     uStack_4 = 0xffffffff;
-    TNumberText::ConstructTNumberTextBaseState(this_01);
-    pTVar1 = this_01->vftable;
+    uStack_20 = 0;
+    uStack_1c = 0;
+    TNumberText::ConstructTNumberTextBaseState(this_00,this,&uStack_20,&pTStack_28,0,0);
+    pTVar1 = this_00->vftable;
+    pTStack_28 = (TMyNumberText *)0x0;
     uStack_18 = 3;
     uStack_16 = 0;
     uStack_14 = 9;
@@ -135,7 +142,7 @@ TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedI
     (*pTVar1[0x36].slot_0x04)(&uStack_18,0);
     (*pTVar1[0x36].GetTEventHandlerClassNamePointer)(&stack0xffffffcf);
     (*pTVar1[0x35].slot_0x04)(0,1);
-    *(TNumberText **)&this->field_0xac = this_01;
+    *(TNumberText **)&this->field_0xac = this_00;
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -143,15 +150,13 @@ TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedI
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005076D0
 // GHIDRA_NAME TNumberedIcon::OrphanCallChain_C1_I10_005076d0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_005076d0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_005076d0(short param_1)
 
-void __thiscall TNumberedIcon::OrphanCallChain_C1_I10_005076d0(TNumberedIcon *this)
+void __thiscall TNumberedIcon::OrphanCallChain_C1_I10_005076d0(TNumberedIcon *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
   if (*(int **)&this->field_0xac != (int *)0x0) {
-    (**(code **)(**(int **)&this->field_0xac + 0x1e4))((int)in_stack_00000004);
+    (**(code **)(**(int **)&this->field_0xac + 0x1e4))((int)param_1);
   }
   return;
 }

@@ -58,15 +58,14 @@ TMinisterView * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C90
 // GHIDRA_NAME TMinisterView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinisterView * __thiscall TMinisterView::_scalar_deleting_destructor_(TMinisterView *this)
+TMinisterView * __thiscall
+TMinisterView::_scalar_deleting_destructor_(TMinisterView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,22 +73,22 @@ TMinisterView * __thiscall TMinisterView::_scalar_deleting_destructor_(TMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2CE0
 // GHIDRA_NAME TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004f2ce0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1)
 
-void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(TMinisterView *this)
+void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(TMinisterView *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  *(TCountry **)&this->field_0x64 = g_apTerrainTypeDescriptorTable[in_stack_00000004];
+  *(TCountry **)&this->field_0x64 = g_apTerrainTypeDescriptorTable[param_1];
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2D10
 // GHIDRA_NAME TMinisterView::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TMinisterView::InvalidateWindowRectFromHandleField1C(TMinisterView *this)
+void __thiscall
+TMinisterView::InvalidateWindowRectFromHandleField1C
+          (TMinisterView *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -97,6 +96,8 @@ void __thiscall TMinisterView::InvalidateWindowRectFromHandleField1C(TMinisterVi
   char cVar3;
   undefined3 extraout_var;
   int *piVar4;
+  undefined4 *unaff_EBX;
+  undefined4 unaff_retaddr;
   
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x6261636b);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
@@ -115,30 +116,31 @@ void __thiscall TMinisterView::InvalidateWindowRectFromHandleField1C(TMinisterVi
   if (cVar3 != '\0') {
     (**(code **)(iVar1 + 0xa4))(0,1);
   }
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  TControl::DispatchUiMouseEventToChildrenOrSelf
+            ((TControl *)this,unaff_EBX,unaff_retaddr,param_1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2E00
 // GHIDRA_NAME TMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TMinisterView::OrphanRetStub_0059add0(TMinisterView *this)
+void __thiscall
+TMinisterView::OrphanRetStub_0059add0
+          (TMinisterView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   TMinisterViewVtbl *pTVar1;
   undefined uVar2;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 != 10) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  if (param_1 != 10) {
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
     return;
   }
-  if (*(int *)(in_stack_00000008 + 0x1c) != 0x6261636b) {
-    if (*(int *)(in_stack_00000008 + 0x1c) != 0x6f6b6179) {
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  if (*(int *)(param_2 + 0x1c) != 0x6261636b) {
+    if (*(int *)(param_2 + 0x1c) != 0x6f6b6179) {
+      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,10,param_2,param_3);
       return;
     }
     pTVar1 = this->vftable;
@@ -166,15 +168,14 @@ void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0(TMinisterView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2EC0
 // GHIDRA_NAME TMinisterView::OrphanCallChain_C2_I08_004f2ec0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I08_004f2ec0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)
 
-void __thiscall TMinisterView::OrphanCallChain_C2_I08_004f2ec0(TMinisterView *this)
+void __thiscall
+TMinisterView::OrphanCallChain_C2_I08_004f2ec0(TMinisterView *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   (*this->vftable[0x35].slot_0x04)();
-  (**(code **)(*g_pStrategicMapViewSystem + 0x48))(in_stack_00000004);
+  (**(code **)(*g_pStrategicMapViewSystem + 0x48))(param_1);
   return;
 }
 

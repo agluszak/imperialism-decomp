@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00518960
 // GHIDRA_NAME TGlobalMapState::SetRegionDevelopmentStageByte
-// GHIDRA_PROTO undefined __thiscall SetRegionDevelopmentStageByte(void)
+// GHIDRA_PROTO undefined __thiscall SetRegionDevelopmentStageByte(short param_1, undefined1 param_2)
 
-void __thiscall TGlobalMapState::SetRegionDevelopmentStageByte(TGlobalMapState *this)
+void __thiscall
+TGlobalMapState::SetRegionDevelopmentStageByte
+          (TGlobalMapState *this,short param_1,undefined1 param_2)
 
 {
-  short in_stack_00000004;
-  undefined1 in_stack_00000008;
-  
-  *(undefined1 *)(*(int *)(this + 0x10) + 2 + in_stack_00000004 * 0xa8) = in_stack_00000008;
+  *(undefined1 *)(*(int *)(this + 0x10) + 2 + param_1 * 0xa8) = param_2;
   return;
 }
 

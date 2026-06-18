@@ -5,17 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(undefined4 param_1)
 
-void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this)
+void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   this[8] = (TNavyMission)0x2;
   *(undefined4 *)(this + 0xc) = 0;
   this[0x11] = (TNavyMission)0xff;
-  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x14) = param_1;
   *(undefined4 *)(this + 0x18) = 0;
   *(undefined4 *)(this + 0x1c) = 0;
   *(undefined4 *)(this + 0x20) = 0;
@@ -31,15 +29,13 @@ void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535560
 // GHIDRA_NAME TNavyMission::DestroyTNavyMission
-// GHIDRA_PROTO undefined __thiscall DestroyTNavyMission(void)
+// GHIDRA_PROTO undefined __thiscall DestroyTNavyMission(byte param_1)
 
-TNavyMission * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this)
+TNavyMission * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetTNavyMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

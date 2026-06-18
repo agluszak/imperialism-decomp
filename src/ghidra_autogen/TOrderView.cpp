@@ -58,15 +58,13 @@ TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506AB0
 // GHIDRA_NAME TOrderView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this)
+TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,9 +72,11 @@ TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507240
 // GHIDRA_NAME TOrderView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall TOrderView::OrphanRetStub_0059add0(TOrderView *this)
+void __thiscall
+TOrderView::OrphanRetStub_0059add0
+          (TOrderView *this,int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   TOrderViewVtbl *pTVar1;
@@ -85,9 +85,8 @@ void __thiscall TOrderView::OrphanRetStub_0059add0(TOrderView *this)
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined2 uVar3;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 0x6c) {
+  if (param_1 == 0x6c) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1[0x12].slot_0x04)(0x736c6964);
     uVar3 = extraout_var_00;
@@ -101,7 +100,7 @@ void __thiscall TOrderView::OrphanRetStub_0059add0(TOrderView *this)
     (*pTVar1[0x34].slot_0x04)();
     return;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 

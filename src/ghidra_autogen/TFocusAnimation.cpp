@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0050
 // GHIDRA_NAME TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0050(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0050(byte param_1)
 
 TFocusAnimation * __thiscall
-TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *this)
+TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTFocusAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

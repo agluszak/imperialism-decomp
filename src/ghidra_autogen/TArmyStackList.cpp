@@ -33,7 +33,7 @@ void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TArmyStackListVtbl_0064c9a0;
   }
   local_4 = 0xffffffff;
@@ -83,7 +83,7 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1),10);
     *puVar1 = &TArmyStackListVtbl_0064c9a0;
     puVar2 = puVar1;
   }
@@ -118,7 +118,7 @@ TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TAr
   *unaff_FS_OFFSET = &local_c;
   this->vftable = (TArmyStackListVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4);
+  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4,10);
   this->vftable = &TArmyStackListVtbl_0064c9a0;
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -126,15 +126,14 @@ TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A84C0
 // GHIDRA_NAME TArmyStackList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyStackList * __thiscall TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this)
+TArmyStackList * __thiscall
+TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -165,17 +164,15 @@ TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8560
 // GHIDRA_NAME TArmyStackList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1, int param_2)
 
-short __thiscall TArmyStackList::GetTEventHandlerClassNamePointer(TArmyStackList *this)
+short __thiscall
+TArmyStackList::GetTEventHandlerClassNamePointer(TArmyStackList *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  if (*(short *)(in_stack_00000004 + 6) < *(short *)(in_stack_00000008 + 6)) {
+  if (*(short *)(param_1 + 6) < *(short *)(param_2 + 6)) {
     return 1;
   }
-  return (*(short *)(in_stack_00000004 + 6) <= *(short *)(in_stack_00000008 + 6)) - 1;
+  return (*(short *)(param_1 + 6) <= *(short *)(param_2 + 6)) - 1;
 }
 

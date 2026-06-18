@@ -61,16 +61,14 @@ TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D90
 // GHIDRA_NAME TPictureRadioButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TPictureRadioButton * __thiscall
-TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this)
+TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -78,11 +76,11 @@ TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570DE0
 // GHIDRA_NAME TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1)
 
 void __thiscall
 TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-          (TPictureRadioButton *this)
+          (TPictureRadioButton *this,char param_1)
 
 {
   undefined2 uVar1;
@@ -90,19 +88,18 @@ TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWind
   TPictureRadioButtonVtbl *pTVar3;
   char cVar4;
   undefined4 unaff_EBP;
-  char in_stack_00000004;
   char local_4;
   
   uVar1 = *(undefined2 *)&this->field_0x84;
   pTVar3 = this->vftable;
   sVar2 = (short)this->field3c;
   cVar4 = (*pTVar3[5].GetTEventHandlerClassNamePointer)();
-  if (in_stack_00000004 == '\0') {
+  if (param_1 == '\0') {
 LAB_00570e0c:
     if (cVar4 == '\0') goto LAB_00570e4e;
   }
   else if (cVar4 != '\0') {
-    if (in_stack_00000004 != '\0') goto LAB_00570e4e;
+    if (param_1 != '\0') goto LAB_00570e4e;
     goto LAB_00570e0c;
   }
   if (sVar2 != 0) {
@@ -111,11 +108,11 @@ LAB_00570e0c:
     this->field3c = (int)(short)unaff_EBP;
     (*pTVar3[0x3b].GetTEventHandlerClassNamePointer)(1);
     local_4 = (char)uVar1;
-    this->padding_08_to_0b = (int)in_stack_00000004;
-    (*pTVar3[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),(int)local_4);
+    this->padding_08_to_0b = (int)param_1;
+    (*pTVar3[0x14].slot_0x04)((uint)(param_1 == '\0'),(int)local_4);
   }
 LAB_00570e4e:
-  TSoundPlayer::UpdateControlCachedIntFromWindowText((TSoundPlayer *)this);
+  TSoundPlayer::UpdateControlCachedIntFromWindowText((TSoundPlayer *)this,(int)param_1);
   return;
 }
 
@@ -155,22 +152,21 @@ TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570F40
 // GHIDRA_NAME TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
 
 void __thiscall
-TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh(TPictureRadioButton *this)
+TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
+          (TPictureRadioButton *this,char param_1,char param_2)
 
 {
   TPictureRadioButtonVtbl *pTVar1;
   char cVar2;
-  char in_stack_00000004;
-  char in_stack_00000008;
   
   pTVar1 = this->vftable;
   cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x14].slot_0x04)((int)in_stack_00000004,(int)in_stack_00000008);
-    if (in_stack_00000004 != '\0') {
+    (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+    if (param_1 != '\0') {
       (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
     }
     (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();

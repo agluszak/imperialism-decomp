@@ -27,15 +27,15 @@ CRuntimeClass * __thiscall TCommandHandler::GetTEventHandlerClassNamePointer(TCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486650
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCommandHandlerBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTCommandHandlerBaseState(int * param_1)
 
-void __thiscall TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this)
+void __thiscall
+TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this,int *param_1)
 
 {
   int iVar1;
-  int *in_stack_00000004;
   
-  iVar1 = *in_stack_00000004;
+  iVar1 = *param_1;
   (**(code **)(iVar1 + 0x2c))();
   (**(code **)(iVar1 + 0x1c))();
   return;

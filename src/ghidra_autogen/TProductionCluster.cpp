@@ -68,16 +68,14 @@ TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586970
 // GHIDRA_NAME TProductionCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TProductionCluster * __thiscall
-TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this)
+TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -85,16 +83,15 @@ TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869C0
 // GHIDRA_NAME TProductionCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void * param_1, int param_2)
 
-void __thiscall TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *this)
+void __thiscall
+TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *this,void *param_1,int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int unaff_retaddr;
-  void *in_stack_00000004;
-  int in_stack_00000008;
   
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x76616c75);
   if (CONCAT31(extraout_var,uVar1) == 0) {
@@ -107,7 +104,7 @@ void __thiscall TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *t
     (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(unaff_retaddr,this,0);
   }
   TMapEditCluster::thunk_DispatchPanelControlEvent
-            ((TMapEditCluster *)this,unaff_retaddr,in_stack_00000004,in_stack_00000008);
+            ((TMapEditCluster *)this,unaff_retaddr,param_1,param_2);
   return;
 }
 

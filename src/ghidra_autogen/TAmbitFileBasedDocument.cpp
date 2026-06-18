@@ -28,16 +28,14 @@ TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBas
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E610
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
 
 TAmbitFileBasedDocument * __thiscall
-TAmbitFileBasedDocument::ConstructTDocumentBaseState(TAmbitFileBasedDocument *this)
+TAmbitFileBasedDocument::ConstructTDocumentBaseState(TAmbitFileBasedDocument *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -112,7 +110,7 @@ TAmbitFileBasedDocument::OrphanRetStub_00486530(TAmbitFileBasedDocument *this,vo
     this_01 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(this_00);
   }
   local_8._0_1_ = 0;
-  TFileStream::SetBackingArchive(this_01);
+  TFileStream::SetBackingArchive(this_01,pLoadContext);
   pTVar1 = this_01->vftable[7].ConstructTStreamBaseState;
   (*pTVar1)();
   (*pTVar1)();
@@ -253,7 +251,7 @@ TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,vo
     pTVar2 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(pTVar2);
   }
   local_4 = 0xffffffff;
-  TFileStream::SetBackingArchive(pTVar2);
+  TFileStream::SetBackingArchive(pTVar2,pSaveContext);
   pTVar1 = pTVar2->vftable[0xf].GetTStreamClassNamePointer;
   (*pTVar1)();
   (*pTVar1)();

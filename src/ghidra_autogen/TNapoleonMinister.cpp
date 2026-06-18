@@ -5,17 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED490
 // GHIDRA_NAME TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
 float10 __thiscall
-TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TNapoleonMinister *this)
+TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
+          (TNapoleonMinister *this,char param_1)
 
 {
-  char in_stack_00000004;
-  
-  if (in_stack_00000004 != '\0') {
+  if (param_1 != '\0') {
     return (float10)_DAT_006548e8;
   }
   return (float10)_DAT_006548f0;
@@ -47,15 +46,14 @@ TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED510
 // GHIDRA_NAME TNapoleonMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TNapoleonMinister * __thiscall TNapoleonMinister::DeletingDestructTMinister(TNapoleonMinister *this)
+TNapoleonMinister * __thiscall
+TNapoleonMinister::DeletingDestructTMinister(TNapoleonMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTNapoleonMinisterAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

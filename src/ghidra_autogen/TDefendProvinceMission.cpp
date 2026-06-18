@@ -25,7 +25,7 @@ TMission * TDefendProvinceMission::CreateTDefendProvinceMission(void)
   local_4 = 0;
   pTVar1 = (TMission *)0x0;
   if (this != (TMission *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(this);
+    TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
     *(undefined ***)this = &g_vtblTDefendProvinceMission;
     pTVar1 = this;
   }
@@ -58,7 +58,8 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
   
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable[1].slot_0x04)();
-  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate((TAttackProvinceMission *)this_00);
+  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
+            ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x14),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -230,16 +231,14 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F010
 // GHIDRA_NAME TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile
-// GHIDRA_PROTO undefined __thiscall HandleInvadeMissionActionType3ForTargetTile(void)
+// GHIDRA_PROTO undefined __thiscall HandleInvadeMissionActionType3ForTargetTile(int param_1, int param_2)
 
 undefined4 __thiscall
-TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile(TDefendProvinceMission *this)
+TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile
+          (TDefendProvinceMission *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  if ((in_stack_00000004 == 3) && (in_stack_00000008 == *(short *)(this + 0x14))) {
+  if ((param_1 == 3) && (param_2 == *(short *)(this + 0x14))) {
     return 1;
   }
   return 0;

@@ -59,16 +59,14 @@ TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BF0
 // GHIDRA_NAME TDisappearingButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TDisappearingButton * __thiscall
-TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this)
+TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,19 +74,19 @@ TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568C40
 // GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I24_00568c40
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00568c40(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00568c40(char param_1)
 
-void __thiscall TDisappearingButton::OrphanCallChain_C2_I24_00568c40(TDisappearingButton *this)
+void __thiscall
+TDisappearingButton::OrphanCallChain_C2_I24_00568c40(TDisappearingButton *this,char param_1)
 
 {
   TDisappearingButtonVtbl *pTVar1;
   char unaff_retaddr;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != this->field_0x64) {
+  if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
-    this->field_0x64 = in_stack_00000004;
-    (*pTVar1[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),1);
+    this->field_0x64 = param_1;
+    (*pTVar1[0x14].slot_0x04)((uint)(param_1 == '\0'),1);
     if (unaff_retaddr != '\0') {
       (*pTVar1[0x39].slot_0x04)();
     }

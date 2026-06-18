@@ -30,15 +30,14 @@ TEngineerDialog * __thiscall TEngineerDialog::ConstructEngineerDialog(TEngineerD
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0590
 // GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEngineerDialog * __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this)
+TEngineerDialog * __thiscall
+TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

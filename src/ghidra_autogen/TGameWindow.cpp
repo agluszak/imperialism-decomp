@@ -49,20 +49,18 @@ CRuntimeClass * __thiscall TGameWindow::GetTEventHandlerClassNamePointer(TGameWi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFC60
 // GHIDRA_NAME TGameWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Destructor wrapper for viewport-adaptive turn-event window entry.
 // GHIDRA_COMMENT_END
 
 /* Destructor wrapper for viewport-adaptive turn-event window entry. */
 
-TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *this)
+TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -89,23 +87,29 @@ void __thiscall TGameWindow::OrphanCallChain_C11_I88_004874b0(TGameWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD10
 // GHIDRA_NAME TGameWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TGameWindow::SetForeignMinisterReadyFlag14(TGameWindow *this)
+void __thiscall
+TGameWindow::SetForeignMinisterReadyFlag14
+          (TGameWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
-  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD40
 // GHIDRA_NAME TGameWindow::InvalidateWindowRectFromHandleField1C
-// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-void __thiscall TGameWindow::InvalidateWindowRectFromHandleField1C(TGameWindow *this)
+void __thiscall
+TGameWindow::InvalidateWindowRectFromHandleField1C
+          (TGameWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,param_1,param_2,param_3,param_4);
   return;
 }
 

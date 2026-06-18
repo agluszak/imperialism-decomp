@@ -58,15 +58,14 @@ TBuildingView * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuild
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6EE0
 // GHIDRA_NAME TBuildingView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBuildingView * __thiscall TBuildingView::_scalar_deleting_destructor_(TBuildingView *this)
+TBuildingView * __thiscall
+TBuildingView::_scalar_deleting_destructor_(TBuildingView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -94,17 +93,17 @@ void __thiscall TBuildingView::OrphanRetStub_004c6fd0(TBuildingView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C70E0
 // GHIDRA_NAME TBuildingView::SetUniversityDialogLocalizedTextAndRefresh
-// GHIDRA_PROTO undefined __thiscall SetUniversityDialogLocalizedTextAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall SetUniversityDialogLocalizedTextAndRefresh(int * param_1)
 
-void __thiscall TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this)
+void __thiscall
+TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this,int *param_1)
 
 {
   int iVar1;
-  int *in_stack_00000004;
   RECT RStack_30;
   tagRECT atStack_20 [2];
   
-  iVar1 = *in_stack_00000004;
+  iVar1 = *param_1;
   (**(code **)(iVar1 + 0x1cc))();
   (**(code **)(iVar1 + 300))(&stack0xffffffc4);
   RStack_30.left = 0;

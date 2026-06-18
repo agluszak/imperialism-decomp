@@ -5,14 +5,12 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E50
 // GHIDRA_NAME TAmtBar::ApplyMoveClamp
-// GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(void)
+// GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1)
 
-undefined2 __thiscall TAmtBar::ApplyMoveClamp(TAmtBar *this)
+undefined2 __thiscall TAmtBar::ApplyMoveClamp(TAmtBar *this,undefined2 param_1)
 
 {
-  undefined2 in_stack_00000004;
-  
-  return in_stack_00000004;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005884C0
@@ -76,15 +74,13 @@ TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005885C0
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
+TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState_005885F0((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -103,18 +99,16 @@ void __thiscall TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588630
 // GHIDRA_NAME TAmtBar::UpdateBarValuesAndRefresh
-// GHIDRA_PROTO undefined __thiscall UpdateBarValuesAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall UpdateBarValuesAndRefresh(short param_1, short param_2)
 
-void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this)
+void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this,short param_1,short param_2)
 
 {
   TAmtBarVtbl *pTVar1;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
   pTVar1 = this->vftable;
-  this->stepOrCurrentValue = in_stack_00000008;
-  this->rangeOrMaxValue = in_stack_00000004;
+  this->stepOrCurrentValue = param_2;
+  this->rangeOrMaxValue = param_1;
   (*pTVar1[0x1c].slot_0x04)();
   (*pTVar1[0x27].slot_0x04)();
   return;
@@ -239,9 +233,9 @@ void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588950
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
+void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,int *param_1)
 
 {
   undefined uVar1;
@@ -251,11 +245,10 @@ void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
   int *piVar4;
   undefined2 uVar5;
   undefined2 extraout_var_00;
-  int *in_stack_00000004;
   
   uVar5 = (undefined2)((uint)this >> 0x10);
-  if ((this->auxValueA < 1) ||
-     (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *in_stack_00000004)) {
+  if ((this->auxValueA < 1) || (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *param_1)
+     ) {
     uVar3 = ftol();
     uVar5 = extraout_var_00;
   }
@@ -263,9 +256,9 @@ void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
     uVar3 = 0;
   }
   uVar1 = (*this->vftable[0x34].GetTEventHandlerClassNamePointer)
-                    (uVar3,CONCAT22(uVar5,(short)*in_stack_00000004));
+                    (uVar3,CONCAT22(uVar5,(short)*param_1));
   uVar3 = CONCAT31(extraout_var,uVar1);
-  if (((short)uVar3 == 0) && (*in_stack_00000004 != 0)) {
+  if (((short)uVar3 == 0) && (*param_1 != 0)) {
     piVar4 = (int *)(**(code **)(**(int **)&this->field_0x20 + 0x94))(0x6d6f7665);
     if (piVar4 == (int *)0x0) {
       piVar4 = (int *)(**(code **)(**(int **)&this->field_0x20 + 0x94))(0x53656c6c);
@@ -283,9 +276,9 @@ LAB_005889eb:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588C60
 // GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
-// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(void)
+// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(char param_1)
 
-void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this)
+void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char param_1)
 
 {
   TAmtBar_slot_0x04_0x04 *pTVar1;
@@ -298,6 +291,7 @@ void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this)
   code *pcVar8;
   int *piVar9;
   undefined4 uVar10;
+  undefined3 in_stack_00000005;
   char in_stack_00000008;
   LONG LStack_58;
   undefined1 auStack_40 [12];
@@ -312,6 +306,7 @@ void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this)
   piVar7 = *(int **)&this[1].field_0x20;
   iVar4 = piVar7[1];
   if (piVar7 != (int *)0x0) {
+    LStack_58 = _param_1;
     (**(code **)(*piVar7 + 0x2c))();
   }
   if ((in_stack_00000008 != '\0') || (*(short *)(*(int *)&this[1].field_0x20 + 4) != (short)iVar4))

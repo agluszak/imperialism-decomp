@@ -72,15 +72,14 @@ TForeignMinister * __thiscall TForeignMinister::ConstructTForeignMinister(TForei
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F0E0
 // GHIDRA_NAME TForeignMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TForeignMinister * __thiscall TForeignMinister::DeletingDestructTMinister(TForeignMinister *this)
+TForeignMinister * __thiscall
+TForeignMinister::DeletingDestructTMinister(TForeignMinister *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTForeignMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -117,16 +116,15 @@ void __thiscall TForeignMinister::InitializeForeignMinisterStateFlags(TForeignMi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F4F0
 // GHIDRA_NAME TForeignMinister::AddToForeignMinisterCounterAtIndex
-// GHIDRA_PROTO undefined __thiscall AddToForeignMinisterCounterAtIndex(void)
+// GHIDRA_PROTO undefined __thiscall AddToForeignMinisterCounterAtIndex(short param_1, short param_2)
 
-void __thiscall TForeignMinister::AddToForeignMinisterCounterAtIndex(TForeignMinister *this)
+void __thiscall
+TForeignMinister::AddToForeignMinisterCounterAtIndex
+          (TForeignMinister *this,short param_1,short param_2)
 
 {
-  short in_stack_00000004;
-  short in_stack_00000008;
-  
-  *(short *)(&this->field_0x1e + in_stack_00000004 * 2) =
-       *(short *)(&this->field_0x1e + in_stack_00000004 * 2) + in_stack_00000008;
+  *(short *)(&this->field_0x1e + param_1 * 2) =
+       *(short *)(&this->field_0x1e + param_1 * 2) + param_2;
   return;
 }
 
@@ -143,17 +141,15 @@ void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F540
 // GHIDRA_NAME TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(undefined2 param_1, undefined2 param_2)
 
 void __thiscall
-TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TForeignMinister *this)
+TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets
+          (TForeignMinister *this,undefined2 param_1,undefined2 param_2)
 
 {
-  undefined2 in_stack_00000004;
-  undefined2 in_stack_00000008;
-  
-  *(undefined2 *)&this->field_0x10 = in_stack_00000004;
-  *(undefined2 *)&this->field_0x12 = in_stack_00000008;
+  *(undefined2 *)&this->field_0x10 = param_1;
+  *(undefined2 *)&this->field_0x12 = param_2;
   return;
 }
 
@@ -294,9 +290,11 @@ LAB_0052f978:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052FBA0
 // GHIDRA_NAME TForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, short param_2)
 
-void __thiscall TForeignMinister::UpdateControlCachedIntFromWindowText(TForeignMinister *this)
+void __thiscall
+TForeignMinister::UpdateControlCachedIntFromWindowText
+          (TForeignMinister *this,undefined4 param_1,short param_2)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -307,13 +305,13 @@ void __thiscall TForeignMinister::UpdateControlCachedIntFromWindowText(TForeignM
   undefined4 uVar4;
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
-  undefined4 in_stack_00000008;
+  undefined2 in_stack_0000000a;
   short in_stack_00000010;
   
   uVar5 = (undefined2)((uint)in_EAX >> 0x10);
-  uVar4 = in_stack_00000008;
+  uVar4 = _param_2;
   if (in_stack_00000010 == *(short *)&this->field_0x10) {
-    if (*(short *)&this->field_0x12 < (short)in_stack_00000008) {
+    if (*(short *)&this->field_0x12 < param_2) {
       uVar4 = CONCAT22(uVar5,*(short *)&this->field_0x12);
     }
     sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
@@ -331,7 +329,7 @@ void __thiscall TForeignMinister::UpdateControlCachedIntFromWindowText(TForeignM
     if (sVar3 < 1) {
       uVar4 = 0;
     }
-    else if (sVar3 < (short)in_stack_00000008) {
+    else if (sVar3 < param_2) {
       uVar4 = CONCAT22(uVar5,sVar3);
     }
     sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
@@ -343,8 +341,8 @@ void __thiscall TForeignMinister::UpdateControlCachedIntFromWindowText(TForeignM
   }
   (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
             (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
-                      *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,uVar4,
-             in_stack_00000008);
+                      *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,uVar4,_param_2)
+  ;
   return;
 }
 

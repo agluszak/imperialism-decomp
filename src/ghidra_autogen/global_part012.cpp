@@ -245,7 +245,7 @@ int __fastcall WrapperFor_RemoveHandleMapEntryByKey_At005e68f1(int param_1)
   if (iVar1 != 0) {
     this = (TTooltipRelayWindowState *)afxMapHIMAGELIST(0);
     if (this != (TTooltipRelayWindowState *)0x0) {
-      TTooltipRelayWindowState::RemoveKey(this);
+      TTooltipRelayWindowState::RemoveKey(this,*(uint *)(param_1 + 4));
     }
   }
   *(undefined4 *)(param_1 + 4) = 0;
@@ -327,7 +327,7 @@ void DeleteTempMap(void)
 // GHIDRA_NAME FromHandlePermanent
 // GHIDRA_PROTO undefined FromHandlePermanent()
 
-undefined4 FromHandlePermanent(void)
+undefined4 FromHandlePermanent(uint param_1)
 
 {
   CWnd *this;
@@ -336,7 +336,7 @@ undefined4 FromHandlePermanent(void)
   this = (CWnd *)afxMapHIMAGELIST(0);
   uVar1 = 0;
   if (this != (CWnd *)0x0) {
-    uVar1 = CWnd::GetValueAt(this);
+    uVar1 = CWnd::GetValueAt(this,param_1);
   }
   return uVar1;
 }
@@ -351,9 +351,11 @@ WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6a73
           int param_7)
 
 {
-  ImageList_Merge(*(HIMAGELIST *)(param_2 + 4),param_3,*(HIMAGELIST *)(param_4 + 4),param_5,param_6,
-                  param_7);
-  CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(param_1);
+  HIMAGELIST p_Var1;
+  
+  p_Var1 = ImageList_Merge(*(HIMAGELIST *)(param_2 + 4),param_3,*(HIMAGELIST *)(param_4 + 4),param_5
+                           ,param_6,param_7);
+  CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(param_1,(int)p_Var1);
   return;
 }
 
@@ -789,7 +791,8 @@ undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e(void)
   this = *(CArchive **)(*(int *)(unaff_EBP + 8) + 4);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffec;
-  uVar1 = CArchive::ReadBytesFromSerializedBuffer(this);
+  uVar1 = CArchive::ReadBytesFromSerializedBuffer
+                    (this,*(int *)(unaff_EBP + 0xc),*(uint *)(unaff_EBP + 0x10));
   if (*(undefined4 **)(unaff_EBP + 0x14) != (undefined4 *)0x0) {
     **(undefined4 **)(unaff_EBP + 0x14) = uVar1;
   }
@@ -804,19 +807,19 @@ undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e(void)
 undefined4 WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6(void)
 
 {
-  undefined4 uVar1;
+  uint uVar1;
   TNetMgr *this;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  uVar1 = *(undefined4 *)(unaff_EBP + 0x10);
+  uVar1 = *(uint *)(unaff_EBP + 0x10);
   this = *(TNetMgr **)(*(int *)(unaff_EBP + 8) + 4);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffec;
-  TNetMgr::WriteBytesToSerializedBuffer(this);
-  if (*(undefined4 **)(unaff_EBP + 0x14) != (undefined4 *)0x0) {
-    **(undefined4 **)(unaff_EBP + 0x14) = uVar1;
+  TNetMgr::WriteBytesToSerializedBuffer(this,*(int *)(unaff_EBP + 0xc),uVar1);
+  if (*(uint **)(unaff_EBP + 0x14) != (uint *)0x0) {
+    **(uint **)(unaff_EBP + 0x14) = uVar1;
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return 0;
@@ -4858,7 +4861,7 @@ LPVOID WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0(LPVOID para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005EADFD
 // GHIDRA_NAME ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd
-// GHIDRA_PROTO undefined ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd()
+// GHIDRA_PROTO undefined ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd(undefined4 param_1, undefined4 param_2)
 
 LPVOID ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd(void)
 
@@ -5997,15 +6000,18 @@ void WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005EC882
 // GHIDRA_NAME WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882
-// GHIDRA_PROTO undefined WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882()
+// GHIDRA_PROTO undefined WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882(undefined4 * param_1, undefined4 param_2)
 
-void WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882
+               (undefined4 *param_1,undefined4 param_2)
 
 {
   undefined4 *in_stack_00000010;
   undefined4 in_stack_00000014;
   
-  ParseDecimalTextAndConvertWithProfileB(&stack0x00000014,in_stack_00000014);
+  ParseDecimalTextAndConvertWithProfileB(&stack0x00000014);
   *in_stack_00000010 = in_stack_00000014;
   return;
 }

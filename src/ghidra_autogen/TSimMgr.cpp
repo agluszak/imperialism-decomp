@@ -37,12 +37,14 @@ void __thiscall TSimMgr::thunk_PostMainWindowCommand100ForTurnFlow_At004053d5(TS
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C1B
 // GHIDRA_NAME TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b
-// GHIDRA_PROTO undefined __thiscall thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b(void)
+// GHIDRA_PROTO undefined __thiscall thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b(short param_1, short param_2, undefined4 param_3)
 
-void __thiscall TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b(TSimMgr *this)
+void __thiscall
+TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b
+          (TSimMgr *this,short param_1,short param_2,undefined4 param_3)
 
 {
-  LoadUiStringByCodeGroupAndOffset(this);
+  LoadUiStringByCodeGroupAndOffset(this,param_1,param_2,param_3);
   return;
 }
 
@@ -58,14 +60,12 @@ CRuntimeClass * __thiscall TSimMgr::CreateSimObjects(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047CD60
 // GHIDRA_NAME TSimMgr::ApplyMciPlaybackRangeFromAudioManager
-// GHIDRA_PROTO undefined __thiscall ApplyMciPlaybackRangeFromAudioManager(void)
+// GHIDRA_PROTO undefined __thiscall ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
 
-void __thiscall TSimMgr::ApplyMciPlaybackRangeFromAudioManager(TSimMgr *this)
+void __thiscall TSimMgr::ApplyMciPlaybackRangeFromAudioManager(TSimMgr *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
-  SetMciPlaybackRangeByTrackIndexAndDevice(in_stack_00000004,this->vftable);
+  SetMciPlaybackRangeByTrackIndexAndDevice(param_1,this->vftable);
   return;
 }
 
@@ -120,9 +120,9 @@ undefined4 __thiscall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(TSimMgr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054C8E0
 // GHIDRA_NAME TSimMgr::EmitTurnEventEAnd9SessionContextPackets
-// GHIDRA_PROTO undefined __thiscall EmitTurnEventEAnd9SessionContextPackets(void)
+// GHIDRA_PROTO undefined __thiscall EmitTurnEventEAnd9SessionContextPackets(int param_1)
 
-void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this)
+void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this,int param_1)
 
 {
   char cVar1;
@@ -136,7 +136,6 @@ void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this)
   undefined4 *puVar9;
   char *pcVar10;
   char *pcVar11;
-  int in_stack_00000004;
   undefined4 local_68;
   undefined4 local_64;
   undefined4 local_60;
@@ -160,11 +159,11 @@ void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this)
     local_68 = 0xe;
     local_64 = 0;
     local_5c = 0x68;
-    if (in_stack_00000004 == 0) {
+    if (param_1 == 0) {
       local_60 = 0;
     }
     else {
-      local_60 = *(undefined4 *)(in_stack_00000004 + 4);
+      local_60 = *(undefined4 *)(param_1 + 4);
     }
     local_8 = *(undefined4 *)&this->field_0xe0;
     if ((*(int *)&this->field_0xd8 == 0x676f696e) &&
@@ -234,11 +233,11 @@ void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this)
     local_68 = 9;
     local_64 = 0;
     local_5c = 100;
-    if (in_stack_00000004 == 0) {
+    if (param_1 == 0) {
       local_60 = 0;
     }
     else {
-      local_60 = *(undefined4 *)(in_stack_00000004 + 4);
+      local_60 = *(undefined4 *)(param_1 + 4);
     }
     iVar8 = 0;
     puVar9 = (undefined4 *)&this->field_0x78;
@@ -824,15 +823,13 @@ TSimMgr * __thiscall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(TSimMg
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057BB50
 // GHIDRA_NAME TSimMgr::DestructTSimMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSimMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTSimMgrAndMaybeFree(byte param_1)
 
-TSimMgr * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this)
+TSimMgr * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -983,20 +980,21 @@ void __thiscall TSimMgr::DestroyGlobalOrderManagersAndState(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057BEA0
 // GHIDRA_NAME TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems
-// GHIDRA_PROTO undefined __thiscall InitializeSimMgrScenarioStateAndRebuildNationSystems(void)
+// GHIDRA_PROTO undefined __thiscall InitializeSimMgrScenarioStateAndRebuildNationSystems(int * param_1)
 
-void __thiscall TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TSimMgr *this)
+void __thiscall
+TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TSimMgr *this,int *param_1)
 
 {
-  ushort uVar1;
-  uint uVar2;
-  int iVar3;
+  int *piVar1;
+  ushort uVar2;
+  uint uVar3;
+  int iVar4;
   CString *this_00;
-  undefined1 *puVar4;
+  undefined1 *puVar5;
   short unaff_DI;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
-  code *pcVar5;
+  code *pcVar6;
   undefined4 uStack_80;
   undefined4 uStack_78;
   undefined1 *puStack_74;
@@ -1017,109 +1015,111 @@ void __thiscall TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TS
   undefined4 uStack_38;
   undefined1 *puStack_34;
   undefined4 uStack_30;
-  undefined4 *puStack_2c;
-  undefined4 uStack_28;
+  int **ppiStack_2c;
+  int *piStack_28;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
+  piVar1 = param_1;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636d18;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_2c = (undefined4 *)0x57bec8;
+  piStack_28 = param_1;
+  ppiStack_2c = (int **)0x57bec8;
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  uStack_28 = 2;
-  pcVar5 = *(code **)(*in_stack_00000004 + 0x3c);
+  piStack_28 = (int *)0x2;
+  pcVar6 = *(code **)(*piVar1 + 0x3c);
   if (DAT_00695278 < 0x38) {
-    puStack_2c = &stack0x00000004;
+    ppiStack_2c = &param_1;
     uStack_30 = 0x57bee2;
-    (*pcVar5)();
+    (*pcVar6)();
     puStack_34 = &stack0xffffffe4;
     uStack_30 = 2;
     uStack_38 = 0x57beed;
-    (*pcVar5)();
+    (*pcVar6)();
     *(short *)&this->field_0x2c = (short)uStack_c + unaff_DI * 4;
   }
   else {
-    puStack_2c = (undefined4 *)&this->field_0x2c;
+    ppiStack_2c = (int **)&this->field_0x2c;
     uStack_30 = 0x57bf06;
-    (*pcVar5)();
+    (*pcVar6)();
   }
   puStack_3c = &this->field_0x2e;
   uStack_38 = 2;
   uStack_40 = 0x57bf10;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_44 = &this->field_0x4;
   uStack_40 = 2;
   uStack_48 = 0x57bf1a;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_4c = &this->field_0x8;
   uStack_48 = 2;
   uStack_50 = 0x57bf24;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_54 = &this->field_0xc;
   uStack_50 = 2;
   uStack_58 = 0x57bf2e;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_5c = &this->field_0x10;
   uStack_58 = 2;
   uStack_60 = 0x57bf38;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_64 = &this->field_0x14;
   uStack_60 = 1;
   uStack_68 = 0x57bf42;
-  (*pcVar5)();
+  (*pcVar6)();
   CStack_6c.m_pchData = &this->field_0x30;
   uStack_68 = 4;
   uStack_70 = 0x57bf4c;
-  (*pcVar5)();
+  (*pcVar6)();
   puStack_74 = &this->field_0x34;
   uStack_70 = 4;
   uStack_78 = 0x57bf56;
-  (*pcVar5)();
+  (*pcVar6)();
   uStack_78 = 4;
-  (*pcVar5)(&this->field_0x3c);
+  (*pcVar6)(&this->field_0x3c);
   if (0x1f < DAT_00695278) {
-    uVar2 = (**(code **)(*in_stack_00000004 + 0x40))();
-    *(uint *)&this->field_0x40 = uVar2 & 0xff;
+    uVar3 = (**(code **)(*piVar1 + 0x40))();
+    *(uint *)&this->field_0x40 = uVar3 & 0xff;
   }
   if (DAT_00695278 < 0x2d) {
     uStack_80 = 0x3c;
-    (*pcVar5)(&this->field_0xd8);
+    (*pcVar6)(&this->field_0xd8);
     *(undefined2 *)&this->field_0x114 = 0;
   }
   else {
     uStack_80 = 0x3e;
-    (*pcVar5)(&this->field_0xd8);
+    (*pcVar6)(&this->field_0xd8);
   }
   if (DAT_00695278 < 0x2e) {
     *(undefined4 *)&this->field_0x64 = 0x2711;
   }
   else {
-    (*pcVar5)(&this->field_0x64,4);
+    (*pcVar6)(&this->field_0x64,4);
   }
-  (*pcVar5)(&this->field_0x15,0x17);
-  (*pcVar5)(&uStack_78,4);
+  (*pcVar6)(&this->field_0x15,0x17);
+  (*pcVar6)(&uStack_78,4);
   if (*(int *)&this->field_0x44 != 0) {
-    (**(code **)(g_pGameFlowState->vftable + 0x18))();
+    (**(code **)(g_pGameFlowState->vftable + 0x18))(piVar1);
   }
   if (0x23 < DAT_00695278) {
-    (*pcVar5)(&this->field_0x5c,2);
+    (*pcVar6)(&this->field_0x5c,2);
   }
   if (DAT_00695278 < 0x34) {
-    uVar1 = (ushort)(*(short *)&this->field_0x114 != 0);
-    *(ushort *)&this->field_0x6a = uVar1;
+    uVar2 = (ushort)(*(short *)&this->field_0x114 != 0);
+    *(ushort *)&this->field_0x6a = uVar2;
   }
   else {
-    (*pcVar5)(&CStack_6c,2);
+    (*pcVar6)(&CStack_6c,2);
     *(ushort *)&this->field_0x6a = (ushort)CStack_6c.m_pchData;
-    uVar1 = (ushort)CStack_6c.m_pchData;
+    uVar2 = (ushort)CStack_6c.m_pchData;
   }
-  EnsurePictWvDataGobLoadedBySlot((int)(short)uVar1);
+  EnsurePictWvDataGobLoadedBySlot((int)(short)uVar2);
   ReloadBitmap244AndRefreshUiCaches();
   if (0x35 < DAT_00695278) {
-    (*pcVar5)(&this->field_0x6c,2);
+    (*pcVar6)(&this->field_0x6c,2);
   }
   if (DAT_00695278 < 0x3b) {
     *(undefined4 *)&this->field_0x6f = 0x1010101;
@@ -1130,10 +1130,10 @@ void __thiscall TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TS
     (&this->field_0x6e)[(*(short *)&this->field_0x6c + -0x717) / 10] = 2;
   }
   else {
-    (*pcVar5)(&this->field_0x6e,0xc);
+    (*pcVar6)(&this->field_0x6e,0xc);
   }
   this_00 = (CString *)&this->field_0x7c;
-  iVar3 = 0x17;
+  iVar4 = 0x17;
   do {
     CString::CString(&CStack_6c,(char *)&g_szEmptyString);
     puStack_74 = (undefined1 *)0x0;
@@ -1141,17 +1141,17 @@ void __thiscall TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TS
     puStack_74 = (undefined1 *)0xffffffff;
     CString::~CString(&CStack_6c);
     this_00 = this_00 + 1;
-    iVar3 = iVar3 + -1;
-  } while (iVar3 != 0);
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
   if (0x3b < DAT_00695278) {
-    puVar4 = &this->field_0x7c;
-    iVar3 = 0x17;
-    pcVar5 = *(code **)(*in_stack_00000004 + 0x70);
+    puVar5 = &this->field_0x7c;
+    iVar4 = 0x17;
+    pcVar6 = *(code **)(*piVar1 + 0x70);
     do {
-      (*pcVar5)(puVar4,0x20);
-      puVar4 = puVar4 + 4;
-      iVar3 = iVar3 + -1;
-    } while (iVar3 != 0);
+      (*pcVar6)(puVar5,0x20);
+      puVar5 = puVar5 + 4;
+      iVar4 = iVar4 + -1;
+    } while (iVar4 != 0);
   }
   (*g_pUiViewManager->vftable[6].GetTAssetMgrClassNamePointer)(1);
   RebuildGlobalOrderManagersAndCapabilityState(0);
@@ -1165,18 +1165,18 @@ void __thiscall TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TS
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057C230
 // GHIDRA_NAME TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(int * param_1)
 
-void __thiscall TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(TSimMgr *this)
+void __thiscall
+TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(TSimMgr *this,int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   undefined1 *puVar3;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  iVar2 = *in_stack_00000004;
+  iVar2 = *param_1;
   pcVar1 = *(code **)(iVar2 + 0x78);
   (*pcVar1)(&this->field_0x2c,2);
   (*pcVar1)(&this->field_0x2e,2);
@@ -1194,7 +1194,7 @@ void __thiscall TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(TSimMg
   (*pcVar1)(&this->field_0x15,0x17);
   (*pcVar1)(&this->field_0x44,4);
   if (*(int *)&this->field_0x44 != 0) {
-    (**(code **)(g_pGameFlowState->vftable + 0x14))();
+    (**(code **)(g_pGameFlowState->vftable + 0x14))(param_1);
   }
   (*pcVar1)(&this->field_0x5c,2);
   (*pcVar1)(&this->field_0x6a,2);
@@ -1223,7 +1223,7 @@ void __thiscall TSimMgr::NoOpVirtualStub_0057c390(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D520
 // GHIDRA_NAME TSimMgr::RebuildSecondaryNationStateForSlot
-// GHIDRA_PROTO undefined __thiscall RebuildSecondaryNationStateForSlot(void)
+// GHIDRA_PROTO undefined __thiscall RebuildSecondaryNationStateForSlot(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Rebuilds one secondary/extended nation slot object (minor nation / extra slot range).
 // GHIDRA_COMMENT
@@ -1246,19 +1246,19 @@ void __thiscall TSimMgr::NoOpVirtualStub_0057c390(TSimMgr *this)
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x30 dispatch. */
 
-void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this)
+void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this,undefined4 param_1)
 
 {
-  TMinorVtbl *pTVar1;
-  char cVar2;
-  int iVar3;
-  TMinor *pTVar4;
+  short sVar1;
+  TMinorVtbl *pTVar2;
+  char cVar3;
+  int iVar4;
+  TMinor *pTVar5;
   TMinor *this_00;
-  TMilitaryUnitOrderState *pTVar5;
-  short sVar6;
-  int iVar7;
+  TMilitaryUnitOrderState *pTVar6;
+  short sVar7;
+  int iVar8;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -1267,83 +1267,85 @@ void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this)
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636ede;
   *unaff_FS_OFFSET = &local_c;
-  sVar6 = (short)in_stack_00000004;
-  if (sVar6 < 7) {
-    g_apSecondaryNationStateSlots[sVar6] = (TMinor *)0x0;
+  sVar7 = (short)param_1;
+  if (sVar7 < 7) {
+    g_apSecondaryNationStateSlots[sVar7] = (TMinor *)0x0;
     goto LAB_0057d6fe;
   }
-  iVar7 = (int)sVar6;
-  iVar3 = *(int *)&this->field_0x34 + 7;
-  if (iVar7 < iVar3) {
+  iVar8 = (int)sVar7;
+  iVar4 = *(int *)&this->field_0x34 + 7;
+  if (iVar8 < iVar4) {
     if (*(int *)&this->field_0x44 != 2) {
-      if (iVar7 < iVar3) {
-        pTVar4 = (TMinor *)0x0;
-        if (g_apSecondaryNationStateSlots[iVar7] != (TMinor *)0x0) {
-          (*g_apSecondaryNationStateSlots[iVar7]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
+      if (iVar8 < iVar4) {
+        pTVar5 = (TMinor *)0x0;
+        if (g_apSecondaryNationStateSlots[iVar8] != (TMinor *)0x0) {
+          (*g_apSecondaryNationStateSlots[iVar8]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
         }
-        g_apSecondaryNationStateSlots[iVar7] = (TMinor *)0x0;
-        g_apTerrainTypeDescriptorTable[iVar7] = (TCountry *)0x0;
+        g_apSecondaryNationStateSlots[iVar8] = (TMinor *)0x0;
+        g_apTerrainTypeDescriptorTable[iVar8] = (TCountry *)0x0;
         this_00 = (TMinor *)AllocateWithFallbackHandler(0x2dc);
         uStack_4 = 1;
         if (this_00 != (TMinor *)0x0) {
-          pTVar4 = (TMinor *)TMinor::TMinor(this_00);
+          pTVar5 = (TMinor *)TMinor::TMinor(this_00);
         }
         uStack_4 = 0xffffffff;
-        InitializeSecondaryNationStateAndSelectHomeTile(in_stack_00000004);
-        cVar2 = DAT_006a43f0;
-        g_apSecondaryNationStateSlots[iVar7] = pTVar4;
-        g_apTerrainTypeDescriptorTable[iVar7] = (TCountry *)pTVar4;
-        if (cVar2 == '\0') {
-          pTVar1 = pTVar4->vftable;
-          (*pTVar1[6].GetTCountryClassNamePointer)();
-          iVar3 = 2;
+        InitializeSecondaryNationStateAndSelectHomeTile(param_1);
+        cVar3 = DAT_006a43f0;
+        g_apSecondaryNationStateSlots[iVar8] = pTVar5;
+        g_apTerrainTypeDescriptorTable[iVar8] = (TCountry *)pTVar5;
+        if (cVar3 == '\0') {
+          pTVar2 = pTVar5->vftable;
+          (*pTVar2[6].GetTCountryClassNamePointer)();
+          iVar4 = 2;
+          sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                            (short)pTVar5->ownerNationSlot * 0x24);
           do {
-            pTVar5 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+            pTVar6 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
             uStack_4 = 2;
-            if (pTVar5 == (TMilitaryUnitOrderState *)0x0) {
-              pTVar5 = (TMilitaryUnitOrderState *)0x0;
+            if (pTVar6 == (TMilitaryUnitOrderState *)0x0) {
+              pTVar6 = (TMilitaryUnitOrderState *)0x0;
             }
             else {
-              pTVar5 = (TMilitaryUnitOrderState *)
-                       TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar5);
+              pTVar6 = (TMilitaryUnitOrderState *)
+                       TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar6);
             }
             uStack_4 = 0xffffffff;
-            TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar5);
-            (**(code **)(*(int *)pTVar5 + 0x34))(2,0xffffffff);
-            iVar3 = iVar3 + -1;
-          } while (iVar3 != 0);
-          (*pTVar1[7].ApplyJoinEmpireModeForTargetNation)();
+            TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar6,2,sVar1,sVar7);
+            (**(code **)(*(int *)pTVar6 + 0x34))(2,0xffffffff);
+            iVar4 = iVar4 + -1;
+          } while (iVar4 != 0);
+          (*pTVar2[7].ApplyJoinEmpireModeForTargetNation)();
         }
         goto LAB_0057d6fe;
       }
       goto LAB_0057d6de;
     }
-    if (g_apSecondaryNationStateSlots[iVar7] != (TMinor *)0x0) {
-      (*g_apSecondaryNationStateSlots[iVar7]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
+    if (g_apSecondaryNationStateSlots[iVar8] != (TMinor *)0x0) {
+      (*g_apSecondaryNationStateSlots[iVar8]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
     }
-    g_apSecondaryNationStateSlots[iVar7] = (TMinor *)0x0;
-    g_apTerrainTypeDescriptorTable[iVar7] = (TCountry *)0x0;
-    pTVar4 = (TMinor *)AllocateWithFallbackHandler(0x2dc);
+    g_apSecondaryNationStateSlots[iVar8] = (TMinor *)0x0;
+    g_apTerrainTypeDescriptorTable[iVar8] = (TCountry *)0x0;
+    pTVar5 = (TMinor *)AllocateWithFallbackHandler(0x2dc);
     uStack_4 = 0;
-    if (pTVar4 == (TMinor *)0x0) {
-      pTVar4 = (TMinor *)0x0;
+    if (pTVar5 == (TMinor *)0x0) {
+      pTVar5 = (TMinor *)0x0;
     }
     else {
-      TMinor::TMinor(pTVar4);
-      pTVar4->vftable = (TMinorVtbl *)&TRemoteMinorVtbl_0065bde0;
+      TMinor::TMinor(pTVar5);
+      pTVar5->vftable = (TMinorVtbl *)&TRemoteMinorVtbl_0065bde0;
     }
     uStack_4 = 0xffffffff;
-    InitializeSecondaryNationStateAndSelectHomeTile(in_stack_00000004);
+    InitializeSecondaryNationStateAndSelectHomeTile(param_1);
   }
   else {
 LAB_0057d6de:
-    pTVar4 = (TMinor *)0x0;
-    if (g_apSecondaryNationStateSlots[iVar7] != (TMinor *)0x0) {
-      (*g_apSecondaryNationStateSlots[iVar7]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
+    pTVar5 = (TMinor *)0x0;
+    if (g_apSecondaryNationStateSlots[iVar8] != (TMinor *)0x0) {
+      (*g_apSecondaryNationStateSlots[iVar8]->vftable[3].ApplyJoinEmpireModeForTargetNation)();
     }
   }
-  g_apSecondaryNationStateSlots[iVar7] = pTVar4;
-  g_apTerrainTypeDescriptorTable[iVar7] = (TCountry *)pTVar4;
+  g_apSecondaryNationStateSlots[iVar8] = pTVar5;
+  g_apTerrainTypeDescriptorTable[iVar8] = (TCountry *)pTVar5;
 LAB_0057d6fe:
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1376,19 +1378,18 @@ undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D8D0
 // GHIDRA_NAME TSimMgr::CopyScenarioNationSetupIntoFlowState
-// GHIDRA_PROTO undefined __thiscall CopyScenarioNationSetupIntoFlowState(void)
+// GHIDRA_PROTO undefined __thiscall CopyScenarioNationSetupIntoFlowState(undefined1 * param_1)
 
-void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this)
+void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this,undefined1 *param_1)
 
 {
   undefined2 *puVar1;
   undefined2 *puVar2;
   int iVar3;
-  undefined1 *in_stack_00000004;
   
   puVar2 = (undefined2 *)&this->field_0xe8;
   iVar3 = 7;
-  puVar1 = (undefined2 *)(in_stack_00000004 + 0x10);
+  puVar1 = (undefined2 *)(param_1 + 0x10);
   do {
     puVar2[-7] = puVar1[-7];
     *puVar2 = *puVar1;
@@ -1398,8 +1399,8 @@ void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this)
     iVar3 = iVar3 + -1;
     puVar1 = puVar1 + 1;
   } while (iVar3 != 0);
-  this->field_0xd8 = *in_stack_00000004;
-  if (in_stack_00000004[0x3a] != '\0') {
+  this->field_0xd8 = *param_1;
+  if (param_1[0x3a] != '\0') {
     this->field_0x112 = 1;
   }
   return;
@@ -1429,16 +1430,15 @@ void __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057D990
 // GHIDRA_NAME TSimMgr::SetGlobalTurnStateCodeIfAllowed
-// GHIDRA_PROTO undefined __thiscall SetGlobalTurnStateCodeIfAllowed(void)
+// GHIDRA_PROTO undefined __thiscall SetGlobalTurnStateCodeIfAllowed(undefined4 param_1)
 
-void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this)
+void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this,undefined4 param_1)
 
 {
   short sVar1;
   TCountry *pTVar2;
   undefined4 uVar3;
   bool bVar4;
-  undefined4 in_stack_00000004;
   
   sVar1 = *(short *)&this->field_0x2e;
   if (sVar1 == -1) {
@@ -1468,7 +1468,7 @@ void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this)
   }
 LAB_0057d9dd:
   if (!bVar4) {
-    switch(in_stack_00000004) {
+    switch(param_1) {
     case 100:
     case 0x67:
     case 0x68:
@@ -1479,7 +1479,7 @@ LAB_0057d9dd:
     }
   }
   uVar3 = *(undefined4 *)&this->field_0x4;
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x4 = param_1;
   *(undefined4 *)&this->field_0x10 = *(undefined4 *)&this->field_0x8;
   *(undefined4 *)&this->field_0xc = uVar3;
   (*this->vftable[8].slot_0x04)();
@@ -2402,14 +2402,12 @@ undefined4 __thiscall TSimMgr::OrphanTiny_ReturnZero_0057f490(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057F4B0
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0057f4b0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
 
-void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(TSimMgr *this)
+void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(TSimMgr *this,uint param_1)
 
 {
-  uint in_stack_00000004;
-  
-  *(uint *)&this->field_0x3c = *(uint *)&this->field_0x3c | in_stack_00000004;
+  *(uint *)&this->field_0x3c = *(uint *)&this->field_0x3c | param_1;
   return;
 }
 
@@ -2453,19 +2451,20 @@ void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057F5B0
 // GHIDRA_NAME TSimMgr::FormatSignedIntWithSingleThousandsSeparator
-// GHIDRA_PROTO undefined __thiscall FormatSignedIntWithSingleThousandsSeparator(void)
+// GHIDRA_PROTO undefined __thiscall FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)
 
-void __thiscall TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *this)
+void __thiscall
+TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *this,CString param_1,CString param_2)
 
 {
+  CString this_00;
   CString CVar1;
   int iVar2;
   undefined4 uVar3;
   CString *pCVar4;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
-  CString in_stack_00000008;
-  undefined4 uVar5;
+  bool bVar5;
+  undefined4 uVar6;
   CString local_18;
   CString local_14;
   CString local_10;
@@ -2473,39 +2472,39 @@ void __thiscall TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *th
   undefined1 *puStack_8;
   int local_4;
   
+  this_00.m_pchData = param_2.m_pchData;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636fa0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  CVar1.m_pchData = in_stack_00000004.m_pchData;
-  if ((int)in_stack_00000004.m_pchData < 0) {
+  bVar5 = (int)param_1.m_pchData < 0;
+  CVar1.m_pchData = param_1.m_pchData;
+  if (bVar5) {
     CVar1.m_pchData =
-         (char *)(((uint)in_stack_00000004.m_pchData ^ (int)in_stack_00000004.m_pchData >> 0x1f) -
-                 ((int)in_stack_00000004.m_pchData >> 0x1f));
+         (char *)(((uint)param_1.m_pchData ^ (int)param_1.m_pchData >> 0x1f) -
+                 ((int)param_1.m_pchData >> 0x1f));
   }
-  uVar5 = 10;
-  iVar2 = CString::EnsureCapacityPreserveLength((CString *)in_stack_00000008.m_pchData,0x11);
-  ConvertSignedIntToStringWithBaseAndSignHandling(CVar1.m_pchData,iVar2,uVar5);
-  CString::SetLengthAndTerminator((CString *)in_stack_00000008.m_pchData,-1);
-                    /* WARNING: Load size is inaccurate */
-  iVar2 = *(int *)(*in_stack_00000008.m_pchData + -8);
+  uVar6 = 10;
+  iVar2 = CString::EnsureCapacityPreserveLength((CString *)param_2.m_pchData,0x11);
+  ConvertSignedIntToStringWithBaseAndSignHandling(CVar1.m_pchData,iVar2,uVar6);
+  CString::SetLengthAndTerminator((CString *)this_00.m_pchData,-1);
+  iVar2 = *(int *)(*(int *)this_00.m_pchData + -8);
   if (6 < iVar2) {
-    uVar5 = FUN_005fed30(&local_10,6);
-                    /* WARNING: Load size is inaccurate */
+    uVar6 = FUN_005fed30(&local_10,6);
     local_4 = 0;
-    uVar3 = FUN_005fedad(&local_14,*(int *)(*in_stack_00000008.m_pchData + -8) + -6);
+    uVar3 = FUN_005fedad(&local_14,*(int *)(*(int *)this_00.m_pchData + -8) + -6);
     local_4._0_1_ = 1;
     uVar3 = FUN_005febbe(&local_18,uVar3,0x2c);
     local_4._0_1_ = 2;
-    pCVar4 = (CString *)AssignSharedStringConcatRefAndRef(&stack0x00000008,uVar3,uVar5);
+    pCVar4 = (CString *)AssignSharedStringConcatRefAndRef(&param_2,uVar3,uVar6);
     local_4._0_1_ = 3;
-    CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar4);
+    CString::StringSharedRef_AssignFromPtr(&param_1,pCVar4);
     local_4._0_1_ = 4;
-    CString::AssignFromPtr((CString *)in_stack_00000008.m_pchData,&stack0x00000004);
+    CString::AssignFromPtr((CString *)this_00.m_pchData,&param_1);
     local_4._0_1_ = 3;
-    CString::~CString(&stack0x00000004);
+    CString::~CString(&param_1);
     local_4._0_1_ = 2;
-    CString::~CString(&stack0x00000008);
+    CString::~CString(&param_2);
     local_4._0_1_ = 1;
     CString::~CString(&local_18);
     local_4 = (uint)local_4._1_3_ << 8;
@@ -2514,22 +2513,21 @@ void __thiscall TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *th
     CString::~CString(&local_10);
   }
   if (3 < iVar2) {
-    uVar5 = FUN_005fed30(&local_18,3);
-                    /* WARNING: Load size is inaccurate */
+    uVar6 = FUN_005fed30(&local_18,3);
     local_4 = 5;
-    uVar3 = FUN_005fedad(&local_14,*(int *)(*in_stack_00000008.m_pchData + -8) + -3);
+    uVar3 = FUN_005fedad(&local_14,*(int *)(*(int *)this_00.m_pchData + -8) + -3);
     local_4._0_1_ = 6;
     uVar3 = FUN_005febbe(&local_10,uVar3,0x2c);
     local_4._0_1_ = 7;
-    pCVar4 = (CString *)AssignSharedStringConcatRefAndRef(&stack0x00000008,uVar3,uVar5);
+    pCVar4 = (CString *)AssignSharedStringConcatRefAndRef(&param_2,uVar3,uVar6);
     local_4._0_1_ = 8;
-    CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar4);
+    CString::StringSharedRef_AssignFromPtr(&param_1,pCVar4);
     local_4._0_1_ = 9;
-    CString::AssignFromPtr((CString *)in_stack_00000008.m_pchData,&stack0x00000004);
+    CString::AssignFromPtr((CString *)this_00.m_pchData,&param_1);
     local_4._0_1_ = 8;
-    CString::~CString(&stack0x00000004);
+    CString::~CString(&param_1);
     local_4._0_1_ = 7;
-    CString::~CString(&stack0x00000008);
+    CString::~CString(&param_2);
     local_4._0_1_ = 6;
     CString::~CString(&local_10);
     local_4 = CONCAT31(local_4._1_3_,5);
@@ -2537,25 +2535,25 @@ void __thiscall TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *th
     local_4 = 0xffffffff;
     CString::~CString(&local_18);
   }
-  pCVar4 = (CString *)FUN_005fec20(&stack0x00000008,0x24,in_stack_00000008.m_pchData);
+  pCVar4 = (CString *)FUN_005fec20(&param_2,0x24,this_00.m_pchData);
   local_4 = 10;
-  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar4);
+  CString::StringSharedRef_AssignFromPtr(&param_1,pCVar4);
   local_4._0_1_ = 0xb;
-  CString::AssignFromPtr((CString *)in_stack_00000008.m_pchData,&stack0x00000004);
+  CString::AssignFromPtr((CString *)this_00.m_pchData,&param_1);
   local_4 = CONCAT31(local_4._1_3_,10);
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000008);
-  if ((int)in_stack_00000004.m_pchData < 0) {
-    pCVar4 = (CString *)FUN_005fec20(&stack0x00000008,0x2d,in_stack_00000008.m_pchData);
+  CString::~CString(&param_2);
+  if (bVar5) {
+    pCVar4 = (CString *)FUN_005fec20(&param_2,0x2d,this_00.m_pchData);
     local_4 = 0xc;
-    CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar4);
+    CString::StringSharedRef_AssignFromPtr(&param_1,pCVar4);
     local_4._0_1_ = 0xd;
-    CString::AssignFromPtr((CString *)in_stack_00000008.m_pchData,&stack0x00000004);
+    CString::AssignFromPtr((CString *)this_00.m_pchData,&param_1);
     local_4 = CONCAT31(local_4._1_3_,0xc);
-    CString::~CString(&stack0x00000004);
+    CString::~CString(&param_1);
     local_4 = 0xffffffff;
-    CString::~CString(&stack0x00000008);
+    CString::~CString(&param_2);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -2563,9 +2561,9 @@ void __thiscall TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057F8F0
 // GHIDRA_NAME TSimMgr::FormatSharedStringFromBracketExpression
-// GHIDRA_PROTO undefined __thiscall FormatSharedStringFromBracketExpression(void)
+// GHIDRA_PROTO undefined __thiscall FormatSharedStringFromBracketExpression(int param_1)
 
-void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this)
+void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this,int param_1)
 
 {
   int iVar1;
@@ -2573,7 +2571,6 @@ void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this)
   uint uVar2;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   CString CStack_20;
   CString local_14;
   CString local_10;
@@ -2590,23 +2587,24 @@ void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this)
   local_4 = (void *)0x0;
   CStack_20.m_pchData = (char *)0x57f926;
   CString::CString(&local_14);
+  CStack_20.m_pchData = (char *)param_1;
   local_4 = (void *)CONCAT31(local_4._1_3_,1);
   FormatStringWithVarArgsToSharedRef(&local_14,&g_szDecimalFormat);
-  iVar1 = in_stack_00000004 % 10;
+  iVar1 = param_1 % 10;
   if (iVar1 == 1) {
-    uVar2 = -(uint)(in_stack_00000004 != 0xb) & 0xfffffffd;
+    uVar2 = -(uint)(param_1 != 0xb) & 0xfffffffd;
   }
   else {
     if (iVar1 != 2) {
       if (iVar1 == 3) {
-        iVar1 = (in_stack_00000004 == 0xd) + 2;
+        iVar1 = (param_1 == 0xd) + 2;
       }
       else {
         iVar1 = 3;
       }
       goto LAB_0057f984;
     }
-    uVar2 = -(uint)(in_stack_00000004 != 0xc) & 0xfffffffe;
+    uVar2 = -(uint)(param_1 != 0xc) & 0xfffffffe;
   }
   iVar1 = uVar2 + 3;
 LAB_0057f984:
@@ -2648,9 +2646,9 @@ void __thiscall TSimMgr::OrphanCallChain_C2_I07_0057fec0(TSimMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00580460
 // GHIDRA_NAME TSimMgr::AppendByteToResizableBuffer
-// GHIDRA_PROTO undefined __thiscall AppendByteToResizableBuffer(void)
+// GHIDRA_PROTO undefined __thiscall AppendByteToResizableBuffer(undefined1 param_1)
 
-void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this)
+void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this,undefined1 param_1)
 
 {
   int iVar1;
@@ -2659,7 +2657,6 @@ void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this)
   int iVar4;
   undefined4 uVar5;
   uint uVar6;
-  undefined1 in_stack_00000004;
   
   uVar2 = *(uint *)&this->field_0xc;
   if (*(uint *)&this->field_0x8 <= uVar2) {
@@ -2683,13 +2680,13 @@ void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this)
   if (*(uint *)&this->field_0xc <= uVar2) {
     *(uint *)&this->field_0xc = uVar2 + 1;
   }
-  *(undefined1 *)(*(int *)&this->field_0x4 + uVar2) = in_stack_00000004;
+  *(undefined1 *)(*(int *)&this->field_0x4 + uVar2) = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00580760
 // GHIDRA_NAME TSimMgr::LoadUiStringByCodeGroupAndOffset
-// GHIDRA_PROTO undefined __thiscall LoadUiStringByCodeGroupAndOffset(void)
+// GHIDRA_PROTO undefined __thiscall LoadUiStringByCodeGroupAndOffset(short param_1, short param_2, undefined4 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT UI string loader wrapper used by the turn-flow object vtable slot +0x84. Converts (codeGroup, offset) to a call into thunk_LoadUiStringResourceByGroupAndIndex with app context DAT_006a134c.
 // GHIDRA_COMMENT_END
@@ -2698,23 +2695,21 @@ void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this)
    offset) to a call into thunk_LoadUiStringResourceByGroupAndIndex with app context DAT_006a134c.
     */
 
-void __thiscall TSimMgr::LoadUiStringByCodeGroupAndOffset(TSimMgr *this)
+void __thiscall
+TSimMgr::LoadUiStringByCodeGroupAndOffset
+          (TSimMgr *this,short param_1,short param_2,undefined4 param_3)
 
 {
-  short in_stack_00000004;
-  short in_stack_00000008;
-  undefined4 in_stack_0000000c;
-  
-  thunk_LoadUiStringResourceByGroupAndIndex
-            (in_stack_0000000c,(int)in_stack_00000004,in_stack_00000008 + 1);
+  thunk_LoadUiStringResourceByGroupAndIndex(param_3,(int)param_1,param_2 + 1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00580790
 // GHIDRA_NAME TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode
-// GHIDRA_PROTO undefined __thiscall FormatDiplomacyNoticeTextByPolicyOrGrantCode(void)
+// GHIDRA_PROTO undefined __thiscall FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString * param_1, short * param_2)
 
-CString * __thiscall TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimMgr *this)
+CString * __thiscall
+TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimMgr *this,CString *param_1,short *param_2)
 
 {
   undefined4 uVar1;
@@ -2724,8 +2719,6 @@ CString * __thiscall TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimM
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   bool bVar5;
-  CString *in_stack_00000004;
-  short *in_stack_00000008;
   CString local_a8;
   CString local_a4;
   CString local_a0;
@@ -2780,8 +2773,8 @@ CString * __thiscall TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimM
   local_4._0_1_ = 2;
   CString::CString(&local_98);
   local_4._0_1_ = 3;
-  iVar4 = CONCAT22((short)((uint)unaff_EDI >> 0x10),*in_stack_00000008);
-  bVar5 = *in_stack_00000008 < 0;
+  iVar4 = CONCAT22((short)((uint)unaff_EDI >> 0x10),*param_2);
+  bVar5 = *param_2 < 0;
   if (bVar5) {
     iVar4 = -iVar4;
   }
@@ -2998,7 +2991,7 @@ switchD_00580a7a_default:
 LAB_00580f40:
   local_4._0_1_ = 3;
   CString::~CString(pCVar2);
-  CString::StringSharedRef_AssignFromPtr(in_stack_00000004,&local_a8);
+  CString::StringSharedRef_AssignFromPtr(param_1,&local_a8);
   local_10 = 1;
   local_4._0_1_ = 2;
   CString::~CString(&local_98);
@@ -3007,7 +3000,7 @@ LAB_00580f40:
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_a8);
   *unaff_FS_OFFSET = uStack_c;
-  return in_stack_00000004;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593A10
@@ -3020,6 +3013,7 @@ void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
   char ok;
   int pending_count;
   undefined4 timer_handle;
+  short requested_id;
   char skip_queue;
   
   if (*(short *)&this->field_0x74 != this_ptr) {
@@ -3035,7 +3029,8 @@ void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
         }
       }
       else {
-        TOceanDialog::RequestAudioPresetChangeWithDeferredApply((TOceanDialog *)this);
+        TOceanDialog::RequestAudioPresetChangeWithDeferredApply
+                  ((TOceanDialog *)this,(int)*(short *)&this->field_0x76,'\0');
         *(undefined2 *)&this->field_0x76 = 0;
       }
     }
@@ -3064,14 +3059,15 @@ void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
           return;
         }
         if (this_ptr != *(short *)&this->field_0x74) {
+          requested_id = (short)this_ptr;
           if ((skip_queue == '\0') || (*(short *)&this->field_0x74 < 1)) {
-            *(short *)&this->field_0x74 = (short)this_ptr;
-            ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc);
+            *(short *)&this->field_0x74 = requested_id;
+            ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc,(int)requested_id);
             ApplyAuxOutputVolumeFromScalar((int)*(short *)&g_pLocalizationTable->field_0x4e << 8);
             this->field_0x78 = 1;
           }
           else {
-            *(short *)&this->field_0x76 = (short)this_ptr;
+            *(short *)&this->field_0x76 = requested_id;
             if (*(int *)&this->field_0x7c == 0) {
               timer_handle = thunk_GetTickCountDiv16();
               *(undefined4 *)&this->field_0x7c = timer_handle;

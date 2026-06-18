@@ -1692,7 +1692,7 @@ undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493819(void)
 {
   CFrameWnd *unaff_ESI;
   
-  CFrameWnd::ShowWindow(unaff_ESI);
+  CFrameWnd::ShowWindow(unaff_ESI,5);
   return 0;
 }
 
@@ -1705,7 +1705,7 @@ undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493829(void)
 {
   CFrameWnd *unaff_ESI;
   
-  CFrameWnd::ShowWindow(unaff_ESI);
+  CFrameWnd::ShowWindow(unaff_ESI,0);
   return 0;
 }
 
@@ -1863,7 +1863,7 @@ WrapperFor_RouteCommandByIdWithUiProbe_At00493c30
       (**(code **)(**(int **)(param_1 + 0x3c) + 0x13c))();
     }
   }
-  TTooltipRelayWindowState::OnCommand(param_1);
+  TTooltipRelayWindowState::OnCommand(param_1,param_2,(int)param_3);
   return;
 }
 
@@ -1995,11 +1995,12 @@ CBrush * CreateFontFromPresetAndAttachRegionHandle(short *param_1)
 {
   short sVar1;
   CBrush *pCVar2;
-  int iVar3;
+  HFONT pHVar3;
   int iVar4;
-  CBrush *this;
   int iVar5;
-  LOGFONTA *pLVar6;
+  CBrush *this;
+  int iVar6;
+  LOGFONTA *pLVar7;
   LOGFONTA local_64;
   undefined4 local_28;
   undefined4 local_24;
@@ -2012,14 +2013,14 @@ CBrush * CreateFontFromPresetAndAttachRegionHandle(short *param_1)
   undefined4 local_8;
   undefined4 local_4;
   
-  iVar3 = 0xc;
+  iVar4 = 0xc;
   sVar1 = param_1[2];
   if (sVar1 != 0) {
-    iVar3 = (int)sVar1;
+    iVar4 = (int)sVar1;
   }
-  iVar5 = (int)*param_1;
-  if ((iVar5 < 1) || (4 < iVar5)) {
-    iVar5 = 0;
+  iVar6 = (int)*param_1;
+  if ((iVar6 < 1) || (4 < iVar6)) {
+    iVar6 = 0;
   }
   local_64.lfFaceName[8] = '\x0e';
   local_64.lfFaceName[9] = '\0';
@@ -2076,12 +2077,12 @@ CBrush * CreateFontFromPresetAndAttachRegionHandle(short *param_1)
   local_c = 0x19;
   local_8 = 0x19;
   local_4 = 0x1e;
-  if ((((iVar5 == 0) || (iVar5 == 1)) || (iVar5 == 4)) || ((iVar3 < 1 || (0x18 < iVar3)))) {
-    iVar3 = iVar3 * 10 + 3;
-    iVar3 = (int)(iVar3 + (iVar3 >> 0x1f & 7U)) >> 3;
+  if ((((iVar6 == 0) || (iVar6 == 1)) || (iVar6 == 4)) || ((iVar4 < 1 || (0x18 < iVar4)))) {
+    iVar4 = iVar4 * 10 + 3;
+    iVar4 = (int)(iVar4 + (iVar4 >> 0x1f & 7U)) >> 3;
   }
   else {
-    iVar3 = *(int *)(local_64.lfFaceName + sVar1 * 4 + -0x1c);
+    iVar4 = *(int *)(local_64.lfFaceName + sVar1 * 4 + -0x1c);
   }
   pCVar2 = (CBrush *)AllocateWithFallbackHandler(8);
   this = (CBrush *)0x0;
@@ -2090,20 +2091,20 @@ CBrush * CreateFontFromPresetAndAttachRegionHandle(short *param_1)
     *(undefined ***)pCVar2 = &PTR_LAB_0064b930;
     this = pCVar2;
   }
-  pLVar6 = &local_64;
-  for (iVar4 = 0xf; iVar4 != 0; iVar4 = iVar4 + -1) {
-    pLVar6->lfHeight = 0;
-    pLVar6 = (LOGFONTA *)&pLVar6->lfWidth;
+  pLVar7 = &local_64;
+  for (iVar5 = 0xf; iVar5 != 0; iVar5 = iVar5 + -1) {
+    pLVar7->lfHeight = 0;
+    pLVar7 = (LOGFONTA *)&pLVar7->lfWidth;
   }
   local_64.lfCharSet = '\x01';
-  local_64.lfHeight = iVar3;
-  lstrcpynA(local_64.lfFaceName,(&PTR_s_System_00695108)[iVar5],0x20);
+  local_64.lfHeight = iVar4;
+  lstrcpynA(local_64.lfFaceName,(&PTR_s_System_00695108)[iVar6],0x20);
   local_64.lfWeight = -(uint)((*(byte *)(param_1 + 1) & 1) != 0) & 700;
   local_64._20_4_ = CONCAT31(local_64._21_3_,(char)param_1[1]) & 0xffffff02;
   local_64._20_4_ =
        CONCAT22(local_64._22_2_,CONCAT11((char)param_1[1],local_64.lfItalic)) & 0xffff04ff;
-  CreateFontIndirectA(&local_64);
-  CBrush::AttachRegionHandleToClipStateAndRegister(this);
+  pHVar3 = CreateFontIndirectA(&local_64);
+  CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar3);
   return this;
 }
 
@@ -2550,7 +2551,9 @@ uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
 {
   int *piVar1;
   undefined4 uVar2;
-  int *piVar3;
+  HDC pHVar3;
+  HGDIOBJ pvVar4;
+  int *piVar5;
   int *unaff_FS_OFFSET;
   undefined4 *unaff_retaddr;
   tagSIZE tStack_24;
@@ -2559,13 +2562,13 @@ uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
   undefined1 *puStack_8;
   int local_4;
   
-  piVar3 = DAT_006a1da0;
+  piVar5 = DAT_006a1da0;
   iStack_c = *unaff_FS_OFFSET;
   local_4 = -1;
   puStack_8 = &LAB_0062f558;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  piVar1 = piVar3;
-  if (piVar3 == (int *)0x0) {
+  piVar1 = piVar5;
+  if (piVar5 == (int *)0x0) {
     piVar1 = g_pScopedMapQuickDrawDcHandleObject;
   }
   if (piVar1 != (int *)0x0) {
@@ -2575,31 +2578,31 @@ uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
       }
       DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
       DAT_006a1d56 = '\0';
-      piVar3 = DAT_006a1da0;
+      piVar5 = DAT_006a1da0;
     }
-    if (piVar3 == (int *)0x0) {
-      piVar3 = g_pScopedMapQuickDrawDcHandleObject;
+    if (piVar5 == (int *)0x0) {
+      piVar5 = g_pScopedMapQuickDrawDcHandleObject;
     }
     piVar1 = DAT_006a1d48;
-    uVar2 = (**(code **)(*piVar3 + 0x30))();
-    piVar3 = DAT_006a1da0;
+    uVar2 = (**(code **)(*piVar5 + 0x30))();
+    piVar5 = DAT_006a1da0;
     if (DAT_006a1da0 == (int *)0x0) {
-      piVar3 = g_pScopedMapQuickDrawDcHandleObject;
+      piVar5 = g_pScopedMapQuickDrawDcHandleObject;
     }
-    GetTextExtentPointA((HDC)piVar3[2],(LPCSTR)*unaff_retaddr,*(int *)((LPCSTR)*unaff_retaddr + -8),
+    GetTextExtentPointA((HDC)piVar5[2],(LPCSTR)*unaff_retaddr,*(int *)((LPCSTR)*unaff_retaddr + -8),
                         (LPSIZE)&stack0xffffffd8);
-    piVar3 = DAT_006a1da0;
+    piVar5 = DAT_006a1da0;
     if (DAT_006a1da0 == (int *)0x0) {
-      piVar3 = g_pScopedMapQuickDrawDcHandleObject;
+      piVar5 = g_pScopedMapQuickDrawDcHandleObject;
     }
-    (**(code **)(*piVar3 + 0x30))(uVar2);
+    (**(code **)(*piVar5 + 0x30))(uVar2);
     *unaff_FS_OFFSET = (int)local_1c.m_hAttribDC;
     return (uint)piVar1 & 0xffff;
   }
   CDC::CDC(&local_1c);
   local_4 = 0;
-  CreateCompatibleDC((HDC)0x0);
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&local_1c);
+  pHVar3 = CreateCompatibleDC((HDC)0x0);
+  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&local_1c,(int)pHVar3);
   if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
     if (DAT_006a1d48 != (int *)0x0) {
       (**(code **)(*DAT_006a1d48 + 4))(1);
@@ -2607,10 +2610,10 @@ uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
     DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
     DAT_006a1d56 = '\0';
   }
-  TTEView::SelectObject_6129d7((TTEView *)&local_1c);
+  pvVar4 = (HGDIOBJ)TTEView::SelectObject_6129d7((TTEView *)&local_1c,DAT_006a1d48);
   GetTextExtentPointA(local_1c.m_hAttribDC,(LPCSTR)*param_1,*(int *)((LPCSTR)*param_1 + -8),
                       &tStack_24);
-  TTEView::SelectObject_6129d7((TTEView *)&local_1c);
+  TTEView::SelectObject_6129d7((TTEView *)&local_1c,pvVar4);
   local_4 = -1;
   DestroyCDCAndDeleteOwnedHdc();
   *unaff_FS_OFFSET = iStack_c;
@@ -2858,7 +2861,8 @@ void __thiscall OrphanCallChain_C1_I15_00495460(int *param_1,char param_2)
 int __fastcall WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0(int param_1)
 
 {
-  undefined4 uVar1;
+  HRGN pHVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2871,9 +2875,9 @@ int __fastcall WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0(in
   *(undefined4 *)(param_1 + 0x18) = 0;
   *(undefined ***)(param_1 + 0x14) = &CBrush::_vftable_;
   local_4 = 0;
-  CreateRectRgn(0,0,0,0);
-  uVar1 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(param_1 + 0x14));
-  *(undefined4 *)(param_1 + 0x10) = uVar1;
+  pHVar1 = CreateRectRgn(0,0,0,0);
+  uVar2 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(param_1 + 0x14),(int)pHVar1);
+  *(undefined4 *)(param_1 + 0x10) = uVar2;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -3016,7 +3020,8 @@ int * CreateClipStateRegionWrapperObject(void)
 {
   int *piVar1;
   int iVar2;
-  undefined4 uVar3;
+  HRGN pHVar3;
+  undefined4 uVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -3036,9 +3041,9 @@ int * CreateClipStateRegionWrapperObject(void)
     *(undefined4 *)(iVar2 + 0x18) = 0;
     *(undefined ***)(iVar2 + 0x14) = &CBrush::_vftable_;
     local_4 = 1;
-    CreateRectRgn(0,0,0,0);
-    uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14));
-    *(undefined4 *)(iVar2 + 0x10) = uVar3;
+    pHVar3 = CreateRectRgn(0,0,0,0);
+    uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14),(int)pHVar3);
+    *(undefined4 *)(iVar2 + 0x10) = uVar4;
   }
   *piVar1 = iVar2;
   *unaff_FS_OFFSET = local_c;
@@ -3053,15 +3058,16 @@ void ReplaceClipStateRegionHandleFromRect(int *param_1,RECT *param_2)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  HRGN pHVar2;
+  undefined4 uVar3;
   
   iVar1 = *param_1;
   if (*(int *)(iVar1 + 0x10) != 0) {
     DeleteObject();
   }
-  CreateRectRgnIndirect(param_2);
-  uVar2 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14));
-  *(undefined4 *)(iVar1 + 0x10) = uVar2;
+  pHVar2 = CreateRectRgnIndirect(param_2);
+  uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14),(int)pHVar2);
+  *(undefined4 *)(iVar1 + 0x10) = uVar3;
   return;
 }
 
@@ -3113,13 +3119,13 @@ void ApplyHitRegionToClipState(int *param_1)
           pCVar3 = g_pScopedMapQuickDrawDcHandleObject;
         }
         iVar2 = *param_1;
-        CreateRectRgnIndirect((RECT *)(pCVar3 + 7));
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14));
+        pHVar1 = CreateRectRgnIndirect((RECT *)(pCVar3 + 7));
+        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14),(int)pHVar1);
         return;
       }
       iVar2 = *param_1;
-      CreateRectRgnIndirect(&local_10);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14));
+      pHVar1 = CreateRectRgnIndirect(&local_10);
+      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar2 + 0x14),(int)pHVar1);
     }
   }
   return;
@@ -3148,6 +3154,7 @@ void ApplyRectClipRegionToGlobalClipState(int *param_1)
 
 {
   int iVar1;
+  HRGN pHVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined **local_14;
   undefined4 local_10;
@@ -3164,8 +3171,8 @@ void ApplyRectClipRegionToGlobalClipState(int *param_1)
     local_14 = &CBrush::_vftable_;
     local_10 = 0;
     local_4 = 0;
-    CreateRectRgn(*param_1,param_1[1],param_1[2],param_1[3]);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14);
+    pHVar2 = CreateRectRgn(*param_1,param_1[1],param_1[2],param_1[3]);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14,(int)pHVar2);
     DeleteObject();
     local_14 = &PTR_LAB_00671054;
     local_4 = 1;
@@ -3397,7 +3404,7 @@ void SetActiveQuickDrawSurfaceContext_Impl(int param_1,int param_2)
 {
   CDC *this;
   TCivDescription *this_00;
-  HDC hdc;
+  HDC pHVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -3416,13 +3423,13 @@ void SetActiveQuickDrawSurfaceContext_Impl(int param_1,int param_2)
     this_00 = (TCivDescription *)CDC::CDC(this);
   }
   local_4 = 0xffffffff;
-  hdc = (HDC)0x0;
+  pHVar1 = (HDC)0x0;
   if (param_2 != 0) {
-    hdc = *(HDC *)(param_2 + 4);
+    pHVar1 = *(HDC *)(param_2 + 4);
   }
   DAT_006a1da0 = this_00;
-  CreateCompatibleDC(hdc);
-  TCivDescription::AttachHdcToDcWrapper(this_00);
+  pHVar1 = CreateCompatibleDC(pHVar1);
+  TCivDescription::AttachHdcToDcWrapper(this_00,(int)pHVar1);
   if (*(HGDIOBJ *)(param_1 + 8) != (HGDIOBJ)0x0) {
     SelectObject((HDC)DAT_006a1da0->field04,*(HGDIOBJ *)(param_1 + 8));
   }
@@ -3789,9 +3796,9 @@ void BlitRectWithOptionalTransparency
                byte blitFlags,astruct_19 *renderCtx)
 
 {
-  HDC pHVar1;
+  HDC dstDC;
   HGDIOBJ prevBitmap;
-  TDropShadowText *pTVar2;
+  TDropShadowText *pTVar1;
   int srcPitch;
   int dstPitch;
   uint count;
@@ -3823,32 +3830,32 @@ void BlitRectWithOptionalTransparency
   sehHandler = &LAB_0062f6d8;
   *unaff_FS_OFFSET = &sehPrev;
   if (renderCtx != (astruct_19 *)0x0) {
-    pTVar2 = DAT_006a1da0;
+    pTVar1 = DAT_006a1da0;
     if (DAT_006a1da0 == (TDropShadowText *)0x0) {
-      pTVar2 = g_pScopedMapQuickDrawDcHandleObject;
+      pTVar1 = g_pScopedMapQuickDrawDcHandleObject;
     }
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar2);
+    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar1,renderCtx->field0_0x0 + 0x14);
   }
   if ((dstSurface == (astruct_18 *)&DAT_006a1ca4) || (renderCtx != (astruct_19 *)0x0)) {
-    pTVar2 = DAT_006a1da0;
+    pTVar1 = DAT_006a1da0;
     if (DAT_006a1da0 == (TDropShadowText *)0x0) {
-      pTVar2 = g_pScopedMapQuickDrawDcHandleObject;
+      pTVar1 = g_pScopedMapQuickDrawDcHandleObject;
     }
     zeroFlags = 0;
-    TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pTVar2,0);
+    TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pTVar1,0);
     TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-              (pTVar2,zeroFlags);
+              (pTVar1,zeroFlags);
     if ((blitFlags & 0x24) == 0x24) {
       CopyRect((LPRECT)&srcRectCopyA,srcRect);
       CopyRect(&srcRectCopyB,srcRect);
       CopyRect(&dstRectCopyA,dstRect);
       CopyRect(&dstRectCopyB,dstRect);
-      pTVar2 = DAT_006a1da0;
+      pTVar1 = DAT_006a1da0;
       if (DAT_006a1da0 == (TDropShadowText *)0x0) {
-        pTVar2 = g_pScopedMapQuickDrawDcHandleObject;
+        pTVar1 = g_pScopedMapQuickDrawDcHandleObject;
       }
       StretchDibitsWithCopiedPaletteTable
-                (pTVar2,0x10,dstRect->left + DAT_006a1d80,dstRect->top + DAT_006a1d84,
+                (pTVar1,0x10,dstRect->left + DAT_006a1d80,dstRect->top + DAT_006a1d84,
                  dstRectCopyB.right - dstRectCopyB.left,dstRectCopyA.bottom - dstRectCopyA.top,
                  srcRect->left,srcRect->top,srcRectCopyB.right - srcRectCopyB.left,
                  srcRectCopyA.m_bPrinting - (int)srcRectCopyA.m_hDC);
@@ -3856,14 +3863,14 @@ void BlitRectWithOptionalTransparency
     else {
       CDC::CDC(&srcRectCopyA);
       sehState = 0;
-      pTVar2 = DAT_006a1da0;
+      pTVar1 = DAT_006a1da0;
       if ((DAT_006a1da0 != (TDropShadowText *)0x0) ||
-         (pHVar1 = (HDC)0x0, pTVar2 = g_pScopedMapQuickDrawDcHandleObject,
+         (dstDC = (HDC)0x0, pTVar1 = g_pScopedMapQuickDrawDcHandleObject,
          g_pScopedMapQuickDrawDcHandleObject != (void *)0x0)) {
-        pHVar1 = (HDC)pTVar2->field04;
+        dstDC = (HDC)pTVar1->field04;
       }
-      CreateCompatibleDC(pHVar1);
-      TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&srcRectCopyA);
+      dstDC = CreateCompatibleDC(dstDC);
+      TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&srcRectCopyA,(int)dstDC);
       prevBitmap = SelectObject((HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) &
                                      (uint)srcRectCopyA.m_hDC),
                                 *(HGDIOBJ *)(srcSurface->field22_0x1c + 8));
@@ -3883,14 +3890,14 @@ void BlitRectWithOptionalTransparency
         dstY = dstRect->top + DAT_006a1d84;
         dstX = dstRect->left + DAT_006a1d80;
         srcDC = (HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) & (uint)srcRectCopyA.m_hDC);
-        pHVar1 = (HDC)_blitFlags->field04;
+        dstDC = (HDC)_blitFlags->field04;
       }
       else {
         CopyRect(&dstRectCopyB,srcRect);
         CopyRect(&dstRectCopyA,srcRect);
-        pTVar2 = DAT_006a1da0;
+        pTVar1 = DAT_006a1da0;
         if (DAT_006a1da0 == (TDropShadowText *)0x0) {
-          pTVar2 = g_pScopedMapQuickDrawDcHandleObject;
+          pTVar1 = g_pScopedMapQuickDrawDcHandleObject;
         }
         srcY = srcRect->top;
         srcX = srcRect->left;
@@ -3899,9 +3906,9 @@ void BlitRectWithOptionalTransparency
         srcPitch = dstRectCopyA.right - dstRectCopyA.left;
         dstY = dstRect->top;
         srcDC = (HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) & (uint)srcRectCopyA.m_hDC);
-        pHVar1 = (HDC)pTVar2->field04;
+        dstDC = (HDC)pTVar1->field04;
       }
-      BitBlt(pHVar1,dstX,dstY,srcPitch,rowCount,srcDC,srcX,srcY,0xcc0020);
+      BitBlt(dstDC,dstX,dstY,srcPitch,rowCount,srcDC,srcX,srcY,0xcc0020);
       if (prevBitmap != (HGDIOBJ)0x0) {
         SelectObject(srcRectCopyA.m_hDC,prevBitmap);
       }
@@ -3956,11 +3963,11 @@ void BlitRectWithOptionalTransparency
     }
   }
   if (renderCtx != (astruct_19 *)0x0) {
-    pTVar2 = DAT_006a1da0;
+    pTVar1 = DAT_006a1da0;
     if (DAT_006a1da0 == (TDropShadowText *)0x0) {
-      pTVar2 = g_pScopedMapQuickDrawDcHandleObject;
+      pTVar1 = g_pScopedMapQuickDrawDcHandleObject;
     }
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar2);
+    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar1,0);
   }
   *unaff_FS_OFFSET = sehPrev;
   return;
@@ -4106,11 +4113,11 @@ void Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540
   LPRECT ptVar1;
   char cVar2;
   BOOL BVar3;
-  LONG LVar4;
+  HRGN pHVar4;
+  LONG LVar5;
   HRGN hrgnSrc1;
   HRGN hrgnDst;
-  HRGN hrgnSrc2;
-  int iVar5;
+  int iVar6;
   tagRECT local_10;
   
   if (param_1 == (int *)0x0) {
@@ -4119,11 +4126,11 @@ LAB_00497589:
   }
   else {
     ptVar1 = (LPRECT)*param_1;
-    LVar4 = 0;
+    LVar5 = 0;
     if (ptVar1 != (LPRECT)0xffffffec) {
-      LVar4 = ptVar1[1].right;
+      LVar5 = ptVar1[1].right;
     }
-    if (LVar4 == 0) goto LAB_00497589;
+    if (LVar5 == 0) goto LAB_00497589;
     GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
     CopyRect(&local_10,(RECT *)*param_1);
     BVar3 = IsRectEmpty(&local_10);
@@ -4136,11 +4143,11 @@ LAB_004975c5:
     }
     else {
       ptVar1 = (LPRECT)*param_2;
-      LVar4 = 0;
+      LVar5 = 0;
       if (ptVar1 != (LPRECT)0xffffffec) {
-        LVar4 = ptVar1[1].right;
+        LVar5 = ptVar1[1].right;
       }
-      if (LVar4 == 0) goto LAB_004975c5;
+      if (LVar5 == 0) goto LAB_004975c5;
       GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
       CopyRect(&local_10,(RECT *)*param_2);
       BVar3 = IsRectEmpty(&local_10);
@@ -4148,9 +4155,9 @@ LAB_004975c5:
     }
     if (cVar2 != '\0') {
       DeleteObject();
-      iVar5 = *param_3;
-      CreateRectRgn(0,0,0,0);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar5 + 0x14));
+      iVar6 = *param_3;
+      pHVar4 = CreateRectRgn(0,0,0,0);
+      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar6 + 0x14),(int)pHVar4);
       GetRgnBox((HRGN)((LPRECT)*param_3)[1].right,(LPRECT)*param_3);
       goto LAB_004976fd;
     }
@@ -4161,11 +4168,11 @@ LAB_00497638:
   }
   else {
     ptVar1 = (LPRECT)*param_1;
-    LVar4 = 0;
+    LVar5 = 0;
     if (ptVar1 != (LPRECT)0xffffffec) {
-      LVar4 = ptVar1[1].right;
+      LVar5 = ptVar1[1].right;
     }
-    if (LVar4 == 0) goto LAB_00497638;
+    if (LVar5 == 0) goto LAB_00497638;
     GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
     CopyRect(&local_10,(RECT *)*param_1);
     BVar3 = IsRectEmpty(&local_10);
@@ -4178,54 +4185,54 @@ LAB_0049769e:
     }
     else {
       ptVar1 = (LPRECT)*param_2;
-      LVar4 = 0;
+      LVar5 = 0;
       if (ptVar1 != (LPRECT)0xffffffec) {
-        LVar4 = ptVar1[1].right;
+        LVar5 = ptVar1[1].right;
       }
-      if (LVar4 == 0) goto LAB_0049769e;
+      if (LVar5 == 0) goto LAB_0049769e;
       GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
       CopyRect(&local_10,(RECT *)*param_2);
       BVar3 = IsRectEmpty(&local_10);
       cVar2 = (char)BVar3;
     }
     if (cVar2 == '\0') {
-      hrgnSrc2 = (HRGN)0x0;
+      pHVar4 = (HRGN)0x0;
       if (*param_2 != -0x14) {
-        hrgnSrc2 = *(HRGN *)(*param_2 + 0x18);
+        pHVar4 = *(HRGN *)(*param_2 + 0x18);
       }
       hrgnSrc1 = (HRGN)0x0;
       if (*param_1 != -0x14) {
         hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
       }
-      iVar5 = 4;
+      iVar6 = 4;
       hrgnDst = *(HRGN *)(*param_3 + 0x18);
     }
     else if (*param_1 == -0x14) {
-      iVar5 = 5;
+      iVar6 = 5;
       hrgnDst = *(HRGN *)(*param_3 + 0x18);
       hrgnSrc1 = (HRGN)0x0;
-      hrgnSrc2 = (HRGN)0x0;
+      pHVar4 = (HRGN)0x0;
     }
     else {
       hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
-      iVar5 = 5;
-      hrgnSrc2 = (HRGN)0x0;
+      iVar6 = 5;
+      pHVar4 = (HRGN)0x0;
       hrgnDst = *(HRGN *)(*param_3 + 0x18);
     }
   }
   else if (*param_2 == -0x14) {
     hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    iVar5 = 5;
+    iVar6 = 5;
     hrgnSrc1 = (HRGN)0x0;
-    hrgnSrc2 = (HRGN)0x0;
+    pHVar4 = (HRGN)0x0;
   }
   else {
     hrgnSrc1 = *(HRGN *)(*param_2 + 0x18);
     hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    iVar5 = 5;
-    hrgnSrc2 = (HRGN)0x0;
+    iVar6 = 5;
+    pHVar4 = (HRGN)0x0;
   }
-  CombineRgn(hrgnDst,hrgnSrc1,hrgnSrc2,iVar5);
+  CombineRgn(hrgnDst,hrgnSrc1,pHVar4,iVar6);
 LAB_004976fd:
   GetRgnBox((HRGN)((LPRECT)*param_3)[1].right,(LPRECT)*param_3);
   return;
@@ -4262,11 +4269,12 @@ void ResetClipRegionAndReadBoundingRect(int *param_1)
 
 {
   int iVar1;
+  HRGN pHVar2;
   
   DeleteObject();
   iVar1 = *param_1;
-  CreateRectRgn(0,0,0,0);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14));
+  pHVar2 = CreateRectRgn(0,0,0,0);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14),(int)pHVar2);
   GetRgnBox((HRGN)((LPRECT)*param_1)[1].right,(LPRECT)*param_1);
   return;
 }
@@ -4321,7 +4329,8 @@ void Helper_Uses_CBrush_At00497940(int *param_1)
 void Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10(int *param_1)
 
 {
-  void *pvVar1;
+  HBRUSH pHVar1;
+  void *pvVar2;
   HRGN hrgn;
   undefined4 *unaff_FS_OFFSET;
   undefined **local_14;
@@ -4336,22 +4345,22 @@ void Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10(int *param_
   local_10 = 0;
   local_14 = &PTR_LAB_00672634;
   local_4 = 0;
-  CreateSolidBrush(g_Quick_Draw_Color_State_006950FC);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14);
-  pvVar1 = DAT_006a1da0;
+  pHVar1 = CreateSolidBrush(g_Quick_Draw_Color_State_006950FC);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14,(int)pHVar1);
+  pvVar2 = DAT_006a1da0;
   if (DAT_006a1da0 == (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
+    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  if (pvVar1 != (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  if (pvVar2 != (void *)0x0) {
+    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
     if (DAT_006a1da0 != (void *)0x0) {
-      pvVar1 = DAT_006a1da0;
+      pvVar2 = DAT_006a1da0;
     }
     hrgn = (HRGN)0x0;
     if (*param_1 != -0x14) {
       hrgn = *(HRGN *)(*param_1 + 0x18);
     }
-    FillRgn(*(HDC *)((int)pvVar1 + 4),hrgn,
+    FillRgn(*(HDC *)((int)pvVar2 + 4),hrgn,
             (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10));
   }
   local_14 = &PTR_LAB_00671054;
@@ -4491,16 +4500,17 @@ undefined4 RebuildSpriteNonTransparentPolygonRegion(int *param_1,int param_2)
 {
   int iVar1;
   int *piVar2;
-  undefined4 uVar3;
+  HRGN pHVar3;
+  undefined4 uVar4;
   
   piVar2 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels
                      (*(TTransFocusAnimation **)(param_2 + 0x1c),0xffffffff);
   DeleteObject();
   iVar1 = *param_1;
-  CreatePolygonRgn((POINT *)(piVar2 + 2),*piVar2,2);
-  uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14));
+  pHVar3 = CreatePolygonRgn((POINT *)(piVar2 + 2),*piVar2,2);
+  uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14),(int)pHVar3);
   FreeHeapBufferIfNotNull(piVar2);
-  return uVar3;
+  return uVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00497F60
@@ -4543,7 +4553,7 @@ void IntersectClipRegionWithRectAndUpdateBounds(int *param_1,int *param_2)
 
 {
   int iVar1;
-  HRGN hrgnSrc2;
+  HRGN pHVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined **local_14;
   uint local_10;
@@ -4557,17 +4567,17 @@ void IntersectClipRegionWithRectAndUpdateBounds(int *param_1,int *param_2)
   local_10 = 0;
   local_14 = &CBrush::_vftable_;
   local_4 = 0;
-  CreateRectRgn(*param_2,param_2[1],param_2[2],param_2[3]);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14);
+  pHVar2 = CreateRectRgn(*param_2,param_2[1],param_2[2],param_2[3]);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_14,(int)pHVar2);
   iVar1 = *param_1;
   if (iVar1 == -0x14) {
-    hrgnSrc2 = (HRGN)0x0;
+    pHVar2 = (HRGN)0x0;
   }
   else {
-    hrgnSrc2 = *(HRGN *)(iVar1 + 0x18);
+    pHVar2 = *(HRGN *)(iVar1 + 0x18);
   }
   CombineRgn(*(HRGN *)(iVar1 + 0x18),
-             (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10),hrgnSrc2,1);
+             (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10),pHVar2,1);
   GetRgnBox((HRGN)((LPRECT)*param_1)[1].right,(LPRECT)*param_1);
   DeleteObject();
   local_14 = &PTR_LAB_00671054;
@@ -4603,8 +4613,8 @@ void DrawFrameRectOrUpdateClipRegion(RECT *param_1)
     local_20 = 0;
     local_24 = &CBrush::_vftable_;
     local_4 = 0;
-    CreateRectRgnIndirect(param_1);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_24);
+    pHVar1 = CreateRectRgnIndirect(param_1);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_24,(int)pHVar1);
     CombineRgn(DAT_006a1da4,DAT_006a1da4,
                (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x24) & local_20),3);
     DeleteObject();
@@ -4805,10 +4815,11 @@ void WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
 
 {
   int iVar1;
+  HRGN pHVar2;
   
   iVar1 = *param_1;
-  CreateRectRgn((int)param_2,(int)param_3,(int)param_4,(int)param_5);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14));
+  pHVar2 = CreateRectRgn((int)param_2,(int)param_3,(int)param_4,(int)param_5);
+  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14),(int)pHVar2);
   return;
 }
 
@@ -6635,7 +6646,7 @@ void ResetGlobalDword6A1E68(void)
 // GHIDRA_NAME InitializeDialogTemplateD0WithTextState
 // GHIDRA_PROTO undefined InitializeDialogTemplateD0WithTextState()
 
-TControl * __fastcall InitializeDialogTemplateD0WithTextState(TControl *param_1)
+TControl * __thiscall InitializeDialogTemplateD0WithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -6647,7 +6658,7 @@ TControl * __fastcall InitializeDialogTemplateD0WithTextState(TControl *param_1)
   puStack_8 = &LAB_0062fbb8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xd0,param_2);
   local_4 = 0;
   ConstructObjectVtable00670b4cBase();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_00671d1c;
@@ -6763,7 +6774,7 @@ void OrphanRetStub_0049bfb0(void)
 void __fastcall WrapperFor_ShowWindowOrForwardToSite_At0049bfd0(CFrameWnd *param_1)
 
 {
-  CFrameWnd::ShowWindow(param_1);
+  CFrameWnd::ShowWindow(param_1,6);
   return;
 }
 

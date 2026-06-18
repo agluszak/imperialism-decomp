@@ -57,15 +57,14 @@ TCloseButton * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseBut
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584B20
 // GHIDRA_NAME TCloseButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCloseButton * __thiscall TCloseButton::_scalar_deleting_destructor_(TCloseButton *this)
+TCloseButton * __thiscall
+TCloseButton::_scalar_deleting_destructor_(TCloseButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -73,12 +72,15 @@ TCloseButton * __thiscall TCloseButton::_scalar_deleting_destructor_(TCloseButto
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584B70
 // GHIDRA_NAME TCloseButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
-undefined4 __thiscall TCloseButton::SetForeignMinisterReadyFlag14(TCloseButton *this)
+undefined4 __thiscall
+TCloseButton::SetForeignMinisterReadyFlag14
+          (TCloseButton *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
-  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_2,param_3,param_4);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0,0);
   return 1;
 }

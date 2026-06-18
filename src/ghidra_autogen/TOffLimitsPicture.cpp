@@ -74,16 +74,14 @@ TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLimitsPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573800
 // GHIDRA_NAME TOffLimitsPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TOffLimitsPicture * __thiscall
-TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this)
+TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D7F0
 // GHIDRA_NAME TScrollView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollView * __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this)
+TScrollView * __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -115,16 +113,18 @@ void __thiscall TScrollView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005742B0
 // GHIDRA_NAME TScrollView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, TDropShadowText * param_2)
 
-void __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this)
+void __thiscall
+TScrollView::_scalar_deleting_destructor_
+          (TScrollView *this,undefined4 param_1,TDropShadowText *param_2)
 
 {
   TScrollViewVtbl *pTVar1;
   char cVar2;
   int iVar3;
+  HRGN pHVar4;
   undefined4 *unaff_FS_OFFSET;
-  TDropShadowText *in_stack_00000008;
   undefined **ppuStack_24;
   undefined4 uStack_20;
   RECT RStack_1c;
@@ -147,18 +147,18 @@ void __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this)
         uStack_20 = 0;
         ppuStack_24 = &CBrush::_vftable_;
         uStack_4 = 0;
-        CreateRectRgnIndirect(&RStack_1c);
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_24);
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(in_stack_00000008);
+        pHVar4 = CreateRectRgnIndirect(&RStack_1c);
+        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_24,(int)pHVar4);
+        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(param_2,(int)&ppuStack_24);
         DeleteObject();
         ppuStack_24 = &PTR_LAB_00671054;
         uStack_4 = 1;
         DeleteObject();
         ppuStack_24 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_4 = 2;
-        TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920((TSoundPlayer *)this);
+        TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920((TSoundPlayer *)this,param_1);
         uStack_4 = 0xffffffff;
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(in_stack_00000008);
+        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(param_2,0);
       }
     }
   }

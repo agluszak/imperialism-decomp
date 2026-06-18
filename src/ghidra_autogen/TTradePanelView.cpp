@@ -19,15 +19,14 @@ TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(TTradePanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430450
 // GHIDRA_NAME TTradePanelView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePanelView * __thiscall TTradePanelView::_scalar_deleting_destructor_(TTradePanelView *this)
+TTradePanelView * __thiscall
+TTradePanelView::_scalar_deleting_destructor_(TTradePanelView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -336,7 +335,7 @@ void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
   uVar1 = (*this->vftable[0x12].slot_0x04)();
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_18);
+            ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);
   InitializeAndRunMainRoutine();
   piStack_14 = (int *)0x74726161;
   pTStack_18 = (TToolBarClusterVtbl *)0x4f8d8f;
@@ -348,36 +347,36 @@ void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8DD0
 // GHIDRA_NAME TTradePanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall TTradePanelView::OrphanRetStub_0059add0(TTradePanelView *this)
+void __thiscall
+TTradePanelView::OrphanRetStub_0059add0
+          (TTradePanelView *this,int param_1,int param_2,undefined4 param_3)
 
 {
   int iVar1;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (in_stack_00000004 == 0xc) {
-    if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c696e6b) {
-      iVar1 = *(int *)(in_stack_00000008 + 0x1c) + -0x74726161;
+  if (param_1 == 0xc) {
+    if (*(int *)(param_2 + 0x1c) != 0x6c696e6b) {
+      iVar1 = *(int *)(param_2 + 0x1c) + -0x74726161;
       *(short *)(*(int *)&this->field_0x60 + 0xc0) = (short)iVar1;
       if ((&DAT_00696950)[iVar1] == 300) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xb;
-        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
         return;
       }
       if ((short)(&DAT_00696950)[iVar1] < 0x60) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 9;
-        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
         return;
       }
       *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 10;
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
       return;
     }
     *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xc;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
   return;
 }
 

@@ -47,15 +47,14 @@ void __thiscall TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(TEven
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A130
 // GHIDRA_NAME TEventHandler::DestructTEventHandlerAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTEventHandlerAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTEventHandlerAndMaybeFree(byte param_1)
 
-TEventHandler * __thiscall TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this)
+TEventHandler * __thiscall
+TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTEventHandlerAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

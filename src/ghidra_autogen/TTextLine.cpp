@@ -76,15 +76,13 @@ TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570310
 // GHIDRA_NAME TTextLine::DestructTTextLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTextLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTTextLineAndMaybeFree(byte param_1)
 
-TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this)
+TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -92,9 +90,10 @@ TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570500
 // GHIDRA_NAME TTextLine::OrphanRetStub_0056f460
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall TTextLine::OrphanRetStub_0056f460(TTextLine *this)
+void __thiscall
+TTextLine::OrphanRetStub_0056f460(TTextLine *this,undefined4 param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -102,8 +101,6 @@ void __thiscall TTextLine::OrphanRetStub_0056f460(TTextLine *this)
   int *piVar2;
   undefined2 extraout_var;
   int *unaff_FS_OFFSET;
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
   undefined1 *puVar3;
   int iStack_c;
   undefined1 *puStack_8;
@@ -123,7 +120,7 @@ void __thiscall TTextLine::OrphanRetStub_0056f460(TTextLine *this)
   }
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource
-            (in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0xffffffff,0);
+            (param_1,param_2,&this->field_0x8,5,5,0xffffffff,0);
   iVar1 = *piVar2;
   puVar3 = &this->field_0x10;
   (**(code **)(iVar1 + 0x1c8))(puVar3,0);

@@ -71,15 +71,14 @@ TMapEditCluster::thunk_DispatchPanelControlEvent
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2900
 // GHIDRA_NAME TMapEditCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditCluster * __thiscall TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this)
+TMapEditCluster * __thiscall
+TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -97,16 +96,13 @@ CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2970
 // GHIDRA_NAME TMapEditCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TMapEditCluster::OrphanRetStub_0059add0(TMapEditCluster *this)
+void __thiscall
+TMapEditCluster::OrphanRetStub_0059add0(TMapEditCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  int in_stack_0000000c;
-  
-  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  thunk_DispatchPanelControlEvent(this,param_1,param_2,param_3);
   return;
 }
 

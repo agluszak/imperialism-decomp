@@ -60,15 +60,14 @@ TRailCluster * __thiscall TRailCluster::TRailCluster(TRailCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589760
 // GHIDRA_NAME TRailCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailCluster * __thiscall TRailCluster::_scalar_deleting_destructor_(TRailCluster *this)
+TRailCluster * __thiscall
+TRailCluster::_scalar_deleting_destructor_(TRailCluster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -76,9 +75,9 @@ TRailCluster * __thiscall TRailCluster::_scalar_deleting_destructor_(TRailCluste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005897B0
 // GHIDRA_NAME TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
 
-void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *this)
+void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *this,short param_1)
 
 {
   uint uVar1;
@@ -86,7 +85,6 @@ void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *thi
   int iVar3;
   undefined2 extraout_var;
   TCity *this_00;
-  short in_stack_00000004;
   
   sVar2 = UiRuntimeContext::GetActiveNationId();
   if (g_apNationStates[sVar2] == (TGreatPower *)0x0) {
@@ -99,14 +97,14 @@ void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *thi
   iVar3 = *(int *)&this_00->field_0x1d8;
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
-      in_stack_00000004 = 0x3c;
+      param_1 = 0x3c;
       *(undefined2 *)&this->field_0x8e = 1;
       iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0xf);
       *(short *)&this->field_0x8c = (short)iVar3;
     }
     else if (uVar1 == 0x666f6f64) {
       *(undefined2 *)&this->field_0x8e = 2;
-      in_stack_00000004 = 7;
+      param_1 = 7;
       iVar3 = *(int *)(*(int *)&this_00->field_0x1d8 + 0x14);
       *(short *)&this->field_0x8c =
            (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
@@ -116,18 +114,18 @@ void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *thi
   else if (uVar1 < 0x70726f67) {
     if (uVar1 == 0x70726f66) {
       *(undefined2 *)&this->field_0x8e = 1;
-      in_stack_00000004 = 0x18;
+      param_1 = 0x18;
       *(undefined2 *)&this->field_0x8c = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 6);
     }
     else if (uVar1 == 0x706f7765) {
-      in_stack_00000004 = 0x34;
+      param_1 = 0x34;
       *(undefined2 *)&this->field_0x8e = 6;
       *(undefined2 *)&this->field_0x8c = 999;
     }
   }
   else if (uVar1 == 0x7261696c) {
     *(undefined2 *)&this->field_0x8e = 1;
-    in_stack_00000004 = 0x33;
+    param_1 = 0x33;
     iVar3 = *(int *)(*(int *)&this_00->field_0x1d8 + 0x14);
     *(short *)&this->field_0x8c =
          (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 + *(short *)(iVar3 + 4) +
@@ -135,10 +133,10 @@ void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *thi
   }
   else if (uVar1 == 0x74726169) {
     *(undefined2 *)&this->field_0x8e = 1;
-    in_stack_00000004 = 0x17;
+    param_1 = 0x17;
     *(undefined2 *)&this->field_0x8c = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 4);
   }
-  *(void **)&this->field_0x88 = this_00->orderSlotsE4[in_stack_00000004];
+  *(void **)&this->field_0x88 = this_00->orderSlotsE4[param_1];
   TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls((TAmtBarCluster *)this);
   (*this->vftable[0x3a].slot_0x04)
             (CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
@@ -158,9 +156,10 @@ void __thiscall TRailCluster::OrphanRetStub_00586ff0(TRailCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589DA0
 // GHIDRA_NAME TRailCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall TRailCluster::OrphanRetStub_0059add0(TRailCluster *this)
+void __thiscall
+TRailCluster::OrphanRetStub_0059add0(TRailCluster *this,int param_1,void *param_2,int param_3)
 
 {
   TRailClusterVtbl *pTVar1;
@@ -170,9 +169,8 @@ void __thiscall TRailCluster::OrphanRetStub_0059add0(TRailCluster *this)
   undefined4 uVar4;
   undefined3 extraout_var_00;
   undefined2 extraout_var_01;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 == 100) {
+  if (param_1 == 100) {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
@@ -185,8 +183,8 @@ void __thiscall TRailCluster::OrphanRetStub_0059add0(TRailCluster *this)
               (CONCAT22(extraout_var_01,*(short *)&this->field_0x8e + sVar3));
     return;
   }
-  if (in_stack_00000004 != 0x65) {
-    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this);
+  if (param_1 != 0x65) {
+    TAmtBarCluster::OrphanRetStub_0059add0((TAmtBarCluster *)this,param_1,param_2,param_3);
     return;
   }
   pTVar1 = this->vftable;

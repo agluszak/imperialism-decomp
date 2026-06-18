@@ -5,15 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00483AD0
 // GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
 
-TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(TEvent *this)
+TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(TEvent *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -41,15 +39,13 @@ CRuntimeClass * __thiscall TEvent::GetTEventClassNamePointer(TEvent *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492C70
 // GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
 
-TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(TEvent *this)
+TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(TEvent *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

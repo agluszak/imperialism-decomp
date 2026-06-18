@@ -22,16 +22,15 @@ void __thiscall TCancelGameOptionsCommand::OrphanRetStub_00487a00(TCancelGameOpt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542560
 // GHIDRA_NAME TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
 TCancelGameOptionsCommand * __thiscall
-TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470(TCancelGameOptionsCommand *this)
+TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470
+          (TCancelGameOptionsCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructCancelGameOptionsCommand();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

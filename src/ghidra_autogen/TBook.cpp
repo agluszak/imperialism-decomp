@@ -19,15 +19,13 @@ TBook * __thiscall TBook::ConstructPictureResourceEntry_Vtbl0063f650(TBook *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430280
 // GHIDRA_NAME TBook::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBook * __thiscall TBook::_scalar_deleting_destructor_(TBook *this)
+TBook * __thiscall TBook::_scalar_deleting_destructor_(TBook *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -99,9 +97,10 @@ void __thiscall TBook::OrphanLeaf_NoCall_Ins07_004d8920(TBook *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F5E0
 // GHIDRA_NAME TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this)
+void __thiscall
+TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this,int param_1,int param_2)
 
 {
   short sVar1;
@@ -110,11 +109,9 @@ void __thiscall TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this)
   undefined uVar4;
   undefined3 extraout_var;
   uint uVar6;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int *piVar5;
   
-  if (in_stack_00000004 == 10) {
+  if (param_1 == 10) {
     pTVar2 = this->vftable[0x12].slot_0x04;
     uVar6 = 0x70616765;
     do {
@@ -123,13 +120,13 @@ void __thiscall TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this)
       if (piVar5 != (int *)0x0) {
         iVar3 = *piVar5;
         (**(code **)(iVar3 + 0xc))();
-        if (*(int *)(in_stack_00000008 + 0x1c) == 0x72636f72) {
+        if (*(int *)(param_2 + 0x1c) == 0x72636f72) {
           (**(code **)(iVar3 + 0x1b0))
                     (CONCAT22(0x7263,(short)piVar5[0x19] + *(short *)((int)piVar5 + 0x62)));
           sVar1 = *(short *)((int)piVar5 + 0x62);
         }
         else {
-          if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
+          if (*(int *)(param_2 + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
           (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar5 + 0x62) - (short)piVar5[0x19]);
           sVar1 = *(short *)((int)piVar5 + 0x62);
         }
@@ -139,7 +136,7 @@ LAB_0056f65f:
       uVar6 = uVar6 + 1;
     } while (uVar6 < 0x70616767);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

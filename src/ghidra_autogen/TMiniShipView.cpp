@@ -15,15 +15,14 @@ void __thiscall TMiniShipView::OrphanRetStub_00569d50(TMiniShipView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569D70
 // GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniShipView * __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this)
+TMiniShipView * __thiscall
+TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -194,9 +193,9 @@ void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A330
 // GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
-void __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this)
+void __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,undefined4 *param_1)
 
 {
   TView *pTVar1;
@@ -213,7 +212,7 @@ void __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this)
     pTVar1[1].ownerOffsetY = iVar2;
     pTVar1[1].ownerOffsetX = 0;
   }
-  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,param_1);
   return;
 }
 

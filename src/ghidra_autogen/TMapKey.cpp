@@ -18,15 +18,13 @@ TMapKey * __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(TMapKey
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430900
 // GHIDRA_NAME TMapKey::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this)
+TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -206,7 +204,8 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
     CopyRect(&tStack_1c,&RStack_2c);
     iStack_60 = local_4c[iVar5] - local_78;
     iStack_5c = (local_4c[iVar5 + 8] - local_74) + -0xf;
-    TDeluxeText::ConstructTDeluxeTextBaseState(pTVar3);
+    TDeluxeText::ConstructTDeluxeTextBaseState
+              (pTVar3,this,&iStack_60,&local_68,&tStack_1c.left,(int)local_58);
     pTVar1 = pTVar3->vftable;
     uVar6 = 0;
     (*pTVar1[0x3d].slot_0x04)(&local_84);
@@ -218,6 +217,7 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
     (*pTVar1[0x3c].slot_0x04)(auStack_6c,1);
     iVar5 = iVar5 + 1;
     local_80 = local_80 + 1;
+    this = local_7c;
   } while ((int)local_80 < 0x6a432c);
   local_4 = 0xffffffff;
   CString::~CString(&local_84);

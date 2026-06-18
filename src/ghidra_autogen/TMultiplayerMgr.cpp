@@ -71,16 +71,14 @@ TMultiplayerMgr::ConstructMultiplayerManager(TMultiplayerMgr *this,astruct_11 *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005427E0
 // GHIDRA_NAME TMultiplayerMgr::DeletingDestructMultiplayerManager
-// GHIDRA_PROTO undefined __thiscall DeletingDestructMultiplayerManager(void)
+// GHIDRA_PROTO undefined __thiscall DeletingDestructMultiplayerManager(byte param_1)
 
 TMultiplayerMgr * __thiscall
-TMultiplayerMgr::DeletingDestructMultiplayerManager(TMultiplayerMgr *this)
+TMultiplayerMgr::DeletingDestructMultiplayerManager(TMultiplayerMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructMultiplayerManager();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -88,17 +86,17 @@ TMultiplayerMgr::DeletingDestructMultiplayerManager(TMultiplayerMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542900
 // GHIDRA_NAME TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
-// GHIDRA_PROTO undefined __thiscall InitializeMultiplayerManagerForSessionContext(void)
+// GHIDRA_PROTO undefined __thiscall InitializeMultiplayerManagerForSessionContext(CString param_1)
 
 void __thiscall
-TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *this)
+TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
+          (TMultiplayerMgr *this,CString param_1)
 
 {
   undefined1 *puVar1;
   int iVar2;
   CString *this_00;
   undefined4 *unaff_FS_OFFSET;
-  CString in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -108,31 +106,30 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *
   puStack_8 = &LAB_0063487a;
   *unaff_FS_OFFSET = &local_c;
   InitializePacketHeaderFields_Tag20202020(0);
-  *(char **)&this->field_0x10 = in_stack_00000004.m_pchData;
+  *(char **)&this->field_0x10 = param_1.m_pchData;
   *(undefined4 *)&this->field_0x44 = 0;
   this->field_0xe4 = 0;
   this->field_0x68 = 1;
   this->field_0x69 = 1;
-  in_stack_00000004.m_pchData = (char *)AllocateWithFallbackHandler(4);
+  param_1.m_pchData = (char *)AllocateWithFallbackHandler(4);
   local_4 = 0;
-  if ((TNetMgr *)in_stack_00000004.m_pchData == (TNetMgr *)0x0) {
+  if ((TNetMgr *)param_1.m_pchData == (TNetMgr *)0x0) {
     DAT_006a6014 = 0;
   }
   else {
-    DAT_006a6014 = TNetMgr::ConstructGlobalTurnEventQueueManager
-                             ((TNetMgr *)in_stack_00000004.m_pchData);
+    DAT_006a6014 = TNetMgr::ConstructGlobalTurnEventQueueManager((TNetMgr *)param_1.m_pchData);
   }
   local_4 = 0xffffffff;
   NoOpInitializeGlobalTurnEventQueueManager();
-  CString::CString(&stack0x00000004);
+  CString::CString(&param_1);
   local_4 = 1;
-  thunk_LoadUiStringResourceByGroupAndIndex(&stack0x00000004,0x2759,1);
+  thunk_LoadUiStringResourceByGroupAndIndex(&param_1,0x2759,1);
   this_00 = (CString *)&this->field_0x94;
   iVar2 = 7;
   do {
     this_00[-0x13].m_pchData = (char *)0x0;
     this_00[10].m_pchData = (char *)0x756e6173;
-    CString::AssignFromPtr(this_00,&stack0x00000004);
+    CString::AssignFromPtr(this_00,&param_1);
     AssignStringSharedRefFromPointer(this_00);
     this_00 = this_00 + 1;
     iVar2 = iVar2 + -1;
@@ -142,20 +139,20 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *
   *(undefined4 *)&this->field_0xf0 = 0xffffffff;
   ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
-  CString::CString(&stack0x00000004);
+  CString::~CString(&param_1);
+  CString::CString(&param_1);
   puVar1 = &this->field_0xb0;
   local_4 = 2;
   GenerateMappedFlavorTextByCurrentContextNation(puVar1);
-  LoadProfileStringAndAssignSharedRef(&stack0x00000004,s_PlayerName_0069801c,*(undefined4 *)puVar1);
-  CString::AssignFromPtr((CString *)puVar1,&stack0x00000004);
+  LoadProfileStringAndAssignSharedRef(&param_1,s_PlayerName_0069801c,*(undefined4 *)puVar1);
+  CString::AssignFromPtr((CString *)puVar1,&param_1);
   CString::AssignFromPtr((CString *)&this->field_0xb4,(CString *)puVar1);
   puVar1 = &this->field_0x74;
   GenerateMappedFlavorTextByCurrentContextNation(puVar1);
-  LoadProfileStringAndAssignSharedRef(&stack0x00000004,s_GameName_00698010,*(undefined4 *)puVar1);
-  CString::AssignFromPtr((CString *)puVar1,&stack0x00000004);
+  LoadProfileStringAndAssignSharedRef(&param_1,s_GameName_00698010,*(undefined4 *)puVar1);
+  CString::AssignFromPtr((CString *)puVar1,&param_1);
   local_4 = 0xffffffff;
-  CString::~CString(&stack0x00000004);
+  CString::~CString(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -196,11 +193,11 @@ void __thiscall TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName(TM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542BE0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-// GHIDRA_PROTO undefined __thiscall InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
+// GHIDRA_PROTO undefined __thiscall InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(int * param_1)
 
 void __thiscall
 TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-          (TMultiplayerMgr *this)
+          (TMultiplayerMgr *this,int *param_1)
 
 {
   int *piVar1;
@@ -219,10 +216,9 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   undefined4 *puVar11;
   code **ppcVar12;
   undefined4 *unaff_FS_OFFSET;
-  int *in_stack_00000004;
   CString CStack_6c;
   int *piStack_68;
-  undefined4 uStack_64;
+  int *piStack_64;
   CString local_50;
   code *local_4c;
   int iStack_48;
@@ -237,16 +233,17 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   puStack_8 = &LAB_006348b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  piStack_64 = param_1;
   piStack_68 = (int *)0x542c0c;
   local_44 = this;
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   local_50.m_pchData = (char *)g_apNationStates;
   puVar11 = (undefined4 *)&this->field_0xbc;
-  local_4c = *(code **)(*in_stack_00000004 + 0x3c);
-  pcVar2 = *(code **)(*in_stack_00000004 + 0x70);
+  local_4c = *(code **)(*param_1 + 0x3c);
+  pcVar2 = *(code **)(*param_1 + 0x70);
   do {
     piVar1 = puVar11 + -0x1d;
-    uStack_64 = 4;
+    piStack_64 = (int *)0x4;
     CStack_6c.m_pchData = (char *)0x542c3a;
     piStack_68 = piVar1;
     (*local_4c)();
@@ -274,7 +271,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
     local_50.m_pchData = (char *)(unaff_EBP + 1);
     puVar11 = puVar11 + 1;
   } while ((int)local_50.m_pchData < 0x6a438c);
-  uStack_64 = 0x20;
+  piStack_64 = (int *)0x20;
   piStack_68 = (int *)&local_44->field_0xb0;
   CStack_6c.m_pchData = (char *)0x542cbe;
   (*pcVar2)();
@@ -285,7 +282,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   (*pcVar2)(&local_50);
   (*unaff_ESI)(&pTVar3->field_0x64,4);
   (*unaff_ESI)(&pTVar3->field_0xe4,1);
-  (**(code **)(*DAT_006a6014 + 0x18))();
+  (**(code **)(*DAT_006a6014 + 0x18))(param_1);
   uVar8 = FUN_00405a3d();
   sVar7 = UiRuntimeContext::GetActiveNationId();
   *(undefined4 *)(&pTVar3->field_0x48 + sVar7 * 4) = uVar8;
@@ -293,11 +290,11 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   uVar6 = UiRuntimeContext::GetActiveNationId();
   local_50.m_pchData._0_1_ = uVar6;
-  uStack_64 = 0x1f;
+  piStack_64 = (int *)0x1f;
   SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(0xffffffff);
   local_4c = (code *)0x7265706f;
   iStack_48 = (int)sVar7 + (short)CONCAT31(extraout_var,uVar5) * 8;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,0);
+  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     *(undefined4 *)&pTVar3->field_0xd8 = 0x696e6974;
     NoOpDialogModeTagChangedHook(1);
@@ -309,7 +306,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   }
   *(undefined4 *)(&pTVar3->field_0xbc + iVar10 * 4) = 0x62757379;
   uVar6 = UiRuntimeContext::GetActiveNationId();
-  uStack_64 = 0x25;
+  piStack_64 = (int *)0x25;
   ppcVar12 = &local_4c;
   for (iVar9 = 7; iVar9 != 0; iVar9 = iVar9 + -1) {
     *ppcVar12 = (code *)0x756e6b6e;
@@ -317,14 +314,14 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   }
   (&local_4c)[iVar10] = (code *)0x62757379;
   local_50.m_pchData._0_1_ = uVar6;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,0);
+  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
   *(undefined4 *)&pTVar3->field_0xd8 = 0x676f696e;
   sVar7 = UiRuntimeContext::GetActiveNationId();
   local_50.m_pchData._0_1_ = UiRuntimeContext::GetActiveNationId();
-  uStack_64 = 0x1f;
+  piStack_64 = (int *)0x1f;
   local_4c = (code *)0x6e616d65;
   iStack_48 = 0xffffffff;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,sVar7 == -3);
+  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar7 == -3);
   uStack_28 = 0xffffffff;
   CString::~CString(&CStack_6c);
   *unaff_FS_OFFSET = uStack_30;
@@ -333,54 +330,53 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542FF0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider
-// GHIDRA_PROTO undefined __thiscall InitializeNationStatusControlArraysFromProvider(void)
+// GHIDRA_PROTO undefined __thiscall InitializeNationStatusControlArraysFromProvider(int * param_1)
 
 void __thiscall
-TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this)
+TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this,int *param_1)
 
 {
   int iVar1;
   code *pcVar2;
   code *pcVar3;
-  undefined1 *puVar4;
-  int *in_stack_00000004;
+  int *piVar4;
+  undefined1 *puVar5;
   
+  piVar4 = param_1;
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  iVar1 = *in_stack_00000004;
-  puVar4 = &this->field_0x78;
-  in_stack_00000004 = (int *)0x7;
+  iVar1 = *param_1;
+  puVar5 = &this->field_0x78;
+  param_1 = (int *)0x7;
   pcVar2 = *(code **)(iVar1 + 0x78);
   pcVar3 = *(code **)(iVar1 + 0xac);
   do {
-    (*pcVar2)(puVar4 + -0x30,4);
-    (*pcVar3)(puVar4);
-    (*pcVar3)(puVar4 + 0x1c);
-    puVar4 = puVar4 + 4;
-    in_stack_00000004 = (int *)((int)in_stack_00000004 + -1);
-  } while (in_stack_00000004 != (int *)0x0);
+    (*pcVar2)(puVar5 + -0x30,4);
+    (*pcVar3)(puVar5);
+    (*pcVar3)(puVar5 + 0x1c);
+    puVar5 = puVar5 + 4;
+    param_1 = (int *)((int)param_1 + -1);
+  } while (param_1 != (int *)0x0);
   (*pcVar3)(&this->field_0xb0);
   (*pcVar3)(&this->field_0x74);
   (*pcVar2)(&this->field_0x64,4);
   (*pcVar2)(&this->field_0xe4,1);
-  (**(code **)(*DAT_006a6014 + 0x14))();
+  (**(code **)(*DAT_006a6014 + 0x14))(piVar4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005430C0
 // GHIDRA_NAME TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-// GHIDRA_PROTO undefined __thiscall EnableDiplomacyQueueRoutingAndSetContextField44(void)
+// GHIDRA_PROTO undefined __thiscall EnableDiplomacyQueueRoutingAndSetContextField44(undefined4 param_1, char param_2)
 
 void __thiscall
-TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TMultiplayerMgr *this)
+TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
+          (TMultiplayerMgr *this,undefined4 param_1,char param_2)
 
 {
-  undefined4 in_stack_00000004;
-  char in_stack_00000008;
-  
   this->field_0x68 = 1;
   this->field_0x69 = 1;
-  if (in_stack_00000008 != '\0') {
-    *(undefined4 *)&this->field_0x44 = in_stack_00000004;
+  if (param_2 != '\0') {
+    *(undefined4 *)&this->field_0x44 = param_1;
     return;
   }
   *(undefined4 *)&this->field_0x44 = 0;

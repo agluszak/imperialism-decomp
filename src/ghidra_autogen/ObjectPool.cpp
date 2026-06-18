@@ -140,23 +140,25 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552340
 // GHIDRA_NAME ObjectPool::OrphanRecovered_00552340_OverlappingStub
-// GHIDRA_PROTO undefined OrphanRecovered_00552340_OverlappingStub()
+// GHIDRA_PROTO undefined OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 /* WARNING: Instruction at (ram,0x00552342) overlaps instruction at (ram,0x00552341)
     */
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
-void __thiscall ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
+void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 {
   TShip *pTVar1;
   int iVar2;
   int iVar3;
   undefined4 uVar4;
+  int in_ECX;
   int iVar5;
   int unaff_EBP;
   int in_stack_00000010;
   
-  *(int *)(param_1 + 0x768b1447) = *(int *)(param_1 + 0x768b1447) + -1;
+  *(int *)(in_ECX + 0x768b1447) = *(int *)(in_ECX + 0x768b1447) + -1;
   *(undefined4 *)(unaff_EBP + 8) = 0;
   iVar5 = 0;
   for (pTVar1 = g_pNavyPrimaryOrderListHead; pTVar1 != (TShip *)0x0;

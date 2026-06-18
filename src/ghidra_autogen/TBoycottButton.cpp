@@ -57,15 +57,14 @@ TBoycottButton * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005847B0
 // GHIDRA_NAME TBoycottButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBoycottButton * __thiscall TBoycottButton::_scalar_deleting_destructor_(TBoycottButton *this)
+TBoycottButton * __thiscall
+TBoycottButton::_scalar_deleting_destructor_(TBoycottButton *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -73,17 +72,18 @@ TBoycottButton * __thiscall TBoycottButton::_scalar_deleting_destructor_(TBoycot
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584800
 // GHIDRA_NAME TBoycottButton::HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
 
-void __thiscall TBoycottButton::HandleToggleButtonStateChangeAndRefresh(TBoycottButton *this)
+void __thiscall
+TBoycottButton::HandleToggleButtonStateChangeAndRefresh
+          (TBoycottButton *this,char param_1,char param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
   int *piVar2;
-  char in_stack_00000004;
   
-  if (in_stack_00000004 != '\0') {
+  if (param_1 != '\0') {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x636c7573);
     if (piVar2 == (int *)0x0) {
@@ -93,7 +93,7 @@ void __thiscall TBoycottButton::HandleToggleButtonStateChangeAndRefresh(TBoycott
     }
     (**(code **)(*piVar2 + 0x1c8))(0x20202020);
   }
-  TToggleButton::TToggleButton_VtblSlot116((TToggleButton *)this);
+  TToggleButton::TToggleButton_VtblSlot116((TToggleButton *)this,param_1,param_2);
   return;
 }
 

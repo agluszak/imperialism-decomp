@@ -106,13 +106,14 @@ uint __fastcall thunk_GetMinActionThresholdFromEntryChildren(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408ADA
 // GHIDRA_NAME thunk_AdvanceCityOrderAndQueueRequirementCommands
-// GHIDRA_PROTO undefined __thiscall thunk_AdvanceCityOrderAndQueueRequirementCommands(void)
+// GHIDRA_PROTO undefined __thiscall thunk_AdvanceCityOrderAndQueueRequirementCommands(int * param_1)
 
 void __thiscall
-TShipBuildingTask::thunk_AdvanceCityOrderAndQueueRequirementCommands(TShipBuildingTask *this)
+TShipBuildingTask::thunk_AdvanceCityOrderAndQueueRequirementCommands
+          (TShipBuildingTask *this,int *param_1)
 
 {
-  OrphanLeaf_NoCall_Ins04_005adc30(this);
+  OrphanLeaf_NoCall_Ins04_005adc30(this,param_1);
   return;
 }
 
@@ -120,7 +121,8 @@ TShipBuildingTask::thunk_AdvanceCityOrderAndQueueRequirementCommands(TShipBuildi
 // GHIDRA_NAME thunk_InitializeDialogTemplateD0WithTextState
 // GHIDRA_PROTO undefined thunk_InitializeDialogTemplateD0WithTextState()
 
-TControl * __fastcall thunk_InitializeDialogTemplateD0WithTextState(TControl *param_1)
+TControl * __thiscall
+thunk_InitializeDialogTemplateD0WithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -132,7 +134,7 @@ TControl * __fastcall thunk_InitializeDialogTemplateD0WithTextState(TControl *pa
   puStack_8 = &LAB_0062fbb8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TControl::InitializeDialogTemplateFromId(param_1);
+  TControl::InitializeDialogTemplateFromId(param_1,0xd0,param_2);
   uStack_4 = 0;
   ConstructObjectVtable00670b4cBase();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_00671d1c;
@@ -243,53 +245,50 @@ undefined4 thunk_ReadScenarioIndexFromSaveHeader(undefined4 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408CFB
 // GHIDRA_NAME thunk_QueueDepotConstructionOrder
-// GHIDRA_PROTO int __thiscall thunk_QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)
+// GHIDRA_PROTO int __thiscall thunk_QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId, undefined2 param_4)
 
 int __thiscall
 TToolBarCluster::thunk_QueueDepotConstructionOrder
-          (TToolBarCluster *this,int *pMapContext,short nTileIndex,short nNationId)
+          (TToolBarCluster *this,int *pMapContext,short nTileIndex,short nNationId,
+          undefined2 param_4)
 
 {
   int iVar1;
   
-  iVar1 = QueueDepotConstructionOrder(this,pMapContext,nTileIndex,nNationId);
+  iVar1 = QueueDepotConstructionOrder(this,pMapContext,nTileIndex,nNationId,param_4);
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408D46
 // GHIDRA_NAME thunk_BuildTurnEventFactoryPacket
-// GHIDRA_PROTO undefined __thiscall thunk_BuildTurnEventFactoryPacket(void)
+// GHIDRA_PROTO undefined __thiscall thunk_BuildTurnEventFactoryPacket(undefined4 param_1, int * param_2, undefined2 param_3, undefined4 * param_4, CString * param_5, undefined2 param_6)
 
-void __thiscall TDiplomacyMapView::thunk_BuildTurnEventFactoryPacket(TDiplomacyMapView *this)
+void __thiscall
+TDiplomacyMapView::thunk_BuildTurnEventFactoryPacket
+          (TDiplomacyMapView *this,undefined4 param_1,int *param_2,undefined2 param_3,
+          undefined4 *param_4,CString *param_5,undefined2 param_6)
 
 {
-  undefined4 in_stack_00000004;
-  int *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined4 *in_stack_00000010;
-  CString *in_stack_00000014;
-  undefined2 in_stack_00000018;
-  
-  if (in_stack_00000008 != (int *)0x0) {
-    this->field50 = in_stack_00000008[0x14];
+  if (param_2 != (int *)0x0) {
+    this->field50 = param_2[0x14];
   }
   this->controlTag = 0x20202020;
   this->field04 = 1;
   this->padding_08_to_0b = 1;
-  this->field0c = (int)in_stack_00000008;
+  this->field0c = (int)param_2;
   this->ownerOffsetX = DAT_006a1ab0;
   this->ownerOffsetY = DAT_006a1ab4;
-  this->field34 = in_stack_00000008[0xd];
-  this->field38 = in_stack_00000008[0xe];
-  if (in_stack_00000008 != (int *)0x0) {
-    (**(code **)(*in_stack_00000008 + 0x170))(this,0);
+  this->field34 = param_2[0xd];
+  this->field38 = param_2[0xe];
+  if (param_2 != (int *)0x0) {
+    (**(code **)(*param_2 + 0x170))(this,0);
   }
-  this->padding_40_to_43 = in_stack_00000004;
-  *(undefined2 *)&this->field_0x60 = in_stack_0000000c;
-  *(undefined4 *)&this->field_0x64 = *in_stack_00000010;
-  *(undefined4 *)&this->field_0x68 = in_stack_00000010[1];
-  CString::AssignFromPtr((CString *)&this->field_0x6c,in_stack_00000014);
-  *(undefined2 *)&this->field_0x70 = in_stack_00000018;
+  this->padding_40_to_43 = param_1;
+  *(undefined2 *)&this->field_0x60 = param_3;
+  *(undefined4 *)&this->field_0x64 = *param_4;
+  *(undefined4 *)&this->field_0x68 = param_4[1];
+  CString::AssignFromPtr((CString *)&this->field_0x6c,param_5);
+  *(undefined2 *)&this->field_0x70 = param_6;
   return;
 }
 
@@ -376,17 +375,20 @@ void __thiscall TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf(TMapDial
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408E27
 // GHIDRA_NAME thunk_InvokeMainWidgetMethod1CCWithArgs
-// GHIDRA_PROTO undefined __thiscall thunk_InvokeMainWidgetMethod1CCWithArgs(void)
+// GHIDRA_PROTO undefined __thiscall thunk_InvokeMainWidgetMethod1CCWithArgs(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk for InvokeMainWidgetMethod1CCWithArgs.
 // GHIDRA_COMMENT_END
 
 /* Thunk for InvokeMainWidgetMethod1CCWithArgs. */
 
-void __thiscall TDiplomacyMapView::thunk_InvokeMainWidgetMethod1CCWithArgs(TDiplomacyMapView *this)
+void __thiscall
+TDiplomacyMapView::thunk_InvokeMainWidgetMethod1CCWithArgs
+          (TDiplomacyMapView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3,
+          undefined4 param_4)
 
 {
-  _scalar_deleting_destructor_(this);
+  _scalar_deleting_destructor_(this,param_1,param_2,param_3,param_4);
   return;
 }
 
@@ -790,7 +792,8 @@ void __fastcall thunk_SelectAndScheduleRandomAudioCue(int param_1)
   char cVar2;
   int iVar3;
   undefined4 uVar4;
-  int iVar5;
+  short sVar5;
+  int iVar6;
   
   if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
      (cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
@@ -800,22 +803,22 @@ void __fastcall thunk_SelectAndScheduleRandomAudioCue(int param_1)
       if (iVar3 == 0) {
         return;
       }
-      iVar5 = 1;
+      iVar6 = 1;
       if (0 < iVar3) {
         do {
           iVar1 = **(int **)(param_1 + 0x70);
-          uVar4 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x24))(iVar5);
+          uVar4 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x24))(iVar6);
           (**(code **)(iVar1 + 0x14))(uVar4);
-          iVar5 = iVar5 + 1;
-        } while (iVar5 <= iVar3);
+          iVar6 = iVar6 + 1;
+        } while (iVar6 <= iVar3);
       }
       *(undefined2 *)(param_1 + 0x74) = 0;
     }
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
-    iVar5 = GenerateThreadLocalRandom15();
-    iVar5 = iVar5 % iVar3 + 1;
-    iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar5);
-    (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar5);
+    iVar6 = GenerateThreadLocalRandom15();
+    iVar6 = iVar6 % iVar3 + 1;
+    iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar6);
+    (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar6);
     if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
        (cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
       cVar2 = thunk_ReturnTrueStub();
@@ -824,14 +827,15 @@ void __fastcall thunk_SelectAndScheduleRandomAudioCue(int param_1)
         return;
       }
       if (iVar3 != *(short *)(param_1 + 0x74)) {
+        sVar5 = (short)iVar3;
         if (*(short *)(param_1 + 0x74) < 1) {
-          *(short *)(param_1 + 0x74) = (short)iVar3;
-          TSimMgr::ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc);
+          *(short *)(param_1 + 0x74) = sVar5;
+          TSimMgr::ApplyMciPlaybackRangeFromAudioManager((TSimMgr *)&DAT_006a60bc,(int)sVar5);
           ApplyAuxOutputVolumeFromScalar((int)*(short *)&g_pLocalizationTable->field_0x4e << 8);
           *(undefined1 *)(param_1 + 0x78) = 1;
         }
         else {
-          *(short *)(param_1 + 0x76) = (short)iVar3;
+          *(short *)(param_1 + 0x76) = sVar5;
           if (*(int *)(param_1 + 0x7c) == 0) {
             uVar4 = thunk_GetTickCountDiv16();
             *(undefined4 *)(param_1 + 0x7c) = uVar4;
@@ -934,23 +938,26 @@ thunk_AssignSharedStringFromIndexedA8EntryNameField(int param_1,int param_2,CStr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004091CE
 // GHIDRA_NAME thunk_HandleTradeMovePageStepCommand
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTradeMovePageStepCommand(void)
+// GHIDRA_PROTO undefined __thiscall thunk_HandleTradeMovePageStepCommand(int param_1, void * param_2, int param_3)
 
-void __thiscall TRailCluster::thunk_HandleTradeMovePageStepCommand(TRailCluster *this)
+void __thiscall
+TRailCluster::thunk_HandleTradeMovePageStepCommand
+          (TRailCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  OrphanRetStub_0059add0(this);
+  OrphanRetStub_0059add0(this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409237
 // GHIDRA_NAME thunk_DestructEngineerDialogAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall thunk_DestructEngineerDialogAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall thunk_DestructEngineerDialogAndMaybeFree(byte param_1)
 
-void __thiscall TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree(TEngineerDialog *this)
+void __thiscall
+TEngineerDialog::thunk_DestructEngineerDialogAndMaybeFree(TEngineerDialog *this,byte param_1)
 
 {
-  _scalar_deleting_destructor_(this);
+  _scalar_deleting_destructor_(this,param_1);
   return;
 }
 
@@ -1329,12 +1336,13 @@ TDiplomacyMapView::thunk_HandleTurnEventVtableSlotA0SyncStatusPanel(TDiplomacyMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040952F
 // GHIDRA_NAME thunk_UpdatePaletteIndexFromTurnEventCode
-// GHIDRA_PROTO undefined __thiscall thunk_UpdatePaletteIndexFromTurnEventCode(void)
+// GHIDRA_PROTO undefined __thiscall thunk_UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 
-void __thiscall TViewMgr::thunk_UpdatePaletteIndexFromTurnEventCode(TViewMgr *this)
+void __thiscall
+TViewMgr::thunk_UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,undefined4 param_1)
 
 {
-  UpdatePaletteIndexFromTurnEventCode(this);
+  UpdatePaletteIndexFromTurnEventCode(this,param_1);
   return;
 }
 
@@ -1371,6 +1379,7 @@ TCountry::thunk_SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTi
   int extraout_EAX_00;
   int iVar2;
   int iVar3;
+  undefined2 unaff_DI;
   
   iVar2 = *(int *)&this->field_0xc;
   iVar3 = nTileIndex * 0x24;
@@ -1380,7 +1389,7 @@ TCountry::thunk_SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTi
   }
   *(ushort *)(*(int *)&this->field_0xc + 0x1c + iVar3) = wTileTransportFlags;
   if ((wTileTransportFlags & 4) != 0) {
-    thunk_EnsurePortZoneForTile(nTileIndex);
+    thunk_EnsurePortZoneForTile(nTileIndex,unaff_DI);
     iVar2 = extraout_EAX_00;
   }
   if ((wTileTransportFlags & 3) != 0) {
@@ -1426,7 +1435,7 @@ thunk_DispatchLocalizedUiMessageWithTemplateA13A0
   param_3 = &pTStack_28;
   iStack_4._0_1_ = 1;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&pTStack_28);
+            ((TToolBarCluster *)&pTStack_28,(char *)&g_szEmptyString);
   iStack_4 = (uint)iStack_4._1_3_ << 8;
   uVar1 = thunk_DispatchLocalizedUiMessageWithTemplate(3);
   iStack_4 = -1;
@@ -1832,7 +1841,7 @@ void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod70(TDiploma
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409903
 // GHIDRA_NAME thunk_HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_PROTO undefined __thiscall thunk_HandleCrossUArmyViewsCommandTagDispatch(void)
+// GHIDRA_PROTO undefined __thiscall thunk_HandleCrossUArmyViewsCommandTagDispatch(undefined4 param_1, CString param_2, undefined4 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk entry from Cross_UArmyViews vtable slot; forwards to HandleCrossUArmyViewsCommandTagDispatch.
 // GHIDRA_COMMENT_END
@@ -1840,10 +1849,12 @@ void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod70(TDiploma
 /* Thunk entry from Cross_UArmyViews vtable slot; forwards to
    HandleCrossUArmyViewsCommandTagDispatch. */
 
-void __thiscall TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch(TArmyUnitView *this)
+void __thiscall
+TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch
+          (TArmyUnitView *this,undefined4 param_1,CString param_2,undefined4 param_3)
 
 {
-  OrphanRetStub_0059add0(this);
+  OrphanRetStub_0059add0(this,param_1,param_2,param_3);
   return;
 }
 
@@ -1984,12 +1995,12 @@ void thunk_SetGlobalQuickDrawOrigin(short param_1,short param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409A39
 // GHIDRA_NAME thunk_NumericEntryMethod_00409a39
-// GHIDRA_PROTO undefined __thiscall thunk_NumericEntryMethod_00409a39(void)
+// GHIDRA_PROTO undefined __thiscall thunk_NumericEntryMethod_00409a39(byte param_1)
 
-void __thiscall TNumberText::thunk_NumericEntryMethod_00409a39(TNumberText *this)
+void __thiscall TNumberText::thunk_NumericEntryMethod_00409a39(TNumberText *this,byte param_1)
 
 {
-  _scalar_deleting_destructor_(this);
+  _scalar_deleting_destructor_(this,param_1);
   return;
 }
 
@@ -2468,7 +2479,7 @@ void ShowDialogTemplate64Modal(void)
   puStack_8 = &LAB_00628008;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId((TControl *)local_68);
+  TControl::InitializeDialogTemplateFromId((TControl *)local_68,100,0);
   local_68[0] = &PTR_LAB_0063e498;
   local_4._0_1_ = 0;
   local_4._1_1_ = 0;
@@ -13930,7 +13941,7 @@ LAB_0042ec5c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0042D240
 // GHIDRA_NAME InitializeCityTradeDiplomacyUiEntries
-// GHIDRA_PROTO undefined InitializeCityTradeDiplomacyUiEntries()
+// GHIDRA_PROTO undefined InitializeCityTradeDiplomacyUiEntries(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Registers top-level UI resource entries for city/trade/diplomacy screens.
 // GHIDRA_COMMENT Algorithm:
@@ -14072,7 +14083,7 @@ int * InitializeCityTradeDiplomacyUiEntries(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0042E0B5
 // GHIDRA_NAME BuildOrderStateStaticTextUiResourceEntries
-// GHIDRA_PROTO undefined BuildOrderStateStaticTextUiResourceEntries()
+// GHIDRA_PROTO undefined BuildOrderStateStaticTextUiResourceEntries(undefined4 param_1)
 
 int * BuildOrderStateStaticTextUiResourceEntries(void)
 
@@ -14355,7 +14366,7 @@ int * BuildOrderStateStaticTextUiResourceEntries(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0042E494
 // GHIDRA_NAME BuildUiResourceTree_MultiTextOptionComposite_0042e494
-// GHIDRA_PROTO undefined BuildUiResourceTree_MultiTextOptionComposite_0042e494()
+// GHIDRA_PROTO undefined BuildUiResourceTree_MultiTextOptionComposite_0042e494(undefined4 param_1)
 
 int * BuildUiResourceTree_MultiTextOptionComposite_0042e494(void)
 
@@ -14554,7 +14565,7 @@ int * BuildUiResourceTree_MultiTextOptionComposite_0042e494(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0042E864
 // GHIDRA_NAME BuildUiResourceTree_TextPictureCursorComposite_0042e864
-// GHIDRA_PROTO undefined BuildUiResourceTree_TextPictureCursorComposite_0042e864()
+// GHIDRA_PROTO undefined BuildUiResourceTree_TextPictureCursorComposite_0042e864(undefined4 param_1)
 
 int * BuildUiResourceTree_TextPictureCursorComposite_0042e864(void)
 
@@ -24950,7 +24961,7 @@ LAB_00447dc8:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043E8B0
 // GHIDRA_NAME BuildMainMapAndCityCommandControls
-// GHIDRA_PROTO undefined BuildMainMapAndCityCommandControls()
+// GHIDRA_PROTO undefined BuildMainMapAndCityCommandControls(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds the large shared command-control panel used by map/city interaction modes.
 // GHIDRA_COMMENT
@@ -25833,7 +25844,7 @@ int * BuildMainMapAndCityCommandControls(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00440B83
 // GHIDRA_NAME BuildCivilianReportDialogResources
-// GHIDRA_PROTO int * BuildCivilianReportDialogResources(void)
+// GHIDRA_PROTO int * BuildCivilianReportDialogResources(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Build UI resource tree for the Civilian Report dialog shown when opening an already-ordered civilian.
 // GHIDRA_COMMENT
@@ -25881,13 +25892,12 @@ int * BuildMainMapAndCityCommandControls(void)
    - String anchors are in STR#ENU.GOB strtbl-1186 (Civilian Report / Rescind Orders / Confirm
    Orders). */
 
-int * BuildCivilianReportDialogResources(void)
+int * BuildCivilianReportDialogResources(undefined4 param_1)
 
 {
   int *piVar1;
   TDeluxeText *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack00000004;
   undefined4 uStack00000008;
   TDeluxeText *pTStack0000003c;
   undefined4 in_stack_000000b0;
@@ -25907,7 +25917,6 @@ int * BuildCivilianReportDialogResources(void)
          _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__PAU12__Z
                    ((TCivReport *)pTStack0000003c);
   }
-  uStack00000004 = 0x444c4f47;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -25921,7 +25930,6 @@ int * BuildCivilianReportDialogResources(void)
     uStack00000008 =
          TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTStack0000003c);
   }
-  uStack00000004 = 0x74746c30;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -25939,7 +25947,6 @@ int * BuildCivilianReportDialogResources(void)
     uStack00000008 =
          TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)pTStack0000003c);
   }
-  uStack00000004 = 0x6f6b6179;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -25954,7 +25961,6 @@ int * BuildCivilianReportDialogResources(void)
     uStack00000008 =
          TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)pTStack0000003c);
   }
-  uStack00000004 = 0x63616e63;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -25968,7 +25974,6 @@ int * BuildCivilianReportDialogResources(void)
   else {
     uStack00000008 = TDeluxeText::thunk_ConstructUiColorTextResourceEntry(pTStack0000003c);
   }
-  uStack00000004 = 0x696e666f;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_ClearUiResourceContext();
@@ -25981,7 +25986,6 @@ int * BuildCivilianReportDialogResources(void)
     uStack00000008 =
          TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTStack0000003c);
   }
-  uStack00000004 = 0x74746c31;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -25999,7 +26003,6 @@ int * BuildCivilianReportDialogResources(void)
     uStack00000008 =
          TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTStack0000003c);
   }
-  uStack00000004 = 0x74746c32;
   thunk_RegisterUiResourceEntry();
   thunk_SetUiResourceStateFlags();
   thunk_SetUiResourceLayoutValues();
@@ -26021,7 +26024,7 @@ int * BuildCivilianReportDialogResources(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004418B0
 // GHIDRA_NAME InitializeTGarrisonViewBitmapAndControlResources
-// GHIDRA_PROTO undefined InitializeTGarrisonViewBitmapAndControlResources()
+// GHIDRA_PROTO undefined InitializeTGarrisonViewBitmapAndControlResources(undefined4 param_1)
 
 int * InitializeTGarrisonViewBitmapAndControlResources(void)
 
@@ -26127,7 +26130,7 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00441948
 // GHIDRA_NAME BuildGarrisonViewBaseAndTabCursorUiResources
-// GHIDRA_PROTO undefined BuildGarrisonViewBaseAndTabCursorUiResources()
+// GHIDRA_PROTO undefined BuildGarrisonViewBaseAndTabCursorUiResources(undefined4 param_1)
 
 int * BuildGarrisonViewBaseAndTabCursorUiResources(void)
 
@@ -26208,7 +26211,7 @@ int * BuildGarrisonViewBaseAndTabCursorUiResources(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00441FF1
 // GHIDRA_NAME BuildConstructionOptionsDialogResources
-// GHIDRA_PROTO int * BuildConstructionOptionsDialogResources(void)
+// GHIDRA_PROTO int * BuildConstructionOptionsDialogResources(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: int* BuildConstructionOptionsDialogResources(void)
 // GHIDRA_COMMENT_END
@@ -26216,7 +26219,7 @@ int * BuildGarrisonViewBaseAndTabCursorUiResources(void)
 /* WARNING: Unknown calling convention -- yet parameter storage is locked */
 /* Setting prototype: int* BuildConstructionOptionsDialogResources(void) */
 
-int * BuildConstructionOptionsDialogResources(void)
+int * BuildConstructionOptionsDialogResources(undefined4 param_1)
 
 {
   int *piVar1;
@@ -26265,7 +26268,7 @@ int * BuildConstructionOptionsDialogResources(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004472BB
 // GHIDRA_NAME InitializeTNavyRosterBitmapAndControlResources
-// GHIDRA_PROTO undefined InitializeTNavyRosterBitmapAndControlResources()
+// GHIDRA_PROTO undefined InitializeTNavyRosterBitmapAndControlResources(undefined4 param_1)
 
 int * InitializeTNavyRosterBitmapAndControlResources(void)
 
@@ -34553,7 +34556,7 @@ LAB_00459519:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00456BA3
 // GHIDRA_NAME BuildDifficultyAndNamesSetupUiResources
-// GHIDRA_PROTO undefined BuildDifficultyAndNamesSetupUiResources()
+// GHIDRA_PROTO undefined BuildDifficultyAndNamesSetupUiResources(undefined4 param_1)
 
 int * BuildDifficultyAndNamesSetupUiResources(void)
 
@@ -34815,7 +34818,7 @@ int * BuildDifficultyAndNamesSetupUiResources(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045762E
 // GHIDRA_NAME BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e
-// GHIDRA_PROTO undefined BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e()
+// GHIDRA_PROTO undefined BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(undefined4 param_1)
 
 int * BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(void)
 
@@ -34972,7 +34975,7 @@ int * BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00457AEE
 // GHIDRA_NAME thunk_BuildMainStatsScoreboardAndDoneUiResourceTree
-// GHIDRA_PROTO undefined thunk_BuildMainStatsScoreboardAndDoneUiResourceTree()
+// GHIDRA_PROTO undefined thunk_BuildMainStatsScoreboardAndDoneUiResourceTree(undefined4 param_1)
 
 int * thunk_BuildMainStatsScoreboardAndDoneUiResourceTree(void)
 
@@ -35474,7 +35477,7 @@ int * thunk_BuildMainStatsScoreboardAndDoneUiResourceTree(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00457AF2
 // GHIDRA_NAME BuildMainStatsScoreboardAndDoneUiResourceTree
-// GHIDRA_PROTO undefined BuildMainStatsScoreboardAndDoneUiResourceTree()
+// GHIDRA_PROTO undefined BuildMainStatsScoreboardAndDoneUiResourceTree(undefined4 param_1)
 
 int * BuildMainStatsScoreboardAndDoneUiResourceTree(void)
 
@@ -51371,29 +51374,30 @@ CBrush * __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(int para
   LOGPALETTE *plpal;
   BYTE *pBVar1;
   CBrush *pCVar2;
-  BYTE *pBVar3;
+  HPALETTE pHVar3;
+  BYTE *pBVar4;
   CBrush *this;
-  int iVar4;
+  int iVar5;
   
   if (*(int *)(param_1 + 0x24) == 0) {
     return (CBrush *)0x0;
   }
   plpal = (LOGPALETTE *)AllocateWithFallbackHandler(*(int *)(param_1 + 0x24) * 4 + 4);
-  iVar4 = 0;
+  iVar5 = 0;
   plpal->palVersion = 0x300;
   plpal->palNumEntries = *(WORD *)(param_1 + 0x24);
   if (0 < *(int *)(param_1 + 0x24)) {
     pBVar1 = &plpal->palPalEntry[0].peGreen;
-    pBVar3 = *(BYTE **)(param_1 + 4);
+    pBVar4 = *(BYTE **)(param_1 + 4);
     do {
-      ((PALETTEENTRY *)(pBVar1 + -1))->peRed = pBVar3[2];
-      *pBVar1 = pBVar3[1];
-      pBVar1[1] = *pBVar3;
+      ((PALETTEENTRY *)(pBVar1 + -1))->peRed = pBVar4[2];
+      *pBVar1 = pBVar4[1];
+      pBVar1[1] = *pBVar4;
       pBVar1[2] = '\0';
-      iVar4 = iVar4 + 1;
+      iVar5 = iVar5 + 1;
       pBVar1 = pBVar1 + 4;
-      pBVar3 = pBVar3 + 4;
-    } while (iVar4 < *(int *)(param_1 + 0x24));
+      pBVar4 = pBVar4 + 4;
+    } while (iVar5 < *(int *)(param_1 + 0x24));
   }
   pCVar2 = (CBrush *)AllocateWithFallbackHandler(8);
   this = (CBrush *)0x0;
@@ -51402,8 +51406,8 @@ CBrush * __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(int para
     *(undefined ***)pCVar2 = &PTR_LAB_00645fe0;
     this = pCVar2;
   }
-  CreatePalette(plpal);
-  CBrush::AttachRegionHandleToClipStateAndRegister(this);
+  pHVar3 = CreatePalette(plpal);
+  CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar3);
   FreeHeapBufferIfNotNull(plpal);
   return this;
 }
@@ -51498,9 +51502,12 @@ HBITMAP __thiscall CreateDibBitmapFromStoredInfo(int param_1,int param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047B53B
 // GHIDRA_NAME thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b
-// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b()
+// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b(HDC param_1, HPALETTE param_2)
 
-void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b
+               (HDC param_1,HPALETTE param_2)
 
 {
   uint uVar1;
@@ -51534,9 +51541,12 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047B544
 // GHIDRA_NAME thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544
-// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544()
+// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544(HDC param_1, HPALETTE param_2)
 
-void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544
+               (HDC param_1,HPALETTE param_2)
 
 {
   uint uVar1;
@@ -51570,9 +51580,12 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047B54D
 // GHIDRA_NAME thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d
-// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d()
+// GHIDRA_PROTO undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d(HDC param_1, HPALETTE param_2)
 
-void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d
+               (HDC param_1,HPALETTE param_2)
 
 {
   uint uVar1;
@@ -51606,9 +51619,11 @@ void thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047B55D
 // GHIDRA_NAME WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d
-// GHIDRA_PROTO undefined WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d()
+// GHIDRA_PROTO undefined WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(HDC param_1, HPALETTE param_2)
 
-void WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(void)
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+
+void WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(HDC param_1,HPALETTE param_2)
 
 {
   uint uVar1;

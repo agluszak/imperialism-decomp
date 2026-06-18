@@ -72,16 +72,14 @@ TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0DA0
 // GHIDRA_NAME TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTInfoBarBehaviorAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTInfoBarBehaviorAndMaybeFree(byte param_1)
 
 TInfoBarBehavior * __thiscall
-TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this)
+TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -89,10 +87,11 @@ TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0E20
 // GHIDRA_NAME TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
-// GHIDRA_PROTO undefined __thiscall InitializeInfoBarTagEntryWithOptionalDummyChild(void)
+// GHIDRA_PROTO undefined __thiscall InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2)
 
 void __thiscall
-TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(TInfoBarBehavior *this)
+TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
+          (TInfoBarBehavior *this,int param_1,int *param_2)
 
 {
   char cVar1;
@@ -101,8 +100,6 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(TInfoBarBehavi
   int *piVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int *in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   CString local_4;
@@ -110,7 +107,7 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(TInfoBarBehavi
   puStack_8 = &LAB_00630cb2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar3 = *in_stack_00000008;
+  iVar3 = *param_2;
   local_4.m_pchData = (char *)0x0;
   *(undefined4 *)&this->field_0x4 = 0x696e6642;
   (**(code **)(iVar3 + 300))(&this->field_0x14);
@@ -127,13 +124,12 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(TInfoBarBehavi
       piVar2 = extraout_EAX;
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-    thunk_InitializeUiResourceEntryFrameAndParent
-              (0,in_stack_00000008,&DAT_006a2410,in_stack_00000008 + 0xd,0,0,0);
+    thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,&DAT_006a2410,param_2 + 0xd,0,0,0);
     iVar3 = *piVar2;
     piVar2[7] = 0x64756d79;
     (**(code **)(iVar3 + 0xa8))(1,0);
     (**(code **)(iVar3 + 0xa4))(0,0);
-    iVar3 = in_stack_00000004;
+    iVar3 = param_1;
   }
   (**(code **)(iVar3 + 0x90))(this);
   uStack_c = 0xffffffff;

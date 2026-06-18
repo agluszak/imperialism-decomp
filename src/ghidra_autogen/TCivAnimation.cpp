@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F480
 // GHIDRA_NAME TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f480(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byte param_1)
 
 TCivAnimation * __thiscall
-TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this)
+TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTCivAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -74,15 +72,14 @@ void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F630
 // GHIDRA_NAME TCivAnimation::DestructTCivAnimationAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCivAnimationAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTCivAnimationAndMaybeFree(byte param_1)
 
-TCivAnimation * __thiscall TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this)
+TCivAnimation * __thiscall
+TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TCivAnimation2::CreateTCivAnimation2Instance((TCivAnimation2 *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

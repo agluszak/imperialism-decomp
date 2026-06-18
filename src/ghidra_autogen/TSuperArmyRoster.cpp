@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA4D0
 // GHIDRA_NAME TSuperArmyRoster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperArmyRoster * __thiscall TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this)
+TSuperArmyRoster * __thiscall
+TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -32,9 +31,11 @@ TSuperArmyRoster::GetTEventHandlerClassNamePointer(TSuperArmyRoster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA540
 // GHIDRA_NAME TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSuperArmyRosterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTSuperArmyRosterBaseState(int param_1, CString param_2, CString param_3)
 
-void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyRoster *this)
+void __thiscall
+TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
+          (TSuperArmyRoster *this,int param_1,CString param_2,CString param_3)
 
 {
   TSuperArmyRoster_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -47,9 +48,6 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
   TLineData *this_01;
   TLineDataVtbl *pTVar7;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  CString in_stack_00000008;
-  CString in_stack_0000000c;
   undefined4 local_1c;
   undefined4 local_18;
   undefined4 uStack_14;
@@ -62,16 +60,16 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
   puStack_8 = &LAB_006304e4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent
-            (0,in_stack_00000004,in_stack_00000008.m_pchData,in_stack_0000000c.m_pchData,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2.m_pchData,param_3.m_pchData,5,5,0)
+  ;
   this->controlTag = 0x70616765;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
   sVar3 = UiRuntimeContext::GetActiveNationId();
-  in_stack_00000004 = 0;
+  param_1 = 0;
   do {
-    sVar4 = thunk_GetTileNormalizedMovementClassId(in_stack_00000004);
+    sVar4 = thunk_GetTileNormalizedMovementClassId(param_1);
     if (sVar4 == sVar3) {
-      sVar4 = (short)in_stack_00000004;
+      sVar4 = (short)param_1;
       if ((sVar4 < 0) || (0x17f < sVar4)) {
         iVar5 = 0;
       }
@@ -79,9 +77,9 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
         iVar5 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8);
       }
       if (iVar5 != 0) {
-        CString::CString(&stack0x00000008);
+        CString::CString(&param_2);
         local_4 = 0;
-        CString::CString(&stack0x0000000c);
+        CString::CString(&param_3);
         local_4._0_1_ = 1;
         this_00 = (TTextLine *)AllocateWithFallbackHandler(0x20);
         local_4._0_1_ = 2;
@@ -95,9 +93,9 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
         local_1c = 0xec;
         local_18 = 0x12;
         WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
-        thunk_AssignSharedStringFromIndexedA8EntryNameField(in_stack_00000004,&stack0x0000000c);
-        CString::AssignFromPtr(&stack0x00000008,&stack0x0000000c);
-        WrapperFor_StringShared_AssignFromPtr_At00570420(&stack0x00000008);
+        thunk_AssignSharedStringFromIndexedA8EntryNameField(param_1,&param_3);
+        CString::AssignFromPtr(&param_2,&param_3);
+        WrapperFor_StringShared_AssignFromPtr_At00570420(&param_2);
         pTVar1 = this->vftable[0x34].GetTEventHandlerClassNamePointer;
         (*pTVar1)(uVar6);
         if ((sVar4 < 0) || (0x17f < sVar4)) {
@@ -120,18 +118,18 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
           local_4 = CONCAT31(local_4._1_3_,1);
           uStack_14 = 0xec;
           uStack_10 = 0x12;
-          TLineData::SetLineDataRowAndBounds(this_01);
+          TLineData::SetLineDataRowAndBounds(this_01,0,0,&uStack_14);
           this_01[1].vftable = pTVar7;
           (*pTVar1)(this_01);
         }
         local_4 = local_4 & 0xffffff00;
-        CString::~CString(&stack0x0000000c);
+        CString::~CString(&param_3);
         local_4 = 0xffffffff;
-        CString::~CString(&stack0x00000008);
+        CString::~CString(&param_2);
       }
     }
-    in_stack_00000004 = in_stack_00000004 + 1;
-  } while (in_stack_00000004 < 0x180);
+    param_1 = param_1 + 1;
+  } while (param_1 < 0x180);
   pTVar2 = this->vftable;
   *(undefined2 *)&this->field_0x64 = 2;
   (*pTVar2[0x35].slot_0x04)();
@@ -144,16 +142,14 @@ void __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyR
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA840
 // GHIDRA_NAME TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTSuperArmyRosterAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTSuperArmyRosterAndMaybeFree(byte param_1)
 
 TSuperArmyRoster * __thiscall
-TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(TSuperArmyRoster *this)
+TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(TSuperArmyRoster *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   ResetObjectToCObjectSentinelVtable_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

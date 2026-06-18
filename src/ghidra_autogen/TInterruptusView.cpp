@@ -35,15 +35,14 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFD30
 // GHIDRA_NAME TInterruptusView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInterruptusView * __thiscall TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this)
+TInterruptusView * __thiscall
+TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructEngineerDialogBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -114,7 +113,7 @@ void __thiscall TInterruptusView::OrphanTiny_ReturnZero_0048a730(TInterruptusVie
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c);
   FormatOverlayTerrainLabelText(&CStack_30);
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,CStack_34.m_pchData);
-  TItemBoyView::DestructTItemBoyViewAndMaybeFree((TItemBoyView *)this);
+  TItemBoyView::DestructTItemBoyViewAndMaybeFree((TItemBoyView *)this,&stack0xffffffdc);
   local_18.m_pchData._0_1_ = 3;
   CString::~CString(&CStack_34);
   local_18.m_pchData._0_1_ = 2;

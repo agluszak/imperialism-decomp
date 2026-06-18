@@ -53,6 +53,8 @@ void __thiscall TTechItemLine::OrphanRetStub_0056f460(TTechItemLine *this)
   TTechItemView *this_00;
   TTechItemView *this_01;
   undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -70,7 +72,8 @@ void __thiscall TTechItemLine::OrphanRetStub_0056f460(TTechItemLine *this)
     this_01 = this_00;
   }
   local_4 = 0xffffffff;
-  TTechItemView::ConstructTTechItemViewBaseState(this_01);
+  TTechItemView::ConstructTTechItemViewBaseState
+            (this_01,in_stack_00000004,in_stack_00000008,(int)&this->field_0x8);
   *unaff_FS_OFFSET = local_c;
   return;
 }

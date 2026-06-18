@@ -15,15 +15,14 @@ CRuntimeClass * __thiscall TPopulationMgr::GetTPopulationMgrClassNamePointer(TPo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BB0
 // GHIDRA_NAME TPopulationMgr::ConstructTPopulationMgrBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPopulationMgrBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTPopulationMgrBaseState(byte param_1)
 
-TPopulationMgr * __thiscall TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this)
+TPopulationMgr * __thiscall
+TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTPopulationMgrAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -42,34 +41,30 @@ void __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMg
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5D10
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins09_004b5d10(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(TPopulationMgr *this)
+void __thiscall
+TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(TPopulationMgr *this,int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  *(undefined2 *)(in_stack_00000008 + 4) = *(undefined2 *)(in_stack_00000004 + 4);
-  *(undefined2 *)(in_stack_00000008 + 6) = *(undefined2 *)(in_stack_00000004 + 6);
-  *(undefined2 *)(in_stack_00000008 + 8) = *(undefined2 *)(in_stack_00000004 + 8);
+  *(undefined2 *)(param_2 + 4) = *(undefined2 *)(param_1 + 4);
+  *(undefined2 *)(param_2 + 6) = *(undefined2 *)(param_1 + 6);
+  *(undefined2 *)(param_2 + 8) = *(undefined2 *)(param_1 + 8);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5D50
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins20_004b5d50(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins20_004b5d50(short param_1)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(TPopulationMgr *this)
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(TPopulationMgr *this,short param_1)
 
 {
-  short in_stack_00000004;
-  
-  *(short *)(*(int *)&this->field_0x10 + 4) = in_stack_00000004;
-  *(short *)(*(int *)&this->field_0x14 + 4) = in_stack_00000004;
-  *(short *)&this->field_0x1c = in_stack_00000004;
-  *(short *)&this->field_0x8 = in_stack_00000004;
-  *(float *)&this->field_0xc = (float)(int)in_stack_00000004;
+  *(short *)(*(int *)&this->field_0x10 + 4) = param_1;
+  *(short *)(*(int *)&this->field_0x14 + 4) = param_1;
+  *(short *)&this->field_0x1c = param_1;
+  *(short *)&this->field_0x8 = param_1;
+  *(float *)&this->field_0xc = (float)(int)param_1;
   *(undefined2 *)(*(int *)&this->field_0x18 + 8) = 0;
   *(undefined2 *)(*(int *)&this->field_0x18 + 6) = 0;
   *(undefined2 *)(*(int *)&this->field_0x18 + 4) = 0;
@@ -79,9 +74,11 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(TPopulationMgr 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5DC0
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins47_004b5dc0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2, short param_3)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(TPopulationMgr *this)
+void __thiscall
+TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
+          (TPopulationMgr *this,short param_1,short param_2,short param_3)
 
 {
   short sVar1;
@@ -89,21 +86,18 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(TPopulationMgr 
   short sVar3;
   int iVar4;
   short sVar5;
-  short in_stack_00000004;
-  short in_stack_00000008;
-  short in_stack_0000000c;
   
-  *(short *)(*(int *)&this->field_0x10 + 4) = in_stack_00000004;
-  *(short *)(*(int *)&this->field_0x14 + 4) = in_stack_00000004;
-  *(short *)(*(int *)&this->field_0x10 + 6) = in_stack_00000008;
-  *(short *)(*(int *)&this->field_0x14 + 6) = in_stack_00000008;
-  *(short *)(*(int *)&this->field_0x10 + 8) = in_stack_0000000c;
-  *(short *)(*(int *)&this->field_0x14 + 8) = in_stack_0000000c;
+  *(short *)(*(int *)&this->field_0x10 + 4) = param_1;
+  *(short *)(*(int *)&this->field_0x14 + 4) = param_1;
+  *(short *)(*(int *)&this->field_0x10 + 6) = param_2;
+  *(short *)(*(int *)&this->field_0x14 + 6) = param_2;
+  *(short *)(*(int *)&this->field_0x10 + 8) = param_3;
+  *(short *)(*(int *)&this->field_0x14 + 8) = param_3;
   iVar4 = *(int *)&this->field_0x14;
   sVar1 = *(short *)(iVar4 + 8);
   sVar2 = *(short *)(iVar4 + 6);
   sVar3 = *(short *)(iVar4 + 4);
-  sVar5 = in_stack_00000008 + in_stack_0000000c + in_stack_00000004;
+  sVar5 = param_2 + param_3 + param_1;
   *(short *)&this->field_0x8 = sVar5;
   *(short *)&this->field_0x1c = (sVar2 + sVar1 * 2) * 2 + sVar3;
   *(float *)&this->field_0xc = (float)(int)sVar5;
@@ -317,9 +311,11 @@ TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(TPo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6260
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins111_004b6260(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins111_004b6260(short * param_1, ushort * param_2)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(TPopulationMgr *this)
+void __thiscall
+TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
+          (TPopulationMgr *this,short *param_1,ushort *param_2)
 
 {
   int iVar1;
@@ -331,14 +327,12 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(TPopulationMgr
   short sVar7;
   int iVar8;
   short sVar9;
-  short *in_stack_00000004;
-  ushort *in_stack_00000008;
   
   iVar8 = (int)*(short *)&this->field_0x8;
   sVar9 = 0;
   iVar1 = *(int *)(*(int *)&this->field_0x4 + 0xac);
-  *in_stack_00000004 = 0;
-  *in_stack_00000008 = 0;
+  *param_1 = 0;
+  *param_2 = 0;
   sVar7 = *(short *)(iVar1 + 0x15e);
   sVar2 = *(short *)(iVar1 + 0x160);
   sVar4 = *(short *)(iVar1 + 0x162) + *(short *)(iVar1 + 0x164);
@@ -392,15 +386,15 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(TPopulationMgr
       else {
         uVar6 = 0;
       }
-      *in_stack_00000004 = sVar9 - uVar6;
+      *param_1 = sVar9 - uVar6;
       if (uVar6 != 0) {
-        *in_stack_00000008 = uVar6;
+        *param_2 = uVar6;
       }
     }
   }
-  uVar6 = *in_stack_00000008;
+  uVar6 = *param_2;
   if (uVar6 != 0) {
-    *in_stack_00000008 = ((short)uVar6 < 1) - 1 & uVar6;
+    *param_2 = ((short)uVar6 < 1) - 1 & uVar6;
   }
   return;
 }
@@ -564,44 +558,43 @@ undefined1 __thiscall TPopulationMgr::OrphanCallChain_C2_I61_004b65b0(TPopulatio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B66A0
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins87_004b66a0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr *this)
+void __thiscall
+TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr *this,short param_1,short param_2)
 
 {
   short *psVar1;
   short sVar2;
   int iVar3;
   short sVar4;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
-  sVar4 = in_stack_00000008;
-  if (in_stack_00000004 == 1) {
+  sVar4 = param_2;
+  if (param_1 == 1) {
     iVar3 = *(int *)&this->field_0x10;
     sVar4 = *(short *)(iVar3 + 4);
-    if (sVar4 < in_stack_00000008) {
-      sVar4 = in_stack_00000008 - sVar4;
+    if (sVar4 < param_2) {
+      sVar4 = param_2 - sVar4;
       *(undefined2 *)(iVar3 + 4) = 0;
-      in_stack_00000004 = 2;
+      param_1 = 2;
       *(undefined2 *)(*(int *)&this->field_0x14 + 4) = 0;
       *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - sVar4;
     }
     else {
-      *(short *)(iVar3 + 4) = sVar4 - in_stack_00000008;
+      *(short *)(iVar3 + 4) = sVar4 - param_2;
       psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
-      *psVar1 = *psVar1 - in_stack_00000008;
-      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - in_stack_00000008;
+      *psVar1 = *psVar1 - param_2;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - param_2;
       sVar4 = 0;
     }
   }
-  if (in_stack_00000004 == 2) {
+  if (param_1 == 2) {
     iVar3 = *(int *)&this->field_0x10;
     sVar2 = *(short *)(iVar3 + 6);
     if (sVar2 < sVar4) {
       sVar4 = sVar4 - sVar2;
       *(undefined2 *)(iVar3 + 6) = 0;
-      in_stack_00000004 = 4;
+      param_1 = 4;
       *(undefined2 *)(*(int *)&this->field_0x14 + 6) = 0;
       *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + sVar4 * -2;
     }
@@ -613,7 +606,7 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr 
       sVar4 = 0;
     }
   }
-  if (in_stack_00000004 == 4) {
+  if (param_1 == 4) {
     iVar3 = *(int *)&this->field_0x10;
     sVar2 = *(short *)(iVar3 + 8);
     if (sVar2 < sVar4) {
@@ -630,39 +623,37 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr 
       sVar4 = 0;
     }
   }
-  *(short *)&this->field_0x8 = *(short *)&this->field_0x8 - (in_stack_00000008 - sVar4);
-  *(float *)&this->field_0xc =
-       *(float *)&this->field_0xc - (float)(int)(short)(in_stack_00000008 - sVar4);
+  *(short *)&this->field_0x8 = *(short *)&this->field_0x8 - (param_2 - sVar4);
+  *(float *)&this->field_0xc = *(float *)&this->field_0xc - (float)(int)(short)(param_2 - sVar4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B67E0
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins26_004b67e0(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr *this)
+void __thiscall
+TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr *this,short param_1,short param_2)
 
 {
   short *psVar1;
-  short in_stack_00000004;
-  short in_stack_00000008;
   
-  if (in_stack_00000004 == 1) {
+  if (param_1 == 1) {
     psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
-    *psVar1 = *psVar1 - in_stack_00000008;
-    *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - in_stack_00000008;
+    *psVar1 = *psVar1 - param_2;
+    *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - param_2;
   }
   else {
-    if (in_stack_00000004 == 2) {
+    if (param_1 == 2) {
       psVar1 = (short *)(*(int *)&this->field_0x14 + 6);
-      *psVar1 = *psVar1 - in_stack_00000008;
-      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + in_stack_00000008 * -2;
+      *psVar1 = *psVar1 - param_2;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + param_2 * -2;
       return;
     }
-    if (in_stack_00000004 == 4) {
+    if (param_1 == 4) {
       psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
-      *psVar1 = *psVar1 - in_stack_00000008;
-      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + in_stack_00000008 * -4;
+      *psVar1 = *psVar1 - param_2;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + param_2 * -4;
       return;
     }
   }
@@ -671,51 +662,49 @@ void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6850
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int * param_1)
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr *this)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
   (*pcVar1)(&this->field_0x1e,2);
   (*pcVar1)(&this->field_0x20,2);
   (*pcVar1)(&this->field_0x22,0x2e);
   (*pcVar1)(&this->field_0xc,4);
-  (**(code **)(**(int **)&this->field_0x10 + 0x14))();
-  (**(code **)(**(int **)&this->field_0x14 + 0x14))();
-  (**(code **)(**(int **)&this->field_0x18 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x10 + 0x14))(param_1);
+  (**(code **)(**(int **)&this->field_0x14 + 0x14))(param_1);
+  (**(code **)(**(int **)&this->field_0x18 + 0x14))(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B68F0
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int * param_1)
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr *this)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
   (*pcVar1)(&this->field_0x1e,2);
   (*pcVar1)(&this->field_0x20,2);
   (*pcVar1)(&this->field_0x22,0x2e);
   (*pcVar1)(&this->field_0xc,4);
-  (**(code **)(**(int **)&this->field_0x10 + 0x18))();
-  (**(code **)(**(int **)&this->field_0x14 + 0x18))();
-  (**(code **)(**(int **)&this->field_0x18 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x10 + 0x18))(param_1);
+  (**(code **)(**(int **)&this->field_0x14 + 0x18))(param_1);
+  (**(code **)(**(int **)&this->field_0x18 + 0x18))(param_1);
   return;
 }
 

@@ -95,16 +95,14 @@ TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6590
 // GHIDRA_NAME TNextMoveCommand::OrphanCallChain_C1_I17_00487470
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
 TNextMoveCommand * __thiscall
-TNextMoveCommand::OrphanCallChain_C1_I17_00487470(TNextMoveCommand *this)
+TNextMoveCommand::OrphanCallChain_C1_I17_00487470(TNextMoveCommand *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTNextMoveCommandAndMaybeFree_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -15,15 +15,13 @@ CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F90
 // GHIDRA_NAME TUnitOrder::ConstructTUnitOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitOrderBaseState(byte param_1)
 
-TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this)
+TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTUnitOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -458,8 +456,17 @@ void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
       iVar3 = 0;
       if (0 < *(short *)&this->field_0x4) {
         do {
+          nSpawnTileOrOrderObj = *(int *)(*(int *)&this->field_0x8 + 0xb0);
                     /* Specialist mode: instantiate military recruit-order objects and update nation
                        unlock progression tiers. */
+          if (nSpawnTileOrOrderObj == 0) {
+            nProgressValue = 1;
+          }
+          else {
+            nProgressValue = *(short *)(nSpawnTileOrOrderObj + 0x14);
+          }
+          nProgressValue =
+               *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nProgressValue * 0x24);
           adwTempAlloc[0] = AllocateWithFallbackHandler(0x44);
           if ((TMilitaryUnitOrderState *)adwTempAlloc[0] == (TMilitaryUnitOrderState *)0x0) {
             this_00 = (TMilitaryUnitOrderState *)0x0;
@@ -469,7 +476,9 @@ void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
                       TMilitaryUnitOrderState::TMilitaryUnitOrderState
                                 ((TMilitaryUnitOrderState *)adwTempAlloc[0]);
           }
-          TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00);
+          TMilitaryUnitOrderState::InitializeRecruitOrderState
+                    (this_00,*(short *)&this->field_0x48,nProgressValue,
+                     *(short *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0xc));
           if ('2' < *(char *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x8ce)) {
             *(undefined2 *)(this_00 + 0x38) = 100;
           }
@@ -571,16 +580,16 @@ LAB_004b7624:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7850
 // GHIDRA_NAME TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int * param_1)
 
-void __thiscall TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this)
+void __thiscall
+TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x40,2);

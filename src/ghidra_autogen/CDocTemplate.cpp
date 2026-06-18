@@ -86,7 +86,7 @@ void * __cdecl CDocTemplate::memset(void *_Dst,int _Val,size_t _Size)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FAB9A
 // GHIDRA_NAME CDocTemplate::HitTest
-// GHIDRA_PROTO undefined __thiscall HitTest(void)
+// GHIDRA_PROTO undefined __thiscall HitTest(int param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies out structure on success.
 // GHIDRA_COMMENT_END
@@ -94,24 +94,25 @@ void * __cdecl CDocTemplate::memset(void *_Dst,int _Val,size_t _Size)
 /* Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies
    out structure on success. */
 
-bool __thiscall CDocTemplate::HitTest(CDocTemplate *this)
+bool __thiscall CDocTemplate::HitTest(CDocTemplate *this,int param_1,undefined4 param_2)
 
 {
   LRESULT LVar1;
-  int in_stack_00000004;
   undefined4 in_stack_00000010;
-  undefined4 local_3c [3];
+  undefined4 local_3c;
+  undefined4 local_38;
   undefined4 local_30 [11];
   
-  memset(local_3c,0,0x38);
+  memset(&local_3c,0,0x38);
   local_30[0] = 0x2c;
-  if (in_stack_00000004 == 0) {
-    local_3c[0] = 0;
+  if (param_1 == 0) {
+    local_3c = 0;
   }
   else {
-    local_3c[0] = *(undefined4 *)(in_stack_00000004 + 0x1c);
+    local_3c = *(undefined4 *)(param_1 + 0x1c);
   }
-  LVar1 = SendMessageA(*(HWND *)(this + 0x1c),0x40a,0,(LPARAM)local_3c);
+  local_38 = param_2;
+  LVar1 = SendMessageA(*(HWND *)(this + 0x1c),0x40a,0,(LPARAM)&local_3c);
   if (LVar1 != 0) {
     CopyMemoryPossiblyOverlapping(in_stack_00000010,local_30,0x2c);
   }
@@ -120,44 +121,41 @@ bool __thiscall CDocTemplate::HitTest(CDocTemplate *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006036B2
 // GHIDRA_NAME CDocTemplate::InitHashTable_6036b2
-// GHIDRA_PROTO undefined __thiscall InitHashTable_6036b2(void)
+// GHIDRA_PROTO undefined __thiscall InitHashTable_6036b2(int param_1, int param_2)
 
-void __thiscall CDocTemplate::InitHashTable_6036b2(CDocTemplate *this)
+void __thiscall CDocTemplate::InitHashTable_6036b2(CDocTemplate *this,int param_1,int param_2)
 
 {
   void *_Dst;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
   if (*(int *)(this + 4) != 0) {
     FreeHeapBufferIfNotNull(*(int *)(this + 4));
     *(undefined4 *)(this + 4) = 0;
   }
-  if (in_stack_00000008 != 0) {
-    _Dst = (void *)AllocateWithFallbackHandler(in_stack_00000004 << 2);
+  if (param_2 != 0) {
+    _Dst = (void *)AllocateWithFallbackHandler(param_1 << 2);
     *(void **)(this + 4) = _Dst;
-    memset(_Dst,0,in_stack_00000004 << 2);
+    memset(_Dst,0,param_1 << 2);
   }
-  *(int *)(this + 8) = in_stack_00000004;
+  *(int *)(this + 8) = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060508E
 // GHIDRA_NAME CDocTemplate::ConstructObjectVtable0066fc2cWithArgs
-// GHIDRA_PROTO undefined __thiscall ConstructObjectVtable0066fc2cWithArgs(void)
+// GHIDRA_PROTO undefined __thiscall ConstructObjectVtable0066fc2cWithArgs(undefined4 param_1, undefined4 param_2)
 
-CDocTemplate * __thiscall CDocTemplate::ConstructObjectVtable0066fc2cWithArgs(CDocTemplate *this)
+CDocTemplate * __thiscall
+CDocTemplate::ConstructObjectVtable0066fc2cWithArgs
+          (CDocTemplate *this,undefined4 param_1,undefined4 param_2)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 in_stack_00000008;
-  
   ConstructObjectVtable00670b4cBase();
   *(undefined ***)this = &PTR_LAB_0066fc2c;
   memset(this + 0x3c,0,0x20);
-  *(undefined4 *)(this + 0x50) = in_stack_00000008;
-  *(undefined4 *)(this + 0x40) = in_stack_00000004;
-  if ((short)((uint)in_stack_00000004 >> 0x10) == 0) {
+  *(undefined4 *)(this + 0x50) = param_2;
+  *(undefined4 *)(this + 0x40) = param_1;
+  if ((short)((uint)param_1 >> 0x10) == 0) {
     *(uint *)(this + 0x3c) = (uint)*(ushort *)(this + 0x40);
   }
   return this;
@@ -165,27 +163,26 @@ CDocTemplate * __thiscall CDocTemplate::ConstructObjectVtable0066fc2cWithArgs(CD
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060780C
 // GHIDRA_NAME CDocTemplate::ConstructObjectVtable00670b4cWithArg
-// GHIDRA_PROTO undefined __thiscall ConstructObjectVtable00670b4cWithArg(void)
+// GHIDRA_PROTO undefined __thiscall ConstructObjectVtable00670b4cWithArg(undefined4 param_1)
 
-CDocTemplate * __thiscall CDocTemplate::ConstructObjectVtable00670b4cWithArg(CDocTemplate *this)
+CDocTemplate * __thiscall
+CDocTemplate::ConstructObjectVtable00670b4cWithArg(CDocTemplate *this,undefined4 param_1)
 
 {
-  undefined4 in_stack_00000004;
-  
   CCmdTarget();
   *(undefined ***)this = &PTR_LAB_00670b4c;
   memset(this + 0x1c,0,0x20);
   *(undefined4 *)(this + 0x38) = 0;
   *(undefined4 *)(this + 0x34) = 0;
-  *(undefined4 *)(this + 0x1c) = in_stack_00000004;
+  *(undefined4 *)(this + 0x1c) = param_1;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060B910
 // GHIDRA_NAME CDocTemplate::GetStatus
-// GHIDRA_PROTO undefined __thiscall GetStatus(void)
+// GHIDRA_PROTO undefined __thiscall GetStatus(int * param_1)
 
-undefined4 __thiscall CDocTemplate::GetStatus(CDocTemplate *this)
+undefined4 __thiscall CDocTemplate::GetStatus(CDocTemplate *this,int *param_1)
 
 {
   int iVar1;
@@ -193,13 +190,12 @@ undefined4 __thiscall CDocTemplate::GetStatus(CDocTemplate *this)
   DWORD DVar3;
   undefined4 uVar4;
   int *piVar5;
-  int *in_stack_00000004;
   _FILETIME local_1c;
   _FILETIME local_14;
   _FILETIME local_c;
   
-  memset(in_stack_00000004,0,0x118);
-  lstrcpynA((LPSTR)((int)in_stack_00000004 + 0x12),*(LPCSTR *)(this + 0xc),0x104);
+  memset(param_1,0,0x118);
+  lstrcpynA((LPSTR)((int)param_1 + 0x12),*(LPCSTR *)(this + 0xc),0x104);
   if (*(HANDLE *)(this + 4) == (HANDLE)0xffffffff) {
 LAB_0060b9e0:
     uVar4 = 1;
@@ -208,29 +204,29 @@ LAB_0060b9e0:
     BVar2 = GetFileTime(*(HANDLE *)(this + 4),&local_c,&local_14,&local_1c);
     if (BVar2 != 0) {
       DVar3 = GetFileSize(*(HANDLE *)(this + 4),(LPDWORD)0x0);
-      in_stack_00000004[3] = DVar3;
+      param_1[3] = DVar3;
       if (DVar3 != 0xffffffff) {
         if (*(int *)(*(LPCSTR *)(this + 0xc) + -8) == 0) {
 LAB_0060b98f:
-          *(undefined1 *)(in_stack_00000004 + 4) = 0;
+          *(undefined1 *)(param_1 + 4) = 0;
         }
         else {
           DVar3 = GetFileAttributesA(*(LPCSTR *)(this + 0xc));
           if (DVar3 == 0xffffffff) goto LAB_0060b98f;
-          *(char *)(in_stack_00000004 + 4) = (char)DVar3;
+          *(char *)(param_1 + 4) = (char)DVar3;
         }
         piVar5 = (int *)FUN_0060010b(&local_c,0xffffffff);
-        *in_stack_00000004 = *piVar5;
+        *param_1 = *piVar5;
         piVar5 = (int *)FUN_0060010b(&local_14,0xffffffff);
-        in_stack_00000004[2] = *piVar5;
+        param_1[2] = *piVar5;
         piVar5 = (int *)FUN_0060010b(&local_1c,0xffffffff);
         iVar1 = *piVar5;
-        in_stack_00000004[1] = iVar1;
-        if (*in_stack_00000004 == 0) {
-          *in_stack_00000004 = iVar1;
+        param_1[1] = iVar1;
+        if (*param_1 == 0) {
+          *param_1 = iVar1;
         }
-        if (in_stack_00000004[2] == 0) {
-          in_stack_00000004[2] = in_stack_00000004[1];
+        if (param_1[2] == 0) {
+          param_1[2] = param_1[1];
         }
         goto LAB_0060b9e0;
       }
@@ -257,20 +253,20 @@ void __thiscall CDocTemplate::StartDocAFromContextWithDocName(CDocTemplate *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614603
 // GHIDRA_NAME CDocTemplate::OpenDocumentFile_614603
-// GHIDRA_PROTO undefined __thiscall OpenDocumentFile_614603(void)
+// GHIDRA_PROTO undefined __thiscall OpenDocumentFile_614603(LPCSTR param_1)
 
-int * __thiscall CDocTemplate::OpenDocumentFile_614603(CDocTemplate *this)
+int * __thiscall CDocTemplate::OpenDocumentFile_614603(CDocTemplate *this,LPCSTR param_1)
 
 {
   undefined4 *puVar1;
   int *piVar2;
+  LPCSTR lpString2;
   undefined1 *puVar3;
   undefined4 uVar4;
   int iVar5;
   int *piVar6;
   int iVar7;
   undefined4 *puVar8;
-  LPCSTR in_stack_00000004;
   CHAR *pCVar9;
   CHAR *pCVar10;
   undefined4 uVar11;
@@ -284,10 +280,11 @@ int * __thiscall CDocTemplate::OpenDocumentFile_614603(CDocTemplate *this)
   puVar8 = *(undefined4 **)(this + 8);
   local_c = (int *)0x0;
   local_8 = (int *)0x0;
-  if (*in_stack_00000004 == '\"') {
-    in_stack_00000004 = in_stack_00000004 + 1;
+  lpString2 = param_1;
+  if (*param_1 == '\"') {
+    lpString2 = param_1 + 1;
   }
-  lstrcpynA(local_214,in_stack_00000004,0x104);
+  lstrcpynA(local_214,lpString2,0x104);
   puVar3 = (undefined1 *)FindLastCharWithMbcsLeadByteSupport(local_214,0x22);
   if (puVar3 != (undefined1 *)0x0) {
     *puVar3 = 0;
@@ -322,9 +319,9 @@ int * __thiscall CDocTemplate::OpenDocumentFile_614603(CDocTemplate *this)
     }
   }
   else {
-    in_stack_00000004 = (LPCSTR)(**(code **)(*local_8 + 0x68))();
-    if (in_stack_00000004 != (LPCSTR)0x0) {
-      (**(code **)(*local_8 + 0x6c))(&stack0x00000004);
+    param_1 = (LPCSTR)(**(code **)(*local_8 + 0x68))();
+    if (param_1 != (LPCSTR)0x0) {
+      (**(code **)(*local_8 + 0x6c))(&param_1);
       piVar6 = (int *)GetParentFrame();
       if (piVar6 != (int *)0x0) {
         (**(code **)(*piVar6 + 0xd4))(0xffffffff);

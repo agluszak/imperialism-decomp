@@ -25,15 +25,14 @@ TStatusPicture::ConstructTurnEventMainPictureEntry_10CC(TStatusPicture *this,int
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D870
 // GHIDRA_NAME TStatusPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusPicture * __thiscall TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this)
+TStatusPicture * __thiscall
+TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -159,9 +158,11 @@ void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005942F0
 // GHIDRA_NAME TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TStatusPicture *this)
+void __thiscall
+TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TStatusPicture *this,int param_1,int param_2)
 
 {
   TStatusPictureVtbl *pTVar1;
@@ -177,13 +178,11 @@ void __thiscall TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSt
   undefined2 *puVar10;
   int iVar11;
   int *piVar12;
-  int in_stack_00000004;
-  int in_stack_00000008;
   undefined4 uVar13;
   
-  if (((in_stack_00000004 == 10) && (0x7461622f < *(uint *)(in_stack_00000008 + 0x1c))) &&
-     (*(uint *)(in_stack_00000008 + 0x1c) < 0x7461623a)) {
-    iVar11 = (int)(short)(*(short *)(in_stack_00000008 + 0x1c) + -0x6230);
+  if (((param_1 == 10) && (0x7461622f < *(uint *)(param_2 + 0x1c))) &&
+     (*(uint *)(param_2 + 0x1c) < 0x7461623a)) {
+    iVar11 = (int)(short)(*(short *)(param_2 + 0x1c) + -0x6230);
     if (iVar11 != *(int *)&this->field_0x90) {
       pTVar1 = this->vftable;
       uVar3 = (*pTVar1[0x12].slot_0x04)(*(int *)&this->field_0x90 + 0x74616230);
@@ -230,23 +229,23 @@ void __thiscall TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSt
         RecomputeNationComparisonValuesAndNormalizeScale();
       }
     }
-    if ((*(int *)(in_stack_00000008 + 0x1c) == 0x74616231) &&
+    if ((*(int *)(param_2 + 0x1c) == 0x74616231) &&
        (uVar5 = GetAsyncKeyState(0x10), (uVar5 & 0x8000) != 0)) {
       uVar13 = 2;
     }
-    else if ((*(int *)(in_stack_00000008 + 0x1c) == 0x74616232) &&
+    else if ((*(int *)(param_2 + 0x1c) == 0x74616232) &&
             (uVar5 = GetAsyncKeyState(0x10), (uVar5 & 0x8000) != 0)) {
       uVar13 = 0;
     }
     else {
-      if ((*(int *)(in_stack_00000008 + 0x1c) != 0x74616233) ||
+      if ((*(int *)(param_2 + 0x1c) != 0x74616233) ||
          (uVar5 = GetAsyncKeyState(0x10), (uVar5 & 0x8000) == 0)) goto LAB_00594498;
       uVar13 = 1;
     }
     SelectAndActivatePendingEventTypeOffsetFrom1A0B(uVar13);
   }
 LAB_00594498:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
   return;
 }
 

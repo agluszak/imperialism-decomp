@@ -5,16 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FCF0
 // GHIDRA_NAME TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(byte param_1)
 
 TOneTimeAnimation * __thiscall
-TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(TOneTimeAnimation *this)
+TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
+          (TOneTimeAnimation *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTOneTimeAnimationInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -44,27 +43,23 @@ CRuntimeClass * __thiscall TOneTimeAnimation::GetTAnimationClassNamePointer(TOne
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
 // GHIDRA_NAME TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOneTimeAnimationBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTOneTimeAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
-void __thiscall TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(TOneTimeAnimation *this)
+void __thiscall
+TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
+          (TOneTimeAnimation *this,undefined4 param_1,undefined4 *param_2,undefined2 param_3,
+          undefined2 param_4,undefined4 param_5,undefined4 param_6)
 
 {
-  undefined4 in_stack_00000004;
-  undefined4 *in_stack_00000008;
-  undefined2 in_stack_0000000c;
-  undefined2 in_stack_00000010;
-  undefined4 in_stack_00000014;
-  undefined4 in_stack_00000018;
-  
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
-  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
-  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
-  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
-  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
-  *(undefined2 *)&this->field_0xa = in_stack_0000000c;
-  *(undefined2 *)&this->field_0xc = in_stack_00000010;
-  *(undefined4 *)&this->field_0x14 = in_stack_00000014;
-  *(undefined4 *)&this->field_0x18 = in_stack_00000018;
+  *(undefined4 *)&this->field_0x4 = param_1;
+  *(undefined4 *)&this->field_0x1c = *param_2;
+  *(undefined4 *)&this->field_0x20 = param_2[1];
+  *(undefined4 *)&this->field_0x24 = param_2[2];
+  *(undefined4 *)&this->field_0x28 = param_2[3];
+  *(undefined2 *)&this->field_0xa = param_3;
+  *(undefined2 *)&this->field_0xc = param_4;
+  *(undefined4 *)&this->field_0x14 = param_5;
+  *(undefined4 *)&this->field_0x18 = param_6;
   *(undefined2 *)&this->field_0x8 = 0;
   *(undefined4 *)&this->field_0x10 = 0;
   this->field_0x2c = 0;

@@ -92,15 +92,13 @@ CRuntimeClass * __thiscall TLaborPool::GetTLaborPoolClassNamePointer(TLaborPool 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2160
 // GHIDRA_NAME TLaborPool::ConstructTLaborPoolBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTLaborPoolBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTLaborPoolBaseState(byte param_1)
 
-TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this)
+TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestructTLaborPoolAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -119,16 +117,16 @@ void __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B21D0
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int * param_1)
 
-void __thiscall TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this)
+void __thiscall
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0x8,2);
@@ -137,16 +135,16 @@ void __thiscall TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2220
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int * param_1)
 
-void __thiscall TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this)
+void __thiscall
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0x8,2);
@@ -155,58 +153,57 @@ void __thiscall TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2270
 // GHIDRA_NAME TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins44_004b2270(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)
 
-undefined2 __thiscall TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this)
+undefined2 __thiscall
+TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this,int param_1,short param_2)
 
 {
   short sVar1;
   short sVar2;
-  int in_stack_00000004;
-  short in_stack_00000008;
   
   sVar1 = *(short *)&this->field_0x4;
-  if (in_stack_00000008 <= sVar1) {
-    *(short *)&this->field_0x4 = sVar1 - in_stack_00000008;
-    *(short *)(in_stack_00000004 + 4) = *(short *)(in_stack_00000004 + 4) + in_stack_00000008;
+  if (param_2 <= sVar1) {
+    *(short *)&this->field_0x4 = sVar1 - param_2;
+    *(short *)(param_1 + 4) = *(short *)(param_1 + 4) + param_2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 4) = *(short *)(in_stack_00000004 + 4) + sVar1;
-  sVar2 = in_stack_00000008 - *(short *)&this->field_0x4;
+  *(short *)(param_1 + 4) = *(short *)(param_1 + 4) + sVar1;
+  sVar2 = param_2 - *(short *)&this->field_0x4;
   sVar1 = *(short *)&this->field_0x6;
   *(undefined2 *)&this->field_0x4 = 0;
   if (sVar2 <= sVar1) {
     *(short *)&this->field_0x6 = sVar1 - sVar2;
-    *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar2;
+    *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + sVar2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar1;
+  *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + sVar1;
   sVar2 = sVar2 - *(short *)&this->field_0x6;
   sVar1 = *(short *)&this->field_0x8;
   *(undefined2 *)&this->field_0x6 = 0;
   if (sVar2 <= sVar1) {
     *(short *)&this->field_0x8 = sVar1 - sVar2;
-    *(short *)(in_stack_00000004 + 8) = *(short *)(in_stack_00000004 + 8) + sVar2;
+    *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + sVar2;
     return 1;
   }
-  *(short *)(in_stack_00000004 + 8) = sVar1;
+  *(short *)(param_1 + 8) = sVar1;
   *(undefined2 *)&this->field_0x8 = 0;
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5C00
 // GHIDRA_NAME TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b5c00(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 param_1)
 
-void __thiscall TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(TLaborPool *this)
+void __thiscall
+TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(TLaborPool *this,undefined4 param_1)
 
 {
   undefined4 *puVar1;
   TLaborPoolVtbl *pTVar2;
   int iVar3;
-  undefined4 in_stack_00000004;
   
-  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x4 = param_1;
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;

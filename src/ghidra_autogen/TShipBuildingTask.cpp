@@ -26,15 +26,14 @@ void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuil
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6C0
 // GHIDRA_NAME TShipBuildingTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
 
-TShipBuildingTask * __thiscall TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this)
+TShipBuildingTask * __thiscall
+TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestroyTShipBuildingTask_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -42,7 +41,7 @@ TShipBuildingTask * __thiscall TShipBuildingTask::ConstructTTaskBaseState(TShipB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE780
 // GHIDRA_NAME TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Advances one city order context through per-turn requirement resolution and command generation.
 // GHIDRA_COMMENT
@@ -65,7 +64,8 @@ TShipBuildingTask * __thiscall TShipBuildingTask::ConstructTTaskBaseState(TShipB
    Context:
    - Participates in turn processing / deferred command pipeline for city production orders. */
 
-uint __thiscall TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this)
+uint __thiscall
+TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this,int *param_1)
 
 {
   short sVar1;
@@ -78,7 +78,6 @@ uint __thiscall TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildin
   short sVar8;
   int iVar9;
   short *psVar10;
-  int *in_stack_00000004;
   short asStack_e6 [73];
   undefined4 uStack_54;
   undefined4 *puStack_50;
@@ -166,7 +165,7 @@ uint __thiscall TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildin
           }
           *(undefined1 *)(puStack_50 + 4) = 1;
           uStack_54 = 0x5ae915;
-          uVar5 = (**(code **)(*in_stack_00000004 + 0x30))();
+          uVar5 = (**(code **)(*param_1 + 0x30))();
         }
         sVar8 = sVar8 + 1;
       } while (sVar8 < 0x17);
@@ -187,15 +186,15 @@ uint __thiscall TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE9E0
 // GHIDRA_NAME TShipBuildingTask::SerializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall SerializeCityProductionQueueCommand(void)
+// GHIDRA_PROTO undefined __thiscall SerializeCityProductionQueueCommand(int * param_1)
 
-void __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this)
+void __thiscall
+TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,1);
   TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
   (*pcVar1)(&this->field_0x4,2);
@@ -209,16 +208,16 @@ void __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuil
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEA70
 // GHIDRA_NAME TShipBuildingTask::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(int * param_1)
 
-void __thiscall TShipBuildingTask::DeserializeCityProductionQueueCommand(TShipBuildingTask *this)
+void __thiscall
+TShipBuildingTask::DeserializeCityProductionQueueCommand(TShipBuildingTask *this,int *param_1)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
   TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);

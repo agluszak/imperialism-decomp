@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430B00
 // GHIDRA_NAME TBattleDetailBook::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
 TBattleDetailBook * __thiscall
-TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this)
+TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -64,23 +62,21 @@ TBattleDetailBook::GetTEventHandlerClassNamePointer(TBattleDetailBook *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA90
 // GHIDRA_NAME TBattleDetailBook::OrphanCallChain_C1_I05_00415050
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00415050(void)
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00415050(int param_1, int param_2)
 
-void __thiscall TBattleDetailBook::OrphanCallChain_C1_I05_00415050(TBattleDetailBook *this)
+void __thiscall
+TBattleDetailBook::OrphanCallChain_C1_I05_00415050(TBattleDetailBook *this,int param_1,int param_2)
 
 {
   undefined uVar1;
   undefined3 extraout_var;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179)) {
+  if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))
-              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
     return;
   }
-  TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject((TBook *)this);
+  TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject((TBook *)this,param_1,param_2);
   return;
 }
 

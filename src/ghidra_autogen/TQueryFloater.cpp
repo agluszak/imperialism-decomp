@@ -5,15 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D6A0
 // GHIDRA_NAME TQueryFloater::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TQueryFloater * __thiscall TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this)
+TQueryFloater * __thiscall
+TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -129,9 +128,11 @@ void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EA20
 // GHIDRA_NAME TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
-void __thiscall TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject(TQueryFloater *this)
+void __thiscall
+TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TQueryFloater *this,int param_1,int param_2)
 
 {
   uint uVar1;
@@ -148,8 +149,6 @@ void __thiscall TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject(TQue
   undefined3 extraout_var_07;
   TSimMgrVtbl *pTVar4;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
   CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -162,8 +161,8 @@ void __thiscall TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject(TQue
   local_10.m_pchData = (char *)this;
   CString::CString(&local_10);
   local_4 = 0;
-  if (in_stack_00000004 != 10) goto LAB_0056ecbe;
-  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+  if (param_1 != 10) goto LAB_0056ecbe;
+  uVar1 = *(uint *)(param_2 + 0x1c);
   if (uVar1 < 0x62617475) {
     if (uVar1 != 0x62617474) {
       if (uVar1 == 0x61647669) {

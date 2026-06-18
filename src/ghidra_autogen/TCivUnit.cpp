@@ -15,15 +15,13 @@ CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28F0
 // GHIDRA_NAME TCivUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(byte param_1)
 
-TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this)
+TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   DestroyCivUnitOrderObject_Impl();
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -233,7 +231,7 @@ void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2B70
 // GHIDRA_NAME TCivUnit::OrphanRetStub_005c2610
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(void)
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(short param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Relinks a civilian unit object into per-tile occupant chain (tile record +0x20 linked list).
 // GHIDRA_COMMENT
@@ -256,11 +254,10 @@ void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchi
    Persistence significance:
    - This controls when/where a unit becomes attached to a concrete map tile. */
 
-void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this)
+void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this,short param_1)
 
 {
   undefined4 uVar1;
-  short in_stack_00000004;
   
   if (*(short *)&this->field_0x6 != -1) {
     if (*(int *)&this->field_0x10 == 0) {
@@ -275,23 +272,22 @@ void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this)
       *(undefined4 *)(*(int *)&this->field_0x14 + 0x10) = *(undefined4 *)&this->field_0x10;
     }
   }
-  if (in_stack_00000004 == -1) {
+  if (param_1 == -1) {
     *(undefined4 *)&this->field_0x10 = 0;
     *(undefined4 *)&this->field_0x14 = 0;
   }
   else {
-    uVar1 = *(undefined4 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + in_stack_00000004 * 0x24)
-    ;
+    uVar1 = *(undefined4 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + param_1 * 0x24);
     *(undefined4 *)&this->field_0x10 = 0;
     *(undefined4 *)&this->field_0x14 = uVar1;
-    *(TCivUnit **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + in_stack_00000004 * 0x24) = this;
+    *(TCivUnit **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + param_1 * 0x24) = this;
     if (*(int *)&this->field_0x14 != 0) {
       *(TCivUnit **)(*(int *)&this->field_0x14 + 0x10) = this;
-      *(short *)&this->field_0x6 = in_stack_00000004;
+      *(short *)&this->field_0x6 = param_1;
       return;
     }
   }
-  *(short *)&this->field_0x6 = in_stack_00000004;
+  *(short *)&this->field_0x6 = param_1;
   return;
 }
 
@@ -353,7 +349,7 @@ TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderS
     else {
       pTVar2 = g_apNationStates[*(short *)&this->field_0x18]->city;
     }
-    TTrainingOrder::CreateTTrainingOrderInstance(*(TTrainingOrder **)&pTVar2->field_0x1d8);
+    TTrainingOrder::CreateTTrainingOrderInstance(*(TTrainingOrder **)&pTVar2->field_0x1d8,1);
   }
   (*pTVar1[3].ConstructTUnitBaseState)();
   return;

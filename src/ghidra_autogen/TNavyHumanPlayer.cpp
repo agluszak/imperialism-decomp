@@ -5,16 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EF20
 // GHIDRA_NAME TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(byte param_1)
 
 TNavyHumanPlayer * __thiscall
-TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer *this)
+TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   CreateTNavyHumanPlayerInstance(this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -45,15 +43,15 @@ TNavyHumanPlayer::GetTTacticalPlayerClassNamePointer(TNavyHumanPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EFC0
 // GHIDRA_NAME TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyHumanPlayerBaseState(void)
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
 
-void __thiscall TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this)
+void __thiscall
+TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,undefined4 param_1)
 
 {
   int iVar1;
   int iVar2;
   int iVar3;
-  undefined4 in_stack_00000004;
   
   iVar3 = 1;
   do {
@@ -67,22 +65,20 @@ void __thiscall TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanP
     this->field_0x10 = 1;
     return;
   }
-  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,in_stack_00000004);
+  (**(code **)(**(int **)&this->field_0x14 + 0x30))(iVar1,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F070
 // GHIDRA_NAME TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTNavyHumanPlayerAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall DestructTNavyHumanPlayerAndMaybeFree(byte param_1)
 
 TNavyHumanPlayer * __thiscall
-TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(TNavyHumanPlayer *this)
+TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(TNavyHumanPlayer *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TNavyAutoPlayer::CreateTNavyAutoPlayerInstance((TNavyAutoPlayer *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;

@@ -59,15 +59,14 @@ TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF00
 // GHIDRA_NAME TArmyPlacard::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyPlacard * __thiscall TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this)
+TArmyPlacard * __thiscall
+TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -75,24 +74,24 @@ TArmyPlacard * __thiscall TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF50
 // GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(short param_1)
 
-void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
+void __thiscall
+TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this,short param_1)
 
 {
   TArmyPlacardVtbl *pTVar1;
   short sVar2;
   int iVar3;
   char unaff_retaddr;
-  short in_stack_00000004;
   
   sVar2 = UiRuntimeContext::GetActiveNationId();
   iVar3 = CONCAT22((short)((uint)g_pCityOrderCapabilityState >> 0x10),
                    *(short *)(&g_pCityOrderCapabilityState[0x50032].field_0x3be +
                              (this->controlTag + sVar2 * 10) * 2) + 0x4c4);
-  if (in_stack_00000004 != *(short *)&this->field_0x90) {
+  if (param_1 != *(short *)&this->field_0x90) {
     pTVar1 = this->vftable;
-    if (in_stack_00000004 < 1) {
+    if (param_1 < 1) {
       iVar3 = iVar3 + 0x1e;
     }
     (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(iVar3,1);
@@ -100,7 +99,7 @@ void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlaca
       (*pTVar1[0x1c].slot_0x04)();
     }
   }
-  *(short *)&this->field_0x90 = in_stack_00000004;
+  *(short *)&this->field_0x90 = param_1;
   return;
 }
 
@@ -148,9 +147,10 @@ void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C140
 // GHIDRA_NAME TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmyPlacard *this)
+void __thiscall
+TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmyPlacard *this,int param_1)
 
 {
   undefined4 uVar1;

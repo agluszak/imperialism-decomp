@@ -59,15 +59,14 @@ TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3910
 // GHIDRA_NAME TRearFloatWindow::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRearFloatWindow * __thiscall TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this)
+TRearFloatWindow * __thiscall
+TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this,byte param_1)
 
 {
-  byte in_stack_00000004;
-  
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
-  if ((in_stack_00000004 & 1) != 0) {
+  if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
   return this;
@@ -75,9 +74,11 @@ TRearFloatWindow * __thiscall TRearFloatWindow::_scalar_deleting_destructor_(TRe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3960
 // GHIDRA_NAME TRearFloatWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3)
 
-undefined4 __thiscall TRearFloatWindow::SetForeignMinisterReadyFlag14(TRearFloatWindow *this)
+undefined4 __thiscall
+TRearFloatWindow::SetForeignMinisterReadyFlag14
+          (TRearFloatWindow *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   TRearFloatWindowVtbl *pTVar1;
@@ -91,24 +92,25 @@ undefined4 __thiscall TRearFloatWindow::SetForeignMinisterReadyFlag14(TRearFloat
   int iVar3;
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x2f].slot_0x04)();
+  uVar2 = (*pTVar1[0x2f].slot_0x04)(param_1);
   iVar3 = CONCAT31(extraout_var,uVar2);
   switch((short)iVar3) {
   case 3:
-    uVar4 = TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+    uVar4 = TView::thunk_DispatchUiMouseMoveToChildren
+                      ((TView *)this,param_1,param_1,param_2,param_3);
     return uVar4;
   case 4:
-    (*pTVar1[0x30].slot_0x04)();
+    (*pTVar1[0x30].slot_0x04)(param_1);
     return CONCAT31(extraout_var_00,1);
   case 5:
-    (*pTVar1[0x31].GetTEventHandlerClassNamePointer)();
+    (*pTVar1[0x31].GetTEventHandlerClassNamePointer)(param_1);
     return CONCAT31(extraout_var_01,1);
   case 6:
-    (*pTVar1[0x30].GetTEventHandlerClassNamePointer)();
+    (*pTVar1[0x30].GetTEventHandlerClassNamePointer)(param_1);
     return CONCAT31(extraout_var_02,1);
   case 7:
   case 8:
-    (*pTVar1[0x31].slot_0x04)();
+    (*pTVar1[0x31].slot_0x04)(param_1,iVar3);
     iVar3 = (uint)extraout_var_03 << 8;
   }
   return CONCAT31((int3)((uint)iVar3 >> 8),1);

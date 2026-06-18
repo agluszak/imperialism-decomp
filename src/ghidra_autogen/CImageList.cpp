@@ -5,22 +5,21 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6AA4
 // GHIDRA_NAME CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
-// GHIDRA_PROTO undefined __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(void)
+// GHIDRA_PROTO undefined __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1)
 
 bool __thiscall
-CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(CImageList *this)
+CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(CImageList *this,int param_1)
 
 {
   TNetMgr *this_00;
   undefined4 *puVar1;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 != 0) {
+  if (param_1 != 0) {
     this_00 = (TNetMgr *)afxMapHIMAGELIST(1);
-    *(int *)(this + 4) = in_stack_00000004;
-    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00);
+    *(int *)(this + 4) = param_1;
+    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00,param_1);
     *puVar1 = this;
   }
-  return in_stack_00000004 != 0;
+  return param_1 != 0;
 }
 
