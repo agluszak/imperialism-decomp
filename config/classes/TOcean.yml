@@ -15,8 +15,8 @@ generated:
     - {index: 0x06, byte: 0x18, target: 0x00562340, kind: new, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::DeserializeMapActionContextRuntimeState, size: 887, prototype: "undefined DeserializeMapActionContextRuntimeState(void)"}
 curated:
   fields:
-    - {offset: 0x04, type: short, name: nationCount, source: manual, evidence: "Active map-order context nation count. RebuildMapContextAndGlobalMapState @0x0057c8a0 zero-inits; manual TMapOrderContext.h."}
-    - {offset: 0x08, type: "int*", name: contextArray, source: manual, evidence: "Per-nation action context array pointer. Same writer; manual TMapOrderContext.h (stride 0x48 entries)."}
+    - {offset: 0x04, type: short, name: nationCount, source: manual, evidence: "Active TOcean context nation count. RebuildMapContextAndGlobalMapState @0x0057c8a0 zero-inits; manual TOcean.h."}
+    - {offset: 0x08, type: "int*", name: contextArray, source: manual, evidence: "Per-nation action context array pointer. Same writer; manual TOcean.h (stride 0x48 entries)."}
     - {offset: 0x0c, type: short, name: field0c, source: manual, evidence: "Short field cleared at alloc. Evidence @0x0057c8a0."}
     - {offset: 0x10, type: int, name: keyMask, source: manual, evidence: "Dword init at +0x10 in RebuildMapContextAndGlobalMapState; manual keyMask at +0x10."}
     - {offset: 0x14, type: int, name: field14, source: manual, evidence: "Dword init at +0x14 in RebuildMapContextAndGlobalMapState."}

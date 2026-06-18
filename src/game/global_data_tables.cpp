@@ -143,7 +143,7 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 } // extern "C"
 
 #include "game/TZone.h"
-#include "game/TMapOrderContext.h"
+#include "game/TOcean.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMinor.h"
 #include "game/TSelectedCivilianOrderState.h"
@@ -152,7 +152,7 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 // Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
 TZone* g_pMapActionContextListHead = 0;
-TMapOrderContext* g_pActiveMapOrderContext = 0;
+TOcean* g_pActiveMapOrderContext = 0;
 TGlobalMapState* g_pGlobalMapState = 0;
 TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
 

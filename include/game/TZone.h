@@ -8,7 +8,7 @@
 struct CRuntimeClass;
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
-// Per-nation seed contexts in TMapOrderContext use the first 0x48 bytes of this layout.
+// Per-nation seed contexts in TOcean use the first 0x48 bytes of this layout.
 // VTABLE: IMPERIALISM 0x0065c6d8
 class TZone {
 public:
@@ -77,7 +77,7 @@ public:
 
 extern TZone* g_pMapActionContextListHead;
 
-// Nation-sized map-action context embedded in TMapOrderContext::contextArray (stride 0x48).
+// Nation-sized map-action context embedded in TOcean::contextArray (stride 0x48).
 struct TMapNationActionContext {
   char storage[0x48];
 };

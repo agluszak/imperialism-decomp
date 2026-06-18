@@ -1,4 +1,4 @@
-#include "game/TMapOrderContext.h"
+#include "game/TOcean.h"
 
 #include "game/mfc.h"
 #include "game/mfc.h"
@@ -142,7 +142,7 @@ void TZone::HandleKeyDown(int key_id) {
 }
 
 // FUNCTION: IMPERIALISM 0x00562d90
-void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
+void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   int* countHeader;
   TMapNationActionContext* contextBase;
   undefined4* costField;
@@ -200,7 +200,7 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
 }
 
 // FUNCTION: IMPERIALISM 0x005634a0
-void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* city) {
+void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId;
   if (city->selectedOrderB0 == 0) {
     selectedTileId = 1;

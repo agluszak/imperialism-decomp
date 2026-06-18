@@ -2,7 +2,7 @@
 
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
-#include "game/TMapOrderContext.h"
+#include "game/TOcean.h"
 #include "game/UiRuntimeContext.h"
 
 #if defined(_MSC_VER)
@@ -339,7 +339,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   unsigned int tileCandidate = 0;
   char* mapTileBase = reinterpret_cast<char*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
-  TMapOrderContext* mapOrderContext = g_pActiveMapOrderContext;
+  TOcean* mapOrderContext = g_pActiveMapOrderContext;
 
   for (;;) {
     char* tileRecord = mapTileBase + static_cast<short>(tileCandidate) * 0x24;

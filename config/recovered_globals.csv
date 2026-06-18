@@ -15,7 +15,7 @@ g_pLocalizationTable|0x006a20f8|TSimMgr|1|0x118|Evidence: InitializeGlobalRuntim
 g_pUiRuntimeContext|0x006a21bc|UiRuntimeContext|1|0xfc|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0xfc via TViewMgr::ConstructGlobalTurnEventState and stores in g_pUiRuntimeContext.
 g_pApplicationUiRootController|0x006a18e0|ApplicationUiRootController|1|0x48|Evidence: CreateTApplicationInstance / TApplication::ConstructGlobalUiRootControllerState assign this to g_pApplicationUiRootController (TApplication RTTI size 0x48).
 g_pGlobalUiRootController|0x006a1344|TApplication|1|0x48|Evidence: CMainFrame::OnEndPrintPreview constructs TApplication::ConstructGlobalUiRootControllerState and assigns g_pGlobalUiRootController.
-g_pActiveMapOrderContext|0x006a3fbc|TOcean|1|0x18|Evidence: RebuildMapContextAndGlobalMapState allocates 0x18, writes TOceanVtbl_0065c7c8. Manual port: TMapOrderContext.
+g_pActiveMapOrderContext|0x006a3fbc|TOcean|1|0x18|Evidence: RebuildMapContextAndGlobalMapState allocates 0x18, writes TOceanVtbl_0065c7c8. Manual port: TOcean.
 g_pMapActionContextListHead|0x006a3fc8|TZone|1||Singly-linked list head; TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList pushes/pops this pointer.
 g_pNavyPrimaryOrderListHead|0x006a3edc|TShip|1||Singly-linked list head; TShip::{Construct,Destroy}AndLink/UnlinkNavyPrimaryOrderNode maintain this pointer.
 g_pMapContextActionManager|0x006a3338|TArmyMgr|1|0x3a8|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0x3a8 and assigns TArmyMgr::ConstructMapContextActionManager result. Manual diplomacy_globals.h uses int*.

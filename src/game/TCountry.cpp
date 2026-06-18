@@ -9,7 +9,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TLocalizationRuntime.h"
-#include "game/TMapOrderContext.h"
+#include "game/TOcean.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMilitaryUnitOrderState.h"
 #include "game/TStationedUnitNode.h"

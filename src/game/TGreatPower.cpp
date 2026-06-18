@@ -502,7 +502,7 @@ static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* pa
 // --- File-scope helpers/types hoisted here so the IMPERIALISM markers below stay in
 // ascending-address order (reccmp-decomplint function_out_of_order). ---
 
-#include "game/TMapOrderContext.h"
+#include "game/TOcean.h"
 
 static const char kUCountryCppPath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 

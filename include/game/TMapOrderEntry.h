@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-// Child-link node for map-order mission trees (NOT TMapOrderContext / TZone).
+// Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
   int object_ptr;
   TMapOrderChildLinkNode* next;

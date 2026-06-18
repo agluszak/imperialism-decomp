@@ -919,7 +919,7 @@ address|target_cpp|ownership|note
 513290|src/game/TGlobalMapState.cpp|manual|marker_sync
 514c80|src/game/TGlobalMapState.cpp|manual|marker_sync
 515de0|src/game/noop_slots.cpp|manual|marker_sync
-515e00|src/game/TMapOrderContext.cpp|manual|marker_sync
+515e00|src/game/TOcean.cpp|manual|marker_sync
 517c30|src/game/TGlobalMapState.cpp|manual|marker_sync
 518960|src/game/TGlobalMapState.cpp|manual|marker_sync
 519e00|src/game/TMapDialog.cpp|manual|marker_sync
@@ -1178,7 +1178,7 @@ address|target_cpp|ownership|note
 55f090|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55fb60|src/game/TZone.cpp|manual|marker_sync
-55fc40|src/game/TMapOrderContext.cpp|manual|marker_sync
+55fc40|src/game/TOcean.cpp|manual|marker_sync
 55fe60|src/game/TZone.cpp|manual|marker_sync
 55fef0|src/game/TZone.cpp|manual|marker_sync
 55ff70|src/game/TZone.cpp|manual|marker_sync
@@ -1190,10 +1190,10 @@ address|target_cpp|ownership|note
 5616a0|src/game/TPortZone.cpp|manual|marker_sync
 5617d0|src/game/TPortZone.cpp|manual|marker_sync
 562880|src/game/TZone.cpp|manual|marker_sync
-562d90|src/game/TMapOrderContext.cpp|manual|marker_sync
-5634a0|src/game/TMapOrderContext.cpp|manual|marker_sync
+562d90|src/game/TOcean.cpp|manual|marker_sync
+5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TZone.cpp|manual|marker_sync
-564530|src/game/TMapOrderContext.cpp|manual|marker_sync
+564530|src/game/TOcean.cpp|manual|marker_sync
 569d50|src/game/noop_slots.cpp|manual|marker_sync
 56e370|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e640|src/game/TTwoPicSlider.cpp|manual|marker_sync
