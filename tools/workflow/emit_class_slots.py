@@ -16,7 +16,9 @@ from pathlib import Path
 from tools.common import class_manifest as cm
 from tools.common.pipe_csv import normalize_hex
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.thunk_names import ThunkResolver, load_thunk_map
 from tools.workflow import class_codegen as bc
+from tools.workflow.shape_body import shape_body
 from tools.workflow.gen_class import (
     classified_from_manifest,
     header_path,
@@ -110,6 +112,7 @@ def merge_cpp_bodies(
     cls: str,
     body_slots: list[bc.ClassifiedSlot],
     autogen: dict[int, str],
+    resolver: ThunkResolver | None = None,
 ) -> tuple[str, list[int], list[int]]:
     """Insert promoted/SYNTHETIC blocks at ascending address order. Returns (text, promoted, missing)."""
     addr_marker = re.compile(
@@ -142,7 +145,7 @@ def merge_cpp_bodies(
         if addr not in autogen:
             missing.append(addr)
             continue
-        existing[addr] = autogen_to_manual_block(autogen[addr], addr) + "\n"
+        existing[addr] = shape_body(autogen[addr], s, cls, resolver) + "\n"
         promoted.append(addr)
 
     if not existing:
@@ -167,7 +170,7 @@ def emit_class_slots(repo_root: Path, cls: str, write: bool) -> int:
 
     cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
     target_cpp_rel = f"src/game/{cls}.cpp"
-    slots = classified_from_manifest(manifest)
+    slots = classified_from_manifest(manifest, repo_root)
     decl_slots = _emit_slots(slots)
     owned = _owned_addresses(repo_root)
     body_slots = _body_slots(slots, owned, target_cpp_rel)
@@ -179,8 +182,10 @@ def emit_class_slots(repo_root: Path, cls: str, write: bool) -> int:
     autogen_dir = resolve_repo_path(repo_root, "src/ghidra_autogen")
     autogen = collect_autogen_blocks(autogen_dir, _MODULE) if autogen_dir.is_dir() else {}
 
+    resolver = ThunkResolver(load_thunk_map(resolve_repo_path(repo_root, "config/thunk_map.csv")))
+
     cpp_text = cpp_path.read_text(encoding="utf-8") if cpp_path.exists() else ""
-    new_cpp, promoted, missing = merge_cpp_bodies(cpp_text, cls, body_slots, autogen)
+    new_cpp, promoted, missing = merge_cpp_bodies(cpp_text, cls, body_slots, autogen, resolver)
     cpp_changed = new_cpp != cpp_text
 
     sym_plan = bc.plan_symbols(

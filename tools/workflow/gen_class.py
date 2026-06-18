@@ -34,6 +34,8 @@ from __future__ import annotations
 
 import argparse
 import re
+from dataclasses import replace
+from pathlib import Path
 from typing import Any
 
 from tools.common import class_manifest as cm
@@ -41,8 +43,10 @@ from tools.common.file_scan import iter_files
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.source_base_slots import (
+    SOURCE_BASE_SLOTS,
     apply_source_base_slots,
     source_base_scaffold_issues as _source_base_scaffold_issues,
+    source_base_slot_records,
 )
 from tools.workflow.class_codegen import (
     ClassifiedSlot,
@@ -183,12 +187,20 @@ def upsert_block(text: str, cls: str, block: str) -> tuple[str, bool]:
 # --------------------------------------------------------------------------- #
 
 
-def classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
+def classified_from_manifest(
+    manifest: dict[str, Any], repo_root: Path | None = None
+) -> list[ClassifiedSlot]:
     """Rebuild class_codegen.ClassifiedSlot records from the manifest.
 
     Reuses the manifest's already-computed ``kind`` and the curated method name
     (curated wins over the Ghidra name) so the header/cpp scaffolding renders
     from the same slot model as the manifest dump.
+
+    When ``repo_root`` is given, inherited/override slots that lack a local curated
+    name additionally adopt the method name (and, for overrides, signature) of the
+    same slot in the nearest ancestor manifest, so a derived declaration matches the
+    parent virtual it overrides. Without ``repo_root`` only the hardcoded
+    TObject/CObject prefix is resolved (``apply_source_base_slots``).
     """
     curated = cm.curated_slot_methods(manifest)
     out: list[ClassifiedSlot] = []
@@ -223,7 +235,84 @@ def classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
             )
         )
     base = (manifest.get("generated") or {}).get("base") or ""
-    return apply_source_base_slots(out, str(base))
+    out = apply_source_base_slots(out, str(base))
+    if repo_root is not None:
+        out = apply_ancestry_slots(out, manifest, repo_root)
+    return out
+
+
+def _ancestor_slot_names(
+    manifest: dict[str, Any], repo_root: Path
+) -> tuple[dict[int, str], dict[int, Signature]]:
+    """Per-slot ``(qualified_name, signature)`` from the class's ancestor manifests.
+
+    Walks ``generated.ancestry`` nearest-first; for each slot index records the
+    first ancestor that supplies a name, and the first that supplies a signature
+    (an ``inherited`` ancestor slot carries a name but no signature, so the two can
+    come from different ancestors). Recurses through ``classified_from_manifest`` so
+    each ancestor is itself resolved against *its* bases.
+    """
+    cls = manifest.get("class")
+    ancestry = [str(a) for a in (manifest.get("generated") or {}).get("ancestry") or []]
+    names: dict[int, str] = {}
+    sigs: dict[int, Signature] = {}
+    for anc in ancestry[1:]:  # ancestry[0] is the class itself
+        if anc == cls:
+            continue
+        if anc in SOURCE_BASE_SLOTS:
+            # Source-owned root (TObject/CObject): use the authoritative prefix
+            # table, not the root's own uncurated manifest (whose Ghidra names are
+            # the stale cross-class labels source_base_slots exists to correct).
+            anc_slots = source_base_slot_records(anc)
+        else:
+            path = manifest_path(repo_root, anc)
+            if not path.exists():
+                continue
+            anc_slots = classified_from_manifest(cm.load_manifest(path), repo_root)
+        for s in anc_slots:
+            if s.qualified_name and s.index not in names:
+                names[s.index] = s.qualified_name
+            if s.sig is not None and s.index not in sigs:
+                sigs[s.index] = s.sig
+    return names, sigs
+
+
+def apply_ancestry_slots(
+    slots: list[ClassifiedSlot], manifest: dict[str, Any], repo_root: Path
+) -> list[ClassifiedSlot]:
+    """Adopt parent slot names/signatures for un-curated inherited/override slots."""
+    names, sigs = _ancestor_slot_names(manifest, repo_root)
+    if not names:
+        return slots
+    local_curated = set(cm.curated_slot_methods(manifest).keys())
+
+    out: list[ClassifiedSlot] = []
+    for slot in slots:
+        parent_name = names.get(slot.index)
+        if (
+            slot.index in local_curated
+            or slot.kind not in ("override", "inherited")
+            or not parent_name
+        ):
+            out.append(slot)
+            continue
+        name = unqualified(parent_name)
+        if slot.kind == "inherited":
+            # Inherited: only correct the name shown in the slot comment.
+            out.append(replace(slot, qualified_name=parent_name))
+            continue
+        # Override: the C++ signature must match the parent virtual exactly. Prefer
+        # the parent's signature; fall back to the derived prototype with the name
+        # corrected so it still overrides.
+        parent_sig = sigs.get(slot.index)
+        if parent_sig is not None:
+            new_sig = replace(parent_sig, name=name)
+        elif slot.sig is not None:
+            new_sig = replace(slot.sig, name=name)
+        else:
+            new_sig = slot.sig
+        out.append(replace(slot, sig=new_sig, qualified_name=parent_name))
+    return out
 
 
 def source_base_scaffold_issues(cls: str, manifest: dict[str, Any]) -> list[str]:
@@ -418,7 +507,7 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
     if vtable_collision:
         scaffold_issues.append(vtable_collision)
 
-    slots = classified_from_manifest(manifest)
+    slots = classified_from_manifest(manifest, repo_root)
     owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
     header_text = bc.render_header(cls, base, vtable_addr, slots, rtti=rtti)
     header_text = header_text.rstrip("\n") + "\n\n" + render_generated_block(manifest) + "\n"

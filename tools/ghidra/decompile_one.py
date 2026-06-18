@@ -14,6 +14,7 @@ from __future__ import annotations
 import sys
 
 from tools.common import ghidra_env
+from tools.common.thunk_names import ThunkResolver
 
 
 def parse_addrs(argv: list[str]) -> list[int]:
@@ -21,6 +22,62 @@ def parse_addrs(argv: list[str]) -> list[int]:
     for a in argv:
         out.append(int(a, 16) if a.lower().startswith("0x") else int(a, 16))
     return out
+
+
+def make_resolve_real_function(program):
+    """Return a closure that follows thunk/jmp chains to the real function."""
+    fm = program.getFunctionManager()
+    listing = program.getListing()
+
+    def resolve_real_function(start_addr):
+        curr = start_addr
+        for _ in range(8):
+            fn = fm.getFunctionContaining(curr)
+            if fn is not None:
+                if fn.isThunk():
+                    tf = fn.getThunkedFunction(True)
+                    if tf is not None:
+                        curr = tf.getEntryPoint()
+                        continue
+                ins = listing.getInstructionAt(fn.getEntryPoint())
+                if ins is not None and ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
+                    curr = ins.getFlows()[0]
+                    continue
+                return fn
+            ins = listing.getInstructionAt(curr)
+            if ins is not None and ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
+                curr = ins.getFlows()[0]
+                continue
+            break
+        return fm.getFunctionContaining(curr)
+
+    return resolve_real_function
+
+
+def build_thunk_map(program) -> dict[str, str]:
+    """Build the ``thunk_name -> real_name`` map from the Ghidra DB.
+
+    A function is treated as a thunk source if Ghidra marks it ``isThunk()`` or if
+    its entry is a lone ``jmp`` to a single target (a linker jmp stub). Names are
+    recorded only when resolution lands on a different function with a different
+    name.
+    """
+    fm = program.getFunctionManager()
+    listing = program.getListing()
+    resolve_real_function = make_resolve_real_function(program)
+    thunk_map: dict[str, str] = {}
+    for tfn in fm.getFunctions(True):
+        if not tfn.isThunk():
+            ins = listing.getInstructionAt(tfn.getEntryPoint())
+            if ins is None or ins.getMnemonicString().lower() != "jmp" or len(ins.getFlows()) != 1:
+                continue
+        resolved = resolve_real_function(tfn.getEntryPoint())
+        if resolved is not None and resolved.getEntryPoint().getOffset() != tfn.getEntryPoint().getOffset():
+            thunk_name = tfn.getName()  # bare thunk name
+            real_name = resolved.getName(True)  # qualified with namespace
+            if thunk_name != real_name:
+                thunk_map[thunk_name] = real_name
+    return thunk_map
 
 
 def main() -> int:
@@ -51,75 +108,9 @@ def main() -> int:
             return 1
         mon = ConsoleTaskMonitor()
 
-        def resolve_real_function(start_addr):
-            curr = start_addr
-            for _ in range(8):
-                fn = fm.getFunctionContaining(curr)
-                if fn is not None:
-                    if fn.isThunk():
-                        tf = fn.getThunkedFunction(True)
-                        if tf is not None:
-                            curr = tf.getEntryPoint()
-                            continue
-                    ins = program.getListing().getInstructionAt(fn.getEntryPoint())
-                    if ins is not None and ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
-                        curr = ins.getFlows()[0]
-                        continue
-                    return fn
-                ins = program.getListing().getInstructionAt(curr)
-                if ins is not None and ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
-                    curr = ins.getFlows()[0]
-                    continue
-                break
-            return fm.getFunctionContaining(curr)
-
-        # Build thunk-name -> real-name map for post-processing decompiled output
-        import re as _re
-        _thunk_map: dict[str, str] = {}
-        for tfn in fm.getFunctions(True):
-            if not tfn.isThunk():
-                ins = program.getListing().getInstructionAt(tfn.getEntryPoint())
-                if ins is None or ins.getMnemonicString().lower() != "jmp" or len(ins.getFlows()) != 1:
-                    continue
-            resolved = resolve_real_function(tfn.getEntryPoint())
-            if resolved is not None and resolved.getEntryPoint().getOffset() != tfn.getEntryPoint().getOffset():
-                thunk_name = tfn.getName()  # bare thunk name
-                real_name = resolved.getName(True)  # qualified with namespace
-                if thunk_name != real_name:
-                    _thunk_map[thunk_name] = real_name
-        # Two name families need different handling to avoid corrupting the output:
-        #  * "thunk_*" names are genuine Ghidra thunk auto-names that only ever appear as
-        #    thunk calls. The decompiler may print them qualified by the target's class
-        #    (e.g. "TCity::thunk_Foo"); we consume any leading namespace qualifier(s) and
-        #    rewrite the whole token to the authoritative real name "TCity::Foo".
-        #  * other names come from jmp-stub aliases whose name equals the target's bare
-        #    name and thus collide with real symbols (headers, already-correct qualified
-        #    calls, and even type names -- a constructor's simple name like "TGreatPower"
-        #    maps to "TGreatPower::TGreatPower"). We only rewrite these when unqualified
-        #    AND in call position (followed by "("), so we never double-qualify nor
-        #    corrupt a type cast / declaration that merely shares the bare name.
-        _thunk_alts = sorted(
-            (_re.escape(k) for k in _thunk_map if k.startswith("thunk_")), key=len, reverse=True
-        )
-        _other_alts = sorted(
-            (_re.escape(k) for k in _thunk_map if not k.startswith("thunk_")), key=len, reverse=True
-        )
-        _branches = []
-        if _thunk_alts:
-            _branches.append(r'(?:[A-Za-z_]\w*::)*(' + '|'.join(_thunk_alts) + r')')
-        if _other_alts:
-            _branches.append(r'(' + '|'.join(_other_alts) + r')(?=\s*\()')
-        if _branches:
-            _thunk_re = _re.compile(r'(?<![:\w])(?:' + '|'.join(_branches) + r')\b')
-        else:
-            _thunk_re = None
-
-        def resolve_thunks_in_source(c_text: str) -> str:
-            if _thunk_re is None:
-                return c_text
-            return _thunk_re.sub(
-                lambda m: _thunk_map[next(g for g in m.groups() if g is not None)], c_text
-            )
+        resolve_real_function = make_resolve_real_function(program)
+        # Build thunk-name -> real-name map for post-processing decompiled output.
+        resolver = ThunkResolver(build_thunk_map(program))
 
         for addr_int in addrs:
             addr = af.getAddress(addr_int)
@@ -157,7 +148,7 @@ def main() -> int:
             if not res.decompileCompleted():
                 print(f"  DECOMP FAILED: {res.getErrorMessage()}")
                 continue
-            print(resolve_thunks_in_source(res.getDecompiledFunction().getC()))
+            print(resolver.resolve(res.getDecompiledFunction().getC()))
     finally:
         if program is not None:
             program.release(consumer)

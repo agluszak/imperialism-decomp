@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from tools.common import class_manifest as cm
 from tools.workflow.gen_class import (
     classified_from_manifest,
     existing_vtable_annotation,
@@ -15,6 +16,77 @@ from tools.workflow.gen_class import (
     source_base_scaffold_issues,
     upsert_block,
 )
+
+
+class AncestryOverrideNamingTests(unittest.TestCase):
+    def _write(self, repo_root: Path, manifest: dict) -> None:
+        cdir = repo_root / "config" / "classes"
+        cdir.mkdir(parents=True, exist_ok=True)
+        cm.write_manifest(cdir / f"{manifest['class']}.yml", manifest)
+
+    def test_override_adopts_parent_name_and_signature(self) -> None:
+        base = {
+            "class": "TBase",
+            "generated": {
+                "vtable_addr": "0x00650000",
+                "base": "TObject",
+                "ancestry": ["TBase", "TObject"],
+                "slots": [
+                    {"index": "0x0a", "byte": "0x28", "target": "0x004b0a00", "kind": "new",
+                     "ghidra_name": "TBase::FUN_004b0a00", "prototype": "void __thiscall f(int x)"},
+                ],
+            },
+            "curated": {"slots": [{"index": "0x0a", "method": "DoBaseThing"}]},
+        }
+        derived = {
+            "class": "TDerived",
+            "generated": {
+                "vtable_addr": "0x00660000",
+                "base": "TBase",
+                "ancestry": ["TDerived", "TBase", "TObject"],
+                "slots": [
+                    {"index": "0x0a", "byte": "0x28", "target": "0x004c0a00", "kind": "override",
+                     "ghidra_name": "TDerived::FUN_004c0a00", "prototype": "void __thiscall g(int y)"},
+                ],
+            },
+            "curated": {},
+        }
+        with TemporaryDirectory() as tmp:
+            repo_root = Path(tmp)
+            self._write(repo_root, base)
+            self._write(repo_root, derived)
+            slots = {s.index: s for s in classified_from_manifest(derived, repo_root)}
+            slot = slots[10]
+            self.assertEqual(slot.kind, "override")
+            # Adopts the parent virtual's name + signature so it really overrides.
+            self.assertEqual(slot.sig.name, "DoBaseThing")
+            self.assertEqual(slot.sig.args, "int x")
+
+    def test_local_curated_name_wins_over_parent(self) -> None:
+        base = {
+            "class": "TBase",
+            "generated": {
+                "base": "TObject", "ancestry": ["TBase", "TObject"],
+                "slots": [{"index": "0x0a", "byte": "0x28", "target": "0x004b0a00", "kind": "new",
+                           "ghidra_name": "TBase::x", "prototype": "void f()"}],
+            },
+            "curated": {"slots": [{"index": "0x0a", "method": "DoBaseThing"}]},
+        }
+        derived = {
+            "class": "TDerived",
+            "generated": {
+                "base": "TBase", "ancestry": ["TDerived", "TBase", "TObject"],
+                "slots": [{"index": "0x0a", "byte": "0x28", "target": "0x004c0a00", "kind": "override",
+                           "ghidra_name": "TDerived::x", "prototype": "void g()"}],
+            },
+            "curated": {"slots": [{"index": "0x0a", "method": "DerivedSpecial"}]},
+        }
+        with TemporaryDirectory() as tmp:
+            repo_root = Path(tmp)
+            self._write(repo_root, base)
+            self._write(repo_root, derived)
+            slots = {s.index: s for s in classified_from_manifest(derived, repo_root)}
+            self.assertEqual(slots[10].sig.name, "DerivedSpecial")
 
 
 def _manifest(size_verified: bool = False) -> dict:

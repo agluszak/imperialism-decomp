@@ -79,7 +79,7 @@ def main() -> int:
 
             # (2) GENERATED DECLS region (when present)
             if find_decls_block(text, cls) is not None:
-                slots = classified_from_manifest(manifest)
+                slots = classified_from_manifest(manifest, repo_root)
                 emit_slots = [s for s in slots if s.kind not in ("null", "ilt_thunk")]
                 expected_decls = render_generated_decls(manifest, emit_slots).split("\n")
                 dfound = find_decls_block(text, cls)

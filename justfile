@@ -62,6 +62,7 @@ sync-ghidra: _require-ghidra-install
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
     --name-overrides "{{name_overrides}}"
   just prune-ilt-thunks
+  just dump-thunk-map
   just symbols-anchor-gate
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
@@ -129,6 +130,12 @@ ghidra-vtable-dump class vtable *args: _require-ghidra-install
 dump-manifests *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_class_manifests {{args}}
 
+# Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
+# body promotion (emit-class-slots) can resolve jmp-thunk/alias call names without
+# a live Ghidra connection. Read-only and idempotent.
+dump-thunk-map *args: _require-ghidra-install
+  uv run python -m tools.ghidra.dump_thunk_map {{args}}
+
 # Idempotent, manifest-driven class generator. Maintains the marked GENERATED
 # block in include/game/<Class>.h from config/classes/<Class>.yml without touching
 # hand-owned decls/docs/bodies. Dry-run by default; pass --write to apply.
@@ -153,6 +160,7 @@ recover-class class: _require-ghidra-install
   #!/usr/bin/env bash
   set -euo pipefail
   just dump-manifests --only "{{class}}"
+  just dump-thunk-map
   just gen-class "{{class}}" --write
   just emit-class-slots "{{class}}" --write
   just sync-ownership
