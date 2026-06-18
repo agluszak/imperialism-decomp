@@ -7,8 +7,9 @@ import argparse
 import re
 from pathlib import Path
 
+from tools.common import class_manifest as cm
 from tools.common.file_scan import iter_files, is_generated_source_path
-from tools.common.pipe_csv import normalize_hex, read_pipe_map, read_pipe_rows
+from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
 
@@ -33,14 +34,6 @@ def parse_args() -> argparse.Namespace:
         help="reccmp target/module id used in VTABLE annotations.",
     )
     parser.add_argument(
-        "--overrides-csv",
-        default=str(repo_root / "config" / "vtable_annotation_overrides.csv"),
-        help=(
-            "Optional override map (pipe-delimited): class|address. "
-            "Used to resolve duplicate g_vtbl<Class> addresses."
-        ),
-    )
-    parser.add_argument(
         "--duplicate-fallback",
         choices=("skip", "first"),
         default="first",
@@ -60,8 +53,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_override_map(path: Path) -> dict[str, str]:
-    return read_pipe_map(path, key_column="class", value_column="address", normalize_value=normalize_hex)
+def load_override_map(repo_root: Path) -> dict[str, str]:
+    """class -> duplicate-vtable disambiguation address, from manifest
+    curated.vtable_annotation (replaced vtable_annotation_overrides.csv)."""
+    manifests = cm.load_all_manifests(repo_root)
+    return {
+        row["class"]: normalize_hex(row["address"])
+        for row in cm.vtable_annotation_rows(manifests)
+    }
 
 
 def load_vtable_symbol_map(
@@ -122,7 +121,7 @@ def main() -> int:
     if not symbols_csv.exists():
         raise FileNotFoundError(f"Missing symbols CSV: {symbols_csv}")
 
-    overrides = load_override_map(Path(args.overrides_csv))
+    overrides = load_override_map(repo_root_from_file(__file__))
     class_to_addr, resolve_stats = load_vtable_symbol_map(
         symbols_csv=symbols_csv,
         overrides=overrides,

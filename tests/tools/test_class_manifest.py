@@ -116,5 +116,67 @@ class ClassManifestMergeTests(unittest.TestCase):
         self.assertEqual(methods[0x1D]["method"], "GetCitySummaryRecordSlot74")
 
 
+class CuratedProjectionTests(unittest.TestCase):
+    """The accessors that replaced the former class-shaped CSVs."""
+
+    def _store(self) -> dict[str, dict]:
+        # Round-trip through the emitter so we exercise the on-disk representation.
+        m = cm.loads_manifest(
+            cm.dump_manifest(
+                {
+                    "class": "TSimMgr",
+                    "generated": {"vtable_addr": "0x00662a58", "slots": []},
+                    "curated": {
+                        "layout": {"base_offset": "0x04", "base_class": "TObject", "status": "recovered", "header": "TSimMgr.h"},
+                        "slots": [
+                            {"index": "0x1d", "method": "FormatNumWide", "mac_method": "FormatNum", "evidence": "x"},
+                            {"index": "0x1f", "method": "GetStringPrelude"},
+                        ],
+                        "fields": [
+                            {"offset": "0x90", "type": "TCity", "name": "pCity", "source": "manual", "evidence": "e"},
+                        ],
+                        "aliases": [{"alias_class": "TLocalizationRuntime", "vtable_addr": "0x00662a58"}],
+                        "vtable_annotation": {"address": "662a58", "note": "auto"},
+                    },
+                }
+            )
+        )
+        return {"TSimMgr": m}
+
+    def test_slot_method_overrides(self) -> None:
+        ov = cm.slot_method_overrides(self._store())
+        self.assertEqual(ov[("TSimMgr", 0x1D)], {"method_name": "FormatNumWide", "mac_method": "FormatNum"})
+        # mac_method defaults to the method name when absent
+        self.assertEqual(ov[("TSimMgr", 0x1F)], {"method_name": "GetStringPrelude", "mac_method": "GetStringPrelude"})
+
+    def test_vtable_aliases(self) -> None:
+        self.assertEqual(cm.vtable_aliases(self._store()), {"TLocalizationRuntime": "TSimMgr"})
+
+    def test_recovered_field_rows(self) -> None:
+        rows = cm.recovered_field_rows(self._store())
+        self.assertEqual(
+            rows,
+            [{"class": "TSimMgr", "offset": "0x90", "field_type": "TCity", "field_name": "pCity", "note": "e"}],
+        )
+
+    def test_vtable_annotation_rows_preserve_bare_address(self) -> None:
+        rows = cm.vtable_annotation_rows(self._store())
+        self.assertEqual(rows, [{"class": "TSimMgr", "address": "662a58", "note": "auto"}])
+
+    def test_curated_layout(self) -> None:
+        layout = cm.curated_layout(self._store()["TSimMgr"])
+        self.assertEqual(layout["base_offset"], "0x04")
+        self.assertEqual(layout["status"], "recovered")
+
+
+class CuratedOnlyManifestTests(unittest.TestCase):
+    def test_generated_omitted_when_empty(self) -> None:
+        text = cm.dump_manifest(
+            {"class": "Family_X", "curated": {"vtable_annotation": {"address": "63eb24", "note": "n"}}}
+        )
+        self.assertNotIn("generated:", text)
+        self.assertEqual(cm.dump_manifest(cm.loads_manifest(text)), text)  # stable
+
+
 if __name__ == "__main__":
     unittest.main()

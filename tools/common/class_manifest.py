@@ -178,6 +178,23 @@ def vtable_aliases(manifests: dict[str, dict[str, Any]]) -> dict[str, str]:
     return out
 
 
+def vtable_annotation_rows(manifests: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
+    """Duplicate-vtable disambiguation overrides as ``{class, address, note}`` rows.
+
+    Sourced from each manifest's ``curated.vtable_annotation`` (replaced
+    ``vtable_annotation_overrides.csv``). ``address`` is the bare normalize_hex
+    spelling used in symbols.csv.
+    """
+    rows: list[dict[str, str]] = []
+    for cls, manifest in manifests.items():
+        ann = (manifest.get("curated") or {}).get("vtable_annotation") or {}
+        addr = str(ann.get("address") or "").strip()
+        if not addr:
+            continue
+        rows.append({"class": cls, "address": addr, "note": str(ann.get("note") or "").strip()})
+    return rows
+
+
 # --------------------------------------------------------------------------- #
 # Deterministic emitter
 # --------------------------------------------------------------------------- #
@@ -201,6 +218,10 @@ _SLOT_KEY_ORDER = [
 _CURATED_SLOT_KEY_ORDER = ["index", "method", "mac_method", "confidence", "evidence"]
 _FIELD_KEY_ORDER = ["offset", "type", "name", "source", "evidence"]
 _ALIAS_KEY_ORDER = ["alias_class", "vtable_addr", "note"]
+# `address` here is the duplicate-vtable disambiguation address; it is kept in the
+# bare normalize_hex spelling used in symbols.csv (NOT zero-padded), so it is NOT a
+# canonicalizing hex field — the emitter quotes it and it round-trips verbatim.
+_VTABLE_ANNOTATION_KEY_ORDER = ["address", "note"]
 _LAYOUT_KEY_ORDER = [
     "base_offset",
     "base_class",
@@ -268,19 +289,20 @@ def dump_manifest(manifest: dict[str, Any]) -> str:
     out.append(f"class: {manifest['class']}")
 
     gen = manifest.get("generated") or {}
-    out.append("generated:")
-    for key in _GENERATED_KEY_ORDER:
-        if key not in gen:
-            continue
-        value = gen[key]
-        if key == "slots":
-            out.append("  slots:")
-            _emit_list(out, "    ", value, _SLOT_KEY_ORDER)
-        elif key == "ancestry":
-            inner = ", ".join(str(v) for v in value)
-            out.append(f"  ancestry: [{inner}]")
-        else:
-            out.append(f"  {key}: {_scalar(key, value)}")
+    if gen:
+        out.append("generated:")
+        for key in _GENERATED_KEY_ORDER:
+            if key not in gen:
+                continue
+            value = gen[key]
+            if key == "slots":
+                out.append("  slots:")
+                _emit_list(out, "    ", value, _SLOT_KEY_ORDER)
+            elif key == "ancestry":
+                inner = ", ".join(str(v) for v in value)
+                out.append(f"  ancestry: [{inner}]")
+            else:
+                out.append(f"  {key}: {_scalar(key, value)}")
 
     cur = manifest.get("curated") or {}
     out.append("curated:")
@@ -296,6 +318,10 @@ def dump_manifest(manifest: dict[str, Any]) -> str:
     if cur.get("aliases"):
         out.append("  aliases:")
         _emit_list(out, "    ", cur["aliases"], _ALIAS_KEY_ORDER)
+    if cur.get("vtable_annotation"):
+        out.append(
+            f"  vtable_annotation: {_flow_mapping(cur['vtable_annotation'], _VTABLE_ANNOTATION_KEY_ORDER)}"
+        )
 
     return "\n".join(out) + "\n"
 

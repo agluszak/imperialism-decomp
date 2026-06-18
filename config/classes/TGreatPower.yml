@@ -192,3 +192,4 @@ curated:
     - {offset: 0x10e, type: "short[0x17]", name: needCurrentByType, source: manual, evidence: "Manual TGreatPower.h; indexed shorts in 0x0050C1BF (e.g. field_0x110)."}
     - {offset: 0x13c, type: "short[0x17]", name: needTargetByType, source: manual, evidence: "Manual TGreatPower.h; indexed shorts in 0x0050C1BF (e.g. field_0x13c)."}
     - {offset: 0x894, type: TCity, name: city, source: manual, evidence: "Nation's TCity (pointer). Evidence: 26/26 GetCityBuildingProductionValueBySlot callsites resolve to g_apNationStates[i]+0x894 passed as the TCity this; offset fits TGreatPower (0x964) but not TMinor (0x2dc), so it is a great-power-only field."}
+  vtable_annotation: {address: "653938", note: "locked-by-ctor-write-004d89f0"}

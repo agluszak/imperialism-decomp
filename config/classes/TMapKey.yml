@@ -122,3 +122,4 @@ generated:
     - {index: 0x71, byte: 0x1c4, target: 0x0048f520, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TTwoPicSlider::ResetPictureResourceEntry, size: 53, prototype: "void ResetPictureResourceEntry(void)"}
     - {index: 0x72, byte: 0x1c8, target: 0x0048f570, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TPicture::SetPictureResourceIdAndRefresh, size: 118, prototype: "void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)"}
 curated:
+  vtable_annotation: {address: "6406d8", note: "auto-first-from-duplicates"}

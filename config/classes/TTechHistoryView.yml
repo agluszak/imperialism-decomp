@@ -111,3 +111,4 @@ generated:
     - {index: 0x66, byte: 0x198, target: 0x0048c7d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TSoundPlayer::UpdateControlCachedIntFromWindowText, size: 53, prototype: "undefined UpdateControlCachedIntFromWindowText(void)"}
     - {index: 0x67, byte: 0x19c, target: 0x0048bac0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TSoundPlayer::OrphanRetStub_0059add0, size: 43, prototype: "undefined OrphanRetStub_0059add0(void)"}
 curated:
+  vtable_annotation: {address: "6406d8", note: "auto-first-from-duplicates"}
