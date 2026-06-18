@@ -1363,6 +1363,14 @@ undefined4 Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
   return 0;
 }
 
+// ghidra_name TTacNavyToolbar::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005ad110
+undefined4 TTacNavyToolbar_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer
 // ghidra_proto undefined GetTTacNavyToolbarClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005ad160
@@ -2075,6 +2083,14 @@ undefined4 DestructTTechHistoryViewAndMaybeFree(void)
   return 0;
 }
 
+// ghidra_name TGameSetupDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b27d0
+undefined4 TGameSetupDialog_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TGameSetupDialog::GetTGameSetupDialogClassNamePointer
 // ghidra_proto undefined GetTGameSetupDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b2820
@@ -2087,6 +2103,14 @@ undefined4 GetTGameSetupDialogClassNamePointer(void)
 // ghidra_proto undefined DestructTGameSetupDialogAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b2880
 undefined4 DestructTGameSetupDialogAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TMapEditCluster::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b2900
+undefined4 TMapEditCluster_scalar_deleting_destructor(void)
 {
   return 0;
 }
@@ -2115,6 +2139,14 @@ undefined4 DestructTMapEditClusterAndMaybeFree(void)
   return 0;
 }
 
+// ghidra_name TMinorTradeBidsDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b2a30
+undefined4 TMinorTradeBidsDialog_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer
 // ghidra_proto undefined GetTMinorTradeBidsDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b2a80
@@ -2135,6 +2167,14 @@ undefined4 ConstructTMinorTradeBidsDialogBaseState(void)
 // ghidra_proto undefined DestructTMinorTradeBidsDialogAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b2ca0
 undefined4 DestructTMinorTradeBidsDialogAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TRelationshipDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b2d30
+undefined4 TRelationshipDialog_scalar_deleting_destructor(void)
 {
   return 0;
 }
@@ -2171,6 +2211,14 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
   return 0;
 }
 
+// ghidra_name TMinorRelationshipDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b3390
+undefined4 TMinorRelationshipDialog_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TMinorRelationshipDialog::GetTMinorRelationshipDialogClassNamePointer
 // ghidra_proto undefined GetTMinorRelationshipDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b33e0
@@ -2203,6 +2251,14 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
   return 0;
 }
 
+// ghidra_name TGPTreatyDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b3b70
+undefined4 TGPTreatyDialog_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TGPTreatyDialog::GetTGPTreatyDialogClassNamePointer
 // ghidra_proto undefined GetTGPTreatyDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b3bc0
@@ -2227,6 +2283,14 @@ undefined4 DestructTGPTreatyDialogAndMaybeFree(void)
   return 0;
 }
 
+// ghidra_name TMinorTreatyDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b4020
+undefined4 TMinorTreatyDialog_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TMinorTreatyDialog::GetTMinorTreatyDialogClassNamePointer
 // ghidra_proto undefined GetTMinorTreatyDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b4070
@@ -2247,6 +2311,14 @@ undefined4 ConstructTMinorTreatyDialogBaseState(void)
 // ghidra_proto undefined DestructTMinorTreatyDialogAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b45c0
 undefined4 DestructTMinorTreatyDialogAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TAutomatedPlayDialog::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x005b4650
+undefined4 TAutomatedPlayDialog_scalar_deleting_destructor(void)
 {
   return 0;
 }

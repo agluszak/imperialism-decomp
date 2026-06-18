@@ -3475,6 +3475,14 @@ undefined4 RunMfcThreadMessageLoopCore(void)
   return 0;
 }
 
+// ghidra_name CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
+// ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
+// FUNCTION: IMPERIALISM 0x00606451
+undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00606451(void)
+{
+  return 0;
+}
+
 // ghidra_name TMacViewMgr::OnIdle_6064b0
 // ghidra_proto undefined OnIdle_6064b0()
 // FUNCTION: IMPERIALISM 0x006064b0
@@ -3615,6 +3623,14 @@ undefined4 TMacViewMgr_Slot17_Target(void)
 // ghidra_proto undefined TMacViewMgr_Slot16_Target()
 // FUNCTION: IMPERIALISM 0x00606cb8
 undefined4 TMacViewMgr_Slot16_Target(void)
+{
+  return 0;
+}
+
+// ghidra_name CCmdTarget::'scalar_deleting_destructor'
+// ghidra_proto void __thiscall 'scalar_deleting_destructor'(void)
+// FUNCTION: IMPERIALISM 0x00606cbe
+undefined4 CCmdTarget_scalar_deleting_destructor(void)
 {
   return 0;
 }

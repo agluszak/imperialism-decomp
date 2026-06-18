@@ -1859,30 +1859,6 @@ undefined4 Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0(v
   return 0;
 }
 
-// ghidra_name SerializeRecordList_0x0C_WithBlockPool_B
-// ghidra_proto undefined SerializeRecordList_0x0C_WithBlockPool_B()
-// FUNCTION: IMPERIALISM 0x00486df0
-undefined4 SerializeRecordList_0x0C_WithBlockPool_B(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00486f60
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00486f60()
-// FUNCTION: IMPERIALISM 0x00486f60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00486f60(void)
-{
-  return 0;
-}
-
-// ghidra_name TBehavior::CreateTBehaviorInstance
-// ghidra_proto undefined CreateTBehaviorInstance()
-// FUNCTION: IMPERIALISM 0x00486f90
-undefined4 CreateTBehaviorInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00487150
 // ghidra_proto undefined WrapperFor_ftol_At00487150()
 // FUNCTION: IMPERIALISM 0x00487150
@@ -1891,50 +1867,10 @@ undefined4 WrapperFor_ftol_At00487150(void)
   return 0;
 }
 
-// ghidra_name TBehavior::ConstructTBehaviorBaseState
-// ghidra_proto undefined ConstructTBehaviorBaseState()
-// FUNCTION: IMPERIALISM 0x004871e0
-undefined4 ConstructTBehaviorBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBehavior::DestructTBehaviorAndMaybeFree
-// ghidra_proto undefined DestructTBehaviorAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00487210
-undefined4 DestructTBehaviorAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTBehaviorAndMaybeFree_Impl
 // ghidra_proto undefined DestructTBehaviorAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x00487240
 undefined4 DestructTBehaviorAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_SetDwordEcxOffset_8_00487280
-// ghidra_proto undefined OrphanTiny_SetDwordEcxOffset_8_00487280()
-// FUNCTION: IMPERIALISM 0x00487280
-undefined4 OrphanTiny_SetDwordEcxOffset_8_00487280(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_004872a0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_004872a0()
-// FUNCTION: IMPERIALISM 0x004872a0
-undefined4 OrphanLeaf_NoCall_Ins02_004872a0(void)
-{
-  return 0;
-}
-
-// ghidra_name TDialogBehavior::CreateTDialogBehaviorInstance
-// ghidra_proto undefined CreateTDialogBehaviorInstance()
-// FUNCTION: IMPERIALISM 0x004872c0
-undefined4 CreateTDialogBehaviorInstance(void)
 {
   return 0;
 }
@@ -2159,6 +2095,14 @@ undefined4 Helper_Uses_CPtrArray_ctor_At00488030(void)
 // ghidra_proto undefined CompareUnsignedIntsAscending()
 // FUNCTION: IMPERIALISM 0x00488360
 undefined4 CompareUnsignedIntsAscending(void)
+{
+  return 0;
+}
+
+// ghidra_name TCommand::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x00488390
+undefined4 TCommand_scalar_deleting_destructor(void)
 {
   return 0;
 }

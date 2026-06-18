@@ -735,7 +735,7 @@ address|name|size|type|prototype
 486b50|PostCustomMessageBC0ToMainWindow|50|function|undefined PostCustomMessageBC0ToMainWindow()
 486ba0|Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0|393|function|undefined Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0()
 486df0|SerializeRecordList_0x0C_WithBlockPool_B|280|function|undefined SerializeRecordList_0x0C_WithBlockPool_B()
-486f60|WrapperFor_FreeHeapBufferIfNotNull_At00486f60|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00486f60()
+486f60|ApplicationUiRootEmbeddedList::`scalar deleting destructor'|30|function|void* __thiscall `scalar deleting destructor'(unsigned int)
 486f90|TBehavior::CreateTBehaviorInstance|101|function|undefined CreateTBehaviorInstance()
 487150|WrapperFor_ftol_At00487150|30|function|undefined WrapperFor_ftol_At00487150()
 4871c0|TBehavior::GetTBehaviorClassNamePointer|6|function|undefined GetTBehaviorClassNamePointer()

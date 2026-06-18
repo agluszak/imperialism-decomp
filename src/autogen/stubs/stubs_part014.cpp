@@ -1099,6 +1099,14 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004f78e0(void)
   return 0;
 }
 
+// ghidra_name TPanelView::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x004f7970
+undefined4 TPanelView_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TPanelView::GetTPanelViewClassNamePointer
 // ghidra_proto undefined GetTPanelViewClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004f79c0
@@ -1595,6 +1603,14 @@ undefined4 Helper_Uses_thunk_ConstructUiCommandTagResourceEntryBase_At004fded0(v
   return 0;
 }
 
+// ghidra_name TFrameRadioView::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x004fdf50
+undefined4 TFrameRadioView_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name TFrameRadioView::GetTFrameRadioViewClassNamePointer
 // ghidra_proto undefined GetTFrameRadioViewClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004fdfa0
@@ -1631,6 +1647,14 @@ undefined4 OrphanCallChain_C2_I18_004fe190(void)
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTViewBaseState_At004fe1d0()
 // FUNCTION: IMPERIALISM 0x004fe1d0
 undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004fe1d0(void)
+{
+  return 0;
+}
+
+// ghidra_name TScoreGraph::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x004fe240
+undefined4 TScoreGraph_scalar_deleting_destructor(void)
 {
   return 0;
 }
@@ -1871,6 +1895,14 @@ undefined4 AssertUDisplayMgrLine730(void)
 // ghidra_proto undefined DestructTColorFillAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004ff1f0
 undefined4 DestructTColorFillAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name TGWorldPeeker::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x004ff280
+undefined4 TGWorldPeeker_scalar_deleting_destructor(void)
 {
   return 0;
 }

@@ -1179,6 +1179,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
   return 0;
 }
 
+// ghidra_name TEditText::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x00492f30
+undefined4 TEditText_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name InitializeMovieViewOwnedStateBlock_Impl
 // ghidra_proto undefined InitializeMovieViewOwnedStateBlock_Impl()
 // FUNCTION: IMPERIALISM 0x00492f60

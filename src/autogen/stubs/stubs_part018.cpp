@@ -11,6 +11,14 @@ undefined4 DestructTScrollViewAndMaybeFree(void)
   return 0;
 }
 
+// ghidra_name TScrollBarView::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// FUNCTION: IMPERIALISM 0x00573df0
+undefined4 TScrollBarView_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e55
 // ghidra_proto undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e55()
 // FUNCTION: IMPERIALISM 0x00573e55

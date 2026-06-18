@@ -1531,6 +1531,14 @@ undefined4 RenumberAndActivateVisibleDocumentFrames(void)
   return 0;
 }
 
+// ghidra_name CDocument::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
+// FUNCTION: IMPERIALISM 0x00610c0b
+undefined4 CDocument_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
 // ghidra_name InvokeVslot84IfVslot98ReturnsNonZero
 // ghidra_proto undefined InvokeVslot84IfVslot98ReturnsNonZero()
 // FUNCTION: IMPERIALISM 0x00610c87
@@ -1631,6 +1639,14 @@ undefined4 DestructFileExceptionAndReleaseMessageString(void)
 // ghidra_proto undefined ReleaseFileObjectCloseOrAbort()
 // FUNCTION: IMPERIALISM 0x006113f7
 undefined4 ReleaseFileObjectCloseOrAbort(void)
+{
+  return 0;
+}
+
+// ghidra_name CDocument::OrphanLeaf_NoCall_Ins04_005adc30
+// ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// FUNCTION: IMPERIALISM 0x00611420
+undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00611420(void)
 {
   return 0;
 }
@@ -2123,6 +2139,14 @@ undefined4 OnMouseActivate(void)
   return 0;
 }
 
+// ghidra_name CCmdTarget::RenderControlStateTextBySelectionCode
+// ghidra_proto undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
+// FUNCTION: IMPERIALISM 0x0061404d
+undefined4 RenderControlStateTextBySelectionCode_0061404D(void)
+{
+  return 0;
+}
+
 // ghidra_name OnEndPrintPreview
 // ghidra_proto undefined OnEndPrintPreview()
 // FUNCTION: IMPERIALISM 0x0061419f
@@ -2299,6 +2323,14 @@ undefined4 ClearObjectField24Value(void)
   return 0;
 }
 
+// ghidra_name CCmdTarget::'scalar_deleting_destructor'
+// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(void)
+// FUNCTION: IMPERIALISM 0x00614a2e
+undefined4 CCmdTarget_scalar_deleting_destructor_00614A2E(void)
+{
+  return 0;
+}
+
 // ghidra_name CreateNewDocument
 // ghidra_proto undefined CreateNewDocument()
 // FUNCTION: IMPERIALISM 0x00614aeb
@@ -2307,10 +2339,34 @@ undefined4 CreateNewDocument(void)
   return 0;
 }
 
+// ghidra_name CCmdTarget::SerializeTMinisterBaseOrderArrayHeader
+// ghidra_proto undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// FUNCTION: IMPERIALISM 0x00614b12
+undefined4 SerializeTMinisterBaseOrderArrayHeader(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_InitialUpdateFrame_At00614bef
 // ghidra_proto undefined WrapperFor_InitialUpdateFrame_At00614bef()
 // FUNCTION: IMPERIALISM 0x00614bef
 undefined4 WrapperFor_InitialUpdateFrame_At00614bef(void)
+{
+  return 0;
+}
+
+// ghidra_name CCmdTarget::DeletingDestructTMinister
+// ghidra_proto undefined __thiscall DeletingDestructTMinister(void)
+// FUNCTION: IMPERIALISM 0x00614c03
+undefined4 DeletingDestructTMinister(void)
+{
+  return 0;
+}
+
+// ghidra_name CCmdTarget::GetTTaskClassNamePointer
+// ghidra_proto undefined __thiscall GetTTaskClassNamePointer(void)
+// FUNCTION: IMPERIALISM 0x00614c41
+undefined4 GetTTaskClassNamePointer_00614C41(void)
 {
   return 0;
 }
@@ -2507,6 +2563,14 @@ undefined4 OnVScroll(void)
   return 0;
 }
 
+// ghidra_name CCmdTarget::'scalar_deleting_destructor'
+// ghidra_proto int __thiscall 'scalar_deleting_destructor'(uint param_1, short param_2, CPoint param_3)
+// FUNCTION: IMPERIALISM 0x00615a00
+undefined4 CCmdTarget_scalar_deleting_destructor_00615A00(void)
+{
+  return 0;
+}
+
 // ghidra_name CScrollView::DoMouseWheel
 // ghidra_proto undefined DoMouseWheel()
 // FUNCTION: IMPERIALISM 0x00615a34
@@ -2547,6 +2611,14 @@ undefined4 OnFileNew(void)
   return 0;
 }
 
+// ghidra_name CAmbitDocument::OrphanRetStub_0059add0
+// ghidra_proto undefined OrphanRetStub_0059add0()
+// FUNCTION: IMPERIALISM 0x0061849d
+undefined4 OrphanRetStub_0059add0(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
 // ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4()
 // FUNCTION: IMPERIALISM 0x006185e4
@@ -2567,6 +2639,14 @@ undefined4 FormatResourceStringAndDispatchViaThreadState(void)
 // ghidra_proto undefined CallField80VirtualSlot28OrReturnTrue_006186a4()
 // FUNCTION: IMPERIALISM 0x006186a4
 undefined4 CallField80VirtualSlot28OrReturnTrue_006186a4(void)
+{
+  return 0;
+}
+
+// ghidra_name CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// ghidra_proto undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x006186b7
+undefined4 ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 {
   return 0;
 }

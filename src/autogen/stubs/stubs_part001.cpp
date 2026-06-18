@@ -43,6 +43,14 @@ undefined4 thunk_InitializeCityModel(void)
   return 0;
 }
 
+// ghidra_name TControl::thunk_ForwardCityDialogParamToChildSlot48
+// ghidra_proto undefined __thiscall thunk_ForwardCityDialogParamToChildSlot48(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x00401d61
+undefined4 thunk_ForwardCityDialogParamToChildSlot48(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_ReleaseHashIndexedRecordByHandle
 // ghidra_proto undefined thunk_ReleaseHashIndexedRecordByHandle()
 // FUNCTION: IMPERIALISM 0x004020fe
@@ -143,14 +151,6 @@ undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void)
 // ghidra_proto undefined thunk_ConstructFrogCityMarker()
 // FUNCTION: IMPERIALISM 0x00403044
 undefined4 thunk_ConstructFrogCityMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeUiResourceEntryBaseHeaderDefaults
-// ghidra_proto undefined thunk_InitializeUiResourceEntryBaseHeaderDefaults()
-// FUNCTION: IMPERIALISM 0x00403049
-undefined4 thunk_InitializeUiResourceEntryBaseHeaderDefaults(void)
 {
   return 0;
 }
@@ -275,14 +275,6 @@ undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void)
   return 0;
 }
 
-// ghidra_name TForeignMinister::thunk_ConstructTForeignMinister
-// ghidra_proto undefined thunk_ConstructTForeignMinister()
-// FUNCTION: IMPERIALISM 0x00404912
-undefined4 thunk_ConstructTForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers
 // ghidra_proto undefined thunk_AppendPackedColorDwordToMaskBuffers()
 // FUNCTION: IMPERIALISM 0x00404a25
@@ -303,6 +295,14 @@ undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void)
 // ghidra_proto undefined thunk_CreateMissionObjectByKindAndNodeContext()
 // FUNCTION: IMPERIALISM 0x00404e99
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void)
+{
+  return 0;
+}
+
+// ghidra_name THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay
+// ghidra_proto undefined __thiscall thunk_RenderHintHelperWithCtrlModifierOverlay(void)
+// FUNCTION: IMPERIALISM 0x00404fe8
+undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void)
 {
   return 0;
 }
@@ -359,14 +359,6 @@ undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void)
 // ghidra_proto undefined thunk_TemporarilyClearAndRestoreUiInvalidationFlag()
 // FUNCTION: IMPERIALISM 0x004057a4
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName
-// ghidra_proto undefined thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName()
-// FUNCTION: IMPERIALISM 0x004058f3
-undefined4 thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
 {
   return 0;
 }
