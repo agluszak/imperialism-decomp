@@ -1,0 +1,59 @@
+class: THandleStream
+generated:
+  vtable_addr: 0x00649410
+  object_size: 0x18
+  base: TStream
+  ancestry: [THandleStream, TStream, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004895c0, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::GetTStreamClassNamePointer, size: 6, prototype: "undefined GetTStreamClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00489610, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::ConstructTStreamBaseState, size: 30, prototype: "undefined ConstructTStreamBaseState(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00485f70, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ad90, size: 3, prototype: "undefined OrphanRetStub_0059ad90(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00485f90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TMapDialog::OrphanCallChain_C11_I88_004874b0, size: 3, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004896a0, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanCallChain_C1_I06_00488ab0, size: 38, prototype: "undefined OrphanCallChain_C1_I06_00488ab0(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004896e0, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanTiny_ReturnZero_00488ad0, size: 4, prototype: "undefined OrphanTiny_ReturnZero_00488ad0(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x00489740, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanRetStub_00488e30, size: 10, prototype: "undefined OrphanRetStub_00488e30(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x00489700, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanTiny_ReturnZero_00488af0, size: 4, prototype: "undefined OrphanTiny_ReturnZero_00488af0(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x00489760, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanRetStub_00488e50, size: 37, prototype: "undefined OrphanRetStub_00488e50(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x00488a80, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C2_I15_00488a80, size: 26, prototype: "undefined OrphanCallChain_C2_I15_00488a80(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004897a0, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanRetStub_00488b40, size: 74, prototype: "undefined OrphanRetStub_00488b40(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x00488b60, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I09_00488b60, size: 19, prototype: "undefined OrphanCallChain_C1_I09_00488b60(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x00488b90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I09_00488b90, size: 19, prototype: "undefined OrphanCallChain_C1_I09_00488b90(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x00488bc0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I08_00488bc0, size: 21, prototype: "undefined OrphanCallChain_C1_I08_00488bc0(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x00488bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I09_00488bf0, size: 20, prototype: "undefined OrphanCallChain_C1_I09_00488bf0(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x00488c20, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::ReadDwordFromStreamViaVtableSlot3C, size: 19, prototype: "undefined ReadDwordFromStreamViaVtableSlot3C(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x00488ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I13_00488ce0, size: 38, prototype: "undefined OrphanCallChain_C1_I13_00488ce0(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x00488d20, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488d20, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488d20(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x00488d40, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488d40, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488d40(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x00488d60, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488d60, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488d60(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x00488d80, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488d80, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488d80(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x00488da0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I09_00488da0, size: 19, prototype: "undefined OrphanCallChain_C1_I09_00488da0(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x00488ca0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C2_I19_00488ca0, size: 36, prototype: "undefined OrphanCallChain_C2_I19_00488ca0(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x00488c50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50, size: 59, prototype: "undefined Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x00488dd0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C2_I17_00488dd0, size: 30, prototype: "undefined OrphanCallChain_C2_I17_00488dd0(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x00489810, kind: override, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanRetStub_00488e70, size: 113, prototype: "undefined OrphanRetStub_00488e70(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x00488e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488e90, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488e90(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x00488eb0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488eb0, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488eb0(void)"}
+    - {index: 0x21, byte: 0x84, target: 0x00488ed0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488ed0, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488ed0(void)"}
+    - {index: 0x22, byte: 0x88, target: 0x00488ef0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488ef0, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488ef0(void)"}
+    - {index: 0x23, byte: 0x8c, target: 0x00488f10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::WriteDwordToStreamViaVtableSlot78, size: 15, prototype: "undefined WriteDwordToStreamViaVtableSlot78(void)"}
+    - {index: 0x24, byte: 0x90, target: 0x00488f30, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488f30, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488f30(void)"}
+    - {index: 0x25, byte: 0x94, target: 0x00488f50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488f50, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488f50(void)"}
+    - {index: 0x26, byte: 0x98, target: 0x00488f70, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488f70, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488f70(void)"}
+    - {index: 0x27, byte: 0x9c, target: 0x00488f90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488f90, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488f90(void)"}
+    - {index: 0x28, byte: 0xa0, target: 0x00488fb0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488fb0, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488fb0(void)"}
+    - {index: 0x29, byte: 0xa4, target: 0x00488fd0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C1_I06_00488fd0, size: 15, prototype: "undefined OrphanCallChain_C1_I06_00488fd0(void)"}
+    - {index: 0x2a, byte: 0xa8, target: 0x00489070, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TFileStream::CreateTFileStreamInstance, size: 49, prototype: "undefined CreateTFileStreamInstance(void)"}
+    - {index: 0x2b, byte: 0xac, target: 0x00489030, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C2_I21_00489030, size: 42, prototype: "undefined OrphanCallChain_C2_I21_00489030(void)"}
+    - {index: 0x2c, byte: 0xb0, target: 0x00489980, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanLeaf_NoCall_Ins02_00489980, size: 5, prototype: "undefined OrphanLeaf_NoCall_Ins02_00489980(void)"}
+    - {index: 0x2d, byte: 0xb4, target: 0x004899a0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanRetStub_004899a0, size: 3, prototype: "undefined OrphanRetStub_004899a0(void)"}
+    - {index: 0x2e, byte: 0xb8, target: 0x00488ff0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::OrphanCallChain_C2_I18_00488ff0, size: 35, prototype: "undefined OrphanCallChain_C2_I18_00488ff0(void)"}
+    - {index: 0x2f, byte: 0xbc, target: 0x00488b10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::AssertMcAppStreamLine304, size: 32, prototype: "undefined AssertMcAppStreamLine304(void)"}
+    - {index: 0x30, byte: 0xc0, target: 0x00488e00, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TStream::AssertMcAppStreamLine596, size: 30, prototype: "undefined AssertMcAppStreamLine596(void)"}
+    - {index: 0x31, byte: 0xc4, target: 0x00489720, kind: new, is_thunk: false, is_null: false, ghidra_name: THandleStream::OrphanLeaf_NoCall_Ins06_00489720, size: 16, prototype: "undefined OrphanLeaf_NoCall_Ins06_00489720(void)"}
+curated:

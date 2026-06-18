@@ -1,0 +1,20 @@
+class: TTask
+generated:
+  vtable_addr: 0x0066a970
+  object_size: 0x08
+  base: TObject
+  ancestry: [TTask, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005adb70, kind: new, is_thunk: false, is_null: false, ghidra_name: TTask::GetTTaskClassNamePointer, size: 6, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005adbb0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTask::ConstructTTaskBaseState, size: 30, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005adc50, kind: new, is_thunk: false, is_null: false, ghidra_name: TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50, size: 46, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005adc90, kind: new, is_thunk: false, is_null: false, ghidra_name: TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90, size: 46, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x005adc30, kind: new, is_thunk: false, is_null: false, ghidra_name: TTask::OrphanLeaf_NoCall_Ins04_005adc30, size: 15, prototype: "undefined OrphanLeaf_NoCall_Ins04_005adc30(void)"}
+curated:

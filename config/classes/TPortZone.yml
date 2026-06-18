@@ -1,0 +1,12 @@
+class: TPortZone
+generated:
+  vtable_addr: 0x0065c7e4
+  object_size: 0x4c
+  base: TZone
+  ancestry: [TPortZone, TZone, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005621e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TPortZone::DispatchNationPendingActionEventCodes, size: 264, prototype: "undefined DispatchNationPendingActionEventCodes(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004798d0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00415ce0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+curated:

@@ -1,0 +1,14 @@
+class: CPtrList
+generated:
+  vtable_addr: 0x00672eec
+  object_size: 0x1c
+  base: CObject
+  ancestry: [CPtrList, CObject]
+  root: CObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x00623b3a, kind: override, is_thunk: false, is_null: false, ghidra_name: CPtrList::SetForeignMinisterReadyFlag14, size: 6, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00601f40, kind: override, is_thunk: false, is_null: false, ghidra_name: "CPtrList::'scalar_deleting_destructor'", size: 28, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00412bd0, kind: override, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+curated:

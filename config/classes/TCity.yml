@@ -1,0 +1,42 @@
+class: TCity
+generated:
+  vtable_addr: 0x0064f580
+  object_size: 0x2d4
+  base: TObject
+  ancestry: [TCity, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004b2490, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::GetTCityClassNamePointer, size: 6, prototype: "undefined GetTCityClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004b2520, kind: new, is_thunk: false, is_null: false, ghidra_name: "TCity::'scalar_deleting_destructor'", size: 30, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x004b35d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::SerializeCityProductionState, size: 915, prototype: "undefined SerializeCityProductionState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x004b30a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::DeserializeCityProductionState, size: 1044, prototype: "undefined DeserializeCityProductionState(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004b3a60, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::Call1C, size: 129, prototype: "undefined Call1C(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004b3b40, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanCallChain_C13_I161_004b3b40, size: 528, prototype: "undefined OrphanCallChain_C13_I161_004b3b40(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x004b3de0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::Call2C, size: 101, prototype: "undefined Call2C(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x004b3e70, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::RefreshOrderStateSlot0C, size: 242, prototype: "undefined RefreshOrderStateSlot0C(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004b3fb0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::AddNeedVectorSplitSlot34, size: 99, prototype: "undefined AddNeedVectorSplitSlot34(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004b4090, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::AddOwnerNeedTargetsSlot38, size: 62, prototype: "undefined AddOwnerNeedTargetsSlot38(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004b4040, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::AddNeedVectorSlot3C, size: 53, prototype: "undefined AddNeedVectorSlot3C(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x004b4580, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::CreateAltownCityObject, size: 247, prototype: "undefined CreateAltownCityObject(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x004b3b20, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20, size: 13, prototype: "undefined OrphanTiny_SetDwordEcxOffset_b0_004b3b20(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x004b4540, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::WriteQueuePairSlot48, size: 39, prototype: "undefined WriteQueuePairSlot48(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x004b40e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::AllocateNeedFromOwnerSlot4C, size: 123, prototype: "undefined AllocateNeedFromOwnerSlot4C(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x004b46c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanLeaf_NoCall_Ins03_004b46c0, size: 11, prototype: "undefined OrphanLeaf_NoCall_Ins03_004b46c0(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x004b46e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::GetCityBuildingDisplayCapacityBySlot, size: 312, prototype: "undefined GetCityBuildingDisplayCapacityBySlot(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x004b48a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::GetBuildingCapacityTierSlot58, size: 123, prototype: "undefined GetBuildingCapacityTierSlot58(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x004b4940, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::WrapperFor_GetActiveNationId_At004b4940, size: 577, prototype: "undefined WrapperFor_GetActiveNationId_At004b4940(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x004b4d50, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::ToggleCityPowerPlantUpgradeOrder, size: 74, prototype: "void ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)"}
+    - {index: 0x19, byte: 0x64, target: 0x004b4c80, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanLeaf_NoCall_Ins08_004b4c80, size: 45, prototype: "undefined OrphanLeaf_NoCall_Ins08_004b4c80(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x004b4cc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanLeaf_NoCall_Ins11_004b4cc0, size: 47, prototype: "undefined OrphanLeaf_NoCall_Ins11_004b4cc0(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x004b4230, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanLeaf_NoCall_Ins07_004b4230, size: 21, prototype: "undefined OrphanLeaf_NoCall_Ins07_004b4230(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x004b4260, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanLeaf_NoCall_Ins04_004b4260, size: 21, prototype: "undefined OrphanLeaf_NoCall_Ins04_004b4260(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x004b44d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::GetCitySummaryRecordSlot74, size: 78, prototype: "undefined GetCitySummaryRecordSlot74(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x004b4d00, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::IsBasicResourceSlot78, size: 62, prototype: "undefined IsBasicResourceSlot78(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x004b4210, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanRetStub_004b4210, size: 1, prototype: "undefined OrphanRetStub_004b4210(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x004b4180, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::Refresh80, size: 111, prototype: "undefined Refresh80(void)"}
+curated:

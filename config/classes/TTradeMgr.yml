@@ -1,0 +1,44 @@
+class: TTradeMgr
+generated:
+  vtable_addr: 0x0066d990
+  object_size: 0xaf0
+  base: TObject
+  ancestry: [TTradeMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005b7a00, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetTTradeMgrClassNamePointer, size: 6, prototype: "undefined GetTTradeMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005b7a40, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::DestructTTradeMgrAndMaybeFree, size: 30, prototype: "undefined DestructTTradeMgrAndMaybeFree(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005b7d90, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90, size: 346, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005b7c10, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10, size: 298, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x005b7bc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::OrphanCallChain_C2_I25_005b7bc0, size: 56, prototype: "undefined OrphanCallChain_C2_I25_005b7bc0(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x005b7fc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::OrphanCallChain_C3_I50_005b7fc0, size: 137, prototype: "undefined OrphanCallChain_C3_I50_005b7fc0(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x005b8080, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents, size: 2050, prototype: "undefined AccumulateDiplomacyRelationChangesAndQueueEvents(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x005b8aa0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::DispatchNationMetricUpdatePassForAllSlots, size: 28, prototype: "undefined DispatchNationMetricUpdatePassForAllSlots(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x005b8ad0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ComputeNationMetricBaselineValueForSlot, size: 449, prototype: "undefined ComputeNationMetricBaselineValueForSlot(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x005b8d40, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetNationMetricWeightedScoreForSlot, size: 18, prototype: "undefined GetNationMetricWeightedScoreForSlot(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x005b8d70, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetNationMetricAuxWordForSlot, size: 19, prototype: "undefined GetNationMetricAuxWordForSlot(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x005b8da0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale, size: 373, prototype: "undefined ComputeNationMetricDispatchScoreAndResolveScale(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x005b8f80, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetNationMetricRosterWordAtOffset0E, size: 19, prototype: "undefined GetNationMetricRosterWordAtOffset0E(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x005b8fb0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetNationMetricRosterWordAtOffset0C, size: 19, prototype: "undefined GetNationMetricRosterWordAtOffset0C(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x005b8fe0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A, size: 50, prototype: "undefined ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x005b9030, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::GetNationMetricBucketValueByIndex, size: 19, prototype: "undefined GetNationMetricBucketValueByIndex(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x005b9060, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster, size: 225, prototype: "undefined ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x005b9190, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190, size: 60, prototype: "undefined WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x005b9410, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline, size: 134, prototype: "undefined RebuildNationMetricPassesAndClampRowsByBaseline(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x005b94d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C, size: 555, prototype: "undefined ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x005b9790, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::SetNationMetricCellValueByIndex, size: 24, prototype: "undefined SetNationMetricCellValueByIndex(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x005b97c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags, size: 145, prototype: "undefined RunNationUpdatePassesAndResetTransitionFlags(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x005b9890, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations, size: 46, prototype: "undefined RunNationMetricPreUpdatePassAcrossSecondaryNations(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x005b9b30, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores, size: 802, prototype: "undefined BuildSecondaryNationMetricBucketsAndWeightedTrendScores(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x005b98d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores, size: 467, prototype: "undefined BuildEligibleNationMetricBucketsAndWeightedTrendScores(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x005b9f70, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::IsNationMetricCellNegative, size: 28, prototype: "undefined IsNationMetricCellNegative(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x005b9fa0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::IsNationMetricCellPositive, size: 28, prototype: "undefined IsNationMetricCellPositive(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x005b9fd0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter, size: 142, prototype: "undefined AllocateAndPopulateLinkedValueCollectionFromRosterFilter(void)"}
+    - {index: 0x21, byte: 0x84, target: 0x005ba090, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::SelectPreferredNationMetricCodeFromLookup, size: 51, prototype: "undefined SelectPreferredNationMetricCodeFromLookup(void)"}
+    - {index: 0x22, byte: 0x88, target: 0x005b9f30, kind: new, is_thunk: false, is_null: false, ghidra_name: TTradeMgr::ComputeNationMetricPowerScale, size: 37, prototype: "undefined ComputeNationMetricPowerScale(void)"}
+curated:

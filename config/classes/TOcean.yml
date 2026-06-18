@@ -1,0 +1,16 @@
+class: TOcean
+generated:
+  vtable_addr: 0x0065c7c8
+  object_size: 0x18
+  base: TObject
+  ancestry: [TOcean, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x00562190, kind: new, is_thunk: false, is_null: false, ghidra_name: TOcean::GetTOceanClassNamePointer, size: 6, prototype: "undefined GetTOceanClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00562140, kind: new, is_thunk: false, is_null: false, ghidra_name: TOcean::DestroyTPortZoneManager, size: 30, prototype: "undefined DestroyTPortZoneManager(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005628f0, kind: new, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::SerializeMapActionContextRuntimeState, size: 399, prototype: "undefined SerializeMapActionContextRuntimeState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00562340, kind: new, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::DeserializeMapActionContextRuntimeState, size: 887, prototype: "undefined DeserializeMapActionContextRuntimeState(void)"}
+curated:

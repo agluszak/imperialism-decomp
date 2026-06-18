@@ -1,0 +1,51 @@
+class: TCountry
+generated:
+  vtable_addr: 0x00653868
+  object_size: 0x94
+  base: TObject
+  ancestry: [TCountry, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004d67b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::GetTCountryClassNamePointer, size: 6, prototype: "undefined GetTCountryClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004d6850, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::DestructTCountryAndMaybeFree, size: 30, prototype: "undefined DestructTCountryAndMaybeFree(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x004d6e60, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60, size: 403, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x004d6bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders, size: 487, prototype: "undefined DeserializeRecruitScenarioAndInstantiateOrders(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004d6ba0, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireModeForTargetNation, size: 62, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004d70e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0, size: 66, prototype: "undefined OrphanLeaf_NoCall_Ins06_004d87b0(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x004d7070, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::SelectCandidateTilesWithLowGroundUnitCount, size: 66, prototype: "undefined SelectCandidateTilesWithLowGroundUnitCount(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x004d71b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920, size: 1153, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004d7770, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireModeForTargetNation, size: 189, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004d7ae0, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers, size: 15, prototype: "undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004d8000, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 711, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x004d87b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins06_004d87b0, size: 25, prototype: "undefined OrphanLeaf_NoCall_Ins06_004d87b0(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x004d87e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::SelectCandidateTilesWithLowGroundUnitCount, size: 243, prototype: "undefined SelectCandidateTilesWithLowGroundUnitCount(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x004d8920, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins07_004d8920, size: 27, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x004d7b20, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireModeForTargetNation, size: 161, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x004d7c00, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers, size: 97, prototype: "undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x004d7c90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ApplyJoinEmpireMode1TargetTransition, size: 111, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x004d7d50, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ApplyJoinEmpireMode2FinalizeNationNameState, size: 13, prototype: "undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x004d7d20, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::IsDiplomacyTargetClassCode200Match, size: 21, prototype: "undefined IsDiplomacyTargetClassCode200Match(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x004d7d70, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::RemoveRegionIdFromNationOwnedRegionList, size: 19, prototype: "undefined RemoveRegionIdFromNationOwnedRegionList(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x004d7da0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::AddRegionIdToNationOwnedRegionList, size: 19, prototype: "undefined AddRegionIdToNationOwnedRegionList(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x004d7dd0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::SetNationPercentFieldByModeAndDescriptorLinks, size: 140, prototype: "undefined SetNationPercentFieldByModeAndDescriptorLinks(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x004d7e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanRetStub_004d7e90, size: 3, prototype: "undefined OrphanRetStub_004d7e90(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x004d7ee0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0, size: 6, prototype: "undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x004d7f00, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins02_004d7f00, size: 4, prototype: "undefined OrphanLeaf_NoCall_Ins02_004d7f00(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x004d7f20, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins02_004d7f20, size: 6, prototype: "undefined OrphanLeaf_NoCall_Ins02_004d7f20(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x004d7f40, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins02_004d7f40, size: 6, prototype: "undefined OrphanLeaf_NoCall_Ins02_004d7f40(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x004d7fa0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanRetStub_004d7fa0, size: 3, prototype: "undefined OrphanRetStub_004d7fa0(void)"}
+    - {index: 0x21, byte: 0x84, target: 0x004d7fc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0, size: 5, prototype: "undefined OrphanLeaf_NoCall_Ins02_004d7fc0(void)"}
+    - {index: 0x22, byte: 0x88, target: 0x004d7b00, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateActionStub, size: 5, prototype: "undefined ReturnFalseNationStateActionStub(void)"}
+    - {index: 0x23, byte: 0x8c, target: 0x004d7fe0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanRetStub_004d7fe0, size: 3, prototype: "undefined OrphanRetStub_004d7fe0(void)"}
+    - {index: 0x24, byte: 0x90, target: 0x004d7f60, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateCapabilityFlag90, size: 5, prototype: "undefined ReturnFalseNationStateCapabilityFlag90(void)"}
+    - {index: 0x25, byte: 0x94, target: 0x004d7f80, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::OrphanRetStub_004d7f80, size: 3, prototype: "undefined OrphanRetStub_004d7f80(void)"}
+    - {index: 0x26, byte: 0x98, target: 0x004d6730, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateCapabilityFlag98, size: 3, prototype: "undefined ReturnFalseNationStateCapabilityFlag98(void)"}
+    - {index: 0x27, byte: 0x9c, target: 0x004d6750, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateCapabilityFlag9C, size: 3, prototype: "undefined ReturnFalseNationStateCapabilityFlag9C(void)"}
+    - {index: 0x28, byte: 0xa0, target: 0x004d6770, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateCapabilityFlagA0, size: 3, prototype: "undefined ReturnFalseNationStateCapabilityFlagA0(void)"}
+    - {index: 0x29, byte: 0xa4, target: 0x004d6790, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::NoOpNationSelectedRegionAndMapCellLabelHook, size: 3, prototype: "undefined NoOpNationSelectedRegionAndMapCellLabelHook(void)"}
+curated:

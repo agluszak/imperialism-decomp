@@ -43,3 +43,5 @@ module|tools.common.ghidra_env|dependency:tools.ghidra.listing_one|Shared pyghid
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
 module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper
+module|tools.ghidra.dump_class_manifests|just:dump-manifests|Stage 0: batch-dump per-class manifests (config/classes/<Class>.yml) from Ghidra
+module|tools.common.class_manifest|dependency:tools.ghidra.dump_class_manifests|Per-class manifest schema, deterministic YAML emitter/loader, curated-wins merge

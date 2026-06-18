@@ -1,0 +1,29 @@
+class: TShipOrder
+generated:
+  vtable_addr: 0x0064f738
+  object_size: 0x4c
+  base: TProductionOrder
+  ancestry: [TShipOrder, TProductionOrder, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004b84a0, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::GetTProductionOrderClassNamePointer, size: 6, prototype: "undefined GetTProductionOrderClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004b84e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::ConstructTShipOrderBaseState, size: 30, prototype: "undefined ConstructTShipOrderBaseState(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x004b4fe0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0, size: 85, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x004b5060, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060, size: 85, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004b4f70, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TNewGameCommand::InitializeBasicCityOrderContext, size: 65, prototype: "undefined InitializeBasicCityOrderContext(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x004b8800, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::OrphanCallChain_C1_I16_004b5100, size: 278, prototype: "undefined OrphanCallChain_C1_I16_004b5100(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x004b86d0, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0, size: 234, prototype: "undefined OrphanLeaf_NoCall_Ins02_004b50e0(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004b8970, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::OrphanRetStub_004b5160, size: 20, prototype: "undefined OrphanRetStub_004b5160(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004b5140, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TProductionOrder::ResetCityOrderItemDerivedStateNoop, size: 1, prototype: "undefined ResetCityOrderItemDerivedStateNoop(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004b5180, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TProductionOrder::InitializeCityOrderItemWorkingBuffers, size: 32, prototype: "undefined InitializeCityOrderItemWorkingBuffers(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x004b8b80, kind: override, is_thunk: false, is_null: false, ghidra_name: TShipOrder::CreateTItemOrderInstance, size: 201, prototype: "undefined CreateTItemOrderInstance(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x004b85a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0, size: 111, prototype: "undefined OrphanLeaf_NoCall_Ins25_004b85a0(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x004b8630, kind: new, is_thunk: false, is_null: false, ghidra_name: TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630, size: 117, prototype: "undefined OrphanLeaf_NoCall_Ins39_004b8630(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x004b89a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability, size: 384, prototype: "undefined CommitQueuedNavyOrdersAndUpdateTierByCapability(void)"}
+curated:

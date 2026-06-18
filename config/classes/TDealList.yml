@@ -1,0 +1,27 @@
+class: TDealList
+generated:
+  vtable_addr: 0x0066da38
+  object_size: 0x18
+  base: TSortedPtrList
+  ancestry: [TDealList, TSortedPtrList, CPtrArray, CObject]
+  root: CObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005ba1a0, kind: override, is_thunk: false, is_null: false, ghidra_name: TDealList::GetTEventHandlerClassNamePointer, size: 6, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005ba1f0, kind: override, is_thunk: false, is_null: false, ghidra_name: "TDealList::'scalar_deleting_destructor'", size: 30, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00412bd0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005e1f10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TCommand::'scalar_deleting_destructor'", size: 103, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005e1e50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::GetTEventHandlerClassNamePointer, size: 136, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004880a0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TCommand::'scalar_deleting_destructor'", size: 56, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004880f0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::GetTEventHandlerClassNamePointer, size: 5, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00488110, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TCommand::'scalar_deleting_destructor'", size: 17, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x00488140, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::OrphanCallChain_C11_I88_004874b0, size: 12, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x00488160, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::OrphanLeaf_NoCall_Ins07_004d8920, size: 26, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x00488190, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::OrphanCallChain_C11_I88_004874b0, size: 43, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004881d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::GetTEventHandlerClassNamePointer, size: 8, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004881f0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::SetForeignMinisterReadyFlag14, size: 156, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004882c0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 60, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x00488310, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCommand::UpdateControlCachedIntFromWindowText, size: 60, prototype: "undefined UpdateControlCachedIntFromWindowText(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x005ba260, kind: override, is_thunk: false, is_null: false, ghidra_name: TDealList::OrphanRetStub_0059add0, size: 202, prototype: "undefined OrphanRetStub_0059add0(void)"}
+curated:

@@ -1,0 +1,24 @@
+class: TFocusAnimation
+generated:
+  vtable_addr: 0x0064c450
+  object_size: 0x30
+  base: TAnimation
+  ancestry: [TFocusAnimation, TAnimation, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004a00a0, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::GetTAnimationClassNamePointer, size: 6, prototype: "undefined GetTAnimationClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004a0050, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050, size: 30, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At004a0050(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00485f70, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ad90, size: 3, prototype: "undefined OrphanRetStub_0059ad90(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00485f90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TMapDialog::OrphanCallChain_C11_I88_004874b0, size: 3, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004a0140, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::ConstructTFocusAnimationBaseState, size: 51, prototype: "undefined ConstructTFocusAnimationBaseState(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x004a0250, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::RenderBattleReportInsetWithPaletteShift, size: 19, prototype: "undefined RenderBattleReportInsetWithPaletteShift(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x0049f2d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle, size: 295, prototype: "undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004a0190, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::DestructTFocusAnimationAndMaybeFree, size: 138, prototype: "undefined DestructTFocusAnimationAndMaybeFree(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004a0280, kind: override, is_thunk: false, is_null: false, ghidra_name: TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280, size: 274, prototype: "undefined Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)"}
+curated:

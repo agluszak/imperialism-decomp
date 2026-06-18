@@ -1,0 +1,41 @@
+class: CCmdTarget
+generated:
+  vtable_addr: 0x006733f8
+  object_size: 0x1c
+  base: CObject
+  ancestry: [CCmdTarget, CObject]
+  root: CObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x00614ca9, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::SetForeignMinisterReadyFlag14, size: 75, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00606cbe, kind: override, is_thunk: false, is_null: false, ghidra_name: "CCmdTarget::'scalar_deleting_destructor'", size: 50, prototype: "void 'scalar_deleting_destructor'(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00606c4e, kind: override, is_thunk: false, is_null: false, ghidra_name: "CDocument::'scalar_deleting_destructor'", size: 6, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00606c54, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::GetTEventHandlerClassNamePointer, size: 5, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00606c59, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::OrphanRetStub_004be6d0, size: 3, prototype: "undefined OrphanRetStub_004be6d0(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00606c5c, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::OrphanCallChain_C11_I88_004874b0, size: 3, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00606c5f, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::OrphanLeaf_NoCall_Ins07_004d8920, size: 8, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x00606ca6, kind: override, is_thunk: false, is_null: false, ghidra_name: "CCmdTarget::'scalar_deleting_destructor'", size: 6, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x00606d09, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::OrphanCallChain_C7_I57_004be5b0, size: 6, prototype: "undefined OrphanCallChain_C7_I57_004be5b0(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00606cac, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::SetForeignMinisterReadyFlag14, size: 6, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x00606cf9, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::GetTEventHandlerClassNamePointer, size: 6, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x00606cb8, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::OrphanRetStub_0059add0, size: 6, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x00606cb2, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 6, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x00606cf0, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::OrphanCallChain_C7_I57_004be5b0, size: 4, prototype: "undefined OrphanCallChain_C7_I57_004be5b0(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x00606cf4, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::SetForeignMinisterReadyFlag14, size: 5, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x00606d04, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::GetTEventHandlerClassNamePointer, size: 5, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x00606cff, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 5, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x006148af, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 168, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x005ead10, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::ConstructTTaskBaseState, size: 11, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x005ead10, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::ConstructTTaskBaseState, size: 11, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x00614a19, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::GetTEventHandlerClassNamePointer, size: 10, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x00614a23, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::OrphanRetStub_0059add0, size: 11, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x00614a04, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30, size: 21, prototype: "undefined OrphanLeaf_NoCall_Ins04_005adc30(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x00614a2e, kind: override, is_thunk: false, is_null: false, ghidra_name: "CCmdTarget::'scalar_deleting_destructor'", size: 189, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x00614aeb, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::SerializeTMinisterBaseOrderArrayHeader, size: 39, prototype: "undefined SerializeTMinisterBaseOrderArrayHeader(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x00614b12, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::SerializeTMinisterBaseOrderArrayHeader, size: 105, prototype: "undefined SerializeTMinisterBaseOrderArrayHeader(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x00614bef, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::GetTMinisterClassNamePointer, size: 20, prototype: "undefined GetTMinisterClassNamePointer(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x00614c03, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::DeletingDestructTMinister, size: 62, prototype: "undefined DeletingDestructTMinister(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x00614c41, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::GetTTaskClassNamePointer, size: 53, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x005ead10, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::ConstructTTaskBaseState, size: 11, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x005ead10, kind: override, is_thunk: false, is_null: false, ghidra_name: CCmdTarget::ConstructTTaskBaseState, size: 11, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x00614c76, kind: override, is_thunk: false, is_null: false, ghidra_name: "CCmdTarget::'scalar_deleting_destructor'", size: 51, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+curated:

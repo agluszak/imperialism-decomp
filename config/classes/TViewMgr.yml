@@ -1,0 +1,28 @@
+class: TViewMgr
+generated:
+  vtable_addr: 0x0066f120
+  object_size: 0xfc
+  base: TObject
+  ancestry: [TViewMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005d5040, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::GetTViewMgrClassNamePointer, size: 6, prototype: "undefined GetTViewMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005d50b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::DestroyTurnEventState, size: 30, prototype: "undefined DestroyTurnEventState(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005d5250, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::SerializeTurnEventDispatchState, size: 13, prototype: "undefined SerializeTurnEventDispatchState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005d5200, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::DeserializeTurnEventDispatchState, size: 57, prototype: "undefined DeserializeTurnEventDispatchState(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x005d51e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::ReleaseTurnEventDialogIfPresent, size: 12, prototype: "undefined ReleaseTurnEventDialogIfPresent(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x005d5100, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::LoadTurnEventCursorTable, size: 36, prototype: "undefined LoadTurnEventCursorTable(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x005dcaa0, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog, size: 260, prototype: "undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x005d5780, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::UpdatePaletteIndexFromTurnEventCode, size: 22, prototype: "undefined UpdatePaletteIndexFromTurnEventCode(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x005d5750, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::ApplyTurnEventPaletteColorByEventCode, size: 22, prototype: "undefined ApplyTurnEventPaletteColorByEventCode(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x005d5960, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::ClassifyTurnStateForOverlayMode, size: 47, prototype: "undefined ClassifyTurnStateForOverlayMode(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x005d6480, kind: new, is_thunk: false, is_null: false, ghidra_name: TToolBarCluster::BuildAndShowTurnOverlayByMode, size: 999, prototype: "undefined BuildAndShowTurnOverlayByMode(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x005d57b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog, size: 328, prototype: "undefined HandleTurnEventVtableSlot40RefreshGoldDialog(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x005d69b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::ComputeTurnEventDialogPlacementByCode, size: 339, prototype: "undefined ComputeTurnEventDialogPlacementByCode(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x005d6b70, kind: new, is_thunk: false, is_null: false, ghidra_name: TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent, size: 84, prototype: "undefined RefreshMainViewNationIndicatorForCurrentTurnEvent(void)"}
+curated:

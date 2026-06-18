@@ -1,0 +1,64 @@
+class: TZone
+generated:
+  vtable_addr: 0x0065c6d8
+  object_size: 0x48
+  base: TObject
+  ancestry: [TZone, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x0055e6e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::DispatchNationPendingActionEventCodes, size: 6, prototype: "undefined DispatchNationPendingActionEventCodes(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00562880, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::SetNationPendingActionStateAndPayload, size: 80, prototype: "undefined SetNationPendingActionStateAndPayload(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x0055eff0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ExecuteNationPendingActionStateMachine, size: 88, prototype: "undefined ExecuteNationPendingActionStateMachine(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x0055ed20, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::HasQueuedCivWorkOrderType7, size: 564, prototype: "undefined HasQueuedCivWorkOrderType7(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x0055ec60, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::GetTCountryClassNamePointer, size: 65, prototype: "undefined GetTCountryClassNamePointer(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x0055f780, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::OrphanRetStub_0059add0, size: 678, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0055f070, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::GetTEventHandlerClassNamePointer, size: 16, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x0055f090, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::HandleCityDialogHintClusterUpdate, size: 16, prototype: "undefined HandleCityDialogHintClusterUpdate(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x0055e820, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::DeserializeRecruitScenarioAndInstantiateOrders, size: 3, prototype: "undefined DeserializeRecruitScenarioAndInstantiateOrders(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x0055e840, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireModeForTargetNation, size: 3, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x0055e860, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x0055e880, kind: new, is_thunk: false, is_null: false, ghidra_name: "TAutoGreatPower::'scalar_deleting_destructor'", size: 5, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x0055e8a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0, size: 5, prototype: "undefined OrphanLeaf_NoCall_Ins06_004d87b0(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x0055e8c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount, size: 12, prototype: "undefined SelectCandidateTilesWithLowGroundUnitCount(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x0055fe60, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920, size: 100, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x0055fef0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireModeForTargetNation, size: 96, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x00560150, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers, size: 638, prototype: "undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x00560580, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 276, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
+    - {index: 0x18, byte: 0x60, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
+    - {index: 0x19, byte: 0x64, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
+    - {index: 0x1a, byte: 0x68, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
+    - {index: 0x1b, byte: 0x6c, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
+    - {index: 0x1c, byte: 0x70, target: 0x0055e9c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 167, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x0055e8e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::GetOrAppendUniqueZonePointerInPrimaryArray, size: 167, prototype: "undefined GetOrAppendUniqueZonePointerInPrimaryArray(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x0055ead0, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::AppendZonePointerToPrimaryArray, size: 124, prototype: "undefined AppendZonePointerToPrimaryArray(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x0055eba0, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::AppendZonePointerToSecondaryArray, size: 124, prototype: "undefined AppendZonePointerToSecondaryArray(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x005617d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPortZone::GetTPortZoneClassNamePointer, size: 6, prototype: "undefined GetTPortZoneClassNamePointer(void)"}
+    - {index: 0x21, byte: 0x84, target: 0x005616c0, kind: new, is_thunk: false, is_null: false, ghidra_name: DestroyTPortZone, size: 30, prototype: "undefined DestroyTPortZone(void)"}
+    - {index: 0x22, byte: 0x88, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x23, byte: 0x8c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x24, byte: 0x90, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x25, byte: 0x94, target: 0x00561820, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::SerializeTPortZoneToBinaryStream, size: 98, prototype: "undefined SerializeTPortZoneToBinaryStream(void)"}
+    - {index: 0x26, byte: 0x98, target: 0x005617f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::DeserializeTPortZoneFromBinaryStream, size: 32, prototype: "undefined DeserializeTPortZoneFromBinaryStream(void)"}
+    - {index: 0x27, byte: 0x9c, target: 0x00561a70, kind: new, is_thunk: false, is_null: false, ghidra_name: DestroyTPortZoneAndClearOverlayMarkers, size: 127, prototype: "undefined DestroyTPortZoneAndClearOverlayMarkers(void)"}
+    - {index: 0x28, byte: 0xa0, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x29, byte: 0xa4, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x2a, byte: 0xa8, target: 0x005618b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPortZone::RefreshTPortZoneDisplayNameFromLocalization, size: 233, prototype: "undefined RefreshTPortZoneDisplayNameFromLocalization(void)"}
+    - {index: 0x2b, byte: 0xac, target: 0x0055f070, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::GetTEventHandlerClassNamePointer, size: 16, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x2c, byte: 0xb0, target: 0x0055f090, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::HandleCityDialogHintClusterUpdate, size: 16, prototype: "undefined HandleCityDialogHintClusterUpdate(void)"}
+    - {index: 0x2d, byte: 0xb4, target: 0x00561660, kind: new, is_thunk: false, is_null: false, ghidra_name: ReturnTrueForPortZoneCapabilityFlagA, size: 3, prototype: "undefined ReturnTrueForPortZoneCapabilityFlagA(void)"}
+    - {index: 0x2e, byte: 0xb8, target: 0x00561680, kind: new, is_thunk: false, is_null: false, ghidra_name: ReturnTrueForPortZoneCapabilityFlagB, size: 3, prototype: "undefined ReturnTrueForPortZoneCapabilityFlagB(void)"}
+    - {index: 0x2f, byte: 0xbc, target: 0x005616a0, kind: new, is_thunk: false, is_null: false, ghidra_name: ReturnFalseForPortZoneCapabilityFlagC, size: 3, prototype: "undefined ReturnFalseForPortZoneCapabilityFlagC(void)"}
+    - {index: 0x30, byte: 0xc0, target: 0x00561b10, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::IsPortZoneOwnerNationEqual, size: 37, prototype: "undefined IsPortZoneOwnerNationEqual(void)"}
+    - {index: 0x31, byte: 0xc4, target: 0x00561b50, kind: new, is_thunk: false, is_null: false, ghidra_name: NotifyDiplomacyManagerForPortZoneOwnerNation, size: 46, prototype: "undefined NotifyDiplomacyManagerForPortZoneOwnerNation(void)"}
+    - {index: 0x32, byte: 0xc8, target: 0x00561dc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TZone::CanPortZoneInteractWithNationUnderDiplomacyRules, size: 85, prototype: "undefined CanPortZoneInteractWithNationUnderDiplomacyRules(void)"}
+    - {index: 0x33, byte: 0xcc, target: 0x00561e40, kind: new, is_thunk: false, is_null: false, ghidra_name: FindNearestValidPortZoneOrCityContextTile, size: 506, prototype: "undefined FindNearestValidPortZoneOrCityContextTile(void)"}
+    - {index: 0x34, byte: 0xd0, target: 0x0055fef0, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireModeForTargetNation, size: 96, prototype: "undefined ApplyJoinEmpireModeForTargetNation(void)"}
+    - {index: 0x35, byte: 0xd4, target: 0x00560150, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers, size: 638, prototype: "undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)"}
+    - {index: 0x36, byte: 0xd8, target: 0x00560580, kind: new, is_thunk: false, is_null: false, ghidra_name: TAutoGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 276, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
+curated:

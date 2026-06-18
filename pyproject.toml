@@ -10,6 +10,7 @@ dependencies = [
     "ghidra-stubs>=12.1.2",
     "cxxheaderparser>=1.8.1",
     "pcpp>=1.30",
+    "pyyaml>=6.0.3",
 ]
 
 [tool.uv]

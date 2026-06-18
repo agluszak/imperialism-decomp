@@ -1,0 +1,10 @@
+class: CFrameWnd
+generated:
+  vtable_addr: 0x00672e78
+  object_size: 0xbc
+  base: CWnd
+  ancestry: [CFrameWnd, CWnd, CCmdTarget, CObject]
+  root: CObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x0061419f, kind: new, is_thunk: false, is_null: false, ghidra_name: CFrameWnd::OnEndPrintPreview, size: 202, prototype: "undefined OnEndPrintPreview(void)"}
+curated:

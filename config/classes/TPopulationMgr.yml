@@ -1,0 +1,30 @@
+class: TPopulationMgr
+generated:
+  vtable_addr: 0x0064f9b0
+  object_size: 0x50
+  base: TObject
+  ancestry: [TPopulationMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004b5b70, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::GetTPopulationMgrClassNamePointer, size: 6, prototype: "undefined GetTPopulationMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004b5bb0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::ConstructTPopulationMgrBaseState, size: 30, prototype: "undefined ConstructTPopulationMgrBaseState(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x004b6850, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850, size: 113, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x004b68f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0, size: 113, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004b6990, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanCallChain_C4_I28_004b6990, size: 75, prototype: "undefined OrphanCallChain_C4_I28_004b6990(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x004b5d10, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10, size: 35, prototype: "undefined OrphanLeaf_NoCall_Ins09_004b5d10(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x004b5dc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0, size: 142, prototype: "undefined OrphanLeaf_NoCall_Ins47_004b5dc0(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x004b5d50, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50, size: 71, prototype: "undefined OrphanLeaf_NoCall_Ins20_004b5d50(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x004b66a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0, size: 248, prototype: "undefined OrphanLeaf_NoCall_Ins87_004b66a0(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x004b5ed0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0, size: 716, prototype: "undefined Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x004b6260, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260, size: 299, prototype: "undefined OrphanLeaf_NoCall_Ins111_004b6260(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x004b65b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanCallChain_C2_I61_004b65b0, size: 179, prototype: "undefined OrphanCallChain_C2_I61_004b65b0(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x004b5e80, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanCallChain_C2_I24_004b5e80, size: 60, prototype: "undefined OrphanCallChain_C2_I24_004b5e80(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x004b63e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0, size: 168, prototype: "undefined OrphanLeaf_NoCall_Ins50_004b63e0(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x004b67e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0, size: 79, prototype: "undefined OrphanLeaf_NoCall_Ins26_004b67e0(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x004b64c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0, size: 178, prototype: "undefined OrphanLeaf_NoCall_Ins63_004b64c0(void)"}
+curated:

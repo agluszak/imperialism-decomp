@@ -1,0 +1,26 @@
+class: TColorFill
+generated:
+  vtable_addr: 0x006566f0
+  object_size: 0x0c
+  base: TAdorner
+  ancestry: [TColorFill, TAdorner, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x004ff1a0, kind: override, is_thunk: false, is_null: false, ghidra_name: TColorFill::GetTAdornerClassNamePointer, size: 6, prototype: "undefined GetTAdornerClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004ff150, kind: override, is_thunk: false, is_null: false, ghidra_name: TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150, size: 30, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At004ff150(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x0049d990, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x0049d960, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x0049d900, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0049d930, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x004ff1c0, kind: override, is_thunk: false, is_null: false, ghidra_name: TColorFill::AssertUDisplayMgrLine730, size: 30, prototype: "undefined AssertUDisplayMgrLine730(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x0049d9f0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x0049da20, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x0049da50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50, size: 22, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x0049da80, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80, size: 24, prototype: "undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)"}
+curated:

@@ -138,6 +138,23 @@ bootstrap-class class vtable base='' base_vtable='' *args: _require-ghidra-insta
   uv run python -m tools.workflow.bootstrap_class \
     --class "{{class}}" "${base_arg[@]}" --slots-json "$slots_json" {{args}}
 
+# Stage 0: batch-dump per-class manifests (config/classes/<Class>.yml) from the
+# Ghidra DB. Read-only and idempotent; the generated: region is refreshed while
+# any curated: region is preserved. Pass --only Name / --limit N to scope.
+dump-manifests *args: _require-ghidra-install
+  uv run python -m tools.ghidra.dump_class_manifests {{args}}
+
+# Idempotent, manifest-driven class generator. Maintains the marked GENERATED
+# block in include/game/<Class>.h from config/classes/<Class>.yml without touching
+# hand-owned decls/docs/bodies. Dry-run by default; pass --write to apply.
+gen-class class *args:
+  uv run python -m tools.workflow.gen_class "{{class}}" {{args}}
+
+# Gate: every header with a GENERATED block must match a fresh render of its
+# manifest (no drift), and the class's // VTABLE: address must match the manifest.
+manifest-gate *args:
+  uv run python -m tools.workflow.check_manifest_consistency {{args}}
+
 apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}
 
@@ -234,6 +251,7 @@ gates:
   just vtable-collision-gate
   just field-layout-gate
   just synthetic-gate
+  just manifest-gate
   just decomplint
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)

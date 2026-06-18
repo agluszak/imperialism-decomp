@@ -1,0 +1,24 @@
+class: TMilitaryUnit
+generated:
+  vtable_addr: 0x0066eea8
+  object_size: 0x44
+  base: TObject
+  ancestry: [TMilitaryUnit, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005c2dd0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::GetTMilitaryUnitClassNamePointer, size: 6, prototype: "undefined GetTMilitaryUnitClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005c2ed0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::DestroyMilitaryUnitOrderObject, size: 30, prototype: "undefined DestroyMilitaryUnitOrderObject(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005c30a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::SerializeMilitaryUnitOrderState, size: 190, prototype: "undefined SerializeMilitaryUnitOrderState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005c2fd0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::DeserializeMilitaryUnitOrderState, size: 145, prototype: "undefined DeserializeMilitaryUnitOrderState(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x005c2680, kind: new, is_thunk: false, is_null: false, ghidra_name: TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy, size: 89, prototype: "undefined UnlinkFromNationOrTerrainOwnerListAndDestroy(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x005c3200, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::RelinkMilitaryUnitByTileIndex, size: 395, prototype: "undefined RelinkMilitaryUnitByTileIndex(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x005c2660, kind: new, is_thunk: false, is_null: false, ghidra_name: TUnit::NormalizeUnitOrderStateAfterLoad, size: 16, prototype: "undefined NormalizeUnitOrderStateAfterLoad(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x005c31c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnit::DetachUnitOrderFromOwnerAndReset, size: 39, prototype: "undefined DetachUnitOrderFromOwnerAndReset(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x005c2630, kind: new, is_thunk: false, is_null: false, ghidra_name: TUnit::SetUnitOrderTypeAndOwnerIndex, size: 19, prototype: "undefined SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrderOwnerId)"}
+    - {index: 0x0e, byte: 0x38, target: 0x005c3190, kind: new, is_thunk: false, is_null: false, ghidra_name: TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets, size: 32, prototype: "undefined CopyUnitCurrentTileIntoOrderTargets(void)"}
+curated:

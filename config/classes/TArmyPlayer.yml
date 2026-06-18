@@ -1,0 +1,31 @@
+class: TArmyPlayer
+generated:
+  vtable_addr: 0x006695f0
+  object_size: 0x54
+  base: TTacticalPlayer
+  ancestry: [TArmyPlayer, TTacticalPlayer, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x0059b190, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::GetTTacticalPlayerClassNamePointer, size: 6, prototype: "undefined GetTTacticalPlayerClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x0059b140, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140, size: 30, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At0059b140(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00485f70, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ad90, size: 3, prototype: "undefined OrphanRetStub_0059ad90(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00485f90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TMapDialog::OrphanCallChain_C11_I88_004874b0, size: 3, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x0059aee0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TTacticalPlayer::ConstructTTacticalPlayerBaseState, size: 42, prototype: "undefined ConstructTTacticalPlayerBaseState(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x0059b830, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ad70, size: 260, prototype: "undefined OrphanRetStub_0059ad70(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0059e3e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ad90, size: 203, prototype: "undefined OrphanRetStub_0059ad90(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x0059adb0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TTacticalPlayer::TArmyTacUnit_VtblSlot00, size: 3, prototype: "undefined TArmyTacUnit_VtblSlot00(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x0059b3e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059add0, size: 193, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x0059b4f0, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::TArmyTacUnit_VtblSlot02, size: 55, prototype: "undefined TArmyTacUnit_VtblSlot02(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x0059b540, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::TArmyTacUnit_VtblSlot03, size: 73, prototype: "undefined TArmyTacUnit_VtblSlot03(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x0059adf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TTacticalPlayer::TArmyTacUnit_VtblSlot04, size: 5, prototype: "undefined TArmyTacUnit_VtblSlot04(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x0059eb40, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmyPlayer::OrphanRetStub_0059ae10, size: 46, prototype: "undefined OrphanRetStub_0059ae10(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x0059bc80, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::TArmyTacUnit_VtblSlot06, size: 67, prototype: "undefined TArmyTacUnit_VtblSlot06(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x0059c3c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::TArmyTacUnit_VtblSlot07, size: 89, prototype: "undefined TArmyTacUnit_VtblSlot07(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x0059e4f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit, size: 752, prototype: "undefined RunTacticalAutoTurnControllerForActiveUnit(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x0059ea60, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyTacUnit::TArmyTacUnit_VtblSlot09, size: 166, prototype: "undefined TArmyTacUnit_VtblSlot09(void)"}
+curated:

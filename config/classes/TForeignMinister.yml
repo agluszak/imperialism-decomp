@@ -1,0 +1,49 @@
+class: TForeignMinister
+generated:
+  vtable_addr: 0x00659cb0
+  object_size: 0x80
+  base: TMinister
+  ancestry: [TForeignMinister, TMinister, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x0052f050, kind: override, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::GetTMinisterClassNamePointer, size: 6, prototype: "undefined GetTMinisterClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x0052f0e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::DeletingDestructTMinister, size: 30, prototype: "undefined DeletingDestructTMinister(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x0052f2b0, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader, size: 298, prototype: "undefined SerializeTMinisterBaseOrderArrayHeader(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x0052f180, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader, size: 236, prototype: "undefined DeserializeTMinisterBaseOrderArrayHeader(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x0052ec80, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TDefenseMinister::'scalar_deleting_destructor'", size: 37, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x0052f430, kind: override, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::DispatchNationStateEventCode10, size: 96, prototype: "undefined DispatchNationStateEventCode10(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0052ed50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TDefenseMinister::'scalar_deleting_destructor'", size: 156, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x0052ee20, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TDefenseMinister::GetTEventHandlerClassNamePointer, size: 90, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x0052eea0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TDefenseMinister::'scalar_deleting_destructor'", size: 90, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x0052ef80, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TDefenseMinister::GetTEventHandlerClassNamePointer, size: 20, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x0052ef20, kind: inherited, is_thunk: false, is_null: false, ghidra_name: "TDefenseMinister::'scalar_deleting_destructor'", size: 21, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x0052ef50, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TDefenseMinister::OrphanCallChain_C11_I88_004874b0, size: 21, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x0052efb0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TMinister::NoOpForeignMinisterUtilityStub, size: 3, prototype: "undefined NoOpForeignMinisterUtilityStub(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x0052f4b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::InitializeForeignMinisterStateFlags, size: 38, prototype: "undefined InitializeForeignMinisterStateFlags(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x0052f4f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::AddToForeignMinisterCounterAtIndex, size: 20, prototype: "undefined AddToForeignMinisterCounterAtIndex(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x0052f520, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::SetForeignMinisterReadyFlag14, size: 7, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x0052f540, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets, size: 21, prototype: "undefined SetForeignMinisterPrimaryAndSecondaryTargets(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x0052fd10, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::GetTEventHandlerClassNamePointer, size: 77, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x0052fe90, kind: new, is_thunk: false, is_null: false, ghidra_name: "TArmsForeignMinister::'scalar_deleting_destructor'", size: 703, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x0052fd80, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive, size: 1, prototype: "undefined SerializeNodeMapEntries_Key32Value32_WithArchive(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x0052fda0, kind: new, is_thunk: false, is_null: false, ghidra_name: "TArmsForeignMinister::'scalar_deleting_destructor'", size: 1, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x0052fdc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::GetTEventHandlerClassNamePointer, size: 160, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x00530bb0, kind: new, is_thunk: false, is_null: false, ghidra_name: "TArmsForeignMinister::'scalar_deleting_destructor'", size: 785, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x005308b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::GetTEventHandlerClassNamePointer, size: 512, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x00530b30, kind: new, is_thunk: false, is_null: false, ghidra_name: "TArmsForeignMinister::'scalar_deleting_destructor'", size: 81, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x00530200, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::GetTEventHandlerClassNamePointer, size: 1359, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x00530fa0, kind: new, is_thunk: false, is_null: false, ghidra_name: "TArmsForeignMinister::'scalar_deleting_destructor'", size: 251, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x00531110, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0, size: 1, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x21, byte: 0x84, target: 0x0052f570, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920, size: 339, prototype: "undefined OrphanLeaf_NoCall_Ins07_004d8920(void)"}
+    - {index: 0x22, byte: 0x88, target: 0x0052f730, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0, size: 83, prototype: "undefined OrphanCallChain_C11_I88_004874b0(void)"}
+    - {index: 0x23, byte: 0x8c, target: 0x0052f7b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::GetTEventHandlerClassNamePointer, size: 315, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x24, byte: 0x90, target: 0x0052f940, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::SetForeignMinisterReadyFlag14, size: 104, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+    - {index: 0x25, byte: 0x94, target: 0x0052f9d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 358, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
+    - {index: 0x26, byte: 0x98, target: 0x0052fba0, kind: new, is_thunk: false, is_null: false, ghidra_name: TForeignMinister::UpdateControlCachedIntFromWindowText, size: 214, prototype: "undefined UpdateControlCachedIntFromWindowText(void)"}
+    - {index: 0x27, byte: 0x9c, target: 0x0052fcc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmsForeignMinister::OrphanRetStub_0059add0, size: 54, prototype: "undefined OrphanRetStub_0059add0(void)"}
+curated:

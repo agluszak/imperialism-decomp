@@ -10,6 +10,32 @@ Hard Rules and the MSVC calling-convention guardrail are in `AGENTS.md`; matchin
 tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36,
 #49, #58–84).
 
+## Per-class manifests (single source of truth)
+
+Each class has an inspectable manifest at `config/classes/<Class>.yml` instead of
+scattering its facts across the Ghidra DB and CSVs. A manifest has two regions:
+`generated:` (Ghidra-derived: `vtable_addr`, `object_size`, `base`/`ancestry`/
+`root`, raw per-slot `target`/`kind`/`is_thunk`) and `curated:` (human judgment:
+per-slot `method`, `confidence`/`evidence`, `fields`, `layout`). Workflow:
+
+- `just dump-manifests [--only <Class>]` — refresh the `generated:` region from
+  Ghidra (read-only; the `curated:` region is preserved, curated always wins).
+  Re-running on an unchanged class is a no-op.
+- `just gen-class <Class> [--write]` — maintain the marked
+  `// === BEGIN GENERATED (<Class>) … === / … END ===` block in
+  `include/game/<Class>.h`. It only touches that block; hand-owned decls, doc
+  comments, member annotations and `.cpp` bodies are never rewritten. The block
+  carries the slot→address→method skeleton and an (informational) object-size
+  `static_assert` — wrapped in `// clang-format off/on` so it stays byte-stable.
+- `just manifest-gate` (part of `just gates`) — fails if a header's generated
+  block has drifted from a fresh render, or its `// VTABLE:` address disagrees
+  with the manifest. Fix with `just gen-class <Class> --write`.
+
+The slot `kind` (null/inherited/override/new/scalar_dtor/ilt_thunk) is computed
+deterministically from the class+base vtables; the *semantic name* and the
+new-vs-reused-base-slot judgment (the TAmtBar trap) remain human work, recorded
+in the manifest's `curated:` slots.
+
 ## ABI model (Imperialism.exe = MSVC x86)
 
 1. Objects carry one or more `vfptr` fields; a `vfptr` points to a vftable

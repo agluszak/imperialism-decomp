@@ -1,0 +1,19 @@
+class: TTechMgr
+generated:
+  vtable_addr: 0x0066ad28
+  object_size: 0x63c
+  base: TObject
+  ancestry: [TTechMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005aef60, kind: new, is_thunk: false, is_null: false, ghidra_name: TTechMgr::GetTTechMgrClassNamePointer, size: 6, prototype: "undefined GetTTechMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005aefa0, kind: new, is_thunk: false, is_null: false, ghidra_name: TTechMgr::DestructTTechMgrAndMaybeFree, size: 30, prototype: "undefined DestructTTechMgrAndMaybeFree(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x005af710, kind: new, is_thunk: false, is_null: false, ghidra_name: TTechMgr::SerializeCityOrderCapabilityState, size: 493, prototype: "undefined SerializeCityOrderCapabilityState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x005af460, kind: new, is_thunk: false, is_null: false, ghidra_name: TTechMgr::DeserializeCityOrderCapabilityState, size: 537, prototype: "undefined DeserializeCityOrderCapabilityState(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+curated:

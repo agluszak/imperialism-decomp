@@ -1,0 +1,16 @@
+class: CMainFrame
+generated:
+  vtable_addr: 0x0063e328
+  object_size: 0xd0
+  base: CFrameWnd
+  ancestry: [CMainFrame, CFrameWnd, CWnd, CCmdTarget, CObject]
+  root: CObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x00412dc0, kind: override, is_thunk: false, is_null: false, ghidra_name: CMainFrame::OnEndPrintPreview, size: 1161, prototype: "undefined OnEndPrintPreview(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x006055ae, kind: new, is_thunk: false, is_null: false, ghidra_name: "CAmbitDocument::'scalar_deleting_destructor'", size: 34, prototype: "undefined 'scalar_deleting_destructor'(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00413a20, kind: new, is_thunk: false, is_null: false, ghidra_name: CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive, size: 30, prototype: "undefined SerializeNodeMapEntries_Key32Value32_WithArchive(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x0060694f, kind: new, is_thunk: false, is_null: false, ghidra_name: CAmbitDocument::ConstructTTaskBaseState, size: 64, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x004145f0, kind: new, is_thunk: false, is_null: false, ghidra_name: CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30, size: 55, prototype: "undefined OrphanLeaf_NoCall_Ins04_005adc30(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00606451, kind: new, is_thunk: false, is_null: false, ghidra_name: CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30, size: 91, prototype: "undefined OrphanLeaf_NoCall_Ins04_005adc30(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00413780, kind: new, is_thunk: false, is_null: false, ghidra_name: CAmbitDocument::SetForeignMinisterReadyFlag14, size: 226, prototype: "undefined SetForeignMinisterReadyFlag14(void)"}
+curated:

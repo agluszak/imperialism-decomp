@@ -1,0 +1,48 @@
+class: TMacViewMgr
+generated:
+  vtable_addr: 0x00658660
+  object_size: 0xd84
+  base: TObject
+  ancestry: [TMacViewMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x00509c80, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::GetTMacViewMgrClassNamePointer, size: 6, prototype: "undefined GetTMacViewMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00509e30, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30, size: 30, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At00509e30(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x0050a180, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180, size: 13, prototype: "undefined WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x0050a140, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles, size: 45, prototype: "undefined ResetNationStateUiAndRefreshCityCapabilityHandles(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x00509f70, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::DestroyStrategicMapViewSystemResources, size: 365, prototype: "undefined DestroyStrategicMapViewSystemResources(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x0050a1a0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722, size: 404, prototype: "undefined BuildStrategicMapCommodityIconAtlasFrom700To722(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0050a3b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::LoadStrategicMapUnitIconAtlas750, size: 24, prototype: "undefined LoadStrategicMapUnitIconAtlas750(void)"}
+    - {index: 0x0c, byte: 0x30, target: 0x0050a3e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751, size: 24, prototype: "undefined LoadStrategicMapUnitOverlayAtlas751(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x0050a410, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::LoadStrategicMapOverlayAtlas8699, size: 24, prototype: "undefined LoadStrategicMapOverlayAtlas8699(void)"}
+    - {index: 0x0e, byte: 0x38, target: 0x0050a440, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::LoadStrategicMapMarkerAtlas1372, size: 24, prototype: "undefined LoadStrategicMapMarkerAtlas1372(void)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x0050bbc0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0, size: 102, prototype: "undefined OrphanCallChain_C4_I35_0050bbc0(void)"}
+    - {index: 0x10, byte: 0x40, target: 0x0050bc50, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::SyncSellTaggedChildControlWithNationState, size: 369, prototype: "undefined SyncSellTaggedChildControlWithNationState(void)"}
+    - {index: 0x11, byte: 0x44, target: 0x0050bea0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets, size: 4080, prototype: "undefined RefreshCityProductionDetailPanelAndArrowWidgets(void)"}
+    - {index: 0x12, byte: 0x48, target: 0x0050be30, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C, size: 78, prototype: "undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)"}
+    - {index: 0x13, byte: 0x4c, target: 0x0050d310, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag, size: 57, prototype: "undefined DispatchTurnEvent3B8AndWaitForCompletionFlag(void)"}
+    - {index: 0x14, byte: 0x50, target: 0x0050d470, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanCallChain_C10_I80_0050d470, size: 243, prototype: "undefined OrphanCallChain_C10_I80_0050d470(void)"}
+    - {index: 0x15, byte: 0x54, target: 0x0050d360, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::CreateCityBuildingDialogBySlot, size: 200, prototype: "undefined CreateCityBuildingDialogBySlot(void)"}
+    - {index: 0x16, byte: 0x58, target: 0x0050d5b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0, size: 160, prototype: "undefined OrphanCallChain_C9_I49_0050d5b0(void)"}
+    - {index: 0x17, byte: 0x5c, target: 0x0050d8d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0, size: 16, prototype: "undefined OrphanLeaf_NoCall_Ins06_0050d8d0(void)"}
+    - {index: 0x18, byte: 0x60, target: 0x0050d8f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0, size: 26, prototype: "undefined OrphanLeaf_NoCall_Ins06_0050d8f0(void)"}
+    - {index: 0x19, byte: 0x64, target: 0x0050d920, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::OrphanCallChain_C1_I10_0050d920, size: 27, prototype: "undefined OrphanCallChain_C1_I10_0050d920(void)"}
+    - {index: 0x1a, byte: 0x68, target: 0x0050a9f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext, size: 2394, prototype: "undefined RenderOffscreenBitmapGridStripAndRestoreContext(void)"}
+    - {index: 0x1b, byte: 0x6c, target: 0x0050d950, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950, size: 98, prototype: "undefined WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(void)"}
+    - {index: 0x1c, byte: 0x70, target: 0x0050b640, kind: new, is_thunk: false, is_null: false, ghidra_name: TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress, size: 730, prototype: "undefined RenderTurnEventPalettePreviewSurfaceAndProgress(void)"}
+    - {index: 0x1d, byte: 0x74, target: 0x0050b9e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles, size: 179, prototype: "undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)"}
+    - {index: 0x1e, byte: 0x78, target: 0x0050bad0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent, size: 187, prototype: "undefined RebuildNationClipRegionsAndDispatchMapEvent(void)"}
+    - {index: 0x1f, byte: 0x7c, target: 0x0050da80, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10, size: 547, prototype: "undefined BlitMapOverlayGlyphStrip32x24SkipMask10(void)"}
+    - {index: 0x20, byte: 0x80, target: 0x0050dd40, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::DrawStrategicMapUnitIcon, size: 386, prototype: "void DrawStrategicMapUnitIcon(int * pDstSurface, short nIconVariant, short nDstX, short nYShift)"}
+    - {index: 0x21, byte: 0x84, target: 0x0050df40, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::DrawStrategicMapUnitIconOverlay, size: 230, prototype: "void DrawStrategicMapUnitIconOverlay(int * pDstSurface, ushort wOverlayIconId, short nVariantRow, short nDstX, short nYShift)"}
+    - {index: 0x22, byte: 0x88, target: 0x0050d9e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::CopySpriteSurfaceToStrideBuffer, size: 117, prototype: "undefined CopySpriteSurfaceToStrideBuffer(void)"}
+    - {index: 0x23, byte: 0x8c, target: 0x0050d700, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext, size: 364, prototype: "undefined RenderOffscreenBitmapTileSpanAndRestoreContext(void)"}
+    - {index: 0x24, byte: 0x90, target: 0x0050d6c0, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0, size: 35, prototype: "undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(void)"}
+    - {index: 0x25, byte: 0x94, target: 0x0050d680, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion, size: 45, prototype: "undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(void)"}
+    - {index: 0x26, byte: 0x98, target: 0x00509e10, kind: new, is_thunk: false, is_null: false, ghidra_name: TMacViewMgr::DestructTMacViewMgrAndMaybeFree, size: 12, prototype: "undefined DestructTMacViewMgrAndMaybeFree(void)"}
+curated:

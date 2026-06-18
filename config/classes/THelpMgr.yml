@@ -1,0 +1,21 @@
+class: THelpMgr
+generated:
+  vtable_addr: 0x00657040
+  object_size: 0x30
+  base: TObject
+  ancestry: [THelpMgr, TObject, CObject]
+  root: TObject
+  slots:
+    - {index: 0x00, byte: 0x00, target: 0x005005c0, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::GetTHelpMgrClassNamePointer, size: 6, prototype: "undefined GetTHelpMgrClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00500630, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::DestructTHelpMgrAndMaybeFree, size: 30, prototype: "undefined DestructTHelpMgrAndMaybeFree(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00500fe0, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0, size: 105, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00500f50, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50, size: 107, prototype: "undefined WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x00501070, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::OrphanCallChain_C2_I16_00501070, size: 37, prototype: "undefined OrphanCallChain_C2_I16_00501070(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x00500680, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::InitializeHelpManagerIndexArrayAndState, size: 1741, prototype: "undefined InitializeHelpManagerIndexArrayAndState(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x00500f10, kind: new, is_thunk: false, is_null: false, ghidra_name: THelpMgr::OrphanCallChain_C1_I22_00500f10, size: 46, prototype: "undefined OrphanCallChain_C1_I22_00500f10(void)"}
+curated:

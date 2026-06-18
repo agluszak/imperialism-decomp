@@ -11,6 +11,15 @@ pairs with the original's slot**. This is distinct from *recovering* the layout 
 `quality-control`). Hard Rules + the calling-convention guardrail are in `AGENTS.md`;
 deep tactics in `decomp-loop/heuristics.md` (#4, #7, #8).
 
+**Start from the manifest.** `config/classes/<Class>.yml` already has the resolved
+slot table (`generated.slots`: `target`/`kind`/`is_thunk`, in slot order) and the
+class+base diff baked into `kind`. Refresh it with `just dump-manifests --only
+<Class>`, read the slots there instead of re-deriving by hand, and record the
+semantic name / new-vs-reused-base judgment in `curated.slots`. `just gen-class
+<Class> --write` keeps the header's generated block (the slot→address→method
+skeleton) in sync; `just manifest-gate` fails on drift. See `class-recovery` for
+the manifest schema.
+
 ## Mechanics you must internalize
 
 1. **Pairing is by `// FUNCTION:` marker source-line**, not by body content. So slot
