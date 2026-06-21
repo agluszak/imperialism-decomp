@@ -1963,53 +1963,9 @@ undefined4 OrphanCallChain_C1_I08_00487a60(void)
   return 0;
 }
 
-// ghidra_name TSortedList::ConstructTSortedListBaseState
-// ghidra_proto undefined ConstructTSortedListBaseState()
-// FUNCTION: IMPERIALISM 0x00487b30
-undefined4 ConstructTSortedListBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedList::DestructTSortedListAndMaybeFree
-// ghidra_proto undefined DestructTSortedListAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00487b60
-undefined4 DestructTSortedListAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C9_I83_00487bd0
-// ghidra_proto undefined OrphanCallChain_C9_I83_00487bd0()
-// FUNCTION: IMPERIALISM 0x00487bd0
-undefined4 OrphanCallChain_C9_I83_00487bd0(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_FindIndex_At00487cc0
-// ghidra_proto undefined Helper_Uses_FindIndex_At00487cc0()
-// FUNCTION: IMPERIALISM 0x00487cc0
-undefined4 Helper_Uses_FindIndex_At00487cc0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I21_00487d90
-// ghidra_proto undefined OrphanCallChain_C3_I21_00487d90()
-// FUNCTION: IMPERIALISM 0x00487d90
-undefined4 OrphanCallChain_C3_I21_00487d90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I23_00487dd0
-// ghidra_proto undefined OrphanCallChain_C3_I23_00487dd0()
-// FUNCTION: IMPERIALISM 0x00487dd0
-undefined4 OrphanCallChain_C3_I23_00487dd0(void)
-{
-  return 0;
-}
+// 0x00487b30/0x00487b60/0x00487bd0/0x00487cc0/0x00487d90/0x00487dd0 are the
+// TPtrList base list-engine virtuals (bytes 0x6c/0x70/0x74/0x78/0x64/0x68); they
+// are now owned by TPtrList::VirtualSlot6C..VirtualSlot78 in src/game/TPtrList.cpp.
 
 // ghidra_name FindOneBasedNodeIndexByValueInLinkedList
 // ghidra_proto undefined FindOneBasedNodeIndexByValueInLinkedList()

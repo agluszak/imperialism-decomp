@@ -35,6 +35,16 @@ struct TPtrList : public TObject {
   virtual void RemoveAllSlot5C();
   virtual void SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag);
 
+  // Base list-engine virtuals shared by all leaves (TList/TSortedList vtables
+  // 0x648f78/0x648ee0, in-construction base vtable 0x6485c0). Bodies return 0;
+  // derived leaves (e.g. TArmyStackList) override VirtualSlot6C.
+  virtual int VirtualSlot64();  // byte 0x64 (0x487d90)
+  virtual int VirtualSlot68();  // byte 0x68 (0x487dd0)
+  virtual int VirtualSlot6C();  // byte 0x6c (0x487b30)
+  virtual int VirtualSlot70();  // byte 0x70 (0x487b60)
+  virtual int VirtualSlot74();  // byte 0x74 (0x487bd0)
+  virtual int VirtualSlot78();  // byte 0x78 (0x487cc0)
+
   CPtrList listState;
 
   static void* GetTPtrListClassNamePointer();

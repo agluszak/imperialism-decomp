@@ -39,7 +39,7 @@ public:
   // slot 0x1c VTableSlot1C inherited unchanged (0x487b60)
   // slot 0x1d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x487bd0)
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
-  virtual undefined CreateTTechMgrInstance() override; // slot 0x1f 0x5aed50
+  virtual int CreateTTechMgrInstance(); // slot 0x1f byte 0x7c 0x5aed50 (new virtual)
 // === END GENERATED DECLS (TTaskList) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTaskList 0xCTOR`).
 

@@ -10,6 +10,6 @@ CRuntimeClass* TArmyStackList::GetRuntimeClass() const {
 TArmyStackList::~TArmyStackList() {}
 
 // FUNCTION: IMPERIALISM 0x004a8560
-undefined TArmyStackList::ConstructTSortedListBaseState() {
+int TArmyStackList::VirtualSlot6C() {
   return 0;
 }

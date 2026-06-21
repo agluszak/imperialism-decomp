@@ -10,6 +10,6 @@ CRuntimeClass* TTaskList::GetRuntimeClass() const {
 TTaskList::~TTaskList() {}
 
 // FUNCTION: IMPERIALISM 0x005aed50
-undefined TTaskList::CreateTTechMgrInstance() {
+int TTaskList::CreateTTechMgrInstance() {
   return 0;
 }
