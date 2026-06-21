@@ -1844,7 +1844,7 @@ address|name|size|type|prototype
 4b5100|TProductionOrder::OrphanCallChain_C1_I16_004b5100|39|function|undefined OrphanCallChain_C1_I16_004b5100(short param_1)
 4b5140|TProductionOrder::ResetCityOrderItemDerivedStateNoop|1|function|undefined ResetCityOrderItemDerivedStateNoop()
 4b5160|TProductionOrder::OrphanRetStub_004b5160|1|function|undefined OrphanRetStub_004b5160(void)
-4b5180|TCityOrderItem::Produce|32|function|void __thiscall Produce(void* orderSheet)
+4b5180|TProductionOrder::InitializeCityOrderItemWorkingBuffers|32|function|undefined __thiscall InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
 4b51b0|TProductionOrder::CreateTItemOrderInstance|13|function|undefined CreateTItemOrderInstance()
 4b5200|TItemOrder::GetRuntimeClass|6|function|undefined GetTItemOrderClassNamePointer()
 4b5240|TItemOrder::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()

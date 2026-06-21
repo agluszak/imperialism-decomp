@@ -7,7 +7,10 @@
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x004b5180
+// Slot 0x3c (Mac: Produce). The real body at 0x004b5180 is owned by
+// TProductionOrder (its own vtable region); this parallel TCityOrderItem chain
+// (TCapacityOrder) shares the same slot but cannot own the address, so this is an
+// unmarked stub. Direct callers (TCapacityOrder::...) still resolve to it.
 void TCityOrderItem::Produce(void* orderSheet) {
   undefined4* cursor = static_cast<undefined4*>(orderSheet);
   int remaining = 0x1e;

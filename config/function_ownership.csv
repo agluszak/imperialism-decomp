@@ -749,7 +749,7 @@ address|target_cpp|ownership|note
 4b5100|src/game/TProductionOrder.cpp|manual|marker_sync
 4b5140|src/game/TProductionOrder.cpp|manual|marker_sync
 4b5160|src/game/TProductionOrder.cpp|manual|marker_sync
-4b5180|src/game/TCityOrderItem.cpp|manual|marker_sync
+4b5180|src/game/TProductionOrder.cpp|manual|marker_sync
 4b51b0|src/game/TProductionOrder.cpp|manual|marker_sync
 4b5200|src/game/TItemOrder.cpp|manual|marker_sync
 4b5240|src/game/TItemOrder.cpp|manual|marker_sync
