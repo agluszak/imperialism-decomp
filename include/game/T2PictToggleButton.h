@@ -121,14 +121,14 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined HandleToggleButtonStateChangeAndRefresh() override; // slot 0x74 0x5849d0
+  undefined HandleToggleButtonStateChangeAndRefresh(); // non-virtual (base Handle non-virtual)
 // === END GENERATED DECLS (T2PictToggleButton) ===
   T2PictToggleButton();
   virtual ~T2PictToggleButton() override;
   CRuntimeClass* GetRuntimeClass() const override;
 
-  bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x1cc
-  void Select(bool isPressed, bool notifyParent) override;            // slot 0x1d0
+  bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x1cc
+  void Select(bool isPressed, bool notifyParent) override;            // slot 0x74 0x1d0
 };
 
 ASSERT_SIZE(T2PictToggleButton, 0x90);

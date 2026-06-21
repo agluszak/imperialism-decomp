@@ -5,7 +5,7 @@ metadata:
   type: project
 ---
 
-Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **128**.
+Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **122**.
 Method: source-only (edit header/cpp → `just build` → `just vtable`), ignore manifests
 & generated metadata, don't chase function similarity, commit every few fixes, skip gates.
 
@@ -19,8 +19,27 @@ TCommand→TObject; TStream→TObject; TAnimation phantom de-virtualize; TStatic
 5 missing slots (TRadioText/TSelectoText); TMinisterView + 3 view classes slot-0x48
 signature (CPoint*,int,int,int).
 
+Also done (2nd session): TDefenseMinister dedup+reorder + its 5 personalities
+(slot-0x60 override rename DefenseSlot18→CreateTDefenseMinisterInstance).
+
+Confirmed-tractable recipe for minister-style cascades: base has duplicate empty
+decls shadowing real bodies + new virtuals in wrong order → remove dups, rename
+the real slot-0x28 body to the TMinister base slot name (MinisterSlot0A) so it
+overrides, order new virtuals by byte. Derived leaves: rename their slot override
+to the base's real slot name + matching return type (`undefined`, not `void`).
+
 Highest-leverage remaining (per-class, laborious — junk-named/wrong-sig overrides &
 reordered new-virtuals):
+- **City-minister family** (TCityInteriorMinister base + TSteel/TShipBuilder/TEven/
+  TRailCityMinister) — TCityInteriorMinister has ~30 junk CityInteriorSlot1A..34
+  names + reorder; big but cascades to 5.
+- **Order family** (TCityOrderItem/TProductionOrder/TItemOrder → TCapacity/TExpansion/
+  TFoodProcessing/TPowerPlant/TTraining/TPopGrowth/TUnit/TOrItem/TItemOrder) — slot
+  0x3c is one body 0x4b5180 named Produce (TCityOrderItem) vs
+  InitializeCityOrderItemWorkingBuffers (TProductionOrder); TProductionOrder:TObject
+  not TCityOrderItem. TExpansion/TFoodProcessing are 1-slot (0x3c) each.
+- **TWindow** (→ TDlgWindow/TGameWindow/dialogs): slot 0x40 DispatchUiCommandToHandler
+  override sig mismatch + missing/extra TView slots 0x190-0x198 + phantom 0x1dc tail.
 - **Cluster family** (~25: TCluster base + TToolBarCluster/TTradeCluster/… ) — TCluster
   overrides named Free/OwnerPanel/etc. instead of the TView ancestor slot name.
 - **Great-power family** (TCountry base + TGreatPower/TMinor/TAutoGreatPower/THost…/TRemote…).
