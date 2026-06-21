@@ -780,7 +780,7 @@ address|name|size|type|prototype
 4882c0|AppendCopiedRecordToPtrList|60|function|undefined AppendCopiedRecordToPtrList()
 488310|InsertCopiedRecordAtFrontOfPtrList|60|function|undefined InsertCopiedRecordAtFrontOfPtrList()
 488360|TSortedPtrList::CompareUnsignedIntsAscending|24|function|undefined CompareUnsignedIntsAscending()
-488390|TSortedPtrList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
+488390|TSortedPtrListSibling_649010::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4883c0|CObArray::thunk_DestructCObArray|5|function|undefined thunk_DestructCObArray()
 4883e0|TSortedPtrList::GetRuntimeClass|6|function|undefined GetRuntimeClass()
 488400|TSortedPtrList::ConstructTSortedPtrListBaseState|80|function|undefined ConstructTSortedPtrListBaseState()
