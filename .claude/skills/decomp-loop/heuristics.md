@@ -232,3 +232,16 @@ recovery for TGreatPower's pending-action slots is the related lever — see
 - After a vtable-dump correction, verify **every** declared virtual sits at the intended
   slot index — a skipped slot in the header shifts all later entries. Details belong in
   `docs/*_vtable_evidence.csv` / worklog, not here.
+
+- **Shape-only class batch (`just gen-classes`)**: porting all remaining classes at once
+  works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
+  DECLS + compilable **unmarked** cpp stubs (no `// FUNCTION:`/ownership/symbols), so
+  the vtable still emits/pairs but nothing claims the heavily-shared slot addresses
+  (claiming them is what made `sync-ownership` explode). Build blockers solved once and
+  for all in the generator: classify slots against the **full ancestry** (not just the
+  immediate base, which truncates/false-`new`s deep view vtables); propagate scalar-dtor
+  kind down the chain; match override return types to the nearest ancestor *header*
+  (C2555); dedupe duplicate slot names and sanitize invalid / bridge-shaped provisional
+  names to `VTableSlotNN`; `render_header` pulls `game/mfc.h` + forward-declares game
+  types; `compat.h` carries the Ghidra scalar typedefs. Bodies are the remaining
+  per-class decomp-loop work; expect the aligned-100% count to dip until they're ported.
