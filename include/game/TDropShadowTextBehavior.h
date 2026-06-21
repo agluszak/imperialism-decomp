@@ -21,7 +21,7 @@ public:
   // slot 0x0a OrphanTiny_SetDwordEcxOffset_8_00487280 inherited unchanged (0x487280)
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
-  virtual undefined OrphanRetStub_004872e0() override; // slot 0x0d 0x4b1150
+  void NoOpSlot34(undefined4 value) override; // slot 0x0d byte 0x34 0x4b1150
 // === END GENERATED DECLS (TDropShadowTextBehavior) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDropShadowTextBehavior 0xCTOR`).
 

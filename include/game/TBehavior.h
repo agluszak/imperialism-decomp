@@ -17,18 +17,17 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanTiny_SetDwordEcxOffset_8_00487280(); // slot 0x0a 0x487280
-  virtual undefined OrphanLeaf_NoCall_Ins02_004872a0(); // slot 0x0b 0x4872a0
-  virtual undefined CreateTDialogBehaviorInstance(); // slot 0x0c 0x4872c0
-  virtual undefined OrphanRetStub_004872e0(); // slot 0x0d 0x4872e0
+  // slots 0x0a-0x0d (bytes 0x28-0x34) are the typed virtuals declared below
+  // (SetDword08/GetFlag0C/SetFlag0C/NoOpSlot34); the generated Orphan*
+  // placeholders were duplicates of these slots and were removed.
 // === END GENERATED DECLS (TBehavior) ===
   TBehavior();
 
   CRuntimeClass* GetRuntimeClass() const override;
-  virtual void SetDword08(undefined4 value);
-  virtual unsigned char GetFlag0C();
-  virtual void SetFlag0C(unsigned char value);
-  virtual void NoOpSlot34(undefined4 value);
+  virtual void SetDword08(undefined4 value);     // slot 0x0a byte 0x28 0x487280
+  virtual unsigned char GetFlag0C();             // slot 0x0b byte 0x2c 0x4872a0
+  virtual void SetFlag0C(unsigned char value);   // slot 0x0c byte 0x30 0x4872c0
+  virtual void NoOpSlot34(undefined4 value);     // slot 0x0d byte 0x34 0x4872e0
 
   undefined4 field_0x4;
   undefined4 field_0x8;

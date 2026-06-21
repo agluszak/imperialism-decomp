@@ -44,7 +44,3 @@ void TBehavior::NoOpSlot34(undefined4 value) {
   (void)value;
   return;
 }
-undefined TBehavior::CreateTDialogBehaviorInstance(void) { return 0; }
-undefined TBehavior::OrphanLeaf_NoCall_Ins02_004872a0(void) { return 0; }
-undefined TBehavior::OrphanRetStub_004872e0(void) { return 0; }
-undefined TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(void) { return 0; }
