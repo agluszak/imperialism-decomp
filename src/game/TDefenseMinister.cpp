@@ -128,7 +128,7 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 // Slot 10 override (0x4ec3d0).
 
 // FUNCTION: IMPERIALISM 0x004ec3d0
-undefined TDefenseMinister::DispatchNationStateEventCode10() { return 0; }
+void TDefenseMinister::MinisterSlot0A() {}
 
 // FUNCTION: IMPERIALISM 0x004ec450
 void TDefenseMinister::MinisterSlot12() {}
@@ -160,8 +160,3 @@ undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004ed050
 undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer() { return 0; }
-void TDefenseMinister::Call54(void) {}
-void TDefenseMinister::DefenseSlot16(void) {}
-void TDefenseMinister::DefenseSlot17(void) {}
-void TDefenseMinister::DefenseSlot18(void) {}
-void TDefenseMinister::MinisterSlot0A(void) {}

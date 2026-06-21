@@ -13,18 +13,8 @@ public:
   // slot 0x07 Free inherited unchanged (0x52ec80)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined DispatchNationStateEventCode10() override; // slot 0x0a 0x4ec3d0
-  // slot 0x0b RebuildTerrainPreferenceEntriesAndAssignRanks inherited unchanged (0x52ed50)
-  // slot 0x0c MapTerrainTypeToPreferenceRank inherited unchanged (0x52ee20)
-  // slot 0x0d MapPreferenceRankToTerrainType inherited unchanged (0x52eea0)
-  // slot 0x0e GetPreferenceTerrainTypeByEntryIndex inherited unchanged (0x52ef80)
-  // slot 0x0f GetPreferenceGroupRankByEntryIndex inherited unchanged (0x52ef20)
-  // slot 0x10 GetPreferenceScoreByEntryIndex inherited unchanged (0x52ef50)
-  // slot 0x11 NoOpForeignMinisterUtilityStub inherited unchanged (0x52efb0)
-  virtual undefined BuildTileRingPriorityMapForNationTileList(); // slot 0x15 0x4ecbb0
-  virtual undefined BuildStrategicTilePriorityHeatmap(); // slot 0x16 0x4ecf20
-  virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(); // slot 0x17 0x4ed050
-  virtual undefined CreateTDefenseMinisterInstance(); // slot 0x18 0x4ec0a0
+  // slot 0x0a (byte 0x28) MinisterSlot0A overridden below (body 0x4ec3d0)
+  // slots 0x0b-0x11 inherited from TMinister unchanged
 // === END GENERATED DECLS (TDefenseMinister) ===
   TDefenseMinister();
   void InitializeBaseOrderArrayMetrics();
@@ -32,18 +22,16 @@ public:
   CRuntimeClass* GetRuntimeClass() const override; // slot 0 (0x4ec0c0)
   void WriteTo(TStream* stream) override;          // 5 (0x4ec1d0)
   void ReadFrom(TStream* stream) override;         // 6 (0x4ec2f0)
-  void MinisterSlot0A() override; // 10 (0x4ec3d0)
-  virtual void MinisterSlot12();    // 18 (0x4ec450)
-  virtual void Call4C();            // 19 (0x4ec4c0)
-  virtual void MinisterSlot14();    // 20 (0x4ec540)
-  virtual void Call54();            // 21 (0x4ecbb0)
+  void MinisterSlot0A() override; // 0x0a byte 0x28 (0x4ec3d0)
 
-  // TDefenseMinister-introduced extension (vtable 0x6549b0 slots 22-24, byte 0x58-0x60).
-  // Slots 25-29 are NULL/abstract trailing slots in orig (reccmp drops them); not declared.
-  // TNapoleonMinister's vtable begins at 0x654a28 (slot 30).
-  virtual void DefenseSlot16(); // 22 (0x58) 0x4ecf20
-  virtual void DefenseSlot17(); // 23 (0x5c) 0x4ed050
-  virtual void DefenseSlot18(); // 24 (0x60) 0x4ec0a0
+  // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
+  virtual void MinisterSlot12();                                    // 0x48 (0x4ec450)
+  virtual void Call4C();                                           // 0x4c (0x4ec4c0)
+  virtual void MinisterSlot14();                                   // 0x50 (0x4ec540)
+  virtual undefined BuildTileRingPriorityMapForNationTileList();    // 0x54 (0x4ecbb0)
+  virtual undefined BuildStrategicTilePriorityHeatmap();           // 0x58 (0x4ecf20)
+  virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(); // 0x5c (0x4ed050)
+  virtual undefined CreateTDefenseMinisterInstance();             // 0x60 (0x4ec0a0)
 };
 
 // === BEGIN GENERATED (TDefenseMinister) — refreshed by `just gen-class TDefenseMinister`; do not hand-edit ===
