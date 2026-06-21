@@ -1,7 +1,5 @@
 #include "game/TUnitOrder.h"
 
-undefined TUnitOrder::OrphanRetStub_004b5160() { return 0; }
-
 // FUNCTION: IMPERIALISM 0x004b6f50
 CRuntimeClass* TUnitOrder::GetRuntimeClass() const {
   return 0;
@@ -37,3 +35,5 @@ void TUnitOrder::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b7920
 void TUnitOrder::ReadFrom(TStream* stream) {
 }
+
+undefined TUnitOrder::OrphanRetStub_004b5160() { return 0; }

@@ -1,7 +1,5 @@
 #include "game/TNavyRoster.h"
 
-undefined TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00564d00
 CRuntimeClass* TNavyRoster::GetRuntimeClass() const {
   return 0;

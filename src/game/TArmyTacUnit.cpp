@@ -1,7 +1,5 @@
 #include "game/TArmyTacUnit.h"
 
-undefined TArmyTacUnit::VTableSlot0E(int param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x0059b390
 // TArmyTacUnit::`scalar deleting destructor'
 TArmyTacUnit::~TArmyTacUnit() {}

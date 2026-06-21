@@ -19,8 +19,8 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) override; // slot 0x0a 0x4d2380
-  virtual bool HandleCivilianTileOrderAction(short nTileIndex, short nInputHint, undefined2 param_3) override; // slot 0x0b 0x4d26d0
-  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry, undefined2 param_3) override; // slot 0x0c 0x4d4310
+  virtual bool HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) override; // slot 0x0b 0x4d26d0
+  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry) override; // slot 0x0c 0x4d4310
   virtual void DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry) override; // slot 0x0d 0x4d2270
 // === END GENERATED DECLS (TCivMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCivMgr 0xCTOR`).

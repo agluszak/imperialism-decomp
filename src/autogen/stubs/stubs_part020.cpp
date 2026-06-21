@@ -1475,26 +1475,10 @@ undefined4 CreateTAssetMgrInstance(void)
   return 0;
 }
 
-// ghidra_name TAssetMgr::GetTAssetMgrClassNamePointer
-// ghidra_proto undefined GetTAssetMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005df260
-undefined4 GetTAssetMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiViewManager
 // ghidra_proto void * __fastcall ConstructUiViewManager(void * pUiViewManager)
 // FUNCTION: IMPERIALISM 0x005df280
 undefined4 ConstructUiViewManager(void)
-{
-  return 0;
-}
-
-// ghidra_name TAssetMgr::DestructTAssetMgrAndMaybeFree
-// ghidra_proto undefined DestructTAssetMgrAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005df300
-undefined4 DestructTAssetMgrAndMaybeFree(void)
 {
   return 0;
 }
@@ -1511,30 +1495,6 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
 // ghidra_proto undefined ForwardEnsurePictWvDataGobLoadedBySlot()
 // FUNCTION: IMPERIALISM 0x005df3a0
 undefined4 ForwardEnsurePictWvDataGobLoadedBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveTurnEventDialogNodeByMessageContext
-// ghidra_proto undefined ResolveTurnEventDialogNodeByMessageContext()
-// FUNCTION: IMPERIALISM 0x005df3c0
-undefined4 ResolveTurnEventDialogNodeByMessageContext(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeUiCallback_005df3f0
-// ghidra_proto undefined NoOpRuntimeUiCallback_005df3f0()
-// FUNCTION: IMPERIALISM 0x005df3f0
-undefined4 NoOpRuntimeUiCallback_005df3f0(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeUiCallback_005df410
-// ghidra_proto undefined NoOpRuntimeUiCallback_005df410()
-// FUNCTION: IMPERIALISM 0x005df410
-undefined4 NoOpRuntimeUiCallback_005df410(void)
 {
   return 0;
 }
@@ -1603,14 +1563,6 @@ undefined4 GetResourceStreamSize(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeUiCallback_005df780
-// ghidra_proto undefined NoOpRuntimeUiCallback_005df780()
-// FUNCTION: IMPERIALISM 0x005df780
-undefined4 NoOpRuntimeUiCallback_005df780(void)
-{
-  return 0;
-}
-
 // ghidra_name QueryVolumeInformationForDriveIndex
 // ghidra_proto undefined QueryVolumeInformationForDriveIndex()
 // FUNCTION: IMPERIALISM 0x005df7a0
@@ -1631,14 +1583,6 @@ undefined4 QueryDriveTypeByDriveIndex(void)
 // ghidra_proto undefined ReturnTrueStub()
 // FUNCTION: IMPERIALISM 0x005df8d0
 undefined4 ReturnTrueStub(void)
-{
-  return 0;
-}
-
-// ghidra_name PlayMovieClipAndDispatchTurnStateFollowup
-// ghidra_proto undefined PlayMovieClipAndDispatchTurnStateFollowup()
-// FUNCTION: IMPERIALISM 0x005dfc10
-undefined4 PlayMovieClipAndDispatchTurnStateFollowup(void)
 {
   return 0;
 }

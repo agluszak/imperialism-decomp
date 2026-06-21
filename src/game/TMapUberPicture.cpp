@@ -1,9 +1,5 @@
 #include "game/TMapUberPicture.h"
 
-void TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 * this_obj) {}
-
-undefined TMapUberPicture::VTableSlot7F() { return 0; }
-
 // FUNCTION: IMPERIALISM 0x005969c0
 CRuntimeClass* TMapUberPicture::GetRuntimeClass_00() const {
   return 0;
@@ -81,10 +77,11 @@ undefined TMapUberPicture::OrphanCallChain_C1_I06_00598a20() {
 
 // FUNCTION: IMPERIALISM 0x00599cf0
 void __fastcall TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 * this_obj) {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00599fd0
-CRuntimeClass* TMapUberPicture::GetRuntimeClass_7e() const {
+CRuntimeClass* TMapUberPicture::GetRuntimeClass_7e() {
   return 0;
 }
+
+undefined TMapUberPicture::VTableSlot7F() { return 0; }

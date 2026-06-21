@@ -1,7 +1,5 @@
 #include "game/TColorKeyPicture.h"
 
-void TColorKeyPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow, undefined2 param_3) {}
-
 // FUNCTION: IMPERIALISM 0x00572dc0
 CRuntimeClass* TColorKeyPicture::GetRuntimeClass() const {
   return 0;

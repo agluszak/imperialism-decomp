@@ -1,7 +1,5 @@
 #include "game/TDealTabControl.h"
 
-undefined TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_2) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x00435540
 // TDealTabControl::`scalar deleting destructor'
 TDealTabControl::~TDealTabControl() {}

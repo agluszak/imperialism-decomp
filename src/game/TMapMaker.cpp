@@ -1,9 +1,5 @@
 #include "game/TMapMaker.h"
 
-void TMapMaker::Free() {}
-
-TObject* TMapMaker::ShallowClone() { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00525950
 CRuntimeClass* TMapMaker::GetRuntimeClass() const {
   return 0;

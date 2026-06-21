@@ -440,11 +440,24 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
                     plan.updated_rows.append(target_addr)
                 continue
         else:
-            if target_addr in by_addr:
-                continue
             assert s.sig is not None
             name = f"{class_name}::{s.sig.name}"
             proto = s.prototype or f"{s.sig.ret} {s.sig.name}({s.sig.args})"
+            existing = by_addr.get(target_addr)
+            if existing is not None:
+                changed = False
+                if (existing.get("name") or "") != name:
+                    existing["name"] = name
+                    changed = True
+                if (existing.get("type") or "") != "function":
+                    existing["type"] = "function"
+                    changed = True
+                if proto and (existing.get("prototype") or "") != proto:
+                    existing["prototype"] = proto
+                    changed = True
+                if changed:
+                    plan.updated_rows.append(target_addr)
+                continue
         plan.new_rows.append(
             {
                 "address": target_addr,
@@ -482,3 +495,38 @@ def plan_ownership(path: Path, owned: list[ClassifiedSlot], target_cpp: str) -> 
         )
         by_addr[target_addr] = plan.new_rows[-1]
     return plan
+
+
+_GEN_BLOCK_RE = re.compile(
+    r"// === BEGIN GENERATED(?: DECLS)? \([^)]*\) .*?// === END GENERATED(?: DECLS)? \([^)]*\) ===",
+    re.DOTALL,
+)
+_MEMBER_DECL_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
+_DECL_LINE_NAME_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
+
+
+def drop_externally_declared_declarations(decls: str, header_text: str, cls: str) -> str:
+    """Remove generated-DECLS lines whose member is already declared outside GENERATED blocks."""
+    outside = _GEN_BLOCK_RE.sub("", header_text)
+    external: set[str] = set()
+    for line in outside.splitlines():
+        s = line.strip()
+        if not s or s.startswith("//") or "(" not in s:
+            continue
+        if "=" in s.split("(", 1)[0]:
+            continue
+        m = _MEMBER_DECL_RE.search(s)
+        if m:
+            external.add(m.group(1))
+    if not external:
+        return decls
+    kept: list[str] = []
+    for line in decls.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("virtual "):
+            m = _DECL_LINE_NAME_RE.search(stripped)
+            name = m.group(1) if m else ""
+            if name in external or (name == f"~{cls}" and f"~{cls}" in external):
+                continue
+        kept.append(line)
+    return "\n".join(kept)

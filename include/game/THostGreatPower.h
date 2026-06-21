@@ -45,7 +45,7 @@ public:
   // slot 0x1f OrphanLeaf_NoCall_Ins02_004d7f40 inherited unchanged (0x4ddb20)
   // slot 0x20 OrphanRetStub_004d7fa0 inherited unchanged (0x4ddc30)
   // slot 0x21 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4ddd50)
-  virtual undefined ReturnFalseNationStateActionStub() override; // slot 0x22 0x541080
+  // slot 0x22 ReturnFalseNationStateActionStub inherited unchanged (0x541080)
   // slot 0x23 OrphanRetStub_004d7fe0 inherited unchanged (0x4defd0)
   // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
   // slot 0x25 OrphanRetStub_004d7f80 inherited unchanged (0x4dedf0)
@@ -140,7 +140,7 @@ public:
   // slot 0x7e ResetNationDiplomacyProposalQueue inherited unchanged (0x4df580)
   // slot 0x7f IsDiplomacyTargetClassCode200Match inherited unchanged (0x4df5a0)
   // slot 0x80 DispatchTurnEvent2103WithNationFromRecord inherited unchanged (0x4df5c0)
-  virtual void ProcessPendingDiplomacyProposalQueue() override; // slot 0x81 0x5410f0
+  // slot 0x81 ProcessPendingDiplomacyProposalQueue inherited unchanged (0x5410f0)
   // slot 0x82 ClassifyNationProductionTotalAgainstGlobalDistribution inherited unchanged (0x4e2880)
   // slot 0x83 HasActiveCandidateNationSlots inherited unchanged (0x4e0400)
   // slot 0x84 OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4e0420)

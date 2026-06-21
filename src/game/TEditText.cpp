@@ -1,9 +1,5 @@
 #include "game/TEditText.h"
 
-undefined TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2) { return 0; }
-
-undefined TEditText::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00490380
 CRuntimeClass* TEditText::GetRuntimeClass() const {
   return 0;

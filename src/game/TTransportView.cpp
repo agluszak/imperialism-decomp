@@ -1,7 +1,5 @@
 #include "game/TTransportView.h"
 
-undefined TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004bd370
 // TTransportView::`scalar deleting destructor'
 TTransportView::~TTransportView() {}

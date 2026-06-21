@@ -1,7 +1,5 @@
 #include "game/TArmyPlayer.h"
 
-undefined TArmyPlayer::TArmyTacUnit_VtblSlot07(undefined4 param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x0059b140
 // TArmyPlayer::`scalar deleting destructor'
 TArmyPlayer::~TArmyPlayer() {}

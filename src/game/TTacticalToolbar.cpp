@@ -1,7 +1,5 @@
 #include "game/TTacticalToolbar.h"
 
-undefined TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int * param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x0045d360
 // TTacticalToolbar::`scalar deleting destructor'
 TTacticalToolbar::~TTacticalToolbar() {}

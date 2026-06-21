@@ -147,11 +147,11 @@ class TView* TWindow::QueryOwnerContextPanel() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492d00
-void TWindow::vmethod_0078(int* point = 0) {
+void TWindow::vmethod_0078(int* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x00492d20
-void TWindow::vmethod_0076(int* point = 0) {
+void TWindow::vmethod_0076(int* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x00492d40

@@ -8,24 +8,37 @@ CRuntimeClass g_pClassDescT2PictToggleButton = {nullptr, 0, 0, nullptr, nullptr}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00584890
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
   return new T2PictToggleButton();
 }
+
+
+
 
 // FUNCTION: IMPERIALISM 0x00584910
 CRuntimeClass* T2PictToggleButton::GetRuntimeClass() const {
   return &g_pClassDescT2PictToggleButton;
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00584930
 T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
+
+
+
 // SYNTHETIC: IMPERIALISM 0x00584960
 // T2PictToggleButton::`scalar deleting destructor'
-T2PictToggleButton::~T2PictToggleButton() {}
+
+
 
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected(short value, bool refreshNow) {
@@ -33,6 +46,9 @@ bool T2PictToggleButton::IsSelected(short value, bool refreshNow) {
   (void)refreshNow;
   return this->field3c <= this->glyphBase84;
 }
+
+
+
 
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
@@ -53,3 +69,7 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   reinterpret_cast<void(__cdecl*)()>(ppuVar2[0x3e])();
   reinterpret_cast<void(__cdecl*)(int)>(ppuVar2[0x45])(0);
 }
+
+undefined T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(void) { return 0;}
+
+T2PictToggleButton::~T2PictToggleButton() {}

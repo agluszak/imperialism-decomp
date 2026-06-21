@@ -40,4 +40,4 @@ void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg
   TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
 
-bool TPictureButton::IsSelected(short value = -1, bool refreshNow = true) { return 0; }
+bool TPictureButton::IsSelected(short value, bool refreshNow) { return 0; }

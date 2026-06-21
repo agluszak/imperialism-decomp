@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name ReassignTileObjectOwnerAndNotifyForSelectedCells
-// ghidra_proto undefined ReassignTileObjectOwnerAndNotifyForSelectedCells()
-// FUNCTION: IMPERIALISM 0x004e6040
-undefined4 ReassignTileObjectOwnerAndNotifyForSelectedCells(void)
-{
-  return 0;
-}
-
-// ghidra_name ReassignUnitOrdersForCountryTargetChange
-// ghidra_proto undefined ReassignUnitOrdersForCountryTargetChange()
-// FUNCTION: IMPERIALISM 0x004e6150
-undefined4 ReassignUnitOrdersForCountryTargetChange(void)
-{
-  return 0;
-}
-
-// ghidra_name RelinkTileUnitsToCountryOrderManager
-// ghidra_proto undefined RelinkTileUnitsToCountryOrderManager()
-// FUNCTION: IMPERIALISM 0x004e6520
-undefined4 RelinkTileUnitsToCountryOrderManager(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004e6610
 // ghidra_proto undefined OrphanRetStub_004e6610()
 // FUNCTION: IMPERIALISM 0x004e6610

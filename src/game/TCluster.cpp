@@ -19,10 +19,14 @@
 
 extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
 
+
+
 // FUNCTION: IMPERIALISM 0x004913e0
 CRuntimeClass* TCluster::GetRuntimeClass() const {
   return &PTR_s_TCluster_006496c0;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
@@ -30,8 +34,11 @@ TCluster::TCluster() {
   this->field84 = 0x20202020;
 }
 
+
+
 // SYNTHETIC: IMPERIALISM 0x00491480
 // TCluster::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x00491650
 void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -68,10 +75,14 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00491770
 int TCluster::GetField84() {
   return this->field84;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00491790
 void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
@@ -93,6 +104,8 @@ void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004918a0
 TObject* TCluster::ShallowClone() {
   TCluster* clone = static_cast<TCluster*>(ShallowFree());
@@ -100,3 +113,165 @@ TObject* TCluster::ShallowClone() {
   clone->field84 = this->field84;
   return clone;
 }
+
+
+
+// FUNCTION: IMPERIALISM 0x00491b10
+undefined TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00491b10() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00491c80
+undefined TCluster::OrphanCallChain_C1_I17_00491c80() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00491cc0
+int * TCluster::RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint) {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00491d80
+int * TCluster::InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint) {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00491f90
+undefined TCluster::GetTFloatWindowClassNamePointer() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492110
+undefined TCluster::VTableSlotA1() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492310
+undefined TCluster::OrphanVtableAssignStub_00492310() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492330
+undefined TCluster::ResetChildSelectionAndNotifyParent468Alt() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492670
+undefined TCluster::SerializeRecordList_0x0C_WithBlockPool_C() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004927e0
+undefined TCluster::SerializeRecordList_0x0C_WithBlockPool_D() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492950
+undefined TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x00492980
+undefined TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492980() {
+  return 0;
+}
+
+void TCluster::Serialize_8c(CArchive& archive) {}
+
+void TCluster::Serialize_a2(CArchive& archive) {}
+
+undefined TCluster::OrphanLeaf_NoCall_Ins05_0048d8a0() { return 0; }
+
+undefined TCluster::AssertMcAppUILine2358() { return 0; }
+
+undefined TCluster::OrphanCallChain_C2_I39_0048d900() { return 0; }
+
+int TCluster::IsActionable() { return 0; }
+
+undefined TCluster::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0() { return 0; }
+
+undefined TCluster::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0() { return 0; }
+
+undefined TCluster::OrphanCallChain_C1_I08_0048da10() { return 0; }
+
+undefined TCluster::OrphanLeaf_NoCall_Ins03_0048da40() { return 0; }
+
+undefined TCluster::ExecuteViewModalStateWithPushPopChain() { return 0; }
+
+undefined TCluster::OrphanCallChain_C1_I08_0048dc60() { return 0; }
+
+undefined TCluster::OrphanCallChain_C2_I12_0048dc90() { return 0; }
+
+undefined TCluster::OrphanLeaf_NoCall_Ins02_0048dcc0() { return 0; }
+
+undefined TCluster::AssertMcAppUILine2554() { return 0; }
+
+undefined TCluster::DispatchUiCommandToHandler() { return 0; }
+
+undefined TCluster::ForwardEngineerDialogCommandToChildSlot40_af() { return 0; }
+
+undefined TCluster::OrphanCallChain_C2_I19_0048ddc0() { return 0; }
+
+void TCluster::DispatchSlot9CToLinkedChildren() {}
+
+undefined TCluster::OrphanCallChain_C2_I10_0048e120() { return 0; }
+
+undefined TCluster::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150() { return 0; }
+
+undefined TCluster::CtrlSlot95_TestPointInBoundsFromSlot128_Impl() { return 0; }
+
+undefined TCluster::GetTEventHandlerClassNamePointer_100() { return 0; }
+
+undefined TCluster::VTableSlot101() { return 0; }
+
+undefined TCluster::GetTEventHandlerClassNamePointer_102() { return 0; }
+
+undefined TCluster::GetTEventHandlerClassNamePointer_103() { return 0; }
+
+void TCluster::Free() {}
+
+class TView* TCluster::OwnerPanel() { return 0; }
+
+class TView* TCluster::QueryOwnerContextPanel() { return 0; }
+
+void TCluster::vmethod_0078(int* point ) {}
+
+void TCluster::vmethod_0076(int* point ) {}
+
+void TCluster::DispatchVslot134WithRectAndRectPlus8_Impl() {}
+
+undefined TCluster::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl() { return 0; }
+
+TObject* TCluster::ShallowClone_a8() { return 0; }
+
+undefined TCluster::ForwardEngineerDialogCommandToChildSlot40_0f(void) { return 0;}
+
+undefined TCluster::OrphanCallChain_C2_I51_00491790(void) { return 0;}
+
+undefined TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(void) { return 0;}
+
+TObject* TCluster::ShallowClone_08(void) { return 0; }
+
+TCluster::~TCluster() {}

@@ -1963,26 +1963,10 @@ undefined4 DestructTBehaviorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TDialogBehavior::GetTDialogBehaviorClassNamePointer
-// ghidra_proto undefined GetTDialogBehaviorClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00487350
-undefined4 GetTDialogBehaviorClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TDialogBehavior::ConstructTDialogBehaviorBaseState
 // ghidra_proto undefined ConstructTDialogBehaviorBaseState()
 // FUNCTION: IMPERIALISM 0x00487370
 undefined4 ConstructTDialogBehaviorBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
-// ghidra_proto undefined DestructTDialogBehaviorAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004873b0
-undefined4 DestructTDialogBehaviorAndMaybeFree(void)
 {
   return 0;
 }
@@ -1999,46 +1983,6 @@ undefined4 DestructTDialogBehaviorAndMaybeFree_Impl(void)
 // ghidra_proto undefined SetUiColorDescriptorGoldTriplet()
 // FUNCTION: IMPERIALISM 0x00487400
 undefined4 SetUiColorDescriptorGoldTriplet(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I13_00487430
-// ghidra_proto undefined OrphanCallChain_C1_I13_00487430()
-// FUNCTION: IMPERIALISM 0x00487430
-undefined4 OrphanCallChain_C1_I13_00487430(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I17_00487470
-// ghidra_proto undefined OrphanCallChain_C1_I17_00487470()
-// FUNCTION: IMPERIALISM 0x00487470
-undefined4 OrphanCallChain_C1_I17_00487470(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C11_I88_004874b0
-// ghidra_proto undefined OrphanCallChain_C11_I88_004874b0()
-// FUNCTION: IMPERIALISM 0x004874b0
-undefined4 OrphanCallChain_C11_I88_004874b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I49_004875d0
-// ghidra_proto undefined OrphanCallChain_C6_I49_004875d0()
-// FUNCTION: IMPERIALISM 0x004875d0
-undefined4 OrphanCallChain_C6_I49_004875d0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommand::CreateTCommandInstance
-// ghidra_proto undefined CreateTCommandInstance()
-// FUNCTION: IMPERIALISM 0x00487660
-undefined4 CreateTCommandInstance(void)
 {
   return 0;
 }

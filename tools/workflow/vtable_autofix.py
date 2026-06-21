@@ -23,7 +23,12 @@ from pathlib import Path
 from tools.common import class_manifest as cm
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.workflow.class_codegen import ClassifiedSlot, plan_ownership, plan_symbols
+from tools.workflow.class_codegen import (
+    ClassifiedSlot,
+    drop_externally_declared_declarations,
+    plan_ownership,
+    plan_symbols,
+)
 from tools.workflow.gen_class import (
     _definition_head_key,
     _find_block_end,
@@ -158,43 +163,10 @@ _GEN_BLOCK_RE = re.compile(
     r"// === BEGIN GENERATED(?: DECLS)? \([^)]*\) .*?// === END GENERATED(?: DECLS)? \([^)]*\) ===",
     re.DOTALL,
 )
-# Capture the identifier immediately before `(` — the method/ctor/dtor name. No leading
-# `\b`: a word boundary does NOT match before a `~` (both sides are non-word), which would
-# silently strip the tilde and parse a destructor `~Class` as the constructor `Class`,
-# colliding in the external set and dropping the generated dtor decl (the C2084 cause).
-_MEMBER_DECL_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
-_DECL_LINE_NAME_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
 
 
 def _drop_externally_declared(decls: str, header_text: str, cls: str) -> str:
-    """Remove generated-DECLS lines whose member is already declared in the header
-    outside the generated blocks (hand-curated GetRuntimeClass / dtor / overrides),
-    which would otherwise double-declare and fail MSVC (C2535)."""
-    outside = _GEN_BLOCK_RE.sub("", header_text)
-    external: set[str] = set()
-    for line in outside.splitlines():
-        s = line.strip()
-        if not s or s.startswith("//") or "(" not in s:
-            continue
-        if "=" in s.split("(", 1)[0]:
-            continue
-        m = _MEMBER_DECL_RE.search(s)
-        if m:
-            external.add(m.group(1))
-    if not external:
-        return decls
-    kept: list[str] = []
-    for line in decls.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("virtual "):
-            m = _DECL_LINE_NAME_RE.search(stripped)
-            name = m.group(1) if m else ""
-            # The dtor decl line spells `~Class()`; external curated dtors spell `~Class`.
-            if name in external or (name == f"~{cls}" and f"~{cls}" in external):
-                continue
-        kept.append(line)
-    return "\n".join(kept)
-
+    return drop_externally_declared_declarations(decls, header_text, cls)
 
 def _ancestry_depth(repo_root: Path, cls: str) -> int:
     """Length of the class's ``generated.ancestry`` chain (class..root..CObject).
@@ -373,6 +345,32 @@ def _strip_or_mark_unmarked_stubs(
     return "".join(chunks), marked
 
 
+def _method_name_from_block(block: str, cls: str) -> str | None:
+    if f"{cls}::~{cls}(" in block:
+        return f"~{cls}"
+    m = re.search(rf"\b{re.escape(cls)}::(~?{re.escape(cls)}|[A-Za-z_]\w*)\s*\(", block)
+    return m.group(1) if m else None
+
+
+def _marked_method_addrs(existing: dict[int, str], cls: str) -> dict[str, int]:
+    out: dict[str, int] = {}
+    for addr, block in existing.items():
+        name = _method_name_from_block(block, cls)
+        if name:
+            out[name] = addr
+    return out
+
+
+def _update_marker_addr(block: str, addr: int, *, synthetic: bool = False) -> str:
+    kind = "SYNTHETIC" if synthetic else "FUNCTION"
+    return re.sub(
+        r"// (?:FUNCTION|SYNTHETIC): IMPERIALISM 0x[0-9a-fA-F]+",
+        f"// {kind}: IMPERIALISM 0x{addr:08x}",
+        block,
+        count=1,
+    )
+
+
 def _merge_marker_stubs(cpp_text: str, cls: str, slots: list[ClassifiedSlot]) -> tuple[str, list[int]]:
     cpp_text, marked = _strip_or_mark_unmarked_stubs(cpp_text, cls, slots)
     matches = list(ADDR_MARKER_RE.finditer(cpp_text))
@@ -396,9 +394,28 @@ def _merge_marker_stubs(cpp_text: str, cls: str, slots: list[ClassifiedSlot]) ->
             return scalar_dtor_block(cls, addr) + "\n"
         return _stub_block(cls, slot)
 
+    has_dtor_body = any(f"{cls}::~{cls}(" in blk for blk in existing.values())
+    method_addrs = _marked_method_addrs(existing, cls)
     claimed = sorted(marked)
     for slot in sorted(slots, key=_slot_addr):
         addr = _slot_addr(slot)
+        if slot.kind == "scalar_dtor":
+            if has_dtor_body:
+                if addr not in existing:
+                    existing[addr] = scalar_dtor_block(cls, addr) + "\n"
+                    claimed.append(addr)
+                elif f"{cls}::~{cls}(" not in existing[addr]:
+                    existing[addr] = scalar_dtor_block(cls, addr) + "\n"
+                    claimed.append(addr)
+                continue
+        elif slot.sig is not None and (old_addr := method_addrs.get(slot.sig.name)) is not None:
+            if old_addr != addr:
+                block = existing.pop(old_addr)
+                synthetic = block.lstrip().startswith("// SYNTHETIC:")
+                existing[addr] = _update_marker_addr(block.rstrip(), addr, synthetic=synthetic) + "\n\n"
+                method_addrs[slot.sig.name] = addr
+                claimed.append(addr)
+            continue
         block = existing.get(addr)
         if block is not None:
             if slot.kind == "scalar_dtor" and f"{cls}::~{cls}(" not in block:
@@ -407,8 +424,14 @@ def _merge_marker_stubs(cpp_text: str, cls: str, slots: list[ClassifiedSlot]) ->
                 )
                 claimed.append(addr)
             continue
+        if slot.sig is not None and slot.sig.name in method_addrs:
+            continue
         existing[addr] = _scalar_dtor_stub(addr) if slot.kind == "scalar_dtor" else _stub_block(cls, slot)
         claimed.append(addr)
+        if slot.sig is not None:
+            method_addrs[slot.sig.name] = addr
+        if slot.kind == "scalar_dtor":
+            has_dtor_body = True
 
     body = "".join(existing[a] for a in sorted(existing))
     if preamble and not preamble.endswith("\n"):
@@ -436,8 +459,8 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
     hpath = header_path(repo_root, cls)
     cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
     if not hpath.exists():
-        print(f"vtable-autofix {cls}: missing header {hpath}")
-        return 1
+        print(f"vtable-autofix {cls}: missing header {hpath} (skip)")
+        return 0
 
     header_text = hpath.read_text(encoding="utf-8")
     new_header, block_changed = upsert_block(header_text, cls, render_generated_block(manifest))
@@ -474,7 +497,7 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
     ]
     valid_names = {s.sig.name for s in all_slots if s.kind in ("override", "new") and s.sig}
     valid_names.add(f"~{cls}")
-    new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names)
+    new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names, all_slots)
 
     sym_plan = plan_symbols(resolve_repo_path(repo_root, "config/symbols.csv"), slots, cls)
     own_plan = plan_ownership(
@@ -510,6 +533,18 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
     if own_plan.new_rows:
         own_plan.path.write_text(own_plan.merged_text())
     return 0
+
+
+def _ilt_target_is_claimed(repo_root: Path, ilt_addr: str) -> bool:
+    """True when the ILT thunk address is claimed in function_ownership.csv."""
+    path = resolve_repo_path(repo_root, "config/function_ownership.csv")
+    if not path.exists():
+        return False
+    needle = normalize_hex(ilt_addr).lower()
+    for row in read_pipe_rows(path):
+        if normalize_hex(row.get("address", "")).lower() == needle:
+            return True
+    return False
 
 
 def plan_for_classes(repo_root: Path, report: VtableReport, classes: list[str]) -> list[FixPlan]:
@@ -575,16 +610,31 @@ def plan_for_classes(repo_root: Path, report: VtableReport, classes: list[str]) 
             if f.side == "orig" and f.orig.startswith("0x") and _is_ilt_addr(f.orig)
         ]
         if ilt:
-            plans.append(
-                FixPlan(
-                    cls,
-                    "ilt_thunk",
-                    True,
-                    f"prune unreferenced ILT thunk rows; referenced rows remain reported ({len(ilt)} slot(s))",
-                    "just prune-ilt-thunks",
-                    tuple(f.orig for f in ilt),
+            referenced = [f for f in ilt if _ilt_target_is_claimed(repo_root, f.orig)]
+            unreferenced = [f for f in ilt if f not in referenced]
+            if referenced:
+                addrs = ", ".join(f"0x{f.orig}" for f in referenced[:6])
+                plans.append(
+                    FixPlan(
+                        cls,
+                        "ilt_thunk_referenced",
+                        False,
+                        f"referenced ILT slot(s) need callsite repoint + symbols row drop ({addrs})",
+                        "just repair-thunk-migration <addr>",
+                        tuple(f.orig for f in referenced),
+                    )
                 )
-            )
+            if unreferenced:
+                plans.append(
+                    FixPlan(
+                        cls,
+                        "ilt_thunk",
+                        True,
+                        f"prune unreferenced ILT thunk rows ({len(unreferenced)} slot(s))",
+                        "just prune-ilt-thunks",
+                        tuple(f.orig for f in unreferenced),
+                    )
+                )
 
         slot_kinds = _manifest_slot_kinds(repo_root, cls)
         inherited = []
@@ -693,35 +743,90 @@ def parse_args() -> argparse.Namespace:
         help="Process classes bases-first (by manifest ancestry depth) so base fixes "
         "cascade to descendants. Implied by --all.",
     )
+    parser.add_argument(
+        "--max-rounds",
+        type=int,
+        default=0,
+        help="When --write is set, repeat autofix → sync-ownership → regen-stubs → build "
+        "and stop when the aggregate not-matching vtable count stabilizes or rounds "
+        "are exhausted. 0 disables the loop (single pass). Implies --all when no "
+        "class filter is given.",
+    )
     parser.add_argument("--vtable-log", type=Path, help="Use an existing `just vtable -n` log.")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    if not args.class_filter and not args.all and not args.vtable_log:
-        raise SystemExit("pass a class filter, --all, or --vtable-log")
+    if not args.class_filter and not args.all and not args.vtable_log and not args.max_rounds:
+        raise SystemExit("pass a class filter, --all, --max-rounds, or --vtable-log")
 
     repo_root = repo_root_from_file(__file__)
-    output = (
-        args.vtable_log.read_text(encoding="utf-8", errors="ignore")
-        if args.vtable_log
-        else run_vtable(repo_root, None if args.all else args.class_filter)
-    )
-    report = parse_vtable_output(output)
-    classes = report.classes
-    if args.class_filter and args.class_filter not in classes:
-        # reccmp filters by substring, so keep all matching sections when present.
-        classes = [c for c in classes if args.class_filter.lower() in c.lower()]
-    if args.ordered or args.all:
-        classes = order_classes_bases_first(repo_root, classes)
-    if args.limit:
-        classes = classes[: args.limit]
-    plans = plan_for_classes(repo_root, report, classes)
-    print_plans(report, plans, args.write)
-    if not args.write:
-        return 0
-    return apply_plans(repo_root, plans, args.verify, args.promote_bodies)
+    if args.max_rounds and not args.write:
+        raise SystemExit("--max-rounds requires --write")
+    if args.max_rounds:
+        args.all = True
+        args.ordered = True
+
+    max_rounds = args.max_rounds if args.max_rounds else 1
+    prev_not_matching: int | None = None
+    rc = 0
+
+    for round_idx in range(1, max_rounds + 1):
+        if args.max_rounds:
+            print(f"vtable-autofix: round {round_idx}/{max_rounds}")
+
+        output = (
+            args.vtable_log.read_text(encoding="utf-8", errors="ignore")
+            if args.vtable_log and round_idx == 1
+            else run_vtable(repo_root, None if args.all or args.max_rounds else args.class_filter)
+        )
+        report = parse_vtable_output(output)
+        classes = report.classes
+        if args.class_filter and args.class_filter not in classes:
+            classes = [c for c in classes if args.class_filter.lower() in c.lower()]
+        if args.ordered or args.all or args.max_rounds:
+            classes = order_classes_bases_first(repo_root, classes)
+        if args.limit:
+            classes = classes[: args.limit]
+        plans = plan_for_classes(repo_root, report, classes)
+        print_plans(report, plans, args.write)
+
+        if report.not_matching_count is not None and args.max_rounds:
+            delta = (
+                ""
+                if prev_not_matching is None
+                else f" (delta {report.not_matching_count - prev_not_matching:+d})"
+            )
+            print(
+                f"vtable-autofix: not matching {report.not_matching_count}{delta}"
+            )
+            if (
+                prev_not_matching is not None
+                and report.not_matching_count == prev_not_matching
+            ):
+                print("vtable-autofix: count stable; stopping early")
+                break
+            prev_not_matching = report.not_matching_count
+
+        if not args.write:
+            return 0
+
+        rc = apply_plans(
+            repo_root,
+            plans,
+            verify=args.verify or bool(args.max_rounds),
+            promote_bodies=args.promote_bodies,
+        )
+        if args.max_rounds:
+            for target in ("sync-ownership", "regen-stubs", "build"):
+                rc = rc or _run_just(repo_root, target)
+                if rc:
+                    return rc
+        elif rc != 0:
+            return rc
+
+    return rc
 
 
 if __name__ == "__main__":

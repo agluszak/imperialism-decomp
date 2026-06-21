@@ -13,7 +13,6 @@
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
 #include <new>
-#include "game/mfc.h"
 
 extern "C" {
 CRuntimeClass g_pClassDescTCityBarCluster = {nullptr, 0, 0, nullptr, nullptr};
@@ -21,10 +20,6 @@ char g_vtblTCityBarCluster = 0;
 }
 
 undefined4 thunk_DestructTShipAndFreeIfOwned(void);
-
-static __inline void FailNilPointerInUSmallViews(int line) {
-  FailNilPointerWithAssert("Z:\\src\\USmallViews.cpp", line);
-}
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 

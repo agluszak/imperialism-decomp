@@ -1,7 +1,5 @@
 #include "game/TPowerPlantOrder.h"
 
-undefined TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x004b7a20
 CRuntimeClass* TPowerPlantOrder::GetRuntimeClass() const {
   return 0;

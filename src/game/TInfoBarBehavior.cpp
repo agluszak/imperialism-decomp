@@ -1,9 +1,20 @@
 #include "game/TInfoBarBehavior.h"
 
-CRuntimeClass* TInfoBarBehavior::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004b0d10
+CRuntimeClass* TInfoBarBehavior::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004b0da0
+// TInfoBarBehavior::`scalar deleting destructor'
 TInfoBarBehavior::~TInfoBarBehavior() {}
 
-undefined TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2) { return 0; }
+// FUNCTION: IMPERIALISM 0x004b0e20
+undefined TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2) {
+  return 0;
+}
 
-undefined TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip() { return 0; }
+// FUNCTION: IMPERIALISM 0x004b0f50
+undefined TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip() {
+  return 0;
+}

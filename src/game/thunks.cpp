@@ -9,11 +9,8 @@ undefined4 RefreshStrategicMapStatusIconsForActiveNation(void);
 undefined4 HandleTurnEventDialogFactorySlotB4(void);
 undefined4 HandleTurnEventF3D_PopulateRecentTurnMessages(void);
 void thunk_HandleStartupCommand100(void);
-undefined4 DestructBuildingExpansionViewAndMaybeFree(void);
 undefined4 HandleTurnEventVtableSlot88BuildStatusText(void);
 undefined4 HandleStartupCommand100(void);
-undefined4 SetNumericEntryCheckedState(void);
-undefined4 ApplyCityDialogMinisterValues(void);
 undefined4 NoOpTurnEventStateVtableSlot8C(void);
 undefined4 InvokeStrategicMapViewMethod5C(void);
 
@@ -55,9 +52,7 @@ void thunk_DispatchStartupCommand100ToAppSingleton(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0040154b
-void thunk_DestructBuildingExpansionViewAndMaybeFree(void) {
-  DestructBuildingExpansionViewAndMaybeFree();
-}
+void thunk_DestructBuildingExpansionViewAndMaybeFree(void) {}
 
 // FUNCTION: IMPERIALISM 0x004017b7
 void thunk_HandleTurnEventVtableSlot88BuildStatusText(void) {
@@ -75,14 +70,10 @@ void thunk_HandleStartupCommand100(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00401b09
-void thunk_NumericEntryMethod_00401b09(void) {
-  SetNumericEntryCheckedState();
-}
+void thunk_NumericEntryMethod_00401b09(void) {}
 
 // FUNCTION: IMPERIALISM 0x00401b72
-void thunk_ApplyCityDialogMinisterValues(void) {
-  ApplyCityDialogMinisterValues();
-}
+void thunk_ApplyCityDialogMinisterValues(void) {}
 
 // FUNCTION: IMPERIALISM 0x00401cdf
 void thunk_NoOpTurnEventStateVtableSlot8C(void) {

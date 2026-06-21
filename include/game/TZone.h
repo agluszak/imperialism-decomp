@@ -6,6 +6,7 @@
 #include "game/CString.h"
 
 struct CRuntimeClass;
+class TStream;
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
 // Per-nation seed contexts in TOcean use the first 0x48 bytes of this layout.
@@ -21,16 +22,16 @@ public:
   virtual void Free() override; // slot 0x07 0x55ec60
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined AssignZoneDisplayNameToOutputRef_0b(); // slot 0x0b 0x55f070
-  virtual undefined AssignZoneDisplayNameAliasToOutputRef_0c(); // slot 0x0c 0x55f090
+  virtual undefined AssignZoneDisplayNameToOutputRef_2b_2b_2b_0b(); // slot 0x0b 0x55f070
+  virtual undefined AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_0c(); // slot 0x0c 0x55f090
   virtual undefined ReturnTrueForZoneCapabilityFlagA(); // slot 0x0d 0x55e820
   virtual undefined ReturnFalseForZoneCapabilityFlagB(); // slot 0x0e 0x55e840
   virtual undefined ReturnFalseForZoneCapabilityFlagC(); // slot 0x0f 0x55e860
   virtual undefined ReturnFalseForZoneCapabilityFlagD(); // slot 0x10 0x55e880
   virtual undefined ReturnFalseForZoneCapabilityFlagE(); // slot 0x11 0x55e8a0
-  virtual undefined GetActiveNationSlotTile_14(); // slot 0x14 0x55fef0
-  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_15(); // slot 0x15 0x560150
-  virtual undefined SetMapOrderUiFlag_16(); // slot 0x16 0x560580
+  virtual undefined GetActiveNationSlotTile_34_34_34_14(); // slot 0x14 0x55fef0
+  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_15(); // slot 0x15 0x560150
+  virtual undefined SetMapOrderUiFlag_36_36_36_16(); // slot 0x16 0x560580
   virtual undefined GetOrAppendUniqueZonePointerInSecondaryArray(); // slot 0x1c 0x55e9c0
   virtual undefined GetOrAppendUniqueZonePointerInPrimaryArray(); // slot 0x1d 0x55e8e0
   virtual undefined AppendZonePointerToPrimaryArray(); // slot 0x1e 0x55ead0
@@ -38,13 +39,16 @@ public:
   virtual undefined GetTPortZoneClassNamePointer(); // slot 0x20 0x5617d0
   virtual undefined DestroyTPortZone(); // slot 0x21 0x5616c0
   virtual void Serialize(CArchive& archive); // slot 0x22 0x485e90
+  // slot 0x23 AssertValid inherited unchanged (0x412bf0)
+  // slot 0x24 Dump inherited unchanged (0x412c10)
   virtual undefined SerializeTPortZoneToBinaryStream(); // slot 0x25 0x561820
   virtual undefined DeserializeTPortZoneFromBinaryStream(); // slot 0x26 0x5617f0
   virtual undefined DestroyTPortZoneAndClearOverlayMarkers(); // slot 0x27 0x561a70
-  virtual TObject* ShallowFree(); // slot 0x29 0x415ce0
+  // slot 0x28 InvokeObjectVtableMethod24 inherited unchanged (0x4798d0)
+  // slot 0x29 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined RefreshTPortZoneDisplayNameFromLocalization(); // slot 0x2a 0x5618b0
-  virtual undefined AssignZoneDisplayNameToOutputRef_2b(); // slot 0x2b 0x55f070
-  virtual undefined AssignZoneDisplayNameAliasToOutputRef_2c(); // slot 0x2c 0x55f090
+  virtual undefined AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b(); // slot 0x2b 0x55f070
+  virtual undefined AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c(); // slot 0x2c 0x55f090
   virtual undefined ReturnTrueForPortZoneCapabilityFlagA(); // slot 0x2d 0x561660
   virtual undefined ReturnTrueForPortZoneCapabilityFlagB(); // slot 0x2e 0x561680
   virtual undefined ReturnFalseForPortZoneCapabilityFlagC(); // slot 0x2f 0x5616a0
@@ -52,9 +56,9 @@ public:
   virtual undefined NotifyDiplomacyManagerForPortZoneOwnerNation(); // slot 0x31 0x561b50
   virtual undefined CanPortZoneInteractWithNationUnderDiplomacyRules(); // slot 0x32 0x561dc0
   virtual undefined FindNearestValidPortZoneOrCityContextTile(); // slot 0x33 0x561e40
-  virtual undefined GetActiveNationSlotTile_34(); // slot 0x34 0x55fef0
-  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_35(); // slot 0x35 0x560150
-  virtual undefined SetMapOrderUiFlag_36(); // slot 0x36 0x560580
+  virtual undefined GetActiveNationSlotTile_34_34_34_34(); // slot 0x34 0x55fef0
+  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35(); // slot 0x35 0x560150
+  virtual undefined SetMapOrderUiFlag_36_36_36_36(); // slot 0x36 0x560580
 // === END GENERATED DECLS (TZone) ===
   // vtable 0x0065c6d8 slots 0x00..0x58
   virtual CRuntimeClass* GetRuntimeClass() const;

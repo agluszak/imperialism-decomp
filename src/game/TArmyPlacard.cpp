@@ -8,15 +8,21 @@
 
 CRuntimeClass g_pClassDescTArmyPlacard = {nullptr, 0, 0, nullptr, nullptr};
 
+
+
 // FUNCTION: IMPERIALISM 0x0058be30
 void* __cdecl CreateTArmyPlacardInstance(void) {
   return new TArmyPlacard();
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058beb0
 CRuntimeClass* TArmyPlacard::GetRuntimeClass() const {
   return &g_pClassDescTArmyPlacard;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x0058bed0
 TArmyPlacard::TArmyPlacard() : TPictureResourceEntryBase() {
@@ -24,10 +30,13 @@ TArmyPlacard::TArmyPlacard() : TPictureResourceEntryBase() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
+
+
 // SYNTHETIC: IMPERIALISM 0x0058bf00
 // TArmyPlacard::`scalar deleting destructor'
 
-TArmyPlacard::~TArmyPlacard() {}
+
 
 // FUNCTION: IMPERIALISM 0x0058bf50
 bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
@@ -53,6 +62,8 @@ undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
 const unsigned int kAddrDecimalFormat = 0x0069430C;
+
+
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
 void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
@@ -93,6 +104,8 @@ undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 
 const unsigned int kAddrMapContextActionManager = 0x006a3338;
 
+
+
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
@@ -118,3 +131,7 @@ void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   }
 }
+
+undefined TArmyPlacard::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+TArmyPlacard::~TArmyPlacard() {}

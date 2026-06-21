@@ -1,7 +1,5 @@
 #include "game/TNewTownView.h"
 
-undefined TNewTownView::BuildCityDialogMinisterControls(int * param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004bd810
 // TNewTownView::`scalar deleting destructor'
 TNewTownView::~TNewTownView() {}

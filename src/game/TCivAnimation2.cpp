@@ -1,7 +1,5 @@
 #include "game/TCivAnimation2.h"
 
-undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int * param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x0049f630
 // TCivAnimation2::`scalar deleting destructor'
 TCivAnimation2::~TCivAnimation2() {}

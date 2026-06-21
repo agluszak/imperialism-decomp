@@ -30,6 +30,8 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   return GetNationTradeCityState(nationState);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058a4d0
 TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   TShipyardCluster* cluster =
@@ -40,17 +42,23 @@ TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
   return cluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058a570
 CRuntimeClass* TShipyardCluster::GetRuntimeClass() const {
   return &g_pClassDescTShipyardCluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058a590
 TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0), field_8e(0) {}
 
+
+
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
-TShipyardCluster::~TShipyardCluster() {}
+
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
@@ -62,6 +70,8 @@ void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
   this->InitializeTradeMoveAndBarControls();
   this->ApplyMoveValue(0);
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x0058a690
 void TShipyardCluster::ApplyMoveValue(int value) {
@@ -108,6 +118,8 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   (void)value;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058a940
 void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* sourceControl = reinterpret_cast<TAmtBar*>(sourceHandler);
@@ -139,3 +151,9 @@ void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
     this->HandleTradeMoveControlAdjustment(commandId, sourceControl, eventExtra);
   }
 }
+
+undefined TShipyardCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+undefined TShipyardCluster::OrphanRetStub_00586ff0(void) { return 0;}
+
+TShipyardCluster::~TShipyardCluster() {}

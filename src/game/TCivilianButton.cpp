@@ -83,8 +83,10 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x0058b410
 // TCivilianButton::`scalar deleting destructor'
+TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
 void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
@@ -130,5 +132,3 @@ void TCivilianButton::ApplyRectSlot110(RECT* rectBuffer) {
 #if defined(_MSC_VER)
 #pragma auto_inline(on)
 #endif
-
-TCivilianButton::~TCivilianButton() {}

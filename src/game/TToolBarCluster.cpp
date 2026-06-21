@@ -1,7 +1,5 @@
 #include "game/TToolBarCluster.h"
 
-undefined TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00584e00
 CRuntimeClass* TToolBarCluster::GetRuntimeClass() const {
   return 0;

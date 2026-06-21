@@ -134,7 +134,7 @@ public:
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2) override; // slot 0x7b 0x5b64a0
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1) override; // slot 0x7c 0x5b6480
   virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1) override; // slot 0x7d 0x5b6360
-  virtual CRuntimeClass* GetRuntimeClass_7e() const override; // slot 0x7e 0x5b63e0
+  virtual CRuntimeClass* GetRuntimeClass_7e() override; // slot 0x7e 0x5b63e0
 // === END GENERATED DECLS (TDeluxeText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText 0xCTOR`).
 

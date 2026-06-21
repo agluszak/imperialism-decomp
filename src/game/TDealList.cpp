@@ -95,10 +95,6 @@ void TDealList::InitializeNationInteractionStateManagerDefaults() {
   } while (rowCount != 0);
 }
 
-CRuntimeClass* TDealList::GetRuntimeClass() const {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x005B8D70
 short TDealList::IsCapabilityCategoryActiveSlot3C(int category) {
   return this->categoryRows[category].capabilityActiveFlag18;
@@ -198,7 +194,7 @@ short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int cate
 }
 
 // FUNCTION: IMPERIALISM 0x005ba1a0
-undefined TDealList::GetRuntimeClass() {
+CRuntimeClass* TDealList::GetRuntimeClass() const {
   return 0;
 }
 
@@ -209,4 +205,13 @@ TDealList::~TDealList() {}
 // FUNCTION: IMPERIALISM 0x005ba260
 undefined TDealList::CompareUnsignedIntsAscending() {
   return 0;
+}
+void TDealList::AssertValid() const {}
+
+void TDealList::Dump(CDumpContext& unused) const {
+  (void)unused;
+}
+
+void TDealList::Serialize(CArchive& ar) {
+  (void)ar;
 }

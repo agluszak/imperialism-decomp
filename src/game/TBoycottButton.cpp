@@ -9,24 +9,37 @@ extern "C" {
 CRuntimeClass g_pClassDescTBoycottButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x005846e0
 TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {
   return new TBoycottButton();
 }
+
+
+
 
 // FUNCTION: IMPERIALISM 0x00584760
 CRuntimeClass* TBoycottButton::GetRuntimeClass() const {
   return &g_pClassDescTBoycottButton;
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00584780
 TBoycottButton::TBoycottButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
+
+
+
 // SYNTHETIC: IMPERIALISM 0x005847b0
 // TBoycottButton::`scalar deleting destructor'
-TBoycottButton::~TBoycottButton() {}
+
+
 
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {
@@ -43,3 +56,5 @@ void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   }
   TToggleButton::Select(isPressed, notifyParent);
 }
+
+TBoycottButton::~TBoycottButton() {}

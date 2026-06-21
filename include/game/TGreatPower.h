@@ -21,6 +21,126 @@ class TCity;
 // VTABLE: IMPERIALISM 0x00653938
 class TGreatPower : public TCountry {
 public:
+// === BEGIN GENERATED DECLS (TGreatPower) — refreshed by recover-class; do not hand-edit ===
+  // slot 0x02 Serialize inherited unchanged (0x485e90)
+  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
+  // slot 0x04 Dump inherited unchanged (0x412c10)
+  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
+  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_0a() override; // slot 0x0a 0x4da500
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_0b() override; // slot 0x0b 0x4da3e0
+  // slot 0x0c SeedRecruitAndNavyOrdersForEligibleCoastalCities inherited unchanged (0x4d71b0)
+  // slot 0x0d CreateAndDispatchMilitaryRecruitOrderForNationSlot inherited unchanged (0x4d7770)
+  // slot 0x0e AddToNationMetricAtField10 inherited unchanged (0x4d7ae0)
+  // slot 0x0f PopulateSelectableEntryFlavorTextAndOrdinals inherited unchanged (0x4d8000)
+  // slot 0x10 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d87b0)
+  // slot 0x11 SelectCandidateTilesWithLowGroundUnitCount_11 inherited unchanged (0x4d87e0)
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_12() override; // slot 0x12 0x4dd040
+  virtual void ApplyJoinEmpireModeForTargetNation_13(int targetNationSlot,int mode) override; // slot 0x13 0x4e21b0
+  virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers_14() override; // slot 0x14 0x4de860
+  // slot 0x15 ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4d7c90)
+  // slot 0x16 ApplyJoinEmpireMode2FinalizeNationNameState inherited unchanged (0x4d7d50)
+  // slot 0x17 IsDiplomacyTargetClassCode200Match inherited unchanged (0x4d7d20)
+  virtual undefined OrphanRetStub_004d7e90_1b() override; // slot 0x1b 0x4dda20
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0_1c() override; // slot 0x1c 0x4dda60
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f00_1d() override; // slot 0x1d 0x4d8c00
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f20() override; // slot 0x1e 0x4dd740
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f40_1f() override; // slot 0x1f 0x4ddb20
+  virtual undefined OrphanRetStub_004d7fa0_20() override; // slot 0x20 0x4ddc30
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7fc0_21() override; // slot 0x21 0x4ddd50
+  virtual undefined ReturnFalseNationStateActionStub_22() override; // slot 0x22 0x4ddbb0
+  virtual undefined OrphanRetStub_004d7fe0_23() override; // slot 0x23 0x4defd0
+  // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
+  virtual undefined OrphanRetStub_004d7f80() override; // slot 0x25 0x4dedf0
+  // slot 0x26 ReturnFalseNationStateCapabilityFlag98 inherited unchanged (0x4d6730)
+  // slot 0x27 ReturnFalseNationStateCapabilityFlag9C inherited unchanged (0x4d6750)
+  // slot 0x28 ReturnFalseNationStateCapabilityFlagA0 inherited unchanged (0x4d6770)
+  // slot 0x29 NoOpNationSelectedRegionAndMapCellLabelHook inherited unchanged (0x4d6790)
+  virtual undefined PromoteNationPendingActionSlot5IfCapabilityActive(); // slot 0x2b 0x4da860
+  virtual undefined AdvanceNationPendingActionStateMachine(); // slot 0x2c 0x4da8a0
+  virtual undefined DispatchNationPendingActionEventCodes(); // slot 0x2d 0x4da5e0
+  virtual undefined QueueNationOrderManagerPayloadObject_2f(); // slot 0x2f 0x4daa50
+  virtual undefined ClearQueuedNationOrdersAndResetOrderManager_30(); // slot 0x30 0x4daa80
+  virtual undefined ExecuteNationPendingActionStateMachine_32(); // slot 0x32 0x4dab20
+  virtual undefined HasQueuedCivWorkOrderType7(); // slot 0x33 0x4dae70
+  virtual undefined UpdateOrderEntryAvailabilityByConnectedRegionMask(); // slot 0x34 0x4db7d0
+  virtual undefined MarkConnectedOwnedRegionsInMaskRecursive(); // slot 0x35 0x4dbac0
+  virtual undefined OrphanRetStub_0059add0(); // slot 0x37 0x4dca60
+  virtual undefined GetTEventHandlerClassNamePointer_38(); // slot 0x38 0x4dcc30
+  virtual undefined RebuildPrimaryNationStateForSlot_Impl(); // slot 0x39 0x4df810
+  virtual undefined DeserializeRecruitScenarioAndInstantiateOrders_3a(int * param_1); // slot 0x3a 0x4dfa20
+  virtual undefined CreateAndQueueFrogCityMarkerForNationTile(); // slot 0x3b 0x4dfae0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_3f(); // slot 0x3f 0x4dca80
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_40(); // slot 0x40 0x4dcaa0
+  virtual void ApplyJoinEmpireModeForTargetNation_41(); // slot 0x41 0x4dcc50
+  virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers_42(); // slot 0x42 0x4dcca0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_45(); // slot 0x45 0x4dcdd0
+  virtual undefined IsNationResourceNeedCurrentAtTargetByType(); // slot 0x46 0x4dce40
+  virtual undefined GetNationResourceNeedTargetByType(); // slot 0x47 0x4dce70
+  virtual undefined ApplyJoinEmpireMode2FinalizeNationNameState(); // slot 0x4a 0x4dcf60
+  virtual undefined IsDiplomacyTargetClassCode200Match_4b(); // slot 0x4b 0x4dcfd0
+  virtual undefined IterateLinkedListCursorEntries_004e0220(); // slot 0x4c 0x4e0220
+  virtual undefined OrphanRetStub_004d7e90_4f(); // slot 0x4f 0x4dc3f0
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0_50(); // slot 0x50 0x4dc440
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f00_51(); // slot 0x51 0x4dc4c0
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7fc0_55(); // slot 0x55 0x4e0290
+  virtual undefined ReturnFalseNationStateActionStub_56(); // slot 0x56 0x4e03a0
+  virtual undefined OrphanRetStub_004d7fe0_57(); // slot 0x57 0x4e03d0
+  virtual undefined AddAmountToAidAllocationMatrixCellAndTotal_5d(); // slot 0x5d 0x4dd340
+  virtual undefined QueueNationOrderManagerPayloadObject_63(); // slot 0x63 0x4dd770
+  virtual undefined ClearQueuedNationOrdersAndResetOrderManager_64(); // slot 0x64 0x4dd7b0
+  virtual undefined OrphanCallChain_C1_I42_004dd7f0(); // slot 0x65 0x4dd7f0
+  virtual undefined ExecuteNationPendingActionStateMachine_66(); // slot 0x66 0x4dda40
+  virtual undefined GetTCountryClassNamePointer(); // slot 0x68 0x4ddad0
+  virtual undefined VTableSlot69(); // slot 0x69 0x4ddb40
+  virtual undefined DispatchNationStateEventCode10(); // slot 0x6a 0x4ddb80
+  virtual undefined GetTEventHandlerClassNamePointer_6c(); // slot 0x6c 0x4ddd90
+  virtual undefined HandleCityDialogHintClusterUpdate(); // slot 0x6d 0x4dde80
+  virtual undefined DeserializeRecruitScenarioAndInstantiateOrders_6e(); // slot 0x6e 0x4dde30
+  virtual void ApplyJoinEmpireModeForTargetNation_6f(); // slot 0x6f 0x4ddeb0
+  virtual undefined GetTEventHandlerClassNamePointer_70(); // slot 0x70 0x4ddf20
+  virtual undefined ClearFieldBlock1c6(); // slot 0x71 0x4ddf90
+  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_78(); // slot 0x78 0x4de7e0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_79(); // slot 0x79 0x4deca0
+  virtual void ApplyJoinEmpireMode1TargetTransition(); // slot 0x7d 0x4df4b0
+  virtual undefined IsDiplomacyTargetClassCode200Match_7f(); // slot 0x7f 0x4df5a0
+  virtual undefined ClassifyNationProductionTotalAgainstGlobalDistribution(); // slot 0x82 0x4e2880
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0_84(); // slot 0x84 0x4e0420
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f00_85(); // slot 0x85 0x4e0440
+  virtual undefined ComputeNavyOrderIndustryCostWeightSumForNation(); // slot 0x86 0x4e0500
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f40_87(); // slot 0x87 0x4e0550
+  virtual undefined OrphanRetStub_004d7fa0_88(); // slot 0x88 0x4e0590
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7fc0_89(); // slot 0x89 0x4e05d0
+  virtual undefined ReturnFalseNationStateActionStub_8a(); // slot 0x8a 0x4e0610
+  virtual undefined OrphanRetStub_004d7fe0_8b(); // slot 0x8b 0x4e0650
+  virtual char ReturnFalseNationStateCapabilityFlag90(); // slot 0x8c 0x4e0690
+  virtual undefined GetNationRuntimeCityBuildingProductionValueBySlot(); // slot 0x8d 0x4e0740
+  virtual undefined IterateLinkedListCursorEntries_004e07b0(); // slot 0x8e 0x4e07b0
+  virtual undefined IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(); // slot 0x8f 0x4e0890
+  virtual undefined ComputeCityOrderCapabilityAggregateScore(); // slot 0x90 0x4e09a0
+  virtual undefined AddAmountToAidAllocationMatrixCellAndTotal_91(); // slot 0x91 0x4e0b20
+  virtual undefined ComputeAdvisoryHandlerCase00Metric(); // slot 0x92 0x4e0c10
+  virtual undefined ComputeAdvisoryHandlerCase01Metric(); // slot 0x93 0x4e0d80
+  virtual undefined ComputeAdvisoryHandlerCase02Metric(); // slot 0x94 0x4e0e70
+  virtual undefined ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(); // slot 0x95 0x4e0fe0
+  virtual undefined ComputeAdvisoryMatrixRatio23CByTargetSlot(); // slot 0x96 0x4e1170
+  virtual undefined ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(); // slot 0x97 0x4e1300
+  virtual undefined ComputeAdvisoryMatrixRatio240ByTargetSlot(); // slot 0x98 0x4e1490
+  virtual undefined ComputeAdvisoryHandlerCase07Metric(); // slot 0x99 0x4e1620
+  virtual undefined ComputeAdvisoryHandlerCase09Metric(); // slot 0x9b 0x4e1910
+  virtual undefined VTableSlot9D(); // slot 0x9d 0x4e1c00
+  virtual undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback(); // slot 0xa0 0x4e1e40
+  virtual undefined QueueWarTransitionAndNotifyThirdPartyIfNeeded(); // slot 0xa1 0x4e27f0
+  virtual undefined DeserializeRecruitScenarioAndInstantiateOrders_a2(); // slot 0xa2 0x4e1f20
+  virtual undefined GetTEventHandlerClassNamePointer_a4(); // slot 0xa4 0x4e2190
+  virtual undefined ReleaseAllTrackedObjectsFromList89C(); // slot 0xa5 0x4de810
+  virtual undefined ApplyMinorNationCapabilityActionType6(); // slot 0xa8 0x4e2630
+  virtual undefined ApplyMinorNationCapabilityActionType4(); // slot 0xa9 0x4e2720
+  virtual undefined SumNationRuntimeFiveBucketValue44(); // slot 0xac 0x4e06d0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_ad(); // slot 0xad 0x4d8bc0
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_ae(); // slot 0xae 0x4d8be0
+  virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers_b0(); // slot 0xb0 0x4e2b00
+// === END GENERATED DECLS (TGreatPower) ===
   // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
   CRuntimeClass* GetRuntimeClass() const override;
@@ -441,3 +561,189 @@ public:
     return city;
   }
 };
+
+// === BEGIN GENERATED (TGreatPower) — refreshed by `just gen-class TGreatPower`; do not hand-edit ===
+// clang-format off
+// vtable @ 0x00653938 (178 slots), object size 0x964, base TCountry
+//   slot 0x00  byte 0x00  0x004d89d0  override  GetTCountryClassNamePointer
+//   slot 0x01  byte 0x04  0x004d8c20  override  VTableSlot01
+//   slot 0x02  byte 0x08  0x00485e90  inherited GetTTaskClassNamePointer
+//   slot 0x03  byte 0x0c  0x00412bf0  inherited ConstructTTaskBaseState
+//   slot 0x04  byte 0x10  0x00412c10  inherited GetTEventHandlerClassNamePointer
+//   slot 0x05  byte 0x14  0x004d9c70  override  HandleCityDialogHintClusterUpdate
+//   slot 0x06  byte 0x18  0x004d92e0  override  DeserializeRecruitScenarioAndInstantiateOrders
+//   slot 0x07  byte 0x1c  0x004d9160  override  ApplyJoinEmpireModeForTargetNation
+//   slot 0x08  byte 0x20  0x004798d0  inherited DeserializeCityProductionQueueCommand
+//   slot 0x09  byte 0x24  0x00415ce0  inherited OrphanRetStub_0059add0
+//   slot 0x0a  byte 0x28  0x004da500  override  OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x0b  byte 0x2c  0x004da3e0  override  SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x0c  byte 0x30  0x004d71b0  inherited OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x0d  byte 0x34  0x004d7770  inherited ApplyJoinEmpireModeForTargetNation
+//   slot 0x0e  byte 0x38  0x004d7ae0  inherited SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x0f  byte 0x3c  0x004d8000  inherited ApplyJoinEmpireMode1TargetTransition
+//   slot 0x10  byte 0x40  0x004d87b0  inherited OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x11  byte 0x44  0x004d87e0  inherited SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x12  byte 0x48  0x004dd040  override  OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x13  byte 0x4c  0x004e21b0  override  ApplyJoinEmpireModeForTargetNation
+//   slot 0x14  byte 0x50  0x004de860  override  SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x15  byte 0x54  0x004d7c90  inherited ApplyJoinEmpireMode1TargetTransition
+//   slot 0x16  byte 0x58  0x004d7d50  inherited ApplyJoinEmpireMode2FinalizeNationNameState
+//   slot 0x17  byte 0x5c  0x004d7d20  inherited IsDiplomacyTargetClassCode200Match
+//   slot 0x18  byte 0x60  0x004e2270  override  RemoveRegionIdFromNationOwnedRegionList
+//   slot 0x19  byte 0x64  0x004e22b0  override  AddRegionIdToNationOwnedRegionList
+//   slot 0x1a  byte 0x68  0x004e2330  override  SetNationPercentFieldByModeAndDescriptorLinks
+//   slot 0x1b  byte 0x6c  0x004dda20  override  OrphanRetStub_004d7e90
+//   slot 0x1c  byte 0x70  0x004dda60  override  OrphanLeaf_NoCall_Ins02_004d7ee0
+//   slot 0x1d  byte 0x74  0x004d8c00  override  OrphanLeaf_NoCall_Ins02_004d7f00
+//   slot 0x1e  byte 0x78  0x004dd740  override  OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x1f  byte 0x7c  0x004ddb20  override  OrphanLeaf_NoCall_Ins02_004d7f40
+//   slot 0x20  byte 0x80  0x004ddc30  override  OrphanRetStub_004d7fa0
+//   slot 0x21  byte 0x84  0x004ddd50  override  OrphanLeaf_NoCall_Ins02_004d7fc0
+//   slot 0x22  byte 0x88  0x004ddbb0  override  ReturnFalseNationStateActionStub
+//   slot 0x23  byte 0x8c  0x004defd0  override  OrphanRetStub_004d7fe0
+//   slot 0x24  byte 0x90  0x004d7f60  inherited ReturnFalseNationStateCapabilityFlag90
+//   slot 0x25  byte 0x94  0x004dedf0  override  OrphanRetStub_004d7f80
+//   slot 0x26  byte 0x98  0x004d6730  inherited ReturnFalseNationStateCapabilityFlag98
+//   slot 0x27  byte 0x9c  0x004d6750  inherited ReturnFalseNationStateCapabilityFlag9C
+//   slot 0x28  byte 0xa0  0x004d6770  inherited ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x29  byte 0xa4  0x004d6790  inherited NoOpNationSelectedRegionAndMapCellLabelHook
+//   slot 0x2a  byte 0xa8  0x004da5c0  new       NoOpNationPendingActionHook
+//   slot 0x2b  byte 0xac  0x004da860  new       PromoteNationPendingActionSlot5IfCapabilityActive
+//   slot 0x2c  byte 0xb0  0x004da8a0  new       AdvanceNationPendingActionStateMachine
+//   slot 0x2d  byte 0xb4  0x004da5e0  new       DispatchNationPendingActionEventCodes
+//   slot 0x2e  byte 0xb8  0x004daa10  new       SetNationPendingActionStateAndPayload
+//   slot 0x2f  byte 0xbc  0x004daa50  new       QueueNationOrderManagerPayloadObject
+//   slot 0x30  byte 0xc0  0x004daa80  new       ClearQueuedNationOrdersAndResetOrderManager
+//   slot 0x31  byte 0xc4  0x004dab00  new       NoOpNationQueuedOrderHook
+//   slot 0x32  byte 0xc8  0x004dab20  new       ExecuteNationPendingActionStateMachine
+//   slot 0x33  byte 0xcc  0x004dae70  new       HasQueuedCivWorkOrderType7
+//   slot 0x34  byte 0xd0  0x004db7d0  new       GetTCountryClassNamePointer
+//   slot 0x35  byte 0xd4  0x004dbac0  new       VTableSlot35
+//   slot 0x36  byte 0xd8  0x004dc9f0  new       DispatchNationStateEventCode10
+//   slot 0x37  byte 0xdc  0x004dca60  new       OrphanRetStub_0059add0
+//   slot 0x38  byte 0xe0  0x004dcc30  new       GetTEventHandlerClassNamePointer
+//   slot 0x39  byte 0xe4  0x004df810  new       HandleCityDialogHintClusterUpdate
+//   slot 0x3a  byte 0xe8  0x004dfa20  new       DeserializeRecruitScenarioAndInstantiateOrders
+//   slot 0x3b  byte 0xec  0x004dfae0  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x3c  byte 0xf0  0x004e00d0  new       GetTEventHandlerClassNamePointer
+//   slot 0x3d  byte 0xf4  0x004e0140  new       VTableSlot3D
+//   slot 0x3e  byte 0xf8  0x004e01b0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x3f  byte 0xfc  0x004dca80  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x40  byte 0x100  0x004dcaa0  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x41  byte 0x104  0x004dcc50  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x42  byte 0x108  0x004dcca0  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x43  byte 0x10c  0x004dcd10  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x44  byte 0x110  0x004dce10  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x45  byte 0x114  0x004dcdd0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x46  byte 0x118  0x004dce40  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x47  byte 0x11c  0x004dce70  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x48  byte 0x120  0x004dce90  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x49  byte 0x124  0x004dcf10  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x4a  byte 0x128  0x004dcf60  new       ApplyJoinEmpireMode2FinalizeNationNameState
+//   slot 0x4b  byte 0x12c  0x004dcfd0  new       IsDiplomacyTargetClassCode200Match
+//   slot 0x4c  byte 0x130  0x004e0220  new       RemoveRegionIdFromNationOwnedRegionList
+//   slot 0x4d  byte 0x134  0x004dbd20  new       AddRegionIdToNationOwnedRegionList
+//   slot 0x4e  byte 0x138  0x004dbf00  new       SetNationPercentFieldByModeAndDescriptorLinks
+//   slot 0x4f  byte 0x13c  0x004dc3f0  new       OrphanRetStub_004d7e90
+//   slot 0x50  byte 0x140  0x004dc440  new       OrphanLeaf_NoCall_Ins02_004d7ee0
+//   slot 0x51  byte 0x144  0x004dc4c0  new       OrphanLeaf_NoCall_Ins02_004d7f00
+//   slot 0x52  byte 0x148  0x004dc540  new       OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x53  byte 0x14c  0x004dc660  new       OrphanLeaf_NoCall_Ins02_004d7f40
+//   slot 0x54  byte 0x150  0x004dc840  new       OrphanRetStub_004d7fa0
+//   slot 0x55  byte 0x154  0x004e0290  new       OrphanLeaf_NoCall_Ins02_004d7fc0
+//   slot 0x56  byte 0x158  0x004e03a0  new       ReturnFalseNationStateActionStub
+//   slot 0x57  byte 0x15c  0x004e03d0  new       OrphanRetStub_004d7fe0
+//   slot 0x58  byte 0x160  0x004dd0c0  new       ReturnFalseNationStateCapabilityFlag90
+//   slot 0x59  byte 0x164  0x004dd140  new       OrphanRetStub_004d7f80
+//   slot 0x5a  byte 0x168  0x004dd1b0  new       ReturnFalseNationStateCapabilityFlag98
+//   slot 0x5b  byte 0x16c  0x004dd270  new       ReturnFalseNationStateCapabilityFlag9C
+//   slot 0x5c  byte 0x170  0x004dd310  new       ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x5d  byte 0x174  0x004dd340  new       AddAmountToAidAllocationMatrixCellAndTotal
+//   slot 0x5e  byte 0x178  0x004dd3b0  new       SumAidAllocationMatrixColumnForTarget
+//   slot 0x5f  byte 0x17c  0x004dd3f0  new       PromoteNationPendingActionSlot5IfCapabilityActive
+//   slot 0x60  byte 0x180  0x004dd430  new       AdvanceNationPendingActionStateMachine
+//   slot 0x61  byte 0x184  0x004dd470  new       DispatchNationPendingActionEventCodes
+//   slot 0x62  byte 0x188  0x004dd4e0  new       SetNationPendingActionStateAndPayload
+//   slot 0x63  byte 0x18c  0x004dd770  new       QueueNationOrderManagerPayloadObject
+//   slot 0x64  byte 0x190  0x004dd7b0  new       ClearQueuedNationOrdersAndResetOrderManager
+//   slot 0x65  byte 0x194  0x004dd7f0  new       OrphanCallChain_C1_I42_004dd7f0
+//   slot 0x66  byte 0x198  0x004dda40  new       ExecuteNationPendingActionStateMachine
+//   slot 0x67  byte 0x19c  0x004dda90  new       HasQueuedCivWorkOrderType7
+//   slot 0x68  byte 0x1a0  0x004ddad0  new       GetTCountryClassNamePointer
+//   slot 0x69  byte 0x1a4  0x004ddb40  new       VTableSlot69
+//   slot 0x6a  byte 0x1a8  0x004ddb80  new       DispatchNationStateEventCode10
+//   slot 0x6b  byte 0x1ac  0x004ddd20  new       OrphanRetStub_0059add0
+//   slot 0x6c  byte 0x1b0  0x004ddd90  new       GetTEventHandlerClassNamePointer
+//   slot 0x6d  byte 0x1b4  0x004dde80  new       HandleCityDialogHintClusterUpdate
+//   slot 0x6e  byte 0x1b8  0x004dde30  new       DeserializeRecruitScenarioAndInstantiateOrders
+//   slot 0x6f  byte 0x1bc  0x004ddeb0  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x70  byte 0x1c0  0x004ddf20  new       GetTEventHandlerClassNamePointer
+//   slot 0x71  byte 0x1c4  0x004ddf90  new       VTableSlot71
+//   slot 0x72  byte 0x1c8  0x004de2b0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x73  byte 0x1cc  0x004de2d0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x74  byte 0x1d0  0x004ddfc0  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x75  byte 0x1d4  0x004de340  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x76  byte 0x1d8  0x004de5e0  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x77  byte 0x1dc  0x004de700  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x78  byte 0x1e0  0x004de7e0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x79  byte 0x1e4  0x004deca0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x7a  byte 0x1e8  0x004de790  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x7b  byte 0x1ec  0x004df010  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x7c  byte 0x1f0  0x004df370  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x7d  byte 0x1f4  0x004df4b0  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x7e  byte 0x1f8  0x004df580  new       ApplyJoinEmpireMode2FinalizeNationNameState
+//   slot 0x7f  byte 0x1fc  0x004df5a0  new       IsDiplomacyTargetClassCode200Match
+//   slot 0x80  byte 0x200  0x004df5c0  new       RemoveRegionIdFromNationOwnedRegionList
+//   slot 0x81  byte 0x204  0x004df5f0  new       AddRegionIdToNationOwnedRegionList
+//   slot 0x82  byte 0x208  0x004e2880  new       SetNationPercentFieldByModeAndDescriptorLinks
+//   slot 0x83  byte 0x20c  0x004e0400  new       OrphanRetStub_004d7e90
+//   slot 0x84  byte 0x210  0x004e0420  new       OrphanLeaf_NoCall_Ins02_004d7ee0
+//   slot 0x85  byte 0x214  0x004e0440  new       OrphanLeaf_NoCall_Ins02_004d7f00
+//   slot 0x86  byte 0x218  0x004e0500  new       OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x87  byte 0x21c  0x004e0550  new       OrphanLeaf_NoCall_Ins02_004d7f40
+//   slot 0x88  byte 0x220  0x004e0590  new       OrphanRetStub_004d7fa0
+//   slot 0x89  byte 0x224  0x004e05d0  new       OrphanLeaf_NoCall_Ins02_004d7fc0
+//   slot 0x8a  byte 0x228  0x004e0610  new       ReturnFalseNationStateActionStub
+//   slot 0x8b  byte 0x22c  0x004e0650  new       OrphanRetStub_004d7fe0
+//   slot 0x8c  byte 0x230  0x004e0690  new       ReturnFalseNationStateCapabilityFlag90
+//   slot 0x8d  byte 0x234  0x004e0740  new       OrphanRetStub_004d7f80
+//   slot 0x8e  byte 0x238  0x004e07b0  new       ReturnFalseNationStateCapabilityFlag98
+//   slot 0x8f  byte 0x23c  0x004e0890  new       ReturnFalseNationStateCapabilityFlag9C
+//   slot 0x90  byte 0x240  0x004e09a0  new       ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x91  byte 0x244  0x004e0b20  new       AddAmountToAidAllocationMatrixCellAndTotal
+//   slot 0x92  byte 0x248  0x004e0c10  new       SumAidAllocationMatrixColumnForTarget
+//   slot 0x93  byte 0x24c  0x004e0d80  new       PromoteNationPendingActionSlot5IfCapabilityActive
+//   slot 0x94  byte 0x250  0x004e0e70  new       AdvanceNationPendingActionStateMachine
+//   slot 0x95  byte 0x254  0x004e0fe0  new       DispatchNationPendingActionEventCodes
+//   slot 0x96  byte 0x258  0x004e1170  new       SetNationPendingActionStateAndPayload
+//   slot 0x97  byte 0x25c  0x004e1300  new       QueueNationOrderManagerPayloadObject
+//   slot 0x98  byte 0x260  0x004e1490  new       ClearQueuedNationOrdersAndResetOrderManager
+//   slot 0x99  byte 0x264  0x004e1620  new       OrphanCallChain_C1_I42_004dd7f0
+//   slot 0x9a  byte 0x268  0x004e1750  new       ExecuteNationPendingActionStateMachine
+//   slot 0x9b  byte 0x26c  0x004e1910  new       HasQueuedCivWorkOrderType7
+//   slot 0x9c  byte 0x270  0x004e1a40  new       GetTCountryClassNamePointer
+//   slot 0x9d  byte 0x274  0x004e1c00  new       VTableSlot9D
+//   slot 0x9e  byte 0x278  0x004e1c20  new       DispatchNationStateEventCode10
+//   slot 0x9f  byte 0x27c  0x004e1d50  new       OrphanRetStub_0059add0
+//   slot 0xa0  byte 0x280  0x004e1e40  new       GetTEventHandlerClassNamePointer
+//   slot 0xa1  byte 0x284  0x004e27f0  new       HandleCityDialogHintClusterUpdate
+//   slot 0xa2  byte 0x288  0x004e1f20  new       DeserializeRecruitScenarioAndInstantiateOrders
+//   slot 0xa3  byte 0x28c  0x004e1f40  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0xa4  byte 0x290  0x004e2190  new       GetTEventHandlerClassNamePointer
+//   slot 0xa5  byte 0x294  0x004de810  new       VTableSlotA5
+//   slot 0xa6  byte 0x298  0x004e2500  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0xa7  byte 0x29c  0x004e25c0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0xa8  byte 0x2a0  0x004e2630  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0xa9  byte 0x2a4  0x004e2720  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0xaa  byte 0x2a8  0x004e27b0  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0xab  byte 0x2ac  0x004daf00  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0xac  byte 0x2b0  0x004e06d0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0xad  byte 0x2b4  0x004d8bc0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0xae  byte 0x2b8  0x004d8be0  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0xaf  byte 0x2bc  0x004db380  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0xb0  byte 0x2c0  0x004e2b00  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0xb1  byte 0x2c4  0x004e2b70  new       ApplyJoinEmpireMode1TargetTransition
+// object size 0x964 (RTTI) unverified against the header layout;
+// set curated.layout.size_verified to emit a sizeof static_assert.
+// clang-format on
+// === END GENERATED (TGreatPower) ===

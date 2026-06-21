@@ -1,6 +1,7 @@
 #include "game/TAdmiral.h"
 
 #include "game/mapped_flavor_text.h"
+#include "game/TMapOrderEntry.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -18,6 +19,7 @@ void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* te
                                                                       CString* dest) {
   GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
 }
+
 // FUNCTION: IMPERIALISM 0x00551410
 CRuntimeClass* TAdmiral::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTAdmiral);
@@ -51,8 +53,6 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
 
 // SYNTHETIC: IMPERIALISM 0x00551550
 // TAdmiral::`scalar deleting destructor'
-
-#include "game/TMapOrderEntry.h"
 
 static void RecomputeMapOrderOwnerActiveSelection(TMapOrderEntryOwnerContext* ownerContext) {
   if (ownerContext == 0) {

@@ -1,11 +1,5 @@
 #include "game/TTacticalBattleView.h"
 
-undefined TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short param_1) { return 0; }
-
-undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(undefined4 * param_1, undefined2 param_2, undefined2 param_3, int param_4, undefined4 param_5) { return 0; }
-
-void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 * ui_ctx) {}
-
 // FUNCTION: IMPERIALISM 0x005a8330
 CRuntimeClass* TTacticalBattleView::GetRuntimeClass() const {
   return 0;
@@ -81,5 +75,4 @@ undefined TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9
 
 // FUNCTION: IMPERIALISM 0x005a9550
 void __fastcall TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 * ui_ctx) {
-  return 0;
 }

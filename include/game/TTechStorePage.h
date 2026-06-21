@@ -126,14 +126,14 @@ public:
   virtual void Serialize(CArchive& archive) override; // slot 0x86 0x4797d0
   // slot 0x87 AssertValid inherited unchanged (0x412bf0)
   // slot 0x88 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x89 0x6118ed
-  virtual void ReadFrom(TStream* stream) override; // slot 0x8a 0x610a57
+  virtual void WriteTo(uint param_1, uint param_2, int param_3, undefined4 param_4) override; // slot 0x89 0x6118ed
+  virtual void ReadFrom() override; // slot 0x8a 0x610a57
   virtual undefined CloseCityDialogChildrenAndReleaseSelf() override; // slot 0x8b 0x606c4e
   virtual undefined CloneEngineerDialogStateToNewInstance() override; // slot 0x8c 0x606c54
   virtual TObject* ShallowFree() override; // slot 0x8d 0x606c59
-  virtual byte __fastcall GetCityDialogFlagByte4(CityDialogController * pDialog) override; // slot 0x8e 0x606c5c
-  virtual void SetCityDialogFlagByte4(char flagValue) override; // slot 0x8f 0x606c5f
-  virtual int __fastcall GetCityDialogValueDwordC(CityDialogController * pDialog) override; // slot 0x90 0x479460
+  virtual undefined GetCityDialogFlagByte4() override; // slot 0x8e 0x606c5c
+  virtual undefined SetCityDialogFlagByte4() override; // slot 0x8f 0x606c5f
+  virtual undefined GetCityDialogValueDwordC() override; // slot 0x90 0x479460
   virtual undefined DispatchQueuedUiCommandAndRelease() override; // slot 0x91 0x606d09
   virtual undefined DispatchUiSelectionToHandler() override; // slot 0x92 0x606cac
   virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x93 0x606cf9
@@ -141,12 +141,12 @@ public:
   virtual undefined ForwardNotifyParamToPrimaryChildSlot44() override; // slot 0x95 0x606cb2
   virtual undefined ForwardCityDialogParamToChildSlot48() override; // slot 0x96 0x606cf0
   virtual char CanHandleCityDialogActionFalse() override; // slot 0x97 0x606cf4
-  virtual int GetCityDialogValueDword10(CityDialogController * pDialog) override; // slot 0x98 0x606d04
-  virtual void SetCityDialogValueDword10(int value) override; // slot 0x99 0x606cff
+  virtual int GetCityDialogValueDword10() override; // slot 0x98 0x606d04
+  virtual void SetCityDialogValueDword10() override; // slot 0x99 0x606cff
   virtual undefined GetCityDialogValueViaChildSlot58() override; // slot 0x9a 0x610a80
-  virtual undefined CanStartCityProductionActionFalse() override; // slot 0x9b 0x610c0b
+  virtual undefined CanStartCityProductionActionFalse(undefined4 param_1, int param_2) override; // slot 0x9b 0x610c0b
   virtual undefined GetCityDialogZeroValue() override; // slot 0x9c 0x4796a0
-  virtual undefined VTableSlot9D() override; // slot 0x9d 0x4796c0
+  virtual undefined VTableSlot9D(undefined4 param_1) override; // slot 0x9d 0x4796c0
 // === END GENERATED DECLS (TTechStorePage) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTechStorePage 0xCTOR`).
 

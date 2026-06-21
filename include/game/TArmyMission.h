@@ -7,6 +7,7 @@
 class TArmyMission : public TMission {
 public:
   // Introduced at +0x18: mission order list (CPtrList-backed, ctor 0x53c0a0).
+  unsigned char pad14[0x18 - 0x14];
   void* orderListAt18;
   unsigned char pad1c[0x20 - 0x1C];
 };

@@ -2,6 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
+#include "game/mfc.h"
 
 // TObject-family command base (its MFC RTTI classdesc follows the vtable in
 // .rdata). Modeled as a standalone polymorphic class because its constructor
@@ -52,8 +53,7 @@ public:
   // signature is a five-argument thiscall (RET 0x14).
   void InitializeRangePair(int arg1, int arg2, int arg3, int arg4, int arg5);
 
-protected:
-  ~TCommand() {}
+  virtual ~TCommand();
 };
 
 ASSERT_SIZE(TCommand, 0x18);

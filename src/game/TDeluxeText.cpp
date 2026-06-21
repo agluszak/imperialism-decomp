@@ -1,11 +1,5 @@
 #include "game/TDeluxeText.h"
 
-undefined TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1) { return 0; }
-
-undefined TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2) { return 0; }
-
-undefined TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
 TDeluxeText::~TDeluxeText() {}
@@ -49,7 +43,7 @@ undefined TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At0
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-CRuntimeClass* TDeluxeText::GetRuntimeClass_7e() const {
+CRuntimeClass* TDeluxeText::GetRuntimeClass_7e() {
   return 0;
 }
 

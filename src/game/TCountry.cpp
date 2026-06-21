@@ -75,36 +75,24 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
   return sum;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d6730
 char TCountry::ReturnFalseNationStateCapabilityFlag98(void) {
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d6750
 char TCountry::ReturnFalseNationStateCapabilityFlag9C(void) {
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::ShouldDispatchImmediatelySlot28(void) {
-  return 0;
-}
-
-
+undefined TCountry::ReturnFalseNationStateCapabilityFlagA0() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004d6790
 void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d67b0
 CRuntimeClass* TCountry::GetRuntimeClass() const {
@@ -114,8 +102,6 @@ CRuntimeClass* TCountry::GetRuntimeClass() const {
 // SYNTHETIC: IMPERIALISM 0x004d6850
 // TCountry::`scalar deleting destructor'
 TCountry::~TCountry() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {
@@ -129,8 +115,6 @@ void TCountry::Free(void) {
   }
   delete this;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TCountry::ReadFrom(TStream* stream) {
@@ -196,7 +180,6 @@ void TCountry::ReadFrom(TStream* stream) {
 // owned-region list. The leading TObject::WriteTo is the no-op base-of-base (0x00485f70).
 #pragma optimize("y", on)
 
-
 // FUNCTION: IMPERIALISM 0x004d6e60
 void TCountry::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
@@ -218,22 +201,16 @@ void TCountry::WriteTo(TStream* stream) {
 }
 #pragma optimize("", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7070
 void TCountry::ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) {
   (void)stream;
   (void)unusedArg;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d70e0
 void TCountry::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
   (void)stream;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d71b0
 #pragma optimize("y", on)
@@ -335,16 +312,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
 }
 #pragma optimize("", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7ae0
 #pragma optimize("y", on)
 void TCountry::AddToNationMetricAtField10(int amount) {
   this->treasuryValue10 += amount;
 }
 #pragma optimize("", on)
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7b00
 char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
@@ -355,8 +328,6 @@ char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2,
   (void)arg4;
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
@@ -384,8 +355,6 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   this->GetIdentitySharedString1Slot58();
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7c00
 void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -400,8 +369,6 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNatio
   }
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7c90
 void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
@@ -423,8 +390,6 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7d20
 #pragma optimize("y", on)
 char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
@@ -436,28 +401,20 @@ char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
 }
 #pragma optimize("", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7d50
 CString* TCountry::GetIdentitySharedString1Slot58(void) {
   return &this->identitySharedString1;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7d70
 void TCountry::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   this->ownedRegionList->RemoveIntSlot34(regionId);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7da0
 void TCountry::AddRegionIdToNationOwnedRegionList(int regionId) {
   this->ownedRegionList->WriteTo(reinterpret_cast<TStream*>(regionId));
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7dd0
 void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) {
@@ -481,14 +438,10 @@ void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlo
   this->needLevelByNation[targetNation] = this->needLevelByNation[terrain->nationSlot];
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7e90
 void TCountry::DecrementDiplomacyCounterA2ByValue(int delta) {
   (void)delta;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7ee0
 int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
@@ -496,14 +449,8 @@ int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7f00
-short TCountry::GetDiplomacyCounterA2(void) {
-  return 0;
-}
-
-
+undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f00() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004d7f20
 short TCountry::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
@@ -511,15 +458,11 @@ short TCountry::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7f40
 short TCountry::QueryNationMetricBySlot7C(short metricSlot) {
   (void)metricSlot;
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7f60
 char TCountry::ReturnFalseNationStateCapabilityFlag90(int arg) {
@@ -527,15 +470,11 @@ char TCountry::ReturnFalseNationStateCapabilityFlag90(int arg) {
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7f80
 void TCountry::NotifyActionSlot94(int sourceNation, int actionCode) {
   (void)sourceNation;
   (void)actionCode;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d7fa0
 void TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -545,23 +484,17 @@ void TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex,
   (void)multiplier;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7fc0
 bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) {
   (void)targetNationSlot;
   return false;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d7fe0
 void TCountry::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
   (void)proposalCode;
   (void)targetNationId;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004d8000
 #pragma optimize("y", on)
@@ -656,16 +589,12 @@ int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
   return sum;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x004d87b0
 #pragma optimize("y", on)
 int TCountry::GetHomeRegionCityRecordIndex(void) {
   return g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex;
 }
 #pragma optimize("", on)
-
-
 
 // FUNCTION: IMPERIALISM 0x004d87e0
 #pragma optimize("y", on)
@@ -709,8 +638,6 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
   } while (ordinal <= regionCount);
 }
 #pragma optimize("", on)
-
-
 
 // FUNCTION: IMPERIALISM 0x004d8920
 void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
@@ -814,23 +741,9 @@ void TCountry::SetNationTradePolicyValueForTargetAndNotify(short targetNationSlo
   }
 }
 
-void TCountry::ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
-                                                        int mode) {
-  (void)targetNationSlot;
-  (void)policyCode;
-  (void)mode;
-}
-
 void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
-}
-
-void TCountry::ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
-                                                                 int payload) {
-  (void)eventCode;
-  (void)targetNationSlot;
-  (void)payload;
 }
 
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
@@ -840,3 +753,25 @@ void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}
+
+undefined TCountry::CreateAndDispatchMilitaryRecruitOrderForNationSlot() { return 0; }
+char TCountry::ShouldDispatchImmediatelySlot28(void) { return 0; }
+short TCountry::GetDiplomacyCounterA2(void) { return 0; }
+undefined TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(void) { return 0; }
+undefined TCountry::IsDiplomacyTargetClassCode200Match(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f20(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f40(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10(void) { return 0; }
+undefined TCountry::OrphanLeaf_NoCall_Ins07_004d8920(void) { return 0; }
+undefined TCountry::OrphanRetStub_004d7e90(void) { return 0; }
+undefined TCountry::OrphanRetStub_004d7f80(void) { return 0; }
+undefined TCountry::OrphanRetStub_004d7fa0(void) { return 0; }
+undefined TCountry::OrphanRetStub_004d7fe0(void) { return 0; }
+undefined TCountry::PopulateSelectableEntryFlavorTextAndOrdinals(void) { return 0; }
+undefined TCountry::ReturnFalseNationStateActionStub(void) { return 0; }
+undefined TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities(void) { return 0; }
+undefined TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b(void) { return 0; }
+undefined TCountry::SelectCandidateTilesWithLowGroundUnitCount_11(void) { return 0; }

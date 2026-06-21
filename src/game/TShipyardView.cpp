@@ -1,9 +1,5 @@
 #include "game/TShipyardView.h"
 
-undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex(CString * param_1, short param_2) { return 0; }
-
-void TShipyardView::RefreshCityViewStatusPanel(int * pCityViewDialog) {}
-
 // FUNCTION: IMPERIALISM 0x004c82a0
 CRuntimeClass* TShipyardView::GetRuntimeClass() const {
   return 0;
@@ -47,7 +43,6 @@ undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex() {
 
 // FUNCTION: IMPERIALISM 0x004c9a60
 void __fastcall TShipyardView::RefreshCityViewStatusPanel(int * pCityViewDialog) {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c9d20

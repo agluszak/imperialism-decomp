@@ -44,6 +44,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588a30
 TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   TIndustryCluster* cluster =
@@ -54,18 +56,24 @@ TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   return cluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588ad0
 CRuntimeClass* TIndustryCluster::GetRuntimeClass() const {
   return &g_pClassDescTIndustryCluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()
     : TUberCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
+
+
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
-TIndustryCluster::~TIndustryCluster() {}
+
 
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
@@ -94,10 +102,14 @@ void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
                                      1);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588c30
 void TIndustryCluster::ApplyMoveValue(int value) {
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00588c60
 int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
@@ -152,11 +164,15 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   return 0;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588f60
 int TIndustryCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
   return 0;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -180,3 +196,13 @@ void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
   int moveValue = moveControl->QueryValue();
   this->ApplyMoveValue(moveValue - 1);
 }
+
+undefined TIndustryCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+undefined TIndustryCluster::OrphanRetStub_00586ff0(void) { return 0;}
+
+undefined TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B(void) { return 0;}
+
+undefined TIndustryCluster::UpdateTradeMoveControlsFromDrag(void) { return 0;}
+
+TIndustryCluster::~TIndustryCluster() {}

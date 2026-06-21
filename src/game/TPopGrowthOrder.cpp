@@ -1,7 +1,5 @@
 #include "game/TPopGrowthOrder.h"
 
-undefined TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
 TPopGrowthOrder::~TPopGrowthOrder() {}

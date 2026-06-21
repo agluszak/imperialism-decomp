@@ -29,6 +29,11 @@ TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 TWarningView::~TWarningView() {}
 
 // FUNCTION: IMPERIALISM 0x00592980
+undefined TWarningView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
+
+// Hand-ported HandleEvent logic (address/slot pairing TBD — lives outside generated slot 0x0f).
 void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x22 && event != 0) {
     unsigned int controlTag =

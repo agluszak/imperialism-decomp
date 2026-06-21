@@ -22,11 +22,11 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanLeaf_NoCall_Ins04_005adc30() override; // slot 0x0a 0x5adde0
-  virtual undefined QueueCityOrderType10CommandIfReady(int * param_1) override; // slot 0x0b 0x5ae010
+  virtual undefined QueueCityOrderType10CommandIfReady(int* param_1) override; // slot 0x0b 0x5ae010
   virtual void ApplyProductionDistributionToCitySlots() override; // slot 0x0c 0x5ae420
-  virtual void QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue) override; // slot 0x0d 0x5ae0e0
-  virtual void DeserializeCityProductionQueueCommand(void * pCommandQueue) override; // slot 0x0e 0x5ae240
-  virtual void OrphanRetStub_0059add0(void * pCommandQueue) override; // slot 0x0f 0x5ae4b0
+  virtual void QueueCityRecruitmentSupportCommandsIfDeficit(void* pCommandQueue) override; // slot 0x0d 0x5ae0e0
+  virtual void DeserializeCityProductionQueueCommand(void* pCommandQueue) override; // slot 0x0e 0x5ae240
+  virtual void OrphanRetStub_0059add0(void* pCommandQueue) override; // slot 0x0f 0x5ae4b0
 // === END GENERATED DECLS (TCityTask) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCityTask 0xCTOR`).
 

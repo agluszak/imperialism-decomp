@@ -137,8 +137,8 @@ public:
   // slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
   virtual undefined VTableSlot7F() override; // slot 0x7f 0x5b6770
   virtual undefined SerializeRecordList_0x0C_WithBlockPool_A() override; // slot 0x80 0x5b66b0
-  virtual void AssertValid() const override; // slot 0x81 0x5b6840
-  virtual void Dump(CDumpContext &) override; // slot 0x82 0x5b6810
+  virtual undefined AssertValid() override; // slot 0x81 0x5b6840
+  virtual undefined Dump() override; // slot 0x82 0x5b6810
 // === END GENERATED DECLS (TInfoBarText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarText 0xCTOR`).
 

@@ -40,5 +40,3 @@ undefined TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback(
 // FUNCTION: IMPERIALISM 0x00541790
 void TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {
 }
-
-undefined TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType1() { return 0; }

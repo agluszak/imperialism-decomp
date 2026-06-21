@@ -1,7 +1,5 @@
 #include "game/TDealBookPicture.h"
 
-undefined TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls(int param_1, short param_2) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x005baba0
 CRuntimeClass* TDealBookPicture::GetRuntimeClass() const {
   return 0;

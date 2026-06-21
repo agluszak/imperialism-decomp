@@ -113,9 +113,17 @@ void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489360
-void TFileStream::streamSlot70() {}
+undefined TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x00489390
 undefined TFileStream::OrphanCallChain_C2_I21_00489030() {
   return 0;
 }
+undefined TFileStream::OrphanLeaf_NoCall_Ins02_00489980(void) { return 0; }
+undefined TFileStream::OrphanRetStub_00488e30(void) { return 0; }
+undefined TFileStream::OrphanRetStub_00488e50(void) { return 0; }
+undefined TFileStream::OrphanRetStub_00488e70(void) { return 0; }
+undefined TFileStream::OrphanRetStub_004899a0(void) { return 0; }
+undefined TFileStream::OrphanTiny_ReturnZero_00488ad0(void) { return 0; }
+undefined TFileStream::OrphanTiny_ReturnZero_00488af0(void) { return 0; }
+void TFileStream::streamSlot70(void) {}

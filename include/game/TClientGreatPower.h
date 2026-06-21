@@ -167,7 +167,7 @@ public:
   // slot 0x9c ComputeNavyScoreStandingRatioForNationPair inherited unchanged (0x4e1a40)
   // slot 0x9d VTableSlot9D inherited unchanged (0x4e1c00)
   // slot 0x9e EvaluateJoinWarAgainstNationAndQueueEvent inherited unchanged (0x4e1c20)
-  virtual undefined ExecuteAdvisoryPromptAndApplyActionType1() override; // slot 0x9f 0x5416b0
+  // slot 0x9f ExecuteAdvisoryPromptAndApplyActionType1 inherited unchanged (0x5416b0)
   virtual undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback() override; // slot 0xa0 0x5415c0
   // slot 0xa1 QueueWarTransitionAndNotifyThirdPartyIfNeeded inherited unchanged (0x4e27f0)
   // slot 0xa2 DeserializeRecruitScenarioAndInstantiateOrders inherited unchanged (0x4e1f20)

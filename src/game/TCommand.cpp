@@ -13,6 +13,7 @@ TCommand::TCommand() : field04(0), field08(0), field0c(0), field10(0), field14(0
 // Vtable-shape placeholder bodies (the real slot implementations live elsewhere;
 // these exist so the class emits its native vtable and derived classes can
 // override individual slots through real C++ inheritance).
+
 // SYNTHETIC: IMPERIALISM 0x00487850
 // TCommand::`scalar deleting destructor'
 TCommand::~TCommand() {}
@@ -46,3 +47,15 @@ undefined TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
 undefined TCommand::OrphanRetStub_00487a00() {
   return 0;
 }
+void TCommand::cmd_slot0(void) {}
+void TCommand::cmd_slot1(void) {}
+void TCommand::cmd_slot10(void) {}
+void TCommand::cmd_slot11(void) {}
+void TCommand::cmd_slot2(void) {}
+void TCommand::cmd_slot3(void) {}
+void TCommand::cmd_slot4(void) {}
+void TCommand::cmd_slot5(void) {}
+void TCommand::cmd_slot6(void) {}
+void TCommand::cmd_slot7(void) {}
+void TCommand::cmd_slot8(void) {}
+void TCommand::cmd_slot9(void) {}

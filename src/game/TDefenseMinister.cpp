@@ -15,10 +15,10 @@ CRuntimeClass g_pClassDescTDefenseMinister = {nullptr, 0, 0, nullptr, nullptr};
 #endif
 
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
-// FUNCTION: IMPERIALISM 0x004ec0a0
-void TDefenseMinister::DefenseSlot18() {}
 
-// MFC RTTI slot 0x00 override: returns this class's CRuntimeClass descriptor (0x654838).
+// FUNCTION: IMPERIALISM 0x004ec0a0
+undefined TDefenseMinister::CreateTDefenseMinisterInstance() { return 0; }
+
 // FUNCTION: IMPERIALISM 0x004ec0c0
 CRuntimeClass* TDefenseMinister::GetRuntimeClass() const {
   return &g_pClassDescTDefenseMinister;
@@ -28,8 +28,10 @@ CRuntimeClass* TDefenseMinister::GetRuntimeClass() const {
 TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // Destructor is compiler-generated (implicit) from real TMinister inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x004ec110
 // TDefenseMinister::`scalar deleting destructor'
+TDefenseMinister::~TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics() {
@@ -52,6 +54,7 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics() {
 }
 
 // Slot 5 override (0x4ec1d0): serialize defense-minister order-array metrics.
+
 // FUNCTION: IMPERIALISM 0x004ec1d0
 void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
@@ -89,6 +92,7 @@ void TDefenseMinister::WriteTo(TStream* stream) {
 }
 
 // Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.
+
 // FUNCTION: IMPERIALISM 0x004ec2f0
 void TDefenseMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
@@ -122,10 +126,10 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 }
 
 // Slot 10 override (0x4ec3d0).
-// FUNCTION: IMPERIALISM 0x004ec3d0
-void TDefenseMinister::MinisterSlot0A() {}
 
-// Slot 18 override (0x4ec450).
+// FUNCTION: IMPERIALISM 0x004ec3d0
+undefined TDefenseMinister::DispatchNationStateEventCode10() { return 0; }
+
 // FUNCTION: IMPERIALISM 0x004ec450
 void TDefenseMinister::MinisterSlot12() {}
 
@@ -142,21 +146,22 @@ void TDefenseMinister::Call4C() {
 }
 
 // Slot 20 override (0x4ec540).
+
 // FUNCTION: IMPERIALISM 0x004ec540
 void TDefenseMinister::MinisterSlot14() {}
 
 // Slot 21 override (0x4ecbb0).
+
 // FUNCTION: IMPERIALISM 0x004ecbb0
-void TDefenseMinister::Call54() {}
+undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList() { return 0; }
 
-// Slot 22 (0x58) — body 0x4ecf20.
 // FUNCTION: IMPERIALISM 0x004ecf20
-void TDefenseMinister::DefenseSlot16() {}
+undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() { return 0; }
 
-// Slot 23 (0x5c) — body 0x4ed050.
 // FUNCTION: IMPERIALISM 0x004ed050
-void TDefenseMinister::DefenseSlot17() {}
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
+undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer() { return 0; }
+void TDefenseMinister::Call54(void) {}
+void TDefenseMinister::DefenseSlot16(void) {}
+void TDefenseMinister::DefenseSlot17(void) {}
+void TDefenseMinister::DefenseSlot18(void) {}
+void TDefenseMinister::MinisterSlot0A(void) {}

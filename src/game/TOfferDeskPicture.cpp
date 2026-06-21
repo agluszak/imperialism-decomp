@@ -1,7 +1,5 @@
 #include "game/TOfferDeskPicture.h"
 
-undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext(short param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x005be550
 CRuntimeClass* TOfferDeskPicture::GetRuntimeClass() const {
   return 0;

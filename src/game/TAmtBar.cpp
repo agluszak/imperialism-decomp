@@ -17,10 +17,14 @@ undefined4 ftol(void);
 
 extern "C" CRuntimeClass g_pClassDescTAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 
+
+
 // FUNCTION: IMPERIALISM 0x00401e65
 void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
   amountBar->~TView();
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
@@ -32,6 +36,8 @@ void TAmtBar::SetBarMetric(int value, int range) {
   UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
   TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
@@ -41,23 +47,33 @@ TAmtBar* __cdecl CreateTAmtBarInstance(void) {
   return amountBar;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588560
 CRuntimeClass* TAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTAmtBar;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00588580
 TAmtBar::TAmtBar()
     : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
+
+
 // SYNTHETIC: IMPERIALISM 0x005885c0
 // TAmtBar::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x00588610
 void TAmtBar::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00588630
 void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
@@ -67,11 +83,15 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
   this->InvokeSlot13C();
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588670
 void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   InvokeSlot1A8();
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00588690
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
@@ -137,6 +157,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   SnapshotHitRegionToClipCache(&clipDescriptorHead);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00588950
 void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
   (void)arg2;
@@ -178,50 +200,10 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
   reinterpret_cast<TUberCluster*>(owner)->ApplyMoveValue(appliedValue);
 }
 
-void TAmtBar::InvokeSlot1A8() {}
-
 void TAmtBar::SetBarMetricRatio(int value) {
   stepOrCurrentValue = (short)value;
   RefreshControl();
 }
-
-void TAmtBar::vmethod_0108() {}
-
-void TAmtBar::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
-  (void)descriptorBuffer;
-  (void)modeFlag;
-}
-
-void TAmtBar::vmethod_0110() {}
-
-void TAmtBar::vmethod_0111() {}
-
-void TAmtBar::vmethod_0112() {}
-
-void TAmtBar::SetStyleState(int stateValue, int modeFlag) {
-  (void)stateValue;
-  (void)modeFlag;
-}
-
-void TAmtBar::SetBitmap(int bitmapIdValue, int unknownFlag) {
-  (void)bitmapIdValue;
-  (void)unknownFlag;
-}
-
-void TAmtBar::InvokeSlot1CC(int value, int modeFlag) {
-  (void)value;
-  (void)modeFlag;
-}
-
-void TAmtBar::vmethod_0116() {}
-
-void TAmtBar::vmethod_0117() {}
-
-void TAmtBar::vmethod_0118() {}
-
-void TAmtBar::vmethod_0119() {}
-
-void TAmtBar::vmethod_0120() {}
 
 void TAmtBar::SetControlValueSlot1E4(int value, int updateFlag) {
   stepOrCurrentValue = (short)value;
@@ -233,3 +215,27 @@ void TAmtBar::SetControlValueSlot1E4(int value, int updateFlag) {
 int TAmtBar::QueryValue() {
   return (int)stepOrCurrentValue;
 }
+
+void TAmtBar::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
+  (void)descriptorBuffer;
+  (void)modeFlag;
+}
+
+void TAmtBar::InvokeSlot1A8() {}
+
+void TAmtBar::InvokeSlot1CC(int value, int modeFlag) {
+  (void)value;
+  (void)modeFlag;
+}
+
+void TAmtBar::SetBitmap(int bitmapIdValue, int unknownFlag) {
+  (void)bitmapIdValue;
+  (void)unknownFlag;
+}
+
+void TAmtBar::SetStyleState(int stateValue, int modeFlag) {
+  (void)stateValue;
+  (void)modeFlag;
+}
+
+TAmtBar::~TAmtBar() {}

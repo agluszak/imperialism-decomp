@@ -20,11 +20,13 @@ undefined TInfoBarText::VTableSlot7F() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
-void TInfoBarText::Dump(CDumpContext &) {
+undefined TInfoBarText::Dump() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6840
-void TInfoBarText::AssertValid() const {
+undefined TInfoBarText::AssertValid() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6930

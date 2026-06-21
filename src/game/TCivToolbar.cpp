@@ -43,40 +43,30 @@ const unsigned int kTagGarrison = 0x67617272;
 
 } // namespace
 
+
+
 // FUNCTION: IMPERIALISM 0x0058ea00
 TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
   return new TCivToolbar();
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x0058ea80
 CRuntimeClass* TCivToolbar::GetRuntimeClass() const {
   return &g_pClassDescTCivToolbar;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x0058eaa0
 TCivToolbar::TCivToolbar() {}
+
+
 
 // SYNTHETIC: IMPERIALISM 0x0058ead0
 // TCivToolbar::`scalar deleting destructor'
 
-/* Handles civilian command-panel actions from map UI button clicks and stack-slot picks.
-   Algorithm:
-   1. For stack-slot event class, detect 'stk0'..'stk5' controls and activate selected civilian
-   slot.
-   2. For command event class, decode 4CC control tag from payload.
-   3. Tag 'done': queue immediate command type 4 (No orders this turn).
-   4. Tag 'dfnd': queue immediate command type 2 (Sleep).
-   5. Tag 'latr': queue immediate command type 3 (Next Unit).
-   6. Tag 'garr': if CTRL held, open civilian ledger; otherwise open disband confirmation.
-   7. Forward event to panel dispatcher after handling branch.
-   Parameters:
-   - nEventClass: Event category discriminator.
-   - pEventPayload: UI payload block containing control tag and control context.
-   - nEventFlags: Additional UI dispatch flags.
-   Returns:
-   - None. */
-
-/* Refreshes civilian command panel controls for the currently selected civilian entry. */
 
 // FUNCTION: IMPERIALISM 0x0058eb20
 void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* selectedOrder) {
@@ -128,6 +118,8 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* s
 
 /* Refreshes civilian stack controls (stk0..stk5) for the selected tile and syncs command button
    enable state. */
+
+
 
 // FUNCTION: IMPERIALISM 0x0058ec50
 void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
@@ -187,6 +179,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   }
   stackButton->SetEnabled(commandEnabled, 1);
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x0058eed0
 void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -249,3 +243,7 @@ void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
       ::CycleMapInteractionSelectionAfterHandledClick);
   dispatch(this);
 }
+
+undefined TCivToolbar::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+TCivToolbar::~TCivToolbar() {}

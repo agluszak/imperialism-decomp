@@ -73,6 +73,8 @@ TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
   return new (storage) TCapacityOrder(city);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004b85a0
 bool TCapacityOrder::CanMakeFromCityStock() {
   TCity* city = this->cityField08;
@@ -94,6 +96,8 @@ bool TCapacityOrder::CanMakeFromCityStock() {
   return false;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004b8630
 bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   const short weightIndex = this->resourceTypeIndex48;
@@ -114,6 +118,8 @@ bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   }
   return false;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x004b86d0
 short TCapacityOrder::MaxOrder() {
@@ -167,6 +173,8 @@ short TCapacityOrder::MaxOrder() {
   return static_cast<short>(static_cast<short>(this->quantityField04) + static_cast<short>(limit));
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004b8800
 bool TCapacityOrder::SetQuantity(short quantity) {
   TCity* city = this->cityField08;
@@ -216,12 +224,16 @@ bool TCapacityOrder::SetQuantity(short quantity) {
   return true;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004b8970
 void TCapacityOrder::CommitIfPending() {
   if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
     this->ApplyCityProductionSlotDelta();
   }
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x004b8b80
 void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
@@ -272,14 +284,18 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004b8cc0
 CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
   return &g_pClassDescTCapacityOrder;
 }
 
+
+
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'
-TCapacityOrder::~TCapacityOrder() {}
+
 
 // FUNCTION: IMPERIALISM 0x004b8d50
 void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short trackingIndex4eInit,
@@ -297,6 +313,8 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short track
   this->trackingIndex50 = trackingIndex50Init;
   this->field52 = field52Init;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
 void TCapacityOrder::ApplyCityProductionSlotDelta() {
@@ -347,3 +365,7 @@ apply_done:
   this->trackingSlots10[this->trackingIndex50] = 0;
   this->field3e = 0;
 }
+
+undefined TCapacityOrder::OrphanRetStub_004b5160(void) { return 0;}
+
+TCapacityOrder::~TCapacityOrder() {}

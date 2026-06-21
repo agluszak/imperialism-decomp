@@ -123,7 +123,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571330)
-  virtual undefined HandleToggleButtonStateChangeAndRefresh() override; // slot 0x74 0x584800
+  // slot 0x74 Select — declared in hand section (0x584800)
 // === END GENERATED DECLS (TBoycottButton) ===
   TBoycottButton();
   CRuntimeClass* GetRuntimeClass() const override;

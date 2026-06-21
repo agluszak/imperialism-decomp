@@ -39,7 +39,7 @@ THandleStream::~THandleStream() {}
 // THandleStream::~THandleStream
 
 // FUNCTION: IMPERIALISM 0x004896a0
-void THandleStream::streamSlot1c() {}
+void THandleStream::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004896e0
 int THandleStream::streamSlot28() {
@@ -57,10 +57,10 @@ undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489740
-void THandleStream::streamSlot2c() {}
+undefined THandleStream::OrphanRetStub_00488e30() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x00489760
-void THandleStream::streamSlot34() {}
+undefined THandleStream::OrphanRetStub_00488e50() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004897a0
 void THandleStream::ReadBytes(void* buffer, int sizeBytes) {
@@ -73,3 +73,9 @@ void THandleStream::WriteBytesSlot78(void* data, int length) {
   (void)data;
   (void)length;
 }
+undefined THandleStream::OrphanRetStub_00488e70(void) { return 0; }
+undefined THandleStream::OrphanTiny_ReturnZero_00488ad0(void) { return 0; }
+undefined THandleStream::OrphanTiny_ReturnZero_00488af0(void) { return 0; }
+void THandleStream::streamSlot1c(void) {}
+void THandleStream::streamSlot2c(void) {}
+void THandleStream::streamSlot34(void) {}

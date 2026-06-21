@@ -46,6 +46,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00589660
 TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   TRailCluster* cluster =
@@ -56,10 +58,14 @@ TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
   return cluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00589700
 CRuntimeClass* TRailCluster::GetRuntimeClass() const {
   return &g_pClassDescTRailCluster;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00589720
 TRailCluster::TRailCluster() : TUberCluster() {
@@ -67,9 +73,11 @@ TRailCluster::TRailCluster() : TUberCluster() {
   this->selectedMetricStep = 0;
 }
 
+
+
 // SYNTHETIC: IMPERIALISM 0x00589760
 // TRailCluster::`scalar deleting destructor'
-TRailCluster::~TRailCluster() {}
+
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
@@ -144,10 +152,14 @@ LABEL_12:
   }
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::ApplyMoveValue(int value) {
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x005899f0
 int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
@@ -208,11 +220,15 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   return 0;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00589d10
 int TRailCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
   return 0;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00589da0
 void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -236,3 +252,13 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   int moveValue = moveControl->QueryValue();
   this->ApplyMoveValue(moveValue - 1);
 }
+
+undefined TRailCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+undefined TRailCluster::OrphanRetStub_00586ff0(void) { return 0;}
+
+undefined TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A(void) { return 0;}
+
+undefined TRailCluster::UpdateTradeMoveControlsFromScaledDrag(void) { return 0;}
+
+TRailCluster::~TRailCluster() {}

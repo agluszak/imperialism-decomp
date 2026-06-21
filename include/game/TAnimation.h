@@ -19,7 +19,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 0x0a 0x49f140
-  virtual undefined RenderBattleReportInsetWithPaletteShift(int * param_1) override; // slot 0x0b 0x49f190
+  virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle() override; // slot 0x0c 0x49f2d0
   virtual undefined EnsureBitmapResourceLoadedAndCopyRectSize() override; // slot 0x10 0x495b70
   virtual undefined WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() override; // slot 0x11 0x495c00

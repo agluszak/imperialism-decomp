@@ -1,7 +1,5 @@
 #include "game/TPlaceCityDialog.h"
 
-undefined TPlaceCityDialog::BuildCityViewResourceRows(int * param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x004d17e0
 CRuntimeClass* TPlaceCityDialog::GetRuntimeClass() const {
   return 0;

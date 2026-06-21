@@ -340,6 +340,7 @@ def classified_from_manifest(
         out = apply_ancestry_slots(out, manifest, repo_root)
         out = _match_ancestor_header_return_types(out, manifest, repo_root)
         out = _apply_defaulted_args(out, repo_root)
+        out = _reclassify_ancestry_owned_slots(out, manifest, repo_root)
     out = _dedupe_method_names(out)
     return out
 
@@ -584,6 +585,55 @@ def apply_ancestry_slots(
         else:
             new_sig = slot.sig
         out.append(replace(slot, sig=new_sig, qualified_name=parent_name))
+    return out
+
+
+def _manual_owners_by_addr(repo_root: Path) -> dict[str, str]:
+    """``bare_hex_addr -> owning class name`` from function_ownership.csv manual rows."""
+    path = resolve_repo_path(repo_root, "config/function_ownership.csv")
+    if not path.exists():
+        return {}
+    out: dict[str, str] = {}
+    for row in read_pipe_rows(path):
+        if (row.get("ownership") or "").strip() != "manual":
+            continue
+        addr = normalize_hex((row.get("address") or "").strip())
+        cpp = (row.get("target_cpp") or "").strip()
+        if not addr or not cpp:
+            continue
+        cls = Path(cpp).stem
+        out[addr] = cls
+    return out
+
+
+def _reclassify_ancestry_owned_slots(
+    slots: list[ClassifiedSlot], manifest: dict[str, Any], repo_root: Path
+) -> list[ClassifiedSlot]:
+    """Render override/new slots as inherited when an ancestor owns the body.
+
+    ``classify_slots`` only compares against the immediate base target. When a higher
+    ancestor already owns the slot body (``function_ownership.csv``), the descendant
+    must not redeclare it — C++ fills the slot from the ancestor vtable. Sibling-owned
+    bodies (owner not in ``generated.ancestry``) stay override/new with an unmarked stub.
+    """
+    cls = manifest.get("class")
+    ancestry = {str(a) for a in (manifest.get("generated") or {}).get("ancestry") or []}
+    owners = _manual_owners_by_addr(repo_root)
+    local_curated = set(cm.curated_slot_methods(manifest).keys())
+    out: list[ClassifiedSlot] = []
+    for slot in slots:
+        if (
+            slot.kind in ("override", "new")
+            and slot.index not in local_curated
+            and (owner_cls := owners.get(norm_addr(slot.target_addr)))
+            and owner_cls in ancestry
+            and owner_cls != cls
+        ):
+            out.append(
+                replace(slot, kind="inherited", sig=None, qualified_name=slot.qualified_name)
+            )
+            continue
+        out.append(slot)
     return out
 
 
@@ -914,8 +964,26 @@ def _stub_head_matches(block: str, cls: str, slot: ClassifiedSlot) -> bool:
     return f"{cls}::{slot.sig.name}(" in block
 
 
+def _marked_method_names(cpp_text: str, cls: str) -> set[str]:
+    """Method names that already have a marked out-of-line definition in ``cpp_text``."""
+    pattern = re.compile(
+        rf"^[ \t]*(?P<head>[^\n;{{}}]*\b{re.escape(cls)}::"
+        rf"(?P<name>~?[A-Za-z_][A-Za-z0-9_]*)\s*\([^;{{}}]*\)\s*(?:const)?\s*)\{{",
+        re.MULTILINE,
+    )
+    names: set[str] = set()
+    for match in pattern.finditer(cpp_text):
+        if _has_immediate_marker_before(cpp_text, match.start()):
+            names.add(match.group("name"))
+    return names
+
+
 def reconcile_unmarked_stubs(
-    cpp_text: str, cls: str, foreign_slots: list[ClassifiedSlot], valid_names: set[str]
+    cpp_text: str,
+    cls: str,
+    foreign_slots: list[ClassifiedSlot],
+    valid_names: set[str],
+    all_slots: list[ClassifiedSlot] | None = None,
 ) -> str:
     """Keep unmarked shape-only stubs in sync with the (resolver-corrected) slot names.
 
@@ -938,6 +1006,13 @@ def reconcile_unmarked_stubs(
     # valid — its signature may be stale (e.g. `VTableSlot73(char)` vs the header's
     # `VTableSlot73()`), which would otherwise mismatch the decl (C2511).
     foreign_names = {s.sig.name for s in foreign_slots if s.sig is not None}
+    marked_names = _marked_method_names(cpp_text, cls)
+    canonical_heads: dict[str, str] = {}
+    for slot in all_slots or foreign_slots:
+        if slot.kind in ("override", "new") and slot.sig is not None:
+            head = _slot_definition_head(cls, slot)
+            if head:
+                canonical_heads[slot.sig.name] = _definition_head_key(head)
     chunks: list[str] = []
     cursor = 0
     present: set[str] = set()
@@ -955,10 +1030,17 @@ def reconcile_unmarked_stubs(
         remove_end = end
         while remove_end < len(cpp_text) and cpp_text[remove_end] in " \t\r\n":
             remove_end += 1
-        if name in valid_names and name not in foreign_names:
+        canonical = canonical_heads.get(name)
+        stale_signature = canonical is not None and _definition_head_key(match.group("head")) != canonical
+        if (
+            name in valid_names
+            and name not in foreign_names
+            and name not in marked_names
+            and not stale_signature
+        ):
             present.add(name)
             continue
-        # Orphaned (renamed away) or stale-signature foreign trivial stub: drop it.
+        # Orphaned (renamed away), duplicate of a marked body, or stale-signature stub.
         chunks.append(cpp_text[cursor : match.start()])
         cursor = remove_end
     chunks.append(cpp_text[cursor:])
@@ -974,7 +1056,11 @@ def reconcile_unmarked_stubs(
         for s in sorted(missing, key=lambda x: int(x.target_addr or "0", 16)):
             assert s.sig is not None  # filtered above
             ret_val = " return 0; " if s.sig.ret.strip() not in ("void", "") else ""
-            blocks.append(f"{s.sig.definition_head(cls)} {{{ret_val}}}\n\n")
+            head = s.sig.definition_head(cls)
+            # Default arguments belong on the declaration only; repeating them on an
+            # out-of-line definition is MSVC C2572.
+            head = re.sub(r"=\s*[^,)]+", "", head)
+            blocks.append(f"{head} {{{ret_val}}}\n\n")
         out = out.rstrip() + "\n\n" + "".join(blocks).rstrip() + "\n"
     return out
 
@@ -1100,6 +1186,7 @@ def apply_slots(
 
     decls_block = render_generated_decls(manifest, decl_slots)
     header_text = hpath.read_text(encoding="utf-8")
+    decls_block = bc.drop_externally_declared_declarations(decls_block, header_text, cls)
     new_header, header_changed = upsert_decls_block(header_text, cls, decls_block)
 
     cpp_text = cpp_path.read_text(encoding="utf-8") if cpp_path.exists() else ""
@@ -1129,7 +1216,7 @@ def apply_slots(
         ]
         valid_names = {s.sig.name for s in slots if s.kind in ("override", "new") and s.sig}
         valid_names.add(f"~{cls}")
-        new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names)
+        new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names, slots)
     cpp_changed = new_cpp != cpp_text
 
     # Shape-only (no_bodies) never claims ownership/symbols — markers + ownership are

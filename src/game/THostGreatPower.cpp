@@ -1,7 +1,5 @@
 #include "game/THostGreatPower.h"
 
-undefined THostGreatPower::ReturnFalseNationStateActionStub() { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00540f20
 char THostGreatPower::ReturnFalseNationStateCapabilityFlag9C() {
   return 0;
@@ -28,4 +26,3 @@ void THostGreatPower::WriteTo(TStream* stream) {
 void THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {
 }
 
-void THostGreatPower::ProcessPendingDiplomacyProposalQueue() {}

@@ -67,114 +67,10 @@ undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0(void)
   return 0;
 }
 
-// ghidra_name IterateLinkedListCursorEntries_004c2d50
-// ghidra_proto undefined IterateLinkedListCursorEntries_004c2d50()
-// FUNCTION: IMPERIALISM 0x004c2d50
-undefined4 IterateLinkedListCursorEntries_004c2d50(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleFrogCityTileSelectionAndDispatchOrders
-// ghidra_proto undefined HandleFrogCityTileSelectionAndDispatchOrders()
-// FUNCTION: IMPERIALISM 0x004c2e10
-undefined4 HandleFrogCityTileSelectionAndDispatchOrders(void)
-{
-  return 0;
-}
-
 // ghidra_name TraceDescendingTileScoreGradientToSource
 // ghidra_proto undefined TraceDescendingTileScoreGradientToSource()
 // FUNCTION: IMPERIALISM 0x004c30b0
 undefined4 TraceDescendingTileScoreGradientToSource(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectBestFrogCityTileFromCandidateSet
-// ghidra_proto undefined SelectBestFrogCityTileFromCandidateSet()
-// FUNCTION: IMPERIALISM 0x004c3170
-undefined4 SelectBestFrogCityTileFromCandidateSet(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeFrogCityCandidateScoreFromNationNeeds
-// ghidra_proto undefined ComputeFrogCityCandidateScoreFromNationNeeds()
-// FUNCTION: IMPERIALISM 0x004c3490
-undefined4 ComputeFrogCityCandidateScoreFromNationNeeds(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_004c3620
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins04_004c3620()
-// FUNCTION: IMPERIALISM 0x004c3620
-undefined4 OrphanLeaf_NoCall_Ins04_004c3620(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildFrogCityDistanceMapFromPrimarySeedSet
-// ghidra_proto undefined BuildFrogCityDistanceMapFromPrimarySeedSet()
-// FUNCTION: IMPERIALISM 0x004c3640
-undefined4 BuildFrogCityDistanceMapFromPrimarySeedSet(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildFrogCityDistanceMapFromReachableSeaCandidates
-// ghidra_proto undefined BuildFrogCityDistanceMapFromReachableSeaCandidates()
-// FUNCTION: IMPERIALISM 0x004c3910
-undefined4 BuildFrogCityDistanceMapFromReachableSeaCandidates(void)
-{
-  return 0;
-}
-
-// ghidra_name RebalanceCityOrderAllocationTargets
-// ghidra_proto undefined RebalanceCityOrderAllocationTargets()
-// FUNCTION: IMPERIALISM 0x004c3c00
-undefined4 RebalanceCityOrderAllocationTargets(void)
-{
-  return 0;
-}
-
-// ghidra_name ProcessCityOrderStateTickAndApplyCapabilitySelection
-// ghidra_proto undefined ProcessCityOrderStateTickAndApplyCapabilitySelection()
-// FUNCTION: IMPERIALISM 0x004c3d60
-undefined4 ProcessCityOrderStateTickAndApplyCapabilitySelection(void)
-{
-  return 0;
-}
-
-// ghidra_name RebalanceCitySupportAndLaborAllocations
-// ghidra_proto undefined RebalanceCitySupportAndLaborAllocations()
-// FUNCTION: IMPERIALISM 0x004c40c0
-undefined4 RebalanceCitySupportAndLaborAllocations(void)
-{
-  return 0;
-}
-
-// ghidra_name ChooseAndMarkNextCityProductionCommand
-// ghidra_proto undefined ChooseAndMarkNextCityProductionCommand()
-// FUNCTION: IMPERIALISM 0x004c4370
-undefined4 ChooseAndMarkNextCityProductionCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeCityProductionCommandLimitsFromBuildingOutputs
-// ghidra_proto undefined ComputeCityProductionCommandLimitsFromBuildingOutputs()
-// FUNCTION: IMPERIALISM 0x004c4690
-undefined4 ComputeCityProductionCommandLimitsFromBuildingOutputs(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildCityOrderCommandAvailabilityAndPriorityCycle
-// ghidra_proto undefined RebuildCityOrderCommandAvailabilityAndPriorityCycle()
-// FUNCTION: IMPERIALISM 0x004c4840
-undefined4 RebuildCityOrderCommandAvailabilityAndPriorityCycle(void)
 {
   return 0;
 }
@@ -803,26 +699,10 @@ undefined4 WrapperFor_ftol_At004d1fb0(void)
   return 0;
 }
 
-// ghidra_name TCivMgr::GetTCivMgrClassNamePointer
-// ghidra_proto undefined GetTCivMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004d2030
-undefined4 GetTCivMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
 // ghidra_proto undefined InitializeCivilianMapInteractionManagerVtable()
 // FUNCTION: IMPERIALISM 0x004d2050
 undefined4 InitializeCivilianMapInteractionManagerVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DeleteCivilianMapInteractionManager
-// ghidra_proto undefined DeleteCivilianMapInteractionManager()
-// FUNCTION: IMPERIALISM 0x004d2070
-undefined4 DeleteCivilianMapInteractionManager(void)
 {
   return 0;
 }
@@ -859,34 +739,10 @@ undefined4 SelectFirstAvailableCivilianForNation(void)
   return 0;
 }
 
-// ghidra_name DispatchSelectedUnitToGlobalMapStateHandler
-// ghidra_proto void __thiscall DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry)
-// FUNCTION: IMPERIALISM 0x004d2270
-undefined4 DispatchSelectedUnitToGlobalMapStateHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::HandleCivilianTileSelectionOrReportClick
-// ghidra_proto bool __thiscall HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
-// FUNCTION: IMPERIALISM 0x004d2380
-undefined4 HandleCivilianTileSelectionOrReportClick(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveCivilianTileSelectionOrReportActionCode
 // ghidra_proto ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
 // FUNCTION: IMPERIALISM 0x004d2540
 undefined4 ResolveCivilianTileSelectionOrReportActionCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::HandleCivilianTileOrderAction
-// ghidra_proto bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint)
-// FUNCTION: IMPERIALISM 0x004d26d0
-undefined4 HandleCivilianTileOrderAction(void)
 {
   return 0;
 }
@@ -983,14 +839,6 @@ undefined4 QueueProspectingOrderAndPlayFeedback(void)
 // ghidra_proto bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d3a60
 undefined4 HandleEngineerConstructionAction(void)
-{
-  return 0;
-}
-
-// ghidra_name RelinkCivilianOrderTileAndInvalidateMapTiles
-// ghidra_proto void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)
-// FUNCTION: IMPERIALISM 0x004d4310
-undefined4 RelinkCivilianOrderTileAndInvalidateMapTiles(void)
 {
   return 0;
 }

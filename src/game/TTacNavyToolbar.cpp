@@ -1,7 +1,5 @@
 #include "game/TTacNavyToolbar.h"
 
-undefined TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int * param_1) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x005ad0d0
 undefined TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() {
   return 0;

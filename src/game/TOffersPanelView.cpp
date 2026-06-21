@@ -1,7 +1,5 @@
 #include "game/TOffersPanelView.h"
 
-undefined TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse(short param_1, short param_2) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x004f8f50
 CRuntimeClass* TOffersPanelView::GetRuntimeClass() const {
   return 0;

@@ -22,7 +22,7 @@ public:
   virtual undefined NoOpRuntimeUiCallback_005df780() override; // slot 0x0b 0x5df780
   virtual undefined NoOpRuntimeUiCallback_005df3f0() override; // slot 0x0c 0x5df3f0
   virtual undefined NoOpRuntimeUiCallback_005df410() override; // slot 0x0d 0x5df410
-  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup(CString param_1, undefined4 param_2) override; // slot 0x0e 0x5dfc10
+  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup() override; // slot 0x0e 0x5dfc10
 // === END GENERATED DECLS (TAssetMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr 0xCTOR`).
 

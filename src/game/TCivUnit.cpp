@@ -12,6 +12,7 @@ CRuntimeClass* TCivUnit::GetRuntimeClass() const {
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
+
 // FUNCTION: IMPERIALISM 0x005c28c0
 TCivUnit::TCivUnit() {}
 #if defined(_MSC_VER)
@@ -27,6 +28,7 @@ TCivUnit::~TCivUnit() {}
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
+
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
                                                      int nOrderOwnerNationId) {
@@ -70,3 +72,4 @@ void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {}
+undefined TCivUnit::OrphanRetStub_005c2610(void) { return 0; }

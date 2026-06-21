@@ -27,6 +27,8 @@ undefined4 thunk_BuildUiTextStyleDescriptor(void);
 
 #include <new>
 
+
+
 // FUNCTION: IMPERIALISM 0x005713c0
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {
   TUberCluster* cluster =
@@ -37,19 +39,25 @@ TUberCluster* __cdecl CreateTUberClusterInstance(void) {
   return cluster;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00571440
 CRuntimeClass* TUberCluster::GetRuntimeClass() const {
   return &g_pClassDescTUberCluster;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00571460
 TUberCluster::TUberCluster() : TCluster() {}
 
 // The scalar deleting destructor is compiler-generated from the inherited virtual dtor.
 
+
+
 // SYNTHETIC: IMPERIALISM 0x00571490
 // TUberCluster::`scalar deleting destructor'
-TUberCluster::~TUberCluster() {}
+
 
 // FUNCTION: IMPERIALISM 0x005714e0
 int TUberCluster::IsTradeControlAtMinimum() {
@@ -109,3 +117,21 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
   this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
                               reinterpret_cast<TEvent*>(eventExtra));
 }
+
+void TUberCluster::ApplyMoveValue(int) {}
+
+void TUberCluster::DoControlAction(void) {}
+
+int TUberCluster::GetBoolSlot1DC(void) { return 0;}
+
+int TUberCluster::GetControlFlag(int,int) { return 0;}
+
+int TUberCluster::NotifyControlSelectionChange(void *,int) { return 0;}
+
+void TUberCluster::SetTradeBidControlBitmap(void) {}
+
+void TUberCluster::SetTradeOfferControlBitmap(void) {}
+
+void TUberCluster::SetTradeOfferSecondaryBitmap(void) {}
+
+TUberCluster::~TUberCluster() {}

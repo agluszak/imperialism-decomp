@@ -65,11 +65,6 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   return destObject;
 }
 
-void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
-  (void)arg1;
-  (void)arg2;
-}
-
 // FUNCTION: IMPERIALISM 0x0055e6e0
 CRuntimeClass* TZone::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTZone);
@@ -195,8 +190,9 @@ void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
-undefined TZone::GenerateMapActionContextDisplayNameAndHeadline() {
-  return 0;
+void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x0055fb60
@@ -614,8 +610,6 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   return 0;
 }
 
-TObject* TZone::ShallowFree() { return 0; }
-
 void TZone::Serialize(CArchive& archive) {}
 
 undefined TZone::ReturnTrueForPortZoneCapabilityFlagA() { return 0; }
@@ -625,3 +619,23 @@ undefined TZone::ReturnTrueForPortZoneCapabilityFlagB() { return 0; }
 undefined TZone::ReturnFalseForPortZoneCapabilityFlagC() { return 0; }
 
 undefined TZone::GetTPortZoneClassNamePointer() { return 0; }
+short TZone::MapActionVtableSlot4C(void) { return 0; }
+undefined TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_0c(void) { return 0; }
+undefined TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c(void) { return 0; }
+undefined TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_0b(void) { return 0; }
+undefined TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b(void) { return 0; }
+undefined TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_15(void) { return 0; }
+undefined TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35(void) { return 0; }
+undefined TZone::GetActiveNationSlotTile_34_34_34_14(void) { return 0; }
+undefined TZone::GetActiveNationSlotTile_34_34_34_34(void) { return 0; }
+undefined TZone::ReturnFalseForZoneCapabilityFlagB(void) { return 0; }
+undefined TZone::ReturnFalseForZoneCapabilityFlagC(void) { return 0; }
+undefined TZone::ReturnFalseForZoneCapabilityFlagD(void) { return 0; }
+undefined TZone::ReturnFalseForZoneCapabilityFlagE(void) { return 0; }
+undefined TZone::ReturnTrueForZoneCapabilityFlagA(void) { return 0; }
+undefined TZone::SetMapOrderUiFlag_36_36_36_16(void) { return 0; }
+undefined TZone::SetMapOrderUiFlag_36_36_36_36(void) { return 0; }
+void TZone::DeserializeZoneFromBinaryStream(int) {}
+void TZone::Free(void) {}
+void TZone::HandleTurnEventVtableSlot08(int) {}
+void TZone::SerializeZoneToBinaryStream(void *) {}

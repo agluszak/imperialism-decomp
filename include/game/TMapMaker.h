@@ -19,8 +19,8 @@ public:
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x05 WriteTo inherited unchanged (0x485f70)
   // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  virtual void Free() override; // slot 0x07 0x4798b0
-  virtual TObject* ShallowClone() override; // slot 0x08 0x4798d0
+  // slot 0x07 Free inherited unchanged (0x4798b0)
+  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual char GetBoolSlot28() override; // slot 0x0a 0x526ba0
   virtual void SetControlValue(int value) override; // slot 0x0b 0x526c20

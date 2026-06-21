@@ -19,6 +19,34 @@ enum { kTerrainTypeDescriptorTableCount = 23 };
 // VTABLE: IMPERIALISM 0x00653868
 class TCountry : public TObject {
 public:
+// === BEGIN GENERATED DECLS (TCountry) — refreshed by recover-class; do not hand-edit ===
+  // slot 0x02 Serialize inherited unchanged (0x485e90)
+  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
+  // slot 0x04 Dump inherited unchanged (0x412c10)
+  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
+  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_0a(); // slot 0x0a 0x4d70e0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_0b(); // slot 0x0b 0x4d7070
+  virtual undefined SeedRecruitAndNavyOrdersForEligibleCoastalCities(); // slot 0x0c 0x4d71b0
+  virtual undefined CreateAndDispatchMilitaryRecruitOrderForNationSlot(); // slot 0x0d 0x4d7770
+  virtual undefined PopulateSelectableEntryFlavorTextAndOrdinals(); // slot 0x0f 0x4d8000
+  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_10(); // slot 0x10 0x4d87b0
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_11(); // slot 0x11 0x4d87e0
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920(); // slot 0x12 0x4d8920
+  virtual undefined ApplyJoinEmpireMode2FinalizeNationNameState(); // slot 0x16 0x4d7d50
+  virtual undefined IsDiplomacyTargetClassCode200Match(); // slot 0x17 0x4d7d20
+  virtual undefined OrphanRetStub_004d7e90(); // slot 0x1b 0x4d7e90
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0(); // slot 0x1c 0x4d7ee0
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f00(); // slot 0x1d 0x4d7f00
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f20(); // slot 0x1e 0x4d7f20
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f40(); // slot 0x1f 0x4d7f40
+  virtual undefined OrphanRetStub_004d7fa0(); // slot 0x20 0x4d7fa0
+  virtual undefined OrphanLeaf_NoCall_Ins02_004d7fc0(); // slot 0x21 0x4d7fc0
+  virtual undefined ReturnFalseNationStateActionStub(); // slot 0x22 0x4d7b00
+  virtual undefined OrphanRetStub_004d7fe0(); // slot 0x23 0x4d7fe0
+  virtual undefined OrphanRetStub_004d7f80(); // slot 0x25 0x4d7f80
+  virtual undefined ReturnFalseNationStateCapabilityFlagA0(); // slot 0x28 0x4d6770
+// === END GENERATED DECLS (TCountry) ===
   CRuntimeClass* GetRuntimeClass() const override;
   ~TCountry() override;
 

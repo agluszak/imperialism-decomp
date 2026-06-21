@@ -1,7 +1,5 @@
 #include "game/TIconBar.h"
 
-void TIconBar::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow, undefined2 param_3) {}
-
 // FUNCTION: IMPERIALISM 0x00505fd0
 CRuntimeClass* TIconBar::GetRuntimeClass() const {
   return 0;

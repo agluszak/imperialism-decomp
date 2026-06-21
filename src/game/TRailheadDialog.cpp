@@ -1,9 +1,5 @@
 #include "game/TRailheadDialog.h"
 
-undefined TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1) { return 0; }
-
-undefined TRailheadDialog::VTableSlot69(int param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004bcfd0
 // TRailheadDialog::`scalar deleting destructor'
 TRailheadDialog::~TRailheadDialog() {}

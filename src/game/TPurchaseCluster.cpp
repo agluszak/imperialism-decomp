@@ -1,7 +1,5 @@
 #include "game/TPurchaseCluster.h"
 
-void TPurchaseCluster::SetCityViewValueControlAmount(int * pCityViewDialog, short nValue) {}
-
 // FUNCTION: IMPERIALISM 0x004cc3a0
 CRuntimeClass* TPurchaseCluster::GetRuntimeClass() const {
   return 0;
@@ -27,7 +25,6 @@ undefined TPurchaseCluster::ForwardEngineerDialogCommandToChildSlot40() {
 
 // FUNCTION: IMPERIALISM 0x004cc550
 void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int * pCityViewDialog, short nValue) {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004cc640

@@ -560,6 +560,7 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
   return reinterpret_cast<int*>(&self->ownerNationSlot);
 }
 
+// FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
   return;
 }
@@ -658,8 +659,6 @@ void TGreatPower::NoOpTailStateHookSlot2B8(int arg) {
 // SYNTHETIC: IMPERIALISM 0x004d8c20
 // TGreatPower::`scalar deleting destructor'
 
-// Member release lives in Free() (0x004d9160); the real destructor only tears down
-// the two identity CStrings (implicitly).
 // FUNCTION: IMPERIALISM 0x004d8c50
 TGreatPower::~TGreatPower() {}
 
@@ -1030,7 +1029,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d9c70
-#pragma optimize("y", on)
 void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
@@ -2064,6 +2062,11 @@ void TGreatPower::NotifyCitySlot2C(void) {
 }
 #pragma optimize("", on)
 
+// FUNCTION: IMPERIALISM 0x004dca80
+undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_3f() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004dcaa0
 #pragma optimize("y", on)
 unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {
@@ -2119,8 +2122,6 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
 
 // FUNCTION: IMPERIALISM 0x004dcc30
 void TGreatPower::OrphanRetStub_004dcc30(void) {}
-
-void TGreatPower::OrphanRetStub_004dca80(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcc50
 void TGreatPower::ApplyDiplomacyState222ToCityFieldB6AndClear(void) {
@@ -2900,6 +2901,9 @@ APPLY_POLICY_IF_ALLOWED:
   return shouldApply != 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004de2b0
+void TGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {}
+
 // FUNCTION: IMPERIALISM 0x004de2d0
 void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void) {
   const unsigned short kResetValue = 0xFFFF;
@@ -2992,8 +2996,6 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
   }
   return accepted;
 }
-
-void TGreatPower::BeginTurnDiplomacyPrePassSlot1c8(void) {}
 
 // FUNCTION: IMPERIALISM 0x004de5e0
 #if defined(_MSC_VER)
@@ -3675,6 +3677,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 #pragma optimize("", on)
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004dfa20
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
@@ -3805,6 +3808,11 @@ void TGreatPower::ResetField900FromNeedCapA6(void) {
 }
 #pragma optimize("", on)
 
+// FUNCTION: IMPERIALISM 0x004e0400
+char TGreatPower::HasActiveCandidateNationSlots() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004e0420
 void TGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   (void)targetNation;
@@ -3812,9 +3820,6 @@ void TGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 
 // FUNCTION: IMPERIALISM 0x004e0440
 #pragma optimize("y", on)
-void TGreatPower::NotifyAllianceSlot214(int targetNation) {
-  (void)targetNation;
-}
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e0500
@@ -3931,6 +3936,7 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
 }
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004e0890
 float TGreatPower::GetScoreFactorSlot23C(void) {
   int armyPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
@@ -4055,6 +4061,7 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
 }
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004e1170
 float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
   float selfScore = this->GetScoreFactorSlot23C();
@@ -4079,6 +4086,7 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
 #pragma optimize("", on)
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004e1300
 float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetScoreFactorSlot240();
@@ -4101,6 +4109,7 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
 }
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004e1490
 float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
   float selfScore = this->GetScoreFactorSlot240();
@@ -4125,6 +4134,7 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, i
 #pragma optimize("", on)
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x004e1620
 float TGreatPower::ComputeArmyScoreRatioForNationPair(int nationA, int nationB, char swapRoles) {
   int opponentNation = nationA;
@@ -4244,10 +4254,6 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 
 // FUNCTION: IMPERIALISM 0x004e1c00
 #pragma optimize("y", on)
-char TGreatPower::ReturnZeroSlot9D(int targetNation) {
-  (void)targetNation;
-  return 0;
-}
 #pragma optimize("", on)
 #pragma optimize("y", on)
 
@@ -4322,7 +4328,6 @@ int TGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNatio
 
 // FUNCTION: IMPERIALISM 0x004e1f20
 #pragma optimize("y", on)
-void TGreatPower::NoOpSlotA2(void) {}
 #pragma optimize("", on)
 
 // --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
@@ -4394,7 +4399,6 @@ float TGreatPower::ComputeWarThresholdSlotA3(int targetNation) {
 
 // FUNCTION: IMPERIALISM 0x004e2190
 #pragma optimize("y", on)
-void TGreatPower::NotifyWarResetSlot290(void) {}
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e21b0
@@ -4514,13 +4518,6 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
   this->NotifyRegionEventSlot298(ownerClass);
 }
 
-char TGreatPower::HasActiveCandidateNationSlots(void) {
-  return 0;
-}
-
-void TGreatPower::AbsorbCityNeedVectorSlotFC(short* needVector) {
-  (void)needVector;
-}
 // FUNCTION: IMPERIALISM 0x004e25c0
 void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
   this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNation), 100);
@@ -5416,6 +5413,110 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
                                            static_cast<int>(cityOwnerTag));
 }
 
-int TGreatPower::GetMultiplierSlot21C(void) {
-  return 0;
-}
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_1d() { return 0; }
+
+undefined TGreatPower::ExecuteNationPendingActionStateMachine_32() { return 0; }
+
+undefined TGreatPower::IsDiplomacyTargetClassCode200Match_7f() { return 0; }
+int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
+char TGreatPower::ReturnFalseNationStateCapabilityFlag90(void) { return 0; }
+char TGreatPower::ReturnZeroSlot9D(int) { return 0; }
+undefined TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_5d(void) { return 0; }
+undefined TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_91(void) { return 0; }
+undefined TGreatPower::AdvanceNationPendingActionStateMachine(void) { return 0; }
+undefined TGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState(void) { return 0; }
+undefined TGreatPower::ApplyMinorNationCapabilityActionType4(void) { return 0; }
+undefined TGreatPower::ApplyMinorNationCapabilityActionType6(void) { return 0; }
+undefined TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution(void) { return 0; }
+undefined TGreatPower::ClearFieldBlock1c6(void) { return 0; }
+undefined TGreatPower::ClearQueuedNationOrdersAndResetOrderManager_30(void) { return 0; }
+undefined TGreatPower::ClearQueuedNationOrdersAndResetOrderManager_64(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryHandlerCase00Metric(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryHandlerCase01Metric(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryHandlerCase02Metric(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryHandlerCase07Metric(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryHandlerCase09Metric(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryMatrixRatio23CByTargetSlot(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryMatrixRatio240ByTargetSlot(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void) { return 0; }
+undefined TGreatPower::ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void) { return 0; }
+undefined TGreatPower::ComputeCityOrderCapabilityAggregateScore(void) { return 0; }
+undefined TGreatPower::ComputeNavyOrderIndustryCostWeightSumForNation(void) { return 0; }
+undefined TGreatPower::CreateAndQueueFrogCityMarkerForNationTile(void) { return 0; }
+undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a(int *) { return 0; }
+undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_6e(void) { return 0; }
+undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_a2(void) { return 0; }
+undefined TGreatPower::DispatchNationPendingActionEventCodes(void) { return 0; }
+undefined TGreatPower::DispatchNationStateEventCode10(void) { return 0; }
+undefined TGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void) { return 0; }
+undefined TGreatPower::ExecuteNationPendingActionStateMachine_66(void) { return 0; }
+undefined TGreatPower::GetNationResourceNeedTargetByType(void) { return 0; }
+undefined TGreatPower::GetNationRuntimeCityBuildingProductionValueBySlot(void) { return 0; }
+undefined TGreatPower::GetTCountryClassNamePointer(void) { return 0; }
+undefined TGreatPower::GetTEventHandlerClassNamePointer_38(void) { return 0; }
+undefined TGreatPower::GetTEventHandlerClassNamePointer_6c(void) { return 0; }
+undefined TGreatPower::GetTEventHandlerClassNamePointer_70(void) { return 0; }
+undefined TGreatPower::GetTEventHandlerClassNamePointer_a4(void) { return 0; }
+undefined TGreatPower::HandleCityDialogHintClusterUpdate(void) { return 0; }
+undefined TGreatPower::HasQueuedCivWorkOrderType7(void) { return 0; }
+undefined TGreatPower::IsDiplomacyTargetClassCode200Match_4b(void) { return 0; }
+undefined TGreatPower::IsNationResourceNeedCurrentAtTargetByType(void) { return 0; }
+undefined TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void) { return 0; }
+undefined TGreatPower::IterateLinkedListCursorEntries_004e0220(void) { return 0; }
+undefined TGreatPower::IterateLinkedListCursorEntries_004e07b0(void) { return 0; }
+undefined TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive(void) { return 0; }
+undefined TGreatPower::OrphanCallChain_C1_I42_004dd7f0(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_1c(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_50(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_84(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_51(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_85(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f20(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_1f(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_87(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_21(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_55(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0_0a(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0_78(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_12(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_40(void) { return 0; }
+undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_ae(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7e90_1b(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7e90_4f(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7f80(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7fa0_20(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7fa0_88(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7fe0_23(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7fe0_57(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_004d7fe0_8b(void) { return 0; }
+undefined TGreatPower::OrphanRetStub_0059add0(void) { return 0; }
+undefined TGreatPower::PromoteNationPendingActionSlot5IfCapabilityActive(void) { return 0; }
+undefined TGreatPower::QueueNationOrderManagerPayloadObject_2f(void) { return 0; }
+undefined TGreatPower::QueueNationOrderManagerPayloadObject_63(void) { return 0; }
+undefined TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(void) { return 0; }
+undefined TGreatPower::RebuildPrimaryNationStateForSlot_Impl(void) { return 0; }
+undefined TGreatPower::ReleaseAllTrackedObjectsFromList89C(void) { return 0; }
+undefined TGreatPower::ReturnFalseNationStateActionStub_22(void) { return 0; }
+undefined TGreatPower::ReturnFalseNationStateActionStub_56(void) { return 0; }
+undefined TGreatPower::ReturnFalseNationStateActionStub_8a(void) { return 0; }
+undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_0b(void) { return 0; }
+undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_45(void) { return 0; }
+undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_79(void) { return 0; }
+undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad(void) { return 0; }
+undefined TGreatPower::SumNationRuntimeFiveBucketValue44(void) { return 0; }
+undefined TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask(void) { return 0; }
+undefined TGreatPower::VTableSlot69(void) { return 0; }
+undefined TGreatPower::VTableSlot9D(void) { return 0; }
+void TGreatPower::ApplyJoinEmpireMode1TargetTransition(void) {}
+void TGreatPower::ApplyJoinEmpireModeForTargetNation_13(int,int) {}
+void TGreatPower::ApplyJoinEmpireModeForTargetNation_41(void) {}
+void TGreatPower::ApplyJoinEmpireModeForTargetNation_6f(void) {}
+void TGreatPower::NoOpSlotA2(void) {}
+void TGreatPower::NotifyAllianceSlot214(int) {}
+void TGreatPower::NotifyWarResetSlot290(void) {}
+void TGreatPower::OrphanRetStub_004dca80(void) {}
+void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_14(void) {}
+void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_42(void) {}
+void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_b0(void) {}
+void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}

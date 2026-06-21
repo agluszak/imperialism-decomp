@@ -13,37 +13,55 @@ CRuntimeClass g_pClassDescTCityInteriorMinister = {nullptr, 0, 0, nullptr, nullp
 // ownership is what drives vtable matching. Methods are listed in ascending-address order
 // (marker hygiene), which differs from slot order.
 
+
+
 // FUNCTION: IMPERIALISM 0x004be480
 void TCityInteriorMinister::CityInteriorSlot16() {}
+
+
 
 // FUNCTION: IMPERIALISM 0x004be4c0
 void TCityInteriorMinister::CityInteriorSlot17() {}
 
+
+
 // FUNCTION: IMPERIALISM 0x004be650
 void TCityInteriorMinister::CityInteriorSlot18() {}
+
+
 
 // FUNCTION: IMPERIALISM 0x004be690
 void TCityInteriorMinister::CityInteriorSlot19() {}
 
+
 // FUNCTION: IMPERIALISM 0x004be7b0
-void TCityInteriorMinister::CityInteriorSlot1D() {}
+undefined TCityInteriorMinister::VTableSlot1D() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004be7d0
-void TCityInteriorMinister::CityInteriorSlot1E() {}
+undefined TCityInteriorMinister::CreateTInteriorMinisterInstance() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004be7f0
-void TCityInteriorMinister::CityInteriorSlot1F() {}
+undefined TCityInteriorMinister::VTableSlot1F() { return 0; }
+
+
 
 // FUNCTION: IMPERIALISM 0x004be820
 CRuntimeClass* TCityInteriorMinister::GetRuntimeClass() const {
   return &g_pClassDescTCityInteriorMinister;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004be840
 TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {}
 
+
+
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState() {
@@ -51,103 +69,291 @@ void TCityInteriorMinister::InitializeCityInteriorState() {
       this);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004becd0
 void TCityInteriorMinister::Free() {}
 
+
 // FUNCTION: IMPERIALISM 0x004bed60
-void TCityInteriorMinister::CityInteriorSlot20() {}
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_20() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bee20
-void TCityInteriorMinister::MinisterSlot0A() {}
+undefined TCityInteriorMinister::DispatchNationStateEventCode10() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004beeb0
-void TCityInteriorMinister::CityInteriorSlot1A() {}
+undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004beee0
-void TCityInteriorMinister::CityInteriorSlot1B() {}
+undefined TCityInteriorMinister::VTableSlot1B() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bef10
-void TCityInteriorMinister::CityInteriorSlot2D() {}
+undefined TCityInteriorMinister::VTableSlot2D() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bef30
-void TCityInteriorMinister::CityInteriorSlot1C() {}
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer() { return 0; }
+
+
 
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
   (void)stream;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x004bf390
 void TCityInteriorMinister::ReadFrom(TStream* stream) {
   (void)stream;
 }
 
+
 // FUNCTION: IMPERIALISM 0x004bf770
-void TCityInteriorMinister::Call54() {}
+undefined TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-void TCityInteriorMinister::CityInteriorSlot21() {}
+undefined TCityInteriorMinister::VTableSlot21() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bfa50
-void TCityInteriorMinister::CityInteriorSlot22() {}
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bfb20
-void TCityInteriorMinister::CityInteriorSlot23() {}
+undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bff60
-void TCityInteriorMinister::CityInteriorSlot24() {}
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004bff80
-void TCityInteriorMinister::CityInteriorSlot2B() {}
+undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c0090
-void TCityInteriorMinister::CityInteriorSlot26() {}
+undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c02c0
-void TCityInteriorMinister::CityInteriorSlot25() {}
+undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c04e0
-void TCityInteriorMinister::CityInteriorSlot27() {}
+undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c05a0
-void TCityInteriorMinister::CityInteriorSlot28() {}
+undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c0690
-void TCityInteriorMinister::CityInteriorSlot29() {}
+undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c0730
-void TCityInteriorMinister::CityInteriorSlot2A() {}
+undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c07d0
-void TCityInteriorMinister::CityInteriorSlot2C() {}
+undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits() { return 0; }
+
+
 
 // FUNCTION: IMPERIALISM 0x004c0d90
 void TCityInteriorMinister::NotifySlot44(void* receiver) {
   (void)receiver;
 }
 
+
 // FUNCTION: IMPERIALISM 0x004c0de0
-void TCityInteriorMinister::CityInteriorSlot2E() {}
+undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c0e50
-void TCityInteriorMinister::CityInteriorSlot2F() {}
+undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders() { return 0; }
+
 
 // FUNCTION: IMPERIALISM 0x004c11c0
-int TCityInteriorMinister::GetHomeCityRecordIndexSlotC0() {
+undefined TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() { return 0; }
+
+
+// FUNCTION: IMPERIALISM 0x004c1510
+undefined TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass() { return 0; }
+
+
+// FUNCTION: IMPERIALISM 0x004c1ac0
+undefined TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() { return 0; }
+
+
+// FUNCTION: IMPERIALISM 0x004c2010
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_32() { return 0; }
+
+
+// FUNCTION: IMPERIALISM 0x004c2120
+undefined TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() { return 0; }
+
+
+// FUNCTION: IMPERIALISM 0x004c2a30
+undefined TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() { return 0; }
+
+
+
+// FUNCTION: IMPERIALISM 0x004c2d50
+undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004c1510
-void TCityInteriorMinister::CallD4() {}
 
-// FUNCTION: IMPERIALISM 0x004c1ac0
-void TCityInteriorMinister::CityInteriorSlot31() {}
 
-// FUNCTION: IMPERIALISM 0x004c2010
-void TCityInteriorMinister::CityInteriorSlot32() {}
+// FUNCTION: IMPERIALISM 0x004c2e10
+undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders() {
+  return 0;
+}
 
-// FUNCTION: IMPERIALISM 0x004c2120
-void TCityInteriorMinister::CityInteriorSlot33() {}
 
-// FUNCTION: IMPERIALISM 0x004c2a30
-void TCityInteriorMinister::CityInteriorSlot34() {}
+
+// FUNCTION: IMPERIALISM 0x004c3170
+undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3490
+undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3620
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3640
+undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3910
+undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3c00
+undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c3d60
+undefined TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c40c0
+undefined TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c4370
+undefined TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c4690
+undefined TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs() {
+  return 0;
+}
+
+
+
+// FUNCTION: IMPERIALISM 0x004c4840
+undefined TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle() {
+  return 0;
+}
+
+void TCityInteriorMinister::Call54() {}
+
+void TCityInteriorMinister::CallD4(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1A(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1B(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1C(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1D(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1E(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot1F(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot20(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot21(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot22(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot23(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot24(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot25(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot26(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot27(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot28(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot29(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2A(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2B(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2C(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2D(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2E(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot2F(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot31(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot32(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot33(void) {}
+
+void TCityInteriorMinister::CityInteriorSlot34(void) {}
+
+int TCityInteriorMinister::GetHomeCityRecordIndexSlotC0(void) { return 0;}
+
+void TCityInteriorMinister::MinisterSlot0A() {}
+
+undefined TCityInteriorMinister::NoOpForeignMinisterUtilityStub(void) { return 0;}
+
+TCityInteriorMinister::~TCityInteriorMinister() {}

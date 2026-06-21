@@ -1787,34 +1787,10 @@ undefined4 AllocateAndConstructTurnEventPacket_Vtbl0065bff0(void)
   return 0;
 }
 
-// ghidra_name ResetGameFlowPromptStateAndPostTurnEvent5E5
-// ghidra_proto undefined ResetGameFlowPromptStateAndPostTurnEvent5E5()
-// FUNCTION: IMPERIALISM 0x00542520
-undefined4 ResetGameFlowPromptStateAndPostTurnEvent5E5(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructCancelGameOptionsCommand
-// ghidra_proto undefined DeletingDestructCancelGameOptionsCommand()
-// FUNCTION: IMPERIALISM 0x00542560
-undefined4 DeletingDestructCancelGameOptionsCommand(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructCancelGameOptionsCommand
 // ghidra_proto undefined DestructCancelGameOptionsCommand()
 // FUNCTION: IMPERIALISM 0x00542590
 undefined4 DestructCancelGameOptionsCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name TCancelGameOptionsCommand::GetTCancelGameOptionsCommandClassNamePointer
-// ghidra_proto undefined GetTCancelGameOptionsCommandClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005425b0
-undefined4 GetTCancelGameOptionsCommandClassNamePointer(void)
 {
   return 0;
 }

@@ -1,9 +1,5 @@
 #include "game/TArmyCheckBox.h"
 
-undefined TArmyCheckBox::VTableSlot73(char param_1) { return 0; }
-
-undefined TArmyCheckBox::SetArmyUnitLineActiveFlagAndNotify(char param_1) { return 0; }
-
 // SYNTHETIC: IMPERIALISM 0x004a9400
 // TArmyCheckBox::`scalar deleting destructor'
 TArmyCheckBox::~TArmyCheckBox() {}
@@ -14,7 +10,8 @@ CRuntimeClass* TArmyCheckBox::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa030
-undefined TArmyCheckBox::VTableSlot73() {
+undefined TArmyCheckBox::VTableSlot73(char param_1) {
+  (void)param_1;
   return 0;
 }
 

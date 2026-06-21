@@ -9,6 +9,9 @@ CRuntimeClass g_pClassDescTToggleButton = {nullptr, 0, 0, nullptr, nullptr};
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00405f8d
 void TToggleButton::Select(bool isPressed, bool notifyParent) {
   void** ppuVar1 = reinterpret_cast<void***>(this)[0];
@@ -24,24 +27,37 @@ void TToggleButton::Select(bool isPressed, bool notifyParent) {
   reinterpret_cast<void(__cdecl*)(int)>(ppuVar1[0x45])(0);
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00571050
 TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
   return new TToggleButton();
 }
+
+
+
 
 // FUNCTION: IMPERIALISM 0x005710d0
 CRuntimeClass* TToggleButton::GetRuntimeClass() const {
   return &g_pClassDescTToggleButton;
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x005710f0
 TToggleButton::TToggleButton() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
+
+
+
 // SYNTHETIC: IMPERIALISM 0x00571120
 // TToggleButton::`scalar deleting destructor'
-TToggleButton::~TToggleButton() {}
+
+
 
 // FUNCTION: IMPERIALISM 0x00571170
 void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -98,6 +114,9 @@ void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x005712a0
 char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   (void)point;
@@ -124,6 +143,9 @@ char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int a
   return 1;
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00571330
 bool TToggleButton::IsSelected(short value, bool refreshNow) {
   (void)value;
@@ -131,7 +153,14 @@ bool TToggleButton::IsSelected(short value, bool refreshNow) {
   return this->IsActionable();
 }
 
+
+
+
 // FUNCTION: IMPERIALISM 0x00571350
 undefined TToggleButton::HandleToggleButtonStateChangeAndRefresh() {
   return 0;
 }
+
+undefined TToggleButton::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
+
+TToggleButton::~TToggleButton() {}

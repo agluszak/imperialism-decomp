@@ -6,6 +6,9 @@ const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 
 const int kControlTagBar = 0x62617220;
 const int kAssertLineMoveBarInitNil = 0x725;
+const int kAssertLineTradeSummaryRtnu = 0x67d;
+const int kAssertLineTradeSummaryIart = 0x682;
+const int kAssertLineTradeSummaryProf = 0x687;
 
 const int kTradeSellPropagationTags[] = {
     0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,

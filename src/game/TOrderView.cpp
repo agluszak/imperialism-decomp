@@ -1,7 +1,5 @@
 #include "game/TOrderView.h"
 
-undefined TOrderView::PopulateDialogControlsFromSelectedProductionEntry(int param_1, short param_2) { return 0; }
-
 // FUNCTION: IMPERIALISM 0x00506a60
 CRuntimeClass* TOrderView::GetRuntimeClass() const {
   return 0;
