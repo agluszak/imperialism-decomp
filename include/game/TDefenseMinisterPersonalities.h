@@ -10,7 +10,7 @@ public:
   TNapoleonMinister();
   CRuntimeClass* GetRuntimeClass() const override;
   void NotifySlot44(void* receiver) override;
-  void DefenseSlot18() override;
+  undefined CreateTDefenseMinisterInstance() override;
 };
 
 // VTABLE: IMPERIALISM 0x00654aa0
@@ -19,7 +19,7 @@ public:
   TBismarckMinister();
   CRuntimeClass* GetRuntimeClass() const override;
   void NotifySlot44(void* receiver) override;
-  void DefenseSlot18() override;
+  undefined CreateTDefenseMinisterInstance() override;
 };
 
 // VTABLE: IMPERIALISM 0x00654b18
@@ -28,7 +28,7 @@ public:
   TPirateMinister();
   CRuntimeClass* GetRuntimeClass() const override;
   void NotifySlot44(void* receiver) override;
-  void DefenseSlot18() override;
+  undefined CreateTDefenseMinisterInstance() override;
 };
 
 // VTABLE: IMPERIALISM 0x00654b90
@@ -37,7 +37,7 @@ public:
   TDefenderMinister();
   CRuntimeClass* GetRuntimeClass() const override;
   void NotifySlot44(void* receiver) override;
-  void DefenseSlot18() override;
+  undefined CreateTDefenseMinisterInstance() override;
 };
 
 // VTABLE: IMPERIALISM 0x00654c08
@@ -46,5 +46,5 @@ public:
   TBullyMinister();
   CRuntimeClass* GetRuntimeClass() const override;
   void NotifySlot44(void* receiver) override;
-  void DefenseSlot18() override;
+  undefined CreateTDefenseMinisterInstance() override;
 };

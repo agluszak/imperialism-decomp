@@ -21,7 +21,7 @@ CRuntimeClass g_pClassDescTBullyMinister = {nullptr, 0, 0, nullptr, nullptr};
 
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
-void TNapoleonMinister::DefenseSlot18() {}
+undefined TNapoleonMinister::CreateTDefenseMinisterInstance() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004ed4c0
 CRuntimeClass* TNapoleonMinister::GetRuntimeClass() const {
@@ -40,8 +40,9 @@ void TNapoleonMinister::NotifySlot44(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
-void TBismarckMinister::DefenseSlot18() {
+undefined TBismarckMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7f0
@@ -61,8 +62,9 @@ void TBismarckMinister::NotifySlot44(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edab0
-void TPirateMinister::DefenseSlot18() {
+undefined TPirateMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004edae0
@@ -82,8 +84,9 @@ void TPirateMinister::NotifySlot44(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edda0
-void TDefenderMinister::DefenseSlot18() {
+undefined TDefenderMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004eddc0
@@ -103,8 +106,9 @@ void TDefenderMinister::NotifySlot44(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ee080
-void TBullyMinister::DefenseSlot18() {
+undefined TBullyMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004ee0b0
