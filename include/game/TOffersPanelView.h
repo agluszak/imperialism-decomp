@@ -80,7 +80,7 @@ public:
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x430c10)
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl() override; // slot 0x48 0x4f9420
+  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x48 0x4f9420
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)

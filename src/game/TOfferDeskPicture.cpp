@@ -26,6 +26,10 @@ void TOfferDeskPicture::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c0930
-char TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl() {
+char TOfferDeskPicture::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }

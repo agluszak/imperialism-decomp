@@ -21,7 +21,11 @@ void TOffersPanelView::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f9420
-char TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl() {
+char TOffersPanelView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 

@@ -19,7 +19,11 @@ char TGameWindow::DispatchUiMouseMoveToChildren() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd40
-char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl() {
+char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 
