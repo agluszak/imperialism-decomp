@@ -25,12 +25,10 @@ CRuntimeClass* THQButton::GetRuntimeClass() const {
 THQButton::THQButton() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x0058b690
 // THQButton::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma auto_inline(off)
-#endif
+THQButton::~THQButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b6e0
 void THQButton::NoOpUiLifecycleHook(int arg) {
@@ -105,4 +103,4 @@ bool THQButton::IsSelected(short value, bool refreshNow) {
 #pragma auto_inline(on)
 #endif
 
-THQButton::~THQButton() {}
+undefined THQButton::SetSelectionStateAndRefreshBitmap() { return 0; }

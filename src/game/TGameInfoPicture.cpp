@@ -1,9 +1,19 @@
 #include "game/TGameInfoPicture.h"
 
+// SYNTHETIC: IMPERIALISM 0x0056b800
+// TGameInfoPicture::`scalar deleting destructor'
 TGameInfoPicture::~TGameInfoPicture() {}
 
-CRuntimeClass* TGameInfoPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0056b850
+CRuntimeClass* TGameInfoPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056b870
+void TGameInfoPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TGameInfoPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056b9b0
+undefined TGameInfoPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

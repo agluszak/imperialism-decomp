@@ -1,9 +1,19 @@
 #include "game/TColorKeyButton.h"
 
-CRuntimeClass* TColorKeyButton::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00571f50
+CRuntimeClass* TColorKeyButton::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00571fa0
+// TColorKeyButton::`scalar deleting destructor'
 TColorKeyButton::~TColorKeyButton() {}
 
-void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
+// FUNCTION: IMPERIALISM 0x00571ff0
+void TColorKeyButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
+}
 
-undefined TColorKeyButton::OrphanCallChain_C1_I05_00572060() { return 0; }
+// FUNCTION: IMPERIALISM 0x00572060
+undefined TColorKeyButton::OrphanCallChain_C1_I05_00572060() {
+  return 0;
+}

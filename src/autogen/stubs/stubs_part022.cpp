@@ -1507,22 +1507,6 @@ undefined4 CDocument(void)
   return 0;
 }
 
-// ghidra_name DispatchViaVtableSlot84FromSlot06
-// ghidra_proto undefined DispatchViaVtableSlot84FromSlot06()
-// FUNCTION: IMPERIALISM 0x00610a57
-undefined4 DispatchViaVtableSlot84FromSlot06(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80
-// ghidra_proto undefined WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80()
-// FUNCTION: IMPERIALISM 0x00610a80
-undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchVirtual84OrA8_ByControlState
 // ghidra_proto undefined DispatchVirtual84OrA8_ByControlState()
 // FUNCTION: IMPERIALISM 0x00610a9e
@@ -1543,14 +1527,6 @@ undefined4 RenumberAndActivateVisibleDocumentFrames(void)
 // ghidra_proto undefined NoOpVirtualStub_00610c08()
 // FUNCTION: IMPERIALISM 0x00610c08
 undefined4 NoOpVirtualStub_00610c08(void)
-{
-  return 0;
-}
-
-// ghidra_name CDocument::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00610c0b
-undefined4 ScalarDeletingDestructor_00610C0B(void)
 {
   return 0;
 }
@@ -1687,14 +1663,6 @@ undefined4 OnSaveDocument(void)
 // ghidra_proto undefined NoOpVirtualStub_0061180f()
 // FUNCTION: IMPERIALISM 0x0061180f
 undefined4 NoOpVirtualStub_0061180f(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed
-// ghidra_proto undefined WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed()
-// FUNCTION: IMPERIALISM 0x006118ed
-undefined4 WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(void)
 {
   return 0;
 }

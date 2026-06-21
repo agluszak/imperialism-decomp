@@ -1,15 +1,35 @@
 #include "game/TTacticalToolbar.h"
 
-TTacticalToolbar::~TTacticalToolbar() {}
-
-CRuntimeClass* TTacticalToolbar::GetRuntimeClass() const { return 0; }
-
-undefined TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
-
-undefined TTacticalToolbar::OrphanCallChain_C11_I88_004874b0() { return 0; }
-
 undefined TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int * param_1) { return 0; }
 
-undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) { return 0; }
+// SYNTHETIC: IMPERIALISM 0x0045d360
+// TTacticalToolbar::`scalar deleting destructor'
+TTacticalToolbar::~TTacticalToolbar() {}
 
-undefined TTacticalToolbar::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005ac820
+CRuntimeClass* TTacticalToolbar::GetRuntimeClass() const {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005ac840
+void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {
+}
+
+// FUNCTION: IMPERIALISM 0x005ac950
+void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {
+}
+
+// FUNCTION: IMPERIALISM 0x005acb50
+undefined TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005acc90
+undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005acf90
+undefined TTacticalToolbar::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

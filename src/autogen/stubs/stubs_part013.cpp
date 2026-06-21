@@ -451,74 +451,10 @@ undefined4 CreateTBuildingViewInstance(void)
   return 0;
 }
 
-// ghidra_name TBuildingView::GetTBuildingViewClassNamePointer
-// ghidra_proto undefined GetTBuildingViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004c6e90
-undefined4 GetTBuildingViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TBuildingView::ConstructTBuildingViewBaseState
 // ghidra_proto undefined ConstructTBuildingViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c6eb0
 undefined4 ConstructTBuildingViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBuildingView::DestructTBuildingViewAndMaybeFree
-// ghidra_proto undefined DestructTBuildingViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004c6ee0
-undefined4 DestructTBuildingViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-// ghidra_proto undefined ApplyCityViewSelectionPayloadAndRefreshControls()
-// FUNCTION: IMPERIALISM 0x004c6f30
-undefined4 ApplyCityViewSelectionPayloadAndRefreshControls(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004c6fb0
-// ghidra_proto undefined OrphanRetStub_004c6fb0()
-// FUNCTION: IMPERIALISM 0x004c6fb0
-undefined4 OrphanRetStub_004c6fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004c6fd0
-// ghidra_proto undefined OrphanRetStub_004c6fd0()
-// FUNCTION: IMPERIALISM 0x004c6fd0
-undefined4 OrphanRetStub_004c6fd0(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetUniversityDialogTextAndRefresh
-// ghidra_proto undefined SetUniversityDialogTextAndRefresh()
-// FUNCTION: IMPERIALISM 0x004c6ff0
-undefined4 SetUniversityDialogTextAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name SetUniversityDialogLocalizedTextAndRefresh
-// ghidra_proto undefined SetUniversityDialogLocalizedTextAndRefresh()
-// FUNCTION: IMPERIALISM 0x004c70e0
-undefined4 SetUniversityDialogLocalizedTextAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At004c7180
-// ghidra_proto undefined WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At004c7180()
-// FUNCTION: IMPERIALISM 0x004c7180
-undefined4 WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At004c7180(void)
 {
   return 0;
 }
@@ -531,50 +467,10 @@ undefined4 CreateTWarehouseViewInstance(void)
   return 0;
 }
 
-// ghidra_name TWarehouseView::GetTWarehouseViewClassNamePointer
-// ghidra_proto undefined GetTWarehouseViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004c7290
-undefined4 GetTWarehouseViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TWarehouseView::ConstructTWarehouseViewBaseState
 // ghidra_proto undefined ConstructTWarehouseViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c72b0
 undefined4 ConstructTWarehouseViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TWarehouseView::DestructTWarehouseViewAndMaybeFree
-// ghidra_proto undefined DestructTWarehouseViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004c72e0
-undefined4 DestructTWarehouseViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardBeginMouseCaptureAndStartRepeatTimer
-// ghidra_proto undefined ForwardBeginMouseCaptureAndStartRepeatTimer()
-// FUNCTION: IMPERIALISM 0x004c7330
-undefined4 ForwardBeginMouseCaptureAndStartRepeatTimer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RefreshCityViewProductionSummaryPanelTextsAndFlags
-// ghidra_proto undefined RefreshCityViewProductionSummaryPanelTextsAndFlags()
-// FUNCTION: IMPERIALISM 0x004c7360
-undefined4 RefreshCityViewProductionSummaryPanelTextsAndFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I85_004c7d90
-// ghidra_proto undefined OrphanCallChain_C6_I85_004c7d90()
-// FUNCTION: IMPERIALISM 0x004c7d90
-undefined4 OrphanCallChain_C6_I85_004c7d90(void)
 {
   return 0;
 }
@@ -587,34 +483,10 @@ undefined4 CreateTUnitsViewInstance(void)
   return 0;
 }
 
-// ghidra_name TUnitsView::GetTUnitsViewClassNamePointer
-// ghidra_proto undefined GetTUnitsViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004c7fb0
-undefined4 GetTUnitsViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TUnitsView::ConstructTUnitsViewBaseState
 // ghidra_proto undefined ConstructTUnitsViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c7fd0
 undefined4 ConstructTUnitsViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUnitsView::DestructTUnitsViewAndMaybeFree
-// ghidra_proto undefined DestructTUnitsViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004c8000
-undefined4 DestructTUnitsViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildIconPictureEntriesFromSelectableTextOptions
-// ghidra_proto undefined RebuildIconPictureEntriesFromSelectableTextOptions()
-// FUNCTION: IMPERIALISM 0x004c8050
-undefined4 RebuildIconPictureEntriesFromSelectableTextOptions(void)
 {
   return 0;
 }
@@ -627,14 +499,6 @@ undefined4 CreateTShipyardViewInstance(void)
   return 0;
 }
 
-// ghidra_name TShipyardView::GetTShipyardViewClassNamePointer
-// ghidra_proto undefined GetTShipyardViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004c82a0
-undefined4 GetTShipyardViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipyardView::ConstructTShipyardViewBaseState
 // ghidra_proto undefined ConstructTShipyardViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c82c0
@@ -643,50 +507,10 @@ undefined4 ConstructTShipyardViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TShipyardView::DestructTShipyardViewAndMaybeFree
-// ghidra_proto undefined DestructTShipyardViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004c82f0
-undefined4 DestructTShipyardViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340
-// ghidra_proto undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340()
-// FUNCTION: IMPERIALISM 0x004c8340
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340(void)
-{
-  return 0;
-}
-
-// ghidra_name TShipyardView::InitializeCityViewProductionRows
-// ghidra_proto void __thiscall InitializeCityViewProductionRows(void)
-// FUNCTION: IMPERIALISM 0x004c8390
-undefined4 InitializeCityViewProductionRows(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20
 // ghidra_proto undefined WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20()
 // FUNCTION: IMPERIALISM 0x004c8a20
 undefined4 WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
-// ghidra_proto undefined WrapperFor_InvalidateCityDialogRectRegion_At004c8a50()
-// FUNCTION: IMPERIALISM 0x004c8a50
-undefined4 WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C8_I90_004c8ac0
-// ghidra_proto undefined OrphanCallChain_C8_I90_004c8ac0()
-// FUNCTION: IMPERIALISM 0x004c8ac0
-undefined4 OrphanCallChain_C8_I90_004c8ac0(void)
 {
   return 0;
 }
@@ -707,46 +531,6 @@ undefined4 UpdateCityViewCountControlAndRefreshSelectionAlt(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::InitializeCityViewActionButtons
-// ghidra_proto void __thiscall InitializeCityViewActionButtons(void)
-// FUNCTION: IMPERIALISM 0x004c8d70
-undefined4 InitializeCityViewActionButtons(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::RenderCityViewProductionDialogMetrics
-// ghidra_proto void __thiscall RenderCityViewProductionDialogMetrics(int pDialogState, int * pRenderRectData)
-// FUNCTION: IMPERIALISM 0x004c9150
-undefined4 RenderCityViewProductionDialogMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildIndustryActionCostSummaryTextByActionIndex
-// ghidra_proto undefined BuildIndustryActionCostSummaryTextByActionIndex()
-// FUNCTION: IMPERIALISM 0x004c97c0
-undefined4 BuildIndustryActionCostSummaryTextByActionIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityViewStatusPanel
-// ghidra_proto void __fastcall RefreshCityViewStatusPanel(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004c9a60
-undefined4 RefreshCityViewStatusPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I15_004c9d20
-// ghidra_proto undefined OrphanCallChain_C1_I15_004c9d20()
-// FUNCTION: IMPERIALISM 0x004c9d20
-undefined4 OrphanCallChain_C1_I15_004c9d20(void)
-{
-  return 0;
-}
-
 // ghidra_name TBuildingConstructionView::CreateTBuildingConstructionViewInstance
 // ghidra_proto undefined CreateTBuildingConstructionViewInstance()
 // FUNCTION: IMPERIALISM 0x004c9d70
@@ -755,42 +539,10 @@ undefined4 CreateTBuildingConstructionViewInstance(void)
   return 0;
 }
 
-// ghidra_name TBuildingConstructionView::GetTBuildingConstructionViewClassNamePointer
-// ghidra_proto undefined GetTBuildingConstructionViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004c9e10
-undefined4 GetTBuildingConstructionViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
 // ghidra_proto undefined ConstructTBuildingConstructionViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c9e30
 undefined4 ConstructTBuildingConstructionViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBuildingConstructionView::DestructTBuildingConstructionViewAndMaybeFree
-// ghidra_proto undefined DestructTBuildingConstructionViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004c9e60
-undefined4 DestructTBuildingConstructionViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TBuildingConstructionView::OpenCityViewBuildingOrderDialog
-// ghidra_proto void __thiscall OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags)
-// FUNCTION: IMPERIALISM 0x004c9eb0
-undefined4 OpenCityViewBuildingOrderDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
-// ghidra_proto void __thiscall ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag)
-// FUNCTION: IMPERIALISM 0x004ca8f0
-undefined4 ApplyCityViewBuildingOrderDialogResult(void)
 {
   return 0;
 }
@@ -827,50 +579,10 @@ undefined4 CreateTUniversityViewInstance(void)
   return 0;
 }
 
-// ghidra_name TUniversityView::GetTUniversityViewClassNamePointer
-// ghidra_proto undefined GetTUniversityViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004cac40
-undefined4 GetTUniversityViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TUniversityView::ConstructTUniversityViewBaseState
 // ghidra_proto undefined ConstructTUniversityViewBaseState()
 // FUNCTION: IMPERIALISM 0x004cac60
 undefined4 ConstructTUniversityViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUniversityView::DestructTUniversityViewAndMaybeFree
-// ghidra_proto undefined DestructTUniversityViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004cac90
-undefined4 DestructTUniversityViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshUniversityRecruitmentDialog
-// ghidra_proto void __fastcall RefreshUniversityRecruitmentDialog(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cace0
-undefined4 RefreshUniversityRecruitmentDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SelectUniversityRecruitmentEntry
-// ghidra_proto void __thiscall SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex)
-// FUNCTION: IMPERIALISM 0x004cb320
-undefined4 SelectUniversityRecruitmentEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-// ghidra_proto undefined HandleUniversityRecruitmentSelectionAndStepCommand()
-// FUNCTION: IMPERIALISM 0x004cb8a0
-undefined4 HandleUniversityRecruitmentSelectionAndStepCommand(void)
 {
   return 0;
 }
@@ -891,42 +603,10 @@ undefined4 UpdateUniversityCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name RefreshUniversityRecruitmentRequirements
-// ghidra_proto void __fastcall RefreshUniversityRecruitmentRequirements(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cbb20
-undefined4 RefreshUniversityRecruitmentRequirements(void)
-{
-  return 0;
-}
-
-// ghidra_name TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
-// ghidra_proto undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30()
-// FUNCTION: IMPERIALISM 0x004cbf30
-undefined4 WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::RenderUniversityRecruitmentRequirementGrid
-// ghidra_proto void __thiscall RenderUniversityRecruitmentRequirementGrid(RECT * pClipRect)
-// FUNCTION: IMPERIALISM 0x004cbf70
-undefined4 RenderUniversityRecruitmentRequirementGrid(void)
-{
-  return 0;
-}
-
 // ghidra_name TPurchaseCluster::CreateTPurchaseClusterInstance
 // ghidra_proto undefined CreateTPurchaseClusterInstance()
 // FUNCTION: IMPERIALISM 0x004cc300
 undefined4 CreateTPurchaseClusterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TPurchaseCluster::GetTPurchaseClusterClassNamePointer
-// ghidra_proto undefined GetTPurchaseClusterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004cc3a0
-undefined4 GetTPurchaseClusterClassNamePointer(void)
 {
   return 0;
 }
@@ -939,66 +619,10 @@ undefined4 ConstructTPurchaseClusterBaseState(void)
   return 0;
 }
 
-// ghidra_name TPurchaseCluster::DestructTPurchaseClusterAndMaybeFree
-// ghidra_proto undefined DestructTPurchaseClusterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004cc3f0
-undefined4 DestructTPurchaseClusterAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_004cc440
-// ghidra_proto undefined OrphanCallChain_C1_I08_004cc440()
-// FUNCTION: IMPERIALISM 0x004cc440
-undefined4 OrphanCallChain_C1_I08_004cc440(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004cc470
-// ghidra_proto undefined OrphanRetStub_004cc470()
-// FUNCTION: IMPERIALISM 0x004cc470
-undefined4 OrphanRetStub_004cc470(void)
-{
-  return 0;
-}
-
-// ghidra_name TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
-// ghidra_proto undefined WrapperFor_thunk_DispatchPanelControlEvent_At004cc490()
-// FUNCTION: IMPERIALISM 0x004cc490
-undefined4 WrapperFor_thunk_DispatchPanelControlEvent_At004cc490(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCityViewValueControlAmount
-// ghidra_proto void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)
-// FUNCTION: IMPERIALISM 0x004cc550
-undefined4 SetCityViewValueControlAmount(void)
-{
-  return 0;
-}
-
-// ghidra_name TPurchaseCluster::UpdateCityViewValueControl
-// ghidra_proto undefined UpdateCityViewValueControl()
-// FUNCTION: IMPERIALISM 0x004cc640
-undefined4 UpdateCityViewValueControl(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateCityViewProductionDialogController
 // ghidra_proto int * __cdecl CreateCityViewProductionDialogController(void)
 // FUNCTION: IMPERIALISM 0x004cc6b0
 undefined4 CreateCityViewProductionDialogController(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndustryView::GetTIndustryViewClassNamePointer
-// ghidra_proto undefined GetTIndustryViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004cc770
-undefined4 GetTIndustryViewClassNamePointer(void)
 {
   return 0;
 }
@@ -1011,42 +635,10 @@ undefined4 ConstructTIndustryViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TIndustryView::DestructTIndustryViewAndMaybeFree
-// ghidra_proto undefined DestructTIndustryViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004cc7d0
-undefined4 DestructTIndustryViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityViewSelectedProductionCapabilityDetails
-// ghidra_proto undefined RefreshCityViewSelectedProductionCapabilityDetails()
-// FUNCTION: IMPERIALISM 0x004cc820
-undefined4 RefreshCityViewSelectedProductionCapabilityDetails(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_EnableWindow_At004ccf30
-// ghidra_proto undefined Helper_Uses_EnableWindow_At004ccf30()
-// FUNCTION: IMPERIALISM 0x004ccf30
-undefined4 Helper_Uses_EnableWindow_At004ccf30(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchCityViewSelectionChangeAndRefresh
 // ghidra_proto undefined DispatchCityViewSelectionChangeAndRefresh()
 // FUNCTION: IMPERIALISM 0x004ccfa2
 undefined4 DispatchCityViewSelectionChangeAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityViewActionAvailability
-// ghidra_proto void __fastcall RefreshCityViewActionAvailability(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cd040
-undefined4 RefreshCityViewActionAvailability(void)
 {
   return 0;
 }
@@ -1059,42 +651,10 @@ undefined4 CreateTTradeSchoolViewInstance(void)
   return 0;
 }
 
-// ghidra_name TTradeSchoolView::GetTTradeSchoolViewClassNamePointer
-// ghidra_proto undefined GetTTradeSchoolViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004cd820
-undefined4 GetTTradeSchoolViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeSchoolView::ConstructTTradeSchoolViewBaseState
 // ghidra_proto undefined ConstructTTradeSchoolViewBaseState()
 // FUNCTION: IMPERIALISM 0x004cd840
 undefined4 ConstructTTradeSchoolViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeSchoolView::DestructTTradeSchoolViewAndMaybeFree
-// ghidra_proto undefined DestructTTradeSchoolViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004cd880
-undefined4 DestructTTradeSchoolViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityViewEquipmentSummary
-// ghidra_proto void __fastcall RefreshCityViewEquipmentSummary(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cd8d0
-undefined4 RefreshCityViewEquipmentSummary(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I24_004ce070
-// ghidra_proto undefined OrphanCallChain_C2_I24_004ce070()
-// FUNCTION: IMPERIALISM 0x004ce070
-undefined4 OrphanCallChain_C2_I24_004ce070(void)
 {
   return 0;
 }
@@ -1155,42 +715,10 @@ undefined4 CreateBuildingExpansionView(void)
   return 0;
 }
 
-// ghidra_name TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer
-// ghidra_proto undefined GetTBuildingExpansionViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ce500
-undefined4 GetTBuildingExpansionViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructBuildingExpansionView
 // ghidra_proto undefined ConstructBuildingExpansionView()
 // FUNCTION: IMPERIALISM 0x004ce520
 undefined4 ConstructBuildingExpansionView(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructBuildingExpansionViewAndMaybeFree
-// ghidra_proto undefined DestructBuildingExpansionViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ce550
-undefined4 DestructBuildingExpansionViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::OpenCityViewProductionDialog
-// ghidra_proto void __thiscall OpenCityViewProductionDialog(int nBuildingSlotId, int * pCityStateData, int nDialogFlags)
-// FUNCTION: IMPERIALISM 0x004ce5a0
-undefined4 OpenCityViewProductionDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ApplyCityProductionDialogChanges
-// ghidra_proto void __thiscall ApplyCityProductionDialogChanges(int nDialogActionTag)
-// FUNCTION: IMPERIALISM 0x004cebb0
-undefined4 ApplyCityProductionDialogChanges(void)
 {
   return 0;
 }
@@ -1203,42 +731,10 @@ undefined4 CreateArmoryView(void)
   return 0;
 }
 
-// ghidra_name TArmoryView::GetTArmoryViewClassNamePointer
-// ghidra_proto undefined GetTArmoryViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ced80
-undefined4 GetTArmoryViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructArmoryView
 // ghidra_proto undefined ConstructArmoryView()
 // FUNCTION: IMPERIALISM 0x004ceda0
 undefined4 ConstructArmoryView(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructArmoryViewAndMaybeFree
-// ghidra_proto undefined DestructArmoryViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004cedd0
-undefined4 DestructArmoryViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshUniversityAdvancedRecruitmentDialog
-// ghidra_proto void __fastcall RefreshUniversityAdvancedRecruitmentDialog(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cee20
-undefined4 RefreshUniversityAdvancedRecruitmentDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleArmoryViewSelectionAndStepCommand
-// ghidra_proto undefined HandleArmoryViewSelectionAndStepCommand()
-// FUNCTION: IMPERIALISM 0x004cf350
-undefined4 HandleArmoryViewSelectionAndStepCommand(void)
 {
   return 0;
 }
@@ -1255,30 +751,6 @@ undefined4 UpdateUniversitySpecialistCountControlAndRefreshView(void)
 // ghidra_proto undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt()
 // FUNCTION: IMPERIALISM 0x004cf4a5
 undefined4 UpdateUniversitySpecialistCountControlAndRefreshViewAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshUniversitySpecialistAvailability
-// ghidra_proto void __fastcall RefreshUniversitySpecialistAvailability(int * pCityViewDialog)
-// FUNCTION: IMPERIALISM 0x004cf5c0
-undefined4 RefreshUniversitySpecialistAvailability(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::RefreshCityViewProductionDetails
-// ghidra_proto void __thiscall RefreshCityViewProductionDetails(short nBuildingSlotId)
-// FUNCTION: IMPERIALISM 0x004cfbd0
-undefined4 RefreshCityViewProductionDetails(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleArmoryViewCloseAndMaybePostCommand23F8
-// ghidra_proto undefined HandleArmoryViewCloseAndMaybePostCommand23F8()
-// FUNCTION: IMPERIALISM 0x004d0470
-undefined4 HandleArmoryViewCloseAndMaybePostCommand23F8(void)
 {
   return 0;
 }
@@ -1307,42 +779,10 @@ undefined4 CreateTPlaceCityDialogInstance(void)
   return 0;
 }
 
-// ghidra_name TPlaceCityDialog::GetTPlaceCityDialogClassNamePointer
-// ghidra_proto undefined GetTPlaceCityDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004d17e0
-undefined4 GetTPlaceCityDialogClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
 // ghidra_proto undefined ConstructTPlaceCityDialogBaseState()
 // FUNCTION: IMPERIALISM 0x004d1800
 undefined4 ConstructTPlaceCityDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree
-// ghidra_proto undefined DestructTPlaceCityDialogAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004d1830
-undefined4 DestructTPlaceCityDialogAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedItem::BuildCityViewResourceRows
-// ghidra_proto undefined BuildCityViewResourceRows()
-// FUNCTION: IMPERIALISM 0x004d1880
-undefined4 BuildCityViewResourceRows(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-// ghidra_proto undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40()
-// FUNCTION: IMPERIALISM 0x004d1e40
-undefined4 WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
 {
   return 0;
 }
@@ -1567,14 +1007,6 @@ undefined4 ApplyCompletedCivWorkOrderToMapState(void)
 // ghidra_proto undefined ResolveCompetingDeveloperTilePurchaseOrders()
 // FUNCTION: IMPERIALISM 0x004d4740
 undefined4 ResolveCompetingDeveloperTilePurchaseOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name LandSaleEvent::DeleteLandSaleEvent
-// ghidra_proto undefined DeleteLandSaleEvent()
-// FUNCTION: IMPERIALISM 0x004d49a0
-undefined4 DeleteLandSaleEvent(void)
 {
   return 0;
 }

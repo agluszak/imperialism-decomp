@@ -1,9 +1,18 @@
 #include "game/TMapKey.h"
 
+// SYNTHETIC: IMPERIALISM 0x00430900
+// TMapKey::`scalar deleting destructor'
 TMapKey::~TMapKey() {}
 
-CRuntimeClass* TMapKey::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004fca70
+CRuntimeClass* TMapKey::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TMapKey::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x004fcac0
+void TMapKey::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TMapKey::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004fcf80
+void TMapKey::ApplyRectSlot110(RECT* rectBuffer) {
+}

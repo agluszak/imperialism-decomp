@@ -763,14 +763,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004293c0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004293c0()
-// FUNCTION: IMPERIALISM 0x004293c0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromField84
 // ghidra_proto undefined AssignSharedStringFromField84()
 // FUNCTION: IMPERIALISM 0x004294d0
@@ -843,34 +835,10 @@ undefined4 ConstructPictureResourceEntry_Vtbl0063f650(void)
   return 0;
 }
 
-// ghidra_name TBook::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430280
-undefined4 ScalarDeletingDestructor(void)
-{
-  return 0;
-}
-
-// ghidra_name TPageCorner::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004302d0
-undefined4 ScalarDeletingDestructor_004302D0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl0063f878
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl0063f878()
 // FUNCTION: IMPERIALISM 0x00430320
 undefined4 ConstructUiResourceEntry_Vtbl0063f878(void)
-{
-  return 0;
-}
-
-// ghidra_name TTreatiesView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430350
-undefined4 ScalarDeletingDestructor_00430350(void)
 {
   return 0;
 }
@@ -883,26 +851,10 @@ undefined4 ConstructUiResourceEntry_Vtbl0063fa70(void)
   return 0;
 }
 
-// ghidra_name TGrantsView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004303d0
-undefined4 ScalarDeletingDestructor_004303D0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl0063fc68
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl0063fc68()
 // FUNCTION: IMPERIALISM 0x00430420
 undefined4 ConstructUiResourceEntry_Vtbl0063fc68(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePanelView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430450
-undefined4 ScalarDeletingDestructor_00430450(void)
 {
   return 0;
 }
@@ -915,50 +867,10 @@ undefined4 ConstructUiResourceEntry_Vtbl0063fe60(void)
   return 0;
 }
 
-// ghidra_name TInfoPanelView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004304d0
-undefined4 ScalarDeletingDestructor_004304D0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl00640060
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl00640060()
 // FUNCTION: IMPERIALISM 0x00430520
 undefined4 ConstructUiResourceEntry_Vtbl00640060(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00430550
-// ghidra_proto undefined OrphanRetStub_00430550()
-// FUNCTION: IMPERIALISM 0x00430550
-undefined4 OrphanRetStub_00430550(void)
-{
-  return 0;
-}
-
-// ghidra_name TCouncilPanelView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430570
-undefined4 ScalarDeletingDestructor_00430570(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004305c0
-// ghidra_proto undefined OrphanRetStub_004305c0()
-// FUNCTION: IMPERIALISM 0x004305c0
-undefined4 OrphanRetStub_004305c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNominationView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004305e0
-undefined4 ScalarDeletingDestructor_004305E0(void)
 {
   return 0;
 }
@@ -1027,26 +939,10 @@ undefined4 ConstructPictureResourceEntry_Vtbl006404b0(void)
   return 0;
 }
 
-// ghidra_name TMapKey::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430900
-undefined4 ScalarDeletingDestructor_00430900(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiColorTextResourceEntry
 // ghidra_proto undefined ConstructUiColorTextResourceEntry()
 // FUNCTION: IMPERIALISM 0x00430950
 undefined4 ConstructUiColorTextResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004309e0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004309e0()
-// FUNCTION: IMPERIALISM 0x004309e0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004309e0(void)
 {
   return 0;
 }
@@ -1067,26 +963,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
   return 0;
 }
 
-// ghidra_name TBattleDetailBook::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430b00
-undefined4 ScalarDeletingDestructor_00430B00(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl00640940
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl00640940()
 // FUNCTION: IMPERIALISM 0x00430b50
 undefined4 ConstructUiResourceEntry_Vtbl00640940(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleUnitsView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00430b80
-undefined4 ScalarDeletingDestructor_00430B80(void)
 {
   return 0;
 }
@@ -1099,26 +979,10 @@ undefined4 InitializeDealBookScreenControlsAndCommandTags(void)
   return 0;
 }
 
-// ghidra_name TDealTabControl::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00435540
-undefined4 ScalarDeletingDestructor_00435540(void)
-{
-  return 0;
-}
-
 // ghidra_name TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
 // ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At00435590()
 // FUNCTION: IMPERIALISM 0x00435590
 undefined4 WrapperFor_ConstructTPageViewBaseState_At00435590(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageSellView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004355c0
-undefined4 ScalarDeletingDestructor_004355C0(void)
 {
   return 0;
 }
@@ -1131,34 +995,10 @@ undefined4 WrapperFor_ConstructTPageViewBaseState_At00435610(void)
   return 0;
 }
 
-// ghidra_name TTradePageBuyView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00435640
-undefined4 ScalarDeletingDestructor_00435640(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeBookView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00435690
-undefined4 ScalarDeletingDestructor_00435690(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()
 // FUNCTION: IMPERIALISM 0x004356e0
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewspaperView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00435710
-undefined4 ScalarDeletingDestructor_00435710(void)
 {
   return 0;
 }
@@ -1179,14 +1019,6 @@ undefined4 ConstructUiPlanetListResourceEntry(void)
   return 0;
 }
 
-// ghidra_name TMapPreviewView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d5c0
-undefined4 ScalarDeletingDestructor_0043D5C0(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610
 // ghidra_proto undefined WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()
 // FUNCTION: IMPERIALISM 0x0043d610
@@ -1198,15 +1030,7 @@ undefined4 WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(vo
 // ghidra_name TTwoPicSlider::`scalar deleting destructor'
 // ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0043d650
-undefined4 ScalarDeletingDestructor_0043D650(void)
-{
-  return 0;
-}
-
-// ghidra_name TQueryFloater::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d6a0
-undefined4 ScalarDeletingDestructor_0043D6A0(void)
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }
@@ -1219,14 +1043,6 @@ undefined4 WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
   return 0;
 }
 
-// ghidra_name TMadnessButton::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d720
-undefined4 ScalarDeletingDestructor_0043D720(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770()
 // FUNCTION: IMPERIALISM 0x0043d770
@@ -1235,34 +1051,10 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770(void)
   return 0;
 }
 
-// ghidra_name TTerrainHelpPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d7a0
-undefined4 ScalarDeletingDestructor_0043D7A0(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d7f0
-undefined4 ScalarDeletingDestructor_0043D7F0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructTurnEventMainPictureEntry_10CC
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_10CC(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d840
 undefined4 ConstructTurnEventMainPictureEntry_10CC(void)
-{
-  return 0;
-}
-
-// ghidra_name TStatusPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d870
-undefined4 ScalarDeletingDestructor_0043D870(void)
 {
   return 0;
 }
@@ -1303,54 +1095,6 @@ undefined4 ConstructSelectableTextOptionEntry(void)
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_104F(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d9c0
 undefined4 ConstructTurnEventMainPictureEntry_104F(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0043d9f0
-// ghidra_proto undefined OrphanRetStub_0043d9f0()
-// FUNCTION: IMPERIALISM 0x0043d9f0
-undefined4 OrphanRetStub_0043d9f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TFlagOptionsPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043da10
-undefined4 ScalarDeletingDestructor_0043DA10(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoadSavePicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043da40
-undefined4 ScalarDeletingDestructor_0043DA40(void)
-{
-  return 0;
-}
-
-// ghidra_name TGamePreferencesPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043da70
-undefined4 ScalarDeletingDestructor_0043DA70(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0043daa0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0043daa0()
-// FUNCTION: IMPERIALISM 0x0043daa0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0043daa0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCreditsPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043dad0
-undefined4 ScalarDeletingDestructor_0043DAD0(void)
 {
   return 0;
 }
@@ -1435,26 +1179,10 @@ undefined4 WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0(void)
   return 0;
 }
 
-// ghidra_name TShipFractionCluster::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0044a720
-undefined4 ScalarDeletingDestructor_0044A720(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivDescription::ConstructTCivDescriptionBaseState
 // ghidra_proto undefined ConstructTCivDescriptionBaseState()
 // FUNCTION: IMPERIALISM 0x0044a770
 undefined4 ConstructTCivDescriptionBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivDescription::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0044a7a0
-undefined4 ScalarDeletingDestructor_0044A7A0(void)
 {
   return 0;
 }
@@ -1487,30 +1215,6 @@ undefined4 InitializeJoinSelectorDialogControlsAndNationSlots(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80()
 // FUNCTION: IMPERIALISM 0x0044fa80
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
-{
-  return 0;
-}
-
-// ghidra_name TJoinSelectorDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0044fab0
-undefined4 ScalarDeletingDestructor_0044FAB0(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0044fae0
-undefined4 ScalarDeletingDestructor_0044FAE0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiMessagePicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0044fb10
-undefined4 ScalarDeletingDestructor_0044FB10(void)
 {
   return 0;
 }
@@ -1611,22 +1315,6 @@ undefined4 InitializeOrderStateUiResourceTreeAndControlEntries(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0045acb0
-// ghidra_proto undefined OrphanRetStub_0045acb0()
-// FUNCTION: IMPERIALISM 0x0045acb0
-undefined4 OrphanRetStub_0045acb0(void)
-{
-  return 0;
-}
-
-// ghidra_name TSpecialQuitPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045acd0
-undefined4 ScalarDeletingDestructor_0045ACD0(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
 // ghidra_proto undefined WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()
 // FUNCTION: IMPERIALISM 0x0045ad20
@@ -1643,42 +1331,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0045ada0
-// ghidra_proto undefined OrphanRetStub_0045ada0()
-// FUNCTION: IMPERIALISM 0x0045ada0
-undefined4 OrphanRetStub_0045ada0(void)
-{
-  return 0;
-}
-
-// ghidra_name THighScoresPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045adc0
-undefined4 ScalarDeletingDestructor_0045ADC0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNetSelectPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045ae10
-undefined4 ScalarDeletingDestructor_0045AE10(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60()
 // FUNCTION: IMPERIALISM 0x0045ae60
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(void)
-{
-  return 0;
-}
-
-// ghidra_name TScenarioChooser::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045ae90
-undefined4 ScalarDeletingDestructor_0045AE90(void)
 {
   return 0;
 }
@@ -1699,26 +1355,10 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(vo
   return 0;
 }
 
-// ghidra_name TGameScorePicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045afb0
-undefined4 ScalarDeletingDestructor_0045AFB0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
 // ghidra_proto undefined WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000()
 // FUNCTION: IMPERIALISM 0x0045b000
 undefined4 WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(void)
-{
-  return 0;
-}
-
-// ghidra_name TGWorldPartView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045b030
-undefined4 ScalarDeletingDestructor_0045B030(void)
 {
   return 0;
 }
@@ -1755,74 +1395,10 @@ undefined4 WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0045d2a0
-// ghidra_proto undefined OrphanRetStub_0045d2a0()
-// FUNCTION: IMPERIALISM 0x0045d2a0
-undefined4 OrphanRetStub_0045d2a0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapUberUberPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d2c0
-undefined4 ScalarDeletingDestructor_0045D2C0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacArmyView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d310
-undefined4 ScalarDeletingDestructor_0045D310(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalToolbar::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d360
-undefined4 ScalarDeletingDestructor_0045D360(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_0045d3b0
-// ghidra_proto undefined OrphanCallChain_C1_I08_0045d3b0()
-// FUNCTION: IMPERIALISM 0x0045d3b0
-undefined4 OrphanCallChain_C1_I08_0045d3b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacMapUberPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d3e0
-undefined4 ScalarDeletingDestructor_0045D3E0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalAdiosPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d430
-undefined4 ScalarDeletingDestructor_0045D430(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480()
 // FUNCTION: IMPERIALISM 0x0045d480
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalHolaPicture::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0045d4b0
-undefined4 ScalarDeletingDestructor_0045D4B0(void)
 {
   return 0;
 }
@@ -1847,22 +1423,6 @@ undefined4 BuildTurnEventDialogResourcesForEvent8FC(void)
 // ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
 // FUNCTION: IMPERIALISM 0x004600c0
 undefined4 WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x004600f0
-undefined4 ScalarDeletingDestructor_004600F0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechHistoryView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00460140
-undefined4 ScalarDeletingDestructor_00460140(void)
 {
   return 0;
 }
@@ -1955,50 +1515,10 @@ undefined4 CreateTurnEventDialogFactoryRegistryObject(void)
   return 0;
 }
 
-// ghidra_name OrphanVtableAssignStub_00479440
-// ghidra_proto undefined OrphanVtableAssignStub_00479440()
-// FUNCTION: IMPERIALISM 0x00479440
-undefined4 OrphanVtableAssignStub_00479440(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_00479460
-// ghidra_proto undefined OrphanVtableAssignStub_00479460()
-// FUNCTION: IMPERIALISM 0x00479460
-undefined4 OrphanVtableAssignStub_00479460(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeTurnEventDialogFactoryRegistry
 // ghidra_proto int * __fastcall InitializeTurnEventDialogFactoryRegistry(int * pFactoryBootstrap)
 // FUNCTION: IMPERIALISM 0x00479480
 undefined4 InitializeTurnEventDialogFactoryRegistry(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_44_004796a0
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_44_004796a0()
-// FUNCTION: IMPERIALISM 0x004796a0
-undefined4 OrphanTiny_GetDwordEcxOffset_44_004796a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_SetDwordEcxOffset_44_004796c0
-// ghidra_proto undefined OrphanTiny_SetDwordEcxOffset_44_004796c0()
-// FUNCTION: IMPERIALISM 0x004796c0
-undefined4 OrphanTiny_SetDwordEcxOffset_44_004796c0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004796e0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004796e0()
-// FUNCTION: IMPERIALISM 0x004796e0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
 {
   return 0;
 }
@@ -2015,14 +1535,6 @@ undefined4 DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(void)
 // ghidra_proto undefined WrapperFor_OnNewDocument_At004797a0()
 // FUNCTION: IMPERIALISM 0x004797a0
 undefined4 WrapperFor_OnNewDocument_At004797a0(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
-// ghidra_proto undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()
-// FUNCTION: IMPERIALISM 0x004797d0
-undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
 {
   return 0;
 }

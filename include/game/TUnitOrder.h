@@ -26,7 +26,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0() override; // slot 0x0c 0x4b7080
   virtual undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b73b0
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
-  // slot 0x0f InitializeCityOrderItemWorkingBuffers inherited unchanged (0x4b5180)
+  // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b7320
   virtual void InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode) override; // slot 0x11 0x4b6fe0
 // === END GENERATED DECLS (TUnitOrder) ===

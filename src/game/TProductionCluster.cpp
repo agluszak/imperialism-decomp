@@ -58,6 +58,7 @@ TProductionCluster::TProductionCluster()
 
 // SYNTHETIC: IMPERIALISM 0x00586970
 // TProductionCluster::`scalar deleting destructor'
+TProductionCluster::~TProductionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

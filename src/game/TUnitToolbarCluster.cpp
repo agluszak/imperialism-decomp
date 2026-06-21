@@ -38,6 +38,7 @@ TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00586040
 // TUnitToolbarCluster::`scalar deleting destructor'
+TUnitToolbarCluster::~TUnitToolbarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586090
 void TUnitToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

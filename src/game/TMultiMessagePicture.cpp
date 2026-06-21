@@ -1,7 +1,15 @@
 #include "game/TMultiMessagePicture.h"
 
+// SYNTHETIC: IMPERIALISM 0x0044fb10
+// TMultiMessagePicture::`scalar deleting destructor'
 TMultiMessagePicture::~TMultiMessagePicture() {}
 
-CRuntimeClass* TMultiMessagePicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0054eca0
+CRuntimeClass* TMultiMessagePicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TMultiMessagePicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054ecc0
+undefined TMultiMessagePicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

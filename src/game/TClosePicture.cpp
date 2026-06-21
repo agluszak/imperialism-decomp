@@ -14,6 +14,7 @@ TClosePicture* __cdecl CreateTClosePictureInstance(void) {
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x662f38).
+
 // FUNCTION: IMPERIALISM 0x00586b50
 CRuntimeClass* TClosePicture::GetRuntimeClass() const {
   return &g_pClassDescTClosePicture;
@@ -23,6 +24,7 @@ CRuntimeClass* TClosePicture::GetRuntimeClass() const {
 TClosePicture::TClosePicture() : TPictureButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00586ba0
 // TClosePicture::`scalar deleting destructor'
 

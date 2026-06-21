@@ -27,6 +27,7 @@ void* __cdecl CreateTApplicationInstance(void) {
 }
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
+
 // FUNCTION: IMPERIALISM 0x00486740
 CRuntimeClass* TApplication::GetRuntimeClass() const {
   return &PTR_s_TApplication_00648af8;
@@ -37,6 +38,9 @@ TApplication::TApplication()
     : TEventHandler(), activeView(0), screenModeAt24(0), field28(0), embeddedList() {
   g_pApplicationUiRootController = this;
 }
+
+// SYNTHETIC: IMPERIALISM 0x004867b0
+// TApplication::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004867e0
 TApplication::~TApplication() {
@@ -67,10 +71,9 @@ TView* TApplication::GetActiveView() {
 // vtable slot 0x25 placeholder (0x00486650 body deferred pending TCommandHandler class
 // recovery; see header note). Real body calls the arg's vtable slots 0x0b (no-arg command
 // processor, not yet modeled) and 0x07 (release/destroy).
-void TApplication::vmethod_0037() {}
-
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): original body is `RET 0xc` (takes
 // three stack args, does nothing). A no-op hook for viewport-edge auto-scroll handling.
+
 // FUNCTION: IMPERIALISM 0x00486990
 void TApplication::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
                                                                         int arg3) {
@@ -85,6 +88,7 @@ void TApplication::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
 // when the free list is empty), store `value` at node+8, and link the node at the list
 // head. When zero, walk to the first node whose data matches `value`, unlink it, return
 // it to the free list, and free the whole block chain if the list becomes empty.
+
 // FUNCTION: IMPERIALISM 0x004869b0
 void TApplication::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
   if (insertFlag != 0) {
@@ -146,6 +150,7 @@ void TApplication::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
 // invoking the per-entry tick (receiver at node+8) with `arg` for each entry. The
 // per-entry tick is a __thiscall on the node's data pointer (ECX = node[2]) with one
 // stack arg; routed through the thunk in repo form (rule 9).
+
 // FUNCTION: IMPERIALISM 0x00486b10
 void TApplication::TickEachTrackedEntry(int arg) {
   int* node = reinterpret_cast<int*>(embeddedList.head);
@@ -156,3 +161,21 @@ void TApplication::TickEachTrackedEntry(int arg) {
     node = next;
   }
 }
+
+// FUNCTION: IMPERIALISM 0x00486b50
+void TApplication::vmethod_0013(int* cmd) {
+}
+
+// FUNCTION: IMPERIALISM 0x00486ba0
+void TApplication::vmethod_0017(int param) {
+}
+
+void TApplication::AssertValid() const {}
+
+void TApplication::Dump(CDumpContext &) {}
+
+undefined TApplication::SerializeRecordList_0x0C_WithBlockPool_B() { return 0; }
+
+undefined TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1) { return 0; }
+
+CRuntimeClass* TApplication::GetRuntimeClass_34() const { return 0; }

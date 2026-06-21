@@ -1,11 +1,25 @@
 #include "game/TIndustryView.h"
 
-CRuntimeClass* TIndustryView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004cc770
+CRuntimeClass* TIndustryView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004cc7d0
+// TIndustryView::`scalar deleting destructor'
 TIndustryView::~TIndustryView() {}
 
-undefined TIndustryView::OrphanRetStub_004c6fd0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004cc820
+undefined TIndustryView::OrphanRetStub_004c6fd0() {
+  return 0;
+}
 
-undefined TIndustryView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004ccf30
+undefined TIndustryView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TIndustryView::OrphanRetStub_004c6fb0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004cd040
+undefined TIndustryView::OrphanRetStub_004c6fb0() {
+  return 0;
+}

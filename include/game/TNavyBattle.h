@@ -18,13 +18,13 @@ public:
   // slot 0x07 Free inherited unchanged (0x59fb50)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined ComputeTacticalReachableTileCostsByUnitCategory(int param_1) override; // slot 0x0a 0x5a59f0
+  virtual undefined ComputeTacticalReachableTileCostsByUnitCategory() override; // slot 0x0a 0x5a59f0
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
   virtual undefined OrphanRetStub_0059f710() override; // slot 0x0c 0x5a55c0
-  virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1, undefined4 param_2) override; // slot 0x0d 0x5a5c50
+  virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget() override; // slot 0x0d 0x5a5c50
   // slot 0x0e WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400 inherited unchanged (0x5a1400)
-  virtual undefined ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(int param_1) override; // slot 0x0f 0x5a5bc0
-  virtual undefined EvaluateAndResolveTacticalActionAgainstTileOccupant(int * param_1, int param_2) override; // slot 0x10 0x5a5730
+  virtual undefined ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget() override; // slot 0x0f 0x5a5bc0
+  virtual undefined EvaluateAndResolveTacticalActionAgainstTileOccupant() override; // slot 0x10 0x5a5730
   // slot 0x11 OrphanCallChain_C4_I30_005a2700 inherited unchanged (0x5a2700)
   virtual undefined CreateTTacticalBattleInstance() override; // slot 0x12 0x5a5b70
   // slot 0x13 MarkTacticalTileStateQueuedAndMaybeDispatchPacket inherited unchanged (0x5a3190)

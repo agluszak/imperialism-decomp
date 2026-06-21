@@ -279,6 +279,7 @@ CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
 
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'
+TCapacityOrder::~TCapacityOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b8d50
 void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short trackingIndex4eInit,

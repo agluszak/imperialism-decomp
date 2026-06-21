@@ -97,8 +97,13 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 
 // The ordinary destructor and the scalar deleting destructor below are both
 // compiler-generated (implicit) from real inheritance — never hand-written.
+
 // SYNTHETIC: IMPERIALISM 0x00407f4a
 // TCivDescription::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0044a7a0
+// TCivDescription::`scalar deleting destructor'
+TCivDescription::~TCivDescription() {}
 
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
@@ -249,6 +254,7 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
 #pragma optimize("", on)
 
 #pragma optimize("y", on)
+
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
     TCivilianOrderState* orderState) {
@@ -400,4 +406,9 @@ void TCivDescription::RenderCivilianTargetLegendVariantA() {
 // FUNCTION: IMPERIALISM 0x0058fec0
 void __cdecl RenderCivilianTargetLegendVariantB(void) {
   reinterpret_cast<void(__cdecl*)(void)>(thunk_RenderCivilianTargetLegendVariantB)();
+}
+
+// FUNCTION: IMPERIALISM 0x005903c0
+void __fastcall TCivDescription::RenderCivilianTargetProfilePanel(int * pPanelContext) {
+  return 0;
 }

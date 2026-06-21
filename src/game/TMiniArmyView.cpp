@@ -1,11 +1,24 @@
 #include "game/TMiniArmyView.h"
 
-undefined TMiniArmyView::OrphanRetStub_004aad20() { return 0; }
+// FUNCTION: IMPERIALISM 0x004aad20
+undefined TMiniArmyView::OrphanRetStub_004aad20() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004aad40
+// TMiniArmyView::`scalar deleting destructor'
 TMiniArmyView::~TMiniArmyView() {}
 
-CRuntimeClass* TMiniArmyView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004aae10
+CRuntimeClass* TMiniArmyView::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TMiniArmyView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004aaeb0
+void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined TMiniArmyView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004ab1d0
+undefined TMiniArmyView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

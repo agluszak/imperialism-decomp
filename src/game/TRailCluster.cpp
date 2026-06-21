@@ -69,6 +69,7 @@ TRailCluster::TRailCluster() : TUberCluster() {
 
 // SYNTHETIC: IMPERIALISM 0x00589760
 // TRailCluster::`scalar deleting destructor'
+TRailCluster::~TRailCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {

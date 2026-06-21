@@ -1,9 +1,19 @@
 #include "game/TTacticalAdiosPicture.h"
 
+// SYNTHETIC: IMPERIALISM 0x0045d430
+// TTacticalAdiosPicture::`scalar deleting destructor'
 TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
 
-CRuntimeClass* TTacticalAdiosPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad4b0
+CRuntimeClass* TTacticalAdiosPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad4d0
+void TTacticalAdiosPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TTacticalAdiosPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad650
+undefined TTacticalAdiosPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

@@ -4,58 +4,126 @@ void TMapMaker::Free() {}
 
 TObject* TMapMaker::ShallowClone() { return 0; }
 
-CRuntimeClass* TMapMaker::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00525950
+CRuntimeClass* TMapMaker::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00525990
+// TMapMaker::`scalar deleting destructor'
 TMapMaker::~TMapMaker() {}
 
-byte TMapMaker::GetTEventHandlerClassNamePointer_0a(CityDialogController * pDialog) { return 0; }
+// FUNCTION: IMPERIALISM 0x00526ba0
+char TMapMaker::GetBoolSlot28() {
+  return 0;
+}
 
-void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject_0b(char flagValue) {}
+// FUNCTION: IMPERIALISM 0x00526c20
+void TMapMaker::SetControlValue(int value) {
+}
 
-int TMapMaker::UpdateControlCachedIntFromWindowText_0c(CityDialogController * pDialog) { return 0; }
+// FUNCTION: IMPERIALISM 0x00527040
+int TMapMaker::QueryStepValue() {
+  return 0;
+}
 
-undefined TMapMaker::OrphanRetStub_0059add0_0d() { return 0; }
+// FUNCTION: IMPERIALISM 0x00527300
+void TMapMaker::vmethod_0013(int* cmd) {
+}
 
-undefined TMapMaker::OrphanTiny_ReturnZero_0048a730_10() { return 0; }
+// FUNCTION: IMPERIALISM 0x005274d0
+undefined TMapMaker::DispatchUiCommandToHandler() {
+  return 0;
+}
 
-undefined TMapMaker::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005275a0
+void TMapMaker::vmethod_0014(int command) {
+}
 
-undefined TMapMaker::OrphanRetStub_0059add0_0f() { return 0; }
+// FUNCTION: IMPERIALISM 0x00527730
+undefined TMapMaker::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TMapMaker::VTableSlot17() { return 0; }
+// FUNCTION: IMPERIALISM 0x00527d00
+char TMapMaker::vmethod_0023() {
+  return 0;
+}
 
-undefined TMapMaker::SetForeignMinisterReadyFlag14() { return 0; }
+// FUNCTION: IMPERIALISM 0x00527ed0
+char TMapMaker::vmethod_0024() {
+  return 0;
+}
 
-undefined TMapMaker::OrphanTiny_ReturnZero_0048a730_16() { return 0; }
+// FUNCTION: IMPERIALISM 0x00528140
+class TView* TMapMaker::OwnerPanel() {
+  return 0;
+}
 
-undefined TMapMaker::OrphanTiny_ReturnZero_0048a730_12() { return 0; }
+// FUNCTION: IMPERIALISM 0x005283c0
+void TMapMaker::ForwardParam(int param) {
+}
 
-undefined TMapMaker::VTableSlot13() { return 0; }
+// FUNCTION: IMPERIALISM 0x00528670
+char TMapMaker::CanHandleCityDialogActionFalse(int action) {
+  return 0;
+}
 
-int TMapMaker::OrphanTiny_ReturnZero_0048a730_14(CityDialogController * pDialog) { return 0; }
+// FUNCTION: IMPERIALISM 0x00528780
+int TMapMaker::GetCityDialogValueDword10() {
+  return 0;
+}
 
-void TMapMaker::VTableSlot15(int value) {}
+// FUNCTION: IMPERIALISM 0x005288a0
+void TMapMaker::SetCityDialogValueDword10(int value) {
+}
 
-undefined TMapMaker::VTableSlot1D() { return 0; }
+// FUNCTION: IMPERIALISM 0x00528ce0
+void TMapMaker::DispatchCityProductionAction1A() {
+}
 
-undefined TMapMaker::VTableSlot11() { return 0; }
+// FUNCTION: IMPERIALISM 0x00528e50
+void TMapMaker::vmethod_0017(int param) {
+}
 
-undefined TMapMaker::GetTEventHandlerClassNamePointer_1e() { return 0; }
+// FUNCTION: IMPERIALISM 0x005292f0
+void TMapMaker::DispatchCityProductionAction1B() {
+}
 
-undefined TMapMaker::VTableSlot1F() { return 0; }
+// FUNCTION: IMPERIALISM 0x005296a0
+char TMapMaker::ActivateCityProductionViewIfAllowed() {
+  return 0;
+}
 
-undefined TMapMaker::GetTEventHandlerClassNamePointer_20() { return 0; }
+// FUNCTION: IMPERIALISM 0x005297e0
+char TMapMaker::vmethod_0080() {
+  return 0;
+}
 
-undefined TMapMaker::VTableSlot21() { return 0; }
+// FUNCTION: IMPERIALISM 0x005298a0
+void TMapMaker::vmethod_0081() {
+}
 
-undefined TMapMaker::VTableSlot19() { return 0; }
+// FUNCTION: IMPERIALISM 0x00529f60
+void TMapMaker::vmethod_0025() {
+}
 
-undefined TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject_29() { return 0; }
+// FUNCTION: IMPERIALISM 0x0052a760
+void TMapMaker::SetEnabled(int enabledState, int refreshFlag) {
+}
 
-undefined TMapMaker::UpdateControlCachedIntFromWindowText_2a() { return 0; }
+// FUNCTION: IMPERIALISM 0x0052c0a0
+void TMapMaker::SetState(int state, int refreshFlag) {
+}
 
-undefined TMapMaker::GetTEventHandlerClassNamePointer_1a() { return 0; }
+// FUNCTION: IMPERIALISM 0x0052e840
+void TMapMaker::vmethod_0026(int gate) {
+}
 
-undefined TMapMaker::GetTEventHandlerClassNamePointer_1c() { return 0; }
+// FUNCTION: IMPERIALISM 0x0052e890
+void TMapMaker::DispatchUiCommand19ToParent() {
+}
 
-undefined TMapMaker::VTableSlot1B() { return 0; }
+// FUNCTION: IMPERIALISM 0x0052e900
+void TMapMaker::HandleCityProductionNoOp() {
+}

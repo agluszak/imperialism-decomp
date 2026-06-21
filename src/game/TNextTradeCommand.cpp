@@ -4,9 +4,17 @@
 // installs 0x654e50 (compiler-emitted from the // VTABLE: annotation). No manual
 // vptr store. The original construction is inlined at the `new TNextTradeCommand()`
 // call site, so this constructor has no standalone FUNCTION address.
-TNextTradeCommand::TNextTradeCommand() : TCommand() {}
-
 // Overridden vtable slots (placeholders, like the TCommand base bodies).
-void TNextTradeCommand::cmd_slot0() {}
-void TNextTradeCommand::cmd_slot1() {}
-void TNextTradeCommand::cmd_slot11() {}
+// FUNCTION: IMPERIALISM 0x005ba3e0
+CRuntimeClass* TNextTradeCommand::GetRuntimeClass() const {
+  return 0;
+}
+
+// SYNTHETIC: IMPERIALISM 0x005ba430
+// TNextTradeCommand::`scalar deleting destructor'
+TNextTradeCommand::~TNextTradeCommand() {}
+
+// FUNCTION: IMPERIALISM 0x005ba4b0
+undefined TNextTradeCommand::OrphanRetStub_00487a00() {
+  return 0;
+}

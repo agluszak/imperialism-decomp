@@ -26,7 +26,7 @@ public:
   // slot 0x0f WrapperFor_AddHead_At0059afe0 inherited unchanged (0x59eea0)
   // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
   // slot 0x11 OrphanRetStub_0059ae10 inherited unchanged (0x59ae10)
-  virtual undefined ConstructTNavyHumanPlayerBaseState(undefined4 param_1) override; // slot 0x12 0x59efc0
+  virtual undefined ConstructTNavyHumanPlayerBaseState() override; // slot 0x12 0x59efc0
 // === END GENERATED DECLS (TNavyHumanPlayer) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyHumanPlayer 0xCTOR`).
 

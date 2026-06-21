@@ -1,7 +1,14 @@
 #include "game/TDropShadowText.h"
 
-CRuntimeClass* TDropShadowText::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005b5570
+CRuntimeClass* TDropShadowText::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005b5600
+// TDropShadowText::`scalar deleting destructor'
 TDropShadowText::~TDropShadowText() {}
 
-undefined TDropShadowText::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005b5650
+void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
+}

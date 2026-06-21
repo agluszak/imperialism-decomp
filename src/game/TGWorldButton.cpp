@@ -1,9 +1,18 @@
 #include "game/TGWorldButton.h"
 
-CRuntimeClass* TGWorldButton::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00572110
+CRuntimeClass* TGWorldButton::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00572160
+// TGWorldButton::`scalar deleting destructor'
 TGWorldButton::~TGWorldButton() {}
 
-void TGWorldButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
+// FUNCTION: IMPERIALISM 0x00572200
+void TGWorldButton::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
+}
 
-undefined TGWorldButton::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00572270
+void TGWorldButton::ApplyRectSlot110(RECT* rectBuffer) {
+}

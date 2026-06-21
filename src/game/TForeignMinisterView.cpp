@@ -1,11 +1,25 @@
 #include "game/TForeignMinisterView.h"
 
-CRuntimeClass* TForeignMinisterView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004f2fb0
+CRuntimeClass* TForeignMinisterView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004f3000
+// TForeignMinisterView::`scalar deleting destructor'
 TForeignMinisterView::~TForeignMinisterView() {}
 
-undefined TForeignMinisterView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f3050
+undefined TForeignMinisterView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f31d0
+undefined TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0() {
+  return 0;
+}
 
-undefined TForeignMinisterView::OrphanRetStub_004f3220() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f3220
+undefined TForeignMinisterView::OrphanRetStub_004f3220() {
+  return 0;
+}

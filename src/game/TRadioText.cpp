@@ -1,11 +1,23 @@
 #include "game/TRadioText.h"
 
+// SYNTHETIC: IMPERIALISM 0x0043daa0
+// TRadioText::`scalar deleting destructor'
 TRadioText::~TRadioText() {}
 
-CRuntimeClass* TRadioText::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00579470
+CRuntimeClass* TRadioText::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TRadioText::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00579490
+void TRadioText::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TRadioText::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005794b0
+void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined TRadioText::OrphanCallChain_C3_I13_00579580() { return 0; }
+// FUNCTION: IMPERIALISM 0x00579580
+undefined TRadioText::OrphanCallChain_C3_I13_00579580() {
+  return 0;
+}

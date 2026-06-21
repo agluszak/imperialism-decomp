@@ -99,16 +99,6 @@ CRuntimeClass* TDealList::GetRuntimeClass() const {
   return 0;
 }
 
-void TDealList::Serialize(CArchive& ar) {
-  (void)ar;
-}
-
-void TDealList::AssertValid() const {}
-
-void TDealList::Dump(CDumpContext& unused) const {
-  (void)unused;
-}
-
 // FUNCTION: IMPERIALISM 0x005B8D70
 short TDealList::IsCapabilityCategoryActiveSlot3C(int category) {
   return this->categoryRows[category].capabilityActiveFlag18;
@@ -205,4 +195,18 @@ short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int cate
     }
   }
   return resolvedCode;
+}
+
+// FUNCTION: IMPERIALISM 0x005ba1a0
+undefined TDealList::GetRuntimeClass() {
+  return 0;
+}
+
+// SYNTHETIC: IMPERIALISM 0x005ba1f0
+// TDealList::`scalar deleting destructor'
+TDealList::~TDealList() {}
+
+// FUNCTION: IMPERIALISM 0x005ba260
+undefined TDealList::CompareUnsignedIntsAscending() {
+  return 0;
 }

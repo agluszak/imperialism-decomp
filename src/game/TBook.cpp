@@ -1,9 +1,19 @@
 #include "game/TBook.h"
 
+// SYNTHETIC: IMPERIALISM 0x00430280
+// TBook::`scalar deleting destructor'
 TBook::~TBook() {}
 
-CRuntimeClass* TBook::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0056f540
+CRuntimeClass* TBook::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TBook::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056f560
+void TBook::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TBook::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056f5e0
+undefined TBook::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

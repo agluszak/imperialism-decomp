@@ -1,13 +1,28 @@
 #include "game/TCreditsPicture.h"
 
-undefined TCreditsPicture::OrphanRetStub_0043d9f0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0043d9f0
+undefined TCreditsPicture::OrphanRetStub_0043d9f0() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0043dad0
+// TCreditsPicture::`scalar deleting destructor'
 TCreditsPicture::~TCreditsPicture() {}
 
-CRuntimeClass* TCreditsPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0056ee30
+CRuntimeClass* TCreditsPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056ee50
+void TCreditsPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TCreditsPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056efc0
+undefined TCreditsPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TCreditsPicture::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056f190
+void TCreditsPicture::ApplyRectSlot110(RECT* rectBuffer) {
+}

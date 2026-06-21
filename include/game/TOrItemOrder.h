@@ -23,7 +23,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0() override; // slot 0x0c 0x4b58f0
   // slot 0x0d OrphanRetStub_004b5160 inherited unchanged (0x4b5580)
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5620)
-  // slot 0x0f InitializeCityOrderItemWorkingBuffers inherited unchanged (0x4b5180)
+  // slot 0x0f Produce inherited unchanged (0x4b5180)
   // slot 0x10 CreateTItemOrderInstance inherited unchanged (0x4b5510)
   // slot 0x11 InitializeCityProductionState_Impl_At004b5290 inherited unchanged (0x4b5290)
   virtual undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) override; // slot 0x12 0x4b5870

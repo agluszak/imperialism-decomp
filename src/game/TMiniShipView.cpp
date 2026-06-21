@@ -1,11 +1,23 @@
 #include "game/TMiniShipView.h"
 
-undefined TMiniShipView::OrphanRetStub_00569d50() { return 0; }
+// FUNCTION: IMPERIALISM 0x00569d50
+undefined TMiniShipView::OrphanRetStub_00569d50() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00569d70
+// TMiniShipView::`scalar deleting destructor'
 TMiniShipView::~TMiniShipView() {}
 
-CRuntimeClass* TMiniShipView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00569e40
+CRuntimeClass* TMiniShipView::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TMiniShipView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00569eb0
+void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined TMiniShipView::ReleaseRuntimeSelectionOwnerAndDestroyObject() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056a330
+void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+}

@@ -23,8 +23,10 @@ CRuntimeClass* TBoycottButton::GetRuntimeClass() const {
 TBoycottButton::TBoycottButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x005847b0
 // TBoycottButton::`scalar deleting destructor'
+TBoycottButton::~TBoycottButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {

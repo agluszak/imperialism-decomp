@@ -1,7 +1,14 @@
 #include "game/TTradeTotalsView.h"
 
-CRuntimeClass* TTradeTotalsView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005c1af0
+CRuntimeClass* TTradeTotalsView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005c1b40
+// TTradeTotalsView::`scalar deleting destructor'
 TTradeTotalsView::~TTradeTotalsView() {}
 
-undefined TTradeTotalsView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005c1bd0
+void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
+}

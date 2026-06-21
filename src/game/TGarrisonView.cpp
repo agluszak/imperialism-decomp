@@ -1,7 +1,14 @@
 #include "game/TGarrisonView.h"
 
-CRuntimeClass* TGarrisonView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004a87f0
+CRuntimeClass* TGarrisonView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004a8840
+// TGarrisonView::`scalar deleting destructor'
 TGarrisonView::~TGarrisonView() {}
 
-undefined TGarrisonView::GetTEventHandlerClassNamePointer() { return 0; }
+// FUNCTION: IMPERIALISM 0x004a8a20
+void TGarrisonView::CallVoidSlotA0() {
+}

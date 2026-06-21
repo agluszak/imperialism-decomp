@@ -1,13 +1,28 @@
 #include "game/TTreatiesView.h"
 
+// SYNTHETIC: IMPERIALISM 0x00430350
+// TTreatiesView::`scalar deleting destructor'
 TTreatiesView::~TTreatiesView() {}
 
-CRuntimeClass* TTreatiesView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004f7aa0
+CRuntimeClass* TTreatiesView::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TTreatiesView::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f7ac0
+void TTreatiesView::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TTreatiesView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f7c00
+void TTreatiesView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined TTreatiesView::OrphanRetStub_00430550() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f7f10
+undefined TTreatiesView::OrphanRetStub_00430550() {
+  return 0;
+}
 
-undefined TTreatiesView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f7f80
+undefined TTreatiesView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

@@ -23,8 +23,10 @@ CRuntimeClass* TWarningView::GetRuntimeClass() const {
 TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00592930
 // TWarningView::`scalar deleting destructor'
+TWarningView::~TWarningView() {}
 
 // FUNCTION: IMPERIALISM 0x00592980
 void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

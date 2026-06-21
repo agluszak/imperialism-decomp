@@ -1,9 +1,18 @@
 #include "game/TScrollView.h"
 
+// SYNTHETIC: IMPERIALISM 0x0043d7f0
+// TScrollView::`scalar deleting destructor'
 TScrollView::~TScrollView() {}
 
-CRuntimeClass* TScrollView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00573c90
+CRuntimeClass* TScrollView::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TScrollView::OrphanLeaf_NoCall_Ins07_004d8920_37() { return 0; }
+// FUNCTION: IMPERIALISM 0x00573ce0
+void TScrollView::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TScrollView::OrphanLeaf_NoCall_Ins07_004d8920_43() { return 0; }
+// FUNCTION: IMPERIALISM 0x005742b0
+void TScrollView::PaintVisibleChildrenIntersectingClipRect() {
+}

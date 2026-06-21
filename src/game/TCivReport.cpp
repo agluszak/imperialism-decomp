@@ -20,8 +20,10 @@ CRuntimeClass* TCivReport::GetRuntimeClass() const {
 TCivReport::TCivReport() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00590c60
 // TCivReport::`scalar deleting destructor'
+TCivReport::~TCivReport() {}
 
 // FUNCTION: IMPERIALISM 0x00590cb0
 bool TCivReport::IsSelected(short value, bool refreshNow) {

@@ -1,7 +1,15 @@
 #include "game/TTaskList.h"
 
-CRuntimeClass* TTaskList::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005aeb70
+CRuntimeClass* TTaskList::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005aec00
+// TTaskList::`scalar deleting destructor'
 TTaskList::~TTaskList() {}
 
-undefined TTaskList::ConstructTTaskBaseState() { return 0; }
+// FUNCTION: IMPERIALISM 0x005aed50
+undefined TTaskList::CreateTTechMgrInstance() {
+  return 0;
+}

@@ -22,8 +22,10 @@ CRuntimeClass* TArmyInfoView::GetRuntimeClass() const {
 TArmyInfoView::TArmyInfoView() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x005915d0
 // TArmyInfoView::`scalar deleting destructor'
+TArmyInfoView::~TArmyInfoView() {}
 
 // FUNCTION: IMPERIALISM 0x00591620
 bool TArmyInfoView::IsSelected(short value, bool refreshNow) {

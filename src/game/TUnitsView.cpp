@@ -1,7 +1,15 @@
 #include "game/TUnitsView.h"
 
-CRuntimeClass* TUnitsView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004c7fb0
+CRuntimeClass* TUnitsView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004c8000
+// TUnitsView::`scalar deleting destructor'
 TUnitsView::~TUnitsView() {}
 
-undefined TUnitsView::OrphanRetStub_004c6fd0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004c8050
+undefined TUnitsView::OrphanRetStub_004c6fd0() {
+  return 0;
+}

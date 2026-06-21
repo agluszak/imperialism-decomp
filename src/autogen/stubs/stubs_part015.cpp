@@ -1339,26 +1339,10 @@ undefined4 CreateTTerrainInfoDialogInstance(void)
   return 0;
 }
 
-// ghidra_name TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer
-// ghidra_proto undefined GetTTerrainInfoDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0051b120
-undefined4 GetTTerrainInfoDialogClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState
 // ghidra_proto undefined ConstructTTerrainInfoDialogBaseState()
 // FUNCTION: IMPERIALISM 0x0051b140
 undefined4 ConstructTTerrainInfoDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
-// ghidra_proto undefined DestructTTerrainInfoDialogAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0051b170
-undefined4 DestructTTerrainInfoDialogAndMaybeFree(void)
 {
   return 0;
 }
@@ -1379,42 +1363,10 @@ undefined4 CreateTTownNameDialogInstance(void)
   return 0;
 }
 
-// ghidra_name TTownNameDialog::GetTTownNameDialogClassNamePointer
-// ghidra_proto undefined GetTTownNameDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0051baf0
-undefined4 GetTTownNameDialogClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTownNameDialog::ConstructTTownNameDialogBaseState
 // ghidra_proto undefined ConstructTTownNameDialogBaseState()
 // FUNCTION: IMPERIALISM 0x0051bb10
 undefined4 ConstructTTownNameDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTownNameDialog::DestructTTownNameDialogAndMaybeFree
-// ghidra_proto undefined DestructTTownNameDialogAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0051bb40
-undefined4 DestructTTownNameDialogAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TriggerRandomPaletteCueAndMapContextAnimation
-// ghidra_proto undefined TriggerRandomPaletteCueAndMapContextAnimation()
-// FUNCTION: IMPERIALISM 0x0051bb90
-undefined4 TriggerRandomPaletteCueAndMapContextAnimation(void)
-{
-  return 0;
-}
-
-// ghidra_name THQButton::RenderMapTileNameControlHighlight
-// ghidra_proto undefined RenderMapTileNameControlHighlight()
-// FUNCTION: IMPERIALISM 0x0051bcc0
-undefined4 RenderMapTileNameControlHighlight(void)
 {
   return 0;
 }
@@ -1427,14 +1379,6 @@ undefined4 CreateTCitySiteViewInstance(void)
   return 0;
 }
 
-// ghidra_name TCitySiteView::GetTCitySiteViewClassNamePointer
-// ghidra_proto undefined GetTCitySiteViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0051be90
-undefined4 GetTCitySiteViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCitySiteView
 // ghidra_proto undefined InitializeCitySiteView()
 // FUNCTION: IMPERIALISM 0x0051beb0
@@ -1443,122 +1387,10 @@ undefined4 InitializeCitySiteView(void)
   return 0;
 }
 
-// ghidra_name TCitySiteView::DestructTCitySiteViewAndMaybeFree
-// ghidra_proto undefined DestructTCitySiteViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0051bfa0
-undefined4 DestructTCitySiteViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMapInteractionMode4BoundsAndCursorControls
-// ghidra_proto undefined InitializeMapInteractionMode4BoundsAndCursorControls()
-// FUNCTION: IMPERIALISM 0x0051bff0
-undefined4 InitializeMapInteractionMode4BoundsAndCursorControls(void)
-{
-  return 0;
-}
-
-// ghidra_name TCitySiteView::WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051c2a0
-// ghidra_proto undefined WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051c2a0()
-// FUNCTION: IMPERIALISM 0x0051c2a0
-undefined4 WrapperFor_thunk_SplitTileIndexToRowAndColumn_At0051c2a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_0051c2f0
-// ghidra_proto undefined OrphanCallChain_C1_I08_0051c2f0()
-// FUNCTION: IMPERIALISM 0x0051c2f0
-undefined4 OrphanCallChain_C1_I08_0051c2f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::ClampTileCoordsToMapDialogBoundsAndRefresh
-// ghidra_proto undefined ClampTileCoordsToMapDialogBoundsAndRefresh()
-// FUNCTION: IMPERIALISM 0x0051c320
-undefined4 ClampTileCoordsToMapDialogBoundsAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderStrategicTileNeighborSlotHighlights
-// ghidra_proto undefined RenderStrategicTileNeighborSlotHighlights()
-// FUNCTION: IMPERIALISM 0x0051c3b0
-undefined4 RenderStrategicTileNeighborSlotHighlights(void)
-{
-  return 0;
-}
-
-// ghidra_name TCitySiteView::HandleTileClickForHomeSelectionOrPortBuild
-// ghidra_proto undefined HandleTileClickForHomeSelectionOrPortBuild()
-// FUNCTION: IMPERIALISM 0x0051c760
-undefined4 HandleTileClickForHomeSelectionOrPortBuild(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapEditView::CreateTMapEditViewInstance
 // ghidra_proto undefined CreateTMapEditViewInstance()
 // FUNCTION: IMPERIALISM 0x0051cab0
 undefined4 CreateTMapEditViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapEditView::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0051cbf0
-undefined4 ScalarDeletingDestructor_0051CBF0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapEditView::GetTMapEditViewClassNamePointer
-// ghidra_proto undefined GetTMapEditViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0051cc40
-undefined4 GetTMapEditViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TWorldView::InitializeStrategicMapTileIconStateCache
-// ghidra_proto void __thiscall InitializeStrategicMapTileIconStateCache(void * pMapView, int nInitToken)
-// FUNCTION: IMPERIALISM 0x0051cc60
-undefined4 InitializeStrategicMapTileIconStateCache(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapEditView::DispatchStrategicMapTileEditAction
-// ghidra_proto void __thiscall DispatchStrategicMapTileEditAction(void * pMapTileEditState, short nTileIndex)
-// FUNCTION: IMPERIALISM 0x0051ce60
-undefined4 DispatchStrategicMapTileEditAction(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C5_I50_0051cfa0
-// ghidra_proto undefined OrphanCallChain_C5_I50_0051cfa0()
-// FUNCTION: IMPERIALISM 0x0051cfa0
-undefined4 OrphanCallChain_C5_I50_0051cfa0(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyCityInfluenceTierAndInvalidateTileCaches
-// ghidra_proto undefined ApplyCityInfluenceTierAndInvalidateTileCaches()
-// FUNCTION: IMPERIALISM 0x0051d060
-undefined4 ApplyCityInfluenceTierAndInvalidateTileCaches(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeStrategicMapCityInfluenceBuffers
-// ghidra_proto undefined InitializeStrategicMapCityInfluenceBuffers()
-// FUNCTION: IMPERIALISM 0x0051d210
-undefined4 InitializeStrategicMapCityInfluenceBuffers(void)
 {
   return 0;
 }
@@ -1623,14 +1455,6 @@ undefined4 ApplyTileTerrainIndexAndInvalidateAdjacency(void)
 // ghidra_proto undefined PromoteTileToCityAndRefreshNeighbors()
 // FUNCTION: IMPERIALISM 0x0051dc90
 undefined4 PromoteTileToCityAndRefreshNeighbors(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C10_I59_0051deb0
-// ghidra_proto undefined OrphanCallChain_C10_I59_0051deb0()
-// FUNCTION: IMPERIALISM 0x0051deb0
-undefined4 OrphanCallChain_C10_I59_0051deb0(void)
 {
   return 0;
 }
@@ -1963,26 +1787,10 @@ undefined4 WrapperFor_ftol_At005258c0(void)
   return 0;
 }
 
-// ghidra_name TMapMaker::GetTMapMakerClassNamePointer
-// ghidra_proto undefined GetTMapMakerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00525950
-undefined4 GetTMapMakerClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMaker::ConstructTMapMaker
 // ghidra_proto undefined ConstructTMapMaker()
 // FUNCTION: IMPERIALISM 0x00525970
 undefined4 ConstructTMapMaker(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::DeleteTMapMaker
-// ghidra_proto undefined DeleteTMapMaker()
-// FUNCTION: IMPERIALISM 0x00525990
-undefined4 DeleteTMapMaker(void)
 {
   return 0;
 }
@@ -2027,118 +1835,6 @@ undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
   return 0;
 }
 
-// ghidra_name TMapMaker::TMapMaker_GenerateRandomCoarseGridCoord27x15
-// ghidra_proto undefined TMapMaker_GenerateRandomCoarseGridCoord27x15()
-// FUNCTION: IMPERIALISM 0x00526ba0
-undefined4 TMapMaker_GenerateRandomCoarseGridCoord27x15(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRegionGenerationStateAndSeedCoarseGrid
-// ghidra_proto undefined InitializeRegionGenerationStateAndSeedCoarseGrid()
-// FUNCTION: IMPERIALISM 0x00526c20
-undefined4 InitializeRegionGenerationStateAndSeedCoarseGrid(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::ExpandCoarseRegionNodeWithNeighborChecks
-// ghidra_proto undefined ExpandCoarseRegionNodeWithNeighborChecks()
-// FUNCTION: IMPERIALISM 0x00527040
-undefined4 ExpandCoarseRegionNodeWithNeighborChecks(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::MergeCoarseRegionSetsAcrossNeighbors
-// ghidra_proto undefined MergeCoarseRegionSetsAcrossNeighbors()
-// FUNCTION: IMPERIALISM 0x00527300
-undefined4 MergeCoarseRegionSetsAcrossNeighbors(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateCoarseRegionMergeConsistency
-// ghidra_proto undefined ValidateCoarseRegionMergeConsistency()
-// FUNCTION: IMPERIALISM 0x005274d0
-undefined4 ValidateCoarseRegionMergeConsistency(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildFineGridRegionOverlayFromCoarseState
-// ghidra_proto undefined BuildFineGridRegionOverlayFromCoarseState()
-// FUNCTION: IMPERIALISM 0x005275a0
-undefined4 BuildFineGridRegionOverlayFromCoarseState(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateCoarseAndFineRegionSeedMap
-// ghidra_proto undefined GenerateCoarseAndFineRegionSeedMap()
-// FUNCTION: IMPERIALISM 0x00527730
-undefined4 GenerateCoarseAndFineRegionSeedMap(void)
-{
-  return 0;
-}
-
-// ghidra_name PickRandomType3SeedAndAttemptExpansion
-// ghidra_proto undefined PickRandomType3SeedAndAttemptExpansion()
-// FUNCTION: IMPERIALISM 0x00527d00
-undefined4 PickRandomType3SeedAndAttemptExpansion(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::TryAssignCellTypeWithDirectionalConstraints
-// ghidra_proto undefined TryAssignCellTypeWithDirectionalConstraints()
-// FUNCTION: IMPERIALISM 0x00527ed0
-undefined4 TryAssignCellTypeWithDirectionalConstraints(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::TryPlaceType1CoarseCellWithAdjacencyRules
-// ghidra_proto undefined TryPlaceType1CoarseCellWithAdjacencyRules()
-// FUNCTION: IMPERIALISM 0x00528140
-undefined4 TryPlaceType1CoarseCellWithAdjacencyRules(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::TryPlaceType3CoarseCellWithAdjacencyRules
-// ghidra_proto undefined TryPlaceType3CoarseCellWithAdjacencyRules()
-// FUNCTION: IMPERIALISM 0x005283c0
-undefined4 TryPlaceType3CoarseCellWithAdjacencyRules(void)
-{
-  return 0;
-}
-
-// ghidra_name BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands
-// ghidra_proto undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()
-// FUNCTION: IMPERIALISM 0x00528670
-undefined4 BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::SpreadType6CellsAcrossCoarseRowSegments
-// ghidra_proto undefined SpreadType6CellsAcrossCoarseRowSegments()
-// FUNCTION: IMPERIALISM 0x00528780
-undefined4 SpreadType6CellsAcrossCoarseRowSegments(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::SpreadType6CellsWithSecondaryNeighborPass
-// ghidra_proto undefined SpreadType6CellsWithSecondaryNeighborPass()
-// FUNCTION: IMPERIALISM 0x005288a0
-undefined4 SpreadType6CellsWithSecondaryNeighborPass(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNeighborTileIndexOnMap108x60
 // ghidra_proto undefined GetNeighborTileIndexOnMap108x60()
 // FUNCTION: IMPERIALISM 0x00528c10
@@ -2147,58 +1843,10 @@ undefined4 GetNeighborTileIndexOnMap108x60(void)
   return 0;
 }
 
-// ghidra_name GetNeighborIndexOnCoarseGrid27x15
-// ghidra_proto undefined GetNeighborIndexOnCoarseGrid27x15()
-// FUNCTION: IMPERIALISM 0x00528ce0
-undefined4 GetNeighborIndexOnCoarseGrid27x15(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::SmoothCityRegionOwnershipByNeighborSampling
-// ghidra_proto undefined SmoothCityRegionOwnershipByNeighborSampling()
-// FUNCTION: IMPERIALISM 0x00528e50
-undefined4 SmoothCityRegionOwnershipByNeighborSampling(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildCoarseCellNeighborTransitionState
-// ghidra_proto undefined RebuildCoarseCellNeighborTransitionState()
-// FUNCTION: IMPERIALISM 0x005292f0
-undefined4 RebuildCoarseCellNeighborTransitionState(void)
-{
-  return 0;
-}
-
 // ghidra_name RandomizeRegionTemplateBanksForMismatchedNeighborClasses
 // ghidra_proto undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()
 // FUNCTION: IMPERIALISM 0x005293d0
 undefined4 RandomizeRegionTemplateBanksForMismatchedNeighborClasses(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::CopyFinePatternFromNeighborCellByMode
-// ghidra_proto undefined CopyFinePatternFromNeighborCellByMode()
-// FUNCTION: IMPERIALISM 0x005296a0
-undefined4 CopyFinePatternFromNeighborCellByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::RestoreFinePatternBandFromNeighborCell
-// ghidra_proto undefined RestoreFinePatternBandFromNeighborCell()
-// FUNCTION: IMPERIALISM 0x005297e0
-undefined4 RestoreFinePatternBandFromNeighborCell(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
-// ghidra_proto undefined GetFineGridCellBasePointerFromCoarseIndex()
-// FUNCTION: IMPERIALISM 0x005298a0
-undefined4 GetFineGridCellBasePointerFromCoarseIndex(void)
 {
   return 0;
 }
@@ -2215,14 +1863,6 @@ undefined4 RotateMapColumnsByPeakCityTileDensity(void)
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90
 undefined4 OrphanDeadLeaf_NoRefs_00529d90(void)
-{
-  return 0;
-}
-
-// ghidra_name TSpaceCommand::ReindexType5CellsAndRebuildRegionOverlays
-// ghidra_proto undefined ReindexType5CellsAndRebuildRegionOverlays()
-// FUNCTION: IMPERIALISM 0x00529f60
-undefined4 ReindexType5CellsAndRebuildRegionOverlays(void)
 {
   return 0;
 }
@@ -2263,14 +1903,6 @@ undefined4 WrapExtendedMapXCoordinateInPlace(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()
 // FUNCTION: IMPERIALISM 0x0052a720
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendSixDwordsToDynamicRecordArray
-// ghidra_proto undefined AppendSixDwordsToDynamicRecordArray()
-// FUNCTION: IMPERIALISM 0x0052a760
-undefined4 AppendSixDwordsToDynamicRecordArray(void)
 {
   return 0;
 }
@@ -2367,14 +1999,6 @@ undefined4 GetOverlaySpanRecordByIndex(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()
 // FUNCTION: IMPERIALISM 0x0052c060
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendOverlayQuadRecord
-// ghidra_proto undefined AppendOverlayQuadRecord()
-// FUNCTION: IMPERIALISM 0x0052c0a0
-undefined4 AppendOverlayQuadRecord(void)
 {
   return 0;
 }
@@ -2503,30 +2127,6 @@ undefined4 RebuildUMapperRouteRecordsAndActiveMapRects(void)
 // ghidra_proto undefined AllocateRouteNodeStateBufferByCount()
 // FUNCTION: IMPERIALISM 0x0052e7b0
 undefined4 AllocateRouteNodeStateBufferByCount(void)
-{
-  return 0;
-}
-
-// ghidra_name NormalizeRouteNodeMarkerValuesAndReportChanges
-// ghidra_proto undefined NormalizeRouteNodeMarkerValuesAndReportChanges()
-// FUNCTION: IMPERIALISM 0x0052e840
-undefined4 NormalizeRouteNodeMarkerValuesAndReportChanges(void)
-{
-  return 0;
-}
-
-// ghidra_name MarkRouteNodePendingAndActivateUnvisitedNeighbors
-// ghidra_proto undefined MarkRouteNodePendingAndActivateUnvisitedNeighbors()
-// FUNCTION: IMPERIALISM 0x0052e890
-undefined4 MarkRouteNodePendingAndActivateUnvisitedNeighbors(void)
-{
-  return 0;
-}
-
-// ghidra_name PropagateRouteNodeMarkersFromDeferredNodes
-// ghidra_proto undefined PropagateRouteNodeMarkersFromDeferredNodes()
-// FUNCTION: IMPERIALISM 0x0052e900
-undefined4 PropagateRouteNodeMarkersFromDeferredNodes(void)
 {
   return 0;
 }

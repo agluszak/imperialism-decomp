@@ -22,7 +22,7 @@ public:
   virtual undefined OrphanTiny_ReturnZero_005a5d60() override; // slot 0x0b 0x5a6140
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override; // slot 0x0c 0x5a6180
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override; // slot 0x0d 0x5a61a0
-  virtual undefined VTableSlot0E(int param_1) override; // slot 0x0e 0x5a61c0
+  virtual undefined VTableSlot0E() override; // slot 0x0e 0x5a61c0
   // slot 0x0f CreateTArmyTacUnitInstance inherited unchanged (0x5a5eb0)
 // === END GENERATED DECLS (TArmyTacUnit) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyTacUnit 0xCTOR`).

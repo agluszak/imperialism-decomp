@@ -1,9 +1,19 @@
 #include "game/TJoinSelectorDialog.h"
 
+// SYNTHETIC: IMPERIALISM 0x0044fab0
+// TJoinSelectorDialog::`scalar deleting destructor'
 TJoinSelectorDialog::~TJoinSelectorDialog() {}
 
-CRuntimeClass* TJoinSelectorDialog::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0054e710
+CRuntimeClass* TJoinSelectorDialog::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054e730
+void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TJoinSelectorDialog::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054e9a0
+undefined TJoinSelectorDialog::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

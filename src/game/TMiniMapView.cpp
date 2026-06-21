@@ -1,9 +1,18 @@
 #include "game/TMiniMapView.h"
 
-CRuntimeClass* TMiniMapView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0059a360
+CRuntimeClass* TMiniMapView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0059a3f0
+// TMiniMapView::`scalar deleting destructor'
 TMiniMapView::~TMiniMapView() {}
 
-undefined TMiniMapView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0059a540
+void TMiniMapView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-void TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {}
+// FUNCTION: IMPERIALISM 0x0059a920
+void TMiniMapView::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+}

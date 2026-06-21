@@ -1,7 +1,14 @@
 #include "game/TBackgroundPicture.h"
 
-CRuntimeClass* TBackgroundPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00572c60
+CRuntimeClass* TBackgroundPicture::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00572cb0
+// TBackgroundPicture::`scalar deleting destructor'
 TBackgroundPicture::~TBackgroundPicture() {}
 
-undefined TBackgroundPicture::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00572d00
+void TBackgroundPicture::ApplyRectSlot110(RECT* rectBuffer) {
+}

@@ -22,7 +22,13 @@ CRuntimeClass* T2PictureButton::GetRuntimeClass() const {
 T2PictureButton::T2PictureButton() : TPictureButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00570be0
 // T2PictureButton::`scalar deleting destructor'
 
 T2PictureButton::~T2PictureButton() {}
+
+// FUNCTION: IMPERIALISM 0x00570c30
+undefined T2PictureButton::OrphanCallChain_C3_I43_00570c30() {
+  return 0;
+}

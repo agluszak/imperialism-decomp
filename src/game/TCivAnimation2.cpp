@@ -1,9 +1,22 @@
 #include "game/TCivAnimation2.h"
 
+undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int * param_1) { return 0; }
+
+// SYNTHETIC: IMPERIALISM 0x0049f630
+// TCivAnimation2::`scalar deleting destructor'
 TCivAnimation2::~TCivAnimation2() {}
 
-CRuntimeClass* TCivAnimation2::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0049f680
+CRuntimeClass* TCivAnimation2::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() { return 0; }
+// FUNCTION: IMPERIALISM 0x0049f7c0
+undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+  return 0;
+}
 
-undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int * param_1) { return 0; }
+// FUNCTION: IMPERIALISM 0x0049f8e0
+undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift() {
+  return 0;
+}

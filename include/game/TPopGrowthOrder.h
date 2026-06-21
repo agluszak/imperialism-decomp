@@ -23,9 +23,9 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0() override; // slot 0x0c 0x4b81b0
   virtual undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b82f0
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b8420
-  // slot 0x0f InitializeCityOrderItemWorkingBuffers inherited unchanged (0x4b5180)
+  // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b8440
-  virtual undefined ConstructTPopGrowthOrderBaseState(int param_1) override; // slot 0x11 0x4b8160
+  virtual undefined ConstructTPopGrowthOrderBaseState() override; // slot 0x11 0x4b8160
 // === END GENERATED DECLS (TPopGrowthOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPopGrowthOrder 0xCTOR`).
 

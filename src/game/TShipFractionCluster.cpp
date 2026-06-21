@@ -1,9 +1,19 @@
 #include "game/TShipFractionCluster.h"
 
+// SYNTHETIC: IMPERIALISM 0x0044a720
+// TShipFractionCluster::`scalar deleting destructor'
 TShipFractionCluster::~TShipFractionCluster() {}
 
-CRuntimeClass* TShipFractionCluster::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00568d50
+CRuntimeClass* TShipFractionCluster::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00568d70
+void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TShipFractionCluster::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00568eb0
+undefined TShipFractionCluster::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

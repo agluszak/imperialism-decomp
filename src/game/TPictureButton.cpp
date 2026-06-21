@@ -12,6 +12,7 @@ CRuntimeClass* TPictureButton::GetRuntimeClass() const {
 TPictureButton::TPictureButton() : TPictureResourceEntryBase(), timingWord92(7000) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00570820
 // TPictureButton::`scalar deleting destructor'
 
@@ -38,3 +39,5 @@ void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg
       *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
   TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
+
+bool TPictureButton::IsSelected(short value = -1, bool refreshNow = true) { return 0; }

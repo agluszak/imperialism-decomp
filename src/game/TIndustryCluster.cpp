@@ -65,6 +65,7 @@ TIndustryCluster::TIndustryCluster()
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
+TIndustryCluster::~TIndustryCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {

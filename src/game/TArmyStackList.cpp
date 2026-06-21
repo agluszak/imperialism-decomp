@@ -1,7 +1,15 @@
 #include "game/TArmyStackList.h"
 
-CRuntimeClass* TArmyStackList::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004a8430
+CRuntimeClass* TArmyStackList::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004a84c0
+// TArmyStackList::`scalar deleting destructor'
 TArmyStackList::~TArmyStackList() {}
 
-undefined TArmyStackList::GetTEventHandlerClassNamePointer() { return 0; }
+// FUNCTION: IMPERIALISM 0x004a8560
+undefined TArmyStackList::ConstructTSortedListBaseState() {
+  return 0;
+}

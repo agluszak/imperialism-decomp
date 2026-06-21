@@ -1,11 +1,23 @@
 #include "game/TTacMapUberPicture.h"
 
-undefined TTacMapUberPicture::OrphanRetStub_0045d2a0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0045d3b0
+undefined TTacMapUberPicture::OrphanRetStub_0045d2a0() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0045d3e0
+// TTacMapUberPicture::`scalar deleting destructor'
 TTacMapUberPicture::~TTacMapUberPicture() {}
 
-CRuntimeClass* TTacMapUberPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad380
+CRuntimeClass* TTacMapUberPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad3a0
+void TTacMapUberPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730() { return 0; }
+// FUNCTION: IMPERIALISM 0x005ad3f0
+void TTacMapUberPicture::ForwardParam(int param) {
+}

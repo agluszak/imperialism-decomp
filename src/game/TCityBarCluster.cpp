@@ -43,10 +43,7 @@ TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00586660
 // TCityBarCluster::`scalar deleting destructor'
-
-const int kAssertLineTradeSummaryRtnu = 0x67d;
-const int kAssertLineTradeSummaryIart = 0x682;
-const int kAssertLineTradeSummaryProf = 0x687;
+TCityBarCluster::~TCityBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005866b0
 void TCityBarCluster::ApplyMoveValue(int value) {

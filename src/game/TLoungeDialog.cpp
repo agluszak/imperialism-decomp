@@ -1,13 +1,28 @@
 #include "game/TLoungeDialog.h"
 
+// SYNTHETIC: IMPERIALISM 0x0044fae0
+// TLoungeDialog::`scalar deleting destructor'
 TLoungeDialog::~TLoungeDialog() {}
 
-CRuntimeClass* TLoungeDialog::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0054d6d0
+CRuntimeClass* TLoungeDialog::GetRuntimeClass() const {
+  return 0;
+}
 
-void TLoungeDialog::Free() {}
+// FUNCTION: IMPERIALISM 0x0054d6f0
+void TLoungeDialog::Free() {
+}
 
-undefined TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054d730
+void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TLoungeDialog::VTableSlot13() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054db40
+char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
+  return 0;
+}
 
-undefined TLoungeDialog::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0054e1f0
+undefined TLoungeDialog::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

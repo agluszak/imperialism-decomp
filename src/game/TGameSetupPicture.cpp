@@ -1,9 +1,19 @@
 #include "game/TGameSetupPicture.h"
 
-CRuntimeClass* TGameSetupPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00575840
+CRuntimeClass* TGameSetupPicture::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00575890
+// TGameSetupPicture::`scalar deleting destructor'
 TGameSetupPicture::~TGameSetupPicture() {}
 
-undefined TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x005758e0
+void TGameSetupPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TGameSetupPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00575900
+undefined TGameSetupPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

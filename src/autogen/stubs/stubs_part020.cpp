@@ -3,26 +3,10 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
-// ghidra_proto undefined DestructTTradeTotalsLineAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005c1930
-undefined4 DestructTTradeTotalsLineAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTradeTotalsLineAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005c1960
 undefined4 DestructTTradeTotalsLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0
-// ghidra_proto undefined Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0()
-// FUNCTION: IMPERIALISM 0x005c19c0
-undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0(void)
 {
   return 0;
 }
@@ -35,34 +19,10 @@ undefined4 CreateTTradeTotalsViewInstance(void)
   return 0;
 }
 
-// ghidra_name TTradeTotalsView::GetTTradeTotalsViewClassNamePointer
-// ghidra_proto undefined GetTTradeTotalsViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005c1af0
-undefined4 GetTTradeTotalsViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeTotalsView::ConstructTTradeTotalsViewBaseState
 // ghidra_proto undefined ConstructTTradeTotalsViewBaseState()
 // FUNCTION: IMPERIALISM 0x005c1b10
 undefined4 ConstructTTradeTotalsViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsView::DestructTTradeTotalsViewAndMaybeFree
-// ghidra_proto undefined DestructTTradeTotalsViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005c1b40
-undefined4 DestructTTradeTotalsViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TUnit::CreateTUnitInstance
-// ghidra_proto undefined CreateTUnitInstance()
-// FUNCTION: IMPERIALISM 0x005c1bd0
-undefined4 CreateTUnitInstance(void)
 {
   return 0;
 }
@@ -2011,14 +1971,6 @@ undefined4 CreateTMovieViewInstance(void)
   return 0;
 }
 
-// ghidra_name TMovieView::GetTMovieViewClassNamePointer
-// ghidra_proto undefined GetTMovieViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005e2210
-undefined4 GetTMovieViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TMovieView::ConstructTMovieViewBaseState
 // ghidra_proto undefined ConstructTMovieViewBaseState()
 // FUNCTION: IMPERIALISM 0x005e2230
@@ -2027,34 +1979,10 @@ undefined4 ConstructTMovieViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TMovieView::DestructTMovieViewAndMaybeFree
-// ghidra_proto undefined DestructTMovieViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005e22f0
-undefined4 DestructTMovieViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructMovieViewAndCloseOwnedWindow
 // ghidra_proto undefined DestructMovieViewAndCloseOwnedWindow()
 // FUNCTION: IMPERIALISM 0x005e2320
 undefined4 DestructMovieViewAndCloseOwnedWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMovieViewOwnedStateBlock
-// ghidra_proto undefined InitializeMovieViewOwnedStateBlock()
-// FUNCTION: IMPERIALISM 0x005e23f0
-undefined4 InitializeMovieViewOwnedStateBlock(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeUiCallback_005e2490
-// ghidra_proto undefined NoOpRuntimeUiCallback_005e2490()
-// FUNCTION: IMPERIALISM 0x005e2490
-undefined4 NoOpRuntimeUiCallback_005e2490(void)
 {
   return 0;
 }
@@ -2079,14 +2007,6 @@ undefined4 SendMessage806IfSelectionStateActive(void)
 // ghidra_proto undefined SendMessage808IfSelectionStateActive()
 // FUNCTION: IMPERIALISM 0x005e2500
 undefined4 SendMessage808IfSelectionStateActive(void)
-{
-  return 0;
-}
-
-// ghidra_name TMovieView::SendMessage808IfActiveThenDispatchMouseMove
-// ghidra_proto undefined SendMessage808IfActiveThenDispatchMouseMove()
-// FUNCTION: IMPERIALISM 0x005e2520
-undefined4 SendMessage808IfActiveThenDispatchMouseMove(void)
 {
   return 0;
 }

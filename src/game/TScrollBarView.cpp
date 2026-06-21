@@ -1,17 +1,35 @@
 #include "game/TScrollBarView.h"
 
+// SYNTHETIC: IMPERIALISM 0x00573df0
+// TScrollBarView::`scalar deleting destructor'
 TScrollBarView::~TScrollBarView() {}
 
-CRuntimeClass* TScrollBarView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00574490
+CRuntimeClass* TScrollBarView::GetRuntimeClass() const {
+  return 0;
+}
 
-void TScrollBarView::Free() {}
+// FUNCTION: IMPERIALISM 0x005746e0
+void TScrollBarView::Free() {
+}
 
-undefined TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00574720
+void TScrollBarView::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TScrollBarView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005747c0
+undefined TScrollBarView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject() { return 0; }
+// FUNCTION: IMPERIALISM 0x00574830
+void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+}
 
-undefined TScrollBarView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00574970
+void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-void TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {}
+// FUNCTION: IMPERIALISM 0x00574d10
+void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+}

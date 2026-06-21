@@ -33,8 +33,8 @@ THandleStream::THandleStream() {
 
 // SYNTHETIC: IMPERIALISM 0x00489610
 // THandleStream::`scalar deleting destructor'
+THandleStream::~THandleStream() {}
 
-// Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489640
 // THandleStream::~THandleStream
 
@@ -49,6 +49,11 @@ int THandleStream::streamSlot28() {
 // FUNCTION: IMPERIALISM 0x00489700
 int THandleStream::streamSlot30() {
   return handleOrBuffer;
+}
+
+// FUNCTION: IMPERIALISM 0x00489720
+undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00489740

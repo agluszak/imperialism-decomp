@@ -37,6 +37,7 @@ TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00586d10
 // TAmtBarCluster::`scalar deleting destructor'
+TAmtBarCluster::~TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void TAmtBarCluster::NoOpUiLifecycleHook(int styleSeed) {

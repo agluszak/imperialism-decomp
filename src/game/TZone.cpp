@@ -98,12 +98,6 @@ TZone::TZone()
   }
 }
 
-TZone::~TZone() {}
-
-void TZone::HandleTurnEventVtableSlot08(int arg1) {
-  (void)arg1;
-}
-
 void TZone::AssertValid() const {
   return;
 }
@@ -111,14 +105,6 @@ void TZone::AssertValid() const {
 void TZone::Dump(CDumpContext& unused) const {
   (void)unused;
   return;
-}
-
-void TZone::SerializeZoneToBinaryStream(void* streamState) {
-  (void)streamState;
-}
-
-void TZone::DeserializeZoneFromBinaryStream(int streamState) {
-  (void)streamState;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e820
@@ -154,6 +140,26 @@ bool TZone::HasZoneActiveChildCount(int unused) {
   return field44 > 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0055e8e0
+undefined TZone::GetOrAppendUniqueZonePointerInPrimaryArray() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e9c0
+undefined TZone::GetOrAppendUniqueZonePointerInSecondaryArray() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0055ead0
+undefined TZone::AppendZonePointerToPrimaryArray() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0055eba0
+undefined TZone::AppendZonePointerToSecondaryArray() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055ec60
 void TZone::RemoveZoneFromGlobalListAndRelease() {
   if (g_pMapActionContextListHead == this) {
@@ -170,6 +176,14 @@ void TZone::RemoveZoneFromGlobalListAndRelease() {
   DeleteUnlinkedZone(this);
 }
 
+// FUNCTION: IMPERIALISM 0x0055ed20
+void TZone::ReadFrom(TStream* stream) {
+}
+
+// FUNCTION: IMPERIALISM 0x0055eff0
+void TZone::WriteTo(TStream* stream) {
+}
+
 // FUNCTION: IMPERIALISM 0x0055f070
 void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
   (void)outputRef;
@@ -178,6 +192,11 @@ void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
 // FUNCTION: IMPERIALISM 0x0055f090
 void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
   (void)outputRef;
+}
+
+// FUNCTION: IMPERIALISM 0x0055f780
+undefined TZone::GenerateMapActionContextDisplayNameAndHeadline() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055fb60
@@ -229,10 +248,6 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
     stepMagnitude = static_cast<short>(stepMagnitude + 1);
     stepSign = static_cast<short>(-stepSign);
   }
-}
-
-short TZone::MapActionVtableSlot4C() {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055fef0
@@ -508,8 +523,55 @@ int ZoneIsPortKind(TZone* node) {
 } // namespace
 
 // Destructors are compiler-generated (implicit virtual dtor).
+
+// FUNCTION: IMPERIALISM 0x005616c0
+undefined TZone::DestroyTPortZone() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005617f0
+undefined TZone::DeserializeTPortZoneFromBinaryStream() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561820
+undefined TZone::SerializeTPortZoneToBinaryStream() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005618b0
+undefined TZone::RefreshTPortZoneDisplayNameFromLocalization() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561a70
+undefined TZone::DestroyTPortZoneAndClearOverlayMarkers() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561b10
+undefined TZone::IsPortZoneOwnerNationEqual() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561b50
+undefined TZone::NotifyDiplomacyManagerForPortZoneOwnerNation() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561dc0
+undefined TZone::CanPortZoneInteractWithNationUnderDiplomacyRules() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00561e40
+undefined TZone::FindNearestValidPortZoneOrCityContextTile() {
+  return 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00562880
 // TZone::`scalar deleting destructor'
+TZone::~TZone() {}
 
 // FUNCTION: IMPERIALISM 0x00563540
 TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
@@ -551,3 +613,15 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
 
   return 0;
 }
+
+TObject* TZone::ShallowFree() { return 0; }
+
+void TZone::Serialize(CArchive& archive) {}
+
+undefined TZone::ReturnTrueForPortZoneCapabilityFlagA() { return 0; }
+
+undefined TZone::ReturnTrueForPortZoneCapabilityFlagB() { return 0; }
+
+undefined TZone::ReturnFalseForPortZoneCapabilityFlagC() { return 0; }
+
+undefined TZone::GetTPortZoneClassNamePointer() { return 0; }

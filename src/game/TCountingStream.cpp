@@ -27,8 +27,8 @@ TCountingStream::TCountingStream() {
 
 // SYNTHETIC: IMPERIALISM 0x00489440
 // TCountingStream::`scalar deleting destructor'
+TCountingStream::~TCountingStream() {}
 
-// Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489470
 // TCountingStream::~TCountingStream
 
@@ -47,3 +47,5 @@ int TCountingStream::streamSlot30() {
 
 // FUNCTION: IMPERIALISM 0x00489520
 void TCountingStream::streamSlot34() {}
+
+undefined TCountingStream::OrphanRetStub_00488e70() { return 0; }

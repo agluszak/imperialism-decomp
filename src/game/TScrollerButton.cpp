@@ -1,7 +1,14 @@
 #include "game/TScrollerButton.h"
 
-CRuntimeClass* TScrollerButton::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00574f20
+CRuntimeClass* TScrollerButton::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00574f70
+// TScrollerButton::`scalar deleting destructor'
 TScrollerButton::~TScrollerButton() {}
 
-void TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {}
+// FUNCTION: IMPERIALISM 0x00574fc0
+void TScrollerButton::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+}

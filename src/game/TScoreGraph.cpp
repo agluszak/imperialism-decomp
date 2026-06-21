@@ -1,9 +1,18 @@
 #include "game/TScoreGraph.h"
 
+// SYNTHETIC: IMPERIALISM 0x004fe240
+// TScoreGraph::`scalar deleting destructor'
 TScoreGraph::~TScoreGraph() {}
 
-CRuntimeClass* TScoreGraph::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004fe290
+CRuntimeClass* TScoreGraph::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TScoreGraph::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x004fe2b0
+void TScoreGraph::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TScoreGraph::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004fe390
+void TScoreGraph::ApplyRectSlot110(RECT* rectBuffer) {
+}

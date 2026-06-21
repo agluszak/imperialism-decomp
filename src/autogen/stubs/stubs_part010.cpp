@@ -1891,26 +1891,10 @@ undefined4 GetTDocumentClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TDocument::ConstructTDocumentBaseState
-// ghidra_proto undefined ConstructTDocumentBaseState()
-// FUNCTION: IMPERIALISM 0x004863f0
-undefined4 ConstructTDocumentBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TFileBasedDocument::CreateTFileBasedDocumentInstance
 // ghidra_proto undefined CreateTFileBasedDocumentInstance()
 // FUNCTION: IMPERIALISM 0x00486420
 undefined4 CreateTFileBasedDocumentInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TFileBasedDocument::GetTFileBasedDocumentClassNamePointer
-// ghidra_proto undefined GetTFileBasedDocumentClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00486440
-undefined4 GetTFileBasedDocumentClassNamePointer(void)
 {
   return 0;
 }
@@ -1939,42 +1923,10 @@ undefined4 ConstructTFileBasedDocumentBaseState(void)
   return 0;
 }
 
-// ghidra_name TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-// ghidra_proto undefined DestructTFileBasedDocumentAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004865e0
-undefined4 DestructTFileBasedDocumentAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommandHandler::CreateTCommandHandlerInstance
 // ghidra_proto undefined CreateTCommandHandlerInstance()
 // FUNCTION: IMPERIALISM 0x00486610
 undefined4 CreateTCommandHandlerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommandHandler::GetTCommandHandlerClassNamePointer
-// ghidra_proto undefined GetTCommandHandlerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00486630
-undefined4 GetTCommandHandlerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommandHandler::ConstructTCommandHandlerBaseState
-// ghidra_proto undefined ConstructTCommandHandlerBaseState()
-// FUNCTION: IMPERIALISM 0x00486650
-undefined4 ConstructTCommandHandlerBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TApplication::DestructTApplicationAndMaybeFree
-// ghidra_proto undefined DestructTApplicationAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004867b0
-undefined4 DestructTApplicationAndMaybeFree(void)
 {
   return 0;
 }
@@ -1991,22 +1943,6 @@ undefined4 PumpUiMessagesAndBackgroundTasks(void)
 // ghidra_proto undefined InvokeAfxThreadAndCallSecondaryRefresh()
 // FUNCTION: IMPERIALISM 0x00486960
 undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name PostCustomMessageBC0ToMainWindow
-// ghidra_proto undefined PostCustomMessageBC0ToMainWindow()
-// FUNCTION: IMPERIALISM 0x00486b50
-undefined4 PostCustomMessageBC0ToMainWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0
-// ghidra_proto undefined Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0()
-// FUNCTION: IMPERIALISM 0x00486ba0
-undefined4 Helper_Uses_thunk_ForwardNotifyParamToPrimaryChildSlot44_At00486ba0(void)
 {
   return 0;
 }
@@ -2107,50 +2043,10 @@ undefined4 CreateTCommandInstance(void)
   return 0;
 }
 
-// ghidra_name TCommand::GetTCommandClassNamePointer
-// ghidra_proto undefined GetTCommandClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00487800
-undefined4 GetTCommandClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommand::DestructTCommandAndMaybeFree
-// ghidra_proto undefined DestructTCommandAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00487850
-undefined4 DestructTCommandAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x00487880
 undefined4 DestructTCommandAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name NextDiplomacyCommandVtableSlotDC_DestroySelf
-// ghidra_proto undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()
-// FUNCTION: IMPERIALISM 0x004878e0
-undefined4 NextDiplomacyCommandVtableSlotDC_DestroySelf(void)
-{
-  return 0;
-}
-
-// ghidra_name NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94
-// ghidra_proto undefined NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()
-// FUNCTION: IMPERIALISM 0x00487900
-undefined4 NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00487a00
-// ghidra_proto undefined OrphanRetStub_00487a00()
-// FUNCTION: IMPERIALISM 0x00487a00
-undefined4 OrphanRetStub_00487a00(void)
 {
   return 0;
 }
@@ -2435,14 +2331,6 @@ undefined4 CreateTFileStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name TCountingStream::CreateTCountingStreamInstance
-// ghidra_proto undefined CreateTCountingStreamInstance()
-// FUNCTION: IMPERIALISM 0x00489390
-undefined4 CreateTCountingStreamInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateTCountingStreamWithAllocFallback
 // ghidra_proto undefined CreateTCountingStreamWithAllocFallback()
 // FUNCTION: IMPERIALISM 0x004893c0
@@ -2471,14 +2359,6 @@ undefined4 CreateTHandleStreamWithAllocFallback(void)
 // ghidra_proto undefined AttachGlobalMemoryHandleAndResetPosition()
 // FUNCTION: IMPERIALISM 0x00489660
 undefined4 AttachGlobalMemoryHandleAndResetPosition(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins06_00489720
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins06_00489720()
-// FUNCTION: IMPERIALISM 0x00489720
-undefined4 OrphanLeaf_NoCall_Ins06_00489720(void)
 {
   return 0;
 }

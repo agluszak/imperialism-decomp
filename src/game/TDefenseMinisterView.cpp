@@ -1,7 +1,15 @@
 #include "game/TDefenseMinisterView.h"
 
-CRuntimeClass* TDefenseMinisterView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004f32d0
+CRuntimeClass* TDefenseMinisterView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x004f3320
+// TDefenseMinisterView::`scalar deleting destructor'
 TDefenseMinisterView::~TDefenseMinisterView() {}
 
-undefined TDefenseMinisterView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f3370
+undefined TDefenseMinisterView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

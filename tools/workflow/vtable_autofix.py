@@ -154,6 +154,73 @@ def parse_vtable_output(text: str) -> VtableReport:
     return report
 
 
+_GEN_BLOCK_RE = re.compile(
+    r"// === BEGIN GENERATED(?: DECLS)? \([^)]*\) .*?// === END GENERATED(?: DECLS)? \([^)]*\) ===",
+    re.DOTALL,
+)
+# Capture the identifier immediately before `(` — the method/ctor/dtor name. No leading
+# `\b`: a word boundary does NOT match before a `~` (both sides are non-word), which would
+# silently strip the tilde and parse a destructor `~Class` as the constructor `Class`,
+# colliding in the external set and dropping the generated dtor decl (the C2084 cause).
+_MEMBER_DECL_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
+_DECL_LINE_NAME_RE = re.compile(r"(~?[A-Za-z_][A-Za-z0-9_]*)\s*\(")
+
+
+def _drop_externally_declared(decls: str, header_text: str, cls: str) -> str:
+    """Remove generated-DECLS lines whose member is already declared in the header
+    outside the generated blocks (hand-curated GetRuntimeClass / dtor / overrides),
+    which would otherwise double-declare and fail MSVC (C2535)."""
+    outside = _GEN_BLOCK_RE.sub("", header_text)
+    external: set[str] = set()
+    for line in outside.splitlines():
+        s = line.strip()
+        if not s or s.startswith("//") or "(" not in s:
+            continue
+        if "=" in s.split("(", 1)[0]:
+            continue
+        m = _MEMBER_DECL_RE.search(s)
+        if m:
+            external.add(m.group(1))
+    if not external:
+        return decls
+    kept: list[str] = []
+    for line in decls.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("virtual "):
+            m = _DECL_LINE_NAME_RE.search(stripped)
+            name = m.group(1) if m else ""
+            # The dtor decl line spells `~Class()`; external curated dtors spell `~Class`.
+            if name in external or (name == f"~{cls}" and f"~{cls}" in external):
+                continue
+        kept.append(line)
+    return "\n".join(kept)
+
+
+def _ancestry_depth(repo_root: Path, cls: str) -> int:
+    """Length of the class's ``generated.ancestry`` chain (class..root..CObject).
+
+    A base always has a strictly shorter ancestry than any class derived from it, so
+    sorting the work list by this depth ascending is a valid topological order: every
+    ancestor is processed before its descendants. Classes without a manifest sort last
+    (depth ``inf``) so the foundation/known classes lead. See the plan's cascade lever:
+    fixing a base first lets `base_owned`/oversized mismatches resolve family-wide.
+    """
+    path = manifest_path(repo_root, cls)
+    if not path.exists():
+        return 1_000_000
+    try:
+        manifest = cm.load_manifest(path)
+    except Exception:
+        return 1_000_000
+    ancestry = (manifest.get("generated") or {}).get("ancestry") or []
+    return len(ancestry) or 1_000_000
+
+
+def order_classes_bases_first(repo_root: Path, classes: list[str]) -> list[str]:
+    """Stable sort of ``classes`` so ancestors precede descendants (bases first)."""
+    return sorted(classes, key=lambda c: (_ancestry_depth(repo_root, c), c))
+
+
 def run_vtable(repo_root: Path, class_filter: str | None) -> str:
     cmd = ["just", "vtable"]
     if class_filter:
@@ -317,16 +384,30 @@ def _merge_marker_stubs(cpp_text: str, cls: str, slots: list[ClassifiedSlot]) ->
         addr = int(match.group(1), 16)
         existing[addr] = cpp_text[start:end].rstrip() + "\n\n"
 
+    def _scalar_dtor_stub(addr: int) -> str:
+        # If the class already defines a real `~Class()` (a hand-ported destructor at the
+        # `??1` address), MSVC generates the `??_G` scalar deleting destructor from it, so
+        # seeding a second `~Class(){}` body is a duplicate definition (C2084). In that
+        # case emit the SYNTHETIC marker only (it claims the `??_G` address for pairing).
+        real_dtor = any(
+            a != addr and f"{cls}::~{cls}(" in blk for a, blk in existing.items()
+        )
+        if real_dtor:
+            return scalar_dtor_block(cls, addr) + "\n"
+        return _stub_block(cls, slot)
+
     claimed = sorted(marked)
     for slot in sorted(slots, key=_slot_addr):
         addr = _slot_addr(slot)
         block = existing.get(addr)
         if block is not None:
             if slot.kind == "scalar_dtor" and f"{cls}::~{cls}(" not in block:
-                existing[addr] = _stub_block(cls, slot)
+                existing[addr] = (
+                    _scalar_dtor_stub(addr) if slot.kind == "scalar_dtor" else _stub_block(cls, slot)
+                )
                 claimed.append(addr)
             continue
-        existing[addr] = _stub_block(cls, slot)
+        existing[addr] = _scalar_dtor_stub(addr) if slot.kind == "scalar_dtor" else _stub_block(cls, slot)
         claimed.append(addr)
 
     body = "".join(existing[a] for a in sorted(existing))
@@ -342,11 +423,15 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
         return 1
     manifest = cm.load_manifest(path)
     slots, collisions = _manifest_owned_slots(repo_root, cls)
+    # `collisions` are override/new slots whose address is owned by another class's .cpp
+    # (shared slot bodies are common). These are NOT claimed here; the header still
+    # declares them and `reconcile_unmarked_stubs` emits an unmarked definition so the
+    # vtable links. Only a collision on a slot we actually try to claim (own_plan, below)
+    # aborts. Report the foreign-owned slots for visibility but proceed.
     if collisions:
-        print(f"vtable-autofix {cls}: refusing slot claim due to ownership collisions:")
+        print(f"vtable-autofix {cls}: {len(collisions)} foreign-owned slot(s) left to reconcile:")
         for collision in collisions:
             print(f"  {collision}")
-        return 1
 
     hpath = header_path(repo_root, cls)
     cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
@@ -360,6 +445,10 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
         manifest,
         [s for s in classified_from_manifest(manifest, repo_root) if s.kind not in ("null", "ilt_thunk")],
     )
+    # Drop generated decl lines for members a hand-curated header already declares
+    # outside the generated blocks (e.g. GetRuntimeClass / the dtor on curated classes),
+    # otherwise the regenerated block double-declares them (MSVC C2535).
+    decls = _drop_externally_declared(decls, header_text, cls)
     new_header, decls_changed = upsert_decls_block(new_header, cls, decls)
 
     cpp_text = (
@@ -368,6 +457,24 @@ def claim_vtable_slots(repo_root: Path, cls: str, write: bool) -> int:
         else f'#include "game/{cls}.h"\n'
     )
     new_cpp, claimed = _merge_marker_stubs(cpp_text, cls, slots)
+    # The header DECLS now use ancestry-resolved override names; an override slot whose
+    # address is owned by another class keeps an *unmarked* stub here, so reconcile those
+    # (drop stubs renamed away, emit unmarked stubs for foreign-owned slots) to keep the
+    # .cpp definitions in step with the header — otherwise header/cpp names diverge.
+    from tools.workflow.gen_class import reconcile_unmarked_stubs
+
+    all_slots = classified_from_manifest(manifest, repo_root)
+    owned_addrs = {normalize_hex(s.target_addr) for s in slots}
+    foreign_slots = [
+        s
+        for s in all_slots
+        if s.kind in ("override", "new")
+        and s.sig is not None
+        and normalize_hex(s.target_addr) not in owned_addrs
+    ]
+    valid_names = {s.sig.name for s in all_slots if s.kind in ("override", "new") and s.sig}
+    valid_names.add(f"~{cls}")
+    new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names)
 
     sym_plan = plan_symbols(resolve_repo_path(repo_root, "config/symbols.csv"), slots, cls)
     own_plan = plan_ownership(
@@ -416,23 +523,31 @@ def plan_for_classes(repo_root: Path, report: VtableReport, classes: list[str]) 
         if (repo_root / "config" / "classes" / f"{cls}.yml").exists():
             claimable, collisions = _claimable_manifest_slots(repo_root, cls)
             if claimable:
+                # Foreign-owned (collision) slots are reconciled as unmarked stubs, not
+                # claimed, so they no longer block the safe claim of the owned slots.
+                summary = f"claim {len(claimable)} manifest-owned vtable slot(s) with marker stubs"
+                if collisions:
+                    summary += f"; reconcile {len(collisions)} foreign-owned slot(s)"
                 plans.append(
                     FixPlan(
                         cls,
                         "slot_promotion",
-                        not collisions,
-                        f"claim {len(claimable)} manifest-owned vtable slot(s) with marker stubs",
+                        True,
+                        summary,
                         f"just vtable-autofix {cls} --write",
                         claimable,
                     )
                 )
             elif collisions:
+                # No owned slots to claim, but header decls + foreign reconcile still need
+                # to run to keep the .cpp in step with resolver-corrected override names.
                 plans.append(
                     FixPlan(
                         cls,
-                        "manual_required",
-                        False,
-                        "manifest slot claim has ownership collisions",
+                        "slot_promotion",
+                        True,
+                        f"reconcile {len(collisions)} foreign-owned vtable slot(s)",
+                        f"just vtable-autofix {cls} --write",
                     )
                 )
 
@@ -509,7 +624,12 @@ def _run_just(repo_root: Path, *args: str) -> int:
 
 def apply_plans(repo_root: Path, plans: list[FixPlan], verify: bool, promote_bodies: bool) -> int:
     rc = 0
-    slot_classes = sorted({p.class_name for p in plans if p.kind == "slot_promotion" and p.safe})
+    # Preserve the (topological) order in which plans were produced — a base must be
+    # regenerated before its descendants so each descendant header regenerates against
+    # the corrected base. dict.fromkeys keeps first-seen order while de-duplicating.
+    slot_classes = list(
+        dict.fromkeys(p.class_name for p in plans if p.kind == "slot_promotion" and p.safe)
+    )
     if any(p.kind == "scalar_dtor" and p.safe for p in plans):
         rc = rc or _run_just(repo_root, "correct-scalar-dtors")
     if any(p.kind == "ilt_thunk" and p.safe for p in plans):
@@ -567,6 +687,12 @@ def parse_args() -> argparse.Namespace:
         help="After --write, run sync/build/detect/vtable/gates.",
     )
     parser.add_argument("--limit", type=int, default=0, help="Analyze at most N classes.")
+    parser.add_argument(
+        "--ordered",
+        action="store_true",
+        help="Process classes bases-first (by manifest ancestry depth) so base fixes "
+        "cascade to descendants. Implied by --all.",
+    )
     parser.add_argument("--vtable-log", type=Path, help="Use an existing `just vtable -n` log.")
     return parser.parse_args()
 
@@ -587,6 +713,8 @@ def main() -> int:
     if args.class_filter and args.class_filter not in classes:
         # reccmp filters by substring, so keep all matching sections when present.
         classes = [c for c in classes if args.class_filter.lower() in c.lower()]
+    if args.ordered or args.all:
+        classes = order_classes_bases_first(repo_root, classes)
     if args.limit:
         classes = classes[: args.limit]
     plans = plan_for_classes(repo_root, report, classes)

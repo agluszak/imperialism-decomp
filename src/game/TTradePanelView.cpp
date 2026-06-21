@@ -1,13 +1,28 @@
 #include "game/TTradePanelView.h"
 
+// SYNTHETIC: IMPERIALISM 0x00430450
+// TTradePanelView::`scalar deleting destructor'
 TTradePanelView::~TTradePanelView() {}
 
-CRuntimeClass* TTradePanelView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x004f8760
+CRuntimeClass* TTradePanelView::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TTradePanelView::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f8780
+void TTradePanelView::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TTradePanelView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f8940
+void TTradePanelView::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined TTradePanelView::OrphanRetStub_00430550() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f8d50
+undefined TTradePanelView::OrphanRetStub_00430550() {
+  return 0;
+}
 
-undefined TTradePanelView::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004f8dd0
+undefined TTradePanelView::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

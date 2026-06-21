@@ -1,11 +1,23 @@
 #include "game/TRadioTextCluster.h"
 
-CRuntimeClass* TRadioTextCluster::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00579680
+CRuntimeClass* TRadioTextCluster::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005796f0
+// TRadioTextCluster::`scalar deleting destructor'
 TRadioTextCluster::~TRadioTextCluster() {}
 
-undefined TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00579740
+void TRadioTextCluster::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TRadioTextCluster::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00579770
+undefined TRadioTextCluster::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TRadioTextCluster::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00579a60
+void TRadioTextCluster::ApplyRectSlot110(RECT* rectBuffer) {
+}

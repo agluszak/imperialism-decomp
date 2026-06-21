@@ -1,13 +1,27 @@
 #include "game/TOffLimitsPicture.h"
 
-CRuntimeClass* TOffLimitsPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005737b0
+CRuntimeClass* TOffLimitsPicture::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00573800
+// TOffLimitsPicture::`scalar deleting destructor'
 TOffLimitsPicture::~TOffLimitsPicture() {}
 
-undefined TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00573850
+void TOffLimitsPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TOffLimitsPicture::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00573890
+void TOffLimitsPicture::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-void TOffLimitsPicture::Free() {}
+// FUNCTION: IMPERIALISM 0x00573900
+void TOffLimitsPicture::Free() {
+}
 
-undefined TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox() { return 0; }
+// FUNCTION: IMPERIALISM 0x00573940
+undefined TOffLimitsPicture::ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox() {
+  return 0;
+}

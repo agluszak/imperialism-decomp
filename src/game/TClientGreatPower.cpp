@@ -1,21 +1,44 @@
 #include "game/TClientGreatPower.h"
 
-char TClientGreatPower::ReturnFalseNationStateCapabilityFlag98() { return 0; }
+// FUNCTION: IMPERIALISM 0x005412b0
+char TClientGreatPower::ReturnFalseNationStateCapabilityFlag98() {
+  return 0;
+}
 
-undefined TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005412d0
+undefined TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005412f0
+// TClientGreatPower::`scalar deleting destructor'
 TClientGreatPower::~TClientGreatPower() {}
 
-CRuntimeClass* TClientGreatPower::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00541390
+CRuntimeClass* TClientGreatPower::GetRuntimeClass() const {
+  return 0;
+}
 
-void TClientGreatPower::ApplyJoinEmpireModeForTargetNation() {}
+// FUNCTION: IMPERIALISM 0x005413b0
+void TClientGreatPower::ApplyAcceptedDiplomacyProposalCode() {
+}
 
-void TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers() {}
+// FUNCTION: IMPERIALISM 0x00541450
+undefined TClientGreatPower::QueueInterNationEventForProposalCode12D_130() {
+  return 0;
+}
 
-void TClientGreatPower::AddRegionIdToNationOwnedRegionList() {}
+// FUNCTION: IMPERIALISM 0x005414f0
+void TClientGreatPower::ProcessPendingDiplomacyProposalQueue() {
+}
 
-undefined TClientGreatPower::GetTEventHandlerClassNamePointer() { return 0; }
+// FUNCTION: IMPERIALISM 0x005415c0
+undefined TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback() {
+  return 0;
+}
 
-undefined TClientGreatPower::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00541790
+void TClientGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {
+}
 
-void TClientGreatPower::ApplyJoinEmpireMode1TargetTransition() {}
+undefined TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType1() { return 0; }

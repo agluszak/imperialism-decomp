@@ -1,7 +1,14 @@
 #include "game/TIncludeView.h"
 
-CRuntimeClass* TIncludeView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0048cd50
+CRuntimeClass* TIncludeView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0048ce40
+// TIncludeView::`scalar deleting destructor'
 TIncludeView::~TIncludeView() {}
 
-undefined TIncludeView::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0048cfd0
+void TIncludeView::NoOpUiLifecycleHook(int arg) {
+}

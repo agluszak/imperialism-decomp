@@ -1,15 +1,33 @@
 #include "game/TSetupRandomMapPicture.h"
 
-CRuntimeClass* TSetupRandomMapPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00576d60
+CRuntimeClass* TSetupRandomMapPicture::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00576e00
+// TSetupRandomMapPicture::`scalar deleting destructor'
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
-undefined TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00577030
+void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TSetupRandomMapPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005779c0
+undefined TSetupRandomMapPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4() { return 0; }
+// FUNCTION: IMPERIALISM 0x00577e40
+undefined TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4() {
+  return 0;
+}
 
-undefined TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState() { return 0; }
+// FUNCTION: IMPERIALISM 0x005781f0
+undefined TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState() {
+  return 0;
+}
 
-undefined TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730() { return 0; }
+// FUNCTION: IMPERIALISM 0x005782f0
+void TSetupRandomMapPicture::ForwardParam(int param) {
+}

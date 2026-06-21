@@ -96,6 +96,66 @@ DECLS_BEGIN = "// === BEGIN GENERATED DECLS ({cls}) — refreshed by recover-cla
 DECLS_END = "// === END GENERATED DECLS ({cls}) ==="
 
 
+_SYMBOLS_NAME_CACHE: dict[str, dict[str, tuple[str, str]]] = {}
+
+
+def _symbols_name_map(repo_root: Path) -> dict[str, tuple[str, str]]:
+    """``addr(bare hex) -> (name, prototype)`` from config/symbols.csv.
+
+    symbols.csv is the name registry of record: a hand-ported/curated slot (e.g. a
+    vtable method renamed to its real name like ``Select``) is recorded here and in the
+    .cpp body, while the manifest still carries the stale Ghidra ``ghidra_name``. The
+    codegen prefers this name for owned slots so the generated header decl matches the
+    .cpp definition + symbols row (avoids unresolved-external link breaks). Cached per
+    repo_root because the sweep resolves many classes (and ancestors recursively)."""
+    key = str(repo_root)
+    cached = _SYMBOLS_NAME_CACHE.get(key)
+    if cached is not None:
+        return cached
+    out: dict[str, tuple[str, str]] = {}
+    path = resolve_repo_path(repo_root, "config/symbols.csv")
+    if path.exists():
+        for row in read_pipe_rows(path):
+            addr = normalize_hex((row.get("address") or "").strip())
+            name = (row.get("name") or "").strip()
+            if addr and name:
+                out[addr] = (name, (row.get("prototype") or "").strip())
+    _SYMBOLS_NAME_CACHE[key] = out
+    return out
+
+
+_DEFAULTED_DECL_CACHE: dict[str, dict[str, str]] = {}
+# A method decl whose parameter list carries default arguments, e.g.
+#   bool IsSelected(short value = -1, bool refreshNow = true) override;
+_DEFAULTED_DECL_RE = re.compile(
+    r"\b(?P<name>[A-Za-z_]\w*)\s*\((?P<args>[^;{}]*=[^;{}]*)\)\s*(?:const)?\s*(?:override)?\s*;"
+)
+
+
+def _handcurated_defaulted_args(repo_root: Path) -> dict[str, str]:
+    """``method name -> args-with-defaults`` scanned from every game header decl that
+    carries default arguments. A slot resolved to such a method must reproduce the
+    defaults, or hand-ported callers that omit those arguments fail to compile (C2660).
+    Cached per repo_root (one scan amortized across the whole sweep)."""
+    key = str(repo_root)
+    cached = _DEFAULTED_DECL_CACHE.get(key)
+    if cached is not None:
+        return cached
+    out: dict[str, str] = {}
+    include_dir = resolve_repo_path(repo_root, "include/game")
+    if include_dir.is_dir():
+        for hpath in include_dir.glob("*.h"):
+            for line in hpath.read_text(encoding="utf-8", errors="ignore").splitlines():
+                s = line.strip()
+                if s.startswith("//") or "=" not in s or "(" not in s:
+                    continue
+                m = _DEFAULTED_DECL_RE.search(s)
+                if m and m.group("name") not in out:
+                    out[m.group("name")] = m.group("args").strip()
+    _DEFAULTED_DECL_CACHE[key] = out
+    return out
+
+
 def manifest_path(repo_root: Path, cls: str) -> Path:
     return resolve_repo_path(repo_root, f"config/classes/{cls}.yml")
 
@@ -226,6 +286,7 @@ def classified_from_manifest(
     TObject/CObject prefix is resolved (``apply_source_base_slots``).
     """
     curated = cm.curated_slot_methods(manifest)
+    sym_names = _symbols_name_map(repo_root) if repo_root is not None else {}
     out: list[ClassifiedSlot] = []
     for s in (manifest.get("generated") or {}).get("slots") or []:
         idx = cm._as_int(s["index"])
@@ -233,7 +294,23 @@ def classified_from_manifest(
         kind = s.get("kind") or "new"
         cur = curated.get(idx)
         qualified = (cur or {}).get("method") or s.get("ghidra_name")
-        proto = s.get("prototype")
+        proto = (cur or {}).get("prototype") or s.get("prototype")
+        # symbols.csv is the name registry of record: when an owned slot has a real
+        # (non-junk) curated name there, it matches the .cpp body + ownership, so prefer
+        # it over the manifest's stale Ghidra name. Manifest curated.slots still wins;
+        # ancestor-header resolution (overrides only) runs later and can still override.
+        if not (cur or {}).get("method") and kind in ("override", "new"):
+            sym = sym_names.get(target)
+            if sym:
+                sym_simple = unqualified(sym[0])
+                if (
+                    _IDENT_RE.match(sym_simple)
+                    and not _JUNK_NAME.search(sym_simple)
+                    and not sym[0].endswith("destructor'")
+                ):
+                    qualified = sym[0]
+                    if sym[1]:
+                        proto = sym[1]
         preferred = safe_method_name(qualified, idx)
         sig: Signature | None = None
         if kind in ("override", "new"):
@@ -262,7 +339,25 @@ def classified_from_manifest(
     if repo_root is not None:
         out = apply_ancestry_slots(out, manifest, repo_root)
         out = _match_ancestor_header_return_types(out, manifest, repo_root)
+        out = _apply_defaulted_args(out, repo_root)
     out = _dedupe_method_names(out)
+    return out
+
+
+def _apply_defaulted_args(
+    slots: list[ClassifiedSlot], repo_root: Path
+) -> list[ClassifiedSlot]:
+    """If a slot's resolved method is declared elsewhere with default arguments, adopt
+    the defaulted parameter list so hand-ported callers that omit those args compile."""
+    defaults = _handcurated_defaulted_args(repo_root)
+    if not defaults:
+        return slots
+    out: list[ClassifiedSlot] = []
+    for s in slots:
+        if s.kind in ("override", "new") and s.sig is not None and s.sig.name in defaults:
+            out.append(replace(s, sig=replace(s.sig, args=defaults[s.sig.name])))
+        else:
+            out.append(s)
     return out
 
 
@@ -289,6 +384,62 @@ def _dedupe_method_names(slots: list[ClassifiedSlot]) -> list[ClassifiedSlot]:
 
 
 _VIRTUAL_DECL_RE = re.compile(r"\bvirtual\s+(.+?)\s+(~?[A-Za-z_]\w*)\s*\(")
+
+# A hand-curated/generated virtual decl tagged with its vtable slot index, e.g.
+#   virtual void NoOpUiLifecycleHook(int arg);   // 0x37 0x48ab70
+#   virtual class TView* OwnerPanel() override;  // 0x16 0x48b180
+# The `// 0x<idx>` comment is the authoritative slot the base actually emits the
+# virtual at — the manifest's `ghidra_name` for the same slot is a stale cross-class
+# label (the source `apply_ancestry_slots` corrects from manifests, but those names are
+# junk for inherited slots on hand-curated bases). Parsing the header decl recovers the
+# real name+signature so a derived `override` matches the base virtual exactly and MSVC
+# reuses the slot instead of appending a new one (the oversized-vtable root cause).
+_HEADER_SLOT_DECL_RE = re.compile(
+    r"^\s*virtual\s+(?P<decl>.+?)\s*;\s*//\s*0x(?P<idx>[0-9a-fA-F]+)\b"
+)
+
+
+def _ancestor_header_slot_decls(
+    manifest: dict[str, Any], repo_root: Path
+) -> tuple[dict[int, str], dict[int, Signature]]:
+    """Per-slot ``(name, signature)`` parsed from ancestor *headers*, nearest wins.
+
+    Walks ``generated.ancestry`` nearest-first; for each ``virtual ...; // 0x<idx>``
+    decl records the first ancestor that names the slot. Destructor slots (``~Class``)
+    are skipped — they stay the scalar-deleting-dtor path. The recovered name+signature
+    take priority over the manifest's stale ``ghidra_name`` so a derived override binds
+    to the base virtual at that slot.
+    """
+    cls = manifest.get("class")
+    ancestry = [str(a) for a in (manifest.get("generated") or {}).get("ancestry") or []]
+    names: dict[int, str] = {}
+    sigs: dict[int, Signature] = {}
+    for anc in ancestry[1:]:  # ancestry[0] is the class itself
+        if anc == cls:
+            continue
+        hpath = header_path(repo_root, anc)
+        if not hpath.exists():
+            continue
+        for line in hpath.read_text(encoding="utf-8", errors="ignore").splitlines():
+            m = _HEADER_SLOT_DECL_RE.match(line)
+            if not m:
+                continue
+            idx = int(m.group("idx"), 16)
+            if idx in names:
+                continue
+            decl = m.group("decl")
+            # Strip the trailing `override` specifier and any leading `class`/`struct`
+            # elaborated-type keyword so parse_prototype reads a clean prototype.
+            decl = re.sub(r"\boverride\b", "", decl).strip()
+            decl = re.sub(r"\b(class|struct)\s+", "", decl)
+            if "~" in decl or "(" not in decl:
+                continue
+            sig = parse_prototype(decl, fallback_name="")
+            if not sig.name or sig.name.startswith("~"):
+                continue
+            names[idx] = sig.name
+            sigs[idx] = sig
+    return names, sigs
 
 
 def _ancestor_header_return_types(manifest: dict[str, Any], repo_root: Path) -> dict[str, str]:
@@ -384,6 +535,13 @@ def apply_ancestry_slots(
     """Adopt parent slot names/signatures for un-curated inherited/override slots, and
     propagate an ancestor's scalar-deleting-dtor classification onto the same slot."""
     names, sigs, scalar_indices = _ancestor_slot_names(manifest, repo_root)
+    # Header-declared slot names override the manifest-derived ones: a hand-curated base
+    # spells the real virtual name in its header (`// 0x<idx>` tagged), while the manifest
+    # carries a stale cross-class ghidra_name for the same inherited slot. Using the real
+    # name lets a derived override bind to the base slot instead of growing the vtable.
+    header_names, header_sigs = _ancestor_header_slot_decls(manifest, repo_root)
+    names = {**names, **header_names}
+    sigs = {**sigs, **header_sigs}
     if not names and not scalar_indices:
         return slots
     local_curated = set(cm.curated_slot_methods(manifest).keys())
@@ -716,6 +874,111 @@ def scalar_dtor_block(cls: str, addr: int) -> str:
     )
 
 
+# A marked block whose function body is empty or a bare `return 0;` — an autofix/
+# shape-only slot claim with no real ported logic. Such a stub may carry a stale method
+# name from before the ancestry resolver corrected the slot's override name, so its head
+# is safe to re-render from the current signature (the body holds nothing to preserve).
+_TRIVIAL_STUB_BODY_RE = re.compile(r"\{\s*(?:return\s+0\s*;\s*)?\}")
+
+
+def _is_trivial_marked_stub(block: str) -> bool:
+    # Exactly one brace-pair holding nothing but an optional `return 0;`, and no
+    # human TODO/ported content beyond the marker + definition head.
+    bodies = _TRIVIAL_STUB_BODY_RE.findall(block)
+    if len(bodies) != 1 or "TODO" in block:
+        return False
+    # Reject anything with a second statement / real logic inside the braces.
+    inner = block[block.index("{") + 1 : block.rindex("}")]
+    stripped = re.sub(r"return\s+0\s*;", "", inner).strip()
+    return stripped == ""
+
+
+def _render_stub_block(cls: str, slot: ClassifiedSlot) -> str:
+    if slot.kind == "scalar_dtor":
+        return scalar_dtor_block(cls, int(slot.target_addr or "0", 16)) + f"{cls}::~{cls}() {{}}\n\n"
+    assert slot.sig is not None
+    addr = int(slot.target_addr or "0", 16)
+    body = " return 0; " if slot.sig.ret.strip() not in ("void", "") else ""
+    return (
+        f"// FUNCTION: IMPERIALISM 0x{addr:08x}\n"
+        f"{slot.sig.definition_head(cls)} {{{body}}}\n\n"
+    )
+
+
+def _stub_head_matches(block: str, cls: str, slot: ClassifiedSlot) -> bool:
+    """True if a trivial stub block already declares the slot's current method head."""
+    if slot.kind == "scalar_dtor":
+        return f"{cls}::~{cls}(" in block
+    if slot.sig is None:
+        return True
+    return f"{cls}::{slot.sig.name}(" in block
+
+
+def reconcile_unmarked_stubs(
+    cpp_text: str, cls: str, foreign_slots: list[ClassifiedSlot], valid_names: set[str]
+) -> str:
+    """Keep unmarked shape-only stubs in sync with the (resolver-corrected) slot names.
+
+    A foreign-owned override/new slot (its address is claimed by another class's .cpp)
+    cannot carry a `// FUNCTION:` marker here, but the class still needs its own
+    out-of-line definition so the vtable links. When the ancestry resolver renames such
+    a slot to the base-virtual name, the old unmarked stub becomes an orphan whose name
+    no longer matches the header decl. This pass (1) drops unmarked trivial stubs of
+    ``cls::Name`` whose ``Name`` is no longer a declared method, and (2) emits an
+    unmarked stub for every foreign-owned slot missing one. Marked blocks and non-trivial
+    human bodies are untouched.
+    """
+    pattern = re.compile(
+        rf"^[ \t]*(?P<head>[^\n;{{}}]*\b{re.escape(cls)}::"
+        rf"(?P<name>~?[A-Za-z_][A-Za-z0-9_]*)\s*\([^;{{}}]*\)\s*(?:const)?\s*)\{{",
+        re.MULTILINE,
+    )
+    # Foreign-slot names are re-emitted below with the canonical (resolver-corrected)
+    # signature, so any trivial stub carrying one is dropped here even if its name is
+    # valid — its signature may be stale (e.g. `VTableSlot73(char)` vs the header's
+    # `VTableSlot73()`), which would otherwise mismatch the decl (C2511).
+    foreign_names = {s.sig.name for s in foreign_slots if s.sig is not None}
+    chunks: list[str] = []
+    cursor = 0
+    present: set[str] = set()
+    for match in pattern.finditer(cpp_text):
+        if _has_immediate_marker_before(cpp_text, match.start()):
+            continue
+        end = _find_block_end(cpp_text, match.end() - 1)
+        if end is None:
+            continue
+        block = cpp_text[match.start() : end]
+        name = match.group("name")
+        if not _is_trivial_unmarked_stub(block):
+            present.add(name)
+            continue
+        remove_end = end
+        while remove_end < len(cpp_text) and cpp_text[remove_end] in " \t\r\n":
+            remove_end += 1
+        if name in valid_names and name not in foreign_names:
+            present.add(name)
+            continue
+        # Orphaned (renamed away) or stale-signature foreign trivial stub: drop it.
+        chunks.append(cpp_text[cursor : match.start()])
+        cursor = remove_end
+    chunks.append(cpp_text[cursor:])
+    out = "".join(chunks)
+
+    missing = [
+        s
+        for s in foreign_slots
+        if s.sig is not None and s.sig.name not in present and s.kind in ("override", "new")
+    ]
+    if missing:
+        blocks: list[str] = []
+        for s in sorted(missing, key=lambda x: int(x.target_addr or "0", 16)):
+            assert s.sig is not None  # filtered above
+            ret_val = " return 0; " if s.sig.ret.strip() not in ("void", "") else ""
+            blocks.append(f"{s.sig.definition_head(cls)} {{{ret_val}}}\n\n")
+        out = out.rstrip() + "\n\n" + "".join(blocks).rstrip() + "\n"
+    return out
+
+
 def merge_cpp_bodies(
     cpp_text: str,
     cls: str,
@@ -754,12 +1017,38 @@ def merge_cpp_bodies(
     for s in sorted(body_slots, key=lambda x: int(x.target_addr or "0", 16)):
         addr = int(s.target_addr or "0", 16)
         is_stub = addr in existing and _is_scaffold_stub(existing[addr])
+        # A trivial shape-only stub whose head no longer matches the slot's (resolver-
+        # corrected) signature is re-rendered so the .cpp definition tracks the header
+        # decl — without this, renaming an override slot to its base-virtual name leaves
+        # the .cpp defining the old name (header/cpp divergence → link/override break).
+        if (
+            addr in existing
+            and not is_stub
+            and _is_trivial_marked_stub(existing[addr])
+            and not _stub_head_matches(existing[addr], cls, s)
+        ):
+            existing[addr] = _render_stub_block(cls, s)
+            promoted.append(addr)
+            continue
         if addr in existing and not is_stub:
             continue  # human-owned or already a real body — never clobber
         if s.kind == "scalar_dtor":
-            # scalar dtors stay SYNTHETIC (Hard Rule 9); only seed when absent.
+            # scalar dtors stay SYNTHETIC (Hard Rule 9); only seed when absent. Normally
+            # seed the SYNTHETIC marker *and* an empty `~Class() {}` body so MSVC has a
+            # real destructor for the polymorphic vtable. BUT if the class already defines
+            # a real `~Class()` (a hand-ported destructor at the `??1` address), seeding a
+            # second body is a duplicate definition (C2084): MSVC generates the `??_G`
+            # scalar deleting destructor from that real dtor, so the SYNTHETIC slot is
+            # marker-only here (it just claims the `??_G` address for reccmp pairing).
             if addr not in existing:
-                existing[addr] = scalar_dtor_block(cls, addr)
+                real_dtor = any(
+                    a != addr and f"{cls}::~{cls}(" in blk for a, blk in existing.items()
+                )
+                existing[addr] = (
+                    scalar_dtor_block(cls, addr) + "\n"
+                    if real_dtor
+                    else _render_stub_block(cls, s)
+                )
                 promoted.append(addr)
             continue
         if addr not in autogen:
@@ -828,6 +1117,19 @@ def apply_slots(
         new_cpp, promoted, missing = merge_cpp_bodies(
             cpp_text, cls, body_slots, autogen, resolver
         )
+        # Keep unmarked stubs for foreign-owned override/new slots in sync with the
+        # resolver-corrected names (the header declares them; their addresses are owned
+        # by another class's .cpp so they cannot be marked here).
+        foreign_slots = [
+            s
+            for s in slots
+            if s.kind in ("override", "new")
+            and s not in body_slots
+            and s.sig is not None
+        ]
+        valid_names = {s.sig.name for s in slots if s.kind in ("override", "new") and s.sig}
+        valid_names.add(f"~{cls}")
+        new_cpp = reconcile_unmarked_stubs(new_cpp, cls, foreign_slots, valid_names)
     cpp_changed = new_cpp != cpp_text
 
     # Shape-only (no_bodies) never claims ownership/symbols — markers + ownership are

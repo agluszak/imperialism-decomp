@@ -1,9 +1,21 @@
 #include "game/TPlaceCityDialog.h"
 
-CRuntimeClass* TPlaceCityDialog::GetRuntimeClass() const { return 0; }
-
-TPlaceCityDialog::~TPlaceCityDialog() {}
-
 undefined TPlaceCityDialog::BuildCityViewResourceRows(int * param_1) { return 0; }
 
-undefined TPlaceCityDialog::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x004d17e0
+CRuntimeClass* TPlaceCityDialog::GetRuntimeClass() const {
+  return 0;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004d1830
+// TPlaceCityDialog::`scalar deleting destructor'
+TPlaceCityDialog::~TPlaceCityDialog() {}
+
+// FUNCTION: IMPERIALISM 0x004d1880
+undefined TPlaceCityDialog::BuildCityViewResourceRows() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d1e40
+void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {
+}

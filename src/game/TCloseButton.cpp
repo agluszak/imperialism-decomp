@@ -1,7 +1,15 @@
 #include "game/TCloseButton.h"
 
-CRuntimeClass* TCloseButton::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00584ad0
+CRuntimeClass* TCloseButton::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00584b20
+// TCloseButton::`scalar deleting destructor'
 TCloseButton::~TCloseButton() {}
 
-undefined TCloseButton::SetForeignMinisterReadyFlag14() { return 0; }
+// FUNCTION: IMPERIALISM 0x00584b70
+char TCloseButton::DispatchUiMouseMoveToChildren() {
+  return 0;
+}

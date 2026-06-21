@@ -1,9 +1,18 @@
 #include "game/TMilitaryPageView.h"
 
-CRuntimeClass* TMilitaryPageView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00564900
+CRuntimeClass* TMilitaryPageView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00564950
+// TMilitaryPageView::`scalar deleting destructor'
 TMilitaryPageView::~TMilitaryPageView() {}
 
-undefined TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x005649a0
+void TMilitaryPageView::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TMilitaryPageView::GetTEventHandlerClassNamePointer() { return 0; }
+// FUNCTION: IMPERIALISM 0x00564bf0
+void TMilitaryPageView::CallVoidSlotA0() {
+}

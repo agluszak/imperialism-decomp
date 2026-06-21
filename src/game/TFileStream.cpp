@@ -57,8 +57,10 @@ TFileStream::TFileStream() {
 }
 
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00489130
 // TFileStream::`scalar deleting destructor'
+TFileStream::~TFileStream() {}
 
 // FUNCTION: IMPERIALISM 0x00489160
 void TFileStream::SetBackingArchive(ArchiveStreamAdapter* backingArchive) {
@@ -112,3 +114,8 @@ void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
 
 // FUNCTION: IMPERIALISM 0x00489360
 void TFileStream::streamSlot70() {}
+
+// FUNCTION: IMPERIALISM 0x00489390
+undefined TFileStream::OrphanCallChain_C2_I21_00489030() {
+  return 0;
+}

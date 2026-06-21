@@ -38,8 +38,10 @@ CRuntimeClass* TToggleButton::GetRuntimeClass() const {
 TToggleButton::TToggleButton() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00571120
 // TToggleButton::`scalar deleting destructor'
+TToggleButton::~TToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571170
 void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -127,4 +129,9 @@ bool TToggleButton::IsSelected(short value, bool refreshNow) {
   (void)value;
   (void)refreshNow;
   return this->IsActionable();
+}
+
+// FUNCTION: IMPERIALISM 0x00571350
+undefined TToggleButton::HandleToggleButtonStateChangeAndRefresh() {
+  return 0;
 }

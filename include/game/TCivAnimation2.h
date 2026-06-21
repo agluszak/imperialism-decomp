@@ -19,7 +19,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 0x0a 0x49f7c0
-  virtual undefined RenderBattleReportInsetWithPaletteShift(int * param_1) override; // slot 0x0b 0x49f8e0
+  virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 0x0b 0x49f8e0
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
 // === END GENERATED DECLS (TCivAnimation2) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCivAnimation2 0xCTOR`).

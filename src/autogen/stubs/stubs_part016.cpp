@@ -1691,130 +1691,10 @@ undefined4 CreateNationStateVariantVtable65B078(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlag98
-// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag98()
-// FUNCTION: IMPERIALISM 0x005408c0
-undefined4 ReturnTrueNationStateCapabilityFlag98(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnTrueNationStateCapabilityFlagA0
-// ghidra_proto undefined ReturnTrueNationStateCapabilityFlagA0()
-// FUNCTION: IMPERIALISM 0x005408e0
-undefined4 ReturnTrueNationStateCapabilityFlagA0(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchProxyGreatPowerCallbackSlot1CC
-// ghidra_proto undefined DispatchProxyGreatPowerCallbackSlot1CC()
-// FUNCTION: IMPERIALISM 0x00540900
-undefined4 DispatchProxyGreatPowerCallbackSlot1CC(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseProxyGreatPowerCapabilityStub
-// ghidra_proto undefined ReturnFalseProxyGreatPowerCapabilityStub()
-// FUNCTION: IMPERIALISM 0x00540920
-undefined4 ReturnFalseProxyGreatPowerCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTProxyGreatPower
-// ghidra_proto undefined DeletingDestructTProxyGreatPower()
-// FUNCTION: IMPERIALISM 0x00540940
-undefined4 DeletingDestructTProxyGreatPower(void)
-{
-  return 0;
-}
-
 // ghidra_name TProxyGreatPower::DestructTProxyGreatPower
 // ghidra_proto undefined DestructTProxyGreatPower()
 // FUNCTION: IMPERIALISM 0x00540970
 undefined4 DestructTProxyGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name TProxyGreatPower::GetTProxyGreatPowerClassNamePointer
-// ghidra_proto undefined GetTProxyGreatPowerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005409e0
-undefined4 GetTProxyGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent14ForProxyGreatPowerAction
-// ghidra_proto undefined EmitTurnEvent14ForProxyGreatPowerAction()
-// FUNCTION: IMPERIALISM 0x00540a00
-undefined4 EmitTurnEvent14ForProxyGreatPowerAction(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00540aa0
-// ghidra_proto undefined OrphanRetStub_00540aa0()
-// FUNCTION: IMPERIALISM 0x00540aa0
-undefined4 OrphanRetStub_00540aa0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00540b80
-// ghidra_proto undefined OrphanRetStub_00540b80()
-// FUNCTION: IMPERIALISM 0x00540b80
-undefined4 OrphanRetStub_00540b80(void)
-{
-  return 0;
-}
-
-// ghidra_name TryDispatchNationActionViaTurnEventOrFallback
-// ghidra_proto undefined TryDispatchNationActionViaTurnEventOrFallback()
-// FUNCTION: IMPERIALISM 0x00540ba0
-undefined4 TryDispatchNationActionViaTurnEventOrFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name TProxyGreatPower::EmitTradePolicyEventAndSetDiplomacyValueForTarget
-// ghidra_proto undefined EmitTradePolicyEventAndSetDiplomacyValueForTarget()
-// FUNCTION: IMPERIALISM 0x00540c20
-undefined4 EmitTradePolicyEventAndSetDiplomacyValueForTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchTurnEvent31StarPayloadForNationAndReleaseObject
-// ghidra_proto undefined DispatchTurnEvent31StarPayloadForNationAndReleaseObject()
-// FUNCTION: IMPERIALISM 0x00540c70
-undefined4 DispatchTurnEvent31StarPayloadForNationAndReleaseObject(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleNationLostEventAndReplaceNationStateForSlot
-// ghidra_proto undefined HandleNationLostEventAndReplaceNationStateForSlot()
-// FUNCTION: IMPERIALISM 0x00540cb0
-undefined4 HandleNationLostEventAndReplaceNationStateForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name TProxyGreatPower::EmitTurnEvent1DCommand69ForCurrentNationSlot
-// ghidra_proto undefined EmitTurnEvent1DCommand69ForCurrentNationSlot()
-// FUNCTION: IMPERIALISM 0x00540cf0
-undefined4 EmitTurnEvent1DCommand69ForCurrentNationSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent1DCommand61ForCurrentNationSlot
-// ghidra_proto undefined EmitTurnEvent1DCommand61ForCurrentNationSlot()
-// FUNCTION: IMPERIALISM 0x00540dc0
-undefined4 EmitTurnEvent1DCommand61ForCurrentNationSlot(void)
 {
   return 0;
 }
@@ -1827,58 +1707,10 @@ undefined4 CreateNationStateVariantVtable65B3D0(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlag9C
-// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag9C()
-// FUNCTION: IMPERIALISM 0x00540f20
-undefined4 ReturnTrueNationStateCapabilityFlag9C(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTHostGreatPower
-// ghidra_proto undefined DeletingDestructTHostGreatPower()
-// FUNCTION: IMPERIALISM 0x00540f40
-undefined4 DeletingDestructTHostGreatPower(void)
-{
-  return 0;
-}
-
 // ghidra_name THostGreatPower::DestructTHostGreatPower
 // ghidra_proto undefined DestructTHostGreatPower()
 // FUNCTION: IMPERIALISM 0x00540f70
 undefined4 DestructTHostGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name THostGreatPower::GetTHostGreatPowerClassNamePointer
-// ghidra_proto undefined GetTHostGreatPowerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00540fe0
-undefined4 GetTHostGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateHostGreatPowerStatePathAAndMaybeSetLossFlag
-// ghidra_proto undefined UpdateHostGreatPowerStatePathAAndMaybeSetLossFlag()
-// FUNCTION: IMPERIALISM 0x00541000
-undefined4 UpdateHostGreatPowerStatePathAAndMaybeSetLossFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateHostGreatPowerStatePathBAndSetLossFlag
-// ghidra_proto undefined UpdateHostGreatPowerStatePathBAndSetLossFlag()
-// FUNCTION: IMPERIALISM 0x00541040
-undefined4 UpdateHostGreatPowerStatePathBAndSetLossFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleHostGreatPowerLostStateAndNotifyOrEndSession
-// ghidra_proto undefined HandleHostGreatPowerLostStateAndNotifyOrEndSession()
-// FUNCTION: IMPERIALISM 0x00541170
-undefined4 HandleHostGreatPowerLostStateAndNotifyOrEndSession(void)
 {
   return 0;
 }
@@ -1891,82 +1723,10 @@ undefined4 CreateNationStateVariantVtable65B728(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlag98Alt
-// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag98Alt()
-// FUNCTION: IMPERIALISM 0x005412b0
-undefined4 ReturnTrueNationStateCapabilityFlag98Alt(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseNationStateCapabilityFlagA0Alt
-// ghidra_proto undefined ReturnFalseNationStateCapabilityFlagA0Alt()
-// FUNCTION: IMPERIALISM 0x005412d0
-undefined4 ReturnFalseNationStateCapabilityFlagA0Alt(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTClientGreatPower
-// ghidra_proto undefined DeletingDestructTClientGreatPower()
-// FUNCTION: IMPERIALISM 0x005412f0
-undefined4 DeletingDestructTClientGreatPower(void)
-{
-  return 0;
-}
-
 // ghidra_name TClientGreatPower::DestructTClientGreatPower
 // ghidra_proto undefined DestructTClientGreatPower()
 // FUNCTION: IMPERIALISM 0x00541320
 undefined4 DestructTClientGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name TClientGreatPower::GetTClientGreatPowerClassNamePointer
-// ghidra_proto undefined GetTClientGreatPowerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00541390
-undefined4 GetTClientGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent17ClientGreatPowerFlagEnabled
-// ghidra_proto undefined EmitTurnEvent17ClientGreatPowerFlagEnabled()
-// FUNCTION: IMPERIALISM 0x005413b0
-undefined4 EmitTurnEvent17ClientGreatPowerFlagEnabled(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent17ClientGreatPowerFlagDisabled
-// ghidra_proto undefined EmitTurnEvent17ClientGreatPowerFlagDisabled()
-// FUNCTION: IMPERIALISM 0x00541450
-undefined4 EmitTurnEvent17ClientGreatPowerFlagDisabled(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueTimeEmitPacketAndDispatchTurnEvent29A
-// ghidra_proto undefined QueueTimeEmitPacketAndDispatchTurnEvent29A()
-// FUNCTION: IMPERIALISM 0x005414f0
-undefined4 QueueTimeEmitPacketAndDispatchTurnEvent29A(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyClientGreatPowerCommand61AndEmitTurnEvent1E
-// ghidra_proto undefined ApplyClientGreatPowerCommand61AndEmitTurnEvent1E()
-// FUNCTION: IMPERIALISM 0x005415c0
-undefined4 ApplyClientGreatPowerCommand61AndEmitTurnEvent1E(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchLoseEventForClientGreatPowerSlot
-// ghidra_proto undefined DispatchLoseEventForClientGreatPowerSlot()
-// FUNCTION: IMPERIALISM 0x00541790
-undefined4 DispatchLoseEventForClientGreatPowerSlot(void)
 {
   return 0;
 }
@@ -1979,186 +1739,10 @@ undefined4 CreateNationStateVariantVtable65BA80(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueNationStateCapabilityFlagA0Alt
-// ghidra_proto undefined ReturnTrueNationStateCapabilityFlagA0Alt()
-// FUNCTION: IMPERIALISM 0x00541840
-undefined4 ReturnTrueNationStateCapabilityFlagA0Alt(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnFalseRemoteGreatPowerCapabilityStub
-// ghidra_proto undefined ReturnFalseRemoteGreatPowerCapabilityStub()
-// FUNCTION: IMPERIALISM 0x00541860
-undefined4 ReturnFalseRemoteGreatPowerCapabilityStub(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541880
-// ghidra_proto undefined OrphanRetStub_00541880()
-// FUNCTION: IMPERIALISM 0x00541880
-undefined4 OrphanRetStub_00541880(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418a0
-// ghidra_proto undefined OrphanRetStub_005418a0()
-// FUNCTION: IMPERIALISM 0x005418a0
-undefined4 OrphanRetStub_005418a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418c0
-// ghidra_proto undefined OrphanRetStub_005418c0()
-// FUNCTION: IMPERIALISM 0x005418c0
-undefined4 OrphanRetStub_005418c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005418e0
-// ghidra_proto undefined OrphanRetStub_005418e0()
-// FUNCTION: IMPERIALISM 0x005418e0
-undefined4 OrphanRetStub_005418e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541900
-// ghidra_proto undefined OrphanRetStub_00541900()
-// FUNCTION: IMPERIALISM 0x00541900
-undefined4 OrphanRetStub_00541900(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541920
-// ghidra_proto undefined OrphanRetStub_00541920()
-// FUNCTION: IMPERIALISM 0x00541920
-undefined4 OrphanRetStub_00541920(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541940
-// ghidra_proto undefined OrphanRetStub_00541940()
-// FUNCTION: IMPERIALISM 0x00541940
-undefined4 OrphanRetStub_00541940(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541960
-// ghidra_proto undefined OrphanRetStub_00541960()
-// FUNCTION: IMPERIALISM 0x00541960
-undefined4 OrphanRetStub_00541960(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541980
-// ghidra_proto undefined OrphanRetStub_00541980()
-// FUNCTION: IMPERIALISM 0x00541980
-undefined4 OrphanRetStub_00541980(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005419a0
-// ghidra_proto undefined OrphanRetStub_005419a0()
-// FUNCTION: IMPERIALISM 0x005419a0
-undefined4 OrphanRetStub_005419a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_005419c0
-// ghidra_proto undefined OrphanRetStub_005419c0()
-// FUNCTION: IMPERIALISM 0x005419c0
-undefined4 OrphanRetStub_005419c0(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchRemoteGreatPowerCallbackSlot1CC
-// ghidra_proto undefined DispatchRemoteGreatPowerCallbackSlot1CC()
-// FUNCTION: IMPERIALISM 0x005419e0
-undefined4 DispatchRemoteGreatPowerCallbackSlot1CC(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDiplomacyTargetTransitionCallbackAlt
-// ghidra_proto undefined NoOpDiplomacyTargetTransitionCallbackAlt()
-// FUNCTION: IMPERIALISM 0x00541a00
-undefined4 NoOpDiplomacyTargetTransitionCallbackAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpGreatPowerCommandHandlerRet4
-// ghidra_proto undefined NoOpGreatPowerCommandHandlerRet4()
-// FUNCTION: IMPERIALISM 0x00541a20
-undefined4 NoOpGreatPowerCommandHandlerRet4(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541a40
-// ghidra_proto undefined OrphanRetStub_00541a40()
-// FUNCTION: IMPERIALISM 0x00541a40
-undefined4 OrphanRetStub_00541a40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00541a60
-// ghidra_proto undefined OrphanRetStub_00541a60()
-// FUNCTION: IMPERIALISM 0x00541a60
-undefined4 OrphanRetStub_00541a60(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTRemoteGreatPower
-// ghidra_proto undefined DeletingDestructTRemoteGreatPower()
-// FUNCTION: IMPERIALISM 0x00541a80
-undefined4 DeletingDestructTRemoteGreatPower(void)
-{
-  return 0;
-}
-
 // ghidra_name TRemoteGreatPower::DestructTRemoteGreatPower
 // ghidra_proto undefined DestructTRemoteGreatPower()
 // FUNCTION: IMPERIALISM 0x00541ab0
 undefined4 DestructTRemoteGreatPower(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteGreatPower::GetTRemoteGreatPowerClassNamePointer
-// ghidra_proto undefined GetTRemoteGreatPowerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00541b20
-undefined4 GetTRemoteGreatPowerClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetNationSelectedRegionAndMapCellLabel
-// ghidra_proto undefined SetNationSelectedRegionAndMapCellLabel()
-// FUNCTION: IMPERIALISM 0x00541b40
-undefined4 SetNationSelectedRegionAndMapCellLabel(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveRemoteGreatPowerNationSlotAndNotifyPeers
-// ghidra_proto undefined RemoveRemoteGreatPowerNationSlotAndNotifyPeers()
-// FUNCTION: IMPERIALISM 0x00541be0
-undefined4 RemoveRemoteGreatPowerNationSlotAndNotifyPeers(void)
 {
   return 0;
 }
@@ -2987,50 +2571,10 @@ undefined4 AllocateAndConstructTLoungeDialog(void)
   return 0;
 }
 
-// ghidra_name TLoungeDialog::GetTLoungeDialogClassNamePointer
-// ghidra_proto undefined GetTLoungeDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054d6d0
-undefined4 GetTLoungeDialogClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name CloseTLoungeDialogAndReleaseChildren
-// ghidra_proto undefined CloseTLoungeDialogAndReleaseChildren()
-// FUNCTION: IMPERIALISM 0x0054d6f0
-undefined4 CloseTLoungeDialogAndReleaseChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::OpenNationStatusDialogAndInitializeRows
-// ghidra_proto undefined OpenNationStatusDialogAndInitializeRows()
-// FUNCTION: IMPERIALISM 0x0054d730
-undefined4 OpenNationStatusDialogAndInitializeRows(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage
-// ghidra_proto undefined RefreshNationStatusDialogRowsAndSummaryMessage()
-// FUNCTION: IMPERIALISM 0x0054db40
-undefined4 RefreshNationStatusDialogRowsAndSummaryMessage(void)
-{
-  return 0;
-}
-
 // ghidra_name TryInvokeNationStateReplacementForSlot
 // ghidra_proto undefined TryInvokeNationStateReplacementForSlot()
 // FUNCTION: IMPERIALISM 0x0054dfc0
 undefined4 TryInvokeNationStateReplacementForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name TLoungeDialog::HandleNationStatusDialogCommand
-// ghidra_proto undefined HandleNationStatusDialogCommand()
-// FUNCTION: IMPERIALISM 0x0054e1f0
-undefined4 HandleNationStatusDialogCommand(void)
 {
   return 0;
 }
@@ -3051,22 +2595,6 @@ undefined4 AllocateAndConstructTJoinSelectorDialog(void)
   return 0;
 }
 
-// ghidra_name TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer
-// ghidra_proto undefined GetTJoinSelectorDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054e710
-undefined4 GetTJoinSelectorDialogClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeDialogEditControlsAndLimits
-// ghidra_proto undefined InitializeDialogEditControlsAndLimits()
-// FUNCTION: IMPERIALISM 0x0054e730
-undefined4 InitializeDialogEditControlsAndLimits(void)
-{
-  return 0;
-}
-
 // ghidra_name AddJoinableGameOptionEntry
 // ghidra_proto undefined AddJoinableGameOptionEntry()
 // FUNCTION: IMPERIALISM 0x0054e8e0
@@ -3083,14 +2611,6 @@ undefined4 GetSelectedJoinableGameTag(void)
   return 0;
 }
 
-// ghidra_name HandleTJoinSelectorDialogCommand
-// ghidra_proto undefined HandleTJoinSelectorDialogCommand()
-// FUNCTION: IMPERIALISM 0x0054e9a0
-undefined4 HandleTJoinSelectorDialogCommand(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndConstructTMadnessButton
 // ghidra_proto undefined AllocateAndConstructTMadnessButton()
 // FUNCTION: IMPERIALISM 0x0054ea30
@@ -3099,50 +2619,10 @@ undefined4 AllocateAndConstructTMadnessButton(void)
   return 0;
 }
 
-// ghidra_name TMadnessButton::GetTMadnessButtonClassNamePointer
-// ghidra_proto undefined GetTMadnessButtonClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054ead0
-undefined4 GetTMadnessButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTMadnessButtonFromCurrentBitmapAndEnable
-// ghidra_proto undefined InitializeTMadnessButtonFromCurrentBitmapAndEnable()
-// FUNCTION: IMPERIALISM 0x0054eaf0
-undefined4 InitializeTMadnessButtonFromCurrentBitmapAndEnable(void)
-{
-  return 0;
-}
-
-// ghidra_name TMadnessButton::DestructTMadnessButtonAndMaybeFree
-// ghidra_proto undefined DestructTMadnessButtonAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0054eb30
-undefined4 DestructTMadnessButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateAndConstructTMultiMessagePicture
 // ghidra_proto undefined AllocateAndConstructTMultiMessagePicture()
 // FUNCTION: IMPERIALISM 0x0054ec20
 undefined4 AllocateAndConstructTMultiMessagePicture(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer
-// ghidra_proto undefined GetTMultiMessagePictureClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054eca0
-undefined4 GetTMultiMessagePictureClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTMultiMessagePictureCommand
-// ghidra_proto undefined HandleTMultiMessagePictureCommand()
-// FUNCTION: IMPERIALISM 0x0054ecc0
-undefined4 HandleTMultiMessagePictureCommand(void)
 {
   return 0;
 }

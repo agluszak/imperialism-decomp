@@ -1,11 +1,25 @@
 #include "game/TNavyToolbarCluster.h"
 
-CRuntimeClass* TNavyToolbarCluster::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005694b0
+CRuntimeClass* TNavyToolbarCluster::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00569500
+// TNavyToolbarCluster::`scalar deleting destructor'
 TNavyToolbarCluster::~TNavyToolbarCluster() {}
 
-undefined TNavyToolbarCluster::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00569550
+undefined TNavyToolbarCluster::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}
 
-undefined TNavyToolbarCluster::OrphanVtableAssignStub_005714e0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005696d0
+int TNavyToolbarCluster::IsTradeControlAtMinimum() {
+  return 0;
+}
 
-undefined TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790() { return 0; }
+// FUNCTION: IMPERIALISM 0x005696f0
+undefined TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790() {
+  return 0;
+}

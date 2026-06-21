@@ -22,8 +22,10 @@ CRuntimeClass* TAlwaysPictureButton::GetRuntimeClass() const {
 TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00570a20
 // TAlwaysPictureButton::`scalar deleting destructor'
+TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
 void TAlwaysPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {

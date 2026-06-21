@@ -1,9 +1,18 @@
 #include "game/TTownNameDialog.h"
 
-CRuntimeClass* TTownNameDialog::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0051baf0
+CRuntimeClass* TTownNameDialog::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0051bb40
+// TTownNameDialog::`scalar deleting destructor'
 TTownNameDialog::~TTownNameDialog() {}
 
-undefined TTownNameDialog::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0051bb90
+void TTownNameDialog::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TTownNameDialog::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0051bcc0
+void TTownNameDialog::ApplyRectSlot110(RECT* rectBuffer) {
+}

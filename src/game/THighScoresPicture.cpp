@@ -1,13 +1,28 @@
 #include "game/THighScoresPicture.h"
 
-undefined THighScoresPicture::UniversityDialogMethod_00405623() { return 0; }
+// FUNCTION: IMPERIALISM 0x0045ada0
+undefined THighScoresPicture::UniversityDialogMethod_00405623() {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x0045adc0
+// THighScoresPicture::`scalar deleting destructor'
 THighScoresPicture::~THighScoresPicture() {}
 
-CRuntimeClass* THighScoresPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00575300
+CRuntimeClass* THighScoresPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00575320
+void THighScoresPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined THighScoresPicture::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00575460
+void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {
+}
 
-undefined THighScoresPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00575770
+undefined THighScoresPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

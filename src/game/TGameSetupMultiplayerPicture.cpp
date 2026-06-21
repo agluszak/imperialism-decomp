@@ -1,9 +1,19 @@
 #include "game/TGameSetupMultiplayerPicture.h"
 
-CRuntimeClass* TGameSetupMultiplayerPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00575f10
+CRuntimeClass* TGameSetupMultiplayerPicture::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00575f60
+// TGameSetupMultiplayerPicture::`scalar deleting destructor'
 TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture() {}
 
-undefined TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x00575fb0
+void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TGameSetupMultiplayerPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00576230
+undefined TGameSetupMultiplayerPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

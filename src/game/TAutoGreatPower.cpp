@@ -112,6 +112,7 @@ void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
 
 // SYNTHETIC: IMPERIALISM 0x004e6b80
 // TAutoGreatPower::`scalar deleting destructor'
+TAutoGreatPower::~TAutoGreatPower() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e6bb0
 // TAutoGreatPower::~TAutoGreatPower
@@ -158,6 +159,11 @@ void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
   if (this->city != 0) {
     this->interiorMinister->Call54();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004e75c0
+undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e7680
@@ -221,6 +227,23 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
       this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004e7910
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2() {
+}
+
+// FUNCTION: IMPERIALISM 0x004e7930
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1() {
+}
+
+// FUNCTION: IMPERIALISM 0x004e7950
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {
+}
+
+// FUNCTION: IMPERIALISM 0x004e7970
+undefined TAutoGreatPower::DispatchNationStateEventCode10() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e79d0
@@ -287,6 +310,10 @@ void TAutoGreatPower::ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void) {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x004e7ca0
+void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {
+}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
@@ -613,11 +640,20 @@ void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short paylo
 // FUNCTION: IMPERIALISM 0x004ea450
 void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
 
-void TAutoGreatPower::EscalateNeedSlot2C8(int needSlot) {
-  (void)needSlot;
+// FUNCTION: IMPERIALISM 0x004ea990
+undefined TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990() {
+  return 0;
 }
 
-void TAutoGreatPower::CallSlotB3(void) {}
+// FUNCTION: IMPERIALISM 0x004eaa20
+undefined TAutoGreatPower::SelectCandidateTilesWithLowGroundUnitCount() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004eae70
+undefined TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920() {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004eb0d0
 void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
@@ -646,3 +682,31 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
     }
   }
 }
+
+void TAutoGreatPower::ReadFrom(TStream* stream) {}
+
+void TAutoGreatPower::WriteTo(TStream* stream) {}
+
+undefined TAutoGreatPower::OrphanRetStub_004d7fa0() { return 0; }
+
+undefined TAutoGreatPower::ReturnFalseNationStateActionStub_56() { return 0; }
+
+undefined TAutoGreatPower::OrphanRetStub_004d7fe0_57() { return 0; }
+
+void TAutoGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches() {}
+
+bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks() { return 0; }
+
+undefined TAutoGreatPower::OrphanRetStub_004d7fe0_23() { return 0; }
+
+undefined TAutoGreatPower::OrphanRetStub_004d7f80() { return 0; }
+
+undefined TAutoGreatPower::DeserializeRecruitScenarioAndInstantiateOrders() { return 0; }
+
+undefined TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded() { return 0; }
+
+void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_14() {}
+
+void TAutoGreatPower::AddRegionIdToNationOwnedRegionList() {}
+
+void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets() {}

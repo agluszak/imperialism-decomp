@@ -27,7 +27,7 @@ public:
   // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
   virtual undefined OrphanRetStub_0059ae10() override; // slot 0x11 0x59eb40
   virtual undefined TArmyTacUnit_VtblSlot06() override; // slot 0x12 0x59bc80
-  virtual undefined TArmyTacUnit_VtblSlot07(undefined4 param_1) override; // slot 0x13 0x59c3c0
+  virtual undefined TArmyTacUnit_VtblSlot07() override; // slot 0x13 0x59c3c0
   virtual undefined RunTacticalAutoTurnControllerForActiveUnit() override; // slot 0x14 0x59e4f0
   virtual undefined TArmyTacUnit_VtblSlot09() override; // slot 0x15 0x59ea60
 // === END GENERATED DECLS (TArmyPlayer) ===

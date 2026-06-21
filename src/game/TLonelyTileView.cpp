@@ -1,7 +1,14 @@
 #include "game/TLonelyTileView.h"
 
-CRuntimeClass* TLonelyTileView::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00505ac0
+CRuntimeClass* TLonelyTileView::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00505b10
+// TLonelyTileView::`scalar deleting destructor'
 TLonelyTileView::~TLonelyTileView() {}
 
-undefined TLonelyTileView::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00505b60
+void TLonelyTileView::ApplyRectSlot110(RECT* rectBuffer) {
+}

@@ -22,8 +22,10 @@ CRuntimeClass* T2PictToggleButton::GetRuntimeClass() const {
 T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
+
 // SYNTHETIC: IMPERIALISM 0x00584960
 // T2PictToggleButton::`scalar deleting destructor'
+T2PictToggleButton::~T2PictToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected(short value, bool refreshNow) {
@@ -51,5 +53,3 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   reinterpret_cast<void(__cdecl*)()>(ppuVar2[0x3e])();
   reinterpret_cast<void(__cdecl*)(int)>(ppuVar2[0x45])(0);
 }
-
-T2PictToggleButton::~T2PictToggleButton() {}

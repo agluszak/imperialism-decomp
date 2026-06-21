@@ -3547,46 +3547,6 @@ undefined4 DispatchCmdMsg(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot07_Target
-// ghidra_proto undefined TMacViewMgr_Slot07_Target()
-// FUNCTION: IMPERIALISM 0x00606c4e
-undefined4 TMacViewMgr_Slot07_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot08_Target
-// ghidra_proto undefined TMacViewMgr_Slot08_Target()
-// FUNCTION: IMPERIALISM 0x00606c54
-undefined4 TMacViewMgr_Slot08_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot09_Target
-// ghidra_proto undefined TMacViewMgr_Slot09_Target()
-// FUNCTION: IMPERIALISM 0x00606c59
-undefined4 TMacViewMgr_Slot09_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot10_Target
-// ghidra_proto undefined TMacViewMgr_Slot10_Target()
-// FUNCTION: IMPERIALISM 0x00606c5c
-undefined4 TMacViewMgr_Slot10_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot11_Target
-// ghidra_proto undefined TMacViewMgr_Slot11_Target()
-// FUNCTION: IMPERIALISM 0x00606c5f
-undefined4 TMacViewMgr_Slot11_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name RestoreWaitCursor
 // ghidra_proto undefined RestoreWaitCursor()
 // FUNCTION: IMPERIALISM 0x00606c91
@@ -3603,82 +3563,10 @@ undefined4 GetCCmdTargetMessageMap(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot14_Target
-// ghidra_proto undefined TMacViewMgr_Slot14_Target()
-// FUNCTION: IMPERIALISM 0x00606cac
-undefined4 TMacViewMgr_Slot14_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot17_Target
-// ghidra_proto undefined TMacViewMgr_Slot17_Target()
-// FUNCTION: IMPERIALISM 0x00606cb2
-undefined4 TMacViewMgr_Slot17_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot16_Target
-// ghidra_proto undefined TMacViewMgr_Slot16_Target()
-// FUNCTION: IMPERIALISM 0x00606cb8
-undefined4 TMacViewMgr_Slot16_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name CCmdTarget::`scalar deleting destructor'
 // ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00606cbe
 undefined4 ScalarDeletingDestructor_00606CBE(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot18_Target
-// ghidra_proto undefined TMacViewMgr_Slot18_Target()
-// FUNCTION: IMPERIALISM 0x00606cf0
-undefined4 TMacViewMgr_Slot18_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot19_Target
-// ghidra_proto undefined TMacViewMgr_Slot19_Target()
-// FUNCTION: IMPERIALISM 0x00606cf4
-undefined4 TMacViewMgr_Slot19_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot15_Target
-// ghidra_proto undefined TMacViewMgr_Slot15_Target()
-// FUNCTION: IMPERIALISM 0x00606cf9
-undefined4 TMacViewMgr_Slot15_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot21_Target
-// ghidra_proto undefined TMacViewMgr_Slot21_Target()
-// FUNCTION: IMPERIALISM 0x00606cff
-undefined4 TMacViewMgr_Slot21_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot20_Target
-// ghidra_proto undefined TMacViewMgr_Slot20_Target()
-// FUNCTION: IMPERIALISM 0x00606d04
-undefined4 TMacViewMgr_Slot20_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot13_Target
-// ghidra_proto undefined TMacViewMgr_Slot13_Target()
-// FUNCTION: IMPERIALISM 0x00606d09
-undefined4 TMacViewMgr_Slot13_Target(void)
 {
   return 0;
 }

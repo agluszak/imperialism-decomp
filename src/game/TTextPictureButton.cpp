@@ -1,7 +1,14 @@
 #include "game/TTextPictureButton.h"
 
-CRuntimeClass* TTextPictureButton::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005725b0
+CRuntimeClass* TTextPictureButton::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x00572670
+// TTextPictureButton::`scalar deleting destructor'
 TTextPictureButton::~TTextPictureButton() {}
 
-undefined TTextPictureButton::OrphanCallChain_C11_I88_004874b0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00572790
+void TTextPictureButton::ApplyRectSlot110(RECT* rectBuffer) {
+}

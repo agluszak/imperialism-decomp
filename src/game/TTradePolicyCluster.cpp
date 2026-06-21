@@ -1,7 +1,15 @@
 #include "game/TTradePolicyCluster.h"
 
-CRuntimeClass* TTradePolicyCluster::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00584280
+CRuntimeClass* TTradePolicyCluster::GetRuntimeClass() const {
+  return 0;
+}
 
+// SYNTHETIC: IMPERIALISM 0x005842d0
+// TTradePolicyCluster::`scalar deleting destructor'
 TTradePolicyCluster::~TTradePolicyCluster() {}
 
-undefined TTradePolicyCluster::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x00584320
+undefined TTradePolicyCluster::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

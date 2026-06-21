@@ -46,28 +46,15 @@ CRuntimeClass* TUberCluster::GetRuntimeClass() const {
 TUberCluster::TUberCluster() : TCluster() {}
 
 // The scalar deleting destructor is compiler-generated from the inherited virtual dtor.
+
 // SYNTHETIC: IMPERIALISM 0x00571490
 // TUberCluster::`scalar deleting destructor'
+TUberCluster::~TUberCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005714e0
 int TUberCluster::IsTradeControlAtMinimum() {
   return 1;
 }
-void TUberCluster::ApplyMoveValue(int value) {}
-int TUberCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
-  return 0;
-}
-int TUberCluster::GetControlFlag(int arg1, int arg2) {
-  return 0;
-}
-int TUberCluster::GetBoolSlot1DC() {
-  return 0;
-}
-void TUberCluster::DoControlAction() {}
-void TUberCluster::SetTradeBidControlBitmap() {}
-void TUberCluster::SetTradeOfferControlBitmap() {}
-void TUberCluster::SetTradeOfferSecondaryBitmap() {}
-
 // Helper shared by TAmtBarCluster::NoOpUiLifecycleHook (0x586d60); the original address
 // is owned by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {

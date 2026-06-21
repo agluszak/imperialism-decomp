@@ -26,9 +26,9 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0() override; // slot 0x0c 0x4b7b00
   virtual undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b7c20
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b7c40
-  // slot 0x0f InitializeCityOrderItemWorkingBuffers inherited unchanged (0x4b5180)
+  // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b7c90
-  virtual undefined InitializeCityProductionState_Impl(int param_1) override; // slot 0x11 0x4b7ab0
+  virtual undefined InitializeCityProductionState_Impl() override; // slot 0x11 0x4b7ab0
 // === END GENERATED DECLS (TPowerPlantOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPowerPlantOrder 0xCTOR`).
 

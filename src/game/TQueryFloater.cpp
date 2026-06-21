@@ -1,9 +1,19 @@
 #include "game/TQueryFloater.h"
 
+// SYNTHETIC: IMPERIALISM 0x0043d6a0
+// TQueryFloater::`scalar deleting destructor'
 TQueryFloater::~TQueryFloater() {}
 
-CRuntimeClass* TQueryFloater::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0056e8c0
+CRuntimeClass* TQueryFloater::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056e8e0
+void TQueryFloater::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TQueryFloater::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056ea20
+undefined TQueryFloater::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

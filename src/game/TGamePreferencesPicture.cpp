@@ -1,9 +1,19 @@
 #include "game/TGamePreferencesPicture.h"
 
+// SYNTHETIC: IMPERIALISM 0x0043da70
+// TGamePreferencesPicture::`scalar deleting destructor'
 TGamePreferencesPicture::~TGamePreferencesPicture() {}
 
-CRuntimeClass* TGamePreferencesPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x0056a590
+CRuntimeClass* TGamePreferencesPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056a5b0
+void TGamePreferencesPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TGamePreferencesPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x0056ae10
+undefined TGamePreferencesPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

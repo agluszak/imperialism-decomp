@@ -1,9 +1,19 @@
 #include "game/TNetSelectPicture.h"
 
+// SYNTHETIC: IMPERIALISM 0x0045ae10
+// TNetSelectPicture::`scalar deleting destructor'
 TNetSelectPicture::~TNetSelectPicture() {}
 
-CRuntimeClass* TNetSelectPicture::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x00576980
+CRuntimeClass* TNetSelectPicture::GetRuntimeClass() const {
+  return 0;
+}
 
-undefined TNetSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920() { return 0; }
+// FUNCTION: IMPERIALISM 0x005769a0
+void TNetSelectPicture::NoOpUiLifecycleHook(int arg) {
+}
 
-undefined TNetSelectPicture::OrphanRetStub_0059add0() { return 0; }
+// FUNCTION: IMPERIALISM 0x005769c0
+undefined TNetSelectPicture::ForwardEngineerDialogCommandToChildSlot40() {
+  return 0;
+}

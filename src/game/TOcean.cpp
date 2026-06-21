@@ -65,9 +65,6 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x0055fc40
 void TZone::HandleKeyDown(int key_id) {
   short sVarSlotId;
@@ -152,30 +149,25 @@ void TZone::HandleKeyDown(int key_id) {
   SetMapOrderUiFlag(0);
 }
 
-
 // SYNTHETIC: IMPERIALISM 0x00562140
 // TOcean::`scalar deleting destructor'
 
 TOcean::~TOcean() {}
-
 
 // FUNCTION: IMPERIALISM 0x00562190
 CRuntimeClass* TOcean::GetRuntimeClass() const {
   return &PTR_s_TOcean_0065c630;
 }
 
-
 // FUNCTION: IMPERIALISM 0x00562340
 void TOcean::ReadFrom(TStream* stream) {
   (void)stream;
 }
 
-
 // FUNCTION: IMPERIALISM 0x005628f0
 void TOcean::WriteTo(TStream* stream) {
   (void)stream;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
@@ -235,9 +227,6 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(costField));
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005634a0
 void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId;
@@ -274,9 +263,6 @@ void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   return node;
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x00564530
 int ComputeGlobalMapActionContextNodeValueAverage(void) {
   int sum = 0;
@@ -290,4 +276,3 @@ int ComputeGlobalMapActionContextNodeValueAverage(void) {
 
   return sum / count;
 }
-
