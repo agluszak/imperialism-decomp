@@ -45,3 +45,28 @@ TObject* TStaticText::ShallowClone() {
 void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
 }
+
+// FUNCTION: IMPERIALISM 0x0048ff70
+undefined TStaticText::OrphanCallChain_C1_I09_0048ff70() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0048fe60
+undefined TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0048fed0
+undefined TStaticText::LoadUiStringAndDispatchViaVslot1C8() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004294d0
+undefined TStaticText::AssignSharedStringFromField84() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004900a0
+undefined TStaticText::RenderControlStateTextBySelectionCode() {
+  return 0;
+}
