@@ -207,6 +207,36 @@ A duplicated or over-sized declaration shifts every later slot/field by a consta
   a redeclared-but-not-overriding virtual becomes a NEW appended slot (+misalignment).
   See [[diplomacy-state-cleanup-progress]].
 
+### 12b. Vtable-not-matching campaign: the five recurring defects (2026-06-21)
+
+`override` is `#define override` (empty) in `compat.h` — MSVC500 has no override
+keyword, so the compiler matches an override to a base slot purely by **name +
+signature**. A derived "override" whose name/signature differs from the base virtual
+is silently appended as a NEW slot → "Recomp vtable is larger than orig" + every later
+slot shifts. Driving `Vtables not matching` down is mostly finding these. Five patterns,
+all source-only (edit header/cpp → `just build` → `just vtable`; ignore manifests):
+
+1. **Duplicate virtuals for one slot** — generated `Orphan*`/`cmd_slotN` placeholder
+   decls PLUS hand-written typed decls for the same slots ⇒ 2× the slots. Delete the
+   junk set, keep the real typed methods (TBehavior, TCommand).
+2. **Wrong base class** — a class whose vtable shows TObject bodies (Serialize 0x485e90,
+   WriteTo 0x485f70, ShallowFree 0x415ce0 at 0x08/0x14/0x24) but is modeled `: CObject`
+   or base-less. Reparent to `TObject` and drop the redundant streamSlot/cmd_slot decls
+   (TCommand→TObject, TStream→TObject). TObject vtable is 0x6485c0, 10 slots (0x00-0x24).
+3. **Missing base virtuals** — base header stops short; derived "inherited" comments name
+   slots the base never declares, so derived new/override virtuals land early. Add the
+   missing virtuals to the base in slot order (TPtrList 0x64-0x78, TStaticText 0x1c4-0x1d4).
+4. **Phantom trailing virtuals** — base declares `virtual` methods past the real vtable
+   end (orig shows "not annotated" tail). De-virtualize them (TAnimation 3 trailing).
+5. **Junk-named overrides** — derived overrides named `Free`/`OwnerPanel`/`OrphanX`
+   instead of the ancestor's real slot name ⇒ appended. Rename the derived method to the
+   exact base virtual name+signature (TCluster pending; the big cascade for clusters/
+   ministers/great-powers/zones). Per-class, laborious; signatures must match exactly.
+
+Plus a non-vtable infra tell: a slot-4 scalar-dtor mismatch where two `symbols.csv` rows
+share the `Class::\`scalar deleting destructor'` name → reccmp mispairs our `~`. Make the
+sibling-class row's name unique (TSortedPtrList vs sibling 0x649010).
+
 ## 13. Batch repeating templates
 
 When a vtable region is one repeating template (e.g. TGreatPower score-factor slots
