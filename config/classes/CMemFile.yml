@@ -6,9 +6,9 @@ generated:
   ancestry: [CMemFile, CFile, CObject]
   root: CObject
   slots:
-    - {index: 0x00, byte: 0x00, target: 0x00623b46, kind: new, is_thunk: false, is_null: false, ghidra_name: CMemFile::GetCMemFileRuntimeClass, size: 6, prototype: "undefined GetCMemFileRuntimeClass(void)"}
-    - {index: 0x01, byte: 0x04, target: 0x00619adc, kind: new, is_thunk: false, is_null: false, ghidra_name: CMemFile::FUN_00619adc, size: 28, prototype: "undefined FUN_00619adc(void)"}
-    - {index: 0x02, byte: 0x08, target: 0x00412bd0, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
-    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
-    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x00, byte: 0x00, target: 0x00623b46, kind: override, is_thunk: false, is_null: false, ghidra_name: CMemFile::GetCMemFileRuntimeClass, size: 6, prototype: "undefined GetCMemFileRuntimeClass(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00619adc, kind: override, is_thunk: false, is_null: false, ghidra_name: CMemFile::FUN_00619adc, size: 28, prototype: "undefined FUN_00619adc(byte param_1)"}
+    - {index: 0x02, byte: 0x08, target: 0x00412bd0, kind: override, is_thunk: false, is_null: false, ghidra_name: CObject::Serialize, size: 3, prototype: "void Serialize(CArchive * archive)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::AssertValid, size: 1, prototype: "void AssertValid(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::Dump, size: 3, prototype: "void Dump(undefined4 dc)"}
 curated:

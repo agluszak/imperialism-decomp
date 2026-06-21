@@ -276,9 +276,23 @@ def main() -> int:
             root = "TObject" if "TObject" in ancestry[1:] else "CObject"
 
             class_slots = extract_slots(vt, all_vtables)
-            base_slots: list[dict] = []
-            if base and base in vtable_of:
-                base_slots = extract_slots(vtable_of[base], all_vtables)
+            # Full-ancestry base vtable: union of every ancestor's slots, nearest
+            # ancestor winning each index's target. Comparing against this (not just
+            # the immediate base) classifies a slot inherited from a grand-ancestor as
+            # `inherited`/`override` rather than a fresh `new` virtual, and — crucially
+            # — recovers the correct slot extent when the immediate base's own vtable
+            # extraction is truncated but a deeper ancestor's is complete (so derived
+            # slots beyond the truncation aren't mislabeled `new`, which would wrongly
+            # lengthen the recovered vtable).
+            merged_base: dict[int, str] = {}
+            for anc in ancestry[1:]:
+                if anc == cls or anc not in vtable_of:
+                    continue
+                for s in extract_slots(vtable_of[anc], all_vtables):
+                    merged_base.setdefault(int(s["index"]), s.get("target_addr", ""))
+            base_slots: list[dict] = [
+                {"index": i, "target_addr": merged_base[i]} for i in sorted(merged_base)
+            ]
 
             classified: list[ClassifiedSlot] = classify_slots(class_slots, base_slots, {})
             if base:

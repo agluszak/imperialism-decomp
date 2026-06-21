@@ -99,6 +99,14 @@ undefined4 OrphanCallChain_C4_I70_0059f610(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_0059f710
+// ghidra_proto undefined OrphanRetStub_0059f710()
+// FUNCTION: IMPERIALISM 0x0059f710
+undefined4 OrphanRetStub_0059f710(void)
+{
+  return 0;
+}
+
 // ghidra_name TTacticalBattle::CreateTTacticalBattleInstance
 // ghidra_proto undefined CreateTTacticalBattleInstance()
 // FUNCTION: IMPERIALISM 0x0059f730
@@ -1043,6 +1051,14 @@ undefined4 ConstructTacticalBattleViewBaseState(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_005a83c0
+// ghidra_proto undefined OrphanRetStub_005a83c0()
+// FUNCTION: IMPERIALISM 0x005a83c0
+undefined4 OrphanRetStub_005a83c0(void)
+{
+  return 0;
+}
+
 // ghidra_name TacticalBattleView::DestructTacticalBattleViewAndMaybeFree
 // ghidra_proto undefined DestructTacticalBattleViewAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005a83e0
@@ -1359,6 +1375,22 @@ undefined4 HandleArmyTacticalToolbarCommandTags(void)
 // ghidra_proto undefined Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030()
 // FUNCTION: IMPERIALISM 0x005ad030
 undefined4 Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005ad0d0
+// ghidra_proto undefined OrphanRetStub_005ad0d0()
+// FUNCTION: IMPERIALISM 0x005ad0d0
+undefined4 OrphanRetStub_005ad0d0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005ad0f0
+// ghidra_proto undefined OrphanRetStub_005ad0f0()
+// FUNCTION: IMPERIALISM 0x005ad0f0
+undefined4 OrphanRetStub_005ad0f0(void)
 {
   return 0;
 }
@@ -1747,6 +1779,14 @@ undefined4 WrapperFor_DestructCPtrListBaseState_At005aec30(void)
   return 0;
 }
 
+// ghidra_name InitializeCityProductionState_Impl_At005aec80
+// ghidra_proto undefined InitializeCityProductionState_Impl_At005aec80()
+// FUNCTION: IMPERIALISM 0x005aec80
+undefined4 InitializeCityProductionState_Impl_At005aec80(void)
+{
+  return 0;
+}
+
 // ghidra_name DispatchCityProductionQueueCommand
 // ghidra_proto void __thiscall DispatchCityProductionQueueCommand(void * pCommandQueue)
 // FUNCTION: IMPERIALISM 0x005aeca0
@@ -2095,6 +2135,14 @@ undefined4 TGameSetupDialog_scalar_deleting_destructor(void)
 // ghidra_proto undefined GetTGameSetupDialogClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005b2820
 undefined4 GetTGameSetupDialogClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005b2860
+// ghidra_proto undefined OrphanRetStub_005b2860()
+// FUNCTION: IMPERIALISM 0x005b2860
+undefined4 OrphanRetStub_005b2860(void)
 {
   return 0;
 }

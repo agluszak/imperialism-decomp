@@ -153,6 +153,14 @@ dump-thunk-map *args: _require-ghidra-install
 gen-class class *args:
   uv run python -m tools.workflow.gen_class "{{class}}" {{args}}
 
+# Batch shape-only generation: run gen-class --no-bodies across every eligible
+# headerless game-class manifest (skips MFC C*, Family_*, unresolvable-base, and
+# vtable/ownership collisions). Emits headers + vtable shapes + compilable stubs;
+# function bodies are deferred to a later per-class decomp-loop pass. Dry-run by
+# default; pass --write to apply. After --write: sync-ownership, regen-stubs, build.
+gen-classes *args:
+  uv run python -m tools.workflow.gen_classes_batch {{args}}
+
 # Gate: every header with a GENERATED block must match a fresh render of its
 # manifest (no drift), and the class's // VTABLE: address must match the manifest.
 manifest-gate *args:

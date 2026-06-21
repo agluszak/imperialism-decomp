@@ -1915,6 +1915,14 @@ undefined4 ConstructTMiniShipLineBaseState(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00569d50
+// ghidra_proto undefined OrphanRetStub_00569d50()
+// FUNCTION: IMPERIALISM 0x00569d50
+undefined4 OrphanRetStub_00569d50(void)
+{
+  return 0;
+}
+
 // ghidra_name TMiniShipLine::DestructTMiniShipLineAndMaybeFree
 // ghidra_proto undefined DestructTMiniShipLineAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x00569d70
@@ -2343,6 +2351,22 @@ undefined4 DestructTLineDataAndMaybeFree_Impl(void)
 // ghidra_proto undefined SetLineDataRowAndBounds()
 // FUNCTION: IMPERIALISM 0x0056f420
 undefined4 SetLineDataRowAndBounds(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0056f460
+// ghidra_proto undefined OrphanRetStub_0056f460()
+// FUNCTION: IMPERIALISM 0x0056f460
+undefined4 OrphanRetStub_0056f460(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0056f480
+// ghidra_proto undefined OrphanRetStub_0056f480()
+// FUNCTION: IMPERIALISM 0x0056f480
+undefined4 OrphanRetStub_0056f480(void)
 {
   return 0;
 }
@@ -3027,6 +3051,14 @@ undefined4 CreateTClickZoneInstance(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_005723d0
+// ghidra_proto undefined OrphanRetStub_005723d0()
+// FUNCTION: IMPERIALISM 0x005723d0
+undefined4 OrphanRetStub_005723d0(void)
+{
+  return 0;
+}
+
 // ghidra_name TClickZone::GetTClickZoneClassNamePointer
 // ghidra_proto undefined GetTClickZoneClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005723f0
@@ -3151,6 +3183,14 @@ undefined4 ConstructPictureResourceEntryType606E8(void)
 // ghidra_proto undefined DestructTNoHilitePictureAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x00572b60
 undefined4 DestructTNoHilitePictureAndMaybeFree(void)
+{
+  return 0;
+}
+
+// ghidra_name UniversityDialogMethod_00405623
+// ghidra_proto undefined UniversityDialogMethod_00405623()
+// FUNCTION: IMPERIALISM 0x00572bb0
+undefined4 UniversityDialogMethod_00405623(void)
 {
   return 0;
 }

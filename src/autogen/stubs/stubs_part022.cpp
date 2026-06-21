@@ -251,6 +251,14 @@ undefined4 DetachWindowHandleFromMap(void)
   return 0;
 }
 
+// ghidra_name TMacViewMgr_Slot22_Target
+// ghidra_proto undefined TMacViewMgr_Slot22_Target()
+// FUNCTION: IMPERIALISM 0x00607bda
+undefined4 TMacViewMgr_Slot22_Target(void)
+{
+  return 0;
+}
+
 // ghidra_name AfxWndProc
 // ghidra_proto undefined AfxWndProc()
 // FUNCTION: IMPERIALISM 0x00607bdb
@@ -1531,6 +1539,14 @@ undefined4 RenumberAndActivateVisibleDocumentFrames(void)
   return 0;
 }
 
+// ghidra_name NoOpVirtualStub_00610c08
+// ghidra_proto undefined NoOpVirtualStub_00610c08()
+// FUNCTION: IMPERIALISM 0x00610c08
+undefined4 NoOpVirtualStub_00610c08(void)
+{
+  return 0;
+}
+
 // ghidra_name CDocument::'scalar_deleting_destructor'
 // ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
 // FUNCTION: IMPERIALISM 0x00610c0b
@@ -1663,6 +1679,14 @@ undefined4 OnOpenDocument(void)
 // ghidra_proto undefined OnSaveDocument()
 // FUNCTION: IMPERIALISM 0x0061160e
 undefined4 OnSaveDocument(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpVirtualStub_0061180f
+// ghidra_proto undefined NoOpVirtualStub_0061180f()
+// FUNCTION: IMPERIALISM 0x0061180f
+undefined4 NoOpVirtualStub_0061180f(void)
 {
   return 0;
 }
@@ -2614,7 +2638,7 @@ undefined4 OnFileNew(void)
 // ghidra_name CAmbitDocument::OrphanRetStub_0059add0
 // ghidra_proto undefined OrphanRetStub_0059add0()
 // FUNCTION: IMPERIALISM 0x0061849d
-undefined4 OrphanRetStub_0059add0(void)
+undefined4 OrphanRetStub_0059add0_0061849D(void)
 {
   return 0;
 }
@@ -2663,6 +2687,14 @@ undefined4 DispatchNestedVirtualSlot24_FromField80(void)
 // ghidra_proto undefined thunk_NoOpVirtualStub_00618753()
 // FUNCTION: IMPERIALISM 0x0061874f
 undefined4 thunk_NoOpVirtualStub_00618753(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpVirtualStub_00618753
+// ghidra_proto undefined NoOpVirtualStub_00618753()
+// FUNCTION: IMPERIALISM 0x00618753
+undefined4 NoOpVirtualStub_00618753(void)
 {
   return 0;
 }
@@ -3759,6 +3791,14 @@ undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
 // ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()
 // FUNCTION: IMPERIALISM 0x0061ebfd
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpVirtualStub_0061ec02
+// ghidra_proto undefined NoOpVirtualStub_0061ec02()
+// FUNCTION: IMPERIALISM 0x0061ec02
+undefined4 NoOpVirtualStub_0061ec02(void)
 {
   return 0;
 }

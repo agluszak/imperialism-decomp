@@ -7,19 +7,19 @@ generated:
   root: TObject
   slots:
     - {index: 0x00, byte: 0x00, target: 0x005add00, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 6, prototype: "undefined GetTTaskClassNamePointer(void)"}
-    - {index: 0x01, byte: 0x04, target: 0x005add40, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::ConstructTTaskBaseState, size: 30, prototype: "undefined ConstructTTaskBaseState(void)"}
-    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
-    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
-    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x005add40, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::ConstructTTaskBaseState, size: 30, prototype: "undefined ConstructTTaskBaseState(byte param_1)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::Serialize, size: 143, prototype: "void Serialize(CArchive * archive)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::AssertValid, size: 1, prototype: "void AssertValid(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::Dump, size: 3, prototype: "void Dump(undefined4 dc)"}
     - {index: 0x05, byte: 0x14, target: 0x005ae570, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::SerializeCityProductionQueueCommand, size: 78, prototype: "void SerializeCityProductionQueueCommand(void * pArchive)"}
     - {index: 0x06, byte: 0x18, target: 0x005ae5e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 66, prototype: "void DeserializeCityProductionQueueCommand(void * pArchive)"}
-    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 12, prototype: "undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)"}
-    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
-    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004798b0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::Free, size: 12, prototype: "void Free(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::ShallowClone, size: 5, prototype: "TObject * ShallowClone(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::ShallowFree, size: 47, prototype: "TObject * ShallowFree(void)"}
     - {index: 0x0a, byte: 0x28, target: 0x005adde0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanLeaf_NoCall_Ins04_005adc30, size: 438, prototype: "bool OrphanLeaf_NoCall_Ins04_005adc30(void)"}
-    - {index: 0x0b, byte: 0x2c, target: 0x005ae010, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityOrderType10CommandIfReady, size: 153, prototype: "undefined QueueCityOrderType10CommandIfReady(void)"}
-    - {index: 0x0c, byte: 0x30, target: 0x005ae420, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::ApplyProductionDistributionToCitySlots, size: 109, prototype: "void ApplyProductionDistributionToCitySlots(void)"}
-    - {index: 0x0d, byte: 0x34, target: 0x005ae0e0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 261, prototype: "void QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)"}
-    - {index: 0x0e, byte: 0x38, target: 0x005ae240, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 376, prototype: "void DeserializeCityProductionQueueCommand(void * pCommandQueue)"}
-    - {index: 0x0f, byte: 0x3c, target: 0x005ae4b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 137, prototype: "void OrphanRetStub_0059add0(void * pCommandQueue)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x005ae010, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityOrderType10CommandIfReady, size: 153, prototype: "undefined QueueCityOrderType10CommandIfReady(int * param_1)"}
+    - {index: 0x0c, byte: 0x30, target: 0x005ae420, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::ApplyProductionDistributionToCitySlots, size: 109, prototype: "void ApplyProductionDistributionToCitySlots(void)"}
+    - {index: 0x0d, byte: 0x34, target: 0x005ae0e0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit, size: 261, prototype: "void QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)"}
+    - {index: 0x0e, byte: 0x38, target: 0x005ae240, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 376, prototype: "void DeserializeCityProductionQueueCommand(void * pCommandQueue)"}
+    - {index: 0x0f, byte: 0x3c, target: 0x005ae4b0, kind: override, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 137, prototype: "void OrphanRetStub_0059add0(void * pCommandQueue)"}
 curated:

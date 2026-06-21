@@ -1147,6 +1147,38 @@ undefined4 OrphanTiny_ReturnThis_00492ce0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00492d00
+// ghidra_proto undefined OrphanRetStub_00492d00()
+// FUNCTION: IMPERIALISM 0x00492d00
+undefined4 OrphanRetStub_00492d00(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00492d20
+// ghidra_proto undefined OrphanRetStub_00492d20()
+// FUNCTION: IMPERIALISM 0x00492d20
+undefined4 OrphanRetStub_00492d20(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00492d40
+// ghidra_proto undefined OrphanRetStub_00492d40()
+// FUNCTION: IMPERIALISM 0x00492d40
+undefined4 OrphanRetStub_00492d40(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00492d60
+// ghidra_proto undefined OrphanRetStub_00492d60()
+// FUNCTION: IMPERIALISM 0x00492d60
+undefined4 OrphanRetStub_00492d60(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80
 // ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80()
 // FUNCTION: IMPERIALISM 0x00492d80
@@ -1931,6 +1963,14 @@ undefined4 ReturnConstantTrueQuickDrawFlag(void)
   return 0;
 }
 
+// ghidra_name NoOpQuickDrawLifecycleHookB
+// ghidra_proto undefined NoOpQuickDrawLifecycleHookB()
+// FUNCTION: IMPERIALISM 0x004972e0
+undefined4 NoOpQuickDrawLifecycleHookB(void)
+{
+  return 0;
+}
+
 // ghidra_name GetSurfaceHeaderFromSurfaceObject
 // ghidra_proto undefined GetSurfaceHeaderFromSurfaceObject()
 // FUNCTION: IMPERIALISM 0x00497300
@@ -2143,6 +2183,30 @@ undefined4 IntersectRectWrapper(void)
 // ghidra_proto undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0()
 // FUNCTION: IMPERIALISM 0x00498be0
 undefined4 WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(void)
+{
+  return 0;
+}
+
+// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl
+// ghidra_proto undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()
+// FUNCTION: IMPERIALISM 0x00498c60
+undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80
+// ghidra_proto undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()
+// FUNCTION: IMPERIALISM 0x00498c80
+undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallback_00498ca0
+// ghidra_proto undefined NoOpCallback_00498ca0()
+// FUNCTION: IMPERIALISM 0x00498ca0
+undefined4 NoOpCallback_00498ca0(void)
 {
   return 0;
 }
@@ -2591,6 +2655,14 @@ undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60(void)
 // ghidra_proto undefined OrphanVtableAssignStub_0049bf90()
 // FUNCTION: IMPERIALISM 0x0049bf90
 undefined4 OrphanVtableAssignStub_0049bf90(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0049bfb0
+// ghidra_proto undefined OrphanRetStub_0049bfb0()
+// FUNCTION: IMPERIALISM 0x0049bfb0
+undefined4 OrphanRetStub_0049bfb0(void)
 {
   return 0;
 }
@@ -3199,6 +3271,22 @@ undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree(void)
 // ghidra_proto undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0049e640
 undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0049e660
+// ghidra_proto undefined OrphanRetStub_0049e660()
+// FUNCTION: IMPERIALISM 0x0049e660
+undefined4 OrphanRetStub_0049e660(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0049e680
+// ghidra_proto undefined OrphanRetStub_0049e680()
+// FUNCTION: IMPERIALISM 0x0049e680
+undefined4 OrphanRetStub_0049e680(void)
 {
   return 0;
 }

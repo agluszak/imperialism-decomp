@@ -843,6 +843,14 @@ undefined4 ClearPerTileByte0FForAllMapTiles(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00515de0
+// ghidra_proto undefined OrphanRetStub_00515de0()
+// FUNCTION: IMPERIALISM 0x00515de0
+undefined4 OrphanRetStub_00515de0(void)
+{
+  return 0;
+}
+
 // ghidra_name TileHasMovementClassId
 // ghidra_proto undefined TileHasMovementClassId()
 // FUNCTION: IMPERIALISM 0x00515e50
@@ -2667,6 +2675,30 @@ undefined4 ConstructTNavyMission(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_005354c0
+// ghidra_proto undefined OrphanRetStub_005354c0()
+// FUNCTION: IMPERIALISM 0x005354c0
+undefined4 OrphanRetStub_005354c0(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueMissionCapabilityStub
+// ghidra_proto undefined ReturnTrueMissionCapabilityStub()
+// FUNCTION: IMPERIALISM 0x005354e0
+undefined4 ReturnTrueMissionCapabilityStub(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseMissionCapabilityStub
+// ghidra_proto undefined ReturnFalseMissionCapabilityStub()
+// FUNCTION: IMPERIALISM 0x00535500
+undefined4 ReturnFalseMissionCapabilityStub(void)
+{
+  return 0;
+}
+
 // ghidra_name ReturnZeroMissionSlot58NavyOverride
 // ghidra_proto undefined ReturnZeroMissionSlot58NavyOverride()
 // FUNCTION: IMPERIALISM 0x00535520
@@ -2699,6 +2731,22 @@ undefined4 ResetTNavyMissionToSentinelVtable(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueForControlSeaZoneMissionCapabilityFlagA
+// ghidra_proto undefined ReturnTrueForControlSeaZoneMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x005355b0
+undefined4 ReturnTrueForControlSeaZoneMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForControlSeaZoneMissionCapabilityFlagB
+// ghidra_proto undefined ReturnFalseForControlSeaZoneMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x005355d0
+undefined4 ReturnFalseForControlSeaZoneMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
 // ghidra_name TControlSeaZoneMission::DestroyTControlSeaZoneMission
 // ghidra_proto undefined DestroyTControlSeaZoneMission()
 // FUNCTION: IMPERIALISM 0x005355f0
@@ -2711,6 +2759,30 @@ undefined4 DestroyTControlSeaZoneMission(void)
 // ghidra_proto undefined ResetTControlSeaZoneMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00535620
 undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagA
+// ghidra_proto undefined ReturnTrueForScatteredShipsMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x00535640
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionCapabilityFlagB
+// ghidra_proto undefined ReturnTrueForScatteredShipsMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x00535660
+undefined4 ReturnTrueForScatteredShipsMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForScatteredShipsMissionSlot20
+// ghidra_proto undefined ReturnTrueForScatteredShipsMissionSlot20()
+// FUNCTION: IMPERIALISM 0x00535680
+undefined4 ReturnTrueForScatteredShipsMissionSlot20(void)
 {
   return 0;
 }

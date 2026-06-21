@@ -95,12 +95,15 @@ def apply_source_base_slots(slots: list[ClassifiedSlot], base: str) -> list[Clas
             continue
 
         if base_slot.kind == "scalar_dtor":
+            # The scalar-deleting-dtor slot renders as `~Class()`, so it carries no
+            # method name. Leave qualified_name empty — a non-None value here leaks
+            # into derived classes' method names via ancestry adoption.
             out.append(
                 replace(
                     slot,
                     kind="scalar_dtor",
                     sig=None,
-                    qualified_name=f"{slot.qualified_name or ''} (verify scalar deleting destructor)",
+                    qualified_name=None,
                     base_target=base_slot.target_addr,
                     dtor_suspect=False,
                 )

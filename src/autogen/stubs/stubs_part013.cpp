@@ -483,6 +483,22 @@ undefined4 ApplyCityViewSelectionPayloadAndRefreshControls(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004c6fb0
+// ghidra_proto undefined OrphanRetStub_004c6fb0()
+// FUNCTION: IMPERIALISM 0x004c6fb0
+undefined4 OrphanRetStub_004c6fb0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004c6fd0
+// ghidra_proto undefined OrphanRetStub_004c6fd0()
+// FUNCTION: IMPERIALISM 0x004c6fd0
+undefined4 OrphanRetStub_004c6fd0(void)
+{
+  return 0;
+}
+
 // ghidra_name TToolBarCluster::SetUniversityDialogTextAndRefresh
 // ghidra_proto undefined SetUniversityDialogTextAndRefresh()
 // FUNCTION: IMPERIALISM 0x004c6ff0
@@ -939,6 +955,14 @@ undefined4 OrphanCallChain_C1_I08_004cc440(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004cc470
+// ghidra_proto undefined OrphanRetStub_004cc470()
+// FUNCTION: IMPERIALISM 0x004cc470
+undefined4 OrphanRetStub_004cc470(void)
+{
+  return 0;
+}
+
 // ghidra_name TPurchaseCluster::WrapperFor_thunk_DispatchPanelControlEvent_At004cc490
 // ghidra_proto undefined WrapperFor_thunk_DispatchPanelControlEvent_At004cc490()
 // FUNCTION: IMPERIALISM 0x004cc490
@@ -1371,6 +1395,14 @@ undefined4 InitializeCivilianMapInteractionManagerBaseVtable(void)
   return 0;
 }
 
+// ghidra_name NoOpCivilianMapInteractionManagerVirtualHook
+// ghidra_proto undefined NoOpCivilianMapInteractionManagerVirtualHook()
+// FUNCTION: IMPERIALISM 0x004d20c0
+undefined4 NoOpCivilianMapInteractionManagerVirtualHook(void)
+{
+  return 0;
+}
+
 // ghidra_name ClearCivilianSelectionHighlightsForNation
 // ghidra_proto undefined ClearCivilianSelectionHighlightsForNation()
 // FUNCTION: IMPERIALISM 0x004d20e0
@@ -1567,6 +1599,14 @@ undefined4 HandleMapHotkeyW_ResetSelectedActionableObjects(void)
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins15_004d4b90()
 // FUNCTION: IMPERIALISM 0x004d4b90
 undefined4 OrphanLeaf_NoCall_Ins15_004d4b90(void)
+{
+  return 0;
+}
+
+// ghidra_name DiscardTileTokenArgumentAndReturn
+// ghidra_proto undefined DiscardTileTokenArgumentAndReturn()
+// FUNCTION: IMPERIALISM 0x004d4bd0
+undefined4 DiscardTileTokenArgumentAndReturn(void)
 {
   return 0;
 }

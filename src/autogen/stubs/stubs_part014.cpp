@@ -27,6 +27,14 @@ undefined4 RelinkTileUnitsToCountryOrderManager(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004e6610
+// ghidra_proto undefined OrphanRetStub_004e6610()
+// FUNCTION: IMPERIALISM 0x004e6610
+undefined4 OrphanRetStub_004e6610(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004e6630
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004e6630()
 // FUNCTION: IMPERIALISM 0x004e6630
@@ -103,6 +111,46 @@ undefined4 InitializeNationMinisterSubsystemsByPolicyIds(void)
 // ghidra_proto undefined OrphanCallChain_C4_I28_004e75c0()
 // FUNCTION: IMPERIALISM 0x004e75c0
 undefined4 OrphanCallChain_C4_I28_004e75c0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004e7910
+// ghidra_proto undefined OrphanRetStub_004e7910()
+// FUNCTION: IMPERIALISM 0x004e7910
+undefined4 OrphanRetStub_004e7910(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004e7930
+// ghidra_proto undefined OrphanRetStub_004e7930()
+// FUNCTION: IMPERIALISM 0x004e7930
+undefined4 OrphanRetStub_004e7930(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004e7950
+// ghidra_proto undefined OrphanRetStub_004e7950()
+// FUNCTION: IMPERIALISM 0x004e7950
+undefined4 OrphanRetStub_004e7950(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004e7970
+// ghidra_proto undefined OrphanRetStub_004e7970()
+// FUNCTION: IMPERIALISM 0x004e7970
+undefined4 OrphanRetStub_004e7970(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004e7ca0
+// ghidra_proto undefined OrphanRetStub_004e7ca0()
+// FUNCTION: IMPERIALISM 0x004e7ca0
+undefined4 OrphanRetStub_004e7ca0(void)
 {
   return 0;
 }
@@ -811,6 +859,14 @@ undefined4 OrphanCallChain_C3_I22_004f31d0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004f3220
+// ghidra_proto undefined OrphanRetStub_004f3220()
+// FUNCTION: IMPERIALISM 0x004f3220
+undefined4 OrphanRetStub_004f3220(void)
+{
+  return 0;
+}
+
 // ghidra_name TDefenseMinisterView::CreateTDefenseMinisterViewInstance
 // ghidra_proto undefined CreateTDefenseMinisterViewInstance()
 // FUNCTION: IMPERIALISM 0x004f3240
@@ -1055,6 +1111,14 @@ undefined4 RenderDiplomacyMatrixRowStatusIcons(void)
 // ghidra_proto undefined HandleDiplomacySelectedNationActionCommand()
 // FUNCTION: IMPERIALISM 0x004f5410
 undefined4 HandleDiplomacySelectedNationActionCommand(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004f5f90
+// ghidra_proto undefined OrphanRetStub_004f5f90()
+// FUNCTION: IMPERIALISM 0x004f5f90
+undefined4 OrphanRetStub_004f5f90(void)
 {
   return 0;
 }
@@ -1819,6 +1883,14 @@ undefined4 WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004fed50
+// ghidra_proto undefined OrphanRetStub_004fed50()
+// FUNCTION: IMPERIALISM 0x004fed50
+undefined4 OrphanRetStub_004fed50(void)
+{
+  return 0;
+}
+
 // ghidra_name TDisplayMgr::AssertUDisplayMgrLines614And616
 // ghidra_proto undefined AssertUDisplayMgrLines614And616()
 // FUNCTION: IMPERIALISM 0x004fed70
@@ -2083,6 +2155,22 @@ undefined4 UpdateTurnOrderNavigationWindowLayout(void)
   return 0;
 }
 
+// ghidra_name NoOpTurnOrderNavigationVtableSlotA
+// ghidra_proto undefined NoOpTurnOrderNavigationVtableSlotA()
+// FUNCTION: IMPERIALISM 0x00500200
+undefined4 NoOpTurnOrderNavigationVtableSlotA(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpTurnOrderNavigationVtableSlotB
+// ghidra_proto undefined NoOpTurnOrderNavigationVtableSlotB()
+// FUNCTION: IMPERIALISM 0x00500220
+undefined4 NoOpTurnOrderNavigationVtableSlotB(void)
+{
+  return 0;
+}
+
 // ghidra_name TGameWindow::DestroyTurnOrderNavigationWindowAndResetManagerSlot
 // ghidra_proto undefined DestroyTurnOrderNavigationWindowAndResetManagerSlot()
 // FUNCTION: IMPERIALISM 0x00500240
@@ -2279,6 +2367,22 @@ undefined4 SelectAndActivatePendingEventType1A0A(void)
 // ghidra_proto undefined SelectAndActivatePendingEventTypeOffsetFrom1A0B()
 // FUNCTION: IMPERIALISM 0x00503370
 undefined4 SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpDiplomacyPolicyStateChangedHook
+// ghidra_proto undefined NoOpDiplomacyPolicyStateChangedHook()
+// FUNCTION: IMPERIALISM 0x005033e0
+undefined4 NoOpDiplomacyPolicyStateChangedHook(void)
+{
+  return 0;
+}
+
+// ghidra_name HandlePostPendingEventActivationNoOp
+// ghidra_proto undefined HandlePostPendingEventActivationNoOp()
+// FUNCTION: IMPERIALISM 0x00503400
+undefined4 HandlePostPendingEventActivationNoOp(void)
 {
   return 0;
 }

@@ -163,6 +163,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004135f0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004136c0
+// ghidra_proto undefined OrphanRetStub_004136c0()
+// FUNCTION: IMPERIALISM 0x004136c0
+undefined4 OrphanRetStub_004136c0(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_004136e0
 // ghidra_proto undefined OrphanVtableAssignStub_004136e0()
 // FUNCTION: IMPERIALISM 0x004136e0
@@ -347,6 +355,14 @@ undefined4 PostTurnEventCodeMessage2420(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00414770
+// ghidra_proto undefined OrphanRetStub_00414770()
+// FUNCTION: IMPERIALISM 0x00414770
+undefined4 OrphanRetStub_00414770(void)
+{
+  return 0;
+}
+
 // ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850
 // ghidra_proto undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()
 // FUNCTION: IMPERIALISM 0x00414850
@@ -375,6 +391,14 @@ undefined4 LoadLanguageResourcesFromIrgFiles(void)
 // ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()
 // FUNCTION: IMPERIALISM 0x00415000
 undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000(void)
+{
+  return 0;
+}
+
+// ghidra_name ExecuteNoOpNewGameCommand
+// ghidra_proto undefined ExecuteNoOpNewGameCommand()
+// FUNCTION: IMPERIALISM 0x00415030
+undefined4 ExecuteNoOpNewGameCommand(void)
 {
   return 0;
 }
@@ -675,6 +699,14 @@ undefined4 GetUiLinkedListNodePayload(void)
   return 0;
 }
 
+// ghidra_name NoOpRuntimeCallback_00426f80
+// ghidra_proto undefined NoOpRuntimeCallback_00426f80()
+// FUNCTION: IMPERIALISM 0x00426f80
+undefined4 NoOpRuntimeCallback_00426f80(void)
+{
+  return 0;
+}
+
 // ghidra_name SetUiResourceContextFlagsAndMetrics
 // ghidra_proto undefined SetUiResourceContextFlagsAndMetrics()
 // FUNCTION: IMPERIALISM 0x00426fa0
@@ -899,10 +931,26 @@ undefined4 ConstructUiResourceEntry_Vtbl00640060(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00430550
+// ghidra_proto undefined OrphanRetStub_00430550()
+// FUNCTION: IMPERIALISM 0x00430550
+undefined4 OrphanRetStub_00430550(void)
+{
+  return 0;
+}
+
 // ghidra_name TCouncilPanelView::'scalar_deleting_destructor'
 // ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // FUNCTION: IMPERIALISM 0x00430570
 undefined4 TCouncilPanelView_scalar_deleting_destructor(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004305c0
+// ghidra_proto undefined OrphanRetStub_004305c0()
+// FUNCTION: IMPERIALISM 0x004305c0
+undefined4 OrphanRetStub_004305c0(void)
 {
   return 0;
 }
@@ -1259,6 +1307,14 @@ undefined4 ConstructTurnEventMainPictureEntry_104F(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_0043d9f0
+// ghidra_proto undefined OrphanRetStub_0043d9f0()
+// FUNCTION: IMPERIALISM 0x0043d9f0
+undefined4 OrphanRetStub_0043d9f0(void)
+{
+  return 0;
+}
+
 // ghidra_name TFlagOptionsPicture::'scalar_deleting_destructor'
 // ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // FUNCTION: IMPERIALISM 0x0043da10
@@ -1555,6 +1611,14 @@ undefined4 InitializeOrderStateUiResourceTreeAndControlEntries(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_0045acb0
+// ghidra_proto undefined OrphanRetStub_0045acb0()
+// FUNCTION: IMPERIALISM 0x0045acb0
+undefined4 OrphanRetStub_0045acb0(void)
+{
+  return 0;
+}
+
 // ghidra_name TSpecialQuitPicture::'scalar_deleting_destructor'
 // ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // FUNCTION: IMPERIALISM 0x0045acd0
@@ -1575,6 +1639,14 @@ undefined4 WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0045ad70()
 // FUNCTION: IMPERIALISM 0x0045ad70
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0045ada0
+// ghidra_proto undefined OrphanRetStub_0045ada0()
+// FUNCTION: IMPERIALISM 0x0045ada0
+undefined4 OrphanRetStub_0045ada0(void)
 {
   return 0;
 }
@@ -1679,6 +1751,14 @@ undefined4 InitializeTacticalBattleViewToolbarAndDialogControls(void)
 // ghidra_proto undefined WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270()
 // FUNCTION: IMPERIALISM 0x0045d270
 undefined4 WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0045d2a0
+// ghidra_proto undefined OrphanRetStub_0045d2a0()
+// FUNCTION: IMPERIALISM 0x0045d2a0
+undefined4 OrphanRetStub_0045d2a0(void)
 {
   return 0;
 }

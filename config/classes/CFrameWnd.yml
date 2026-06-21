@@ -6,5 +6,5 @@ generated:
   ancestry: [CFrameWnd, CWnd, CCmdTarget, CObject]
   root: CObject
   slots:
-    - {index: 0x00, byte: 0x00, target: 0x0061419f, kind: new, is_thunk: false, is_null: false, ghidra_name: CFrameWnd::OnEndPrintPreview, size: 202, prototype: "undefined OnEndPrintPreview(void)"}
+    - {index: 0x00, byte: 0x00, target: 0x0061419f, kind: override, is_thunk: false, is_null: false, ghidra_name: CFrameWnd::OnEndPrintPreview, size: 202, prototype: "undefined OnEndPrintPreview(int * param_1)"}
 curated:

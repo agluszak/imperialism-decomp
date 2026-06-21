@@ -955,6 +955,14 @@ undefined4 DispatchTurnEvent7D8IfTurnFlowIdle(void)
   return 0;
 }
 
+// ghidra_name NoOpTurnEventStateVtableSlotD4
+// ghidra_proto undefined NoOpTurnEventStateVtableSlotD4()
+// FUNCTION: IMPERIALISM 0x005d7190
+undefined4 NoOpTurnEventStateVtableSlotD4(void)
+{
+  return 0;
+}
+
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
@@ -1119,6 +1127,14 @@ undefined4 HandleTurnStateExitAndPostFollowupEventCode(void)
 // ghidra_proto undefined HandleTurnEventDialogFactorySlotF8()
 // FUNCTION: IMPERIALISM 0x005db780
 undefined4 HandleTurnEventDialogFactorySlotF8(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpTurnEventStateVtableSlotFC
+// ghidra_proto undefined NoOpTurnEventStateVtableSlotFC()
+// FUNCTION: IMPERIALISM 0x005dbd10
+undefined4 NoOpTurnEventStateVtableSlotFC(void)
 {
   return 0;
 }
@@ -1443,6 +1459,14 @@ undefined4 InitializeDialogTemplateE0(void)
   return 0;
 }
 
+// ghidra_name NoOpRuntimeUiCallback_005dee80
+// ghidra_proto undefined NoOpRuntimeUiCallback_005dee80()
+// FUNCTION: IMPERIALISM 0x005dee80
+undefined4 NoOpRuntimeUiCallback_005dee80(void)
+{
+  return 0;
+}
+
 // ghidra_name GetRuntimePtrTable0066F368
 // ghidra_proto undefined GetRuntimePtrTable0066F368()
 // FUNCTION: IMPERIALISM 0x005deea0
@@ -1539,6 +1563,22 @@ undefined4 ResolveTurnEventDialogNodeByMessageContext(void)
   return 0;
 }
 
+// ghidra_name NoOpRuntimeUiCallback_005df3f0
+// ghidra_proto undefined NoOpRuntimeUiCallback_005df3f0()
+// FUNCTION: IMPERIALISM 0x005df3f0
+undefined4 NoOpRuntimeUiCallback_005df3f0(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpRuntimeUiCallback_005df410
+// ghidra_proto undefined NoOpRuntimeUiCallback_005df410()
+// FUNCTION: IMPERIALISM 0x005df410
+undefined4 NoOpRuntimeUiCallback_005df410(void)
+{
+  return 0;
+}
+
 // ghidra_name LoadTableResourceStreamByName
 // ghidra_proto undefined LoadTableResourceStreamByName()
 // FUNCTION: IMPERIALISM 0x005df430
@@ -1599,6 +1639,14 @@ undefined4 InvokeVtableSlot30OnTargetObject(void)
 // ghidra_proto undefined GetResourceStreamSize()
 // FUNCTION: IMPERIALISM 0x005df760
 undefined4 GetResourceStreamSize(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpRuntimeUiCallback_005df780
+// ghidra_proto undefined NoOpRuntimeUiCallback_005df780()
+// FUNCTION: IMPERIALISM 0x005df780
+undefined4 NoOpRuntimeUiCallback_005df780(void)
 {
   return 0;
 }
@@ -2003,6 +2051,14 @@ undefined4 InitializeMovieViewOwnedStateBlock(void)
   return 0;
 }
 
+// ghidra_name NoOpRuntimeUiCallback_005e2490
+// ghidra_proto undefined NoOpRuntimeUiCallback_005e2490()
+// FUNCTION: IMPERIALISM 0x005e2490
+undefined4 NoOpRuntimeUiCallback_005e2490(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0
 // ghidra_proto undefined WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0()
 // FUNCTION: IMPERIALISM 0x005e24b0
@@ -2147,6 +2203,22 @@ undefined4 DestructRuntimeSelectionRecordBufferState(void)
   return 0;
 }
 
+// ghidra_name NoOpJoinGameSelectionVtableSlotA
+// ghidra_proto undefined NoOpJoinGameSelectionVtableSlotA()
+// FUNCTION: IMPERIALISM 0x005e2b50
+undefined4 NoOpJoinGameSelectionVtableSlotA(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpJoinGameSelectionVtableSlotB
+// ghidra_proto undefined NoOpJoinGameSelectionVtableSlotB()
+// FUNCTION: IMPERIALISM 0x005e2b70
+undefined4 NoOpJoinGameSelectionVtableSlotB(void)
+{
+  return 0;
+}
+
 // ghidra_name ResetJoinableGameDescriptorBuffer
 // ghidra_proto undefined ResetJoinableGameDescriptorBuffer()
 // FUNCTION: IMPERIALISM 0x005e2bb0
@@ -2219,10 +2291,34 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_Secondary(void)
   return 0;
 }
 
+// ghidra_name NoOpInitializeGlobalTurnEventQueueManager
+// ghidra_proto undefined NoOpInitializeGlobalTurnEventQueueManager()
+// FUNCTION: IMPERIALISM 0x005e3450
+undefined4 NoOpInitializeGlobalTurnEventQueueManager(void)
+{
+  return 0;
+}
+
 // ghidra_name ReleaseObjectIfNonNullViaVslot04
 // ghidra_proto undefined ReleaseObjectIfNonNullViaVslot04()
 // FUNCTION: IMPERIALISM 0x005e3470
 undefined4 ReleaseObjectIfNonNullViaVslot04(void)
+{
+  return 0;
+}
+
+// ghidra_name DefaultUnhandledTurnEventHookReturnsFalse
+// ghidra_proto undefined DefaultUnhandledTurnEventHookReturnsFalse()
+// FUNCTION: IMPERIALISM 0x005e3490
+undefined4 DefaultUnhandledTurnEventHookReturnsFalse(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueRuntimeCredentialInitStub
+// ghidra_proto undefined ReturnTrueRuntimeCredentialInitStub()
+// FUNCTION: IMPERIALISM 0x005e34b0
+undefined4 ReturnTrueRuntimeCredentialInitStub(void)
 {
   return 0;
 }
@@ -2255,6 +2351,14 @@ undefined4 OpenRuntimeSelectionSourceByIndexAndCopyPath(void)
 // ghidra_proto undefined OpenRuntimeSelectionSourceAndApplyActiveNationState()
 // FUNCTION: IMPERIALISM 0x005e3ad0
 undefined4 OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueRuntimeCredentialFinalizeStub
+// ghidra_proto undefined ReturnTrueRuntimeCredentialFinalizeStub()
+// FUNCTION: IMPERIALISM 0x005e3c00
+undefined4 ReturnTrueRuntimeCredentialFinalizeStub(void)
 {
   return 0;
 }
@@ -2295,6 +2399,14 @@ undefined4 PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
 // ghidra_proto undefined GetSessionActiveNationId()
 // FUNCTION: IMPERIALISM 0x005e4280
 undefined4 GetSessionActiveNationId(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpDialogModeTagChangedHook
+// ghidra_proto undefined NoOpDialogModeTagChangedHook()
+// FUNCTION: IMPERIALISM 0x005e42a0
+undefined4 NoOpDialogModeTagChangedHook(void)
 {
   return 0;
 }
@@ -2447,6 +2559,14 @@ undefined4 NotifyGlobalAudioObjectsViaVslot48(void)
 // ghidra_proto undefined WrapperFor_ftol_At005e5020()
 // FUNCTION: IMPERIALISM 0x005e5020
 undefined4 WrapperFor_ftol_At005e5020(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpAudioTickCallback_005e50a0
+// ghidra_proto undefined NoOpAudioTickCallback_005e50a0()
+// FUNCTION: IMPERIALISM 0x005e50a0
+undefined4 NoOpAudioTickCallback_005e50a0(void)
 {
   return 0;
 }
@@ -3171,6 +3291,14 @@ undefined4 thunk_NoOpRuntimeCallback_005e717b(void)
   return 0;
 }
 
+// ghidra_name NoOpRuntimeCallback_005e717b
+// ghidra_proto undefined NoOpRuntimeCallback_005e717b()
+// FUNCTION: IMPERIALISM 0x005e717b
+undefined4 NoOpRuntimeCallback_005e717b(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e
 // ghidra_proto undefined WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e()
 // FUNCTION: IMPERIALISM 0x005e717e
@@ -3207,6 +3335,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e72f1(void)
 // ghidra_proto void __cdecl fpmath(int param_1)
 // FUNCTION: IMPERIALISM 0x005e7350
 undefined4 fpmath(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCrtThreadLifecycleHook
+// ghidra_proto undefined NoOpCrtThreadLifecycleHook()
+// FUNCTION: IMPERIALISM 0x005e7370
+undefined4 NoOpCrtThreadLifecycleHook(void)
 {
   return 0;
 }

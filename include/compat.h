@@ -14,6 +14,32 @@
 
 #define MSVC420_VERSION 1020
 
+// Ghidra placeholder integer types. Mirrored here (decomp_types.h also defines
+// them and includes this header) so a generated game-class header — which only
+// includes its immediate base header — always sees `undefined` even before
+// decomp_types.h is pulled in. Identical typedefs are a no-op redefinition when
+// both headers are included.
+typedef unsigned char undefined;
+typedef unsigned char undefined1;
+typedef unsigned short undefined2;
+typedef unsigned int undefined4;
+#if defined(_MSC_VER) && (_MSC_VER < 1300)
+typedef unsigned __int64 undefined8;
+#else
+typedef unsigned long long undefined8;
+#endif
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned char uchar;
+typedef unsigned short word;
+typedef unsigned int dword;
+typedef unsigned long ulong;
+#if defined(_MSC_VER) && (_MSC_VER < 1300)
+typedef unsigned __int64 qword;
+#else
+typedef unsigned long long qword;
+#endif
+
 // We use `override` so newer compilers can tell us our vtables are valid,
 // however this keyword was added in C++11, so we define it as empty for
 // compatibility with older compilers. Also define `nullptr` as `0`.

@@ -66,6 +66,27 @@ _JUNK_NAME = re.compile(
     r"(FUN_|SUB_|LAB_|Orphan|WrapperFor_|NoOp|_At[0-9A-Fa-f]{6}|VTableSlot|Unknown|Dummy)"
 )
 _VTABLE_MARKER = re.compile(r"//\s*VTABLE:\s*IMPERIALISM\s+(0x[0-9a-fA-F]+|[0-9a-fA-F]+)")
+_IDENT_RE = re.compile(r"^[A-Za-z_~][A-Za-z0-9_]*$")
+# Provisional Ghidra names shaped like banned construction bridges (the
+# construction-antipattern gate's `bridge_name` rule). A shape-only stub is not a real
+# bridge, so neutralize the name rather than asserting one.
+_BRIDGE_NAME_RE = re.compile(r"Construct\w*AtThis|VCall_\w*Runtime|\w*AndMaybeFree")
+
+
+def safe_method_name(name: str | None, idx: int) -> str:
+    """A valid, non-bridge-shaped C++ method identifier for a slot, or a deterministic
+    ``VTableSlotNN``.
+
+    Provisional Ghidra names can contain backticks/apostrophes/spaces (e.g.
+    ``'scalar_deleting_destructor'``) that are not valid identifiers, or look like a
+    banned construction bridge (``DestructXAndMaybeFree``). Falling back to a name keyed
+    only on the slot index keeps it stable across the hierarchy, so an override and the
+    parent virtual it overrides still resolve to the same name.
+    """
+    n = unqualified(name) if name else ""
+    if not n or not _IDENT_RE.match(n) or _BRIDGE_NAME_RE.search(n):
+        return f"VTableSlot{idx:02X}"
+    return n
 _CLASS_DECL = re.compile(r"\b(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)\b")
 
 BLOCK_BEGIN = "// === BEGIN GENERATED ({cls}) — refreshed by `just gen-class {cls}`; do not hand-edit ==="
@@ -102,7 +123,7 @@ def _slot_display(slot: dict[str, Any], curated: dict[int, dict[str, Any]]) -> s
     if kind == "ilt_thunk":
         return "(ILT thunk — reccmp auto-resolves)"
     name = slot.get("ghidra_name")
-    return unqualified(name) if name else "?"
+    return safe_method_name(name, idx) if name else "?"
 
 
 def render_generated_block(manifest: dict[str, Any]) -> str:
@@ -213,7 +234,7 @@ def classified_from_manifest(
         cur = curated.get(idx)
         qualified = (cur or {}).get("method") or s.get("ghidra_name")
         proto = s.get("prototype")
-        preferred = unqualified(qualified) if qualified else f"VTableSlot{idx:02X}"
+        preferred = safe_method_name(qualified, idx)
         sig: Signature | None = None
         if kind in ("override", "new"):
             parsed = parse_prototype(proto, preferred)
@@ -240,24 +261,100 @@ def classified_from_manifest(
     out = apply_source_base_slots(out, str(base))
     if repo_root is not None:
         out = apply_ancestry_slots(out, manifest, repo_root)
+        out = _match_ancestor_header_return_types(out, manifest, repo_root)
+    out = _dedupe_method_names(out)
+    return out
+
+
+def _dedupe_method_names(slots: list[ClassifiedSlot]) -> list[ClassifiedSlot]:
+    """Disambiguate override/new slots that share a method name.
+
+    Distinct vtable slots often carry the same provisional Ghidra name (shared
+    dispatch/no-op bodies), which would emit duplicate member declarations (C2535).
+    Suffix every colliding name with its slot index — deterministic, so a parent and
+    child that share the collision still resolve to the same overriding name."""
+    counts: dict[str, int] = {}
+    for s in slots:
+        if s.kind in ("override", "new") and s.sig is not None:
+            counts[s.sig.name] = counts.get(s.sig.name, 0) + 1
+    if not any(c > 1 for c in counts.values()):
+        return slots
+    out: list[ClassifiedSlot] = []
+    for s in slots:
+        if s.kind in ("override", "new") and s.sig is not None and counts[s.sig.name] > 1:
+            out.append(replace(s, sig=replace(s.sig, name=f"{s.sig.name}_{s.index:02x}")))
+        else:
+            out.append(s)
+    return out
+
+
+_VIRTUAL_DECL_RE = re.compile(r"\bvirtual\s+(.+?)\s+(~?[A-Za-z_]\w*)\s*\(")
+
+
+def _ancestor_header_return_types(manifest: dict[str, Any], repo_root: Path) -> dict[str, str]:
+    """``method name -> return type`` from the class's ancestor *headers* (nearest
+    wins). A hand-curated base may declare a virtual with a corrected return type
+    (e.g. ``char``) that differs from the Ghidra prototype (``undefined``); a derived
+    override must use the base's type or MSVC rejects it (C2555)."""
+    cls = manifest.get("class")
+    ancestry = [str(a) for a in (manifest.get("generated") or {}).get("ancestry") or []]
+    out: dict[str, str] = {}
+    for anc in ancestry[1:]:
+        if anc == cls:
+            continue
+        hpath = header_path(repo_root, anc)
+        if not hpath.exists():
+            continue
+        for line in hpath.read_text(encoding="utf-8", errors="ignore").splitlines():
+            m = _VIRTUAL_DECL_RE.search(line)
+            if not m:
+                continue
+            ret, name = m.group(1).strip(), m.group(2)
+            if name.startswith("~") or not ret:
+                continue
+            out.setdefault(name, ret)
+    return out
+
+
+def _match_ancestor_header_return_types(
+    slots: list[ClassifiedSlot], manifest: dict[str, Any], repo_root: Path
+) -> list[ClassifiedSlot]:
+    ret_map = _ancestor_header_return_types(manifest, repo_root)
+    if not ret_map:
+        return slots
+    out: list[ClassifiedSlot] = []
+    for s in slots:
+        if (
+            s.kind in ("override", "new")
+            and s.sig is not None
+            and s.sig.name in ret_map
+            and ret_map[s.sig.name] != s.sig.ret
+        ):
+            out.append(replace(s, sig=replace(s.sig, ret=ret_map[s.sig.name])))
+        else:
+            out.append(s)
     return out
 
 
 def _ancestor_slot_names(
     manifest: dict[str, Any], repo_root: Path
-) -> tuple[dict[int, str], dict[int, Signature]]:
-    """Per-slot ``(qualified_name, signature)`` from the class's ancestor manifests.
+) -> tuple[dict[int, str], dict[int, Signature], set[int]]:
+    """Per-slot ``(qualified_name, signature)`` + scalar-dtor indices from ancestors.
 
     Walks ``generated.ancestry`` nearest-first; for each slot index records the
     first ancestor that supplies a name, and the first that supplies a signature
     (an ``inherited`` ancestor slot carries a name but no signature, so the two can
-    come from different ancestors). Recurses through ``classified_from_manifest`` so
-    each ancestor is itself resolved against *its* bases.
+    come from different ancestors). Also collects the slot indices that any ancestor
+    classifies as the scalar deleting destructor, so a derived class's same slot is
+    propagated to ``scalar_dtor`` (it is still the dtor, even when the immediate base
+    isn't a source root). Recurses through ``classified_from_manifest`` so each
+    ancestor is itself resolved against *its* bases.
     """
     cls = manifest.get("class")
     ancestry = [str(a) for a in (manifest.get("generated") or {}).get("ancestry") or []]
     names: dict[int, str] = {}
     sigs: dict[int, Signature] = {}
+    scalar_indices: set[int] = set()
     for anc in ancestry[1:]:  # ancestry[0] is the class itself
         if anc == cls:
             continue
@@ -272,24 +369,39 @@ def _ancestor_slot_names(
                 continue
             anc_slots = classified_from_manifest(cm.load_manifest(path), repo_root)
         for s in anc_slots:
+            if s.kind == "scalar_dtor":
+                scalar_indices.add(s.index)
             if s.qualified_name and s.index not in names:
                 names[s.index] = s.qualified_name
             if s.sig is not None and s.index not in sigs:
                 sigs[s.index] = s.sig
-    return names, sigs
+    return names, sigs, scalar_indices
 
 
 def apply_ancestry_slots(
     slots: list[ClassifiedSlot], manifest: dict[str, Any], repo_root: Path
 ) -> list[ClassifiedSlot]:
-    """Adopt parent slot names/signatures for un-curated inherited/override slots."""
-    names, sigs = _ancestor_slot_names(manifest, repo_root)
-    if not names:
+    """Adopt parent slot names/signatures for un-curated inherited/override slots, and
+    propagate an ancestor's scalar-deleting-dtor classification onto the same slot."""
+    names, sigs, scalar_indices = _ancestor_slot_names(manifest, repo_root)
+    if not names and not scalar_indices:
         return slots
     local_curated = set(cm.curated_slot_methods(manifest).keys())
 
     out: list[ClassifiedSlot] = []
     for slot in slots:
+        # The scalar-deleting-dtor slot stays the dtor in every descendant, even when
+        # the dump labeled it override/new (its target differs from the root's). Render
+        # it as `~Class()`, never as a named method (whose name would be the dtor's).
+        if (
+            slot.index in scalar_indices
+            and slot.index not in local_curated
+            and slot.kind in ("override", "new", "inherited")
+        ):
+            out.append(
+                replace(slot, kind="scalar_dtor", sig=None, qualified_name=None, dtor_suspect=False)
+            )
+            continue
         parent_name = names.get(slot.index)
         if (
             slot.index in local_curated
@@ -298,7 +410,7 @@ def apply_ancestry_slots(
         ):
             out.append(slot)
             continue
-        name = unqualified(parent_name)
+        name = safe_method_name(parent_name, slot.index)
         if slot.kind == "inherited":
             # Inherited: only correct the name shown in the slot comment.
             out.append(replace(slot, qualified_name=parent_name))
@@ -333,14 +445,14 @@ def render_generated_decls(manifest: dict[str, Any], slots: list[ClassifiedSlot]
     lines = [DECLS_BEGIN.format(cls=cls)]
     for s in slots:
         if s.kind == "inherited":
-            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            nm = safe_method_name(s.qualified_name, s.index) if s.qualified_name else "?"
             lines.append(
                 f"  // slot {s.slot_label} {nm} inherited unchanged (0x{s.target_addr})"
             )
         elif s.kind == "null":
             lines.append(f"  // slot {s.slot_label} (null in original table)")
         elif s.kind == "ilt_thunk":
-            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            nm = safe_method_name(s.qualified_name, s.index) if s.qualified_name else "?"
             lines.append(
                 f"  // slot {s.slot_label} {nm} -> ILT/linker thunk (0x{s.target_addr}); "
                 "reccmp auto-resolves, not owned here"
@@ -351,9 +463,12 @@ def render_generated_decls(manifest: dict[str, Any], slots: list[ClassifiedSlot]
             )
         elif s.kind in ("override", "new"):
             assert s.sig is not None
-            virtual = True
+            # `new` slots introduce a fresh virtual (no base slot to override); only
+            # `override` slots get the `override` specifier (a no-op on MSVC500 via the
+            # compat.h `#define override`, but correct for modern verifying compilers).
             lines.append(
-                f"  {s.sig.decl(virtual=virtual, override=True)} // slot 0x{s.index:02x} 0x{s.target_addr}"
+                f"  {s.sig.decl(virtual=True, override=s.kind == 'override')}"
+                f" // slot 0x{s.index:02x} 0x{s.target_addr}"
             )
     lines.append(DECLS_END.format(cls=cls))
     return "\n".join(lines)
@@ -524,12 +639,24 @@ def merge_cpp_bodies(
 
 
 def apply_slots(
-    repo_root: Path, cls: str, manifest: dict[str, Any], slots: list[ClassifiedSlot], write: bool
+    repo_root: Path,
+    cls: str,
+    manifest: dict[str, Any],
+    slots: list[ClassifiedSlot],
+    write: bool,
+    no_bodies: bool = False,
 ) -> int:
     """Insert/refresh the GENERATED DECLS block and promote+shape slot bodies.
 
     Assumes the header already exists (scaffolded or hand-written). Plans and merges
     the symbols + ownership CSV rows for the bodies. Returns a process exit code.
+
+    When ``no_bodies`` is set, the autogen body-shaping step (``merge_cpp_bodies``) is
+    skipped: the header DECLS, the symbols/ownership CSV rows, and the compilable
+    scaffold stubs already written by ``scaffold_new_class`` are kept, but no raw
+    Ghidra decompile is pulled in. This is the shape-only mode used to batch-port a
+    class's *vtable* (which still emits + pairs from the stub definitions) while
+    deferring the bodies to a later per-class decomp-loop pass.
     """
     from tools.workflow.promote_from_autogen import collect_autogen_blocks
     from tools.workflow import class_codegen as bc
@@ -546,23 +673,38 @@ def apply_slots(
     header_text = hpath.read_text(encoding="utf-8")
     new_header, header_changed = upsert_decls_block(header_text, cls, decls_block)
 
-    autogen_dir = resolve_repo_path(repo_root, "src/ghidra_autogen")
-    autogen = collect_autogen_blocks(autogen_dir, "IMPERIALISM") if autogen_dir.is_dir() else {}
-    resolver = ThunkResolver(load_thunk_map(resolve_repo_path(repo_root, "config/thunk_map.csv")))
-
     cpp_text = cpp_path.read_text(encoding="utf-8") if cpp_path.exists() else ""
-    new_cpp, promoted, missing = merge_cpp_bodies(cpp_text, cls, body_slots, autogen, resolver)
+    if no_bodies:
+        # Shape-only: leave the scaffold stubs in place; do not read/shape autogen.
+        new_cpp, promoted, missing = cpp_text, [], []
+    else:
+        autogen_dir = resolve_repo_path(repo_root, "src/ghidra_autogen")
+        autogen = (
+            collect_autogen_blocks(autogen_dir, "IMPERIALISM") if autogen_dir.is_dir() else {}
+        )
+        resolver = ThunkResolver(
+            load_thunk_map(resolve_repo_path(repo_root, "config/thunk_map.csv"))
+        )
+        new_cpp, promoted, missing = merge_cpp_bodies(
+            cpp_text, cls, body_slots, autogen, resolver
+        )
     cpp_changed = new_cpp != cpp_text
 
-    sym_plan = bc.plan_symbols(
-        resolve_repo_path(repo_root, "config/symbols.csv"), body_slots, cls
-    )
-    own_plan = bc.plan_ownership(
-        resolve_repo_path(repo_root, "config/function_ownership.csv"),
-        [s for s in body_slots if s.kind != "scalar_dtor"],
-        target_cpp_rel,
-    )
+    # Shape-only (no_bodies) never claims ownership/symbols — markers + ownership are
+    # part of body porting (deferred), and the slot targets are shared across classes.
+    sym_plan = None
+    own_plan = None
+    if not no_bodies:
+        sym_plan = bc.plan_symbols(
+            resolve_repo_path(repo_root, "config/symbols.csv"), body_slots, cls
+        )
+        own_plan = bc.plan_ownership(
+            resolve_repo_path(repo_root, "config/function_ownership.csv"),
+            [s for s in body_slots if s.kind != "scalar_dtor"],
+            target_cpp_rel,
+        )
 
+    collisions = own_plan.collisions if own_plan else []
     print(f"gen-class {cls}: slots — decl {len(decl_slots)}, body {len(body_slots)}")
     print(f"  header DECLS {'changed' if header_changed else 'up to date'}")
     print(f"  cpp bodies {'changed' if cpp_changed else 'up to date'}  promoted {len(promoted)}")
@@ -570,16 +712,16 @@ def apply_slots(
         print("  promoted: " + ", ".join(f"0x{a:08x}" for a in promoted))
     if missing:
         print("  missing autogen (no body to shape): " + ", ".join(f"0x{a:08x}" for a in missing))
-    if own_plan.collisions:
+    if collisions:
         print("  ownership collisions:")
-        for c in own_plan.collisions:
+        for c in collisions:
             print(f"    {c}")
 
     if not write:
         print("  (dry-run) pass --write to apply slot decls + bodies.")
-        return 1 if own_plan.collisions else 0
+        return 1 if collisions else 0
 
-    if own_plan.collisions:
+    if collisions:
         print("gen-class: refusing --write due to ownership collisions.")
         return 1
 
@@ -588,9 +730,9 @@ def apply_slots(
     if cpp_changed:
         cpp_path.parent.mkdir(parents=True, exist_ok=True)
         cpp_path.write_text(new_cpp, encoding="utf-8")
-    if sym_plan.new_rows or sym_plan.updated_rows:
+    if sym_plan and (sym_plan.new_rows or sym_plan.updated_rows):
         sym_plan.path.write_text(sym_plan.merged_text())
-    if own_plan.new_rows:
+    if own_plan and own_plan.new_rows:
         own_plan.path.write_text(own_plan.merged_text())
     return 0
 
@@ -685,11 +827,17 @@ def print_todo(repo_root: Path, cls: str, manifest: dict[str, Any]) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], write: bool) -> int:
+def scaffold_new_class(
+    repo_root: Path, cls: str, manifest: dict[str, Any], write: bool, no_bodies: bool = False
+) -> int:
     """Write the structural skeleton (header + GENERATED block + cpp stubs) for a
     brand-new class. Virtual decls + shaped bodies + CSV rows are applied afterward
     by ``apply_slots`` (the single decl/body source). Returns a process exit code;
-    1 means "refused / dry-run, do not proceed to apply_slots"."""
+    1 means "refused / dry-run, do not proceed to apply_slots".
+
+    When ``no_bodies`` is set the cpp is rendered as unmarked shape-only stubs (no
+    ``// FUNCTION:``/``// SYNTHETIC:`` markers, no ownership claim).
+    """
     from tools.workflow import class_codegen as bc
 
     gen = manifest.get("generated") or {}
@@ -702,13 +850,21 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
     if vtable_collision:
         scaffold_issues.append(vtable_collision)
 
+    hpath = header_path(repo_root, cls)
+    cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
+
+    # No-clobber: a class implemented inline in an existing .cpp (no header) must
+    # never be overwritten by the scaffold.
+    if cpp_path.exists():
+        scaffold_issues.append(
+            f"src/game/{cls}.cpp already exists (class likely implemented inline); "
+            "refusing to overwrite"
+        )
+
     slots = classified_from_manifest(manifest, repo_root)
     header_text = bc.render_header(cls, base, vtable_addr, slots, rtti=rtti)
     header_text = header_text.rstrip("\n") + "\n\n" + render_generated_block(manifest) + "\n"
-    cpp_text = bc.render_cpp(cls, slots)
-
-    hpath = header_path(repo_root, cls)
-    cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
+    cpp_text = bc.render_cpp(cls, slots, emit_markers=not no_bodies)
 
     if not write:
         print(f"gen-class {cls}: NEW class (no header). Dry-run preview:\n")
@@ -737,7 +893,9 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
 # --------------------------------------------------------------------------- #
 
 
-def gen_class(repo_root: Path, cls: str, write: bool, todo: bool = False) -> int:
+def gen_class(
+    repo_root: Path, cls: str, write: bool, todo: bool = False, no_bodies: bool = False
+) -> int:
     mpath = manifest_path(repo_root, cls)
     if not mpath.exists():
         print(f"gen-class: no manifest {mpath}; run `just dump-manifests --only {cls}` first.")
@@ -754,7 +912,7 @@ def gen_class(repo_root: Path, cls: str, write: bool, todo: bool = False) -> int
 
     # Stage 1: ensure the header structure exists (scaffold new / refresh block).
     if not hpath.exists():
-        rc = scaffold_new_class(repo_root, cls, manifest, write)
+        rc = scaffold_new_class(repo_root, cls, manifest, write, no_bodies=no_bodies)
         if rc != 0:
             return rc  # dry-run preview or refusal — nothing on disk to apply to
     else:
@@ -770,7 +928,7 @@ def gen_class(repo_root: Path, cls: str, write: bool, todo: bool = False) -> int
                 print(f"gen-class {cls}: refreshed generated block in {hpath}.")
 
     # Stage 2: apply virtual decls + promote/shape slot bodies + merge CSV rows.
-    return apply_slots(repo_root, cls, manifest, slots, write)
+    return apply_slots(repo_root, cls, manifest, slots, write, no_bodies=no_bodies)
 
 
 def parse_args() -> argparse.Namespace:
@@ -778,12 +936,24 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("cls", help="Class name (must have config/classes/<Class>.yml).")
     p.add_argument("--write", action="store_true", help="Apply changes (default: dry-run preview).")
     p.add_argument("--todo", action="store_true", help="Print the human-judgment TODO list and exit.")
+    p.add_argument(
+        "--no-bodies",
+        action="store_true",
+        help="Shape-only: emit header/decls + scaffold stubs + CSV rows, but do not "
+        "promote/shape autogen function bodies (vtable still emits + pairs).",
+    )
     return p.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    return gen_class(repo_root_from_file(__file__), args.cls, args.write, todo=args.todo)
+    return gen_class(
+        repo_root_from_file(__file__),
+        args.cls,
+        args.write,
+        todo=args.todo,
+        no_bodies=args.no_bodies,
+    )
 
 
 if __name__ == "__main__":

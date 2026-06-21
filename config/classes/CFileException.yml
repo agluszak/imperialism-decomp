@@ -6,16 +6,16 @@ generated:
   ancestry: [CFileException, CException, CObject]
   root: CObject
   slots:
-    - {index: 0x00, byte: 0x00, target: 0x00610f8a, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ReportSaveLoadException, size: 368, prototype: "undefined ReportSaveLoadException(void)"}
-    - {index: 0x01, byte: 0x04, target: 0x00611334, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::GetFile, size: 118, prototype: "undefined GetFile(void)"}
-    - {index: 0x02, byte: 0x08, target: 0x006113f7, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ReleaseFileObjectCloseOrAbort, size: 41, prototype: "undefined ReleaseFileObjectCloseOrAbort(void)"}
-    - {index: 0x03, byte: 0x0c, target: 0x00610bbd, kind: new, is_thunk: false, is_null: false, ghidra_name: CUserException::FUN_00610bbd, size: 75, prototype: "undefined FUN_00610bbd(void)"}
-    - {index: 0x04, byte: 0x10, target: 0x00610e6f, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::SaveModified, size: 277, prototype: "undefined SaveModified(void)"}
-    - {index: 0x05, byte: 0x14, target: 0x00610c08, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 3, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
-    - {index: 0x06, byte: 0x18, target: 0x00610ce5, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::DoSaveDocumentWithPromptAndReplace, size: 378, prototype: "undefined DoSaveDocumentWithPromptAndReplace(void)"}
-    - {index: 0x07, byte: 0x1c, target: 0x00610cb7, kind: new, is_thunk: false, is_null: false, ghidra_name: CUserException::FUN_00610cb7, size: 46, prototype: "undefined FUN_00610cb7(void)"}
-    - {index: 0x08, byte: 0x20, target: 0x00610aba, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::RenumberAndActivateVisibleDocumentFrames, size: 259, prototype: "undefined RenumberAndActivateVisibleDocumentFrames(void)"}
-    - {index: 0x09, byte: 0x24, target: 0x00610f84, kind: new, is_thunk: false, is_null: false, ghidra_name: CUserException::ReturnZeroStub_00610f84, size: 3, prototype: "undefined ReturnZeroStub_00610f84(void)"}
-    - {index: 0x0a, byte: 0x28, target: 0x00610f87, kind: new, is_thunk: false, is_null: false, ghidra_name: CUserException::ReturnZeroStub_00610f87, size: 3, prototype: "undefined ReturnZeroStub_00610f87(void)"}
-    - {index: 0x0b, byte: 0x2c, target: 0x0061180f, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::CreateChildWindowFromRect, size: 1, prototype: "undefined CreateChildWindowFromRect(void)"}
+    - {index: 0x00, byte: 0x00, target: 0x00610f8a, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::ReportSaveLoadException, size: 368, prototype: "undefined ReportSaveLoadException(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00611334, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::GetFile, size: 118, prototype: "undefined GetFile(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x006113f7, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::ReleaseFileObjectCloseOrAbort, size: 41, prototype: "undefined ReleaseFileObjectCloseOrAbort(int * param_1, int param_2)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00610bbd, kind: override, is_thunk: false, is_null: false, ghidra_name: CUserException::FUN_00610bbd, size: 75, prototype: "undefined FUN_00610bbd(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00610e6f, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::SaveModified, size: 277, prototype: "undefined SaveModified(void)"}
+    - {index: 0x05, byte: 0x14, target: 0x00610c08, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject, size: 3, prototype: "undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00610ce5, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::DoSaveDocumentWithPromptAndReplace, size: 378, prototype: "undefined DoSaveDocumentWithPromptAndReplace(void)"}
+    - {index: 0x07, byte: 0x1c, target: 0x00610cb7, kind: override, is_thunk: false, is_null: false, ghidra_name: CUserException::FUN_00610cb7, size: 46, prototype: "undefined FUN_00610cb7(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x00610aba, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::RenumberAndActivateVisibleDocumentFrames, size: 259, prototype: "undefined RenumberAndActivateVisibleDocumentFrames(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00610f84, kind: override, is_thunk: false, is_null: false, ghidra_name: CUserException::ReturnZeroStub_00610f84, size: 3, prototype: "undefined ReturnZeroStub_00610f84(void)"}
+    - {index: 0x0a, byte: 0x28, target: 0x00610f87, kind: override, is_thunk: false, is_null: false, ghidra_name: CUserException::ReturnZeroStub_00610f87, size: 3, prototype: "undefined ReturnZeroStub_00610f87(void)"}
+    - {index: 0x0b, byte: 0x2c, target: 0x0061180f, kind: override, is_thunk: false, is_null: false, ghidra_name: CDocument::CreateChildWindowFromRect, size: 1, prototype: "undefined CreateChildWindowFromRect(void)"}
 curated:

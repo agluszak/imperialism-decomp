@@ -1,0 +1,182 @@
+#pragma once
+
+#include "game/TObject.h"
+#include "game/mfc.h"
+
+// Forward declarations for types referenced by generated signatures.
+class TStream;
+
+// TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TMapMgr -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x006587e0
+class TMapMgr : public TObject {
+public:
+// === BEGIN GENERATED DECLS (TMapMgr) — refreshed by recover-class; do not hand-edit ===
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x50e3b0
+  virtual ~TMapMgr(); // slot 0x01 (scalar deleting destructor)
+  // slot 0x02 Serialize inherited unchanged (0x485e90)
+  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
+  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x50e7a0
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50e620
+  virtual void Free() override; // slot 0x07 0x50e510
+  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
+  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
+  virtual undefined WrapperFor_AllocateWithFallbackHandler_At0050e8b0() override; // slot 0x0a 0x50e8b0
+  virtual undefined BuildOrLoadGlobalMapStateForSession(CString param_1, char * param_2) override; // slot 0x0b 0x50ec90
+  virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream() override; // slot 0x0c 0x50f200
+  virtual undefined UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1) override; // slot 0x0d 0x510210
+  virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1) override; // slot 0x0e 0x5107e0
+  virtual undefined UpdateTileNeighborBorderInfluenceCounters(short param_1, short param_2) override; // slot 0x0f 0x50fe10
+  virtual undefined OrphanLeaf_NoCall_Ins01_00511610(short param_1) override; // slot 0x10 0x511610
+  virtual undefined TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() override; // slot 0x11 0x511a70
+  virtual undefined TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() override; // slot 0x12 0x511e80
+  virtual undefined DispatchTurnEvent7DDForActiveNation() override; // slot 0x13 0x511ed0
+  virtual undefined OrphanLeaf_NoCall_Ins08_005178c0() override; // slot 0x14 0x5178c0
+  virtual undefined TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1, short param_2) override; // slot 0x15 0x511f30
+  virtual undefined IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int param_1, short param_2) override; // slot 0x16 0x5121d0
+  virtual undefined IsShiftKeyDown() override; // slot 0x17 0x5122b0
+  virtual undefined IsAltKeyDown() override; // slot 0x18 0x5122d0
+  virtual undefined ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) override; // slot 0x19 0x511f10
+  virtual undefined SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) override; // slot 0x1a 0x513f60
+  virtual undefined OrphanLeaf_NoCall_Ins18_00514310(short param_1, short param_2) override; // slot 0x1b 0x514310
+  virtual undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2, short param_3) override; // slot 0x1c 0x514360
+  virtual undefined OrphanLeaf_NoCall_Ins15_00514e40(short param_1) override; // slot 0x1d 0x514e40
+  virtual undefined OrphanLeaf_NoCall_Ins28_00514e80() override; // slot 0x1e 0x514e80
+  virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1) override; // slot 0x1f 0x514dc0
+  virtual undefined OrphanLeaf_NoCall_Ins09_00514ef0() override; // slot 0x20 0x514ef0
+  virtual undefined OrphanCallChain_C5_I115_00514f20(int param_1) override; // slot 0x21 0x514f20
+  virtual undefined OrphanCallChain_C1_I159_005150e0(int * param_1, short param_2) override; // slot 0x22 0x5150e0
+  virtual undefined WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(int param_1) override; // slot 0x23 0x515330
+  virtual undefined WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(int param_1) override; // slot 0x24 0x515460
+  virtual undefined OrphanLeaf_NoCall_Ins83_005155c0(int param_1) override; // slot 0x25 0x5155c0
+  virtual undefined MarkType5NeighborTilesUnavailableByNationCapability(int param_1) override; // slot 0x26 0x515720
+  virtual undefined OrphanLeaf_NoCall_Ins69_00515890(int param_1) override; // slot 0x27 0x515890
+  virtual undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1) override; // slot 0x28 0x5159b0
+  virtual undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1) override; // slot 0x29 0x515b10
+  virtual undefined UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1) override; // slot 0x2a 0x50fca0
+  virtual undefined WrapperFor_thunk_GetUnitMovementClassId_At00515d60(int param_1) override; // slot 0x2b 0x515d60
+  virtual undefined WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80(int param_1, int param_2) override; // slot 0x2c 0x515f80
+  virtual undefined OrphanRetStub_00515de0() override; // slot 0x2d 0x515de0
+  virtual undefined DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1, undefined4 param_2) override; // slot 0x2e 0x513290
+  virtual undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2) override; // slot 0x2f 0x516090
+  virtual undefined OrphanLeaf_NoCall_Ins18_00516100(int param_1) override; // slot 0x30 0x516100
+  virtual undefined OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_2) override; // slot 0x31 0x513610
+  virtual byte GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble) override; // slot 0x32 0x513660
+  virtual undefined OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3, char param_4) override; // slot 0x33 0x5136a0
+  virtual undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) override; // slot 0x34 0x513720
+  virtual undefined OrphanCallChain_C1_I29_005135a0(short param_1, char param_2) override; // slot 0x35 0x5135a0
+  virtual undefined OrphanCallChain_C3_I43_00513170(short param_1) override; // slot 0x36 0x513170
+  virtual undefined SetTileOwnerAndInvalidateNeighborState(short param_1, short param_2) override; // slot 0x37 0x5133f0
+  virtual undefined OrphanLeaf_NoCall_Ins14_00516150(short param_1) override; // slot 0x38 0x516150
+  virtual undefined OrphanLeaf_NoCall_Ins12_005161a0(short param_1) override; // slot 0x39 0x5161a0
+  virtual undefined OrphanLeaf_NoCall_Ins10_005161e0(short param_1) override; // slot 0x3a 0x5161e0
+  virtual undefined OrphanLeaf_NoCall_Ins09_00516220(short param_1) override; // slot 0x3b 0x516220
+  virtual undefined OrphanLeaf_NoCall_Ins464_00516260(char param_1, char param_2) override; // slot 0x3c 0x516260
+  virtual undefined OrphanCallChain_C3_I41_00517410(char param_1) override; // slot 0x3d 0x517410
+  virtual undefined OrphanCallChain_C3_I49_00517480() override; // slot 0x3e 0x517480
+  virtual undefined OrphanVtableAssignStub_00517520() override; // slot 0x3f 0x517520
+  virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1, short param_2) override; // slot 0x40 0x517540
+  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1) override; // slot 0x41 0x517600
+  virtual undefined OrphanLeaf_NoCall_Ins04_005176a0(int param_1) override; // slot 0x42 0x5176a0
+  virtual undefined OrphanLeaf_NoCall_Ins04_005176c0(int param_1) override; // slot 0x43 0x5176c0
+  virtual undefined GetMapImprovementTierBucketOffset(short param_1) override; // slot 0x44 0x5176e0
+  virtual undefined GetMapImprovementSpriteBaseOffset(short param_1, char param_2, char param_3) override; // slot 0x45 0x517780
+  virtual undefined ApplyMapImprovementSelectionState(void * param_1) override; // slot 0x46 0x517710
+  virtual undefined GetMapImprovementTileOffsetFromClass(char param_1) override; // slot 0x47 0x5177d0
+  virtual undefined GetMapImprovementTileSpriteOffset(short param_1) override; // slot 0x48 0x5177f0
+  virtual int QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId, undefined2 param_4) override; // slot 0x49 0x5145b0
+  virtual void QueuePortConstructionOrder(int * pMapContext, short nTileIndex, short nNationId, undefined2 param_4) override; // slot 0x4a 0x5147d0
+  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId); // slot 0x4b 0x5149d0
+  virtual void FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId); // slot 0x4c 0x5143d0
+  virtual void SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex); // slot 0x4d 0x514a20
+// === END GENERATED DECLS (TMapMgr) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapMgr 0xCTOR`).
+
+  TMapMgr();
+};
+
+// === BEGIN GENERATED (TMapMgr) — refreshed by `just gen-class TMapMgr`; do not hand-edit ===
+// clang-format off
+// vtable @ 0x006587e0 (78 slots), object size 0x28, base TObject
+//   slot 0x00  byte 0x00  0x0050e3b0  override  GetRuntimeClass
+//   slot 0x01  byte 0x04  0x0050e460  scalar_dtor (scalar deleting destructor)
+//   slot 0x02  byte 0x08  0x00485e90  inherited Serialize
+//   slot 0x03  byte 0x0c  0x00412bf0  inherited AssertValid
+//   slot 0x04  byte 0x10  0x00412c10  inherited Dump
+//   slot 0x05  byte 0x14  0x0050e7a0  override  WriteTo
+//   slot 0x06  byte 0x18  0x0050e620  override  ReadFrom
+//   slot 0x07  byte 0x1c  0x0050e510  override  Free
+//   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
+//   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
+//   slot 0x0a  byte 0x28  0x0050e8b0  override  WrapperFor_AllocateWithFallbackHandler_At0050e8b0
+//   slot 0x0b  byte 0x2c  0x0050ec90  override  BuildOrLoadGlobalMapStateForSession
+//   slot 0x0c  byte 0x30  0x0050f200  override  LoadPoliticalMapRegionSubtypeTableFromResourceStream
+//   slot 0x0d  byte 0x34  0x00510210  override  UpdateMapTileAdjacencyMasksAndVariantForTile
+//   slot 0x0e  byte 0x38  0x005107e0  override  InitializeTileNeighborConnectionMaskIfNeeded
+//   slot 0x0f  byte 0x3c  0x0050fe10  override  UpdateTileNeighborBorderInfluenceCounters
+//   slot 0x10  byte 0x40  0x00511610  override  OrphanLeaf_NoCall_Ins01_00511610
+//   slot 0x11  byte 0x44  0x00511a70  override  TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
+//   slot 0x12  byte 0x48  0x00511e80  override  TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
+//   slot 0x13  byte 0x4c  0x00511ed0  override  DispatchTurnEvent7DDForActiveNation
+//   slot 0x14  byte 0x50  0x005178c0  override  OrphanLeaf_NoCall_Ins08_005178c0
+//   slot 0x15  byte 0x54  0x00511f30  override  TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+//   slot 0x16  byte 0x58  0x005121d0  override  IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
+//   slot 0x17  byte 0x5c  0x005122b0  override  IsShiftKeyDown
+//   slot 0x18  byte 0x60  0x005122d0  override  IsAltKeyDown
+//   slot 0x19  byte 0x64  0x00511f10  override  ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
+//   slot 0x1a  byte 0x68  0x00513f60  override  SetHexAdjacencyDirectionFlagsForTilePair
+//   slot 0x1b  byte 0x6c  0x00514310  override  OrphanLeaf_NoCall_Ins18_00514310
+//   slot 0x1c  byte 0x70  0x00514360  override  OrphanLeaf_NoCall_Ins31_00514360
+//   slot 0x1d  byte 0x74  0x00514e40  override  OrphanLeaf_NoCall_Ins15_00514e40
+//   slot 0x1e  byte 0x78  0x00514e80  override  OrphanLeaf_NoCall_Ins28_00514e80
+//   slot 0x1f  byte 0x7c  0x00514dc0  override  WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0
+//   slot 0x20  byte 0x80  0x00514ef0  override  OrphanLeaf_NoCall_Ins09_00514ef0
+//   slot 0x21  byte 0x84  0x00514f20  override  OrphanCallChain_C5_I115_00514f20
+//   slot 0x22  byte 0x88  0x005150e0  override  OrphanCallChain_C1_I159_005150e0
+//   slot 0x23  byte 0x8c  0x00515330  override  WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330
+//   slot 0x24  byte 0x90  0x00515460  override  WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460
+//   slot 0x25  byte 0x94  0x005155c0  override  OrphanLeaf_NoCall_Ins83_005155c0
+//   slot 0x26  byte 0x98  0x00515720  override  MarkType5NeighborTilesUnavailableByNationCapability
+//   slot 0x27  byte 0x9c  0x00515890  override  OrphanLeaf_NoCall_Ins69_00515890
+//   slot 0x28  byte 0xa0  0x005159b0  override  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
+//   slot 0x29  byte 0xa4  0x00515b10  override  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
+//   slot 0x2a  byte 0xa8  0x0050fca0  override  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority
+//   slot 0x2b  byte 0xac  0x00515d60  override  WrapperFor_thunk_GetUnitMovementClassId_At00515d60
+//   slot 0x2c  byte 0xb0  0x00515f80  override  WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
+//   slot 0x2d  byte 0xb4  0x00515de0  override  OrphanRetStub_00515de0
+//   slot 0x2e  byte 0xb8  0x00513290  override  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
+//   slot 0x2f  byte 0xbc  0x00516090  override  OrphanLeaf_NoCall_Ins27_00516090
+//   slot 0x30  byte 0xc0  0x00516100  override  OrphanLeaf_NoCall_Ins18_00516100
+//   slot 0x31  byte 0xc4  0x00513610  override  OrphanLeaf_NoCall_Ins14_00513610
+//   slot 0x32  byte 0xc8  0x00513660  override  GetTileCivilianWorkOrderCostClassNibble
+//   slot 0x33  byte 0xcc  0x005136a0  override  OrphanLeaf_NoCall_Ins35_005136a0
+//   slot 0x34  byte 0xd0  0x00513720  override  OrphanLeaf_NoCall_Ins37_00513720
+//   slot 0x35  byte 0xd4  0x005135a0  override  OrphanCallChain_C1_I29_005135a0
+//   slot 0x36  byte 0xd8  0x00513170  override  OrphanCallChain_C3_I43_00513170
+//   slot 0x37  byte 0xdc  0x005133f0  override  SetTileOwnerAndInvalidateNeighborState
+//   slot 0x38  byte 0xe0  0x00516150  override  OrphanLeaf_NoCall_Ins14_00516150
+//   slot 0x39  byte 0xe4  0x005161a0  override  OrphanLeaf_NoCall_Ins12_005161a0
+//   slot 0x3a  byte 0xe8  0x005161e0  override  OrphanLeaf_NoCall_Ins10_005161e0
+//   slot 0x3b  byte 0xec  0x00516220  override  OrphanLeaf_NoCall_Ins09_00516220
+//   slot 0x3c  byte 0xf0  0x00516260  override  OrphanLeaf_NoCall_Ins464_00516260
+//   slot 0x3d  byte 0xf4  0x00517410  override  OrphanCallChain_C3_I41_00517410
+//   slot 0x3e  byte 0xf8  0x00517480  override  OrphanCallChain_C3_I49_00517480
+//   slot 0x3f  byte 0xfc  0x00517520  override  OrphanVtableAssignStub_00517520
+//   slot 0x40  byte 0x100  0x00517540  override  OrphanLeaf_NoCall_Ins55_00517540
+//   slot 0x41  byte 0x104  0x00517600  override  OrphanCallChain_C1_I46_00517600
+//   slot 0x42  byte 0x108  0x005176a0  override  OrphanLeaf_NoCall_Ins04_005176a0
+//   slot 0x43  byte 0x10c  0x005176c0  override  OrphanLeaf_NoCall_Ins04_005176c0
+//   slot 0x44  byte 0x110  0x005176e0  override  GetMapImprovementTierBucketOffset
+//   slot 0x45  byte 0x114  0x00517780  override  GetMapImprovementSpriteBaseOffset
+//   slot 0x46  byte 0x118  0x00517710  override  ApplyMapImprovementSelectionState
+//   slot 0x47  byte 0x11c  0x005177d0  override  GetMapImprovementTileOffsetFromClass
+//   slot 0x48  byte 0x120  0x005177f0  override  GetMapImprovementTileSpriteOffset
+//   slot 0x49  byte 0x124  0x005145b0  override  QueueDepotConstructionOrder
+//   slot 0x4a  byte 0x128  0x005147d0  override  QueuePortConstructionOrder
+//   slot 0x4b  byte 0x12c  0x005149d0  new       SetProvinceCapitalTileFlagBit08
+//   slot 0x4c  byte 0x130  0x005143d0  new       FloodFillTileRegionMarker
+//   slot 0x4d  byte 0x134  0x00514a20  new       SetTileTransportFlagsTo0x37AndRefreshNeighbors
+// object size 0x28 (RTTI) unverified against the header layout;
+// set curated.layout.size_verified to emit a sizeof static_assert.
+// clang-format on
+// === END GENERATED (TMapMgr) ===

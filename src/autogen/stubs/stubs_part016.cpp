@@ -11,6 +11,14 @@ undefined4 ResetTScatteredShipsMissionToSentinelVtable(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueForArmyMissionCapabilityFlag
+// ghidra_proto undefined ReturnTrueForArmyMissionCapabilityFlag()
+// FUNCTION: IMPERIALISM 0x005356f0
+undefined4 ReturnTrueForArmyMissionCapabilityFlag(void)
+{
+  return 0;
+}
+
 // ghidra_name ReturnMissionSelfPointer
 // ghidra_proto undefined ReturnMissionSelfPointer()
 // FUNCTION: IMPERIALISM 0x00535710
@@ -39,6 +47,22 @@ undefined4 GetMissionTargetContextIdFromField14(void)
 // ghidra_proto undefined PropagateMissionTargetContextIdToLinkedUnits()
 // FUNCTION: IMPERIALISM 0x00535770
 undefined4 PropagateMissionTargetContextIdToLinkedUnits(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForDefendProvinceMissionCapabilityFlagA
+// ghidra_proto undefined ReturnTrueForDefendProvinceMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x00535790
+undefined4 ReturnTrueForDefendProvinceMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueForDefendProvinceMissionCapabilityFlagB
+// ghidra_proto undefined ReturnTrueForDefendProvinceMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x005357b0
+undefined4 ReturnTrueForDefendProvinceMissionCapabilityFlagB(void)
 {
   return 0;
 }
@@ -483,6 +507,22 @@ undefined4 ReturnEscortMissionArgPassthrough(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueForEscortMissionCapabilityFlagA
+// ghidra_proto undefined ReturnTrueForEscortMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x00539920
+undefined4 ReturnTrueForEscortMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForEscortMissionCapabilityFlagB
+// ghidra_proto undefined ReturnFalseForEscortMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x00539940
+undefined4 ReturnFalseForEscortMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
 // ghidra_name TEscortMission::DestroyTEscortMission
 // ghidra_proto undefined DestroyTEscortMission()
 // FUNCTION: IMPERIALISM 0x00539960
@@ -579,6 +619,22 @@ undefined4 CreateTBeachheadMission(void)
   return 0;
 }
 
+// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagA
+// ghidra_proto undefined ReturnFalseForBeachheadMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x0053a390
+undefined4 ReturnFalseForBeachheadMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForBeachheadMissionCapabilityFlagB
+// ghidra_proto undefined ReturnFalseForBeachheadMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x0053a3b0
+undefined4 ReturnFalseForBeachheadMissionCapabilityFlagB(void)
+{
+  return 0;
+}
+
 // ghidra_name DestroyTBeachheadMission
 // ghidra_proto undefined DestroyTBeachheadMission()
 // FUNCTION: IMPERIALISM 0x0053a3d0
@@ -663,6 +719,22 @@ undefined4 ClearBlockadePortMissionChildOrderLinksIfReady(void)
 // ghidra_proto undefined CreateTBlockadePortMission()
 // FUNCTION: IMPERIALISM 0x0053a990
 undefined4 CreateTBlockadePortMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagA
+// ghidra_proto undefined ReturnFalseForBlockadePortMissionCapabilityFlagA()
+// FUNCTION: IMPERIALISM 0x0053aa50
+undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagA(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForBlockadePortMissionCapabilityFlagB
+// ghidra_proto undefined ReturnFalseForBlockadePortMissionCapabilityFlagB()
+// FUNCTION: IMPERIALISM 0x0053aa70
+undefined4 ReturnFalseForBlockadePortMissionCapabilityFlagB(void)
 {
   return 0;
 }
@@ -915,6 +987,14 @@ undefined4 ConstructTArmyMissionWithNodeKey(void)
   return 0;
 }
 
+// ghidra_name ReturnFalseForArmyAttackInvadeCapabilityFlag
+// ghidra_proto undefined ReturnFalseForArmyAttackInvadeCapabilityFlag()
+// FUNCTION: IMPERIALISM 0x0053c1b0
+undefined4 ReturnFalseForArmyAttackInvadeCapabilityFlag(void)
+{
+  return 0;
+}
+
 // ghidra_name TArmyMission::DestroyTArmyMission
 // ghidra_proto undefined DestroyTArmyMission()
 // FUNCTION: IMPERIALISM 0x0053c1d0
@@ -1095,6 +1175,14 @@ undefined4 ReturnMissionIfMovementClassMatchesTargetTile(void)
 // ghidra_proto undefined CreateTAttackProvinceMission()
 // FUNCTION: IMPERIALISM 0x0053d670
 undefined4 CreateTAttackProvinceMission(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForAttackProvinceMissionCapabilityFlag
+// ghidra_proto undefined ReturnFalseForAttackProvinceMissionCapabilityFlag()
+// FUNCTION: IMPERIALISM 0x0053d6f0
+undefined4 ReturnFalseForAttackProvinceMissionCapabilityFlag(void)
 {
   return 0;
 }
@@ -1339,6 +1427,14 @@ undefined4 GetInvadeMissionBeachheadChild(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueForInvadeMissionCapabilityFlagAlt
+// ghidra_proto undefined ReturnTrueForInvadeMissionCapabilityFlagAlt()
+// FUNCTION: IMPERIALISM 0x0053f140
+undefined4 ReturnTrueForInvadeMissionCapabilityFlagAlt(void)
+{
+  return 0;
+}
+
 // ghidra_name TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90
 // ghidra_proto undefined ForwardInvadeMissionArgToBeachheadSlot90()
 // FUNCTION: IMPERIALISM 0x0053f160
@@ -1367,6 +1463,14 @@ undefined4 ForwardInvadeMissionArgsToBeachheadSlot8C(void)
 // ghidra_proto undefined ComputeInvadeMissionCompositeScoreWithBeachhead()
 // FUNCTION: IMPERIALISM 0x0053f1f0
 undefined4 ComputeInvadeMissionCompositeScoreWithBeachhead(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseForInvadeMissionCapabilityFlag
+// ghidra_proto undefined ReturnFalseForInvadeMissionCapabilityFlag()
+// FUNCTION: IMPERIALISM 0x0053f240
+undefined4 ReturnFalseForInvadeMissionCapabilityFlag(void)
 {
   return 0;
 }
@@ -1491,6 +1595,14 @@ undefined4 ComputeInvadeMissionPriorityScore(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueForInvadeMissionCapabilityFlag
+// ghidra_proto undefined ReturnTrueForInvadeMissionCapabilityFlag()
+// FUNCTION: IMPERIALISM 0x0053faa0
+undefined4 ReturnTrueForInvadeMissionCapabilityFlag(void)
+{
+  return 0;
+}
+
 // ghidra_name TInvadeMission::ComputeInvadeMissionWeightedScoreDelta
 // ghidra_proto undefined ComputeInvadeMissionWeightedScoreDelta()
 // FUNCTION: IMPERIALISM 0x0053fac0
@@ -1579,10 +1691,34 @@ undefined4 CreateNationStateVariantVtable65B078(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueNationStateCapabilityFlag98
+// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag98()
+// FUNCTION: IMPERIALISM 0x005408c0
+undefined4 ReturnTrueNationStateCapabilityFlag98(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueNationStateCapabilityFlagA0
+// ghidra_proto undefined ReturnTrueNationStateCapabilityFlagA0()
+// FUNCTION: IMPERIALISM 0x005408e0
+undefined4 ReturnTrueNationStateCapabilityFlagA0(void)
+{
+  return 0;
+}
+
 // ghidra_name DispatchProxyGreatPowerCallbackSlot1CC
 // ghidra_proto undefined DispatchProxyGreatPowerCallbackSlot1CC()
 // FUNCTION: IMPERIALISM 0x00540900
 undefined4 DispatchProxyGreatPowerCallbackSlot1CC(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseProxyGreatPowerCapabilityStub
+// ghidra_proto undefined ReturnFalseProxyGreatPowerCapabilityStub()
+// FUNCTION: IMPERIALISM 0x00540920
+undefined4 ReturnFalseProxyGreatPowerCapabilityStub(void)
 {
   return 0;
 }
@@ -1615,6 +1751,22 @@ undefined4 GetTProxyGreatPowerClassNamePointer(void)
 // ghidra_proto undefined EmitTurnEvent14ForProxyGreatPowerAction()
 // FUNCTION: IMPERIALISM 0x00540a00
 undefined4 EmitTurnEvent14ForProxyGreatPowerAction(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00540aa0
+// ghidra_proto undefined OrphanRetStub_00540aa0()
+// FUNCTION: IMPERIALISM 0x00540aa0
+undefined4 OrphanRetStub_00540aa0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00540b80
+// ghidra_proto undefined OrphanRetStub_00540b80()
+// FUNCTION: IMPERIALISM 0x00540b80
+undefined4 OrphanRetStub_00540b80(void)
 {
   return 0;
 }
@@ -1675,6 +1827,14 @@ undefined4 CreateNationStateVariantVtable65B3D0(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueNationStateCapabilityFlag9C
+// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag9C()
+// FUNCTION: IMPERIALISM 0x00540f20
+undefined4 ReturnTrueNationStateCapabilityFlag9C(void)
+{
+  return 0;
+}
+
 // ghidra_name DeletingDestructTHostGreatPower
 // ghidra_proto undefined DeletingDestructTHostGreatPower()
 // FUNCTION: IMPERIALISM 0x00540f40
@@ -1727,6 +1887,22 @@ undefined4 HandleHostGreatPowerLostStateAndNotifyOrEndSession(void)
 // ghidra_proto undefined CreateNationStateVariantVtable65B728()
 // FUNCTION: IMPERIALISM 0x00541230
 undefined4 CreateNationStateVariantVtable65B728(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnTrueNationStateCapabilityFlag98Alt
+// ghidra_proto undefined ReturnTrueNationStateCapabilityFlag98Alt()
+// FUNCTION: IMPERIALISM 0x005412b0
+undefined4 ReturnTrueNationStateCapabilityFlag98Alt(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseNationStateCapabilityFlagA0Alt
+// ghidra_proto undefined ReturnFalseNationStateCapabilityFlagA0Alt()
+// FUNCTION: IMPERIALISM 0x005412d0
+undefined4 ReturnFalseNationStateCapabilityFlagA0Alt(void)
 {
   return 0;
 }
@@ -1803,10 +1979,146 @@ undefined4 CreateNationStateVariantVtable65BA80(void)
   return 0;
 }
 
+// ghidra_name ReturnTrueNationStateCapabilityFlagA0Alt
+// ghidra_proto undefined ReturnTrueNationStateCapabilityFlagA0Alt()
+// FUNCTION: IMPERIALISM 0x00541840
+undefined4 ReturnTrueNationStateCapabilityFlagA0Alt(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseRemoteGreatPowerCapabilityStub
+// ghidra_proto undefined ReturnFalseRemoteGreatPowerCapabilityStub()
+// FUNCTION: IMPERIALISM 0x00541860
+undefined4 ReturnFalseRemoteGreatPowerCapabilityStub(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541880
+// ghidra_proto undefined OrphanRetStub_00541880()
+// FUNCTION: IMPERIALISM 0x00541880
+undefined4 OrphanRetStub_00541880(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005418a0
+// ghidra_proto undefined OrphanRetStub_005418a0()
+// FUNCTION: IMPERIALISM 0x005418a0
+undefined4 OrphanRetStub_005418a0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005418c0
+// ghidra_proto undefined OrphanRetStub_005418c0()
+// FUNCTION: IMPERIALISM 0x005418c0
+undefined4 OrphanRetStub_005418c0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005418e0
+// ghidra_proto undefined OrphanRetStub_005418e0()
+// FUNCTION: IMPERIALISM 0x005418e0
+undefined4 OrphanRetStub_005418e0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541900
+// ghidra_proto undefined OrphanRetStub_00541900()
+// FUNCTION: IMPERIALISM 0x00541900
+undefined4 OrphanRetStub_00541900(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541920
+// ghidra_proto undefined OrphanRetStub_00541920()
+// FUNCTION: IMPERIALISM 0x00541920
+undefined4 OrphanRetStub_00541920(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541940
+// ghidra_proto undefined OrphanRetStub_00541940()
+// FUNCTION: IMPERIALISM 0x00541940
+undefined4 OrphanRetStub_00541940(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541960
+// ghidra_proto undefined OrphanRetStub_00541960()
+// FUNCTION: IMPERIALISM 0x00541960
+undefined4 OrphanRetStub_00541960(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541980
+// ghidra_proto undefined OrphanRetStub_00541980()
+// FUNCTION: IMPERIALISM 0x00541980
+undefined4 OrphanRetStub_00541980(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005419a0
+// ghidra_proto undefined OrphanRetStub_005419a0()
+// FUNCTION: IMPERIALISM 0x005419a0
+undefined4 OrphanRetStub_005419a0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_005419c0
+// ghidra_proto undefined OrphanRetStub_005419c0()
+// FUNCTION: IMPERIALISM 0x005419c0
+undefined4 OrphanRetStub_005419c0(void)
+{
+  return 0;
+}
+
 // ghidra_name DispatchRemoteGreatPowerCallbackSlot1CC
 // ghidra_proto undefined DispatchRemoteGreatPowerCallbackSlot1CC()
 // FUNCTION: IMPERIALISM 0x005419e0
 undefined4 DispatchRemoteGreatPowerCallbackSlot1CC(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpDiplomacyTargetTransitionCallbackAlt
+// ghidra_proto undefined NoOpDiplomacyTargetTransitionCallbackAlt()
+// FUNCTION: IMPERIALISM 0x00541a00
+undefined4 NoOpDiplomacyTargetTransitionCallbackAlt(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpGreatPowerCommandHandlerRet4
+// ghidra_proto undefined NoOpGreatPowerCommandHandlerRet4()
+// FUNCTION: IMPERIALISM 0x00541a20
+undefined4 NoOpGreatPowerCommandHandlerRet4(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541a40
+// ghidra_proto undefined OrphanRetStub_00541a40()
+// FUNCTION: IMPERIALISM 0x00541a40
+undefined4 OrphanRetStub_00541a40(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00541a60
+// ghidra_proto undefined OrphanRetStub_00541a60()
+// FUNCTION: IMPERIALISM 0x00541a60
+undefined4 OrphanRetStub_00541a60(void)
 {
   return 0;
 }
@@ -2559,6 +2871,30 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
 // ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
 // FUNCTION: IMPERIALISM 0x0054c630
 undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet4
+// ghidra_proto undefined NoOpCallbackRet4()
+// FUNCTION: IMPERIALISM 0x0054c660
+undefined4 NoOpCallbackRet4(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet10
+// ghidra_proto undefined NoOpCallbackRet10()
+// FUNCTION: IMPERIALISM 0x0054c680
+undefined4 NoOpCallbackRet10(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpCallbackRet18
+// ghidra_proto undefined NoOpCallbackRet18()
+// FUNCTION: IMPERIALISM 0x0054c6a0
+undefined4 NoOpCallbackRet18(void)
 {
   return 0;
 }

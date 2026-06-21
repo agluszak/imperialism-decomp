@@ -220,6 +220,33 @@ def classify_slots(
 # --------------------------------------------------------------------------- #
 
 
+# A type token worth forward-declaring: a game class (``T<Upper>``) or a Ghidra
+# struct/class spelled ``<Upper><lower>...`` (e.g. ``CityDialogController``). MFC types
+# (``CString``, ``CArchive`` — second char upper) and Windows typedefs (``LONG``,
+# ``LPRECT`` — all-caps) are excluded; they come from ``game/mfc.h``.
+_FWD_TYPE_RE = re.compile(r"^(?:T[A-Z][A-Za-z0-9_]*|[A-Z][a-z][A-Za-z0-9_]*|astruct_\d+)$")
+_PRIMITIVE_TOKENS = frozenset(
+    {"const", "void", "unsigned", "signed", "int", "short", "char", "long",
+     "float", "double", "bool", "undefined", "undefined1", "undefined2",
+     "undefined4", "undefined8", "byte", "uint", "ushort"}
+)
+
+
+def _forward_decl_types(slots: list[ClassifiedSlot], skip: set[str]) -> list[str]:
+    """Game/Ghidra class types referenced in slot signatures that need a forward
+    declaration (the generated header only includes its base + game/mfc.h)."""
+    names: set[str] = set()
+    for s in slots:
+        if s.kind not in ("override", "new") or s.sig is None:
+            continue
+        for tok in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", f"{s.sig.ret} {s.sig.args}"):
+            if tok in _PRIMITIVE_TOKENS or tok in skip:
+                continue
+            if _FWD_TYPE_RE.match(tok):
+                names.add(tok)
+    return sorted(names)
+
+
 def render_header(
     class_name: str,
     base_name: str,
@@ -242,15 +269,23 @@ def render_header(
             f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence."
         )
     # Skeleton only. The per-slot virtual declarations live in the single
-    # `GENERATED DECLS` block that gen_class inserts after `public:` (so the
-    # declarations have exactly one source and never duplicate). `slots` is no
-    # longer consumed here; it is kept in the signature for call-site stability.
-    _ = slots
+    # `GENERATED DECLS` block that gen_class inserts after `public:`. `slots` is used
+    # only to compute the forward declarations the DECLS signatures will need.
+    fwd = _forward_decl_types(slots, skip={class_name, base_name})
+    fwd_block = "\n".join(f"class {n};" for n in fwd)
     lines = [
         "#pragma once",
         "",
         base_header,
+        # MFC/Windows types (CRuntimeClass, CString, CArchive, LONG, ...) used by the
+        # generated virtual signatures; the lean base headers don't all pull these in.
+        '#include "game/mfc.h"',
         "",
+    ]
+    if fwd_block:
+        lines += ["// Forward declarations for types referenced by generated signatures.",
+                  fwd_block, ""]
+    lines += [
         edge_comment,
         f"// VTABLE: IMPERIALISM {vtable_addr}",
         f"class {class_name} : public {base_name} {{",
@@ -288,14 +323,31 @@ def _body_seed(s: ClassifiedSlot) -> list[str]:
     return out
 
 
-def render_cpp(class_name: str, slots: list[ClassifiedSlot]) -> str:
-    lines = [
-        f'#include "game/{class_name}.h"',
-        "",
-        f"// RTTI class descriptor placeholder (see GetRuntimeClass).",
-        f'extern "C" char g_pClassDesc{class_name} = 0;',
-        "",
-    ]
+def render_cpp(class_name: str, slots: list[ClassifiedSlot], emit_markers: bool = True) -> str:
+    """Render the class's .cpp.
+
+    With ``emit_markers`` (the default, body-porting flow) each owned slot gets a
+    ``// FUNCTION:`` marker, a Ghidra-seeded body, and an ownership/symbols claim.
+
+    With ``emit_markers=False`` (the shape-only ``--no-bodies`` flow) the slots are
+    emitted as plain *unmarked* out-of-line stubs: distinct C++ method symbols that
+    give MSVC a key function so the class's vtable is emitted, but with **no**
+    ``// FUNCTION:``/``// SYNTHETIC:`` markers and no ownership — claiming addresses is
+    part of body porting, which is deferred, and the slot targets are heavily shared
+    across classes (so claiming them would collide). Bodies + markers + ownership are
+    added later, per class, by the real decomp loop.
+    """
+    lines = [f'#include "game/{class_name}.h"', ""]
+    if emit_markers:
+        # RTTI class descriptor placeholder (see GetRuntimeClass). Omitted in
+        # shape-only output: the stub GetRuntimeClass returns 0 (never references it),
+        # and emitting it collides with descriptors hand-defined elsewhere (e.g.
+        # CArchive.cpp) and mistypes headers that declare it as CRuntimeClass.
+        lines += [
+            f"// RTTI class descriptor placeholder (see GetRuntimeClass).",
+            f'extern "C" char g_pClassDesc{class_name} = 0;',
+            "",
+        ]
 
     # Owned bodies emitted in ascending address order (decomplint requirement).
     owned = sorted(
@@ -305,23 +357,26 @@ def render_cpp(class_name: str, slots: list[ClassifiedSlot]) -> str:
 
     for s in owned:
         if s.kind == "scalar_dtor":
-            lines.append(f"// SYNTHETIC: IMPERIALISM 0x{s.target_addr}")
-            lines.append(f"// {class_name}::`scalar deleting destructor'")
-            lines.append("")
-            lines.append(
-                "// TODO(manifest): emit the real ~" + class_name + "() with its own"
-            )
-            lines.append(
-                "// function marker at the real destructor address (find the destructor body in"
-            )
-            lines.append("// Ghidra; it is usually adjacent to the scalar deleting destructor).")
+            if emit_markers:
+                # The SYNTHETIC marker claims the compiler-generated scalar deleting
+                # destructor (??_G) for reccmp; the empty `~Class() {}` gives MSVC a
+                # real base destructor so the polymorphic vtable links.
+                lines.append(f"// SYNTHETIC: IMPERIALISM 0x{s.target_addr}")
+                lines.append(f"// {class_name}::`scalar deleting destructor'")
+            lines.append(f"{class_name}::~{class_name}() {{}}")
             lines.append("")
             continue
         assert s.sig is not None
-        lines.append(f"// FUNCTION: IMPERIALISM 0x{s.target_addr}")
-        lines.append(f"{s.sig.definition_head(class_name)} {{")
-        lines += _body_seed(s)
-        lines.append("}")
+        if emit_markers:
+            lines.append(f"// FUNCTION: IMPERIALISM 0x{s.target_addr}")
+            lines.append(f"{s.sig.definition_head(class_name)} {{")
+            lines += _body_seed(s)
+            lines.append("}")
+        else:
+            # Unmarked shape-only stub: compiles + emits the vtable, claims nothing.
+            ret = s.sig.ret.strip()
+            body = " return 0; " if ret not in ("void", "") else ""
+            lines.append(f"{s.sig.definition_head(class_name)} {{{body}}}")
         lines.append("")
     return "\n".join(lines)
 

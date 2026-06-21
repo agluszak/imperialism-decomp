@@ -8999,7 +8999,6 @@ address|name|size|type|prototype
 648a08|TTEView::classRuntimeClass||global|
 648a20|TDocument::classRuntimeClass||global|
 648a38|TFileBasedDocument::classRuntimeClass||global|
-648aa0|TFileBasedDocument::vftable||global|
 648ae0|TCommandHandler::classRuntimeClass||global|
 648af8|TApplication::classRuntimeClass||global|
 648cf8|g_pClassDescTBehavior||global|
@@ -9048,7 +9047,6 @@ address|name|size|type|prototype
 64c268|TFocusAnimation::classRuntimeClass||global|
 64c280|TTransFocusAnimation::classRuntimeClass||global|
 64c298|TAnimator::classRuntimeClass||global|
-64c350|TCivAnimation::vftable||global|
 64c450|TFocusAnimation::vftable||global|
 64c828|TArmyMgr::classRuntimeClass||global|
 64c840|TArmyStack::classRuntimeClass||global|
@@ -9125,7 +9123,6 @@ address|name|size|type|prototype
 653194|g_adwCivilianWorkOrderCostByClass||global|
 6531d8|g_adwEngineerRailBuildCostByTerrainType||global|
 6531f8|TCivMgr::classRuntimeClass||global|
-653248|g_vtblCivilianMapInteractionManager||global|
 653308|g_DAT_Value_00653308||global|
 653328|g_DAT_Value_00653328||global|
 653340|g_DAT_Value_00653340||global|
@@ -9154,7 +9151,6 @@ address|name|size|type|prototype
 653720|g_Compute_Advisory_Handler_LookupTable_00653720||global|
 653724|g_Compute_Advisory_Peer_LookupTable_00653724||global|
 653d00|g_apfnMapOrderUiDispatchHandlers||global|
-653d90|TTurnStartEvent::vftable||global|
 653f90|TAutoGreatPower::classRuntimeClass||global|
 653fc0|g_DAT_00653fc0_Value_00653FC0||global|
 653fc8|g_DAT_00653fc8_Value_00653FC8||global|
@@ -9211,11 +9207,9 @@ address|name|size|type|prototype
 6579d0|TNumberedItem::classRuntimeClass||global|
 658560|TLanguageMgr::classRuntimeClass||global|
 658610|TMacViewMgr::classRuntimeClass||global|
-658660|g_vtblStrategicMapViewSystem||global|
 6586e0|g_vtblStrategicMapViewSystem_DrawUnitIcon||global|
 6586e4|g_vtblStrategicMapViewSystem_DrawUnitIconOverlay||global|
 658788|TMapMgr::classRuntimeClass||global|
-6587e0|g_vtblGlobalMapState||global|
 6588f0|g_apfnMapImprovementOperationHandlers||global|
 6588f0|g_apfnMapImprovementOperationHandlers||global|
 658964|g_anMapActionClassToImprovementOpIndex||global|
@@ -9297,7 +9291,6 @@ address|name|size|type|prototype
 65e1a0|TPageView::classRuntimeClass||global|
 65e1b8|TPictureLine::classRuntimeClass||global|
 65e1d0|TTextLine::classRuntimeClass||global|
-65e480|TPictureLine::vftable||global|
 65e538|TPictureButton::classRuntimeClass||global|
 65e550|g_pClassDescTAlwaysPictureButton||global|
 65e568|g_pClassDescT2PictureButton||global|
@@ -9391,11 +9384,6 @@ address|name|size|type|prototype
 6694a0|TNavyPlayer::classRuntimeClass||global|
 6694b8|TNavyHumanPlayer::classRuntimeClass||global|
 6694d0|TNavyAutoPlayer::classRuntimeClass||global|
-669598|TTacticalPlayer::vftable||global|
-6696b0|TNavyPlayer::vftable||global|
-669708|TNavyTacUnit::vftable||global|
-669760|TNavyHumanPlayer::vftable||global|
-6697c0|TNavyAutoPlayer::vftable||global|
 669e00|TTacticalBattle::classRuntimeClass||global|
 669e18|TArmyBattle::classRuntimeClass||global|
 669e30|TNavyBattle::classRuntimeClass||global|
@@ -9403,8 +9391,6 @@ address|name|size|type|prototype
 669e60|TArmyTacUnit::classRuntimeClass||global|
 669e78|TNavyTacUnit::classRuntimeClass||global|
 669e90|TNextMoveCommand::classRuntimeClass||global|
-66a140|TNavyBattle::vftable||global|
-66a1b8|TTacticalUnit::vftable||global|
 66a280|TTacticalBattleView::classRuntimeClass||global|
 66a298|TTacArmyView::classRuntimeClass||global|
 66a2b0|TTacticalToolbar::classRuntimeClass||global|
@@ -9416,7 +9402,6 @@ address|name|size|type|prototype
 66a8c8|TCityTask::classRuntimeClass||global|
 66a8e0|TShipBuildingTask::classRuntimeClass||global|
 66a8f8|TTaskList::classRuntimeClass||global|
-66a970|TTask::vftable||global|
 66aba6|g_anCapabilityPriorityRangePairs||global|
 66ac98|TTechMgr::classRuntimeClass||global|
 66ae10|TTechStorePage::classRuntimeClass||global|
@@ -9470,7 +9455,6 @@ address|name|size|type|prototype
 66f16c|TDiplomacyMapView::vftable||global|
 66f2a8|TModalMessageCommand::classRuntimeClass||global|
 66f4c0|TAssetMgr::classRuntimeClass||global|
-66f508|g_vtblUiViewManager||global|
 66f6e8|TMovieView::classRuntimeClass||global|
 66f978|g_pClassDescTNetMgr||global|
 66fc00|CDialog::classRuntimeClass||global|

@@ -1435,6 +1435,14 @@ undefined4 ConstructTMiniArmyLineBaseState(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004aad20
+// ghidra_proto undefined OrphanRetStub_004aad20()
+// FUNCTION: IMPERIALISM 0x004aad20
+undefined4 OrphanRetStub_004aad20(void)
+{
+  return 0;
+}
+
 // ghidra_name TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree
 // ghidra_proto undefined DestructTMiniArmyLineAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004aad40
@@ -1543,6 +1551,14 @@ undefined4 GetTMiniCivLineClassNamePointer(void)
 // ghidra_proto undefined ConstructTMiniCivLineBaseState()
 // FUNCTION: IMPERIALISM 0x004ab740
 undefined4 ConstructTMiniCivLineBaseState(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004ab800
+// ghidra_proto undefined OrphanRetStub_004ab800()
+// FUNCTION: IMPERIALISM 0x004ab800
+undefined4 OrphanRetStub_004ab800(void)
 {
   return 0;
 }
@@ -2283,6 +2299,14 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004b13a0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004b1410
+// ghidra_proto undefined OrphanRetStub_004b1410()
+// FUNCTION: IMPERIALISM 0x004b1410
+undefined4 OrphanRetStub_004b1410(void)
+{
+  return 0;
+}
+
 // ghidra_name TCheater::'scalar_deleting_destructor'
 // ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 // FUNCTION: IMPERIALISM 0x004b1430
@@ -2343,6 +2367,14 @@ undefined4 TTechCheater_scalar_deleting_destructor(void)
 // ghidra_proto undefined GetTTechCheaterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004b1940
 undefined4 GetTTechCheaterClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004b1990
+// ghidra_proto undefined OrphanRetStub_004b1990()
+// FUNCTION: IMPERIALISM 0x004b1990
+undefined4 OrphanRetStub_004b1990(void)
 {
   return 0;
 }
@@ -2555,10 +2587,34 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void)
   return 0;
 }
 
+// ghidra_name OrphanLeaf_NoCall_Ins02_004b50e0
+// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_004b50e0()
+// FUNCTION: IMPERIALISM 0x004b50e0
+undefined4 OrphanLeaf_NoCall_Ins02_004b50e0(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanCallChain_C1_I16_004b5100
 // ghidra_proto undefined OrphanCallChain_C1_I16_004b5100()
 // FUNCTION: IMPERIALISM 0x004b5100
 undefined4 OrphanCallChain_C1_I16_004b5100(void)
+{
+  return 0;
+}
+
+// ghidra_name ResetCityOrderItemDerivedStateNoop
+// ghidra_proto undefined ResetCityOrderItemDerivedStateNoop()
+// FUNCTION: IMPERIALISM 0x004b5140
+undefined4 ResetCityOrderItemDerivedStateNoop(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004b5160
+// ghidra_proto undefined OrphanRetStub_004b5160()
+// FUNCTION: IMPERIALISM 0x004b5160
+undefined4 OrphanRetStub_004b5160(void)
 {
   return 0;
 }
@@ -2923,6 +2979,14 @@ undefined4 CreateTUnitOrderInstance(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004b6f00
+// ghidra_proto undefined OrphanRetStub_004b6f00()
+// FUNCTION: IMPERIALISM 0x004b6f00
+undefined4 OrphanRetStub_004b6f00(void)
+{
+  return 0;
+}
+
 // ghidra_name TUnitOrder::GetTUnitOrderClassNamePointer
 // ghidra_proto undefined GetTUnitOrderClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004b6f50
@@ -3051,6 +3115,14 @@ undefined4 OrphanCallChain_C3_I63_004b7b30(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004b7c20
+// ghidra_proto undefined OrphanRetStub_004b7c20()
+// FUNCTION: IMPERIALISM 0x004b7c20
+undefined4 OrphanRetStub_004b7c20(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanCallChain_C3_I25_004b7c40
 // ghidra_proto undefined OrphanCallChain_C3_I25_004b7c40()
 // FUNCTION: IMPERIALISM 0x004b7c40
@@ -3139,6 +3211,14 @@ undefined4 OrphanCallChain_C1_I12_004b8060(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004b80a0
+// ghidra_proto undefined OrphanRetStub_004b80a0()
+// FUNCTION: IMPERIALISM 0x004b80a0
+undefined4 OrphanRetStub_004b80a0(void)
+{
+  return 0;
+}
+
 // ghidra_name TPopGrowthOrder::CreateTPopGrowthOrderInstance
 // ghidra_proto undefined CreateTPopGrowthOrderInstance()
 // FUNCTION: IMPERIALISM 0x004b80c0
@@ -3183,6 +3263,14 @@ undefined4 OrphanCallChain_C5_I45_004b8230(void)
 // ghidra_proto undefined OrphanCallChain_C4_I73_004b82f0()
 // FUNCTION: IMPERIALISM 0x004b82f0
 undefined4 OrphanCallChain_C4_I73_004b82f0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004b8420
+// ghidra_proto undefined OrphanRetStub_004b8420()
+// FUNCTION: IMPERIALISM 0x004b8420
+undefined4 OrphanRetStub_004b8420(void)
 {
   return 0;
 }
@@ -3643,10 +3731,42 @@ undefined4 CreateTInteriorMinisterInstance(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004be190
+// ghidra_proto undefined OrphanRetStub_004be190()
+// FUNCTION: IMPERIALISM 0x004be190
+undefined4 OrphanRetStub_004be190(void)
+{
+  return 0;
+}
+
 // ghidra_name DestructTInteriorMinisterAndMaybeFree_Impl
 // ghidra_proto undefined DestructTInteriorMinisterAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004be230
 undefined4 DestructTInteriorMinisterAndMaybeFree_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004be3f0
+// ghidra_proto undefined OrphanRetStub_004be3f0()
+// FUNCTION: IMPERIALISM 0x004be3f0
+undefined4 OrphanRetStub_004be3f0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004be410
+// ghidra_proto undefined OrphanRetStub_004be410()
+// FUNCTION: IMPERIALISM 0x004be410
+undefined4 OrphanRetStub_004be410(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004be430
+// ghidra_proto undefined OrphanRetStub_004be430()
+// FUNCTION: IMPERIALISM 0x004be430
+undefined4 OrphanRetStub_004be430(void)
 {
   return 0;
 }

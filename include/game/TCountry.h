@@ -119,7 +119,7 @@ ASSERT_SIZE(TCountry, 0x94);
 // clang-format off
 // vtable @ 0x00653868 (42 slots), object size 0x94, base TObject
 //   slot 0x00  byte 0x00  0x004d67b0  new       GetTCountryClassNamePointer
-//   slot 0x01  byte 0x04  0x004d6850  new       DestructTCountryAndMaybeFree
+//   slot 0x01  byte 0x04  0x004d6850  new       VTableSlot01
 //   slot 0x02  byte 0x08  0x00485e90  new       GetTTaskClassNamePointer
 //   slot 0x03  byte 0x0c  0x00412bf0  new       ConstructTTaskBaseState
 //   slot 0x04  byte 0x10  0x00412c10  new       GetTEventHandlerClassNamePointer

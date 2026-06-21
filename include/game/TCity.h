@@ -163,7 +163,7 @@ public:
 // clang-format off
 // vtable @ 0x0064f580 (33 slots), object size 0x2d4, base TObject
 //   slot 0x00  byte 0x00  0x004b2490  new       GetTCityClassNamePointer
-//   slot 0x01  byte 0x04  0x004b2520  new       'scalar_deleting_destructor'
+//   slot 0x01  byte 0x04  0x004b2520  new       VTableSlot01
 //   slot 0x02  byte 0x08  0x00485e90  new       GetTTaskClassNamePointer
 //   slot 0x03  byte 0x0c  0x00412bf0  new       ConstructTTaskBaseState
 //   slot 0x04  byte 0x10  0x00412c10  new       GetTEventHandlerClassNamePointer

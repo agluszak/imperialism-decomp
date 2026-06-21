@@ -91,6 +91,14 @@ undefined4 InitializeDialogTemplateDDPictureState(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_0047d5b0
+// ghidra_proto undefined OrphanRetStub_0047d5b0()
+// FUNCTION: IMPERIALISM 0x0047d5b0
+undefined4 OrphanRetStub_0047d5b0(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_0047d5d0
 // ghidra_proto undefined OrphanVtableAssignStub_0047d5d0()
 // FUNCTION: IMPERIALISM 0x0047d5d0
@@ -215,6 +223,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047ded0(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl()
 // FUNCTION: IMPERIALISM 0x0047df00
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0047df90
+// ghidra_proto undefined OrphanRetStub_0047df90()
+// FUNCTION: IMPERIALISM 0x0047df90
+undefined4 OrphanRetStub_0047df90(void)
 {
   return 0;
 }
@@ -387,6 +403,22 @@ undefined4 WrapperFor_ftol_At0047f250(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_0047f2b0
+// ghidra_proto undefined OrphanRetStub_0047f2b0()
+// FUNCTION: IMPERIALISM 0x0047f2b0
+undefined4 OrphanRetStub_0047f2b0(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0047f320
+// ghidra_proto undefined OrphanRetStub_0047f320()
+// FUNCTION: IMPERIALISM 0x0047f320
+undefined4 OrphanRetStub_0047f320(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_0047f340
 // ghidra_proto undefined OrphanVtableAssignStub_0047f340()
 // FUNCTION: IMPERIALISM 0x0047f340
@@ -399,6 +431,14 @@ undefined4 OrphanVtableAssignStub_0047f340(void)
 // ghidra_proto undefined AssertDiplomacyDialogsLine61()
 // FUNCTION: IMPERIALISM 0x0047f3e0
 undefined4 AssertDiplomacyDialogsLine61(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_0047f410
+// ghidra_proto undefined OrphanRetStub_0047f410()
+// FUNCTION: IMPERIALISM 0x0047f410
+undefined4 OrphanRetStub_0047f410(void)
 {
   return 0;
 }
@@ -551,6 +591,14 @@ undefined4 CacheObjectVslot18ResultToField0C(void)
 // ghidra_proto undefined NotifyIfNationMatchesSessionActiveNation_Impl()
 // FUNCTION: IMPERIALISM 0x0047fd30
 undefined4 NotifyIfNationMatchesSessionActiveNation_Impl(void)
+{
+  return 0;
+}
+
+// ghidra_name ReturnFalseRuntimeSelectionAuxStatus
+// ghidra_proto undefined ReturnFalseRuntimeSelectionAuxStatus()
+// FUNCTION: IMPERIALISM 0x0047fd70
+undefined4 ReturnFalseRuntimeSelectionAuxStatus(void)
 {
   return 0;
 }
@@ -771,6 +819,14 @@ undefined4 WrapperFor_CDialog_At00481160(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004811e0
+// ghidra_proto undefined OrphanRetStub_004811e0()
+// FUNCTION: IMPERIALISM 0x004811e0
+undefined4 OrphanRetStub_004811e0(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_00481200
 // ghidra_proto undefined OrphanVtableAssignStub_00481200()
 // FUNCTION: IMPERIALISM 0x00481200
@@ -835,10 +891,26 @@ undefined4 OrphanVtableAssignStub_004815d0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00481670
+// ghidra_proto undefined OrphanRetStub_00481670()
+// FUNCTION: IMPERIALISM 0x00481670
+undefined4 OrphanRetStub_00481670(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_00481690
 // ghidra_proto undefined OrphanVtableAssignStub_00481690()
 // FUNCTION: IMPERIALISM 0x00481690
 undefined4 OrphanVtableAssignStub_00481690(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00481730
+// ghidra_proto undefined OrphanRetStub_00481730()
+// FUNCTION: IMPERIALISM 0x00481730
+undefined4 OrphanRetStub_00481730(void)
 {
   return 0;
 }
@@ -891,6 +963,14 @@ undefined4 OrphanVtableAssignStub_004818d0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00481970
+// ghidra_proto undefined OrphanRetStub_00481970()
+// FUNCTION: IMPERIALISM 0x00481970
+undefined4 OrphanRetStub_00481970(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_00481990
 // ghidra_proto undefined OrphanVtableAssignStub_00481990()
 // FUNCTION: IMPERIALISM 0x00481990
@@ -899,10 +979,26 @@ undefined4 OrphanVtableAssignStub_00481990(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00481a30
+// ghidra_proto undefined OrphanRetStub_00481a30()
+// FUNCTION: IMPERIALISM 0x00481a30
+undefined4 OrphanRetStub_00481a30(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_00481a50
 // ghidra_proto undefined OrphanVtableAssignStub_00481a50()
 // FUNCTION: IMPERIALISM 0x00481a50
 undefined4 OrphanVtableAssignStub_00481a50(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00481af0
+// ghidra_proto undefined OrphanRetStub_00481af0()
+// FUNCTION: IMPERIALISM 0x00481af0
+undefined4 OrphanRetStub_00481af0(void)
 {
   return 0;
 }
@@ -955,6 +1051,14 @@ undefined4 OrphanVtableAssignStub_00481ce0(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00481d80
+// ghidra_proto undefined OrphanRetStub_00481d80()
+// FUNCTION: IMPERIALISM 0x00481d80
+undefined4 OrphanRetStub_00481d80(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanVtableAssignStub_00481da0
 // ghidra_proto undefined OrphanVtableAssignStub_00481da0()
 // FUNCTION: IMPERIALISM 0x00481da0
@@ -999,6 +1103,14 @@ undefined4 WrapperFor_DDX_Text_At00481f30(void)
 // ghidra_proto undefined OrphanVtableAssignStub_00481f70()
 // FUNCTION: IMPERIALISM 0x00481f70
 undefined4 OrphanVtableAssignStub_00481f70(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00482010
+// ghidra_proto undefined OrphanRetStub_00482010()
+// FUNCTION: IMPERIALISM 0x00482010
+undefined4 OrphanRetStub_00482010(void)
 {
   return 0;
 }
@@ -1067,10 +1179,26 @@ undefined4 SyncTripleSelectionControlsFromState(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_004822e0
+// ghidra_proto undefined OrphanRetStub_004822e0()
+// FUNCTION: IMPERIALISM 0x004822e0
+undefined4 OrphanRetStub_004822e0(void)
+{
+  return 0;
+}
+
 // ghidra_name SyncTripleSelectionStateViaMessage400
 // ghidra_proto undefined SyncTripleSelectionStateViaMessage400()
 // FUNCTION: IMPERIALISM 0x00482300
 undefined4 SyncTripleSelectionStateViaMessage400(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00482420
+// ghidra_proto undefined OrphanRetStub_00482420()
+// FUNCTION: IMPERIALISM 0x00482420
+undefined4 OrphanRetStub_00482420(void)
 {
   return 0;
 }
@@ -1723,6 +1851,14 @@ undefined4 CallThisVslot1B4NoArgs(void)
   return 0;
 }
 
+// ghidra_name NoOpTextPostLayoutHook
+// ghidra_proto undefined NoOpTextPostLayoutHook()
+// FUNCTION: IMPERIALISM 0x00486300
+undefined4 NoOpTextPostLayoutHook(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_AllocateWithFallbackHandler_At00486320
 // ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At00486320()
 // FUNCTION: IMPERIALISM 0x00486320
@@ -1775,6 +1911,22 @@ undefined4 CreateTFileBasedDocumentInstance(void)
 // ghidra_proto undefined GetTFileBasedDocumentClassNamePointer()
 // FUNCTION: IMPERIALISM 0x00486440
 undefined4 GetTFileBasedDocumentClassNamePointer(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00486530
+// ghidra_proto undefined OrphanRetStub_00486530()
+// FUNCTION: IMPERIALISM 0x00486530
+undefined4 OrphanRetStub_00486530(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00486550
+// ghidra_proto undefined OrphanRetStub_00486550()
+// FUNCTION: IMPERIALISM 0x00486550
+undefined4 OrphanRetStub_00486550(void)
 {
   return 0;
 }
@@ -1995,6 +2147,14 @@ undefined4 NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00487a00
+// ghidra_proto undefined OrphanRetStub_00487a00()
+// FUNCTION: IMPERIALISM 0x00487a00
+undefined4 OrphanRetStub_00487a00(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanCallChain_C1_I08_00487a60
 // ghidra_proto undefined OrphanCallChain_C1_I08_00487a60()
 // FUNCTION: IMPERIALISM 0x00487a60
@@ -2055,6 +2215,22 @@ undefined4 OrphanCallChain_C3_I23_00487dd0(void)
 // ghidra_proto undefined FindOneBasedNodeIndexByValueInLinkedList()
 // FUNCTION: IMPERIALISM 0x00487e10
 undefined4 FindOneBasedNodeIndexByValueInLinkedList(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00487f70
+// ghidra_proto undefined OrphanRetStub_00487f70()
+// FUNCTION: IMPERIALISM 0x00487f70
+undefined4 OrphanRetStub_00487f70(void)
+{
+  return 0;
+}
+
+// ghidra_name NoOpLinkedValueListHook20
+// ghidra_proto undefined NoOpLinkedValueListHook20()
+// FUNCTION: IMPERIALISM 0x00487f90
+undefined4 NoOpLinkedValueListHook20(void)
 {
   return 0;
 }
@@ -2219,6 +2395,30 @@ undefined4 AssertMcAppStreamLine596(void)
   return 0;
 }
 
+// ghidra_name OrphanRetStub_00488e30
+// ghidra_proto undefined OrphanRetStub_00488e30()
+// FUNCTION: IMPERIALISM 0x00488e30
+undefined4 OrphanRetStub_00488e30(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00488e50
+// ghidra_proto undefined OrphanRetStub_00488e50()
+// FUNCTION: IMPERIALISM 0x00488e50
+undefined4 OrphanRetStub_00488e50(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_00488e70
+// ghidra_proto undefined OrphanRetStub_00488e70()
+// FUNCTION: IMPERIALISM 0x00488e70
+undefined4 OrphanRetStub_00488e70(void)
+{
+  return 0;
+}
+
 // ghidra_name OrphanCallChain_C2_I18_00488ff0
 // ghidra_proto undefined OrphanCallChain_C2_I18_00488ff0()
 // FUNCTION: IMPERIALISM 0x00488ff0
@@ -2251,6 +2451,14 @@ undefined4 CreateTCountingStreamWithAllocFallback(void)
   return 0;
 }
 
+// ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl
+// ghidra_proto undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()
+// FUNCTION: IMPERIALISM 0x00489490
+undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
+{
+  return 0;
+}
+
 // ghidra_name CreateTHandleStreamWithAllocFallback
 // ghidra_proto undefined CreateTHandleStreamWithAllocFallback()
 // FUNCTION: IMPERIALISM 0x00489580
@@ -2271,6 +2479,22 @@ undefined4 AttachGlobalMemoryHandleAndResetPosition(void)
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins06_00489720()
 // FUNCTION: IMPERIALISM 0x00489720
 undefined4 OrphanLeaf_NoCall_Ins06_00489720(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanLeaf_NoCall_Ins02_00489980
+// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_00489980()
+// FUNCTION: IMPERIALISM 0x00489980
+undefined4 OrphanLeaf_NoCall_Ins02_00489980(void)
+{
+  return 0;
+}
+
+// ghidra_name OrphanRetStub_004899a0
+// ghidra_proto undefined OrphanRetStub_004899a0()
+// FUNCTION: IMPERIALISM 0x004899a0
+undefined4 OrphanRetStub_004899a0(void)
 {
   return 0;
 }

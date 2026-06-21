@@ -6,14 +6,14 @@ generated:
   ancestry: [TArmyStack, TObject, CObject]
   root: TObject
   slots:
-    - {index: 0x00, byte: 0x00, target: 0x004a76d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyStack::GetTArmyStackClassNamePointer, size: 6, prototype: "undefined GetTArmyStackClassNamePointer(void)"}
-    - {index: 0x01, byte: 0x04, target: 0x004a7720, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyStack::DestructTArmyStackAndMaybeFree, size: 30, prototype: "undefined DestructTArmyStackAndMaybeFree(void)"}
-    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
-    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
-    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
-    - {index: 0x05, byte: 0x14, target: 0x004a7960, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyStack::OrphanCallChain_C9_I80_004a7960, size: 173, prototype: "undefined OrphanCallChain_C9_I80_004a7960(void)"}
-    - {index: 0x06, byte: 0x18, target: 0x004a77b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts, size: 328, prototype: "undefined BuildTerrainLinkedSelectionListFromSerializedCounts(void)"}
-    - {index: 0x07, byte: 0x1c, target: 0x004a7c20, kind: new, is_thunk: false, is_null: false, ghidra_name: TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20, size: 45, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)"}
-    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::DeserializeCityProductionQueueCommand, size: 5, prototype: "undefined DeserializeCityProductionQueueCommand(void)"}
-    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::OrphanRetStub_0059add0, size: 47, prototype: "undefined OrphanRetStub_0059add0(void)"}
+    - {index: 0x00, byte: 0x00, target: 0x004a76d0, kind: override, is_thunk: false, is_null: false, ghidra_name: TObject::GetRuntimeClass, size: 6, prototype: "undefined GetTArmyStackClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x004a7720, kind: scalar_dtor, is_thunk: false, is_null: false, ghidra_name: "TArmyStack::DestructTArmyStackAndMaybeFree (verify scalar deleting destructor)", size: 30, prototype: "undefined DestructTArmyStackAndMaybeFree(byte param_1)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::Serialize, size: 143, prototype: "void Serialize(CArchive * archive)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::AssertValid, size: 1, prototype: "void AssertValid(void)"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::Dump, size: 3, prototype: "void Dump(undefined4 dc)"}
+    - {index: 0x05, byte: 0x14, target: 0x004a7960, kind: override, is_thunk: false, is_null: false, ghidra_name: TObject::WriteTo, size: 173, prototype: "undefined OrphanCallChain_C9_I80_004a7960(int * param_1)"}
+    - {index: 0x06, byte: 0x18, target: 0x004a77b0, kind: override, is_thunk: false, is_null: false, ghidra_name: TObject::ReadFrom, size: 328, prototype: "undefined BuildTerrainLinkedSelectionListFromSerializedCounts(int * param_1)"}
+    - {index: 0x07, byte: 0x1c, target: 0x004a7c20, kind: override, is_thunk: false, is_null: false, ghidra_name: TObject::Free, size: 45, prototype: "undefined WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)"}
+    - {index: 0x08, byte: 0x20, target: 0x004798d0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::ShallowClone, size: 5, prototype: "TObject * ShallowClone(void)"}
+    - {index: 0x09, byte: 0x24, target: 0x00415ce0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::ShallowFree, size: 47, prototype: "TObject * ShallowFree(void)"}
 curated:
