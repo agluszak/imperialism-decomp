@@ -1,10 +1,10 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 // VTABLE: IMPERIALISM 0x65e6f8
-class TPictureButton : public TPictureResourceEntryBase {
+class TPictureButton : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TPictureButton) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)

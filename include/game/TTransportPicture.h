@@ -1,11 +1,11 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668588
-class TTransportPicture : public TPictureResourceEntryBase {
+class TTransportPicture : public TPicture {
 public:
   short gaugeMetricId90;
   short unknown92;

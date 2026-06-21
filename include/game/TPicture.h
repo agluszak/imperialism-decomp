@@ -1,7 +1,10 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TControl.h"
 #include "game/mfc.h"
+
+int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
@@ -127,10 +130,22 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPicture 0xCTOR`).
+  short glyphBase84;
+  short field86;
+  short bitmapId;
+  short field8A;
+  int field8C;
 
   TPicture();
+  virtual void ResetPictureResourceEntry();                                        // slot 0x71
+  virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow); // slot 0x72
+
+  void* operator new(unsigned int size) {
+    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
+  }
 };
+
+ASSERT_SIZE(TPicture, 0x90);
 
 // === BEGIN GENERATED (TPicture) — refreshed by `just gen-class TPicture`; do not hand-edit ===
 // clang-format off

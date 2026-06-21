@@ -21,7 +21,7 @@ CRuntimeClass* TCombatReportView::GetRuntimeClass() const {
 
 
 // FUNCTION: IMPERIALISM 0x0058c8d0
-TCombatReportView::TCombatReportView() : TPictureResourceEntryBase() {}
+TCombatReportView::TCombatReportView() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
@@ -42,7 +42,7 @@ bool TCombatReportView::IsSelected(short value, bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0058d2b0
 void TCombatReportView::ApplyRectSlot110(RECT* rectBuffer) {
-  TPictureResourceEntryBase::ApplyRectSlot110(rectBuffer);
+  TPicture::ApplyRectSlot110(rectBuffer);
 }
 
 

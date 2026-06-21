@@ -17,7 +17,7 @@ CRuntimeClass* TPlacard::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ba10
-TPlacard::TPlacard() : TPictureResourceEntryBase() {
+TPlacard::TPlacard() : TPicture() {
   this->glyph90 = 0;
 }
 
@@ -59,7 +59,7 @@ bool TPlacard::IsSelected(short value, bool refreshNow) {
 // FUNCTION: IMPERIALISM 0x0058bc60
 void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
-  TPictureResourceEntryBase::ApplyRectSlot110(nullptr);
+  TPicture::ApplyRectSlot110(nullptr);
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
                                                                                                 10);
   if (glyph90 < 10) {

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x6687b8
-class TWarningView : public TPictureResourceEntryBase {
+class TWarningView : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TWarningView) — refreshed by recover-class; do not hand-edit ===
   virtual ~TWarningView(); // slot 0x01 (scalar deleting destructor)

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 extern "C" int g_vtblTCombatReportView;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTCombatReportView;
 
 // VTABLE: IMPERIALISM 0x6678a0
-class TCombatReportView : public TPictureResourceEntryBase {
+class TCombatReportView : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TCombatReportView) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCombatReportView(); // slot 0x01 (scalar deleting destructor)

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 extern "C" int g_vtblTArmyPlacard;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTArmyPlacard;
 
 // VTABLE: IMPERIALISM 0x667448
-class TArmyPlacard : public TPictureResourceEntryBase {
+class TArmyPlacard : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TArmyPlacard) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)

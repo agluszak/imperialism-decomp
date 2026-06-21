@@ -9,7 +9,7 @@ CRuntimeClass* TPictureButton::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005707f0
-TPictureButton::TPictureButton() : TPictureResourceEntryBase(), timingWord92(7000) {}
+TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
@@ -40,4 +40,11 @@ void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg
   TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
 
-bool TPictureButton::IsSelected(short value, bool refreshNow) { return 0; }
+// FUNCTION: IMPERIALISM 0x005708c0
+bool TPictureButton::IsSelected(short value, bool refreshNow) {
+  (void)value;
+  (void)refreshNow;
+  RECT rect = this->BuildRectFromSlot158();
+  return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
+                      RDW_INVALIDATE | RDW_UPDATENOW);
+}

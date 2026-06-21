@@ -19,7 +19,7 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 #include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TAmtBar.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 #include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
 #include "game/mfc.h"
@@ -328,8 +328,8 @@ int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
 // control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
 int TTradeCluster::GetControlFlag(int arg1, int arg2) {
-  TPictureResourceEntryBase* bidControl =
-      reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagCard));
+  TPicture* bidControl =
+      reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -350,8 +350,8 @@ int TTradeCluster::GetControlFlag(int arg1, int arg2) {
 // the control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587a10
 int TTradeCluster::GetBoolSlot1DC() {
-  TPictureResourceEntryBase* offerControl =
-      reinterpret_cast<TPictureResourceEntryBase*>(this->ResolveControlByTag(kControlTagOffr));
+  TPicture* offerControl =
+      reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }

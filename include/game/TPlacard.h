@@ -1,13 +1,13 @@
 #pragma once
 
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 extern "C" int g_vtblTPlacard;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTPlacard;
 
 // VTABLE: IMPERIALISM 0x667218
-class TPlacard : public TPictureResourceEntryBase {
+class TPlacard : public TPicture {
 public:
   short glyph90;
   short field92;

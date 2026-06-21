@@ -4,7 +4,7 @@
 #include "game/TTradeCluster.h"
 
 #include "game/TAmtBar.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/TGreatPower.h"

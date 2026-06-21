@@ -25,7 +25,7 @@ CRuntimeClass* TArmyPlacard::GetRuntimeClass() const {
 
 
 // FUNCTION: IMPERIALISM 0x0058bed0
-TArmyPlacard::TArmyPlacard() : TPictureResourceEntryBase() {
+TArmyPlacard::TArmyPlacard() : TPicture() {
   this->glyph90 = -1;
 }
 
@@ -71,7 +71,7 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
 
-  TPictureResourceEntryBase::ApplyRectSlot110(nullptr);
+  TPicture::ApplyRectSlot110(nullptr);
 
   if (this->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();

@@ -19,7 +19,7 @@ CRuntimeClass* TArmyInfoView::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005915a0
-TArmyInfoView::TArmyInfoView() : TPictureResourceEntryBase() {}
+TArmyInfoView::TArmyInfoView() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 

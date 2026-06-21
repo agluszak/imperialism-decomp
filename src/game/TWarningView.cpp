@@ -20,7 +20,7 @@ CRuntimeClass* TWarningView::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00592900
-TWarningView::TWarningView() : TPictureResourceEntryBase() {}
+TWarningView::TWarningView() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 

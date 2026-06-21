@@ -17,7 +17,7 @@ CRuntimeClass* TCivReport::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00590c30
-TCivReport::TCivReport() : TPictureResourceEntryBase() {}
+TCivReport::TCivReport() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 

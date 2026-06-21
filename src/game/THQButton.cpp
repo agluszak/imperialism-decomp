@@ -31,7 +31,7 @@ CRuntimeClass* THQButton::GetRuntimeClass() const {
 
 
 // FUNCTION: IMPERIALISM 0x0058b660
-THQButton::THQButton() : TPictureResourceEntryBase() {}
+THQButton::THQButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 

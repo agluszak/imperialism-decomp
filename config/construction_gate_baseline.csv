@@ -11,7 +11,7 @@ include/game/TForeignMinister.h|0|0|0|0|0|2|2
 include/game/TList.h|0|0|0|0|0|2|2
 include/game/TMilitaryUnitOrderState.h|0|0|0|0|0|3|3
 include/game/TNextTradeCommand.h|0|0|0|0|0|2|2
-include/game/TPictureResourceEntryBase.h|0|0|0|0|0|1|1
+include/game/TPicture.h|0|0|0|0|0|1|1
 include/game/TProductionCluster.h|0|0|0|0|1|0|1
 include/game/TSortedList.h|0|0|0|0|0|2|2
 include/game/TTextList.h|0|0|0|0|0|2|2

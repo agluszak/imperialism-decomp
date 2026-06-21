@@ -24,7 +24,7 @@ CRuntimeClass* TTransportPicture::GetRuntimeClass() const {
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
-    : TPictureResourceEntryBase(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
+    : TPicture(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
       splitLimit98((short)0xffff) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
@@ -81,7 +81,7 @@ bool TTransportPicture::IsSelected(short value, bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00592830
 void TTransportPicture::ApplyRectSlot110(RECT* rectBuffer) {
-  TPictureResourceEntryBase::ApplyRectSlot110(rectBuffer);
+  TPicture::ApplyRectSlot110(rectBuffer);
   InvokeSlot13C();
 }
 

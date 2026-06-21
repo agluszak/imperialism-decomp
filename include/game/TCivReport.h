@@ -1,11 +1,11 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 
 struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668128
-class TCivReport : public TPictureResourceEntryBase {
+class TCivReport : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TCivReport) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCivReport(); // slot 0x01 (scalar deleting destructor)

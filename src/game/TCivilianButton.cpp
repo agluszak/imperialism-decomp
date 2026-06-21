@@ -1,6 +1,6 @@
 #include "game/TCivilianButton.h"
 #include "game/TAmtBar.h"
-#include "game/TPictureResourceEntryBase.h"
+#include "game/TPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TControl.h"
 #include "game/trade_quickdraw.h"
@@ -109,7 +109,7 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
 void TCivilianButton::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   if (ownerContext != 0) {
-    TPictureResourceEntryBase::ApplyRectSlot110(nullptr);
+    TPicture::ApplyRectSlot110(nullptr);
   }
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
 

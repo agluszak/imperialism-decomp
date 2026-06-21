@@ -47,7 +47,7 @@ CRuntimeClass* TToggleButton::GetRuntimeClass() const {
 
 
 // FUNCTION: IMPERIALISM 0x005710f0
-TToggleButton::TToggleButton() : TPictureResourceEntryBase() {}
+TToggleButton::TToggleButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
