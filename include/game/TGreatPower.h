@@ -37,7 +37,7 @@ public:
   // tracked-order list and each tracked order to the stream.
   void WriteCoreStateAndTrackedOrdersToStream(void* stream) override;
   // slot 0x0b — body 0x004da3e0 (RET 0x8): reads the same scalar block, clears the
-  // tracked-order list, then recreates one TCivWorkOrderState per stream count entry.
+  // tracked-order list, then recreates one TCivUnit per stream count entry.
   void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
@@ -305,7 +305,7 @@ public:
   virtual void CallSlotA8(int targetNation);
   virtual void CallSlotA9(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
-  // slot 0xa8, etc.). TDiplomacyTurnStateManager notifies relation-code changes here.
+  // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
   // slot 0x2ac — base body is the 0x0040389b thunk: dispatch turn event 0x11f8 with no
   // payload. TAutoGreatPower overrides it (0x004e7510) with the 'lost' game-state event.

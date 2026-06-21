@@ -10,7 +10,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // Created by the slot 0x3a/0x3b bodies ("Frog City"/"FrogCity" markers); the
 // transport-link predicate 0x005b7830 reads regionId14/enabledFlag4d.
 // VTABLE: IMPERIALISM 0x0066d7c8
-class TTownMarker {
+class TTown {
 public:
   virtual CRuntimeClass* GetRuntimeClass() const;
 
@@ -25,7 +25,7 @@ public:
   unsigned char pad4e;                  // 0x4e
   unsigned char activeFlag4f;           // 0x4f
 
-  TTownMarker();
+  TTown();
   void InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
                             short ownerNation);
   char IsTransportLinkedAndEnabled(void);
@@ -38,5 +38,5 @@ public:
   }
 
 protected:
-  ~TTownMarker() {}
+  ~TTown() {}
 };

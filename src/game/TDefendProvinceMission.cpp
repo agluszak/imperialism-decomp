@@ -1,6 +1,6 @@
 #include "game/TDefendProvinceMission.h"
 
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TStationedUnitNode.h"
 #include "game/diplomacy_globals.h"

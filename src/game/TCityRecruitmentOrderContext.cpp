@@ -1,10 +1,10 @@
 #include "game/TCityRecruitmentOrderContext.h"
 
 #include "game/CString.h"
-#include "game/TCivWorkOrderState.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TCivUnit.h"
+#include "game/TSimMgr.h"
 
-extern "C" TLocalizationRuntime* g_pLocalizationTable;
+extern "C" TSimMgr* g_pLocalizationTable;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -18,7 +18,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   CString sharedRefA;
   CString sharedRefB;
 
-  TLocalizationRuntime* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pLocalizationTable;
   if (localization != 0) {
     localization->GetString(static_cast<short>((this->specialistMode == 0) ? 0x2718 : 0x2717),
                             this->entryId, &sharedRefB);
@@ -37,7 +37,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   }
 
   for (short i = 0; i < pendingDelta; ++i) {
-    TCivWorkOrderState* orderObject = new TCivWorkOrderState();
+    TCivUnit* orderObject = new TCivUnit();
     if (orderObject == nullptr) {
       continue;
     }

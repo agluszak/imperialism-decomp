@@ -4,7 +4,7 @@
 
 // Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
 // VTABLE: IMPERIALISM 0x0066ad28
-class TCityOrderCapabilityState {
+class TTechMgr {
 public:
   unsigned char pad000[0x193];
   unsigned char hasProductionOrder193;
@@ -43,4 +43,4 @@ public:
   void InitializeCityOrderCapabilityStateDefaults();
 };
 
-extern TCityOrderCapabilityState* g_pCityOrderCapabilityState;
+extern TTechMgr* g_pCityOrderCapabilityState;

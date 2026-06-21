@@ -1,4 +1,4 @@
-#include "game/ApplicationUiRootController.h"
+#include "game/TApplication.h"
 
 #include "game/mfc.h"
 #include "game/mfc.h"
@@ -17,29 +17,29 @@ extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
 // FUNCTION: IMPERIALISM 0x00486680
 void* __cdecl CreateTApplicationInstance(void) {
-  ApplicationUiRootController* controller =
-      reinterpret_cast<ApplicationUiRootController*>(AllocateWithFallbackHandler(0x48));
+  TApplication* controller =
+      reinterpret_cast<TApplication*>(AllocateWithFallbackHandler(0x48));
   if (controller == 0) {
     return 0;
   }
-  new (controller) ApplicationUiRootController();
+  new (controller) TApplication();
   return controller;
 }
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 // FUNCTION: IMPERIALISM 0x00486740
-CRuntimeClass* ApplicationUiRootController::GetRuntimeClass() const {
+CRuntimeClass* TApplication::GetRuntimeClass() const {
   return &PTR_s_TApplication_00648af8;
 }
 
 // FUNCTION: IMPERIALISM 0x00486760
-ApplicationUiRootController::ApplicationUiRootController()
+TApplication::TApplication()
     : TEventHandler(), activeView(0), screenModeAt24(0), field28(0), embeddedList() {
   g_pApplicationUiRootController = this;
 }
 
 // FUNCTION: IMPERIALISM 0x004867e0
-ApplicationUiRootController::~ApplicationUiRootController() {
+TApplication::~TApplication() {
   g_pApplicationUiRootController = 0;
   for (void** cursor = reinterpret_cast<void**>(embeddedList.head); cursor != 0;
        cursor = reinterpret_cast<void**>(*cursor)) {
@@ -55,24 +55,24 @@ ApplicationUiRootController::~ApplicationUiRootController() {
 }
 
 // FUNCTION: IMPERIALISM 0x00486880
-void ApplicationUiRootController::SetActiveView(TView* view) {
+void TApplication::SetActiveView(TView* view) {
   this->activeView = view;
 }
 
 // FUNCTION: IMPERIALISM 0x004868a0
-TView* ApplicationUiRootController::GetActiveView() {
+TView* TApplication::GetActiveView() {
   return this->activeView;
 }
 
 // vtable slot 0x25 placeholder (0x00486650 body deferred pending TCommandHandler class
 // recovery; see header note). Real body calls the arg's vtable slots 0x0b (no-arg command
 // processor, not yet modeled) and 0x07 (release/destroy).
-void ApplicationUiRootController::vmethod_0037() {}
+void TApplication::vmethod_0037() {}
 
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): original body is `RET 0xc` (takes
 // three stack args, does nothing). A no-op hook for viewport-edge auto-scroll handling.
 // FUNCTION: IMPERIALISM 0x00486990
-void ApplicationUiRootController::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
+void TApplication::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
                                                                         int arg3) {
   (void)arg1;
   (void)arg2;
@@ -86,7 +86,7 @@ void ApplicationUiRootController::HandleTurnEventViewportEdgeAutoScroll(int arg1
 // head. When zero, walk to the first node whose data matches `value`, unlink it, return
 // it to the free list, and free the whole block chain if the list becomes empty.
 // FUNCTION: IMPERIALISM 0x004869b0
-void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
+void TApplication::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
   if (insertFlag != 0) {
     int priorHead = reinterpret_cast<int>(embeddedList.head);
     int* node = embeddedList.AllocateNode();
@@ -147,7 +147,7 @@ void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char ins
 // per-entry tick is a __thiscall on the node's data pointer (ECX = node[2]) with one
 // stack arg; routed through the thunk in repo form (rule 9).
 // FUNCTION: IMPERIALISM 0x00486b10
-void ApplicationUiRootController::TickEachTrackedEntry(int arg) {
+void TApplication::TickEachTrackedEntry(int arg) {
   int* node = reinterpret_cast<int*>(embeddedList.head);
   while (node != 0) {
     int* next = reinterpret_cast<int*>(node[0]);

@@ -7,7 +7,7 @@ struct CRuntimeClass;
 class TCity;
 
 // Mac oracle: TCapacityOrder (capacity / industry production order).
-// VTABLE: IMPERIALISM 0x0064f738
+// VTABLE: IMPERIALISM 0x0064f678
 class TCapacityOrder : public TCityOrderItem {
 public:
   explicit TCapacityOrder(TCity* city);

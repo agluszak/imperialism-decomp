@@ -5,15 +5,15 @@
 // Base class for the per-nation pending unit-order objects (civilian work,
 // military recruit, navy task-force). The concrete subclasses each install their
 // own vtable in the packed 0x0066ee18 region:
-//   TUnitOrderState     -> 0x0066ee18 (this base, 18-slot table; 0x0e-0x11 null)
-//   TCivWorkOrderState  -> 0x0066ee60
+//   TUnit     -> 0x0066ee18 (this base, 18-slot table; 0x0e-0x11 null)
+//   TCivUnit  -> 0x0066ee60
 //   military recruit    -> 0x0066eea8
 // VTABLE: IMPERIALISM 0x0066ee18
-class TUnitOrderState : public TObject {
+class TUnit : public TObject {
 public:
   // --- TObject overrides ---
   CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
-  ~TUnitOrderState() override; // slot 0x04
+  ~TUnit() override; // slot 0x04
 
   // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
 
@@ -24,7 +24,7 @@ public:
   // slot 0x20 ShallowClone is inherited unchanged (0x4798d0)
   // slot 0x24 ShallowFree is inherited unchanged (0x415ce0)
 
-  // --- TUnitOrderState virtual functions ---
+  // --- TUnit virtual functions ---
   virtual void VTableSlot10(int pOwnerContext); // slot 0x28
   virtual void DispatchSlot2C(); // slot 0x2c
   virtual void DetachUnitOrderFromOwnerAndReset(); // slot 0x30
@@ -47,7 +47,7 @@ public:
   // header-inline so MSVC folds it into each subclass ctor and dead-store-
   // eliminates the base vptr write, leaving the single derived vptr write the
   // originals emit.
-  TUnitOrderState() {
+  TUnit() {
     field_10 = 0;
     field_14 = 0;
     field_6 = static_cast<short>(0xffff);

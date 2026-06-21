@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-// Embedded CObList-like prefix at ApplicationUiRootController+0x2c.
+// Embedded CObList-like prefix at TApplication+0x2c.
 // VTABLE: IMPERIALISM 0x00648ca8
 class ApplicationUiRootEmbeddedList : public CObject {
 public:
@@ -38,7 +38,7 @@ public:
 
 protected:
   ~ApplicationUiRootEmbeddedList() override;
-  friend class ApplicationUiRootController;
+  friend class TApplication;
 };
 
 ASSERT_SIZE(ApplicationUiRootEmbeddedList, 0x1c);

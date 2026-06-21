@@ -1,9 +1,9 @@
 #include "decomp_types.h"
 #include "game/TCountry.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TStrategicMapViewSystem.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
@@ -14,11 +14,11 @@ extern "C" {
 TMinor* g_apSecondaryNationStateSlots[36] = {0};
 TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
-TLocalizationRuntime* g_pLocalizationTable = 0;
+TSimMgr* g_pLocalizationTable = 0;
 TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
-TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager = 0;
+TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 int* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
 }

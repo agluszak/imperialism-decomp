@@ -3,13 +3,13 @@
 #include "game/diplomacy_globals.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TCivilianOrderState.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TDealList.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TStream.h"
-#include "game/TUnitOrderState.h"
+#include "game/TUnit.h"
 #include "game/nation_stream_serialization.h"
 #include "game/turn_event_packets.h"
 
@@ -707,7 +707,7 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot
 
 namespace {
 
-void DispatchCivilianOrderRelationMaskSlots(TUnitOrderState* orderNode) {
+void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
   if (orderNode->orderType == 7) {
     TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
     if (ownerNation != 0) {
@@ -723,10 +723,10 @@ void DispatchCivilianOrderRelationMaskSlots(TUnitOrderState* orderNode) {
 
 void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
                                          const char* relationMaskByNation) {
-  TUnitOrderState* orderNode =
-      reinterpret_cast<TUnitOrderState*>(terrainTiles[tileId].firstCivilianOrder20);
+  TUnit* orderNode =
+      reinterpret_cast<TUnit*>(terrainTiles[tileId].firstCivilianOrder20);
   while (orderNode != 0) {
-    TUnitOrderState* nextNode = reinterpret_cast<TUnitOrderState*>(orderNode->field_14);
+    TUnit* nextNode = reinterpret_cast<TUnit*>(orderNode->field_14);
     if (relationMaskByNation[orderNode->field_18] != 0) {
       DispatchCivilianOrderRelationMaskSlots(orderNode);
     }

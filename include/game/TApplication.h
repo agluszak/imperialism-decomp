@@ -13,10 +13,10 @@ class TView;
 // viewport-edge auto-scroll no-op, an intrusive-list insert/remove, and a per-entry tick
 // walk over the embedded list at +0x2c (secondary vtable 0x00648ca8). Size 0x48.
 // VTABLE: IMPERIALISM 0x00648bd8
-class ApplicationUiRootController : public TEventHandler {
+class TApplication : public TEventHandler {
 public:
-  ApplicationUiRootController();
-  ~ApplicationUiRootController() override;
+  TApplication();
+  ~TApplication() override;
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   virtual CRuntimeClass* GetRuntimeClass() const override;
@@ -50,4 +50,4 @@ public:
   ApplicationUiRootEmbeddedList embeddedList; // 0x2c
 };
 
-extern ApplicationUiRootController* g_pApplicationUiRootController;
+extern TApplication* g_pApplicationUiRootController;

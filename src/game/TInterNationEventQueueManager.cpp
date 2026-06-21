@@ -1,7 +1,7 @@
 #include "game/TInterNationEventQueueManager.h"
 
 #include "game/diplomacy_globals.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
 
 #if defined(_MSC_VER)

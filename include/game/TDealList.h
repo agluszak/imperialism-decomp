@@ -11,7 +11,7 @@ class CArchive;
   virtual void VTableIndex##n##_Provisional(void) {}
 
 // Mac oracle: TDealList (nation interaction / proposal weight manager).
-// VTABLE: IMPERIALISM 0x0066d990
+// VTABLE: IMPERIALISM 0x0066da38
 class TDealList : public CObject {
 public:
   struct NationMetricCategoryRow {

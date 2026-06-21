@@ -2,14 +2,14 @@
 
 #include "decomp_types.h"
 
-#include "game/TCityOrderCapabilityState.h"
+#include "game/TTechMgr.h"
 #include "game/TMinor.h"
 #include "game/TShip.h"
 #include "game/TZone.h"
 #include "game/TPtrList.h"
 
 class TGreatPower;
-class TLocalizationRuntime;
+class TSimMgr;
 
 int SumMilitaryUnitPowerWeights(TPtrList* unitList);
 float SumAlliedArmyScoreFactors(int targetNation);
@@ -18,7 +18,7 @@ short* GetRelationStandingRowForNation(short nationSlot);
 int GetClampedQuarterYearTerm(void);
 float TruncatedScoreFactorToFloat(float score);
 
-static __inline TCityOrderCapabilityState* CityOrderCapabilityState(void) {
+static __inline TTechMgr* CityOrderCapabilityState(void) {
   return g_pCityOrderCapabilityState;
 }
 static __inline short CityOrderCapForNation(short nationSlot) {

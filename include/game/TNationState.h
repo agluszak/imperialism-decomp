@@ -14,5 +14,5 @@ struct TNationStateFlags {
   char busyFlagA0;
 };
 
-// Event-message eligibility bytes at +0x4c/+0x4d live on TTownMarker records
+// Event-message eligibility bytes at +0x4c/+0x4d live on TTown records
 // (transportLinkedFlag4c / enabledFlag4d), not on nation-state objects.

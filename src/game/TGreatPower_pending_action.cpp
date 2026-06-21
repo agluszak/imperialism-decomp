@@ -1,7 +1,7 @@
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
 #include "game/TMilitaryUnitOrderState.h"
-#include "game/TCivWorkOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -9,7 +9,7 @@
 #include "game/TMinor.h"
 #include "game/TShip.h"
 #include "game/diplomacy_globals.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 
 #include "decomp_types.h"
 
@@ -20,7 +20,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
-    const TCityOrderCapabilityState::MilitaryCapRow& capabilityRow =
+    const TTechMgr::MilitaryCapRow& capabilityRow =
         CityOrderCapabilityState()->militaryCapRows39d[this->nationSlot];
     if (capabilityRow.eliteRecruitFlag != 0) {
       capabilityBonus = 0x10;
@@ -93,7 +93,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     } while (minorEntry <= &g_apMinorNationCapabilityObjects[15]);
 
     if (needsCivOrder) {
-      TCivWorkOrderState* civOrder = new TCivWorkOrderState();
+      TCivUnit* civOrder = new TCivUnit();
       short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
           this->ownerNationSlot, 0);
       civOrder->InitializeCivWorkOrderState(7, spawnTile, nationSlot);

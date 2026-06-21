@@ -3,7 +3,7 @@
 #include "game/CString.h"
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"
-#include "game/TCityOrderCapabilityState.h"
+#include "game/TTechMgr.h"
 #include "game/TEvent.h"
 
 CRuntimeClass g_pClassDescTArmyPlacard = {nullptr, 0, 0, nullptr, nullptr};

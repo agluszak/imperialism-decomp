@@ -8,7 +8,7 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 
-#include "game/ApplicationUiRootController.h"
+#include "game/TApplication.h"
 #include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/TView.h"
@@ -281,7 +281,7 @@ void TView::Free() {
     ownerContext = 0;
   }
   if (g_pApplicationUiRootController != 0 &&
-      g_pApplicationUiRootController != reinterpret_cast<ApplicationUiRootController*>(this)) {
+      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
     TView* activeView = g_pApplicationUiRootController->GetActiveView();
     if (activeView == this) {
       TEventHandler* replacement = reinterpret_cast<TEventHandler*>(QueryStepValue());

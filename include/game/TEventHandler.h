@@ -10,11 +10,11 @@ class TView;
 class TEvent;
 
 //
-// The real shared base of TView and ApplicationUiRootController (TApplication). Both
+// The real shared base of TView and TApplication (TApplication). Both
 // inherit this 37-slot interface (slots 0x00-0x24) and the fields through +0x1c; they
-// diverge at +0x20 (TView::ownerContext vs ApplicationUiRootController::activeView) and
+// diverge at +0x20 (TView::ownerContext vs TApplication::activeView) and
 // each introduces its own virtuals at slot 0x25+. Proven by vtable comparison: TView
-// (0x649858) and ApplicationUiRootController (0x648bd8) share the same body addresses for
+// (0x649858) and TApplication (0x648bd8) share the same body addresses for
 // most of slots 0x02-0x24, overriding only a handful. Methods kept with their TView-era
 // vmethod_* / semantic names so existing by-name callers/overrides keep resolving.
 // VTABLE: IMPERIALISM 0x006497a0

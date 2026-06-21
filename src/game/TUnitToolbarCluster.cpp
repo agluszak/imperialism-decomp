@@ -15,7 +15,7 @@
 
 #include <new>
 
-#include "game/ApplicationUiRootController.h"
+#include "game/TApplication.h"
 #include "game/mfc.h"
 
 extern "C" {

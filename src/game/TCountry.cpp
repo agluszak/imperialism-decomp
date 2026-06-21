@@ -8,21 +8,21 @@
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TOcean.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMilitaryUnitOrderState.h"
 #include "game/TStationedUnitNode.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
-#include "game/TUnitOrderState.h"
+#include "game/TUnit.h"
 #include "game/TZone.h"
 #include "game/diplomacy_globals.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/nation_stream_serialization.h"
 #include "game/turn_event_packets.h"
 
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
 
 #include <new>
@@ -238,7 +238,7 @@ void TCountry::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
 // FUNCTION: IMPERIALISM 0x004d71b0
 #pragma optimize("y", on)
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
-  TLocalizationRuntime* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pLocalizationTable;
   if (localization->stateFlag114 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
@@ -579,7 +579,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString typeName;
         CString composedName;
         short unitType = unit->unitTypeId04;
-        TLocalizationRuntime* localization = g_pLocalizationTable;
+        TSimMgr* localization = g_pLocalizationTable;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);

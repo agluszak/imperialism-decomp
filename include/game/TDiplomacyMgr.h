@@ -16,7 +16,7 @@ enum {
 // slots model its native vtable; the non-virtual methods are the recovered
 // behaviour. Constructed once and reached via g_pTDiplomacyTurnStateManager.
 // VTABLE: IMPERIALISM 0x00654d90
-struct TDiplomacyTurnStateManager {
+struct TDiplomacyMgr {
   // Native virtual functions layout
   virtual void slot_00(); // 0 (0x00)
   virtual void slot_04(); // 1 (0x04)
@@ -93,8 +93,8 @@ struct TDiplomacyTurnStateManager {
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
 
-  TDiplomacyTurnStateManager* ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
-  TDiplomacyTurnStateManager* thunk_ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
+  TDiplomacyMgr* ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
+  TDiplomacyMgr* thunk_ConstructTDiplomacyTurnStateManager_Vtbl00654d90();
   void InitializeTDiplomacyTurnStateManagerDefaults();
   void thunk_InitializeTDiplomacyTurnStateManagerDefaults();
   char IsNationPairAtWar(int sourceNationSlot, int targetNationSlot);
@@ -123,7 +123,7 @@ struct TDiplomacyTurnStateManager {
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
 
 protected:
-  ~TDiplomacyTurnStateManager();
+  ~TDiplomacyMgr();
 };
 
 #include "game/diplomacy_globals.h"

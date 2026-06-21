@@ -1,9 +1,9 @@
 #include "game/TGreatPower_internal.h"
 
 #include "game/CIterator.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TPtrList.h"
 #include "game/diplomacy_globals.h"
@@ -58,7 +58,7 @@ short* GetRelationStandingRowForNation(short nationSlot) {
 }
 
 int GetClampedQuarterYearTerm(void) {
-  TLocalizationRuntime* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pLocalizationTable;
   int yearTerm = static_cast<short>(localization->quarterGateTick2c / 4);
   if (yearTerm >= 0x3c) {
     yearTerm = 0x3c;

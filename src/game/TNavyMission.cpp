@@ -1,6 +1,6 @@
 #include "game/TNavyMission.h"
 
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/diplomacy_globals.h"
 
 extern "C" {

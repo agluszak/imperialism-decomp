@@ -2,7 +2,7 @@
 
 #include "game/mfc.h"
 #include "game/diplomacy_globals.h"
-#include "game/ApplicationUiRootController.h"
+#include "game/TApplication.h"
 #include "game/TSoundChannelNode.h"
 
 #include <new>
@@ -52,7 +52,7 @@ CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
 
 // Fork-class construction: the binary calls InitializeUiResourceEntryBaseHeaderDefaults
 // (TEventHandler field defaults) then installs the TSoundPlayer vptr — same pattern as
-// ApplicationUiRootController @ 0x00486760, not TControl::TControl().
+// TApplication @ 0x00486760, not TControl::TControl().
 TSoundPlayer::TSoundPlayer() {
   typedef void(__fastcall * InitHeader)(undefined4 * self);
   reinterpret_cast<InitHeader>(InitializeUiResourceEntryBaseHeaderDefaults)(
@@ -172,7 +172,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
   EnsureCdAudioDeviceHandleInitialized();
   this->field10 = param_1;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  reinterpret_cast<ApplicationUiRootController*>(g_pGlobalUiRootController)
+  reinterpret_cast<TApplication*>(g_pGlobalUiRootController)
       ->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
 }
 

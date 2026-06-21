@@ -10,7 +10,7 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
 #include "game/TControl.h"
 

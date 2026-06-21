@@ -2,7 +2,7 @@
 
 #include "game/TControl.h"
 
-// VTABLE: IMPERIALISM 0x64a2b8
+// VTABLE: IMPERIALISM 0x0064a4e0
 class TButton : public TControl {
 public:
   TButton();

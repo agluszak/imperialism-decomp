@@ -1,34 +1,34 @@
-#include "game/TCivWorkOrderState.h"
-#include "game/TUnitOrderState.h"
+#include "game/TCivUnit.h"
+#include "game/TUnit.h"
 #include "game/TStream.h"
 
-extern "C" char g_pClassDescTCivWorkOrderState = 0;
+extern "C" char g_pClassDescTCivUnit = 0;
 
 // FUNCTION: IMPERIALISM 0x005c28a0
-CRuntimeClass* TCivWorkOrderState::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCivWorkOrderState);
+CRuntimeClass* TCivUnit::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCivUnit);
 }
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 // FUNCTION: IMPERIALISM 0x005c28c0
-TCivWorkOrderState::TCivWorkOrderState() {}
+TCivUnit::TCivUnit() {}
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
 
 // SYNTHETIC: IMPERIALISM 0x005c28f0
-// TCivWorkOrderState::`scalar deleting destructor'
+// TCivUnit::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c2920
-TCivWorkOrderState::~TCivWorkOrderState() {}
+TCivUnit::~TCivUnit() {}
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 // FUNCTION: IMPERIALISM 0x005c2940
-void TCivWorkOrderState::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
+void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
                                                      int nOrderOwnerNationId) {
   this->RegisterUnitOrderWithOwnerManager(static_cast<short>(nOrderType), pOwnerContext,
                                           static_cast<short>(nOrderOwnerNationId), 0);
@@ -40,33 +40,33 @@ void TCivWorkOrderState::InitializeCivWorkOrderState(int nOrderType, int pOwnerC
 #endif
 
 // FUNCTION: IMPERIALISM 0x005c29f0
-void TCivWorkOrderState::SetOrderModeSlot34(int mode, int payload) {
+void TCivUnit::SetOrderModeSlot34(int mode, int payload) {
   (void)mode;
   (void)payload;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2a90
-void TCivWorkOrderState::DispatchSlot2C() {}
+void TCivUnit::DispatchSlot2C() {}
 
 // FUNCTION: IMPERIALISM 0x005c2b10
-void TCivWorkOrderState::ReadFrom(TStream* stream) {
-  TUnitOrderState::ReadFrom(stream);
+void TCivUnit::ReadFrom(TStream* stream) {
+  TUnit::ReadFrom(stream);
   stream->ReadBytes(&remainingTurns24, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2b40
-void TCivWorkOrderState::WriteTo(TStream* stream) {
-  TUnitOrderState::WriteTo(stream);
+void TCivUnit::WriteTo(TStream* stream) {
+  TUnit::WriteTo(stream);
   stream->WriteBytesSlot78(&remainingTurns24, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2b70
-void TCivWorkOrderState::VTableSlot10(int pOwnerContext) {
+void TCivUnit::VTableSlot10(int pOwnerContext) {
   (void)pOwnerContext;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c40
-void TCivWorkOrderState::DetachUnitOrderFromOwnerAndReset() {}
+void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
-void TCivWorkOrderState::ResetCivWorkOrderAndRefreshCounters() {}
+void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {}

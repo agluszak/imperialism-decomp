@@ -1,27 +1,27 @@
-#include "game/TTownMarker.h"
+#include "game/TTown.h"
 
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include <string.h>
 
 #include "game/diplomacy_globals.h"
 #include "game/mfc.h"
 
-extern "C" CRuntimeClass PTR_s_TTownMarker_0066d780;
+extern "C" CRuntimeClass PTR_s_TTown_0066d780;
 
 // MFC-style GetRuntimeClass (slot 0): returns the class descriptor that precedes
 // the vtable at 0x0066d7c8.
 // FUNCTION: IMPERIALISM 0x005b6c40
-CRuntimeClass* TTownMarker::GetRuntimeClass() const {
-  return &PTR_s_TTownMarker_0066d780;
+CRuntimeClass* TTown::GetRuntimeClass() const {
+  return &PTR_s_TTown_0066d780;
 }
 
 // Bare vptr-write constructor; all field state comes from InitializeTownMarker.
 // FUNCTION: IMPERIALISM 0x005b6c60
-TTownMarker::TTownMarker() {}
+TTown::TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
 #pragma optimize("y", on)
-void TTownMarker::InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
+void TTown::InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
                                        short ownerNation) {
   strcpy(this->name, markerName);
   this->ownerNation1c = ownerNation;
@@ -41,7 +41,7 @@ void TTownMarker::InitializeTownMarker(const char* markerName, short regionId, c
 extern undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void);
 
 // FUNCTION: IMPERIALISM 0x005b7830
-char TTownMarker::IsTransportLinkedAndEnabled(void) {
+char TTown::IsTransportLinkedAndEnabled(void) {
   if (this->enabledFlag4d == 0) {
     return 0;
   }

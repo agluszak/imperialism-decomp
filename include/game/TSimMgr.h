@@ -4,7 +4,7 @@
 
 // Ghidra class TSimMgr; global instance g_pLocalizationTable @ 0x6a20f8.
 // VTABLE: IMPERIALISM 0x00662a58
-class TLocalizationRuntime {
+class TSimMgr {
 public:
   virtual void* GetClassDescDynamic() = 0;
   TLOCALIZATION_VTABLE_SLOT(01);
@@ -65,5 +65,5 @@ public:
   short stateFlag114;
 
 protected:
-  ~TLocalizationRuntime() {}
+  ~TSimMgr() {}
 };

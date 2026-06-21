@@ -1,4 +1,4 @@
-// Shared base of TView and ApplicationUiRootController. Holds the vtable slots 0x00-0x24
+// Shared base of TView and TApplication. Holds the vtable slots 0x00-0x24
 // and fields through +0x1c that both branches inherit (see include/game/TEventHandler.h).
 // Bodies here are the original shared implementations referenced by both derived vtables;
 // TView/AppRoot override only the few slots where their vtable bodies differ.
@@ -8,7 +8,7 @@
 #include "game/TEvent.h"
 #include "game/TFileStream.h"
 #include "game/TView.h"
-#include "game/ApplicationUiRootController.h"
+#include "game/TApplication.h"
 #include "game/mcappui_globals.h"
 #include <string.h>
 
@@ -19,7 +19,7 @@ extern CRuntimeClass PTR_s_TEventHandler_00649588;
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-extern ApplicationUiRootController* g_pApplicationUiRootController;
+extern TApplication* g_pApplicationUiRootController;
 
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetCityDialogValueDword10() {
@@ -55,7 +55,7 @@ TEventHandler::~TEventHandler() {}
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
   if (g_pApplicationUiRootController != 0 &&
-      g_pApplicationUiRootController != reinterpret_cast<ApplicationUiRootController*>(this)) {
+      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
     TView* activeView = g_pApplicationUiRootController->GetActiveView();
     if (activeView == reinterpret_cast<TView*>(this)) {
       TView* replacement = reinterpret_cast<TView*>(QueryStepValue());

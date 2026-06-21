@@ -1,14 +1,14 @@
-#include "game/TUnitOrderState.h"
+#include "game/TUnit.h"
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 
 #include "game/diplomacy_globals.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TStream.h"
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
-extern "C" char g_pClassDescTUnitOrderState = 0;
+extern "C" char g_pClassDescTUnit = 0;
 
 static const unsigned int kAddrSaveFormatVersion = 0x00695278;
 
@@ -25,13 +25,13 @@ struct TUnitOrderOwnerManagerView {
   virtual void s09() = 0;
   virtual void s10() = 0;
   virtual void s11() = 0;
-  virtual void VTableSlot12(TUnitOrderState* order) = 0; // slot 12 at 0x30
+  virtual void VTableSlot12(TUnit* order) = 0; // slot 12 at 0x30
 protected:
   ~TUnitOrderOwnerManagerView() {}
 };
 
 // FUNCTION: IMPERIALISM 0x00402eeb
-void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnitOrderState* order, int unusedEdx,
+void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnit* order, int unusedEdx,
                                                         short nOrderType, int pOwnerContext,
                                                         short nOrderOwnerNationId, short arg3) {
   (void)unusedEdx;
@@ -39,24 +39,24 @@ void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnitOrderState* order, 
 }
 
 // FUNCTION: IMPERIALISM 0x005c2470
-void TUnitOrderState::DetachUnitOrderFromOwnerAndReset() {}
+void TUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2490
-CRuntimeClass* TUnitOrderState::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTUnitOrderState);
+CRuntimeClass* TUnit::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTUnit);
 }
 
 // SYNTHETIC: IMPERIALISM 0x005c24e0
-// TUnitOrderState::`scalar deleting destructor'
+// TUnit::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c2510
-TUnitOrderState::~TUnitOrderState() {}
+TUnit::~TUnit() {}
 
 // Original is FPO (frame-pointer omitted); force /Oy to match the esp-relative
 // argument loads (heuristic 88).
 #pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x005c2530
-void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
+void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                                         short nOrderOwnerNationId, short arg3) {
   this->orderType = nOrderType;
   this->field_8 = 0;
@@ -85,7 +85,7 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   this->field_1A = arg3;
   this->field_C = static_cast<short>(-1);
 
-  TLocalizationRuntime* locTable = g_pLocalizationTable;
+  TSimMgr* locTable = g_pLocalizationTable;
   int uniqueId = locTable->field_64 + 1;
   locTable->field_64 = uniqueId;
   this->field_20 = uniqueId;
@@ -93,25 +93,25 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x005c2610
-void TUnitOrderState::VTableSlot10(int pOwnerContext) {
+void TUnit::VTableSlot10(int pOwnerContext) {
   (void)pOwnerContext;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2630
-void TUnitOrderState::SetOrderModeSlot34(int mode, int payload) {
+void TUnit::SetOrderModeSlot34(int mode, int payload) {
   this->field_8 = mode;
   this->field_C = static_cast<short>(payload);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660
-void TUnitOrderState::DispatchSlot2C() {
+void TUnit::DispatchSlot2C() {
   if (this->field_8 != 2) {
     this->field_8 = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005c2680
-void TUnitOrderState::Free() {
+void TUnit::Free() {
   void* manager = nullptr;
   if (this->field_1C == 0) {
     void* nation = g_apNationStates[this->field_18];
@@ -131,7 +131,7 @@ void TUnitOrderState::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2700
-void TUnitOrderState::ReadFrom(TStream* stream) {
+void TUnit::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&orderType, 2);
   stream->ReadBytes(&field_6, 2);
@@ -153,7 +153,7 @@ void TUnitOrderState::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c27d0
-void TUnitOrderState::WriteTo(TStream* stream) {
+void TUnit::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&orderType, 2);
   stream->WriteBytesSlot78(&field_6, 2);

@@ -1,11 +1,11 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
 #include "game/CIterator.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TPtrList.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TMinister.h"
 #include "game/TForeignMinister.h"
 #include "game/TCityInteriorMinister.h"
@@ -36,7 +36,7 @@ extern double g_DAT_00653fc8_Value_00653FC8; // 32767.0
 }
 
 static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
-// kNationSlotCount (0x17) comes from TDiplomacyTurnStateManager.h.
+// kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
 

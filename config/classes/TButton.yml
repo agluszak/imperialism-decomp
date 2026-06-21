@@ -121,4 +121,4 @@ generated:
     - {index: 0x70, byte: 0x1c0, target: 0x0048e810, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TControl::SetControlStateFlagAndMaybeRefresh, size: 33, prototype: "void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)"}
     - {index: 0x71, byte: 0x1c4, target: 0x00492db0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0, size: 30, prototype: "undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)"}
 curated:
-  vtable_annotation: {address: "64a2b8", note: "auto-first-from-duplicates"}
+  vtable_annotation: {address: "64a4e0", note: "own vtable after TCtlMgr collision split"}

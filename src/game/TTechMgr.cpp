@@ -1,4 +1,4 @@
-#include "game/TCityOrderCapabilityState.h"
+#include "game/TTechMgr.h"
 
 #include "decomp_types.h"
 
@@ -8,13 +8,13 @@ extern int DAT_006a601c;
 }
 undefined4 RecomputeGlobalCapabilityAverages(void);
 
-TCityOrderCapabilityState* g_pCityOrderCapabilityState = 0;
+TTechMgr* g_pCityOrderCapabilityState = 0;
 
 // FUNCTION: IMPERIALISM 0x005aef80
-void TCityOrderCapabilityState::ConstructCityOrderCapabilityStateVtable(void) {}
+void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 
 // FUNCTION: IMPERIALISM 0x005aeff0
-void TCityOrderCapabilityState::InitializeCityOrderCapabilityStateDefaults(void) {
+void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   int self = reinterpret_cast<int>(this);
   int iVar1;
   undefined2* puVar2;

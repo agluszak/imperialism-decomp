@@ -3,9 +3,9 @@
 
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TSortedPtrList.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/diplomacy_globals.h"
 #include "game/TMinor.h"
 #include "game/TForeignMinister.h"

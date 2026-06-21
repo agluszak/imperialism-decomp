@@ -2,7 +2,7 @@
 
 #include "game/TPictureButton.h"
 
-// VTABLE: IMPERIALISM 0x643a40
+// VTABLE: IMPERIALISM 0x0065f670
 class TRadioPictureButton : public TPictureButton {
 public:
   TRadioPictureButton();

@@ -2,7 +2,7 @@
 
 #include "game/CString.h"
 #include "game/TGreatPower.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
 #include "game/diplomacy_globals.h"
 #include "game/mfc.h"

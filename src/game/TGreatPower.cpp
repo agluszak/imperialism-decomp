@@ -4,9 +4,9 @@
 #include "game/TTrackedObject.h"
 #include "game/TNationInteractionStateManager.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/TLocalizationRuntime.h"
+#include "game/TSimMgr.h"
 #include "game/CIterator.h"
-#include "game/TTownMarker.h"
+#include "game/TTown.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TCity.h"
@@ -41,7 +41,7 @@
 #include "game/TObject.h"
 #include "game/TGreatPower_internal.h"
 #include "game/diplomacy_globals.h"
-#include "game/TDiplomacyTurnStateManager.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
 #include "game/TradeCommodityMetricRecord.h"
@@ -173,9 +173,9 @@ extern "C" {
 extern TMinor* g_apNationAuxRuntimeStateSlots[];
 }
 
-#include "game/TUnitOrderState.h"
+#include "game/TUnit.h"
 #include "game/TZone.h"
-#include "game/TCivWorkOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
 #include "game/TMarkerReceiverView.h"
 #include "game/TTrackedObjectListEntry.h"
@@ -411,7 +411,7 @@ static __inline TPtrList* AllocateBattleListOwnerWithLinkedSentinel(void) {
 }
 
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
-  TLocalizationRuntime* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable == 0) {
     return false;
   }
@@ -668,7 +668,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   reinterpret_cast<void(__fastcall*)(int, int)>(
       thunk_InitializeNationStateIdentityAndOwnedRegionList)(reinterpret_cast<int>(this), arg1);
 
-  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
     this->treasuryValue10 = ReadGlobalIntStep(kAddrNationRuntimeSubsystemCache, runtimeIndex);
@@ -983,7 +983,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   int orderOrdinal = 1;
   while (orderOrdinal < 5) {
-    TCivWorkOrderState* civOrderObj = new TCivWorkOrderState();
+    TCivUnit* civOrderObj = new TCivUnit();
     if (civOrderObj != nullptr) {
       civOrderObj->InitializeCivWorkOrderState(0, -1, this->nationSlot);
       civOrderObj->ReadFrom(stream);
@@ -1136,7 +1136,7 @@ void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState,
 
   int orderCount = stream->ReadShort();
   for (; orderCount > 0; --orderCount) {
-    TCivWorkOrderState* civOrder = new TCivWorkOrderState();
+    TCivUnit* civOrder = new TCivUnit();
     civOrder->InitializeCivWorkOrderState(0, -1, this->nationSlot);
     civOrder->ReadFrom(stream);
   }
@@ -1158,8 +1158,8 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
   int orderCount = this->trackedObjectList->GetCountSlot48();
   stream->WriteCountSlot88(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
-    TUnitOrderState* order =
-        reinterpret_cast<TUnitOrderState*>(this->trackedObjectList->GetTrackedEntrySlot4C(ordinal));
+    TUnit* order =
+        reinterpret_cast<TUnit*>(this->trackedObjectList->GetTrackedEntrySlot4C(ordinal));
     order->WriteTo(stream);
   }
 }
@@ -1323,10 +1323,10 @@ void TGreatPower::NoOpNationQueuedOrderHook(void) {}
 char TGreatPower::HasTrackedOrderOfType7(void) {
   char found = 0;
   CIterator orderIter(this->trackedObjectList);
-  TUnitOrderState* order = static_cast<TUnitOrderState*>(orderIter.Reset());
+  TUnit* order = static_cast<TUnit*>(orderIter.Reset());
   if (orderIter.More()) {
     while (order->orderType != 7) {
-      order = static_cast<TUnitOrderState*>(orderIter.Advance());
+      order = static_cast<TUnit*>(orderIter.Advance());
       if (!orderIter.More()) {
         return 0;
       }
@@ -1346,7 +1346,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     return;
   }
 
-  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pLocalizationTable;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -1411,7 +1411,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
 // FUNCTION: IMPERIALISM 0x004db380
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pLocalizationTable;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -1532,52 +1532,52 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   memset(influenceMap, 0, 0x1950);
 
   CIterator markerCursor(this->townMarkerList);
-  TTownMarker* marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  TTown* marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0 &&
          static_cast<int>(marker->regionId14) != *GreatPower_HomeRegionIndex88(this)) {
-    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+    marker = static_cast<TTown*>(markerCursor.Advance());
   }
-  char homeLinked = static_cast<TTownMarker*>(marker)->IsTransportLinkedAndEnabled();
+  char homeLinked = static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled();
   if (homeLinked == 0) {
     this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
                                         marker->regionId14);
-    marker = static_cast<TTownMarker*>(markerCursor.Reset());
+    marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0 && homeLinked == 0) {
       if (influenceMap[marker->regionId14] != 0 &&
-          static_cast<TTownMarker*>(marker)->IsTransportLinkedAndEnabled() != 0) {
+          static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() != 0) {
         homeLinked = 1;
       }
-      marker = static_cast<TTownMarker*>(markerCursor.Advance());
+      marker = static_cast<TTown*>(markerCursor.Advance());
     }
   }
-  marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if (static_cast<TTownMarker*>(marker)->IsTransportLinkedAndEnabled() != 0 && homeLinked != 0 &&
+    if (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() != 0 && homeLinked != 0 &&
         marker->activeFlag4f != 0 && influenceMap[marker->regionId14] == 0) {
       this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
                                           marker->regionId14);
     }
-    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+    marker = static_cast<TTown*>(markerCursor.Advance());
   }
-  marker = static_cast<TTownMarker*>(markerCursor.Reset());
+  marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
     if ((influenceMap[marker->regionId14] == 0 || marker->activeFlag4f == 0) &&
-        (static_cast<TTownMarker*>(marker)->IsTransportLinkedAndEnabled() == 0 ||
+        (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() == 0 ||
          homeLinked == 0)) {
       marker->transportLinkedFlag4c = 0;
     } else {
       marker->transportLinkedFlag4c = 1;
     }
-    marker = static_cast<TTownMarker*>(markerCursor.Advance());
+    marker = static_cast<TTown*>(markerCursor.Advance());
   }
   if (outInfluenceMap != 0) {
-    marker = static_cast<TTownMarker*>(markerCursor.Reset());
+    marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0) {
-      if (static_cast<TTownMarker*>(marker)->IsTransportLinkedAndEnabled() != 0 &&
+      if (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() != 0 &&
           homeLinked != 0) {
         influenceMap[marker->regionId14] = 1;
       }
-      marker = static_cast<TTownMarker*>(markerCursor.Advance());
+      marker = static_cast<TTown*>(markerCursor.Advance());
     }
     *outInfluenceMap = influenceMap;
     return;
@@ -1702,7 +1702,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     unsigned char needsRedraw = 0;
 
     TGlobalMapState* globalMapState = g_pGlobalMapState;
-    TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+    TSimMgr* localizationRuntime = g_pLocalizationTable;
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
       TGlobalMapCityScoreRecord* cityTable = globalMapState->cityScoreTable;
@@ -1783,7 +1783,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
               }
             }
 
-            TCityOrderCapabilityState* orderCapabilityState = CityOrderCapabilityState();
+            TTechMgr* orderCapabilityState = CityOrderCapabilityState();
             int capabilityScore = this->city->GetBuildingProductionValueBySlot(7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
                 orderCapabilityState->hasProductionOrder193 != 0) {
@@ -2028,7 +2028,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
   CIterator cursor(townMarkerList);
   cursor.Reset();
   while (cursor.More()) {
-    TTownMarker* marker = static_cast<TTownMarker*>(cursor.current);
+    TTown* marker = static_cast<TTown*>(cursor.current);
     if (marker != 0 && marker->enabledFlag4d != 0 && marker->transportLinkedFlag4c == 0) {
       CString messageRef;
       CString scratchRef;
@@ -2398,7 +2398,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  TLocalizationRuntime* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable->runtimeSubsystemIndex != 0 || localizationTable->mode != 2) {
     return;
   }
@@ -2838,7 +2838,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     break;
 
   case 3: {
-    TLocalizationRuntime* localizationTable = g_pLocalizationTable;
+    TSimMgr* localizationTable = g_pLocalizationTable;
     if (localizationTable != 0 && localizationTable->mode == 6) {
       this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetClass, 4, -1);
     }
@@ -2979,7 +2979,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
       if (shouldDispatchAlert) {
         SharedRefPairScope sharedRefs;
-        TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+        TSimMgr* localizationRuntime = g_pLocalizationTable;
         if (localizationRuntime != 0) {
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.first);
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.second);
@@ -3215,7 +3215,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
       thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists)();
   ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(g_pGlobalMapState, this->nationSlot);
 
-  TLocalizationRuntime* localizationTable = g_pLocalizationTable;
+  TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
     reinterpret_cast<void(__cdecl*)(void)>(thunk_DispatchTaggedGameStateEvent1F20)();
   }
@@ -3662,7 +3662,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   } else {
     notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
   }
-  TLocalizationRuntime* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pLocalizationTable;
   if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
       localization->stateFlag114 != 0) {
     if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag114 != 0) {
@@ -3677,7 +3677,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 #pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x004dfa20
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
-  TTownMarker* marker = new TTownMarker();
+  TTown* marker = new TTown();
   marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
   static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
   marker->activeFlag4f = 1;
@@ -3688,7 +3688,7 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
 // FUNCTION: IMPERIALISM 0x004dfae0
 #pragma optimize("y", on)
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
-  TLocalizationRuntime* localization = g_pLocalizationTable;
+  TSimMgr* localization = g_pLocalizationTable;
   int homeRegionIndex = -1;
   if (localization->stateFlag114 == 0) {
     homeRegionIndex =
@@ -3715,7 +3715,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
     }
   }
   *GreatPower_HomeRegionIndex88(this) = static_cast<short>(homeRegionIndex);
-  TTownMarker* marker = new TTownMarker();
+  TTown* marker = new TTown();
   marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
   static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
   marker->activeFlag4f = 1;
@@ -3757,8 +3757,8 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(void) {
 #pragma optimize("y", on)
 void TGreatPower::DispatchTrackedOrderSlot2CCallbacks(void) {
   CIterator orderIter(this->trackedObjectList);
-  for (TUnitOrderState* order = static_cast<TUnitOrderState*>(orderIter.Reset()); orderIter.More();
-       order = static_cast<TUnitOrderState*>(orderIter.Advance())) {
+  for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
+       order = static_cast<TUnit*>(orderIter.Advance())) {
     order->DispatchSlot2C();
   }
 }
@@ -3772,11 +3772,11 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
   for (int outer = 1; outer < total; ++outer) {
     void* entryOuter = this->trackedObjectList->GetTrackedEntrySlot4C(outer);
     short outerPriority =
-        g_DAT_006966d0_Value_006966D0[static_cast<TUnitOrderState*>(entryOuter)->orderType];
+        g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryOuter)->orderType];
     for (int inner = outer + 1; inner <= total; ++inner) {
       void* entryInner = this->trackedObjectList->GetTrackedEntrySlot4C(inner);
       short innerPriority =
-          g_DAT_006966d0_Value_006966D0[static_cast<TUnitOrderState*>(entryInner)->orderType];
+          g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryInner)->orderType];
       if (innerPriority < outerPriority) {
         static_cast<TPtrList*>(this->trackedObjectList)
             ->SetEntryDataAtSlot60(outer, &entryInner, 1);
@@ -3947,7 +3947,7 @@ float TGreatPower::GetScoreFactorSlot23C(void) {
 
 // FUNCTION: IMPERIALISM 0x004e09a0
 float TGreatPower::GetScoreFactorSlot240(void) {
-  TCityOrderCapabilityState* capabilityState = CityOrderCapabilityState();
+  TTechMgr* capabilityState = CityOrderCapabilityState();
   int shipProduction;
   if (capabilityState->shipCapabilityFlag1a8 != 0) {
     shipProduction = this->GetCityBuildingProductionSlot8D(2);
@@ -4686,7 +4686,7 @@ void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, 
   };
 
   short turnTick = 0;
-  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     turnTick = localizationRuntime->GetTurnTickSlot3C();
   }
@@ -4716,7 +4716,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   short activeTurn = 0;
-  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
+  TSimMgr* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     activeTurn = static_cast<short>(localizationRuntime->GetTurnTickSlot3C() - 1);
   }
@@ -5408,7 +5408,7 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
     }
   }
 
-  TCivWorkOrderState* orderObject = new TCivWorkOrderState();
+  TCivUnit* orderObject = new TCivUnit();
   if (orderObject == nullptr) {
     return;
   }

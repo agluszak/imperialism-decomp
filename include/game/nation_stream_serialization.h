@@ -2,7 +2,7 @@
 
 #include "game/TPtrList.h"
 #include "game/TStream.h"
-#include "game/TUnitOrderState.h"
+#include "game/TUnit.h"
 
 // Write-side serialization helpers shared by the nation classes (TCountry / TGreatPower).
 // The original copies each array element into a stack temp, byte-swaps it to the stream's
@@ -44,8 +44,8 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
   int entryCount = list->GetCountSlot48();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    TUnitOrderState* entry =
-        reinterpret_cast<TUnitOrderState*>(list->GetTrackedEntrySlot4C(ordinal));
+    TUnit* entry =
+        reinterpret_cast<TUnit*>(list->GetTrackedEntrySlot4C(ordinal));
     entry->WriteTo(stream);
   }
 }
