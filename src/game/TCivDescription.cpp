@@ -66,27 +66,6 @@ struct CivilianClassCacheContext {
   unsigned char pad_6e_to_6f[0x02];
 };
 
-class ProvinceCollectionVirtualShape {
-public:
-  virtual void Slot00(void);
-  virtual void Slot04(void);
-  virtual void Slot08(void);
-  virtual void Slot0c(void);
-  virtual void Slot10(void);
-  virtual void Slot14(void);
-  virtual void Slot18(void);
-  virtual void Slot1c(void);
-  virtual void Slot20(void);
-  virtual int GetByOrdinal(int provinceOrdinal);
-  virtual int GetCount(void);
-
-protected:
-  ~ProvinceCollectionVirtualShape() {}
-};
-
-typedef int(__fastcall* ProvinceCollectionGetCountFn)(void* thisCollection, int unusedEdx);
-typedef int(__fastcall* ProvinceCollectionGetByOrdinalFn)(void* thisCollection, int unusedEdx,
-                                                          int provinceOrdinal);
 typedef void(__fastcall* UiRootOnLegendTileSelectedFn)(void* thisLegendSelectionOwner,
                                                        int unusedEdx, int tileIndex);
 typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextRef);
@@ -191,16 +170,13 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
   do {
     if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) !=
         0) {
-      ProvinceCollectionVirtualShape* ownerNationProvinceCollection =
-          *reinterpret_cast<ProvinceCollectionVirtualShape**>(
-              *reinterpret_cast<int*>(reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable) +
-                                      this->ownerNationId * 4) +
-              0x90);
-      provinceCount = ownerNationProvinceCollection->GetCount();
+      TPtrList* ownerNationProvinceCollection =
+          g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
+      provinceCount = ownerNationProvinceCollection->GetCountSlot48();
       if (0 < provinceCount) {
         provinceOrdinal = 1;
         do {
-          provinceId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
+          provinceId = ownerNationProvinceCollection->GetIntByOrdinalSlot24(provinceOrdinal);
           provinceTileCount =
               (int)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
                             provinceId * 0xa8 + 0x3a);
@@ -236,7 +212,7 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
             }
           }
           provinceOrdinal = provinceOrdinal + 1;
-          provinceCount = ownerNationProvinceCollection->GetCount();
+          provinceCount = ownerNationProvinceCollection->GetCountSlot48();
         } while (provinceOrdinal <= provinceCount);
       }
     }
@@ -268,26 +244,25 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
   int provinceTileIndex;
   char* tableBase;
   short tileProfileId;
-  ProvinceCollectionVirtualShape* ownerNationProvinceCollection;
+  TPtrList* ownerNationProvinceCollection;
   int provinceCount;
 
   provinceOrdinal = 1;
   ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
                                   4 + orderState->currentTileIndex * 0x24);
   context->ownerNationId = ownerNationId;
-  ownerNationProvinceCollection = *reinterpret_cast<ProvinceCollectionVirtualShape**>(
-      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[ownerNationId]) + 0x90);
+  ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;
   context->targetTileCountsBySlot[3] = 0;
   context->targetTileCountsBySlot[2] = 0;
   context->targetTileCountsBySlot[1] = 0;
   context->targetTileCountsBySlot[0] = 0;
-  provinceCount = ownerNationProvinceCollection->GetCount();
+  provinceCount = ownerNationProvinceCollection->GetCountSlot48();
   if (provinceCount < provinceOrdinal) {
     return;
   }
   do {
-    int provinceRecordId = ownerNationProvinceCollection->GetByOrdinal(provinceOrdinal);
+    int provinceRecordId = ownerNationProvinceCollection->GetIntByOrdinalSlot24(provinceOrdinal);
     provinceTileOrdinal = 0;
     provinceRecord =
         reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceRecordId * 0xa8;
@@ -318,7 +293,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
       } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
     }
     provinceOrdinal = provinceOrdinal + 1;
-    provinceCount = ownerNationProvinceCollection->GetCount();
+    provinceCount = ownerNationProvinceCollection->GetCountSlot48();
   } while (provinceOrdinal <= provinceCount);
 }
 #pragma optimize("", on)

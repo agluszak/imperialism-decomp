@@ -163,7 +163,7 @@ public:
   short production24c[0x10];              // 0x24C — slot 0x1a outAccum
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
-  TPtrList* trackedOrderList270;     // 0x270 — released via Call58
+  TPtrList* trackedOrderList270;     // 0x270 — released via FreePayloadsAndDestroySlot58
   class TQueueObject* eventQueue274; // 0x274 — released via Call24
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")

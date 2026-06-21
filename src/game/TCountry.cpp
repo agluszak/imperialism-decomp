@@ -106,11 +106,11 @@ TCountry::~TCountry() {}
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {
   if (this->militaryUnitList44 != 0) {
-    this->militaryUnitList44->Call58();
+    this->militaryUnitList44->FreePayloadsAndDestroySlot58();
   }
   this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->Call38();
+    this->ownedRegionList->AddTailSlot38();
     this->ownedRegionList = 0;
   }
   delete this;
@@ -140,7 +140,7 @@ void TCountry::ReadFrom(TStream* stream) {
   SwapAdjacentBytesInShortArray(this->needLevelByNation, 0x17);
 
   if (this->militaryUnitList44->GetCountSlot48() != 0) {
-    this->militaryUnitList44->Call54();
+    this->militaryUnitList44->FreePayloadsSlot54();
   }
   this->militaryUnitList44->ReadFrom(reinterpret_cast<TStream*>(streamState));
 
@@ -158,8 +158,8 @@ void TCountry::ReadFrom(TStream* stream) {
     } while (recruitIndex <= recruitCount);
   }
 
-  if (this->ownedRegionList->GetCountOrReleaseSlot28() != 0) {
-    this->ownedRegionList->Call38();
+  if (this->ownedRegionList->GetCountSlot48() != 0) {
+    this->ownedRegionList->AddTailSlot38();
   }
   this->ownedRegionList->ShallowClone();
   int regionDeserializeCount = 0;
@@ -222,7 +222,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
     return;
   }
   int ordinal = 1;
-  if (this->ownedRegionList->GetCountOrReleaseSlot28() >= 1) {
+  if (this->ownedRegionList->GetCountSlot48() >= 1) {
     do {
       int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].ownerNationSlot;
@@ -306,7 +306,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         bonusOrder->SetOrderModeSlot34(2, -1);
       }
       ++ordinal;
-    } while (ordinal <= this->ownedRegionList->GetCountOrReleaseSlot28());
+    } while (ordinal <= this->ownedRegionList->GetCountSlot48());
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
@@ -408,7 +408,7 @@ CString* TCountry::GetIdentitySharedString1Slot58(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7d70
 void TCountry::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->RemoveIntSlot34(regionId);
+  this->ownedRegionList->AddTailSlot34(reinterpret_cast<void*>(regionId));
 }
 
 // FUNCTION: IMPERIALISM 0x004d7da0
@@ -505,7 +505,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   }
   do {
     TMilitaryUnit* unit =
-        static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetTrackedEntrySlot4C(ordinal));
+        static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinalSlot4C(ordinal));
     if (unit->nameTag1a == 0) {
       if (unit->unitTypeId04 < 0x1b) {
         CString ordinalText;
@@ -574,7 +574,7 @@ int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
   }
 
   int index = 1;
-  int count = linkedList->GetCountOrReleaseSlot28();
+  int count = linkedList->GetCountSlot48();
   if (count <= 0) {
     return 0;
   }
@@ -583,7 +583,7 @@ int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
     int nodeId = linkedList->GetIntByOrdinalSlot24(index);
     sum += ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeId));
     ++index;
-    count = linkedList->GetCountOrReleaseSlot28();
+    count = linkedList->GetCountSlot48();
   } while (index <= count);
 
   return sum;
@@ -609,7 +609,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
     garrisonThreshold = 4;
   }
 
-  int regionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+  int regionCount = this->ownedRegionList->GetCountSlot48();
   int ordinal = 1;
   if (ordinal > regionCount) {
     return;
@@ -634,7 +634,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
       this->CreateMilitaryRecruitOrderForNode(static_cast<int>(regionId));
     }
     ordinal = ordinal + 1;
-    regionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    regionCount = this->ownedRegionList->GetCountSlot48();
   } while (ordinal <= regionCount);
 }
 #pragma optimize("", on)

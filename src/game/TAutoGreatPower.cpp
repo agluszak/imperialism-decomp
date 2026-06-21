@@ -127,13 +127,13 @@ void TAutoGreatPower::Free(void) {
     int ordinal = this->missionQueue->GetCountSlot48();
     for (; ordinal > 0; --ordinal) {
       TTrackedObject* entry =
-          static_cast<TTrackedObject*>(this->missionQueue->GetTrackedEntrySlot4C(ordinal));
+          static_cast<TTrackedObject*>(this->missionQueue->GetEntryByOrdinalSlot4C(ordinal));
       entry->NotifyDetachSlot0C();
-      this->missionQueue->RemoveEntryAtSlot50(ordinal);
+      this->missionQueue->RemoveAtOrdinalSlot50(ordinal);
       entry->Free();
     }
     if (this->missionQueue != 0) {
-      this->missionQueue->Call58();
+      this->missionQueue->FreePayloadsAndDestroySlot58();
     }
     this->missionQueue = 0;
   }
@@ -535,7 +535,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
     if (this->candidateNationFlags[candidate] != 0) {
-      if ((*minorCursor)->ownedRegionList->GetCountOrReleaseSlot28() == 0) {
+      if ((*minorCursor)->ownedRegionList->GetCountSlot48() == 0) {
         this->candidateNationFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, candidate) !=
             0) {
@@ -570,7 +570,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   }
   this->candidateNationFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountOrReleaseSlot28() >
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() >
         0) {
       short ownerTag;
       if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
@@ -590,7 +590,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountOrReleaseSlot28() >
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() >
         0) {
       TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = GetShortAtOffset14OrInvalidValue();
@@ -626,13 +626,13 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
   int ordinal = 1;
   TPtrList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
-  if (regionList->GetCountOrReleaseSlot28() > 0) {
+  if (regionList->GetCountSlot48() > 0) {
     do {
       int regionId = regionList->GetIntByOrdinalSlot24(ordinal);
       this->mapNodeStateFlags[regionId] = 1;
       this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
       ++ordinal;
-    } while (ordinal <= regionList->GetCountOrReleaseSlot28());
+    } while (ordinal <= regionList->GetCountSlot48());
   }
   TZone* portZone = TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   if (portZone->portZoneEntryCount2c == 0) {
@@ -708,7 +708,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
     }
     mission->Free();
     if (replacement != 0) {
-      this->missionQueue->AddTail30(replacement);
+      this->missionQueue->AddTailSlot30(replacement);
     }
   }
 }

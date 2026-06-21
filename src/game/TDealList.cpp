@@ -18,7 +18,6 @@
 
 static short kNationMetricCategoryPresetValues[0x11];
 static short kNationMetricCodeLookup[0x20];
-static const int kTDealListIndexAndRankListVtableAddr = 0x00649068;
 
 extern undefined4 CreateAndSendTurnEvent1C_BoolAndSixShorts(void);
 
@@ -66,16 +65,8 @@ void TDealList::InitializeNationInteractionStateManagerDefaults() {
     *reinterpret_cast<int*>(rowCursor + 0x14) = 0;
     *reinterpret_cast<short*>(rowCursor + 0x1a) = presetValue;
 
-    TIndexAndRankList* list =
-        reinterpret_cast<TIndexAndRankList*>(AllocateWithFallbackHandler(0x18));
-    if (list == 0) {
-      list = 0;
-    } else {
-      list->TIndexAndRankList::TIndexAndRankList();
-      *reinterpret_cast<void***>(list) =
-          reinterpret_cast<void**>(kTDealListIndexAndRankListVtableAddr);
-    }
-    reinterpret_cast<TSortedPtrList*>(list)->relationType = 0x10;
+    TSortedPtrList* list = new TSortedPtrList();
+    list->relationType = 0x10;
     *listCursor = list;
 
     short* nationCellCursor = reinterpret_cast<short*>(rowCursor + 0x3c);

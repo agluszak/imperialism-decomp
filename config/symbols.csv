@@ -718,8 +718,8 @@ address|name|size|type|prototype
 486b10|TApplication::TickEachTrackedEntry|35|function|undefined TApplication::TickEachTrackedEntry(int)
 486b50|TApplication::vmethod_0013|50|function|undefined PostCustomMessageBC0ToMainWindow()
 486ba0|TApplication::vmethod_0017|393|function|undefined DispatchReflectedControlMessageOrFallback(undefined4 param_1)
-486df0|SerializeRecordList_0x0C_WithBlockPool_B|280|function|undefined SerializeRecordList_0x0C_WithBlockPool_B()
-486f60|TApplication::EmbeddedList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
+486df0|TApplication::trackedEntries::Serialize|280|function|undefined SerializeRecordList_0x0C_WithBlockPool_B()
+486f60|TApplication::trackedEntries::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 486f90|TBehavior::CreateTBehaviorInstance|101|function|undefined CreateTBehaviorInstance()
 487150|WrapperFor_ftol_At00487150|30|function|undefined WrapperFor_ftol_At00487150()
 4871c0|TBehavior::GetRuntimeClass|6|function|undefined GetTBehaviorClassNamePointer()
@@ -788,24 +788,24 @@ address|name|size|type|prototype
 4884c0|TSortedPtrList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4884f0|thunk_DestructCObArray|5|function|undefined thunk_DestructCObArray()
 488510|TPtrList::GetTPtrListClassNamePointer|6|function|undefined GetTPtrListClassNamePointer()
-4885d0|TPtrList::GetCountOrReleaseSlot28|16|function|undefined GetCountOrReleaseSlot28()
-4885f0|TPtrList::GetNodeByOrdinalSlot2C|16|function|undefined GetNodeByOrdinalSlot2C()
-488610|TPtrList::AddTail30|16|function|undefined AddTail30()
-488630|WrapperFor_AddTail_At00488630|16|function|undefined WrapperFor_AddTail_At00488630()
-488650|WrapperFor_AddTail_At00488650|16|function|undefined WrapperFor_AddTail_At00488650()
-488670|OrphanTiny_ThisAdjustJump_4_00488670|8|function|undefined OrphanTiny_ThisAdjustJump_4_00488670()
-488690|WrapperFor_AddTail_At00488690|16|function|undefined WrapperFor_AddTail_At00488690()
-4886b0|OrphanTiny_ThisAdjustJump_4_004886b0|8|function|undefined OrphanTiny_ThisAdjustJump_4_004886b0()
+4885d0|TPtrList::AddHeadSlot28|16|function|undefined AddHeadSlot28()
+4885f0|TPtrList::AddHeadSlot2C|16|function|undefined AddHeadSlot2C()
+488610|TPtrList::AddTailSlot30|16|function|undefined AddTailSlot30()
+488630|TPtrList::AddTailSlot34|16|function|undefined AddTailSlot34()
+488650|TPtrList::AddTailSlot38|16|function|undefined AddTailSlot38()
+488670|TPtrList::RemoveTailSlot3C|8|function|undefined RemoveTailSlot3C()
+488690|TPtrList::AddTailSlot40|16|function|undefined AddTailSlot40()
+4886b0|TPtrList::RemoveHeadSlot44|8|function|undefined RemoveHeadSlot44()
 4886d0|TPtrList::GetCountSlot48|4|function|undefined GetCountSlot48()
-4886f0|TPtrList::GetTrackedEntrySlot4C|20|function|undefined GetTrackedEntrySlot4C()
-488720|TPtrList::RemoveEntryAtSlot50|29|function|undefined RemoveEntryAtSlot50()
-488750|TPtrList::Call54|38|function|undefined Call54()
+4886f0|TPtrList::GetEntryByOrdinalSlot4C|20|function|undefined GetEntryByOrdinalSlot4C()
+488720|TPtrList::RemoveAtOrdinalSlot50|29|function|undefined RemoveAtOrdinalSlot50()
+488750|TPtrList::FreePayloadsSlot54|38|function|undefined FreePayloadsSlot54()
 488790|TPtrList::Release1C|12|function|undefined Release1C()
-4887b0|TPtrList::Call58|17|function|undefined Call58()
-4887e0|TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0|8|function|undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0()
+4887b0|TPtrList::FreePayloadsAndDestroySlot58|17|function|undefined FreePayloadsAndDestroySlot58()
+4887e0|TPtrList::RemoveAllSlot5C|8|function|undefined RemoveAllSlot5C()
 488800|OrphanRetStub_00488800|3|function|undefined OrphanRetStub_00488800()
 488820|OrphanRetStub_00488820|3|function|undefined OrphanRetStub_00488820()
-488840|TPtrList::SetEntryDataAtSlot60|26|function|undefined SetEntryDataAtSlot60()
+488840|TPtrList::SetAtOrdinalSlot60|26|function|undefined SetAtOrdinalSlot60()
 488870|TList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4888a0|WrapperFor_DestructCPtrListBaseState_At004888a0|62|function|undefined WrapperFor_DestructCPtrListBaseState_At004888a0()
 4888f0|TSortedList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
@@ -9501,7 +9501,7 @@ address|name|size|type|prototype
 672d60|CFrameWnd::vftable||global|
 672e78|CFrameWnd::vftable||global|
 672e80|CPtrArray::classRuntimeClass||global|
-672eac|TIndexAndRankList::'vftable'||global|
+672eac|CPtrArray::'vftable'||global|
 672ec0|CPtrList::classRuntimeClass||global|
 672eec|CPtrList::'vftable'||global|
 672f28|CFileException::classRuntimeClass||global|

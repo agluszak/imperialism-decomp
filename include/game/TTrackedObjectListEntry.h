@@ -2,7 +2,7 @@
 
 #include "compat.h"
 
-// Tracked list node returned from TPtrList::GetTrackedEntrySlot4C (stride matches list engine).
+// Tracked list node returned from TPtrList::GetEntryByOrdinalSlot4C (stride matches list engine).
 struct TTrackedObjectListEntry {
   void* object;
   unsigned short pad04;

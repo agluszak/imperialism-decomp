@@ -45,7 +45,7 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
     TUnit* entry =
-        reinterpret_cast<TUnit*>(list->GetTrackedEntrySlot4C(ordinal));
+        reinterpret_cast<TUnit*>(list->GetEntryByOrdinalSlot4C(ordinal));
     entry->WriteTo(stream);
   }
 }
@@ -54,7 +54,7 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
 // entry count (slot 0x28), then each 1-based int value (slot 0x24).
 static __inline void WriteIntListToStream(TStream* stream, TPtrList* list) {
   list->WriteTo(stream);
-  int entryCount = list->GetCountOrReleaseSlot28();
+  int entryCount = list->GetCountSlot48();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
     int entryValue = list->GetIntByOrdinalSlot24(ordinal);

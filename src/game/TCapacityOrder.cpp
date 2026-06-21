@@ -334,19 +334,19 @@ void TCapacityOrder::ApplyCityProductionSlotDelta() {
   if (slotIndex == 0xf) {
     TGreatPower* owner = city->ownerNationAc;
     if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8d1) < '3') {
-      int laborPool = owner->ownedRegionList->GetCountOrReleaseSlot28();
+      int laborPool = owner->ownedRegionList->GetCountSlot48();
       if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCountOrReleaseSlot28();
+        laborPool = owner->ownedRegionList->GetCountSlot48();
         newValue = static_cast<short>((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2);
       }
     } else {
-      int laborPool = owner->ownedRegionList->GetCountOrReleaseSlot28();
+      int laborPool = owner->ownedRegionList->GetCountSlot48();
       if (laborPool / 3 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCountOrReleaseSlot28();
+        laborPool = owner->ownedRegionList->GetCountSlot48();
         newValue = static_cast<short>(laborPool / 3);
       }
     }

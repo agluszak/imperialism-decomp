@@ -595,7 +595,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   }
 
   if (this->ownedRegionList != 0) {
-    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    int ownedCount = this->ownedRegionList->GetCountSlot48();
     int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
       short regionId = static_cast<short>(
@@ -604,7 +604,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         ownedRegionIds[oneBasedIndex - 1] = regionId;
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+      ownedCount = this->ownedRegionList->GetCountSlot48();
     }
   }
 
@@ -750,7 +750,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     if (this->ownedRegionList == 0) {
       return;
     }
-    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    int ownedCount = this->ownedRegionList->GetCountSlot48();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
@@ -764,7 +764,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+      ownedCount = this->ownedRegionList->GetCountSlot48();
     }
     return;
   }
@@ -799,7 +799,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
   char* terrainBytes = reinterpret_cast<char*>(terrainTiles);
 
   if (this->ownedRegionList != 0) {
-    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    int ownedCount = this->ownedRegionList->GetCountSlot48();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
@@ -817,7 +817,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+      ownedCount = this->ownedRegionList->GetCountSlot48();
     }
   }
 
@@ -849,7 +849,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     if (this->ownedRegionList == 0) {
       return;
     }
-    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    int ownedCount = this->ownedRegionList->GetCountSlot48();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
@@ -863,7 +863,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+      ownedCount = this->ownedRegionList->GetCountSlot48();
     }
     return;
   }
@@ -882,14 +882,14 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->RemoveIntSlot34(regionId);
+    this->ownedRegionList->AddTailSlot34(reinterpret_cast<void*>(regionId));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0
 void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTail30(reinterpret_cast<void*>(regionId));
+    this->ownedRegionList->AddTailSlot30(reinterpret_cast<void*>(regionId));
   }
 }
 

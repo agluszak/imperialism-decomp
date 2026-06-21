@@ -19,21 +19,21 @@ struct TPtrList : public TObject {
 
   int GetIntByOrdinalSlot24(int ordinal);
 
-  virtual int GetCountOrReleaseSlot28();
-  virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal);
-  virtual void AddTail30(void* item);
-  virtual void RemoveIntSlot34(int value);
-  virtual void Call38();
-  virtual void VTableSlot3C_Provisional();
-  virtual void VTableSlot40_Provisional();
-  virtual void VTableSlot44_Provisional();
+  virtual POSITION AddHeadSlot28(void* item);
+  virtual POSITION AddHeadSlot2C(void* item, int unused1 = 0, int unused2 = 0);
+  virtual POSITION AddTailSlot30(void* item);
+  virtual POSITION AddTailSlot34(void* item, int unused1 = 0, int unused2 = 0);
+  virtual POSITION AddTailSlot38(void* item = 0);
+  virtual void* RemoveTailSlot3C();
+  virtual POSITION AddTailSlot40(void* item = 0);
+  virtual void* RemoveHeadSlot44();
   virtual int GetCountSlot48();
-  virtual void* GetTrackedEntrySlot4C(int ordinal = 0);
-  virtual void RemoveEntryAtSlot50(int ordinal);
-  virtual void Call54();
-  virtual void Call58();
-  virtual void VTableSlot5C_Provisional();
-  virtual void SetEntryDataAtSlot60(int ordinal, void** entryPtr, int unusedFlag);
+  virtual void* GetEntryByOrdinalSlot4C(int ordinal = 0);
+  virtual void RemoveAtOrdinalSlot50(int ordinal);
+  virtual void FreePayloadsSlot54();
+  virtual void FreePayloadsAndDestroySlot58();
+  virtual void RemoveAllSlot5C();
+  virtual void SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag);
 
   CPtrList listState;
 

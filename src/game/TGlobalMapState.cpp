@@ -193,7 +193,7 @@ short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short start
 // FUNCTION: IMPERIALISM 0x00517c30
 char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
   TPtrList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
-  if (regionList->GetCountOrReleaseSlot28() < 1) {
+  if (regionList->GetCountSlot48() < 1) {
     return 0;
   }
   int ordinal = 1;
@@ -215,7 +215,7 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
       return 1;
     }
     ++ordinal;
-  } while (ordinal <= regionList->GetCountOrReleaseSlot28());
+  } while (ordinal <= regionList->GetCountSlot48());
   return 0;
 }
 

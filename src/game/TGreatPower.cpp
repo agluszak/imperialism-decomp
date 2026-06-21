@@ -786,11 +786,11 @@ void TGreatPower::Free(void) {
     trackedSlotCount = trackedSlotCount + -1;
   } while (trackedSlotCount != 0);
   if (this->townMarkerList != 0) {
-    this->townMarkerList->Call58();
+    this->townMarkerList->FreePayloadsAndDestroySlot58();
   }
   this->townMarkerList = 0;
   if (this->trackedObjectList != 0) {
-    this->trackedObjectList->Call58();
+    this->trackedObjectList->FreePayloadsAndDestroySlot58();
   }
   this->trackedObjectList = 0;
   if (this->turnSummaryQueue != 0) {
@@ -798,15 +798,15 @@ void TGreatPower::Free(void) {
   }
   this->turnSummaryQueue = 0;
   if (this->missionNodeQueue != 0) {
-    this->missionNodeQueue->Call58();
+    this->missionNodeQueue->FreePayloadsAndDestroySlot58();
   }
   this->missionNodeQueue = 0;
   if (this->militaryUnitList44 != 0) {
-    this->militaryUnitList44->Call58();
+    this->militaryUnitList44->FreePayloadsAndDestroySlot58();
   }
   this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->Call38();
+    this->ownedRegionList->AddTailSlot38();
     this->ownedRegionList = 0;
   }
   delete this;
@@ -944,7 +944,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   void* townMarkerList = this->townMarkerList;
   int hasItems = static_cast<TPtrList*>(townMarkerList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TPtrList*>(townMarkerList)->Call54();
+    static_cast<TPtrList*>(townMarkerList)->FreePayloadsSlot54();
   }
   static_cast<TPtrList*>(townMarkerList)->ReadFrom(stream);
 
@@ -959,7 +959,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
         reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructFrogCityMarker)(townMarker,
                                                                                        0);
         static_cast<TPtrList*>(townMarker)->ReadFrom(stream);
-        static_cast<TPtrList*>(townMarkerList)->AddTail30(townMarker);
+        static_cast<TPtrList*>(townMarkerList)->AddTailSlot30(townMarker);
       }
       ++townOrdinal;
     }
@@ -967,13 +967,13 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (townCount > 0) {
     this->city->AdoptSelectedOrderSlot44(
-        static_cast<TPtrList*>(townMarkerList)->GetTrackedEntrySlot4C());
+        static_cast<TPtrList*>(townMarkerList)->GetEntryByOrdinalSlot4C());
   }
 
   void* trackedObjectList = this->trackedObjectList;
   hasItems = static_cast<TPtrList*>(trackedObjectList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TPtrList*>(trackedObjectList)->Call54();
+    static_cast<TPtrList*>(trackedObjectList)->FreePayloadsSlot54();
   }
   static_cast<TPtrList*>(trackedObjectList)->ReadFrom(stream);
 
@@ -1009,7 +1009,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
         unsigned char hasNode = 0;
         char markerOk = static_cast<TStream*>(stream)->ReadByte(&hasNode);
         if (markerOk != 0) {
-          static_cast<TPtrList*>(missionNodeQueue)->AddTail30(0);
+          static_cast<TPtrList*>(missionNodeQueue)->AddTailSlot30(0);
         }
         ++nodeOrdinal;
       }
@@ -1106,7 +1106,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   int missionNodeCount = this->missionNodeQueue->GetCountSlot48();
   stream->WriteBytesSlot78(&missionNodeCount, 4);
   for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
-    void* node = this->missionNodeQueue->GetTrackedEntrySlot4C(nodeOrdinal);
+    void* node = this->missionNodeQueue->GetEntryByOrdinalSlot4C(nodeOrdinal);
     stream->WriteObjectSlotB4(node, 0);
   }
 
@@ -1128,7 +1128,7 @@ void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState,
   stream->ReadBytes(&this->serializedField8c, 4);
 
   if (this->trackedObjectList->GetCountSlot48() != 0) {
-    this->trackedObjectList->Call54();
+    this->trackedObjectList->FreePayloadsSlot54();
   }
   this->trackedObjectList->ReadFrom(stream);
 
@@ -1157,7 +1157,7 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
   stream->WriteCountSlot88(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnit* order =
-        reinterpret_cast<TUnit*>(this->trackedObjectList->GetTrackedEntrySlot4C(ordinal));
+        reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinalSlot4C(ordinal));
     order->WriteTo(stream);
   }
 }
@@ -1297,7 +1297,7 @@ void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload
 // FUNCTION: IMPERIALISM 0x004daa50
 #pragma optimize("y", on)
 void TGreatPower::AddNodeToMissionNodeQueue(void* node) {
-  this->missionNodeQueue->AddTail30(node);
+  this->missionNodeQueue->AddTailSlot30(node);
 }
 #pragma optimize("", on)
 
@@ -1309,7 +1309,7 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
        nodeIter.More(); node = static_cast<TMissionNodeCallback*>(nodeIter.Advance())) {
     node->DispatchSlot28();
   }
-  static_cast<TPtrList*>(this->missionNodeQueue)->Call54();
+  static_cast<TPtrList*>(this->missionNodeQueue)->FreePayloadsSlot54();
 }
 #pragma optimize("", on)
 
@@ -1692,7 +1692,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     return;
   }
 
-  int totalRegions = regionList->GetCountOrReleaseSlot28();
+  int totalRegions = regionList->GetCountSlot48();
   int regionOrdinal = 1;
   while (regionOrdinal <= totalRegions) {
     short regionId = static_cast<short>(regionList->GetIntByOrdinalSlot24(regionOrdinal));
@@ -3074,7 +3074,7 @@ void TGreatPower::NotifyWarResetSlotA5(void) {
   int remaining = trackedList->GetCountSlot48();
   while (remaining > 0) {
     TTrackedObjectListEntry* entry =
-        static_cast<TTrackedObjectListEntry*>(trackedList->GetTrackedEntrySlot4C(remaining));
+        static_cast<TTrackedObjectListEntry*>(trackedList->GetEntryByOrdinalSlot4C(remaining));
     if (entry != 0) {
       reinterpret_cast<TTrackedObject*>(entry)->Call30();
     }
@@ -3684,7 +3684,7 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
   static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
   marker->activeFlag4f = 1;
-  this->townMarkerList->AddTail30(marker);
+  this->townMarkerList->AddTailSlot30(marker);
 }
 #pragma optimize("", on)
 
@@ -3722,7 +3722,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
   static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
   marker->activeFlag4f = 1;
-  this->townMarkerList->AddTail30(marker);
+  this->townMarkerList->AddTailSlot30(marker);
   g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
     this->interiorMinister->NotifySlot44(receiver);
@@ -3773,18 +3773,18 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
   short orderCount = static_cast<short>(this->trackedObjectList->GetCountSlot48());
   int total = orderCount;
   for (int outer = 1; outer < total; ++outer) {
-    void* entryOuter = this->trackedObjectList->GetTrackedEntrySlot4C(outer);
+    void* entryOuter = this->trackedObjectList->GetEntryByOrdinalSlot4C(outer);
     short outerPriority =
         g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryOuter)->orderType];
     for (int inner = outer + 1; inner <= total; ++inner) {
-      void* entryInner = this->trackedObjectList->GetTrackedEntrySlot4C(inner);
+      void* entryInner = this->trackedObjectList->GetEntryByOrdinalSlot4C(inner);
       short innerPriority =
           g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryInner)->orderType];
       if (innerPriority < outerPriority) {
         static_cast<TPtrList*>(this->trackedObjectList)
-            ->SetEntryDataAtSlot60(outer, &entryInner, 1);
+            ->SetAtOrdinalSlot60(outer, &entryInner, 1);
         static_cast<TPtrList*>(this->trackedObjectList)
-            ->SetEntryDataAtSlot60(inner, &entryOuter, 1);
+            ->SetAtOrdinalSlot60(inner, &entryOuter, 1);
         entryOuter = entryInner;
         outerPriority = innerPriority;
       }
@@ -4417,14 +4417,14 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->RemoveIntSlot34(regionId);
+  this->ownedRegionList->AddTailSlot34(reinterpret_cast<void*>(regionId));
   this->NotifyRegionEventSlot298(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
   this->ownedRegionList->WriteTo(reinterpret_cast<TStream*>(regionId));
-  int ownedRegionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+  int ownedRegionCount = this->ownedRegionList->GetCountSlot48();
 
   unsigned char pressureGate = this->serializedStatusFlags[6];
   unsigned char nationGate = this->expansionEventGate;
@@ -4484,7 +4484,7 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   TPtrList* filteredList = this->trackedObjectList;
   for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
     TTrackedObjectListEntry* entry =
-        static_cast<TTrackedObjectListEntry*>(filteredList->GetTrackedEntrySlot4C(index));
+        static_cast<TTrackedObjectListEntry*>(filteredList->GetEntryByOrdinalSlot4C(index));
     if (entry == 0 || globalMapState == 0 || globalMapState->terrainStateTable == 0) {
       continue;
     }
@@ -4505,7 +4505,7 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   for (int unassignedIndex = unassignedList->GetCountSlot48(); unassignedIndex != 0;
        --unassignedIndex) {
     TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
-        unassignedList->GetTrackedEntrySlot4C(unassignedIndex));
+        unassignedList->GetEntryByOrdinalSlot4C(unassignedIndex));
     if (entry != 0 && entry->regionIndex == -1) {
       if (entry->object != 0) {
         static_cast<TTrackedObject*>(entry->object)->Free();
@@ -4753,7 +4753,7 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
 
   TPtrList* missionQueue = this->missionQueue;
   if (missionQueue->GetCountSlot48() != 0) {
-    missionQueue->Call54();
+    missionQueue->FreePayloadsSlot54();
   }
   missionQueue->ReadFrom(reinterpret_cast<TStream*>(arg1));
 
@@ -4763,7 +4763,7 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
     missionContext = 0;
     char hasMission = stream->ReadByte(&missionContext);
     if (hasMission != 0) {
-      missionQueue->AddTail30(reinterpret_cast<void*>(missionContext));
+      missionQueue->AddTailSlot30(reinterpret_cast<void*>(missionContext));
     }
   }
 
@@ -4803,7 +4803,7 @@ void TGreatPower::SerializeGreatPowerTailStateToMessage(void* pMessage) {
   int index = 1;
   if (index <= missionQueueCount) {
     do {
-      int value = reinterpret_cast<int>(missionQueue->GetTrackedEntrySlot4C(index));
+      int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinalSlot4C(index));
       message->WriteEntrySlotB4(value, 0);
       ++index;
     } while (index <= missionQueueCount);
@@ -4907,7 +4907,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   }
 
   TPtrList* missionQueue = this->missionQueue;
-  missionQueue->AddTail30(missionObj);
+  missionQueue->AddTailSlot30(missionObj);
 
   if (arg2 != -1) {
     this->mapNodeStateFlags[arg2] = kNodeStateQueued;
@@ -4994,7 +4994,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return kOne;
     }
 
-    int nodeWeight = terrainView->ownedRegionList->GetCountOrReleaseSlot28();
+    int nodeWeight = terrainView->ownedRegionList->GetCountSlot48();
     int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
     int linkedNodeTotal = SumWeightedNeighborLinkScoreForLinkedNodes(terrainView);
 
