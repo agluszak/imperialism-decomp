@@ -1547,10 +1547,10 @@ undefined4 NoOpVirtualStub_00610c08(void)
   return 0;
 }
 
-// ghidra_name CDocument::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
+// ghidra_name CDocument::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00610c0b
-undefined4 CDocument_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00610C0B(void)
 {
   return 0;
 }
@@ -2347,10 +2347,10 @@ undefined4 ClearObjectField24Value(void)
   return 0;
 }
 
-// ghidra_name CCmdTarget::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(void)
+// ghidra_name CCmdTarget::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00614a2e
-undefined4 CCmdTarget_scalar_deleting_destructor_00614A2E(void)
+undefined4 ScalarDeletingDestructor_00614A2E(void)
 {
   return 0;
 }
@@ -2587,10 +2587,10 @@ undefined4 OnVScroll(void)
   return 0;
 }
 
-// ghidra_name CCmdTarget::'scalar_deleting_destructor'
-// ghidra_proto int __thiscall 'scalar_deleting_destructor'(uint param_1, short param_2, CPoint param_3)
+// ghidra_name CCmdTarget::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00615a00
-undefined4 CCmdTarget_scalar_deleting_destructor_00615A00(void)
+undefined4 ScalarDeletingDestructor_00615A00(void)
 {
   return 0;
 }

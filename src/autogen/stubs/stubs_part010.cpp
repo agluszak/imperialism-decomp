@@ -2275,10 +2275,10 @@ undefined4 CompareUnsignedIntsAscending(void)
   return 0;
 }
 
-// ghidra_name TCommand::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TCommand::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00488390
-undefined4 TCommand_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00488390(void)
 {
   return 0;
 }

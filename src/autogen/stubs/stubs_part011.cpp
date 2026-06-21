@@ -1211,10 +1211,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
   return 0;
 }
 
-// ghidra_name TEditText::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TEditText::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00492f30
-undefined4 TEditText_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00492F30(void)
 {
   return 0;
 }

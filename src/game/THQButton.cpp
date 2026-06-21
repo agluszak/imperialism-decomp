@@ -34,9 +34,8 @@ THQButton::THQButton() : TPictureResourceEntryBase() {}
 
 // FUNCTION: IMPERIALISM 0x0058b6e0
 void THQButton::NoOpUiLifecycleHook(int arg) {
-  (void)arg;
   short glyph = glyphBase84;
-  thunk_NoOpUiLifecycleHook();
+  TView::NoOpUiLifecycleHook(arg);
   glyph98 = 0;
   glyph90 = glyph;
   hasCommandTagResource = 0xc;

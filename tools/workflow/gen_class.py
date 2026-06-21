@@ -572,6 +572,143 @@ def _is_scaffold_stub(block: str) -> bool:
     return "TODO(manifest): port the body from Ghidra" in block
 
 
+def _definition_head_key(head: str) -> str:
+    """Whitespace-insensitive key for a simple out-of-line method definition head."""
+    return re.sub(r"\s+", "", head.strip())
+
+
+def _slot_definition_head(cls: str, slot: ClassifiedSlot) -> str | None:
+    if slot.kind == "scalar_dtor":
+        return f"{cls}::~{cls}()"
+    if slot.sig is None:
+        return None
+    return slot.sig.definition_head(cls)
+
+
+def _find_block_end(text: str, open_brace: int) -> int | None:
+    depth = 0
+    for i in range(open_brace, len(text)):
+        ch = text[i]
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return i + 1
+    return None
+
+
+def _is_trivial_unmarked_stub(block: str) -> bool:
+    """True for generated shape-only stubs that are safe to replace with a marker.
+
+    These are intentionally narrower than "any empty function": only unmarked
+    definitions with an empty body, a zero return, `(void)param` noise, or the
+    generator's TODO scaffold comment are considered generated stubs.
+    """
+    if re.search(r"//\s*(?:FUNCTION|STUB|SYNTHETIC|GHIDRA_FUNCTION)\s+", block):
+        return False
+    if "TODO(manifest): port the body from Ghidra" in block:
+        return True
+    body_start = block.find("{")
+    body_end = block.rfind("}")
+    if body_start == -1 or body_end == -1 or body_end < body_start:
+        return False
+    body = block[body_start + 1 : body_end].strip()
+    body = re.sub(r"//[^\n]*", "", body)
+    body = re.sub(r"/\*.*?\*/", "", body, flags=re.DOTALL).strip()
+    if not body:
+        return True
+    statements = [s.strip() for s in body.split(";") if s.strip()]
+    if not statements:
+        return True
+    for stmt in statements:
+        if re.fullmatch(r"\(void\)\s*[A-Za-z_][A-Za-z0-9_]*", stmt):
+            continue
+        if re.fullmatch(r"return\s+(?:0|nullptr|NULL)", stmt):
+            continue
+        return False
+    return True
+
+
+def _has_immediate_marker_before(text: str, pos: int) -> bool:
+    prefix = text[:pos].rstrip()
+    if not prefix:
+        return False
+    previous = prefix.rsplit("\n", 1)[-1]
+    return bool(
+        re.match(r"\s*//\s*(?:FUNCTION|STUB|SYNTHETIC|GHIDRA_FUNCTION)\s*[: ]", previous)
+    )
+
+
+def _strip_replaceable_unmarked_stubs(
+    cpp_text: str,
+    cls: str,
+    body_slots: list[ClassifiedSlot],
+    autogen: dict[int, str],
+) -> tuple[str, set[int]]:
+    """Prepare unmarked method definitions for promotion.
+
+    `gen-class --no-bodies` emits plain out-of-line methods so MSVC creates a vtable
+    without claiming addresses. A later body-promotion pass must replace those
+    definitions with marked bodies, not append duplicates. Trivial generated stubs
+    are removed so a shaped body can be inserted. Nontrivial matching definitions get
+    a marker inserted in place and are otherwise left intact.
+    """
+    replaceable_heads: dict[str, ClassifiedSlot] = {}
+    for slot in body_slots:
+        addr = int(slot.target_addr or "0", 16)
+        if slot.kind != "scalar_dtor" and addr not in autogen:
+            continue
+        head = _slot_definition_head(cls, slot)
+        if head:
+            replaceable_heads[_definition_head_key(head)] = slot
+    if not replaceable_heads:
+        return cpp_text, set()
+
+    pattern = re.compile(
+        rf"^[ \t]*(?P<head>[^\n;{{}}]*\b{re.escape(cls)}::"
+        rf"(?:~{re.escape(cls)}|[A-Za-z_][A-Za-z0-9_]*)\s*"
+        rf"\([^;{{}}]*\)\s*(?:const)?\s*)\{{",
+        re.MULTILINE,
+    )
+    chunks: list[str] = []
+    cursor = 0
+    marked: set[int] = set()
+    for match in pattern.finditer(cpp_text):
+        if _has_immediate_marker_before(cpp_text, match.start()):
+            continue
+        key = _definition_head_key(match.group("head"))
+        slot = replaceable_heads.get(key)
+        if slot is None:
+            continue
+        end = _find_block_end(cpp_text, match.end() - 1)
+        if end is None:
+            continue
+        # Remove following blank lines with the generated block to avoid accumulating
+        # whitespace when the promoted marked body is inserted in address order.
+        remove_end = end
+        while remove_end < len(cpp_text) and cpp_text[remove_end] in " \t\r\n":
+            remove_end += 1
+        block = cpp_text[match.start() : end]
+        addr = int(slot.target_addr or "0", 16)
+        if _is_trivial_unmarked_stub(block):
+            chunks.append(cpp_text[cursor : match.start()])
+            cursor = remove_end
+            continue
+        chunks.append(cpp_text[cursor : match.start()])
+        if slot.kind == "scalar_dtor":
+            chunks.append(scalar_dtor_block(cls, addr))
+        else:
+            chunks.append(f"// FUNCTION: IMPERIALISM 0x{addr:08x}\n")
+        chunks.append(block)
+        cursor = end
+        marked.add(addr)
+    if cursor == 0:
+        return cpp_text, set()
+    chunks.append(cpp_text[cursor:])
+    return "".join(chunks), marked
+
+
 def scalar_dtor_block(cls: str, addr: int) -> str:
     return (
         f"// SYNTHETIC: IMPERIALISM 0x{addr:08x}\n"
@@ -592,6 +729,9 @@ def merge_cpp_bodies(
     shaped autogen body; human-edited bodies are never clobbered; scalar dtors stay
     SYNTHETIC.
     """
+    cpp_text, unmarked_promoted = _strip_replaceable_unmarked_stubs(
+        cpp_text, cls, body_slots, autogen
+    )
     addr_marker = re.compile(
         r"^\s*//\s*(?:"
         r"(?:FUNCTION|STUB)\s*:\s*IMPERIALISM\s+"
@@ -609,7 +749,7 @@ def merge_cpp_bodies(
         addr = int(match.group(1), 16)
         existing[addr] = cpp_text[start:end].rstrip() + "\n\n"
 
-    promoted: list[int] = []
+    promoted: list[int] = sorted(unmarked_promoted)
     missing: list[int] = []
     for s in sorted(body_slots, key=lambda x: int(x.target_addr or "0", 16)):
         addr = int(s.target_addr or "0", 16)

@@ -1507,10 +1507,10 @@ undefined4 CreateTMapEditViewInstance(void)
   return 0;
 }
 
-// ghidra_name TMapEditView::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TMapEditView::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0051cbf0
-undefined4 TMapEditView_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_0051CBF0(void)
 {
   return 0;
 }

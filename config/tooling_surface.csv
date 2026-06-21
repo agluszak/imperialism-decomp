@@ -9,10 +9,12 @@ module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable poli
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
+module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical symbols.csv rows after Ghidra export
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
+module|tools.workflow.check_field_layout_annotations|just:field-layout-gate|Field-layout annotation gate
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
 module|tools.workflow.correct_scalar_dtors|just:correct-scalar-dtors|Canonicalize scalar deleting destructor names
 module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtable discovery pipeline
@@ -26,8 +28,19 @@ module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies 
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
 module|tools.ghidra.listing_one|just:ghidra-listing|Read-only pyghidra instruction listing
+module|tools.ghidra.decompile_one|just:ghidra-decompile|Read-only pyghidra decompile helper
+module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile benchmark gate
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
 module|tools.ghidra.vtable_dump|just:ghidra-vtable-dump|Dump a class vtable slot->function map
+module|tools.ghidra.gen_vtable_slot_overrides|just:gen-vtable-slot-overrides|Suggest curated vtable-slot method names
+module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
+module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
+module|tools.ghidra.fix_in_stack_params|just:fix-in-stack-params|Promote Ghidra in_stack variables to parameters
+module|tools.ghidra.dump_thunk_map|just:dump-thunk-map|Dump Ghidra thunk-name map for offline promotion
+module|tools.ghidra.gen_recovered_fields_from_headers|just:gen-recovered-fields-from-headers|Generate recovered fields from source headers
+module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
+module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
+module|tools.ghidra.datatype_audit|just:ghidra-datatype-audit|Audit Ghidra datatype state
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
 module|tools.workflow.prune_ilt_thunks|just:prune-ilt-thunks|Prune unannotated ILT jmp thunks from the reccmp report
@@ -47,5 +60,6 @@ module|tools.ghidra.dump_class_manifests|just:dump-manifests|Stage 0: batch-dump
 module|tools.common.class_manifest|dependency:tools.ghidra.dump_class_manifests|Per-class manifest schema, deterministic YAML emitter/loader, curated-wins merge
 module|tools.ghidra.push_names_to_ghidra|just:push-names|Stage 3: push source-owned curated names into the Ghidra DB so sync-ghidra converges names
 module|tools.workflow.gen_class|just:gen-class|Stage 1/4: idempotent manifest-driven class generator (marked block, new-class scaffold, --todo)
-module|tools.workflow.emit_class_slots|just:emit-class-slots|recover-class step: GENERATED DECLS + autogen body promote into manual TU
+module|tools.workflow.gen_classes_batch|just:gen-classes|Batch shape-only generation for eligible headerless manifests
 module|tools.workflow.check_manifest_consistency|just:manifest-gate|Stage 1 gate: header generated blocks must match a fresh manifest render
+module|tools.workflow.vtable_autofix|just:vtable-autofix|Dry-run-first planner/applicator for deterministic vtable pairing fixes

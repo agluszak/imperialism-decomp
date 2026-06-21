@@ -3627,10 +3627,10 @@ undefined4 TMacViewMgr_Slot16_Target(void)
   return 0;
 }
 
-// ghidra_name CCmdTarget::'scalar_deleting_destructor'
-// ghidra_proto void __thiscall 'scalar_deleting_destructor'(void)
+// ghidra_name CCmdTarget::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00606cbe
-undefined4 CCmdTarget_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00606CBE(void)
 {
   return 0;
 }

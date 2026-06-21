@@ -8,7 +8,6 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 unsigned int __cdecl thunk_GetActiveNationId(void);
-undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);

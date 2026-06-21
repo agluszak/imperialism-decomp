@@ -92,7 +92,6 @@ undefined4 SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 DrawCenteredGuideLineOnMapDc(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
-undefined4 thunk_ForwardCityDialogParamToChildSlot48(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
 namespace {

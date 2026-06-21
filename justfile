@@ -185,6 +185,11 @@ recover-class class: _require-ghidra-install
   uv run python -m tools.workflow.gen_class "{{class}}" --todo
   just gates
 
+# Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
+# manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
+vtable-autofix *args:
+  uv run python -m tools.workflow.vtable_autofix {{args}}
+
 apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}
 

@@ -110,10 +110,6 @@ undefined4 thunk_DestructTShipAndFreeIfOwned(void) {
   return 0;
 }
 
-undefined4 thunk_NoOpUiLifecycleHook(void) {
-  return 0;
-}
-
 undefined4 thunk_QueueInterNationEventRecordDeduped(void) {
   return 0;
 }

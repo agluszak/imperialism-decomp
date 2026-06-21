@@ -423,7 +423,7 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
             continue
         if s.kind == "scalar_dtor":
             name = f"{class_name}::`scalar deleting destructor'"
-            proto = "void* __thiscall `scalar deleting destructor'(unsigned int)"
+            proto = "undefined ScalarDeletingDestructor()"
             existing = by_addr.get(target_addr)
             if existing is not None:
                 changed = False

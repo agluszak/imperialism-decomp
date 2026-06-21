@@ -1163,10 +1163,10 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004f78e0(void)
   return 0;
 }
 
-// ghidra_name TPanelView::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TPanelView::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x004f7970
-undefined4 TPanelView_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_004F7970(void)
 {
   return 0;
 }
@@ -1667,10 +1667,10 @@ undefined4 Helper_Uses_thunk_ConstructUiCommandTagResourceEntryBase_At004fded0(v
   return 0;
 }
 
-// ghidra_name TFrameRadioView::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TFrameRadioView::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x004fdf50
-undefined4 TFrameRadioView_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_004FDF50(void)
 {
   return 0;
 }
@@ -1715,10 +1715,10 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At004fe1d0(void)
   return 0;
 }
 
-// ghidra_name TScoreGraph::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TScoreGraph::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x004fe240
-undefined4 TScoreGraph_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_004FE240(void)
 {
   return 0;
 }
@@ -1971,10 +1971,10 @@ undefined4 DestructTColorFillAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TGWorldPeeker::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TGWorldPeeker::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x004ff280
-undefined4 TGWorldPeeker_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_004FF280(void)
 {
   return 0;
 }

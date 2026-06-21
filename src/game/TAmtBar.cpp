@@ -56,8 +56,7 @@ TAmtBar::TAmtBar()
 
 // FUNCTION: IMPERIALISM 0x00588610
 void TAmtBar::NoOpUiLifecycleHook(int arg) {
-  (void)arg;
-  thunk_NoOpUiLifecycleHook();
+  TView::NoOpUiLifecycleHook(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x00588630

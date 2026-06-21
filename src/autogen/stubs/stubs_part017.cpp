@@ -1851,10 +1851,10 @@ undefined4 Helper_Uses_ConstructTPageViewBaseState_At005697d0(void)
   return 0;
 }
 
-// ghidra_name TSuperNavyRoster::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TSuperNavyRoster::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00569870
-undefined4 TSuperNavyRoster_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00569870(void)
 {
   return 0;
 }
@@ -2059,10 +2059,10 @@ undefined4 Helper_Uses_thunk_ConstructPictureResourceEntryBase_At0056b780(void)
   return 0;
 }
 
-// ghidra_name TGameInfoPicture::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TGameInfoPicture::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0056b800
-undefined4 TGameInfoPicture_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_0056B800(void)
 {
   return 0;
 }

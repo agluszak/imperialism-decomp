@@ -128,6 +128,57 @@ class EmitClassSlotsTests(unittest.TestCase):
         self.assertEqual(promoted, [])
         self.assertIn("return &kReal;", out)  # human body untouched
 
+    def test_merge_cpp_replaces_unmarked_shape_only_stub(self) -> None:
+        cpp = (
+            '#include "game/TCityTask.h"\n\n'
+            "CRuntimeClass* TCityTask::GetRuntimeClass() const { return 0; }\n\n"
+            "void TCityTask::WriteTo(TStream* stream) {}\n"
+        )
+        from tools.workflow.class_codegen import Signature
+
+        slot = ClassifiedSlot(
+            index=0, byte_offset=0, slot_label="0x00", target_addr="5add00",
+            kind="override",
+            sig=Signature(ret="CRuntimeClass*", name="GetRuntimeClass", args="", const=" const"),
+            qualified_name="GetRuntimeClass", size=6, prototype=None,
+            decompiled_c=None, base_target=None,
+        )
+        autogen = {
+            0x5ADD00: (
+                "// GHIDRA_FUNCTION IMPERIALISM 0x005add00\n"
+                "CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)\n"
+                "{\n  return &classRuntimeClass;\n}\n"
+            ),
+        }
+        out, promoted, missing = merge_cpp_bodies(cpp, "TCityTask", [slot], autogen)
+        self.assertEqual(promoted, [0x5ADD00])
+        self.assertEqual(missing, [])
+        self.assertEqual(out.count("TCityTask::GetRuntimeClass"), 1)
+        self.assertIn("// FUNCTION: IMPERIALISM 0x005add00", out)
+        self.assertIn("return &classRuntimeClass;", out)
+        self.assertIn("void TCityTask::WriteTo(TStream* stream) {}", out)
+
+    def test_merge_cpp_keeps_nontrivial_unmarked_body(self) -> None:
+        cpp = (
+            '#include "game/TCityTask.h"\n\n'
+            "CRuntimeClass* TCityTask::GetRuntimeClass() const { return gRealClass; }\n"
+        )
+        from tools.workflow.class_codegen import Signature
+
+        slot = ClassifiedSlot(
+            index=0, byte_offset=0, slot_label="0x00", target_addr="5add00",
+            kind="override",
+            sig=Signature(ret="CRuntimeClass*", name="GetRuntimeClass", args="", const=" const"),
+            qualified_name="GetRuntimeClass", size=6, prototype=None,
+            decompiled_c=None, base_target=None,
+        )
+        autogen = {0x5ADD00: "// GHIDRA_FUNCTION IMPERIALISM 0x005add00\nvoid x() {}\n"}
+        out, promoted, missing = merge_cpp_bodies(cpp, "TCityTask", [slot], autogen)
+        self.assertEqual(promoted, [0x5ADD00])
+        self.assertEqual(out.count("TCityTask::GetRuntimeClass"), 1)
+        self.assertIn("// FUNCTION: IMPERIALISM 0x005add00", out)
+        self.assertIn("return gRealClass;", out)
+
     def test_merge_cpp_preserves_existing_and_orders(self) -> None:
         cpp = (
             "#include \"game/TOcean.h\"\n\n"

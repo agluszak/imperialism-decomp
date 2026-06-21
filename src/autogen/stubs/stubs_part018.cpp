@@ -11,10 +11,10 @@ undefined4 DestructTScrollViewAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TScrollBarView::'scalar_deleting_destructor'
-// ghidra_proto undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
+// ghidra_name TScrollBarView::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00573df0
-undefined4 TScrollBarView_scalar_deleting_destructor(void)
+undefined4 ScalarDeletingDestructor_00573DF0(void)
 {
   return 0;
 }
