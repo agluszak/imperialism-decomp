@@ -15,7 +15,11 @@ undefined TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f2d10
-char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl() {
+char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 
