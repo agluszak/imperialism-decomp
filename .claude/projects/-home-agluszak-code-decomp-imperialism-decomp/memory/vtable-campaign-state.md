@@ -20,7 +20,27 @@ base's own address range). Descendants inherit it → all cascade. The losing si
 keeps an unmarked stub for its own slot (it was already not-100%, so no count regression).
 Done: 0x572bb0 UniversityDialogMethod_00405623 moved TNumberedItem→TNoHilitePicture,
 cascaded to ~24 picture/view classes (TBackgroundPicture, TColorKey*, TGameSetup*,
-TBuildingView family, TNetSelect*, dialogs, etc.).
+TBuildingView family, TNetSelect*, dialogs, etc.). Also 0x4b5180 (Mac Produce / slot
+0x3c) moved TCityOrderItem→TProductionOrder, cascaded to 7 Order classes (TExpansion/
+TFoodProcessing/TItem/TOrItem/TPopGrowth/TPowerPlant/TTrainingOrder). 119→95→88.
+
+Remaining families are all the HARD type (no quick cascade left):
+- **Cluster** (~21: TCluster base + clusters) — has a SECONDARY embedded vtable at
+  byte 0x228+ (TObject/TEventHandler/TControl subobject) plus ~50 junk new-virtuals;
+  needs real multi-vtable reconstruction, not a rename. Biggest lever but hardest.
+- **TCountry/GreatPower** (~8) — scrambled/oversized base vtable, slots in wrong order
+  + many appended new-virtuals; needs slot-by-slot reorder. See [[tcountry-intermediate-base]].
+- **Minister** city-minister family (~6) — oversized, dedup+reorder per minister-recipe.
+- **Zone** (TZone/TPortZone/TOcean/TOceanDialog) — wrong-base: TOcean slot 0x1c points
+  at a TPortZone body → TOcean is TPortZone-derived not TObject. Reparent cascade.
+- **Stream** (TFileStream/TCountingStream/THandleStream) — TStream base tail (byte
+  0x70,0xa8-0xc0) unbound + missing 3 slots; 0x489070/0x489030 wrongly owned by
+  TFileStream (sibling-share of base slots). Mechanical but multi-step.
+- **Thunk-resolution 1-slot wins** (TIconBar/TCreditsPicture 0x1c, TGameSetupDialog/
+  TPlaceCityDialog 0xa0): orig slot = ILT jmp thunk that reccmp won't auto-follow.
+  TPlaceCityDialog's 0x4d1e60 IS claimed (stubs_part013 + symbols.csv) → un-import per
+  [[imported-thunks-block-vtable-resolution]]. The others (0x409a20/0x401e6a/0x402289)
+  are unclaimed yet still unresolved — needs investigation (maybe not detected as thunk).
 
 `override` is `#define override` empty (compat.h) → MSVC500 matches overrides by
 name+signature; the 5 recurring defects + the fix recipes are in
