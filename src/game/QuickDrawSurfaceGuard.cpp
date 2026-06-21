@@ -1,9 +1,9 @@
 #include "game/QuickDrawSurfaceGuard.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ClipStateRegion.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
-undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
 
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";
@@ -25,8 +25,8 @@ QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
   surfaceWrapper = CreateClipStateRegionWrapperObject();
   if (surfaceWrapper == 0) {
     GAME_FAIL_NIL_POINTER();
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(
-        kQuickDrawCppPath, 0x7f6);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        TemporarilyClearAndRestoreUiInvalidationFlag)(kQuickDrawCppPath, 0x7f6);
   }
 }
 

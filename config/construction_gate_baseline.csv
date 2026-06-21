@@ -29,4 +29,3 @@ src/game/TShip.cpp|0|1|0|0|0|0|1
 src/game/TSoundPlayer.cpp|0|0|0|0|1|0|1
 src/game/TStratReportView.cpp|0|0|0|0|0|2|2
 src/game/TUnitToolbarCluster.cpp|0|0|0|0|1|0|1
-src/game/thunks.cpp|0|0|0|0|3|0|3

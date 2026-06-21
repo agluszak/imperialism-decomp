@@ -291,14 +291,6 @@ undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void)
   return 0;
 }
 
-// ghidra_name THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay
-// ghidra_proto undefined __thiscall thunk_RenderHintHelperWithCtrlModifierOverlay(void)
-// FUNCTION: IMPERIALISM 0x00404fe8
-undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks
 // ghidra_proto undefined thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks()
 // FUNCTION: IMPERIALISM 0x004051f0

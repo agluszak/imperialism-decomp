@@ -110,9 +110,9 @@ public:
   virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
   virtual RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
-  virtual void ApplyBounds(RECT* newBounds, int modeFlag);
-  virtual char PointInBoundsAndActionable(CPoint* point);
-  virtual void vmethod_0092(class TView* child, int flag);
+  virtual void ApplyBounds(RECT* newBounds, int modeFlag); // 0x5a 0x48c380
+  virtual char PointInBoundsAndActionable(CPoint* point);  // 0x5b 0x48c6d0
+  virtual void vmethod_0092(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void vmethod_0093(class TView* child);
   virtual unsigned short GetField54();
   virtual char TestPointInBounds(CPoint* point);

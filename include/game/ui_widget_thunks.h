@@ -7,6 +7,8 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
+
 unsigned int __cdecl thunk_GetActiveNationId(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
@@ -15,5 +17,4 @@ undefined4 thunk_ConstructUiClickablePictureResourceEntry(void);
 undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DestructCityDialogSharedBaseState(void);
-undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 undefined4 thunk_InitializeUiTextStyleDescriptor(void);

@@ -7,6 +7,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/quickdraw_globals.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/ui_widget_thunks.h"
 
 undefined4 ApplyHitRegionToClipState(void);
@@ -14,7 +15,6 @@ undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
-undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 
@@ -86,7 +86,7 @@ extern void FailNilPointerInUSmallViews(int line);
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   GAME_FAIL_NIL_POINTER();
   reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      reinterpret_cast<void (*)()>(thunk_DestructTShipAndFreeIfOwned))(sourcePath, line);
+      reinterpret_cast<void (*)()>(TemporarilyClearAndRestoreUiInvalidationFlag))(sourcePath, line);
 }
 
 struct CityTradeProductionSlots {

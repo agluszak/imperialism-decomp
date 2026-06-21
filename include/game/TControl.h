@@ -11,7 +11,7 @@ struct TControlPictureRectState {
 // VTABLE: IMPERIALISM 0x64a098
 class TControl : public TView {
 public:
-// === BEGIN GENERATED DECLS (TControl) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TControl) — refreshed by recover-class; do not hand-edit ===
   virtual ~TControl(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -25,7 +25,7 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x0f 0x48e710
+  // slot 0x0f HandleEvent override declared below (0x48e710)
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -99,7 +99,7 @@ public:
   // slot 0x58 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl inherited unchanged (0x48bce0)
   // slot 0x59 VTableSlot59 inherited unchanged (0x48b2d0)
   // slot 0x5a UpdateRectCacheIfChangedAndInvalidateCityDialog inherited unchanged (0x48c380)
-  virtual undefined VTableSlot5B() override; // slot 0x5b 0x48e940
+  virtual char PointInBoundsAndActionable(CPoint* point) override; // slot 0x5b 0x48e940
   // slot 0x5c vmethod_0092 inherited unchanged (0x48abe0)
   // slot 0x5d DetachUiElementFromOwnerListAndClearBackref inherited unchanged (0x48ae60)
   // slot 0x5e CtrlSlot94_GetWordField54_Impl inherited unchanged (0x48c970)
@@ -112,10 +112,24 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined DeserializeCityProductionQueueCommand() override; // slot 0x69 0x48e980
-  virtual undefined NoOpUiViewSlotHandler() override; // slot 0x6b 0x48e9c0
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x6c 0x48e9e0
-// === END GENERATED DECLS (TControl) ===
+  virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
+                                              void* eventDataB) override; // slot 0x68 0x48e850
+  virtual void
+  DeserializeCityProductionQueueCommand(int* boundsBuffer) override; // slot 0x69 0x48e980
+  virtual void AssertCityProductionGlobalStateInitialized(int arg1,
+                                                          int arg2) override; // slot 0x6a 0x429470
+  virtual void NoOpUiViewSlotHandler(int arg1, int arg2) override;            // slot 0x6b 0x48e9c0
+  virtual undefined OrphanRetStub_00487a00() override;                        // slot 0x6c 0x48e9e0
+  virtual void
+  SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
+                                                    char refreshNow) override; // slot 0x6d 0x48e7d0
+  virtual void
+  SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef,
+                                        bool refreshNow) override; // slot 0x6e 0x48e7a0
+  virtual char LogUnhandledDialogMethodAndReturnFalse() override;  // slot 0x6f 0x4294a0
+  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
+                                                  bool refreshNow) override; // slot 0x70 0x48e810
+  // === END GENERATED DECLS (TControl) ===
   int hasCommandTagResource;
   unsigned char commandTagResourceByte;
   unsigned char padding_65_to_67[3];
@@ -137,19 +151,6 @@ public:
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;
-  virtual char PointInBoundsAndActionable(CPoint* point) override;
-
-  // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
-  virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB);
-  virtual void SwitchTab(int* boundsBuffer);
-  virtual void AssertCityProductionGlobalStateInitialized(int arg1, int arg2);
-  virtual void NoOpCityProductionDialogMethod(int arg1, int arg2);
-  virtual void SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
-                                                                 char refreshNow);
-  virtual void SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow);
-  virtual char LogUnhandledDialogMethodAndReturnFalse();
-  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow);
 };
 
 // === BEGIN GENERATED (TControl) — refreshed by `just gen-class TControl`; do not hand-edit ===
@@ -246,7 +247,7 @@ public:
 //   slot 0x58  byte 0x160  0x0048bce0  inherited GetTEventHandlerClassNamePointer
 //   slot 0x59  byte 0x164  0x0048b2d0  inherited VTableSlot59
 //   slot 0x5a  byte 0x168  0x0048c380  inherited GetTEventHandlerClassNamePointer
-//   slot 0x5b  byte 0x16c  0x0048e940  override  VTableSlot5B
+//   slot 0x5b  byte 0x16c  0x0048e940  override  PointInBoundsAndActionable
 //   slot 0x5c  byte 0x170  0x0048abe0  inherited GetTEventHandlerClassNamePointer
 //   slot 0x5d  byte 0x174  0x0048ae60  inherited VTableSlot5D
 //   slot 0x5e  byte 0x178  0x0048c970  inherited GetTEventHandlerClassNamePointer

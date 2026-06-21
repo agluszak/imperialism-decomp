@@ -24,8 +24,6 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
-undefined4 thunk_RenderCivilianTargetLegendVariantA(void);
-undefined4 thunk_RenderCivilianTargetLegendVariantB(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
@@ -98,16 +96,11 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // The ordinary destructor and the scalar deleting destructor below are both
 // compiler-generated (implicit) from real inheritance — never hand-written.
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00407f4a
 // TCivDescription::`scalar deleting destructor'
 
-
-
 // SYNTHETIC: IMPERIALISM 0x0044a7a0
 // TCivDescription::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
@@ -119,16 +112,12 @@ TCivDescription::TCivDescription() : TControl() {
   legendInitialized = 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x0058f0f0
 CRuntimeClass* TCivDescription::GetRuntimeClass() const {
   return &g_pClassDescTCivDescription;
 }
 
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
-
-
 
 // FUNCTION: IMPERIALISM 0x0058f110
 #pragma optimize("y", on)
@@ -183,8 +172,6 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
    Consumes pCivilianOrderState->currentTileIndex and class-indexed target profile table. */
 
 /* Handles civ-description click hit-test and selects matching terrain/entry descriptor. */
-
-
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 #pragma optimize("y", on)
@@ -265,8 +252,6 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
 
 #pragma optimize("y", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
     TCivilianOrderState* orderState) {
@@ -338,8 +323,6 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
 }
 #pragma optimize("", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x0058f550
 #pragma optimize("y", on)
 void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
@@ -372,7 +355,7 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
     this->DispatchPictureResourceCommand(0, 0, 0, 0);
   } else if (selectedClass == kCivilianClass_Engineer) {
     int boundsBuffer[4];
-    this->SwitchTab(boundsBuffer);
+    this->DeserializeCityProductionQueueCommand(boundsBuffer);
   } else if (selectedClass != kCivilianClass_Developer) {
     this->AssertCityProductionGlobalStateInitialized(0, 0);
   }
@@ -409,33 +392,21 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x0058f7b0
 void TCivDescription::RenderCivilianTargetLegendVariantA() {
-  TCivDescription* context = this;
-  // ORIG_CALLCONV: __thiscall
-
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderCivilianTargetLegendVariantA)(context);
+  (void)this;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x0058fec0
-void __cdecl RenderCivilianTargetLegendVariantB(void) {
-  reinterpret_cast<void(__cdecl*)(void)>(thunk_RenderCivilianTargetLegendVariantB)();
+undefined TCivDescription::RenderCivilianTargetLegendVariantB() {
+  return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x005903c0
-void __fastcall TCivDescription::RenderCivilianTargetProfilePanel(int * pPanelContext) {
-}
+void __fastcall TCivDescription::RenderCivilianTargetProfilePanel(int* pPanelContext) {}
 
-void TCivDescription::ApplyRectSlot110(struct tagRECT *) {}
+void TCivDescription::ApplyRectSlot110(struct tagRECT*) {}
 
-void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(class CPoint *) {}
-
-undefined TCivDescription::RenderCivilianTargetLegendVariantB(void) { return 0;}
+void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(class CPoint*) {}
 
 TCivDescription::~TCivDescription() {}

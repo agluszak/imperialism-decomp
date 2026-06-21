@@ -3,6 +3,12 @@
 typedef void(__cdecl* TempMapLockCallback)(int);
 typedef int(__cdecl* AllocFallbackCallback)(undefined4);
 
+undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
+
+undefined4 GetOrCreateMfcModuleThreadState(void) {
+  return WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
+}
+
 static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
   if (module_thread_state == 0) {
     return 0;
