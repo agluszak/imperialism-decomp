@@ -1,7 +1,6 @@
 #include "game/TApplication.h"
 
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TView.h"
 #include "game/ui_widget_thunks.h"
 #include <new.h>
@@ -38,7 +37,7 @@ CRuntimeClass* TApplication::GetRuntimeClass() const {
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()
-    : TEventHandler(), activeView(0), screenModeAt24(0), field28(0), embeddedList() {
+    : TEventHandler(), activeView(0), screenModeAt24(0), field28(0), trackedEntries() {
   g_pApplicationUiRootController = this;
 }
 
@@ -50,17 +49,6 @@ TApplication::TApplication()
 // FUNCTION: IMPERIALISM 0x004867e0
 TApplication::~TApplication() {
   g_pApplicationUiRootController = 0;
-  for (void** cursor = reinterpret_cast<void**>(embeddedList.head); cursor != 0;
-       cursor = reinterpret_cast<void**>(*cursor)) {
-  }
-  embeddedList.head = 0;
-  embeddedList.field08 = 0;
-  embeddedList.field0c = 0;
-  embeddedList.field10 = 0;
-  if (embeddedList.field14 != 0) {
-    reinterpret_cast<CPlex*>(embeddedList.field14)->FreeDataChain();
-  }
-  embeddedList.field14 = 0;
 }
 
 
@@ -90,85 +78,33 @@ void TApplication::HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
   (void)arg3;
 }
 
-// vtable slot 0x29 (0x004869b0): intrusive-list insert/remove on embeddedList. Each node
-// is { void* next; void* prev; int data; } (12 bytes). When insertFlag is nonzero, pop a
-// node from the free list (allocating and link-building a fresh 12-byte-per-entry block
-// when the free list is empty), store `value` at node+8, and link the node at the list
-// head. When zero, walk to the first node whose data matches `value`, unlink it, return
-// it to the free list, and free the whole block chain if the list becomes empty.
+// vtable slot 0x29 (0x004869b0): add/remove an entry from the embedded MFC list.
 
 
 // FUNCTION: IMPERIALISM 0x004869b0
 void TApplication::InsertOrRemoveTrackedEntry(int value, char insertFlag) {
   if (insertFlag != 0) {
-    int priorHead = reinterpret_cast<int>(embeddedList.head);
-    int* node = embeddedList.AllocateNode();
-    node[1] = 0;
-    node[0] = priorHead;
-    embeddedList.field0c = embeddedList.field0c + 1;
-    node[2] = 0;
-    node[2] = value;
-    if (embeddedList.head == 0) {
-      embeddedList.field08 = reinterpret_cast<int>(node);
-      embeddedList.head = reinterpret_cast<void*>(node);
-      return;
-    }
-    *reinterpret_cast<int**>(reinterpret_cast<int>(embeddedList.head) + 4) = node;
-    embeddedList.head = reinterpret_cast<void*>(node);
+    trackedEntries.AddHead(reinterpret_cast<void*>(value));
     return;
   }
-  int* match = reinterpret_cast<int*>(embeddedList.head);
-  while (match != 0) {
-    if (match[2] == value) {
-      break;
-    }
-    match = reinterpret_cast<int*>(match[0]);
-  }
+
+  POSITION match = trackedEntries.Find(reinterpret_cast<void*>(value));
   if (match != 0) {
-    if (match == reinterpret_cast<int*>(embeddedList.head)) {
-      embeddedList.head = reinterpret_cast<void*>(match[0]);
-    } else {
-      *reinterpret_cast<int*>(match[1]) = match[0];
-    }
-    if (match == reinterpret_cast<int*>(embeddedList.field08)) {
-      embeddedList.field08 = match[1];
-    } else {
-      *reinterpret_cast<int*>(match[0] + 4) = match[1];
-    }
-    match[0] = embeddedList.field10;
-    embeddedList.field10 = reinterpret_cast<int>(match);
-    int newCount = embeddedList.field0c - 1;
-    embeddedList.field0c = newCount;
-    if (newCount == 0) {
-      for (int* p = reinterpret_cast<int*>(embeddedList.head); p != 0;
-           p = reinterpret_cast<int*>(p[0])) {
-      }
-      embeddedList.field0c = 0;
-      embeddedList.field10 = 0;
-      embeddedList.field08 = 0;
-      embeddedList.head = 0;
-      if (embeddedList.field14 != 0) {
-        reinterpret_cast<CPlex*>(embeddedList.field14)->FreeDataChain();
-      }
-      embeddedList.field14 = 0;
-    }
+    trackedEntries.RemoveAt(match);
   }
 }
 
-// vtable slot 0x2a (0x00486b10 via ILT 0x00403f21): walk the embedded list from head,
-// invoking the per-entry tick (receiver at node+8) with `arg` for each entry. The
-// per-entry tick is a __thiscall on the node's data pointer (ECX = node[2]) with one
-// stack arg; routed through the thunk in repo form (rule 9).
+// vtable slot 0x2a (0x00486b10 via ILT 0x00403f21): walk the tracked entries and invoke
+// each receiver's tick method with `arg`.
 
 
 // FUNCTION: IMPERIALISM 0x00486b10
 void TApplication::TickEachTrackedEntry(int arg) {
-  int* node = reinterpret_cast<int*>(embeddedList.head);
-  while (node != 0) {
-    int* next = reinterpret_cast<int*>(node[0]);
+  POSITION pos = trackedEntries.GetHeadPosition();
+  while (pos != 0) {
+    int entry = reinterpret_cast<int>(trackedEntries.GetNext(pos));
     reinterpret_cast<void(__fastcall*)(int, int, int)>(reinterpret_cast<void (*)()>(
-        WrapperFor_thunk_GetTickCountDiv16_At0048a410))(node[2], 0, arg);
-    node = next;
+        WrapperFor_thunk_GetTickCountDiv16_At0048a410))(entry, 0, arg);
   }
 }
 
@@ -182,9 +118,6 @@ void TApplication::vmethod_0013(int* cmd) {
 void TApplication::vmethod_0017(int param) {
 }
 
-undefined TApplication::SerializeRecordList_0x0C_WithBlockPool_B() { return 0; }
-
-undefined TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1) { return 0; }
 undefined TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0(void) { return 0; }
 undefined TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(unsigned int) { return 0; }
 void TApplication::vmethod_0037(void) {}

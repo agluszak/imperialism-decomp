@@ -1,8 +1,10 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
-#include "game/ApplicationUiRootEmbeddedList.h"
+#include "game/mfc.h"
 #include "game/TEventHandler.h"
+#include <afxtempl.h>
 
 class TView;
 
@@ -54,11 +56,6 @@ public:
   // slot 0x25 ConstructTCommandHandlerBaseState inherited unchanged (0x486650)
   virtual undefined OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1) override; // slot 0x26 0x486880
   virtual undefined OrphanTiny_GetDwordEcxOffset_20_004868a0() override; // slot 0x27 0x4868a0
-  // slot 0x34 GetRuntimeClass inherited unchanged (0x606fba)
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1) override; // slot 0x35 0x486f60
-  virtual undefined SerializeRecordList_0x0C_WithBlockPool_B() override; // slot 0x36 0x486df0
-  // slot 0x37 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x38 Dump inherited unchanged (0x412c10)
 // === END GENERATED DECLS (TApplication) ===
   TApplication();
   ~TApplication() override;
@@ -89,11 +86,13 @@ public:
   // method (slot at node+8 receiver, passing arg) via the per-entry thunk.
   virtual void TickEachTrackedEntry(int arg);
 
-  TView* activeView;                          // 0x20
-  int screenModeAt24;                         // 0x24
-  int field28;                                // 0x28
-  ApplicationUiRootEmbeddedList embeddedList; // 0x2c
+  TView* activeView;           // 0x20
+  int screenModeAt24;          // 0x24
+  int field28;                 // 0x28
+  CList<void*, void*> trackedEntries; // 0x2c, vtable 0x00648ca8
 };
+
+ASSERT_SIZE(TApplication, 0x48);
 
 extern TApplication* g_pApplicationUiRootController;
 

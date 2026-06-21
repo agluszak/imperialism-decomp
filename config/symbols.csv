@@ -719,7 +719,7 @@ address|name|size|type|prototype
 486b50|TApplication::vmethod_0013|50|function|undefined PostCustomMessageBC0ToMainWindow()
 486ba0|TApplication::vmethod_0017|393|function|undefined DispatchReflectedControlMessageOrFallback(undefined4 param_1)
 486df0|SerializeRecordList_0x0C_WithBlockPool_B|280|function|undefined SerializeRecordList_0x0C_WithBlockPool_B()
-486f60|ApplicationUiRootEmbeddedList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
+486f60|TApplication::EmbeddedList::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 486f90|TBehavior::CreateTBehaviorInstance|101|function|undefined CreateTBehaviorInstance()
 487150|WrapperFor_ftol_At00487150|30|function|undefined WrapperFor_ftol_At00487150()
 4871c0|TBehavior::GetRuntimeClass|6|function|undefined GetTBehaviorClassNamePointer()
