@@ -13,11 +13,11 @@ TNextTradeCommand::TNextTradeCommand() : TCommand() {}
 TNextTradeCommand::~TNextTradeCommand() {}
 
 // FUNCTION: IMPERIALISM 0x005ba3e0
-void TNextTradeCommand::cmd_slot0() {}
-
-// slot 0x01 shares scalar dtor address — cmd_slot1 is a separate curated name for the
-// deleting-dtor slot in the original; provide an empty body only when not the dtor.
-void TNextTradeCommand::cmd_slot1() {}
+CRuntimeClass* TNextTradeCommand::GetRuntimeClass() const {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
-void TNextTradeCommand::cmd_slot11() {}
+undefined TNextTradeCommand::OrphanRetStub_00487a00() {
+  return 0;
+}

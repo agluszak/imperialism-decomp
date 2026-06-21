@@ -2,31 +2,22 @@
 
 #include "compat.h"
 #include "decomp_types.h"
+#include "game/TObject.h"
 #include "game/mfc.h"
 
-// TObject-family command base (its MFC RTTI classdesc follows the vtable in
-// .rdata). Modeled as a standalone polymorphic class because its constructor
-// (0x00487820) is self-contained: it installs the 0x648e28 vtable and zeroes its
-// five payload fields without chaining to a base constructor. The twelve virtual
-// slots model the native vtable shape (0x00-0x2c); slots 2-10 are shared with the
-// TNextTradeCommand override, which only replaces slots 0/1/11. Bodies are
-// vtable-shape placeholders.
+// TObject-derived turn-event command base. Its constructor (0x00487820) installs
+// the 0x648e28 vtable and zeroes its five payload fields (the trivial TObject
+// base ctor is inlined). The native vtable is the TObject 10-slot shape plus the
+// two new command virtuals at bytes 0x28/0x2c. Derived commands (e.g.
+// TNextTradeCommand) override slots 0/1 (GetRuntimeClass/dtor) and 0x0b.
 // VTABLE: IMPERIALISM 0x00648e28
-class TCommand {
+class TCommand : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TCommand) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x487800
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  virtual void Free() override; // slot 0x07 0x4878e0
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(); // slot 0x0a 0x487900
-  virtual undefined OrphanRetStub_00487a00(); // slot 0x0b 0x487a00
-// === END GENERATED DECLS (TCommand) ===
+  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 byte 0x00 0x487800
+  void Free() override;                             // slot 0x07 byte 0x1c 0x4878e0
+  virtual undefined NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(); // slot 0x0a byte 0x28 0x487900
+  virtual undefined OrphanRetStub_00487a00(); // slot 0x0b byte 0x2c 0x487a00
+
   int field04; // 0x04
   int field08; // 0x08
   int field0c; // 0x0c
@@ -34,19 +25,6 @@ public:
   int field14; // 0x14
 
   TCommand();
-
-  virtual void cmd_slot0();  // 0 (0x00)
-  virtual void cmd_slot1();  // 1 (0x04)
-  virtual void cmd_slot2();  // 2 (0x08)
-  virtual void cmd_slot3();  // 3 (0x0c)
-  virtual void cmd_slot4();  // 4 (0x10)
-  virtual void cmd_slot5();  // 5 (0x14)
-  virtual void cmd_slot6();  // 6 (0x18)
-  virtual void cmd_slot7();  // 7 (0x1c)
-  virtual void cmd_slot8();  // 8 (0x20)
-  virtual void cmd_slot9();  // 9 (0x24)
-  virtual void cmd_slot10(); // 10 (0x28)
-  virtual void cmd_slot11(); // 11 (0x2c)
 
   // 0x004878a0: seeds the range/cursor payload (resolving a default when the
   // second argument is zero). Only the first two arguments are used; the native

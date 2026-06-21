@@ -29,9 +29,9 @@ public:
 // === END GENERATED DECLS (TNextTradeCommand) ===
   TNextTradeCommand();
 
-  void cmd_slot0() override;  // override 0 (0x00)
-  void cmd_slot1() override;  // override 1 (0x04)
-  void cmd_slot11() override; // override 11 (0x2c)
+  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5ba3e0
+  undefined OrphanRetStub_00487a00() override;     // slot 0x0b 0x5ba4b0
+  // slot 0x01 (dtor) overridden by ~TNextTradeCommand below (0x5ba430)
 
   void* operator new(size_t size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

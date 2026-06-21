@@ -47,15 +47,3 @@ undefined TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
 undefined TCommand::OrphanRetStub_00487a00() {
   return 0;
 }
-void TCommand::cmd_slot0(void) {}
-void TCommand::cmd_slot1(void) {}
-void TCommand::cmd_slot10(void) {}
-void TCommand::cmd_slot11(void) {}
-void TCommand::cmd_slot2(void) {}
-void TCommand::cmd_slot3(void) {}
-void TCommand::cmd_slot4(void) {}
-void TCommand::cmd_slot5(void) {}
-void TCommand::cmd_slot6(void) {}
-void TCommand::cmd_slot7(void) {}
-void TCommand::cmd_slot8(void) {}
-void TCommand::cmd_slot9(void) {}
