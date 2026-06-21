@@ -2315,7 +2315,7 @@ address|target_cpp|ownership|note
 572790|src/game/TTextPictureButton.cpp|manual|marker_sync
 572b10|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572b60|src/game/TNoHilitePicture.cpp|manual|marker_sync
-572bb0|src/game/TNumberedItem.cpp|manual|marker_sync
+572bb0|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572c60|src/game/TBackgroundPicture.cpp|manual|marker_sync
 572cb0|src/game/TBackgroundPicture.cpp|manual|marker_sync
 572d00|src/game/TBackgroundPicture.cpp|manual|marker_sync

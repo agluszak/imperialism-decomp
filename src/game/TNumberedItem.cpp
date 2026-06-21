@@ -13,7 +13,10 @@ TNumberedItem::~TNumberedItem() {}
 void TNumberedItem::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
-// FUNCTION: IMPERIALISM 0x00572bb0
+// Slot 0x1cc body lives at 0x00572bb0, which is owned by TNoHilitePicture
+// (the function sits in TNoHilitePicture's address range, right after its dtor
+// at 0x572b60). TNumberedItem shares the same slot in the binary but cannot own
+// the address; this unmarked stub keeps its own vtable slot compilable.
 undefined TNumberedItem::UniversityDialogMethod_00405623() {
   return 0;
 }

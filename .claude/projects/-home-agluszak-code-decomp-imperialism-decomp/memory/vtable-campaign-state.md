@@ -5,9 +5,22 @@ metadata:
   type: project
 ---
 
-Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **122**.
+Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **95**.
 Method: source-only (edit header/cpp → `just build` → `just vtable`), ignore manifests
 & generated metadata, don't chase function similarity, commit every few fixes, skip gates.
+
+**Defect pattern 6 — sibling shares a body (HIGHEST yield so far, 119→95 in one fix):**
+A slot-body address is owned by the WRONG sibling class, so the real introducing base
++ all its descendants get an unmarked stub at that slot and never pair. Tell: the diff
+shows `(orig / recompA) : SiblingClass::Foo` on the left and `(no orig / recompB) :
+BaseClass::Foo` on the right for MANY classes at the same byte offset. Fix: move the
+`// FUNCTION:` marker + `function_ownership.csv` row + `symbols.csv` name from the
+sibling to the real base (verify by address locality — the body usually sits in the
+base's own address range). Descendants inherit it → all cascade. The losing sibling
+keeps an unmarked stub for its own slot (it was already not-100%, so no count regression).
+Done: 0x572bb0 UniversityDialogMethod_00405623 moved TNumberedItem→TNoHilitePicture,
+cascaded to ~24 picture/view classes (TBackgroundPicture, TColorKey*, TGameSetup*,
+TBuildingView family, TNetSelect*, dialogs, etc.).
 
 `override` is `#define override` empty (compat.h) → MSVC500 matches overrides by
 name+signature; the 5 recurring defects + the fix recipes are in

@@ -9,4 +9,5 @@ CRuntimeClass* TNoHilitePicture::GetRuntimeClass() const {
 // TNoHilitePicture::`scalar deleting destructor'
 TNoHilitePicture::~TNoHilitePicture() {}
 
+// FUNCTION: IMPERIALISM 0x00572bb0
 undefined TNoHilitePicture::UniversityDialogMethod_00405623() { return 0; }

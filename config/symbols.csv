@@ -4605,7 +4605,7 @@ address|name|size|type|prototype
 572b10|TNoHilitePicture::GetRuntimeClass|6|function|undefined GetTNoHilitePictureClassNamePointer()
 572b30|TNoHilitePicture::ConstructPictureResourceEntryType606E8|25|function|undefined ConstructPictureResourceEntryType606E8()
 572b60|TNoHilitePicture::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
-572bb0|TNumberedItem::UniversityDialogMethod_00405623|1|function|undefined UniversityDialogMethod_00405623()
+572bb0|TNoHilitePicture::UniversityDialogMethod_00405623|1|function|undefined UniversityDialogMethod_00405623()
 572bd0|TBackgroundPicture::CreateTBackgroundPictureInstance|110|function|undefined CreateTBackgroundPictureInstance()
 572c60|TBackgroundPicture::GetRuntimeClass|6|function|undefined GetTBackgroundPictureClassNamePointer()
 572c80|TBackgroundPicture::ConstructTBackgroundPictureBaseState|25|function|undefined ConstructTBackgroundPictureBaseState()
