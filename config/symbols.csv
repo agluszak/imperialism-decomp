@@ -4298,7 +4298,7 @@ address|name|size|type|prototype
 562170|ResetTPortZoneManagerToSentinelVtable|7|function|undefined ResetTPortZoneManagerToSentinelVtable()
 562190|TOcean::GetRuntimeClass|6|function|undefined GetTOceanClassNamePointer(void)
 5621b0|ResetPortZoneGlobalContextCounters|21|function|undefined ResetPortZoneGlobalContextCounters()
-5621e0|TPortZone::GetRuntimeClass|264|function|undefined DestroyTPortZoneManagerAndPurgePortZones()
+5621e0|TOcean::Free|264|function|void Free()
 562340|TOcean::ReadFrom|887|function|undefined DeserializeMapActionContextRuntimeState(void)
 5627a0|ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList|171|function|undefined ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
 562880|TZone::`scalar deleting destructor'|80|function|undefined ScalarDeletingDestructor()

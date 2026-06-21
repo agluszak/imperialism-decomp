@@ -164,6 +164,13 @@ void TOcean::ReadFrom(TStream* stream) {
   (void)stream;
 }
 
+// Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
+// real body is a follow-up port; stub keeps the vtable slot owned/paired. This
+// address was previously mis-owned by TPortZone (its "vtable" 0x65c7e4 aliases
+// TOcean's tail).
+// FUNCTION: IMPERIALISM 0x005621e0
+void TOcean::Free() {}
+
 // FUNCTION: IMPERIALISM 0x005628f0
 void TOcean::WriteTo(TStream* stream) {
   (void)stream;

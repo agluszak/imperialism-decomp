@@ -41,7 +41,9 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
   return false;
 }
 
-// FUNCTION: IMPERIALISM 0x005621e0
+// 0x005621e0 is TOcean::Free (TPortZone's "vtable" 0x65c7e4 aliases TOcean's
+// vtable tail), so it is owned there now. TPortZone's real slot-0 body is a
+// separate port; this unmarked GetRuntimeClass stub keeps the class compilable.
 CRuntimeClass* TPortZone::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
 }
