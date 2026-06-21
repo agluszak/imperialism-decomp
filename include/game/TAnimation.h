@@ -21,9 +21,11 @@ public:
   virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 0x0a 0x49f140
   virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle() override; // slot 0x0c 0x49f2d0
-  virtual undefined EnsureBitmapResourceLoadedAndCopyRectSize() override; // slot 0x10 0x495b70
-  virtual undefined WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() override; // slot 0x11 0x495c00
-  virtual undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100() override; // slot 0x12 0x4a1100
+  // These three are regular (non-virtual) methods — the orig TAnimation vtable
+  // ends at byte 0x30; declaring them virtual appended 3 phantom slots.
+  undefined EnsureBitmapResourceLoadedAndCopyRectSize(); // 0x495b70
+  undefined WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(); // 0x495c00
+  undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(); // 0x4a1100
 // === END GENERATED DECLS (TAnimation) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimation 0xCTOR`).
 
