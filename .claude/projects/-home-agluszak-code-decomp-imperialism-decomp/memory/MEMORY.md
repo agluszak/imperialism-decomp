@@ -4,3 +4,4 @@
 - [TMission vtable layout ground truth](tmission-vtable-layout-ground-truth.md) — 48-slot abstract base + paired MissionOrderPrioritizer companion vtables; exact rdata order; inheritance confirmed
 - [vtable easy-wins session 2026-06-15](vtable-easy-wins-session.md) — 8 classes to 100% (84→76); GetRuntimeClass/scalar-dtor/non-virtual-override patterns + remaining-work map
 - [TUberCluster vtable reconstruction](tubercluster-vtable-reconstruction.md) — NOT bloated; abstract NULL tail 0x1d0-0x22c + 3 entangled mismatches; open MSVC500 NULL-slot question
+- [Vtable campaign state](vtable-campaign-state.md) — 156→128 not-matching; method + remaining cluster/great-power/minister/zone/stream targets
