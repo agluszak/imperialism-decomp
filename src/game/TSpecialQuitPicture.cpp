@@ -19,6 +19,4 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10
-undefined TSpecialQuitPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -15,6 +15,4 @@ undefined TTerrainHelpPicture::VTableSlot73() {
 }
 
 // FUNCTION: IMPERIALISM 0x005059d0
-undefined TTerrainHelpPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTerrainHelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

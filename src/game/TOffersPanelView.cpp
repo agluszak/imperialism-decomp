@@ -14,9 +14,7 @@ void TOffersPanelView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f9300
-undefined TOffersPanelView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TOffersPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004f9350
 void TOffersPanelView::ForwardParam(int param) {

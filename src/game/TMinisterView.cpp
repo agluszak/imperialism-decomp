@@ -20,9 +20,7 @@ char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f2e00
-undefined TMinisterView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
 undefined TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0() {

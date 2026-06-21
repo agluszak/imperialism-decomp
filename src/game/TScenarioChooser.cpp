@@ -14,9 +14,7 @@ void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057a050
-undefined TScenarioChooser::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {

@@ -14,9 +14,7 @@ void TRadioTextCluster::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00579770
-undefined TRadioTextCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TRadioTextCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00579a60
 void TRadioTextCluster::ApplyRectSlot110(RECT* rectBuffer) {

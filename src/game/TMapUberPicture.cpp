@@ -18,9 +18,7 @@ void TMapUberPicture::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00597340
-undefined TMapUberPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMapUberPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00597600
 void TMapUberPicture::vmethod_0017(int param) {

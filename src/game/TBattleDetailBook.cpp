@@ -10,6 +10,4 @@ CRuntimeClass* TBattleDetailBook::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x004aea90
-undefined TBattleDetailBook::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TBattleDetailBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

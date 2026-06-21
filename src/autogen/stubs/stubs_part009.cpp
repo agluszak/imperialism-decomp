@@ -763,14 +763,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringFromField84
-// ghidra_proto undefined AssignSharedStringFromField84()
-// FUNCTION: IMPERIALISM 0x004294d0
-undefined4 AssignSharedStringFromField84(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiNumericTextEntry
 // ghidra_proto undefined ConstructUiNumericTextEntry()
 // FUNCTION: IMPERIALISM 0x00429500
@@ -1023,14 +1015,6 @@ undefined4 ConstructUiPlanetListResourceEntry(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()
 // FUNCTION: IMPERIALISM 0x0043d610
 undefined4 WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(void)
-{
-  return 0;
-}
-
-// ghidra_name TTwoPicSlider::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0043d650
-undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }
@@ -1323,14 +1307,6 @@ undefined4 WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0045ad70
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0045ad70()
-// FUNCTION: IMPERIALISM 0x0045ad70
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0045ad70(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60()
 // FUNCTION: IMPERIALISM 0x0045ae60
@@ -1591,14 +1567,6 @@ undefined4 InitializeJoinSelectorDialogControlsAndNationSlots_Impl(void)
 // ghidra_proto undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()
 // FUNCTION: IMPERIALISM 0x00479bc0
 undefined4 InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeRecordList_0x0C_WithBlockPool_A
-// ghidra_proto undefined SerializeRecordList_0x0C_WithBlockPool_A()
-// FUNCTION: IMPERIALISM 0x00479be0
-undefined4 SerializeRecordList_0x0C_WithBlockPool_A(void)
 {
   return 0;
 }

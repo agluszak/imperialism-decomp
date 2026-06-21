@@ -253,7 +253,6 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   this->ApplyMoveValue(moveValue - 1);
 }
 
-undefined TRailCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TRailCluster::OrphanRetStub_00586ff0(void) { return 0;}
 

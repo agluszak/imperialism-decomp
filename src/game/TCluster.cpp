@@ -38,7 +38,7 @@ TCluster::TCluster() {
 
 // SYNTHETIC: IMPERIALISM 0x00491480
 // TCluster::`scalar deleting destructor'
-
+TCluster::~TCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00491650
 void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -228,9 +228,9 @@ undefined TCluster::OrphanLeaf_NoCall_Ins02_0048dcc0() { return 0; }
 
 undefined TCluster::AssertMcAppUILine2554() { return 0; }
 
-undefined TCluster::DispatchUiCommandToHandler() { return 0; }
+void TCluster::OrphanRetStub_0059add0_af() {}
 
-undefined TCluster::ForwardEngineerDialogCommandToChildSlot40_af() { return 0; }
+void TCluster::DispatchEvent() {}
 
 undefined TCluster::OrphanCallChain_C2_I19_0048ddc0() { return 0; }
 
@@ -265,13 +265,3 @@ void TCluster::DispatchVslot134WithRectAndRectPlus8_Impl() {}
 undefined TCluster::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl() { return 0; }
 
 TObject* TCluster::ShallowClone_a8() { return 0; }
-
-undefined TCluster::ForwardEngineerDialogCommandToChildSlot40_0f(void) { return 0;}
-
-undefined TCluster::OrphanCallChain_C2_I51_00491790(void) { return 0;}
-
-undefined TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(void) { return 0;}
-
-TObject* TCluster::ShallowClone_08(void) { return 0; }
-
-TCluster::~TCluster() {}

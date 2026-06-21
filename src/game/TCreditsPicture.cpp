@@ -19,9 +19,7 @@ void TCreditsPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056efc0
-undefined TCreditsPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TCreditsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x0056f190
 void TCreditsPicture::ApplyRectSlot110(RECT* rectBuffer) {

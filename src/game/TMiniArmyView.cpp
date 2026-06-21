@@ -19,6 +19,4 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ab1d0
-undefined TMiniArmyView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMiniArmyView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

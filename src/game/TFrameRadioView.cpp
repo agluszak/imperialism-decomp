@@ -14,9 +14,7 @@ void TFrameRadioView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fe060
-undefined TFrameRadioView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TFrameRadioView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004fe190
 void TFrameRadioView::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {

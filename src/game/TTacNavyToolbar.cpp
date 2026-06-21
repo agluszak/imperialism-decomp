@@ -24,6 +24,4 @@ void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
-undefined TTacNavyToolbar::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

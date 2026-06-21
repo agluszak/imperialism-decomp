@@ -23,6 +23,4 @@ void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00575770
-undefined THighScoresPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void THighScoresPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

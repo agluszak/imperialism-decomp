@@ -24,4 +24,4 @@ undefined TRadioPictureButton::OrphanCallChain_C2_I16_005718f0() {
   return 0;
 }
 
-undefined TRadioPictureButton::ForwardEngineerDialogCommandToChildSlot40() { return 0; }
+void TRadioPictureButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -90,7 +90,6 @@ void TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int nResourceIndex
   resourceControl->HandleEvent(0, 0, 0);
 }
 
-undefined TUnitToolbarCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(void) { return 0;}
 

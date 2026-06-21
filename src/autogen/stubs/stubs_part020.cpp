@@ -643,26 +643,10 @@ undefined4 WrapperFor_ftol_At005d4f00(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::GetTViewMgrClassNamePointer
-// ghidra_proto undefined GetTViewMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005d5040
-undefined4 GetTViewMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::ConstructGlobalTurnEventState
 // ghidra_proto undefined ConstructGlobalTurnEventState()
 // FUNCTION: IMPERIALISM 0x005d5060
 undefined4 ConstructGlobalTurnEventState(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyTurnEventState
-// ghidra_proto undefined DestroyTurnEventState()
-// FUNCTION: IMPERIALISM 0x005d50b0
-undefined4 DestroyTurnEventState(void)
 {
   return 0;
 }
@@ -675,42 +659,10 @@ undefined4 SetTurnEventStateBaseVtable(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::LoadTurnEventCursorTable
-// ghidra_proto undefined LoadTurnEventCursorTable()
-// FUNCTION: IMPERIALISM 0x005d5100
-undefined4 LoadTurnEventCursorTable(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadTurnEventCursorByResourceIdOffset1000
 // ghidra_proto undefined LoadTurnEventCursorByResourceIdOffset1000()
 // FUNCTION: IMPERIALISM 0x005d5140
 undefined4 LoadTurnEventCursorByResourceIdOffset1000(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseTurnEventDialogIfPresent
-// ghidra_proto undefined ReleaseTurnEventDialogIfPresent()
-// FUNCTION: IMPERIALISM 0x005d51e0
-undefined4 ReleaseTurnEventDialogIfPresent(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::DeserializeTurnEventDispatchState
-// ghidra_proto undefined DeserializeTurnEventDispatchState()
-// FUNCTION: IMPERIALISM 0x005d5200
-undefined4 DeserializeTurnEventDispatchState(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeTurnEventDispatchState
-// ghidra_proto undefined SerializeTurnEventDispatchState()
-// FUNCTION: IMPERIALISM 0x005d5250
-undefined4 SerializeTurnEventDispatchState(void)
 {
   return 0;
 }
@@ -727,38 +679,6 @@ undefined4 MapTurnEventCodeToPaletteIndex(void)
 // ghidra_proto undefined UpdateTurnEventPaletteByCode()
 // FUNCTION: IMPERIALISM 0x005d5710
 undefined4 UpdateTurnEventPaletteByCode(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTurnEventPaletteColorByEventCode
-// ghidra_proto undefined ApplyTurnEventPaletteColorByEventCode()
-// FUNCTION: IMPERIALISM 0x005d5750
-undefined4 ApplyTurnEventPaletteColorByEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdatePaletteIndexFromTurnEventCode
-// ghidra_proto undefined UpdatePaletteIndexFromTurnEventCode()
-// FUNCTION: IMPERIALISM 0x005d5780
-undefined4 UpdatePaletteIndexFromTurnEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEventVtableSlot40RefreshGoldDialog
-// ghidra_proto undefined HandleTurnEventVtableSlot40RefreshGoldDialog()
-// FUNCTION: IMPERIALISM 0x005d57b0
-undefined4 HandleTurnEventVtableSlot40RefreshGoldDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name ClassifyTurnStateForOverlayMode
-// ghidra_proto undefined ClassifyTurnStateForOverlayMode()
-// FUNCTION: IMPERIALISM 0x005d5960
-undefined4 ClassifyTurnStateForOverlayMode(void)
 {
   return 0;
 }
@@ -799,30 +719,6 @@ undefined4 NoOpRuntimeCallback_005d5d10(void)
 // ghidra_proto undefined RunNationInfoModalAndReturnNonCancel()
 // FUNCTION: IMPERIALISM 0x005d5d30
 undefined4 RunNationInfoModalAndReturnNonCancel(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::BuildAndShowTurnOverlayByMode
-// ghidra_proto undefined BuildAndShowTurnOverlayByMode()
-// FUNCTION: IMPERIALISM 0x005d6480
-undefined4 BuildAndShowTurnOverlayByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::ComputeTurnEventDialogPlacementByCode
-// ghidra_proto undefined ComputeTurnEventDialogPlacementByCode()
-// FUNCTION: IMPERIALISM 0x005d69b0
-undefined4 ComputeTurnEventDialogPlacementByCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
-// ghidra_proto undefined RefreshMainViewNationIndicatorForCurrentTurnEvent()
-// FUNCTION: IMPERIALISM 0x005d6b70
-undefined4 RefreshMainViewNationIndicatorForCurrentTurnEvent(void)
 {
   return 0;
 }
@@ -1203,14 +1099,6 @@ undefined4 HandleTurnEventF3D_PopulateRecentTurnMessages(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventVtableSlot2CInitializeHotKeyDialog
-// ghidra_proto undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
-// FUNCTION: IMPERIALISM 0x005dcaa0
-undefined4 HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005dcc60
 // ghidra_proto undefined WrapperFor_ftol_At005dcc60()
 // FUNCTION: IMPERIALISM 0x005dcc60
@@ -1227,34 +1115,10 @@ undefined4 Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90(void)
   return 0;
 }
 
-// ghidra_name TModalMessageCommand::DispatchTurnStateLocalizedMessageForControlId
-// ghidra_proto undefined DispatchTurnStateLocalizedMessageForControlId()
-// FUNCTION: IMPERIALISM 0x005dcd10
-undefined4 DispatchTurnStateLocalizedMessageForControlId(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005dcd50
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005dcd50()
-// FUNCTION: IMPERIALISM 0x005dcd50
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005dcd50(void)
-{
-  return 0;
-}
-
 // ghidra_name TModalMessageCommand::CreateTModalMessageCommandInstance
 // ghidra_proto undefined CreateTModalMessageCommandInstance()
 // FUNCTION: IMPERIALISM 0x005dcd80
 undefined4 CreateTModalMessageCommandInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TModalMessageCommand::GetTModalMessageCommandClassNamePointer
-// ghidra_proto undefined GetTModalMessageCommandClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005dcdd0
-undefined4 GetTModalMessageCommandClassNamePointer(void)
 {
   return 0;
 }
@@ -2139,14 +2003,6 @@ undefined4 ConstructGlobalTurnEventQueueManager(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::DestructTNetMgrAndMaybeFree
-// ghidra_proto undefined DestructTNetMgrAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005e3400
-undefined4 DestructTNetMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_Secondary
 // ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FEC4_Secondary()
 // FUNCTION: IMPERIALISM 0x005e3430
@@ -2159,14 +2015,6 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FEC4_Secondary(void)
 // ghidra_proto undefined NoOpInitializeGlobalTurnEventQueueManager()
 // FUNCTION: IMPERIALISM 0x005e3450
 undefined4 NoOpInitializeGlobalTurnEventQueueManager(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseObjectIfNonNullViaVslot04
-// ghidra_proto undefined ReleaseObjectIfNonNullViaVslot04()
-// FUNCTION: IMPERIALISM 0x005e3470
-undefined4 ReleaseObjectIfNonNullViaVslot04(void)
 {
   return 0;
 }
@@ -2315,14 +2163,6 @@ undefined4 DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
   return 0;
 }
 
-// ghidra_name SerializeLinkedRecordListWithFreeNodePool
-// ghidra_proto undefined SerializeLinkedRecordListWithFreeNodePool()
-// FUNCTION: IMPERIALISM 0x005e4610
-undefined4 SerializeLinkedRecordListWithFreeNodePool(void)
-{
-  return 0;
-}
-
 // ghidra_name TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
 // ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FA68_State()
 // FUNCTION: IMPERIALISM 0x005e4780
@@ -2335,30 +2175,6 @@ undefined4 InitializeRuntimeClassVtablePointer_0066FA68_State(void)
 // ghidra_proto undefined DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 // FUNCTION: IMPERIALISM 0x005e47b0
 undefined4 DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeDynamicDwordPointerArrayState
-// ghidra_proto undefined SerializeDynamicDwordPointerArrayState()
-// FUNCTION: IMPERIALISM 0x005e4830
-undefined4 SerializeDynamicDwordPointerArrayState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30()
-// FUNCTION: IMPERIALISM 0x005e4a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60()
-// FUNCTION: IMPERIALISM 0x005e4a60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
 {
   return 0;
 }
@@ -2407,70 +2223,6 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 // ghidra_proto undefined thunk_SendMciCommand804IfDeviceOpenAndClearHandle()
 // FUNCTION: IMPERIALISM 0x005e4e15
 undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name NotifyGlobalAudioObjectsViaVslot48
-// ghidra_proto undefined NotifyGlobalAudioObjectsViaVslot48()
-// FUNCTION: IMPERIALISM 0x005e4ff0
-undefined4 NotifyGlobalAudioObjectsViaVslot48(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005e5020
-// ghidra_proto undefined WrapperFor_ftol_At005e5020()
-// FUNCTION: IMPERIALISM 0x005e5020
-undefined4 WrapperFor_ftol_At005e5020(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpAudioTickCallback_005e50a0
-// ghidra_proto undefined NoOpAudioTickCallback_005e50a0()
-// FUNCTION: IMPERIALISM 0x005e50a0
-undefined4 NoOpAudioTickCallback_005e50a0(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState
-// ghidra_proto undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState()
-// FUNCTION: IMPERIALISM 0x005e50c0
-undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardActionToVslotB4WithFlag1
-// ghidra_proto undefined ForwardActionToVslotB4WithFlag1()
-// FUNCTION: IMPERIALISM 0x005e5140
-undefined4 ForwardActionToVslotB4WithFlag1(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantZero_005e5170
-// ghidra_proto undefined ReturnConstantZero_005e5170()
-// FUNCTION: IMPERIALISM 0x005e5170
-undefined4 ReturnConstantZero_005e5170(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantZero_005e5190
-// ghidra_proto undefined ReturnConstantZero_005e5190()
-// FUNCTION: IMPERIALISM 0x005e5190
-undefined4 ReturnConstantZero_005e5190(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
-// ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0()
-// FUNCTION: IMPERIALISM 0x005e51b0
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
 {
   return 0;
 }

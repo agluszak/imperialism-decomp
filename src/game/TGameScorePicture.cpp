@@ -14,6 +14,4 @@ void TGameScorePicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057b620
-undefined TGameScorePicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TGameScorePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

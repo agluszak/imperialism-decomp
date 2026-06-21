@@ -127,6 +127,5 @@ bool THQButton::IsSelected(short value, bool refreshNow) {
 
 undefined THQButton::SetSelectionStateAndRefreshBitmap() { return 0; }
 
-undefined THQButton::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 THQButton::~THQButton() {}

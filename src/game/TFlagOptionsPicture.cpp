@@ -10,9 +10,7 @@ CRuntimeClass* TFlagOptionsPicture::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0056b2b0
-undefined TFlagOptionsPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x0056b640
 void TFlagOptionsPicture::NoOpUiLifecycleHook(int arg) {

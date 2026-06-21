@@ -14,6 +14,4 @@ void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a9990
-undefined TArmyUnitView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TArmyUnitView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -2,19 +2,17 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TIndexAndRankList.h"
+#include "game/TSortedPtrList.h"
 
 class CArchive;
 
-#define TDEALLIST_VTABLE_SLOT(n)                                                                   \
-  virtual void VTableIndex##n##_Provisional(void) {}
-
 // Mac oracle: TDealList (nation interaction / proposal weight manager).
 // VTABLE: IMPERIALISM 0x0066da38
-class TDealList : public CObject {
+class TDealList : public TSortedPtrList {
 public:
 // === BEGIN GENERATED DECLS (TDealList) — refreshed by recover-class; do not hand-edit ===
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5ba1a0
   virtual ~TDealList(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x412bd0)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -31,8 +29,9 @@ public:
   // slot 0x0e UpsertPtrListRecordByComparator inherited unchanged (0x4881f0)
   // slot 0x0f AppendCopiedRecordToPtrList inherited unchanged (0x4882c0)
   // slot 0x10 InsertCopiedRecordAtFrontOfPtrList inherited unchanged (0x488310)
-  virtual undefined CompareUnsignedIntsAscending() override; // slot 0x11 0x5ba260
+  virtual int CompareUnsignedIntsAscending(int lhs, int rhs) override; // slot 0x11 0x5ba260
 // === END GENERATED DECLS (TDealList) ===
+
   struct NationMetricCategoryRow {
     unsigned char pad00[0x0a];
     short proposalWeightScale0a;
@@ -44,45 +43,12 @@ public:
   TDealList();
   void InitializeNationInteractionStateManagerDefaults();
 
-  virtual CRuntimeClass* GetRuntimeClass() const override;
-  virtual void Serialize(CArchive& ar) override;
-  virtual void AssertValid() const override;
-  virtual void Dump(CDumpContext& unused) const override;
-  TDEALLIST_VTABLE_SLOT(05);
-  TDEALLIST_VTABLE_SLOT(06);
-  TDEALLIST_VTABLE_SLOT(07);
-  TDEALLIST_VTABLE_SLOT(08);
-  TDEALLIST_VTABLE_SLOT(09);
-  TDEALLIST_VTABLE_SLOT(10);
-  TDEALLIST_VTABLE_SLOT(11);
-  TDEALLIST_VTABLE_SLOT(12);
-  TDEALLIST_VTABLE_SLOT(13);
-  TDEALLIST_VTABLE_SLOT(14);
-  // slot 0x3c — nonzero when the capability category row (+0x18) is active.
-  virtual short IsCapabilityCategoryActiveSlot3C(int category);
-  TDEALLIST_VTABLE_SLOT(16);
-  TDEALLIST_VTABLE_SLOT(17);
-  TDEALLIST_VTABLE_SLOT(18);
-  // slot 0x4c — proposal-weight threshold for random%100+200 tests.
-  virtual short QueryProposalWeightSlot4C(int metricSlot);
-  TDEALLIST_VTABLE_SLOT(20);
-  TDEALLIST_VTABLE_SLOT(21);
-  TDEALLIST_VTABLE_SLOT(22);
-  TDEALLIST_VTABLE_SLOT(23);
-  // slot 0x60 — diplomacy transfer dispatch used by foreign-minister proposals.
-  virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
-                                            int maxAmount, int targetNation, char emitEventFlag,
-                                            char skipLocalizationBranch);
-  TDEALLIST_VTABLE_SLOT(25);
-  TDEALLIST_VTABLE_SLOT(26);
-  TDEALLIST_VTABLE_SLOT(27);
-  TDEALLIST_VTABLE_SLOT(28);
-  TDEALLIST_VTABLE_SLOT(29);
-  TDEALLIST_VTABLE_SLOT(30);
-  TDEALLIST_VTABLE_SLOT(31);
-  TDEALLIST_VTABLE_SLOT(32);
-  // slot 0x84 — maps a proposal code into a capability category's effective code.
-  virtual short ResolveProposalCodeForCategorySlot84(int proposalCode, int category);
+  short IsCapabilityCategoryActiveSlot3C(int category);
+  short QueryProposalWeightSlot4C(int metricSlot);
+  void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
+                                    int maxAmount, int targetNation, char emitEventFlag,
+                                    char skipLocalizationBranch);
+  short ResolveProposalCodeForCategorySlot84(int proposalCode, int category);
 
   NationMetricCategoryRow categoryRows[0x11];
   unsigned char padBetweenRowsAndLists[0x3f8];

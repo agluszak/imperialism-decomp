@@ -2134,7 +2134,7 @@ undefined4 OnMouseActivate(void)
 // ghidra_name CCmdTarget::RenderControlStateTextBySelectionCode
 // ghidra_proto undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
 // FUNCTION: IMPERIALISM 0x0061404d
-undefined4 RenderControlStateTextBySelectionCode_0061404D(void)
+undefined4 RenderControlStateTextBySelectionCode(void)
 {
   return 0;
 }
@@ -2358,7 +2358,7 @@ undefined4 DeletingDestructTMinister(void)
 // ghidra_name CCmdTarget::GetTTaskClassNamePointer
 // ghidra_proto undefined __thiscall GetTTaskClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00614c41
-undefined4 GetTTaskClassNamePointer_00614C41(void)
+undefined4 GetTTaskClassNamePointer(void)
 {
   return 0;
 }
@@ -2606,7 +2606,7 @@ undefined4 OnFileNew(void)
 // ghidra_name CAmbitDocument::OrphanRetStub_0059add0
 // ghidra_proto undefined OrphanRetStub_0059add0()
 // FUNCTION: IMPERIALISM 0x0061849d
-undefined4 OrphanRetStub_0059add0_0061849D(void)
+undefined4 OrphanRetStub_0059add0(void)
 {
   return 0;
 }

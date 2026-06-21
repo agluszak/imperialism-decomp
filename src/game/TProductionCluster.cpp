@@ -101,7 +101,6 @@ int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2)
   return 0;
 }
 
-undefined TProductionCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TProductionCluster::OrphanLeaf_NoCall_Ins05_00586a80(void) { return 0;}
 

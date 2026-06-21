@@ -19,9 +19,7 @@ void TUniversityView::SelectUniversityRecruitmentEntry(short nRecruitmentEntryIn
 }
 
 // FUNCTION: IMPERIALISM 0x004cb8a0
-undefined TUniversityView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TUniversityView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004cbb20
 undefined TUniversityView::OrphanRetStub_004c6fb0() {

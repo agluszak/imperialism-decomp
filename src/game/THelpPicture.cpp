@@ -14,9 +14,7 @@ void THelpPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00503ed0
-undefined THelpPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void THelpPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00504120
 undefined THelpPicture::OrphanCallChain_C2_I34_00504120() {

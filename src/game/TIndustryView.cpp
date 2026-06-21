@@ -15,9 +15,7 @@ undefined TIndustryView::OrphanRetStub_004c6fd0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ccf30
-undefined TIndustryView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004cd040
 undefined TIndustryView::OrphanRetStub_004c6fb0() {

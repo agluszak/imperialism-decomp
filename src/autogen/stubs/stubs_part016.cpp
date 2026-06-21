@@ -1803,14 +1803,6 @@ undefined4 AllocateAndInitConfigDefaultsObjectF8(void)
   return 0;
 }
 
-// ghidra_name TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer
-// ghidra_proto undefined GetTMultiplayerMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00542650
-undefined4 GetTMultiplayerMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructMultiplayerManager
 // ghidra_proto undefined4 * __fastcall ConstructMultiplayerManager(astruct_11 * this_obj)
 // FUNCTION: IMPERIALISM 0x00542670
@@ -1835,50 +1827,10 @@ undefined4 FreePointerIfNotNull(void)
   return 0;
 }
 
-// ghidra_name DeletingDestructMultiplayerManager
-// ghidra_proto undefined DeletingDestructMultiplayerManager()
-// FUNCTION: IMPERIALISM 0x005427e0
-undefined4 DeletingDestructMultiplayerManager(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructMultiplayerManager
 // ghidra_proto undefined DestructMultiplayerManager()
 // FUNCTION: IMPERIALISM 0x00542810
 undefined4 DestructMultiplayerManager(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
-// ghidra_proto undefined InitializeMultiplayerManagerForSessionContext()
-// FUNCTION: IMPERIALISM 0x00542900
-undefined4 InitializeMultiplayerManagerForSessionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ShutdownRuntimeSelectionAndPersistPlayerName
-// ghidra_proto undefined ShutdownRuntimeSelectionAndPersistPlayerName()
-// FUNCTION: IMPERIALISM 0x00542b10
-undefined4 ShutdownRuntimeSelectionAndPersistPlayerName(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-// ghidra_proto undefined InitializeNationStatusSlotsFromNationListAndEmitStartupEvents()
-// FUNCTION: IMPERIALISM 0x00542be0
-undefined4 InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider
-// ghidra_proto undefined InitializeNationStatusControlArraysFromProvider()
-// FUNCTION: IMPERIALISM 0x00542ff0
-undefined4 InitializeNationStatusControlArraysFromProvider(void)
 {
   return 0;
 }
@@ -1975,14 +1927,6 @@ undefined4 BuildTurnEvent2ArraySyncPacketDeltaOrFull(void)
 // ghidra_proto undefined ApplyEncodedDeltaPayloadToBufferByMode()
 // FUNCTION: IMPERIALISM 0x00544cd0
 undefined4 ApplyEncodedDeltaPayloadToBufferByMode(void)
-{
-  return 0;
-}
-
-// ghidra_name TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue
-// ghidra_proto undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()
-// FUNCTION: IMPERIALISM 0x00544e30
-undefined4 DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(void)
 {
   return 0;
 }
@@ -2299,22 +2243,6 @@ undefined4 CopyA8RecordWithSharedStringAtA4(void)
   return 0;
 }
 
-// ghidra_name InvokePoseMessageDialogRefreshFromContextField18
-// ghidra_proto undefined InvokePoseMessageDialogRefreshFromContextField18()
-// FUNCTION: IMPERIALISM 0x0054aff0
-undefined4 InvokePoseMessageDialogRefreshFromContextField18(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructPoseMessageDialogTurnEventPacket
-// ghidra_proto undefined DeletingDestructPoseMessageDialogTurnEventPacket()
-// FUNCTION: IMPERIALISM 0x0054b010
-undefined4 DeletingDestructPoseMessageDialogTurnEventPacket(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructPoseMessageDialogTurnEventPacket
 // ghidra_proto undefined DestructPoseMessageDialogTurnEventPacket()
 // FUNCTION: IMPERIALISM 0x0054b040
@@ -2327,14 +2255,6 @@ undefined4 DestructPoseMessageDialogTurnEventPacket(void)
 // ghidra_proto undefined AllocateAndConstructPoseMessageDialogTurnEventPacket()
 // FUNCTION: IMPERIALISM 0x0054b060
 undefined4 AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
-{
-  return 0;
-}
-
-// ghidra_name TPoseMessageDialog::GetTPoseMessageDialogClassNamePointer
-// ghidra_proto undefined GetTPoseMessageDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054b0d0
-undefined4 GetTPoseMessageDialogClassNamePointer(void)
 {
   return 0;
 }
@@ -2635,50 +2555,10 @@ undefined4 CreateNavyPrimaryOrderNode(void)
   return 0;
 }
 
-// ghidra_name TShip::GetTShipClassNamePointer
-// ghidra_proto undefined GetTShipClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0054f4e0
-undefined4 GetTShipClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DestructTShipAndFreeIfOwned
-// ghidra_proto undefined DestructTShipAndFreeIfOwned()
-// FUNCTION: IMPERIALISM 0x0054f5c0
-undefined4 DestructTShipAndFreeIfOwned(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::DestructTShip
 // ghidra_proto undefined DestructTShip()
 // FUNCTION: IMPERIALISM 0x0054f5f0
 undefined4 DestructTShip(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DestroyAndUnlinkNavyPrimaryOrderNode
-// ghidra_proto undefined DestroyAndUnlinkNavyPrimaryOrderNode()
-// FUNCTION: IMPERIALISM 0x0054f640
-undefined4 DestroyAndUnlinkNavyPrimaryOrderNode(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::SerializeNavyPrimaryOrderNodeToStream
-// ghidra_proto undefined SerializeNavyPrimaryOrderNodeToStream()
-// FUNCTION: IMPERIALISM 0x0054fab0
-undefined4 SerializeNavyPrimaryOrderNodeToStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DeserializeNavyPrimaryOrderNodeFromStream
-// ghidra_proto undefined DeserializeNavyPrimaryOrderNodeFromStream()
-// FUNCTION: IMPERIALISM 0x0054fb50
-undefined4 DeserializeNavyPrimaryOrderNodeFromStream(void)
 {
   return 0;
 }
@@ -2971,26 +2851,10 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name TTaskForce::GetTTaskForceClassNamePointer
-// ghidra_proto undefined GetTTaskForceClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005527e0
-undefined4 GetTTaskForceClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTaskForce::ConstructTTaskForce
 // ghidra_proto undefined ConstructTTaskForce()
 // FUNCTION: IMPERIALISM 0x00552800
 undefined4 ConstructTTaskForce(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyTTaskForce
-// ghidra_proto undefined DestroyTTaskForce()
-// FUNCTION: IMPERIALISM 0x00552870
-undefined4 DestroyTTaskForce(void)
 {
   return 0;
 }
@@ -3003,34 +2867,10 @@ undefined4 ResetTTaskForceToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name DeleteMapOrderEntryAndUnlink
-// ghidra_proto void __fastcall DeleteMapOrderEntryAndUnlink(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00552930
-undefined4 DeleteMapOrderEntryAndUnlink(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveTaskForceOrderNodesByNationAndClearSelectionState
 // ghidra_proto undefined RemoveTaskForceOrderNodesByNationAndClearSelectionState()
 // FUNCTION: IMPERIALISM 0x00552a70
 undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::SerializeTaskForceToBinaryStream
-// ghidra_proto undefined SerializeTaskForceToBinaryStream()
-// FUNCTION: IMPERIALISM 0x00552b90
-undefined4 SerializeTaskForceToBinaryStream(void)
-{
-  return 0;
-}
-
-// ghidra_name TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
-// ghidra_proto undefined DeserializeTaskForceFromBinaryStreamAndRefreshMarkers()
-// FUNCTION: IMPERIALISM 0x00552d10
-undefined4 DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
 {
   return 0;
 }

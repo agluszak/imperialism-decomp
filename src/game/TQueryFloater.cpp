@@ -14,6 +14,4 @@ void TQueryFloater::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ea20
-undefined TQueryFloater::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TQueryFloater::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -18,7 +18,7 @@
 
 static short kNationMetricCategoryPresetValues[0x11];
 static short kNationMetricCodeLookup[0x20];
-static const int kTDealListIndexAndRankListVtableAddr = 0x0066da38;
+static const int kTDealListIndexAndRankListVtableAddr = 0x00649068;
 
 extern undefined4 CreateAndSendTurnEvent1C_BoolAndSixShorts(void);
 
@@ -47,7 +47,7 @@ static void CallMinorSlot6C(TMinor* self, int arg) {
 TDealList* g_pNationInteractionStateManager = 0;
 
 // FUNCTION: IMPERIALISM 0x005B7A20
-TDealList::TDealList() : CObject() {}
+TDealList::TDealList() : TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x005B7A90
 void TDealList::InitializeNationInteractionStateManagerDefaults() {
@@ -203,15 +203,8 @@ CRuntimeClass* TDealList::GetRuntimeClass() const {
 TDealList::~TDealList() {}
 
 // FUNCTION: IMPERIALISM 0x005ba260
-undefined TDealList::CompareUnsignedIntsAscending() {
+int TDealList::CompareUnsignedIntsAscending(int lhs, int rhs) {
+  (void)lhs;
+  (void)rhs;
   return 0;
-}
-void TDealList::AssertValid() const {}
-
-void TDealList::Dump(CDumpContext& unused) const {
-  (void)unused;
-}
-
-void TDealList::Serialize(CArchive& ar) {
-  (void)ar;
 }

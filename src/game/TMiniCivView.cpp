@@ -19,6 +19,4 @@ void TMiniCivView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ac320
-undefined TMiniCivView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMiniCivView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

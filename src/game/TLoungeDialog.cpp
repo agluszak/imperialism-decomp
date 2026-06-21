@@ -23,6 +23,4 @@ char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e1f0
-undefined TLoungeDialog::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

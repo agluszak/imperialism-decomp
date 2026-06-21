@@ -19,9 +19,7 @@ void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
 }
 
 // FUNCTION: IMPERIALISM 0x004cc490
-undefined TPurchaseCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004cc550
 void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int * pCityViewDialog, short nValue) {

@@ -18,9 +18,7 @@ void TScrollBarView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
-undefined TScrollBarView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {

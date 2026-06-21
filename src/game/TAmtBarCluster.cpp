@@ -66,7 +66,6 @@ void TAmtBarCluster::ApplyMoveValue(int value) {
   (void)value;
 }
 
-undefined TAmtBarCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TAmtBarCluster::OrphanRetStub_00586ff0(void) { return 0;}
 

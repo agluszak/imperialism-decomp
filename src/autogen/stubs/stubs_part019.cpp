@@ -35,42 +35,10 @@ undefined4 OrphanCallChain_C4_I70_0059f610(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0059f710
-// ghidra_proto undefined OrphanRetStub_0059f710()
-// FUNCTION: IMPERIALISM 0x0059f710
-undefined4 OrphanRetStub_0059f710(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalBattle::CreateTTacticalBattleInstance
-// ghidra_proto undefined CreateTTacticalBattleInstance()
-// FUNCTION: IMPERIALISM 0x0059f730
-undefined4 CreateTTacticalBattleInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalBattle::GetTTacticalBattleClassNamePointer
-// ghidra_proto undefined GetTTacticalBattleClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0059f750
-undefined4 GetTTacticalBattleClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalBattle::ConstructTTacticalBattleBaseState
 // ghidra_proto undefined ConstructTTacticalBattleBaseState()
 // FUNCTION: IMPERIALISM 0x0059f770
 undefined4 ConstructTTacticalBattleBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalBattle::DestructTTacticalBattleAndMaybeFree
-// ghidra_proto undefined DestructTTacticalBattleAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0059f7a0
-undefined4 DestructTTacticalBattleAndMaybeFree(void)
 {
   return 0;
 }
@@ -95,14 +63,6 @@ undefined4 ConstructTArmyBattleBaseStateImpl(void)
 // ghidra_proto undefined BuildTacticalBattleStateFromBothSides()
 // FUNCTION: IMPERIALISM 0x0059f890
 undefined4 BuildTacticalBattleStateFromBothSides(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0059fb50
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0059fb50()
-// FUNCTION: IMPERIALISM 0x0059fb50
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0059fb50(void)
 {
   return 0;
 }
@@ -151,22 +111,6 @@ undefined4 FinalizeTacticalTurnStateAndQueueEvent232A(void)
 // ghidra_proto undefined ApplyTacticalDoneSelectionAndRefreshUi()
 // FUNCTION: IMPERIALISM 0x0059fe40
 undefined4 ApplyTacticalDoneSelectionAndRefreshUi(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory
-// ghidra_proto undefined ComputeTacticalReachableTileCostsByUnitCategory()
-// FUNCTION: IMPERIALISM 0x0059ff20
-undefined4 ComputeTacticalReachableTileCostsByUnitCategory(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyStack::PropagateTileAccessibilityStrengthLevels
-// ghidra_proto undefined PropagateTileAccessibilityStrengthLevels()
-// FUNCTION: IMPERIALISM 0x005a02e0
-undefined4 PropagateTileAccessibilityStrengthLevels(void)
 {
   return 0;
 }
@@ -243,14 +187,6 @@ undefined4 ProcessTacticalUnitState1TurnStep(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
-// ghidra_proto undefined WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400()
-// FUNCTION: IMPERIALISM 0x005a1400
-undefined4 WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveTacticalUnitTowardTile
 // ghidra_proto undefined MoveTacticalUnitTowardTile()
 // FUNCTION: IMPERIALISM 0x005a1520
@@ -291,34 +227,10 @@ undefined4 WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50(void)
   return 0;
 }
 
-// ghidra_name MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
-// ghidra_proto undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget()
-// FUNCTION: IMPERIALISM 0x005a1bd0
-undefined4 MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(void)
-{
-  return 0;
-}
-
-// ghidra_name ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
-// ghidra_proto undefined ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
-// FUNCTION: IMPERIALISM 0x005a1ca0
-undefined4 ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(void)
-{
-  return 0;
-}
-
 // ghidra_name HasValidTacticalFollowupTargetForCurrentAction
 // ghidra_proto undefined HasValidTacticalFollowupTargetForCurrentAction()
 // FUNCTION: IMPERIALISM 0x005a1d70
 undefined4 HasValidTacticalFollowupTargetForCurrentAction(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateAndResolveTacticalActionAgainstTileOccupant
-// ghidra_proto undefined EvaluateAndResolveTacticalActionAgainstTileOccupant()
-// FUNCTION: IMPERIALISM 0x005a1ee0
-undefined4 EvaluateAndResolveTacticalActionAgainstTileOccupant(void)
 {
   return 0;
 }
@@ -339,42 +251,10 @@ undefined4 Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C4_I30_005a2700
-// ghidra_proto undefined OrphanCallChain_C4_I30_005a2700()
-// FUNCTION: IMPERIALISM 0x005a2700
-undefined4 OrphanCallChain_C4_I30_005a2700(void)
-{
-  return 0;
-}
-
 // ghidra_name EvaluateTacticalSideStateAndShowBattleSummaryDialog
 // ghidra_proto undefined EvaluateTacticalSideStateAndShowBattleSummaryDialog()
 // FUNCTION: IMPERIALISM 0x005a2750
 undefined4 EvaluateTacticalSideStateAndShowBattleSummaryDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name MarkTacticalTileStateQueuedAndMaybeDispatchPacket
-// ghidra_proto undefined MarkTacticalTileStateQueuedAndMaybeDispatchPacket()
-// FUNCTION: IMPERIALISM 0x005a3190
-undefined4 MarkTacticalTileStateQueuedAndMaybeDispatchPacket(void)
-{
-  return 0;
-}
-
-// ghidra_name AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket
-// ghidra_proto undefined AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket()
-// FUNCTION: IMPERIALISM 0x005a3210
-undefined4 AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearTacticalTileStateRunByStride
-// ghidra_proto undefined ClearTacticalTileStateRunByStride()
-// FUNCTION: IMPERIALISM 0x005a3320
-undefined4 ClearTacticalTileStateRunByStride(void)
 {
   return 0;
 }
@@ -387,14 +267,6 @@ undefined4 DispatchTacticalActionByHoverStateIndex(void)
   return 0;
 }
 
-// ghidra_name ExecuteTacticalMineActionAndQueuePacket
-// ghidra_proto undefined ExecuteTacticalMineActionAndQueuePacket()
-// FUNCTION: IMPERIALISM 0x005a34d0
-undefined4 ExecuteTacticalMineActionAndQueuePacket(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTacticalCommandTag_mine
 // ghidra_proto undefined HandleTacticalCommandTag_mine()
 // FUNCTION: IMPERIALISM 0x005a35a0
@@ -403,26 +275,10 @@ undefined4 HandleTacticalCommandTag_mine(void)
   return 0;
 }
 
-// ghidra_name ExecuteTacticalDigActionAndConsumeUnitActionPoints
-// ghidra_proto undefined ExecuteTacticalDigActionAndConsumeUnitActionPoints()
-// FUNCTION: IMPERIALISM 0x005a3640
-undefined4 ExecuteTacticalDigActionAndConsumeUnitActionPoints(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTacticalCommandTag_digg
 // ghidra_proto undefined HandleTacticalCommandTag_digg()
 // FUNCTION: IMPERIALISM 0x005a36d0
 undefined4 HandleTacticalCommandTag_digg(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand
-// ghidra_proto undefined ComputeRallyStrengthAndQueueTacticalRallyCommand()
-// FUNCTION: IMPERIALISM 0x005a3810
-undefined4 ComputeRallyStrengthAndQueueTacticalRallyCommand(void)
 {
   return 0;
 }
@@ -587,46 +443,6 @@ undefined4 HandleNavyTacticalToolbarModeAndCommandTags_Impl(void)
   return 0;
 }
 
-// ghidra_name OrphanTiny_ReturnZero_005a5d40
-// ghidra_proto undefined OrphanTiny_ReturnZero_005a5d40()
-// FUNCTION: IMPERIALISM 0x005a5d40
-undefined4 OrphanTiny_ReturnZero_005a5d40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_ReturnZero_005a5d60
-// ghidra_proto undefined OrphanTiny_ReturnZero_005a5d60()
-// FUNCTION: IMPERIALISM 0x005a5d60
-undefined4 OrphanTiny_ReturnZero_005a5d60(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_005a5d80
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_005a5d80()
-// FUNCTION: IMPERIALISM 0x005a5d80
-undefined4 OrphanLeaf_NoCall_Ins02_005a5d80(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_005a5da0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_005a5da0()
-// FUNCTION: IMPERIALISM 0x005a5da0
-undefined4 OrphanLeaf_NoCall_Ins02_005a5da0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0()
-// FUNCTION: IMPERIALISM 0x005a5dc0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalUnit::CreateTTacticalUnitInstance
 // ghidra_proto undefined CreateTTacticalUnitInstance()
 // FUNCTION: IMPERIALISM 0x005a5df0
@@ -635,34 +451,10 @@ undefined4 CreateTTacticalUnitInstance(void)
   return 0;
 }
 
-// ghidra_name TTacticalUnit::GetTTacticalUnitClassNamePointer
-// ghidra_proto undefined GetTTacticalUnitClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005a5e10
-undefined4 GetTTacticalUnitClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalUnit::ConstructTTacticalUnitBaseState
 // ghidra_proto undefined ConstructTTacticalUnitBaseState()
 // FUNCTION: IMPERIALISM 0x005a5e30
 undefined4 ConstructTTacticalUnitBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacticalUnit::DestructTTacticalUnitAndMaybeFree
-// ghidra_proto undefined DestructTTacticalUnitAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005a5e70
-undefined4 DestructTTacticalUnitAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::CreateTArmyTacUnitInstance
-// ghidra_proto undefined CreateTArmyTacUnitInstance()
-// FUNCTION: IMPERIALISM 0x005a5eb0
-undefined4 CreateTArmyTacUnitInstance(void)
 {
   return 0;
 }
@@ -707,14 +499,6 @@ undefined4 CreateTNextMoveCommandInstance(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::GetTNextMoveCommandClassNamePointer
-// ghidra_proto undefined GetTNextMoveCommandClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005a6540
-undefined4 GetTNextMoveCommandClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextMoveCommand::ConstructTNextMoveCommandBaseState
 // ghidra_proto undefined ConstructTNextMoveCommandBaseState()
 // FUNCTION: IMPERIALISM 0x005a6560
@@ -723,26 +507,10 @@ undefined4 ConstructTNextMoveCommandBaseState(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::DestructTNextMoveCommandAndMaybeFree
-// ghidra_proto undefined DestructTNextMoveCommandAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005a6590
-undefined4 DestructTNextMoveCommandAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTNextMoveCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextMoveCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005a65c0
 undefined4 DestructTNextMoveCommandAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleActiveTacticalUnitReadyToggleOrAdvanceTurn
-// ghidra_proto undefined HandleActiveTacticalUnitReadyToggleOrAdvanceTurn()
-// FUNCTION: IMPERIALISM 0x005a6620
-undefined4 HandleActiveTacticalUnitReadyToggleOrAdvanceTurn(void)
 {
   return 0;
 }
@@ -955,50 +723,10 @@ undefined4 WrapperFor_ftol_At005adb10(void)
   return 0;
 }
 
-// ghidra_name TTask::GetTTaskClassNamePointer
-// ghidra_proto undefined GetTTaskClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005adb70
-undefined4 GetTTaskClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTask::ConstructTTaskBaseState
-// ghidra_proto undefined ConstructTTaskBaseState()
-// FUNCTION: IMPERIALISM 0x005adbb0
-undefined4 ConstructTTaskBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTask::DestructTTaskAndMaybeFree
 // ghidra_proto undefined DestructTTaskAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005adbe0
 undefined4 DestructTTaskAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins04_005adc30()
-// FUNCTION: IMPERIALISM 0x005adc30
-undefined4 OrphanLeaf_NoCall_Ins04_005adc30(void)
-{
-  return 0;
-}
-
-// ghidra_name TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot14_At005adc50()
-// FUNCTION: IMPERIALISM 0x005adc50
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(void)
-{
-  return 0;
-}
-
-// ghidra_name TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot18_At005adc90()
-// FUNCTION: IMPERIALISM 0x005adc90
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(void)
 {
   return 0;
 }
@@ -1107,22 +835,6 @@ undefined4 WrapperFor_ftol_At005aef00(void)
   return 0;
 }
 
-// ghidra_name TTechMgr::GetTTechMgrClassNamePointer
-// ghidra_proto undefined GetTTechMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005aef60
-undefined4 GetTTechMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechMgr::DestructTTechMgrAndMaybeFree
-// ghidra_proto undefined DestructTTechMgrAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005aefa0
-undefined4 DestructTTechMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTTechMgrAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTechMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005aefd0
@@ -1135,22 +847,6 @@ undefined4 DestructTTechMgrAndMaybeFree_Impl(void)
 // ghidra_proto void __fastcall GenerateRandomCapabilityPrioritySlots(void * pCapabilityPriorityState)
 // FUNCTION: IMPERIALISM 0x005af330
 undefined4 GenerateRandomCapabilityPrioritySlots(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeCityOrderCapabilityState
-// ghidra_proto undefined DeserializeCityOrderCapabilityState()
-// FUNCTION: IMPERIALISM 0x005af460
-undefined4 DeserializeCityOrderCapabilityState(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeCityOrderCapabilityState
-// ghidra_proto undefined SerializeCityOrderCapabilityState()
-// FUNCTION: IMPERIALISM 0x005af710
-undefined4 SerializeCityOrderCapabilityState(void)
 {
   return 0;
 }
@@ -1667,74 +1363,10 @@ undefined4 WrapperFor_ftol_At005b6be0(void)
   return 0;
 }
 
-// ghidra_name TTown::DestructTTownAndMaybeFree
-// ghidra_proto undefined DestructTTownAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005b6c80
-undefined4 DestructTTownAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTTownAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTownAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005b6cb0
 undefined4 DestructTTownAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70()
-// FUNCTION: IMPERIALISM 0x005b6d70
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60()
-// FUNCTION: IMPERIALISM 0x005b6e60
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::RecomputeTownAdjacentTileYieldTotals
-// ghidra_proto undefined RecomputeTownAdjacentTileYieldTotals()
-// FUNCTION: IMPERIALISM 0x005b6f70
-undefined4 RecomputeTownAdjacentTileYieldTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::RecomputeTownAdjacentResourceSupplyTotals
-// ghidra_proto undefined RecomputeTownAdjacentResourceSupplyTotals()
-// FUNCTION: IMPERIALISM 0x005b7140
-undefined4 RecomputeTownAdjacentResourceSupplyTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::RecomputeTownAdjacentUniversityWeightedTotals
-// ghidra_proto undefined RecomputeTownAdjacentUniversityWeightedTotals()
-// FUNCTION: IMPERIALISM 0x005b73e0
-undefined4 RecomputeTownAdjacentUniversityWeightedTotals(void)
-{
-  return 0;
-}
-
-// ghidra_name TTown::IncrementProductionDerivedCountersWithTurnParityRules
-// ghidra_proto undefined IncrementProductionDerivedCountersWithTurnParityRules()
-// FUNCTION: IMPERIALISM 0x005b7570
-undefined4 IncrementProductionDerivedCountersWithTurnParityRules(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins29_005b77e0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins29_005b77e0()
-// FUNCTION: IMPERIALISM 0x005b77e0
-undefined4 OrphanLeaf_NoCall_Ins29_005b77e0(void)
 {
   return 0;
 }

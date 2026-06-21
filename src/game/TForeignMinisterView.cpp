@@ -10,9 +10,7 @@ CRuntimeClass* TForeignMinisterView::GetRuntimeClass() const {
 TForeignMinisterView::~TForeignMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3050
-undefined TForeignMinisterView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TForeignMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004f31d0
 undefined TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0() {

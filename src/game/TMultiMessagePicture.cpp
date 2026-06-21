@@ -10,6 +10,4 @@ CRuntimeClass* TMultiMessagePicture::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0054ecc0
-undefined TMultiMessagePicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMultiMessagePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

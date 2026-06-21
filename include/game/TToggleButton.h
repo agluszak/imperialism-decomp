@@ -22,7 +22,7 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x0f 0x571170
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00571170
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -129,9 +129,6 @@ public:
 
   bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x1cc
   virtual void Select(bool isPressed, bool notifyParent);             // slot 0x1d0
-
-  void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                   TEvent* event) override; // slot 0x3c 0x571170
   char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
                                      int arg4) override; // slot 0x118 0x5712a0
 };

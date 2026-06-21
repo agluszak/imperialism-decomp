@@ -20,9 +20,7 @@ void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa280
-undefined TArmyCheckBox::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
 void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {

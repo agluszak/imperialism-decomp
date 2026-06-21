@@ -10,6 +10,4 @@ CRuntimeClass* TCloseParentButton::GetRuntimeClass() const {
 TCloseParentButton::~TCloseParentButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584d30
-undefined TCloseParentButton::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TCloseParentButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

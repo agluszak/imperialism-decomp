@@ -14,9 +14,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005779c0
-undefined TSetupRandomMapPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00577e40
 undefined TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4() {

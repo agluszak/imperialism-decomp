@@ -659,14 +659,6 @@ undefined4 CreateEngineerDialog(void)
   return 0;
 }
 
-// ghidra_name TDeluxeText::BuildCityViewProductionControls
-// ghidra_proto void __thiscall BuildCityViewProductionControls(short nBuildingSlotId)
-// FUNCTION: IMPERIALISM 0x004d0810
-undefined4 BuildCityViewProductionControls(void)
-{
-  return 0;
-}
-
 // ghidra_name TPlaceCityDialog::CreateTPlaceCityDialogInstance
 // ghidra_proto undefined CreateTPlaceCityDialogInstance()
 // FUNCTION: IMPERIALISM 0x004d1760
@@ -1039,14 +1031,6 @@ undefined4 thunk_DestructCObArray_004D65F0(void)
 // ghidra_proto undefined InitializeObArrayVtable653810ModeField()
 // FUNCTION: IMPERIALISM 0x004d6610
 undefined4 InitializeObArrayVtable653810ModeField(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GenerateThreadLocalRandom15_At004d6630
-// ghidra_proto undefined WrapperFor_GenerateThreadLocalRandom15_At004d6630()
-// FUNCTION: IMPERIALISM 0x004d6630
-undefined4 WrapperFor_GenerateThreadLocalRandom15_At004d6630(void)
 {
   return 0;
 }

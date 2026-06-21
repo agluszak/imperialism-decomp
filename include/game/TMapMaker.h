@@ -27,7 +27,7 @@ public:
   virtual int QueryStepValue() override; // slot 0x0c 0x527040
   virtual void vmethod_0013(int* cmd) override; // slot 0x0d 0x527300
   virtual void vmethod_0014(int command) override; // slot 0x0e 0x5275a0
-  virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x0f 0x527730
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00527730
   virtual undefined DispatchUiCommandToHandler() override; // slot 0x10 0x5274d0
   virtual void vmethod_0017(int param) override; // slot 0x11 0x528e50
   virtual void ForwardParam(int param) override; // slot 0x12 0x5283c0

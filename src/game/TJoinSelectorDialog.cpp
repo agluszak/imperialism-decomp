@@ -14,6 +14,4 @@ void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0
-undefined TJoinSelectorDialog::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TJoinSelectorDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

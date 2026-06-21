@@ -52,6 +52,5 @@ void TCombatReportView::HandleEvent(int commandId, TEventHandler* sourceHandler,
   TControl::HandleEvent(commandId, sourceHandler, event);
 }
 
-undefined TCombatReportView::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 TCombatReportView::~TCombatReportView() {}

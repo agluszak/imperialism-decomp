@@ -14,6 +14,4 @@ void TTacticalAdiosPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ad650
-undefined TTacticalAdiosPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTacticalAdiosPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

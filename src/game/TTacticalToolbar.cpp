@@ -28,6 +28,4 @@ undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
 }
 
 // FUNCTION: IMPERIALISM 0x005acf90
-undefined TTacticalToolbar::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -106,9 +106,7 @@ char TTechStorePage::CanHandleCityDialogActionFalse() {
 
 
 // FUNCTION: IMPERIALISM 0x00606cf9
-undefined TTechStorePage::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTechStorePage::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 
 // FUNCTION: IMPERIALISM 0x00606cff

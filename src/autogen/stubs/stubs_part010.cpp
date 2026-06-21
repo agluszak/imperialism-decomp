@@ -1795,14 +1795,6 @@ undefined4 CreateTTEViewInstance(void)
   return 0;
 }
 
-// ghidra_name TTEView::GetTTEViewClassNamePointer
-// ghidra_proto undefined GetTTEViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00486030
-undefined4 GetTTEViewClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTEView::ConstructTTEViewBaseState
 // ghidra_proto undefined ConstructTTEViewBaseState()
 // FUNCTION: IMPERIALISM 0x00486050
@@ -1867,14 +1859,6 @@ undefined4 WrapperFor_AllocateWithFallbackHandler_At00486320(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00486350
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00486350()
-// FUNCTION: IMPERIALISM 0x00486350
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00486350(void)
-{
-  return 0;
-}
-
 // ghidra_name TDocument::CreateTDocumentInstance
 // ghidra_proto undefined CreateTDocumentInstance()
 // FUNCTION: IMPERIALISM 0x00486380
@@ -1883,34 +1867,10 @@ undefined4 CreateTDocumentInstance(void)
   return 0;
 }
 
-// ghidra_name TDocument::GetTDocumentClassNamePointer
-// ghidra_proto undefined GetTDocumentClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004863a0
-undefined4 GetTDocumentClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TFileBasedDocument::CreateTFileBasedDocumentInstance
 // ghidra_proto undefined CreateTFileBasedDocumentInstance()
 // FUNCTION: IMPERIALISM 0x00486420
 undefined4 CreateTFileBasedDocumentInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00486530
-// ghidra_proto undefined OrphanRetStub_00486530()
-// FUNCTION: IMPERIALISM 0x00486530
-undefined4 OrphanRetStub_00486530(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00486550
-// ghidra_proto undefined OrphanRetStub_00486550()
-// FUNCTION: IMPERIALISM 0x00486550
-undefined4 OrphanRetStub_00486550(void)
 {
   return 0;
 }
@@ -2107,22 +2067,6 @@ undefined4 Helper_Uses_CPtrArray_ctor_At00488030(void)
   return 0;
 }
 
-// ghidra_name CompareUnsignedIntsAscending
-// ghidra_proto undefined CompareUnsignedIntsAscending()
-// FUNCTION: IMPERIALISM 0x00488360
-undefined4 CompareUnsignedIntsAscending(void)
-{
-  return 0;
-}
-
-// ghidra_name TCommand::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00488390
-undefined4 ScalarDeletingDestructor_00488390(void)
-{
-  return 0;
-}
-
 // ghidra_name CObArray::thunk_DestructCObArray
 // ghidra_proto undefined thunk_DestructCObArray()
 // FUNCTION: IMPERIALISM 0x004883c0
@@ -2171,98 +2115,10 @@ undefined4 CreateTStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name TStream::GetTStreamClassNamePointer
-// ghidra_proto undefined GetTStreamClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004889d0
-undefined4 GetTStreamClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TStream::ConstructTStreamBaseState
-// ghidra_proto undefined ConstructTStreamBaseState()
-// FUNCTION: IMPERIALISM 0x00488a10
-undefined4 ConstructTStreamBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TStream::DestructTStreamAndMaybeFree
 // ghidra_proto undefined DestructTStreamAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x00488a40
 undefined4 DestructTStreamAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_ReturnZero_00488ad0
-// ghidra_proto undefined OrphanTiny_ReturnZero_00488ad0()
-// FUNCTION: IMPERIALISM 0x00488ad0
-undefined4 OrphanTiny_ReturnZero_00488ad0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_ReturnZero_00488af0
-// ghidra_proto undefined OrphanTiny_ReturnZero_00488af0()
-// FUNCTION: IMPERIALISM 0x00488af0
-undefined4 OrphanTiny_ReturnZero_00488af0(void)
-{
-  return 0;
-}
-
-// ghidra_name AssertMcAppStreamLine304
-// ghidra_proto undefined AssertMcAppStreamLine304()
-// FUNCTION: IMPERIALISM 0x00488b10
-undefined4 AssertMcAppStreamLine304(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
-// ghidra_proto undefined Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50()
-// FUNCTION: IMPERIALISM 0x00488c50
-undefined4 Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(void)
-{
-  return 0;
-}
-
-// ghidra_name AssertMcAppStreamLine596
-// ghidra_proto undefined AssertMcAppStreamLine596()
-// FUNCTION: IMPERIALISM 0x00488e00
-undefined4 AssertMcAppStreamLine596(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00488e30
-// ghidra_proto undefined OrphanRetStub_00488e30()
-// FUNCTION: IMPERIALISM 0x00488e30
-undefined4 OrphanRetStub_00488e30(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00488e50
-// ghidra_proto undefined OrphanRetStub_00488e50()
-// FUNCTION: IMPERIALISM 0x00488e50
-undefined4 OrphanRetStub_00488e50(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_00488e70
-// ghidra_proto undefined OrphanRetStub_00488e70()
-// FUNCTION: IMPERIALISM 0x00488e70
-undefined4 OrphanRetStub_00488e70(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I18_00488ff0
-// ghidra_proto undefined OrphanCallChain_C2_I18_00488ff0()
-// FUNCTION: IMPERIALISM 0x00488ff0
-undefined4 OrphanCallChain_C2_I18_00488ff0(void)
 {
   return 0;
 }
@@ -2303,22 +2159,6 @@ undefined4 CreateTHandleStreamWithAllocFallback(void)
 // ghidra_proto undefined AttachGlobalMemoryHandleAndResetPosition()
 // FUNCTION: IMPERIALISM 0x00489660
 undefined4 AttachGlobalMemoryHandleAndResetPosition(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins02_00489980
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins02_00489980()
-// FUNCTION: IMPERIALISM 0x00489980
-undefined4 OrphanLeaf_NoCall_Ins02_00489980(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_004899a0
-// ghidra_proto undefined OrphanRetStub_004899a0()
-// FUNCTION: IMPERIALISM 0x004899a0
-undefined4 OrphanRetStub_004899a0(void)
 {
   return 0;
 }
@@ -2403,14 +2243,6 @@ undefined4 CreateTEventInstance(void)
   return 0;
 }
 
-// ghidra_name TEvent::GetTEventClassNamePointer
-// ghidra_proto undefined GetTEventClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00489f40
-undefined4 GetTEventClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveUiListEntryByOwnerIdAndRecycleStorage
 // ghidra_proto undefined RemoveUiListEntryByOwnerIdAndRecycleStorage()
 // FUNCTION: IMPERIALISM 0x00489f90
@@ -2463,14 +2295,6 @@ undefined4 CreateTViewInstance(void)
 // ghidra_proto undefined InitializeUiResourceEntryFrameAndParent()
 // FUNCTION: IMPERIALISM 0x0048aa60
 undefined4 InitializeUiResourceEntryFrameAndParent(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0048ada0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0048ada0()
-// FUNCTION: IMPERIALISM 0x0048ada0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0048ada0(void)
 {
   return 0;
 }

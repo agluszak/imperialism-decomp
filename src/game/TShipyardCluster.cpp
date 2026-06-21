@@ -152,7 +152,6 @@ void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
   }
 }
 
-undefined TShipyardCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TShipyardCluster::OrphanRetStub_00586ff0(void) { return 0;}
 

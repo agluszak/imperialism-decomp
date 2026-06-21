@@ -147,7 +147,8 @@ public:
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
 
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // 0x0f 0x48e710
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;

@@ -14,6 +14,4 @@ void TGamePreferencesPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ae10
-undefined TGamePreferencesPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TGamePreferencesPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

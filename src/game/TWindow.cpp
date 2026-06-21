@@ -80,9 +80,7 @@ undefined TWindow::DispatchUiCommandToHandler() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dd50
-undefined TWindow::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x0048ddc0
 undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow * param_1) {

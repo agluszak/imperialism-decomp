@@ -23,6 +23,4 @@ undefined TGrantsView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
-undefined TGrantsView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TGrantsView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

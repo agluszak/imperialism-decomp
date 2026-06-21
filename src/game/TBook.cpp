@@ -14,6 +14,4 @@ void TBook::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056f5e0
-undefined TBook::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

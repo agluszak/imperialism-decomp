@@ -14,6 +14,4 @@ void TShipView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005658d0
-undefined TShipView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TShipView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

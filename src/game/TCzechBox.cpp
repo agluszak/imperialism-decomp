@@ -10,9 +10,7 @@ CRuntimeClass* TCzechBox::GetRuntimeClass() const {
 TCzechBox::~TCzechBox() {}
 
 // FUNCTION: IMPERIALISM 0x00571cb0
-undefined TCzechBox::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TCzechBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00571cf0
 void TCzechBox::NoOpUiLifecycleHook(int arg) {

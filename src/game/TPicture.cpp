@@ -11,8 +11,4 @@ TPicture::~TPicture() {}
 
 void TPicture::ApplyRectSlot110(RECT* rectBuffer) {}
 
-void TPicture::ResetPictureResourceEntry() {}
-
-void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}
-
 TObject* TPicture::ShallowClone() { return 0; }

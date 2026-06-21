@@ -26,7 +26,7 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x0f 0x597340
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00597340
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   virtual void vmethod_0017(int param) override; // slot 0x11 0x597600
   virtual void ForwardParam(int param) override; // slot 0x12 0x597770

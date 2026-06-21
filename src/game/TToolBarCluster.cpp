@@ -10,9 +10,7 @@ CRuntimeClass* TToolBarCluster::GetRuntimeClass() const {
 TToolBarCluster::~TToolBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584ea0
-undefined TToolBarCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback() {

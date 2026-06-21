@@ -10,6 +10,4 @@ CRuntimeClass* TDefenseMinisterView::GetRuntimeClass() const {
 TDefenseMinisterView::~TDefenseMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3370
-undefined TDefenseMinisterView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TDefenseMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -132,6 +132,5 @@ void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
   }
 }
 
-undefined TArmyPlacard::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 TArmyPlacard::~TArmyPlacard() {}

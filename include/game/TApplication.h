@@ -29,7 +29,7 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   virtual void vmethod_0013(int* cmd) override; // slot 0x0d 0x486b50
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  // slot 0x0f ForwardEngineerDialogCommandToChildSlot40 inherited unchanged (0x48a280)
+  // slot 0x0f HandleEvent inherited unchanged (0x48a280)
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   virtual void vmethod_0017(int param) override; // slot 0x11 0x486ba0
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)

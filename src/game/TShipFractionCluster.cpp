@@ -14,6 +14,4 @@ void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00568eb0
-undefined TShipFractionCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TShipFractionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

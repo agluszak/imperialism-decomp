@@ -10,6 +10,4 @@ CRuntimeClass* TTechItemView::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005b1e20
-undefined TTechItemView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTechItemView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

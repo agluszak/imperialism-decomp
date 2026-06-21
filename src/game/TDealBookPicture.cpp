@@ -20,6 +20,4 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
-undefined TDealBookPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

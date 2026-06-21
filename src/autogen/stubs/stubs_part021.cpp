@@ -3478,7 +3478,7 @@ undefined4 RunMfcThreadMessageLoopCore(void)
 // ghidra_name CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
 // ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 // FUNCTION: IMPERIALISM 0x00606451
-undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00606451(void)
+undefined4 OrphanLeaf_NoCall_Ins04_005adc30(void)
 {
   return 0;
 }
@@ -3566,7 +3566,7 @@ undefined4 GetCCmdTargetMessageMap(void)
 // ghidra_name CCmdTarget::`scalar deleting destructor'
 // ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00606cbe
-undefined4 ScalarDeletingDestructor_00606CBE(void)
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }

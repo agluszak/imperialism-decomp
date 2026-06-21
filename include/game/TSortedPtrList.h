@@ -13,6 +13,7 @@ public:
   short pad16;
 
   TSortedPtrList();
+  virtual ~TSortedPtrList();
   CRuntimeClass* GetRuntimeClass() const override;
   static TSortedPtrList* ConstructTSortedPtrListBaseState();
 };

@@ -23,6 +23,4 @@ undefined TTradePanelView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0
-undefined TTradePanelView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTradePanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

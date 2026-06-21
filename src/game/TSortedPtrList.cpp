@@ -18,6 +18,7 @@ TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
 
 // SYNTHETIC: IMPERIALISM 0x004884c0
 // TSortedPtrList::`scalar deleting destructor'
+TSortedPtrList::~TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x00488510
 CRuntimeClass* TSortedPtrList::GetRuntimeClass() const {

@@ -19,6 +19,4 @@ void TNominationView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004fb990
-undefined TNominationView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TNominationView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

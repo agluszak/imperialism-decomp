@@ -14,6 +14,4 @@ void TTradeBookView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005be370
-undefined TTradeBookView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTradeBookView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

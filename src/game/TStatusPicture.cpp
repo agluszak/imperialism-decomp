@@ -14,9 +14,7 @@ void TStatusPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005942f0
-undefined TStatusPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00594540
 void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {

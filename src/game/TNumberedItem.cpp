@@ -45,8 +45,6 @@ bool TNumberedItem::LogUnhandledDialogMethodAndReturnFalse() { return 0; }
 
 void TNumberedItem::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {}
 
-undefined TNumberedItem::ForwardEngineerDialogCommandToChildSlot40() { return 0; }
-
 void TNumberedItem::SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow) {}
 
 undefined TNumberedItem::SetCityProductionDialogPictureRectAndMaybeRefresh() { return 0; }

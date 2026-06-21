@@ -23,9 +23,7 @@ undefined TInfoPanelView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fad60
-undefined TInfoPanelView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TInfoPanelView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004fae00
 undefined TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(short param_1) {

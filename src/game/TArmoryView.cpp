@@ -15,9 +15,7 @@ undefined TArmoryView::OrphanRetStub_004c6fd0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004cf350
-undefined TArmoryView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TArmoryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004cf5c0
 undefined TArmoryView::OrphanRetStub_004c6fb0() {

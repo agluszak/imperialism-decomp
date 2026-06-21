@@ -37,9 +37,7 @@ void TMapMaker::vmethod_0014(int command) {
 }
 
 // FUNCTION: IMPERIALISM 0x00527730
-undefined TMapMaker::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMapMaker::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00527d00
 char TMapMaker::vmethod_0023() {

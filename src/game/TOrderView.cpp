@@ -20,6 +20,4 @@ undefined TOrderView::RefreshOrderViewSupplyAndUseControlValues() {
 }
 
 // FUNCTION: IMPERIALISM 0x00507240
-undefined TOrderView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TOrderView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

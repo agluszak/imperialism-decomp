@@ -197,7 +197,6 @@ void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
   this->ApplyMoveValue(moveValue - 1);
 }
 
-undefined TIndustryCluster::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 undefined TIndustryCluster::OrphanRetStub_00586ff0(void) { return 0;}
 

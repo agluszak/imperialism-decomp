@@ -244,6 +244,5 @@ void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
   dispatch(this);
 }
 
-undefined TCivToolbar::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 TCivToolbar::~TCivToolbar() {}

@@ -14,9 +14,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056cd10
-undefined TLoadSavePicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TLoadSavePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x0056d190
 undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {

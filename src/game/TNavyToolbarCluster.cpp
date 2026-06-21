@@ -10,9 +10,7 @@ CRuntimeClass* TNavyToolbarCluster::GetRuntimeClass() const {
 TNavyToolbarCluster::~TNavyToolbarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00569550
-undefined TNavyToolbarCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TNavyToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x005696d0
 int TNavyToolbarCluster::IsTradeControlAtMinimum() {

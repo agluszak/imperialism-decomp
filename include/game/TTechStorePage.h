@@ -26,7 +26,7 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  // slot 0x0f ForwardEngineerDialogCommandToChildSlot40 inherited unchanged (0x48a280)
+  // slot 0x0f HandleEvent inherited unchanged (0x48a280)
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -136,7 +136,7 @@ public:
   virtual undefined GetCityDialogValueDwordC() override; // slot 0x90 0x479460
   virtual undefined DispatchQueuedUiCommandAndRelease() override; // slot 0x91 0x606d09
   virtual undefined DispatchUiSelectionToHandler() override; // slot 0x92 0x606cac
-  virtual undefined ForwardEngineerDialogCommandToChildSlot40() override; // slot 0x93 0x606cf9
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x93 0x606cf9
   virtual undefined DispatchUiCommandToHandler() override; // slot 0x94 0x606cb8
   virtual undefined ForwardNotifyParamToPrimaryChildSlot44() override; // slot 0x95 0x606cb2
   virtual undefined ForwardCityDialogParamToChildSlot48() override; // slot 0x96 0x606cf0

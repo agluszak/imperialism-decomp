@@ -10,6 +10,4 @@ CRuntimeClass* TTradePolicyCluster::GetRuntimeClass() const {
 TTradePolicyCluster::~TTradePolicyCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584320
-undefined TTradePolicyCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTradePolicyCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

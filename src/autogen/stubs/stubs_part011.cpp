@@ -19,26 +19,10 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0048cad0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0048cad0()
-// FUNCTION: IMPERIALISM 0x0048cad0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0048cad0(void)
-{
-  return 0;
-}
-
 // ghidra_name TScroller::CreateTScrollerInstance
 // ghidra_proto undefined CreateTScrollerInstance()
 // FUNCTION: IMPERIALISM 0x0048cb00
 undefined4 CreateTScrollerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TScroller::GetTScrollerClassNamePointer
-// ghidra_proto undefined GetTScrollerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0048cb90
-undefined4 GetTScrollerClassNamePointer(void)
 {
   return 0;
 }
@@ -271,38 +255,6 @@ undefined4 TStaticText(void)
 // ghidra_proto undefined InitializeTextEntryBaseAndOptionalStringResource()
 // FUNCTION: IMPERIALISM 0x0048fd00
 undefined4 InitializeTextEntryBaseAndOptionalStringResource(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignTextSharedRefIfChangedAndMaybeInvalidate
-// ghidra_proto undefined AssignTextSharedRefIfChangedAndMaybeInvalidate()
-// FUNCTION: IMPERIALISM 0x0048fe60
-undefined4 AssignTextSharedRefIfChangedAndMaybeInvalidate(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadUiStringAndDispatchViaVslot1C8
-// ghidra_proto undefined LoadUiStringAndDispatchViaVslot1C8()
-// FUNCTION: IMPERIALISM 0x0048fed0
-undefined4 LoadUiStringAndDispatchViaVslot1C8(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_0048ff70
-// ghidra_proto undefined OrphanCallChain_C1_I09_0048ff70()
-// FUNCTION: IMPERIALISM 0x0048ff70
-undefined4 OrphanCallChain_C1_I09_0048ff70(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RenderControlStateTextBySelectionCode
-// ghidra_proto undefined RenderControlStateTextBySelectionCode()
-// FUNCTION: IMPERIALISM 0x004900a0
-undefined4 RenderControlStateTextBySelectionCode(void)
 {
   return 0;
 }
@@ -599,14 +551,6 @@ undefined4 WrapperFor_FreeLinkedBlockChain_At00492b00(void)
 // ghidra_proto undefined WrapperFor_StringSharedRef_AssignFromPtr_At00492b70()
 // FUNCTION: IMPERIALISM 0x00492b70
 undefined4 WrapperFor_StringSharedRef_AssignFromPtr_At00492b70(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00492c70
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00492c70()
-// FUNCTION: IMPERIALISM 0x00492c70
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492c70(void)
 {
   return 0;
 }
@@ -2427,34 +2371,10 @@ undefined4 CreateTurnEventPacket_Vtbl0064c130(void)
   return 0;
 }
 
-// ghidra_name ReinitializeGameFlowWithoutPostingTurnEvent
-// ghidra_proto undefined ReinitializeGameFlowWithoutPostingTurnEvent()
-// FUNCTION: IMPERIALISM 0x0049ddb0
-undefined4 ReinitializeGameFlowWithoutPostingTurnEvent(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0()
-// FUNCTION: IMPERIALISM 0x0049ddd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049ddd0(void)
-{
-  return 0;
-}
-
 // ghidra_name TNewGameCommand::CreateTNewGameCommandInstance
 // ghidra_proto undefined CreateTNewGameCommandInstance()
 // FUNCTION: IMPERIALISM 0x0049de00
 undefined4 CreateTNewGameCommandInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::GetTNewGameCommandClassNamePointer
-// ghidra_proto undefined GetTNewGameCommandClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0049de20
-undefined4 GetTNewGameCommandClassNamePointer(void)
 {
   return 0;
 }

@@ -19,9 +19,7 @@ undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
-undefined TOfferDeskPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TOfferDeskPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x005bf860
 void TOfferDeskPicture::ForwardParam(int param) {

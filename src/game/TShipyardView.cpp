@@ -24,9 +24,7 @@ undefined TShipyardView::OrphanRetStub_004c6fb0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
-undefined TShipyardView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x004c8d70
 void TShipyardView::InitializeCityViewActionButtons() {

@@ -195,26 +195,10 @@ undefined4 ClearNavyOrderMapMarker(void)
   return 0;
 }
 
-// ghidra_name TNavyMgr::GetTNavyMgrClassNamePointer
-// ghidra_proto undefined GetTNavyMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00556570
-undefined4 GetTNavyMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructNavyManager
 // ghidra_proto undefined ConstructNavyManager()
 // FUNCTION: IMPERIALISM 0x00556590
 undefined4 ConstructNavyManager(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyNavyManager
-// ghidra_proto undefined DestroyNavyManager()
-// FUNCTION: IMPERIALISM 0x005565c0
-undefined4 DestroyNavyManager(void)
 {
   return 0;
 }
@@ -235,14 +219,6 @@ undefined4 InitializeNavyOrderPriorityTables(void)
   return 0;
 }
 
-// ghidra_name ClearNavyOrderLists
-// ghidra_proto undefined ClearNavyOrderLists()
-// FUNCTION: IMPERIALISM 0x005567a0
-undefined4 ClearNavyOrderLists(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyNavyOrderAndChildren
 // ghidra_proto undefined DestroyNavyOrderAndChildren()
 // FUNCTION: IMPERIALISM 0x00556820
@@ -259,26 +235,10 @@ undefined4 ResetNavyOrderListsAndManagerOwner(void)
   return 0;
 }
 
-// ghidra_name SerializeNavyManager
-// ghidra_proto undefined SerializeNavyManager()
-// FUNCTION: IMPERIALISM 0x005568c0
-undefined4 SerializeNavyManager(void)
-{
-  return 0;
-}
-
 // ghidra_name SerializeNavyOrderListsByNation
 // ghidra_proto undefined SerializeNavyOrderListsByNation()
 // FUNCTION: IMPERIALISM 0x005568f0
 undefined4 SerializeNavyOrderListsByNation(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeNavyManager
-// ghidra_proto undefined DeserializeNavyManager()
-// FUNCTION: IMPERIALISM 0x00556aa0
-undefined4 DeserializeNavyManager(void)
 {
   return 0;
 }
@@ -483,14 +443,6 @@ undefined4 WrapperFor_ftol_At0055b640(void)
   return 0;
 }
 
-// ghidra_name DestroyTNewsMgr
-// ghidra_proto undefined DestroyTNewsMgr()
-// FUNCTION: IMPERIALISM 0x0055b6a0
-undefined4 DestroyTNewsMgr(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTNewsMgrToSentinelVtable
 // ghidra_proto undefined ResetTNewsMgrToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0055b6d0
@@ -499,42 +451,10 @@ undefined4 ResetTNewsMgrToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TNewsMgr::GetTNewsMgrClassNamePointer
-// ghidra_proto undefined GetTNewsMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0055b6f0
-undefined4 GetTNewsMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TIndexAndRankList::InitializeInterNationEventQueueManager
 // ghidra_proto undefined InitializeInterNationEventQueueManager()
 // FUNCTION: IMPERIALISM 0x0055b710
 undefined4 InitializeInterNationEventQueueManager(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries
-// ghidra_proto undefined DestroyTNewsMgrAndReleaseHeadlineEntries()
-// FUNCTION: IMPERIALISM 0x0055b820
-undefined4 DestroyTNewsMgrAndReleaseHeadlineEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeNewsMgrNoOpSlot18
-// ghidra_proto undefined DeserializeNewsMgrNoOpSlot18()
-// FUNCTION: IMPERIALISM 0x0055b8a0
-undefined4 DeserializeNewsMgrNoOpSlot18(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeNewsMgrNoOpSlot14
-// ghidra_proto undefined SerializeNewsMgrNoOpSlot14()
-// FUNCTION: IMPERIALISM 0x0055b8c0
-undefined4 SerializeNewsMgrNoOpSlot14(void)
 {
   return 0;
 }
@@ -1491,26 +1411,10 @@ undefined4 CreateTTwoPicSliderInstance(void)
   return 0;
 }
 
-// ghidra_name TTwoPicSlider::GetTTwoPicSliderClassNamePointer
-// ghidra_proto undefined GetTTwoPicSliderClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0056e1e0
-undefined4 GetTTwoPicSliderClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTwoPicSlider::ConstructTTwoPicSliderBaseState
 // ghidra_proto undefined ConstructTTwoPicSliderBaseState()
 // FUNCTION: IMPERIALISM 0x0056e200
 undefined4 ConstructTTwoPicSliderBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTwoPicSlider::DestructTTwoPicSliderAndMaybeFree
-// ghidra_proto undefined DestructTTwoPicSliderAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0056e2f0
-undefined4 DestructTTwoPicSliderAndMaybeFree(void)
 {
   return 0;
 }
@@ -1539,26 +1443,10 @@ undefined4 WrapperFor_ftol_At0056f330(void)
   return 0;
 }
 
-// ghidra_name TLineData::GetTLineDataClassNamePointer
-// ghidra_proto undefined GetTLineDataClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0056f390
-undefined4 GetTLineDataClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TLineData::ConstructTLineDataBaseState
 // ghidra_proto undefined ConstructTLineDataBaseState()
 // FUNCTION: IMPERIALISM 0x0056f3b0
 undefined4 ConstructTLineDataBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::DestructTLineDataAndMaybeFree
-// ghidra_proto undefined DestructTLineDataAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0056f3d0
-undefined4 DestructTLineDataAndMaybeFree(void)
 {
   return 0;
 }
@@ -1575,22 +1463,6 @@ undefined4 DestructTLineDataAndMaybeFree_Impl(void)
 // ghidra_proto undefined SetLineDataRowAndBounds()
 // FUNCTION: IMPERIALISM 0x0056f420
 undefined4 SetLineDataRowAndBounds(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0056f460
-// ghidra_proto undefined OrphanRetStub_0056f460()
-// FUNCTION: IMPERIALISM 0x0056f460
-undefined4 OrphanRetStub_0056f460(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0056f480
-// ghidra_proto undefined OrphanRetStub_0056f480()
-// FUNCTION: IMPERIALISM 0x0056f480
-undefined4 OrphanRetStub_0056f480(void)
 {
   return 0;
 }

@@ -14,6 +14,4 @@ void TNetGameSelectPicture::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00576bc0
-undefined TNetGameSelectPicture::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TNetGameSelectPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

@@ -10,6 +10,4 @@ CRuntimeClass* TMapEditCluster::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005b2970
-undefined TMapEditCluster::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TMapEditCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

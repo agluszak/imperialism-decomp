@@ -161,6 +161,5 @@ undefined TToggleButton::HandleToggleButtonStateChangeAndRefresh() {
   return 0;
 }
 
-undefined TToggleButton::ForwardEngineerDialogCommandToChildSlot40(void) { return 0;}
 
 TToggleButton::~TToggleButton() {}

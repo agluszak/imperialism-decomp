@@ -23,6 +23,4 @@ undefined TTreatiesView::OrphanRetStub_00430550() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
-undefined TTreatiesView::ForwardEngineerDialogCommandToChildSlot40() {
-  return 0;
-}
+void TTreatiesView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
