@@ -76,6 +76,5 @@ void THandleStream::WriteBytesSlot78(void* data, int length) {
 undefined THandleStream::OrphanRetStub_00488e70(void) { return 0; }
 undefined THandleStream::OrphanTiny_ReturnZero_00488ad0(void) { return 0; }
 undefined THandleStream::OrphanTiny_ReturnZero_00488af0(void) { return 0; }
-void THandleStream::streamSlot1c(void) {}
 void THandleStream::streamSlot2c(void) {}
 void THandleStream::streamSlot34(void) {}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/TObject.h"
 #include "game/mfc.h"
 
 // Mac: TStream — serialization byte stream (ReadBytes, ReadInteger, WriteObjectSize, …).
@@ -14,14 +15,12 @@
 // pending their dedicated port; they are honest defaults, not matched yet.
 //
 // VTABLE: IMPERIALISM 0x00649140
-class TStream : public CObject {
+class TStream : public TObject {
 public:
   virtual ~TStream();
-  virtual void streamSlot14();                            // 5 (0x14)  TODO: shared-NoOp default
-  virtual void streamSlot18();                            // 6 (0x18)  TODO
-  virtual void streamSlot1c();                            // 7 (0x1c)  TODO: 0x00488ab0
-  virtual void streamSlot20();                            // 8 (0x20)  TODO
-  virtual void streamSlot24();                            // 9 (0x24)  TODO
+  // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
+  // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
+  void Free() override;                                   // 7 (0x1c)  0x00488ab0
   virtual int streamSlot28();                             // 10 (0x28) TODO (read by streamSlot38)
   virtual void streamSlot2c();                            // 11 (0x2c) TODO
   virtual int streamSlot30();                             // 12 (0x30) TODO (read by streamSlot38)

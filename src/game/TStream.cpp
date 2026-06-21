@@ -11,8 +11,6 @@
 // below — and the concrete stream subclasses — can be instantiated.
 // ---------------------------------------------------------------------------
 TStream::~TStream() {}
-void TStream::streamSlot14() {} // TODO: shared-NoOp default
-void TStream::streamSlot18() {} // TODO
 
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::streamSlot38() {
@@ -20,9 +18,7 @@ char TStream::streamSlot38() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488ab0
-void TStream::streamSlot1c() {} // TODO: 0x00488ab0
-void TStream::streamSlot20() {} // TODO
-void TStream::streamSlot24() {} // TODO
+void TStream::Free() {} // slot 0x1c override
 int TStream::streamSlot28() {
   return 0;
 } // TODO
