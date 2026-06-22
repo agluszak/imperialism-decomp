@@ -137,6 +137,12 @@ gen-vtable-slot-overrides *args: _require-ghidra-install
 propagate-virtual-method-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.propagate_virtual_method_names {{args}}
 
+# Name + expand a class's <Class>Vtbl struct from its recovered header slot map so
+# virtual dispatches through that class decompile as obj->vftable->Method(...).
+# Dry-run by default; pass --apply to write to the Ghidra DB.
+name-vtable-slots *args: _require-ghidra-install
+  uv run python -m tools.ghidra.name_vtable_slots {{args}}
+
 ghidra-vtable-struct-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_struct_check {{args}}
 
