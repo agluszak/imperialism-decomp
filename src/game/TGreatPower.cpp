@@ -560,11 +560,6 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
   return reinterpret_cast<int*>(&self->ownerNationSlot);
 }
 
-// FUNCTION: IMPERIALISM 0x004daf00
-void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004d8950
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
   void* instance = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x964));
@@ -1334,6 +1329,11 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
   return found;
 }
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004daf00
+void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
+  return;
+}
 
 // FUNCTION: IMPERIALISM 0x004daf30
 void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void) {

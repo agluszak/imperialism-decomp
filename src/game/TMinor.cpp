@@ -879,6 +879,14 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004e6040
+void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(void) {
+}
+
+// FUNCTION: IMPERIALISM 0x004e6150
+void TMinor::ReassignUnitOrdersForCountryTargetChange(void) {
+}
+
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
@@ -891,14 +899,6 @@ void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
     this->ownedRegionList->AddTailSlot30(reinterpret_cast<void*>(regionId));
   }
-}
-
-// FUNCTION: IMPERIALISM 0x004e6040
-void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(void) {
-}
-
-// FUNCTION: IMPERIALISM 0x004e6150
-void TMinor::ReassignUnitOrdersForCountryTargetChange(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e6520

@@ -127,11 +127,6 @@ scan-cdecl-thiscall *args: _require-ghidra-install
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
-# Stage 0: batch-dump per-class manifests (config/classes/<Class>.yml) from the
-# Ghidra DB. Read-only and idempotent; the generated: region is refreshed while
-# any curated: region is preserved. Pass --only Name / --limit N to scope.
-dump-manifests *args: _require-ghidra-install
-  uv run python -m tools.ghidra.dump_class_manifests {{args}}
 
 # One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
 # parameters in the DB, so after `just sync-ghidra` + autogen regen no `in_stack_*`
@@ -145,45 +140,6 @@ fix-in-stack-params *args: _require-ghidra-install
 dump-thunk-map *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
-# Idempotent, manifest-driven class generator. From config/classes/<Class>.yml it
-# scaffolds a new header/cpp (or refreshes the marked GENERATED block of an existing
-# one), inserts the GENERATED DECLS virtual declarations, promotes + shapes slot
-# bodies from ghidra_autogen, and merges the symbols/ownership CSV rows — without
-# touching hand-owned decls/docs/bodies. Dry-run by default; pass --write to apply.
-gen-class class *args:
-  uv run python -m tools.workflow.gen_class "{{class}}" {{args}}
-
-# Batch shape-only generation: run gen-class --no-bodies across every eligible
-# headerless game-class manifest (skips MFC C*, Family_*, unresolvable-base, and
-# vtable/ownership collisions). Emits headers + vtable shapes + compilable stubs;
-# function bodies are deferred to a later per-class decomp-loop pass. Dry-run by
-# default; pass --write to apply. After --write: sync-ownership, regen-stubs, build.
-gen-classes *args:
-  uv run python -m tools.workflow.gen_classes_batch {{args}}
-
-# Gate: every header with a GENERATED block must match a fresh render of its
-# manifest (no drift), and the class's // VTABLE: address must match the manifest.
-manifest-gate *args:
-  uv run python -m tools.workflow.check_manifest_consistency {{args}}
-
-# Orchestrator: drive one class through the full manifest-based recovery loop —
-# refresh its manifest from Ghidra, regenerate its header block (or scaffold a new
-# class), wire ownership, rebuild, detect, report the vtable score + the human-TODO
-# list, and run the gates. The vtable score is informational (won't abort the loop).
-recover-class class: _require-ghidra-install
-  #!/usr/bin/env bash
-  set -euo pipefail
-  just dump-manifests --only "{{class}}"
-  just dump-thunk-map
-  just gen-class "{{class}}" --write
-  just sync-ownership
-  just regen-stubs
-  just build
-  just detect
-  echo "=== vtable {{class}} (informational) ==="
-  just vtable "{{class}}" || true
-  uv run python -m tools.workflow.gen_class "{{class}}" --todo
-  just gates
 
 # Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
 # manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
@@ -278,6 +234,7 @@ tgreatpower-gate-update:
 # Run `just format-check <touched paths>` separately on files you edited; the tree
 # is not fully clang-formatted, so format-check is per-path, not whole-tree.
 gates:
+  just vtable
   just vtable-gate
   just antipattern-gate
   just tgreatpower-gate
@@ -286,7 +243,6 @@ gates:
   just vtable-collision-gate
   just field-layout-gate
   just synthetic-gate
-  just manifest-gate
   just decomplint
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)

@@ -60,6 +60,16 @@ void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
 #pragma optimize("y", on)
 #endif
 
+// FUNCTION: IMPERIALISM 0x00519af0
+short TWorldView::QueryMinusOneWordSlot77() {
+  return -1;
+}
+
+// FUNCTION: IMPERIALISM 0x00594fc0
+void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
+  (void)arg1;
+}
+
 // FUNCTION: IMPERIALISM 0x00594fe0
 CRuntimeClass* TWorldView::GetRuntimeClass() const {
   return 0;
@@ -92,81 +102,6 @@ void TWorldView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
 // FUNCTION: IMPERIALISM 0x005958b0
 void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
-}
-
-// FUNCTION: IMPERIALISM 0x00596100
-char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  int overlayRecord = reinterpret_cast<int>(point);
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-
-  QuickDrawSurfaceGuard surface;
-
-  short tileRow = 0;
-  unsigned short tileCol = 0;
-  short regionBand = 0;
-  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      &tileRow, reinterpret_cast<short*>(&tileCol));
-
-  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
-      (int)tileRow, (int)tileCol);
-  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return 1;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
-    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
-    return 1;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return 1;
-  }
-
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
-    HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
-    return 1;
-  }
-
-  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
-  return 1;
-}
-
-// FUNCTION: IMPERIALISM 0x00519af0
-short TWorldView::QueryMinusOneWordSlot77() {
-  return -1;
-}
-
-// FUNCTION: IMPERIALISM 0x00596680
-undefined TWorldView::OrphanRetStub_00596680() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005966a0
-undefined TWorldView::OrphanRetStub_005966a0() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005966c0
-undefined TWorldView::OrphanRetStub_005966c0() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005966e0
-undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00596700
-void TWorldView::OrphanCallChain_C6_I29_00596700() {}
-
-// FUNCTION: IMPERIALISM 0x00594fc0
-void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x00595c40
@@ -340,6 +275,48 @@ void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, i
   (void)arg5;
 }
 
+// FUNCTION: IMPERIALISM 0x00596100
+char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  int overlayRecord = reinterpret_cast<int>(point);
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+
+  QuickDrawSurfaceGuard surface;
+
+  short tileRow = 0;
+  unsigned short tileCol = 0;
+  short regionBand = 0;
+  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
+  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
+      &tileRow, reinterpret_cast<short*>(&tileCol));
+
+  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
+      (int)tileRow, (int)tileCol);
+  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
+    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    return 1;
+  }
+
+  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
+    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
+    return 1;
+  }
+
+  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
+    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    return 1;
+  }
+
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
+    HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
+    return 1;
+  }
+
+  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00596270
 void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) {
   (void)stridedRecord;
@@ -418,3 +395,26 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   (void)nTileIndex;
   (void)nInputFlags;
 }
+
+// FUNCTION: IMPERIALISM 0x00596680
+undefined TWorldView::OrphanRetStub_00596680() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005966a0
+undefined TWorldView::OrphanRetStub_005966a0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005966c0
+undefined TWorldView::OrphanRetStub_005966c0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005966e0
+undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00596700
+void TWorldView::OrphanCallChain_C6_I29_00596700() {}

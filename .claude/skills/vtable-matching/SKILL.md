@@ -11,15 +11,8 @@ pairs with the original's slot**. This is distinct from *recovering* the layout 
 `quality-control`). Hard Rules + the calling-convention guardrail are in `AGENTS.md`;
 deep tactics in `decomp-loop/heuristics.md` (#4, #7, #8).
 
-**Start from the manifest / `just recover-class <Class>`.** The orchestrator
-refreshes `config/classes/<Class>.yml`, regenerates the header block, rebuilds, and
-prints the vtable score + a TODO list (unnamed slots, unported bodies). The manifest
-already has the resolved slot table (`generated.slots`: `target`/`kind`/`is_thunk`,
-in slot order) with the class+base diff baked into `kind`; read the slots there
-instead of re-deriving by hand, and record the semantic name / new-vs-reused-base
-judgment in `curated.slots`. `just gen-class <Class> --write` keeps the header's
-generated block in sync; `just manifest-gate` fails on drift. See `class-recovery`
-for the manifest schema.
+**Start by building and comparing the class.** Run `just build` followed by `just vtable <Class>` to see the current status of the vtable slot-by-slot. The diff output highlights mismatching slots, missing functions, or extra slots.
+
 
 ## Mechanics you must internalize
 

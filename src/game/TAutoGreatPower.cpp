@@ -161,80 +161,6 @@ void TAutoGreatPower::Free(void) {
 }
 
 
-// FUNCTION: IMPERIALISM 0x004e7510
-void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  if (g_pLocalizationTable->redrawEnabled != 0) {
-    // TEMP: 0x0054a340 is a thiscall on g_pGameFlowState (0x6a43c8); model it as a
-    // real method once the game-flow event sink class is recovered.
-    reinterpret_cast<void(__stdcall*)(int, int, int)>(thunk_DispatchTaggedGameStateEvent1F20)(
-        0x6c6f7374, this->nationSlot, -3);
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e7550
-void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
-  if (this->city != 0) {
-    this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e7590
-void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
-  if (this->city != 0) {
-    this->interiorMinister->Call54();
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e75c0
-undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0(int) {
-  return 0;
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e7680
-void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) {
-  if (g_apNationStates[static_cast<short>(sourceNation)]->diplomacyEligibilityA0 != 0) {
-    if (static_cast<short>(needSlot) != 5) {
-      short relationScore = g_pDiplomacyTurnStateManager
-                                ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
-                                                                 static_cast<short>(sourceNation)];
-      double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
-      int roll = GenerateThreadLocalRandom15();
-      if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
-        this->OrphanCallChain_C4_I28_004e75c0(needSlot);
-      }
-      return;
-    }
-  } else if (static_cast<short>(needSlot) != 5) {
-    short metricCap = 10;
-    if (this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot)) < 10) {
-      metricCap = this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot));
-    }
-    if (this->tradeCapacity < metricCap) {
-      metricCap = this->tradeCapacity;
-    }
-    if (this->QueryNationMetricBySlot7C(static_cast<short>(needSlot)) == -1) {
-      return;
-    }
-    this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
-    return;
-  }
-  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 &&
-      this->QueryNationMetricBySlot7C(5) != -1) {
-    short metric = this->GetDiplomacyExternalStateB6ByTarget(5);
-    int assignAmount = (metric != 1) + 1;
-    if (this->tradeCapacity < static_cast<short>(assignAmount)) {
-      assignAmount = this->tradeCapacity;
-    }
-    this->SetDiplomacyState1c6ClampedToCounterA4(5, static_cast<short>(assignAmount));
-  }
-}
-
-
 // FUNCTION: IMPERIALISM 0x004e72c0
 void TAutoGreatPower::ReadFrom(TStream* stream) {
   TGreatPower::ReadFrom(stream);
@@ -308,6 +234,42 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+#pragma optimize("y", on)
+
+
+// FUNCTION: IMPERIALISM 0x004e7510
+void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
+  if (g_pLocalizationTable->redrawEnabled != 0) {
+    // TEMP: 0x0054a340 is a thiscall on g_pGameFlowState (0x6a43c8); model it as a
+    // real method once the game-flow event sink class is recovered.
+    reinterpret_cast<void(__stdcall*)(int, int, int)>(thunk_DispatchTaggedGameStateEvent1F20)(
+        0x6c6f7374, this->nationSlot, -3);
+  }
+}
+
+
+// FUNCTION: IMPERIALISM 0x004e7550
+void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
+  if (this->city != 0) {
+    this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
+  }
+}
+
+
+// FUNCTION: IMPERIALISM 0x004e7590
+void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
+  if (this->city != 0) {
+    this->interiorMinister->Call54();
+  }
+}
+
+
+// FUNCTION: IMPERIALISM 0x004e75c0
+undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0(int) {
+  return 0;
+}
+#pragma optimize("", on)
 
 
 // FUNCTION: IMPERIALISM 0x004e7630
@@ -320,6 +282,48 @@ void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourc
 
   TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(resourceIndex, delta, multiplier);
 }
+#pragma optimize("y", on)
+
+
+// FUNCTION: IMPERIALISM 0x004e7680
+void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) {
+  if (g_apNationStates[static_cast<short>(sourceNation)]->diplomacyEligibilityA0 != 0) {
+    if (static_cast<short>(needSlot) != 5) {
+      short relationScore = g_pDiplomacyTurnStateManager
+                                ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
+                                                                 static_cast<short>(sourceNation)];
+      double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
+      int roll = GenerateThreadLocalRandom15();
+      if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
+        this->OrphanCallChain_C4_I28_004e75c0(needSlot);
+      }
+      return;
+    }
+  } else if (static_cast<short>(needSlot) != 5) {
+    short metricCap = 10;
+    if (this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot)) < 10) {
+      metricCap = this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot));
+    }
+    if (this->tradeCapacity < metricCap) {
+      metricCap = this->tradeCapacity;
+    }
+    if (this->QueryNationMetricBySlot7C(static_cast<short>(needSlot)) == -1) {
+      return;
+    }
+    this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
+    return;
+  }
+  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 &&
+      this->QueryNationMetricBySlot7C(5) != -1) {
+    short metric = this->GetDiplomacyExternalStateB6ByTarget(5);
+    int assignAmount = (metric != 1) + 1;
+    if (this->tradeCapacity < static_cast<short>(assignAmount)) {
+      assignAmount = this->tradeCapacity;
+    }
+    this->SetDiplomacyState1c6ClampedToCounterA4(5, static_cast<short>(assignAmount));
+  }
+}
+#pragma optimize("", on)
 
 
 // FUNCTION: IMPERIALISM 0x004e7810
@@ -359,13 +363,6 @@ void TAutoGreatPower::ResetField900FromNeedCapA6(void) {
 }
 
 
-// FUNCTION: IMPERIALISM 0x004e7990
-void TAutoGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  this->foreignMinister->Call90();
-  this->foreignMinister->Call94();
-}
-
-
 // FUNCTION: IMPERIALISM 0x004e7910
 void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2() {
 }
@@ -383,6 +380,13 @@ void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {
 
 // FUNCTION: IMPERIALISM 0x004e7970
 void TAutoGreatPower::SnapshotDiplomacyState1c6Into250(void) {}
+
+
+// FUNCTION: IMPERIALISM 0x004e7990
+void TAutoGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
+  this->foreignMinister->Call90();
+  this->foreignMinister->Call94();
+}
 
 
 // FUNCTION: IMPERIALISM 0x004e79d0
@@ -423,6 +427,14 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 }
 
 
+// FUNCTION: IMPERIALISM 0x004e7af0
+void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
+  if (this->city != 0) {
+    this->foreignMinister->Call58();
+  }
+}
+
+
 // FUNCTION: IMPERIALISM 0x004e7b20
 bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
   return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
@@ -454,23 +466,6 @@ void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCo
 }
 
 
-// FUNCTION: IMPERIALISM 0x004e7c50
-void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
-  if (actionCode == 0x131) {
-    this->SetCandidateNationFlagAndPortZoneState(static_cast<short>(sourceNation));
-  }
-  TGreatPower::NotifyActionSlot94(sourceNation, actionCode);
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e7af0
-void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
-  if (this->city != 0) {
-    this->foreignMinister->Call58();
-  }
-}
-
-
 // FUNCTION: IMPERIALISM 0x004e7be0
 void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   if (this->city == 0) {
@@ -492,6 +487,15 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+
+// FUNCTION: IMPERIALISM 0x004e7c50
+void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
+  if (actionCode == 0x131) {
+    this->SetCandidateNationFlagAndPortZoneState(static_cast<short>(sourceNation));
+  }
+  TGreatPower::NotifyActionSlot94(sourceNation, actionCode);
+}
 
 
 // FUNCTION: IMPERIALISM 0x004e7ca0
@@ -681,6 +685,70 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
 }
 
 
+// FUNCTION: IMPERIALISM 0x004e9a50
+void TAutoGreatPower::NoOpSlotA2(void) {
+  if (this->city == 0) {
+    return;
+  }
+
+  // TEMP: 0x004e92b0 (PopulateCase16AdvisoryMapNodeCandidateState) is still an
+  // autogen stub; call it through the generic thunk declaration until it is ported.
+  PopulateCase16AdvisoryMapNodeCandidateState();
+
+  int bestNodeIndex = -1;
+  float bestNodeScore = 0.0f;
+
+  for (int nodeIndex = 0; nodeIndex < 0x180; ++nodeIndex) {
+    if (this->mapNodeStateFlags[nodeIndex] != 1) {
+      continue;
+    }
+
+    float nodeScore = this->ComputeMapActionContextCompositeScoreForNation(nodeIndex);
+    if (bestNodeIndex < 0 || nodeScore > bestNodeScore) {
+      bestNodeIndex = nodeIndex;
+      bestNodeScore = nodeScore;
+    }
+  }
+
+  if (bestNodeIndex < 0) {
+    return;
+  }
+
+  this->QueueMapActionMissionFromCandidateAndMarkState(3, bestNodeIndex, 0, -1);
+
+  int strongestNation = -1;
+  int strongestNeed = 0;
+  for (int nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
+    int needValue = static_cast<int>(this->needLevelByNation[nationSlot]);
+    if (needValue > strongestNeed) {
+      strongestNeed = needValue;
+      strongestNation = nationSlot;
+    }
+  }
+
+  if (strongestNation >= 0 && strongestNation != this->nationSlot) {
+    this->QueueInterNationEventType0FForNationPairContext(static_cast<short>(strongestNation),
+                                                          this->nationSlot);
+  }
+}
+
+
+// FUNCTION: IMPERIALISM 0x004e9ed0
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
+                                                                            int policyCode,
+                                                                            int sourceNationSlot) {
+  this->SetCandidateNationFlagAndPortZoneState(targetNationSlot);
+  TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNationSlot, policyCode,
+                                                                    sourceNationSlot);
+}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
+
 // FUNCTION: IMPERIALISM 0x004e9f10
 char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   char anyActive = 0;
@@ -764,6 +832,23 @@ void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
 }
 
 
+// FUNCTION: IMPERIALISM 0x004ea150
+void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
+  TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(targetNationSlot);
+
+  int i = 0;
+  for (i = 0; i < 6; ++i) {
+    this->actionMetricByQuarter[i] = 0;
+  }
+  for (i = 0; i < kMapNodeCount; ++i) {
+    this->mapNodeStateFlags[i] = 0;
+  }
+  for (i = 0; i < kPortZoneCount; ++i) {
+    this->portZoneStateFlags[i] = 0;
+  }
+}
+
+
 // FUNCTION: IMPERIALISM 0x004ea1c0
 void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
@@ -782,6 +867,17 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   }
   this->mapNodeStateFlags[regionId] = 0;
   TGreatPower::RemoveRegionIdFromNationOwnedRegionList(regionId);
+}
+
+
+// FUNCTION: IMPERIALISM 0x004ea290
+void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
+  TGreatPower::AddRegionIdToNationOwnedRegionList(regionId);
+
+  if (regionId >= 0 && regionId < kMapNodeCount) {
+    this->mapNodeStateFlags[regionId] = 1;
+    this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
+  }
 }
 
 
@@ -822,107 +918,6 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
 }
 
 
-// FUNCTION: IMPERIALISM 0x004e9a50
-void TAutoGreatPower::NoOpSlotA2(void) {
-  if (this->city == 0) {
-    return;
-  }
-
-  // TEMP: 0x004e92b0 (PopulateCase16AdvisoryMapNodeCandidateState) is still an
-  // autogen stub; call it through the generic thunk declaration until it is ported.
-  PopulateCase16AdvisoryMapNodeCandidateState();
-
-  int bestNodeIndex = -1;
-  float bestNodeScore = 0.0f;
-
-  for (int nodeIndex = 0; nodeIndex < 0x180; ++nodeIndex) {
-    if (this->mapNodeStateFlags[nodeIndex] != 1) {
-      continue;
-    }
-
-    float nodeScore = this->ComputeMapActionContextCompositeScoreForNation(nodeIndex);
-    if (bestNodeIndex < 0 || nodeScore > bestNodeScore) {
-      bestNodeIndex = nodeIndex;
-      bestNodeScore = nodeScore;
-    }
-  }
-
-  if (bestNodeIndex < 0) {
-    return;
-  }
-
-  this->QueueMapActionMissionFromCandidateAndMarkState(3, bestNodeIndex, 0, -1);
-
-  int strongestNation = -1;
-  int strongestNeed = 0;
-  for (int nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-    int needValue = static_cast<int>(this->needLevelByNation[nationSlot]);
-    if (needValue > strongestNeed) {
-      strongestNeed = needValue;
-      strongestNation = nationSlot;
-    }
-  }
-
-  if (strongestNation >= 0 && strongestNation != this->nationSlot) {
-    this->QueueInterNationEventType0FForNationPairContext(static_cast<short>(strongestNation),
-                                                          this->nationSlot);
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004e9ed0
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
-                                                                            int policyCode,
-                                                                            int sourceNationSlot) {
-  this->SetCandidateNationFlagAndPortZoneState(targetNationSlot);
-  TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNationSlot, policyCode,
-                                                                    sourceNationSlot);
-}
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-
-// FUNCTION: IMPERIALISM 0x004ea150
-void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
-  TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(targetNationSlot);
-
-  int i = 0;
-  for (i = 0; i < 6; ++i) {
-    this->actionMetricByQuarter[i] = 0;
-  }
-  for (i = 0; i < kMapNodeCount; ++i) {
-    this->mapNodeStateFlags[i] = 0;
-  }
-  for (i = 0; i < kPortZoneCount; ++i) {
-    this->portZoneStateFlags[i] = 0;
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004ea290
-void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  TGreatPower::AddRegionIdToNationOwnedRegionList(regionId);
-
-  if (regionId >= 0 && regionId < kMapNodeCount) {
-    this->mapNodeStateFlags[regionId] = 1;
-    this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
-  }
-}
-
-
-// FUNCTION: IMPERIALISM 0x004ea470
-void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
-  TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  short carryValue = this->needCurrentByType[0x13];
-  this->needCurrentByType[0x13] = 0;
-  this->needCurrentByType[0x14] = static_cast<short>(this->needCurrentByType[0x14] + carryValue);
-}
-
-
 // FUNCTION: IMPERIALISM 0x004ea430
 void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
   (void)orderKind;
@@ -933,6 +928,15 @@ void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short paylo
 
 // FUNCTION: IMPERIALISM 0x004ea450
 void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
+
+
+// FUNCTION: IMPERIALISM 0x004ea470
+void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
+  TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  short carryValue = this->needCurrentByType[0x13];
+  this->needCurrentByType[0x13] = 0;
+  this->needCurrentByType[0x14] = static_cast<short>(this->needCurrentByType[0x14] + carryValue);
+}
 
 
 // FUNCTION: IMPERIALISM 0x004ea990

@@ -6,18 +6,7 @@ share the grammar implemented in `tools/common/field_layout_annotations.py`.
 
 ## Recovery status
 
-Record per-class status in the manifest's `curated.layout` block
-(`config/classes/<Class>.yml`):
-
-```yaml
-curated:
-  layout: {base_offset: 0x04, status: recovered, header: "TCity.h", note: "Every data member offset-annotated."}
-```
-
-`status` is `recovered` or `in_progress`.
-
-Optionally mirror the status in the header (must agree with the manifest when
-both are present):
+Record the recovery status directly in the class header using comment annotations:
 
 ```cpp
 // LAYOUT: RECOVERED
@@ -25,15 +14,12 @@ both are present):
 class TCity {
 ```
 
-**`recovered`** — `just field-layout-gate` requires every non-pad data member to
+`status` can be `RECOVERED` or `IN_PROGRESS`.
+
+**`RECOVERED`** — `just field-layout-gate` requires every non-pad data member to
 carry a resolvable offset annotation, and the annotation must match the
-sequential layout walk (pcpp + cxxheaderparser + the manifest's
-`curated.layout.base_offset`).
+sequential layout walk (pcpp + cxxheaderparser).
 
-**`in_progress`** — missing annotations are allowed; any present annotation that
-conflicts with the layout walk is still a gate failure.
-
-Classes without a `curated.layout.status` are not checked.
 
 ## Offset comment forms
 
@@ -91,8 +77,8 @@ offset comments.
 ## Derived-class prefix
 
 When a class inherits a documented prefix (e.g. `TGreatPower` after `TCountry`),
-record the first owned offset in the manifest's `curated.layout.base_offset`; do not
-re-annotate base-owned bytes in the derived header.
+do not re-annotate base-owned bytes in the derived header.
+
 
 ## Closed loop
 

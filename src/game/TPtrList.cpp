@@ -18,6 +18,39 @@ void TPtrList::ConstructTPtrListBaseState(int ownerContext) {
   new (&this->listState) CPtrList(ownerContext);
 }
 
+// FUNCTION: IMPERIALISM 0x00487b30
+int TPtrList::VirtualSlot6C() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00487b60
+int TPtrList::VirtualSlot70() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00487bd0
+int TPtrList::VirtualSlot74() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00487cc0
+int TPtrList::VirtualSlot78() {
+  return 0;
+}
+
+// Destructor is compiler-generated; the implicit ~TPtrList destroys the embedded
+// listState (CPtrList).
+
+// FUNCTION: IMPERIALISM 0x00487d90
+int TPtrList::VirtualSlot64() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00487dd0
+int TPtrList::VirtualSlot68() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004885d0
 POSITION TPtrList::AddHeadSlot28(void* item) {
   return this->listState.AddHead(item);
@@ -134,36 +167,3 @@ void TPtrList::SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag) 
     this->listState.SetAt(pos, *entryPtr);
   }
 }
-
-// FUNCTION: IMPERIALISM 0x00487d90
-int TPtrList::VirtualSlot64() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00487dd0
-int TPtrList::VirtualSlot68() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00487b30
-int TPtrList::VirtualSlot6C() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00487b60
-int TPtrList::VirtualSlot70() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00487bd0
-int TPtrList::VirtualSlot74() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00487cc0
-int TPtrList::VirtualSlot78() {
-  return 0;
-}
-
-// Destructor is compiler-generated; the implicit ~TPtrList destroys the embedded
-// listState (CPtrList).

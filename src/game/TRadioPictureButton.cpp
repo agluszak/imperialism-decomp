@@ -21,13 +21,6 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
 
 TRadioPictureButton::~TRadioPictureButton() {}
 
-// FUNCTION: IMPERIALISM 0x005718f0
-undefined TRadioPictureButton::OrphanCallChain_C2_I16_005718f0(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00571850
 void TRadioPictureButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
@@ -46,4 +39,11 @@ void TRadioPictureButton::HandleEvent(int commandId, TEventHandler* sourceHandle
     return;
   }
   reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x005718f0
+undefined TRadioPictureButton::OrphanCallChain_C2_I16_005718f0(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
+  return 0;
 }

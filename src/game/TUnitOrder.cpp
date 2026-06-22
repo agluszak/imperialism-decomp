@@ -36,12 +36,6 @@ undefined TUnitOrder::CreateTItemOrderInstance() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004b7850
-void TUnitOrder::WriteTo(TStream* stream) {}
-
-// FUNCTION: IMPERIALISM 0x004b7920
-void TUnitOrder::ReadFrom(TStream* stream) {}
-
 // FUNCTION: IMPERIALISM 0x004b73b0
 undefined TUnitOrder::OrphanRetStub_004b5160() {
   unsigned char* raw = reinterpret_cast<unsigned char*>(this);
@@ -87,3 +81,9 @@ undefined TUnitOrder::OrphanRetStub_004b5160() {
   *pendingDeltaRef = 0;
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x004b7850
+void TUnitOrder::WriteTo(TStream* stream) {}
+
+// FUNCTION: IMPERIALISM 0x004b7920
+void TUnitOrder::ReadFrom(TStream* stream) {}

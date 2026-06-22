@@ -31,15 +31,6 @@ void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool 
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00570900
-void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {
-  int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
-  TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
-}
-
 // FUNCTION: IMPERIALISM 0x005708c0
 bool TPictureButton::IsSelected(short value, bool refreshNow) {
   (void)value;
@@ -47,4 +38,13 @@ bool TPictureButton::IsSelected(short value, bool refreshNow) {
   RECT rect = this->BuildRectFromSlot158();
   return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
                       RDW_INVALIDATE | RDW_UPDATENOW);
+}
+
+// FUNCTION: IMPERIALISM 0x00570900
+void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                          int arg4) {
+  int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
+  reinterpret_cast<void(__cdecl*)(int, int, int)>(
+      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }

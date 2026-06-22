@@ -64,11 +64,11 @@ int TStream::streamSlot50() {
   return value;
 }
 
-// FUNCTION: IMPERIALISM 0x00488ca0
-void TStream::streamSlot6c() {} // TODO: 0x00488ca0
-
 // FUNCTION: IMPERIALISM 0x00488c50
 void TStream::streamSlot70() {} // TODO: 0x00488c50
+
+// FUNCTION: IMPERIALISM 0x00488ca0
+void TStream::streamSlot6c() {} // TODO: 0x00488ca0
 
 // FUNCTION: IMPERIALISM 0x00488ce0
 void TStream::streamSlot54(void* out) {
@@ -108,11 +108,11 @@ int TStream::streamSlot68() {
 // FUNCTION: IMPERIALISM 0x00488dd0
 void TStream::streamSlot74() {} // TODO: 0x00488dd0
 
-// FUNCTION: IMPERIALISM 0x00488e70
-void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
-
 // FUNCTION: IMPERIALISM 0x00488e00
 void TStream::AssertMcAppStreamLine596() {}
+
+// FUNCTION: IMPERIALISM 0x00488e70
+void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
 
 // FUNCTION: IMPERIALISM 0x00488e90
 void TStream::streamSlot7c(unsigned char value) {

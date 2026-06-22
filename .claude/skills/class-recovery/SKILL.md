@@ -10,52 +10,16 @@ Hard Rules and the MSVC calling-convention guardrail are in `AGENTS.md`; matchin
 tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36,
 #49, #58–84).
 
-## Per-class manifests (single source of truth)
+## Source-only class recovery workflow
 
-**Entry point: `just recover-class <Class>`** drives the whole loop — refresh the
-manifest from Ghidra, regenerate the header block (or scaffold a brand-new class),
-emit virtual decls + promote slot bodies, wire ownership, rebuild, detect, print
-the vtable score + a human-TODO list (unnamed slots, low-confidence base edge,
-unported bodies), and run the gates. The individual steps below are what it chains.
+The class recovery workflow is source-first and source-only. There are no manifests or consistency gates.
 
-Each class has an inspectable manifest at `config/classes/<Class>.yml` instead of
-scattering its facts across the Ghidra DB and CSVs. A manifest has two regions:
-`generated:` (Ghidra-derived: `vtable_addr`, `object_size`, `base`/`ancestry`/
-`root`, raw per-slot `target`/`kind`/`is_thunk`) and `curated:` (human judgment:
-per-slot `method`, `confidence`/`evidence`, `fields`, `layout`). Workflow:
+To recover or modify a class:
+1. Edit class headers (`include/game/<ClassName>.h`) and source files (`src/game/<ClassName>.cpp`) directly.
+2. Compile and link the code with `just build`.
+3. Assert and verify virtual table layout and correctness against the original binary using `just vtable [ClassName]`.
+4. Ensure no mechanical formatting or annotation policies are violated by running `just gates`.
 
-- `just dump-manifests [--only <Class>]` — refresh the `generated:` region from
-  Ghidra (read-only; the `curated:` region is preserved, curated always wins).
-  Re-running on an unchanged class is a no-op.
-- `just gen-class <Class> [--write]` — the single manifest-driven generator. It
-  (1) scaffolds a new `include/game/<Class>.h` + `src/game/<Class>.cpp` (or refreshes
-  the marked `// === BEGIN GENERATED (<Class>) … === / … END ===` vtable-snapshot
-  block of an existing header), (2) inserts/refreshes the `// === BEGIN GENERATED
-  DECLS (<Class>) … ===` region — the **single source** of the owned virtual
-  declarations (`override` / `new` / `scalar_dtor`), (3) promotes Ghidra autogen
-  bodies into the `.cpp` at ascending address order, shaping each (canonical
-  signature, thunk-name resolution, `in_stack_*` lift, `// TODO(shape):` hazard
-  flags via `shape_body`), replacing scaffold stubs but never clobbering a
-  hand-edited body, and (4) merges the `symbols.csv` + `function_ownership.csv`
-  plans. Inherited slots already owned elsewhere are skipped; scalar deleting
-  destructors get a `// SYNTHETIC:` claim only (no hand bridge). Dry-run by default;
-  `--write` applies. (This subsumed the former separate `emit-class-slots` step.)
-- `just manifest-gate` (part of `just gates`) — fails if a header's generated
-  block or GENERATED DECLS region has drifted from a fresh render, or its
-  `// VTABLE:` address disagrees with the manifest. Fix with
-  `just gen-class <Class> --write`.
-
-The slot `kind` (null/inherited/override/new/scalar_dtor/ilt_thunk) is computed
-deterministically from the class+base vtables; the *semantic name* and the
-new-vs-reused-base-slot judgment (the TAmtBar trap) remain human work, recorded
-in the manifest's `curated:` slots.
-
-**Name convergence (source → Ghidra).** `just push-names` writes the *explicitly
-curated* source names (manifest `curated.slots` + `function_name_overrides.csv`)
-into the Ghidra DB, for source-owned addresses only (dry-run by default; `--apply`
-writes + saves). It is wired into `just sync-ghidra` before the export so names
-converge instead of churning. It deliberately does **not** push the bulk of
-`symbols.csv` (mostly the previous export), so it can never revert a newer DB name.
 
 ## ABI model (Imperialism.exe = MSVC x86)
 

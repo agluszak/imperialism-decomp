@@ -10,6 +10,16 @@ CRuntimeClass g_pClassDescTInteriorMinister = {nullptr, 0, 0, nullptr, nullptr};
 #pragma optimize("y", on)
 #endif
 
+// Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
+// FUNCTION: IMPERIALISM 0x004be150
+void TInteriorMinister::InteriorSlot1D() {}
+
+// FUNCTION: IMPERIALISM 0x004be170
+void TInteriorMinister::InteriorSlot1E() {}
+
+// FUNCTION: IMPERIALISM 0x004be190
+void TInteriorMinister::InteriorSlot1F() {}
+
 // FUNCTION: IMPERIALISM 0x004be1b0
 CRuntimeClass* TInteriorMinister::GetRuntimeClass() const {
   return &g_pClassDescTInteriorMinister;
@@ -39,8 +49,23 @@ void TInteriorMinister::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004be3c0
 void TInteriorMinister::MinisterSlot0A() {}
 
+// FUNCTION: IMPERIALISM 0x004be3f0
+void TInteriorMinister::InteriorSlot1A() {}
+
+// FUNCTION: IMPERIALISM 0x004be410
+void TInteriorMinister::InteriorSlot1B() {}
+
+// FUNCTION: IMPERIALISM 0x004be430
+void TInteriorMinister::InteriorSlot1C() {}
+
 // FUNCTION: IMPERIALISM 0x004be450
 void TInteriorMinister::MinisterSlot12() {}
+
+// FUNCTION: IMPERIALISM 0x004be480
+void TInteriorMinister::InteriorSlot16() {}
+
+// FUNCTION: IMPERIALISM 0x004be4c0
+void TInteriorMinister::InteriorSlot17() {}
 
 // FUNCTION: IMPERIALISM 0x004be4f0
 void TInteriorMinister::Call4C() {}
@@ -51,36 +76,6 @@ void TInteriorMinister::MinisterSlot14() {}
 // FUNCTION: IMPERIALISM 0x004be5b0
 void TInteriorMinister::Call54() {}
 
-// FUNCTION: IMPERIALISM 0x004be6d0
-void TInteriorMinister::NotifySlot44(void* receiver) {
-  (void)receiver;
-}
-
-// Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
-// FUNCTION: IMPERIALISM 0x004be150
-void TInteriorMinister::InteriorSlot1D() {}
-
-// FUNCTION: IMPERIALISM 0x004be170
-void TInteriorMinister::InteriorSlot1E() {}
-
-// FUNCTION: IMPERIALISM 0x004be190
-void TInteriorMinister::InteriorSlot1F() {}
-
-// FUNCTION: IMPERIALISM 0x004be3f0
-void TInteriorMinister::InteriorSlot1A() {}
-
-// FUNCTION: IMPERIALISM 0x004be410
-void TInteriorMinister::InteriorSlot1B() {}
-
-// FUNCTION: IMPERIALISM 0x004be430
-void TInteriorMinister::InteriorSlot1C() {}
-
-// FUNCTION: IMPERIALISM 0x004be480
-void TInteriorMinister::InteriorSlot16() {}
-
-// FUNCTION: IMPERIALISM 0x004be4c0
-void TInteriorMinister::InteriorSlot17() {}
-
 // FUNCTION: IMPERIALISM 0x004be650
 void TInteriorMinister::InteriorSlot18() {}
 
@@ -90,3 +85,9 @@ void TInteriorMinister::InteriorSlot19() {}
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+#pragma optimize("y", on)
+
+// FUNCTION: IMPERIALISM 0x004be6d0
+void TInteriorMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}

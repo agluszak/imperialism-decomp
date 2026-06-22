@@ -9,6 +9,11 @@
 #include <new>
 CRuntimeClass g_pClassDescTStaticText = {nullptr, 0, 0, nullptr, nullptr};
 
+// FUNCTION: IMPERIALISM 0x004294d0
+undefined TStaticText::AssignSharedStringFromField84() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0048F710
 void* __cdecl CreateTStaticTextInstance(void) {
   return new TStaticText();
@@ -41,16 +46,6 @@ TObject* TStaticText::ShallowClone() {
   return cloned;
 }
 
-// FUNCTION: IMPERIALISM 0x0048ffb0
-void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
-  (void)rectBuffer;
-}
-
-// FUNCTION: IMPERIALISM 0x0048ff70
-undefined TStaticText::OrphanCallChain_C1_I09_0048ff70() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x0048fe60
 undefined TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate() {
   return 0;
@@ -61,9 +56,14 @@ undefined TStaticText::LoadUiStringAndDispatchViaVslot1C8() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004294d0
-undefined TStaticText::AssignSharedStringFromField84() {
+// FUNCTION: IMPERIALISM 0x0048ff70
+undefined TStaticText::OrphanCallChain_C1_I09_0048ff70() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0048ffb0
+void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0
