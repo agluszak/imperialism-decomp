@@ -5,7 +5,27 @@ metadata:
   type: project
 ---
 
-Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **95**.
+Driving `just vtable` "Vtables not matching" DOWN. Started 156 (2026-06-21), at **87**.
+
+**Findings from the ILT / city-minister / zone follow-up pass (2026-06-22):**
+- **TOcean DONE (pattern 6, 88→87):** TPortZone's 3-slot "vtable" 0x65c7e4 is an ALIAS
+  onto TOcean's vtable tail (TOcean vt 0x65c7c8 + 0x1c). 0x5621e0 (Ghidra
+  DispatchNationPendingActionEventCodes, 264B) is TOcean::Free (slot 0x07), mis-owned/
+  mislabeled as TPortZone::GetRuntimeClass → moved to TOcean. TOcean now 100%.
+- **ILT-thunk slots are BLOCKED by reccmp, not source-fixable:** TIconBar/TCreditsPicture
+  (slot 0x1c), TGameSetupDialog/TPlaceCityDialog (slot 0xa0). The orig slot is a DOUBLE
+  ILT thunk (e.g. 0x4d1e60→0x409a8e→real 0x48c890, with a sibling alias 0x408ea9→0x4d1e60).
+  reccmp follows only ONE hop and lands on the sibling alias, never the real target.
+  Un-claiming the thunk (delete symbols.csv row → stub drops) does NOT resolve it — tested
+  on TPlaceCityDialog, still 1-not-matching. Needs a reccmp thunk-traversal fix, not source.
+- **City-ministers are HARD (not the simple minister recipe):** TCityInteriorMinister
+  (base of TSteel/TShipBuilder/TEven/TRailCityMinister) has (a) junk-named overrides
+  (slot 0x0a DispatchNationStateEventCode10 should be base MinisterSlot0A; 0x16-0x19 too),
+  (b) ~5 MISSING slots 0x43-0x47, AND (c) a genuine SECONDARY embedded vtable at byte
+  0x160+ (a TNetMgr linked-value-list subobject: CObject::GetRuntimeClass + TNetMgr::
+  *LinkedValueList* methods). Object size 0x1c4. Reaching 100% needs full multi-vtable
+  class recovery of the embedded list subobject — a class-recovery task, not a rename.
+  Same secondary-vtable shape as the Cluster family.
 Method: source-only (edit header/cpp → `just build` → `just vtable`), ignore manifests
 & generated metadata, don't chase function similarity, commit every few fixes, skip gates.
 
