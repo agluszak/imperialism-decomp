@@ -66,7 +66,7 @@ def parse_header_slots(repo_root: Path, cls: str) -> dict[int, SlotInfo]:
     """Slot -> SlotInfo from the recovered header (bottom block preferred)."""
     path = resolve_repo_path(repo_root, f"include/game/{cls}.h")
     if not path.exists():
-        raise SystemExit(f"No recovered header: {path}")
+        return {}  # e.g. an MFC base (CObject) with no recovered header — stops the chain
     text = path.read_text(encoding="utf-8", errors="ignore")
 
     block: dict[int, SlotInfo] = {}
@@ -91,6 +91,41 @@ def parse_header_slots(repo_root: Path, cls: str) -> dict[int, SlotInfo]:
         if re.fullmatch(r"~?[A-Za-z_]\w*", name):
             inline.setdefault(idx, SlotInfo(idx, name, addr, "decl"))
     return inline
+
+
+_BASE_RE = re.compile(r"\bclass\s+([A-Za-z_]\w*)\s*:\s*public\s+([A-Za-z_]\w*)\b")
+
+
+def _base_of(repo_root: Path, cls: str) -> str | None:
+    path = resolve_repo_path(repo_root, f"include/game/{cls}.h")
+    if not path.exists():
+        return None
+    for m in _BASE_RE.finditer(path.read_text(encoding="utf-8", errors="ignore")):
+        if m.group(1) == cls:
+            return m.group(2)
+    return None
+
+
+def merged_header_slots(
+    repo_root: Path, cls: str, cache: dict[str, dict[int, SlotInfo]] | None = None
+) -> dict[int, SlotInfo]:
+    """Slot map for ``cls`` with inherited slots filled from the base chain.
+
+    Single inheritance keeps slot index == byte offset / 4 across the chain, so a
+    derived class inherits each base slot's method identity at the same index and
+    overrides win. This fills the inherited slots that inline-format headers omit.
+    """
+    cache = cache if cache is not None else {}
+    if cls in cache:
+        return cache[cls]
+    cache[cls] = {}  # guard against cycles
+    merged: dict[int, SlotInfo] = {}
+    base = _base_of(repo_root, cls)
+    if base is not None:
+        merged.update(merged_header_slots(repo_root, base, cache))
+    merged.update(parse_header_slots(repo_root, cls))  # derived wins
+    cache[cls] = merged
+    return merged
 
 
 def _find_struct(dtm, name: str):
@@ -219,7 +254,8 @@ def main() -> int:
         class_names = _all_class_names(repo_root)
     if not class_names:
         raise SystemExit("Pass class name(s) or --all.")
-    per_class_slots = {cls: parse_header_slots(repo_root, cls) for cls in class_names}
+    slot_cache: dict[str, dict[int, SlotInfo]] = {}
+    per_class_slots = {cls: merged_header_slots(repo_root, cls, slot_cache) for cls in class_names}
 
     project = ghidra_env.open_project()
     consumer = program = None
