@@ -420,7 +420,7 @@ void TCountry::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 
 // FUNCTION: IMPERIALISM 0x004d7da0
 void TCountry::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->WriteTo(reinterpret_cast<TStream*>(regionId));
+  this->ownedRegionList->AddHeadSlot28(reinterpret_cast<void*>(regionId));
 }
 
 // FUNCTION: IMPERIALISM 0x004d7dd0

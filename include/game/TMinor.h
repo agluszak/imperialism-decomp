@@ -45,9 +45,9 @@ public:
   void QueueInterNationEvent17ForState300AffectedNations(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
 
-  void ReassignUnitOrdersForCountryTargetChange(void);
-  void ReassignTileObjectOwnerAndNotifyForSelectedCells(void);
-  void RelinkTileUnitsToCountryOrderManager(void);
+  void ReassignUnitOrdersForCountryTargetChange(short provinceId, char includeAllPolicyTargets);
+  void ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot);
+  void RelinkTileUnitsToCountryOrderManager(int destinationNationSlot);
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);

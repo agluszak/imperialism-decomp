@@ -50,6 +50,7 @@ public:
   undefined AppendZonePointerToSecondaryArray();                   // 0x55eba0
 
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
+  void GenerateZoneStatusCodeIfUnset();                            // 0x55f5c0
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 
@@ -87,6 +88,9 @@ public:
   void HandleKeyDown(int key_id);
 
   static TZone* FindFirstPortZoneContextByNation(short nationSlot);
+  static TZone* GetFirstPortZone();
+  TZone* GetNextPortZone();
+  static TZone* FindPortZoneByTile(short nTileIndex);
 };
 
 extern TZone* g_pMapActionContextListHead;

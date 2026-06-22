@@ -4409,7 +4409,7 @@ void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->WriteTo(reinterpret_cast<TStream*>(regionId));
+  this->ownedRegionList->AddHeadSlot28(reinterpret_cast<void*>(regionId));
   int ownedRegionCount = this->ownedRegionList->GetCountSlot48();
 
   unsigned char pressureGate = this->serializedStatusFlags[6];

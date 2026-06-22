@@ -155,8 +155,11 @@ public:
   static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally);
   static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
+  static short StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction);
 
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
+
+  int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
 
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
 

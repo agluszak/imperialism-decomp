@@ -275,14 +275,6 @@ undefined4 NormalizeWrappedMapCoord217x60(void)
   return 0;
 }
 
-// ghidra_name SetTileTransportFlags
-// ghidra_proto int __thiscall SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags)
-// FUNCTION: IMPERIALISM 0x00513200
-undefined4 SetTileTransportFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0

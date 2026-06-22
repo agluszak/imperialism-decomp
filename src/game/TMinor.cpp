@@ -1,6 +1,8 @@
 #include "game/TMinor.h"
 
+#include "game/CIterator.h"
 #include "game/diplomacy_globals.h"
+#include "game/mfc.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TCivilianOrderState.h"
 #include "game/TDiplomacyMgr.h"
@@ -8,7 +10,9 @@
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
+#include "game/TStationedUnitNode.h"
 #include "game/TStream.h"
+#include "game/TTown.h"
 #include "game/TUnit.h"
 #include "game/nation_stream_serialization.h"
 #include "game/turn_event_packets.h"
@@ -54,10 +58,12 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 #pragma optimize("y", on)
 #endif
 
+
 // FUNCTION: IMPERIALISM 0x004e3660
 void* TMinor::CreateTMinorInstance() {
   return new TMinor();
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e36f0
 CRuntimeClass* TMinor::GetRuntimeClass() const {
@@ -68,6 +74,7 @@ void* TMinor::GetTMinorClassNamePointer() {
   return reinterpret_cast<void*>(kAddrClassDescTMinor);
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e3710
 TMinor::TMinor() {
   encodedNationSlot = 0;
@@ -77,6 +84,7 @@ TMinor::TMinor() {
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
 TMinor::~TMinor() {}
+
 
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
@@ -108,6 +116,7 @@ void TMinor::ReadFrom(TStream* stream) {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4390
 void TMinor::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
@@ -130,10 +139,12 @@ void TMinor::WriteTo(TStream* stream) {
                        0x17);
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e45f0
 char TMinor::ReturnFalseNationStateCapabilityFlag90(int arg) {
   return (arg > 0xc && arg < 0x11) ? 1 : 0;
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e4630
 int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
@@ -145,15 +156,18 @@ int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   return sum;
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4660
 short TMinor::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
   return this->needCurrentByType[nationSlot];
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4680
 short TMinor::QueryNationMetricBySlot7C(short metricSlot) {
   return this->diplomacyPolicyByNation[metricSlot];
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e46a0
 void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
@@ -174,6 +188,7 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
   }
   nation->diplomacyCounterA2 = 2;
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e49b0
 void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -253,6 +268,7 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
     majorNation->AddAmountToAidAllocationMatrixCellAndTotal(amount, resourceSlot, this->nationSlot);
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e4bd0
 void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
@@ -355,6 +371,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4ee0
 bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCode) {
   if (policyCode <= 0xc || policyCode >= 0x11) {
@@ -369,6 +386,7 @@ bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCod
   return false;
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4f50
 char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                            int arg4) {
@@ -381,6 +399,7 @@ char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, i
   return 0;
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4fa0
 void TMinor::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
   short targetNationSlot = static_cast<short>(nationSlot);
@@ -389,7 +408,7 @@ void TMinor::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int reset
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
       this->needLevelByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
-        this->NotifyActionSlot94(-1, 0);
+        this->ReassignUnitOrdersForCountryTargetChange(-1, 0);
       }
     }
   }
@@ -440,6 +459,7 @@ void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e4ff0
 char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) {
   if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
@@ -472,6 +492,7 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short
   }
   return canPropose;
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e50d0
 void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
@@ -527,6 +548,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e5300
 void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
   (void)sourceNation;
@@ -535,6 +557,7 @@ void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
     this->QueueInterNationEvent17ForState300AffectedNations();
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e5340
 void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
@@ -665,7 +688,22 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
 // FUNCTION: IMPERIALISM 0x004e5730
 void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
-  (void)nationId;
+  char* terrainTileBytes =
+      *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(g_pGlobalMapState) + 0xc);
+  unsigned char nationTileFlags =
+      terrainTileBytes[0x1c + static_cast<short>(this->ownerNationSlot) * 0x24];
+  if ((nationTileFlags >> 2 & 1) != 0) {
+    return;
+  }
+
+  TTown* marker = new TTown();
+  marker->InitializeTownMarker("", this->ownerNationSlot, 1, static_cast<short>(nationId));
+  marker->activeFlag4f = 1;
+  g_pGlobalMapState->SetTileTransportFlags(this->ownerNationSlot, 0x15);
+  TGreatPower* targetNation = g_apNationStates[nationId];
+  if (targetNation != 0 && targetNation->townMarkerList != 0) {
+    targetNation->townMarkerList->AddTailSlot30(marker);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5840
@@ -674,6 +712,7 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
                                                                     targetNationSlot, 0);
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e59d0
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
@@ -685,6 +724,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
@@ -742,6 +782,7 @@ int ResolveDiplomacyMaskOwnerNationSlot(const TMinor* minor, short provinceId) {
 
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x004e5ac0
 void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   char* tileArrayBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
@@ -783,6 +824,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
 #pragma optimize("", on)
 #endif
 #pragma optimize("y", on)
+
 
 // FUNCTION: IMPERIALISM 0x004e5be0
 void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
@@ -828,6 +870,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
     }
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x004e5d90
 void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId) {
@@ -878,12 +921,161 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e6040
-void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(void) {
+void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot) {
+  TPtrList* destinationManager =
+      g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList44;
+  if (this->ownedRegionList == 0 || destinationManager == 0 || this->militaryUnitList44 == 0) {
+    return;
+  }
+
+  int ownedCount = this->ownedRegionList->GetCountSlot48();
+  int oneBasedIndex = 1;
+  while (oneBasedIndex <= ownedCount) {
+    short regionId =
+        static_cast<short>(this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex));
+    if (regionId < 0 || regionId >= 0x180) {
+      oneBasedIndex++;
+      continue;
+    }
+    TStationedUnitNode* unitNode =
+        g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+    while (unitNode != 0) {
+      TUnit* unit = reinterpret_cast<TUnit*>(unitNode);
+      TStationedUnitNode* nextNode = unitNode->next14;
+      if (unit->field_18 == priorOwnerNationSlot) {
+        unit->field_18 = this->nationSlot;
+        CPtrList* sourceList = &this->militaryUnitList44->listState;
+        POSITION pos = sourceList->Find(unit, 0);
+        if (pos != 0) {
+          sourceList->RemoveAt(pos);
+        }
+        destinationManager->AddTailSlot30(unit);
+      }
+      unitNode = nextNode;
+    }
+    oneBasedIndex++;
+    ownedCount = this->ownedRegionList->GetCountSlot48();
+  }
 }
 
+
+namespace {
+
+void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
+  short ownerNationSlot = orderNode->field_18;
+  TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
+  if (ownerNation == 0) {
+    return;
+  }
+  short homeRegionIndex =
+      *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
+  short spawnTile =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeRegionIndex, 0);
+  if (spawnTile == -1) {
+    orderNode->DetachUnitOrderFromOwnerAndReset();
+    orderNode->Free();
+    return;
+  }
+  orderNode->VTableSlot10(static_cast<int>(spawnTile));
+}
+
+void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
+  short ownerNationSlot = orderNode->field_18;
+  TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
+  if (ownerNation == 0) {
+    return;
+  }
+  short homeRegionIndex =
+      *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerNation) + 0x88);
+  short spawnTile =
+      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeRegionIndex, 0);
+  if (spawnTile == -1) {
+    orderNode->DetachUnitOrderFromOwnerAndReset();
+    orderNode->Free();
+    return;
+  }
+  orderNode->SetOrderModeSlot34(0, -1);
+  orderNode->VTableSlot10(static_cast<int>(spawnTile));
+}
+
+void WalkTileUnitOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
+                                       const char* relationMaskByNation, char resetOrderMode) {
+  TUnit* orderNode = reinterpret_cast<TUnit*>(terrainTiles[tileId].firstCivilianOrder20);
+  while (orderNode != 0) {
+    TUnit* nextNode = reinterpret_cast<TUnit*>(orderNode->field_14);
+    if (relationMaskByNation[orderNode->field_18] != 0) {
+      if (resetOrderMode != 0) {
+        RetargetUnitOrderForAllowedNationWithModeReset(orderNode);
+      } else {
+        RetargetUnitOrderForAllowedNation(orderNode);
+      }
+    }
+    orderNode = nextNode;
+  }
+}
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x004e6150
-void TMinor::ReassignUnitOrdersForCountryTargetChange(void) {
+void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
+                                                      char includeAllPolicyTargets) {
+  if (includeAllPolicyTargets == 0) {
+    this->QueueInterNationEvent17ForState300AffectedNations();
+  }
+
+  int ownerNationSlot;
+  if (provinceId == -1) {
+    ownerNationSlot = DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
+  } else {
+    ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode00;
+  }
+
+  char relationMaskByNation[kTerrainTypeDescriptorTableCount];
+  for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
+    relationMaskByNation[nationSlot] = 0;
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
+        (includeAllPolicyTargets != 0 ||
+         g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nationSlot) !=
+             0)) {
+      relationMaskByNation[nationSlot] = 1;
+    }
+  }
+
+  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
+  if (provinceId == -1) {
+    if (this->ownedRegionList == 0) {
+      return;
+    }
+    int ownedCount = this->ownedRegionList->GetCountSlot48();
+    int oneBasedIndex = 1;
+    while (oneBasedIndex <= ownedCount) {
+      int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
+      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      if (regionRecord->linkedRegionCount > 0) {
+        int linkedIndex = 0;
+        while (linkedIndex < regionRecord->linkedRegionCount) {
+          WalkTileUnitOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
+                                            relationMaskByNation, 0);
+          linkedIndex++;
+        }
+      }
+      oneBasedIndex++;
+      ownedCount = this->ownedRegionList->GetCountSlot48();
+    }
+    return;
+  }
+
+  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
+  if (regionRecord->linkedRegionCount > 0) {
+    int linkedIndex = 0;
+    while (linkedIndex < regionRecord->linkedRegionCount) {
+      WalkTileUnitOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
+                                        relationMaskByNation, 1);
+      linkedIndex++;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e64a0
@@ -891,15 +1083,37 @@ void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
     this->ownedRegionList->AddTailSlot34(reinterpret_cast<void*>(regionId));
   }
+  this->ClearTileActivityOverlayByProvinceId(regionId);
+  this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(regionId);
+  this->ReassignUnitOrdersForCountryTargetChange(static_cast<short>(regionId), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0
 void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTailSlot30(reinterpret_cast<void*>(regionId));
+    this->ownedRegionList->AddHeadSlot28(reinterpret_cast<void*>(regionId));
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004e6520
-void TMinor::RelinkTileUnitsToCountryOrderManager(void) {
+void TMinor::RelinkTileUnitsToCountryOrderManager(int destinationNationSlot) {
+  TPtrList* destinationManager =
+      g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList44;
+  if (destinationManager == 0 || this->militaryUnitList44 == 0) {
+    return;
+  }
+
+  CIterator unitCursor(this->militaryUnitList44);
+  TUnit* unit = static_cast<TUnit*>(unitCursor.Reset());
+  while (unitCursor.More() != 0) {
+    unit->field_18 = static_cast<short>(destinationNationSlot);
+    CPtrList* sourceList = &this->militaryUnitList44->listState;
+    POSITION pos = sourceList->Find(unit, 0);
+    if (pos != 0) {
+      sourceList->RemoveAt(pos);
+    }
+    destinationManager->AddTailSlot30(unit);
+    unit = static_cast<TUnit*>(unitCursor.Advance());
+  }
 }

@@ -36,6 +36,8 @@ public:
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
+  TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);
+
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   void* FindPortZoneBySelectedTile(TCity* city);
 };

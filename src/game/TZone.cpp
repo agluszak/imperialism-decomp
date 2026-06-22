@@ -19,11 +19,14 @@ extern char g_pClassDescTPortZone;
 }
 
 undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void);
-undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void);
 undefined4 thunk_FindPortZoneByTile(void);
-undefined4 GetNextPortZone(void);
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void);
 undefined4 thunk_StepHexRowColByDirectionWithWrapRules(void);
+
+static int ZoneIsPortKind(TZone* node) {
+  return reinterpret_cast<CObject*>(node)->IsKindOf(
+      reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone));
+}
 
 namespace {
 
@@ -180,6 +183,9 @@ void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
   (void)outputRef;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f5c0
+void TZone::GenerateZoneStatusCodeIfUnset() {}
+
 // FUNCTION: IMPERIALISM 0x0055f780
 void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
   (void)arg1;
@@ -201,11 +207,9 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
     return;
   }
   SetMapTileStateByteAndNotifyObserver(field20, -0x10);
-  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
+  field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 5);
   SetMapTileStateByteAndNotifyObserver(field20, -0x12);
-  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
+  field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 0);
   SetMapTileStateByteAndNotifyObserver(field20, -0x14);
 }
 
@@ -290,8 +294,8 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
   int score = 0x1388;
   int neighborDir = 0;
   do {
-    short neighborTile = reinterpret_cast<short(__cdecl*)(int, int)>(
-        thunk_StepHexTileIndexByDirectionWithWrapRules)(tileIndex, neighborDir);
+    short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+        static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       char* neighborRecord = mapTileBase + neighborTile * 0x24;
       if (neighborRecord[0] == static_cast<char>(0x05)) {
@@ -308,8 +312,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
                 (static_cast<short>(portZone->field48) == neighborTile)) {
               break;
             }
-            portZone = static_cast<TZone*>(
-                reinterpret_cast<void*(__fastcall*)(void*)>(GetNextPortZone)(portZone));
+            portZone = portZone->GetNextPortZone();
           }
           if (portZone != contextZone) {
             score = score - 1;
@@ -361,8 +364,8 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
       if (zoneForTile == this) {
         int neighborDir = 0;
         do {
-          short neighborTile = reinterpret_cast<short(__cdecl*)(unsigned int, int)>(
-              thunk_StepHexTileIndexByDirectionWithWrapRules)(tileCandidate, neighborDir);
+          short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+              static_cast<short>(tileCandidate), static_cast<short>(neighborDir));
           if (neighborTile != -1) {
             char* neighborRecord = mapTileBase + neighborTile * 0x24;
             if (*neighborRecord != static_cast<char>(0x05)) {
@@ -487,27 +490,45 @@ void TZone::SetMapOrderUiFlag(int flag) {
     SetMapTileStateByteAndNotifyObserver(field20, magnitude << 4);
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
-    field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-        thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
+    field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 5);
     SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x12);
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
-    field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-        thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
+    field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 0);
     SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x14);
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
   }
 }
 
-namespace {
-
-int ZoneIsPortKind(TZone* node) {
-  return reinterpret_cast<CObject*>(node)->IsKindOf(
-      reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone));
+// FUNCTION: IMPERIALISM 0x00561bf0
+TZone* TZone::FindPortZoneByTile(short nTileIndex) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+    if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
+        static_cast<short>(zone->field48) == nTileIndex) {
+      return zone;
+    }
+  }
+  return 0;
 }
 
-} // namespace
+// FUNCTION: IMPERIALISM 0x00561c80
+TZone* TZone::GetFirstPortZone() {
+  TZone* cursor = g_pMapActionContextListHead;
+  while (cursor != 0 && ZoneIsPortKind(cursor) == 0) {
+    cursor = cursor->prev18;
+  }
+  return cursor;
+}
+
+// FUNCTION: IMPERIALISM 0x00561d40
+TZone* TZone::GetNextPortZone() {
+  TZone* cursor = this->prev18;
+  while (cursor != 0 && ZoneIsPortKind(cursor) == 0) {
+    cursor = cursor->prev18;
+  }
+  return cursor;
+}
 
 // Destructors are compiler-generated (implicit virtual dtor).
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.

@@ -3,7 +3,14 @@
 #include "game/TPtrList.h"
 #include "game/TMinor.h"
 #include "game/TCivilianOrderState.h"
+#include "game/TPortZone.h"
+#include "game/TOcean.h"
+#include "game/TZone.h"
 #include "game/diplomacy_globals.h"
+
+void EnsurePortZoneForTile(short nTileIndex);
+void RemovePortZoneByTile(short nTileIndex);
+short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 
 #pragma optimize("y", on) // omit frame pointer, as in the original bodies
 
@@ -119,6 +126,25 @@ short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex
   return static_cast<short>(result);
 }
 
+// FUNCTION: IMPERIALISM 0x00513200
+int TGlobalMapState::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
+  char* terrainTileBytes =
+      *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(this) + 0xc);
+  int tileByteOffset = static_cast<int>(nTileIndex) * 0x24;
+  unsigned char* flagByte = reinterpret_cast<unsigned char*>(terrainTileBytes + 0x1c + tileByteOffset);
+  if (((*flagByte & 4) != 0) && ((wTileTransportFlags & 4) == 0)) {
+    RemovePortZoneByTile(nTileIndex);
+  }
+  *reinterpret_cast<unsigned short*>(flagByte) = wTileTransportFlags;
+  if ((wTileTransportFlags & 4) != 0) {
+    EnsurePortZoneForTile(nTileIndex);
+  }
+  if ((wTileTransportFlags & 3) != 0) {
+    *flagByte = static_cast<unsigned char>(*flagByte | 0x20);
+  }
+  return reinterpret_cast<int>(flagByte);
+}
+
 namespace {
 
 const int kGlobalMapTileCount = 0x1950;
@@ -222,4 +248,221 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
 // FUNCTION: IMPERIALISM 0x00518960
 void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
+}
+
+// FUNCTION: IMPERIALISM 0x0055e360
+short TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
+                                                                short direction) {
+  int col = static_cast<int>(tileIndex) % 0x6c;
+  unsigned int row = static_cast<unsigned int>(static_cast<int>(tileIndex) / 0x6c);
+  if ((direction == 4) || ((direction > 2) && ((row & 1U) == 0U))) {
+    col = col - 1;
+    if (static_cast<short>(col) < 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+        return -1;
+      }
+      col = 0x6b;
+    }
+  } else if (((direction == 1) || ((direction < 3) && ((row & 1U) != 0U)))) {
+    col = col + 1;
+    if (col > 0x6b) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+        return -1;
+      }
+      col = 0;
+    }
+  }
+  if ((direction == 5) || (direction == 0)) {
+    if (static_cast<short>(row) - 1 < 0) {
+      return -1;
+    }
+    row = row - 1U;
+  } else if (((direction == 3) || (direction == 2)) &&
+             (row = row + 1U, static_cast<short>(row) > 0x3b)) {
+    return -1;
+  }
+  return static_cast<short>(col + static_cast<int>(row) * 0x6c);
+}
+
+static const unsigned int kAddrTerrainFlowTypeRemapTable = 0x0065c632;
+static const unsigned int kAddrTerrainFlowDirectionTable = 0x0065c668;
+
+namespace {
+
+TZone* ResolveLinkedMapActionContextForSeaTile(short seaTileIndex) {
+  TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
+  signed char terrainClass =
+      *reinterpret_cast<signed char*>(reinterpret_cast<char*>(&terrainRecord) + 0x16);
+  if (terrainClass == 3 || terrainClass == 0x0e) {
+    return TZone::FindPortZoneByTile(seaTileIndex);
+  }
+  signed char nationCode = terrainRecord.ownerNationTag04;
+  if (nationCode < 0x17) {
+    return 0;
+  }
+  return g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
+      static_cast<short>(nationCode));
+}
+
+short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed) {
+  short seaTileIndex = -1;
+  short tileWalkIndex = portTileIndex;
+  for (int attempt = 0; attempt < 6; ++attempt) {
+    short candidateTile = TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(
+        portTileIndex, static_cast<short>(tileWalkIndex % 6));
+    ++tileWalkIndex;
+    if (candidateTile == -1) {
+      continue;
+    }
+    TTerrainStateRecordView& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
+    if (candidateRecord.pad00[0] != 5) {
+      continue;
+    }
+    char allNeighborsMatchNation = 1;
+    for (int neighborDirection = 0; neighborDirection < 6; ++neighborDirection) {
+      short neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(
+          candidateTile, static_cast<short>(neighborDirection));
+      if (neighborTile == -1) {
+        continue;
+      }
+      signed char neighborNation =
+          g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      if (neighborNation < 0x17 && neighborNation != nationSeed) {
+        allNeighborsMatchNation = 0;
+        break;
+      }
+    }
+    if (allNeighborsMatchNation != 0) {
+      seaTileIndex = candidateTile;
+      break;
+    }
+  }
+  if (seaTileIndex == -1) {
+    seaTileIndex = TraceTerrainFlowToNearestSeaTile(portTileIndex);
+  }
+  return seaTileIndex;
+}
+
+void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
+  if (contextZone == 0 || portZone == 0) {
+    return;
+  }
+  unsigned int entryIndex = 0;
+  if (portZone->portZoneActiveEntryCount30 != 0) {
+    for (; entryIndex < static_cast<unsigned int>(portZone->portZoneActiveEntryCount30);
+         ++entryIndex) {
+      if (reinterpret_cast<TZone*>(portZone->portZoneEntries28[entryIndex]) == contextZone) {
+        return;
+      }
+    }
+  }
+  portZone->AppendZonePointerToPrimaryArray();
+  contextZone->AppendZonePointerToSecondaryArray();
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x005635e0
+void EnsurePortZoneForTile(short nTileIndex) {
+  if (g_pGlobalMapState == 0) {
+    return;
+  }
+  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  int tileIndex = static_cast<int>(nTileIndex);
+  if ((terrainTable[tileIndex].activeFlags1c & 1) == 0) {
+    return;
+  }
+  signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
+  if (TZone::FindPortZoneByTile(nTileIndex) != 0) {
+    return;
+  }
+
+  TPortZone* portZone = TPortZone::CreateTPortZone();
+  if (portZone == 0) {
+    return;
+  }
+  portZone->field48 = static_cast<int>(nTileIndex);
+  portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
+  portZone->field0c = tileIndex;
+  portZone->GenerateZoneStatusCodeIfUnset();
+  portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
+
+  short seaTileIndex = FindSeaTileForPortZoneCreation(nTileIndex, nationSeed);
+  TZone* linkedContext = ResolveLinkedMapActionContextForSeaTile(seaTileIndex);
+  LinkPortZoneToContextIfMissing(portZone, linkedContext);
+
+  SetMapTileStateByteAndNotifyObserver(static_cast<int>(seaTileIndex), 3);
+  portZone->field0c = static_cast<int>(seaTileIndex);
+  portZone->field20 = portZone->GetActiveNationSlotTile();
+}
+
+// FUNCTION: IMPERIALISM 0x00563990
+short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
+  if (g_pGlobalMapState == 0) {
+    return -1;
+  }
+  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  for (int flowVariant = 0; flowVariant < 2; ++flowVariant) {
+    short flowType = static_cast<short>(terrainTable[tileIndex].roadFlag);
+    if (flowType == 0) {
+      return -1;
+    }
+    if (flowType > 0x1a && flowType < 0x2b) {
+      flowType = static_cast<short>(flowType - 0x10);
+    }
+    if (flowType >= 0xb && flowType <= 0x1a) {
+      flowType =
+          *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
+    } else if (flowType >= 0x2b && flowType <= 0x3a) {
+      return -1;
+    }
+
+    short stepDirection = *reinterpret_cast<const short*>(
+        kAddrTerrainFlowDirectionTable + (flowVariant + flowType * 2) * 2);
+    short walkTile = tileIndex;
+    for (int stepCount = 0; stepCount < 100; ++stepCount) {
+      walkTile = TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
+      TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
+      if (walkRecord.pad00[0] == 5) {
+        return walkTile;
+      }
+
+      short nextFlowType = static_cast<short>(walkRecord.roadFlag);
+      if (nextFlowType == 0) {
+        break;
+      }
+      if (nextFlowType > 0x1a && nextFlowType < 0x2b) {
+        nextFlowType = static_cast<short>(nextFlowType - 0x10);
+      }
+      if (nextFlowType >= 0xb && nextFlowType <= 0x1a) {
+        nextFlowType =
+            *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
+      } else if (nextFlowType >= 0x2b && nextFlowType <= 0x3a) {
+        break;
+      }
+
+      short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);
+      const short* directionPair =
+          reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable + nextFlowType * 4);
+      if (directionPair[0] == preferredDirection) {
+        stepDirection = directionPair[1];
+      } else if (directionPair[1] != preferredDirection) {
+        break;
+      } else {
+        stepDirection = directionPair[0];
+      }
+    }
+  }
+  return -1;
+}
+
+// FUNCTION: IMPERIALISM 0x00564240
+void RemovePortZoneByTile(short nTileIndex) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+    if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
+        static_cast<short>(zone->field48) == nTileIndex) {
+      zone->Free();
+      return;
+    }
+  }
 }

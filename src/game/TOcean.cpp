@@ -234,6 +234,12 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(costField));
 }
 
+// FUNCTION: IMPERIALISM 0x00563300
+TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
+  return reinterpret_cast<TZone*>(reinterpret_cast<char*>(this->contextArray) +
+                                  (static_cast<int>(nationCode) - 0x17) * 0x48);
+}
+
 // FUNCTION: IMPERIALISM 0x005634a0
 void* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId;

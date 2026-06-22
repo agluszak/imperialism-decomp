@@ -587,14 +587,6 @@ undefined4 WrapperFor_ftol_At0055e330(void)
   return 0;
 }
 
-// ghidra_name StepHexTileIndexByDirectionWithWrapRules
-// ghidra_proto undefined StepHexTileIndexByDirectionWithWrapRules()
-// FUNCTION: IMPERIALISM 0x0055e360
-undefined4 StepHexTileIndexByDirectionWithWrapRules(void)
-{
-  return 0;
-}
-
 // ghidra_name StepHexRowColByDirectionWithWrapRules
 // ghidra_proto undefined StepHexRowColByDirectionWithWrapRules()
 // FUNCTION: IMPERIALISM 0x0055e550
@@ -655,14 +647,6 @@ undefined4 ContainsPointerArrayEntryMatchingByteKey(void)
 // ghidra_proto undefined IsZoneMaskOrArrayEntryPresentForKey()
 // FUNCTION: IMPERIALISM 0x0055f540
 undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateZoneStatusCodeIfUnset
-// ghidra_proto undefined GenerateZoneStatusCodeIfUnset()
-// FUNCTION: IMPERIALISM 0x0055f5c0
-undefined4 GenerateZoneStatusCodeIfUnset(void)
 {
   return 0;
 }
@@ -811,30 +795,6 @@ undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void)
   return 0;
 }
 
-// ghidra_name FindPortZoneByTile
-// ghidra_proto void * __cdecl FindPortZoneByTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00561bf0
-undefined4 FindPortZoneByTile(void)
-{
-  return 0;
-}
-
-// ghidra_name GetFirstPortZone
-// ghidra_proto void * GetFirstPortZone(void)
-// FUNCTION: IMPERIALISM 0x00561c80
-undefined4 GetFirstPortZone(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNextPortZone
-// ghidra_proto void * __fastcall GetNextPortZone(void * pCurrentPortZone)
-// FUNCTION: IMPERIALISM 0x00561d40
-undefined4 GetNextPortZone(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocatePortZoneContextArrayBuffer
 // ghidra_proto undefined ReallocatePortZoneContextArrayBuffer()
 // FUNCTION: IMPERIALISM 0x005620c0
@@ -899,14 +859,6 @@ undefined4 RegenerateAllMapActionContextStatusCodes(void)
   return 0;
 }
 
-// ghidra_name GetMapActionContextEntryByNationCodeOffset17
-// ghidra_proto undefined GetMapActionContextEntryByNationCodeOffset17()
-// FUNCTION: IMPERIALISM 0x00563300
-undefined4 GetMapActionContextEntryByNationCodeOffset17(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapActionContextEntryByIndex
 // ghidra_proto undefined GetMapActionContextEntryByIndex()
 // FUNCTION: IMPERIALISM 0x00563330
@@ -931,22 +883,6 @@ undefined4 GetMapActionContextByTileIndex(void)
   return 0;
 }
 
-// ghidra_name EnsurePortZoneForTile
-// ghidra_proto void __stdcall EnsurePortZoneForTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x005635e0
-undefined4 EnsurePortZoneForTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TraceTerrainFlowToNearestSeaTile
-// ghidra_proto undefined TraceTerrainFlowToNearestSeaTile()
-// FUNCTION: IMPERIALISM 0x00563990
-undefined4 TraceTerrainFlowToNearestSeaTile(void)
-{
-  return 0;
-}
-
 // ghidra_name EvaluateTerrainFlowCrossNationBoundaryToSea
 // ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
 // FUNCTION: IMPERIALISM 0x00563b70
@@ -967,14 +903,6 @@ undefined4 PopulatePortZoneAdjacencyToNearbyCityContexts(void)
 // ghidra_proto undefined RefreshPortZoneNeighborContextLinksAndFallbacks()
 // FUNCTION: IMPERIALISM 0x00563f50
 undefined4 RefreshPortZoneNeighborContextLinksAndFallbacks(void)
-{
-  return 0;
-}
-
-// ghidra_name RemovePortZoneByTile
-// ghidra_proto void __stdcall RemovePortZoneByTile(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00564240
-undefined4 RemovePortZoneByTile(void)
 {
   return 0;
 }

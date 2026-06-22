@@ -1644,6 +1644,7 @@ address|target_cpp|ownership|note
 512b50|src/game/TGlobalMapState.cpp|manual|marker_sync
 512cc0|src/game/TGlobalMapState.cpp|manual|marker_sync
 513170|src/game/TMapMgr.cpp|manual|marker_sync
+513200|src/game/TGlobalMapState.cpp|manual|marker_sync
 513290|src/game/TGlobalMapState.cpp|manual|marker_sync
 5133f0|src/game/TMapMgr.cpp|manual|marker_sync
 5135a0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2091,6 +2092,7 @@ address|target_cpp|ownership|note
 55c9f0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
+55e360|src/game/TGlobalMapState.cpp|manual|marker_sync
 55e6e0|src/game/TZone.cpp|manual|marker_sync
 55e700|src/game/TZone.cpp|manual|marker_sync
 55e820|src/game/TZone.cpp|manual|marker_sync
@@ -2109,6 +2111,7 @@ address|target_cpp|ownership|note
 55f070|src/game/TZone.cpp|manual|marker_sync
 55f090|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
+55f5c0|src/game/TZone.cpp|manual|marker_sync
 55f780|src/game/TZone.cpp|manual|marker_sync
 55fb60|src/game/TZone.cpp|manual|marker_sync
 55fc40|src/game/TOcean.cpp|manual|marker_sync
@@ -2129,6 +2132,9 @@ address|target_cpp|ownership|note
 561a70|src/game/TPortZone.cpp|manual|marker_sync
 561b10|src/game/TPortZone.cpp|manual|marker_sync
 561b50|src/game/TPortZone.cpp|manual|marker_sync
+561bf0|src/game/TZone.cpp|manual|marker_sync
+561c80|src/game/TZone.cpp|manual|marker_sync
+561d40|src/game/TZone.cpp|manual|marker_sync
 561dc0|src/game/TPortZone.cpp|manual|marker_sync
 561e40|src/game/TPortZone.cpp|manual|marker_sync
 562140|src/game/TOcean.cpp|manual|marker_sync
@@ -2138,8 +2144,12 @@ address|target_cpp|ownership|note
 562880|src/game/TZone.cpp|manual|marker_sync
 5628f0|src/game/TOcean.cpp|manual|marker_sync
 562d90|src/game/TOcean.cpp|manual|marker_sync
+563300|src/game/TOcean.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TZone.cpp|manual|marker_sync
+5635e0|src/game/TGlobalMapState.cpp|manual|marker_sync
+563990|src/game/TGlobalMapState.cpp|manual|marker_sync
+564240|src/game/TGlobalMapState.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
 564900|src/game/TMilitaryPageView.cpp|manual|marker_sync
 564950|src/game/TMilitaryPageView.cpp|manual|marker_sync
