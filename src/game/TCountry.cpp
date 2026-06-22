@@ -85,8 +85,9 @@ char TCountry::ReturnFalseNationStateCapabilityFlag9C(void) {
   return 0;
 }
 
+// slot 0x28 — ShouldDispatchImmediatelySlot28 (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-undefined TCountry::ReturnFalseNationStateCapabilityFlagA0() { return 0; }
+char TCountry::ShouldDispatchImmediatelySlot28(void) { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004d6790
 void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
@@ -449,8 +450,9 @@ int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   return 0;
 }
 
+// slot 0x1d — GetDiplomacyCounterA2 (real body).
 // FUNCTION: IMPERIALISM 0x004d7f00
-undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f00() { return 0; }
+short TCountry::GetDiplomacyCounterA2(void) { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004d7f20
 short TCountry::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
@@ -754,24 +756,3 @@ void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}
 
-undefined TCountry::CreateAndDispatchMilitaryRecruitOrderForNationSlot() { return 0; }
-char TCountry::ShouldDispatchImmediatelySlot28(void) { return 0; }
-short TCountry::GetDiplomacyCounterA2(void) { return 0; }
-undefined TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(void) { return 0; }
-undefined TCountry::IsDiplomacyTargetClassCode200Match(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f20(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7f40(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_0a(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins06_004d87b0_10(void) { return 0; }
-undefined TCountry::OrphanLeaf_NoCall_Ins07_004d8920(void) { return 0; }
-undefined TCountry::OrphanRetStub_004d7e90(void) { return 0; }
-undefined TCountry::OrphanRetStub_004d7f80(void) { return 0; }
-undefined TCountry::OrphanRetStub_004d7fa0(void) { return 0; }
-undefined TCountry::OrphanRetStub_004d7fe0(void) { return 0; }
-undefined TCountry::PopulateSelectableEntryFlavorTextAndOrdinals(void) { return 0; }
-undefined TCountry::ReturnFalseNationStateActionStub(void) { return 0; }
-undefined TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities(void) { return 0; }
-undefined TCountry::SelectCandidateTilesWithLowGroundUnitCount_0b(void) { return 0; }
-undefined TCountry::SelectCandidateTilesWithLowGroundUnitCount_11(void) { return 0; }
