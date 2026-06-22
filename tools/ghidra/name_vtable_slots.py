@@ -139,7 +139,7 @@ def _dedupe(slots: dict[int, SlotInfo]) -> dict[int, str]:
 def plan(dtm, cls: str, slots: dict[int, SlotInfo]):
     vtbl, source = _vtbl_for_class(dtm, cls)
     if vtbl is None:
-        raise SystemExit(f"No <Class>Vtbl struct found for {cls} (looked via class struct + by name)")
+        return None
     names = _dedupe(slots)
     max_slot = max(slots)
     need_len = (max_slot + 1) * 4
@@ -195,52 +195,91 @@ def apply(program, vtbl, need_len, names):
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("classes", nargs="+", help="Class name(s), e.g. TViewMgr TView")
+    p.add_argument("classes", nargs="*", help="Class name(s), e.g. TViewMgr TView")
+    p.add_argument(
+        "--all",
+        action="store_true",
+        help="Process every include/game/*.h class that has a slot map + <Class>Vtbl.",
+    )
     p.add_argument("--apply", action="store_true", help="Write to the Ghidra DB (default: dry-run).")
+    p.add_argument("--quiet", action="store_true", help="Only print per-class summary lines.")
     return p.parse_args()
+
+
+def _all_class_names(repo_root: Path) -> list[str]:
+    include_dir = resolve_repo_path(repo_root, "include/game")
+    return sorted(p.stem for p in include_dir.glob("*.h"))
 
 
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    per_class_slots = {cls: parse_header_slots(repo_root, cls) for cls in args.classes}
-    for cls, slots in per_class_slots.items():
-        if not slots:
-            print(f"[{cls}] no slot map found in header; skipping")
+    class_names = list(args.classes)
+    if args.all:
+        class_names = _all_class_names(repo_root)
+    if not class_names:
+        raise SystemExit("Pass class name(s) or --all.")
+    per_class_slots = {cls: parse_header_slots(repo_root, cls) for cls in class_names}
 
     project = ghidra_env.open_project()
     consumer = program = None
     txid = None
+    n_planned = n_skipped_noslots = n_skipped_novtbl = total_renames = total_grows = 0
     try:
         consumer, program = ghidra_env.open_program(project, writable=args.apply)
         dtm = program.getDataTypeManager()
         applied = []
-        for cls, slots in per_class_slots.items():
+        for cls in class_names:
+            slots = per_class_slots[cls]
             if not slots:
+                n_skipped_noslots += 1
                 continue
-            vtbl, source, cur_len, need_len, rows, renames, grows, names = plan(dtm, cls, slots)
-            print(f"\n=== {cls}  (vtbl {vtbl.getName()} via {source})")
-            print(f"    current len 0x{cur_len:x} -> 0x{need_len:x}; {renames} rename(s), {grows} new slot(s)")
-            for idx, off, status, old, new, kind in rows:
-                if status == "ok":
-                    continue
-                old_s = old if old is not None else "-"
-                print(f"    slot {idx:>2} +0x{off:02x}  {status:6}  {old_s:36} -> {new}   [{kind}]")
+            planned = plan(dtm, cls, slots)
+            if planned is None:
+                n_skipped_novtbl += 1
+                if not args.quiet and not args.all:
+                    print(f"[{cls}] no <Class>Vtbl struct; skipping")
+                continue
+            vtbl, source, cur_len, need_len, rows, renames, grows, names = planned
+            if renames == 0 and grows == 0:
+                continue
+            n_planned += 1
+            total_renames += renames
+            total_grows += grows
+            print(f"=== {cls}  ({vtbl.getName()} via {source})  "
+                  f"len 0x{cur_len:x}->0x{need_len:x}  {renames} rename / {grows} new")
+            if not args.quiet:
+                for idx, off, status, old, new, kind in rows:
+                    if status == "ok":
+                        continue
+                    old_s = old if old is not None else "-"
+                    print(f"    slot {idx:>2} +0x{off:02x}  {status:6}  {old_s:36} -> {new}   [{kind}]")
             if args.apply:
                 applied.append((vtbl, need_len, names))
 
         if args.apply and applied:
             txid = program.startTransaction("name vtable slots from headers")
+            n_ok = n_err = 0
             for vtbl, need_len, names in applied:
-                apply(program, vtbl, need_len, names)
+                try:
+                    apply(program, vtbl, need_len, names)
+                    n_ok += 1
+                except Exception as exc:  # noqa: BLE001 — skip one bad struct, keep the batch
+                    n_err += 1
+                    print(f"  ! apply failed for {vtbl.getName()}: {exc}")
             program.endTransaction(txid, True)
             txid = None
             import pyghidra
 
             program.save("name vtable slots from headers", pyghidra.task_monitor())
-            print(f"\nApplied {len(applied)} vtable struct(s).")
-        elif not args.apply:
-            print("\n(dry-run; pass --apply to write to the Ghidra DB)")
+            print(f"apply: {n_ok} ok, {n_err} failed")
+
+        print(
+            f"\nclasses: {n_planned} planned, "
+            f"{n_skipped_noslots} no-slot-map, {n_skipped_novtbl} no-vtbl-struct; "
+            f"{total_renames} renames, {total_grows} new slots"
+        )
+        print("Applied." if args.apply else "(dry-run; pass --apply to write to the Ghidra DB)")
     finally:
         if txid is not None:
             program.endTransaction(txid, False)
