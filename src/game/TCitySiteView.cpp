@@ -24,13 +24,13 @@ undefined TCitySiteView::OrphanRetStub_00596680() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c320
-undefined TCitySiteView::SetMapDialogCellCoordinatesAndRefresh() {
+undefined TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1,
+                                                                      undefined4 param_2) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0051c3b0
-undefined TCitySiteView::OrphanRetStub_00596080() {
-  return 0;
+void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c760

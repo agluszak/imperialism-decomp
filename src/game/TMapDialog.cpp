@@ -16,6 +16,13 @@ undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
 
+// FUNCTION: IMPERIALISM 0x00519B30
+CRuntimeClass* TMapDialog::GetRuntimeClass() const { return 0; }
+
+// SYNTHETIC: IMPERIALISM 0x00519C40
+// TMapDialog::`scalar deleting destructor'
+TMapDialog::~TMapDialog() {}
+
 // FUNCTION: IMPERIALISM 0x00519c90
 void TMapDialog::Free() {
   char* objectBytes = reinterpret_cast<char*>(this);
@@ -27,8 +34,19 @@ void TMapDialog::Free() {
   TView::Free();
 }
 
+// FUNCTION: IMPERIALISM 0x00519D30
+void TMapDialog::NoOpUiLifecycleHook(int arg) { (void)arg; }
+
 // FUNCTION: IMPERIALISM 0x00519e00
 void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
+
+// FUNCTION: IMPERIALISM 0x0051a2a0
+undefined TMapDialog::DrawHexNeighborOutlineFromTileArray() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051A900
+undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x0051a990
 void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
@@ -76,6 +94,16 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
   *outBand = static_cast<short>((0x1f < bandRow) + 3);
 }
 
+// FUNCTION: IMPERIALISM 0x0051aad0
+undefined TMapDialog::OrphanRetStub_005966c0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051ab60
+undefined TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0051ac40
 void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   int tileRowOutput[5] = {0};
@@ -89,7 +117,27 @@ void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
       reinterpret_cast<int>(&invalidateRect[0]), 1);
 }
 
+// FUNCTION: IMPERIALISM 0x0051ace0
+undefined TMapDialog::HasRenderableParentAndContentSlotA2() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051ad70
+undefined TMapDialog::OrphanRetStub_005966a0() {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0051adc0
+undefined TMapDialog::OrphanRetStub_00596680() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051adf0
+undefined TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1,
+                                                                     undefined4 param_2) {
+  return 0;
+}
+
 void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
   typedef void(__fastcall * TileCoordHandlerFn)(TView * self, int unusedEdx, int x, int y,
                                                 int mode);
@@ -97,6 +145,84 @@ void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int 
   int* vtable = *reinterpret_cast<int**>(view);
   reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
 }
+
+// FUNCTION: IMPERIALISM 0x0051AF60
+undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x0051e1a0
+undefined TMapDialog::OrphanCallChain_C1_I20_0051e1a0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051e1f0
+undefined TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051e260
+void TMapDialog::ApplyRectSlot110(RECT* rectBuffer) {
+  TView::ApplyRectSlot110(rectBuffer);
+}
+
+// FUNCTION: IMPERIALISM 0x0051EB40
+undefined TMapDialog::RenderStrategicMapTileCell() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520670
+undefined TMapDialog::RenderMapDialogBilateralRelationMarkers() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520970
+undefined TMapDialog::DrawMapDialogGuidePatternSetA_00520970() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520A90
+undefined TMapDialog::DrawMapDialogGuidePatternSetB_00520a90() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520C10
+undefined TMapDialog::DrawMapDialogGuidePatternSetC_00520c10() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520D20
+undefined TMapDialog::DrawMapDialogGuidePatternSetD_00520d20() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520DE0
+undefined TMapDialog::DrawMapDialogTileGuidePatternByVariant() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00520FC0
+undefined TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00521090
+undefined TMapDialog::DrawMapDialogGuidePatternSetF_00521090() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005211C0
+undefined TMapDialog::DrawMapDialogGuidePatternSetG_005211c0() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00521340
+undefined TMapDialog::DrawMapDialogGuidePatternSetH_00521340() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00521540
+undefined TMapDialog::DrawMapDialogGuidePatternSetI_00521540() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00521680
+undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00521A40
+undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00522000
+undefined TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005220F0
+undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00522C10
+undefined TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00522CF0
+undefined TMapDialog::DrawHexNeighborConnectionMask() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00523060
+undefined TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00523170
+undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x00523640
 void TMapDialog::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
@@ -172,6 +298,45 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
                                         dstRect, 0x24, 0);
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
+
+// FUNCTION: IMPERIALISM 0x005241B0
+undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005242F0
+undefined TMapDialog::GetTEventHandlerClassNamePointer() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00524540
+undefined TMapDialog::VTableSlot97() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00524670
+undefined TMapDialog::InitializeForeignMinisterStateFlags() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005247A0
+undefined TMapDialog::AddToForeignMinisterCounterAtIndex() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005249F0
+undefined TMapDialog::SetForeignMinisterReadyFlag14() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00524B30
+undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00524C60
+undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00524E70
+undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005250A0
+undefined TMapDialog::CopyDiamondMaskBlockKernel() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005252D0
+undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x005254A0
+undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00525670
+undefined TMapDialog::Copy64x64TileBlockWithStrideAdjustment() { return 0; }
 
 // FUNCTION: IMPERIALISM 0x00525730
 void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,

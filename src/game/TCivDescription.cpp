@@ -86,7 +86,7 @@ CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
   return new TCivDescription();
 }
 
-TCivDescription::TCivDescription() : TControl() {
+TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
 }

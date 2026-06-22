@@ -18,16 +18,21 @@ void TMapEditView::HandleMapClickByInteractionMode(short nTileIndex, int nInputF
 }
 
 // FUNCTION: IMPERIALISM 0x0051cfa0
-void TMapEditView::InvokeDialogHooks1D8ThenE4() {
+void TMapEditView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) {
+  (void)stridedRecord;
+  (void)dispatchContext;
 }
 
 // FUNCTION: IMPERIALISM 0x0051d060
-undefined TMapEditView::WrapperFor_AllocateWithFallbackHandler_At005963d0() {
-  return 0;
+void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext) {
+  (void)stridedRecord;
+  (void)dispatchContext;
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
-void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79() {
+void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x0051deb0

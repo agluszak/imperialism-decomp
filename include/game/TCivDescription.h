@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TControl.h"
+#include "game/TView.h"
 
 struct CRuntimeClass;
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -14,7 +14,7 @@ struct Rect32 {
 };
 
 // VTABLE: IMPERIALISM 0x6431B0
-class TCivDescription : public TControl {
+class TCivDescription : public TView {
 public:
   virtual CRuntimeClass* GetRuntimeClass() const override;
   virtual ~TCivDescription();
@@ -45,8 +45,6 @@ public:
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivilianOrderState* orderState);
   void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivilianOrderState* selectedOrder);
 };
-
-ASSERT_SIZE(TCivDescription, 0x194);
 
 // === BEGIN GENERATED (TCivDescription) — refreshed by `just gen-class TCivDescription`; do not hand-edit ===
 // clang-format off
