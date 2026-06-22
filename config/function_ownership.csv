@@ -2741,7 +2741,7 @@ address|target_cpp|ownership|note
 5960a0|src/game/TWorldView.cpp|manual|marker_sync
 5960c0|src/game/TWorldView.cpp|manual|marker_sync
 5960e0|src/game/TWorldView.cpp|manual|marker_sync
-596100|src/game/TMapDialog.cpp|manual|marker_sync
+596100|src/game/TWorldView.cpp|manual|marker_sync
 596270|src/game/TWorldView.cpp|manual|marker_sync
 5962a0|src/game/TWorldView.cpp|manual|marker_sync
 5963d0|src/game/TWorldView.cpp|manual|marker_sync

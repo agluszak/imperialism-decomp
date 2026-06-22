@@ -16,9 +16,16 @@ undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
 
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
+// FUNCTION: IMPERIALISM 0x00519c90
+void TMapDialog::Free() {
+  char* objectBytes = reinterpret_cast<char*>(this);
+  void** quickDrawSurfaceSlot = reinterpret_cast<void**>(objectBytes + 0x350);
+  if (*quickDrawSurfaceSlot != 0) {
+    *quickDrawSurfaceSlot = 0;
+  }
+  *reinterpret_cast<void**>(objectBytes + 0x35c) = 0;
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x00519e00
 void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}

@@ -52,7 +52,7 @@ public:
   // slot 0xa2 — 0x004e9a50: select and queue advisory map missions (case 16).
   void NoOpSlotA2(void) override;
   // slot 0xa4 — 0x004eb0d0: prune invalid missionQueue entries.
-  void NotifyWarResetSlot290(void) override;
+  void PruneInvalidTrackedEntriesAndNotifyOwner(void) override;
   // slots 0xad/0xae — 0x004eaa20/0x004eae70: AI turn tail hooks.
   void NoOpTailStateHookSlot2B4(void) override;
   void NoOpTailStateHookSlot2B8(int arg) override;

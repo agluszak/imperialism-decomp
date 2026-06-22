@@ -4398,7 +4398,7 @@ float TGreatPower::ComputeWarThresholdSlotA3(int targetNation) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e2190
-void TGreatPower::NotifyWarResetSlot290(void) {}
+void TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e21b0
 void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {

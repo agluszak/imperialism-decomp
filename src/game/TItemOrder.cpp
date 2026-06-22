@@ -1,5 +1,7 @@
 #include "game/TItemOrder.h"
 
+TItemOrder::TItemOrder() {}
+
 // FUNCTION: IMPERIALISM 0x004b5200
 CRuntimeClass* TItemOrder::GetRuntimeClass() const {
   return 0;

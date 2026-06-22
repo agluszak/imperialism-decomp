@@ -166,7 +166,7 @@ TMission::~TMission() {}
 
 // --- slot 0x05/0x06 serializers (TStream* fast-path; same vtable offsets as WriteTo/ReadFrom) ---
 // FUNCTION: IMPERIALISM 0x00535820
-void TMission::SerializeMissionState(TStream* stream) {
+void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   char* raw = reinterpret_cast<char*>(this);
   stream->WriteBytesSlot78(raw + 0x04, 2);
@@ -178,7 +178,7 @@ void TMission::SerializeMissionState(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005358a0
-void TMission::DeserializeMissionState(TStream* stream) {
+void TMission::ReadFrom(TStream* stream) {
   static const unsigned int kSaveFormatVersionAddr = 0x00695278;
   TObject::ReadFrom(stream);
   stream->ReadBytes(&nationId04, 2);

@@ -154,8 +154,11 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 #pragma optimize("y", on)
-void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, CPoint* point,
-                                                                int arg4) {
+void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                           int arg4) {
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   int candidateOrdinal = 0;
   int provinceCount;
   int provinceOrdinal;
@@ -300,7 +303,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
 
 // FUNCTION: IMPERIALISM 0x0058f550
 #pragma optimize("y", on)
-void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
+void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall
   int slotIndex;
   unsigned short* legendSelectionCountsBySlot;
@@ -368,20 +372,23 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058f7b0
-void TCivDescription::RenderCivilianTargetLegendVariantA() {
-  (void)this;
+void TCivDescription::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
+  (void)boundsBuffer;
 }
 
 // FUNCTION: IMPERIALISM 0x0058fec0
-undefined TCivDescription::RenderCivilianTargetLegendVariantB() {
-  return 0;
+void TCivDescription::DispatchPictureResourceCommand(int eventType, void* eventSender,
+                                                     void* eventDataA, void* eventDataB) {
+  (void)eventType;
+  (void)eventSender;
+  (void)eventDataA;
+  (void)eventDataB;
 }
 
 // FUNCTION: IMPERIALISM 0x005903c0
-void __fastcall TCivDescription::RenderCivilianTargetProfilePanel(int* pPanelContext) {}
-
-void TCivDescription::ApplyRectSlot110(struct tagRECT*) {}
-
-void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(class CPoint*) {}
+void TCivDescription::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
+}
 
 TCivDescription::~TCivDescription() {}

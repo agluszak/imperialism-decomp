@@ -295,7 +295,7 @@ public:
   // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
   virtual float ComputeWarThresholdSlotA3(int targetNation);
-  virtual void NotifyWarResetSlot290(); // slot 0x290 — body 0x004e2190
+  virtual void PruneInvalidTrackedEntriesAndNotifyOwner(); // slot 0xa4 — body 0x004e2190
   virtual void NotifyWarResetSlotA5(void);
   // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
   virtual void NotifyRegionEventSlot298(int regionId);

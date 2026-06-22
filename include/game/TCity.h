@@ -55,15 +55,6 @@ public:
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanCallChain_C13_I161_004b3b40(); // slot 0x0a 0x4b3b40
-  virtual undefined OrphanTiny_SetDwordEcxOffset_b0_004b3b20(); // slot 0x11 0x4b3b20
-  virtual undefined OrphanLeaf_NoCall_Ins03_004b46c0(); // slot 0x14 0x4b46c0
-  virtual undefined WrapperFor_GetActiveNationId_At004b4940(); // slot 0x17 0x4b4940
-  virtual undefined OrphanLeaf_NoCall_Ins08_004b4c80(); // slot 0x19 0x4b4c80
-  virtual undefined OrphanLeaf_NoCall_Ins11_004b4cc0(); // slot 0x1a 0x4b4cc0
-  virtual undefined OrphanLeaf_NoCall_Ins07_004b4230(); // slot 0x1b 0x4b4230
-  virtual undefined OrphanLeaf_NoCall_Ins04_004b4260(); // slot 0x1c 0x4b4260
-  virtual undefined OrphanRetStub_004b4210(); // slot 0x1f 0x4b4210
 // === END GENERATED DECLS (TCity) ===
   CRuntimeClass* GetRuntimeClass() const override;
   ~TCity() override;

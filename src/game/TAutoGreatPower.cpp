@@ -951,7 +951,7 @@ void TAutoGreatPower::NoOpTailStateHookSlot2B8(int arg) {
 
 
 // FUNCTION: IMPERIALISM 0x004eb0d0
-void TAutoGreatPower::NotifyWarResetSlot290(void) {
+void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
   for (;;) {
     CIterator missionCursor(this->missionQueue);
     TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());

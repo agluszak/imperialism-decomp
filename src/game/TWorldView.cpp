@@ -7,7 +7,6 @@
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 
-undefined4 thunk_HandleMapClickByInteractionMode(void);
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
@@ -129,7 +128,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   }
 
   if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
-    HandleMapClickByInteractionModeFromStridedRecord(stridedRecord, regionBand);
+    HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }
 
@@ -415,9 +414,7 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
 }
 
 // FUNCTION: IMPERIALISM 0x005964b0
-void TWorldView::HandleMapClickByInteractionModeFromStridedRecord(int stridedRecord,
-                                                                  int dispatchContext) {
-  reinterpret_cast<void(__fastcall*)(TWorldView*, int, short, int)>(
-      thunk_HandleMapClickByInteractionMode)(this, 0, static_cast<short>(stridedRecord),
-                                             dispatchContext);
+void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
+  (void)nTileIndex;
+  (void)nInputFlags;
 }

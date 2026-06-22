@@ -229,7 +229,7 @@ bool TCapacityOrder::SetQuantity(short quantity) {
 // FUNCTION: IMPERIALISM 0x004b8970
 void TCapacityOrder::CommitIfPending() {
   if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
-    this->ApplyCityProductionSlotDelta();
+    this->OrphanRetStub_004b5160();
   }
 }
 
@@ -239,7 +239,7 @@ void TCapacityOrder::CommitIfPending() {
 void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   short value = 0;
 
-  this->Produce(orderSheet);
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
 
   value = static_cast<short>(
       ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) * quantity);
@@ -296,10 +296,11 @@ CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'
 
-
+TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
-void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short trackingIndex4eInit,
-                                    short trackingIndex50Init, short field52Init) {
+undefined TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(
+    TCity* city, short resourceType, short trackingIndex4eInit, short trackingIndex50Init,
+    short field52Init) {
   this->cityField08 = city;
   this->summaryField0c = city->productionSummary1d8;
   this->resourceTypeIndex48 = resourceType;
@@ -312,19 +313,20 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short track
   this->field4c = 0;
   this->trackingIndex50 = trackingIndex50Init;
   this->field52 = field52Init;
+  return 0;
 }
 
 
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
-void TCapacityOrder::ApplyCityProductionSlotDelta() {
+undefined TCapacityOrder::OrphanRetStub_004b5160() {
   TCity* city = this->cityField08;
   short slotIndex = this->resourceTypeIndex48;
   short newValue;
   short deltaToAccum;
 
   if (this->quantityField04 == 0) {
-    return;
+    return 0;
   }
   if (slotIndex == 0xe) {
     const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
@@ -364,8 +366,5 @@ apply_done:
   this->trackingSlots10[this->trackingIndex4e] = 0;
   this->trackingSlots10[this->trackingIndex50] = 0;
   this->field3e = 0;
+  return 0;
 }
-
-undefined TCapacityOrder::OrphanRetStub_004b5160(void) { return 0;}
-
-TCapacityOrder::~TCapacityOrder() {}

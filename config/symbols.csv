@@ -1,5 +1,4 @@
 address|name|size|type|prototype
-401073|thunk_HandleMapClickByInteractionMode|5|function|void __thiscall thunk_HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
 401122|thunk_TPictureButton::TPictureButton|5|function|undefined TPictureButton()
 401730|TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage|5|function|undefined thunk_RunControlStringProviderAndDispatchLocalizedMessage()
 4019ba|thunk_InvalidateMapRegionForOrderEntry|5|function|undefined thunk_InvalidateMapRegionForOrderEntry()
@@ -2515,7 +2514,7 @@ address|name|size|type|prototype
 4e1e40|TGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback|168|function|undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback()
 4e1f20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_a2|1|function|undefined DeserializeRecruitScenarioAndInstantiateOrders(void)
 4e1f40|TGreatPower::ComputeWarThresholdSlotA3|452|function|undefined ComputeWarThresholdSlotA3()
-4e2190|TGreatPower::GetTEventHandlerClassNamePointer_a4|1|function|undefined GetTEventHandlerClassNamePointer(void)
+4e2190|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner|1|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)
 4e21b0|TGreatPower::ApplyJoinEmpireModeForTargetNation|132|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)
 4e2270|TGreatPower::RemoveRegionIdFromNationOwnedRegionList|36|function|undefined RemoveRegionIdAndRunTrackedObjectCleanup()
 4e22b0|TGreatPower::AddRegionIdToNationOwnedRegionList|83|function|undefined AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet()
@@ -2641,7 +2640,7 @@ address|name|size|type|prototype
 4eae70|TAutoGreatPower::OrphanLeaf_NoCall_Ins07_004d8920|239|function|undefined RefreshTrackedEntriesAndReplanAiDevelopment(void)
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits|124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()
 4eb040|IterateLinkedListCursorEntries_004eb040|74|function|undefined IterateLinkedListCursorEntries_004eb040()
-4eb0d0|TAutoGreatPower::NotifyWarResetSlot290|131|function|undefined NotifyWarResetSlot290()
+4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner|131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)
 4eb190|PlanAiDevelopmentActionsFromResourcePools|853|function|undefined PlanAiDevelopmentActionsFromResourcePools()
 4eb5d0|OrphanCallChain_C4_I75_004eb5d0|172|function|undefined OrphanCallChain_C4_I75_004eb5d0()
 4eb6b0|UpdateTrackedEntryEligibilityByClassMaskAndRatio|393|function|undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()

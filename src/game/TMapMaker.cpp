@@ -1,4 +1,5 @@
 #include "game/TMapMaker.h"
+#include "game/TObject.h"
 
 // FUNCTION: IMPERIALISM 0x00525950
 CRuntimeClass* TMapMaker::GetRuntimeClass() const {
@@ -8,6 +9,14 @@ CRuntimeClass* TMapMaker::GetRuntimeClass() const {
 // SYNTHETIC: IMPERIALISM 0x00525990
 // TMapMaker::`scalar deleting destructor'
 TMapMaker::~TMapMaker() {}
+
+void TMapMaker::Free() {
+  TObject::Free();
+}
+
+TObject* TMapMaker::ShallowClone() {
+  return TObject::ShallowClone();
+}
 
 // FUNCTION: IMPERIALISM 0x00526ba0
 char TMapMaker::GetBoolSlot28() {
@@ -28,8 +37,10 @@ void TMapMaker::vmethod_0013(int* cmd) {
 }
 
 // FUNCTION: IMPERIALISM 0x005274d0
-undefined TMapMaker::DispatchUiCommandToHandler() {
-  return 0;
+void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  (void)commandId;
+  (void)sourceHandler;
+  (void)event;
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0

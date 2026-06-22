@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TCityOrderItem.h"
+#include "game/TItemOrder.h"
 
 struct CRuntimeClass;
 
@@ -8,39 +8,23 @@ class TCity;
 
 // Mac oracle: TCapacityOrder (capacity / industry production order).
 // VTABLE: IMPERIALISM 0x0064f678
-class TCapacityOrder : public TCityOrderItem {
+class TCapacityOrder : public TItemOrder {
 public:
-// === BEGIN GENERATED DECLS (TCapacityOrder) — refreshed by recover-class; do not hand-edit ===
-  virtual ~TCapacityOrder(); // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x4b5670)
-  // slot 0x06 ReadFrom inherited unchanged (0x4b5710)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
-  // slot 0x0b OrphanCallChain_C1_I16_004b5100 inherited unchanged (0x4b53d0)
-  // slot 0x0c OrphanLeaf_NoCall_Ins02_004b50e0 inherited unchanged (0x4b5310)
-  virtual undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b8dd0
-  // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5620)
-  // slot 0x0f Produce inherited unchanged (0x4b5180)
-  // slot 0x10 CreateTItemOrderInstance inherited unchanged (0x4b5510)
-  // slot 0x11 InitializeCityProductionState_Impl_At004b5290 inherited unchanged (0x4b5290)
-// === END GENERATED DECLS (TCapacityOrder) ===
-  explicit TCapacityOrder(TCity* city);
   CRuntimeClass* GetRuntimeClass() const override;
-  short MaxOrder() override;
-  bool SetQuantity(short quantity) override;
-  void CommitIfPending() override;
-  void FillOrderSheet(void* orderSheet, short quantity) override;
-  bool CanMakeFromCityStock() override;
-  bool CanFillOrderSheet(void* orderSheet) override;
-  // Mac: ICapacityOrder(TCity*, short, short, short, short).
-  void ICapacityOrder(TCity* city, short resourceType, short trackingIndex4e, short trackingIndex50,
-                      short field52);
-  void ApplyCityProductionSlotDelta() override;
+  ~TCapacityOrder();
+
+  undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b8dd0
+  virtual undefined InitializeCityProductionState_Impl_At004b8d50(
+      TCity* city, short resourceType, short trackingIndex4e, short trackingIndex50,
+      short field52); // slot 0x12 0x4b8d50
+
+  explicit TCapacityOrder(TCity* city);
+  short MaxOrder();
+  bool SetQuantity(short quantity);
+  void CommitIfPending();
+  void FillOrderSheet(void* orderSheet, short quantity);
+  bool CanMakeFromCityStock();
+  bool CanFillOrderSheet(void* orderSheet);
   static TCapacityOrder* NewForCity(TCity* city);
 
   short quantityField04;

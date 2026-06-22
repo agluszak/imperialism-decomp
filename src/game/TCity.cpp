@@ -92,7 +92,8 @@ void TCity::AdoptSelectedOrderSlot44(void* order) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b40
-undefined TCity::OrphanCallChain_C13_I161_004b3b40() { return 0; }
+void TCity::Call28() {
+}
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::Call2C() {
@@ -290,7 +291,8 @@ void TCity::Refresh80() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4210
-undefined TCity::OrphanRetStub_004b4210() { return 0; }
+void TCity::NoOpCitySlot7C() {
+}
 
 // FUNCTION: IMPERIALISM 0x004b4230
 int TCity::GetOwnerNeedCapA6() {
@@ -460,12 +462,3 @@ int TCity::GetBuildingProductionValueBySlot(short buildingSlot) {
   return 1;
 }
 #pragma optimize("", on)
-undefined TCity::OrphanLeaf_NoCall_Ins03_004b46c0(void) { return 0; }
-undefined TCity::OrphanLeaf_NoCall_Ins04_004b4260(void) { return 0; }
-undefined TCity::OrphanLeaf_NoCall_Ins07_004b4230(void) { return 0; }
-undefined TCity::OrphanLeaf_NoCall_Ins08_004b4c80(void) { return 0; }
-undefined TCity::OrphanLeaf_NoCall_Ins11_004b4cc0(void) { return 0; }
-undefined TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(void) { return 0; }
-undefined TCity::WrapperFor_GetActiveNationId_At004b4940(void) { return 0; }
-void TCity::Call28(void) {}
-void TCity::NoOpCitySlot7C(void) {}

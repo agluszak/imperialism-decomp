@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_HandleMapClickByInteractionMode
-// ghidra_proto void __thiscall thunk_HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
-// FUNCTION: IMPERIALISM 0x00401073
-undefined4 thunk_HandleMapClickByInteractionMode(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_TPictureButton::TPictureButton
 // ghidra_proto undefined TPictureButton()
 // FUNCTION: IMPERIALISM 0x00401122

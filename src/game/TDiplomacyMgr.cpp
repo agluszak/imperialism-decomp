@@ -952,10 +952,10 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot,
     relationSideEffectMatrix1402[forwardIndex] = 0;
     relationSideEffectMatrix1402[reverseIndex] = 0;
     if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
-      g_apNationStates[source]->NotifyWarResetSlot290();
+      g_apNationStates[source]->PruneInvalidTrackedEntriesAndNotifyOwner();
     }
     if (HasFlag84ForNationSlot84(targetNationSlot) != 0) {
-      g_apNationStates[target]->NotifyWarResetSlot290();
+      g_apNationStates[target]->PruneInvalidTrackedEntriesAndNotifyOwner();
     }
     if (static_cast<char>(updateMode) == 1) {
       PropagateRelationSideEffectSlot80(sourceNationSlot, targetNationSlot, 1);

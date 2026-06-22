@@ -48,8 +48,7 @@ public:
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                int dispatchContext);
-  virtual void HandleMapClickByInteractionModeFromStridedRecord(int stridedRecord,
-                                                                int dispatchContext);
+  virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1);
   virtual short QueryMinusOneWordSlot77();
   virtual undefined OrphanRetStub_005966a0();

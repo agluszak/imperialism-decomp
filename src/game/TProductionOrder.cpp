@@ -1,5 +1,7 @@
 #include "game/TProductionOrder.h"
 
+TProductionOrder::TProductionOrder() {}
+
 CRuntimeClass* TProductionOrder::GetRuntimeClass() const { return 0; }
 
 TProductionOrder::~TProductionOrder() {}

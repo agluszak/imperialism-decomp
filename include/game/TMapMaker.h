@@ -2,54 +2,45 @@
 
 #include "game/TControl.h"
 #include "game/mfc.h"
+#include "game/TObject.h"
+#include "game/TView.h"
 
-// Forward declarations for types referenced by generated signatures.
-class CityDialogController;
-class TObject;
-
-// TODO(manifest): describe TMapMaker and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TMapMaker -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TControl {
 public:
-// === BEGIN GENERATED DECLS (TMapMaker) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x525950
-  virtual ~TMapMaker(); // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual char GetBoolSlot28() override; // slot 0x0a 0x526ba0
-  virtual void SetControlValue(int value) override; // slot 0x0b 0x526c20
-  virtual int QueryStepValue() override; // slot 0x0c 0x527040
-  virtual void vmethod_0013(int* cmd) override; // slot 0x0d 0x527300
-  virtual void vmethod_0014(int command) override; // slot 0x0e 0x5275a0
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00527730
-  virtual undefined DispatchUiCommandToHandler() override; // slot 0x10 0x5274d0
-  virtual void vmethod_0017(int param) override; // slot 0x11 0x528e50
-  virtual void ForwardParam(int param) override; // slot 0x12 0x5283c0
-  virtual char CanHandleCityDialogActionFalse(int action) override; // slot 0x13 0x528670
-  virtual int GetCityDialogValueDword10() override; // slot 0x14 0x528780
-  virtual void SetCityDialogValueDword10(int value) override; // slot 0x15 0x5288a0
-  virtual class TView* OwnerPanel() override; // slot 0x16 0x528140
-  virtual char vmethod_0023() override; // slot 0x17 0x527d00
-  virtual char vmethod_0024() override; // slot 0x18 0x527ed0
-  virtual void vmethod_0025() override; // slot 0x19 0x529f60
-  virtual void vmethod_0026(int gate) override; // slot 0x1a 0x52e840
-  virtual void HandleCityProductionNoOp() override; // slot 0x1b 0x52e900
-  virtual void DispatchUiCommand19ToParent() override; // slot 0x1c 0x52e890
-  virtual void DispatchCityProductionAction1A() override; // slot 0x1d 0x528ce0
-  virtual void DispatchCityProductionAction1B() override; // slot 0x1e 0x5292f0
-  virtual char ActivateCityProductionViewIfAllowed() override; // slot 0x1f 0x5296a0
-  virtual char vmethod_0080() override; // slot 0x20 0x5297e0
-  virtual void vmethod_0081() override; // slot 0x21 0x5298a0
-  virtual void SetEnabled(int enabledState, int refreshFlag) override; // slot 0x29 0x52a760
-  virtual void SetState(int state, int refreshFlag) override; // slot 0x2a 0x52c0a0
-// === END GENERATED DECLS (TMapMaker) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapMaker 0xCTOR`).
+  CRuntimeClass* GetRuntimeClass() const override;
+  ~TMapMaker();
+
+  // slots 0x07/0x08 — reuse TObject stream-object lifecycle (not TControl/TView bodies).
+  void Free() override;
+  TObject* ShallowClone() override;
+
+  char GetBoolSlot28() override;
+  void SetControlValue(int value) override;
+  int QueryStepValue() override;
+  void vmethod_0013(int* cmd) override;
+  void vmethod_0014(int command) override;
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void vmethod_0017(int param) override;
+  void ForwardParam(int param) override;
+  char CanHandleCityDialogActionFalse(int action) override;
+  int GetCityDialogValueDword10() override;
+  void SetCityDialogValueDword10(int value) override;
+  TView* OwnerPanel() override;
+  char vmethod_0023() override;
+  char vmethod_0024() override;
+  void vmethod_0025() override;
+  void vmethod_0026(int gate) override;
+  void HandleCityProductionNoOp() override;
+  void DispatchUiCommand19ToParent() override;
+  void DispatchCityProductionAction1A() override;
+  void DispatchCityProductionAction1B() override;
+  char ActivateCityProductionViewIfAllowed() override;
+  char vmethod_0080() override;
+  void vmethod_0081() override;
+  void SetEnabled(int enabledState, int refreshFlag) override;
+  void SetState(int state, int refreshFlag) override;
 
   TMapMaker();
 };

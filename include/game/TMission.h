@@ -44,8 +44,8 @@ public:
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
-  virtual void SerializeMissionState(TStream* stream);      // 0x05 0x535820
-  virtual void DeserializeMissionState(TStream* stream);    // 0x06 0x5358a0
+  virtual void WriteTo(TStream* stream) override;   // slot 0x05 0x535820
+  virtual void ReadFrom(TStream* stream) override;  // slot 0x06 0x5358a0
   virtual char ReturnFalseSlot28();                         // 0x0a 0x534c00
   virtual int ReturnZeroSlot2C(int a, int b);               // 0x0b 0x534c20 (ret 8)
   virtual void NoOpSlot30();                                // 0x0c 0x534c40

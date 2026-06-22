@@ -5,6 +5,9 @@
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
+  // slot 0x07 — 0x00519c90: release map-dialog quickdraw surface (+0x350) and child state.
+  void Free() override;
+
   void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
 
   virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) override;
