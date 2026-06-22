@@ -7,7 +7,7 @@
 // GHIDRA_NAME THighScoresPicture::UniversityDialogMethod_00405623
 // GHIDRA_PROTO undefined __thiscall UniversityDialogMethod_00405623(void)
 
-void __thiscall THighScoresPicture::UniversityDialogMethod_00405623(THighScoresPicture *this)
+void THighScoresPicture::UniversityDialogMethod_00405623()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall THighScoresPicture::UniversityDialogMethod_00405623(THighScoresP
 // GHIDRA_NAME THighScoresPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THighScoresPicture * __thiscall
-THighScoresPicture::_scalar_deleting_destructor_(THighScoresPicture *this,byte param_1)
+THighScoresPicture * THighScoresPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -32,8 +31,7 @@ THighScoresPicture::_scalar_deleting_destructor_(THighScoresPicture *this,byte p
 // GHIDRA_NAME THighScoresPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-THighScoresPicture::GetTEventHandlerClassNamePointer(THighScoresPicture *this)
+CRuntimeClass * THighScoresPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,8 +41,7 @@ THighScoresPicture::GetTEventHandlerClassNamePointer(THighScoresPicture *this)
 // GHIDRA_NAME THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
-void __thiscall
-THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScoresPicture *this,CString param_1)
+void THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
 {
   int iVar1;
@@ -104,7 +101,7 @@ THighScoresPicture::OrphanLeaf_NoCall_Ins07_004d8920(THighScoresPicture *this,CS
 // GHIDRA_NAME THighScoresPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall THighScoresPicture::OrphanTiny_ReturnZero_0048a730(THighScoresPicture *this)
+void THighScoresPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

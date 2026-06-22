@@ -7,7 +7,7 @@
 // GHIDRA_NAME CRuntimeClass::IsDerivedFrom
 // GHIDRA_PROTO undefined __thiscall IsDerivedFrom(CRuntimeClass * param_1)
 
-undefined4 __thiscall CRuntimeClass::IsDerivedFrom(CRuntimeClass *this,CRuntimeClass *param_1)
+undefined4 CRuntimeClass::IsDerivedFrom(CRuntimeClass *param_1)
 
 {
   while( true ) {

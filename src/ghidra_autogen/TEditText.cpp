@@ -70,7 +70,7 @@ TView * TEditText::CreateTEditTextInstance(void)
 // GHIDRA_NAME TEditText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEditText::GetTEventHandlerClassNamePointer(TEditText *this)
+CRuntimeClass * TEditText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -86,7 +86,7 @@ CRuntimeClass * __thiscall TEditText::GetTEventHandlerClassNamePointer(TEditText
 /* Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an
    auxiliary 4-byte state block before derived numeric vtable install. */
 
-TEditText * __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
+TEditText * TEditText::ConstructUiNumericTextEntryBase()
 
 {
   CString *this_00;
@@ -142,7 +142,7 @@ TEditText * __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *thi
 // GHIDRA_NAME TEditText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TEditText::GetTEventHandlerClassNamePointer(TEditText *this)
+void TEditText::GetTEventHandlerClassNamePointer()
 
 {
   if (*(int **)&this->field_0x94 != (int *)0x0) {
@@ -160,7 +160,7 @@ void __thiscall TEditText::GetTEventHandlerClassNamePointer(TEditText *this)
 // GHIDRA_NAME TEditText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TEditText::OrphanTiny_ReturnZero_0048a730(TEditText *this)
+void TEditText::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;
@@ -177,7 +177,7 @@ void __thiscall TEditText::OrphanTiny_ReturnZero_0048a730(TEditText *this)
 // GHIDRA_NAME TEditText::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-undefined1 __thiscall TEditText::GetTBehaviorClassNamePointer(TEditText *this)
+undefined1 TEditText::GetTBehaviorClassNamePointer()
 
 {
   return (char)this->field04;
@@ -187,7 +187,7 @@ undefined1 __thiscall TEditText::GetTBehaviorClassNamePointer(TEditText *this)
 // GHIDRA_NAME TEditText::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(char param_1)
 
-void __thiscall TEditText::OrphanRetStub_0059ad90(TEditText *this,char param_1)
+void TEditText::OrphanRetStub_0059ad90(char param_1)
 
 {
   astruct_10 *unaff_retaddr;
@@ -205,7 +205,7 @@ void __thiscall TEditText::OrphanRetStub_0059ad90(TEditText *this,char param_1)
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-void __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this,int param_1,int param_2)
+void TEditText::_scalar_deleting_destructor_(int param_1, int param_2)
 
 {
   astruct_10 *unaff_ESI;
@@ -229,7 +229,7 @@ void __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this,int para
 // GHIDRA_NAME TEditText::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO int __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 * ui_ctx)
 
-int __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(TEditText *this,astruct_10 *ui_ctx)
+int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
 
 {
   short sVar1;
@@ -330,8 +330,7 @@ int __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(TEditText *this,astru
 /* Sets text selection range in edit control (EM_SETSEL) and scrolls caret into view
    (EM_SCROLLCARET). */
 
-void __thiscall
-TEditText::SetEditSelectionAndScrollCaret(TEditText *this,short param_1,short param_2)
+void TEditText::SetEditSelectionAndScrollCaret(short param_1, short param_2)
 
 {
   int iVar1;
@@ -348,7 +347,7 @@ TEditText::SetEditSelectionAndScrollCaret(TEditText *this,short param_1,short pa
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined1 __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this)
+undefined1 TEditText::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -361,7 +360,7 @@ undefined1 __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this)
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this)
+void TEditText::_scalar_deleting_destructor_()
 
 {
   int iVar1;
@@ -434,7 +433,7 @@ TEditText::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TEditText::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TEditText::OrphanRetStub_0059add0(TEditText *this)
+void TEditText::OrphanRetStub_0059add0()
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -448,7 +447,7 @@ void __thiscall TEditText::OrphanRetStub_0059add0(TEditText *this)
 // GHIDRA_NAME TEditText::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1)
 
-void __thiscall TEditText::OrphanRetStub_0059add0(TEditText *this,undefined4 param_1)
+void TEditText::OrphanRetStub_0059add0(undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -462,8 +461,7 @@ void __thiscall TEditText::OrphanRetStub_0059add0(TEditText *this,undefined4 par
 // GHIDRA_NAME TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70
 // GHIDRA_PROTO undefined __thiscall TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString * param_1)
 
-void __thiscall
-TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(TEditText *this,CString *param_1)
+void TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString *param_1)
 
 {
   if (*(int *)&this->field_0x94 != 0) {
@@ -478,8 +476,7 @@ TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(TEditText *this,CStr
 // GHIDRA_NAME TEditText::OrphanCallChain_C1_I09_0048ff70
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
-void __thiscall
-TEditText::OrphanCallChain_C1_I09_0048ff70(TEditText *this,undefined2 param_1,char param_2)
+void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
 {
   *(undefined2 *)&this->field_0x90 = param_1;
@@ -493,7 +490,7 @@ TEditText::OrphanCallChain_C1_I09_0048ff70(TEditText *this,undefined2 param_1,ch
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this)
+void TEditText::_scalar_deleting_destructor_()
 
 {
   tagRECT local_10;
@@ -512,7 +509,7 @@ void __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this)
 // GHIDRA_NAME TEditText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEditText * __thiscall TEditText::_scalar_deleting_destructor_(TEditText *this,byte param_1)
+TEditText * TEditText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);

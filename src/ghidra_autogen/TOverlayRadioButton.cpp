@@ -7,8 +7,7 @@
 // GHIDRA_NAME TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40
 // GHIDRA_PROTO undefined __thiscall TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
 
-TOverlayRadioButton * __thiscall
-TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(TOverlayRadioButton *this)
+TOverlayRadioButton * TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40()
 
 {
   TRadioPictureButton::TRadioPictureButton((TCivilianButton *)this);
@@ -21,8 +20,7 @@ TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(TOverla
 // GHIDRA_NAME TOverlayRadioButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOverlayRadioButton * __thiscall
-TOverlayRadioButton::_scalar_deleting_destructor_(TOverlayRadioButton *this,byte param_1)
+TOverlayRadioButton * TOverlayRadioButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -36,8 +34,7 @@ TOverlayRadioButton::_scalar_deleting_destructor_(TOverlayRadioButton *this,byte
 // GHIDRA_NAME TOverlayRadioButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TOverlayRadioButton::GetTEventHandlerClassNamePointer(TOverlayRadioButton *this)
+CRuntimeClass * TOverlayRadioButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +44,7 @@ TOverlayRadioButton::GetTEventHandlerClassNamePointer(TOverlayRadioButton *this)
 // GHIDRA_NAME TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730(TOverlayRadioButton *this)
+void TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

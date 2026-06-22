@@ -15,7 +15,7 @@
    Restores display mode, releases core global systems/managers, unloads custom fonts, posts
    font-change broadcast, and finalizes framework cleanup. */
 
-void __thiscall CAmbitDocument::SetForeignMinisterReadyFlag14(CAmbitDocument *this)
+void CAmbitDocument::SetForeignMinisterReadyFlag14()
 
 {
   int iVar1;
@@ -84,8 +84,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
-undefined4 __thiscall
-CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
+undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
 {
   FUN_0060567e(param_1);
@@ -108,7 +107,7 @@ CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_
    Posts quit if no main window and app shutdown condition is met, then executes
    RunMfcThreadMessageLoopCore for the active app thread. */
 
-void __thiscall CAmbitDocument::_scalar_deleting_destructor_(CAmbitDocument *this)
+void CAmbitDocument::_scalar_deleting_destructor_()
 
 {
   int iVar1;
@@ -163,8 +162,7 @@ void __fastcall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
-undefined4 __thiscall
-CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
+undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
 {
   int iVar1;
@@ -281,7 +279,7 @@ void __fastcall CAmbitDocument::ConstructTTaskBaseState(int param_1)
    Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless
    message 0x36A is filtered. */
 
-undefined4 __thiscall CAmbitDocument::ConstructTTaskBaseState(CAmbitDocument *this)
+undefined4 CAmbitDocument::ConstructTTaskBaseState()
 
 {
   undefined1 *lpMsg;
@@ -432,8 +430,7 @@ void __thiscall CAmbitDocument::GetTEventHandlerClassNamePointer(int param_1,und
 // GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-undefined4 __thiscall
-CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CAmbitDocument *this)
+undefined4 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   undefined4 uVar1;

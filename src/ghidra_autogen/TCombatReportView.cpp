@@ -40,8 +40,7 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z_imperialismincl
 // GHIDRA_NAME TCombatReportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCombatReportView::GetTEventHandlerClassNamePointer(TCombatReportView *this)
+CRuntimeClass * TCombatReportView::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCombatReportView;
@@ -66,8 +65,7 @@ _ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z_imperialism
 // GHIDRA_NAME TCombatReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCombatReportView * __thiscall
-TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this,byte param_1)
+TCombatReportView * TCombatReportView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -83,8 +81,7 @@ TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this,byte par
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,char *param_1)
+void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
 
 {
   char cVar1;
@@ -392,7 +389,7 @@ TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,ch
 // GHIDRA_NAME TCombatReportView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportView *this)
+void TCombatReportView::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

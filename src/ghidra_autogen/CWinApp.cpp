@@ -18,7 +18,7 @@ void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined
 // GHIDRA_NAME CWinApp::CloseAllDocuments_618704
 // GHIDRA_PROTO undefined __thiscall CloseAllDocuments_618704(void)
 
-void __thiscall CWinApp::CloseAllDocuments_618704(CWinApp *this)
+void CWinApp::CloseAllDocuments_618704()
 
 {
   if (*(int **)(this + 0x80) != (int *)0x0) {

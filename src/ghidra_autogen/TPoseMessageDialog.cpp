@@ -1894,7 +1894,7 @@ LAB_005485d8:
 // GHIDRA_NAME TPoseMessageDialog::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TPoseMessageDialog::OrphanRetStub_00487a00(TPoseMessageDialog *this)
+void TPoseMessageDialog::OrphanRetStub_00487a00()
 
 {
   RefreshPoseMessageDialogNationSelectionControls(*(undefined4 *)&this->field_0x18);
@@ -1905,8 +1905,7 @@ void __thiscall TPoseMessageDialog::OrphanRetStub_00487a00(TPoseMessageDialog *t
 // GHIDRA_NAME TPoseMessageDialog::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TPoseMessageDialog * __thiscall
-TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(TPoseMessageDialog *this,byte param_1)
+TPoseMessageDialog * TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   DestructPoseMessageDialogTurnEventPacket();
@@ -1920,7 +1919,7 @@ TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(TPoseMessageDialog *this,byt
 // GHIDRA_NAME TPoseMessageDialog::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPoseMessageDialog::GetTEventClassNamePointer(TPoseMessageDialog *this)
+CRuntimeClass * TPoseMessageDialog::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;

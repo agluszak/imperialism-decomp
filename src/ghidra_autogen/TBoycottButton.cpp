@@ -37,7 +37,7 @@ TToggleButton * TBoycottButton::CreateTBoycottButtonInstance(void)
 // GHIDRA_NAME TBoycottButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBoycottButton::GetTEventHandlerClassNamePointer(TBoycottButton *this)
+CRuntimeClass * TBoycottButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTBoycottButton;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TBoycottButton::GetTEventHandlerClassNamePointer(TBoy
 // GHIDRA_NAME TBoycottButton::ConstructTBoycottButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBoycottButtonBaseState(void)
 
-TBoycottButton * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBoycottButton *this)
+TBoycottButton * TBoycottButton::ConstructTBoycottButtonBaseState()
 
 {
   TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
@@ -59,8 +59,7 @@ TBoycottButton * __thiscall TBoycottButton::ConstructTBoycottButtonBaseState(TBo
 // GHIDRA_NAME TBoycottButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBoycottButton * __thiscall
-TBoycottButton::_scalar_deleting_destructor_(TBoycottButton *this,byte param_1)
+TBoycottButton * TBoycottButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

@@ -7,8 +7,7 @@
 // GHIDRA_NAME CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
 // GHIDRA_PROTO undefined __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1)
 
-bool __thiscall
-CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(CImageList *this,int param_1)
+bool CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1)
 
 {
   TNetMgr *this_00;

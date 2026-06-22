@@ -41,8 +41,7 @@ TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
 // GHIDRA_NAME TRadioTextCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TRadioTextCluster::GetTEventHandlerClassNamePointer(TRadioTextCluster *this)
+CRuntimeClass * TRadioTextCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,8 +51,7 @@ TRadioTextCluster::GetTEventHandlerClassNamePointer(TRadioTextCluster *this)
 // GHIDRA_NAME TRadioTextCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioTextCluster * __thiscall
-TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this,byte param_1)
+TRadioTextCluster * TRadioTextCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -67,7 +65,7 @@ TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this,byte par
 // GHIDRA_NAME TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRadioTextCluster *this)
+void TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -105,7 +103,7 @@ TRadioTextCluster::OrphanRetStub_0059add0
 // GHIDRA_NAME TRadioTextCluster::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TRadioTextCluster::OrphanTiny_ReturnZero_0048a730(TRadioTextCluster *this)
+void TRadioTextCluster::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 in_EDX;

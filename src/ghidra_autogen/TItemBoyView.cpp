@@ -7,8 +7,7 @@
 // GHIDRA_NAME TItemBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TItemBoyView * __thiscall
-TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this,byte param_1)
+TItemBoyView * TItemBoyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this,byte param_1)
 // GHIDRA_NAME TItemBoyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TItemBoyView::GetTEventHandlerClassNamePointer(TItemBoyView *this)
+CRuntimeClass * TItemBoyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TItemBoyView::GetTEventHandlerClassNamePointer(TItemB
 // GHIDRA_NAME TItemBoyView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TItemBoyView::OrphanTiny_ReturnZero_0048a730(TItemBoyView *this)
+void TItemBoyView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 unaff_ESI;
@@ -94,8 +93,7 @@ void __thiscall TItemBoyView::OrphanTiny_ReturnZero_0048a730(TItemBoyView *this)
 // GHIDRA_NAME TItemBoyView::DestructTItemBoyViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
 
-void __thiscall
-TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this,undefined4 param_1)
+void TItemBoyView::DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
 
 {
   int iVar1;

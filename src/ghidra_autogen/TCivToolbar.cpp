@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivToolbar::ShowDisbandCivilianConfirmationDialog
 // GHIDRA_PROTO void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(void)
 
-void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *this)
+void TCivToolbar::ShowDisbandCivilianConfirmationDialog()
 
 {
   undefined2 uVar1;
@@ -123,7 +123,7 @@ TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection
 // GHIDRA_NAME TToolBarCluster::SetMapInteractionMode
 // GHIDRA_PROTO void __thiscall TToolBarCluster::SetMapInteractionMode(short nMode)
 
-void __thiscall TToolBarCluster::SetMapInteractionMode(TCivToolbar *this,short nMode)
+void TToolBarCluster::SetMapInteractionMode(short nMode)
 
 {
   short sVar1;
@@ -261,7 +261,7 @@ TCivToolbar::SetActiveCivilianSelection
 // GHIDRA_NAME TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
 // GHIDRA_PROTO void __thiscall TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(void)
 
-void __thiscall TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(TCivToolbar *this)
+void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick()
 
 {
   TCivToolbarVtbl *pTVar1;
@@ -860,8 +860,7 @@ TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex
    branch, 8=immediate order type 8, 9=queue costed work order, 10=open Civilian Report dialog,
    11=prompt engineer rail order dialog. */
 
-int __thiscall
-TCivToolbar::ResolveCivilianTileOrderActionCode(TCivToolbar *this,short nTileIndex,short nInputHint)
+int TCivToolbar::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
 
 {
   bool fCanOpenCivilianReport;
@@ -1087,8 +1086,7 @@ TCivToolbar::SetActiveCivilianSelection
    Returns:
    - None. */
 
-void __thiscall
-TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(TCivToolbar *this,int nCommandType)
+void TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
 
 {
   if ((int *)this->field04 != (int *)0x0) {
@@ -1114,7 +1112,7 @@ TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection(TCivToolbar *this,in
 
 /* Setting prototype: void ShowDisbandCivilianConfirmationDialog(void) */
 
-void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *this)
+void TCivToolbar::ShowDisbandCivilianConfirmationDialog()
 
 {
   undefined2 uVar1;
@@ -1241,7 +1239,7 @@ void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *
    - Function does not force productive work; non-applicable tiles can still become move-only
    orders. */
 
-bool __thiscall TCivToolbar::TryQueueCivilianMoveOrderToTile(TCivToolbar *this,int nTileIndex)
+bool TCivToolbar::TryQueueCivilianMoveOrderToTile(int nTileIndex)
 
 {
   char fOrderQueued;
@@ -1293,7 +1291,7 @@ bool __thiscall TCivToolbar::TryQueueCivilianMoveOrderToTile(TCivToolbar *this,i
    Notes:
    - Uses g_pTerrainTypeDescriptorTable and g_pCivilianTerrainCompatibilityMatrix for rules. */
 
-bool __thiscall TCivToolbar::CanAssignCivilianOrderToTile(TCivToolbar *this,short nTileIndex)
+bool TCivToolbar::CanAssignCivilianOrderToTile(short nTileIndex)
 
 {
   bool fTerrainRuleAllowsUnit;
@@ -1384,8 +1382,7 @@ bool __thiscall TCivToolbar::CanAssignCivilianOrderToTile(TCivToolbar *this,shor
    Returns:
    - void. */
 
-void __thiscall
-TCivToolbar::HandleCivilianReportDecision(TCivToolbar *this,int *pCivilianOrderEntry)
+void TCivToolbar::HandleCivilianReportDecision(int *pCivilianOrderEntry)
 
 {
   int iVar1;
@@ -1536,8 +1533,7 @@ TCivToolbar::HandleCivilianReportDecision(TCivToolbar *this,int *pCivilianOrderE
    Returns:
    true when confirmed and queued; false when canceled or blocked. */
 
-bool __thiscall
-TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nTileIndex)
+bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
 
 {
   char cDialogConfirmed;
@@ -1853,8 +1849,7 @@ TCivToolbar::ApplyEngineerRailCostDeltaForConnectedTiles
    - Tile records are 0x24-byte stride; unit list head is at tile+0x20.
    - Unit entry next-link is field index [5], owner nation id is low 16 bits of field [6]. */
 
-int * __thiscall
-TCivToolbar::GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,short nOwnerNationId)
+int * TCivToolbar::GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)
 
 {
   int *piVar1;
@@ -1874,7 +1869,7 @@ TCivToolbar::GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,short nO
 
 /* Setting prototype: int CalculateEngineerRailBuildCost(short nTileIndex) */
 
-int __thiscall TCivToolbar::CalculateDeveloperTilePurchaseCost(TCivToolbar *this,short nTileIndex)
+int TCivToolbar::CalculateDeveloperTilePurchaseCost(short nTileIndex)
 
 {
   undefined uVar1;
@@ -1916,8 +1911,7 @@ int __thiscall TCivToolbar::CalculateDeveloperTilePurchaseCost(TCivToolbar *this
 
 /* Setting prototype: void RelinkMapOrderQueueNodeBetween(int pPrevNode, int pNextNode) */
 
-void __thiscall
-TCivToolbar::RelinkMapOrderQueueNodeBetween(TCivToolbar *this,int pPrevNode,int pNextNode)
+void TCivToolbar::RelinkMapOrderQueueNodeBetween(int pPrevNode, int pNextNode)
 
 {
   if (this->ownerOffsetY != 0) {
@@ -1994,8 +1988,7 @@ TCivToolbar::RelinkMapOrderQueueNodeBetween(TCivToolbar *this,int pPrevNode,int 
    Notes:
    - Tile-type byte 0x05 gates the action-context command path before province fallback. */
 
-int __thiscall
-TCivToolbar::TryQueueMapOrderFromTileAction(TCivToolbar *this,short nTileIndex,int nInputFlags)
+int TCivToolbar::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)
 
 {
   TCivToolbarVtbl *pTVar1;
@@ -2174,8 +2167,7 @@ LAB_0055a363:
    - Validates entry category/type against active filters and nation/context state.
    - Returns nonzero when entry should be considered by mode-2 selection traversal. */
 
-undefined4 __thiscall
-TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(TCivToolbar *this,int param_1,char param_2)
+undefined4 TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(int param_1, char param_2)
 
 {
   short sVar1;
@@ -2236,7 +2228,7 @@ TCluster * TCivToolbar::CreateTCivToolbarInstance(void)
 // GHIDRA_NAME TCivToolbar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivToolbar::GetTEventHandlerClassNamePointer(TCivToolbar *this)
+CRuntimeClass * TCivToolbar::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCivToolbar;
@@ -2246,7 +2238,7 @@ CRuntimeClass * __thiscall TCivToolbar::GetTEventHandlerClassNamePointer(TCivToo
 // GHIDRA_NAME TCivToolbar::ConstructTCivToolbarBaseState
 // GHIDRA_PROTO undefined __thiscall TCivToolbar::ConstructTCivToolbarBaseState(void)
 
-TCivToolbar * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar *this)
+TCivToolbar * TCivToolbar::ConstructTCivToolbarBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -2258,7 +2250,7 @@ TCivToolbar * __thiscall TCivToolbar::ConstructTCivToolbarBaseState(TCivToolbar 
 // GHIDRA_NAME TCivToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivToolbar * __thiscall TCivToolbar::_scalar_deleting_destructor_(TCivToolbar *this,byte param_1)
+TCivToolbar * TCivToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -2399,7 +2391,7 @@ TCivToolbar::RefreshCivilianCommandPanelForSelection
    - stk0..stk5: per-tile civilian stack slots.
    - dfnd/latr/done: immediate civilian commands on command panel. */
 
-void __thiscall TCivToolbar::RefreshCivilianStackButtonsForTile(TCivToolbar *this,short nTileIndex)
+void TCivToolbar::RefreshCivilianStackButtonsForTile(short nTileIndex)
 
 {
   TCivToolbarVtbl *pTVar1;
@@ -2708,7 +2700,7 @@ switchD_005964c8_default:
    If no candidate remains in current civilian mode, active civilian pointer is cleared (matches
    'last unit deselected' behavior). */
 
-void __thiscall TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(TCivToolbar *this)
+void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick()
 
 {
   int iVar1;
@@ -3171,8 +3163,7 @@ bool TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
    Notes:
    - This result drives refund/cancel logic in HandleCivilianReportDecision. */
 
-bool __thiscall
-TCivToolbar::ShowCivilianReportDialogAndReturnConfirm(TCivToolbar *this,int *pCivilianOrderEntry)
+bool TCivToolbar::ShowCivilianReportDialogAndReturnConfirm(int *pCivilianOrderEntry)
 
 {
   int *pViewManager;

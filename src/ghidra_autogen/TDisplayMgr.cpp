@@ -7,7 +7,7 @@
 // GHIDRA_NAME TDisplayMgr::GetTDisplayMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTDisplayMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDisplayMgr::GetTDisplayMgrClassNamePointer(TDisplayMgr *this)
+CRuntimeClass * TDisplayMgr::GetTDisplayMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TDisplayMgr::GetTDisplayMgrClassNamePointer(TDisplayM
    - activity overlay byte (+0x18) set to 0xFF.
    Returns: void. */
 
-void __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(TDisplayMgr *this)
+void TDisplayMgr::InitializeMapTileRuntimeStateEntry()
 
 {
   this->field_0x10 = 0;
@@ -55,8 +55,7 @@ void __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(TDisplayMgr *thi
 // GHIDRA_NAME TDisplayMgr::DestructTDisplayMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDisplayMgrAndMaybeFree(byte param_1)
 
-TDisplayMgr * __thiscall
-TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this,byte param_1)
+TDisplayMgr * TDisplayMgr::DestructTDisplayMgrAndMaybeFree(byte param_1)
 
 {
   DestructTDisplayMgrAndMaybeFree_Impl();
@@ -70,7 +69,7 @@ TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this,byte param_1)
 // GHIDRA_NAME TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
 // GHIDRA_PROTO undefined __thiscall ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
 
-void __thiscall TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(TDisplayMgr *this)
+void TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00496420(g_pPrimaryRenderSurfaceContext);
@@ -86,8 +85,7 @@ void __thiscall TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
 // GHIDRA_NAME TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(void)
 
-void __thiscall
-TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(TDisplayMgr *this)
+void TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0()
 
 {
   short sVar1;
@@ -104,7 +102,7 @@ TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(TDisplay
 // GHIDRA_NAME TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated
 // GHIDRA_PROTO undefined __thiscall EnsurePrimaryRenderSurfaceContextAllocated(void)
 
-void __thiscall TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated(TDisplayMgr *this)
+void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated()
 
 {
   undefined4 local_10;
@@ -126,7 +124,7 @@ void __thiscall TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated(TDisplay
 // GHIDRA_NAME TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(void)
 
-void __thiscall TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(TDisplayMgr *this)
+void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0()
 
 {
   if ((*(short *)&this->field_0xa != 0) && (*(int **)&this->field_0x4 != (int *)0x0)) {
@@ -141,7 +139,7 @@ void __thiscall TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(T
 // GHIDRA_NAME TDisplayMgr::AssertUDisplayMgrLine471
 // GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLine471(void)
 
-void __thiscall TDisplayMgr::AssertUDisplayMgrLine471(TDisplayMgr *this)
+void TDisplayMgr::AssertUDisplayMgrLine471()
 
 {
   if (DAT_006a30ac == 0) {
@@ -155,7 +153,7 @@ void __thiscall TDisplayMgr::AssertUDisplayMgrLine471(TDisplayMgr *this)
 // GHIDRA_NAME TDisplayMgr::AssertUDisplayMgrLine495
 // GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLine495(void)
 
-void __thiscall TDisplayMgr::AssertUDisplayMgrLine495(TDisplayMgr *this)
+void TDisplayMgr::AssertUDisplayMgrLine495()
 
 {
   if (DAT_006a30b0 == 0) {
@@ -169,7 +167,7 @@ void __thiscall TDisplayMgr::AssertUDisplayMgrLine495(TDisplayMgr *this)
 // GHIDRA_NAME TDisplayMgr::DispatchDisplayManagerControlStringMessage
 // GHIDRA_PROTO undefined __thiscall DispatchDisplayManagerControlStringMessage(void)
 
-void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplayMgr *this)
+void TDisplayMgr::DispatchDisplayManagerControlStringMessage()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -196,7 +194,7 @@ void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplay
 // GHIDRA_NAME TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(void)
 
-void __thiscall TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(TDisplayMgr *this)
+void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00()
 
 {
   if (*(short *)&this->field_0xa != 0) {
@@ -212,7 +210,7 @@ void __thiscall TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(T
 // GHIDRA_NAME TDisplayMgr::OrphanRetStub_004fed50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004fed50(void)
 
-void __thiscall TDisplayMgr::OrphanRetStub_004fed50(TDisplayMgr *this)
+void TDisplayMgr::OrphanRetStub_004fed50()
 
 {
   return;
@@ -222,7 +220,7 @@ void __thiscall TDisplayMgr::OrphanRetStub_004fed50(TDisplayMgr *this)
 // GHIDRA_NAME TDisplayMgr::AssertUDisplayMgrLines614And616
 // GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLines614And616(char param_1)
 
-void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this,char param_1)
+void TDisplayMgr::AssertUDisplayMgrLines614And616(char param_1)
 
 {
   if (*(short *)&this->field_0xa != 0) {
@@ -241,8 +239,7 @@ void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this,c
 // GHIDRA_NAME TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState
 // GHIDRA_PROTO undefined __thiscall LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
 
-void __thiscall
-TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,undefined2 param_1)
+void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
 
 {
   int iVar1;
@@ -316,7 +313,7 @@ TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,undefi
    Calls icon-cache update helper after write.
    Returns: void. */
 
-void __thiscall TDisplayMgr::SetMapTileIconVariantTriplet(TDisplayMgr *this,undefined1 *param_1)
+void TDisplayMgr::SetMapTileIconVariantTriplet(undefined1 *param_1)
 
 {
   this->field_0x10 = *param_1;
@@ -330,7 +327,7 @@ void __thiscall TDisplayMgr::SetMapTileIconVariantTriplet(TDisplayMgr *this,unde
 // GHIDRA_NAME TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows
 // GHIDRA_PROTO undefined __thiscall DispatchUiWindowStatusTickForClass99Windows(void)
 
-void __thiscall TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows(TDisplayMgr *this)
+void TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows()
 
 {
   char cVar1;

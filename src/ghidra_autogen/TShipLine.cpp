@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
 // GHIDRA_PROTO undefined __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
 
-void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this,char param_1)
+void TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
 
 {
   if (this[4].field_0x14 != param_1) {
@@ -21,8 +21,7 @@ void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this,ch
 // GHIDRA_NAME TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_1)
 
-TShipLine * __thiscall
-TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(TShipLine *this,byte param_1)
+TShipLine * TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl();
@@ -66,7 +65,7 @@ TLineData * TShipLine::CreateTShipLineInstance(void)
 // GHIDRA_NAME TShipLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipLine::GetTLineDataClassNamePointer(TShipLine *this)
+CRuntimeClass * TShipLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +75,7 @@ CRuntimeClass * __thiscall TShipLine::GetTLineDataClassNamePointer(TShipLine *th
 // GHIDRA_NAME TShipLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
 
-void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this,int param_1)
+void TShipLine::OrphanRetStub_0056f460(int param_1)
 
 {
   TView *this_00;

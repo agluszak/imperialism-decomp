@@ -7,8 +7,7 @@
 // GHIDRA_NAME TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004b3050(byte param_1)
 
-TPopGrowthOrder * __thiscall
-TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *this,byte param_1)
+TPopGrowthOrder * TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl();
@@ -22,8 +21,7 @@ TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *
 // GHIDRA_NAME TPopGrowthOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
+CRuntimeClass * TPopGrowthOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,8 +31,7 @@ TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
 // GHIDRA_PROTO undefined __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 
-void __thiscall
-TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int param_1)
+void TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 
 {
   int iVar1;
@@ -60,7 +57,7 @@ TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int par
 // GHIDRA_NAME TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-short __thiscall TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPopGrowthOrder *this)
+short TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   int iVar1;
@@ -93,8 +90,7 @@ short __thiscall TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPopGrowthOrd
 // GHIDRA_NAME TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall
-TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowthOrder *this,short param_1)
+undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   short *psVar1;
@@ -139,7 +135,7 @@ TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowthOrder *this,short par
 // GHIDRA_NAME TPopGrowthOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TPopGrowthOrder::OrphanRetStub_004b5160(TPopGrowthOrder *this)
+void TPopGrowthOrder::OrphanRetStub_004b5160()
 
 {
   short *psVar1;
@@ -186,7 +182,7 @@ void __thiscall TPopGrowthOrder::OrphanRetStub_004b5160(TPopGrowthOrder *this)
 // GHIDRA_NAME TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
-void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOrder *this)
+void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop()
 
 {
   return;
@@ -196,7 +192,7 @@ void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOr
 // GHIDRA_NAME TPopGrowthOrder::CreateTItemOrderInstance
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
-void __thiscall TPopGrowthOrder::CreateTItemOrderInstance(TPopGrowthOrder *this)
+void TPopGrowthOrder::CreateTItemOrderInstance()
 
 {
   undefined2 uStack00000004;

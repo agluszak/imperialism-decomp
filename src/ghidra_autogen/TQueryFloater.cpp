@@ -7,8 +7,7 @@
 // GHIDRA_NAME TQueryFloater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TQueryFloater * __thiscall
-TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this,byte param_1)
+TQueryFloater * TQueryFloater::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -52,7 +51,7 @@ thunk_TPictureButton * TQueryFloater::CreateTQueryFloaterInstance(void)
 // GHIDRA_NAME TQueryFloater::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TQueryFloater::GetTEventHandlerClassNamePointer(TQueryFloater *this)
+CRuntimeClass * TQueryFloater::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -62,7 +61,7 @@ CRuntimeClass * __thiscall TQueryFloater::GetTEventHandlerClassNamePointer(TQuer
 // GHIDRA_NAME TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *this)
+void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;

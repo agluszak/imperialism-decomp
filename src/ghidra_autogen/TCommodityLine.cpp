@@ -37,7 +37,7 @@ TLineData * TCommodityLine::CreateTCommodityLineInstance(void)
 // GHIDRA_NAME TCommodityLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCommodityLine::GetTLineDataClassNamePointer(TCommodityLine *this)
+CRuntimeClass * TCommodityLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TCommodityLine::GetTLineDataClassNamePointer(TCommodi
 // GHIDRA_NAME TCommodityLine::ConstructTCommodityLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCommodityLineBaseState(void)
 
-TCommodityLine * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCommodityLine *this)
+TCommodityLine * TCommodityLine::ConstructTCommodityLineBaseState()
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
@@ -59,8 +59,7 @@ TCommodityLine * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCo
 // GHIDRA_NAME TCommodityLine::DestructTCommodityLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCommodityLineAndMaybeFree(byte param_1)
 
-TCommodityLine * __thiscall
-TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte param_1)
+TCommodityLine * TCommodityLine::DestructTCommodityLineAndMaybeFree(byte param_1)
 
 {
   DestructTCommodityLineAndMaybeFree_Impl();
@@ -74,7 +73,7 @@ TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte par
 // GHIDRA_NAME TCommodityLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall TCommodityLine::OrphanRetStub_0056f460(TCommodityLine *this)
+void TCommodityLine::OrphanRetStub_0056f460()
 
 {
   TSimMgrVtbl *pTVar1;

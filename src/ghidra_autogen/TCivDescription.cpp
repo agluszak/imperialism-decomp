@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivDescription::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-void __thiscall TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1)
+void TCivDescription::_scalar_deleting_destructor_(byte param_1)
 
 {
   _scalar_deleting_destructor_(this,param_1);
@@ -18,8 +18,7 @@ void __thiscall TCivDescription::_scalar_deleting_destructor_(TCivDescription *t
 // GHIDRA_NAME TCivDescription::ConstructTCivDescriptionBaseState
 // GHIDRA_PROTO undefined __thiscall TCivDescription::ConstructTCivDescriptionBaseState(void)
 
-TCivDescription * __thiscall
-TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
+TCivDescription * TCivDescription::ConstructTCivDescriptionBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -33,8 +32,7 @@ TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
 // GHIDRA_NAME TCivDescription::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivDescription * __thiscall
-TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1)
+TCivDescription * TCivDescription::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -50,8 +48,7 @@ TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1
 
 /* WARNING: Removing unreachable block (ram,0x0050b738) */
 
-void __thiscall
-TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription *this)
+void TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress()
 
 {
   char cVar1;
@@ -350,7 +347,7 @@ TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
    - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw
    paths rather than a single direct switch in this function. */
 
-void __thiscall TCivDescription::RenderStrategicMapTileCell(TCivDescription *this,short param_1)
+void TCivDescription::RenderStrategicMapTileCell(short param_1)
 
 {
   ushort uVar1;
@@ -997,7 +994,7 @@ TView * TCivDescription::CreateTCivDescriptionInstance(void)
 // GHIDRA_NAME TCivDescription::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivDescription::GetTEventHandlerClassNamePointer(TCivDescription *this)
+CRuntimeClass * TCivDescription::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCivDescription;
@@ -1007,8 +1004,7 @@ CRuntimeClass * __thiscall TCivDescription::GetTEventHandlerClassNamePointer(TCi
 // GHIDRA_NAME TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 // GHIDRA_PROTO undefined __thiscall UpdateCivilianOrderClassAndRefreshTargetCounts(int * param_1)
 
-void __thiscall
-TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivDescription *this,int *param_1)
+void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(int *param_1)
 
 {
   short sVar1;
@@ -1042,7 +1038,7 @@ TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivDescription 
 
 /* WARNING: Removing unreachable block (ram,0x0058f2bf) */
 
-void __thiscall TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,POINT *param_1)
+void TCivDescription::_scalar_deleting_destructor_(POINT *param_1)
 
 {
   short sVar1;
@@ -1233,8 +1229,7 @@ TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
 // GHIDRA_NAME TCivDescription::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
-void __thiscall
-TCivDescription::OrphanTiny_ReturnZero_0048a730(TCivDescription *this,undefined4 param_1)
+void TCivDescription::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 {
   short sVar1;
@@ -1311,7 +1306,7 @@ TCivDescription::OrphanTiny_ReturnZero_0048a730(TCivDescription *this,undefined4
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantA
 // GHIDRA_PROTO undefined __thiscall RenderCivilianTargetLegendVariantA(void)
 
-void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescription *this)
+void TCivDescription::RenderCivilianTargetLegendVariantA()
 
 {
   short sVar1;
@@ -1550,7 +1545,7 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantB
 // GHIDRA_PROTO undefined __thiscall RenderCivilianTargetLegendVariantB(void)
 
-void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescription *this)
+void TCivDescription::RenderCivilianTargetLegendVariantB()
 
 {
   char cVar1;
@@ -1753,8 +1748,7 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
    - This renderer consumes the same class/profile mapping table used by
    UpdateCivilianOrderTargetTileCountsForOwnerNation. */
 
-void __thiscall
-TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPanelContext)
+void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
 
 {
   undefined4 uVar1;
@@ -1997,7 +1991,7 @@ TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupan
 // GHIDRA_NAME TCivDescription::AttachHdcToDcWrapper
 // GHIDRA_PROTO undefined __thiscall AttachHdcToDcWrapper(int param_1)
 
-bool __thiscall TCivDescription::AttachHdcToDcWrapper(TCivDescription *this,int param_1)
+bool TCivDescription::AttachHdcToDcWrapper(int param_1)
 
 {
   TNetMgr *this_00;

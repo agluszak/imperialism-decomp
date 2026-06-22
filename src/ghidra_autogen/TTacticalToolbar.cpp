@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTacticalToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalToolbar * __thiscall
-TTacticalToolbar::_scalar_deleting_destructor_(TTacticalToolbar *this,byte param_1)
+TTacticalToolbar * TTacticalToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -55,8 +54,7 @@ TCluster * TTacticalToolbar::CreateTTacticalToolbarInstance(void)
 // GHIDRA_NAME TTacticalToolbar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalToolbar::GetTEventHandlerClassNamePointer(TTacticalToolbar *this)
+CRuntimeClass * TTacticalToolbar::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -66,7 +64,7 @@ TTacticalToolbar::GetTEventHandlerClassNamePointer(TTacticalToolbar *this)
 // GHIDRA_NAME TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalToolbar *this)
+void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalToolbar_slot_0x04_0x04 *pTVar1;
@@ -141,7 +139,7 @@ void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalTool
 // GHIDRA_NAME TTacticalToolbar::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-int __thiscall TTacticalToolbar::OrphanCallChain_C11_I88_004874b0(TTacticalToolbar *this)
+int TTacticalToolbar::OrphanCallChain_C11_I88_004874b0()
 
 {
   int iVar1;

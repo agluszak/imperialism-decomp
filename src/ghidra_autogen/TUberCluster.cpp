@@ -37,7 +37,7 @@ TCluster * TUberCluster::CreateTUberClusterInstance(void)
 // GHIDRA_NAME TUberCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TUberCluster::GetTEventHandlerClassNamePointer(TUberCluster *this)
+CRuntimeClass * TUberCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTUberCluster;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TUberCluster::GetTEventHandlerClassNamePointer(TUberC
 // GHIDRA_NAME TUberCluster::ConstructTUberClusterBaseState
 // GHIDRA_PROTO undefined __thiscall TUberCluster::ConstructTUberClusterBaseState(void)
 
-TUberCluster * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberCluster *this)
+TUberCluster * TUberCluster::ConstructTUberClusterBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -59,8 +59,7 @@ TUberCluster * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberClus
 // GHIDRA_NAME TUberCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUberCluster * __thiscall
-TUberCluster::_scalar_deleting_destructor_(TUberCluster *this,byte param_1)
+TUberCluster * TUberCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -74,7 +73,7 @@ TUberCluster::_scalar_deleting_destructor_(TUberCluster *this,byte param_1)
 // GHIDRA_NAME TUberCluster::OrphanVtableAssignStub_005714e0
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-undefined1 __thiscall TUberCluster::OrphanVtableAssignStub_005714e0(TUberCluster *this)
+undefined1 TUberCluster::OrphanVtableAssignStub_005714e0()
 
 {
   return 1;

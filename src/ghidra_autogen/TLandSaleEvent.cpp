@@ -7,8 +7,7 @@
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(byte param_1)
 
-TLandSaleEvent * __thiscall
-TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this,byte param_1)
+TLandSaleEvent * TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(byte param_1)
 
 {
   DestructLandSaleEventToBase();
@@ -22,7 +21,7 @@ TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this,byte par
 // GHIDRA_NAME TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-CRuntimeClass * __thiscall TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920(TLandSaleEvent *this)
+CRuntimeClass * TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920(TLan
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLandSaleEvent *this)
+void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
   char cVar1;
@@ -113,8 +112,7 @@ void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLan
 // GHIDRA_NAME TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int * param_1)
 
-void __thiscall
-TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this,int *param_1)
+void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
 
 {
   int iVar1;

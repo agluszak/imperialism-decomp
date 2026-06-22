@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTextPictureButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTextPictureButton::GetTEventHandlerClassNamePointer(TTextPictureButton *this)
+CRuntimeClass * TTextPictureButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TTextPictureButton::GetTEventHandlerClassNamePointer(TTextPictureButton *this)
 // GHIDRA_NAME TTextPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextPictureButton * __thiscall
-TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this,byte param_1)
+TTextPictureButton * TTextPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   DestructTTextPictureButtonAndMaybeFree_Impl();
@@ -33,7 +31,7 @@ TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this,byte p
 // GHIDRA_NAME TTextPictureButton::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTextPictureButton::OrphanTiny_ReturnZero_0048a730(TTextPictureButton *this)
+void TTextPictureButton::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined1 *puVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
 // GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)
 
-void __thiscall
-TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacNavyToolbar *this)
+void TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()
 
 {
   return;
@@ -18,7 +17,7 @@ TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacNav
 // GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_005ad0f0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005ad0f0(void)
 
-void __thiscall TTacNavyToolbar::OrphanRetStub_005ad0f0(TTacNavyToolbar *this)
+void TTacNavyToolbar::OrphanRetStub_005ad0f0()
 
 {
   return;
@@ -28,8 +27,7 @@ void __thiscall TTacNavyToolbar::OrphanRetStub_005ad0f0(TTacNavyToolbar *this)
 // GHIDRA_NAME TTacNavyToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacNavyToolbar * __thiscall
-TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1)
+TTacNavyToolbar * TTacNavyToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -43,7 +41,7 @@ TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1
 // GHIDRA_NAME TTacNavyToolbar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTacNavyToolbar::GetTEventHandlerClassNamePointer(TTacNavyToolbar *this)
+CRuntimeClass * TTacNavyToolbar::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -53,7 +51,7 @@ CRuntimeClass * __thiscall TTacNavyToolbar::GetTEventHandlerClassNamePointer(TTa
 // GHIDRA_NAME TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolbar *this)
+void TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920((TTacticalToolbar *)this);
@@ -65,8 +63,7 @@ void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolba
 // GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this,int param_1,void *param_2,int param_3)
+void TTacNavyToolbar::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   int iVar1;

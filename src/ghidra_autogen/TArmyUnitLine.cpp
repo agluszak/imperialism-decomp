@@ -37,7 +37,7 @@ TLineData * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
 // GHIDRA_NAME TArmyUnitLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyUnitLine::GetTLineDataClassNamePointer(TArmyUnitLine *this)
+CRuntimeClass * TArmyUnitLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TArmyUnitLine::GetTLineDataClassNamePointer(TArmyUnit
 // GHIDRA_NAME TArmyUnitLine::ConstructTArmyUnitLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitLineBaseState(void)
 
-TArmyUnitLine * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyUnitLine *this)
+TArmyUnitLine * TArmyUnitLine::ConstructTArmyUnitLineBaseState()
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
@@ -59,8 +59,7 @@ TArmyUnitLine * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyU
 // GHIDRA_NAME TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTArmyUnitLineAndMaybeFree(byte param_1)
 
-TArmyUnitLine * __thiscall
-TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte param_1)
+TArmyUnitLine * TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(byte param_1)
 
 {
   DestructTArmyUnitLineAndMaybeFree_Impl();
@@ -74,7 +73,7 @@ TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte param_
 // GHIDRA_NAME TArmyUnitLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int param_1)
 
-void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int param_1)
+void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
 
 {
   short sVar1;

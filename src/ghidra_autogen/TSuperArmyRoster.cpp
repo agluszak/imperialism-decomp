@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSuperArmyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperArmyRoster * __thiscall
-TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param_1)
+TSuperArmyRoster * TSuperArmyRoster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param
 // GHIDRA_NAME TSuperArmyRoster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSuperArmyRoster::GetTEventHandlerClassNamePointer(TSuperArmyRoster *this)
+CRuntimeClass * TSuperArmyRoster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -144,8 +142,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
 // GHIDRA_NAME TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTSuperArmyRosterAndMaybeFree(byte param_1)
 
-TSuperArmyRoster * __thiscall
-TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(TSuperArmyRoster *this,byte param_1)
+TSuperArmyRoster * TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(byte param_1)
 
 {
   ResetObjectToCObjectSentinelVtable_Impl();
@@ -159,8 +156,7 @@ TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(TSuperArmyRoster *this,by
 // GHIDRA_NAME TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
 // GHIDRA_PROTO undefined __thiscall OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
 
-void __thiscall
-TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmyRoster *this)
+void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
 
 {
   short sVar1;

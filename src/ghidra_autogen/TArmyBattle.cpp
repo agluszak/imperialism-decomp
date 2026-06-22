@@ -7,8 +7,7 @@
 // GHIDRA_NAME TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte param_1)
 
-TArmyBattle * __thiscall
-TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(TArmyBattle *this,byte param_1)
+TArmyBattle * TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl();
@@ -22,7 +21,7 @@ TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(TArmyBattle *this,byt
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
 // GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
 
-void __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
+void TArmyBattle::ConstructTArmyBattleBaseStateImpl()
 
 {
   undefined4 *puVar1;
@@ -73,7 +72,7 @@ uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
 // GHIDRA_NAME TArmyBattle::GetTTacticalBattleClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalBattleClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyBattle::GetTTacticalBattleClassNamePointer(TArmyBattle *this)
+CRuntimeClass * TArmyBattle::GetTTacticalBattleClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -83,7 +82,7 @@ CRuntimeClass * __thiscall TArmyBattle::GetTTacticalBattleClassNamePointer(TArmy
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseState
 // GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
 
-void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
+void TArmyBattle::ConstructTArmyBattleBaseState()
 
 {
   undefined4 *puVar1;
@@ -115,7 +114,7 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 // GHIDRA_NAME TArmyBattle::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
-void __thiscall TArmyBattle::OrphanCallChain_C11_I88_004874b0(TArmyBattle *this,int *param_1)
+void TArmyBattle::OrphanCallChain_C11_I88_004874b0(int *param_1)
 
 {
   code *pcVar1;
@@ -298,7 +297,7 @@ LAB_005a4b8e:
 // GHIDRA_NAME TArmyBattle::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(int * param_1)
 
-void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this,int *param_1)
+void TArmyBattle::OrphanRetStub_0059ad90(int *param_1)
 
 {
   code *pcVar1;
@@ -399,7 +398,7 @@ void __thiscall TArmyBattle::OrphanRetStub_0059ad90(TArmyBattle *this,int *param
 // GHIDRA_NAME TArmyBattle::OrphanRetStub_0059f710
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(int * param_1, int param_2)
 
-int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this,int *param_1,int param_2)
+int * TArmyBattle::OrphanRetStub_0059f710(int *param_1, int param_2)
 
 {
   int *piVar1;
@@ -458,7 +457,7 @@ int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this,int *para
 // GHIDRA_NAME TArmyBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(undefined4 param_1)
 
-void __thiscall TArmyBattle::CreateTTacticalBattleInstance(TArmyBattle *this,undefined4 param_1)
+void TArmyBattle::CreateTTacticalBattleInstance(undefined4 param_1)
 
 {
   int *piVar1;

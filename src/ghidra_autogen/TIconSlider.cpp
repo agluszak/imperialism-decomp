@@ -58,7 +58,7 @@ TNoHilitePicture * TIconSlider::CreateTIconSliderInstance(void)
 // GHIDRA_NAME TIconSlider::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIconSlider::GetTEventHandlerClassNamePointer(TIconSlider *this)
+CRuntimeClass * TIconSlider::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -68,7 +68,7 @@ CRuntimeClass * __thiscall TIconSlider::GetTEventHandlerClassNamePointer(TIconSl
 // GHIDRA_NAME TIconSlider::ConstructTIconSliderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIconSliderBaseState(void)
 
-TIconSlider * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider *this)
+TIconSlider * TIconSlider::ConstructTIconSliderBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -88,7 +88,7 @@ TIconSlider * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider 
 // GHIDRA_NAME TIconSlider::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *this,byte param_1)
+TIconSlider * TIconSlider::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -102,7 +102,7 @@ TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TIconSlider::OrphanCallChain_C6_I49_004875d0(TIconSlider *this)
+void TIconSlider::OrphanCallChain_C6_I49_004875d0()
 
 {
   short sVar1;
@@ -129,7 +129,7 @@ void __thiscall TIconSlider::OrphanCallChain_C6_I49_004875d0(TIconSlider *this)
 // GHIDRA_NAME TIconSlider::OrphanLeaf_NoCall_Ins04_00506560
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_00506560(short param_1)
 
-void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this,short param_1)
+void TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(short param_1)
 
 {
   *(short *)&this->field_0xb6 = *(short *)&this->field_0x98 * param_1;
@@ -140,8 +140,7 @@ void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this,
 // GHIDRA_NAME TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void __thiscall
-TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this,undefined2 param_1)
+void TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x96 = param_1;
@@ -152,7 +151,7 @@ TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this,undefined
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C2_I15_005065b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_005065b0(void)
 
-void __thiscall TIconSlider::OrphanCallChain_C2_I15_005065b0(TIconSlider *this)
+void TIconSlider::OrphanCallChain_C2_I15_005065b0()
 
 {
   POINT *unaff_retaddr;
@@ -197,7 +196,7 @@ TIconSlider::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TIconSlider::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TIconSlider::OrphanTiny_ReturnZero_0048a730(TIconSlider *this)
+void TIconSlider::OrphanTiny_ReturnZero_0048a730()
 
 {
   TIconBar::OrphanTiny_ReturnZero_0048a730((TIconBar *)this);
@@ -227,7 +226,7 @@ TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6
 // GHIDRA_NAME TIconSlider::OrphanCallChain_C1_I36_00506710
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I36_00506710(LPRECT param_1)
 
-void __thiscall TIconSlider::OrphanCallChain_C1_I36_00506710(TIconSlider *this,LPRECT param_1)
+void TIconSlider::OrphanCallChain_C1_I36_00506710(LPRECT param_1)
 
 {
   param_1->left = *(LONG *)&this->field_0xa4;

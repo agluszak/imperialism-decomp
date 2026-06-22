@@ -38,7 +38,7 @@ TMilitaryPageView * TGarrisonView::CreateTGarrisonViewInstance(void)
 // GHIDRA_NAME TGarrisonView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGarrisonView::GetTEventHandlerClassNamePointer(TGarrisonView *this)
+CRuntimeClass * TGarrisonView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TGarrisonView::GetTEventHandlerClassNamePointer(TGarr
 // GHIDRA_NAME TGarrisonView::ConstructTGarrisonViewBaseState
 // GHIDRA_PROTO undefined __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(void)
 
-TGarrisonView * __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(TGarrisonView *this)
+TGarrisonView * TGarrisonView::ConstructTGarrisonViewBaseState()
 
 {
   TMilitaryPageView::ConstructTMilitaryPageViewBaseState((TMilitaryPageView *)this);
@@ -61,8 +61,7 @@ TGarrisonView * __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(TGarri
 // GHIDRA_NAME TGarrisonView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGarrisonView * __thiscall
-TGarrisonView::_scalar_deleting_destructor_(TGarrisonView *this,byte param_1)
+TGarrisonView * TGarrisonView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -76,7 +75,7 @@ TGarrisonView::_scalar_deleting_destructor_(TGarrisonView *this,byte param_1)
 // GHIDRA_NAME TGarrisonView::InvalidateWindowRectFromHandleField1C
 // GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
 
-void __thiscall TGarrisonView::InvalidateWindowRectFromHandleField1C(TGarrisonView *this)
+void TGarrisonView::InvalidateWindowRectFromHandleField1C()
 
 {
   int *piVar1;

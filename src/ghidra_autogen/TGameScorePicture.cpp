@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGameScorePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameScorePicture * __thiscall
-TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this,byte param_1)
+TGameScorePicture * TGameScorePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -52,8 +51,7 @@ TNoHilitePicture * TGameScorePicture::CreateTGameScorePictureInstance(void)
 // GHIDRA_NAME TGameScorePicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TGameScorePicture::GetTEventHandlerClassNamePointer(TGameScorePicture *this)
+CRuntimeClass * TGameScorePicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -65,7 +63,7 @@ TGameScorePicture::GetTEventHandlerClassNamePointer(TGameScorePicture *this)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePicture *this)
+void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TGameScorePicture_slot_0x04_0x04 *pTVar1;

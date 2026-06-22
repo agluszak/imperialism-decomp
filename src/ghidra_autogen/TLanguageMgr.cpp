@@ -36,7 +36,7 @@ undefined4 __fastcall TLanguageMgr::CreateTLanguageMgrInstance(undefined4 param_
 // GHIDRA_NAME TLanguageMgr::GetTLanguageMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLanguageMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TLanguageMgr::GetTLanguageMgrClassNamePointer(TLanguageMgr *this)
+CRuntimeClass * TLanguageMgr::GetTLanguageMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -46,7 +46,7 @@ CRuntimeClass * __thiscall TLanguageMgr::GetTLanguageMgrClassNamePointer(TLangua
 // GHIDRA_NAME TLanguageMgr::ConstructTLanguageMgrBaseState
 // GHIDRA_PROTO undefined __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(void)
 
-TLanguageMgr * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguageMgr *this)
+TLanguageMgr * TLanguageMgr::ConstructTLanguageMgrBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -92,8 +92,7 @@ TLanguageMgr * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguage
 // GHIDRA_NAME TLanguageMgr::DestructTLanguageMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTLanguageMgrAndMaybeFree(byte param_1)
 
-TLanguageMgr * __thiscall
-TLanguageMgr::DestructTLanguageMgrAndMaybeFree(TLanguageMgr *this,byte param_1)
+TLanguageMgr * TLanguageMgr::DestructTLanguageMgrAndMaybeFree(byte param_1)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0();

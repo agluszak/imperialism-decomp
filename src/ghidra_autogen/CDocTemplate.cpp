@@ -12,7 +12,7 @@
 
 /* Builds mode-4 query struct and sends control message 0x1005; returns extracted output field. */
 
-undefined4 __thiscall CDocTemplate::GetItemData(CDocTemplate *this)
+undefined4 CDocTemplate::GetItemData()
 
 {
   undefined4 local_2c [8];
@@ -94,7 +94,7 @@ void * __cdecl CDocTemplate::memset(void *_Dst,int _Val,size_t _Size)
 /* Builds 0x2C-byte hit/query structure and sends tooltip message 0x40A for window/id lookup; copies
    out structure on success. */
 
-bool __thiscall CDocTemplate::HitTest(CDocTemplate *this,int param_1,undefined4 param_2)
+bool CDocTemplate::HitTest(int param_1, undefined4 param_2)
 
 {
   LRESULT LVar1;
@@ -123,7 +123,7 @@ bool __thiscall CDocTemplate::HitTest(CDocTemplate *this,int param_1,undefined4 
 // GHIDRA_NAME CDocTemplate::InitHashTable_6036b2
 // GHIDRA_PROTO undefined __thiscall InitHashTable_6036b2(int param_1, int param_2)
 
-void __thiscall CDocTemplate::InitHashTable_6036b2(CDocTemplate *this,int param_1,int param_2)
+void CDocTemplate::InitHashTable_6036b2(int param_1, int param_2)
 
 {
   void *_Dst;
@@ -165,8 +165,7 @@ CDocTemplate::ConstructObjectVtable0066fc2cWithArgs
 // GHIDRA_NAME CDocTemplate::ConstructObjectVtable00670b4cWithArg
 // GHIDRA_PROTO undefined __thiscall ConstructObjectVtable00670b4cWithArg(undefined4 param_1)
 
-CDocTemplate * __thiscall
-CDocTemplate::ConstructObjectVtable00670b4cWithArg(CDocTemplate *this,undefined4 param_1)
+CDocTemplate * CDocTemplate::ConstructObjectVtable00670b4cWithArg(undefined4 param_1)
 
 {
   CCmdTarget();
@@ -182,7 +181,7 @@ CDocTemplate::ConstructObjectVtable00670b4cWithArg(CDocTemplate *this,undefined4
 // GHIDRA_NAME CDocTemplate::GetStatus
 // GHIDRA_PROTO undefined __thiscall GetStatus(int * param_1)
 
-undefined4 __thiscall CDocTemplate::GetStatus(CDocTemplate *this,int *param_1)
+undefined4 CDocTemplate::GetStatus(int *param_1)
 
 {
   int iVar1;
@@ -240,7 +239,7 @@ LAB_0060b98f:
 // GHIDRA_NAME CDocTemplate::StartDocAFromContextWithDocName
 // GHIDRA_PROTO undefined __thiscall StartDocAFromContextWithDocName(void)
 
-void __thiscall CDocTemplate::StartDocAFromContextWithDocName(CDocTemplate *this)
+void CDocTemplate::StartDocAFromContextWithDocName()
 
 {
   DOCINFOA local_18;
@@ -255,7 +254,7 @@ void __thiscall CDocTemplate::StartDocAFromContextWithDocName(CDocTemplate *this
 // GHIDRA_NAME CDocTemplate::OpenDocumentFile_614603
 // GHIDRA_PROTO undefined __thiscall OpenDocumentFile_614603(LPCSTR param_1)
 
-int * __thiscall CDocTemplate::OpenDocumentFile_614603(CDocTemplate *this,LPCSTR param_1)
+int * CDocTemplate::OpenDocumentFile_614603(LPCSTR param_1)
 
 {
   undefined4 *puVar1;

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
 // GHIDRA_PROTO undefined __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(void)
 
-void __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent *this)
+void TTurnStartEvent::CreateTTurnStartEventInstance()
 
 {
   this->vftable = (TTurnStartEventVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4

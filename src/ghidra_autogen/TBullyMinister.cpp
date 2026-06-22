@@ -9,8 +9,7 @@
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBullyMinister *this,char param_1)
+float10 TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 {
   if (param_1 != '\0') {
@@ -23,7 +22,7 @@ TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBullyMinister 
 // GHIDRA_NAME TBullyMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBullyMinister::GetTMinisterClassNamePointer(TBullyMinister *this)
+CRuntimeClass * TBullyMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +32,7 @@ CRuntimeClass * __thiscall TBullyMinister::GetTMinisterClassNamePointer(TBullyMi
 // GHIDRA_NAME TBullyMinister::ConstructTBullyMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(void)
 
-TBullyMinister * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMinister *this)
+TBullyMinister * TBullyMinister::ConstructTBullyMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -46,8 +45,7 @@ TBullyMinister * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBu
 // GHIDRA_NAME TBullyMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TBullyMinister * __thiscall
-TBullyMinister::DeletingDestructTMinister(TBullyMinister *this,byte param_1)
+TBullyMinister * TBullyMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTBullyMinisterAndMaybeFree_Impl();

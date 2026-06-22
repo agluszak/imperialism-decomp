@@ -37,8 +37,7 @@ TView * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
 // GHIDRA_NAME TInteriorMinisterView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TInteriorMinisterView::GetTEventHandlerClassNamePointer(TInteriorMinisterView *this)
+CRuntimeClass * TInteriorMinisterView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TInteriorMinisterView::GetTEventHandlerClassNamePointer(TInteriorMinisterView *t
 // GHIDRA_NAME TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInteriorMinisterViewBaseState(void)
 
-TInteriorMinisterView * __thiscall
-TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinisterView *this)
+TInteriorMinisterView * TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -62,8 +60,7 @@ TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinister
 // GHIDRA_NAME TInteriorMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInteriorMinisterView * __thiscall
-TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this,byte param_1)
+TInteriorMinisterView * TInteriorMinisterView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

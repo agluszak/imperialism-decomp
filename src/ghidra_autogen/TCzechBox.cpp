@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
 // GHIDRA_PROTO undefined __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
 
-TCzechBox * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
+TCzechBox * TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()
 
 {
   TCzechBox::ConstructTCzechBoxBaseState(this);
@@ -51,7 +51,7 @@ thunk_TPictureButton * TCzechBox::CreateTCzechBoxInstance(void)
 // GHIDRA_NAME TCzechBox::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCzechBox::GetTEventHandlerClassNamePointer(TCzechBox *this)
+CRuntimeClass * TCzechBox::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -61,7 +61,7 @@ CRuntimeClass * __thiscall TCzechBox::GetTEventHandlerClassNamePointer(TCzechBox
 // GHIDRA_NAME TCzechBox::ConstructTCzechBoxBaseState
 // GHIDRA_PROTO undefined __thiscall TCzechBox::ConstructTCzechBoxBaseState(void)
 
-TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
+TCzechBox * TCzechBox::ConstructTCzechBoxBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -75,7 +75,7 @@ TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 // GHIDRA_NAME TCzechBox::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,byte param_1)
+TCzechBox * TCzechBox::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -89,7 +89,7 @@ TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,b
 // GHIDRA_NAME TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBox *this,int param_1)
+void TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   if (param_1 == 0x21) {
@@ -103,7 +103,7 @@ void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBo
 // GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920(TCzechBox *this)
+void TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   *(undefined4 *)&this->field_0x60 = 4;
@@ -114,7 +114,7 @@ void __thiscall TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920(TCzechBox *this)
 // GHIDRA_NAME TCzechBox::SetPressedStateAdjustPictureBitmapByOne
 // GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(char param_1)
 
-void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *this,char param_1)
+void TCzechBox::SetPressedStateAdjustPictureBitmapByOne(char param_1)
 
 {
   if (param_1 != this->field_0x64) {
@@ -128,7 +128,7 @@ void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *th
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C4_I45_00571d40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(char param_1)
 
-void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this,char param_1)
+void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
 
 {
   ushort uVar1;
@@ -168,7 +168,7 @@ void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this,char 
 // GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00571de0(void)
 
-undefined1 __thiscall TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0(TCzechBox *this)
+undefined1 TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0()
 
 {
   return this->field_0x94;
@@ -178,7 +178,7 @@ undefined1 __thiscall TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0(TCzechBox *thi
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C1_I10_00571e00
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_00571e00(char param_1)
 
-void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this,char param_1)
+void TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)
 
 {
   if (this->field_0x94 != param_1) {
@@ -192,7 +192,7 @@ void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this,char 
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C2_I16_00571e40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571e40(void)
 
-void __thiscall TCzechBox::OrphanCallChain_C2_I16_00571e40(TCzechBox *this)
+void TCzechBox::OrphanCallChain_C2_I16_00571e40()
 
 {
   TCzechBoxVtbl *pTVar1;
@@ -208,8 +208,7 @@ void __thiscall TCzechBox::OrphanCallChain_C2_I16_00571e40(TCzechBox *this)
 // GHIDRA_NAME TCzechBox::OrphanCallChain_C3_I23_00571e80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2)
 
-void __thiscall
-TCzechBox::OrphanCallChain_C3_I23_00571e80(TCzechBox *this,char param_1,undefined4 param_2)
+void TCzechBox::OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2)
 
 {
   TCzechBoxVtbl *pTVar1;

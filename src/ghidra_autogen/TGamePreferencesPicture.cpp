@@ -27,8 +27,7 @@ TGamePreferencesPicture::ConstructTurnEventMainPictureEntry_1036
 // GHIDRA_NAME TGamePreferencesPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGamePreferencesPicture * __thiscall
-TGamePreferencesPicture::_scalar_deleting_destructor_(TGamePreferencesPicture *this,byte param_1)
+TGamePreferencesPicture * TGamePreferencesPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -72,8 +71,7 @@ thunk_TPictureButton * TGamePreferencesPicture::CreateTGamePreferencesPictureIns
 // GHIDRA_NAME TGamePreferencesPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TGamePreferencesPicture::GetTEventHandlerClassNamePointer(TGamePreferencesPicture *this)
+CRuntimeClass * TGamePreferencesPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -83,8 +81,7 @@ TGamePreferencesPicture::GetTEventHandlerClassNamePointer(TGamePreferencesPictur
 // GHIDRA_NAME TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGamePreferencesPicture *this)
+void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;

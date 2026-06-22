@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTechMgr::GetTTechMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTechMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTechMgr::GetTTechMgrClassNamePointer(TTechMgr *this)
+CRuntimeClass * TTechMgr::GetTTechMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TTechMgr::GetTTechMgrClassNamePointer(TTechMgr *this)
 // GHIDRA_NAME TTechMgr::ConstructCityOrderCapabilityStateVtable
 // GHIDRA_PROTO undefined __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(void)
 
-void __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(TTechMgr *this)
+void TTechMgr::ConstructCityOrderCapabilityStateVtable()
 
 {
   this->vftable = &TTechMgrVtbl_0066ad28;
@@ -28,7 +28,7 @@ void __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(TTechMgr *this
 // GHIDRA_NAME TTechMgr::DestructTTechMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTechMgrAndMaybeFree(byte param_1)
 
-TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this,byte param_1)
+TTechMgr * TTechMgr::DestructTTechMgrAndMaybeFree(byte param_1)
 
 {
   DestructTTechMgrAndMaybeFree_Impl();
@@ -71,7 +71,7 @@ TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this,byte
    
    This function is a key source for persisted city/university capability state. */
 
-void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this,int *param_1)
+void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
 
 {
   undefined1 uVar1;
@@ -206,7 +206,7 @@ LAB_005af590:
    
    This function is the persistence writeback counterpart of DeserializeCityOrderCapabilityState. */
 
-void __thiscall TTechMgr::SerializeCityOrderCapabilityState(TTechMgr *this)
+void TTechMgr::SerializeCityOrderCapabilityState()
 
 {
   code *pcVar1;

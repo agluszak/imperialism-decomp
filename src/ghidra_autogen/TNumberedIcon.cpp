@@ -37,7 +37,7 @@ TMegaPicture * TNumberedIcon::CreateTNumberedIconInstance(void)
 // GHIDRA_NAME TNumberedIcon::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNumberedIcon::GetTEventHandlerClassNamePointer(TNumberedIcon *this)
+CRuntimeClass * TNumberedIcon::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TNumberedIcon::GetTEventHandlerClassNamePointer(TNumb
 // GHIDRA_NAME TNumberedIcon::ConstructTNumberedIconBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNumberedIconBaseState(void)
 
-TNumberedIcon * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumberedIcon *this)
+TNumberedIcon * TNumberedIcon::ConstructTNumberedIconBaseState()
 
 {
   TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
@@ -60,8 +60,7 @@ TNumberedIcon * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumbe
 // GHIDRA_NAME TNumberedIcon::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedIcon * __thiscall
-TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this,byte param_1)
+TNumberedIcon * TNumberedIcon::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,7 +74,7 @@ TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this,byte param_1)
 // GHIDRA_NAME TNumberedIcon::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TNumberedIcon::OrphanCallChain_C6_I49_004875d0(TNumberedIcon *this)
+void TNumberedIcon::OrphanCallChain_C6_I49_004875d0()
 
 {
   TNumberedIconVtbl *pTVar1;
@@ -94,8 +93,7 @@ void __thiscall TNumberedIcon::OrphanCallChain_C6_I49_004875d0(TNumberedIcon *th
 // GHIDRA_NAME TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
 
-void __thiscall
-TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedIcon *this)
+void TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570()
 
 {
   TNumberTextVtbl *pTVar1;
@@ -152,7 +150,7 @@ TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedI
 // GHIDRA_NAME TNumberedIcon::OrphanCallChain_C1_I10_005076d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_005076d0(short param_1)
 
-void __thiscall TNumberedIcon::OrphanCallChain_C1_I10_005076d0(TNumberedIcon *this,short param_1)
+void TNumberedIcon::OrphanCallChain_C1_I10_005076d0(short param_1)
 
 {
   if (*(int **)&this->field_0xac != (int *)0x0) {

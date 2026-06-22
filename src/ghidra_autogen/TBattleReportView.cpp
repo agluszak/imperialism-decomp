@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBattleReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleReportView * __thiscall
-TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,byte param_1)
+TBattleReportView * TBattleReportView::_scalar_deleting_destructor_(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl();
@@ -22,8 +21,7 @@ TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,byte par
 // GHIDRA_NAME TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle
 // GHIDRA_PROTO undefined __thiscall RenderBattleReportViewSurfaceSpriteWithResourceHandle(void)
 
-void __thiscall
-TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle(TBattleReportView *this)
+void TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
 
 {
   undefined4 *puVar1;
@@ -82,8 +80,7 @@ TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle(TBattle
 // GHIDRA_NAME TBattleReportView::RemoveUiTransientRegistryObjectByTag
 // GHIDRA_PROTO undefined __thiscall TBattleReportView::RemoveUiTransientRegistryObjectByTag(int param_1)
 
-void __thiscall
-TBattleReportView::RemoveUiTransientRegistryObjectByTag(TBattleReportView *this,int param_1)
+void TBattleReportView::RemoveUiTransientRegistryObjectByTag(int param_1)
 
 {
   TAutoGreatPower *this_00;
@@ -148,8 +145,7 @@ TDiplomacyMapView * TBattleReportView::CreateTBattleReportViewInstance(void)
 // GHIDRA_NAME TBattleReportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBattleReportView::GetTEventHandlerClassNamePointer(TBattleReportView *this)
+CRuntimeClass * TBattleReportView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -159,7 +155,7 @@ TBattleReportView::GetTEventHandlerClassNamePointer(TBattleReportView *this)
 // GHIDRA_NAME TBattleReportView::ConstructTBattleReportViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBattleReportViewBaseState(void)
 
-void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleReportView *this)
+void TBattleReportView::ConstructTBattleReportViewBaseState()
 
 {
   TBattleReportView_slot_0x04_0x04 *pTVar1;
@@ -482,7 +478,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
 // GHIDRA_NAME TBattleReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this)
+void TBattleReportView::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x24cc != 0) {
@@ -497,8 +493,7 @@ void __thiscall TBattleReportView::_scalar_deleting_destructor_(TBattleReportVie
 // GHIDRA_NAME TBattleReportView::DispatchReflectedControlMessageOrFallback
 // GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(uint param_1)
 
-uint __thiscall
-TBattleReportView::DispatchReflectedControlMessageOrFallback(TBattleReportView *this,uint param_1)
+uint TBattleReportView::DispatchReflectedControlMessageOrFallback(uint param_1)
 
 {
   TBattleReportViewVtbl *pTVar1;
@@ -557,8 +552,7 @@ TBattleReportView::DispatchReflectedControlMessageOrFallback(TBattleReportView *
 // GHIDRA_NAME TBattleReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-void __thiscall
-TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,int param_1,int param_2)
+void TBattleReportView::_scalar_deleting_destructor_(int param_1, int param_2)
 
 {
   uint uVar1;
@@ -1105,7 +1099,7 @@ LAB_004ae762:
 // GHIDRA_NAME TBattleReportView::OrphanLeaf_NoCall_Ins05_004f6820
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_004f6820(void)
 
-void __thiscall TBattleReportView::OrphanLeaf_NoCall_Ins05_004f6820(TBattleReportView *this)
+void TBattleReportView::OrphanLeaf_NoCall_Ins05_004f6820()
 
 {
   short sVar1;

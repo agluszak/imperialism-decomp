@@ -7,7 +7,7 @@
 // GHIDRA_NAME TRadio::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this,byte param_1)
+TRadio * TRadio::_scalar_deleting_destructor_(byte param_1)
 
 {
   TRadio::CreateTRadioInstance(this);
@@ -21,7 +21,7 @@ TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this,byte param
 // GHIDRA_NAME TRadio::CreateTRadioInstance
 // GHIDRA_PROTO undefined __thiscall TRadio::CreateTRadioInstance(void)
 
-void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
+void TRadio::CreateTRadioInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -49,7 +49,7 @@ void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
 // GHIDRA_NAME TRadio::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRadio::GetTEventHandlerClassNamePointer(TRadio *this)
+CRuntimeClass * TRadio::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TView *this)
+void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TView *this)
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(CArchive * param_1)
 
-void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this,CArchive *param_1)
+void TView::GetTEventHandlerClassNamePointer(CArchive *param_1)
 
 {
   int iVar1;
@@ -92,8 +92,7 @@ void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this,CArchive *pa
 // GHIDRA_NAME TView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
-void __thiscall
-TView::OrphanRetStub_0059add0(TView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
+void TView::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 {
   undefined uVar1;
@@ -139,7 +138,7 @@ undefined4 __fastcall TView::CreateTViewInstance(undefined4 param_1)
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
+CRuntimeClass * TView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -149,7 +148,7 @@ CRuntimeClass * __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
 // GHIDRA_NAME TView::ConstructTViewBaseState
 // GHIDRA_PROTO void __thiscall ConstructTViewBaseState(void)
 
-void __thiscall TView::ConstructTViewBaseState(TView *this)
+void TView::ConstructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -188,7 +187,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
+TView * TView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState(this);
@@ -202,7 +201,7 @@ TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -230,7 +229,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
+TView * TView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
@@ -244,7 +243,7 @@ TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 // GHIDRA_NAME TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
 // GHIDRA_PROTO undefined __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
 
-void __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(TView *this)
+void TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
 
 {
   undefined4 *puVar1;
@@ -281,7 +280,7 @@ void __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At004
 
 /* Setting prototype: void CopyCityDialogStateFromSource(TView *this, TView *pSource) */
 
-void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
+void TView::CopyCityDialogStateFromSource(TView *pSource)
 
 {
   int iVar1;
@@ -325,7 +324,7 @@ void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
 // GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-TView * __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
+TView * TView::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;
@@ -340,7 +339,7 @@ TView * __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
 // GHIDRA_NAME TView::EnableAndProcessFlag
 // GHIDRA_PROTO void __thiscall TView::EnableAndProcessFlag(CString * sharedString)
 
-void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
+void TView::EnableAndProcessFlag(CString *sharedString)
 
 {
   this->field5c = 1;
@@ -422,7 +421,7 @@ TView::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TView::DestructTIncludeViewAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(void)
 
-void __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(TView *this)
+void TView::DestructTIncludeViewAndMaybeFree_Impl()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -452,7 +451,7 @@ void __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(TView *this)
 // GHIDRA_NAME TView::DestructTWindowViewAndUnlinkGlobalLists
 // GHIDRA_PROTO undefined __thiscall TView::DestructTWindowViewAndUnlinkGlobalLists(void)
 
-void __thiscall TView::DestructTWindowViewAndUnlinkGlobalLists(TView *this)
+void TView::DestructTWindowViewAndUnlinkGlobalLists()
 
 {
   int *piVar1;
@@ -527,7 +526,7 @@ LAB_0048d750:
 // GHIDRA_NAME TView::DestructCityDialogSharedBaseState
 // GHIDRA_PROTO undefined __thiscall DestructCityDialogSharedBaseState(void)
 
-void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
+void TView::DestructCityDialogSharedBaseState()
 
 {
   short sVar1;
@@ -566,7 +565,7 @@ void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTEditTextAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TView::DestructTEditTextAndMaybeFree(void)
 
-void __thiscall TView::DestructTEditTextAndMaybeFree(TView *this)
+void TView::DestructTEditTextAndMaybeFree()
 
 {
   CString *this_00;
@@ -610,7 +609,7 @@ void __thiscall TView::DestructTEditTextAndMaybeFree(TView *this)
 // GHIDRA_NAME TView::DestructTClusterAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TView::DestructTClusterAndMaybeFree_Impl(void)
 
-void __thiscall TView::DestructTClusterAndMaybeFree_Impl(TView *this)
+void TView::DestructTClusterAndMaybeFree_Impl()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -638,7 +637,7 @@ void __thiscall TView::DestructTClusterAndMaybeFree_Impl(TView *this)
 // GHIDRA_NAME TView::DestructTWindowAndUnlinkGlobalWindowNode
 // GHIDRA_PROTO undefined __thiscall TView::DestructTWindowAndUnlinkGlobalWindowNode(void)
 
-void __thiscall TView::DestructTWindowAndUnlinkGlobalWindowNode(TView *this)
+void TView::DestructTWindowAndUnlinkGlobalWindowNode()
 
 {
   int *piVar1;
@@ -706,7 +705,7 @@ LAB_004921ef:
 // GHIDRA_NAME TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl
 // GHIDRA_PROTO undefined __thiscall TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
 
-void __thiscall TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(TView *this)
+void TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl()
 
 {
   undefined4 *unaff_FS_OFFSET;

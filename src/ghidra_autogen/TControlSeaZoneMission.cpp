@@ -7,8 +7,7 @@
 // GHIDRA_NAME TControlSeaZoneMission::DestroyTControlSeaZoneMission
 // GHIDRA_PROTO undefined __thiscall DestroyTControlSeaZoneMission(byte param_1)
 
-TControlSeaZoneMission * __thiscall
-TControlSeaZoneMission::DestroyTControlSeaZoneMission(TControlSeaZoneMission *this,byte param_1)
+TControlSeaZoneMission * TControlSeaZoneMission::DestroyTControlSeaZoneMission(byte param_1)
 
 {
   ResetTControlSeaZoneMissionToSentinelVtable();
@@ -189,8 +188,7 @@ TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
 
 /* Setting prototype: void SetMapOrderType6AndQueue(int nOrderTarget) */
 
-void __thiscall
-TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,int nOrderTarget)
+void TControlSeaZoneMission::SetMapOrderType6AndQueue(int nOrderTarget)
 
 {
   int *piVar1;

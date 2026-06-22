@@ -179,8 +179,7 @@ TIndexAndRankList * TSortedByRelationshipList::CreateTSortedByRelationshipListIn
 // GHIDRA_NAME TSortedByRelationshipList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSortedByRelationshipList::GetTEventHandlerClassNamePointer(TSortedByRelationshipList *this)
+CRuntimeClass * TSortedByRelationshipList::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTSortedByRelationshipList;
@@ -190,8 +189,7 @@ TSortedByRelationshipList::GetTEventHandlerClassNamePointer(TSortedByRelationshi
 // GHIDRA_NAME TSortedByRelationshipList::ConstructObArrayWithVtable654D38
 // GHIDRA_PROTO undefined __thiscall TSortedByRelationshipList::ConstructObArrayWithVtable654D38(void)
 
-TSortedByRelationshipList * __thiscall
-TSortedByRelationshipList::ConstructObArrayWithVtable654D38(TSortedByRelationshipList *this)
+TSortedByRelationshipList * TSortedByRelationshipList::ConstructObArrayWithVtable654D38()
 
 {
   TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
@@ -905,8 +903,7 @@ LAB_004f00ff:
 // GHIDRA_NAME TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
 // GHIDRA_PROTO undefined __thiscall ApplyDiplomacyInterNationStatesForTurn(void)
 
-void __thiscall
-TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn(TSortedByRelationshipList *this)
+void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
 
 {
   short sVar1;

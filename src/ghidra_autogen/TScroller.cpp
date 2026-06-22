@@ -7,7 +7,7 @@
 // GHIDRA_NAME TScroller::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this,byte param_1)
+TScroller * TScroller::_scalar_deleting_destructor_(byte param_1)
 
 {
   TScroller::CreateTScrollerInstance(this);
@@ -21,7 +21,7 @@ TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this,b
 // GHIDRA_NAME TScroller::CreateTScrollerInstance
 // GHIDRA_PROTO undefined __thiscall TScroller::CreateTScrollerInstance(void)
 
-void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
+void TScroller::CreateTScrollerInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -49,7 +49,7 @@ void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
 // GHIDRA_NAME TScroller::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TScroller::GetTEventHandlerClassNamePointer(TScroller *this)
+CRuntimeClass * TScroller::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -59,8 +59,7 @@ CRuntimeClass * __thiscall TScroller::GetTEventHandlerClassNamePointer(TScroller
 // GHIDRA_NAME TScroller::ConstructTScrollerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTScrollerBaseState(int * param_1, int * param_2, int * param_3)
 
-void __thiscall
-TScroller::ConstructTScrollerBaseState(TScroller *this,int *param_1,int *param_2,int *param_3)
+void TScroller::ConstructTScrollerBaseState(int *param_1, int *param_2, int *param_3)
 
 {
   int iVar1;

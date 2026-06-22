@@ -56,7 +56,7 @@ TWorldView * TCitySiteView::CreateTCitySiteViewInstance(void)
 // GHIDRA_NAME TCitySiteView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCitySiteView::GetTEventHandlerClassNamePointer(TCitySiteView *this)
+CRuntimeClass * TCitySiteView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -66,8 +66,7 @@ CRuntimeClass * __thiscall TCitySiteView::GetTEventHandlerClassNamePointer(TCity
 // GHIDRA_NAME TCitySiteView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCitySiteView * __thiscall
-TCitySiteView::_scalar_deleting_destructor_(TCitySiteView *this,byte param_1)
+TCitySiteView * TCitySiteView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -81,7 +80,7 @@ TCitySiteView::_scalar_deleting_destructor_(TCitySiteView *this,byte param_1)
 // GHIDRA_NAME TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920(TCitySiteView *this)
+void TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
@@ -147,7 +146,7 @@ void __thiscall TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920(TCitySiteView *t
 // GHIDRA_NAME TCitySiteView::OrphanRetStub_005966a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(undefined4 param_1)
 
-void __thiscall TCitySiteView::OrphanRetStub_005966a0(TCitySiteView *this,undefined4 param_1)
+void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TCitySiteView *pTStack_4;
@@ -162,7 +161,7 @@ void __thiscall TCitySiteView::OrphanRetStub_005966a0(TCitySiteView *this,undefi
 // GHIDRA_NAME TCitySiteView::OrphanRetStub_00596680
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
 
-void __thiscall TCitySiteView::OrphanRetStub_00596680(TCitySiteView *this)
+void TCitySiteView::OrphanRetStub_00596680()
 
 {
   (*this->vftable[0x51].slot_0x04)();
@@ -220,7 +219,7 @@ TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject
    Returns:
    - void */
 
-void __thiscall TCitySiteView::OrphanRetStub_00596080(TCitySiteView *this)
+void TCitySiteView::OrphanRetStub_00596080()
 
 {
   char cVar1;
@@ -346,7 +345,7 @@ void __thiscall TCitySiteView::OrphanRetStub_00596080(TCitySiteView *this)
 // GHIDRA_NAME TCitySiteView::HandleMapClickByInteractionMode
 // GHIDRA_PROTO undefined __thiscall HandleMapClickByInteractionMode(void)
 
-void __thiscall TCitySiteView::HandleMapClickByInteractionMode(TCitySiteView *this)
+void TCitySiteView::HandleMapClickByInteractionMode()
 
 {
   TMapMgrVtbl *pTVar1;

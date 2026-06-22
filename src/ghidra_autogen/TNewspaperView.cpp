@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0
 // GHIDRA_PROTO undefined __thiscall TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
 
-TNewspaperView * __thiscall
-TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(TNewspaperView *this)
+TNewspaperView * TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -20,8 +19,7 @@ TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(TN
 // GHIDRA_NAME TNewspaperView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewspaperView * __thiscall
-TNewspaperView::_scalar_deleting_destructor_(TNewspaperView *this,byte param_1)
+TNewspaperView * TNewspaperView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -65,7 +63,7 @@ thunk_TPictureButton * TNewspaperView::CreateTNewspaperView(void)
 // GHIDRA_NAME TNewspaperView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNewspaperView::GetTEventHandlerClassNamePointer(TNewspaperView *this)
+CRuntimeClass * TNewspaperView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTradeBidNationView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeBidNationView * __thiscall
-TTradeBidNationView::_scalar_deleting_destructor_(TTradeBidNationView *this,byte param_1)
+TTradeBidNationView * TTradeBidNationView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -52,8 +51,7 @@ TView * TTradeBidNationView::CreateTTradeBidNationViewInstance(void)
 // GHIDRA_NAME TTradeBidNationView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradeBidNationView::GetTEventHandlerClassNamePointer(TTradeBidNationView *this)
+CRuntimeClass * TTradeBidNationView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -63,7 +61,7 @@ TTradeBidNationView::GetTEventHandlerClassNamePointer(TTradeBidNationView *this)
 // GHIDRA_NAME TTradeBidNationView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TTradeBidNationView::OrphanCallChain_C11_I88_004874b0(TTradeBidNationView *this)
+void TTradeBidNationView::OrphanCallChain_C11_I88_004874b0()
 
 {
   short sVar1;

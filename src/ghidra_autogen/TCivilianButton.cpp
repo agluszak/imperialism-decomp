@@ -7,8 +7,7 @@
 // GHIDRA_NAME TRadioPictureButton::TRadioPictureButton
 // GHIDRA_PROTO undefined __thiscall TRadioPictureButton::TRadioPictureButton(void)
 
-TCivilianButton * __thiscall
-TRadioPictureButton::TRadioPictureButton(TCivilianButton *this)
+TCivilianButton * TRadioPictureButton::TRadioPictureButton()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -54,7 +53,7 @@ TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 // GHIDRA_NAME TCivilianButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivilianButton::GetTEventHandlerClassNamePointer(TCivilianButton *this)
+CRuntimeClass * TCivilianButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCivilianButton;
@@ -64,7 +63,7 @@ CRuntimeClass * __thiscall TCivilianButton::GetTEventHandlerClassNamePointer(TCi
 // GHIDRA_NAME TCivilianButton::TCivilianButton
 // GHIDRA_PROTO undefined __thiscall TCivilianButton(void)
 
-TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *this)
+TCivilianButton * TCivilianButton::TCivilianButton()
 
 {
   TRadioPictureButton::TRadioPictureButton(this);
@@ -77,8 +76,7 @@ TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *t
 // GHIDRA_NAME TCivilianButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivilianButton * __thiscall
-TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this,byte param_1)
+TCivilianButton * TCivilianButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -92,8 +90,7 @@ TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this,byte param_1
 // GHIDRA_NAME TCivilianButton::SetSelectionAndEnableByMappedValue
 // GHIDRA_PROTO undefined __thiscall SetSelectionAndEnableByMappedValue(int param_1)
 
-void __thiscall
-TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int param_1)
+void TCivilianButton::SetSelectionAndEnableByMappedValue(int param_1)
 
 {
   TCivilianButtonVtbl *pTVar1;
@@ -118,7 +115,7 @@ TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int pa
 // GHIDRA_NAME TCivilianButton::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TCivilianButton::OrphanTiny_ReturnZero_0048a730(TCivilianButton *this)
+void TCivilianButton::OrphanTiny_ReturnZero_0048a730()
 
 {
   RECT local_20;

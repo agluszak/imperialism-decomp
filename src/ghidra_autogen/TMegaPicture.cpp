@@ -39,7 +39,7 @@ thunk_TPictureButton * TMegaPicture::CreateTMegaPictureInstance(void)
 // GHIDRA_NAME TMegaPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMegaPicture::GetTEventHandlerClassNamePointer(TMegaPicture *this)
+CRuntimeClass * TMegaPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,7 +49,7 @@ CRuntimeClass * __thiscall TMegaPicture::GetTEventHandlerClassNamePointer(TMegaP
 // GHIDRA_NAME TMegaPicture::ConstructTMegaPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TMegaPicture::ConstructTMegaPictureBaseState(void)
 
-TMegaPicture * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPicture *this)
+TMegaPicture * TMegaPicture::ConstructTMegaPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -64,8 +64,7 @@ TMegaPicture * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPict
 // GHIDRA_NAME TMegaPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMegaPicture * __thiscall
-TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this,byte param_1)
+TMegaPicture * TMegaPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -79,7 +78,7 @@ TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this,byte param_1)
 // GHIDRA_NAME TMegaPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this,LONG *param_1)
+void TMegaPicture::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
 
 {
   TMegaPicture_slot_0x04_0x04 *pTVar1;
@@ -142,7 +141,7 @@ void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this,
 // GHIDRA_NAME TMegaPicture::SetPictureResourceIdAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(undefined4 param_1)
 
-void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this,undefined4 param_1)
+void TMegaPicture::SetPictureResourceIdAndRefresh(undefined4 param_1)
 
 {
   undefined1 *puVar1;
@@ -224,7 +223,7 @@ void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this,
 // GHIDRA_NAME TMegaPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMegaPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMegaPicture *this)
+void TMegaPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(int *)&this->field_0x94 != 0) {

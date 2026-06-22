@@ -7,7 +7,7 @@
 // GHIDRA_NAME Config::InitDefaults
 // GHIDRA_PROTO undefined4 * __thiscall TMultiplayerMgr::ConstructMultiplayerManager(astruct_11 * this_obj)
 
-undefined4 * __thiscall Config::InitDefaults(Config *this,astruct_11 *this_obj)
+undefined4 * Config::InitDefaults(astruct_11 *this_obj)
 
 {
   undefined4 *unaff_FS_OFFSET;

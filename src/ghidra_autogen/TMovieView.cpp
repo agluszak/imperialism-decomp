@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMovieView::SetFieldC0AndInvalidateWindowIfChanged
 // GHIDRA_PROTO undefined __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
 
-int __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *this,int param_1)
+int TMovieView::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
 
 {
   int iVar1;
@@ -24,7 +24,7 @@ int __thiscall TMovieView::SetFieldC0AndInvalidateWindowIfChanged(TMovieView *th
 // GHIDRA_NAME TMovieView::HandleBlinkStateAndScheduleTimerTick
 // GHIDRA_PROTO undefined __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(char param_1)
 
-void __thiscall TMovieView::HandleBlinkStateAndScheduleTimerTick(TMovieView *this,char param_1)
+void TMovieView::HandleBlinkStateAndScheduleTimerTick(char param_1)
 
 {
   int iVar1;
@@ -99,7 +99,7 @@ thunk_TPictureButton * TMovieView::CreateTMovieViewInstance(void)
 // GHIDRA_NAME TMovieView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMovieView::GetTEventHandlerClassNamePointer(TMovieView *this)
+CRuntimeClass * TMovieView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -109,7 +109,7 @@ CRuntimeClass * __thiscall TMovieView::GetTEventHandlerClassNamePointer(TMovieVi
 // GHIDRA_NAME TMovieView::ConstructTMovieViewBaseState
 // GHIDRA_PROTO undefined __thiscall TMovieView::ConstructTMovieViewBaseState(void)
 
-TMovieView * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *this)
+TMovieView * TMovieView::ConstructTMovieViewBaseState()
 
 {
   CWinThread *pCVar1;
@@ -145,7 +145,7 @@ TMovieView * __thiscall TMovieView::ConstructTMovieViewBaseState(TMovieView *thi
 // GHIDRA_NAME TMovieView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMovieView * __thiscall TMovieView::_scalar_deleting_destructor_(TMovieView *this,byte param_1)
+TMovieView * TMovieView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TMovieView::DestructMovieViewAndCloseOwnedWindow(this);
@@ -159,7 +159,7 @@ TMovieView * __thiscall TMovieView::_scalar_deleting_destructor_(TMovieView *thi
 // GHIDRA_NAME TMovieView::DestructMovieViewAndCloseOwnedWindow
 // GHIDRA_PROTO undefined __thiscall TMovieView::DestructMovieViewAndCloseOwnedWindow(void)
 
-void __thiscall TMovieView::DestructMovieViewAndCloseOwnedWindow(TMovieView *this)
+void TMovieView::DestructMovieViewAndCloseOwnedWindow()
 
 {
   int iVar1;
@@ -200,7 +200,7 @@ void __thiscall TMovieView::DestructMovieViewAndCloseOwnedWindow(TMovieView *thi
 // GHIDRA_NAME TMovieView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMovieView::OrphanLeaf_NoCall_Ins07_004d8920(TMovieView *this)
+void TMovieView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;
@@ -243,7 +243,7 @@ void __thiscall TMovieView::OrphanLeaf_NoCall_Ins07_004d8920(TMovieView *this)
 // GHIDRA_NAME TMovieView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMovieView::OrphanTiny_ReturnZero_0048a730(TMovieView *this)
+void TMovieView::OrphanTiny_ReturnZero_0048a730()
 
 {
   return;
@@ -278,7 +278,7 @@ TMovieView::SetForeignMinisterReadyFlag14
    Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A
    notifications, and exits on modal completion. */
 
-int __thiscall TMovieView::RunModalLoop(TMovieView *this,byte param_1)
+int TMovieView::RunModalLoop(byte param_1)
 
 {
   bool bVar1;

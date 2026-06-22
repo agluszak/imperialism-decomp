@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTacMapUberPicture::OrphanRetStub_0045d2a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
 
-void __thiscall TTacMapUberPicture::OrphanRetStub_0045d2a0(TTacMapUberPicture *this)
+void TTacMapUberPicture::OrphanRetStub_0045d2a0()
 
 {
   if (*(int **)&this->field_0x94 != (int *)0x0) {
@@ -20,8 +20,7 @@ void __thiscall TTacMapUberPicture::OrphanRetStub_0045d2a0(TTacMapUberPicture *t
 // GHIDRA_NAME TTacMapUberPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacMapUberPicture * __thiscall
-TTacMapUberPicture::_scalar_deleting_destructor_(TTacMapUberPicture *this,byte param_1)
+TTacMapUberPicture * TTacMapUberPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -65,8 +64,7 @@ TOffLimitsPicture * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
 // GHIDRA_NAME TTacMapUberPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacMapUberPicture::GetTEventHandlerClassNamePointer(TTacMapUberPicture *this)
+CRuntimeClass * TTacMapUberPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +74,7 @@ TTacMapUberPicture::GetTEventHandlerClassNamePointer(TTacMapUberPicture *this)
 // GHIDRA_NAME TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacMapUberPicture *this)
+void TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined uVar1;
@@ -93,7 +91,7 @@ void __thiscall TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacMapUber
 // GHIDRA_NAME TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730(TTacMapUberPicture *this)
+void TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

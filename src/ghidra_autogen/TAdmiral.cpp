@@ -7,7 +7,7 @@
 // GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
 // GHIDRA_PROTO undefined __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(void)
 
-void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
+void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
 
 {
   GenerateMappedFlavorTextByTableSlot();
@@ -18,7 +18,7 @@ void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *
 // GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
 // GHIDRA_PROTO undefined __thiscall GenerateMappedFlavorTextByNationSlotField0C(void)
 
-void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
+void TAdmiral::GenerateMappedFlavorTextByNationSlotField0C()
 
 {
   GenerateMappedFlavorTextByTableSlot();
@@ -29,7 +29,7 @@ void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *
 // GHIDRA_NAME TAdmiral::TAdmiral
 // GHIDRA_PROTO undefined __thiscall TAdmiral::TAdmiral(undefined2 param_1)
 
-TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
+TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
 
 {
   TAdmiral *pTVar1;
@@ -77,7 +77,7 @@ TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
 // GHIDRA_NAME TAdmiral::DestructTAdmiral
 // GHIDRA_PROTO undefined __thiscall TAdmiral::DestructTAdmiral(void)
 
-void __thiscall TAdmiral::DestructTAdmiral(TAdmiral *this)
+void TAdmiral::DestructTAdmiral()
 
 {
   undefined4 *unaff_FS_OFFSET;

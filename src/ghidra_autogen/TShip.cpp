@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShip::GetTShipClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTShipClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShip::GetTShipClassNamePointer(TShip *this)
+CRuntimeClass * TShip::GetTShipClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TShip::GetTShipClassNamePointer(TShip *this)
 // GHIDRA_NAME TShip::ConstructAndLinkNavyPrimaryOrderNode
 // GHIDRA_PROTO undefined __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(void)
 
-TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
+TShip * TShip::ConstructAndLinkNavyPrimaryOrderNode()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -56,7 +56,7 @@ TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
 // GHIDRA_NAME TShip::DestructTShipAndFreeIfOwned
 // GHIDRA_PROTO undefined __thiscall DestructTShipAndFreeIfOwned(byte param_1)
 
-TShip * __thiscall TShip::DestructTShipAndFreeIfOwned(TShip *this,byte param_1)
+TShip * TShip::DestructTShipAndFreeIfOwned(byte param_1)
 
 {
   TShip::DestructTShip(this);
@@ -70,7 +70,7 @@ TShip * __thiscall TShip::DestructTShipAndFreeIfOwned(TShip *this,byte param_1)
 // GHIDRA_NAME TShip::DestructTShip
 // GHIDRA_PROTO undefined __thiscall TShip::DestructTShip(void)
 
-void __thiscall TShip::DestructTShip(TShip *this)
+void TShip::DestructTShip()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -92,7 +92,7 @@ void __thiscall TShip::DestructTShip(TShip *this)
 // GHIDRA_NAME TShip::DestroyAndUnlinkNavyPrimaryOrderNode
 // GHIDRA_PROTO undefined __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
 
-void __thiscall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(TShip *this)
+void TShip::DestroyAndUnlinkNavyPrimaryOrderNode()
 
 {
   short *psVar1;
@@ -161,7 +161,7 @@ void __thiscall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(TShip *this)
 // GHIDRA_NAME TShip::SerializeNavyPrimaryOrderNodeToStream
 // GHIDRA_PROTO undefined __thiscall SerializeNavyPrimaryOrderNodeToStream(int * param_1)
 
-void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(TShip *this,int *param_1)
+void TShip::SerializeNavyPrimaryOrderNodeToStream(int *param_1)
 
 {
   int iVar1;
@@ -208,7 +208,7 @@ void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(TShip *this,int *pa
 // GHIDRA_NAME TShip::DeserializeNavyPrimaryOrderNodeFromStream
 // GHIDRA_PROTO undefined __thiscall DeserializeNavyPrimaryOrderNodeFromStream(int * param_1)
 
-void __thiscall TShip::DeserializeNavyPrimaryOrderNodeFromStream(TShip *this,int *param_1)
+void TShip::DeserializeNavyPrimaryOrderNodeFromStream(int *param_1)
 
 {
   int iVar1;
@@ -265,7 +265,7 @@ void __thiscall TShip::DeserializeNavyPrimaryOrderNodeFromStream(TShip *this,int
 
 /* Setting prototype: int * DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode) */
 
-int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pChildLinkNode)
+int * TShip::DeleteMapOrderChildLinkAndReturnNext(int *pChildLinkNode)
 
 {
   int *piVar1;
@@ -285,7 +285,7 @@ int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pC
 // GHIDRA_NAME TShip::SerializeTaskForceToBinaryStream
 // GHIDRA_PROTO undefined __thiscall SerializeTaskForceToBinaryStream(int * param_1)
 
-void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this,int *param_1)
+void TShip::SerializeTaskForceToBinaryStream(int *param_1)
 
 {
   code *pcVar1;
@@ -376,8 +376,7 @@ void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this,int *param_1
 // GHIDRA_NAME TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
 // GHIDRA_PROTO undefined __thiscall TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int * param_1)
 
-void __thiscall
-TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(TShip *this,int *param_1)
+void TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int *param_1)
 
 {
   code *pcVar1;

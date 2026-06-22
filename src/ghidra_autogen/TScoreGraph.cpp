@@ -7,7 +7,7 @@
 // GHIDRA_NAME TScoreGraph::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this,byte param_1)
+TScoreGraph * TScoreGraph::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -21,7 +21,7 @@ TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *
 // GHIDRA_NAME TScoreGraph::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TScoreGraph::GetTEventHandlerClassNamePointer(TScoreGraph *this)
+CRuntimeClass * TScoreGraph::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -31,7 +31,7 @@ CRuntimeClass * __thiscall TScoreGraph::GetTEventHandlerClassNamePointer(TScoreG
 // GHIDRA_NAME TScoreGraph::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
+void TScoreGraph::OrphanCallChain_C6_I49_004875d0()
 
 {
   undefined uVar1;
@@ -81,7 +81,7 @@ void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
 // GHIDRA_NAME TScoreGraph::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
+void TScoreGraph::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

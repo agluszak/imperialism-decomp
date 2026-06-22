@@ -38,8 +38,7 @@ TControl * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
 // GHIDRA_NAME TNumberedArrowButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNumberedArrowButton::GetTEventHandlerClassNamePointer(TNumberedArrowButton *this)
+CRuntimeClass * TNumberedArrowButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTNumberedArrowButton;
@@ -49,8 +48,7 @@ TNumberedArrowButton::GetTEventHandlerClassNamePointer(TNumberedArrowButton *thi
 // GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton
 // GHIDRA_PROTO undefined __thiscall TNumberedArrowButton::TNumberedArrowButton(void)
 
-TNumberedArrowButton * __thiscall
-TNumberedArrowButton::TNumberedArrowButton(TNumberedArrowButton *this)
+TNumberedArrowButton * TNumberedArrowButton::TNumberedArrowButton()
 
 {
   TControl::TControl((TControl *)this);
@@ -64,8 +62,7 @@ TNumberedArrowButton::TNumberedArrowButton(TNumberedArrowButton *this)
 // GHIDRA_NAME TNumberedArrowButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedArrowButton * __thiscall
-TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this,byte param_1)
+TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -96,7 +93,7 @@ _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialism
 // GHIDRA_NAME TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730(TNumberedArrowButton *this)
+void TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

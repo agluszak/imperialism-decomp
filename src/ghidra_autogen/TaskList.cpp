@@ -38,7 +38,7 @@ undefined4 * TaskList::CreateTaskListInstance(void)
 // GHIDRA_NAME TaskList::ConstructTaskListBaseState
 // GHIDRA_PROTO undefined __thiscall TaskList::ConstructTaskListBaseState(void)
 
-TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
+TaskList * TaskList::ConstructTaskListBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -61,7 +61,7 @@ TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
 // GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
 // GHIDRA_PROTO undefined __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(void)
 
-void __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(TaskList *this)
+void TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30()
 
 {
   undefined4 *unaff_FS_OFFSET;

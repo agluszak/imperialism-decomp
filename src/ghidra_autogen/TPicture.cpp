@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *this)
+CRuntimeClass * TPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *
 // GHIDRA_NAME TPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte param_1)
+TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -31,7 +31,7 @@ TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte
 // GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(TPicture *this)
+void TPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar1;

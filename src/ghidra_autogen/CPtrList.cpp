@@ -7,7 +7,7 @@
 // GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
+void CPtrList::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -22,7 +22,7 @@ void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 
 /* No-op virtual slot stub (returns immediately). */
 
-void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
+void CPtrList::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -32,7 +32,7 @@ void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 // GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this,byte param_1)
+CPtrList * CPtrList::_scalar_deleting_destructor_(byte param_1)
 
 {
   DestructCPtrListBaseState();
@@ -46,7 +46,7 @@ CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this,byte
 // GHIDRA_NAME CPtrList::NewNode
 // GHIDRA_PROTO undefined __thiscall NewNode(undefined4 param_1, undefined4 param_2)
 
-void __thiscall CPtrList::NewNode(CPtrList *this,undefined4 param_1,undefined4 param_2)
+void CPtrList::NewNode(undefined4 param_1, undefined4 param_2)
 
 {
   int iVar1;
@@ -79,7 +79,7 @@ void __thiscall CPtrList::NewNode(CPtrList *this,undefined4 param_1,undefined4 p
 // GHIDRA_NAME CPtrList::GetNodeAtZeroBasedIndex
 // GHIDRA_PROTO undefined __thiscall GetNodeAtZeroBasedIndex(int param_1)
 
-undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this,int param_1)
+undefined4 * CPtrList::GetNodeAtZeroBasedIndex(int param_1)
 
 {
   undefined4 *puVar1;
@@ -100,7 +100,7 @@ undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this,int par
 // GHIDRA_NAME CPtrList::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-CRuntimeClass * __thiscall CPtrList::SetForeignMinisterReadyFlag14(CPtrList *this)
+CRuntimeClass * CPtrList::SetForeignMinisterReadyFlag14()
 
 {
   return &classRuntimeClass;

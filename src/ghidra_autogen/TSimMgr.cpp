@@ -7,7 +7,7 @@
 // GHIDRA_NAME TSimMgr::GetTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall TSimMgr::GetTurnFlowStateCounter2C(void)
 
-undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
+undefined2 TSimMgr::GetTurnFlowStateCounter2C()
 
 {
   return *(undefined2 *)&this->field_0x2c;
@@ -17,7 +17,7 @@ undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::IncrementTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(void)
 
-void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
+void TSimMgr::IncrementTurnFlowStateCounter2C()
 
 {
   *(short *)&this->field_0x2c = *(short *)&this->field_0x2c + 1;
@@ -28,7 +28,7 @@ void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::PostMainWindowCommand100ForTurnFlow
 // GHIDRA_PROTO undefined __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(void)
 
-void __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(TSimMgr *this)
+void TSimMgr::PostMainWindowCommand100ForTurnFlow()
 
 {
   PostCommand100ToMainWindow();
@@ -52,7 +52,7 @@ TSimMgr::LoadUiStringByCodeGroupAndOffset
 // GHIDRA_NAME TSimMgr::CreateSimObjects
 // GHIDRA_PROTO undefined __thiscall TSimMgr::GetTSimMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSimMgr::CreateSimObjects(TSimMgr *this)
+CRuntimeClass * TSimMgr::CreateSimObjects()
 
 {
   return &classRuntimeClass;
@@ -62,7 +62,7 @@ CRuntimeClass * __thiscall TSimMgr::CreateSimObjects(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::ApplyMciPlaybackRangeFromAudioManager
 // GHIDRA_PROTO undefined __thiscall TSimMgr::ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
 
-void __thiscall TSimMgr::ApplyMciPlaybackRangeFromAudioManager(TSimMgr *this,undefined4 param_1)
+void TSimMgr::ApplyMciPlaybackRangeFromAudioManager(undefined4 param_1)
 
 {
   SetMciPlaybackRangeByTrackIndexAndDevice(param_1,this->vftable);
@@ -78,7 +78,7 @@ void __thiscall TSimMgr::ApplyMciPlaybackRangeFromAudioManager(TSimMgr *this,und
 
 /* Validates/normalizes game-flow name state and marks localization mode for subsequent dispatch. */
 
-undefined4 __thiscall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(TSimMgr *this)
+undefined4 TSimMgr::ValidateAndPrepareGameFlowNameForDispatch()
 
 {
   char cVar1;
@@ -122,7 +122,7 @@ undefined4 __thiscall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(TSimMgr
 // GHIDRA_NAME TSimMgr::EmitTurnEventEAnd9SessionContextPackets
 // GHIDRA_PROTO undefined __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(int param_1)
 
-void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this,int param_1)
+void TSimMgr::EmitTurnEventEAnd9SessionContextPackets(int param_1)
 
 {
   char cVar1;
@@ -307,7 +307,7 @@ void __thiscall TSimMgr::EmitTurnEventEAnd9SessionContextPackets(TSimMgr *this,i
 
 /* Setting prototype: void ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry) */
 
-void __thiscall TSimMgr::ApplyMapOrderTypeExecutionEffects(TSimMgr *this,void *pMapOrderEntry)
+void TSimMgr::ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
 
 {
   int iVar1;
@@ -426,7 +426,7 @@ TSimMgr::PrepareMapOrdersForExecutionPhase
    Returns:
    - void. */
 
-void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOrderNode)
+void TSimMgr::ClearMapOrderProcessedFlagsChain(int *pOrderNode)
 
 {
   for (; this != (TSimMgr *)0x0; this = *(TSimMgr **)&this->field_0x2c) {
@@ -489,7 +489,7 @@ void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOr
    Returns:
    - void. */
 
-void __thiscall TSimMgr::ResolveMapOrderChainsForTurnPhase(TSimMgr *this,int *pOrderManager)
+void TSimMgr::ResolveMapOrderChainsForTurnPhase(int *pOrderManager)
 
 {
   int iVar1;
@@ -739,7 +739,7 @@ TSimMgr::QueueInterNationEventType11(int param_1,undefined4 param_2,undefined4 p
 // GHIDRA_NAME TSimMgr::GetTSimMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTSimMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSimMgr::GetTSimMgrClassNamePointer(TSimMgr *this)
+CRuntimeClass * TSimMgr::GetTSimMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -757,7 +757,7 @@ CRuntimeClass * __thiscall TSimMgr::GetTSimMgrClassNamePointer(TSimMgr *this)
    [this+0x0C]=1, [this+0x10]=1. This establishes initial state consumed by
    AdvanceGlobalTurnStateMachine (vfunc slot +0x4C). */
 
-TSimMgr * __thiscall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(TSimMgr *this)
+TSimMgr * TSimMgr::ConstructTurnFlowStateManagerVtable00662a58()
 
 {
   undefined2 *puVar1;
@@ -825,7 +825,7 @@ TSimMgr * __thiscall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(TSimMg
 // GHIDRA_NAME TSimMgr::DestructTSimMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTSimMgrAndMaybeFree(byte param_1)
 
-TSimMgr * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this,byte param_1)
+TSimMgr * TSimMgr::DestructTSimMgrAndMaybeFree(byte param_1)
 
 {
   WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80();
@@ -839,7 +839,7 @@ TSimMgr * __thiscall TSimMgr::DestructTSimMgrAndMaybeFree(TSimMgr *this,byte par
 // GHIDRA_NAME TSimMgr::InitializeTurnFlowStateDefaults
 // GHIDRA_PROTO undefined __thiscall TSimMgr::InitializeTurnFlowStateDefaults(void)
 
-void __thiscall TSimMgr::InitializeTurnFlowStateDefaults(TSimMgr *this)
+void TSimMgr::InitializeTurnFlowStateDefaults()
 
 {
   undefined1 local_118 [280];
@@ -904,7 +904,7 @@ void __thiscall TSimMgr::InitializeTurnFlowStateDefaults(TSimMgr *this)
    Notes:
    - This is the teardown counterpart of RebuildGlobalOrderManagersAndCapabilityState. */
 
-void __thiscall TSimMgr::DestroyGlobalOrderManagersAndState(TSimMgr *this)
+void TSimMgr::DestroyGlobalOrderManagersAndState()
 
 {
   TCountry **ppTVar1;
@@ -982,8 +982,7 @@ void __thiscall TSimMgr::DestroyGlobalOrderManagersAndState(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems
 // GHIDRA_PROTO undefined __thiscall InitializeSimMgrScenarioStateAndRebuildNationSystems(int * param_1)
 
-void __thiscall
-TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TSimMgr *this,int *param_1)
+void TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(int *param_1)
 
 {
   int *piVar1;
@@ -1167,8 +1166,7 @@ TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(TSimMgr *this,int 
 // GHIDRA_NAME TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(int * param_1)
 
-void __thiscall
-TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(TSimMgr *this,int *param_1)
+void TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(int *param_1)
 
 {
   code *pcVar1;
@@ -1215,7 +1213,7 @@ TSimMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0057c230(TSimMgr *this,int *par
 // GHIDRA_NAME TSimMgr::NoOpVirtualStub_0057c390
 // GHIDRA_PROTO undefined __thiscall NoOpVirtualStub_0057c390(void)
 
-void __thiscall TSimMgr::NoOpVirtualStub_0057c390(TSimMgr *this)
+void TSimMgr::NoOpVirtualStub_0057c390()
 
 {
   return;
@@ -1246,7 +1244,7 @@ void __thiscall TSimMgr::NoOpVirtualStub_0057c390(TSimMgr *this)
    
    Used by RebuildNationStateSlotsAndAvailability via vtable +0x30 dispatch. */
 
-void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(TSimMgr *this,undefined4 param_1)
+void TSimMgr::RebuildSecondaryNationStateForSlot(undefined4 param_1)
 
 {
   short sVar1;
@@ -1355,7 +1353,7 @@ LAB_0057d6fe:
 // GHIDRA_NAME TSimMgr::ApplyScenarioVariantSeedForNationSetup
 // GHIDRA_PROTO undefined __thiscall ApplyScenarioVariantSeedForNationSetup(void)
 
-void __thiscall TSimMgr::ApplyScenarioVariantSeedForNationSetup(TSimMgr *this)
+void TSimMgr::ApplyScenarioVariantSeedForNationSetup()
 
 {
   uint uVar1;
@@ -1370,7 +1368,7 @@ void __thiscall TSimMgr::ApplyScenarioVariantSeedForNationSetup(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::GetTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall GetTurnFlowStateCounter2C(void)
 
-undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
+undefined2 TSimMgr::GetTurnFlowStateCounter2C()
 
 {
   return *(undefined2 *)&this->field_0x2c;
@@ -1380,7 +1378,7 @@ undefined2 __thiscall TSimMgr::GetTurnFlowStateCounter2C(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::CopyScenarioNationSetupIntoFlowState
 // GHIDRA_PROTO undefined __thiscall CopyScenarioNationSetupIntoFlowState(undefined1 * param_1)
 
-void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this,undefined1 *param_1)
+void TSimMgr::CopyScenarioNationSetupIntoFlowState(undefined1 *param_1)
 
 {
   undefined2 *puVar1;
@@ -1410,7 +1408,7 @@ void __thiscall TSimMgr::CopyScenarioNationSetupIntoFlowState(TSimMgr *this,unde
 // GHIDRA_NAME TSimMgr::IncrementTurnFlowStateCounter2C
 // GHIDRA_PROTO undefined __thiscall IncrementTurnFlowStateCounter2C(void)
 
-void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
+void TSimMgr::IncrementTurnFlowStateCounter2C()
 
 {
   *(short *)&this->field_0x2c = *(short *)&this->field_0x2c + 1;
@@ -1421,7 +1419,7 @@ void __thiscall TSimMgr::IncrementTurnFlowStateCounter2C(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::PostMainWindowCommand100ForTurnFlow
 // GHIDRA_PROTO undefined __thiscall PostMainWindowCommand100ForTurnFlow(void)
 
-void __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(TSimMgr *this)
+void TSimMgr::PostMainWindowCommand100ForTurnFlow()
 
 {
   PostCommand100ToMainWindow();
@@ -1432,7 +1430,7 @@ void __thiscall TSimMgr::PostMainWindowCommand100ForTurnFlow(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::SetGlobalTurnStateCodeIfAllowed
 // GHIDRA_PROTO undefined __thiscall SetGlobalTurnStateCodeIfAllowed(undefined4 param_1)
 
-void __thiscall TSimMgr::SetGlobalTurnStateCodeIfAllowed(TSimMgr *this,undefined4 param_1)
+void TSimMgr::SetGlobalTurnStateCodeIfAllowed(undefined4 param_1)
 
 {
   short sVar1;
@@ -1523,7 +1521,7 @@ LAB_0057d9dd:
    Known strong anchor:
    - Calls Thunk_RebuildNationStateSlotsAndAvailability in the state-3 branch. */
 
-void __thiscall TSimMgr::AdvanceGlobalTurnStateMachine(TSimMgr *this,astruct_24 *ctx)
+void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
 
 {
   TGreatPowerVtbl *pTVar1;
@@ -2193,7 +2191,7 @@ switchD_0057dad8_caseD_18:
 // GHIDRA_NAME TSimMgr::IsTurnFlowPhaseOutsideRange4To5
 // GHIDRA_PROTO undefined __thiscall IsTurnFlowPhaseOutsideRange4To5(void)
 
-int __thiscall TSimMgr::IsTurnFlowPhaseOutsideRange4To5(TSimMgr *this)
+int TSimMgr::IsTurnFlowPhaseOutsideRange4To5()
 
 {
   int iVar1;
@@ -2211,7 +2209,7 @@ int __thiscall TSimMgr::IsTurnFlowPhaseOutsideRange4To5(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::RefreshEligibleNationTurnPhaseHandlers
 // GHIDRA_PROTO undefined __thiscall RefreshEligibleNationTurnPhaseHandlers(void)
 
-void __thiscall TSimMgr::RefreshEligibleNationTurnPhaseHandlers(TSimMgr *this)
+void TSimMgr::RefreshEligibleNationTurnPhaseHandlers()
 
 {
   TCountry *pTVar1;
@@ -2246,7 +2244,7 @@ void __thiscall TSimMgr::RefreshEligibleNationTurnPhaseHandlers(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::DispatchEligibleNationTurnCallback158
 // GHIDRA_PROTO undefined __thiscall DispatchEligibleNationTurnCallback158(void)
 
-void __thiscall TSimMgr::DispatchEligibleNationTurnCallback158(TSimMgr *this)
+void TSimMgr::DispatchEligibleNationTurnCallback158()
 
 {
   TCountry *pTVar1;
@@ -2306,7 +2304,7 @@ void __thiscall TSimMgr::DispatchEligibleNationTurnCallback158(TSimMgr *this)
    Returns:
    - void. */
 
-void __thiscall TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(TSimMgr *this,int *pTurnContext)
+void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(int *pTurnContext)
 
 {
   short nBucketIndex;
@@ -2364,7 +2362,7 @@ void __thiscall TSimMgr::RefreshMapSystemsAndPrepareOrderExecution(TSimMgr *this
 // GHIDRA_NAME TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent2134AndRefreshNationPanels(void)
 
-void __thiscall TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(TSimMgr *this)
+void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels()
 
 {
   TGreatPower **ppTVar1;
@@ -2394,7 +2392,7 @@ void __thiscall TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels(TSimMgr *th
 // GHIDRA_NAME TSimMgr::OrphanTiny_ReturnZero_0057f490
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0057f490(void)
 
-undefined4 __thiscall TSimMgr::OrphanTiny_ReturnZero_0057f490(TSimMgr *this)
+undefined4 TSimMgr::OrphanTiny_ReturnZero_0057f490()
 
 {
   return 0;
@@ -2404,7 +2402,7 @@ undefined4 __thiscall TSimMgr::OrphanTiny_ReturnZero_0057f490(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
 
-void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(TSimMgr *this,uint param_1)
+void TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(uint param_1)
 
 {
   *(uint *)&this->field_0x3c = *(uint *)&this->field_0x3c | param_1;
@@ -2415,7 +2413,7 @@ void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins05_0057f4b0(TSimMgr *this,uint par
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins15_0057f4f0(void)
 
-undefined1 __thiscall TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0(TSimMgr *this)
+undefined1 TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0()
 
 {
   TGreatPower **ppTVar1;
@@ -2434,7 +2432,7 @@ undefined1 __thiscall TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins10_0057f530(void)
 
-void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530(TSimMgr *this)
+void TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530()
 
 {
   TGreatPower **ppTVar1;
@@ -2453,8 +2451,7 @@ void __thiscall TSimMgr::OrphanLeaf_NoCall_Ins10_0057f530(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::FormatSignedIntWithSingleThousandsSeparator
 // GHIDRA_PROTO undefined __thiscall FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)
 
-void __thiscall
-TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *this,CString param_1,CString param_2)
+void TSimMgr::FormatSignedIntWithSingleThousandsSeparator(CString param_1, CString param_2)
 
 {
   CString this_00;
@@ -2563,7 +2560,7 @@ TSimMgr::FormatSignedIntWithSingleThousandsSeparator(TSimMgr *this,CString param
 // GHIDRA_NAME TSimMgr::FormatSharedStringFromBracketExpression
 // GHIDRA_PROTO undefined __thiscall FormatSharedStringFromBracketExpression(int param_1)
 
-void __thiscall TSimMgr::FormatSharedStringFromBracketExpression(TSimMgr *this,int param_1)
+void TSimMgr::FormatSharedStringFromBracketExpression(int param_1)
 
 {
   int iVar1;
@@ -2623,7 +2620,7 @@ LAB_0057f984:
 // GHIDRA_NAME TSimMgr::OrphanCallChain_C1_I08_0057fe90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0057fe90(void)
 
-void __thiscall TSimMgr::OrphanCallChain_C1_I08_0057fe90(TSimMgr *this)
+void TSimMgr::OrphanCallChain_C1_I08_0057fe90()
 
 {
   (*this->vftable[0x10].slot_0x04)(0x2711);
@@ -2634,7 +2631,7 @@ void __thiscall TSimMgr::OrphanCallChain_C1_I08_0057fe90(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::OrphanCallChain_C2_I07_0057fec0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I07_0057fec0(void)
 
-void __thiscall TSimMgr::OrphanCallChain_C2_I07_0057fec0(TSimMgr *this)
+void TSimMgr::OrphanCallChain_C2_I07_0057fec0()
 
 {
   undefined4 uVar1;
@@ -2648,7 +2645,7 @@ void __thiscall TSimMgr::OrphanCallChain_C2_I07_0057fec0(TSimMgr *this)
 // GHIDRA_NAME TSimMgr::AppendByteToResizableBuffer
 // GHIDRA_PROTO undefined __thiscall TSimMgr::AppendByteToResizableBuffer(undefined1 param_1)
 
-void __thiscall TSimMgr::AppendByteToResizableBuffer(TSimMgr *this,undefined1 param_1)
+void TSimMgr::AppendByteToResizableBuffer(undefined1 param_1)
 
 {
   int iVar1;
@@ -2708,8 +2705,7 @@ TSimMgr::LoadUiStringByCodeGroupAndOffset
 // GHIDRA_NAME TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode
 // GHIDRA_PROTO undefined __thiscall FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString * param_1, short * param_2)
 
-CString * __thiscall
-TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(TSimMgr *this,CString *param_1,short *param_2)
+CString * TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString *param_1, short *param_2)
 
 {
   undefined4 uVar1;
@@ -3007,7 +3003,7 @@ LAB_00580f40:
 // GHIDRA_NAME TSimMgr::SetOutputDevice
 // GHIDRA_PROTO void __thiscall TSimMgr::SetOutputDevice(int this_ptr)
 
-void __thiscall TSimMgr::SetOutputDevice(TSimMgr *this,int this_ptr)
+void TSimMgr::SetOutputDevice(int this_ptr)
 
 {
   char ok;

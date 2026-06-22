@@ -7,8 +7,7 @@
 // GHIDRA_NAME TShipFractionCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipFractionCluster * __thiscall
-TShipFractionCluster::_scalar_deleting_destructor_(TShipFractionCluster *this,byte param_1)
+TShipFractionCluster * TShipFractionCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -52,8 +51,7 @@ TCluster * TShipFractionCluster::CreateTShipFractionClusterInstance(void)
 // GHIDRA_NAME TShipFractionCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TShipFractionCluster::GetTEventHandlerClassNamePointer(TShipFractionCluster *this)
+CRuntimeClass * TShipFractionCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -63,7 +61,7 @@ TShipFractionCluster::GetTEventHandlerClassNamePointer(TShipFractionCluster *thi
 // GHIDRA_NAME TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFractionCluster *this)
+void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TShipFractionClusterVtbl *pTVar1;

@@ -22,7 +22,7 @@ void TTown::CreateTTownInstance(CString param_1,undefined4 *param_2)
 // GHIDRA_NAME TTown::GetTTownClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTownClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTown::GetTTownClassNamePointer(TTown *this)
+CRuntimeClass * TTown::GetTTownClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +32,7 @@ CRuntimeClass * __thiscall TTown::GetTTownClassNamePointer(TTown *this)
 // GHIDRA_NAME TTown::DestructTTownAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTownAndMaybeFree(byte param_1)
 
-TTown * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this,byte param_1)
+TTown * TTown::DestructTTownAndMaybeFree(byte param_1)
 
 {
   DestructTTownAndMaybeFree_Impl();
@@ -46,7 +46,7 @@ TTown * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this,byte param_1)
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int * param_1)
 
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *this,int *param_1)
+void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
 
 {
   code *pcVar1;
@@ -88,7 +88,7 @@ void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *t
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int * param_1)
 
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *this,int *param_1)
+void TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int *param_1)
 
 {
   code *pcVar1;
@@ -142,7 +142,7 @@ void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *t
 // GHIDRA_NAME TTown::RecomputeTownAdjacentResourceSupplyTotals
 // GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentResourceSupplyTotals(void)
 
-void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
+void TTown::RecomputeTownAdjacentResourceSupplyTotals()
 
 {
   char cVar1;
@@ -244,7 +244,7 @@ void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
 // GHIDRA_NAME TTown::RecomputeTownAdjacentUniversityWeightedTotals
 // GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentUniversityWeightedTotals(void)
 
-void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this)
+void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
 
 {
   char cVar1;
@@ -316,7 +316,7 @@ void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this
 // GHIDRA_NAME TTown::IncrementProductionDerivedCountersWithTurnParityRules
 // GHIDRA_PROTO undefined __thiscall IncrementProductionDerivedCountersWithTurnParityRules(void)
 
-void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTown *this)
+void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
 
 {
   short sVar1;
@@ -396,7 +396,7 @@ void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTo
 // GHIDRA_NAME TTown::OrphanLeaf_NoCall_Ins29_005b77e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins29_005b77e0(char * param_1)
 
-void __thiscall TTown::OrphanLeaf_NoCall_Ins29_005b77e0(TTown *this,char *param_1)
+void TTown::OrphanLeaf_NoCall_Ins29_005b77e0(char *param_1)
 
 {
   char cVar1;

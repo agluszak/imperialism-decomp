@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall TPanelView::OrphanRetStub_00430550(TPanelView *this)
+void TPanelView::OrphanRetStub_00430550()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TPanelView::OrphanRetStub_00430550(TPanelView *this)
 // GHIDRA_NAME TPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *this,byte param_1)
+TPanelView * TPanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -31,7 +31,7 @@ TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *thi
 // GHIDRA_NAME TPanelView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPanelView::GetTEventHandlerClassNamePointer(TPanelView *this)
+CRuntimeClass * TPanelView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -41,7 +41,7 @@ CRuntimeClass * __thiscall TPanelView::GetTEventHandlerClassNamePointer(TPanelVi
 // GHIDRA_NAME TPanelView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TPanelView::OrphanCallChain_C6_I49_004875d0(TPanelView *this)
+void TPanelView::OrphanCallChain_C6_I49_004875d0()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);

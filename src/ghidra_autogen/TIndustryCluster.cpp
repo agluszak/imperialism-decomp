@@ -37,8 +37,7 @@ TUberCluster * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
 // GHIDRA_NAME TIndustryCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TIndustryCluster::GetTEventHandlerClassNamePointer(TIndustryCluster *this)
+CRuntimeClass * TIndustryCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTIndustryCluster;
@@ -48,8 +47,7 @@ TIndustryCluster::GetTEventHandlerClassNamePointer(TIndustryCluster *this)
 // GHIDRA_NAME TIndustryCluster::ConstructTradeMoveStepControlPanel
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveStepControlPanel(void)
 
-TIndustryCluster * __thiscall
-TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
+TIndustryCluster * TIndustryCluster::ConstructTradeMoveStepControlPanel()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -62,8 +60,7 @@ TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
 // GHIDRA_NAME TIndustryCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryCluster * __thiscall
-TIndustryCluster::_scalar_deleting_destructor_(TIndustryCluster *this,byte param_1)
+TIndustryCluster * TIndustryCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -77,7 +74,7 @@ TIndustryCluster::_scalar_deleting_destructor_(TIndustryCluster *this,byte param
 // GHIDRA_NAME TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryCluster *this)
+void TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   dword dVar1;
@@ -115,7 +112,7 @@ void __thiscall TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryClus
 // GHIDRA_NAME TIndustryCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void __thiscall TIndustryCluster::OrphanRetStub_00586ff0(TIndustryCluster *this)
+void TIndustryCluster::OrphanRetStub_00586ff0()
 
 {
   (*this->vftable[0x3a].slot_0x04)();

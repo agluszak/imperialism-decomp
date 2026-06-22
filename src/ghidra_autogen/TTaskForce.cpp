@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTaskForce::GetTTaskForceClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTaskForceClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTaskForce::GetTTaskForceClassNamePointer(TTaskForce *this)
+CRuntimeClass * TTaskForce::GetTTaskForceClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TTaskForce::GetTTaskForceClassNamePointer(TTaskForce 
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
 // GHIDRA_PROTO undefined __thiscall TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
-void __thiscall
-TTaskForce::ConstructTTaskForce(TTaskForce *this,undefined4 param_1,undefined2 param_2)
+void TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
 {
   *(undefined4 *)&this->field_0x18 = param_1;
@@ -41,7 +40,7 @@ TTaskForce::ConstructTTaskForce(TTaskForce *this,undefined4 param_1,undefined2 p
 // GHIDRA_NAME TTaskForce::DestroyTTaskForce
 // GHIDRA_PROTO undefined __thiscall DestroyTTaskForce(byte param_1)
 
-TTaskForce * __thiscall TTaskForce::DestroyTTaskForce(TTaskForce *this,byte param_1)
+TTaskForce * TTaskForce::DestroyTTaskForce(byte param_1)
 
 {
   ResetTTaskForceToSentinelVtable();

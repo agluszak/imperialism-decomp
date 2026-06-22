@@ -13,7 +13,7 @@
 /* Numeric text entry constructor. Builds on ConstructUiNumericTextEntryBase and installs
    numeric-entry vtable used across university and control panels. */
 
-TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *this)
+TNumberText * TNumberText::ConstructUiNumericTextEntry()
 
 {
   TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
@@ -26,7 +26,7 @@ TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *t
 // GHIDRA_NAME TNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberText * __thiscall TNumberText::_scalar_deleting_destructor_(TNumberText *this,byte param_1)
+TNumberText * TNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
@@ -104,7 +104,7 @@ TView * TNumberText::CreateTNumberTextInstance(void)
 // GHIDRA_NAME TNumberText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumberText *this)
+CRuntimeClass * TNumberText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -136,8 +136,7 @@ TNumberText::ConstructTNumberTextBaseState
 // GHIDRA_NAME TNumberText::DestructTNumberTextAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
 
-void __thiscall
-TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,CString param_1,undefined4 param_2)
+void TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
 
 {
   CString CVar1;
@@ -173,7 +172,7 @@ TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,CString param_1,u
 // GHIDRA_NAME TNumberText::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
-undefined4 __thiscall TNumberText::UpdateControlCachedIntFromWindowText(TNumberText *this)
+undefined4 TNumberText::UpdateControlCachedIntFromWindowText()
 
 {
   undefined4 uVar1;
@@ -206,7 +205,7 @@ undefined4 __thiscall TNumberText::UpdateControlCachedIntFromWindowText(TNumberT
 // GHIDRA_NAME TNumberText::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-int __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(TNumberText *this)
+int TNumberText::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;

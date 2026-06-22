@@ -37,7 +37,7 @@ TNoHilitePicture * TShipPlacard::CreateTShipPlacardInstance(void)
 // GHIDRA_NAME TShipPlacard::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipPlacard::GetTEventHandlerClassNamePointer(TShipPlacard *this)
+CRuntimeClass * TShipPlacard::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TShipPlacard::GetTEventHandlerClassNamePointer(TShipP
 // GHIDRA_NAME TShipPlacard::ConstructTShipPlacardBaseState
 // GHIDRA_PROTO undefined __thiscall TShipPlacard::ConstructTShipPlacardBaseState(void)
 
-TShipPlacard * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlacard *this)
+TShipPlacard * TShipPlacard::ConstructTShipPlacardBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -59,8 +59,7 @@ TShipPlacard * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlac
 // GHIDRA_NAME TShipPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipPlacard * __thiscall
-TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
+TShipPlacard * TShipPlacard::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -74,7 +73,7 @@ TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
 // GHIDRA_NAME TShipPlacard::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TShipPlacard::OrphanTiny_ReturnZero_0048a730(TShipPlacard *this)
+void TShipPlacard::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

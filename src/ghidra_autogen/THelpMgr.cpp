@@ -7,7 +7,7 @@
 // GHIDRA_NAME THelpMgr::GetTHelpMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTHelpMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall THelpMgr::GetTHelpMgrClassNamePointer(THelpMgr *this)
+CRuntimeClass * THelpMgr::GetTHelpMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall THelpMgr::GetTHelpMgrClassNamePointer(THelpMgr *this)
 // GHIDRA_NAME THelpMgr::ConstructTHelpMgrBaseState
 // GHIDRA_PROTO undefined __thiscall THelpMgr::ConstructTHelpMgrBaseState(void)
 
-void __thiscall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *this)
+void THelpMgr::ConstructTHelpMgrBaseState()
 
 {
   this->vftable = &THelpMgrVtbl_00657040;
@@ -40,7 +40,7 @@ void __thiscall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *this)
 // GHIDRA_NAME THelpMgr::DestructTHelpMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTHelpMgrAndMaybeFree(byte param_1)
 
-THelpMgr * __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(THelpMgr *this,byte param_1)
+THelpMgr * THelpMgr::DestructTHelpMgrAndMaybeFree(byte param_1)
 
 {
   DestructTHelpMgrAndMaybeFree_Impl();
@@ -54,7 +54,7 @@ THelpMgr * __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(THelpMgr *this,byte
 // GHIDRA_NAME THelpMgr::InitializeHelpManagerIndexArrayAndState
 // GHIDRA_PROTO undefined __thiscall InitializeHelpManagerIndexArrayAndState(void)
 
-void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this)
+void THelpMgr::InitializeHelpManagerIndexArrayAndState()
 
 {
   TIndexAndRankList *pTVar1;
@@ -336,7 +336,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
 // GHIDRA_NAME THelpMgr::OrphanCallChain_C1_I22_00500f10
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I22_00500f10(void)
 
-void __thiscall THelpMgr::OrphanCallChain_C1_I22_00500f10(THelpMgr *this)
+void THelpMgr::OrphanCallChain_C1_I22_00500f10()
 
 {
   int iVar1;
@@ -361,8 +361,7 @@ void __thiscall THelpMgr::OrphanCallChain_C1_I22_00500f10(THelpMgr *this)
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int * param_1)
 
-void __thiscall
-THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this,int *param_1)
+void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int *param_1)
 
 {
   undefined1 uVar1;
@@ -394,8 +393,7 @@ THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this,int *p
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int * param_1)
 
-void __thiscall
-THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this,int *param_1)
+void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int *param_1)
 
 {
   code *pcVar1;
@@ -418,7 +416,7 @@ THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this,int *p
 // GHIDRA_NAME THelpMgr::OrphanCallChain_C2_I16_00501070
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00501070(void)
 
-void __thiscall THelpMgr::OrphanCallChain_C2_I16_00501070(THelpMgr *this)
+void THelpMgr::OrphanCallChain_C2_I16_00501070()
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTacticalAdiosPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalAdiosPicture * __thiscall
-TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this,byte param_1)
+TTacticalAdiosPicture * TTacticalAdiosPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -52,8 +51,7 @@ thunk_TPictureButton * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstanc
 // GHIDRA_NAME TTacticalAdiosPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalAdiosPicture::GetTEventHandlerClassNamePointer(TTacticalAdiosPicture *this)
+CRuntimeClass * TTacticalAdiosPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -63,7 +61,7 @@ TTacticalAdiosPicture::GetTEventHandlerClassNamePointer(TTacticalAdiosPicture *t
 // GHIDRA_NAME TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalAdiosPicture *this)
+void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalAdiosPicture_slot_0x04_0x04 *pTVar1;

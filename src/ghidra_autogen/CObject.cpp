@@ -7,8 +7,7 @@
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
 // GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
 
-void __thiscall
-CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(CObject *this)
+void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()
 
 {
   CObjectVtbl *pCVar1;
@@ -41,8 +40,7 @@ CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(CObject 
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00415f90(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(byte param_1)
 
 {
   CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
@@ -56,8 +54,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(CObject *this,byte param_
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00479d50(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(byte param_1)
 
 {
   CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(this);
@@ -71,8 +68,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(CObject *this,byte param_
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80
 // GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(void)
 
-void __thiscall
-CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(CObject *this)
+void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80()
 
 {
   CObjectVtbl *pCVar1;
@@ -105,8 +101,7 @@ CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(CObject 
 // GHIDRA_NAME CObject::SerializeDwordArrayWithAutoReallocFromArchive
 // GHIDRA_PROTO undefined __thiscall SerializeDwordArrayWithAutoReallocFromArchive(CArchive * param_1)
 
-void __thiscall
-CObject::SerializeDwordArrayWithAutoReallocFromArchive(CObject *this,CArchive *param_1)
+void CObject::SerializeDwordArrayWithAutoReallocFromArchive(CArchive *param_1)
 
 {
   CObjectVtbl *pCVar1;
@@ -214,8 +209,7 @@ CObject::SerializeDwordArrayWithAutoReallocFromArchive(CObject *this,CArchive *p
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(byte param_1)
 
 {
   DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
@@ -229,7 +223,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(CObject *this,byte param_
 // GHIDRA_NAME CObject::SerializeRecordList_0x0C_WithBlockPool_D
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_D(CArchive * param_1)
 
-void __thiscall CObject::SerializeRecordList_0x0C_WithBlockPool_D(CObject *this,CArchive *param_1)
+void CObject::SerializeRecordList_0x0C_WithBlockPool_D(CArchive *param_1)
 
 {
   CArchive *this_00;
@@ -307,8 +301,7 @@ void __thiscall CObject::SerializeRecordList_0x0C_WithBlockPool_D(CObject *this,
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(byte param_1)
 
 {
   CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(this);
@@ -322,8 +315,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this,byte param_
 // GHIDRA_NAME CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
 // GHIDRA_PROTO undefined __thiscall CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
 
-void __thiscall
-CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(CObject *this)
+void CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0()
 
 {
   CObjectVtbl *pCVar1;
@@ -356,7 +348,7 @@ CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004
 // GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateBAndFree
 // GHIDRA_PROTO undefined __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(void)
 
-void __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(CObject *this)
+void CObject::DestructModuleLibraryCacheTableStateBAndFree()
 
 {
   CObjectVtbl *pCVar1;
@@ -400,7 +392,7 @@ void __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(CObject *t
 // GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateAAndFree
 // GHIDRA_PROTO undefined __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(void)
 
-void __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(CObject *this)
+void CObject::DestructModuleLibraryCacheTableStateAAndFree()
 
 {
   CObjectVtbl *pCVar1;
@@ -444,8 +436,7 @@ void __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(CObject *t
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(byte param_1)
 
 {
   CObject::DestructModuleLibraryCacheTableStateBAndFree(this);
@@ -459,8 +450,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(CObject *this,byte param_
 // GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b600(byte param_1)
 
-CObject * __thiscall
-CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(CObject *this,byte param_1)
+CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(byte param_1)
 
 {
   CObject::DestructModuleLibraryCacheTableStateAAndFree(this);
@@ -480,7 +470,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(CObject *this,byte param_
 /* Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node
    pointer is present. */
 
-void __thiscall CObject::IsKindOf(CObject *this)
+void CObject::IsKindOf()
 
 {
   undefined uVar1;
@@ -496,7 +486,7 @@ void __thiscall CObject::IsKindOf(CObject *this)
 // GHIDRA_NAME CObject::ParseParam
 // GHIDRA_PROTO undefined __thiscall ParseParam(undefined4 param_1, int param_2, undefined4 param_3)
 
-void __thiscall CObject::ParseParam(CObject *this,undefined4 param_1,int param_2,undefined4 param_3)
+void CObject::ParseParam(undefined4 param_1, int param_2, undefined4 param_3)
 
 {
   if (param_2 == 0) {

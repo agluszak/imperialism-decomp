@@ -7,8 +7,7 @@
 // GHIDRA_NAME TScatteredShipsMission::DestroyTScatteredShipsMission
 // GHIDRA_PROTO undefined __thiscall DestroyTScatteredShipsMission(byte param_1)
 
-TScatteredShipsMission * __thiscall
-TScatteredShipsMission::DestroyTScatteredShipsMission(TScatteredShipsMission *this,byte param_1)
+TScatteredShipsMission * TScatteredShipsMission::DestroyTScatteredShipsMission(byte param_1)
 
 {
   ResetTScatteredShipsMissionToSentinelVtable();
@@ -162,8 +161,7 @@ undefined ** TScatteredShipsMission::GetTScatteredShipsMissionClassNamePointer(v
 // GHIDRA_NAME TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline
 // GHIDRA_PROTO undefined __thiscall RunScatteredShipsMissionStateUpdatePipeline(void)
 
-void __thiscall
-TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline(TScatteredShipsMission *this)
+void TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline()
 
 {
   int iVar1;
@@ -179,8 +177,7 @@ TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline(TScatteredSh
 // GHIDRA_NAME TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3
 // GHIDRA_PROTO undefined __thiscall SetScatteredShipsMissionStateByte8To3(void)
 
-void __thiscall
-TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3(TScatteredShipsMission *this)
+void TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3()
 
 {
   this[8] = (TScatteredShipsMission)0x3;
@@ -191,8 +188,7 @@ TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3(TScatteredShipsMis
 // GHIDRA_NAME TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C
 // GHIDRA_PROTO undefined __thiscall ResetScatteredShipsMissionScoreField0C(void)
 
-void __thiscall
-TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C(TScatteredShipsMission *this)
+void TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C()
 
 {
   *(undefined4 *)(this + 0xc) = DAT_0065a9c8;
@@ -341,8 +337,7 @@ LAB_0053be9a:
 
 /* Setting prototype: void* GetOrCreateMapOrderEntryForChildNode(void) */
 
-void * __thiscall
-TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(TScatteredShipsMission *this)
+void * TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode()
 
 {
   short *psVar1;

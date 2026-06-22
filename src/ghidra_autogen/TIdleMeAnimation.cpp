@@ -24,8 +24,7 @@ TIdleMeAnimation * __cdecl TIdleMeAnimation::CreateObject(void)
 // GHIDRA_NAME TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ac950(byte param_1)
 
-TIdleMeAnimation * __thiscall
-TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation *this,byte param_1)
+TIdleMeAnimation * TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(byte param_1)
 
 {
   TIdleMeAnimation::CreateTIdleMeAnimationInstance(this);
@@ -39,7 +38,7 @@ TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation
 // GHIDRA_NAME TIdleMeAnimation::CreateTIdleMeAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(void)
 
-void __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(TIdleMeAnimation *this)
+void TIdleMeAnimation::CreateTIdleMeAnimationInstance()
 
 {
   this->vftable =
@@ -51,7 +50,7 @@ void __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(TIdleMeAnimatio
 // GHIDRA_NAME TIdleMeAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIdleMeAnimation::GetTAnimationClassNamePointer(TIdleMeAnimation *this)
+CRuntimeClass * TIdleMeAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -61,8 +60,7 @@ CRuntimeClass * __thiscall TIdleMeAnimation::GetTAnimationClassNamePointer(TIdle
 // GHIDRA_NAME TIdleMeAnimation::ConstructTIdleMeAnimationBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTIdleMeAnimationBaseState(undefined4 param_1)
 
-void __thiscall
-TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this,undefined4 param_1)
+void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -86,7 +84,7 @@ TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this,unde
 // GHIDRA_NAME TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTIdleMeAnimationAndMaybeFree(void)
 
-void __thiscall TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree(TIdleMeAnimation *this)
+void TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree()
 
 {
   char cVar1;

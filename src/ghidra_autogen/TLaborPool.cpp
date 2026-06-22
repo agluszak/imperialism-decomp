@@ -84,7 +84,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
 // GHIDRA_NAME TLaborPool::GetTLaborPoolClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLaborPoolClassNamePointer(void)
 
-CRuntimeClass * __thiscall TLaborPool::GetTLaborPoolClassNamePointer(TLaborPool *this)
+CRuntimeClass * TLaborPool::GetTLaborPoolClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -94,7 +94,7 @@ CRuntimeClass * __thiscall TLaborPool::GetTLaborPoolClassNamePointer(TLaborPool 
 // GHIDRA_NAME TLaborPool::ConstructTLaborPoolBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTLaborPoolBaseState(byte param_1)
 
-TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this,byte param_1)
+TLaborPool * TLaborPool::ConstructTLaborPoolBaseState(byte param_1)
 
 {
   TLaborPool::DestructTLaborPoolAndMaybeFree(this);
@@ -108,7 +108,7 @@ TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *thi
 // GHIDRA_NAME TLaborPool::DestructTLaborPoolAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(void)
 
-void __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
+void TLaborPool::DestructTLaborPoolAndMaybeFree()
 
 {
   this->vftable = (TLaborPoolVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -119,8 +119,7 @@ void __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int * param_1)
 
-void __thiscall
-TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,int *param_1)
+void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int *param_1)
 
 {
   code *pcVar1;
@@ -137,8 +136,7 @@ TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,in
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int * param_1)
 
-void __thiscall
-TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,int *param_1)
+void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int *param_1)
 
 {
   code *pcVar1;
@@ -155,8 +153,7 @@ TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,in
 // GHIDRA_NAME TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)
 
-undefined2 __thiscall
-TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this,int param_1,short param_2)
+undefined2 TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2)
 
 {
   short sVar1;
@@ -195,8 +192,7 @@ TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this,int param_1,short 
 // GHIDRA_NAME TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00
 // GHIDRA_PROTO undefined __thiscall TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 param_1)
 
-void __thiscall
-TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(TLaborPool *this,undefined4 param_1)
+void TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 param_1)
 
 {
   undefined4 *puVar1;

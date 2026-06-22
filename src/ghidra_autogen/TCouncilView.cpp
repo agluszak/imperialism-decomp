@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this)
+void TCouncilView::OrphanRetStub_0059add0()
 
 {
   if (g_McAppUiFlag_006A143C == 0) {
@@ -20,8 +20,7 @@ void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this)
 // GHIDRA_NAME TCouncilView::ConstructPictureResourceEntry_Vtbl00640258
 // GHIDRA_PROTO undefined __thiscall TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(void)
 
-TCouncilView * __thiscall
-TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(TCouncilView *this)
+TCouncilView * TCouncilView::ConstructPictureResourceEntry_Vtbl00640258()
 
 {
   TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState((TDiplomacyMapView *)this);
@@ -33,8 +32,7 @@ TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(TCouncilView *this)
 // GHIDRA_NAME TCouncilView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCouncilView * __thiscall
-TCouncilView::_scalar_deleting_destructor_(TCouncilView *this,byte param_1)
+TCouncilView * TCouncilView::_scalar_deleting_destructor_(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl();
@@ -184,8 +182,7 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_NAME TCouncilView::DeserializeCityProductionQueueCommand
 // GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(TTEView * param_1)
 
-void __thiscall
-TCouncilView::DeserializeCityProductionQueueCommand(TCouncilView *this,TTEView *param_1)
+void TCouncilView::DeserializeCityProductionQueueCommand(TTEView *param_1)
 
 {
   (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(param_1);
@@ -197,7 +194,7 @@ TCouncilView::DeserializeCityProductionQueueCommand(TCouncilView *this,TTEView *
 // GHIDRA_NAME TCouncilView::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
+void TCouncilView::OrphanRetStub_00487a00()
 
 {
   return;
@@ -207,7 +204,7 @@ void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
+void TCouncilView::GetTEventHandlerClassNamePointer()
 
 {
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
@@ -219,7 +216,7 @@ void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *thi
 // GHIDRA_NAME TCouncilView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCouncilView::_scalar_deleting_destructor_(TCouncilView *this)
+void TCouncilView::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x9c != 0) {
@@ -234,7 +231,7 @@ void __thiscall TCouncilView::_scalar_deleting_destructor_(TCouncilView *this)
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
+void TCouncilView::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -244,7 +241,7 @@ void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *thi
 // GHIDRA_NAME TCouncilView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
-void __thiscall TCouncilView::OrphanTiny_ReturnZero_0048a730(TCouncilView *this,undefined4 param_1)
+void TCouncilView::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 {
   if (*(int *)&this->field_0xb8 == 5) {
@@ -289,7 +286,7 @@ TDiplomacyMapView * TCouncilView::CreateTCouncilViewInstance(void)
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
+CRuntimeClass * TCouncilView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -299,7 +296,7 @@ CRuntimeClass * __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCounc
 // GHIDRA_NAME TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels
 // GHIDRA_PROTO undefined __thiscall RefreshDiplomacyNationOverlayGeometryAndLabels(void)
 
-void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCouncilView *this)
+void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
 
 {
   short sVar1;
@@ -410,7 +407,7 @@ void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCo
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this,int param_1,int param_2)
+void TCouncilView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   int *piVar1;

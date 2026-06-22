@@ -37,7 +37,7 @@ TLineData * TDealLine::CreateTDealLineInstance(void)
 // GHIDRA_NAME TDealLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDealLine::GetTLineDataClassNamePointer(TDealLine *this)
+CRuntimeClass * TDealLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TDealLine::GetTLineDataClassNamePointer(TDealLine *th
 // GHIDRA_NAME TDealLine::ConstructTDealLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealLineBaseState(void)
 
-TDealLine * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
+TDealLine * TDealLine::ConstructTDealLineBaseState()
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
@@ -59,7 +59,7 @@ TDealLine * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
 // GHIDRA_NAME TDealLine::DestructTDealLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDealLineAndMaybeFree(byte param_1)
 
-TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this,byte param_1)
+TDealLine * TDealLine::DestructTDealLineAndMaybeFree(byte param_1)
 
 {
   DestructTDealLineAndMaybeFree_Impl();
@@ -73,7 +73,7 @@ TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this,
 // GHIDRA_NAME TDealLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int * param_1)
 
-void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this,int *param_1)
+void TDealLine::OrphanRetStub_0056f460(int *param_1)
 
 {
   int iVar1;

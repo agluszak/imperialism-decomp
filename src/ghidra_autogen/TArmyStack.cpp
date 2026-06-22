@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates
 // GHIDRA_PROTO undefined __thiscall ProcessTileUnitListsAndApplyRandomStatusUpdates(void)
 
-void __thiscall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(TArmyStack *this)
+void TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates()
 
 {
   short sVar1;
@@ -215,7 +215,7 @@ void TArmyStack::CreateTArmyStackInstance(void)
 // GHIDRA_NAME TArmyStack::GetTArmyStackClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTArmyStackClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyStack::GetTArmyStackClassNamePointer(TArmyStack *this)
+CRuntimeClass * TArmyStack::GetTArmyStackClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -225,7 +225,7 @@ CRuntimeClass * __thiscall TArmyStack::GetTArmyStackClassNamePointer(TArmyStack 
 // GHIDRA_NAME TArmyStack::ConstructTArmyStackBaseState
 // GHIDRA_PROTO undefined __thiscall TArmyStack::ConstructTArmyStackBaseState(void)
 
-void __thiscall TArmyStack::ConstructTArmyStackBaseState(TArmyStack *this)
+void TArmyStack::ConstructTArmyStackBaseState()
 
 {
   this->vftable = &TArmyStackVtbl_0064ca38;
@@ -238,7 +238,7 @@ void __thiscall TArmyStack::ConstructTArmyStackBaseState(TArmyStack *this)
 // GHIDRA_NAME TArmyStack::DestructTArmyStackAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTArmyStackAndMaybeFree(byte param_1)
 
-TArmyStack * __thiscall TArmyStack::DestructTArmyStackAndMaybeFree(TArmyStack *this,byte param_1)
+TArmyStack * TArmyStack::DestructTArmyStackAndMaybeFree(byte param_1)
 
 {
   DestructTArmyStackAndMaybeFree_Impl();
@@ -271,8 +271,7 @@ TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a
 // GHIDRA_NAME TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts
 // GHIDRA_PROTO undefined __thiscall BuildTerrainLinkedSelectionListFromSerializedCounts(int * param_1)
 
-void __thiscall
-TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(TArmyStack *this,int *param_1)
+void TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(int *param_1)
 
 {
   code *pcVar1;
@@ -354,7 +353,7 @@ TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(TArmyStack *this
 // GHIDRA_NAME TArmyStack::OrphanCallChain_C9_I80_004a7960
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C9_I80_004a7960(int * param_1)
 
-void __thiscall TArmyStack::OrphanCallChain_C9_I80_004a7960(TArmyStack *this,int *param_1)
+void TArmyStack::OrphanCallChain_C9_I80_004a7960(int *param_1)
 
 {
   code *pcVar1;
@@ -431,7 +430,7 @@ joined_r0x004a79d0:
 // GHIDRA_NAME TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20
 // GHIDRA_PROTO undefined __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)
 
-void __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(TArmyStack *this)
+void TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20()
 
 {
   int iVar1;
@@ -453,8 +452,7 @@ void __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(TArmyS
 // GHIDRA_NAME TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory
 // GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
-void __thiscall
-TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(TArmyStack *this,int param_1)
+void TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
 {
   short sVar1;
@@ -576,7 +574,7 @@ LAB_005a0199:
 // GHIDRA_NAME TArmyStack::PropagateTileAccessibilityStrengthLevels
 // GHIDRA_PROTO undefined __thiscall PropagateTileAccessibilityStrengthLevels(char * param_1)
 
-void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(TArmyStack *this,char *param_1)
+void TArmyStack::PropagateTileAccessibilityStrengthLevels(char *param_1)
 
 {
   char cVar1;
@@ -643,8 +641,7 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(TArmyStack 
 // GHIDRA_NAME TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand
 // GHIDRA_PROTO undefined __thiscall ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
 
-void __thiscall
-TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(TArmyStack *this,int param_1)
+void TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1)
 
 {
   int iVar1;

@@ -21,7 +21,7 @@
    1. Calls ConstructSelectableTextOptionEntryBase.
    2. Installs derived option-entry vtable PTR_LAB_00642b18. */
 
-TRadioText * __thiscall TRadioText::ConstructSelectableTextOptionEntry(TRadioText *this)
+TRadioText * TRadioText::ConstructSelectableTextOptionEntry()
 
 {
   TDropShadowText::ConstructSelectableTextOptionEntryBase((TDropShadowText *)this);
@@ -33,7 +33,7 @@ TRadioText * __thiscall TRadioText::ConstructSelectableTextOptionEntry(TRadioTex
 // GHIDRA_NAME TRadioText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *this,byte param_1)
+TRadioText * TRadioText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);
@@ -47,7 +47,7 @@ TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *thi
 // GHIDRA_NAME TRadioText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRadioText::GetTEventHandlerClassNamePointer(TRadioText *this)
+CRuntimeClass * TRadioText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -57,7 +57,7 @@ CRuntimeClass * __thiscall TRadioText::GetTEventHandlerClassNamePointer(TRadioTe
 // GHIDRA_NAME TRadioText::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TRadioText::OrphanLeaf_NoCall_Ins07_004d8920(TRadioText *this)
+void TRadioText::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -68,7 +68,7 @@ void __thiscall TRadioText::OrphanLeaf_NoCall_Ins07_004d8920(TRadioText *this)
 // GHIDRA_NAME TRadioText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TRadioText::OrphanTiny_ReturnZero_0048a730(TRadioText *this)
+void TRadioText::OrphanTiny_ReturnZero_0048a730()
 
 {
   TView *pTVar1;
@@ -107,7 +107,7 @@ void __thiscall TRadioText::OrphanTiny_ReturnZero_0048a730(TRadioText *this)
 // GHIDRA_NAME TRadioText::OrphanCallChain_C3_I13_00579580
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I13_00579580(void)
 
-void __thiscall TRadioText::OrphanCallChain_C3_I13_00579580(TRadioText *this)
+void TRadioText::OrphanCallChain_C3_I13_00579580()
 
 {
   TRadioTextVtbl *pTVar1;

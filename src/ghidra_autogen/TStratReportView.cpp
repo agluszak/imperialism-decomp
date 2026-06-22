@@ -39,8 +39,7 @@ TView * TStratReportView::
 // GHIDRA_NAME TStratReportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TStratReportView::GetTEventHandlerClassNamePointer(TStratReportView *this)
+CRuntimeClass * TStratReportView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -65,8 +64,7 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
 // GHIDRA_NAME TStratReportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStratReportView * __thiscall
-TStratReportView::_scalar_deleting_destructor_(TStratReportView *this,byte param_1)
+TStratReportView * TStratReportView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -93,7 +91,7 @@ TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
 // GHIDRA_NAME TStratReportView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportView *this)
+void TStratReportView::OrphanTiny_ReturnZero_0048a730()
 
 {
   CString *pCVar1;

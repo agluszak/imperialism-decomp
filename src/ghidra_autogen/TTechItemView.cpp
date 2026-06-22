@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTechItemView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechItemView * __thiscall
-TTechItemView::_scalar_deleting_destructor_(TTechItemView *this,byte param_1)
+TTechItemView * TTechItemView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -52,7 +51,7 @@ TView * TTechItemView::CreateTTechItemViewInstance(void)
 // GHIDRA_NAME TTechItemView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTechItemView::GetTEventHandlerClassNamePointer(TTechItemView *this)
+CRuntimeClass * TTechItemView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

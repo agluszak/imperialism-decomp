@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNetGameSelectPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNetGameSelectPicture * __thiscall
-TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this,byte param_1)
+TNetGameSelectPicture * TNetGameSelectPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -22,8 +21,7 @@ TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this,
 // GHIDRA_NAME TNetGameSelectPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNetGameSelectPicture::GetTEventHandlerClassNamePointer(TNetGameSelectPicture *this)
+CRuntimeClass * TNetGameSelectPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TNetGameSelectPicture::GetTEventHandlerClassNamePointer(TNetGameSelectPicture *t
 // GHIDRA_NAME TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920(TNetGameSelectPicture *this)
+void TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);

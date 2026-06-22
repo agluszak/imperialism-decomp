@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMiniShipView::OrphanRetStub_00569d50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00569d50(void)
 
-void __thiscall TMiniShipView::OrphanRetStub_00569d50(TMiniShipView *this)
+void TMiniShipView::OrphanRetStub_00569d50()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TMiniShipView::OrphanRetStub_00569d50(TMiniShipView *this)
 // GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniShipView * __thiscall
-TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,byte param_1)
+TMiniShipView * TMiniShipView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -62,7 +61,7 @@ TControl * TMiniShipView::CreateTMiniShipViewInstance(void)
 // GHIDRA_NAME TMiniShipView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniShipView::GetTEventHandlerClassNamePointer(TMiniShipView *this)
+CRuntimeClass * TMiniShipView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -72,7 +71,7 @@ CRuntimeClass * __thiscall TMiniShipView::GetTEventHandlerClassNamePointer(TMini
 // GHIDRA_NAME TMiniShipView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *this)
+void TMiniShipView::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;
@@ -195,7 +194,7 @@ void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *thi
 // GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
-void __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,undefined4 *param_1)
+void TMiniShipView::_scalar_deleting_destructor_(undefined4 *param_1)
 
 {
   TView *pTVar1;

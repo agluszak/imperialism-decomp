@@ -21,8 +21,7 @@ TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d
 // GHIDRA_NAME TTacticalHolaPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalHolaPicture * __thiscall
-TTacticalHolaPicture::_scalar_deleting_destructor_(TTacticalHolaPicture *this,byte param_1)
+TTacticalHolaPicture * TTacticalHolaPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -66,8 +65,7 @@ thunk_TPictureButton * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(
 // GHIDRA_NAME TTacticalHolaPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalHolaPicture::GetTEventHandlerClassNamePointer(TTacticalHolaPicture *this)
+CRuntimeClass * TTacticalHolaPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

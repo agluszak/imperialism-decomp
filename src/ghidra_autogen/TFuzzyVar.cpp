@@ -7,7 +7,7 @@
 // GHIDRA_NAME TFuzzyVar::GetTFuzzyVarClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTFuzzyVarClassNamePointer(void)
 
-CRuntimeClass * __thiscall TFuzzyVar::GetTFuzzyVarClassNamePointer(TFuzzyVar *this)
+CRuntimeClass * TFuzzyVar::GetTFuzzyVarClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TFuzzyVar::GetTFuzzyVarClassNamePointer(TFuzzyVar *th
 // GHIDRA_NAME TFuzzyVar::ConstructTFuzzyVarBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTFuzzyVarBaseState(byte param_1)
 
-TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this,byte param_1)
+TFuzzyVar * TFuzzyVar::ConstructTFuzzyVarBaseState(byte param_1)
 
 {
   TFuzzySet::CreateTFuzzySetInstance((TFuzzySet *)this);

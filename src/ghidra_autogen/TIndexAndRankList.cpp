@@ -7,8 +7,7 @@
 // GHIDRA_NAME TIndexAndRankList::InitializeTMinisterBaseOrderArray
 // GHIDRA_PROTO undefined __thiscall InitializeTMinisterBaseOrderArray(undefined4 param_1)
 
-void __thiscall
-TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this,undefined4 param_1)
+void TIndexAndRankList::InitializeTMinisterBaseOrderArray(undefined4 param_1)
 
 {
   TIndexAndRankList *this_00;
@@ -41,8 +40,7 @@ TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this,und
 // GHIDRA_NAME TIndexAndRankList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TIndexAndRankList::GetTEventHandlerClassNamePointer(TIndexAndRankList *this)
+CRuntimeClass * TIndexAndRankList::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,8 +50,7 @@ TIndexAndRankList::GetTEventHandlerClassNamePointer(TIndexAndRankList *this)
 // GHIDRA_NAME TIndexAndRankList::ConstructTIndexAndRankList
 // GHIDRA_PROTO undefined __thiscall ConstructTIndexAndRankList(void)
 
-TIndexAndRankList * __thiscall
-TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
+TIndexAndRankList * TIndexAndRankList::ConstructTIndexAndRankList()
 
 {
   CPtrArray(this);
@@ -65,8 +62,7 @@ TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndexAndRankList * __thiscall
-TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
+TIndexAndRankList * TIndexAndRankList::_scalar_deleting_destructor_(byte param_1)
 
 {
   CObArray::DestructCObArray();
@@ -103,8 +99,7 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
 // GHIDRA_NAME TIndexAndRankList::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-int __thiscall
-TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this,int param_1,int param_2)
+int TIndexAndRankList::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
@@ -182,7 +177,7 @@ void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int pa
    
    Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release, Visual Studio 2010 Release */
 
-void __thiscall TIndexAndRankList::CPtrArray(TIndexAndRankList *this)
+void TIndexAndRankList::CPtrArray()
 
 {
   this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
@@ -197,8 +192,7 @@ void __thiscall TIndexAndRankList::CPtrArray(TIndexAndRankList *this)
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndexAndRankList * __thiscall
-TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
+TIndexAndRankList * TIndexAndRankList::_scalar_deleting_destructor_(byte param_1)
 
 {
   CObArray::DestructCObArray();

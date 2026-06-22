@@ -7,8 +7,7 @@
 // GHIDRA_NAME TDialogBehavior::CreateTDialogBehaviorInstance
 // GHIDRA_PROTO undefined __thiscall CreateTDialogBehaviorInstance(undefined1 param_1)
 
-void __thiscall
-TDialogBehavior::CreateTDialogBehaviorInstance(TDialogBehavior *this,undefined1 param_1)
+void TDialogBehavior::CreateTDialogBehaviorInstance(undefined1 param_1)
 
 {
   this->field_0xc = param_1;
@@ -19,7 +18,7 @@ TDialogBehavior::CreateTDialogBehaviorInstance(TDialogBehavior *this,undefined1 
 // GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialogBehavior *this)
+CRuntimeClass * TDialogBehavior::GetTBehaviorClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -29,7 +28,7 @@ CRuntimeClass * __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialog
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(void)
 
-void __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *this)
+void TDialogBehavior::ConstructTDialogBehaviorBaseState()
 
 {
   *(undefined4 *)&this->field_0x4 = 0x20202020;
@@ -48,8 +47,7 @@ void __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavi
 // GHIDRA_NAME TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDialogBehaviorAndMaybeFree(byte param_1)
 
-TDialogBehavior * __thiscall
-TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this,byte param_1)
+TDialogBehavior * TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(byte param_1)
 
 {
   DestructTDialogBehaviorAndMaybeFree_Impl();
@@ -63,8 +61,7 @@ TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this,byte 
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I13_00487430
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I13_00487430(undefined4 param_1)
 
-void __thiscall
-TDialogBehavior::OrphanCallChain_C1_I13_00487430(TDialogBehavior *this,undefined4 param_1)
+void TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1)
 
 {
   if (*(int *)&this->field_0x8 != 0) {
@@ -79,8 +76,7 @@ TDialogBehavior::OrphanCallChain_C1_I13_00487430(TDialogBehavior *this,undefined
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 
-void __thiscall
-TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this,int param_1,int param_2)
+void TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 
 {
   if (param_1 == 0x22) {
@@ -95,7 +91,7 @@ TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this,int param
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1)
 
-void __thiscall TDialogBehavior::OrphanCallChain_C11_I88_004874b0(TDialogBehavior *this,int param_1)
+void TDialogBehavior::OrphanCallChain_C11_I88_004874b0(int param_1)
 
 {
   short sVar1;
@@ -151,7 +147,7 @@ void __thiscall TDialogBehavior::OrphanCallChain_C11_I88_004874b0(TDialogBehavio
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(int param_1)
 
-void __thiscall TDialogBehavior::OrphanCallChain_C6_I49_004875d0(TDialogBehavior *this,int param_1)
+void TDialogBehavior::OrphanCallChain_C6_I49_004875d0(int param_1)
 
 {
   int *piVar1;
@@ -188,7 +184,7 @@ void __thiscall TDialogBehavior::OrphanCallChain_C6_I49_004875d0(TDialogBehavior
 // GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-void __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialogBehavior *this)
+void TDialogBehavior::GetTBehaviorClassNamePointer()
 
 {
   TMovieView *this_00;
@@ -221,8 +217,7 @@ void __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialogBehavior *t
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TDialogBehavior * __thiscall
-TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this,byte param_1)
+TDialogBehavior * TDialogBehavior::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   DestructTCommandAndMaybeFree_Impl();

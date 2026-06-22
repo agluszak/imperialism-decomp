@@ -7,7 +7,7 @@
 // GHIDRA_NAME TAmtBar::ApplyMoveClamp
 // GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1)
 
-undefined2 __thiscall TAmtBar::ApplyMoveClamp(TAmtBar *this,undefined2 param_1)
+undefined2 TAmtBar::ApplyMoveClamp(undefined2 param_1)
 
 {
   return param_1;
@@ -50,7 +50,7 @@ TView * TAmtBar::CreateTAmtBarInstance(void)
 // GHIDRA_NAME TAmtBar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAmtBar::GetTEventHandlerClassNamePointer(TAmtBar *this)
+CRuntimeClass * TAmtBar::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTAmtBar;
@@ -60,7 +60,7 @@ CRuntimeClass * __thiscall TAmtBar::GetTEventHandlerClassNamePointer(TAmtBar *th
 // GHIDRA_NAME TAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
-TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
+TAmtBar * TAmtBar::ConstructBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -76,7 +76,7 @@ TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,byte param_1)
+TAmtBar * TAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -90,7 +90,7 @@ TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,byte pa
 // GHIDRA_NAME TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBar *this)
+void TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -101,7 +101,7 @@ void __thiscall TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBar *this)
 // GHIDRA_NAME TAmtBar::UpdateBarValuesAndRefresh
 // GHIDRA_PROTO undefined __thiscall UpdateBarValuesAndRefresh(short param_1, short param_2)
 
-void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this,short param_1,short param_2)
+void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 
 {
   TAmtBarVtbl *pTVar1;
@@ -118,7 +118,7 @@ void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this,short param_1,s
 // GHIDRA_NAME TAmtBar::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TAmtBar::OrphanTiny_ReturnZero_0048a730(TAmtBar *this)
+void TAmtBar::OrphanTiny_ReturnZero_0048a730()
 
 {
   (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
@@ -129,7 +129,7 @@ void __thiscall TAmtBar::OrphanTiny_ReturnZero_0048a730(TAmtBar *this)
 // GHIDRA_NAME TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *this)
+void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 
 {
   short sVar1;
@@ -235,7 +235,7 @@ void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this,int *param_1)
+void TAmtBar::_scalar_deleting_destructor_(int *param_1)
 
 {
   undefined uVar1;
@@ -278,7 +278,7 @@ LAB_005889eb:
 // GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
 // GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(char param_1)
 
-void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char param_1)
+void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
 
 {
   TAmtBar_slot_0x04_0x04 *pTVar1;
@@ -375,7 +375,7 @@ void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char para
 // GHIDRA_NAME TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B
 // GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_B(void)
 
-void __thiscall TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B(TAmtBar *this)
+void TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B()
 
 {
   int iVar1;

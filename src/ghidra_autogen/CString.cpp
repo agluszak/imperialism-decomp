@@ -7,7 +7,7 @@
 // GHIDRA_NAME CString::CString
 // GHIDRA_PROTO void __thiscall CString(void)
 
-void __thiscall CString::CString(CString *this)
+void CString::CString()
 
 {
   undefined4 *puVar1;
@@ -21,7 +21,7 @@ void __thiscall CString::CString(CString *this)
 // GHIDRA_NAME CString::StringSharedRef_AssignFromPtr
 // GHIDRA_PROTO CString * __thiscall StringSharedRef_AssignFromPtr(CString * src_ref)
 
-CString * __thiscall CString::StringSharedRef_AssignFromPtr(CString *this,CString *src_ref)
+CString * CString::StringSharedRef_AssignFromPtr(CString *src_ref)
 
 {
   char *pcVar1;
@@ -44,7 +44,7 @@ CString * __thiscall CString::StringSharedRef_AssignFromPtr(CString *this,CStrin
 // GHIDRA_NAME CString::AllocateBufferForLength
 // GHIDRA_PROTO void __thiscall AllocateBufferForLength(int text_length)
 
-void __thiscall CString::AllocateBufferForLength(CString *this,int text_length)
+void CString::AllocateBufferForLength(int text_length)
 
 {
   undefined4 *puVar1;
@@ -70,7 +70,7 @@ void __thiscall CString::AllocateBufferForLength(CString *this,int text_length)
 // GHIDRA_NAME CString::EnsureUniqueSharedStringBuffer
 // GHIDRA_PROTO void __thiscall EnsureUniqueSharedStringBuffer(void)
 
-void __thiscall CString::EnsureUniqueSharedStringBuffer(CString *this)
+void CString::EnsureUniqueSharedStringBuffer()
 
 {
   char *pcVar1;
@@ -88,7 +88,7 @@ void __thiscall CString::EnsureUniqueSharedStringBuffer(CString *this)
 // GHIDRA_NAME CString::EnsureCapacityOrAllocate
 // GHIDRA_PROTO void __thiscall EnsureCapacityOrAllocate(int required_capacity)
 
-void __thiscall CString::EnsureCapacityOrAllocate(CString *this,int required_capacity)
+void CString::EnsureCapacityOrAllocate(int required_capacity)
 
 {
   if ((1 < *(int *)(this->m_pchData + -0xc)) || (*(int *)(this->m_pchData + -4) < required_capacity)
@@ -103,7 +103,7 @@ void __thiscall CString::EnsureCapacityOrAllocate(CString *this,int required_cap
 // GHIDRA_NAME CString::~CString
 // GHIDRA_PROTO void __thiscall CString::~CString(void)
 
-void __thiscall CString::~CString(CString *this)
+void CString::~CString()
 
 {
   LONG LVar1;
@@ -127,7 +127,7 @@ void __thiscall CString::~CString(CString *this)
 /* Initializes a shared-string ref from either an ANSI C-string pointer or (when high word is zero)
    a resource/string-table id in the low word. */
 
-void __thiscall CString::CString(CString *this,char *text_or_resource_id)
+void CString::CString(char *text_or_resource_id)
 
 {
   undefined4 *puVar1;
@@ -158,7 +158,7 @@ LAB_0060598e:
 // GHIDRA_NAME CString::CopyBufferAndSetLength
 // GHIDRA_PROTO void __thiscall CopyBufferAndSetLength(int new_length, char * src_text)
 
-void __thiscall CString::CopyBufferAndSetLength(CString *this,int new_length,char *src_text)
+void CString::CopyBufferAndSetLength(int new_length, char *src_text)
 
 {
   EnsureCapacityOrAllocate(this,new_length);
@@ -172,7 +172,7 @@ void __thiscall CString::CopyBufferAndSetLength(CString *this,int new_length,cha
 // GHIDRA_NAME CString::AssignFromPtr
 // GHIDRA_PROTO CString * __thiscall AssignFromPtr(CString * src_ref)
 
-CString * __thiscall CString::AssignFromPtr(CString *this,CString *src_ref)
+CString * CString::AssignFromPtr(CString *src_ref)
 
 {
   char *pcVar1;
@@ -199,7 +199,7 @@ CString * __thiscall CString::AssignFromPtr(CString *this,CString *src_ref)
 // GHIDRA_NAME CString::CopyFromCStr
 // GHIDRA_PROTO CString * __thiscall CopyFromCStr(char * src_text)
 
-CString * __thiscall CString::CopyFromCStr(CString *this,char *src_text)
+CString * CString::CopyFromCStr(char *src_text)
 
 {
   int new_length;
@@ -218,8 +218,7 @@ CString * __thiscall CString::CopyFromCStr(CString *this,char *src_text)
 // GHIDRA_NAME CString::ConcatenateBuffers
 // GHIDRA_PROTO void __thiscall ConcatenateBuffers(int lhs_len, char * lhs_text, int rhs_len, char * rhs_text)
 
-void __thiscall
-CString::ConcatenateBuffers(CString *this,int lhs_len,char *lhs_text,int rhs_len,char *rhs_text)
+void CString::ConcatenateBuffers(int lhs_len, char *lhs_text, int rhs_len, char *rhs_text)
 
 {
   if (rhs_len + lhs_len != 0) {
@@ -234,7 +233,7 @@ CString::ConcatenateBuffers(CString *this,int lhs_len,char *lhs_text,int rhs_len
 // GHIDRA_NAME CString::AppendBuffer
 // GHIDRA_PROTO void __thiscall AppendBuffer(int append_len, char * append_text)
 
-void __thiscall CString::AppendBuffer(CString *this,int append_len,char *append_text)
+void CString::AppendBuffer(int append_len, char *append_text)
 
 {
   char *lhs_text;
@@ -259,7 +258,7 @@ void __thiscall CString::AppendBuffer(CString *this,int append_len,char *append_
 // GHIDRA_NAME CString::AssignFromCStr
 // GHIDRA_PROTO undefined4 __thiscall AssignFromCStr(char * text)
 
-CString * __thiscall CString::AssignFromCStr(CString *this,char *text)
+CString * CString::AssignFromCStr(char *text)
 
 {
   int append_len;
@@ -278,7 +277,7 @@ CString * __thiscall CString::AssignFromCStr(CString *this,char *text)
 // GHIDRA_NAME CString::EnsureCapacityPreserveLength
 // GHIDRA_PROTO int __thiscall EnsureCapacityPreserveLength(int min_capacity)
 
-int __thiscall CString::EnsureCapacityPreserveLength(CString *this,int min_capacity)
+int CString::EnsureCapacityPreserveLength(int min_capacity)
 
 {
   char *pcVar1;
@@ -302,7 +301,7 @@ int __thiscall CString::EnsureCapacityPreserveLength(CString *this,int min_capac
 // GHIDRA_NAME CString::SetLengthAndTerminator
 // GHIDRA_PROTO void __thiscall SetLengthAndTerminator(int new_length)
 
-void __thiscall CString::SetLengthAndTerminator(CString *this,int new_length)
+void CString::SetLengthAndTerminator(int new_length)
 
 {
   EnsureUniqueSharedStringBuffer(this);
@@ -318,7 +317,7 @@ void __thiscall CString::SetLengthAndTerminator(CString *this,int new_length)
 // GHIDRA_NAME CString::EnsureCapacityAndSetLength
 // GHIDRA_PROTO int __thiscall EnsureCapacityAndSetLength(int new_length)
 
-int __thiscall CString::EnsureCapacityAndSetLength(CString *this,int new_length)
+int CString::EnsureCapacityAndSetLength(int new_length)
 
 {
   EnsureCapacityPreserveLength(this,new_length);

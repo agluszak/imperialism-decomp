@@ -7,7 +7,7 @@
 // GHIDRA_NAME CWnd::Default
 // GHIDRA_PROTO undefined __thiscall CWnd::Default(void)
 
-void __thiscall CWnd::Default(CWnd *this)
+void CWnd::Default()
 
 {
   Default(this);
@@ -24,7 +24,7 @@ void __thiscall CWnd::Default(CWnd *this)
 /* Lookup helper for handle-map buckets: finds object entry by HWND key and returns mapped object
    pointer. */
 
-undefined4 __thiscall CWnd::GetValueAt(CWnd *this,uint param_1)
+undefined4 CWnd::GetValueAt(uint param_1)
 
 {
   int iVar1;
@@ -47,7 +47,7 @@ undefined4 __thiscall CWnd::GetValueAt(CWnd *this,uint param_1)
 // GHIDRA_NAME CWnd::AttachControlSite_607673
 // GHIDRA_PROTO undefined __thiscall AttachControlSite_607673(int param_1)
 
-void __thiscall CWnd::AttachControlSite_607673(CWnd *this,int param_1)
+void CWnd::AttachControlSite_607673(int param_1)
 
 {
   int iVar1;
@@ -72,7 +72,7 @@ void __thiscall CWnd::AttachControlSite_607673(CWnd *this,int param_1)
 // GHIDRA_NAME CWnd::CWnd
 // GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
-void __thiscall CWnd::CWnd(CWnd *this)
+void CWnd::CWnd()
 
 {
   ~CWnd(this);
@@ -83,7 +83,7 @@ void __thiscall CWnd::CWnd(CWnd *this)
 // GHIDRA_NAME CWnd::CWnd_00607744
 // GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
-void __thiscall CWnd::CWnd_00607744(CWnd *this)
+void CWnd::CWnd_00607744()
 
 {
   ~CWnd(this);
@@ -94,7 +94,7 @@ void __thiscall CWnd::CWnd_00607744(CWnd *this)
 // GHIDRA_NAME CWnd::CWnd_00607782
 // GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
-void __thiscall CWnd::CWnd_00607782(CWnd *this)
+void CWnd::CWnd_00607782()
 
 {
   ~CWnd(this);
@@ -105,7 +105,7 @@ void __thiscall CWnd::CWnd_00607782(CWnd *this)
 // GHIDRA_NAME CWnd::CWnd_006077C0
 // GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
-void __thiscall CWnd::CWnd_006077C0(CWnd *this)
+void CWnd::CWnd_006077C0()
 
 {
   ~CWnd(this);
@@ -116,7 +116,7 @@ void __thiscall CWnd::CWnd_006077C0(CWnd *this)
 // GHIDRA_NAME CWnd::Default
 // GHIDRA_PROTO undefined __thiscall Default(void)
 
-void __thiscall CWnd::Default(CWnd *this)
+void CWnd::Default()
 
 {
   int iVar1;

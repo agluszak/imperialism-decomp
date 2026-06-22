@@ -40,7 +40,7 @@ TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
 // GHIDRA_NAME TIndustryAmtBar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIndustryAmtBar::GetTEventHandlerClassNamePointer(TIndustryAmtBar *this)
+CRuntimeClass * TIndustryAmtBar::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTIndustryAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TIndustryAmtBar::GetTEventHandlerClassNamePointer(TIn
 // GHIDRA_NAME TIndustryAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
-TIndustryAmtBar * __thiscall TIndustryAmtBar::ConstructBaseState(TIndustryAmtBar *this)
+TIndustryAmtBar * TIndustryAmtBar::ConstructBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -66,8 +66,7 @@ TIndustryAmtBar * __thiscall TIndustryAmtBar::ConstructBaseState(TIndustryAmtBar
 // GHIDRA_NAME TIndustryAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryAmtBar * __thiscall
-TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1)
+TIndustryAmtBar * TIndustryAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -81,7 +80,7 @@ TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1
 // GHIDRA_NAME TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryAmtBar *this)
+void TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   dword dVar1;
@@ -124,8 +123,7 @@ void __thiscall TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryAmtBa
 // GHIDRA_NAME TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __thiscall
-TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TIndustryAmtBar *this)
+void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 
 {
   TIndustryAmtBarVtbl *pTVar1;
@@ -337,7 +335,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
 // GHIDRA_NAME TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A
 // GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_A(void)
 
-void __thiscall TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A(TIndustryAmtBar *this)
+void TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A()
 
 {
   int iVar1;

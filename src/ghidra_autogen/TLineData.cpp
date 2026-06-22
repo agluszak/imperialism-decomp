@@ -98,7 +98,7 @@ TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
 // GHIDRA_PROTO undefined __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
-void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this,undefined4 param_1)
+void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
 {
   byte *pbVar1;
@@ -156,8 +156,7 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
 // GHIDRA_NAME TLineData::InitializePagedListLineDataControlsAndHeaderBitmap
 // GHIDRA_PROTO undefined __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
 
-void __thiscall
-TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,undefined4 param_1)
+void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
 
 {
   TLineData_GetTLineDataClassNamePointer_0x00 *pTVar1;
@@ -233,7 +232,7 @@ TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,un
 // GHIDRA_NAME TLineData::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TLineData::GetTLineDataClassNamePointer(TLineData *this)
+CRuntimeClass * TLineData::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -243,7 +242,7 @@ CRuntimeClass * __thiscall TLineData::GetTLineDataClassNamePointer(TLineData *th
 // GHIDRA_NAME TLineData::ConstructTLineDataBaseState
 // GHIDRA_PROTO undefined __thiscall TLineData::ConstructTLineDataBaseState(void)
 
-void __thiscall TLineData::ConstructTLineDataBaseState(TLineData *this)
+void TLineData::ConstructTLineDataBaseState()
 
 {
   this->vftable = &TLineDataVtbl_0065e230;
@@ -254,7 +253,7 @@ void __thiscall TLineData::ConstructTLineDataBaseState(TLineData *this)
 // GHIDRA_NAME TLineData::DestructTLineDataAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTLineDataAndMaybeFree(byte param_1)
 
-TLineData * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this,byte param_1)
+TLineData * TLineData::DestructTLineDataAndMaybeFree(byte param_1)
 
 {
   DestructTLineDataAndMaybeFree_Impl();
@@ -284,7 +283,7 @@ TLineData::SetLineDataRowAndBounds
 // GHIDRA_NAME TLineData::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall TLineData::OrphanRetStub_0056f460(TLineData *this)
+void TLineData::OrphanRetStub_0056f460()
 
 {
   return;
@@ -294,7 +293,7 @@ void __thiscall TLineData::OrphanRetStub_0056f460(TLineData *this)
 // GHIDRA_NAME TLineData::OrphanRetStub_0056f480
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f480(void)
 
-void __thiscall TLineData::OrphanRetStub_0056f480(TLineData *this)
+void TLineData::OrphanRetStub_0056f480()
 
 {
   return;
@@ -304,7 +303,7 @@ void __thiscall TLineData::OrphanRetStub_0056f480(TLineData *this)
 // GHIDRA_NAME TLineData::ConstructPictureScreenVariantEntry
 // GHIDRA_PROTO undefined __thiscall ConstructPictureScreenVariantEntry(void)
 
-TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
+TLineData * TLineData::ConstructPictureScreenVariantEntry()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -339,7 +338,7 @@ TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *
 /* Derived UI resource constructor used in call paths that bind tag 'gold' and localized string
    setup; initializes label geometry/sentinel defaults. */
 
-TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
+TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -356,7 +355,7 @@ TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *t
 // GHIDRA_NAME TLineData::BuildSelectedNationOrderCapabilityRows
 // GHIDRA_PROTO undefined __thiscall BuildSelectedNationOrderCapabilityRows(void)
 
-void __thiscall TLineData::BuildSelectedNationOrderCapabilityRows(TLineData *this)
+void TLineData::BuildSelectedNationOrderCapabilityRows()
 
 {
   short sVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSuperNavyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSuperNavyRoster * __thiscall
-TSuperNavyRoster::_scalar_deleting_destructor_(TSuperNavyRoster *this,byte param_1)
+TSuperNavyRoster * TSuperNavyRoster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TSuperNavyRoster::_scalar_deleting_destructor_(TSuperNavyRoster *this,byte param
 // GHIDRA_NAME TSuperNavyRoster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSuperNavyRoster::GetTEventHandlerClassNamePointer(TSuperNavyRoster *this)
+CRuntimeClass * TSuperNavyRoster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -128,8 +126,7 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
 // GHIDRA_NAME TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTSuperNavyRosterAndMaybeFree(byte param_1)
 
-TSuperNavyRoster * __thiscall
-TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(TSuperNavyRoster *this,byte param_1)
+TSuperNavyRoster * TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(byte param_1)
 
 {
   DestructTSuperNavyRosterAndMaybeFree_Impl();
@@ -145,8 +142,7 @@ TSuperNavyRoster::DestructTSuperNavyRosterAndMaybeFree(TSuperNavyRoster *this,by
 
 /* WARNING: Type propagation algorithm not settling */
 
-void __thiscall
-TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult(TSuperNavyRoster *this)
+void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
 
 {
   int iVar1;

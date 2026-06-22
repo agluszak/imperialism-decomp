@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt
 // GHIDRA_PROTO undefined __thiscall InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 * param_1)
 
-void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this,undefined4 *param_1)
+void TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(undefined4 *param_1)
 
 {
   short sVar1;
@@ -36,7 +36,7 @@ void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this,u
 // GHIDRA_NAME TPtrList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte param_1)
+TPtrList * TPtrList::_scalar_deleting_destructor_(byte param_1)
 
 {
   CObArray::DestructCObArray();
@@ -50,7 +50,7 @@ TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte
 // GHIDRA_NAME TPtrList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPtrList::GetTEventHandlerClassNamePointer(TPtrList *this)
+CRuntimeClass * TPtrList::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTPtrList;

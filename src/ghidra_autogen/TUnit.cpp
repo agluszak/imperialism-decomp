@@ -7,7 +7,7 @@
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2470
 // GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2470(void)
 
-void __thiscall TUnit::OrphanRetStub_005c2470(TUnit *this)
+void TUnit::OrphanRetStub_005c2470()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TUnit::OrphanRetStub_005c2470(TUnit *this)
 // GHIDRA_NAME TUnit::GetTUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TUnit::GetTUnitClassNamePointer(TUnit *this)
+CRuntimeClass * TUnit::GetTUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -27,7 +27,7 @@ CRuntimeClass * __thiscall TUnit::GetTUnitClassNamePointer(TUnit *this)
 // GHIDRA_NAME TUnit::ConstructTUnitBaseState
 // GHIDRA_PROTO undefined __thiscall TUnit::ConstructTUnitBaseState(byte param_1)
 
-TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this,byte param_1)
+TUnit * TUnit::ConstructTUnitBaseState(byte param_1)
 
 {
   TUnit::DestructTUnitAndMaybeFree(this);
@@ -41,7 +41,7 @@ TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this,byte param_1)
 // GHIDRA_NAME TUnit::DestructTUnitAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TUnit::DestructTUnitAndMaybeFree(void)
 
-void __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
+void TUnit::DestructTUnitAndMaybeFree()
 
 {
   this->vftable = (TUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -52,7 +52,7 @@ void __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2610
 // GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2610(void)
 
-void __thiscall TUnit::OrphanRetStub_005c2610(TUnit *this)
+void TUnit::OrphanRetStub_005c2610()
 
 {
   return;
@@ -62,8 +62,7 @@ void __thiscall TUnit::OrphanRetStub_005c2610(TUnit *this)
 // GHIDRA_NAME TUnit::SetUnitOrderTypeAndOwnerIndex
 // GHIDRA_PROTO undefined __thiscall SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrderOwnerId)
 
-void __thiscall
-TUnit::SetUnitOrderTypeAndOwnerIndex(TUnit *this,undefined4 nOrderType,undefined2 nOrderOwnerId)
+void TUnit::SetUnitOrderTypeAndOwnerIndex(undefined4 nOrderType, undefined2 nOrderOwnerId)
 
 {
   *(undefined4 *)&this->field_0x8 = nOrderType;
@@ -75,7 +74,7 @@ TUnit::SetUnitOrderTypeAndOwnerIndex(TUnit *this,undefined4 nOrderType,undefined
 // GHIDRA_NAME TUnit::NormalizeUnitOrderStateAfterLoad
 // GHIDRA_PROTO undefined __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(void)
 
-void __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(TUnit *this)
+void TUnit::NormalizeUnitOrderStateAfterLoad()
 
 {
   if (*(int *)&this->field_0x8 != 2) {
@@ -88,7 +87,7 @@ void __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(TUnit *this)
 // GHIDRA_NAME TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy
 // GHIDRA_PROTO undefined __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
 
-void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
+void TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy()
 
 {
   int iVar1;
@@ -155,7 +154,7 @@ void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
    Versioning:
    - DAT_00695278 gates legacy-vs-newer layout for the +0x20 field. */
 
-void __thiscall TUnit::DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
+void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
 
 {
   undefined2 extraout_var;
@@ -230,7 +229,7 @@ void __thiscall TUnit::DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveSt
    Notes:
    - Civ/Military serializers wrap this routine and append class-specific fields. */
 
-void __thiscall TUnit::SerializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
+void TUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
 
 {
   code *pWriteBytesFn;

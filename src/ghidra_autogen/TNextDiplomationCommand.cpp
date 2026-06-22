@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNextDiplomationCommand::ProcessQueuedWarTransitions
 // GHIDRA_PROTO undefined __thiscall ProcessQueuedWarTransitions(void)
 
-void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplomationCommand *this)
+void TNextDiplomationCommand::ProcessQueuedWarTransitions()
 
 {
   char cVar1;
@@ -130,7 +130,7 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
 // GHIDRA_NAME TNextDiplomationCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TNextDiplomationCommand::OrphanRetStub_00487a00(TNextDiplomationCommand *this)
+void TNextDiplomationCommand::OrphanRetStub_00487a00()
 
 {
   TNextDiplomationCommand::ProcessQueuedWarTransitions((TNextDiplomationCommand *)g_pDiplomacyTurnStateManager);
@@ -141,8 +141,7 @@ void __thiscall TNextDiplomationCommand::OrphanRetStub_00487a00(TNextDiplomation
 // GHIDRA_NAME TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TNextDiplomationCommand * __thiscall
-TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470(TNextDiplomationCommand *this,byte param_1)
+TNextDiplomationCommand * TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl();
@@ -156,8 +155,7 @@ TNextDiplomationCommand::OrphanCallChain_C1_I17_00487470(TNextDiplomationCommand
 // GHIDRA_NAME TNextDiplomationCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNextDiplomationCommand::GetTEventClassNamePointer(TNextDiplomationCommand *this)
+CRuntimeClass * TNextDiplomationCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -182,8 +180,7 @@ void TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(undefi
 // GHIDRA_NAME TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode
 // GHIDRA_PROTO undefined __thiscall TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(void)
 
-void __thiscall
-TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCommand *this)
+void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
 
 {
   TCountryVtbl *pTVar1;

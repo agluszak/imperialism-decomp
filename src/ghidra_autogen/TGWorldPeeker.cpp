@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGWorldPeeker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPeeker * __thiscall
-TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
+TGWorldPeeker * TGWorldPeeker::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
 // GHIDRA_NAME TGWorldPeeker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWorldPeeker *this)
+CRuntimeClass * TGWorldPeeker::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWor
 // GHIDRA_NAME TGWorldPeeker::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(TGWorldPeeker *this,LONG *param_1)
+void TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
 
 {
   RECT local_20;

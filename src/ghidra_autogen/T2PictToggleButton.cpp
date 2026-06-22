@@ -37,8 +37,7 @@ TToggleButton * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
 // GHIDRA_NAME T2PictToggleButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-T2PictToggleButton::GetTEventHandlerClassNamePointer(T2PictToggleButton *this)
+CRuntimeClass * T2PictToggleButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescT2PictToggleButton;
@@ -48,8 +47,7 @@ T2PictToggleButton::GetTEventHandlerClassNamePointer(T2PictToggleButton *this)
 // GHIDRA_NAME T2PictToggleButton::ConstructT2PictToggleButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructT2PictToggleButtonBaseState(void)
 
-T2PictToggleButton * __thiscall
-T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *this)
+T2PictToggleButton * T2PictToggleButton::ConstructT2PictToggleButtonBaseState()
 
 {
   TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
@@ -61,8 +59,7 @@ T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *thi
 // GHIDRA_NAME T2PictToggleButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-T2PictToggleButton * __thiscall
-T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this,byte param_1)
+T2PictToggleButton * T2PictToggleButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -76,8 +73,7 @@ T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this,byte p
 // GHIDRA_NAME T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_VcallForward_Slot_ec_00571330(void)
 
-undefined4 __thiscall
-T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(T2PictToggleButton *this)
+undefined4 T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
 
 {
   return CONCAT31((int3)(char)((ushort)*(short *)&this->field_0x84 >> 8),
@@ -88,8 +84,7 @@ T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(T2PictToggleButton 
 // GHIDRA_NAME T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh
 // GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(char param_1)
 
-void __thiscall
-T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(T2PictToggleButton *this,char param_1)
+void T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1)
 
 {
   short sVar1;

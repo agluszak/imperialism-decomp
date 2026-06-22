@@ -7,7 +7,7 @@
 // GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
-void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *this)
+void CCmdTarget::ConstructTTaskBaseState()
 
 {
   amsg_exit(0x19);
@@ -18,7 +18,7 @@ void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *this)
 // GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined * __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
+undefined * CCmdTarget::_scalar_deleting_destructor_()
 
 {
   return &DAT_00670560;
@@ -39,7 +39,7 @@ undefined * __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this
    
    Library: Visual Studio 1998 Release */
 
-void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
+void CCmdTarget::_scalar_deleting_destructor_()
 
 {
   CCmdTargetVtbl *pCVar1;
@@ -62,7 +62,7 @@ void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
 // GHIDRA_NAME CCmdTarget::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
 
-undefined4 __thiscall CCmdTarget::OrphanCallChain_C7_I57_004be5b0(CCmdTarget *this)
+undefined4 CCmdTarget::OrphanCallChain_C7_I57_004be5b0()
 
 {
   return 1;
@@ -72,7 +72,7 @@ undefined4 __thiscall CCmdTarget::OrphanCallChain_C7_I57_004be5b0(CCmdTarget *th
 // GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall CCmdTarget::SetForeignMinisterReadyFlag14(CCmdTarget *this)
+undefined4 CCmdTarget::SetForeignMinisterReadyFlag14()
 
 {
   return 0;
@@ -92,7 +92,7 @@ void CCmdTarget::LogUnhandledDialogMethodAndReturnFalse(void)
 // GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
+void CCmdTarget::_scalar_deleting_destructor_()
 
 {
   if (this[1].vftable != (CCmdTargetVtbl *)0x0) {
@@ -557,8 +557,7 @@ CCmdTarget::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME CCmdTarget::RenderControlStateTextBySelectionCode
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::RenderControlStateTextBySelectionCode(int param_1)
 
-undefined4 __thiscall
-CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this,int param_1)
+undefined4 CCmdTarget::RenderControlStateTextBySelectionCode(int param_1)
 
 {
   uint uVar1;
@@ -589,7 +588,7 @@ CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this,int param_1)
 // GHIDRA_NAME CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTarget *this)
+void CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   HINSTANCE pHVar1;
@@ -633,8 +632,7 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 // GHIDRA_NAME CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this,undefined4 param_1,undefined4 param_2)
+void CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(undefined4 param_1, undefined4 param_2)
 
 {
   AfxExtractSubString(param_1,this[3].m_xInnerUnknown,param_2,10);
@@ -645,7 +643,7 @@ CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this,undefined4 param_1
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
-void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this,int param_1)
+void CCmdTarget::GetTEventHandlerClassNamePointer(int param_1)
 
 {
   *(CCmdTarget **)(param_1 + 0x24) = this;
@@ -656,7 +654,7 @@ void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this,in
 // GHIDRA_NAME CCmdTarget::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall CCmdTarget::OrphanRetStub_0059add0(CCmdTarget *this,int param_1)
+void CCmdTarget::OrphanRetStub_0059add0(int param_1)
 
 {
   *(undefined4 *)(param_1 + 0x24) = 0;
@@ -667,7 +665,7 @@ void __thiscall CCmdTarget::OrphanRetStub_0059add0(CCmdTarget *this,int param_1)
 // GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
+undefined4 CCmdTarget::_scalar_deleting_destructor_()
 
 {
   int iVar1;
@@ -722,7 +720,7 @@ LAB_00614ad0:
 // GHIDRA_NAME CCmdTarget::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
-int __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *this)
+int CCmdTarget::SerializeTMinisterBaseOrderArrayHeader()
 
 {
   int iVar1;
@@ -738,7 +736,7 @@ int __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *th
 // GHIDRA_NAME CCmdTarget::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
-uint __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *this)
+uint CCmdTarget::SerializeTMinisterBaseOrderArrayHeader()
 
 {
   int *piVar1;
@@ -760,8 +758,7 @@ uint __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *t
 // GHIDRA_NAME CCmdTarget::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-CCmdTarget::GetTMinisterClassNamePointer(CCmdTarget *this,undefined4 param_1,undefined4 param_2)
+void CCmdTarget::GetTMinisterClassNamePointer(undefined4 param_1, undefined4 param_2)
 
 {
   undefined4 in_stack_0000000c;
@@ -774,7 +771,7 @@ CCmdTarget::GetTMinisterClassNamePointer(CCmdTarget *this,undefined4 param_1,und
 // GHIDRA_NAME CCmdTarget::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall CCmdTarget::DeletingDestructTMinister(CCmdTarget *this)
+undefined4 CCmdTarget::DeletingDestructTMinister()
 
 {
   CCmdTargetVtbl *pCVar1;
@@ -806,7 +803,7 @@ undefined4 __thiscall CCmdTarget::DeletingDestructTMinister(CCmdTarget *this)
 // GHIDRA_NAME CCmdTarget::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-void __thiscall CCmdTarget::GetTTaskClassNamePointer(CCmdTarget *this)
+void CCmdTarget::GetTTaskClassNamePointer()
 
 {
   CCmdTargetVtbl *pCVar1;
@@ -834,7 +831,7 @@ void __thiscall CCmdTarget::GetTTaskClassNamePointer(CCmdTarget *this)
 // GHIDRA_NAME CCmdTarget::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
+void CCmdTarget::_scalar_deleting_destructor_()
 
 {
   CCmdTargetVtbl *pCVar1;
@@ -898,7 +895,7 @@ undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(undefined4 pa
 // GHIDRA_NAME CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTarget *this)
+void CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   CWnd::Default((CWnd *)this);
@@ -916,8 +913,7 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 // GHIDRA_NAME CCmdTarget::LoadUiStringAndDispatchViaVslot1C8
 // GHIDRA_PROTO undefined __thiscall TStaticText::LoadUiStringAndDispatchViaVslot1C8(LPRECT param_1, int param_2)
 
-void __thiscall
-CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this,LPRECT param_1,int param_2)
+void CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(LPRECT param_1, int param_2)
 
 {
   int iVar1;
@@ -1019,7 +1015,7 @@ CCmdTarget::SetEditSelectionAndScrollCaret(int *param_1,byte param_2,undefined4 
    
    Library: Visual Studio 2003 Release */
 
-int __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this,ushort param_1)
+int CCmdTarget::_scalar_deleting_destructor_(ushort param_1)
 
 {
   int iVar1;

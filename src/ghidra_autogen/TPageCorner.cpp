@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPageCorner::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *this,byte param_1)
+TPageCorner * TPageCorner::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -65,7 +65,7 @@ TColorKeyPicture * TPageCorner::CreateTPageCornerInstance(void)
 // GHIDRA_NAME TPageCorner::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPageCorner::GetTEventHandlerClassNamePointer(TPageCorner *this)
+CRuntimeClass * TPageCorner::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

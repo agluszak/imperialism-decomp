@@ -37,7 +37,7 @@ TCommand * TNextTradeCommand::CreateTNextTradeCommandInstance(void)
 // GHIDRA_NAME TNextTradeCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNextTradeCommand::GetTEventClassNamePointer(TNextTradeCommand *this)
+CRuntimeClass * TNextTradeCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TNextTradeCommand::GetTEventClassNamePointer(TNextTra
 // GHIDRA_NAME TNextTradeCommand::ConstructTNextTradeCommandBaseState
 // GHIDRA_PROTO undefined __thiscall TNextTradeCommand::ConstructTNextTradeCommandBaseState(void)
 
-TNextTradeCommand * __thiscall
-TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
+TNextTradeCommand * TNextTradeCommand::ConstructTNextTradeCommandBaseState()
 
 {
   TCommand::ConstructTurnEventPacketBase((TCommand *)this);
@@ -60,8 +59,7 @@ TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
 // GHIDRA_NAME TNextTradeCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TNextTradeCommand * __thiscall
-TNextTradeCommand::OrphanCallChain_C1_I17_00487470(TNextTradeCommand *this,byte param_1)
+TNextTradeCommand * TNextTradeCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(this);
@@ -75,8 +73,7 @@ TNextTradeCommand::OrphanCallChain_C1_I17_00487470(TNextTradeCommand *this,byte 
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(void)
 
-void __thiscall
-TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(TNextTradeCommand *this)
+void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
 
 {
   this->vftable =
@@ -88,7 +85,7 @@ TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(TNextTradeCommand 
 // GHIDRA_NAME TNextTradeCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TNextTradeCommand::OrphanRetStub_00487a00(TNextTradeCommand *this)
+void TNextTradeCommand::OrphanRetStub_00487a00()
 
 {
   ProcessPendingDiplomacyTransferEntriesUntilBlocked();
@@ -99,7 +96,7 @@ void __thiscall TNextTradeCommand::OrphanRetStub_00487a00(TNextTradeCommand *thi
 // GHIDRA_NAME TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
 // GHIDRA_PROTO undefined __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(void)
 
-void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTradeCommand *this)
+void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
 
 {
   TNextTradeCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;

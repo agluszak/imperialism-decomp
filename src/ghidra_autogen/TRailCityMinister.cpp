@@ -40,7 +40,7 @@ TMinister * TRailCityMinister::CreateTRailCityMinisterInstance(void)
 // GHIDRA_NAME TRailCityMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRailCityMinister::GetTMinisterClassNamePointer(TRailCityMinister *this)
+CRuntimeClass * TRailCityMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -50,8 +50,7 @@ CRuntimeClass * __thiscall TRailCityMinister::GetTMinisterClassNamePointer(TRail
 // GHIDRA_NAME TRailCityMinister::ConstructTRailCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TRailCityMinister::ConstructTRailCityMinisterBaseState(void)
 
-TRailCityMinister * __thiscall
-TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
+TRailCityMinister * TRailCityMinister::ConstructTRailCityMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -67,8 +66,7 @@ TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
 // GHIDRA_NAME TRailCityMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TRailCityMinister * __thiscall
-TRailCityMinister::DeletingDestructTMinister(TRailCityMinister *this,byte param_1)
+TRailCityMinister * TRailCityMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTRailCityMinisterAndMaybeFree_Impl();
@@ -82,7 +80,7 @@ TRailCityMinister::DeletingDestructTMinister(TRailCityMinister *this,byte param_
 // GHIDRA_NAME TRailCityMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TRailCityMinister::GetTEventHandlerClassNamePointer(TRailCityMinister *this)
+void TRailCityMinister::GetTEventHandlerClassNamePointer()
 
 {
   (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xe);

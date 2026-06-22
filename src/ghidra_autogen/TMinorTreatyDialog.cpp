@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMinorTreatyDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinorTreatyDialog * __thiscall
-TMinorTreatyDialog::_scalar_deleting_destructor_(TMinorTreatyDialog *this,byte param_1)
+TMinorTreatyDialog * TMinorTreatyDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TMinorTreatyDialog::_scalar_deleting_destructor_(TMinorTreatyDialog *this,byte p
 // GHIDRA_NAME TMinorTreatyDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMinorTreatyDialog::GetTEventHandlerClassNamePointer(TMinorTreatyDialog *this)
+CRuntimeClass * TMinorTreatyDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TMinorTreatyDialog::GetTEventHandlerClassNamePointer(TMinorTreatyDialog *this)
 // GHIDRA_NAME TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMinorTreatyDialogBaseState(void)
 
-void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorTreatyDialog *this)
+void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
 
 {
   int iVar1;

@@ -37,7 +37,7 @@ TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
 // GHIDRA_NAME TClosePicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TClosePicture::GetTEventHandlerClassNamePointer(TClosePicture *this)
+CRuntimeClass * TClosePicture::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTClosePicture;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TClosePicture::GetTEventHandlerClassNamePointer(TClos
 // GHIDRA_NAME TClosePicture::ConstructTClosePictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTClosePictureBaseState(void)
 
-TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
+TClosePicture * TClosePicture::ConstructTClosePictureBaseState()
 
 {
   TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
@@ -59,8 +59,7 @@ TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClose
 // GHIDRA_NAME TClosePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClosePicture * __thiscall
-TClosePicture::_scalar_deleting_destructor_(TClosePicture *this,byte param_1)
+TClosePicture * TClosePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

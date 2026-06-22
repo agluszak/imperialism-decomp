@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGameSetupDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameSetupDialog * __thiscall
-TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this,byte param_1)
+TGameSetupDialog * TGameSetupDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this,byte param
 // GHIDRA_NAME TGameSetupDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TGameSetupDialog::GetTEventHandlerClassNamePointer(TGameSetupDialog *this)
+CRuntimeClass * TGameSetupDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TGameSetupDialog::GetTEventHandlerClassNamePointer(TGameSetupDialog *this)
 // GHIDRA_NAME TGameSetupDialog::OrphanRetStub_005b2860
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005b2860(void)
 
-void __thiscall TGameSetupDialog::OrphanRetStub_005b2860(TGameSetupDialog *this)
+void TGameSetupDialog::OrphanRetStub_005b2860()
 
 {
   return;

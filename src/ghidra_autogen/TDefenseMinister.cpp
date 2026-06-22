@@ -7,8 +7,7 @@
 // GHIDRA_NAME TDefenseMinister::ConstructTDefenseMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TDefenseMinister::ConstructTDefenseMinisterBaseState(void)
 
-TDefenseMinister * __thiscall
-TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
+TDefenseMinister * TDefenseMinister::ConstructTDefenseMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -22,8 +21,7 @@ TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TDefenseMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TDefenseMinister *this)
+float10 TDefenseMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
 
 {
   return (float10)_DAT_006548e0;
@@ -33,7 +31,7 @@ TDefenseMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TDefenseMinis
 // GHIDRA_NAME TDefenseMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDefenseMinister::GetTMinisterClassNamePointer(TDefenseMinister *this)
+CRuntimeClass * TDefenseMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,8 +41,7 @@ CRuntimeClass * __thiscall TDefenseMinister::GetTMinisterClassNamePointer(TDefen
 // GHIDRA_NAME TDefenseMinister::ConstructTDefenseMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDefenseMinisterBaseState(void)
 
-TDefenseMinister * __thiscall
-TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
+TDefenseMinister * TDefenseMinister::ConstructTDefenseMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -56,8 +53,7 @@ TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 // GHIDRA_NAME TDefenseMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TDefenseMinister * __thiscall
-TDefenseMinister::DeletingDestructTMinister(TDefenseMinister *this,byte param_1)
+TDefenseMinister * TDefenseMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTDefenseMinisterAndMaybeFree_Impl();
@@ -71,8 +67,7 @@ TDefenseMinister::DeletingDestructTMinister(TDefenseMinister *this,byte param_1)
 // GHIDRA_NAME TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets
 // GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(int * param_1)
 
-void __thiscall
-TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister *this,int *param_1)
+void TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(int *param_1)
 
 {
   code *pcVar1;
@@ -104,8 +99,7 @@ TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister 
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall
-TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,int *param_1)
+void TDefenseMinister::GetTEventHandlerClassNamePointer(int *param_1)
 
 {
   undefined1 uVar1;
@@ -148,8 +142,7 @@ TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,int *p
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-undefined2 __thiscall
-TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
+undefined2 TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   int *piVar1;
@@ -181,7 +174,7 @@ TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short 
 // GHIDRA_NAME TDefenseMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-int __thiscall TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this)
+int TDefenseMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;
@@ -207,7 +200,7 @@ int __thiscall TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinist
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
+void TDefenseMinister::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -228,7 +221,7 @@ void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinis
 // GHIDRA_NAME TDefenseMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister *this)
+void TDefenseMinister::SetForeignMinisterReadyFlag14()
 
 {
   char cVar1;
@@ -482,8 +475,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
 // GHIDRA_NAME TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int * param_1)
 
-undefined4 * __thiscall
-TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister *this,int *param_1)
+undefined4 * TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(int *param_1)
 
 {
   char cVar1;
@@ -618,7 +610,7 @@ TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister 
 // GHIDRA_NAME TDefenseMinister::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
-int * __thiscall TDefenseMinister::UpdateControlCachedIntFromWindowText(TDefenseMinister *this)
+int * TDefenseMinister::UpdateControlCachedIntFromWindowText()
 
 {
   short sVar1;
@@ -678,7 +670,7 @@ int * __thiscall TDefenseMinister::UpdateControlCachedIntFromWindowText(TDefense
 // GHIDRA_NAME TDefenseMinister::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(char param_1)
 
-int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this,char param_1)
+int * TDefenseMinister::OrphanRetStub_0059add0(char param_1)
 
 {
   short sVar1;
@@ -835,8 +827,7 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall
-TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
+void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
@@ -891,8 +882,7 @@ TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int pa
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall
-TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
+void TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;
@@ -933,7 +923,7 @@ TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int pa
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this)
+void TDefenseMinister::_scalar_deleting_destructor_()
 
 {
   if (*(int **)&this->field_0x8 != (int *)0x0) {
@@ -950,7 +940,7 @@ void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister 
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this)
+void TDefenseMinister::_scalar_deleting_destructor_()
 
 {
   undefined uVar1;
@@ -1001,8 +991,7 @@ void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister 
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-short __thiscall
-TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
+short TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   short *psVar1;
@@ -1032,8 +1021,7 @@ TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short 
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(short param_1)
 
-short __thiscall
-TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short param_1)
+short TDefenseMinister::_scalar_deleting_destructor_(short param_1)
 
 {
   short *psVar1;
@@ -1063,8 +1051,7 @@ TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short para
 // GHIDRA_NAME TDefenseMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(short param_1)
 
-undefined2 __thiscall
-TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short param_1)
+undefined2 TDefenseMinister::_scalar_deleting_destructor_(short param_1)
 
 {
   int iVar1;
@@ -1077,8 +1064,7 @@ TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short para
 // GHIDRA_NAME TDefenseMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(short param_1)
 
-undefined2 __thiscall
-TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this,short param_1)
+undefined2 TDefenseMinister::OrphanCallChain_C11_I88_004874b0(short param_1)
 
 {
   int iVar1;
@@ -1091,8 +1077,7 @@ TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this,short 
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-undefined2 __thiscall
-TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
+undefined2 TDefenseMinister::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   undefined2 *puVar1;

@@ -17,7 +17,7 @@ undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 // GHIDRA_NAME TArmyMission::DestroyTArmyMission
 // GHIDRA_PROTO undefined __thiscall DestroyTArmyMission(byte param_1)
 
-TArmyMission * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this,byte param_1)
+TArmyMission * TArmyMission::DestroyTArmyMission(byte param_1)
 
 {
   ResetTArmyMissionToSentinelVtable();
@@ -31,7 +31,7 @@ TArmyMission * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this,b
 // GHIDRA_NAME TArmyMission::CleanupTArmyMissionAndReleaseChildContext
 // GHIDRA_PROTO undefined __thiscall CleanupTArmyMissionAndReleaseChildContext(void)
 
-void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
+void TArmyMission::CleanupTArmyMissionAndReleaseChildContext()
 
 {
   int iVar1;

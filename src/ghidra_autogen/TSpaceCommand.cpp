@@ -193,8 +193,7 @@ LAB_0050efe5:
 // GHIDRA_NAME TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren
 // GHIDRA_PROTO undefined __thiscall TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
-void __thiscall
-TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int param_1,int param_2)
+void TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
 {
   int iVar1;
@@ -736,7 +735,7 @@ LAB_005262cf:
 // GHIDRA_NAME TSpaceCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TSpaceCommand::OrphanRetStub_00487a00(TSpaceCommand *this)
+void TSpaceCommand::OrphanRetStub_00487a00()
 
 {
   TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(*(TSpaceCommand **)&this->field_0x18);
@@ -747,8 +746,7 @@ void __thiscall TSpaceCommand::OrphanRetStub_00487a00(TSpaceCommand *this)
 // GHIDRA_NAME TSpaceCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TSpaceCommand * __thiscall
-TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this,byte param_1)
+TSpaceCommand * TSpaceCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   TSpaceCommand::CreateTSpaceCommandInstance(this);
@@ -762,7 +760,7 @@ TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this,byte param_1)
 // GHIDRA_NAME TSpaceCommand::CreateTSpaceCommandInstance
 // GHIDRA_PROTO undefined __thiscall TSpaceCommand::CreateTSpaceCommandInstance(void)
 
-void __thiscall TSpaceCommand::CreateTSpaceCommandInstance(TSpaceCommand *this)
+void TSpaceCommand::CreateTSpaceCommandInstance()
 
 {
   this->vftable = (TSpaceCommandVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -773,7 +771,7 @@ void __thiscall TSpaceCommand::CreateTSpaceCommandInstance(TSpaceCommand *this)
 // GHIDRA_NAME TSpaceCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSpaceCommand::GetTEventClassNamePointer(TSpaceCommand *this)
+CRuntimeClass * TSpaceCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -852,7 +850,7 @@ TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
 // GHIDRA_NAME TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview
 // GHIDRA_PROTO undefined __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(void)
 
-void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCommand *this)
+void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
 
 {
   TSpaceCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
@@ -975,7 +973,7 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
 // GHIDRA_NAME TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame
 // GHIDRA_PROTO undefined __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(void)
 
-void __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(TSpaceCommand *this)
+void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
 
 {
   int iVar1;

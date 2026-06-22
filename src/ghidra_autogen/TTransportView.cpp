@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTransportView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransportView * __thiscall
-TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
+TTransportView * TTransportView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
 // GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
+CRuntimeClass * TTransportView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,8 +31,7 @@ CRuntimeClass * __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTra
 // GHIDRA_NAME TTransportView::ApplyCityDialogMinisterValues
 // GHIDRA_PROTO undefined __thiscall ApplyCityDialogMinisterValues(undefined4 param_1)
 
-void __thiscall
-TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 param_1)
+void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
 
 {
   code *pcVar1;
@@ -119,7 +117,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
 // GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
+void TTransportView::GetTEventHandlerClassNamePointer()
 
 {
   undefined uVar1;

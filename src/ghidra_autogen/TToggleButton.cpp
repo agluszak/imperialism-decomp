@@ -7,8 +7,7 @@
 // GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot116
 // GHIDRA_PROTO undefined __thiscall TToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)
 
-void __thiscall
-TToggleButton::TToggleButton_VtblSlot116(TToggleButton *this,char param_1,char param_2)
+void TToggleButton::TToggleButton_VtblSlot116(char param_1, char param_2)
 
 {
   TToggleButtonVtbl *pTVar1;
@@ -57,7 +56,7 @@ thunk_TPictureButton * TToggleButton::CreateTToggleButtonInstance(void)
 // GHIDRA_NAME TToggleButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TToggleButton::GetTEventHandlerClassNamePointer(TToggleButton *this)
+CRuntimeClass * TToggleButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTToggleButton;
@@ -67,7 +66,7 @@ CRuntimeClass * __thiscall TToggleButton::GetTEventHandlerClassNamePointer(TTogg
 // GHIDRA_NAME TToggleButton::ConstructTToggleButtonBaseState
 // GHIDRA_PROTO undefined __thiscall TToggleButton::ConstructTToggleButtonBaseState(void)
 
-TToggleButton * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggleButton *this)
+TToggleButton * TToggleButton::ConstructTToggleButtonBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -79,8 +78,7 @@ TToggleButton * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggl
 // GHIDRA_NAME TToggleButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TToggleButton * __thiscall
-TToggleButton::_scalar_deleting_destructor_(TToggleButton *this,byte param_1)
+TToggleButton * TToggleButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -158,7 +156,7 @@ LAB_005711e0:
 // GHIDRA_NAME TToggleButton::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall TToggleButton::SetForeignMinisterReadyFlag14(TToggleButton *this)
+undefined4 TToggleButton::SetForeignMinisterReadyFlag14()
 
 {
   TToggleButtonVtbl *pTVar1;
@@ -188,7 +186,7 @@ undefined4 __thiscall TToggleButton::SetForeignMinisterReadyFlag14(TToggleButton
 // GHIDRA_NAME TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_VcallForward_Slot_ec_00571330(void)
 
-void __thiscall TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(TToggleButton *this)
+void TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
 
 {
                     /* WARNING: Could not recover jumptable at 0x00571332. Too many branches */

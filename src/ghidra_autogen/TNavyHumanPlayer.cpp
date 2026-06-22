@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(byte param_1)
 
-TNavyHumanPlayer * __thiscall
-TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer *this,byte param_1)
+TNavyHumanPlayer * TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(byte param_1)
 
 {
   TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(this);
@@ -22,7 +21,7 @@ TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer
 // GHIDRA_NAME TNavyHumanPlayer::CreateTNavyHumanPlayerInstance
 // GHIDRA_PROTO undefined __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(void)
 
-void __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(TNavyHumanPlayer *this)
+void TNavyHumanPlayer::CreateTNavyHumanPlayerInstance()
 
 {
   this->vftable =
@@ -34,8 +33,7 @@ void __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(TNavyHumanPlaye
 // GHIDRA_NAME TNavyHumanPlayer::GetTTacticalPlayerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNavyHumanPlayer::GetTTacticalPlayerClassNamePointer(TNavyHumanPlayer *this)
+CRuntimeClass * TNavyHumanPlayer::GetTTacticalPlayerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -45,8 +43,7 @@ TNavyHumanPlayer::GetTTacticalPlayerClassNamePointer(TNavyHumanPlayer *this)
 // GHIDRA_NAME TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
 
-void __thiscall
-TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,undefined4 param_1)
+void TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(undefined4 param_1)
 
 {
   int iVar1;
@@ -73,8 +70,7 @@ TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,unde
 // GHIDRA_NAME TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTNavyHumanPlayerAndMaybeFree(byte param_1)
 
-TNavyHumanPlayer * __thiscall
-TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(TNavyHumanPlayer *this,byte param_1)
+TNavyHumanPlayer * TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(byte param_1)
 
 {
   TNavyAutoPlayer::CreateTNavyAutoPlayerInstance((TNavyAutoPlayer *)this);

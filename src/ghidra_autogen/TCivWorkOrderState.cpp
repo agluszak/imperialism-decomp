@@ -23,7 +23,7 @@ InitializeCivWorkOrderState
 // GHIDRA_NAME TCivWorkOrderState::TCivWorkOrderState
 // GHIDRA_PROTO undefined __thiscall TCivWorkOrderState(void)
 
-void __thiscall TCivWorkOrderState::TCivWorkOrderState(TCivWorkOrderState *this)
+void TCivWorkOrderState::TCivWorkOrderState()
 
 {
   *(TCivUnitVtbl **)this = &_vftable_;

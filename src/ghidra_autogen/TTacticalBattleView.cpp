@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTacticalBattleView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalBattleView::GetTEventHandlerClassNamePointer(TTacticalBattleView *this)
+CRuntimeClass * TTacticalBattleView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,7 +17,7 @@ TTacticalBattleView::GetTEventHandlerClassNamePointer(TTacticalBattleView *this)
 // GHIDRA_NAME TTacticalBattleView::OrphanRetStub_005a83c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(void)
 
-void __thiscall TTacticalBattleView::OrphanRetStub_005a83c0(TTacticalBattleView *this)
+void TTacticalBattleView::OrphanRetStub_005a83c0()
 
 {
   return;
@@ -28,8 +27,7 @@ void __thiscall TTacticalBattleView::OrphanRetStub_005a83c0(TTacticalBattleView 
 // GHIDRA_NAME TTacticalBattleView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacticalBattleView * __thiscall
-TTacticalBattleView::_scalar_deleting_destructor_(TTacticalBattleView *this,byte param_1)
+TTacticalBattleView * TTacticalBattleView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -43,7 +41,7 @@ TTacticalBattleView::_scalar_deleting_destructor_(TTacticalBattleView *this,byte
 // GHIDRA_NAME TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalBattleView *this)
+void TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x64);
@@ -61,7 +59,7 @@ void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalB
 // GHIDRA_NAME TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalBattleView *this)
+void TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalBattleViewVtbl *pTVar1;
@@ -88,8 +86,7 @@ void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalB
 // GHIDRA_NAME TTacticalBattleView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall
-TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(TTacticalBattleView *this,int param_1)
+void TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   switch(*(undefined2 *)(param_1 + 0x1c)) {
@@ -237,8 +234,7 @@ TTacticalBattleView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_NAME TTacticalBattleView::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
-void __thiscall
-TTacticalBattleView::SetForeignMinisterReadyFlag14(TTacticalBattleView *this,undefined4 param_1)
+void TTacticalBattleView::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 {
   undefined1 *puVar1;
@@ -383,8 +379,7 @@ TTacticalBattleView::OrphanCallChain_C2_I66_005a9090
 // GHIDRA_NAME TTacticalBattleView::DrawUiTilesAndOverlay
 // GHIDRA_PROTO void __thiscall DrawUiTilesAndOverlay(astruct_13 * ui_ctx)
 
-void __thiscall
-TTacticalBattleView::DrawUiTilesAndOverlay(TTacticalBattleView *this,astruct_13 *ui_ctx)
+void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 *ui_ctx)
 
 {
   int frame_start_tick;

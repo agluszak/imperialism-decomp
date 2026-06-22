@@ -7,7 +7,7 @@
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnMinusOneWord_00519af0(void)
 
-undefined2 __thiscall TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0(TWorldView *this)
+undefined2 TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0()
 
 {
   return 0xffff;
@@ -51,7 +51,7 @@ TView * TWorldView::CreateTWorldViewInstance(void)
 // GHIDRA_NAME TWorldView::OrphanRetStub_00594fc0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(void)
 
-void __thiscall TWorldView::OrphanRetStub_00594fc0(TWorldView *this)
+void TWorldView::OrphanRetStub_00594fc0()
 
 {
   return;
@@ -61,7 +61,7 @@ void __thiscall TWorldView::OrphanRetStub_00594fc0(TWorldView *this)
 // GHIDRA_NAME TWorldView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TWorldView::GetTEventHandlerClassNamePointer(TWorldView *this)
+CRuntimeClass * TWorldView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -71,7 +71,7 @@ CRuntimeClass * __thiscall TWorldView::GetTEventHandlerClassNamePointer(TWorldVi
 // GHIDRA_NAME TWorldView::ConstructTWorldViewBaseState
 // GHIDRA_PROTO undefined __thiscall TWorldView::ConstructTWorldViewBaseState(void)
 
-TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
+TWorldView * TWorldView::ConstructTWorldViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -88,7 +88,7 @@ TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *thi
 // GHIDRA_NAME TWorldView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *this,byte param_1)
+TWorldView * TWorldView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -102,7 +102,7 @@ TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *thi
 // GHIDRA_NAME TWorldView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TWorldView::OrphanLeaf_NoCall_Ins07_004d8920(TWorldView *this)
+void TWorldView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -153,7 +153,7 @@ TWorldView::OrphanRetStub_0059add0
    This function is the keyboard entry point complementing HandleMapCommandPanelAction mouse paths.
     */
 
-void __thiscall TWorldView::OrphanTiny_ReturnZero_0048a730(TWorldView *this,int *pKeyEvent)
+void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
 
 {
   TZone *pTVar1;
@@ -343,8 +343,7 @@ LAB_005952db:
 /* If current hit-test index maps to a runtime cursor slot, sets mapped cursor; otherwise loads and
    sets default arrow cursor. */
 
-void __thiscall
-TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this,undefined4 param_1,undefined4 param_2)
+void TWorldView::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -375,7 +374,7 @@ TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this,undefined4 param_1
 // GHIDRA_NAME TWorldView::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
+void TWorldView::SetForeignMinisterReadyFlag14()
 
 {
   undefined1 *puVar1;
@@ -496,7 +495,7 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596060
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(void)
 
-void __thiscall TWorldView::OrphanRetStub_00596060(TWorldView *this)
+void TWorldView::OrphanRetStub_00596060()
 
 {
   return;
@@ -506,7 +505,7 @@ void __thiscall TWorldView::OrphanRetStub_00596060(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596080
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596080(void)
 
-void __thiscall TWorldView::OrphanRetStub_00596080(TWorldView *this)
+void TWorldView::OrphanRetStub_00596080()
 
 {
   return;
@@ -516,7 +515,7 @@ void __thiscall TWorldView::OrphanRetStub_00596080(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnMinusOneWord_005960a0(void)
 
-undefined2 __thiscall TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0(TWorldView *this)
+undefined2 TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0()
 
 {
   return 0xffff;
@@ -526,7 +525,7 @@ undefined2 __thiscall TWorldView::OrphanTiny_ReturnMinusOneWord_005960a0(TWorldV
 // GHIDRA_NAME TWorldView::OrphanRetStub_005960c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960c0(void)
 
-void __thiscall TWorldView::OrphanRetStub_005960c0(TWorldView *this)
+void TWorldView::OrphanRetStub_005960c0()
 
 {
   return;
@@ -536,7 +535,7 @@ void __thiscall TWorldView::OrphanRetStub_005960c0(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanRetStub_005960e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(void)
 
-void __thiscall TWorldView::OrphanRetStub_005960e0(TWorldView *this)
+void TWorldView::OrphanRetStub_005960e0()
 
 {
   return;
@@ -546,7 +545,7 @@ void __thiscall TWorldView::OrphanRetStub_005960e0(TWorldView *this)
 // GHIDRA_NAME TWorldView::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
-undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this,undefined4 param_1)
+undefined4 TWorldView::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -606,7 +605,7 @@ undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this
 // GHIDRA_NAME TWorldView::InvokeDialogHooks1D8ThenE4
 // GHIDRA_PROTO undefined __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(void)
 
-void __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(TWorldView *this)
+void TWorldView::InvokeDialogHooks1D8ThenE4()
 
 {
   TWorldViewVtbl *pTVar1;
@@ -623,8 +622,7 @@ void __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(TWorldView *this)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this,short param_1)
+void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param_1)
 
 {
   TCivToolbar *this_00;
@@ -676,8 +674,7 @@ TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 param_1)
 
-void __thiscall
-TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TWorldView *this,undefined2 param_1)
+void TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -708,8 +705,7 @@ TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(TWorldView *this,u
 // GHIDRA_NAME TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 param_1)
 
-void __thiscall
-TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this,undefined2 param_1)
+void TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 param_1)
 
 {
   TWorldViewVtbl *pTVar1;
@@ -740,7 +736,7 @@ TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this,u
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596680
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
 
-void __thiscall TWorldView::OrphanRetStub_00596680(TWorldView *this)
+void TWorldView::OrphanRetStub_00596680()
 
 {
   return;
@@ -750,7 +746,7 @@ void __thiscall TWorldView::OrphanRetStub_00596680(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanRetStub_005966a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(void)
 
-void __thiscall TWorldView::OrphanRetStub_005966a0(TWorldView *this)
+void TWorldView::OrphanRetStub_005966a0()
 
 {
   return;
@@ -760,7 +756,7 @@ void __thiscall TWorldView::OrphanRetStub_005966a0(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanRetStub_005966c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(void)
 
-void __thiscall TWorldView::OrphanRetStub_005966c0(TWorldView *this)
+void TWorldView::OrphanRetStub_005966c0()
 
 {
   return;
@@ -770,7 +766,7 @@ void __thiscall TWorldView::OrphanRetStub_005966c0(TWorldView *this)
 // GHIDRA_NAME TWorldView::OrphanLeaf_NoCall_Ins02_005966e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(void)
 
-undefined1 __thiscall TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(TWorldView *this)
+undefined1 TWorldView::OrphanLeaf_NoCall_Ins02_005966e0()
 
 {
   return 0;
@@ -780,7 +776,7 @@ undefined1 __thiscall TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(TWorldView *t
 // GHIDRA_NAME TWorldView::OrphanCallChain_C6_I29_00596700
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I29_00596700(void)
 
-void __thiscall TWorldView::OrphanCallChain_C6_I29_00596700(TWorldView *this)
+void TWorldView::OrphanCallChain_C6_I29_00596700()
 
 {
   TWorldViewVtbl *pTVar1;

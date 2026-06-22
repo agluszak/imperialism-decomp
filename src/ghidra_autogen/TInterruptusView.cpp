@@ -37,8 +37,7 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
 // GHIDRA_NAME TInterruptusView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInterruptusView * __thiscall
-TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param_1)
+TInterruptusView * TInterruptusView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -52,8 +51,7 @@ TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param
 // GHIDRA_NAME TInterruptusView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TInterruptusView::GetTEventHandlerClassNamePointer(TInterruptusView *this)
+CRuntimeClass * TInterruptusView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -63,7 +61,7 @@ TInterruptusView::GetTEventHandlerClassNamePointer(TInterruptusView *this)
 // GHIDRA_NAME TInterruptusView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TInterruptusView::OrphanTiny_ReturnZero_0048a730(TInterruptusView *this)
+void TInterruptusView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 *unaff_FS_OFFSET;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTraderForeignMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTraderForeignMinister::GetTMinisterClassNamePointer(TTraderForeignMinister *this)
+CRuntimeClass * TTraderForeignMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TTraderForeignMinister::GetTMinisterClassNamePointer(TTraderForeignMinister *thi
 // GHIDRA_NAME TTraderForeignMinister::ConstructTTraderForeignMinister
 // GHIDRA_PROTO undefined __thiscall TTraderForeignMinister::ConstructTTraderForeignMinister(void)
 
-TTraderForeignMinister * __thiscall
-TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *this)
+TTraderForeignMinister * TTraderForeignMinister::ConstructTTraderForeignMinister()
 
 {
   int iVar1;
@@ -47,8 +45,7 @@ TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *
 // GHIDRA_NAME TTraderForeignMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TTraderForeignMinister * __thiscall
-TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this,byte param_1)
+TTraderForeignMinister * TTraderForeignMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TTraderForeignMinister::DestructTTraderForeignMinister(this);
@@ -62,7 +59,7 @@ TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this,b
 // GHIDRA_NAME TTraderForeignMinister::DestructTTraderForeignMinister
 // GHIDRA_PROTO undefined __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(void)
 
-void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderForeignMinister *this)
+void TTraderForeignMinister::DestructTTraderForeignMinister()
 
 {
   this->vftable =
@@ -74,8 +71,7 @@ void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderFo
 // GHIDRA_NAME TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTraderForeignMinister *this)
+void TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TIndexAndRankListVtbl *pTVar1;
@@ -148,7 +144,7 @@ TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTraderForeignMinister 
 // GHIDRA_NAME TTraderForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TTraderForeignMinister::SetForeignMinisterReadyFlag14(TTraderForeignMinister *this)
+void TTraderForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   TTraderForeignMinisterVtbl *pTVar1;
@@ -351,8 +347,7 @@ TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_NAME TTraderForeignMinister::IncrementTraderCounter60ByThree
 // GHIDRA_PROTO undefined __thiscall IncrementTraderCounter60ByThree(int param_1)
 
-void __thiscall
-TTraderForeignMinister::IncrementTraderCounter60ByThree(TTraderForeignMinister *this,int param_1)
+void TTraderForeignMinister::IncrementTraderCounter60ByThree(int param_1)
 
 {
   *(short *)(param_1 + 0x60) = *(short *)(param_1 + 0x60) + 3;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMilitaryUnitOrderState::TMilitaryUnitOrderState
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState::TMilitaryUnitOrderState(void)
 
-TMilitaryUnitOrderState * __thiscall
-TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
+TMilitaryUnitOrderState * TMilitaryUnitOrderState::TMilitaryUnitOrderState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -91,8 +90,7 @@ TMilitaryUnitOrderState::InitializeRecruitOrderState
 // GHIDRA_NAME TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(void)
 
-void __thiscall
-TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(TMilitaryUnitOrderState *this)
+void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets()
 
 {
   TMilitaryUnitOrderState *pTVar1;

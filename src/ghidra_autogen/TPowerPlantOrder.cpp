@@ -7,8 +7,7 @@
 // GHIDRA_NAME TPowerPlantOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPowerPlantOrder::GetTProductionOrderClassNamePointer(TPowerPlantOrder *this)
+CRuntimeClass * TPowerPlantOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TPowerPlantOrder::GetTProductionOrderClassNamePointer(TPowerPlantOrder *this)
 // GHIDRA_NAME TPowerPlantOrder::ConstructTPowerPlantOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPowerPlantOrderBaseState(byte param_1)
 
-TPowerPlantOrder * __thiscall
-TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this,byte param_1)
+TPowerPlantOrder * TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(byte param_1)
 
 {
   TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(this);
@@ -33,7 +31,7 @@ TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this,byte
 // GHIDRA_NAME TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(void)
 
-void __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerPlantOrder *this)
+void TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree()
 
 {
   this->vftable =
@@ -45,8 +43,7 @@ void __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerPla
 // GHIDRA_NAME TPowerPlantOrder::InitializeCityProductionState_Impl
 // GHIDRA_PROTO undefined __thiscall TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1)
 
-void __thiscall
-TPowerPlantOrder::InitializeCityProductionState_Impl(TPowerPlantOrder *this,int param_1)
+void TPowerPlantOrder::InitializeCityProductionState_Impl(int param_1)
 
 {
   int iVar1;
@@ -73,7 +70,7 @@ TPowerPlantOrder::InitializeCityProductionState_Impl(TPowerPlantOrder *this,int 
 // GHIDRA_NAME TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPowerPlantOrder *this)
+int TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   undefined2 uVar1;
@@ -87,8 +84,7 @@ int __thiscall TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPowerPlantOrd
 // GHIDRA_NAME TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall
-TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(TPowerPlantOrder *this,short param_1)
+undefined4 TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   short sVar1;
@@ -137,7 +133,7 @@ TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(TPowerPlantOrder *this,short p
 // GHIDRA_NAME TPowerPlantOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TPowerPlantOrder::OrphanRetStub_004b5160(TPowerPlantOrder *this)
+void TPowerPlantOrder::OrphanRetStub_004b5160()
 
 {
   return;
@@ -147,7 +143,7 @@ void __thiscall TPowerPlantOrder::OrphanRetStub_004b5160(TPowerPlantOrder *this)
 // GHIDRA_NAME TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
-void __thiscall TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(TPowerPlantOrder *this)
+void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
 
 {
   short sVar1;
@@ -173,7 +169,7 @@ void __thiscall TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(TPowerPlant
 // GHIDRA_NAME TPowerPlantOrder::CreateTItemOrderInstance
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(int param_1)
 
-void __thiscall TPowerPlantOrder::CreateTItemOrderInstance(TPowerPlantOrder *this,int param_1)
+void TPowerPlantOrder::CreateTItemOrderInstance(int param_1)
 
 {
   (*this->vftable[7].ConstructTPowerPlantOrderBaseState)(param_1);

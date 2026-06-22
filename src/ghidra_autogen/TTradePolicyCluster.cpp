@@ -37,8 +37,7 @@ TUberCluster * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
 // GHIDRA_NAME TTradePolicyCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradePolicyCluster::GetTEventHandlerClassNamePointer(TTradePolicyCluster *this)
+CRuntimeClass * TTradePolicyCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TTradePolicyCluster::GetTEventHandlerClassNamePointer(TTradePolicyCluster *this)
 // GHIDRA_NAME TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradePolicyClusterBaseState(void)
 
-TTradePolicyCluster * __thiscall
-TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *this)
+TTradePolicyCluster * TTradePolicyCluster::ConstructTTradePolicyClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -61,8 +59,7 @@ TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *
 // GHIDRA_NAME TTradePolicyCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePolicyCluster * __thiscall
-TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this,byte param_1)
+TTradePolicyCluster * TTradePolicyCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

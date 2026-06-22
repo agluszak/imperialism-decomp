@@ -9,7 +9,7 @@
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,undefined4 *param_1)
+void TNumberedItem::_scalar_deleting_destructor_(undefined4 *param_1)
 
 {
   undefined4 uVar1;
@@ -41,7 +41,7 @@ void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,
 // GHIDRA_NAME TNumberedItem::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this)
+void TNumberedItem::_scalar_deleting_destructor_()
 
 {
   POINT *unaff_retaddr;
@@ -57,7 +57,7 @@ void __thiscall TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this)
 // GHIDRA_NAME TNumberedItem::BuildCityViewResourceRows
 // GHIDRA_PROTO undefined __thiscall BuildCityViewResourceRows(int * param_1)
 
-void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int *param_1)
+void TNumberedItem::BuildCityViewResourceRows(int *param_1)
 
 {
   TNumberedItemVtbl *pTVar1;
@@ -281,7 +281,7 @@ TMegaPicture * TNumberedItem::CreateTNumberedItemInstance(void)
 // GHIDRA_NAME TNumberedItem::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNumberedItem::GetTEventHandlerClassNamePointer(TNumberedItem *this)
+CRuntimeClass * TNumberedItem::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -291,7 +291,7 @@ CRuntimeClass * __thiscall TNumberedItem::GetTEventHandlerClassNamePointer(TNumb
 // GHIDRA_NAME TNumberedItem::ConstructTNumberedItemBaseState
 // GHIDRA_PROTO undefined __thiscall TNumberedItem::ConstructTNumberedItemBaseState(void)
 
-TNumberedItem * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumberedItem *this)
+TNumberedItem * TNumberedItem::ConstructTNumberedItemBaseState()
 
 {
   TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
@@ -305,8 +305,7 @@ TNumberedItem * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumbe
 // GHIDRA_NAME TNumberedItem::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNumberedItem * __thiscall
-TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
+TNumberedItem * TNumberedItem::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -320,7 +319,7 @@ TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
 // GHIDRA_NAME TNumberedItem::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TNumberedItem::OrphanTiny_ReturnZero_0048a730(TNumberedItem *this)
+void TNumberedItem::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -380,7 +379,7 @@ void __thiscall TNumberedItem::OrphanTiny_ReturnZero_0048a730(TNumberedItem *thi
 // GHIDRA_NAME TNumberedItem::UniversityDialogMethod_00405623
 // GHIDRA_PROTO undefined __thiscall UniversityDialogMethod_00405623(void)
 
-void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *this)
+void TNumberedItem::UniversityDialogMethod_00405623()
 
 {
   return;
@@ -390,8 +389,7 @@ void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *th
 // GHIDRA_NAME TNumberedItem::OrphanCallChain_C1_I08_00573690
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)
 
-void __thiscall
-TNumberedItem::OrphanCallChain_C1_I08_00573690(TNumberedItem *this,undefined2 param_1,char param_2)
+void TNumberedItem::OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)
 
 {
   *(undefined2 *)&this->field_0x98 = param_1;

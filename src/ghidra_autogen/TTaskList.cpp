@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTaskList::OnActivateView
 // GHIDRA_PROTO undefined __thiscall OnActivateView(void)
 
-CRuntimeClass * __thiscall TTaskList::OnActivateView(TTaskList *this)
+CRuntimeClass * TTaskList::OnActivateView()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TTaskList::OnActivateView(TTaskList *this)
 // GHIDRA_NAME TTaskList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTaskList * __thiscall TTaskList::_scalar_deleting_destructor_(TTaskList *this,byte param_1)
+TTaskList * TTaskList::_scalar_deleting_destructor_(byte param_1)
 
 {
   TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30((TaskList *)this);

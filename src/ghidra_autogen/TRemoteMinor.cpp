@@ -7,7 +7,7 @@
 // GHIDRA_NAME TRemoteMinor::DestructTRemoteMinor
 // GHIDRA_PROTO undefined __thiscall TRemoteMinor::DestructTRemoteMinor(void)
 
-void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
+void TRemoteMinor::DestructTRemoteMinor()
 
 {
   undefined4 *unaff_FS_OFFSET;

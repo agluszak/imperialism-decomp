@@ -7,7 +7,7 @@
 // GHIDRA_NAME TSpecialQuitPicture::OrphanRetStub_0045acb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045acb0(void)
 
-void __thiscall TSpecialQuitPicture::OrphanRetStub_0045acb0(TSpecialQuitPicture *this)
+void TSpecialQuitPicture::OrphanRetStub_0045acb0()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TSpecialQuitPicture::OrphanRetStub_0045acb0(TSpecialQuitPicture 
 // GHIDRA_NAME TSpecialQuitPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSpecialQuitPicture * __thiscall
-TSpecialQuitPicture::_scalar_deleting_destructor_(TSpecialQuitPicture *this,byte param_1)
+TSpecialQuitPicture * TSpecialQuitPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -62,8 +61,7 @@ thunk_TPictureButton * TSpecialQuitPicture::CreateTSpecialQuitPictureInstance(vo
 // GHIDRA_NAME TSpecialQuitPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSpecialQuitPicture::GetTEventHandlerClassNamePointer(TSpecialQuitPicture *this)
+CRuntimeClass * TSpecialQuitPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -73,7 +71,7 @@ TSpecialQuitPicture::GetTEventHandlerClassNamePointer(TSpecialQuitPicture *this)
 // GHIDRA_NAME TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920(TSpecialQuitPicture *this)
+void TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TSpecialQuitPicture_slot_0x04_0x04 *pTVar1;

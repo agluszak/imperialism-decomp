@@ -7,8 +7,7 @@
 // GHIDRA_NAME TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
 
-void __thiscall
-TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(TDiplomacyMapView *this,uint param_1)
+void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
 
 {
   int iVar1;
@@ -96,8 +95,7 @@ TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(TDiplomacyMapView *this,u
 // GHIDRA_NAME TDiplomacyMapView::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall
-TDiplomacyMapView::QueueCityRecruitmentSupportCommandsIfDeficit(TDiplomacyMapView *this)
+void TDiplomacyMapView::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   if (this != (TDiplomacyMapView *)0x0) {
@@ -261,8 +259,7 @@ TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFi
 // GHIDRA_NAME TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers
 // GHIDRA_PROTO undefined __thiscall AppendPackedColorDwordToMaskBuffers(uint param_1)
 
-void __thiscall
-TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(TDiplomacyMapView *this,uint param_1)
+void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
 
 {
   int iVar1;
@@ -389,8 +386,7 @@ CRuntimeClass * TDiplomacyMapView::GetTDiplomacyMapViewClassNamePointer(void)
 // GHIDRA_NAME TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(void)
 
-TDiplomacyMapView * __thiscall
-TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(TDiplomacyMapView *this)
+TDiplomacyMapView * TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -423,7 +419,7 @@ TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(TDiplomacyMapView *this)
 // GHIDRA_NAME TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMapViewAndMaybeFree(void)
 
-void __thiscall TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree(TDiplomacyMapView *this)
+void TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree()
 
 {
   this->vftable = (TDiplomacyMapViewVtbl *)0x0;
@@ -450,7 +446,7 @@ TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree_004F3C90
 // GHIDRA_NAME TDiplomacyMapView::DestructTDiplomacyMapViewBaseState
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DestructTDiplomacyMapViewBaseState(void)
 
-void __thiscall TDiplomacyMapView::DestructTDiplomacyMapViewBaseState(TDiplomacyMapView *this)
+void TDiplomacyMapView::DestructTDiplomacyMapViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -475,8 +471,7 @@ void __thiscall TDiplomacyMapView::DestructTDiplomacyMapViewBaseState(TDiplomacy
 // GHIDRA_NAME TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks(void)
 
-void __thiscall
-TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks(TDiplomacyMapView *this)
+void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
 
 {
   short sVar1;
@@ -759,8 +754,7 @@ LAB_004f4343:
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(void)
 
-void __thiscall
-TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(TDiplomacyMapView *this)
+void TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill()
 
 {
   int iVar1;
@@ -831,8 +825,7 @@ TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(TDiplomacyMapV
 // GHIDRA_NAME TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand
 // GHIDRA_PROTO undefined __thiscall HandleDiplomacySelectedNationActionCommand(void)
 
-void __thiscall
-TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand()
 
 {
   undefined4 *puVar1;
@@ -1244,7 +1237,7 @@ LAB_004f6089:
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent
 // GHIDRA_PROTO undefined __thiscall RenderDiplomacyLegendSurfaceAndPresent(void)
 
-void __thiscall TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(TDiplomacyMapView *this)
+void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
 
 {
   TDiplomacyMapViewVtbl *pTVar1;
@@ -1490,8 +1483,7 @@ TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface
 // GHIDRA_NAME TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
 // GHIDRA_PROTO undefined __thiscall RebuildDiplomacyLegendPaletteMode1AndBlit(LONG * param_1)
 
-void __thiscall
-TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(TDiplomacyMapView *this,LONG *param_1)
+void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
 
 {
   TDiplomacyMapView *pTVar1;
@@ -1756,8 +1748,7 @@ TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward
 // GHIDRA_NAME TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames(void)
 
-void __thiscall
-TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames(TDiplomacyMapView *this)
+void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames()
 
 {
   short sVar1;
@@ -1837,8 +1828,7 @@ TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames(TDiplomacyMapView 
 
 /* Adds delta to pending overlay code field (this+0xEC). */
 
-void __thiscall
-TDiplomacyMapView::_scalar_deleting_destructor_(TDiplomacyMapView *this,short param_1)
+void TDiplomacyMapView::_scalar_deleting_destructor_(short param_1)
 
 {
   *(short *)&this->field_0xec = *(short *)&this->field_0xec + param_1;
@@ -1854,8 +1844,7 @@ TDiplomacyMapView::_scalar_deleting_destructor_(TDiplomacyMapView *this,short pa
 
 /* Returns pending turn overlay/dialog code from TurnEventState at offset +0xEC. */
 
-undefined2 __thiscall
-TDiplomacyMapView::InitializeForeignMinisterStateFlags(TDiplomacyMapView *this)
+undefined2 TDiplomacyMapView::InitializeForeignMinisterStateFlags()
 
 {
   return *(undefined2 *)&this->field_0xec;
@@ -1871,7 +1860,7 @@ TDiplomacyMapView::InitializeForeignMinisterStateFlags(TDiplomacyMapView *this)
 /* Refreshes strategic-map status icon widgets for active nation by iterating fixed icon tags
    (sr/am/dg groups) and pushing nation-indexed status values to StrategicMapViewSystem. */
 
-void __thiscall TDiplomacyMapView::AddToForeignMinisterCounterAtIndex(TDiplomacyMapView *this)
+void TDiplomacyMapView::AddToForeignMinisterCounterAtIndex()
 
 {
   code *pcVar1;
@@ -1907,7 +1896,7 @@ void __thiscall TDiplomacyMapView::AddToForeignMinisterCounterAtIndex(TDiplomacy
 /* TurnEventState vtable slot +0x70 handler. Resolves dialog object from factory manager, touches
    GOLD widget state, and invokes object virtual slot +0x9C. */
 
-void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanRetStub_0059add0()
 
 {
   int iVar1;
@@ -1941,7 +1930,7 @@ void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *thi
 /* TurnEventState vtable slot +0x74 handler. Resolves dialog object from factory manager, touches
    GOLD widget state, then runs commit/refresh chain (+0x1A0,+0x1AC,+0xA0,+0x1C). */
 
-void __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetTBehaviorClassNamePointer()
 
 {
   int iVar1;
@@ -1977,7 +1966,7 @@ void __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(TDiplomacyMapVie
 
 /* No-op virtual slot stub (returns immediately). */
 
-void __thiscall TDiplomacyMapView::GetCityDialogFlagByte4(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetCityDialogFlagByte4()
 
 {
   return;
@@ -1993,7 +1982,7 @@ void __thiscall TDiplomacyMapView::GetCityDialogFlagByte4(TDiplomacyMapView *thi
 /* TurnEventState vtable slot +0x78 handler. Same commit/refresh sequence pattern as slot +0x74 over
    factory-resolved dialog object. */
 
-void __thiscall TDiplomacyMapView::EvaluateControlInputGate(TDiplomacyMapView *this)
+void TDiplomacyMapView::EvaluateControlInputGate()
 
 {
   int iVar1;
@@ -2030,7 +2019,7 @@ void __thiscall TDiplomacyMapView::EvaluateControlInputGate(TDiplomacyMapView *t
 /* TurnEventState vtable slot +0x7C handler. Same commit/refresh sequence pattern as slot +0x74 over
    factory-resolved dialog object. */
 
-void __thiscall TDiplomacyMapView::HasRenderableParentAndContent(TDiplomacyMapView *this)
+void TDiplomacyMapView::HasRenderableParentAndContent()
 
 {
   int iVar1;
@@ -2067,8 +2056,7 @@ void __thiscall TDiplomacyMapView::HasRenderableParentAndContent(TDiplomacyMapVi
 /* TurnEventState vtable slot +0x80 handler. Same commit/refresh sequence pattern as slot +0x74 over
    factory-resolved dialog object. */
 
-void __thiscall
-TDiplomacyMapView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDiplomacyMapView *this)
+void TDiplomacyMapView::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   int iVar1;
@@ -2105,8 +2093,7 @@ TDiplomacyMapView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDiplomacyMapVie
 /* Dispatches turn event 0x7D8, resolves the 'main' UI node, and invokes its post-dispatch update
    callback with the selected nation/context argument. */
 
-void __thiscall
-TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection(TDiplomacyMapView *this)
+void TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection()
 
 {
   int iVar1;
@@ -2131,8 +2118,7 @@ TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection(TDiplomacyMapV
 /* Guarded 0x7D8 dispatch path: exits early when turn-flow is busy, otherwise forwards event 0x7D8
    and triggers main-view follow-up update. */
 
-undefined4 __thiscall
-TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730(TDiplomacyMapView *this,undefined4 param_1)
+undefined4 TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 {
   char cVar1;
@@ -2163,7 +2149,7 @@ TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730(TDiplomacyMapView *this,undefi
 
 /* No-op virtual slot stub (returns immediately). */
 
-void __thiscall TDiplomacyMapView::IsCurrentActiveCityProductionView(TDiplomacyMapView *this)
+void TDiplomacyMapView::IsCurrentActiveCityProductionView()
 
 {
   return;
@@ -2548,7 +2534,7 @@ LAB_005d79b8:
 /* Dispatches turn event 0x3B8 through g_pUiRuntimeContext and pumps UI messages until the
    caller-provided completion flag at +0x14 is set. */
 
-void __thiscall TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(TDiplomacyMapView *this)
+void TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion()
 
 {
   short sVar1;
@@ -2577,8 +2563,7 @@ void __thiscall TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(TDip
 /* Event 0x7DB handler: switches to city-focused view (tag 'city'), updates strategic-map active
    view pointer, and binds current-nation city selection context. */
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView()
 
 {
   CString *pCVar1;
@@ -2718,7 +2703,7 @@ TDiplomacyMapView::HandleTurnEvent7DB_SelectCityAndRefreshView(TDiplomacyMapView
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x5C. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod5C(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod5C()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005d7f78. Too many branches */
@@ -2736,7 +2721,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod5C(TDiplomacyMapV
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x60 with forwarded argument. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod60(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod60()
 
 {
   (**(code **)(*g_pStrategicMapViewSystem + 0x60))();
@@ -2753,7 +2738,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod60(TDiplomacyMapV
 /* Loads cursor/main panel resources, configures cursor code range (0x2B6C..0x2B67), and refreshes
    main panel via thunk_FUN_004FC2E0. */
 
-void __thiscall TDiplomacyMapView::_scalar_deleting_destructor_(TDiplomacyMapView *this)
+void TDiplomacyMapView::_scalar_deleting_destructor_()
 
 {
   code *pcVar1;
@@ -2779,8 +2764,7 @@ void __thiscall TDiplomacyMapView::_scalar_deleting_destructor_(TDiplomacyMapVie
 /* Event 0x7D8 handler: activates diplomacy map view controls (tag 'dipl'), refreshes
    main/tool/cursor panes, and updates TDiplomacyMapView selection context. */
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView()
 
 {
   code *pcVar1;
@@ -3105,7 +3089,7 @@ TDiplomacyMapView::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
    Builds localized status text for active nation context, configures cursor/style data, and applies
    text/layout updates to the main widget. */
 
-void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanRetStub_0059add0()
 
 {
   code *pcVar1;
@@ -3261,8 +3245,7 @@ void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *thi
 /* Event 0x2103 handler: runs nation status report update sequence (0x14B4 callback + FUN_0055d200)
    and final main-view refresh hook. */
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate()
 
 {
   int iVar1;
@@ -3290,7 +3273,7 @@ TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplomacyMap
    Resolves DLOG and child panel objects, captures panel geometry/context, and forwards state via
    virtual method +0x1CC before cleanup. */
 
-void __thiscall TDiplomacyMapView::SetCityDialogValueDword10(TDiplomacyMapView *this)
+void TDiplomacyMapView::SetCityDialogValueDword10()
 
 {
   int iVar1;
@@ -3346,7 +3329,7 @@ void __thiscall TDiplomacyMapView::SetCityDialogValueDword10(TDiplomacyMapView *
 /* Event 0x7D9/0x7DA shared handler: large nation resource-advisor/ledger refresh pass with
    production and shortage computations across nation/resource slots. */
 
-void __thiscall TDiplomacyMapView::SetForeignMinisterReadyFlag14(TDiplomacyMapView *this)
+void TDiplomacyMapView::SetForeignMinisterReadyFlag14()
 
 {
   word wVar1;
@@ -3881,8 +3864,7 @@ void __thiscall TDiplomacyMapView::SetForeignMinisterReadyFlag14(TDiplomacyMapVi
    Resolves main UI widgets, refreshes cursor/control ranges, then enters
    InitializeAndRunMainRoutine. */
 
-void __thiscall
-TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount(TDiplomacyMapView *this)
+void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount()
 
 {
   code *pcVar1;
@@ -3933,7 +3915,7 @@ TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount(TDiplomacyMapView 
 /* Event 0x2260 handler: refreshes main HUD title labels and tab header widgets, then invokes shared
    tab-layout preparation. */
 
-void __thiscall TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   code *pcVar1;
@@ -4024,8 +4006,7 @@ void __thiscall TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomacyMa
    0x24D9..0x24E7 constants are icon/picture resource IDs passed into control vfunc +0x1C8
    (TPicture::SetPictureResourceIdAndRefresh), not direct localization string IDs. */
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
 
 {
   char cVar1;
@@ -4439,7 +4420,7 @@ TDiplomacyMapView::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(TDiplomac
 /* TurnEventState vtable slot +0xF4 handler. Selects move/text resources based on current turn state
    and launches matching UI view flow. */
 
-void __thiscall TDiplomacyMapView::SetUiResourceOwner(TDiplomacyMapView *this)
+void TDiplomacyMapView::SetUiResourceOwner()
 
 {
   char cVar1;
@@ -4533,7 +4514,7 @@ LAB_005db4dd:
 /* TurnEventState vtable slot +0xF8 handler. Builds cursor/text option set, updates UI labels
    through repeated localization inserts, and runs main routine commits. */
 
-void __thiscall TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl(TDiplomacyMapView *this)
+void TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl()
 
 {
   code *pcVar1;
@@ -4677,7 +4658,7 @@ void __thiscall TDiplomacyMapView::CtrlSlot43_GetWordField4E_Impl(TDiplomacyMapV
 
 /* No-op virtual slot stub (returns immediately). */
 
-void __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -4693,7 +4674,7 @@ void __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(TDiplomacyMa
 /* Event 0x5DE handler: minimal main-view refresh (resolve 'main' widget and invoke refresh vfunc).
     */
 
-void __thiscall TDiplomacyMapView::HandleTurnEvent5DE_RefreshMainView(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent5DE_RefreshMainView()
 
 {
   int iVar1;
@@ -4769,7 +4750,7 @@ TDiplomacyMapView::HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x6C. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod6C()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005dc168. Too many branches */
@@ -4787,7 +4768,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(TDiplomacyMapV
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x68. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod68(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod68()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005dc188. Too many branches */
@@ -4805,7 +4786,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod68(TDiplomacyMapV
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x74. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod74()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005dc1a8. Too many branches */
@@ -4823,7 +4804,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(TDiplomacyMapV
 
 /* Calls StrategicMapViewSystem virtual method at slot +0x70. */
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod70(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod70()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005dc1c8. Too many branches */
@@ -4842,7 +4823,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod70(TDiplomacyMapV
 /* TurnEventState vtable slot +0xD0 handler. Builds multi-part text/context payload using
    TOOL/GOLD/MAIN resources and commits through UI runtime path. */
 
-void __thiscall TDiplomacyMapView::InvokeVslotF4WithZeroArgs(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeVslotF4WithZeroArgs()
 
 {
   code *pcVar1;
@@ -4981,7 +4962,7 @@ TDiplomacyMapView::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_1
 /* TurnEventState vtable slot +0xB8 handler. Opens dialog flow (resource id 0x2405), applies context
    values, and commits refresh chain. */
 
-void __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0()
 
 {
   int iVar1;
@@ -5034,8 +5015,7 @@ void __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(TDiplomacyMap
 
 /* Event 0xF3D handler: populates recent-turn message rows from nation turn-log entries. */
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages()
 
 {
   int iVar1;
@@ -5174,7 +5154,7 @@ TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages(TDiplomacyMapVi
 /* TurnEventState vtable slot +0xB4 handler. Runs factory/view transaction and returns non-cancel
    acceptance state. */
 
-bool __thiscall TDiplomacyMapView::SetUiResourceOwner(TDiplomacyMapView *this)
+bool TDiplomacyMapView::SetUiResourceOwner()
 
 {
   int iVar1;
@@ -5217,7 +5197,7 @@ bool __thiscall TDiplomacyMapView::SetUiResourceOwner(TDiplomacyMapView *this)
 /* TurnEventState vtable slot +0xD8 handler. Opens dialog id 0x546, updates GOLD/name widgets with
    argument payload, and commits refresh chain. */
 
-void __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDiplomacyMapView *this)
+void TDiplomacyMapView::DetachActiveCityProductionChildIfMatches()
 
 {
   int iVar1;
@@ -5266,8 +5246,7 @@ void __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDip
 /* TurnEventState vtable slot +0xDC handler. Runs factory transaction and returns resulting
    command/status value from commit phase. */
 
-undefined4 __thiscall
-TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag(TDiplomacyMapView *this)
+undefined4 TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag()
 
 {
   int iVar1;
@@ -5306,8 +5285,7 @@ TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag(TDiplomacyMapVi
 /* Handles global-map nation-context selection: if selected nation matches active map state,
    refreshes view id 0x24F9; otherwise forwards to map context-menu helper (FUN_00503AC0). */
 
-void __thiscall
-TDiplomacyMapView::HandleGlobalMapNationContextSelection(TDiplomacyMapView *this,undefined4 param_1)
+void TDiplomacyMapView::HandleGlobalMapNationContextSelection(undefined4 param_1)
 
 {
   int iVar1;
@@ -5341,8 +5319,7 @@ TDiplomacyMapView::HandleGlobalMapNationContextSelection(TDiplomacyMapView *this
 /* TurnEventState vtable slot +0xE4 handler. Opens dialog id 0x1C52, updates GOLD->name widget path,
    and commits. */
 
-void __thiscall
-TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(TDiplomacyMapView *this)
+void TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl()
 
 {
   int iVar1;
@@ -5386,8 +5363,7 @@ TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(TDiplomacyMapView 
 /* TurnEventState vtable slot +0xF0 handler. Opens dialog id 0x2506, updates PAGE widget selection,
    and commits refresh chain. */
 
-int * __thiscall
-TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDiplomacyMapView *this)
+int * TDiplomacyMapView::DetachActiveCityProductionChildIfMatches()
 
 {
   int iVar1;
@@ -5432,8 +5408,7 @@ TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDiplomacyMapView *t
 /* TurnEventState vtable slot +0xE8 handler. Opens dialog id 0x0F0A, applies argument to GOLD
    widget, and commits refresh chain. */
 
-void __thiscall
-TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(TDiplomacyMapView *this)
+void TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl()
 
 {
   int iVar1;
@@ -5482,7 +5457,7 @@ TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(TDiplomacyMapV
 /* TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values,
    commits, then updates active-item widget selection. */
 
-void __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;

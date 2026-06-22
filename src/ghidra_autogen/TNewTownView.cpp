@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNewTownView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNewTownView * __thiscall
-TNewTownView::_scalar_deleting_destructor_(TNewTownView *this,byte param_1)
+TNewTownView * TNewTownView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TNewTownView::_scalar_deleting_destructor_(TNewTownView *this,byte param_1)
 // GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTownView *this)
+CRuntimeClass * TNewTownView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTo
 // GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
 // GHIDRA_PROTO undefined __thiscall BuildCityDialogMinisterControls(int * param_1)
 
-void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
+void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
 
 {
   TNewTownViewVtbl *pTVar1;
@@ -159,7 +158,7 @@ void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this
 // GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTownView *this)
+void TNewTownView::GetTEventHandlerClassNamePointer()
 
 {
   undefined uVar1;

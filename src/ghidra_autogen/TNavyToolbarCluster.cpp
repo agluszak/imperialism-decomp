@@ -37,8 +37,7 @@ TUberCluster * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
 // GHIDRA_NAME TNavyToolbarCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNavyToolbarCluster::GetTEventHandlerClassNamePointer(TNavyToolbarCluster *this)
+CRuntimeClass * TNavyToolbarCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TNavyToolbarCluster::GetTEventHandlerClassNamePointer(TNavyToolbarCluster *this)
 // GHIDRA_NAME TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(void)
 
-TNavyToolbarCluster * __thiscall
-TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
+TNavyToolbarCluster * TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -61,8 +59,7 @@ TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *
 // GHIDRA_NAME TNavyToolbarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyToolbarCluster * __thiscall
-TNavyToolbarCluster::_scalar_deleting_destructor_(TNavyToolbarCluster *this,byte param_1)
+TNavyToolbarCluster * TNavyToolbarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -144,8 +141,7 @@ LAB_00569662:
 // GHIDRA_NAME TNavyToolbarCluster::OrphanVtableAssignStub_005714e0
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-undefined1 __thiscall
-TNavyToolbarCluster::OrphanVtableAssignStub_005714e0(TNavyToolbarCluster *this)
+undefined1 TNavyToolbarCluster::OrphanVtableAssignStub_005714e0()
 
 {
   return 1;
@@ -155,8 +151,7 @@ TNavyToolbarCluster::OrphanVtableAssignStub_005714e0(TNavyToolbarCluster *this)
 // GHIDRA_NAME TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void __thiscall
-TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(TNavyToolbarCluster *this,int param_1)
+void TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
 
 {
   undefined uVar1;

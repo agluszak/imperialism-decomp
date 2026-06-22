@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
 // GHIDRA_PROTO undefined __thiscall TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
 
-void __thiscall
-TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMaker *this)
+void TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()
 
 {
   short *psVar1;
@@ -287,7 +286,7 @@ LAB_0051212a:
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+CRuntimeClass * TMapMaker::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -297,7 +296,7 @@ CRuntimeClass * __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker
 // GHIDRA_NAME TMapMaker::ConstructTMapMaker
 // GHIDRA_PROTO undefined __thiscall TMapMaker::ConstructTMapMaker(void)
 
-void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
+void TMapMaker::ConstructTMapMaker()
 
 {
   this->padding_08_to_0b = 0;
@@ -309,7 +308,7 @@ void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,byte param_1)
+TMapMaker * TMapMaker::_scalar_deleting_destructor_(byte param_1)
 
 {
   TMapMaker::DestructTMapMaker(this);
@@ -323,7 +322,7 @@ TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,b
 // GHIDRA_NAME TMapMaker::DestructTMapMaker
 // GHIDRA_PROTO undefined __thiscall TMapMaker::DestructTMapMaker(void)
 
-void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
+void TMapMaker::DestructTMapMaker()
 
 {
   this->vftable = (TMapMakerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -334,8 +333,7 @@ void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint * param_1, uint * param_2)
 
-void __thiscall
-TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,uint *param_1,uint *param_2)
+void TMapMaker::GetTEventHandlerClassNamePointer(uint *param_1, uint *param_2)
 
 {
   DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
@@ -349,7 +347,7 @@ TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,uint *param_1,uint *
 // GHIDRA_NAME TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMaker *this)
+void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   int *piVar1;
@@ -502,8 +500,7 @@ void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMake
 // GHIDRA_NAME TMapMaker::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 
-int __thiscall
-TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this,int param_1,int param_2)
+int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -620,7 +617,7 @@ TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this,int param_1,int 
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
 
-uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,undefined4 param_1,int param_2)
+uint TMapMaker::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
 
 {
   TMapMaker_slot_0x04_0x04 *pTVar1;
@@ -709,8 +706,7 @@ LAB_0052745a:
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
 
-uint __thiscall
-TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,undefined4 param_1,int param_2)
+uint TMapMaker::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
 
 {
   TMapMaker_slot_0x04_0x04 *pTVar1;
@@ -758,7 +754,7 @@ TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,undefined4 param_1,int
 // GHIDRA_NAME TMapMaker::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
+void TMapMaker::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined1 *puVar1;
@@ -846,7 +842,7 @@ void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 // GHIDRA_NAME TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMaker *this)
+void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   TMapMakerVtbl *pTVar1;
@@ -1041,7 +1037,7 @@ LAB_00527ad7:
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-uint __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+uint TMapMaker::_scalar_deleting_destructor_()
 
 {
   int iVar1;
@@ -1218,8 +1214,7 @@ LAB_00528081:
 // GHIDRA_NAME TMapMaker::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int param_1, int param_2, char param_3)
 
-int __thiscall
-TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this,int param_1,int param_2,char param_3)
+int TMapMaker::SetForeignMinisterReadyFlag14(int param_1, int param_2, char param_3)
 
 {
   uint uVar1;
@@ -1321,8 +1316,7 @@ LAB_00528295:
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int param_3)
 
-int __thiscall
-TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2,int param_3)
+int TMapMaker::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int param_3)
 
 {
   uint uVar1;
@@ -1442,7 +1436,7 @@ LAB_00528574:
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+void TMapMaker::_scalar_deleting_destructor_()
 
 {
   TMapMaker_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -1497,7 +1491,7 @@ void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
 
-int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2)
+int TMapMaker::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
 
 {
   char cVar1;
@@ -1564,7 +1558,7 @@ joined_r0x00528843:
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1,int param_2)
+int TMapMaker::_scalar_deleting_destructor_(int param_1, int param_2)
 
 {
   char cVar1;
@@ -1690,7 +1684,7 @@ LAB_00528a9e:
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1, int param_2)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1,int param_2)
+int TMapMaker::_scalar_deleting_destructor_(int param_1, int param_2)
 
 {
   int iVar1;
@@ -1721,7 +1715,7 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+void TMapMaker::_scalar_deleting_destructor_()
 
 {
   char cVar1;
@@ -1907,7 +1901,7 @@ LAB_00529187:
 // GHIDRA_NAME TMapMaker::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
+void TMapMaker::OrphanCallChain_C11_I88_004874b0()
 
 {
   char cVar1;
@@ -1944,8 +1938,7 @@ void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(short param_1, short param_2, short param_3)
 
-void __thiscall
-TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,short param_1,short param_2,short param_3)
+void TMapMaker::OrphanRetStub_0059add0(short param_1, short param_2, short param_3)
 
 {
   undefined uVar1;
@@ -2024,7 +2017,7 @@ LAB_0052977b:
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
+void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -2077,7 +2070,7 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,shor
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param_1)
+int TMapMaker::_scalar_deleting_destructor_(int param_1)
 
 {
   int iVar1;
@@ -2094,7 +2087,7 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(char param_1)
 
-void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,char param_1)
+void TMapMaker::OrphanRetStub_0059add0(char param_1)
 
 {
   int iVar1;
@@ -2151,7 +2144,7 @@ void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,char param_1)
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+void TMapMaker::_scalar_deleting_destructor_()
 
 {
   uint uVar1;
@@ -2239,7 +2232,7 @@ TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
+undefined4 TMapMaker::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -2268,7 +2261,7 @@ undefined4 __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *thi
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
+void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
@@ -2301,7 +2294,7 @@ void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,shor
 // GHIDRA_NAME TMapMaker::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
+void TMapMaker::_scalar_deleting_destructor_()
 
 {
   int *piVar1;

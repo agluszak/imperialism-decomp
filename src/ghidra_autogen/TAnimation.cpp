@@ -7,7 +7,7 @@
 // GHIDRA_NAME TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize
 // GHIDRA_PROTO undefined __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(void)
 
-void __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(TAnimation *this)
+void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize()
 
 {
   undefined4 uVar1;
@@ -56,8 +56,7 @@ TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_
 // GHIDRA_NAME TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte param_1)
 
-TAnimation * __thiscall
-TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this,byte param_1)
+TAnimation * TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(byte param_1)
 
 {
   TAnimation::CreateTAnimationInstance(this);
@@ -71,7 +70,7 @@ TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this,byte 
 // GHIDRA_NAME TAnimation::CreateTAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TAnimation::CreateTAnimationInstance(void)
 
-void __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
+void TAnimation::CreateTAnimationInstance()
 
 {
   this->vftable = (TAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -82,7 +81,7 @@ void __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
 // GHIDRA_NAME TAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAnimation::GetTAnimationClassNamePointer(TAnimation *this)
+CRuntimeClass * TAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -116,7 +115,7 @@ TAnimation::ConstructTAnimationBaseState
 // GHIDRA_NAME TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
 
-void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TAnimation *this)
+void TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
 
 {
   int iVar1;
@@ -138,7 +137,7 @@ void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 // GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this,int *param_1)
+void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
 
 {
   int iVar1;
@@ -196,7 +195,7 @@ TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a
 // GHIDRA_NAME TAnimation::SpawnTacticalUiMarkerAtUnitTile
 // GHIDRA_PROTO undefined __thiscall SpawnTacticalUiMarkerAtUnitTile(void)
 
-void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
+void TAnimation::SpawnTacticalUiMarkerAtUnitTile()
 
 {
   int iVar1;

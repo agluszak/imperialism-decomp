@@ -7,8 +7,7 @@
 // GHIDRA_NAME TOffersPanelView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TOffersPanelView::GetTEventHandlerClassNamePointer(TOffersPanelView *this)
+CRuntimeClass * TOffersPanelView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TOffersPanelView::GetTEventHandlerClassNamePointer(TOffersPanelView *this)
 // GHIDRA_NAME TOffersPanelView::ConstructTOffersPanelViewBaseState
 // GHIDRA_PROTO undefined __thiscall TOffersPanelView::ConstructTOffersPanelViewBaseState(void)
 
-TOffersPanelView * __thiscall
-TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
+TOffersPanelView * TOffersPanelView::ConstructTOffersPanelViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -34,8 +32,7 @@ TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
 // GHIDRA_NAME TOffersPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOffersPanelView * __thiscall
-TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this,byte param_1)
+TOffersPanelView * TOffersPanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -49,7 +46,7 @@ TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this,byte param
 // GHIDRA_NAME TOffersPanelView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelView *this)
+void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
 
 {
   TOffersPanelView_slot_0x04_0x04 *pTVar1;
@@ -205,7 +202,7 @@ TOffersPanelView::OrphanRetStub_0059add0
 // GHIDRA_NAME TOffersPanelView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelView *this,int param_1)
+void TOffersPanelView::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;

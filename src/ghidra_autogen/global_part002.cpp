@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNewGameCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall TNewGameCommand::OrphanRetStub_00487a00(void)
 
-void __thiscall
-TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
+void TNewGameCommand::OrphanRetStub_00487a00()
 
 {
   OrphanRetStub_00487a00(this);
@@ -88,8 +87,7 @@ void GenerateMappedFlavorTextByTableSlot(undefined4 param_1,short param_2)
 // GHIDRA_NAME TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
 // GHIDRA_PROTO undefined __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(void)
 
-TDlgWindow * __thiscall
-TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
+TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
 
 {
   TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
@@ -101,7 +99,7 @@ TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 // GHIDRA_NAME TLineData::ConstructUiGoldLabelResourceEntry
 // GHIDRA_PROTO undefined __thiscall TLineData::ConstructUiGoldLabelResourceEntry(void)
 
-TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
+TLineData * TLineData::ConstructUiGoldLabelResourceEntry()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -248,7 +246,7 @@ LAB_00517ad7:
 // GHIDRA_NAME TMapDialog::InitializeCitySiteView
 // GHIDRA_PROTO undefined __thiscall TMapDialog::InitializeCitySiteView(void)
 
-TMapDialog * __thiscall TMapDialog::InitializeCitySiteView(TMapDialog *this)
+TMapDialog * TMapDialog::InitializeCitySiteView()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -315,7 +313,7 @@ void UpdateUiResourceContextMetricWord27(undefined2 param_1)
 // GHIDRA_NAME TStaticText::TStaticText
 // GHIDRA_PROTO undefined __thiscall TStaticText::TStaticText(void)
 
-TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
+TStaticText * TStaticText::TStaticText()
 
 {
   CString *this_00;
@@ -517,8 +515,7 @@ BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrd
 // GHIDRA_NAME TControl::ApplyCityProductionDialogChanges
 // GHIDRA_PROTO void __thiscall TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
 
-void __thiscall
-TControl::ApplyCityProductionDialogChanges(TControl *this,int nDialogActionTag)
+void TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
 
 {
   ApplyCityProductionDialogChanges(this,nDialogActionTag);
@@ -706,7 +703,7 @@ LAB_005dfe2e:
 // GHIDRA_NAME TControl::ConstructUiWindowResourceEntryType4B340
 // GHIDRA_PROTO undefined __thiscall TControl::ConstructUiWindowResourceEntryType4B340(void)
 
-TControl * __thiscall TControl::ConstructUiWindowResourceEntryType4B340(TControl *this)
+TControl * TControl::ConstructUiWindowResourceEntryType4B340()
 
 {
   int iVar1;
@@ -800,8 +797,7 @@ uint __fastcall HasActiveMapOrderEntryChildren(int param_1)
 // GHIDRA_NAME TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(void)
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate()
 
 {
   int iVar1;
@@ -874,8 +870,7 @@ void __fastcall HandleTacticalCommandTag_skip(int param_1)
 // GHIDRA_NAME TToolBarCluster::ConstructTToolBarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::ConstructTToolBarClusterBaseState(void)
 
-TToolBarCluster * __thiscall
-TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
+TToolBarCluster * TToolBarCluster::ConstructTToolBarClusterBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -887,7 +882,7 @@ TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
 // GHIDRA_NAME TNumberedItem::UniversityDialogMethod_00405623
 // GHIDRA_PROTO undefined __thiscall TNumberedItem::UniversityDialogMethod_00405623(void)
 
-void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *this)
+void TNumberedItem::UniversityDialogMethod_00405623()
 
 {
   return;
@@ -897,8 +892,7 @@ void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *th
 // GHIDRA_NAME TPictureButton::ConstructUiTabCursorPictureEntry
 // GHIDRA_PROTO undefined __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(void)
 
-TPictureButton * __thiscall
-TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton *this)
+TPictureButton * TPictureButton::ConstructUiTabCursorPictureEntry()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -1146,7 +1140,7 @@ LAB_00501596:
 // GHIDRA_NAME TSimMgr::ClearMapOrderProcessedFlagsChain
 // GHIDRA_PROTO void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(int * pOrderNode)
 
-void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOrderNode)
+void TSimMgr::ClearMapOrderProcessedFlagsChain(int *pOrderNode)
 
 {
   for (; this != (TSimMgr *)0x0; this = *(TSimMgr **)&this->field_0x2c) {
@@ -1159,7 +1153,7 @@ void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOr
 // GHIDRA_NAME TAnimation::SpawnTacticalUiMarkerAtUnitTile
 // GHIDRA_PROTO undefined __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(void)
 
-void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
+void TAnimation::SpawnTacticalUiMarkerAtUnitTile()
 
 {
   int iVar1;
@@ -1240,7 +1234,7 @@ void HandlePostDispatchTurnStateEventUpdates(void)
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
+void TSoundPlayer::SetForeignMinisterReadyFlag14()
 
 {
   TCommand::SetForeignMinisterReadyFlag14(this);
@@ -1441,7 +1435,7 @@ void __thiscall RecomputeMapOrderChildAggregateMetric(void *this,int *pMapOrderE
 // GHIDRA_NAME TObject::WriteTo
 // GHIDRA_PROTO undefined __thiscall TObject::WriteTo(void)
 
-void __thiscall TObject::WriteTo(TArmyPlayer *this)
+void TObject::WriteTo()
 
 {
   return;
@@ -1451,7 +1445,7 @@ void __thiscall TObject::WriteTo(TArmyPlayer *this)
 // GHIDRA_NAME TArmoryView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TArmoryView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmoryView *this)
+void TArmoryView::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer(this);
@@ -1513,7 +1507,7 @@ TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
 // GHIDRA_NAME TShipyardCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall TShipyardCluster::OrphanRetStub_00586ff0(void)
 
-void __thiscall TShipyardCluster::OrphanRetStub_00586ff0(TShipyardCluster *this)
+void TShipyardCluster::OrphanRetStub_00586ff0()
 
 {
   OrphanRetStub_00586ff0(this);
@@ -1547,7 +1541,7 @@ void __fastcall RemoveDuplicateNavySecondaryOrdersByDisplayName(int param_1)
 // GHIDRA_NAME TDiplomacyMapView::HasRenderableParentAndContent
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HasRenderableParentAndContent(void)
 
-void __thiscall TDiplomacyMapView::HasRenderableParentAndContent(TDiplomacyMapView *this)
+void TDiplomacyMapView::HasRenderableParentAndContent()
 
 {
   int iVar1;
@@ -1591,8 +1585,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
 // GHIDRA_NAME TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
 // GHIDRA_PROTO undefined __thiscall TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
 
-void __thiscall
-TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmyRoster *this)
+void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
 
 {
   short sVar1;
@@ -2670,7 +2663,7 @@ TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
 // GHIDRA_NAME TAmtBarCluster::QueryTradeSellControlQuantity
 // GHIDRA_PROTO undefined __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(void)
 
-void __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(TAmtBarCluster *this)
+void TAmtBarCluster::QueryTradeSellControlQuantity()
 
 {
   QueryTradeSellControlQuantity(this);
@@ -2727,7 +2720,7 @@ undefined4 __thiscall ResolveTacticalReactionChecksForTile(int *param_1,int para
 // GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
 // GHIDRA_PROTO undefined __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
 
-void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char param_1)
+void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
 
 {
   UpdateTradeMoveControlsFromDrag(this,param_1);
@@ -2740,7 +2733,7 @@ void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char para
 
 /* WARNING: Removing unreachable block (ram,0x005a4018) */
 
-void __thiscall TacticalBattleView::HandleTacticalCommandTag_targ(TacticalBattleView *this)
+void TacticalBattleView::HandleTacticalCommandTag_targ()
 
 {
   int *piVar1;
@@ -3041,7 +3034,7 @@ void __fastcall InitializeGlobalRuntimeSystemsFromConfig(int param_1)
 // GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod6C
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(void)
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod6C()
 
 {
   InvokeStrategicMapViewMethod6C(this);
@@ -3063,7 +3056,7 @@ void ClearUiResourceContext(void)
 // GHIDRA_NAME TObject::ShallowFree
 // GHIDRA_PROTO undefined __thiscall TObject::ShallowFree(void)
 
-void __thiscall TObject::ShallowFree(TCityTask *this)
+void TObject::ShallowFree()
 
 {
   TSoundPlayer::OrphanRetStub_0059add0(this);
@@ -3074,7 +3067,7 @@ void __thiscall TObject::ShallowFree(TCityTask *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -3146,8 +3139,7 @@ void SetUiResourceStateFlags(undefined1 param_1,undefined1 param_2)
 // GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO int __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(CityDialogController * pDialog)
 
-int __thiscall
-TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,CityDialogController *pDialog)
+int TMapDialog::OrphanTiny_ReturnZero_0048a730(CityDialogController *pDialog)
 
 {
   int iVar1;
@@ -3165,8 +3157,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,CityDialogController
 
 /* Thunk for PostTurnEvent5DCOrResetLocalUiState. */
 
-void __thiscall
-TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPicture *this)
+void TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState()
 
 {
   PostTurnEvent5DCOrResetLocalUiState(this);
@@ -3543,7 +3534,7 @@ InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer(this);
@@ -3554,7 +3545,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(int * param_1)
 
-void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
+void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
 
 {
   TCityTask::QueueCityOrderType10CommandIfReady(this,param_1);
@@ -3722,7 +3713,7 @@ code_r0x00559e85:
 // GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
 // GHIDRA_PROTO undefined __thiscall TNewTownView::BuildCityDialogMinisterControls(int * param_1)
 
-void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
+void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
 
 {
   BuildCityDialogMinisterControls(this,param_1);
@@ -3748,7 +3739,7 @@ TCivToolbar::HandleCivilianTileSelectionOrReportClick
 // GHIDRA_NAME TLineData::ConstructPictureScreenVariantEntry
 // GHIDRA_PROTO undefined __thiscall TLineData::ConstructPictureScreenVariantEntry(void)
 
-TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
+TLineData * TLineData::ConstructPictureScreenVariantEntry()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -3913,7 +3904,7 @@ void BuildUiMessageTextFromBracketTemplate(int *param_1,CString *param_2)
 // GHIDRA_NAME TNumberText::ConstructUiNumericTextEntry
 // GHIDRA_PROTO undefined __thiscall TNumberText::ConstructUiNumericTextEntry(void)
 
-TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *this)
+TNumberText * TNumberText::ConstructUiNumericTextEntry()
 
 {
   TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
@@ -3976,7 +3967,7 @@ undefined4 __fastcall InitializeDirectSoundDeviceAndChannels(int *param_1)
 // GHIDRA_NAME TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
 // GHIDRA_PROTO undefined __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(void)
 
-void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TViewMgr *this)
+void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent()
 
 {
   RefreshMainViewNationIndicatorForCurrentTurnEvent(this);
@@ -4097,7 +4088,7 @@ float10 ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
 // GHIDRA_NAME TSimMgr::ResolveMapOrderChainsForTurnPhase
 // GHIDRA_PROTO void __thiscall TSimMgr::ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
 
-void __thiscall TSimMgr::ResolveMapOrderChainsForTurnPhase(TSimMgr *this,int *pOrderManager)
+void TSimMgr::ResolveMapOrderChainsForTurnPhase(int *pOrderManager)
 
 {
   int iVar1;
@@ -4335,8 +4326,7 @@ TGlobalMapState::SetRegionDevelopmentStageByte
 
 /* Thunk for HandleCommand10AndPostTurnEvent5DC. */
 
-void __thiscall
-THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(THighScoresPicture *this,int param_1)
+void THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(this,param_1);
@@ -6432,7 +6422,7 @@ void __thiscall TEngineerDialog::'scalar_deleting_destructor'(TEngineerDialog *t
 // GHIDRA_NAME TDiplomacyMapView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(void)
 
-void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanRetStub_0059add0()
 
 {
   int iVar1;
@@ -6466,8 +6456,7 @@ void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *thi
 /* 5-byte thunk-table entry that jumps to InitializeTurnOrderNavigationDialogByViewportSize
    (0x004FE840). Kept as explicit thunk for vtable/callgraph readability. */
 
-void __thiscall
-TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarCluster *this)
+void TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize()
 
 {
   InitializeTurnOrderNavigationDialogByViewportSize(this);
@@ -6478,7 +6467,7 @@ TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarClust
 // GHIDRA_NAME TView::ConstructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::ConstructTViewBaseState(void)
 
-void __thiscall TView::ConstructTViewBaseState(TView *this)
+void TView::ConstructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -6517,7 +6506,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
 // GHIDRA_NAME TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog
 // GHIDRA_PROTO undefined __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
 
-void __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TViewMgr *this)
+void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
 
 {
   HandleTurnEventVtableSlot2CInitializeHotKeyDialog(this);
@@ -6737,7 +6726,7 @@ TArmyStack::HandleTacticalCommandTag_raly
 // GHIDRA_NAME TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(void)
 
-void __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0()
 
 {
   OrphanCallChain_C3_I32_0048c6d0(this);
@@ -6748,7 +6737,7 @@ void __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(TDiplomacyMap
 // GHIDRA_NAME TMapMgr::GetMapImprovementTierBucketOffset
 // GHIDRA_PROTO undefined __thiscall TMapMgr::GetMapImprovementTierBucketOffset(short param_1)
 
-int __thiscall TMapMgr::GetMapImprovementTierBucketOffset(TMapMgr *this,short param_1)
+int TMapMgr::GetMapImprovementTierBucketOffset(short param_1)
 
 {
   undefined2 in_stack_00000006;
@@ -6763,7 +6752,7 @@ int __thiscall TMapMgr::GetMapImprovementTierBucketOffset(TMapMgr *this,short pa
 // GHIDRA_NAME TViewMgr::ComputeTurnEventDialogPlacementByCode
 // GHIDRA_PROTO undefined __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(void)
 
-void __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(TViewMgr *this)
+void TViewMgr::ComputeTurnEventDialogPlacementByCode()
 
 {
   ComputeTurnEventDialogPlacementByCode(this);
@@ -6926,7 +6915,7 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
 // GHIDRA_NAME TArmoryView::ConstructArmoryView
 // GHIDRA_PROTO undefined __thiscall TArmoryView::ConstructArmoryView(void)
 
-TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
+TArmoryView * TArmoryView::ConstructArmoryView()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -7117,7 +7106,7 @@ int __fastcall LoadNextUiWindowTraversalEntry(int *param_1)
 // GHIDRA_NAME TView::DestructCityDialogSharedBaseState
 // GHIDRA_PROTO undefined __thiscall TView::DestructCityDialogSharedBaseState(void)
 
-void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
+void TView::DestructCityDialogSharedBaseState()
 
 {
   short sVar1;
@@ -7156,7 +7145,7 @@ void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
 // GHIDRA_NAME TViewMgr::LoadTurnEventCursorTable
 // GHIDRA_PROTO undefined __thiscall TViewMgr::LoadTurnEventCursorTable(void)
 
-void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
+void TViewMgr::LoadTurnEventCursorTable()
 
 {
   LoadTurnEventCursorTable(this);
@@ -7167,7 +7156,7 @@ void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
 // GHIDRA_NAME TCouncilView::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall TCouncilView::OrphanRetStub_00487a00(void)
 
-void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
+void TCouncilView::OrphanRetStub_00487a00()
 
 {
   return;
@@ -7177,7 +7166,7 @@ void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
 // GHIDRA_NAME TViewMgr::ClassifyTurnStateForOverlayMode
 // GHIDRA_PROTO undefined __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(void)
 
-undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
+undefined4 TViewMgr::ClassifyTurnStateForOverlayMode()
 
 {
   switch(*(undefined2 *)&g_pLocalizationTable->field_0x8) {
@@ -7208,7 +7197,7 @@ undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
 // GHIDRA_NAME TDiplomacyMapView::IsCurrentActiveCityProductionView
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::IsCurrentActiveCityProductionView(void)
 
-void __thiscall TDiplomacyMapView::IsCurrentActiveCityProductionView(TDiplomacyMapView *this)
+void TDiplomacyMapView::IsCurrentActiveCityProductionView()
 
 {
   IsCurrentActiveCityProductionView(this);
@@ -7331,7 +7320,7 @@ int __fastcall GetRankingTableStringBaseAtOffset28(int param_1)
 // GHIDRA_NAME TControl::DeleteCivilianMapInteractionManager
 // GHIDRA_PROTO undefined __thiscall TControl::DeleteCivilianMapInteractionManager(byte param_1)
 
-void __thiscall TControl::DeleteCivilianMapInteractionManager(TControl *this,byte param_1)
+void TControl::DeleteCivilianMapInteractionManager(byte param_1)
 
 {
   DeleteCivilianMapInteractionManager(this,param_1);
@@ -7342,8 +7331,7 @@ void __thiscall TControl::DeleteCivilianMapInteractionManager(TControl *this,byt
 // GHIDRA_NAME TNextDiplomationCommand::ProcessQueuedWarTransitions
 // GHIDRA_PROTO undefined __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(void)
 
-void __thiscall
-TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplomationCommand *this)
+void TNextDiplomationCommand::ProcessQueuedWarTransitions()
 
 {
   ProcessQueuedWarTransitions(this);
@@ -7354,7 +7342,7 @@ TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplomationCommand *th
 // GHIDRA_NAME TDiplomacyMapView::InitializeForeignMinisterStateFlags
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InitializeForeignMinisterStateFlags(void)
 
-void __thiscall TDiplomacyMapView::InitializeForeignMinisterStateFlags(TDiplomacyMapView *this)
+void TDiplomacyMapView::InitializeForeignMinisterStateFlags()
 
 {
   InitializeForeignMinisterStateFlags(this);
@@ -7403,8 +7391,7 @@ void BuildUiTextStyleDescriptor
 // GHIDRA_NAME TCivUnit::NormalizeUnitOrderStateAfterLoad
 // GHIDRA_PROTO void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(int * pCivUnitOrderState)
 
-void __thiscall
-TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *pCivUnitOrderState)
+void TCivUnit::NormalizeUnitOrderStateAfterLoad(int *pCivUnitOrderState)
 
 {
   TUnit::NormalizeUnitOrderStateAfterLoad(this,pCivUnitOrderState);
@@ -7486,8 +7473,7 @@ LAB_005a3ea3:
 // GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
 // GHIDRA_PROTO void __thiscall TCityTask::DeserializeCityProductionQueueCommand(void * pCommandQueue)
 
-void __thiscall
-TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pCommandQueue)
+void TCityTask::DeserializeCityProductionQueueCommand(void *pCommandQueue)
 
 {
   DeserializeCityProductionQueueCommand(this,pCommandQueue);
@@ -7586,8 +7572,7 @@ LAB_00553089:
 // GHIDRA_NAME TViewMgr::HandleEngineerConstructionAction
 // GHIDRA_PROTO bool __thiscall TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 
-bool __thiscall
-TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
+bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 
 {
   uint uVar1;
@@ -7869,7 +7854,7 @@ char __thiscall ResolveMapOrderCommandFromProvinceContext(int param_1,char *para
 // GHIDRA_NAME TNumberText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TNumberText::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumberText *this)
+CRuntimeClass * TNumberText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -7879,7 +7864,7 @@ CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumber
 // GHIDRA_NAME TControl::NoOpUiViewSlotHandler
 // GHIDRA_PROTO undefined __thiscall TControl::NoOpUiViewSlotHandler(void)
 
-void __thiscall TControl::NoOpUiViewSlotHandler(TControl *this)
+void TControl::NoOpUiViewSlotHandler()
 
 {
   return;
@@ -7925,7 +7910,7 @@ void DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_2,int 
 // GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod74
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(void)
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod74()
 
 {
   InvokeStrategicMapViewMethod74(this);
@@ -8137,8 +8122,7 @@ InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4
 // GHIDRA_NAME TGreatPower::SumNavyOrderPriorityForNationAndNodeType
 // GHIDRA_PROTO undefined __thiscall TGreatPower::SumNavyOrderPriorityForNationAndNodeType(int param_1)
 
-int __thiscall
-TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,int param_1)
+int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(int param_1)
 
 {
   TGreatPower *this_00;
@@ -8161,7 +8145,7 @@ TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,int para
 // GHIDRA_NAME TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(void)
 
-void __thiscall TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(TDiplomacyMapView *this)
+void TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl()
 
 {
   CtrlSlot38_SwitchActiveChildAndNotify_Impl(this);
@@ -8240,7 +8224,7 @@ TView::SetForeignMinisterReadyFlag14
 
 /* Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotA (0x00500200). */
 
-void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *this)
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotA()
 
 {
   return;
@@ -8250,7 +8234,7 @@ void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *thi
 // GHIDRA_NAME TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TUnitOrder *this)
+int TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   int iVar1;
@@ -8263,7 +8247,7 @@ int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TUnitOrder *this)
 // GHIDRA_NAME TShipyardView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO void __thiscall TShipyardView::OrphanRetStub_004c6fd0(void)
 
-void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
+void TShipyardView::OrphanRetStub_004c6fd0()
 
 {
   OrphanRetStub_004c6fd0(this);
@@ -8315,7 +8299,7 @@ void CreateAndSendTurnEvent21_ThreeBytes
 // GHIDRA_NAME TDiplomacyMapView::DetachActiveCityProductionChildIfMatches
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(void)
 
-void __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDiplomacyMapView *this)
+void TDiplomacyMapView::DetachActiveCityProductionChildIfMatches()
 
 {
   DetachActiveCityProductionChildIfMatches(this);
@@ -8326,7 +8310,7 @@ void __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDip
 // GHIDRA_NAME TDiplomacyMapView::InvokeVslotF4WithZeroArgs
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeVslotF4WithZeroArgs(void)
 
-void __thiscall TDiplomacyMapView::InvokeVslotF4WithZeroArgs(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeVslotF4WithZeroArgs()
 
 {
   InvokeVslotF4WithZeroArgs(this);
@@ -8375,7 +8359,7 @@ void __thiscall ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
 /* Setting prototype: void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(CityDialogController *this, char flagValue)
     */
 
-void __thiscall TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,char flagValue)
+void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
 
 {
   this->field04 = (int)flagValue;
@@ -8386,7 +8370,7 @@ void __thiscall TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDia
 // GHIDRA_NAME TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(void)
 
-void __thiscall TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(TDiplomacyMapView *this)
+void TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl()
 
 {
   CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(this);
@@ -8402,8 +8386,7 @@ void __thiscall TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Imp
 
 /* Thunk for ApplyScenarioSelectionAndPostTurnEvent5E4. */
 
-void __thiscall
-TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChooser *this)
+void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
 
 {
   ApplyScenarioSelectionAndPostTurnEvent5E4(this);
@@ -8426,7 +8409,7 @@ TControl * __thiscall InitializeDialogTemplateE0(TControl *param_1,undefined4 pa
 // GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
 // GHIDRA_PROTO undefined __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
 
-void __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this,short param_1)
+void TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
 
 {
   GetCityBuildingDisplayCapacityBySlot(this,param_1);
@@ -8802,7 +8785,7 @@ void __fastcall RefreshNavyOrderCycleAndClearReadyFlags(int param_1)
 // GHIDRA_NAME TArmyStackList::InitializeMapContextActionManager
 // GHIDRA_PROTO void __thiscall TArmyStackList::InitializeMapContextActionManager(void)
 
-void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList *this)
+void TArmyStackList::InitializeMapContextActionManager()
 
 {
   undefined4 *puVar1;
@@ -8867,8 +8850,7 @@ TDiplomacyMapView::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
 
-void __thiscall
-TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView(TDiplomacyMapView *this)
+void TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView()
 
 {
   HandleTurnEvent7D8_ActivateDiplomacyMapView(this);
@@ -8939,7 +8921,7 @@ LAB_00564364:
 // GHIDRA_NAME TControl::ConstructTurnEventUiEntryBase
 // GHIDRA_PROTO undefined __thiscall TControl::ConstructTurnEventUiEntryBase(void)
 
-TControl * __thiscall TControl::ConstructTurnEventUiEntryBase(TControl *this)
+TControl * TControl::ConstructTurnEventUiEntryBase()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9120,7 +9102,7 @@ LAB_004f261c:
 // GHIDRA_NAME TNumberText::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(TNumberText *this)
+void TNumberText::OrphanCallChain_C11_I88_004874b0()
 
 {
   TEditText::OrphanCallChain_C11_I88_004874b0(this);
@@ -9131,8 +9113,7 @@ void __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(TNumberText *this)
 // GHIDRA_NAME TBuildingExpansionView::ConstructBuildingExpansionView
 // GHIDRA_PROTO undefined __thiscall TBuildingExpansionView::ConstructBuildingExpansionView(void)
 
-TBuildingExpansionView * __thiscall
-TBuildingExpansionView::ConstructBuildingExpansionView(TBuildingExpansionView *this)
+TBuildingExpansionView * TBuildingExpansionView::ConstructBuildingExpansionView()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -9189,7 +9170,7 @@ void ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex,uint *outRow,int *out
 // GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
 // GHIDRA_PROTO void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(void)
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   ApplyProductionDistributionToCitySlots(this);
@@ -9213,8 +9194,7 @@ TDiplomacyMapView::HandleGlobalMapNationContextSelection
 // GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
 // GHIDRA_PROTO void __thiscall TCityTask::OrphanRetStub_0059add0(void * pCommandQueue)
 
-void __thiscall
-TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommandQueue)
+void TCityTask::OrphanRetStub_0059add0(void *pCommandQueue)
 
 {
   TSoundPlayer::OrphanRetStub_0059add0(this,pCommandQueue);
@@ -9255,7 +9235,7 @@ void __thiscall SetSelectedTextOptionByTag(int *param_1,int param_2,char param_3
 // GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TMapDialog::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this)
+void TMapDialog::SetForeignMinisterReadyFlag14()
 
 {
   TCommand::SetForeignMinisterReadyFlag14(this);
@@ -9747,7 +9727,7 @@ LAB_0055b160:
 // GHIDRA_NAME TControl::ConstructUiWindowResourceEntryBase
 // GHIDRA_PROTO undefined __thiscall TControl::ConstructUiWindowResourceEntryBase(void)
 
-TControl * __thiscall TControl::ConstructUiWindowResourceEntryBase(TControl *this)
+TControl * TControl::ConstructUiWindowResourceEntryBase()
 
 {
   int iVar1;
@@ -9810,8 +9790,7 @@ TControl * __thiscall TControl::ConstructUiWindowResourceEntryBase(TControl *thi
 // GHIDRA_NAME TObject::Serialize
 // GHIDRA_PROTO undefined __thiscall TObject::Serialize(int param_1)
 
-void __thiscall
-TObject::Serialize(TCityTask *this,int param_1)
+void TObject::Serialize(int param_1)
 
 {
   TCityTask::GetTTaskClassNamePointer(this,param_1);
@@ -10016,8 +9995,7 @@ LAB_005a1345:
 // GHIDRA_NAME TCivUnit::ResetCivWorkOrderAndRefreshCounters
 // GHIDRA_PROTO void __thiscall TCivUnit::ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)
 
-void __thiscall
-TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
+void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
 
 {
   ResetCivWorkOrderAndRefreshCounters(this,pCivUnitOrderState);
@@ -10039,7 +10017,7 @@ undefined4 __fastcall GetUnitMovementClassId(int param_1)
 // GHIDRA_NAME TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *this)
+void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TCommand::OrphanLeaf_NoCall_Ins07_004d8920(this);
@@ -10063,7 +10041,7 @@ TDiplomacyMapView::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TDiplomacyMapView::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(void)
 
-void __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetTBehaviorClassNamePointer()
 
 {
   GetTBehaviorClassNamePointer(this);
@@ -10208,7 +10186,7 @@ void __fastcall SetTimeEmitPacketGameFlowTurnId(int param_1)
 
 /* Setting prototype: int * ThunkDeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode) */
 
-int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pChildLinkNode)
+int * TShip::DeleteMapOrderChildLinkAndReturnNext(int *pChildLinkNode)
 
 {
   int *piVar1;
@@ -10313,7 +10291,7 @@ TScatteredShipsMission::SetMapOrderActiveChildEntry
 // GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster *this)
+void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;
@@ -10347,7 +10325,7 @@ void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster 
 // GHIDRA_NAME TArmyMgr::ConstructMapContextActionManager
 // GHIDRA_PROTO void __thiscall TArmyMgr::ConstructMapContextActionManager(void)
 
-void __thiscall TArmyMgr::ConstructMapContextActionManager(TArmyMgr *this)
+void TArmyMgr::ConstructMapContextActionManager()
 
 {
   this->vftable = &TArmyMgrVtbl_0064c928;
@@ -10360,7 +10338,7 @@ void __thiscall TArmyMgr::ConstructMapContextActionManager(TArmyMgr *this)
 // GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TTransportView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
+void TTransportView::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer(this);
@@ -10449,7 +10427,7 @@ TArmoryView::OrphanRetStub_0059add0
 // GHIDRA_NAME TViewMgr::ReleaseTurnEventDialogIfPresent
 // GHIDRA_PROTO undefined __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(void)
 
-void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
+void TViewMgr::ReleaseTurnEventDialogIfPresent()
 
 {
   if (this != (TViewMgr *)0x0) {
@@ -10462,8 +10440,7 @@ void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
 // GHIDRA_NAME TToolBarCluster::OpenMapEntryOrderDialog
 // GHIDRA_PROTO void __thiscall TToolBarCluster::OpenMapEntryOrderDialog(void * pMapOrderEntry)
 
-void __thiscall
-TToolBarCluster::OpenMapEntryOrderDialog(TToolBarCluster *this,void *pMapOrderEntry)
+void TToolBarCluster::OpenMapEntryOrderDialog(void *pMapOrderEntry)
 
 {
   int iVar1;
@@ -10979,8 +10956,7 @@ LAB_005570f4:
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
 
-void __thiscall
-TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue)
 
 {
   TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(this,pCommandQueue);
@@ -10991,7 +10967,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pC
 // GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TView::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
+void TView::OrphanCallChain_C11_I88_004874b0()
 
 {
   TEditText::OrphanCallChain_C11_I88_004874b0(this);
@@ -11148,8 +11124,7 @@ LAB_005a17eb:
 // GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
 // GHIDRA_PROTO undefined __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(void)
 
-THelpWindow * __thiscall
-THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
+THelpWindow * THelpWindow::ConstructUiWindowResourceEntryType572C0()
 
 {
   TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
@@ -11161,8 +11136,7 @@ THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 // GHIDRA_NAME TCityProductionView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityProductionView::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
+CRuntimeClass * TCityProductionView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -11295,7 +11269,7 @@ undefined4 ReturnTrueStub(void)
 // GHIDRA_NAME TDiplomacyMapView::EvaluateControlInputGate
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::EvaluateControlInputGate(void)
 
-void __thiscall TDiplomacyMapView::EvaluateControlInputGate(TDiplomacyMapView *this)
+void TDiplomacyMapView::EvaluateControlInputGate()
 
 {
   EvaluateControlInputGate(this);
@@ -11306,8 +11280,7 @@ void __thiscall TDiplomacyMapView::EvaluateControlInputGate(TDiplomacyMapView *t
 // GHIDRA_NAME TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
 
-TGreatPower * __thiscall
-TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGreatPower *this)
+TGreatPower * TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive()
 
 {
   TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
@@ -11324,7 +11297,7 @@ TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGreatPower
 // GHIDRA_NAME CObject::Dump
 // GHIDRA_PROTO undefined __thiscall CObject::Dump(void)
 
-void __thiscall CObject::Dump(CPtrList *this)
+void CObject::Dump()
 
 {
   return;
@@ -11334,7 +11307,7 @@ void __thiscall CObject::Dump(CPtrList *this)
 // GHIDRA_NAME TacticalBattleView::InitializeCityViewActionButtons
 // GHIDRA_PROTO void __thiscall TacticalBattleView::InitializeCityViewActionButtons(void)
 
-void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBattleView *this)
+void TacticalBattleView::InitializeCityViewActionButtons()
 
 {
   InitializeCityViewActionButtons(this);
@@ -11410,7 +11383,7 @@ DispatchLocalizedUiMessageWithTemplate
 // GHIDRA_NAME TObject::ShallowClone
 // GHIDRA_PROTO undefined __thiscall TObject::ShallowClone(void)
 
-void __thiscall TObject::ShallowClone(TCityTask *this)
+void TObject::ShallowClone()
 
 {
   DeserializeCityProductionQueueCommand(this);
@@ -11421,7 +11394,7 @@ void __thiscall TObject::ShallowClone(TCityTask *this)
 // GHIDRA_NAME CMainFrame::ConstructModuleLibraryCacheDualTableState
 // GHIDRA_PROTO undefined __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(void)
 
-void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame *this)
+void CMainFrame::ConstructModuleLibraryCacheDualTableState()
 
 {
   this->vftable = (CMainFrameVtbl *)0x0;
@@ -11473,7 +11446,7 @@ void PostTurnEventCodeMessage2420(short param_1)
 // GHIDRA_NAME TDiplomacyMapView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(TDiplomacyMapView *this)
+void TDiplomacyMapView::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer(this);
@@ -11616,8 +11589,7 @@ InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param_2)
 // GHIDRA_NAME TCivDescription::RenderStrategicMapTileCell
 // GHIDRA_PROTO undefined __thiscall TCivDescription::RenderStrategicMapTileCell(short param_1)
 
-void __thiscall
-TCivDescription::RenderStrategicMapTileCell(TCivDescription *this,short param_1)
+void TCivDescription::RenderStrategicMapTileCell(short param_1)
 
 {
   RenderStrategicMapTileCell(this,param_1);
@@ -11643,7 +11615,7 @@ undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 
 /* Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotB (0x00500220). */
 
-void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *this)
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 
 {
   return;
@@ -11653,8 +11625,7 @@ void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *thi
 // GHIDRA_NAME TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(void)
 
-void __thiscall
-TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(TDiplomacyMapView *this)
+void TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion()
 
 {
   DispatchTurnEvent3B8AndWaitForCompletion(this);
@@ -11689,8 +11660,7 @@ TCivUnit::SetUnitOrderTypeAndOwnerIndex
 // GHIDRA_NAME TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomacyMapView *this)
+void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TCommand::OrphanLeaf_NoCall_Ins07_004d8920(this);

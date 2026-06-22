@@ -58,7 +58,7 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
 // GHIDRA_NAME TMilitaryUnit::GetTMilitaryUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(TMilitaryUnit *this)
+CRuntimeClass * TMilitaryUnit::GetTMilitaryUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -68,8 +68,7 @@ CRuntimeClass * __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(TMili
 // GHIDRA_NAME TMilitaryUnit::DestroyMilitaryUnitOrderObject
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DestroyMilitaryUnitOrderObject(byte param_1)
 
-TMilitaryUnit * __thiscall
-TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this,byte param_1)
+TMilitaryUnit * TMilitaryUnit::DestroyMilitaryUnitOrderObject(byte param_1)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00();
@@ -83,7 +82,7 @@ TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this,byte param_1)
 // GHIDRA_NAME TMilitaryUnit::DeserializeMilitaryUnitOrderState
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(int * param_1)
 
-void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
+void TMilitaryUnit::DeserializeMilitaryUnitOrderState(int *param_1)
 
 {
   undefined1 uVar1;
@@ -126,7 +125,7 @@ void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *
 // GHIDRA_NAME TMilitaryUnit::SerializeMilitaryUnitOrderState
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(int * param_1)
 
-void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
+void TMilitaryUnit::SerializeMilitaryUnitOrderState(int *param_1)
 
 {
   code *pcVar1;
@@ -158,7 +157,7 @@ void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *th
 // GHIDRA_NAME TMilitaryUnit::DetachUnitOrderFromOwnerAndReset
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(void)
 
-void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *this)
+void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset()
 
 {
   TMilitaryUnitVtbl *pTVar1;
@@ -176,7 +175,7 @@ void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *t
 // GHIDRA_NAME TMilitaryUnit::RelinkMilitaryUnitByTileIndex
 // GHIDRA_PROTO undefined __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(short param_1)
 
-void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this,short param_1)
+void TMilitaryUnit::RelinkMilitaryUnitByTileIndex(short param_1)
 
 {
   short sVar1;

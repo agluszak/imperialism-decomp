@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTwoPicSlider::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTwoPicSlider * __thiscall
-TTwoPicSlider::_scalar_deleting_destructor_(TTwoPicSlider *this,byte param_1)
+TTwoPicSlider * TTwoPicSlider::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -27,7 +26,7 @@ TTwoPicSlider::_scalar_deleting_destructor_(TTwoPicSlider *this,byte param_1)
 
 /* Release current picture resource and clear cached resource id/state for the UI picture entry. */
 
-void __thiscall TTwoPicSlider::ResetPictureResourceEntry(TTwoPicSlider *this)
+void TTwoPicSlider::ResetPictureResourceEntry()
 
 {
   if (*(short *)&this->field_0x84 != -1) {
@@ -76,7 +75,7 @@ TControl * TTwoPicSlider::CreateTTwoPicSliderInstance(void)
 // GHIDRA_NAME TTwoPicSlider::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTwoPicSlider::GetTEventHandlerClassNamePointer(TTwoPicSlider *this)
+CRuntimeClass * TTwoPicSlider::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -86,7 +85,7 @@ CRuntimeClass * __thiscall TTwoPicSlider::GetTEventHandlerClassNamePointer(TTwoP
 // GHIDRA_NAME TTwoPicSlider::ConstructTTwoPicSliderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTwoPicSliderBaseState(int param_1)
 
-void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *this,int param_1)
+void TTwoPicSlider::ConstructTTwoPicSliderBaseState(int param_1)
 
 {
   undefined4 uVar1;
@@ -122,7 +121,7 @@ void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *th
 // GHIDRA_NAME TTwoPicSlider::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTwoPicSlider::OrphanLeaf_NoCall_Ins07_004d8920(TTwoPicSlider *this)
+void TTwoPicSlider::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(int *)&this->field_0x84 != 0) {
@@ -142,7 +141,7 @@ void __thiscall TTwoPicSlider::OrphanLeaf_NoCall_Ins07_004d8920(TTwoPicSlider *t
 // GHIDRA_NAME TTwoPicSlider::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTwoPicSlider::OrphanTiny_ReturnZero_0048a730(TTwoPicSlider *this)
+void TTwoPicSlider::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

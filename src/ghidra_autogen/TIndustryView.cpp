@@ -7,7 +7,7 @@
 // GHIDRA_NAME TIndustryView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIndustryView::GetTEventHandlerClassNamePointer(TIndustryView *this)
+CRuntimeClass * TIndustryView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TIndustryView::GetTEventHandlerClassNamePointer(TIndu
 // GHIDRA_NAME TIndustryView::ConstructTIndustryViewBaseState
 // GHIDRA_PROTO undefined __thiscall TIndustryView::ConstructTIndustryViewBaseState(void)
 
-TIndustryView * __thiscall TIndustryView::ConstructTIndustryViewBaseState(TIndustryView *this)
+TIndustryView * TIndustryView::ConstructTIndustryViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -32,8 +32,7 @@ TIndustryView * __thiscall TIndustryView::ConstructTIndustryViewBaseState(TIndus
 // GHIDRA_NAME TIndustryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIndustryView * __thiscall
-TIndustryView::_scalar_deleting_destructor_(TIndustryView *this,byte param_1)
+TIndustryView * TIndustryView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -47,7 +46,7 @@ TIndustryView::_scalar_deleting_destructor_(TIndustryView *this,byte param_1)
 // GHIDRA_NAME TIndustryView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void __thiscall TIndustryView::OrphanRetStub_004c6fd0(TIndustryView *this)
+void TIndustryView::OrphanRetStub_004c6fd0()
 
 {
   TIndustryView_slot_0x04_0x04 *pTVar1;
@@ -281,7 +280,7 @@ void __thiscall TIndustryView::OrphanRetStub_004c6fd0(TIndustryView *this)
 // GHIDRA_NAME TIndustryView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TIndustryView::OrphanRetStub_0059add0(TIndustryView *this,int param_1,int param_2)
+void TIndustryView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TIndustryView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -339,7 +338,7 @@ void __thiscall TIndustryView::OrphanRetStub_0059add0(TIndustryView *this,int pa
    Returns:
    - void. */
 
-void __thiscall TIndustryView::OrphanRetStub_004c6fb0(TIndustryView *this,int *pCityViewDialog)
+void TIndustryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 
 {
   short sVar1;

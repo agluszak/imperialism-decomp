@@ -37,7 +37,7 @@ TNoHilitePicture * TBuildingView::CreateTBuildingViewInstance(void)
 // GHIDRA_NAME TBuildingView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuildingView *this)
+CRuntimeClass * TBuildingView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuil
 // GHIDRA_NAME TBuildingView::ConstructTBuildingViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBuildingViewBaseState(void)
 
-TBuildingView * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuildingView *this)
+TBuildingView * TBuildingView::ConstructTBuildingViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -60,8 +60,7 @@ TBuildingView * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuild
 // GHIDRA_NAME TBuildingView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBuildingView * __thiscall
-TBuildingView::_scalar_deleting_destructor_(TBuildingView *this,byte param_1)
+TBuildingView * TBuildingView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,7 +74,7 @@ TBuildingView::_scalar_deleting_destructor_(TBuildingView *this,byte param_1)
 // GHIDRA_NAME TBuildingView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void __thiscall TBuildingView::OrphanRetStub_004c6fb0(TBuildingView *this)
+void TBuildingView::OrphanRetStub_004c6fb0()
 
 {
   return;
@@ -85,7 +84,7 @@ void __thiscall TBuildingView::OrphanRetStub_004c6fb0(TBuildingView *this)
 // GHIDRA_NAME TBuildingView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void __thiscall TBuildingView::OrphanRetStub_004c6fd0(TBuildingView *this)
+void TBuildingView::OrphanRetStub_004c6fd0()
 
 {
   return;
@@ -95,8 +94,7 @@ void __thiscall TBuildingView::OrphanRetStub_004c6fd0(TBuildingView *this)
 // GHIDRA_NAME TBuildingView::SetUniversityDialogLocalizedTextAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetUniversityDialogLocalizedTextAndRefresh(int * param_1)
 
-void __thiscall
-TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this,int *param_1)
+void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int *param_1)
 
 {
   int iVar1;
@@ -116,7 +114,7 @@ TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this,in
 // GHIDRA_NAME TBuildingView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuildingView *this)
+void TBuildingView::GetTEventHandlerClassNamePointer()
 
 {
   if (this->field_0x9c != '\0') {

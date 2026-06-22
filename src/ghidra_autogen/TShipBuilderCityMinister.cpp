@@ -40,8 +40,7 @@ TMinister * TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(voi
 // GHIDRA_NAME TShipBuilderCityMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TShipBuilderCityMinister::GetTMinisterClassNamePointer(TShipBuilderCityMinister *this)
+CRuntimeClass * TShipBuilderCityMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,8 +50,7 @@ TShipBuilderCityMinister::GetTMinisterClassNamePointer(TShipBuilderCityMinister 
 // GHIDRA_NAME TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(void)
 
-TShipBuilderCityMinister * __thiscall
-TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
+TShipBuilderCityMinister * TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -68,8 +66,7 @@ TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilde
 // GHIDRA_NAME TShipBuilderCityMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TShipBuilderCityMinister * __thiscall
-TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *this,byte param_1)
+TShipBuilderCityMinister * TShipBuilderCityMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTShipBuilderCityMinisterAndMaybeFree_Impl();
@@ -83,8 +80,7 @@ TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *th
 // GHIDRA_NAME TShipBuilderCityMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall
-TShipBuilderCityMinister::GetTEventHandlerClassNamePointer(TShipBuilderCityMinister *this)
+void TShipBuilderCityMinister::GetTEventHandlerClassNamePointer()
 
 {
   (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xe);

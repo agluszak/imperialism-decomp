@@ -37,7 +37,7 @@ TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
 // GHIDRA_NAME TWarehouseView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TWarehouseView::GetTEventHandlerClassNamePointer(TWarehouseView *this)
+CRuntimeClass * TWarehouseView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TWarehouseView::GetTEventHandlerClassNamePointer(TWar
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
 // GHIDRA_PROTO undefined __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(void)
 
-TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWarehouseView *this)
+TWarehouseView * TWarehouseView::ConstructTWarehouseViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -60,8 +60,7 @@ TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWa
 // GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarehouseView * __thiscall
-TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,byte param_1)
+TWarehouseView * TWarehouseView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,8 +74,7 @@ TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,byte param_1)
 // GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
-void __thiscall
-TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,undefined4 *param_1)
+void TWarehouseView::_scalar_deleting_destructor_(undefined4 *param_1)
 
 {
   TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,param_1);
@@ -89,7 +87,7 @@ TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,undefined4 *pa
 
 /* WARNING: Type propagation algorithm not settling */
 
-void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
+void TWarehouseView::OrphanRetStub_004c6fd0()
 
 {
   TWarehouseView_slot_0x04_0x04 *pTVar1;
@@ -523,7 +521,7 @@ LAB_004c7958:
 // GHIDRA_NAME TWarehouseView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void __thiscall TWarehouseView::OrphanRetStub_004c6fb0(TWarehouseView *this)
+void TWarehouseView::OrphanRetStub_004c6fb0()
 
 {
   short sVar1;

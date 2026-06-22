@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBillForeignMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBillForeignMinister::GetTMinisterClassNamePointer(TBillForeignMinister *this)
+CRuntimeClass * TBillForeignMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TBillForeignMinister::GetTMinisterClassNamePointer(TBillForeignMinister *this)
 // GHIDRA_NAME TBillForeignMinister::ConstructTBillForeignMinister
 // GHIDRA_PROTO undefined __thiscall TBillForeignMinister::ConstructTBillForeignMinister(void)
 
-TBillForeignMinister * __thiscall
-TBillForeignMinister::ConstructTBillForeignMinister(TBillForeignMinister *this)
+TBillForeignMinister * TBillForeignMinister::ConstructTBillForeignMinister()
 
 {
   int iVar1;
@@ -48,8 +46,7 @@ TBillForeignMinister::ConstructTBillForeignMinister(TBillForeignMinister *this)
 // GHIDRA_NAME TBillForeignMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TBillForeignMinister * __thiscall
-TBillForeignMinister::DeletingDestructTMinister(TBillForeignMinister *this,byte param_1)
+TBillForeignMinister * TBillForeignMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TBillForeignMinister::DestructTBillForeignMinister(this);
@@ -63,7 +60,7 @@ TBillForeignMinister::DeletingDestructTMinister(TBillForeignMinister *this,byte 
 // GHIDRA_NAME TBillForeignMinister::DestructTBillForeignMinister
 // GHIDRA_PROTO undefined __thiscall TBillForeignMinister::DestructTBillForeignMinister(void)
 
-void __thiscall TBillForeignMinister::DestructTBillForeignMinister(TBillForeignMinister *this)
+void TBillForeignMinister::DestructTBillForeignMinister()
 
 {
   this->vftable =
@@ -105,7 +102,7 @@ TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_NAME TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TBillForeignMinister *this)
+void TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int *piVar1;
@@ -154,7 +151,7 @@ void __thiscall TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TBillFore
 // GHIDRA_NAME TBillForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TBillForeignMinister::SetForeignMinisterReadyFlag14(TBillForeignMinister *this)
+void TBillForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   short sVar1;
@@ -477,8 +474,7 @@ LAB_005323bb:
 // GHIDRA_NAME TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
-void __thiscall
-TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBillForeignMinister *this)
+void TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
 
 {
   char cVar1;
@@ -520,7 +516,7 @@ TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBillFore
 // GHIDRA_NAME TBillForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TBillForeignMinister::_scalar_deleting_destructor_(TBillForeignMinister *this)
+void TBillForeignMinister::_scalar_deleting_destructor_()
 
 {
   short sVar1;

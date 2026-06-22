@@ -7,7 +7,7 @@
 // GHIDRA_NAME TStream::CreateTStreamInstance
 // GHIDRA_PROTO undefined __thiscall TStream::CreateTStreamInstance(void)
 
-void __thiscall TStream::CreateTStreamInstance(TStream *this)
+void TStream::CreateTStreamInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -29,7 +29,7 @@ void __thiscall TStream::CreateTStreamInstance(TStream *this)
 // GHIDRA_NAME TStream::GetTStreamClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
 
-CRuntimeClass * __thiscall TStream::GetTStreamClassNamePointer(TStream *this)
+CRuntimeClass * TStream::GetTStreamClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -39,7 +39,7 @@ CRuntimeClass * __thiscall TStream::GetTStreamClassNamePointer(TStream *this)
 // GHIDRA_NAME TStream::ConstructTStreamBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(byte param_1)
 
-TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this,byte param_1)
+TStream * TStream::ConstructTStreamBaseState(byte param_1)
 
 {
   TStream::DestructTStreamAndMaybeFree(this);
@@ -53,7 +53,7 @@ TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this,byte param
 // GHIDRA_NAME TStream::DestructTStreamAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TStream::DestructTStreamAndMaybeFree(void)
 
-void __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
+void TStream::DestructTStreamAndMaybeFree()
 
 {
   this->vftable = (TStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -64,7 +64,7 @@ void __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I15_00488a80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00488a80(void)
 
-undefined4 __thiscall TStream::OrphanCallChain_C2_I15_00488a80(TStream *this)
+undefined4 TStream::OrphanCallChain_C2_I15_00488a80()
 
 {
   TStreamVtbl *pTVar1;
@@ -83,7 +83,7 @@ undefined4 __thiscall TStream::OrphanCallChain_C2_I15_00488a80(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ab0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ab0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488ab0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488ab0()
 
 {
   if (this != (TStream *)0x0) {
@@ -96,7 +96,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488ab0(TStream *this)
 // GHIDRA_NAME TStream::OrphanTiny_ReturnZero_00488ad0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
 
-undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488ad0(TStream *this)
+undefined4 TStream::OrphanTiny_ReturnZero_00488ad0()
 
 {
   return 0;
@@ -106,7 +106,7 @@ undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488ad0(TStream *this)
 // GHIDRA_NAME TStream::OrphanTiny_ReturnZero_00488af0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
 
-undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488af0(TStream *this)
+undefined4 TStream::OrphanTiny_ReturnZero_00488af0()
 
 {
   return 0;
@@ -116,7 +116,7 @@ undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488af0(TStream *this)
 // GHIDRA_NAME TStream::AssertMcAppStreamLine304
 // GHIDRA_PROTO undefined __thiscall AssertMcAppStreamLine304(void)
 
-undefined4 __thiscall TStream::AssertMcAppStreamLine304(TStream *this)
+undefined4 TStream::AssertMcAppStreamLine304()
 
 {
   if (DAT_006a1a10 == 0) {
@@ -129,7 +129,7 @@ undefined4 __thiscall TStream::AssertMcAppStreamLine304(TStream *this)
 // GHIDRA_NAME TStream::OrphanRetStub_00488b40
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
 
-void __thiscall TStream::OrphanRetStub_00488b40(TStream *this)
+void TStream::OrphanRetStub_00488b40()
 
 {
   return;
@@ -139,7 +139,7 @@ void __thiscall TStream::OrphanRetStub_00488b40(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488b60
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488b60(void)
 
-undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b60(TStream *this)
+undefined4 TStream::OrphanCallChain_C1_I09_00488b60()
 
 {
   undefined3 extraout_var;
@@ -154,7 +154,7 @@ undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b60(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488b90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488b90(void)
 
-undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b90(TStream *this)
+undefined4 TStream::OrphanCallChain_C1_I09_00488b90()
 
 {
   undefined3 extraout_var;
@@ -169,7 +169,7 @@ undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b90(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I08_00488bc0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00488bc0(undefined2 * param_1)
 
-void __thiscall TStream::OrphanCallChain_C1_I08_00488bc0(TStream *this,undefined2 *param_1)
+void TStream::OrphanCallChain_C1_I08_00488bc0(undefined2 *param_1)
 
 {
   TStreamVtbl *pTVar1;
@@ -184,7 +184,7 @@ void __thiscall TStream::OrphanCallChain_C1_I08_00488bc0(TStream *this,undefined
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488bf0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488bf0(void)
 
-undefined2 __thiscall TStream::OrphanCallChain_C1_I09_00488bf0(TStream *this)
+undefined2 TStream::OrphanCallChain_C1_I09_00488bf0()
 
 {
   undefined1 *puVar1;
@@ -198,7 +198,7 @@ undefined2 __thiscall TStream::OrphanCallChain_C1_I09_00488bf0(TStream *this)
 // GHIDRA_NAME TStream::ReadDwordFromStreamViaVtableSlot3C
 // GHIDRA_PROTO undefined __thiscall ReadDwordFromStreamViaVtableSlot3C(void)
 
-undefined1 * __thiscall TStream::ReadDwordFromStreamViaVtableSlot3C(TStream *this)
+undefined1 * TStream::ReadDwordFromStreamViaVtableSlot3C()
 
 {
   TStream **ppTVar1;
@@ -240,7 +240,7 @@ TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I19_00488ca0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_00488ca0(int param_1)
 
-void __thiscall TStream::OrphanCallChain_C2_I19_00488ca0(TStream *this,int param_1)
+void TStream::OrphanCallChain_C2_I19_00488ca0(int param_1)
 
 {
   TStreamVtbl *pTVar1;
@@ -258,7 +258,7 @@ void __thiscall TStream::OrphanCallChain_C2_I19_00488ca0(TStream *this,int param
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I13_00488ce0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I13_00488ce0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I13_00488ce0(TStream *this)
+void TStream::OrphanCallChain_C1_I13_00488ce0()
 
 {
   undefined1 local_8 [4];
@@ -274,7 +274,7 @@ void __thiscall TStream::OrphanCallChain_C1_I13_00488ce0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d20
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d20(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488d20(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488d20()
 
 {
   (*this->vftable[7].ConstructTStreamBaseState)();
@@ -285,7 +285,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488d20(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d40(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488d40(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488d40()
 
 {
   (*this->vftable[7].ConstructTStreamBaseState)();
@@ -296,7 +296,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488d40(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d60
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d60(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488d60(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488d60()
 
 {
   (*this->vftable[7].ConstructTStreamBaseState)();
@@ -307,7 +307,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488d60(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d80(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488d80(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488d80()
 
 {
   (*this->vftable[7].ConstructTStreamBaseState)();
@@ -318,7 +318,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488d80(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488da0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488da0(void)
 
-undefined1 * __thiscall TStream::OrphanCallChain_C1_I09_00488da0(TStream *this)
+undefined1 * TStream::OrphanCallChain_C1_I09_00488da0()
 
 {
   TStream **ppTVar1;
@@ -334,7 +334,7 @@ undefined1 * __thiscall TStream::OrphanCallChain_C1_I09_00488da0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I17_00488dd0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I17_00488dd0(void)
 
-void __thiscall TStream::OrphanCallChain_C2_I17_00488dd0(TStream *this)
+void TStream::OrphanCallChain_C2_I17_00488dd0()
 
 {
   TStreamVtbl *pTVar1;
@@ -354,7 +354,7 @@ void __thiscall TStream::OrphanCallChain_C2_I17_00488dd0(TStream *this)
 // GHIDRA_NAME TStream::AssertMcAppStreamLine596
 // GHIDRA_PROTO undefined __thiscall AssertMcAppStreamLine596(void)
 
-void __thiscall TStream::AssertMcAppStreamLine596(TStream *this)
+void TStream::AssertMcAppStreamLine596()
 
 {
   if (DAT_006a1a14 == 0) {
@@ -367,7 +367,7 @@ void __thiscall TStream::AssertMcAppStreamLine596(TStream *this)
 // GHIDRA_NAME TStream::OrphanRetStub_00488e30
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
 
-void __thiscall TStream::OrphanRetStub_00488e30(TStream *this)
+void TStream::OrphanRetStub_00488e30()
 
 {
   return;
@@ -377,7 +377,7 @@ void __thiscall TStream::OrphanRetStub_00488e30(TStream *this)
 // GHIDRA_NAME TStream::OrphanRetStub_00488e50
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
 
-void __thiscall TStream::OrphanRetStub_00488e50(TStream *this)
+void TStream::OrphanRetStub_00488e50()
 
 {
   return;
@@ -387,7 +387,7 @@ void __thiscall TStream::OrphanRetStub_00488e50(TStream *this)
 // GHIDRA_NAME TStream::OrphanRetStub_00488e70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
 
-void __thiscall TStream::OrphanRetStub_00488e70(TStream *this)
+void TStream::OrphanRetStub_00488e70()
 
 {
   return;
@@ -397,7 +397,7 @@ void __thiscall TStream::OrphanRetStub_00488e70(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488e90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488e90(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488e90(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488e90()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,1);
@@ -408,7 +408,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488e90(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488eb0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488eb0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488eb0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488eb0()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,1);
@@ -419,7 +419,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488eb0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ed0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ed0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488ed0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488ed0()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000005,1);
@@ -430,7 +430,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488ed0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ef0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ef0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488ef0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488ef0()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,2);
@@ -441,7 +441,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488ef0(TStream *this)
 // GHIDRA_NAME TStream::WriteDwordToStreamViaVtableSlot78
 // GHIDRA_PROTO undefined __thiscall WriteDwordToStreamViaVtableSlot78(void)
 
-void __thiscall TStream::WriteDwordToStreamViaVtableSlot78(TStream *this)
+void TStream::WriteDwordToStreamViaVtableSlot78()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,4);
@@ -452,7 +452,7 @@ void __thiscall TStream::WriteDwordToStreamViaVtableSlot78(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f30
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f30(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488f30(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488f30()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,8);
@@ -463,7 +463,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488f30(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f50
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f50(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488f50(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488f50()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)();
@@ -474,7 +474,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488f50(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f70
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f70(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488f70(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488f70()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)();
@@ -485,7 +485,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488f70(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f90(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488f90(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488f90()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)();
@@ -496,7 +496,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488f90(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488fb0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488fb0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488fb0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488fb0()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)();
@@ -507,7 +507,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488fb0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488fd0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488fd0(void)
 
-void __thiscall TStream::OrphanCallChain_C1_I06_00488fd0(TStream *this)
+void TStream::OrphanCallChain_C1_I06_00488fd0()
 
 {
   (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,4);
@@ -518,7 +518,7 @@ void __thiscall TStream::OrphanCallChain_C1_I06_00488fd0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I18_00488ff0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_00488ff0(void)
 
-void __thiscall TStream::OrphanCallChain_C2_I18_00488ff0(TStream *this)
+void TStream::OrphanCallChain_C2_I18_00488ff0()
 
 {
   TStreamVtbl *pTVar1;
@@ -539,7 +539,7 @@ void __thiscall TStream::OrphanCallChain_C2_I18_00488ff0(TStream *this)
 // GHIDRA_NAME TStream::OrphanCallChain_C2_I21_00489030
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(int * param_1)
 
-void __thiscall TStream::OrphanCallChain_C2_I21_00489030(TStream *this,int *param_1)
+void TStream::OrphanCallChain_C2_I21_00489030(int *param_1)
 
 {
   TStreamVtbl *pTVar1;
@@ -556,7 +556,7 @@ void __thiscall TStream::OrphanCallChain_C2_I21_00489030(TStream *this,int *para
 // GHIDRA_NAME TStream::OrphanLeaf_NoCall_Ins02_00489980
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(void)
 
-undefined1 __thiscall TStream::OrphanLeaf_NoCall_Ins02_00489980(TStream *this)
+undefined1 TStream::OrphanLeaf_NoCall_Ins02_00489980()
 
 {
   return 0;
@@ -566,7 +566,7 @@ undefined1 __thiscall TStream::OrphanLeaf_NoCall_Ins02_00489980(TStream *this)
 // GHIDRA_NAME TStream::OrphanRetStub_004899a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004899a0(void)
 
-void __thiscall TStream::OrphanRetStub_004899a0(TStream *this)
+void TStream::OrphanRetStub_004899a0()
 
 {
   return;

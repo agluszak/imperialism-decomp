@@ -7,8 +7,7 @@
 // GHIDRA_NAME TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
 
-undefined1 __thiscall
-TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98(TProxyGreatPower *this)
+undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98()
 
 {
   return 1;
@@ -18,8 +17,7 @@ TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98(TProxyGreatPower *this)
 // GHIDRA_NAME TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 __thiscall
-TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0(TProxyGreatPower *this)
+undefined1 TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 
 {
   return 1;
@@ -29,7 +27,7 @@ TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0(TProxyGreatPower *this)
 // GHIDRA_NAME TProxyGreatPower::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
-void __thiscall TProxyGreatPower::AddRegionIdToNationOwnedRegionList(TProxyGreatPower *this)
+void TProxyGreatPower::AddRegionIdToNationOwnedRegionList()
 
 {
                     /* WARNING: Could not recover jumptable at 0x00540902. Too many branches */
@@ -42,7 +40,7 @@ void __thiscall TProxyGreatPower::AddRegionIdToNationOwnedRegionList(TProxyGreat
 // GHIDRA_NAME TProxyGreatPower::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
 
-undefined1 __thiscall TProxyGreatPower::ApplyJoinEmpireModeForTargetNation(TProxyGreatPower *this)
+undefined1 TProxyGreatPower::ApplyJoinEmpireModeForTargetNation()
 
 {
   return 0;
@@ -52,8 +50,7 @@ undefined1 __thiscall TProxyGreatPower::ApplyJoinEmpireModeForTargetNation(TProx
 // GHIDRA_NAME TProxyGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TProxyGreatPower * __thiscall
-TProxyGreatPower::_scalar_deleting_destructor_(TProxyGreatPower *this,byte param_1)
+TProxyGreatPower * TProxyGreatPower::_scalar_deleting_destructor_(byte param_1)
 
 {
   TProxyGreatPower::DestructTProxyGreatPower(this);
@@ -67,7 +64,7 @@ TProxyGreatPower::_scalar_deleting_destructor_(TProxyGreatPower *this,byte param
 // GHIDRA_NAME TProxyGreatPower::DestructTProxyGreatPower
 // GHIDRA_PROTO undefined __thiscall TProxyGreatPower::DestructTProxyGreatPower(void)
 
-void __thiscall TProxyGreatPower::DestructTProxyGreatPower(TProxyGreatPower *this)
+void TProxyGreatPower::DestructTProxyGreatPower()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -92,7 +89,7 @@ void __thiscall TProxyGreatPower::DestructTProxyGreatPower(TProxyGreatPower *thi
 // GHIDRA_NAME TProxyGreatPower::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall TProxyGreatPower::GetTCountryClassNamePointer(TProxyGreatPower *this)
+CRuntimeClass * TProxyGreatPower::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -134,7 +131,7 @@ TProxyGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
 // GHIDRA_NAME TProxyGreatPower::RemoveRegionIdFromNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::RemoveRegionIdFromNationOwnedRegionList(void)
 
-void __thiscall TProxyGreatPower::RemoveRegionIdFromNationOwnedRegionList(TProxyGreatPower *this)
+void TProxyGreatPower::RemoveRegionIdFromNationOwnedRegionList()
 
 {
   return;
@@ -144,7 +141,7 @@ void __thiscall TProxyGreatPower::RemoveRegionIdFromNationOwnedRegionList(TProxy
 // GHIDRA_NAME TProxyGreatPower::OrphanRetStub_004d7fe0
 // GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7fe0(void)
 
-void __thiscall TProxyGreatPower::OrphanRetStub_004d7fe0(TProxyGreatPower *this)
+void TProxyGreatPower::OrphanRetStub_004d7fe0()
 
 {
   undefined4 local_20;
@@ -172,7 +169,7 @@ void __thiscall TProxyGreatPower::OrphanRetStub_004d7fe0(TProxyGreatPower *this)
 // GHIDRA_NAME TProxyGreatPower::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
 
-void __thiscall TProxyGreatPower::DispatchNationStateEventCode10(TProxyGreatPower *this)
+void TProxyGreatPower::DispatchNationStateEventCode10()
 
 {
   return;
@@ -223,8 +220,7 @@ TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_NAME TProxyGreatPower::QueueNationOrderManagerPayloadObject
 // GHIDRA_PROTO undefined __thiscall QueueNationOrderManagerPayloadObject(int * param_1)
 
-void __thiscall
-TProxyGreatPower::QueueNationOrderManagerPayloadObject(TProxyGreatPower *this,int *param_1)
+void TProxyGreatPower::QueueNationOrderManagerPayloadObject(int *param_1)
 
 {
   DispatchTurnEvent31TaggedPayload(0x73746172,param_1,(int)*(short *)&this->field_0xc);
@@ -236,7 +232,7 @@ TProxyGreatPower::QueueNationOrderManagerPayloadObject(TProxyGreatPower *this,in
 // GHIDRA_NAME TProxyGreatPower::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
-void __thiscall TProxyGreatPower::ApplyJoinEmpireMode1TargetTransition(TProxyGreatPower *this)
+void TProxyGreatPower::ApplyJoinEmpireMode1TargetTransition()
 
 {
   DispatchTaggedGameStateEvent1F20(0x6c6f7374,(int)*(short *)&this->field_0xc,0xfffffffd);
@@ -248,7 +244,7 @@ void __thiscall TProxyGreatPower::ApplyJoinEmpireMode1TargetTransition(TProxyGre
 // GHIDRA_NAME TProxyGreatPower::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-undefined4 __thiscall TProxyGreatPower::OrphanRetStub_0059add0(TProxyGreatPower *this)
+undefined4 TProxyGreatPower::OrphanRetStub_0059add0()
 
 {
   undefined4 local_20;
@@ -277,7 +273,7 @@ undefined4 __thiscall TProxyGreatPower::OrphanRetStub_0059add0(TProxyGreatPower 
 // GHIDRA_NAME TProxyGreatPower::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TProxyGreatPower::GetTEventHandlerClassNamePointer(TProxyGreatPower *this)
+undefined4 TProxyGreatPower::GetTEventHandlerClassNamePointer()
 
 {
   undefined4 local_20;

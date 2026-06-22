@@ -47,7 +47,7 @@ TView * TCtlMgr::CreateTCtlMgrInstance(void)
 // GHIDRA_NAME TCtlMgr::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCtlMgr::GetTEventHandlerClassNamePointer(TCtlMgr *this)
+CRuntimeClass * TCtlMgr::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -98,8 +98,7 @@ TView * TCtlMgr::ConstructTCtlMgrBaseState(void)
 // GHIDRA_NAME TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
 
-void __thiscall
-TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(TCtlMgr *this)
+void TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
 
 {
   if (DAT_006a1b5c == 0) {
@@ -112,7 +111,7 @@ TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db
 // GHIDRA_NAME TCtlMgr::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCtlMgr * __thiscall TCtlMgr::_scalar_deleting_destructor_(TCtlMgr *this,byte param_1)
+TCtlMgr * TCtlMgr::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl((TView *)this);

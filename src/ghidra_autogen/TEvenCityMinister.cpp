@@ -40,7 +40,7 @@ TMinister * TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
 // GHIDRA_NAME TEvenCityMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEvenCityMinister::GetTMinisterClassNamePointer(TEvenCityMinister *this)
+CRuntimeClass * TEvenCityMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -50,8 +50,7 @@ CRuntimeClass * __thiscall TEvenCityMinister::GetTMinisterClassNamePointer(TEven
 // GHIDRA_NAME TEvenCityMinister::ConstructTEvenCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TEvenCityMinister::ConstructTEvenCityMinisterBaseState(void)
 
-TEvenCityMinister * __thiscall
-TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
+TEvenCityMinister * TEvenCityMinister::ConstructTEvenCityMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -67,8 +66,7 @@ TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
 // GHIDRA_NAME TEvenCityMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TEvenCityMinister * __thiscall
-TEvenCityMinister::DeletingDestructTMinister(TEvenCityMinister *this,byte param_1)
+TEvenCityMinister * TEvenCityMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTEvenCityMinisterAndMaybeFree_Impl();
@@ -82,7 +80,7 @@ TEvenCityMinister::DeletingDestructTMinister(TEvenCityMinister *this,byte param_
 // GHIDRA_NAME TEvenCityMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TEvenCityMinister::GetTEventHandlerClassNamePointer(TEvenCityMinister *this)
+void TEvenCityMinister::GetTEventHandlerClassNamePointer()
 
 {
   (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xf);

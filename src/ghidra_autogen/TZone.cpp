@@ -36,7 +36,7 @@ undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
 // GHIDRA_NAME TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList
 // GHIDRA_PROTO undefined __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
 
-TZone * __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone *this)
+TZone * TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -86,7 +86,7 @@ TZone * __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZ
 // GHIDRA_NAME TZone::GetOrAppendUniqueZonePointerInPrimaryArray
 // GHIDRA_PROTO undefined __thiscall GetOrAppendUniqueZonePointerInPrimaryArray(int param_1)
 
-int * __thiscall TZone::GetOrAppendUniqueZonePointerInPrimaryArray(TZone *this,int param_1)
+int * TZone::GetOrAppendUniqueZonePointerInPrimaryArray(int param_1)
 
 {
   int iVar1;
@@ -143,7 +143,7 @@ LAB_0055e90c:
 // GHIDRA_NAME TZone::AppendZonePointerToPrimaryArray
 // GHIDRA_PROTO undefined __thiscall AppendZonePointerToPrimaryArray(undefined4 param_1)
 
-void __thiscall TZone::AppendZonePointerToPrimaryArray(TZone *this,undefined4 param_1)
+void TZone::AppendZonePointerToPrimaryArray(undefined4 param_1)
 
 {
   int iVar1;
@@ -181,7 +181,7 @@ void __thiscall TZone::AppendZonePointerToPrimaryArray(TZone *this,undefined4 pa
 // GHIDRA_NAME TZone::AppendZonePointerToSecondaryArray
 // GHIDRA_PROTO undefined __thiscall AppendZonePointerToSecondaryArray(undefined4 param_1)
 
-void __thiscall TZone::AppendZonePointerToSecondaryArray(TZone *this,undefined4 param_1)
+void TZone::AppendZonePointerToSecondaryArray(undefined4 param_1)
 
 {
   int iVar1;
@@ -219,8 +219,7 @@ void __thiscall TZone::AppendZonePointerToSecondaryArray(TZone *this,undefined4 
 // GHIDRA_NAME TZone::SetMapActionContextTargetTileAndRefreshMarkers
 // GHIDRA_PROTO undefined __thiscall TZone::SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, short param_2)
 
-void __thiscall
-TZone::SetMapActionContextTargetTileAndRefreshMarkers(TZone *this,undefined4 param_1,short param_2)
+void TZone::SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, short param_2)
 
 {
   char cVar1;
@@ -342,7 +341,7 @@ LAB_00560099:
 // GHIDRA_NAME TZone::ResetTPortZoneToSentinelVtableAndReleaseResources
 // GHIDRA_PROTO undefined __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(void)
 
-void __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(TZone *this)
+void TZone::ResetTPortZoneToSentinelVtableAndReleaseResources()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -384,7 +383,7 @@ void __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(TZone *
 // GHIDRA_NAME TZone::DeserializeTPortZoneFromBinaryStream
 // GHIDRA_PROTO undefined __thiscall TZone::DeserializeTPortZoneFromBinaryStream(int * param_1)
 
-void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(TZone *this,int *param_1)
+void TZone::DeserializeTPortZoneFromBinaryStream(int *param_1)
 
 {
   TAutoGreatPower::HasQueuedCivWorkOrderType7((TAutoGreatPower *)this,param_1);
@@ -396,7 +395,7 @@ void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(TZone *this,int *par
 // GHIDRA_NAME TZone::SerializeTPortZoneToBinaryStream
 // GHIDRA_PROTO undefined __thiscall SerializeTPortZoneToBinaryStream(int * param_1)
 
-void __thiscall TZone::SerializeTPortZoneToBinaryStream(TZone *this,int *param_1)
+void TZone::SerializeTPortZoneToBinaryStream(int *param_1)
 
 {
   int iVar1;
@@ -419,7 +418,7 @@ void __thiscall TZone::SerializeTPortZoneToBinaryStream(TZone *this,int *param_1
 // GHIDRA_NAME TZone::IsPortZoneOwnerNationEqual
 // GHIDRA_PROTO undefined __thiscall IsPortZoneOwnerNationEqual(short param_1)
 
-undefined4 __thiscall TZone::IsPortZoneOwnerNationEqual(TZone *this,short param_1)
+undefined4 TZone::IsPortZoneOwnerNationEqual(short param_1)
 
 {
   short sVar1;
@@ -439,7 +438,7 @@ undefined4 __thiscall TZone::IsPortZoneOwnerNationEqual(TZone *this,short param_
 
 /* Setting prototype: void* TZone::GetNextPortZone(void* pCurrentPortZone) */
 
-void * __thiscall TZone::GetNextPortZone(TZone *this,void *pCurrentPortZone)
+void * TZone::GetNextPortZone(void *pCurrentPortZone)
 
 {
   CObjectVtbl *this_00;
@@ -457,8 +456,7 @@ void * __thiscall TZone::GetNextPortZone(TZone *this,void *pCurrentPortZone)
 // GHIDRA_NAME TZone::CanPortZoneInteractWithNationUnderDiplomacyRules
 // GHIDRA_PROTO undefined __thiscall CanPortZoneInteractWithNationUnderDiplomacyRules(int param_1)
 
-undefined4 __thiscall
-TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this,int param_1)
+undefined4 TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(int param_1)
 
 {
   char cVar1;
@@ -484,7 +482,7 @@ TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this,int param_1)
 // GHIDRA_NAME TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList
 // GHIDRA_PROTO undefined __thiscall TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
 
-void __thiscall TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(TZone *this)
+void TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
 
 {
   undefined4 *unaff_FS_OFFSET;

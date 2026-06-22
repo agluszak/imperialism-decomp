@@ -37,7 +37,7 @@ TUberCluster * TCityBarCluster::CreateTCityBarClusterInstance(void)
 // GHIDRA_NAME TCityBarCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCityBarCluster::GetTEventHandlerClassNamePointer(TCityBarCluster *this)
+CRuntimeClass * TCityBarCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCityBarCluster;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TCityBarCluster::GetTEventHandlerClassNamePointer(TCi
 // GHIDRA_NAME TCityBarCluster::ConstructTCityBarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCityBarClusterBaseState(void)
 
-TCityBarCluster * __thiscall
-TCityBarCluster::ConstructTCityBarClusterBaseState(TCityBarCluster *this)
+TCityBarCluster * TCityBarCluster::ConstructTCityBarClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -60,8 +59,7 @@ TCityBarCluster::ConstructTCityBarClusterBaseState(TCityBarCluster *this)
 // GHIDRA_NAME TCityBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityBarCluster * __thiscall
-TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this,byte param_1)
+TCityBarCluster * TCityBarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -75,8 +73,7 @@ TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this,byte param_1
 // GHIDRA_NAME TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord
 // GHIDRA_PROTO undefined __thiscall UpdateTradeSummaryMetricControlsFromRecord(int param_1)
 
-void __thiscall
-TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *this,int param_1)
+void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
 
 {
   int iVar1;

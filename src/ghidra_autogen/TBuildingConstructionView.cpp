@@ -38,8 +38,7 @@ thunk_TPictureButton * TBuildingConstructionView::CreateTBuildingConstructionVie
 // GHIDRA_NAME TBuildingConstructionView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBuildingConstructionView::GetTEventHandlerClassNamePointer(TBuildingConstructionView *this)
+CRuntimeClass * TBuildingConstructionView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

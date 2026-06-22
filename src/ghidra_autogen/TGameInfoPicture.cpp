@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGameInfoPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGameInfoPicture * __thiscall
-TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param_1)
+TGameInfoPicture * TGameInfoPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -22,8 +21,7 @@ TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param
 // GHIDRA_NAME TGameInfoPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
+CRuntimeClass * TGameInfoPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,8 +31,7 @@ TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
 // GHIDRA_NAME TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
-void __thiscall
-TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this,CString param_1)
+void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
 {
   TGameInfoPicture_slot_0x04_0x04 *pTVar1;

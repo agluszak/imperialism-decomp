@@ -104,7 +104,7 @@ TIndexAndRankList * TDealList::CreateTDealListInstance(void)
 // GHIDRA_NAME TDealList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDealList::GetTEventHandlerClassNamePointer(TDealList *this)
+CRuntimeClass * TDealList::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -114,7 +114,7 @@ CRuntimeClass * __thiscall TDealList::GetTEventHandlerClassNamePointer(TDealList
 // GHIDRA_NAME TDealList::ConstructTDealListBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealListBaseState(void)
 
-TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
+TDealList * TDealList::ConstructTDealListBaseState()
 
 {
   TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
@@ -126,7 +126,7 @@ TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
 // GHIDRA_NAME TDealList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,byte param_1)
+TDealList * TDealList::_scalar_deleting_destructor_(byte param_1)
 
 {
   CObArray::DestructCObArray();
@@ -140,7 +140,7 @@ TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,b
 // GHIDRA_NAME TDealList::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(short * param_1, short * param_2)
 
-int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this,short *param_1,short *param_2)
+int TDealList::OrphanRetStub_0059add0(short *param_1, short *param_2)
 
 {
   short sVar1;

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TDialogView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDialogView::GetTEventHandlerClassNamePointer(TDialogView *this)
+CRuntimeClass * TDialogView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TDialogView::GetTEventHandlerClassNamePointer(TDialog
 // GHIDRA_NAME TDialogView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
+void TDialogView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 uVar1;
@@ -31,7 +31,7 @@ void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
 // GHIDRA_NAME TDialogView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this,byte param_1)
+TDialogView * TDialogView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

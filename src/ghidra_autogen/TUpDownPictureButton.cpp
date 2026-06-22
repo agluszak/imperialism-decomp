@@ -7,8 +7,7 @@
 // GHIDRA_NAME TUpDownPictureButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TUpDownPictureButton::GetTEventHandlerClassNamePointer(TUpDownPictureButton *this)
+CRuntimeClass * TUpDownPictureButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TUpDownPictureButton::GetTEventHandlerClassNamePointer(TUpDownPictureButton *thi
 // GHIDRA_NAME TUpDownPictureButton::ConstructPictureScreenResourceEntry
 // GHIDRA_PROTO undefined __thiscall ConstructPictureScreenResourceEntry(void)
 
-TUpDownPictureButton * __thiscall
-TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
+TUpDownPictureButton * TUpDownPictureButton::ConstructPictureScreenResourceEntry()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -32,8 +30,7 @@ TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *
 // GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUpDownPictureButton * __thiscall
-TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this,byte param_1)
+TUpDownPictureButton * TUpDownPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -78,7 +75,7 @@ TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne
 // GHIDRA_NAME TUpDownPictureButton::OrphanCallChain_C1_I05_00571690
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00571690(void)
 
-void __thiscall TUpDownPictureButton::OrphanCallChain_C1_I05_00571690(TUpDownPictureButton *this)
+void TUpDownPictureButton::OrphanCallChain_C1_I05_00571690()
 
 {
   undefined uVar1;
@@ -95,7 +92,7 @@ void __thiscall TUpDownPictureButton::OrphanCallChain_C1_I05_00571690(TUpDownPic
 // GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this)
+void TUpDownPictureButton::_scalar_deleting_destructor_()
 
 {
   undefined4 in_EDX;

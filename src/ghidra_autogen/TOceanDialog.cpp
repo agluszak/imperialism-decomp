@@ -42,7 +42,7 @@ TWorldView * TOceanDialog::CreateTOceanDialogInstance(void)
 // GHIDRA_NAME TOceanDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TOceanDialog::GetTEventHandlerClassNamePointer(TOceanDialog *this)
+CRuntimeClass * TOceanDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,7 +52,7 @@ CRuntimeClass * __thiscall TOceanDialog::GetTEventHandlerClassNamePointer(TOcean
 // GHIDRA_NAME TOceanDialog::ConstructTOceanDialogBaseState
 // GHIDRA_PROTO undefined __thiscall TOceanDialog::ConstructTOceanDialogBaseState(void)
 
-TOceanDialog * __thiscall TOceanDialog::ConstructTOceanDialogBaseState(TOceanDialog *this)
+TOceanDialog * TOceanDialog::ConstructTOceanDialogBaseState()
 
 {
   TWorldView::ConstructTWorldViewBaseState((TWorldView *)this);
@@ -70,8 +70,7 @@ TOceanDialog * __thiscall TOceanDialog::ConstructTOceanDialogBaseState(TOceanDia
 // GHIDRA_NAME TOceanDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOceanDialog * __thiscall
-TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this,byte param_1)
+TOceanDialog * TOceanDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -85,7 +84,7 @@ TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this,byte param_1)
 // GHIDRA_NAME TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920(TOceanDialog *this)
+void TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TWorldView::OrphanLeaf_NoCall_Ins07_004d8920((TWorldView *)this);
@@ -141,7 +140,7 @@ TOceanDialog::OrphanRetStub_005960c0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596080
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596080(void)
 
-void __thiscall TOceanDialog::OrphanRetStub_00596080(TOceanDialog *this)
+void TOceanDialog::OrphanRetStub_00596080()
 
 {
   TOceanDialog_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -191,7 +190,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596080(TOceanDialog *this)
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_005966c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(short param_1)
 
-void __thiscall TOceanDialog::OrphanRetStub_005966c0(TOceanDialog *this,short param_1)
+void TOceanDialog::OrphanRetStub_005966c0(short param_1)
 
 {
   uint uVar1;
@@ -248,7 +247,7 @@ void __thiscall TOceanDialog::OrphanRetStub_005966c0(TOceanDialog *this,short pa
    - Reads strategic-map tile bytes from g_pGlobalMapState with 0x24-byte tile stride.
    - Uses g_pMapActionContextListHead for order-entry overlay annotations. */
 
-void __thiscall TOceanDialog::OrphanTiny_ReturnZero_0048a730(TOceanDialog *this)
+void TOceanDialog::OrphanTiny_ReturnZero_0048a730()
 
 {
   int *piVar1;
@@ -1066,7 +1065,7 @@ TOceanDialog::DispatchReflectedControlMessageOrFallback
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596060
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(short param_1, RECT * param_2)
 
-void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short param_1,RECT *param_2)
+void TOceanDialog::OrphanRetStub_00596060(short param_1, RECT *param_2)
 
 {
   astruct_17 *srcSurface;
@@ -1165,8 +1164,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short pa
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_005960e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(short param_1, short * param_2, short * param_3)
 
-void __thiscall
-TOceanDialog::OrphanRetStub_005960e0(TOceanDialog *this,short param_1,short *param_2,short *param_3)
+void TOceanDialog::OrphanRetStub_005960e0(short param_1, short *param_2, short *param_3)
 
 {
   short sVar1;
@@ -1186,8 +1184,7 @@ TOceanDialog::OrphanRetStub_005960e0(TOceanDialog *this,short param_1,short *par
 // GHIDRA_NAME TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(short param_1)
 
-undefined4 __thiscall
-TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialog *this,short param_1)
+undefined4 TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(short param_1)
 
 {
   short sVar1;
@@ -1214,7 +1211,7 @@ TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialog *this,short param_1)
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596680
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(short param_1, short param_2)
 
-void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this,short param_1,short param_2)
+void TOceanDialog::OrphanRetStub_00596680(short param_1, short param_2)
 
 {
   short sVar1;
@@ -1267,7 +1264,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this,short pa
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00594fc0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(short param_1)
 
-void __thiscall TOceanDialog::OrphanRetStub_00594fc0(TOceanDialog *this,short param_1)
+void TOceanDialog::OrphanRetStub_00594fc0(short param_1)
 
 {
   (*this->vftable[0x3c].slot_0x04)((int)param_1 % 0x6c + -0x10,(int)param_1 / 0x6c + -0xe);
@@ -1278,8 +1275,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00594fc0(TOceanDialog *this,short pa
 // GHIDRA_NAME TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
 // GHIDRA_PROTO undefined __thiscall TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
 
-void __thiscall
-TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(TOceanDialog *this,byte param_1)
+void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
 
 {
   undefined4 in_EAX;
@@ -1314,7 +1310,7 @@ TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(TOceanDialog *this,byte par
 // GHIDRA_NAME TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E
 // GHIDRA_PROTO undefined __thiscall ComputeWrappedTileIndexFromObjectOffset7C7E(void)
 
-int __thiscall TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E(TOceanDialog *this)
+int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E()
 
 {
   undefined4 in_EAX;
@@ -1331,8 +1327,7 @@ int __thiscall TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E(TOceanD
 // GHIDRA_NAME TOceanDialog::RequestAudioPresetChangeWithDeferredApply
 // GHIDRA_PROTO undefined __thiscall TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
 
-void __thiscall
-TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this,int param_1,char param_2)
+void TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
 
 {
   char cVar1;
@@ -1389,7 +1384,7 @@ TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate(int param_1,BOOL p
 // GHIDRA_NAME TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe
 // GHIDRA_PROTO undefined __thiscall DispatchHandleMapLookupWithReadPtrProbe(void)
 
-void __thiscall TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe(TOceanDialog *this)
+void TOceanDialog::DispatchHandleMapLookupWithReadPtrProbe()
 
 {
   BOOL BVar1;

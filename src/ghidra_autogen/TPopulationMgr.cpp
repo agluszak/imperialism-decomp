@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPopulationMgr::GetTPopulationMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTPopulationMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPopulationMgr::GetTPopulationMgrClassNamePointer(TPopulationMgr *this)
+CRuntimeClass * TPopulationMgr::GetTPopulationMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TPopulationMgr::GetTPopulationMgrClassNamePointer(TPo
 // GHIDRA_NAME TPopulationMgr::ConstructTPopulationMgrBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPopulationMgrBaseState(byte param_1)
 
-TPopulationMgr * __thiscall
-TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this,byte param_1)
+TPopulationMgr * TPopulationMgr::ConstructTPopulationMgrBaseState(byte param_1)
 
 {
   TPopulationMgr::DestructTPopulationMgrAndMaybeFree(this);
@@ -32,7 +31,7 @@ TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this,byte param
 // GHIDRA_NAME TPopulationMgr::DestructTPopulationMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(void)
 
-void __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMgr *this)
+void TPopulationMgr::DestructTPopulationMgrAndMaybeFree()
 
 {
   this->vftable = (TPopulationMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -43,8 +42,7 @@ void __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMg
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2)
 
-void __thiscall
-TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(TPopulationMgr *this,int param_1,int param_2)
+void TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2)
 
 {
   *(undefined2 *)(param_2 + 4) = *(undefined2 *)(param_1 + 4);
@@ -57,7 +55,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(TPopulationMgr *this,int param_
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins20_004b5d50(short param_1)
 
-void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(TPopulationMgr *this,short param_1)
+void TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(short param_1)
 
 {
   *(short *)(*(int *)&this->field_0x10 + 4) = param_1;
@@ -112,7 +110,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
 // GHIDRA_NAME TPopulationMgr::OrphanCallChain_C2_I24_004b5e80
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_004b5e80(void)
 
-void __thiscall TPopulationMgr::OrphanCallChain_C2_I24_004b5e80(TPopulationMgr *this)
+void TPopulationMgr::OrphanCallChain_C2_I24_004b5e80()
 
 {
   short sVar1;
@@ -138,8 +136,7 @@ void __thiscall TPopulationMgr::OrphanCallChain_C2_I24_004b5e80(TPopulationMgr *
 // GHIDRA_NAME TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(void)
 
-void __thiscall
-TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(TPopulationMgr *this)
+void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0()
 
 {
   short *psVar1;
@@ -405,7 +402,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0(TPopulationMgr *this)
+float10 TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0()
 
 {
   short sVar1;
@@ -450,7 +447,7 @@ float10 __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0(TPopulationM
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins63_004b64c0(void)
 
-undefined1 * __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0(TPopulationMgr *this)
+undefined1 * TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0()
 
 {
   uint uVar1;
@@ -501,7 +498,7 @@ undefined1 * __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0(TPopula
 // GHIDRA_NAME TPopulationMgr::OrphanCallChain_C2_I61_004b65b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I61_004b65b0(void)
 
-undefined1 __thiscall TPopulationMgr::OrphanCallChain_C2_I61_004b65b0(TPopulationMgr *this)
+undefined1 TPopulationMgr::OrphanCallChain_C2_I61_004b65b0()
 
 {
   int iVar1;
@@ -560,8 +557,7 @@ undefined1 __thiscall TPopulationMgr::OrphanCallChain_C2_I61_004b65b0(TPopulatio
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2)
 
-void __thiscall
-TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr *this,short param_1,short param_2)
+void TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2)
 
 {
   short *psVar1;
@@ -632,8 +628,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr *this,short para
 // GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)
 
-void __thiscall
-TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr *this,short param_1,short param_2)
+void TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2)
 
 {
   short *psVar1;
@@ -664,8 +659,7 @@ TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr *this,short para
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int * param_1)
 
-void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr *this,int *param_1)
+void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int *param_1)
 
 {
   code *pcVar1;
@@ -688,8 +682,7 @@ TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr 
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int * param_1)
 
-void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr *this,int *param_1)
+void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int *param_1)
 
 {
   code *pcVar1;
@@ -712,7 +705,7 @@ TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr 
 // GHIDRA_NAME TPopulationMgr::OrphanCallChain_C4_I28_004b6990
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I28_004b6990(void)
 
-void __thiscall TPopulationMgr::OrphanCallChain_C4_I28_004b6990(TPopulationMgr *this)
+void TPopulationMgr::OrphanCallChain_C4_I28_004b6990()
 
 {
   if (*(int **)&this->field_0x10 != (int *)0x0) {

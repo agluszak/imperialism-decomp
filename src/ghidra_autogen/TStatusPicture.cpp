@@ -13,8 +13,7 @@
 /* Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event
    code 0x10CC. */
 
-int * __thiscall
-TStatusPicture::ConstructTurnEventMainPictureEntry_10CC(TStatusPicture *this,int *pEntry)
+int * TStatusPicture::ConstructTurnEventMainPictureEntry_10CC(int *pEntry)
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -27,8 +26,7 @@ TStatusPicture::ConstructTurnEventMainPictureEntry_10CC(TStatusPicture *this,int
 // GHIDRA_NAME TStatusPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusPicture * __thiscall
-TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
+TStatusPicture * TStatusPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -42,7 +40,7 @@ TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
 // GHIDRA_NAME TStatusPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TStatusPicture::GetTEventHandlerClassNamePointer(TStatusPicture *this)
+CRuntimeClass * TStatusPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,7 +50,7 @@ CRuntimeClass * __thiscall TStatusPicture::GetTEventHandlerClassNamePointer(TSta
 // GHIDRA_NAME TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture *this)
+void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TStatusPictureVtbl *pTVar1;
@@ -253,7 +251,7 @@ LAB_00594498:
 // GHIDRA_NAME TStatusPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *this)
+void TStatusPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -311,7 +309,7 @@ void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *t
 // GHIDRA_NAME TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
 // GHIDRA_PROTO undefined __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(void)
 
-void __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture *this)
+void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets()
 
 {
   short sVar1;

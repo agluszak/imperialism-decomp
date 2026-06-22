@@ -39,8 +39,7 @@ thunk_TPictureButton * TRadioPictureButton::CreateTRadioPictureButtonInstance(vo
 // GHIDRA_NAME TRadioPictureButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TRadioPictureButton::GetTEventHandlerClassNamePointer(TRadioPictureButton *this)
+CRuntimeClass * TRadioPictureButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -56,7 +55,7 @@ TRadioPictureButton::GetTEventHandlerClassNamePointer(TRadioPictureButton *this)
 /* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
    icon slots in multiple UI builders. */
 
-TRadioPictureButton * __thiscall TRadioPictureButton::TRadioPictureButton(TRadioPictureButton *this)
+TRadioPictureButton * TRadioPictureButton::TRadioPictureButton()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -71,8 +70,7 @@ TRadioPictureButton * __thiscall TRadioPictureButton::TRadioPictureButton(TRadio
 // GHIDRA_NAME TRadioPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRadioPictureButton * __thiscall
-TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this,byte param_1)
+TRadioPictureButton * TRadioPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

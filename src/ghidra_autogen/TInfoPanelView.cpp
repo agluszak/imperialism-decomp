@@ -7,8 +7,7 @@
 // GHIDRA_NAME TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60
 // GHIDRA_PROTO undefined __thiscall TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60(void)
 
-TInfoPanelView * __thiscall
-TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60(TInfoPanelView *this)
+TInfoPanelView * TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -21,8 +20,7 @@ TInfoPanelView::ConstructUiResourceEntry_Vtbl0063fe60(TInfoPanelView *this)
 // GHIDRA_NAME TInfoPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoPanelView * __thiscall
-TInfoPanelView::_scalar_deleting_destructor_(TInfoPanelView *this,byte param_1)
+TInfoPanelView * TInfoPanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -66,7 +64,7 @@ TView * TInfoPanelView::CreateTInfoPanelViewInstance(void)
 // GHIDRA_NAME TInfoPanelView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TInfoPanelView::GetTEventHandlerClassNamePointer(TInfoPanelView *this)
+CRuntimeClass * TInfoPanelView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +74,7 @@ CRuntimeClass * __thiscall TInfoPanelView::GetTEventHandlerClassNamePointer(TInf
 // GHIDRA_NAME TInfoPanelView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TInfoPanelView::OrphanCallChain_C6_I49_004875d0(TInfoPanelView *this)
+void TInfoPanelView::OrphanCallChain_C6_I49_004875d0()
 
 {
   int iVar1;
@@ -138,7 +136,7 @@ void __thiscall TInfoPanelView::OrphanCallChain_C6_I49_004875d0(TInfoPanelView *
 // GHIDRA_NAME TInfoPanelView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TInfoPanelView::OrphanTiny_ReturnZero_0048a730(TInfoPanelView *this)
+void TInfoPanelView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -409,7 +407,7 @@ LAB_004faa26:
 // GHIDRA_NAME TInfoPanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall TInfoPanelView::OrphanRetStub_00430550(TInfoPanelView *this)
+void TInfoPanelView::OrphanRetStub_00430550()
 
 {
   TInfoPanelView_slot_0x04_0x04 *pTVar1;
@@ -478,7 +476,7 @@ TInfoPanelView::OrphanRetStub_0059add0
 // GHIDRA_NAME TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
 
-void __thiscall TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(TInfoPanelView *this,short param_1)
+void TInfoPanelView::OrphanLeaf_NoCall_Ins97_004fae00(short param_1)
 
 {
   short *psVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBuildingExpansionView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBuildingExpansionView::GetTEventHandlerClassNamePointer(TBuildingExpansionView *this)
+CRuntimeClass * TBuildingExpansionView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TBuildingExpansionView::GetTEventHandlerClassNamePointer(TBuildingExpansionView 
 // GHIDRA_NAME TBuildingExpansionView::ConstructBuildingExpansionView
 // GHIDRA_PROTO undefined __thiscall ConstructBuildingExpansionView(void)
 
-TBuildingExpansionView * __thiscall
-TBuildingExpansionView::ConstructBuildingExpansionView(TBuildingExpansionView *this)
+TBuildingExpansionView * TBuildingExpansionView::ConstructBuildingExpansionView()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -31,8 +29,7 @@ TBuildingExpansionView::ConstructBuildingExpansionView(TBuildingExpansionView *t
 // GHIDRA_NAME TBuildingExpansionView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBuildingExpansionView * __thiscall
-TBuildingExpansionView::_scalar_deleting_destructor_(TBuildingExpansionView *this,byte param_1)
+TBuildingExpansionView * TBuildingExpansionView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

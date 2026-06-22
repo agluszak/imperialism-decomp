@@ -12739,8 +12739,7 @@ void DestroyRuntimeClassState_0066FA50_AtExit(void)
 // GHIDRA_NAME TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
 // GHIDRA_PROTO undefined __thiscall TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
-void __thiscall
-TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
+void TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
 
 {
   TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
@@ -12763,8 +12762,7 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 // GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
 // GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
-void __thiscall
-TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+void TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
 {
   TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
@@ -12787,8 +12785,7 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 // GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
 // GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
-void __thiscall
-TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+void TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
 {
   TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);

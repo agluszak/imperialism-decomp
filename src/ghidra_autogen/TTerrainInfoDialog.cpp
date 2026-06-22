@@ -37,8 +37,7 @@ TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
 // GHIDRA_NAME TTerrainInfoDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTerrainInfoDialog::GetTEventHandlerClassNamePointer(TTerrainInfoDialog *this)
+CRuntimeClass * TTerrainInfoDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TTerrainInfoDialog::GetTEventHandlerClassNamePointer(TTerrainInfoDialog *this)
 // GHIDRA_NAME TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTerrainInfoDialogBaseState(void)
 
-TTerrainInfoDialog * __thiscall
-TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *this)
+TTerrainInfoDialog * TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -61,8 +59,7 @@ TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *thi
 // GHIDRA_NAME TTerrainInfoDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTerrainInfoDialog * __thiscall
-TTerrainInfoDialog::_scalar_deleting_destructor_(TTerrainInfoDialog *this,byte param_1)
+TTerrainInfoDialog * TTerrainInfoDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

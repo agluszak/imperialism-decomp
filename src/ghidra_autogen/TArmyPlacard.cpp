@@ -38,7 +38,7 @@ thunk_TPictureButton * TArmyPlacard::CreateTArmyPlacardInstance(void)
 // GHIDRA_NAME TArmyPlacard::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyPlacard::GetTEventHandlerClassNamePointer(TArmyPlacard *this)
+CRuntimeClass * TArmyPlacard::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTArmyPlacard;
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TArmyPlacard::GetTEventHandlerClassNamePointer(TArmyP
 // GHIDRA_NAME TArmyPlacard::TArmyPlacard
 // GHIDRA_PROTO undefined __thiscall TArmyPlacard::TArmyPlacard(void)
 
-TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
+TArmyPlacard * TArmyPlacard::TArmyPlacard()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -61,8 +61,7 @@ TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
 // GHIDRA_NAME TArmyPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyPlacard * __thiscall
-TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this,byte param_1)
+TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -76,8 +75,7 @@ TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this,byte param_1)
 // GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(short param_1)
 
-void __thiscall
-TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this,short param_1)
+void TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(short param_1)
 
 {
   TArmyPlacardVtbl *pTVar1;
@@ -107,7 +105,7 @@ TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this,short p
 // GHIDRA_NAME TArmyPlacard::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
+void TArmyPlacard::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -149,8 +147,7 @@ void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
 // GHIDRA_NAME TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall
-TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmyPlacard *this,int param_1)
+void TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   undefined4 uVar1;

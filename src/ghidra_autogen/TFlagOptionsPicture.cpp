@@ -21,8 +21,7 @@ TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8
 // GHIDRA_NAME TFlagOptionsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFlagOptionsPicture * __thiscall
-TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this,byte param_1)
+TFlagOptionsPicture * TFlagOptionsPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -66,8 +65,7 @@ thunk_TPictureButton * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(vo
 // GHIDRA_NAME TFlagOptionsPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TFlagOptionsPicture::GetTEventHandlerClassNamePointer(TFlagOptionsPicture *this)
+CRuntimeClass * TFlagOptionsPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -196,7 +194,7 @@ LAB_0056b529:
 // GHIDRA_NAME TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TFlagOptionsPicture *this)
+void TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;

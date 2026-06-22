@@ -13,8 +13,7 @@
 /* Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event
    code 0x104F. */
 
-int * __thiscall
-TCreditsPicture::ConstructTurnEventMainPictureEntry_104F(TCreditsPicture *this,int *pEntry)
+int * TCreditsPicture::ConstructTurnEventMainPictureEntry_104F(int *pEntry)
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -26,7 +25,7 @@ TCreditsPicture::ConstructTurnEventMainPictureEntry_104F(TCreditsPicture *this,i
 // GHIDRA_NAME TCreditsPicture::OrphanRetStub_0043d9f0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0043d9f0(void)
 
-void __thiscall TCreditsPicture::OrphanRetStub_0043d9f0(TCreditsPicture *this)
+void TCreditsPicture::OrphanRetStub_0043d9f0()
 
 {
   return;
@@ -36,8 +35,7 @@ void __thiscall TCreditsPicture::OrphanRetStub_0043d9f0(TCreditsPicture *this)
 // GHIDRA_NAME TCreditsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCreditsPicture * __thiscall
-TCreditsPicture::_scalar_deleting_destructor_(TCreditsPicture *this,byte param_1)
+TCreditsPicture * TCreditsPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -81,7 +79,7 @@ thunk_TPictureButton * TCreditsPicture::CreateTCreditsPictureInstance(void)
 // GHIDRA_NAME TCreditsPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCreditsPicture::GetTEventHandlerClassNamePointer(TCreditsPicture *this)
+CRuntimeClass * TCreditsPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -91,7 +89,7 @@ CRuntimeClass * __thiscall TCreditsPicture::GetTEventHandlerClassNamePointer(TCr
 // GHIDRA_NAME TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TCreditsPicture *this)
+void TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;
@@ -220,7 +218,7 @@ TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_NAME TCreditsPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TCreditsPicture::OrphanTiny_ReturnZero_0048a730(TCreditsPicture *this)
+void TCreditsPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

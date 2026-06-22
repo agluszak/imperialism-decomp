@@ -7,8 +7,7 @@
 // GHIDRA_NAME TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 __thiscall
-TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0(TRemoteGreatPower *this)
+undefined1 TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 
 {
   return 1;
@@ -18,7 +17,7 @@ TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0(TRemoteGreatPower *thi
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
 
-undefined1 __thiscall TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation(TRemoteGreatPower *this)
+undefined1 TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation()
 
 {
   return 0;
@@ -28,7 +27,7 @@ undefined1 __thiscall TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation(TRem
 // GHIDRA_NAME TRemoteGreatPower::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
 
-void __thiscall TRemoteGreatPower::DispatchNationStateEventCode10(TRemoteGreatPower *this)
+void TRemoteGreatPower::DispatchNationStateEventCode10()
 
 {
   return;
@@ -38,7 +37,7 @@ void __thiscall TRemoteGreatPower::DispatchNationStateEventCode10(TRemoteGreatPo
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanRetStub_0059add0()
 
 {
   return;
@@ -48,7 +47,7 @@ void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *thi
 // GHIDRA_NAME TRemoteGreatPower::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TRemoteGreatPower::GetTEventHandlerClassNamePointer(TRemoteGreatPower *this)
+void TRemoteGreatPower::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -58,7 +57,7 @@ void __thiscall TRemoteGreatPower::GetTEventHandlerClassNamePointer(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_005418e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005418e0(void)
 
-void __thiscall TRemoteGreatPower::OrphanRetStub_005418e0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanRetStub_005418e0()
 
 {
   return;
@@ -68,7 +67,7 @@ void __thiscall TRemoteGreatPower::OrphanRetStub_005418e0(TRemoteGreatPower *thi
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7fc0(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0()
 
 {
   return;
@@ -78,7 +77,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this)
+void TRemoteGreatPower::_scalar_deleting_destructor_()
 
 {
   return;
@@ -88,7 +87,7 @@ void __thiscall TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPowe
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanRetStub_0059add0()
 
 {
   return;
@@ -98,7 +97,7 @@ void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *thi
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_004d87b0(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0()
 
 {
   return;
@@ -108,7 +107,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_004d87b0(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0()
 
 {
   return;
@@ -118,8 +117,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void __thiscall
-TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState(TRemoteGreatPower *this)
+void TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
   return;
@@ -129,7 +127,7 @@ TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState(TRemoteGreatPower
 // GHIDRA_NAME TRemoteGreatPower::IsDiplomacyTargetClassCode200Match
 // GHIDRA_PROTO undefined __thiscall IsDiplomacyTargetClassCode200Match(void)
 
-void __thiscall TRemoteGreatPower::IsDiplomacyTargetClassCode200Match(TRemoteGreatPower *this)
+void TRemoteGreatPower::IsDiplomacyTargetClassCode200Match()
 
 {
   return;
@@ -139,7 +137,7 @@ void __thiscall TRemoteGreatPower::IsDiplomacyTargetClassCode200Match(TRemoteGre
 // GHIDRA_NAME TRemoteGreatPower::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
-void __thiscall TRemoteGreatPower::AddRegionIdToNationOwnedRegionList(TRemoteGreatPower *this)
+void TRemoteGreatPower::AddRegionIdToNationOwnedRegionList()
 
 {
                     /* WARNING: Could not recover jumptable at 0x005419e2. Too many branches */
@@ -152,7 +150,7 @@ void __thiscall TRemoteGreatPower::AddRegionIdToNationOwnedRegionList(TRemoteGre
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7ee0(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0()
 
 {
   return;
@@ -162,7 +160,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return;
@@ -172,8 +170,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount
 // GHIDRA_PROTO undefined __thiscall TGreatPower::SelectCandidateTilesWithLowGroundUnitCount(void)
 
-void __thiscall
-TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount(TRemoteGreatPower *this)
+void TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount()
 
 {
   return;
@@ -183,7 +180,7 @@ TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount(TRemoteGreatPower 
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreatPower *this)
+void TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return;
@@ -193,8 +190,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreat
 // GHIDRA_NAME TRemoteGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRemoteGreatPower * __thiscall
-TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this,byte param_1)
+TRemoteGreatPower * TRemoteGreatPower::_scalar_deleting_destructor_(byte param_1)
 
 {
   TRemoteGreatPower::DestructTRemoteGreatPower(this);
@@ -208,7 +204,7 @@ TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this,byte par
 // GHIDRA_NAME TRemoteGreatPower::DestructTRemoteGreatPower
 // GHIDRA_PROTO undefined __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(void)
 
-void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *this)
+void TRemoteGreatPower::DestructTRemoteGreatPower()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -233,7 +229,7 @@ void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *
 // GHIDRA_NAME TRemoteGreatPower::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRemoteGreatPower::GetTCountryClassNamePointer(TRemoteGreatPower *this)
+CRuntimeClass * TRemoteGreatPower::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -243,7 +239,7 @@ CRuntimeClass * __thiscall TRemoteGreatPower::GetTCountryClassNamePointer(TRemot
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
-void __thiscall TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition(TRemoteGreatPower *this)
+void TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition()
 
 {
   RemoveNationSlotAndNotifyPeers(*(undefined2 *)&this->field_0xc);

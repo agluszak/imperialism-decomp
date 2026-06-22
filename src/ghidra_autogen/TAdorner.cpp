@@ -39,7 +39,7 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
 // GHIDRA_NAME TAdorner::GetTAdornerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAdorner::GetTAdornerClassNamePointer(TAdorner *this)
+CRuntimeClass * TAdorner::GetTAdornerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -82,8 +82,7 @@ TView * TAdorner::ConstructTAdornerBaseState(void)
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900()
 
 {
   undefined4 uVar1;
@@ -97,8 +96,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930()
 
 {
   undefined4 uVar1;
@@ -112,8 +110,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960()
 
 {
   undefined4 uVar1;
@@ -127,8 +124,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990()
 
 {
   undefined4 uVar1;
@@ -142,8 +138,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0()
 
 {
   undefined4 uVar1;
@@ -157,8 +152,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0()
 
 {
   undefined4 uVar1;
@@ -172,8 +166,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20()
 
 {
   undefined4 uVar1;
@@ -187,8 +180,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
 
-void __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(TAdorner *this)
+void TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50()
 
 {
   undefined4 uVar1;
@@ -202,8 +194,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 // GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
 
-uint __thiscall
-TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(TAdorner *this)
+uint TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80()
 
 {
   undefined4 uVar1;
@@ -218,8 +209,7 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 // GHIDRA_NAME TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
 
-TAdorner * __thiscall
-TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(TAdorner *this,byte param_1)
+TAdorner * TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl();

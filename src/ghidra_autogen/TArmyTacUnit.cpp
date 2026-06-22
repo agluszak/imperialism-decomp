@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot02
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot02(int param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this,int param_1)
+void TArmyTacUnit::TArmyTacUnit_VtblSlot02(int param_1)
 
 {
   TAutoGreatPower *this_00;
@@ -26,7 +26,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot02(TArmyTacUnit *this,int par
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot03
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot03(int * param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this,int *param_1)
+void TArmyTacUnit::TArmyTacUnit_VtblSlot03(int *param_1)
 
 {
   int *piVar1;
@@ -45,7 +45,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot03(TArmyTacUnit *this,int *pa
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot06(void)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
+void TArmyTacUnit::TArmyTacUnit_VtblSlot06()
 
 {
   int iVar1;
@@ -70,7 +70,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot07
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot07(undefined4 param_1)
 
-void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this,undefined4 param_1)
+void TArmyTacUnit::TArmyTacUnit_VtblSlot07(undefined4 param_1)
 
 {
   int iVar1;
@@ -97,7 +97,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot07(TArmyTacUnit *this,undefin
 // GHIDRA_NAME TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit
 // GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(void)
 
-void __thiscall TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit(TArmyTacUnit *this)
+void TArmyTacUnit::RunTacticalAutoTurnControllerForActiveUnit()
 
 {
   short sVar1;
@@ -235,7 +235,7 @@ LAB_0059e5be:
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot09
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot09(void)
 
-undefined1 __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
+undefined1 TArmyTacUnit::TArmyTacUnit_VtblSlot09()
 
 {
   undefined1 uVar1;
@@ -287,7 +287,7 @@ undefined1 __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(void)
 
-int __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit *this)
+int TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl()
 
 {
   bool bVar1;
@@ -331,7 +331,7 @@ LAB_005a42a1:
 // GHIDRA_NAME TArmyTacUnit::CreateTArmyTacUnitInstance
 // GHIDRA_PROTO undefined __thiscall CreateTArmyTacUnitInstance(void)
 
-void __thiscall TArmyTacUnit::CreateTArmyTacUnitInstance(TArmyTacUnit *this)
+void TArmyTacUnit::CreateTArmyTacUnitInstance()
 
 {
   *(uint *)&this->field_0x20 = (uint)(*(int *)&this->field_0x20 == 0);
@@ -342,7 +342,7 @@ void __thiscall TArmyTacUnit::CreateTArmyTacUnitInstance(TArmyTacUnit *this)
 // GHIDRA_NAME TArmyTacUnit::GetTTacticalUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyTacUnit::GetTTacticalUnitClassNamePointer(TArmyTacUnit *this)
+CRuntimeClass * TArmyTacUnit::GetTTacticalUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -352,7 +352,7 @@ CRuntimeClass * __thiscall TArmyTacUnit::GetTTacticalUnitClassNamePointer(TArmyT
 // GHIDRA_NAME TArmyTacUnit::ConstructTArmyTacUnitBaseState
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
 
-void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,int param_1)
+void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
 
 {
   short sVar1;
@@ -393,7 +393,7 @@ void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(TArmyTacUnit *this)
+void TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree()
 
 {
   float fVar1;
@@ -426,7 +426,7 @@ void __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(TArmyTacUnit *thi
 // GHIDRA_NAME TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
-int __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(TArmyTacUnit *this)
+int TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40()
 
 {
   return (int)*(short *)(&DAT_00669898 + *(int *)&this->field_0xc * 2);
@@ -436,7 +436,7 @@ int __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(TArmyTacUnit *this)
 // GHIDRA_NAME TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
 
-int __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60(TArmyTacUnit *this)
+int TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60()
 
 {
   int iVar1;
@@ -453,7 +453,7 @@ int __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60(TArmyTacUnit *this)
 // GHIDRA_NAME TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5d80(void)
 
-float10 __thiscall TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TArmyTacUnit *this)
+float10 TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
 
 {
   return (float10)*(float *)(&DAT_006698d8 + *(int *)&this->field_0xc * 4);
@@ -463,7 +463,7 @@ float10 __thiscall TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TArmyTacUnit *
 // GHIDRA_NAME TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5da0(void)
 
-float10 __thiscall TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TArmyTacUnit *this)
+float10 TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 
 {
   return (float10)*(float *)(&DAT_00669970 + *(int *)&this->field_0xc * 4);
@@ -473,8 +473,7 @@ float10 __thiscall TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TArmyTacUnit *
 // GHIDRA_NAME TArmyTacUnit::SetScrollRange
 // GHIDRA_PROTO undefined __thiscall SetScrollRange(int param_1, int param_2, int param_3, BOOL param_4)
 
-void __thiscall
-TArmyTacUnit::SetScrollRange(TArmyTacUnit *this,int param_1,int param_2,int param_3,BOOL param_4)
+void TArmyTacUnit::SetScrollRange(int param_1, int param_2, int param_3, BOOL param_4)
 
 {
   undefined uVar1;
@@ -497,7 +496,7 @@ TArmyTacUnit::SetScrollRange(TArmyTacUnit *this,int param_1,int param_2,int para
 // GHIDRA_NAME TArmyTacUnit::EnableScrollBarCtrl
 // GHIDRA_PROTO undefined __thiscall EnableScrollBarCtrl(int param_1)
 
-void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this,int param_1)
+void TArmyTacUnit::EnableScrollBarCtrl(int param_1)
 
 {
   undefined uVar1;
@@ -530,8 +529,7 @@ void __thiscall TArmyTacUnit::EnableScrollBarCtrl(TArmyTacUnit *this,int param_1
 /* Scrolls client area by delta or repositions child windows when invisible/no clip rects.
    Also forwards scroll delta to attached helper object (+0x34 -> vfunc +0x60). */
 
-void __thiscall
-TArmyTacUnit::ScrollWindow(TArmyTacUnit *this,int param_1,int param_2,RECT *param_3,RECT *param_4)
+void TArmyTacUnit::ScrollWindow(int param_1, int param_2, RECT *param_3, RECT *param_4)
 
 {
   BOOL BVar1;
@@ -561,8 +559,7 @@ TArmyTacUnit::ScrollWindow(TArmyTacUnit *this,int param_1,int param_2,RECT *para
 // GHIDRA_NAME TArmyTacUnit::SetScaleToFitSize
 // GHIDRA_PROTO undefined __thiscall SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TArmyTacUnit::SetScaleToFitSize(TArmyTacUnit *this,undefined4 param_1,undefined4 param_2)
+void TArmyTacUnit::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
 
 {
   uint uVar1;
@@ -708,7 +705,7 @@ void TArmyTacUnit::ScrollToPosition(void)
 // GHIDRA_NAME TArmyTacUnit::ScrollToDevicePosition
 // GHIDRA_PROTO undefined __thiscall ScrollToDevicePosition(int param_1, int param_2)
 
-void __thiscall TArmyTacUnit::ScrollToDevicePosition(TArmyTacUnit *this,int param_1,int param_2)
+void TArmyTacUnit::ScrollToDevicePosition(int param_1, int param_2)
 
 {
   int iVar1;
@@ -726,7 +723,7 @@ void __thiscall TArmyTacUnit::ScrollToDevicePosition(TArmyTacUnit *this,int para
 // GHIDRA_NAME TArmyTacUnit::GetScrollBarSizes
 // GHIDRA_PROTO undefined __thiscall GetScrollBarSizes(int * param_1)
 
-void __thiscall TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this,int *param_1)
+void TArmyTacUnit::GetScrollBarSizes(int *param_1)
 
 {
   TArmyTacUnit_GetTTacticalUnitClassNamePointer_0x00 *pTVar1;
@@ -755,7 +752,7 @@ void __thiscall TArmyTacUnit::GetScrollBarSizes(TArmyTacUnit *this,int *param_1)
 // GHIDRA_NAME TArmyTacUnit::GetTrueClientSize
 // GHIDRA_PROTO undefined __thiscall GetTrueClientSize(int * param_1, int * param_2)
 
-undefined4 __thiscall TArmyTacUnit::GetTrueClientSize(TArmyTacUnit *this,int *param_1,int *param_2)
+undefined4 TArmyTacUnit::GetTrueClientSize(int *param_1, int *param_2)
 
 {
   uint uVar1;
@@ -845,7 +842,7 @@ TArmyTacUnit::GetScrollBarState
 // GHIDRA_NAME TArmyTacUnit::UpdateBars
 // GHIDRA_PROTO undefined __thiscall UpdateBars(void)
 
-void __thiscall TArmyTacUnit::UpdateBars(TArmyTacUnit *this)
+void TArmyTacUnit::UpdateBars()
 
 {
   HWND pHVar1;

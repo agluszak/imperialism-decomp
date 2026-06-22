@@ -38,8 +38,7 @@ thunk_TPictureButton * TDealBookPicture::CreateTDealBookPictureInstance(void)
 // GHIDRA_NAME TDealBookPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TDealBookPicture::GetTEventHandlerClassNamePointer(TDealBookPicture *this)
+CRuntimeClass * TDealBookPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +48,7 @@ TDealBookPicture::GetTEventHandlerClassNamePointer(TDealBookPicture *this)
 // GHIDRA_NAME TDealBookPicture::ConstructTDealBookPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TDealBookPicture::ConstructTDealBookPictureBaseState(void)
 
-TDealBookPicture * __thiscall
-TDealBookPicture::ConstructTDealBookPictureBaseState(TDealBookPicture *this)
+TDealBookPicture * TDealBookPicture::ConstructTDealBookPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -64,8 +62,7 @@ TDealBookPicture::ConstructTDealBookPictureBaseState(TDealBookPicture *this)
 // GHIDRA_NAME TDealBookPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealBookPicture * __thiscall
-TDealBookPicture::_scalar_deleting_destructor_(TDealBookPicture *this,byte param_1)
+TDealBookPicture * TDealBookPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

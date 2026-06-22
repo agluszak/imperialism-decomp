@@ -7,7 +7,7 @@
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot022
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::AddToForeignMinisterCounterAtIndex(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot022(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot022()
 
 {
   TDiplomacyMapView::AddToForeignMinisterCounterAtIndex((TDiplomacyMapView *)this);
@@ -18,7 +18,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot022(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot055
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot055(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot055()
 
 {
   TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag((TDiplomacyMapView *)this);
@@ -29,7 +29,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot055(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot045
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::SetUiResourceOwner(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot045(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot045()
 
 {
   TDiplomacyMapView::SetUiResourceOwner((TDiplomacyMapView *)this);
@@ -40,7 +40,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot045(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot068
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot068(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot068()
 
 {
   TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages((TDiplomacyMapView *)this);
@@ -92,7 +92,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot034
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot034(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot034()
 
 {
   TDiplomacyMapView::OrphanRetStub_0059add0((TDiplomacyMapView *)this);
@@ -103,7 +103,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot034(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot035
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetCityDialogFlagByte4(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot035(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot035()
 
 {
   TDiplomacyMapView::GetCityDialogFlagByte4((TDiplomacyMapView *)this);
@@ -114,7 +114,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot035(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot043
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod5C(void)
 
-void __thiscall TViewMgr::TViewMgr_VtblSlot043(TViewMgr *this)
+void TViewMgr::TViewMgr_VtblSlot043()
 
 {
   TDiplomacyMapView::InvokeStrategicMapViewMethod5C((TDiplomacyMapView *)this);
@@ -157,8 +157,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot043(TViewMgr *this)
    Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses
    g_adwEngineerRailBuildCostByTerrainType. */
 
-bool __thiscall
-TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
+bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 
 {
   uint uVar1;
@@ -436,7 +435,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
 
 /* Returns pointer to the static Turn View Manager class-name descriptor/string table entry. */
 
-CRuntimeClass * __thiscall TViewMgr::GetTViewMgrClassNamePointer(TViewMgr *this)
+CRuntimeClass * TViewMgr::GetTViewMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -453,7 +452,7 @@ CRuntimeClass * __thiscall TViewMgr::GetTViewMgrClassNamePointer(TViewMgr *this)
    Sets vtable PTR_LAB_0066F120 and initializes current-event and status fields consumed by
    DispatchGlobalTurnEventCode (vtable +0x4C). */
 
-void __thiscall TViewMgr::ConstructGlobalTurnEventState(TViewMgr *this)
+void TViewMgr::ConstructGlobalTurnEventState()
 
 {
   this->vftable = &TViewMgrVtbl_0066f120;
@@ -478,7 +477,7 @@ void __thiscall TViewMgr::ConstructGlobalTurnEventState(TViewMgr *this)
 /* Deleting-destructor wrapper for TurnEventState object. Calls SetTurnEventStateBaseVtable and
    frees memory when delete flag bit0 is set. */
 
-TViewMgr * __thiscall TViewMgr::DestroyTurnEventState(TViewMgr *this,byte param_1)
+TViewMgr * TViewMgr::DestroyTurnEventState(byte param_1)
 
 {
   SetTurnEventStateBaseVtable();
@@ -498,7 +497,7 @@ TViewMgr * __thiscall TViewMgr::DestroyTurnEventState(TViewMgr *this,byte param_
 /* Initializes TurnEventState cursor table at this+0x14 by loading 0x36 cursor handles (resource IDs
    1000..1053). */
 
-void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
+void TViewMgr::LoadTurnEventCursorTable()
 
 {
   undefined4 uVar1;
@@ -526,7 +525,7 @@ void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
 /* Releases/destroys dialog/view object if pointer is non-null by calling its virtual slot +0x4 with
    delete flag 1. */
 
-void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
+void TViewMgr::ReleaseTurnEventDialogIfPresent()
 
 {
   if (this != (TViewMgr *)0x0) {
@@ -545,7 +544,7 @@ void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
 /* Deserialization/load hook for turn-event dispatch state. Invokes base stream load then explicitly
    resets current event code (word +0x4) to 0 and clears transient dispatch flags. */
 
-void __thiscall TViewMgr::DeserializeTurnEventDispatchState(TViewMgr *this)
+void TViewMgr::DeserializeTurnEventDispatchState()
 
 {
   TObject::ReadFrom((TMapDialog *)this);
@@ -567,7 +566,7 @@ void __thiscall TViewMgr::DeserializeTurnEventDispatchState(TViewMgr *this)
 
 /* Serialization/save hook for turn-event dispatch state (delegates to base stream serializer). */
 
-void __thiscall TViewMgr::SerializeTurnEventDispatchState(TViewMgr *this)
+void TViewMgr::SerializeTurnEventDispatchState()
 
 {
   TObject::WriteTo((TArmyPlayer *)this);
@@ -583,7 +582,7 @@ void __thiscall TViewMgr::SerializeTurnEventDispatchState(TViewMgr *this)
 
 /* Computes palette index from turn-event code and applies resulting color via FUN_004950F0 path. */
 
-void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this,undefined4 param_1)
+void TViewMgr::ApplyTurnEventPaletteColorByEventCode(undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -603,7 +602,7 @@ void __thiscall TViewMgr::ApplyTurnEventPaletteColorByEventCode(TViewMgr *this,u
 /* Computes palette index from turn-event code and updates current palette index state with fallback
    handling. */
 
-void __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,undefined4 param_1)
+void TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 
 {
   uint palette_index;
@@ -625,7 +624,7 @@ void __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,und
    Fetches view 0x7E5, updates DLOG/GOLD widget state, runs commit/refresh chain, and temporarily
    masks game-flow flag g_pGameFlowState+0x68 when localization mode is active. */
 
-void __thiscall TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog(TViewMgr *this)
+void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog()
 
 {
   int iVar1;
@@ -691,7 +690,7 @@ void __thiscall TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog(TViewMgr 
 /* Classifies current turn state (g_pLocalizationTable+8) into overlay mode bucket: returns 0, 1, or
    2. */
 
-undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
+undefined4 TViewMgr::ClassifyTurnStateForOverlayMode()
 
 {
   switch(*(undefined2 *)&g_pLocalizationTable->field_0x8) {
@@ -722,8 +721,7 @@ undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
 // GHIDRA_NAME TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
 // GHIDRA_PROTO undefined __thiscall RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
 
-void __thiscall
-TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this,undefined4 *param_1)
+void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *param_1)
 
 {
   undefined uVar1;
@@ -768,7 +766,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this,und
 /* Computes turn-event dialog placement offsets from current event code (this+0x4), selecting
    special layout buckets for key event ids. */
 
-void __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(TViewMgr *this)
+void TViewMgr::ComputeTurnEventDialogPlacementByCode()
 
 {
   short sVar1;
@@ -839,7 +837,7 @@ LAB_005d6ac9:
 /* Updates main-view nation indicator hooks based on current turn event code (special-case for 0x7DD
    vs default tool branch). */
 
-void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TViewMgr *this)
+void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent()
 
 {
   int iVar1;
@@ -875,7 +873,7 @@ void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TVie
    Initializes a dialog/hotkey control block from DAT_00698B1A template data, conditionally
    registers it, then releases temporary dialog objects. */
 
-void __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TViewMgr *this)
+void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog()
 
 {
   int iVar1;

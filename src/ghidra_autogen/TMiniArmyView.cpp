@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMiniArmyView::OrphanRetStub_004aad20
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004aad20(void)
 
-void __thiscall TMiniArmyView::OrphanRetStub_004aad20(TMiniArmyView *this)
+void TMiniArmyView::OrphanRetStub_004aad20()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TMiniArmyView::OrphanRetStub_004aad20(TMiniArmyView *this)
 // GHIDRA_NAME TMiniArmyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniArmyView * __thiscall
-TMiniArmyView::_scalar_deleting_destructor_(TMiniArmyView *this,byte param_1)
+TMiniArmyView * TMiniArmyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -62,7 +61,7 @@ TControl * TMiniArmyView::CreateTMiniArmyViewInstance(void)
 // GHIDRA_NAME TMiniArmyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniArmyView::GetTEventHandlerClassNamePointer(TMiniArmyView *this)
+CRuntimeClass * TMiniArmyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -72,7 +71,7 @@ CRuntimeClass * __thiscall TMiniArmyView::GetTEventHandlerClassNamePointer(TMini
 // GHIDRA_NAME TMiniArmyView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *this)
+void TMiniArmyView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -162,8 +161,7 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
 // GHIDRA_NAME TMiniArmyView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, CString param_2)
 
-void __thiscall
-TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this,int param_1,CString param_2)
+void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
 
 {
   int iVar1;

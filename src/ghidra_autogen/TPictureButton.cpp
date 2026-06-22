@@ -28,7 +28,7 @@
    Returns:
    - this pointer. */
 
-TPictureButton * __thiscall TPictureButton::TPictureButton(TPictureButton *this)
+TPictureButton * TPictureButton::TPictureButton()
 
 {
   ushort uVar1;
@@ -87,7 +87,7 @@ thunk_TPictureButton * TPictureButton::CreateTPictureButtonInstance(void)
 // GHIDRA_NAME TPictureButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPictureButton::GetTEventHandlerClassNamePointer(TPictureButton *this)
+CRuntimeClass * TPictureButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -103,7 +103,7 @@ CRuntimeClass * __thiscall TPictureButton::GetTEventHandlerClassNamePointer(TPic
 /* Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs',
    'tab0'..'tab8'). Sets timing/word field (+0x92=7000). */
 
-TPictureButton * __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton *this)
+TPictureButton * TPictureButton::ConstructUiTabCursorPictureEntry()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -116,8 +116,7 @@ TPictureButton * __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPi
 // GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureButton * __thiscall
-TPictureButton::_scalar_deleting_destructor_(TPictureButton *this,byte param_1)
+TPictureButton * TPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -131,7 +130,7 @@ TPictureButton::_scalar_deleting_destructor_(TPictureButton *this,byte param_1)
 // GHIDRA_NAME TPictureButton::OrphanCallChain_C2_I24_00570870
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
 
-void __thiscall TPictureButton::OrphanCallChain_C2_I24_00570870(TPictureButton *this,char param_1)
+void TPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
 
 {
   TPictureButtonVtbl *pTVar1;
@@ -152,7 +151,7 @@ void __thiscall TPictureButton::OrphanCallChain_C2_I24_00570870(TPictureButton *
 // GHIDRA_NAME TPictureButton::OrphanCallChain_C2_I18_005708c0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_005708c0(void)
 
-void __thiscall TPictureButton::OrphanCallChain_C2_I18_005708c0(TPictureButton *this)
+void TPictureButton::OrphanCallChain_C2_I18_005708c0()
 
 {
   undefined uVar1;
@@ -169,7 +168,7 @@ void __thiscall TPictureButton::OrphanCallChain_C2_I18_005708c0(TPictureButton *
 // GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TPictureButton::_scalar_deleting_destructor_(TPictureButton *this)
+void TPictureButton::_scalar_deleting_destructor_()
 
 {
   undefined4 in_EDX;

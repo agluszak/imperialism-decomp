@@ -40,8 +40,7 @@ TBehavior * TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(void)
 // GHIDRA_NAME TDropShadowTextBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TDropShadowTextBehavior::GetTBehaviorClassNamePointer(TDropShadowTextBehavior *this)
+CRuntimeClass * TDropShadowTextBehavior::GetTBehaviorClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,8 +50,7 @@ TDropShadowTextBehavior::GetTBehaviorClassNamePointer(TDropShadowTextBehavior *t
 // GHIDRA_NAME TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDropShadowTextBehaviorBaseState(void)
 
-TDropShadowTextBehavior * __thiscall
-TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(TDropShadowTextBehavior *this)
+TDropShadowTextBehavior * TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState()
 
 {
   TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
@@ -84,7 +82,7 @@ TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
 // GHIDRA_NAME TDropShadowTextBehavior::OrphanRetStub_004872e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004872e0(void)
 
-void __thiscall TDropShadowTextBehavior::OrphanRetStub_004872e0(TDropShadowTextBehavior *this)
+void TDropShadowTextBehavior::OrphanRetStub_004872e0()
 
 {
   int *piVar1;

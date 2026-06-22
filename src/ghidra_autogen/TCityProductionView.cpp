@@ -7,8 +7,7 @@
 // GHIDRA_NAME TCityProductionView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
+CRuntimeClass * TCityProductionView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
 // GHIDRA_NAME TCityProductionView::InitializeCityProductionView
 // GHIDRA_PROTO undefined __thiscall InitializeCityProductionView(void)
 
-TCityProductionView * __thiscall
-TCityProductionView::InitializeCityProductionView(TCityProductionView *this)
+TCityProductionView * TCityProductionView::InitializeCityProductionView()
 
 {
   int iVar1;
@@ -52,8 +50,7 @@ TCityProductionView::InitializeCityProductionView(TCityProductionView *this)
 // GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityProductionView * __thiscall
-TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this,byte param_1)
+TCityProductionView * TCityProductionView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -118,8 +115,7 @@ TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this,byte
    14 Railyard
    15 Capitol. */
 
-void __thiscall
-TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,void *pInitContext)
+void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
 
 {
   undefined2 uVar1;
@@ -246,7 +242,7 @@ TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,v
 
 /* Setting prototype: void ReleaseCityBuildingControls(void) */
 
-void __thiscall TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this)
+void TCityProductionView::_scalar_deleting_destructor_()
 
 {
   undefined4 uVar1;
@@ -334,8 +330,7 @@ void __thiscall TCityProductionView::_scalar_deleting_destructor_(TCityProductio
    
    City entry index mapping used by logic: buildingEnum = slotId + 0x35. */
 
-void __thiscall
-TCityProductionView::OrphanTiny_ReturnZero_0048a730(TCityProductionView *this,tagRECT *pTargetRect)
+void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
 
 {
   TCityVtbl *pTVar1;
@@ -545,8 +540,7 @@ TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
 // GHIDRA_NAME TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
 // GHIDRA_PROTO undefined __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
 
-void __thiscall
-TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProductionView *this)
+void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
 
 {
   short sVar1;
@@ -879,8 +873,7 @@ LAB_004bb5bb:
 // GHIDRA_NAME TCityProductionView::UpdateCityProductionDialogCommodityValueControls
 // GHIDRA_PROTO undefined __thiscall UpdateCityProductionDialogCommodityValueControls(void)
 
-void __thiscall
-TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProductionView *this)
+void TCityProductionView::UpdateCityProductionDialogCommodityValueControls()
 
 {
   TCityProductionView_slot_0x04_0x04 *pTVar1;
@@ -1032,8 +1025,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
 // GHIDRA_NAME TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators
 // GHIDRA_PROTO undefined __thiscall RefreshCityBuildingActionAvailabilityIndicators(void)
 
-void __thiscall
-TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators(TCityProductionView *this)
+void TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators()
 
 {
   short sVar1;
@@ -1098,7 +1090,7 @@ TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators(TCityProduc
 // GHIDRA_NAME TCityProductionView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TCityProductionView::OrphanRetStub_0059add0(TCityProductionView *this,int param_1)
+void TCityProductionView::OrphanRetStub_0059add0(int param_1)
 
 {
   if (9999 < param_1) {
@@ -1113,8 +1105,7 @@ void __thiscall TCityProductionView::OrphanRetStub_0059add0(TCityProductionView 
 // GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1)
 
-void __thiscall
-TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this,undefined4 *param_1)
+void TCityProductionView::_scalar_deleting_destructor_(undefined4 *param_1)
 
 {
   bool bVar1;
@@ -1230,7 +1221,7 @@ LAB_004bc8cd:
 // GHIDRA_NAME TCityProductionView::OrphanCallChain_C5_I49_004bc910
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C5_I49_004bc910(void)
 
-void __thiscall TCityProductionView::OrphanCallChain_C5_I49_004bc910(TCityProductionView *this)
+void TCityProductionView::OrphanCallChain_C5_I49_004bc910()
 
 {
   int iVar1;
@@ -1265,8 +1256,7 @@ void __thiscall TCityProductionView::OrphanCallChain_C5_I49_004bc910(TCityProduc
 // GHIDRA_NAME TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip
 // GHIDRA_PROTO undefined __thiscall RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
 
-void __thiscall
-TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityProductionView *this)
+void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()
 
 {
   TCityProductionViewVtbl *pTVar1;
@@ -1316,7 +1306,7 @@ TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityPr
 // GHIDRA_NAME TCityProductionView::RefreshCityDialogSummaryValues
 // GHIDRA_PROTO undefined __thiscall RefreshCityDialogSummaryValues(void)
 
-void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProductionView *this)
+void TCityProductionView::RefreshCityDialogSummaryValues()
 
 {
   int iVar1;

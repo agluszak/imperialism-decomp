@@ -7,7 +7,7 @@
 // GHIDRA_NAME CUserException::ReturnZeroStub_00610f84
 // GHIDRA_PROTO undefined __thiscall ReturnZeroStub_00610f84(void)
 
-undefined4 __thiscall CUserException::ReturnZeroStub_00610f84(CUserException *this)
+undefined4 CUserException::ReturnZeroStub_00610f84()
 
 {
   return 0;
@@ -17,7 +17,7 @@ undefined4 __thiscall CUserException::ReturnZeroStub_00610f84(CUserException *th
 // GHIDRA_NAME CUserException::ReturnZeroStub_00610f87
 // GHIDRA_PROTO undefined __thiscall ReturnZeroStub_00610f87(void)
 
-undefined4 __thiscall CUserException::ReturnZeroStub_00610f87(CUserException *this)
+undefined4 CUserException::ReturnZeroStub_00610f87()
 
 {
   return 0;

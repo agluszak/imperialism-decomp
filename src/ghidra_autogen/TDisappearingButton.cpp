@@ -37,8 +37,7 @@ thunk_TPictureButton * TDisappearingButton::CreateTDisappearingButtonInstance(vo
 // GHIDRA_NAME TDisappearingButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TDisappearingButton::GetTEventHandlerClassNamePointer(TDisappearingButton *this)
+CRuntimeClass * TDisappearingButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TDisappearingButton::GetTEventHandlerClassNamePointer(TDisappearingButton *this)
 // GHIDRA_NAME TDisappearingButton::ConstructTDisappearingButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDisappearingButtonBaseState(void)
 
-TDisappearingButton * __thiscall
-TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *this)
+TDisappearingButton * TDisappearingButton::ConstructTDisappearingButtonBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -61,8 +59,7 @@ TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *
 // GHIDRA_NAME TDisappearingButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDisappearingButton * __thiscall
-TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this,byte param_1)
+TDisappearingButton * TDisappearingButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -76,8 +73,7 @@ TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this,byte
 // GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I24_00568c40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00568c40(char param_1)
 
-void __thiscall
-TDisappearingButton::OrphanCallChain_C2_I24_00568c40(TDisappearingButton *this,char param_1)
+void TDisappearingButton::OrphanCallChain_C2_I24_00568c40(char param_1)
 
 {
   TDisappearingButtonVtbl *pTVar1;
@@ -98,7 +94,7 @@ TDisappearingButton::OrphanCallChain_C2_I24_00568c40(TDisappearingButton *this,c
 // GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I18_00568c90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_00568c90(void)
 
-void __thiscall TDisappearingButton::OrphanCallChain_C2_I18_00568c90(TDisappearingButton *this)
+void TDisappearingButton::OrphanCallChain_C2_I18_00568c90()
 
 {
   undefined uVar1;

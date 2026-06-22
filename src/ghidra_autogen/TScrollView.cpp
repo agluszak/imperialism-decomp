@@ -7,7 +7,7 @@
 // GHIDRA_NAME TScrollView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollView * __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this,byte param_1)
+TScrollView * TScrollView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -51,7 +51,7 @@ TView * TScrollView::CreateTScrollViewInstance(void)
 // GHIDRA_NAME TScrollView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TScrollView::GetTEventHandlerClassNamePointer(TScrollView *this)
+CRuntimeClass * TScrollView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -73,7 +73,7 @@ void TScrollView::ConstructTScrollViewBaseState
 // GHIDRA_NAME TScrollView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TScrollView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollView *this)
+void TScrollView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined uVar1;

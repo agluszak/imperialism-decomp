@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCapacityOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(TCapacityOrder *this)
+CRuntimeClass * TCapacityOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &g_pClassDescTCapacityOrder;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(T
 // GHIDRA_NAME TCapacityOrder::ConstructTItemOrderBaseState
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
-TCapacityOrder * __thiscall
-TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this,byte param_1)
+TCapacityOrder * TCapacityOrder::ConstructTItemOrderBaseState(byte param_1)
 
 {
   TCapacityOrder::DestructTCapacityOrderAndMaybeFree(this);
@@ -32,7 +31,7 @@ TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this,byte param_1)
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(void)
 
-void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
+void TCapacityOrder::DestructTCapacityOrderAndMaybeFree()
 
 {
   this->vftable = (TCapacityOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -89,7 +88,7 @@ TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
    - delta/mirror table at city +0x1FC + slot*2
    Handles special-slot behavior (including slot 14 branch and slot 15 derived path). */
 
-void __thiscall TCapacityOrder::OrphanRetStub_004b5160(TCapacityOrder *this)
+void TCapacityOrder::OrphanRetStub_004b5160()
 
 {
   short *psVar1;

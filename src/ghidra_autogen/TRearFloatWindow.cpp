@@ -37,8 +37,7 @@ TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
 // GHIDRA_NAME TRearFloatWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TRearFloatWindow::GetTEventHandlerClassNamePointer(TRearFloatWindow *this)
+CRuntimeClass * TRearFloatWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TRearFloatWindow::GetTEventHandlerClassNamePointer(TRearFloatWindow *this)
 // GHIDRA_NAME TRearFloatWindow::ConstructTRearFloatWindowBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTRearFloatWindowBaseState(void)
 
-TRearFloatWindow * __thiscall
-TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
+TRearFloatWindow * TRearFloatWindow::ConstructTRearFloatWindowBaseState()
 
 {
   TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
@@ -61,8 +59,7 @@ TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 // GHIDRA_NAME TRearFloatWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRearFloatWindow * __thiscall
-TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this,byte param_1)
+TRearFloatWindow * TRearFloatWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);

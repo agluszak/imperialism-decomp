@@ -53,8 +53,7 @@ void TMapDialog::SplitTileIndexToRowAndColumn(short param_1,short *param_2,short
 
 /* Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog) */
 
-int __thiscall
-TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,CityDialogController *pDialog)
+int TMapDialog::OrphanTiny_ReturnZero_0048a730(CityDialogController *pDialog)
 
 {
   return this->field10;
@@ -64,7 +63,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,CityDialogController
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO void __thiscall 'scalar_deleting_destructor'(int value)
 
-void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,int value)
+void TMapDialog::_scalar_deleting_destructor_(int value)
 
 {
   this->field10 = value;
@@ -75,7 +74,7 @@ void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,int va
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
+undefined4 TMapDialog::_scalar_deleting_destructor_()
 
 {
   return *(undefined4 *)&this->field_0x60;
@@ -85,7 +84,7 @@ undefined4 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
+void TMapDialog::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -100,8 +99,7 @@ void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
 
 /* Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog) */
 
-byte __thiscall
-TMapDialog::GetTEventHandlerClassNamePointer(TMapDialog *this,CityDialogController *pDialog)
+byte TMapDialog::GetTEventHandlerClassNamePointer(CityDialogController *pDialog)
 
 {
   return (byte)this->field04;
@@ -111,8 +109,7 @@ TMapDialog::GetTEventHandlerClassNamePointer(TMapDialog *this,CityDialogControll
 // GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
 
-void __thiscall
-TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,char flagValue)
+void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
 
 {
   this->field04 = (int)flagValue;
@@ -128,8 +125,7 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,char f
 
 /* Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog) */
 
-int __thiscall
-TMapDialog::UpdateControlCachedIntFromWindowText(TMapDialog *this,CityDialogController *pDialog)
+int TMapDialog::UpdateControlCachedIntFromWindowText(CityDialogController *pDialog)
 
 {
   return this->field0c;
@@ -146,7 +142,7 @@ TMapDialog::UpdateControlCachedIntFromWindowText(TMapDialog *this,CityDialogCont
 /* Forwards a UI command triplet to the current widget handler at vtable slot +0x3C.
    Used by numeric entry controls to bubble command IDs to parent dialog handlers. */
 
-void __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this)
+void TMapDialog::OrphanTiny_ReturnZero_0048a730()
 
 {
   (*this->vftable[7].slot_0x04)();
@@ -157,7 +153,7 @@ void __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
 
-void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,undefined4 param_1)
+void TMapDialog::_scalar_deleting_destructor_(undefined4 param_1)
 
 {
   undefined uVar1;
@@ -174,7 +170,7 @@ void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,undefi
 // GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
-void __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,undefined4 param_1)
+void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 {
   undefined uVar1;
@@ -191,7 +187,7 @@ void __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,unde
 // GHIDRA_NAME TMapDialog::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
-void __thiscall TMapDialog::OrphanRetStub_0059add0(TMapDialog *this,int *param_1)
+void TMapDialog::OrphanRetStub_0059add0(int *param_1)
 
 {
   (**(code **)(*(int *)param_1[4] + 0x40))(param_1[2],param_1[3],param_1);
@@ -205,7 +201,7 @@ void __thiscall TMapDialog::OrphanRetStub_0059add0(TMapDialog *this,int *param_1
 // GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
+void TMapDialog::OrphanCallChain_C11_I88_004874b0()
 
 {
   (*this->vftable[6].slot_0x04)();
@@ -216,7 +212,7 @@ void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined1 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
+undefined1 TMapDialog::_scalar_deleting_destructor_()
 
 {
   return 0;
@@ -226,7 +222,7 @@ undefined1 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined1 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
+undefined1 TMapDialog::_scalar_deleting_destructor_()
 
 {
   return 0;
@@ -243,7 +239,7 @@ undefined1 __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
 /* Dispatches city-production action code 0x1A through object vtable slot +0x40.
    Used as a tiny action wrapper from city/production method table. */
 
-void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
+void TMapDialog::_scalar_deleting_destructor_()
 
 {
   (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1a,this,0);
@@ -254,7 +250,7 @@ void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
+void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return;
@@ -279,7 +275,7 @@ void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
    - clears active state fields and releases final owned resource at +0x06, then self-releases via
    virtual destructor slot +0x04. */
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
+void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;
@@ -323,7 +319,7 @@ void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined1 __thiscall TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this)
+undefined1 TMapDialog::SetForeignMinisterReadyFlag14()
 
 {
   undefined uVar1;
@@ -341,8 +337,7 @@ undefined1 __thiscall TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this
 // GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
 
-void __thiscall
-TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this,undefined4 *param_1,undefined4 param_2)
+void TMapDialog::SetForeignMinisterReadyFlag14(undefined4 *param_1, undefined4 param_2)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -404,7 +399,7 @@ TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this,undefined4 *param_1,u
 // GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
+void TMapDialog::OrphanCallChain_C11_I88_004874b0()
 
 {
   TMapDialogVtbl *pTVar1;
@@ -451,8 +446,7 @@ void __thiscall TMapDialog::OrphanCallChain_C11_I88_004874b0(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall
-TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,int param_1)
+void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   undefined uVar1;
@@ -492,8 +486,7 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,int pa
 /* Setting prototype: CityDialogController *
    CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource) */
 
-CityDialogController * __thiscall
-TMapDialog::GetTBehaviorClassNamePointer(TMapDialog *this,CityDialogController *pSource)
+CityDialogController * TMapDialog::GetTBehaviorClassNamePointer(CityDialogController *pSource)
 
 {
   short sVar1;
@@ -619,7 +612,7 @@ TWorldView * TMapDialog::CreateTMapDialogInstance(void)
 // GHIDRA_NAME TMapDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapDialog::GetTEventHandlerClassNamePointer(TMapDialog *this)
+CRuntimeClass * TMapDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -629,7 +622,7 @@ CRuntimeClass * __thiscall TMapDialog::GetTEventHandlerClassNamePointer(TMapDial
 // GHIDRA_NAME TMapDialog::ConstructTMapDialogBaseState
 // GHIDRA_PROTO undefined __thiscall TMapDialog::ConstructTMapDialogBaseState(void)
 
-TMapDialog * __thiscall TMapDialog::ConstructTMapDialogBaseState(TMapDialog *this)
+TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -670,7 +663,7 @@ TMapDialog * __thiscall TMapDialog::ConstructTMapDialogBaseState(TMapDialog *thi
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapDialog * __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this,byte param_1)
+TMapDialog * TMapDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -684,7 +677,7 @@ TMapDialog * __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *thi
 // GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
+void TMapDialog::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x350 != 0) {
@@ -708,7 +701,7 @@ void __thiscall TMapDialog::_scalar_deleting_destructor_(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
+void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 local_10;
@@ -757,7 +750,7 @@ void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
    Returns:
    - void */
 
-void __thiscall TMapDialog::OrphanRetStub_00596080(TMapDialog *this)
+void TMapDialog::OrphanRetStub_00596080()
 
 {
   char cVar1;
@@ -920,7 +913,7 @@ void __thiscall TMapDialog::OrphanRetStub_00596080(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::DrawHexNeighborOutlineFromTileArray
 // GHIDRA_PROTO undefined __thiscall DrawHexNeighborOutlineFromTileArray(void)
 
-void __thiscall TMapDialog::DrawHexNeighborOutlineFromTileArray(TMapDialog *this)
+void TMapDialog::DrawHexNeighborOutlineFromTileArray()
 
 {
   undefined2 extraout_var;
@@ -1030,8 +1023,7 @@ void __thiscall TMapDialog::DrawHexNeighborOutlineFromTileArray(TMapDialog *this
 // GHIDRA_NAME TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate
 // GHIDRA_PROTO undefined __thiscall UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
 
-void __thiscall
-TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(TMapDialog *this,short param_1)
+void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
 
 {
   undefined4 uVar1;
@@ -1105,7 +1097,7 @@ TMapDialog::OrphanRetStub_005960c0
 // GHIDRA_NAME TMapDialog::OrphanRetStub_005966c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966c0(undefined4 param_1)
 
-void __thiscall TMapDialog::OrphanRetStub_005966c0(TMapDialog *this,undefined4 param_1)
+void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -1131,7 +1123,7 @@ void __thiscall TMapDialog::OrphanRetStub_005966c0(TMapDialog *this,undefined4 p
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005966e0(void)
 
-bool __thiscall TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(TMapDialog *this)
+bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
 
 {
   TMapDialogVtbl *pTVar1;
@@ -1161,7 +1153,7 @@ bool __thiscall TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanRetStub_00594fc0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00594fc0(int param_1)
 
-void __thiscall TMapDialog::OrphanRetStub_00594fc0(TMapDialog *this,int param_1)
+void TMapDialog::OrphanRetStub_00594fc0(int param_1)
 
 {
   int local_14 [5];
@@ -1179,7 +1171,7 @@ void __thiscall TMapDialog::OrphanRetStub_00594fc0(TMapDialog *this,int param_1)
 // GHIDRA_NAME TMapDialog::HasRenderableParentAndContent
 // GHIDRA_PROTO undefined __thiscall HasRenderableParentAndContent(void)
 
-int __thiscall TMapDialog::HasRenderableParentAndContent(TMapDialog *this)
+int TMapDialog::HasRenderableParentAndContent()
 
 {
   int local_8;
@@ -1197,7 +1189,7 @@ int __thiscall TMapDialog::HasRenderableParentAndContent(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanRetStub_005966a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005966a0(undefined4 param_1)
 
-void __thiscall TMapDialog::OrphanRetStub_005966a0(TMapDialog *this,undefined4 param_1)
+void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
 
 {
   TMapDialog *local_4;
@@ -1212,7 +1204,7 @@ void __thiscall TMapDialog::OrphanRetStub_005966a0(TMapDialog *this,undefined4 p
 // GHIDRA_NAME TMapDialog::OrphanRetStub_00596680
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
 
-void __thiscall TMapDialog::OrphanRetStub_00596680(TMapDialog *this)
+void TMapDialog::OrphanRetStub_00596680()
 
 {
   (*this->vftable[0x51].slot_0x04)();
@@ -1280,8 +1272,7 @@ TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_NAME TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 // GHIDRA_PROTO undefined __thiscall HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
 
-void __thiscall
-TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(TMapDialog *this)
+void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
 
 {
   TMapDialogVtbl *pTVar1;
@@ -1347,7 +1338,7 @@ TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(TMapDia
 // GHIDRA_NAME TMapDialog::InitializeCitySiteView
 // GHIDRA_PROTO undefined __thiscall InitializeCitySiteView(void)
 
-TMapDialog * __thiscall TMapDialog::InitializeCitySiteView(TMapDialog *this)
+TMapDialog * TMapDialog::InitializeCitySiteView()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -1389,7 +1380,7 @@ TMapDialog * __thiscall TMapDialog::InitializeCitySiteView(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanCallChain_C1_I20_0051e1a0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I20_0051e1a0(void)
 
-void __thiscall TMapDialog::OrphanCallChain_C1_I20_0051e1a0(TMapDialog *this)
+void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
 
 {
   undefined2 *puVar1;
@@ -1413,7 +1404,7 @@ void __thiscall TMapDialog::OrphanCallChain_C1_I20_0051e1a0(TMapDialog *this)
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(TMapDialog *this,short param_1)
+void TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(short param_1)
 
 {
   int iVar1;
@@ -1437,7 +1428,7 @@ void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0(TMapDialog *this,sh
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,int *param_1)
+void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
 
 {
   TMapDialogVtbl *pTVar1;
@@ -2170,8 +2161,7 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
    Returns:
    - void */
 
-void __thiscall
-TMapDialog::DrawHexEdgeConnectionGlyphsByMask(TMapDialog *this,byte param_1,undefined4 param_2)
+void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 param_2)
 
 {
   byte bVar1;
@@ -2270,8 +2260,7 @@ TMapDialog::DrawHexEdgeConnectionGlyphsByMask(TMapDialog *this,byte param_1,unde
 // GHIDRA_NAME TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask
 // GHIDRA_PROTO undefined __thiscall EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short param_2)
 
-void __thiscall
-TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(TMapDialog *this,byte param_1,short param_2)
+void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short param_2)
 
 {
   TMapDialog_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -2767,8 +2756,7 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
 // GHIDRA_NAME TMapDialog::DrawHexNeighborConnectionMask
 // GHIDRA_PROTO undefined __thiscall DrawHexNeighborConnectionMask(byte param_1, int param_2, int param_3)
 
-void __thiscall
-TMapDialog::DrawHexNeighborConnectionMask(TMapDialog *this,byte param_1,int param_2,int param_3)
+void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int param_3)
 
 {
   int iVar1;
@@ -2855,7 +2843,7 @@ LAB_00522e7a:
 // GHIDRA_NAME TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060
 // GHIDRA_PROTO undefined __thiscall WrapperFor_SetQuickDrawFillColor_At00523060(void)
 
-void __thiscall TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060(TMapDialog *this)
+void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
 
 {
   int iVar1;
@@ -3235,8 +3223,7 @@ LAB_00523a3f:
 // GHIDRA_NAME TMapDialog::DispatchReflectedControlMessageOrFallback
 // GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(RECT * param_1, char param_2)
 
-void __thiscall
-TMapDialog::DispatchReflectedControlMessageOrFallback(TMapDialog *this,RECT *param_1,char param_2)
+void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char param_2)
 
 {
   int iVar1;
@@ -3375,8 +3362,7 @@ TMapDialog::DispatchReflectedControlMessageOrFallback(TMapDialog *this,RECT *par
 // GHIDRA_NAME TMapDialog::OrphanRetStub_00596060
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596060(short param_1, RECT * param_2, char param_3)
 
-void __thiscall
-TMapDialog::OrphanRetStub_00596060(TMapDialog *this,short param_1,RECT *param_2,char param_3)
+void TMapDialog::OrphanRetStub_00596060(short param_1, RECT *param_2, char param_3)
 
 {
   int iVar1;
@@ -4943,7 +4929,7 @@ TMapDialog::EvaluateControlInputGate
 // GHIDRA_NAME TMapDialog::OrphanRetStub_005960e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005960e0(void)
 
-void __thiscall TMapDialog::OrphanRetStub_005960e0(TMapDialog *this)
+void TMapDialog::OrphanRetStub_005960e0()
 
 {
   TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale();

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipBuildingTask::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipBuildingTask::GetTTaskClassNamePointer(TShipBuildingTask *this)
+CRuntimeClass * TShipBuildingTask::GetTTaskClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TShipBuildingTask::GetTTaskClassNamePointer(TShipBuil
 // GHIDRA_NAME TShipBuildingTask::ConstructTShipBuildingTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(void)
 
-void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuildingTask *this)
+void TShipBuildingTask::ConstructTShipBuildingTaskBaseState()
 
 {
   this->vftable = &TShipBuildingTaskVtbl_0066a9f8;
@@ -28,8 +28,7 @@ void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuil
 // GHIDRA_NAME TShipBuildingTask::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
-TShipBuildingTask * __thiscall
-TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this,byte param_1)
+TShipBuildingTask * TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
 {
   DestroyTShipBuildingTask_Impl();
@@ -64,8 +63,7 @@ TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this,byte param_1)
    Context:
    - Participates in turn processing / deferred command pipeline for city production orders. */
 
-uint __thiscall
-TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this,int *param_1)
+uint TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 
 {
   short sVar1;
@@ -188,8 +186,7 @@ TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this,int 
 // GHIDRA_NAME TShipBuildingTask::SerializeCityProductionQueueCommand
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(int * param_1)
 
-void __thiscall
-TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this,int *param_1)
+void TShipBuildingTask::SerializeCityProductionQueueCommand(int *param_1)
 
 {
   code *pcVar1;
@@ -210,8 +207,7 @@ TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this,i
 // GHIDRA_NAME TShipBuildingTask::DeserializeCityProductionQueueCommand
 // GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(int * param_1)
 
-void __thiscall
-TShipBuildingTask::DeserializeCityProductionQueueCommand(TShipBuildingTask *this,int *param_1)
+void TShipBuildingTask::DeserializeCityProductionQueueCommand(int *param_1)
 
 {
   code *pcVar1;

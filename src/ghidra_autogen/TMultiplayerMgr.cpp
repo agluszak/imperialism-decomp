@@ -18,8 +18,7 @@ void __thiscall TSoundPlayer::'scalar_deleting_destructor'(TMultiplayerMgr *this
 // GHIDRA_NAME TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMultiplayerMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer(TMultiplayerMgr *this)
+CRuntimeClass * TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -29,8 +28,7 @@ TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer(TMultiplayerMgr *this)
 // GHIDRA_NAME TMultiplayerMgr::ConstructMultiplayerManager
 // GHIDRA_PROTO undefined4 * __thiscall ConstructMultiplayerManager(astruct_11 * this_obj)
 
-undefined4 * __thiscall
-TMultiplayerMgr::ConstructMultiplayerManager(TMultiplayerMgr *this,astruct_11 *this_obj)
+undefined4 * TMultiplayerMgr::ConstructMultiplayerManager(astruct_11 *this_obj)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -73,8 +71,7 @@ TMultiplayerMgr::ConstructMultiplayerManager(TMultiplayerMgr *this,astruct_11 *t
 // GHIDRA_NAME TMultiplayerMgr::DeletingDestructMultiplayerManager
 // GHIDRA_PROTO undefined __thiscall DeletingDestructMultiplayerManager(byte param_1)
 
-TMultiplayerMgr * __thiscall
-TMultiplayerMgr::DeletingDestructMultiplayerManager(TMultiplayerMgr *this,byte param_1)
+TMultiplayerMgr * TMultiplayerMgr::DeletingDestructMultiplayerManager(byte param_1)
 
 {
   DestructMultiplayerManager();
@@ -161,7 +158,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
 // GHIDRA_NAME TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName
 // GHIDRA_PROTO undefined __thiscall ShutdownRuntimeSelectionAndPersistPlayerName(void)
 
-void __thiscall TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName(TMultiplayerMgr *this)
+void TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName()
 
 {
   undefined4 unaff_ESI;
@@ -332,8 +329,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider
 // GHIDRA_PROTO undefined __thiscall InitializeNationStatusControlArraysFromProvider(int * param_1)
 
-void __thiscall
-TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this,int *param_1)
+void TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(int *param_1)
 
 {
   int iVar1;
@@ -387,8 +383,7 @@ TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
 // GHIDRA_NAME TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue
 // GHIDRA_PROTO undefined __thiscall DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(void)
 
-uint __thiscall
-TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(TMultiplayerMgr *this)
+uint TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()
 
 {
   uint uVar1;
@@ -404,7 +399,7 @@ TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(TMultipl
 // GHIDRA_NAME TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
 // GHIDRA_PROTO undefined __thiscall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(void)
 
-void __thiscall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(TMultiplayerMgr *this)
+void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue()
 
 {
   bool bVar1;

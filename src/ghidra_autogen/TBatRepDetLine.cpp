@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004affd0(byte param_1)
 
-TBatRepDetLine * __thiscall
-TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0(TBatRepDetLine *this,byte param_1)
+TBatRepDetLine * TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0(byte param_1)
 
 {
   TBatRepDetLine::CreateTBatRepDetLineInstance(this);
@@ -22,7 +21,7 @@ TBatRepDetLine::WrapperFor_FreeHeapBufferIfNotNull_At004affd0(TBatRepDetLine *th
 // GHIDRA_NAME TBatRepDetLine::CreateTBatRepDetLineInstance
 // GHIDRA_PROTO undefined __thiscall TBatRepDetLine::CreateTBatRepDetLineInstance(void)
 
-void __thiscall TBatRepDetLine::CreateTBatRepDetLineInstance(TBatRepDetLine *this)
+void TBatRepDetLine::CreateTBatRepDetLineInstance()
 
 {
   this->vftable = (TBatRepDetLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -33,7 +32,7 @@ void __thiscall TBatRepDetLine::CreateTBatRepDetLineInstance(TBatRepDetLine *thi
 // GHIDRA_NAME TBatRepDetLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBatRepDetLine::GetTLineDataClassNamePointer(TBatRepDetLine *this)
+CRuntimeClass * TBatRepDetLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,8 +42,7 @@ CRuntimeClass * __thiscall TBatRepDetLine::GetTLineDataClassNamePointer(TBatRepD
 // GHIDRA_NAME TBatRepDetLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(int * param_1, undefined4 param_2)
 
-void __thiscall
-TBatRepDetLine::OrphanRetStub_0056f460(TBatRepDetLine *this,int *param_1,undefined4 param_2)
+void TBatRepDetLine::OrphanRetStub_0056f460(int *param_1, undefined4 param_2)
 
 {
   uint uVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNavyBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyBoyView * __thiscall
-TNavyBoyView::_scalar_deleting_destructor_(TNavyBoyView *this,byte param_1)
+TNavyBoyView * TNavyBoyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TNavyBoyView::_scalar_deleting_destructor_(TNavyBoyView *this,byte param_1)
 // GHIDRA_NAME TNavyBoyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNavyBoyView::GetTEventHandlerClassNamePointer(TNavyBoyView *this)
+CRuntimeClass * TNavyBoyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TNavyBoyView::GetTEventHandlerClassNamePointer(TNavyB
 // GHIDRA_NAME TNavyBoyView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TNavyBoyView::OrphanTiny_ReturnZero_0048a730(TNavyBoyView *this)
+void TNavyBoyView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

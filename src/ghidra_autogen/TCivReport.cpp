@@ -40,7 +40,7 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_
 // GHIDRA_NAME TCivReport::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivReport::GetTEventHandlerClassNamePointer(TCivReport *this)
+CRuntimeClass * TCivReport::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTCivReport;
@@ -65,7 +65,7 @@ _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivRep
 // GHIDRA_NAME TCivReport::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this,byte param_1)
+TCivReport * TCivReport::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __thiscall TArmyPlayer::OrphanRetStub_0059ad90(TArmyPlayer *this)
+void TArmyPlayer::OrphanRetStub_0059ad90()
 
 {
   return;
@@ -62,8 +62,7 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,und
 // GHIDRA_NAME TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)
 
-TArmyPlayer * __thiscall
-TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this,byte param_1)
+TArmyPlayer * TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)
 
 {
   TArmyPlayer::CreateTArmyPlayerInstance(this);
@@ -77,7 +76,7 @@ TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this,byt
 // GHIDRA_NAME TArmyPlayer::CreateTArmyPlayerInstance
 // GHIDRA_PROTO undefined __thiscall TArmyPlayer::CreateTArmyPlayerInstance(void)
 
-void __thiscall TArmyPlayer::CreateTArmyPlayerInstance(TArmyPlayer *this)
+void TArmyPlayer::CreateTArmyPlayerInstance()
 
 {
   this->vftable = (TArmyPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -88,7 +87,7 @@ void __thiscall TArmyPlayer::CreateTArmyPlayerInstance(TArmyPlayer *this)
 // GHIDRA_NAME TArmyPlayer::GetTTacticalPlayerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyPlayer::GetTTacticalPlayerClassNamePointer(TArmyPlayer *this)
+CRuntimeClass * TArmyPlayer::GetTTacticalPlayerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -98,8 +97,7 @@ CRuntimeClass * __thiscall TArmyPlayer::GetTTacticalPlayerClassNamePointer(TArmy
 // GHIDRA_NAME TArmyPlayer::ConstructTTacticalPlayerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(byte param_1)
 
-TArmyPlayer * __thiscall
-TArmyPlayer::ConstructTTacticalPlayerBaseState(TArmyPlayer *this,byte param_1)
+TArmyPlayer * TArmyPlayer::ConstructTTacticalPlayerBaseState(byte param_1)
 
 {
   DestructTArmyPlayerAndMaybeFree_Impl();
@@ -113,7 +111,7 @@ TArmyPlayer::ConstructTTacticalPlayerBaseState(TArmyPlayer *this,byte param_1)
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TArmyPlayer::OrphanRetStub_0059add0(TArmyPlayer *this)
+void TArmyPlayer::OrphanRetStub_0059add0()
 
 {
   int *piVar1;
@@ -155,7 +153,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059add0(TArmyPlayer *this)
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ad70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
 
-void __thiscall TArmyPlayer::OrphanRetStub_0059ad70(TArmyPlayer *this)
+void TArmyPlayer::OrphanRetStub_0059ad70()
 
 {
   int iVar1;
@@ -194,7 +192,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ad70(TArmyPlayer *this)
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __thiscall TArmyPlayer::OrphanRetStub_0059ad90(TArmyPlayer *this)
+void TArmyPlayer::OrphanRetStub_0059ad90()
 
 {
   ushort uVar1;
@@ -238,7 +236,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ad90(TArmyPlayer *this)
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ae10
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ae10(void)
 
-void __thiscall TArmyPlayer::OrphanRetStub_0059ae10(TArmyPlayer *this)
+void TArmyPlayer::OrphanRetStub_0059ae10()
 
 {
   if (this->field_0x10 == '\0') {
@@ -324,8 +322,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
 // GHIDRA_NAME TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit
 // GHIDRA_PROTO undefined __thiscall RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)
 
-void __thiscall
-TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(TArmyPlayer *this,int param_1,int param_2)
+void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)
 
 {
   int iVar1;

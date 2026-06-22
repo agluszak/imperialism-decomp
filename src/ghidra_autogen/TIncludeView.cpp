@@ -7,7 +7,7 @@
 // GHIDRA_NAME TIncludeView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIncludeView::GetTEventHandlerClassNamePointer(TIncludeView *this)
+CRuntimeClass * TIncludeView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TIncludeView::GetTEventHandlerClassNamePointer(TInclu
 // GHIDRA_NAME TIncludeView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIncludeView * __thiscall
-TIncludeView::_scalar_deleting_destructor_(TIncludeView *this,byte param_1)
+TIncludeView * TIncludeView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTIncludeViewAndMaybeFree_Impl((TView *)this);
@@ -38,7 +37,7 @@ TIncludeView::_scalar_deleting_destructor_(TIncludeView *this,byte param_1)
 /* Dispatches turn-event packet through factory manager using event code from packet field
    pEventPacket[0x18] (offset 0x60), then signals completion to packet window host. */
 
-void __thiscall TIncludeView::OrphanCallChain_C6_I49_004875d0(TIncludeView *this,int *pEventPacket)
+void TIncludeView::OrphanCallChain_C6_I49_004875d0(int *pEventPacket)
 
 {
   TIncludeViewVtbl *pTVar1;

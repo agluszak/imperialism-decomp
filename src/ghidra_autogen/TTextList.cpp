@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTextList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,byte param_1)
+TTextList * TTextList::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -55,7 +55,7 @@ TView * TTextList::CreateTTextListInstance(void)
 // GHIDRA_NAME TTextList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTextList::GetTEventHandlerClassNamePointer(TTextList *this)
+CRuntimeClass * TTextList::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTTextList;
@@ -65,7 +65,7 @@ CRuntimeClass * __thiscall TTextList::GetTEventHandlerClassNamePointer(TTextList
 // GHIDRA_NAME TTextList::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
+void TTextList::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -136,7 +136,7 @@ void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
 // GHIDRA_NAME TTextList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,int param_1)
+void TTextList::_scalar_deleting_destructor_(int param_1)
 
 {
   TTextListVtbl *pTVar1;

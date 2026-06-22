@@ -7,8 +7,7 @@
 // GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
 
-undefined1 __thiscall
-TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(TClientGreatPower *this)
+undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlag98()
 
 {
   return 1;
@@ -18,8 +17,7 @@ TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(TClientGreatPower *thi
 // GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
 
-undefined1 __thiscall
-TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0(TClientGreatPower *this)
+undefined1 TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0()
 
 {
   return 0;
@@ -29,8 +27,7 @@ TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0(TClientGreatPower *thi
 // GHIDRA_NAME TClientGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClientGreatPower * __thiscall
-TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte param_1)
+TClientGreatPower * TClientGreatPower::_scalar_deleting_destructor_(byte param_1)
 
 {
   TClientGreatPower::DestructTClientGreatPower(this);
@@ -44,7 +41,7 @@ TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte par
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
 // GHIDRA_PROTO undefined __thiscall TClientGreatPower::DestructTClientGreatPower(void)
 
-void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
+void TClientGreatPower::DestructTClientGreatPower()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -69,7 +66,7 @@ void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *
 // GHIDRA_NAME TClientGreatPower::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall TClientGreatPower::GetTCountryClassNamePointer(TClientGreatPower *this)
+CRuntimeClass * TClientGreatPower::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -79,7 +76,7 @@ CRuntimeClass * __thiscall TClientGreatPower::GetTCountryClassNamePointer(TClien
 // GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
 
-void __thiscall TClientGreatPower::ApplyJoinEmpireModeForTargetNation(TClientGreatPower *this)
+void TClientGreatPower::ApplyJoinEmpireModeForTargetNation()
 
 {
   undefined4 local_20;
@@ -107,8 +104,7 @@ void __thiscall TClientGreatPower::ApplyJoinEmpireModeForTargetNation(TClientGre
 // GHIDRA_NAME TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
 // GHIDRA_PROTO undefined __thiscall TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
 
-void __thiscall
-TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(TClientGreatPower *this)
+void TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers()
 
 {
   undefined4 local_20;
@@ -136,7 +132,7 @@ TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(TClientGrea
 // GHIDRA_NAME TClientGreatPower::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
-void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGreatPower *this)
+void TClientGreatPower::AddRegionIdToNationOwnedRegionList()
 
 {
   undefined4 local_20;
@@ -166,8 +162,7 @@ void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGre
 // GHIDRA_NAME TClientGreatPower::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
 
-int __thiscall
-TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this,char param_1)
+int TClientGreatPower::GetTEventHandlerClassNamePointer(char param_1)
 
 {
   int iVar1;
@@ -203,7 +198,7 @@ TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this,char
 // GHIDRA_NAME TClientGreatPower::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-int __thiscall TClientGreatPower::OrphanRetStub_0059add0(TClientGreatPower *this)
+int TClientGreatPower::OrphanRetStub_0059add0()
 
 {
   int iVar1;
@@ -237,7 +232,7 @@ int __thiscall TClientGreatPower::OrphanRetStub_0059add0(TClientGreatPower *this
 // GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
-void __thiscall TClientGreatPower::ApplyJoinEmpireMode1TargetTransition(TClientGreatPower *this)
+void TClientGreatPower::ApplyJoinEmpireMode1TargetTransition()
 
 {
   DispatchTaggedGameStateEvent1F20(0x6c6f7365,(int)*(short *)&this->field_0xc,0xffffffff);

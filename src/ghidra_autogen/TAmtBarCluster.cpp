@@ -7,8 +7,7 @@
 // GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8c
 // GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8c(undefined2 param_1)
 
-void __thiscall
-TAmtBarCluster::SetTAmtBarClusterWordField8c(TAmtBarCluster *this,undefined2 param_1)
+void TAmtBarCluster::SetTAmtBarClusterWordField8c(undefined2 param_1)
 
 {
   *(undefined2 *)&this[1].field04 = param_1;
@@ -33,8 +32,7 @@ TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80
 // GHIDRA_NAME TAmtBarCluster::SetTAmtBarClusterWordField8e
 // GHIDRA_PROTO undefined __thiscall SetTAmtBarClusterWordField8e(undefined2 param_1)
 
-void __thiscall
-TAmtBarCluster::SetTAmtBarClusterWordField8e(TAmtBarCluster *this,undefined2 param_1)
+void TAmtBarCluster::SetTAmtBarClusterWordField8e(undefined2 param_1)
 
 {
   *(undefined2 *)((int)&this[1].field04 + 2) = param_1;
@@ -75,7 +73,7 @@ TUberCluster * TAmtBarCluster::CreateTradeMoveControlPanelBasic(void)
 // GHIDRA_NAME TAmtBarCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAmtBarCluster::GetTEventHandlerClassNamePointer(TAmtBarCluster *this)
+CRuntimeClass * TAmtBarCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTAmtBarCluster;
@@ -85,8 +83,7 @@ CRuntimeClass * __thiscall TAmtBarCluster::GetTEventHandlerClassNamePointer(TAmt
 // GHIDRA_NAME TAmtBarCluster::ConstructTradeMoveControlPanelBasic
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveControlPanelBasic(void)
 
-TAmtBarCluster * __thiscall
-TAmtBarCluster::ConstructTradeMoveControlPanelBasic(TAmtBarCluster *this)
+TAmtBarCluster * TAmtBarCluster::ConstructTradeMoveControlPanelBasic()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -98,8 +95,7 @@ TAmtBarCluster::ConstructTradeMoveControlPanelBasic(TAmtBarCluster *this)
 // GHIDRA_NAME TAmtBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAmtBarCluster * __thiscall
-TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
+TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -113,7 +109,7 @@ TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
 // GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster *this)
+void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;
@@ -147,8 +143,7 @@ void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster 
 // GHIDRA_NAME TAmtBarCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *param_2,int param_3)
+void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   TAmtBarClusterVtbl *pTVar1;
@@ -202,7 +197,7 @@ TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *pa
 // GHIDRA_NAME TAmtBarCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void __thiscall TAmtBarCluster::OrphanRetStub_00586ff0(TAmtBarCluster *this)
+void TAmtBarCluster::OrphanRetStub_00586ff0()
 
 {
   return;
@@ -212,7 +207,7 @@ void __thiscall TAmtBarCluster::OrphanRetStub_00586ff0(TAmtBarCluster *this)
 // GHIDRA_NAME TAmtBarCluster::QueryTradeSellControlQuantity
 // GHIDRA_PROTO undefined __thiscall QueryTradeSellControlQuantity(void)
 
-void __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(TAmtBarCluster *this)
+void TAmtBarCluster::QueryTradeSellControlQuantity()
 
 {
   undefined uVar1;
@@ -237,7 +232,7 @@ void __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(TAmtBarCluster *th
    Looks up control tag 'card' and returns true when control bitmap is 2111 (0x83F) or 2125 (0x84D)
    and control reports actionable state via vtable+0xEC. */
 
-undefined4 __thiscall TAmtBarCluster::IsTradeBidControlActionable(TAmtBarCluster *this)
+undefined4 TAmtBarCluster::IsTradeBidControlActionable()
 
 {
   undefined uVar1;
@@ -273,7 +268,7 @@ undefined4 __thiscall TAmtBarCluster::IsTradeBidControlActionable(TAmtBarCluster
    Looks up control tag 'offr' and returns true when control bitmap is 2113 (0x841) or 2127 (0x84F)
    and control reports actionable state via vtable+0xEC. */
 
-undefined4 __thiscall TAmtBarCluster::IsTradeOfferControlActionable(TAmtBarCluster *this)
+undefined4 TAmtBarCluster::IsTradeOfferControlActionable()
 
 {
   undefined uVar1;
@@ -309,7 +304,7 @@ undefined4 __thiscall TAmtBarCluster::IsTradeOfferControlActionable(TAmtBarClust
    Resolves 'card' control and assigns 2112 (0x840) or 2126 (0x84E) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
 
-void __thiscall TAmtBarCluster::SetTradeBidSecondaryBitmapState(TAmtBarCluster *this)
+void TAmtBarCluster::SetTradeBidSecondaryBitmapState()
 
 {
   int iVar1;
@@ -360,7 +355,7 @@ void __thiscall TAmtBarCluster::SetTradeBidSecondaryBitmapState(TAmtBarCluster *
    bitmap 2111 (0x83F).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-void __thiscall TAmtBarCluster::SetTradeBidControlBitmapState(TAmtBarCluster *this)
+void TAmtBarCluster::SetTradeBidControlBitmapState()
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;
@@ -443,7 +438,7 @@ void __thiscall TAmtBarCluster::SetTradeBidControlBitmapState(TAmtBarCluster *th
    bitmap 2113 (0x841).
    Then refreshes related controls 'gree', 'left', 'rght' visibility/active flags. */
 
-void __thiscall TAmtBarCluster::SetTradeOfferControlBitmapState(TAmtBarCluster *this)
+void TAmtBarCluster::SetTradeOfferControlBitmapState()
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;
@@ -519,7 +514,7 @@ void __thiscall TAmtBarCluster::SetTradeOfferControlBitmapState(TAmtBarCluster *
    Resolves 'offr' control and assigns 2114 (0x842) or 2128 (0x850) through vtable+0x1C8 based on
    row state field (+0x1C == 0x67643020) when nation availability gate passes. */
 
-void __thiscall TAmtBarCluster::SetTradeOfferSecondaryBitmapState(TAmtBarCluster *this)
+void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;

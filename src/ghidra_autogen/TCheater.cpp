@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCheater::OrphanRetStub_004b1410
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
 
-void __thiscall TCheater::OrphanRetStub_004b1410(TCheater *this)
+void TCheater::OrphanRetStub_004b1410()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TCheater::OrphanRetStub_004b1410(TCheater *this)
 // GHIDRA_NAME TCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this,byte param_1)
+TCheater * TCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -31,7 +31,7 @@ TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this,byte
 // GHIDRA_NAME TCheater::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCheater::GetTEventHandlerClassNamePointer(TCheater *this)
+CRuntimeClass * TCheater::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -107,7 +107,7 @@ void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2
 // GHIDRA_NAME TCheater::DestructTCheaterAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCheaterAndMaybeFree(void)
 
-void __thiscall TCheater::DestructTCheaterAndMaybeFree(TCheater *this)
+void TCheater::DestructTCheaterAndMaybeFree()
 
 {
   int iVar1;

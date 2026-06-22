@@ -13,8 +13,7 @@
 /* Derived picture constructor used with dominant 'base' tag call paths. Clears extended
    picture-state bytes before registration. */
 
-TLoadSavePicture * __thiscall
-TLoadSavePicture::ConstructUiBaseBackdropPictureEntry(TLoadSavePicture *this)
+TLoadSavePicture * TLoadSavePicture::ConstructUiBaseBackdropPictureEntry()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -34,8 +33,7 @@ TLoadSavePicture::ConstructUiBaseBackdropPictureEntry(TLoadSavePicture *this)
 // GHIDRA_NAME TLoadSavePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoadSavePicture * __thiscall
-TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param_1)
+TLoadSavePicture * TLoadSavePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -49,8 +47,7 @@ TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param
 // GHIDRA_NAME TLoadSavePicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TLoadSavePicture::GetTEventHandlerClassNamePointer(TLoadSavePicture *this)
+CRuntimeClass * TLoadSavePicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -60,7 +57,7 @@ TLoadSavePicture::GetTEventHandlerClassNamePointer(TLoadSavePicture *this)
 // GHIDRA_NAME TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920(TLoadSavePicture *this)
+void TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TLoadSavePicture_slot_0x04_0x04 *pTVar1;
@@ -413,8 +410,7 @@ code_r0x0056c450:
 // GHIDRA_NAME TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
 
-void __thiscall
-TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,int param_1)
+void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
 
 {
   TLoadSavePicture_slot_0x04_0x04 *pTVar1;
@@ -695,7 +691,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_NAME TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC
 // GHIDRA_PROTO undefined __thiscall HandleTurnFlowStateTickOrPostTurnEvent5DC(void)
 
-void __thiscall TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC(TLoadSavePicture *this)
+void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC()
 
 {
   if (*(int *)&g_pLocalizationTable->field_0x8 != 1) {
@@ -716,7 +712,7 @@ void __thiscall TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC(TLoa
 // GHIDRA_NAME TLoadSavePicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePicture *this,int param_1)
+void TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;
@@ -753,7 +749,7 @@ void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePictur
 // GHIDRA_NAME TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow
 // GHIDRA_PROTO undefined __thiscall HandleSaveGameSlotSelectionAndPromptFlow(void)
 
-void __thiscall TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow(TLoadSavePicture *this)
+void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow()
 
 {
   short sVar1;
@@ -870,8 +866,7 @@ LAB_0056d50c:
 // GHIDRA_NAME TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap
 // GHIDRA_PROTO undefined __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param_1)
 
-void __thiscall
-TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSavePicture *this,int param_1)
+void TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param_1)
 
 {
   uint uVar1;

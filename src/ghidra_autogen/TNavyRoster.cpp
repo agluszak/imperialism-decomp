@@ -124,7 +124,7 @@ TPageView * TNavyRoster::CreateTNavyRosterInstance(void)
 // GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRoster *this)
+CRuntimeClass * TNavyRoster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -134,7 +134,7 @@ CRuntimeClass * __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRo
 // GHIDRA_NAME TNavyRoster::ConstructTNavyRosterBaseState
 // GHIDRA_PROTO undefined __thiscall TNavyRoster::ConstructTNavyRosterBaseState(void)
 
-TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster *this)
+TNavyRoster * TNavyRoster::ConstructTNavyRosterBaseState()
 
 {
   TPageView::ConstructTPageViewBaseState((TPageView *)this);
@@ -153,7 +153,7 @@ TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster 
 // GHIDRA_NAME TNavyRoster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *this,byte param_1)
+TNavyRoster * TNavyRoster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -167,7 +167,7 @@ TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *
 // GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRoster *this)
+void TNavyRoster::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;

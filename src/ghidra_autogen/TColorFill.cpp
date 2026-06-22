@@ -7,8 +7,7 @@
 // GHIDRA_NAME TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ff150(byte param_1)
 
-TColorFill * __thiscall
-TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this,byte param_1)
+TColorFill * TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(byte param_1)
 
 {
   TColorFill::CreateTColorFillInstance(this);
@@ -22,7 +21,7 @@ TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this,byte 
 // GHIDRA_NAME TColorFill::CreateTColorFillInstance
 // GHIDRA_PROTO undefined __thiscall TColorFill::CreateTColorFillInstance(void)
 
-void __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
+void TColorFill::CreateTColorFillInstance()
 
 {
   this->vftable = (TColorFillVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -33,7 +32,7 @@ void __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
 // GHIDRA_NAME TColorFill::GetTAdornerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TColorFill::GetTAdornerClassNamePointer(TColorFill *this)
+CRuntimeClass * TColorFill::GetTAdornerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,7 +42,7 @@ CRuntimeClass * __thiscall TColorFill::GetTAdornerClassNamePointer(TColorFill *t
 // GHIDRA_NAME TColorFill::AssertUDisplayMgrLine730
 // GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLine730(void)
 
-void __thiscall TColorFill::AssertUDisplayMgrLine730(TColorFill *this)
+void TColorFill::AssertUDisplayMgrLine730()
 
 {
   if (DAT_006a30b4 == 0) {

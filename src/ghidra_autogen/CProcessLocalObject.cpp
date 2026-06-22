@@ -7,7 +7,7 @@
 // GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
 // GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
-void __thiscall CProcessLocalObject::~CProcessLocalObject(CProcessLocalObject *this)
+void CProcessLocalObject::~CProcessLocalObject()
 
 {
   ~CProcessLocalObject(this);
@@ -18,7 +18,7 @@ void __thiscall CProcessLocalObject::~CProcessLocalObject(CProcessLocalObject *t
 // GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
 // GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
-void __thiscall CProcessLocalObject::thunk__CProcessLocalObject(CProcessLocalObject *this)
+void CProcessLocalObject::thunk__CProcessLocalObject()
 
 {
   ~CProcessLocalObject(this);

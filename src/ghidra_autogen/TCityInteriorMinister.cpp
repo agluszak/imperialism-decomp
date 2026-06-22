@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -41,8 +41,7 @@ TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
@@ -63,8 +62,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+undefined4 TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   if (0x31 < *(short *)(*(int *)&this->field_0x4 + 0xa4)) {
@@ -77,7 +75,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   *(undefined4 *)&this->field_0x18 = 0;
@@ -91,7 +89,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+void TCityInteriorMinister::SetForeignMinisterReadyFlag14()
 
 {
   short sVar1;
@@ -122,8 +120,7 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined1 __thiscall
-TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+undefined1 TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined1 uVar1;
@@ -141,7 +138,7 @@ TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   (**(code **)(**(int **)&this->field_0x4 + 0x120))(*(undefined2 *)&this->field_0x10);
@@ -156,8 +153,7 @@ void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-undefined2 __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
+undefined2 TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
 
 {
   return *(undefined2 *)(&this->field_0x12a + param_1 * 2);
@@ -167,8 +163,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
-undefined2 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
+undefined2 TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1)
 
 {
   return *(undefined2 *)(&this->field_0x158 + param_1 * 2);
@@ -178,8 +173,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
 
 {
   *(undefined2 *)(&this->field_0x158 + param_1 * 2) = 0;
@@ -190,8 +184,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCityInteriorMinister::GetTMinisterClassNamePointer(TCityInteriorMinister *this)
+CRuntimeClass * TCityInteriorMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -201,8 +194,7 @@ TCityInteriorMinister::GetTMinisterClassNamePointer(TCityInteriorMinister *this)
 // GHIDRA_NAME TCityInteriorMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TCityInteriorMinister * __thiscall
-TCityInteriorMinister::DeletingDestructTMinister(TCityInteriorMinister *this,byte param_1)
+TCityInteriorMinister * TCityInteriorMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestroyTCityInteriorMinister_Impl();
@@ -216,8 +208,7 @@ TCityInteriorMinister::DeletingDestructTMinister(TCityInteriorMinister *this,byt
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCityInteriorMinister * __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,byte param_1)
+TCityInteriorMinister * TCityInteriorMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
   TCityInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40(this);
@@ -266,7 +257,7 @@ TCityInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   if (*(int **)&this->field_0x28 != (int *)0x0) {
@@ -295,8 +286,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
-undefined4 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,short param_1)
+undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   word wVar1;
@@ -336,8 +326,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(short param_1)
 
-void __thiscall
-TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this,short param_1)
+void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(short param_1)
 
 {
   if (*(short *)&this->field_0x32 == 0) {
@@ -350,8 +339,7 @@ TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(short param_1)
 
-void __thiscall
-TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this,short param_1)
+void TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(short param_1)
 
 {
   (**(code **)(**(int **)&this->field_0x190 + 0x14))(param_1 + 0x1e);
@@ -362,8 +350,7 @@ TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *th
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined2 param_1)
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined2 param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x36 = param_1;
@@ -374,8 +361,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(short param_1)
 
-void __thiscall
-TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this,short param_1)
+void TCityInteriorMinister::SetForeignMinisterReadyFlag14(short param_1)
 
 {
   (**(code **)(**(int **)&this->field_0x190 + 0x14))((int)param_1);
@@ -386,8 +372,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
 
 {
   code *pcVar1;
@@ -661,8 +646,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1)
 
-void __thiscall
-TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this,int *param_1)
+void TCityInteriorMinister::SetForeignMinisterReadyFlag14(int *param_1)
 
 {
   undefined1 uVar1;
@@ -930,7 +914,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
@@ -999,8 +983,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 /* WARNING: Removing unreachable block (ram,0x004bf9ad) */
 /* WARNING: Removing unreachable block (ram,0x004bf9bb) */
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
 
 {
   int iVar1;
@@ -1033,8 +1016,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
-void __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1)
 
 {
   if ((*(char *)(param_1 + 0x7c) == '\0') || (*(char *)(param_1 + 0x7d) != '\0')) {
@@ -1201,7 +1183,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -1211,8 +1193,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
-void __thiscall
-TCityInteriorMinister::OrphanRetStub_0059add0(TCityInteriorMinister *this,int *param_1)
+void TCityInteriorMinister::OrphanRetStub_0059add0(int *param_1)
 
 {
   char cVar1;
@@ -1544,8 +1525,7 @@ TCityInteriorMinister::DispatchNationStateEventCode10
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TCity * param_1)
 
-void __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,TCity *param_1)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
 
 {
   TCity_slot_0x04_0x04 *pTVar1;
@@ -1779,7 +1759,7 @@ LAB_004c0c1d:
 // GHIDRA_NAME TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(char *)(*(int *)&this->field_0x4 + 0xa0) == '\0') {
@@ -1826,8 +1806,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-short __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
+short TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
 
 {
   TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *this_00;
@@ -1984,8 +1963,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+undefined4 TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   short sVar1;
@@ -2142,7 +2120,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
@@ -2290,7 +2268,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   code *pcVar1;
@@ -2462,7 +2440,7 @@ void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInterio
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -2532,7 +2510,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this)
+void TCityInteriorMinister::_scalar_deleting_destructor_()
 
 {
   char *pcVar1;
@@ -2860,7 +2838,7 @@ LAB_004c237a:
 /* WARNING: Removing unreachable block (ram,0x004c2c59) */
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   undefined1 *puVar1;
@@ -3305,8 +3283,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
 
-short __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined4 param_1)
+short TCityInteriorMinister::_scalar_deleting_destructor_(undefined4 param_1)
 
 {
   int iVar1;
@@ -3398,8 +3375,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-undefined4 * __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int param_1)
+undefined4 * TCityInteriorMinister::_scalar_deleting_destructor_(int param_1)
 
 {
   short sVar1;
@@ -3518,8 +3494,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
-undefined4 * __thiscall
-TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this,int param_1)
+undefined4 * TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1)
 
 {
   char *pcVar1;
@@ -3645,8 +3620,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,int *param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
 
 {
   TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar1;
@@ -3736,7 +3710,7 @@ TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
@@ -3892,7 +3866,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::OrphanRetStub_004be6d0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(void)
 
-void __thiscall TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanRetStub_004be6d0()
 
 {
   short sVar1;
@@ -4030,7 +4004,7 @@ void __thiscall TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinis
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   short sVar1;
@@ -4161,7 +4135,7 @@ void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
@@ -4240,7 +4214,7 @@ void __thiscall TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   bool bVar1;
@@ -4802,8 +4776,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_NAME TCityInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1)
 
-void __thiscall
-TCityInteriorMinister::_scalar_deleting_destructor_(TCityInteriorMinister *this,undefined4 param_1)
+void TCityInteriorMinister::_scalar_deleting_destructor_(undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -4893,8 +4866,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-undefined4 __thiscall
-TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinister *this,int param_1)
+undefined4 TCityInteriorMinister::OrphanRetStub_004be6d0(int param_1)
 
 {
   undefined4 *puVar1;
@@ -4915,8 +4887,7 @@ TCityInteriorMinister::OrphanRetStub_004be6d0(TCityInteriorMinister *this,int pa
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined4 __thiscall
-TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+undefined4 TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   return *(undefined4 *)&this->field_0xc;
@@ -4926,8 +4897,7 @@ TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall
-TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *this,int param_1)
+void TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 {
   undefined4 *puVar1;
@@ -4978,7 +4948,7 @@ TCityInteriorMinister::OrphanLeaf_NoCall_Ins07_004d8920(TCityInteriorMinister *t
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInteriorMinister *this)
+void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined4 *puVar1;
@@ -4999,8 +4969,7 @@ void __thiscall TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(int param_1)
 
-void __thiscall
-TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TCityInteriorMinister *this,int param_1)
+void TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0(int param_1)
 
 {
   undefined4 *puVar1;
@@ -5048,7 +5017,7 @@ LAB_004c6a00:
 // GHIDRA_NAME TCityInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInteriorMinister *this)
+void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   TCityInteriorMinister_DeletingDestructTMinister_0x04 *pTVar1;
@@ -5081,7 +5050,7 @@ void __thiscall TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCityInt
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+void TCityInteriorMinister::SetForeignMinisterReadyFlag14()
 
 {
   TCityInteriorMinisterVtbl *pTVar1;
@@ -5098,8 +5067,7 @@ void __thiscall TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteri
 // GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-CRuntimeClass * __thiscall
-TCityInteriorMinister::SetForeignMinisterReadyFlag14(TCityInteriorMinister *this)
+CRuntimeClass * TCityInteriorMinister::SetForeignMinisterReadyFlag14()
 
 {
   return &classCObject;

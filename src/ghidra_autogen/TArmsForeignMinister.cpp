@@ -173,8 +173,7 @@ TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_NAME TArmsForeignMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-int __thiscall
-TArmsForeignMinister::DispatchNationStateEventCode10(TArmsForeignMinister *this,short param_1)
+int TArmsForeignMinister::DispatchNationStateEventCode10(short param_1)
 
 {
   short sVar1;
@@ -203,8 +202,7 @@ TArmsForeignMinister::DispatchNationStateEventCode10(TArmsForeignMinister *this,
 // GHIDRA_NAME TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined4 __thiscall
-TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *this)
+undefined4 TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   int iVar1;
@@ -230,7 +228,7 @@ TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *thi
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
+void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
 
 {
   bool bVar1;
@@ -312,8 +310,7 @@ LAB_0052f8bf:
 // GHIDRA_NAME TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall
-TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmsForeignMinister *this)
+void TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   undefined uVar1;
@@ -386,7 +383,7 @@ TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmsForeignM
 // GHIDRA_NAME TArmsForeignMinister::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TArmsForeignMinister::OrphanRetStub_0059add0(TArmsForeignMinister *this)
+void TArmsForeignMinister::OrphanRetStub_0059add0()
 
 {
   short sVar1;
@@ -413,7 +410,7 @@ void __thiscall TArmsForeignMinister::OrphanRetStub_0059add0(TArmsForeignMiniste
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
+void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
 
 {
   TArmsForeignMinisterVtbl *pTVar1;
@@ -441,8 +438,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
 // GHIDRA_NAME TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
-void __thiscall
-TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TArmsForeignMinister *this)
+void TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
 
 {
   return;
@@ -452,7 +448,7 @@ TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TArmsFore
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this)
+void TArmsForeignMinister::_scalar_deleting_destructor_()
 
 {
   return;
@@ -462,7 +458,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
+void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
 
 {
   bool bVar1;
@@ -508,7 +504,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this)
+void TArmsForeignMinister::_scalar_deleting_destructor_()
 
 {
   short sVar1;
@@ -639,7 +635,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
+void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
 
 {
   float *pfVar1;
@@ -879,8 +875,7 @@ LAB_0053054c:
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(float param_1)
 
-undefined1 __thiscall
-TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this,float param_1)
+undefined1 TArmsForeignMinister::GetTEventHandlerClassNamePointer(float param_1)
 
 {
   char cVar1;
@@ -947,7 +942,7 @@ TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *thi
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this)
+void TArmsForeignMinister::_scalar_deleting_destructor_()
 
 {
   char cVar1;
@@ -973,7 +968,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this)
+void TArmsForeignMinister::_scalar_deleting_destructor_()
 
 {
   undefined1 *puVar1;
@@ -1139,8 +1134,7 @@ LAB_00530d24:
 // GHIDRA_NAME TArmsForeignMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(short param_1)
 
-void __thiscall
-TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignMinister *this,short param_1)
+void TArmsForeignMinister::_scalar_deleting_destructor_(short param_1)
 
 {
   short sVar1;
@@ -1203,7 +1197,7 @@ LAB_00531084:
 // GHIDRA_NAME TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *this)
+void TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -1213,8 +1207,7 @@ void __thiscall TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsFore
 // GHIDRA_NAME TArmsForeignMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TArmsForeignMinister::GetTMinisterClassNamePointer(TArmsForeignMinister *this)
+CRuntimeClass * TArmsForeignMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -1224,8 +1217,7 @@ TArmsForeignMinister::GetTMinisterClassNamePointer(TArmsForeignMinister *this)
 // GHIDRA_NAME TArmsForeignMinister::ConstructTArmsForeignMinister
 // GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::ConstructTArmsForeignMinister(void)
 
-TArmsForeignMinister * __thiscall
-TArmsForeignMinister::ConstructTArmsForeignMinister(TArmsForeignMinister *this)
+TArmsForeignMinister * TArmsForeignMinister::ConstructTArmsForeignMinister()
 
 {
   int iVar1;
@@ -1253,8 +1245,7 @@ TArmsForeignMinister::ConstructTArmsForeignMinister(TArmsForeignMinister *this)
 // GHIDRA_NAME TArmsForeignMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TArmsForeignMinister * __thiscall
-TArmsForeignMinister::DeletingDestructTMinister(TArmsForeignMinister *this,byte param_1)
+TArmsForeignMinister * TArmsForeignMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TArmsForeignMinister::DestructTArmsForeignMinister(this);
@@ -1268,7 +1259,7 @@ TArmsForeignMinister::DeletingDestructTMinister(TArmsForeignMinister *this,byte 
 // GHIDRA_NAME TArmsForeignMinister::DestructTArmsForeignMinister
 // GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(void)
 
-void __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(TArmsForeignMinister *this)
+void TArmsForeignMinister::DestructTArmsForeignMinister()
 
 {
   this->vftable =
@@ -1280,7 +1271,7 @@ void __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(TArmsForeignM
 // GHIDRA_NAME TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TArmsForeignMinister *this)
+void TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   uint uVar1;
@@ -1314,7 +1305,7 @@ void __thiscall TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TArmsFore
 // GHIDRA_NAME TArmsForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TArmsForeignMinister::SetForeignMinisterReadyFlag14(TArmsForeignMinister *this)
+void TArmsForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   TArmsForeignMinisterVtbl *pTVar1;
@@ -1539,8 +1530,7 @@ LAB_0053457f:
 // GHIDRA_NAME TArmsForeignMinister::IncrementArmsCounter5EByFive
 // GHIDRA_PROTO undefined __thiscall IncrementArmsCounter5EByFive(int param_1)
 
-void __thiscall
-TArmsForeignMinister::IncrementArmsCounter5EByFive(TArmsForeignMinister *this,int param_1)
+void TArmsForeignMinister::IncrementArmsCounter5EByFive(int param_1)
 
 {
   *(short *)(param_1 + 0x5e) = *(short *)(param_1 + 0x5e) + 5;

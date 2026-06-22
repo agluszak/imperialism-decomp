@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMiniCivView::OrphanRetStub_004ab800
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004ab800(void)
 
-void __thiscall TMiniCivView::OrphanRetStub_004ab800(TMiniCivView *this)
+void TMiniCivView::OrphanRetStub_004ab800()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TMiniCivView::OrphanRetStub_004ab800(TMiniCivView *this)
 // GHIDRA_NAME TMiniCivView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniCivView * __thiscall
-TMiniCivView::_scalar_deleting_destructor_(TMiniCivView *this,byte param_1)
+TMiniCivView * TMiniCivView::_scalar_deleting_destructor_(byte param_1)
 
 {
   DestructTMiniCivLineAndMaybeFree_Impl();
@@ -64,7 +63,7 @@ TControl * TMiniCivView::CreateTMiniCivViewInstance(void)
 // GHIDRA_NAME TMiniCivView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniCivView::GetTEventHandlerClassNamePointer(TMiniCivView *this)
+CRuntimeClass * TMiniCivView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -238,7 +237,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
 // GHIDRA_NAME TMiniCivView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
+void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined uVar1;
@@ -331,8 +330,7 @@ void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
 // GHIDRA_NAME TMiniCivView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)
 
-void __thiscall
-TMiniCivView::OrphanRetStub_0059add0(TMiniCivView *this,int param_1,TMiniCivView *param_2)
+void TMiniCivView::OrphanRetStub_0059add0(int param_1, TMiniCivView *param_2)
 
 {
   TView *pTVar1;

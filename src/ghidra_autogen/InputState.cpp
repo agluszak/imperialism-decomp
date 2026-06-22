@@ -22,7 +22,7 @@ InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,
 // GHIDRA_NAME InputState::HandleKeyDown
 // GHIDRA_PROTO void __thiscall InputState::HandleKeyDown(int key_id)
 
-void __thiscall InputState::HandleKeyDown(InputState *this,int key_id)
+void InputState::HandleKeyDown(int key_id)
 
 {
   short slot_id;

@@ -37,8 +37,7 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
 // GHIDRA_NAME TPurchaseCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPurchaseCluster::GetTEventHandlerClassNamePointer(TPurchaseCluster *this)
+CRuntimeClass * TPurchaseCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TPurchaseCluster::GetTEventHandlerClassNamePointer(TPurchaseCluster *this)
 // GHIDRA_NAME TPurchaseCluster::ConstructTPurchaseClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPurchaseClusterBaseState(void)
 
-TPurchaseCluster * __thiscall
-TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
+TPurchaseCluster * TPurchaseCluster::ConstructTPurchaseClusterBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -62,8 +60,7 @@ TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
 // GHIDRA_NAME TPurchaseCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPurchaseCluster * __thiscall
-TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this,byte param_1)
+TPurchaseCluster * TPurchaseCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -77,8 +74,7 @@ TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this,byte param
 // GHIDRA_NAME TPurchaseCluster::OrphanCallChain_C1_I08_004cc440
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_004cc440(int param_1)
 
-void __thiscall
-TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(TPurchaseCluster *this,int param_1)
+void TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1)
 
 {
   *(int *)&this->field_0x88 = param_1;
@@ -91,7 +87,7 @@ TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(TPurchaseCluster *this,int par
 // GHIDRA_NAME TPurchaseCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this)
+void TPurchaseCluster::_scalar_deleting_destructor_()
 
 {
   return;
@@ -200,7 +196,7 @@ TPurchaseCluster::SetCityViewValueControlAmount
 // GHIDRA_NAME TPurchaseCluster::UpdateCityViewValueControl
 // GHIDRA_PROTO undefined __thiscall UpdateCityViewValueControl(void)
 
-void __thiscall TPurchaseCluster::UpdateCityViewValueControl(TPurchaseCluster *this)
+void TPurchaseCluster::UpdateCityViewValueControl()
 
 {
   undefined uVar1;

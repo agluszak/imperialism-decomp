@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(byte param_1)
 
-TNavyPlayer * __thiscall
-TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this,byte param_1)
+TNavyPlayer * TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(byte param_1)
 
 {
   TNavyPlayer::CreateTNavyPlayerInstance(this);
@@ -22,7 +21,7 @@ TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this,byt
 // GHIDRA_NAME TNavyPlayer::CreateTNavyPlayerInstance
 // GHIDRA_PROTO undefined __thiscall TNavyPlayer::CreateTNavyPlayerInstance(void)
 
-void __thiscall TNavyPlayer::CreateTNavyPlayerInstance(TNavyPlayer *this)
+void TNavyPlayer::CreateTNavyPlayerInstance()
 
 {
   this->vftable = (TNavyPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -33,7 +32,7 @@ void __thiscall TNavyPlayer::CreateTNavyPlayerInstance(TNavyPlayer *this)
 // GHIDRA_NAME TNavyPlayer::GetTTacticalPlayerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNavyPlayer::GetTTacticalPlayerClassNamePointer(TNavyPlayer *this)
+CRuntimeClass * TNavyPlayer::GetTTacticalPlayerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,7 +42,7 @@ CRuntimeClass * __thiscall TNavyPlayer::GetTTacticalPlayerClassNamePointer(TNavy
 // GHIDRA_NAME TNavyPlayer::ConstructTNavyPlayerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNavyPlayerBaseState(void)
 
-undefined4 __thiscall TNavyPlayer::ConstructTNavyPlayerBaseState(TNavyPlayer *this)
+undefined4 TNavyPlayer::ConstructTNavyPlayerBaseState()
 
 {
   return *(undefined4 *)&this[1].field_0x4;
@@ -53,8 +52,7 @@ undefined4 __thiscall TNavyPlayer::ConstructTNavyPlayerBaseState(TNavyPlayer *th
 // GHIDRA_NAME TNavyPlayer::DestructTNavyPlayerAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTNavyPlayerAndMaybeFree(byte param_1)
 
-TNavyPlayer * __thiscall
-TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this,byte param_1)
+TNavyPlayer * TNavyPlayer::DestructTNavyPlayerAndMaybeFree(byte param_1)
 
 {
   DestructTNavyPlayerAndMaybeFree_Impl();
@@ -68,7 +66,7 @@ TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this,byte param_1)
 // GHIDRA_NAME TNavyPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TNavyPlayer::OrphanRetStub_0059add0(TNavyPlayer *this)
+void TNavyPlayer::OrphanRetStub_0059add0()
 
 {
   int *piVar1;
@@ -91,8 +89,7 @@ void __thiscall TNavyPlayer::OrphanRetStub_0059add0(TNavyPlayer *this)
 // GHIDRA_NAME TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)
 
-void __thiscall
-TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(TNavyPlayer *this)
+void TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60()
 
 {
   TAutoGreatPower *this_00;
@@ -111,8 +108,7 @@ TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(TNavyPlayer 
 // GHIDRA_NAME TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters
 // GHIDRA_PROTO undefined __thiscall AddOrderNodeToHeadAndReassignNationCounters(int * param_1)
 
-void __thiscall
-TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters(TNavyPlayer *this,int *param_1)
+void TNavyPlayer::AddOrderNodeToHeadAndReassignNationCounters(int *param_1)
 
 {
   int iVar1;

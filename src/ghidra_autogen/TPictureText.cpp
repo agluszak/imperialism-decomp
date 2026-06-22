@@ -37,7 +37,7 @@ TStaticText * TPictureText::CreateTPictureTextInstance(void)
 // GHIDRA_NAME TPictureText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPictureText::GetTEventHandlerClassNamePointer(TPictureText *this)
+CRuntimeClass * TPictureText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TPictureText::GetTEventHandlerClassNamePointer(TPictu
 // GHIDRA_NAME TPictureText::ConstructTPictureTextBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPictureTextBaseState(void)
 
-TPictureText * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *this)
+TPictureText * TPictureText::ConstructTPictureTextBaseState()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -59,8 +59,7 @@ TPictureText * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureT
 // GHIDRA_NAME TPictureText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureText * __thiscall
-TPictureText::_scalar_deleting_destructor_(TPictureText *this,byte param_1)
+TPictureText * TPictureText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);

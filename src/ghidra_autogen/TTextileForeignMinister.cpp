@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTextileForeignMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTextileForeignMinister::GetTMinisterClassNamePointer(TTextileForeignMinister *this)
+CRuntimeClass * TTextileForeignMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TTextileForeignMinister::GetTMinisterClassNamePointer(TTextileForeignMinister *t
 // GHIDRA_NAME TTextileForeignMinister::ConstructTTextileForeignMinister
 // GHIDRA_PROTO undefined __thiscall TTextileForeignMinister::ConstructTTextileForeignMinister(void)
 
-TTextileForeignMinister * __thiscall
-TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMinister *this)
+TTextileForeignMinister * TTextileForeignMinister::ConstructTTextileForeignMinister()
 
 {
   int iVar1;
@@ -47,8 +45,7 @@ TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMiniste
 // GHIDRA_NAME TTextileForeignMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TTextileForeignMinister * __thiscall
-TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this,byte param_1)
+TTextileForeignMinister * TTextileForeignMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TTextileForeignMinister::DestructTTextileForeignMinister(this);
@@ -62,8 +59,7 @@ TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this
 // GHIDRA_NAME TTextileForeignMinister::DestructTTextileForeignMinister
 // GHIDRA_PROTO undefined __thiscall TTextileForeignMinister::DestructTTextileForeignMinister(void)
 
-void __thiscall
-TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister *this)
+void TTextileForeignMinister::DestructTTextileForeignMinister()
 
 {
   this->vftable =
@@ -75,8 +71,7 @@ TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister
 // GHIDRA_NAME TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTextileForeignMinister *this)
+void TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TIndexAndRankListVtbl *pTVar1;
@@ -153,8 +148,7 @@ TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTextileForeignMiniste
 // GHIDRA_NAME TTextileForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall
-TTextileForeignMinister::SetForeignMinisterReadyFlag14(TTextileForeignMinister *this)
+void TTextileForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   TTextileForeignMinisterVtbl *pTVar1;

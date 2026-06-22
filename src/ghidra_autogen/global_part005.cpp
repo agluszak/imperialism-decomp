@@ -6728,7 +6728,7 @@ void __thiscall PopulateListBoxFromDelimitedText(char *param_1,CString param_2)
 // GHIDRA_NAME CString::~CString
 // GHIDRA_PROTO void __thiscall CString::~CString(void)
 
-void __thiscall CString::~CString(CString *this)
+void CString::~CString()
 
 {
   CString::~CString(this);

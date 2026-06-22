@@ -24,7 +24,7 @@ TPirateMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_NAME TPirateMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPirateMinister::GetTMinisterClassNamePointer(TPirateMinister *this)
+CRuntimeClass * TPirateMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,8 +34,7 @@ CRuntimeClass * __thiscall TPirateMinister::GetTMinisterClassNamePointer(TPirate
 // GHIDRA_NAME TPirateMinister::ConstructTPirateMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TPirateMinister::ConstructTPirateMinisterBaseState(void)
 
-TPirateMinister * __thiscall
-TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMinister *this)
+TPirateMinister * TPirateMinister::ConstructTPirateMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -48,8 +47,7 @@ TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMinister *this)
 // GHIDRA_NAME TPirateMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TPirateMinister * __thiscall
-TPirateMinister::DeletingDestructTMinister(TPirateMinister *this,byte param_1)
+TPirateMinister * TPirateMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTPirateMinisterAndMaybeFree_Impl();
@@ -63,8 +61,7 @@ TPirateMinister::DeletingDestructTMinister(TPirateMinister *this,byte param_1)
 // GHIDRA_NAME TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
 // GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
 
-void __thiscall
-TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this,int param_1)
+void TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1)
 
 {
   TMilitaryUnitOrderState *pTVar1;

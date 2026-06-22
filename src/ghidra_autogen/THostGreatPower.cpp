@@ -7,7 +7,7 @@
 // GHIDRA_NAME THostGreatPower::ReturnFalseNationStateCapabilityFlag9C
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag9C(void)
 
-undefined1 __thiscall THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(THostGreatPower *this)
+undefined1 THostGreatPower::ReturnFalseNationStateCapabilityFlag9C()
 
 {
   return 1;
@@ -17,8 +17,7 @@ undefined1 __thiscall THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(TH
 // GHIDRA_NAME THostGreatPower::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THostGreatPower * __thiscall
-THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1)
+THostGreatPower * THostGreatPower::_scalar_deleting_destructor_(byte param_1)
 
 {
   THostGreatPower::DestructTHostGreatPower(this);
@@ -32,7 +31,7 @@ THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1
 // GHIDRA_NAME THostGreatPower::DestructTHostGreatPower
 // GHIDRA_PROTO undefined __thiscall THostGreatPower::DestructTHostGreatPower(void)
 
-void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
+void THostGreatPower::DestructTHostGreatPower()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -57,7 +56,7 @@ void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
 // GHIDRA_NAME THostGreatPower::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall THostGreatPower::GetTCountryClassNamePointer(THostGreatPower *this)
+CRuntimeClass * THostGreatPower::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -67,8 +66,7 @@ CRuntimeClass * __thiscall THostGreatPower::GetTCountryClassNamePointer(THostGre
 // GHIDRA_NAME THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
 // GHIDRA_PROTO undefined __thiscall TMinor::DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
 
-void __thiscall
-THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower *this,int *param_1)
+void THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int *param_1)
 
 {
   TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
@@ -83,8 +81,7 @@ THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower 
 // GHIDRA_NAME THostGreatPower::HandleCityDialogHintClusterUpdate
 // GHIDRA_PROTO undefined __thiscall TCountry::HandleCityDialogHintClusterUpdate(int * param_1)
 
-void __thiscall
-THostGreatPower::HandleCityDialogHintClusterUpdate(THostGreatPower *this,int *param_1)
+void THostGreatPower::HandleCityDialogHintClusterUpdate(int *param_1)
 
 {
   TCountry::HandleCityDialogHintClusterUpdate((TCountry *)this,param_1);
@@ -119,7 +116,7 @@ THostGreatPower::ReturnFalseNationStateActionStub
 // GHIDRA_NAME THostGreatPower::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
-void __thiscall THostGreatPower::AddRegionIdToNationOwnedRegionList(THostGreatPower *this)
+void THostGreatPower::AddRegionIdToNationOwnedRegionList()
 
 {
   char cVar1;
@@ -148,7 +145,7 @@ void __thiscall THostGreatPower::AddRegionIdToNationOwnedRegionList(THostGreatPo
 // GHIDRA_NAME THostGreatPower::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
-void __thiscall THostGreatPower::ApplyJoinEmpireMode1TargetTransition(THostGreatPower *this)
+void THostGreatPower::ApplyJoinEmpireMode1TargetTransition()
 
 {
   char cVar1;

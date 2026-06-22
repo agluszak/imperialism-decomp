@@ -37,7 +37,7 @@ TUberCluster * TTradeCluster::CreateTradeSellControlPanel(void)
 // GHIDRA_NAME TTradeCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTradeCluster::GetTEventHandlerClassNamePointer(TTradeCluster *this)
+CRuntimeClass * TTradeCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTTradeCluster;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TTradeCluster::GetTEventHandlerClassNamePointer(TTrad
 // GHIDRA_NAME TTradeCluster::ConstructTradeSellControlPanel
 // GHIDRA_PROTO undefined __thiscall TTradeCluster::ConstructTradeSellControlPanel(void)
 
-TTradeCluster * __thiscall TTradeCluster::ConstructTradeSellControlPanel(TTradeCluster *this)
+TTradeCluster * TTradeCluster::ConstructTradeSellControlPanel()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -59,8 +59,7 @@ TTradeCluster * __thiscall TTradeCluster::ConstructTradeSellControlPanel(TTradeC
 // GHIDRA_NAME TTradeCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeCluster * __thiscall
-TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
+TTradeCluster * TTradeCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -74,7 +73,7 @@ TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
 // GHIDRA_NAME TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *this)
+void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTradeCluster_slot_0x04_0x04 *pTVar1;
@@ -159,8 +158,7 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
 // GHIDRA_NAME TTradeCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *param_2,int param_3)
+void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   TTradeClusterVtbl *pTVar1;
@@ -322,7 +320,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
 // GHIDRA_NAME TTradeCluster::OrphanVtableAssignStub_005714e0
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-bool __thiscall TTradeCluster::OrphanVtableAssignStub_005714e0(TTradeCluster *this)
+bool TTradeCluster::OrphanVtableAssignStub_005714e0()
 
 {
   undefined uVar1;
@@ -343,7 +341,7 @@ bool __thiscall TTradeCluster::OrphanVtableAssignStub_005714e0(TTradeCluster *th
 // GHIDRA_NAME TTradeCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void __thiscall TTradeCluster::OrphanRetStub_00586ff0(TTradeCluster *this)
+void TTradeCluster::OrphanRetStub_00586ff0()
 
 {
   TTradeCluster_slot_0x04_0x04 *pTVar1;

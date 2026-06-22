@@ -38,7 +38,7 @@ TNoHilitePicture * TUniversityView::CreateTUniversityViewInstance(void)
 // GHIDRA_NAME TUniversityView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TUniversityView::GetTEventHandlerClassNamePointer(TUniversityView *this)
+CRuntimeClass * TUniversityView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +48,7 @@ CRuntimeClass * __thiscall TUniversityView::GetTEventHandlerClassNamePointer(TUn
 // GHIDRA_NAME TUniversityView::ConstructTUniversityViewBaseState
 // GHIDRA_PROTO undefined __thiscall TUniversityView::ConstructTUniversityViewBaseState(void)
 
-TUniversityView * __thiscall
-TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
+TUniversityView * TUniversityView::ConstructTUniversityViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -63,8 +62,7 @@ TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 // GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUniversityView * __thiscall
-TUniversityView::_scalar_deleting_destructor_(TUniversityView *this,byte param_1)
+TUniversityView * TUniversityView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -107,7 +105,7 @@ TUniversityView::_scalar_deleting_destructor_(TUniversityView *this,byte param_1
    Special Cases:
    - Rows 6 and 7 are skipped in this pass (gated/alternate rows handled elsewhere). */
 
-void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,int *pCityViewDialog)
+void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
   TUniversityView_slot_0x04_0x04 *pTVar1;
@@ -320,8 +318,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
 // GHIDRA_NAME TUniversityView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall
-TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int param_2)
+void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TUniversityViewVtbl *pTVar1;
@@ -423,7 +420,7 @@ TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int pa
    Returns:
    - void. */
 
-void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,int *pCityViewDialog)
+void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 
 {
   TUniversityView_slot_0x04_0x04 *pTVar1;
@@ -565,7 +562,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
 // GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *this)
+void TUniversityView::_scalar_deleting_destructor_()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
@@ -584,8 +581,7 @@ void __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *t
 
 /* Setting prototype: void RenderUniversityRecruitmentRequirementGrid(RECT *pClipRect) */
 
-void __thiscall
-TUniversityView::OrphanTiny_ReturnZero_0048a730(TUniversityView *this,RECT *pClipRect)
+void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
 
 {
   undefined uVar1;

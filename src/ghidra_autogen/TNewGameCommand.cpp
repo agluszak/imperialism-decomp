@@ -13,7 +13,7 @@
 /* Thin wrapper that reinitializes game flow without posting any follow-up turn-event code
    (param=0). */
 
-void __thiscall TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
+void TNewGameCommand::OrphanRetStub_00487a00()
 
 {
   ReinitializeGameFlowAndPostTurnEventCode(0);
@@ -24,8 +24,7 @@ void __thiscall TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
 // GHIDRA_NAME TNewGameCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TNewGameCommand * __thiscall
-TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this,byte param_1)
+TNewGameCommand * TNewGameCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   TNewGameCommand::CreateTNewGameCommandInstance(this);
@@ -39,7 +38,7 @@ TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this,byte para
 // GHIDRA_NAME TNewGameCommand::CreateTNewGameCommandInstance
 // GHIDRA_PROTO undefined __thiscall TNewGameCommand::CreateTNewGameCommandInstance(void)
 
-void __thiscall TNewGameCommand::CreateTNewGameCommandInstance(TNewGameCommand *this)
+void TNewGameCommand::CreateTNewGameCommandInstance()
 
 {
   this->vftable = (TNewGameCommandVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -51,7 +50,7 @@ void __thiscall TNewGameCommand::CreateTNewGameCommandInstance(TNewGameCommand *
 // GHIDRA_NAME TNewGameCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNewGameCommand::GetTEventClassNamePointer(TNewGameCommand *this)
+CRuntimeClass * TNewGameCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -183,7 +182,7 @@ TNewGameCommand::InitializeBasicCityOrderContext
 // GHIDRA_NAME TNewGameCommand::OnOK_6054aa
 // GHIDRA_PROTO undefined __thiscall OnOK_6054aa(void)
 
-void __thiscall TNewGameCommand::OnOK_6054aa(TNewGameCommand *this)
+void TNewGameCommand::OnOK_6054aa()
 
 {
   int iVar1;

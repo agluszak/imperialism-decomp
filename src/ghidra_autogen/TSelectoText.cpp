@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSelectoText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSelectoText * __thiscall
-TSelectoText::_scalar_deleting_destructor_(TSelectoText *this,byte param_1)
+TSelectoText * TSelectoText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText(this);
@@ -22,7 +21,7 @@ TSelectoText::_scalar_deleting_destructor_(TSelectoText *this,byte param_1)
 // GHIDRA_NAME TSelectoText::CreateTSelectoTextInstance
 // GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
-void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
+void TSelectoText::CreateTSelectoTextInstance()
 
 {
   CString *this_00;
@@ -58,7 +57,7 @@ void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
 // GHIDRA_NAME TSelectoText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSelectoText::GetTEventHandlerClassNamePointer(TSelectoText *this)
+CRuntimeClass * TSelectoText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -68,7 +67,7 @@ CRuntimeClass * __thiscall TSelectoText::GetTEventHandlerClassNamePointer(TSelec
 // GHIDRA_NAME TSelectoText::OrphanRetStub_0057b760
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0057b760(void)
 
-void __thiscall TSelectoText::OrphanRetStub_0057b760(TSelectoText *this)
+void TSelectoText::OrphanRetStub_0057b760()
 
 {
   return;

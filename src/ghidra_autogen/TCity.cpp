@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCity::CreateTCityInstance
 // GHIDRA_PROTO undefined __thiscall CreateTCityInstance(int param_1, short param_2)
 
-undefined2 __thiscall TCity::CreateTCityInstance(TCity *this,int param_1,short param_2)
+undefined2 TCity::CreateTCityInstance(int param_1, short param_2)
 
 {
   short sVar1;
@@ -46,7 +46,7 @@ undefined2 __thiscall TCity::CreateTCityInstance(TCity *this,int param_1,short p
 // GHIDRA_NAME TCity::GetTCityClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTCityClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCity::GetTCityClassNamePointer(TCity *this)
+CRuntimeClass * TCity::GetTCityClassNamePointer()
 
 {
   return &g_pClassDescTCity;
@@ -56,7 +56,7 @@ CRuntimeClass * __thiscall TCity::GetTCityClassNamePointer(TCity *this)
 // GHIDRA_NAME TCity::TCity
 // GHIDRA_PROTO undefined __thiscall TCity(void)
 
-void __thiscall TCity::TCity(TCity *this)
+void TCity::TCity()
 
 {
   int iVar1;
@@ -85,7 +85,7 @@ void __thiscall TCity::TCity(TCity *this)
 // GHIDRA_NAME TCity::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
+TCity * TCity::_scalar_deleting_destructor_(byte param_1)
 
 {
   TCity::~TCity(this);
@@ -99,7 +99,7 @@ TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
 // GHIDRA_NAME TCity::~TCity
 // GHIDRA_PROTO undefined __thiscall TCity::~TCity(void)
 
-void __thiscall TCity::~TCity(TCity *this)
+void TCity::~TCity()
 
 {
   this->vftable = (TCityVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -120,7 +120,7 @@ void __thiscall TCity::~TCity(TCity *this)
    state.
    This is a core persistence load path for remembered production orders. */
 
-void __thiscall TCity::DeserializeCityProductionState(TCity *this,int *param_1)
+void TCity::DeserializeCityProductionState(int *param_1)
 
 {
   undefined1 uVar1;
@@ -444,7 +444,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this,int *param_1)
    entry/queue objects.
    This is a core persistence save path for remembered production orders. */
 
-void __thiscall TCity::SerializeCityProductionState(TCity *this,int *param_1)
+void TCity::SerializeCityProductionState(int *param_1)
 
 {
   code *pcVar1;
@@ -673,7 +673,7 @@ void __thiscall TCity::SerializeCityProductionState(TCity *this,int *param_1)
 // GHIDRA_NAME TCity::Call1C
 // GHIDRA_PROTO undefined __thiscall Call1C(void)
 
-void __thiscall TCity::Call1C(TCity *this)
+void TCity::Call1C()
 
 {
   void **ppvVar1;
@@ -711,7 +711,7 @@ void __thiscall TCity::Call1C(TCity *this)
 // GHIDRA_NAME TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
 
-void __thiscall TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(TCity *this,undefined4 param_1)
+void TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0xb0 = param_1;
@@ -722,7 +722,7 @@ void __thiscall TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(TCity *this,unde
 // GHIDRA_NAME TCity::OrphanCallChain_C13_I161_004b3b40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C13_I161_004b3b40(void)
 
-void __thiscall TCity::OrphanCallChain_C13_I161_004b3b40(TCity *this)
+void TCity::OrphanCallChain_C13_I161_004b3b40()
 
 {
   TCity_GetTCityClassNamePointer_0x00 *pTVar1;
@@ -838,7 +838,7 @@ LAB_004b3d28:
 // GHIDRA_NAME TCity::Call2C
 // GHIDRA_PROTO undefined __thiscall Call2C(void)
 
-void __thiscall TCity::Call2C(TCity *this)
+void TCity::Call2C()
 
 {
   short sVar1;
@@ -873,7 +873,7 @@ void __thiscall TCity::Call2C(TCity *this)
 // GHIDRA_NAME TCity::RefreshOrderStateSlot0C
 // GHIDRA_PROTO undefined __thiscall RefreshOrderStateSlot0C(void)
 
-void __thiscall TCity::RefreshOrderStateSlot0C(TCity *this)
+void TCity::RefreshOrderStateSlot0C()
 
 {
   short sVar1;
@@ -943,7 +943,7 @@ void __thiscall TCity::RefreshOrderStateSlot0C(TCity *this)
 // GHIDRA_NAME TCity::AddNeedVectorSplitSlot34
 // GHIDRA_PROTO undefined __thiscall AddNeedVectorSplitSlot34(short * param_1)
 
-void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this,short *param_1)
+void TCity::AddNeedVectorSplitSlot34(short *param_1)
 
 {
   short sVar1;
@@ -988,7 +988,7 @@ void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this,short *param_1)
 // GHIDRA_NAME TCity::AddNeedVectorSlot3C
 // GHIDRA_PROTO undefined __thiscall AddNeedVectorSlot3C(short * param_1)
 
-void __thiscall TCity::AddNeedVectorSlot3C(TCity *this,short *param_1)
+void TCity::AddNeedVectorSlot3C(short *param_1)
 
 {
   short sVar1;
@@ -1013,7 +1013,7 @@ void __thiscall TCity::AddNeedVectorSlot3C(TCity *this,short *param_1)
 // GHIDRA_NAME TCity::AddOwnerNeedTargetsSlot38
 // GHIDRA_PROTO undefined __thiscall AddOwnerNeedTargetsSlot38(void)
 
-void __thiscall TCity::AddOwnerNeedTargetsSlot38(TCity *this)
+void TCity::AddOwnerNeedTargetsSlot38()
 
 {
   word *pwVar1;
@@ -1036,7 +1036,7 @@ void __thiscall TCity::AddOwnerNeedTargetsSlot38(TCity *this)
 // GHIDRA_NAME TCity::AllocateNeedFromOwnerSlot4C
 // GHIDRA_PROTO undefined __thiscall AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
 
-short __thiscall TCity::AllocateNeedFromOwnerSlot4C(TCity *this,short param_1,short param_2)
+short TCity::AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
 
 {
   int iVar1;
@@ -1067,7 +1067,7 @@ short __thiscall TCity::AllocateNeedFromOwnerSlot4C(TCity *this,short param_1,sh
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TCity::Refresh80(TCity *this)
+void TCity::Refresh80()
 
 {
   char cVar1;
@@ -1096,7 +1096,7 @@ void __thiscall TCity::Refresh80(TCity *this)
 // GHIDRA_NAME TCity::OrphanRetStub_004b4210
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b4210(void)
 
-void __thiscall TCity::OrphanRetStub_004b4210(TCity *this)
+void TCity::OrphanRetStub_004b4210()
 
 {
   return;
@@ -1106,7 +1106,7 @@ void __thiscall TCity::OrphanRetStub_004b4210(TCity *this)
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins07_004b4230
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004b4230(void)
 
-int __thiscall TCity::OrphanLeaf_NoCall_Ins07_004b4230(TCity *this)
+int TCity::OrphanLeaf_NoCall_Ins07_004b4230()
 
 {
   if (*(int *)&this->field_0xac != 0) {
@@ -1119,7 +1119,7 @@ int __thiscall TCity::OrphanLeaf_NoCall_Ins07_004b4230(TCity *this)
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins04_004b4260
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
 
-void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this,undefined2 param_1)
+void TCity::OrphanLeaf_NoCall_Ins04_004b4260(undefined2 param_1)
 
 {
   *(undefined2 *)(*(int *)&this->field_0xac + 0xa6) = param_1;
@@ -1130,7 +1130,7 @@ void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this,undefined2 p
 // GHIDRA_NAME TCity::GetCitySummaryRecordSlot74
 // GHIDRA_PROTO undefined __thiscall GetCitySummaryRecordSlot74(void)
 
-void __thiscall TCity::GetCitySummaryRecordSlot74(TCity *this)
+void TCity::GetCitySummaryRecordSlot74()
 
 {
   int iVar1;
@@ -1162,7 +1162,7 @@ void __thiscall TCity::GetCitySummaryRecordSlot74(TCity *this)
 // GHIDRA_NAME TCity::WriteQueuePairSlot48
 // GHIDRA_PROTO undefined __thiscall WriteQueuePairSlot48(void)
 
-void __thiscall TCity::WriteQueuePairSlot48(TCity *this)
+void TCity::WriteQueuePairSlot48()
 
 {
   (**(code **)(**(int **)&this->field_0x274 + 0x38))(&stack0x00000004);
@@ -1173,7 +1173,7 @@ void __thiscall TCity::WriteQueuePairSlot48(TCity *this)
 // GHIDRA_NAME TCity::CreateAltownCityObject
 // GHIDRA_PROTO undefined __thiscall CreateAltownCityObject(void)
 
-void __thiscall TCity::CreateAltownCityObject(TCity *this)
+void TCity::CreateAltownCityObject()
 
 {
   TTown *this_00;
@@ -1226,7 +1226,7 @@ void __thiscall TCity::CreateAltownCityObject(TCity *this)
 // GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins03_004b46c0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_004b46c0(void)
 
-void __thiscall TCity::OrphanLeaf_NoCall_Ins03_004b46c0(TCity *this)
+void TCity::OrphanLeaf_NoCall_Ins03_004b46c0()
 
 {
                     /* WARNING: Could not recover jumptable at 0x004b46c8. Too many branches */
@@ -1239,7 +1239,7 @@ void __thiscall TCity::OrphanLeaf_NoCall_Ins03_004b46c0(TCity *this)
 // GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
 // GHIDRA_PROTO undefined __thiscall GetCityBuildingDisplayCapacityBySlot(short param_1)
 
-int __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this,short param_1)
+int TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
 
 {
   short sVar1;
@@ -1308,7 +1308,7 @@ LAB_004b4795:
 // GHIDRA_NAME TCity::GetBuildingCapacityTierSlot58
 // GHIDRA_PROTO undefined __thiscall GetBuildingCapacityTierSlot58(short param_1)
 
-char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this,short param_1)
+char TCity::GetBuildingCapacityTierSlot58(short param_1)
 
 {
   undefined uVar1;
@@ -1340,7 +1340,7 @@ char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this,short param_1)
 // GHIDRA_NAME TCity::WrapperFor_GetActiveNationId_At004b4940
 // GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At004b4940(short param_1)
 
-int __thiscall TCity::WrapperFor_GetActiveNationId_At004b4940(TCity *this,short param_1)
+int TCity::WrapperFor_GetActiveNationId_At004b4940(short param_1)
 
 {
   char cVar1;
@@ -1466,7 +1466,7 @@ TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
 // GHIDRA_NAME TCity::IsBasicResourceSlot78
 // GHIDRA_PROTO undefined __thiscall IsBasicResourceSlot78(short param_1)
 
-undefined2 __thiscall TCity::IsBasicResourceSlot78(TCity *this,short param_1)
+undefined2 TCity::IsBasicResourceSlot78(short param_1)
 
 {
   if (((((param_1 != 0) && (param_1 != 1)) && (param_1 != 2)) && ((param_1 != 3 && (param_1 != 4))))
@@ -1503,7 +1503,7 @@ undefined2 __thiscall TCity::IsBasicResourceSlot78(TCity *this,short param_1)
    Returns:
    - void. */
 
-void __thiscall TCity::ToggleCityPowerPlantUpgradeOrder(TCity *this,char fEnableUpgrade)
+void TCity::ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
 
 {
   if (fEnableUpgrade == '\0') {
@@ -1546,7 +1546,7 @@ void __thiscall TCity::ToggleCityPowerPlantUpgradeOrder(TCity *this,char fEnable
    - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing
    logic. */
 
-int __thiscall TCity::GetCityBuildingProductionValueBySlot(TCity *this,short nBuildingSlotId)
+int TCity::GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
 
 {
   int iVar1;

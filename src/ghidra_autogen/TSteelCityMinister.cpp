@@ -40,8 +40,7 @@ TMinister * TSteelCityMinister::CreateTSteelCityMinisterInstance(void)
 // GHIDRA_NAME TSteelCityMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSteelCityMinister::GetTMinisterClassNamePointer(TSteelCityMinister *this)
+CRuntimeClass * TSteelCityMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,8 +50,7 @@ TSteelCityMinister::GetTMinisterClassNamePointer(TSteelCityMinister *this)
 // GHIDRA_NAME TSteelCityMinister::ConstructTSteelCityMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TSteelCityMinister::ConstructTSteelCityMinisterBaseState(void)
 
-TSteelCityMinister * __thiscall
-TSteelCityMinister::ConstructTSteelCityMinisterBaseState(TSteelCityMinister *this)
+TSteelCityMinister * TSteelCityMinister::ConstructTSteelCityMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -68,8 +66,7 @@ TSteelCityMinister::ConstructTSteelCityMinisterBaseState(TSteelCityMinister *thi
 // GHIDRA_NAME TSteelCityMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TSteelCityMinister * __thiscall
-TSteelCityMinister::DeletingDestructTMinister(TSteelCityMinister *this,byte param_1)
+TSteelCityMinister * TSteelCityMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTSteelCityMinisterAndMaybeFree_Impl();
@@ -83,7 +80,7 @@ TSteelCityMinister::DeletingDestructTMinister(TSteelCityMinister *this,byte para
 // GHIDRA_NAME TSteelCityMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSteelCityMinister::GetTEventHandlerClassNamePointer(TSteelCityMinister *this)
+void TSteelCityMinister::GetTEventHandlerClassNamePointer()
 
 {
   (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xf);

@@ -38,7 +38,7 @@ TControl * TClickZone::CreateTClickZoneInstance(void)
 // GHIDRA_NAME TClickZone::OrphanRetStub_005723d0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005723d0(void)
 
-void __thiscall TClickZone::OrphanRetStub_005723d0(TClickZone *this)
+void TClickZone::OrphanRetStub_005723d0()
 
 {
   return;
@@ -48,7 +48,7 @@ void __thiscall TClickZone::OrphanRetStub_005723d0(TClickZone *this)
 // GHIDRA_NAME TClickZone::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TClickZone::GetTEventHandlerClassNamePointer(TClickZone *this)
+CRuntimeClass * TClickZone::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -64,7 +64,7 @@ CRuntimeClass * __thiscall TClickZone::GetTEventHandlerClassNamePointer(TClickZo
 /* Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by
    list/info/view/count style command-tag paths and sets +0x84 word to 7000. */
 
-TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZone *this)
+TClickZone * TClickZone::ConstructUiCommandTagResourceEntry()
 
 {
   TControl::TControl((TControl *)this);
@@ -77,7 +77,7 @@ TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZon
 // GHIDRA_NAME TClickZone::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this,byte param_1)
+TClickZone * TClickZone::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -91,7 +91,7 @@ TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *thi
 // GHIDRA_NAME TClickZone::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this)
+void TClickZone::_scalar_deleting_destructor_()
 
 {
   undefined4 in_EDX;

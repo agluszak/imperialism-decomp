@@ -37,7 +37,7 @@ TControl * TRightLeftView::CreateTRightLeftViewInstance(void)
 // GHIDRA_NAME TRightLeftView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRightLeftView::GetTEventHandlerClassNamePointer(TRightLeftView *this)
+CRuntimeClass * TRightLeftView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TRightLeftView::GetTEventHandlerClassNamePointer(TRig
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
 // GHIDRA_PROTO undefined __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(void)
 
-TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
+TRightLeftView * TRightLeftView::ConstructTRightLeftViewBaseState()
 
 {
   TControl::TControl((TControl *)this);
@@ -60,8 +60,7 @@ TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRi
 // GHIDRA_NAME TRightLeftView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRightLeftView * __thiscall
-TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this,byte param_1)
+TRightLeftView * TRightLeftView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

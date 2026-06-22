@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMapKey::ConstructPictureResourceEntry_Vtbl006404b0
 // GHIDRA_PROTO undefined __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(void)
 
-TMapKey * __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(TMapKey *this)
+TMapKey * TMapKey::ConstructPictureResourceEntry_Vtbl006404b0()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -20,7 +20,7 @@ TMapKey * __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(TMapKey
 // GHIDRA_NAME TMapKey::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte param_1)
+TMapKey * TMapKey::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -34,8 +34,7 @@ TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte pa
 // GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
 // GHIDRA_PROTO undefined __thiscall TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 
-TMapKey * __thiscall
-TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(TMapKey *this)
+TMapKey * TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -77,7 +76,7 @@ thunk_TPictureButton * TMapKey::CreateTMapKeyInstance(void)
 // GHIDRA_NAME TMapKey::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapKey::GetTEventHandlerClassNamePointer(TMapKey *this)
+CRuntimeClass * TMapKey::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -87,7 +86,7 @@ CRuntimeClass * __thiscall TMapKey::GetTEventHandlerClassNamePointer(TMapKey *th
 // GHIDRA_NAME TMapKey::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
+void TMapKey::OrphanCallChain_C6_I49_004875d0()
 
 {
   TDeluxeTextVtbl *pTVar1;
@@ -229,7 +228,7 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
 // GHIDRA_NAME TMapKey::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMapKey::OrphanTiny_ReturnZero_0048a730(TMapKey *this)
+void TMapKey::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

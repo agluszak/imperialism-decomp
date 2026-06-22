@@ -7,7 +7,7 @@
 // GHIDRA_NAME TOrItemOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(TOrItemOrder *this)
+CRuntimeClass * TOrItemOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(TOr
 // GHIDRA_NAME TOrItemOrder::ConstructTItemOrderBaseState
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
-TOrItemOrder * __thiscall
-TOrItemOrder::ConstructTItemOrderBaseState(TOrItemOrder *this,byte param_1)
+TOrItemOrder * TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
 {
   TOrItemOrder::DestructTOrItemOrderAndMaybeFree(this);
@@ -32,7 +31,7 @@ TOrItemOrder::ConstructTItemOrderBaseState(TOrItemOrder *this,byte param_1)
 // GHIDRA_NAME TOrItemOrder::DestructTOrItemOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(void)
 
-void __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
+void TOrItemOrder::DestructTOrItemOrderAndMaybeFree()
 
 {
   this->vftable = (TOrItemOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -103,7 +102,7 @@ TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
    - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
    - Returns the minimum cap. */
 
-int __thiscall TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TOrItemOrder *this)
+int TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   short sVar1;
@@ -167,8 +166,7 @@ int __thiscall TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TOrItemOrder *this
    
    Returns: true if delta applied, false if rejected. */
 
-bool __thiscall
-TOrItemOrder::OrphanCallChain_C1_I16_004b5100(TOrItemOrder *this,short nNewOrderAmount)
+bool TOrItemOrder::OrphanCallChain_C1_I16_004b5100(short nNewOrderAmount)
 
 {
   short *psVar1;

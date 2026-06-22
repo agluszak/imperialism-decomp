@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68
 // GHIDRA_PROTO undefined __thiscall TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(void)
 
-TTradePanelView * __thiscall
-TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(TTradePanelView *this)
+TTradePanelView * TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -21,8 +20,7 @@ TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(TTradePanelView *this)
 // GHIDRA_NAME TTradePanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePanelView * __thiscall
-TTradePanelView::_scalar_deleting_destructor_(TTradePanelView *this,byte param_1)
+TTradePanelView * TTradePanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -66,7 +64,7 @@ TView * TTradePanelView::CreateTTradePanelViewInstance(void)
 // GHIDRA_NAME TTradePanelView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTradePanelView::GetTEventHandlerClassNamePointer(TTradePanelView *this)
+CRuntimeClass * TTradePanelView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +74,7 @@ CRuntimeClass * __thiscall TTradePanelView::GetTEventHandlerClassNamePointer(TTr
 // GHIDRA_NAME TTradePanelView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView *this)
+void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
 
 {
   code *pcVar1;
@@ -158,7 +156,7 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
 // GHIDRA_NAME TTradePanelView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView *this)
+void TTradePanelView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -321,7 +319,7 @@ void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView 
 // GHIDRA_NAME TTradePanelView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
+void TTradePanelView::OrphanRetStub_00430550()
 
 {
   undefined uVar1;

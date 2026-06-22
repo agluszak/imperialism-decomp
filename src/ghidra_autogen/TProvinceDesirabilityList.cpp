@@ -37,8 +37,7 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
 // GHIDRA_NAME TProvinceDesirabilityList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TProvinceDesirabilityList::GetTEventHandlerClassNamePointer(TProvinceDesirabilityList *this)
+CRuntimeClass * TProvinceDesirabilityList::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTProvinceDesirabilityList;
@@ -48,8 +47,7 @@ TProvinceDesirabilityList::GetTEventHandlerClassNamePointer(TProvinceDesirabilit
 // GHIDRA_NAME TProvinceDesirabilityList::ConstructObArrayWithVtable653810
 // GHIDRA_PROTO undefined __thiscall TProvinceDesirabilityList::ConstructObArrayWithVtable653810(void)
 
-TProvinceDesirabilityList * __thiscall
-TProvinceDesirabilityList::ConstructObArrayWithVtable653810(TProvinceDesirabilityList *this)
+TProvinceDesirabilityList * TProvinceDesirabilityList::ConstructObArrayWithVtable653810()
 
 {
   TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMadnessButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMadnessButton * __thiscall
-TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this,byte param_1)
+TMadnessButton * TMadnessButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -22,7 +21,7 @@ TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this,byte param_1)
 // GHIDRA_NAME TMadnessButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMadnessButton::GetTEventHandlerClassNamePointer(TMadnessButton *this)
+CRuntimeClass * TMadnessButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TMadnessButton::GetTEventHandlerClassNamePointer(TMad
 // GHIDRA_NAME TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920(TMadnessButton *this)
+void TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920((TCzechBox *)this);
@@ -45,7 +44,7 @@ void __thiscall TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920(TMadnessButton 
 // GHIDRA_NAME TMadnessButton::OrphanCallChain_C4_I45_00571d40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(char param_1)
 
-void __thiscall TMadnessButton::OrphanCallChain_C4_I45_00571d40(TMadnessButton *this,char param_1)
+void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
 
 {
   TMadnessButtonVtbl *pTVar1;

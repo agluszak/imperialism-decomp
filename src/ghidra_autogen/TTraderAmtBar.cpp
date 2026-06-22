@@ -40,7 +40,7 @@ TView * TTraderAmtBar::CreateTTraderAmtBarInstance(void)
 // GHIDRA_NAME TTraderAmtBar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTraderAmtBar::GetTEventHandlerClassNamePointer(TTraderAmtBar *this)
+CRuntimeClass * TTraderAmtBar::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTTraderAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TTraderAmtBar::GetTEventHandlerClassNamePointer(TTrad
 // GHIDRA_NAME TTraderAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
-TTraderAmtBar * __thiscall TTraderAmtBar::ConstructBaseState(TTraderAmtBar *this)
+TTraderAmtBar * TTraderAmtBar::ConstructBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -66,8 +66,7 @@ TTraderAmtBar * __thiscall TTraderAmtBar::ConstructBaseState(TTraderAmtBar *this
 // GHIDRA_NAME TTraderAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTraderAmtBar * __thiscall
-TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
+TTraderAmtBar * TTraderAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -81,7 +80,7 @@ TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
 // GHIDRA_NAME TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TTraderAmtBar *this)
+void TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TGreatPower *pTVar1;
@@ -141,8 +140,7 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(void)
 // GHIDRA_NAME TTraderAmtBar::ApplyMoveClamp
 // GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(undefined2 param_1, short param_2)
 
-undefined2 __thiscall
-TTraderAmtBar::ApplyMoveClamp(TTraderAmtBar *this,undefined2 param_1,short param_2)
+undefined2 TTraderAmtBar::ApplyMoveClamp(undefined2 param_1, short param_2)
 
 {
   undefined uVar1;
@@ -165,7 +163,7 @@ TTraderAmtBar::ApplyMoveClamp(TTraderAmtBar *this,undefined2 param_1,short param
 // GHIDRA_NAME TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTraderAmtBar *this)
+void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 
 {
   TTraderAmtBarVtbl *pTVar1;

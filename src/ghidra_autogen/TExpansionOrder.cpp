@@ -7,8 +7,7 @@
 // GHIDRA_NAME TExpansionOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
+CRuntimeClass * TExpansionOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
 // GHIDRA_NAME TExpansionOrder::ConstructTItemOrderBaseState
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
-TExpansionOrder * __thiscall
-TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this,byte param_1)
+TExpansionOrder * TExpansionOrder::ConstructTItemOrderBaseState(byte param_1)
 
 {
   TExpansionOrder::DestructTExpansionOrderAndMaybeFree(this);
@@ -33,7 +31,7 @@ TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this,byte param_1
 // GHIDRA_NAME TExpansionOrder::DestructTExpansionOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(void)
 
-void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionOrder *this)
+void TExpansionOrder::DestructTExpansionOrderAndMaybeFree()
 
 {
   this->vftable = (TExpansionOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -87,7 +85,7 @@ TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
    Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
    Used in command paths that do not require the slot 14 special branch. */
 
-void __thiscall TExpansionOrder::OrphanRetStub_004b5160(TExpansionOrder *this)
+void TExpansionOrder::OrphanRetStub_004b5160()
 
 {
   short *psVar1;
@@ -140,7 +138,7 @@ LAB_004b9154:
 // GHIDRA_NAME TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-uint __thiscall TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TExpansionOrder *this)
+uint TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   short sVar1;
@@ -169,8 +167,7 @@ uint __thiscall TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TExpansionOrde
 // GHIDRA_NAME TExpansionOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall
-TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this,short param_1)
+undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   short *psVar1;
@@ -213,7 +210,7 @@ TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this,short par
 // GHIDRA_NAME TExpansionOrder::CreateTItemOrderInstance
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
-void __thiscall TExpansionOrder::CreateTItemOrderInstance(TExpansionOrder *this)
+void TExpansionOrder::CreateTItemOrderInstance()
 
 {
   undefined2 uStack00000004;

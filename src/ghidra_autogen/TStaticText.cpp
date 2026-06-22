@@ -7,7 +7,7 @@
 // GHIDRA_NAME TStaticText::AssignSharedStringFromField84
 // GHIDRA_PROTO undefined __thiscall TStaticText::AssignSharedStringFromField84(CString * param_1)
 
-void __thiscall TStaticText::AssignSharedStringFromField84(TStaticText *this,CString *param_1)
+void TStaticText::AssignSharedStringFromField84(CString *param_1)
 
 {
   CString::AssignFromPtr(param_1,*(CString **)&this->field_0x84);
@@ -73,7 +73,7 @@ TView * TStaticText::CreateTStaticTextInstance(void)
 // GHIDRA_NAME TStaticText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TStaticText::GetTEventHandlerClassNamePointer(TStaticText *this)
+CRuntimeClass * TStaticText::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTStaticText;
@@ -106,7 +106,7 @@ CRuntimeClass * __thiscall TStaticText::GetTEventHandlerClassNamePointer(TStatic
    Returns:
    - this pointer. */
 
-TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
+TStaticText * TStaticText::TStaticText()
 
 {
   CString *this_00;
@@ -156,7 +156,7 @@ TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
 // GHIDRA_NAME TStaticText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *this,byte param_1)
+TStaticText * TStaticText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText(this);
@@ -170,7 +170,7 @@ TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *
 // GHIDRA_NAME TStaticText::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined1 __thiscall TStaticText::OrphanCallChain_C11_I88_004874b0(TStaticText *this)
+undefined1 TStaticText::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;
@@ -184,7 +184,7 @@ undefined1 __thiscall TStaticText::OrphanCallChain_C11_I88_004874b0(TStaticText 
 // GHIDRA_NAME TStaticText::~TStaticText
 // GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
-void __thiscall TStaticText::~TStaticText(TStaticText *this)
+void TStaticText::~TStaticText()
 
 {
   CString *this_00;
@@ -242,8 +242,7 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
 // GHIDRA_NAME TStaticText::LoadUiStringAndDispatchViaVslot1C8
 // GHIDRA_PROTO undefined __thiscall TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
 
-void __thiscall
-TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,short param_2)
+void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
 
 {
   undefined4 unaff_ESI;
@@ -275,8 +274,7 @@ TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,
 // GHIDRA_NAME TStaticText::OrphanCallChain_C1_I09_0048ff70
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
-void __thiscall
-TStaticText::OrphanCallChain_C1_I09_0048ff70(TStaticText *this,undefined2 param_1,char param_2)
+void TStaticText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
 {
   *(undefined2 *)&this->field_0x90 = param_1;
@@ -290,7 +288,7 @@ TStaticText::OrphanCallChain_C1_I09_0048ff70(TStaticText *this,undefined2 param_
 // GHIDRA_NAME TStaticText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TStaticText::OrphanTiny_ReturnZero_0048a730(TStaticText *this)
+void TStaticText::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

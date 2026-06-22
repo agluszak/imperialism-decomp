@@ -37,7 +37,7 @@ TStaticText * TMyStaticText::CreateTMyStaticTextInstance(void)
 // GHIDRA_NAME TMyStaticText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMyStaticText::GetTEventHandlerClassNamePointer(TMyStaticText *this)
+CRuntimeClass * TMyStaticText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TMyStaticText::GetTEventHandlerClassNamePointer(TMySt
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
 // GHIDRA_PROTO undefined __thiscall TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
 
-TMyStaticText * __thiscall
-TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
+TMyStaticText * TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -60,8 +59,7 @@ TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
 // GHIDRA_NAME TMyStaticText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMyStaticText * __thiscall
-TMyStaticText::_scalar_deleting_destructor_(TMyStaticText *this,byte param_1)
+TMyStaticText * TMyStaticText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);

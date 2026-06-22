@@ -37,7 +37,7 @@ thunk_TPictureButton * TPlacard::CreateTPlacardInstance(void)
 // GHIDRA_NAME TPlacard::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPlacard::GetTEventHandlerClassNamePointer(TPlacard *this)
+CRuntimeClass * TPlacard::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTPlacard;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TPlacard::GetTEventHandlerClassNamePointer(TPlacard *
 // GHIDRA_NAME TPlacard::TPlacard
 // GHIDRA_PROTO undefined __thiscall TPlacard::TPlacard(void)
 
-TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
+TPlacard * TPlacard::TPlacard()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -60,7 +60,7 @@ TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 // GHIDRA_NAME TPlacard::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte param_1)
+TPlacard * TPlacard::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -74,7 +74,7 @@ TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte
 // GHIDRA_NAME TPlacard::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TPlacard::OrphanLeaf_NoCall_Ins07_004d8920(TPlacard *this)
+void TPlacard::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -122,7 +122,7 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 // GHIDRA_NAME TPlacard::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TPlacard::OrphanTiny_ReturnZero_0048a730(TPlacard *this)
+void TPlacard::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTrainingOrder::CreateTTrainingOrderInstance
 // GHIDRA_PROTO undefined __thiscall TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
 
-void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *this,short param_1)
+void TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
 
 {
   short *psVar1;
@@ -25,7 +25,7 @@ void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *thi
 // GHIDRA_NAME TTrainingOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTrainingOrder::GetTProductionOrderClassNamePointer(TTrainingOrder *this)
+CRuntimeClass * TTrainingOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -35,8 +35,7 @@ CRuntimeClass * __thiscall TTrainingOrder::GetTProductionOrderClassNamePointer(T
 // GHIDRA_NAME TTrainingOrder::ConstructTTrainingOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTrainingOrderBaseState(byte param_1)
 
-TTrainingOrder * __thiscall
-TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *this,byte param_1)
+TTrainingOrder * TTrainingOrder::ConstructTTrainingOrderBaseState(byte param_1)
 
 {
   TTrainingOrder::DestructTTrainingOrderAndMaybeFree(this);
@@ -50,7 +49,7 @@ TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *this,byte param
 // GHIDRA_NAME TTrainingOrder::DestructTTrainingOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(void)
 
-void __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(TTrainingOrder *this)
+void TTrainingOrder::DestructTTrainingOrderAndMaybeFree()
 
 {
   this->vftable = (TTrainingOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -89,7 +88,7 @@ TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
 // GHIDRA_NAME TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TTrainingOrder *this)
+int TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   short sVar1;
@@ -153,8 +152,7 @@ int __thiscall TTrainingOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TTrainingOrder *
 // GHIDRA_NAME TTrainingOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall
-TTrainingOrder::OrphanCallChain_C1_I16_004b5100(TTrainingOrder *this,short param_1)
+undefined4 TTrainingOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   int *piVar1;
@@ -201,7 +199,7 @@ TTrainingOrder::OrphanCallChain_C1_I16_004b5100(TTrainingOrder *this,short param
 // GHIDRA_NAME TTrainingOrder::CreateTItemOrderInstance
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
-void __thiscall TTrainingOrder::CreateTItemOrderInstance(TTrainingOrder *this)
+void TTrainingOrder::CreateTItemOrderInstance()
 
 {
   short sStack00000004;
@@ -220,7 +218,7 @@ void __thiscall TTrainingOrder::CreateTItemOrderInstance(TTrainingOrder *this)
 // GHIDRA_NAME TTrainingOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TTrainingOrder::OrphanRetStub_004b5160(TTrainingOrder *this)
+void TTrainingOrder::OrphanRetStub_004b5160()
 
 {
   short sVar1;
@@ -261,7 +259,7 @@ void __thiscall TTrainingOrder::OrphanRetStub_004b5160(TTrainingOrder *this)
 // GHIDRA_NAME TTrainingOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
-void __thiscall TTrainingOrder::ResetCityOrderItemDerivedStateNoop(TTrainingOrder *this)
+void TTrainingOrder::ResetCityOrderItemDerivedStateNoop()
 
 {
   return;

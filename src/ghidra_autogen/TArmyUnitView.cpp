@@ -37,7 +37,7 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
 // GHIDRA_NAME TArmyUnitView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyUnitView::GetTEventHandlerClassNamePointer(TArmyUnitView *this)
+CRuntimeClass * TArmyUnitView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TArmyUnitView::GetTEventHandlerClassNamePointer(TArmy
 // GHIDRA_NAME TArmyUnitView::ConstructTArmyUnitViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitViewBaseState(void)
 
-TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
+TArmyUnitView * TArmyUnitView::ConstructTArmyUnitViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -59,8 +59,7 @@ TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyU
 // GHIDRA_NAME TArmyUnitView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyUnitView * __thiscall
-TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
+TArmyUnitView * TArmyUnitView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -74,7 +73,7 @@ TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
 // GHIDRA_NAME TArmyUnitView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *this)
+void TArmyUnitView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

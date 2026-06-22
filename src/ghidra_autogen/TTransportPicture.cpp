@@ -43,8 +43,7 @@ _CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcg
 // GHIDRA_NAME TTransportPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTransportPicture::GetTEventHandlerClassNamePointer(TTransportPicture *this)
+CRuntimeClass * TTransportPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTTransportPicture;
@@ -73,8 +72,7 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
 // GHIDRA_NAME TTransportPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTransportPicture * __thiscall
-TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this,byte param_1)
+TTransportPicture * TTransportPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -88,8 +86,7 @@ TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this,byte par
 // GHIDRA_NAME TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall
-TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPicture *this,int param_1)
+void TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   TGreatPower *pTVar1;
@@ -195,7 +192,7 @@ LAB_00592108:
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TTransportPicture::RenderTransportPictureGaugeAndLabels(TTransportPicture *this)
+void TTransportPicture::RenderTransportPictureGaugeAndLabels()
 
 {
   TTransportPicture_slot_0x04_0x04 *pTVar1;
@@ -430,7 +427,7 @@ LAB_005925fa:
 // GHIDRA_NAME TTransportPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTransportPicture::OrphanTiny_ReturnZero_0048a730(TTransportPicture *this)
+void TTransportPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

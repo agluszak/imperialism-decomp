@@ -23,8 +23,7 @@ TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
 // GHIDRA_NAME TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(void)
 
-void __thiscall
-TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAnimation *this)
+void TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance()
 
 {
   this->vftable =
@@ -36,8 +35,7 @@ TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAni
 // GHIDRA_NAME TCouncilTickerAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCouncilTickerAnimation::GetTAnimationClassNamePointer(TCouncilTickerAnimation *this)
+CRuntimeClass * TCouncilTickerAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -70,8 +68,7 @@ TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
 // GHIDRA_NAME TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep
 // GHIDRA_PROTO undefined __thiscall TickAndAdvanceCivilianTerrainSelectionStep(void)
 
-void __thiscall
-TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep(TCouncilTickerAnimation *this)
+void TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep()
 
 {
   int iVar1;

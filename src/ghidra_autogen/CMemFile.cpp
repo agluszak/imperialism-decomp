@@ -7,7 +7,7 @@
 // GHIDRA_NAME CMemFile::GetCMemFileRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetCMemFileRuntimeClass(void)
 
-CRuntimeClass * __thiscall CMemFile::GetCMemFileRuntimeClass(CMemFile *this)
+CRuntimeClass * CMemFile::GetCMemFileRuntimeClass()
 
 {
   return &classRuntimeClass;

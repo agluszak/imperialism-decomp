@@ -39,8 +39,7 @@ thunk_TPictureButton * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
 // GHIDRA_NAME TOnOffRadioButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TOnOffRadioButton::GetTEventHandlerClassNamePointer(TOnOffRadioButton *this)
+CRuntimeClass * TOnOffRadioButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -50,8 +49,7 @@ TOnOffRadioButton::GetTEventHandlerClassNamePointer(TOnOffRadioButton *this)
 // GHIDRA_NAME TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOnOffRadioButtonBaseState(void)
 
-TOnOffRadioButton * __thiscall
-TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
+TOnOffRadioButton * TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -66,8 +64,7 @@ TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
 // GHIDRA_NAME TOnOffRadioButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOnOffRadioButton * __thiscall
-TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte param_1)
+TOnOffRadioButton * TOnOffRadioButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -81,8 +78,7 @@ TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte par
 // GHIDRA_NAME TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall
-TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButton *this,int param_1)
+void TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   if (param_1 == 0xc) {

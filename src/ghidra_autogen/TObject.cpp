@@ -17,7 +17,7 @@ undefined ** TObject::OrphanVtableAssignStub_00479ed0(void)
 // GHIDRA_NAME TObject::CreateTObjectInstance
 // GHIDRA_PROTO undefined __thiscall CreateTObjectInstance(int param_1)
 
-void __thiscall TObject::CreateTObjectInstance(TObject *this,int param_1)
+void TObject::CreateTObjectInstance(int param_1)
 
 {
   undefined4 local_2c;
@@ -53,7 +53,7 @@ undefined ** TObject::GetRuntimeClass(void)
 // GHIDRA_NAME TObject::DestructTObjectAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TObject::DestructTObjectAndMaybeFree(void)
 
-void __thiscall TObject::DestructTObjectAndMaybeFree(TObject *this)
+void TObject::DestructTObjectAndMaybeFree()
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

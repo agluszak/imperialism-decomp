@@ -49,7 +49,7 @@ TView * TCluster::CreateTClusterInstance(void)
 // GHIDRA_NAME TCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCluster::GetTEventHandlerClassNamePointer(TCluster *this)
+CRuntimeClass * TCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -59,7 +59,7 @@ CRuntimeClass * __thiscall TCluster::GetTEventHandlerClassNamePointer(TCluster *
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
 // GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntryType4B0C0(void)
 
-TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
+TCluster * TCluster::ConstructUiResourceEntryType4B0C0()
 
 {
   ushort uVar1;
@@ -85,7 +85,7 @@ TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this
 // GHIDRA_NAME TCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this,byte param_1)
+TCluster * TCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTClusterAndMaybeFree_Impl((TView *)this);
@@ -105,8 +105,7 @@ TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this,byte
 /* Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int
    nEventFlags) */
 
-void __thiscall
-TCluster::OrphanRetStub_0059add0(TCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
+void TCluster::OrphanRetStub_0059add0(int nEventClass, void *pEventPayload, int nEventFlags)
 
 {
   undefined uVar1;
@@ -170,7 +169,7 @@ TCluster::OrphanRetStub_0059add0(TCluster *this,int nEventClass,void *pEventPayl
 // GHIDRA_NAME TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_84_00491770(void)
 
-undefined4 __thiscall TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(TCluster *this)
+undefined4 TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770()
 
 {
   return *(undefined4 *)&this->field_0x84;
@@ -180,7 +179,7 @@ undefined4 __thiscall TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(TCluste
 // GHIDRA_NAME TCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this,int param_1)
+void TCluster::OrphanCallChain_C2_I51_00491790(int param_1)
 
 {
   int *piVar1;
@@ -224,7 +223,7 @@ void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this,int par
 // GHIDRA_NAME TCluster::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-TView * __thiscall TCluster::OrphanCallChain_C11_I88_004874b0(TCluster *this)
+TView * TCluster::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined uVar1;

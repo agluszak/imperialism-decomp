@@ -37,7 +37,7 @@ TLineData * TMiniShipLine::CreateTMiniShipLineInstance(void)
 // GHIDRA_NAME TMiniShipLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniShipLine::GetTLineDataClassNamePointer(TMiniShipLine *this)
+CRuntimeClass * TMiniShipLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TMiniShipLine::GetTLineDataClassNamePointer(TMiniShip
 // GHIDRA_NAME TMiniShipLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this,undefined4 param_1,undefined4 param_2)
+void TMiniShipLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   TControlVtbl *pTVar1;

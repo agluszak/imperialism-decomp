@@ -42,7 +42,7 @@ TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
 // GHIDRA_NAME TMiniMapView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniMapView::GetTEventHandlerClassNamePointer(TMiniMapView *this)
+CRuntimeClass * TMiniMapView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,7 +52,7 @@ CRuntimeClass * __thiscall TMiniMapView::GetTEventHandlerClassNamePointer(TMiniM
 // GHIDRA_NAME TMiniMapView::ConstructTMiniMapViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTMiniMapViewBaseState(void)
 
-TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
+TMiniMapView * TMiniMapView::ConstructTMiniMapViewBaseState()
 
 {
   TControl::TControl((TControl *)this);
@@ -70,8 +70,7 @@ TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapV
 // GHIDRA_NAME TMiniMapView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMiniMapView * __thiscall
-TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
+TMiniMapView * TMiniMapView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -85,7 +84,7 @@ TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
 // GHIDRA_NAME TMiniMapView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TMiniMapView::OrphanCallChain_C11_I88_004874b0(TMiniMapView *this)
+void TMiniMapView::OrphanCallChain_C11_I88_004874b0()
 
 {
   uint uVar1;

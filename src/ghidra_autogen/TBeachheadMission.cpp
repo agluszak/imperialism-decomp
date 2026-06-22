@@ -84,8 +84,7 @@ TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeachheadMission *this)
+void TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext()
 
 {
   undefined2 uVar1;
@@ -201,8 +200,7 @@ TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
 // GHIDRA_NAME TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady
 // GHIDRA_PROTO undefined __thiscall ClearBlockadePortMissionChildOrderLinksIfReady(void)
 
-undefined4 __thiscall
-TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady(TBeachheadMission *this)
+undefined4 TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady()
 
 {
   int *piVar1;

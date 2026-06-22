@@ -37,7 +37,7 @@ thunk_TPictureButton * TSliderPicture::CreateTSliderPictureInstance(void)
 // GHIDRA_NAME TSliderPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSliderPicture::GetTEventHandlerClassNamePointer(TSliderPicture *this)
+CRuntimeClass * TSliderPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TSliderPicture::GetTEventHandlerClassNamePointer(TSli
 // GHIDRA_NAME TSliderPicture::ConstructTSliderPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TSliderPicture::ConstructTSliderPictureBaseState(void)
 
-TSliderPicture * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSliderPicture *this)
+TSliderPicture * TSliderPicture::ConstructTSliderPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -60,8 +60,7 @@ TSliderPicture * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSl
 // GHIDRA_NAME TSliderPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSliderPicture * __thiscall
-TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this,byte param_1)
+TSliderPicture * TSliderPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,7 +74,7 @@ TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this,byte param_1)
 // GHIDRA_NAME TSliderPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TSliderPicture::OrphanTiny_ReturnZero_0048a730(TSliderPicture *this)
+void TSliderPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

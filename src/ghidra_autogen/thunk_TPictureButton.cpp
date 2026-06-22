@@ -7,7 +7,7 @@
 // GHIDRA_NAME thunk_TPictureButton::TPictureButton
 // GHIDRA_PROTO undefined __thiscall TPictureButton::TPictureButton(void)
 
-thunk_TPictureButton * __thiscall thunk_TPictureButton::TPictureButton(thunk_TPictureButton *this)
+thunk_TPictureButton * thunk_TPictureButton::TPictureButton()
 
 {
   ushort uVar1;

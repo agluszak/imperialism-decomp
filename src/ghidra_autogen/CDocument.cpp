@@ -12,7 +12,7 @@
 
 /* No-op virtual slot stub (returns immediately). */
 
-void __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
+void CDocument::ConstructTTaskBaseState()
 
 {
   return;
@@ -22,7 +22,7 @@ void __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
-undefined4 __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this)
+undefined4 CDocument::SerializeTMinisterBaseOrderArrayHeader()
 
 {
   return *(undefined4 *)&this->field_0x44;
@@ -32,8 +32,7 @@ undefined4 __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocumen
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
 
-void __thiscall
-CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this,undefined4 param_1)
+void CDocument::SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x44 = param_1;
@@ -44,7 +43,7 @@ CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this,undefined4 par
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
+undefined4 CDocument::_scalar_deleting_destructor_()
 
 {
   return 1;
@@ -54,7 +53,7 @@ undefined4 __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
+undefined4 CDocument::GetTEventHandlerClassNamePointer()
 
 {
   return 0;
@@ -64,7 +63,7 @@ undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *thi
 // GHIDRA_NAME CDocument::OrphanRetStub_004be6d0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(void)
 
-undefined4 __thiscall CDocument::OrphanRetStub_004be6d0(CDocument *this)
+undefined4 CDocument::OrphanRetStub_004be6d0()
 
 {
   return 0;
@@ -74,7 +73,7 @@ undefined4 __thiscall CDocument::OrphanRetStub_004be6d0(CDocument *this)
 // GHIDRA_NAME CDocument::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined4 __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *this)
+undefined4 CDocument::OrphanCallChain_C11_I88_004874b0()
 
 {
   return 0;
@@ -84,7 +83,7 @@ undefined4 __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *thi
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins07_004d8920(CDocument *this)
+undefined4 CDocument::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return 0x80029c4a;
@@ -94,7 +93,7 @@ undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins07_004d8920(CDocument *thi
 // GHIDRA_NAME CDocument::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
+undefined * CDocument::SetForeignMinisterReadyFlag14()
 
 {
   return &DAT_00670580;
@@ -104,7 +103,7 @@ undefined * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
 // GHIDRA_NAME CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-undefined * __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocument *this)
+undefined * CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   return &DAT_006705b0;
@@ -114,7 +113,7 @@ undefined * __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(C
 // GHIDRA_NAME CDocument::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-undefined * __thiscall CDocument::OrphanRetStub_0059add0(CDocument *this)
+undefined * CDocument::OrphanRetStub_0059add0()
 
 {
   return &DAT_006705e8;
@@ -124,7 +123,7 @@ undefined * __thiscall CDocument::OrphanRetStub_0059add0(CDocument *this)
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined * __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
+undefined * CDocument::GetTEventHandlerClassNamePointer()
 
 {
   return &DAT_00670610;
@@ -134,7 +133,7 @@ undefined * __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *th
 // GHIDRA_NAME CDocument::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
-undefined4 __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
+undefined4 CDocument::ConstructTTaskBaseState()
 
 {
   return 0;
@@ -144,7 +143,7 @@ undefined4 __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
+undefined4 CDocument::GetTEventHandlerClassNamePointer()
 
 {
   return 0;
@@ -154,7 +153,7 @@ undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *thi
 // GHIDRA_NAME CDocument::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
 
-undefined * __thiscall CDocument::OrphanCallChain_C7_I57_004be5b0(CDocument *this)
+undefined * CDocument::OrphanCallChain_C7_I57_004be5b0()
 
 {
   return &DAT_00670620;
@@ -164,7 +163,7 @@ undefined * __thiscall CDocument::OrphanCallChain_C7_I57_004be5b0(CDocument *thi
 // GHIDRA_NAME CDocument::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined ** __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *this)
+undefined ** CDocument::OrphanCallChain_C11_I88_004874b0()
 
 {
   return &PTR_DAT_00672078;
@@ -205,7 +204,7 @@ undefined4 * CDocument::CDocument(void)
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CDocument * __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this,byte param_1)
+CDocument * CDocument::_scalar_deleting_destructor_(byte param_1)
 
 {
   DestructCDocumentBaseState();
@@ -250,7 +249,7 @@ void CDocument::DestructCDocumentBaseState(void)
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
+void CDocument::GetTEventHandlerClassNamePointer()
 
 {
                     /* WARNING: Could not recover jumptable at 0x00610a59. Too many branches */
@@ -263,7 +262,7 @@ void __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
 // GHIDRA_NAME CDocument::DisconnectViews
 // GHIDRA_PROTO undefined __thiscall DisconnectViews(void)
 
-void __thiscall CDocument::DisconnectViews(CDocument *this)
+void CDocument::DisconnectViews()
 
 {
   int iVar1;
@@ -281,7 +280,7 @@ void __thiscall CDocument::DisconnectViews(CDocument *this)
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
 
-void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this,char *param_1)
+void CDocument::OrphanLeaf_NoCall_Ins04_005adc30(char *param_1)
 
 {
   CString::CopyFromCStr((CString *)&this->field_0x1c,param_1);
@@ -293,7 +292,7 @@ void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this,char
 // GHIDRA_NAME CDocument::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-void __thiscall CDocument::GetTTaskClassNamePointer(CDocument *this)
+void CDocument::GetTTaskClassNamePointer()
 
 {
   if ((*(int *)&this->field_0x34 == 0) && (*(int *)&this->field_0x48 != 0)) {
@@ -312,7 +311,7 @@ void __thiscall CDocument::GetTTaskClassNamePointer(CDocument *this)
 // GHIDRA_NAME CDocument::RenumberAndActivateVisibleDocumentFrames
 // GHIDRA_PROTO undefined __thiscall RenumberAndActivateVisibleDocumentFrames(void)
 
-void __thiscall CDocument::RenumberAndActivateVisibleDocumentFrames(CDocument *this)
+void CDocument::RenumberAndActivateVisibleDocumentFrames()
 
 {
   CDocumentVtbl *pCVar1;
@@ -393,7 +392,7 @@ void __thiscall CDocument::RenumberAndActivateVisibleDocumentFrames(CDocument *t
 // GHIDRA_NAME CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocument *this)
+void CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   return;
@@ -403,8 +402,7 @@ void __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocumen
 // GHIDRA_NAME CDocument::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 param_1, int param_2)
 
-void __thiscall
-CDocument::_scalar_deleting_destructor_(CDocument *this,undefined4 param_1,int param_2)
+void CDocument::_scalar_deleting_destructor_(undefined4 param_1, int param_2)
 
 {
   undefined4 uVar1;
@@ -431,7 +429,7 @@ CDocument::_scalar_deleting_destructor_(CDocument *this,undefined4 param_1,int p
 // GHIDRA_NAME CDocument::DoSaveDocumentWithPromptAndReplace
 // GHIDRA_PROTO undefined __thiscall DoSaveDocumentWithPromptAndReplace(void)
 
-undefined4 __thiscall CDocument::DoSaveDocumentWithPromptAndReplace(CDocument *this)
+undefined4 CDocument::DoSaveDocumentWithPromptAndReplace()
 
 {
   int *piVar1;
@@ -511,7 +509,7 @@ LAB_00610e5e:
 // GHIDRA_NAME CDocument::SaveModified
 // GHIDRA_PROTO undefined __thiscall SaveModified(void)
 
-undefined4 __thiscall CDocument::SaveModified(CDocument *this)
+undefined4 CDocument::SaveModified()
 
 {
   char *pcVar1;
@@ -578,7 +576,7 @@ LAB_00610f75:
 // GHIDRA_NAME CDocument::ReportSaveLoadException
 // GHIDRA_PROTO undefined __thiscall ReportSaveLoadException(void)
 
-void __thiscall CDocument::ReportSaveLoadException(CDocument *this)
+void CDocument::ReportSaveLoadException()
 
 {
   CObject *this_00;
@@ -653,7 +651,7 @@ LAB_006110dd:
 // GHIDRA_NAME CDocument::GetFile
 // GHIDRA_PROTO undefined __thiscall GetFile(void)
 
-int * __thiscall CDocument::GetFile(CDocument *this)
+int * CDocument::GetFile()
 
 {
   int iVar1;
@@ -694,7 +692,7 @@ int * __thiscall CDocument::GetFile(CDocument *this)
 // GHIDRA_NAME CDocument::ReleaseFileObjectCloseOrAbort
 // GHIDRA_PROTO undefined __thiscall ReleaseFileObjectCloseOrAbort(int * param_1, int param_2)
 
-void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,int *param_1,int param_2)
+void CDocument::ReleaseFileObjectCloseOrAbort(int *param_1, int param_2)
 
 {
   int iVar1;
@@ -716,7 +714,7 @@ void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,int *pa
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
-undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this)
+undefined4 CDocument::OrphanLeaf_NoCall_Ins04_005adc30()
 
 {
   CDocumentVtbl *pCVar1;
@@ -865,7 +863,7 @@ bool CDocument::OnSaveDocument(void)
 // GHIDRA_NAME CDocument::CreateChildWindowFromRect
 // GHIDRA_PROTO undefined __thiscall CreateChildWindowFromRect(void)
 
-void __thiscall CDocument::CreateChildWindowFromRect(CDocument *this)
+void CDocument::CreateChildWindowFromRect()
 
 {
   return;
@@ -875,7 +873,7 @@ void __thiscall CDocument::CreateChildWindowFromRect(CDocument *this)
 // GHIDRA_NAME CDocument::AddView
 // GHIDRA_PROTO undefined __thiscall AddView(int param_1)
 
-void __thiscall CDocument::AddView(CDocument *this,int param_1)
+void CDocument::AddView(int param_1)
 
 {
   CDocumentVtbl *pCVar1;
@@ -1017,7 +1015,7 @@ void CDocument::ReleaseSerializedArchiveBufferState(void)
 // GHIDRA_NAME CDocument::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-CRuntimeClass * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
+CRuntimeClass * CDocument::SetForeignMinisterReadyFlag14()
 
 {
   return &classRuntimeClass;

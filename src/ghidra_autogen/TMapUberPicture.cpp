@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot127
 // GHIDRA_PROTO undefined __thiscall TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(void)
 
-void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot127(TMapUberPicture *this)
+void TMapUberPicture::TMapUberPicture_VtblSlot127()
 
 {
   code *pcVar1;
@@ -81,7 +81,7 @@ TOffLimitsPicture * TMapUberPicture::CreateTMapUberPictureInstance(void)
 // GHIDRA_NAME TMapUberPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapUberPicture::GetTEventHandlerClassNamePointer(TMapUberPicture *this)
+CRuntimeClass * TMapUberPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -91,8 +91,7 @@ CRuntimeClass * __thiscall TMapUberPicture::GetTEventHandlerClassNamePointer(TMa
 // GHIDRA_NAME TMapUberPicture::ConstructTMapUberPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TMapUberPicture::ConstructTMapUberPictureBaseState(void)
 
-TMapUberPicture * __thiscall
-TMapUberPicture::ConstructTMapUberPictureBaseState(TMapUberPicture *this)
+TMapUberPicture * TMapUberPicture::ConstructTMapUberPictureBaseState()
 
 {
   TOffLimitsPicture::ConstructTOffLimitsPictureBaseState((TOffLimitsPicture *)this);
@@ -110,8 +109,7 @@ TMapUberPicture::ConstructTMapUberPictureBaseState(TMapUberPicture *this)
 // GHIDRA_NAME TMapUberPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapUberPicture * __thiscall
-TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,byte param_1)
+TMapUberPicture * TMapUberPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -125,7 +123,7 @@ TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,byte param_1
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPicture *this)
+void TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapUberPictureVtbl *pTVar1;
@@ -190,7 +188,7 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPictur
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPicture *this)
+void TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (g_pUiRuntimeContext != (UiRuntimeContext *)0x0) {
@@ -311,7 +309,7 @@ LAB_00597559:
 // GHIDRA_NAME TMapUberPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,int param_1)
+void TMapUberPicture::_scalar_deleting_destructor_(int param_1)
 
 {
   short sVar1;
@@ -376,7 +374,7 @@ void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *t
 // GHIDRA_NAME TMapUberPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMapUberPicture::OrphanTiny_ReturnZero_0048a730(TMapUberPicture *this)
+void TMapUberPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   if (*(int **)&this->field_0xac != (int *)0x0) {
@@ -389,7 +387,7 @@ void __thiscall TMapUberPicture::OrphanTiny_ReturnZero_0048a730(TMapUberPicture 
 // GHIDRA_NAME TMapUberPicture::OrphanRetStub_0045d2a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(byte param_1)
 
-void __thiscall TMapUberPicture::OrphanRetStub_0045d2a0(TMapUberPicture *this,byte param_1)
+void TMapUberPicture::OrphanRetStub_0045d2a0(byte param_1)
 
 {
   undefined3 in_stack_00000005;
@@ -411,7 +409,7 @@ void __thiscall TMapUberPicture::OrphanRetStub_0045d2a0(TMapUberPicture *this,by
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins23_00597a10(void)
 
-bool __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10(TMapUberPicture *this)
+bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10()
 
 {
   short sVar1;
@@ -456,7 +454,7 @@ TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C2_I18_005988c0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_005988c0(void)
 
-void __thiscall TMapUberPicture::OrphanCallChain_C2_I18_005988c0(TMapUberPicture *this)
+void TMapUberPicture::OrphanCallChain_C2_I18_005988c0()
 
 {
   (**(code **)(**(int **)&this->field_0xac + 0x1e8))();
@@ -470,8 +468,7 @@ void __thiscall TMapUberPicture::OrphanCallChain_C2_I18_005988c0(TMapUberPicture
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C2_I11_00598910
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I11_00598910(undefined4 param_1)
 
-void __thiscall
-TMapUberPicture::OrphanCallChain_C2_I11_00598910(TMapUberPicture *this,undefined4 param_1)
+void TMapUberPicture::OrphanCallChain_C2_I11_00598910(undefined4 param_1)
 
 {
   (*this->vftable[0x1f].GetTEventHandlerClassNamePointer)();
@@ -483,7 +480,7 @@ TMapUberPicture::OrphanCallChain_C2_I11_00598910(TMapUberPicture *this,undefined
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins09_00598950(void)
 
-void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950(TMapUberPicture *this)
+void TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950()
 
 {
   if (this->field_0x94 != '\0') {
@@ -502,7 +499,7 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950(TMapUberPictur
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C2_I14_00598990
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I14_00598990(void)
 
-void __thiscall TMapUberPicture::OrphanCallChain_C2_I14_00598990(TMapUberPicture *this)
+void TMapUberPicture::OrphanCallChain_C2_I14_00598990()
 
 {
   (**(code **)(**(int **)&this->field_0xac + 0x1d8))();
@@ -516,7 +513,7 @@ void __thiscall TMapUberPicture::OrphanCallChain_C2_I14_00598990(TMapUberPicture
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C2_I16_005989d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_005989d0(void)
 
-void __thiscall TMapUberPicture::OrphanCallChain_C2_I16_005989d0(TMapUberPicture *this)
+void TMapUberPicture::OrphanCallChain_C2_I16_005989d0()
 
 {
   (**(code **)(**(int **)&this->field_0xac + 0x1e4))();
@@ -530,7 +527,7 @@ void __thiscall TMapUberPicture::OrphanCallChain_C2_I16_005989d0(TMapUberPicture
 // GHIDRA_NAME TMapUberPicture::OrphanCallChain_C1_I06_00598a20
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00598a20(void)
 
-void __thiscall TMapUberPicture::OrphanCallChain_C1_I06_00598a20(TMapUberPicture *this)
+void TMapUberPicture::OrphanCallChain_C1_I06_00598a20()
 
 {
   (**(code **)(**(int **)&this->field_0xac + 0x1f0))();
@@ -541,8 +538,7 @@ void __thiscall TMapUberPicture::OrphanCallChain_C1_I06_00598a20(TMapUberPicture
 // GHIDRA_NAME TMapUberPicture::CreateToolWindow_00599CF0
 // GHIDRA_PROTO void __thiscall CreateToolWindow_00599CF0(astruct_20 * this_obj)
 
-void __thiscall
-TMapUberPicture::CreateToolWindow_00599CF0(TMapUberPicture *this,astruct_20 *this_obj)
+void TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 *this_obj)
 
 {
   astruct_22 *tool_iface;
@@ -629,7 +625,7 @@ TMapUberPicture::CreateToolWindow_00599CF0(TMapUberPicture *this,astruct_20 *thi
 // GHIDRA_NAME TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion
 // GHIDRA_PROTO undefined __thiscall SwapToolInfoSubviewAndRefreshClipRegion(void)
 
-void __thiscall TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion(TMapUberPicture *this)
+void TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion()
 
 {
   TMapUberPictureVtbl *pTVar1;
@@ -674,7 +670,7 @@ void __thiscall TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion(TMapUbe
 // GHIDRA_NAME TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag
 // GHIDRA_PROTO undefined __thiscall SetTradeToolSubcontrolEnabledStateByFlag(void)
 
-void __thiscall TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(TMapUberPicture *this)
+void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag()
 
 {
   code *pcVar1;

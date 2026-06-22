@@ -7,7 +7,7 @@
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
 // GHIDRA_PROTO undefined __thiscall TBehavior::CreateTBehaviorInstance(void)
 
-void __thiscall TBehavior::CreateTBehaviorInstance(TBehavior *this)
+void TBehavior::CreateTBehaviorInstance()
 
 {
   undefined4 *puVar1;
@@ -39,7 +39,7 @@ void __thiscall TBehavior::CreateTBehaviorInstance(TBehavior *this)
 // GHIDRA_NAME TBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBehavior::GetTBehaviorClassNamePointer(TBehavior *this)
+CRuntimeClass * TBehavior::GetTBehaviorClassNamePointer()
 
 {
   return &g_pClassDescTBehavior;
@@ -49,7 +49,7 @@ CRuntimeClass * __thiscall TBehavior::GetTBehaviorClassNamePointer(TBehavior *th
 // GHIDRA_NAME TBehavior::ConstructTBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall TBehavior::ConstructTBehaviorBaseState(void)
 
-void __thiscall TBehavior::ConstructTBehaviorBaseState(TBehavior *this)
+void TBehavior::ConstructTBehaviorBaseState()
 
 {
   this->vftable = &TBehaviorVtbl_00648d60;
@@ -63,7 +63,7 @@ void __thiscall TBehavior::ConstructTBehaviorBaseState(TBehavior *this)
 // GHIDRA_NAME TBehavior::DestructTBehaviorAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTBehaviorAndMaybeFree(byte param_1)
 
-TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this,byte param_1)
+TBehavior * TBehavior::DestructTBehaviorAndMaybeFree(byte param_1)
 
 {
   DestructTBehaviorAndMaybeFree_Impl();
@@ -77,8 +77,7 @@ TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this,
 // GHIDRA_NAME TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_8_00487280(undefined4 param_1)
 
-void __thiscall
-TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(TBehavior *this,undefined4 param_1)
+void TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x8 = param_1;
@@ -89,7 +88,7 @@ TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(TBehavior *this,undefined4 pa
 // GHIDRA_NAME TBehavior::OrphanLeaf_NoCall_Ins02_004872a0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004872a0(void)
 
-undefined1 __thiscall TBehavior::OrphanLeaf_NoCall_Ins02_004872a0(TBehavior *this)
+undefined1 TBehavior::OrphanLeaf_NoCall_Ins02_004872a0()
 
 {
   return this->field_0xc;
@@ -99,7 +98,7 @@ undefined1 __thiscall TBehavior::OrphanLeaf_NoCall_Ins02_004872a0(TBehavior *thi
 // GHIDRA_NAME TBehavior::OrphanRetStub_004872e0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004872e0(void)
 
-void __thiscall TBehavior::OrphanRetStub_004872e0(TBehavior *this)
+void TBehavior::OrphanRetStub_004872e0()
 
 {
   return;

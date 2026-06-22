@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
 // GHIDRA_PROTO undefined __thiscall TNavyMission::ConstructTNavyMission(undefined4 param_1)
 
-void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,undefined4 param_1)
+void TNavyMission::ConstructTNavyMission(undefined4 param_1)
 
 {
   this[8] = (TNavyMission)0x2;
@@ -31,7 +31,7 @@ void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,undefined
 // GHIDRA_NAME TNavyMission::DestroyTNavyMission
 // GHIDRA_PROTO undefined __thiscall DestroyTNavyMission(byte param_1)
 
-TNavyMission * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this,byte param_1)
+TNavyMission * TNavyMission::DestroyTNavyMission(byte param_1)
 
 {
   ResetTNavyMissionToSentinelVtable();
@@ -94,7 +94,7 @@ undefined ** TNavyMission::GetTNavyMissionClassNamePointer(void)
 // GHIDRA_NAME TNavyMission::EnsureMissionCurrentTargetContextIsValid
 // GHIDRA_PROTO undefined __thiscall EnsureMissionCurrentTargetContextIsValid(void)
 
-uint __thiscall TNavyMission::EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
+uint TNavyMission::EnsureMissionCurrentTargetContextIsValid()
 
 {
   char cVar1;

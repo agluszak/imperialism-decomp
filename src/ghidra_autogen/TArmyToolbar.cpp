@@ -40,7 +40,7 @@ _CreateTArmyToolbarInstance__YAPAUArmyToolbarState___Z_imperialismsrcgameTArmyTo
 // GHIDRA_NAME TArmyToolbar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyToolbar::GetTEventHandlerClassNamePointer(TArmyToolbar *this)
+CRuntimeClass * TArmyToolbar::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -65,8 +65,7 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
 // GHIDRA_NAME TArmyToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyToolbar * __thiscall
-TArmyToolbar::_scalar_deleting_destructor_(TArmyToolbar *this,byte param_1)
+TArmyToolbar * TArmyToolbar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -182,7 +181,7 @@ LAB_0058e021:
 // GHIDRA_NAME TArmyToolbar::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int * param_2)
 
-void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int param_1,int *param_2)
+void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
 
 {
   uint uVar1;

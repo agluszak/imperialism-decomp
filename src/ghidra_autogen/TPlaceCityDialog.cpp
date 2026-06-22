@@ -37,8 +37,7 @@ thunk_TPictureButton * TPlaceCityDialog::CreateTPlaceCityDialogInstance(void)
 // GHIDRA_NAME TPlaceCityDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPlaceCityDialog::GetTEventHandlerClassNamePointer(TPlaceCityDialog *this)
+CRuntimeClass * TPlaceCityDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TPlaceCityDialog::GetTEventHandlerClassNamePointer(TPlaceCityDialog *this)
 // GHIDRA_NAME TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
 // GHIDRA_PROTO undefined __thiscall TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(void)
 
-TPlaceCityDialog * __thiscall
-TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(TPlaceCityDialog *this)
+TPlaceCityDialog * TPlaceCityDialog::ConstructTPlaceCityDialogBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -61,8 +59,7 @@ TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(TPlaceCityDialog *this)
 // GHIDRA_NAME TPlaceCityDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPlaceCityDialog * __thiscall
-TPlaceCityDialog::_scalar_deleting_destructor_(TPlaceCityDialog *this,byte param_1)
+TPlaceCityDialog * TPlaceCityDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -76,7 +73,7 @@ TPlaceCityDialog::_scalar_deleting_destructor_(TPlaceCityDialog *this,byte param
 // GHIDRA_NAME TPlaceCityDialog::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TPlaceCityDialog::OrphanTiny_ReturnZero_0048a730(TPlaceCityDialog *this)
+void TPlaceCityDialog::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

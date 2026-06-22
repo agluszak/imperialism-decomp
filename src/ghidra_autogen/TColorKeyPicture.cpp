@@ -38,8 +38,7 @@ thunk_TPictureButton * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
 // GHIDRA_NAME TColorKeyPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TColorKeyPicture::GetTEventHandlerClassNamePointer(TColorKeyPicture *this)
+CRuntimeClass * TColorKeyPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +48,7 @@ TColorKeyPicture::GetTEventHandlerClassNamePointer(TColorKeyPicture *this)
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
 // GHIDRA_PROTO undefined __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(void)
 
-TColorKeyPicture * __thiscall
-TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
+TColorKeyPicture * TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -64,8 +62,7 @@ TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *t
 // GHIDRA_NAME TColorKeyPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyPicture * __thiscall
-TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param_1)
+TColorKeyPicture * TColorKeyPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -79,7 +76,7 @@ TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param
 // GHIDRA_NAME TColorKeyPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TColorKeyPicture::OrphanTiny_ReturnZero_0048a730(TColorKeyPicture *this)
+void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TColorKeyPictureVtbl *pTVar1;
@@ -156,8 +153,7 @@ void __thiscall TColorKeyPicture::OrphanTiny_ReturnZero_0048a730(TColorKeyPictur
 // GHIDRA_NAME TColorKeyPicture::SetPictureResourceIdAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void __thiscall
-TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this,short param_1,bool param_2)
+void TColorKeyPicture::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
 {
   undefined2 unaff_DI;
@@ -174,7 +170,7 @@ TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this,short pa
 // GHIDRA_NAME TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920(TColorKeyPicture *this)
+void TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(int *)&this->field_0x94 != 0) {

@@ -40,8 +40,7 @@ TControl * TCloseParentButton::CreateTCloseParentButtonInstance(void)
 // GHIDRA_NAME TCloseParentButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCloseParentButton::GetTEventHandlerClassNamePointer(TCloseParentButton *this)
+CRuntimeClass * TCloseParentButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,8 +50,7 @@ TCloseParentButton::GetTEventHandlerClassNamePointer(TCloseParentButton *this)
 // GHIDRA_NAME TCloseParentButton::ConstructTCloseParentButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCloseParentButtonBaseState(void)
 
-TCloseParentButton * __thiscall
-TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *this)
+TCloseParentButton * TCloseParentButton::ConstructTCloseParentButtonBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -77,8 +75,7 @@ TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *thi
 // GHIDRA_NAME TCloseParentButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCloseParentButton * __thiscall
-TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this,byte param_1)
+TCloseParentButton * TCloseParentButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

@@ -7,7 +7,7 @@
 // GHIDRA_NAME TModalMessageCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TModalMessageCommand::OrphanRetStub_00487a00(TModalMessageCommand *this)
+void TModalMessageCommand::OrphanRetStub_00487a00()
 
 {
   undefined4 in_EAX;
@@ -31,8 +31,7 @@ void __thiscall TModalMessageCommand::OrphanRetStub_00487a00(TModalMessageComman
 // GHIDRA_NAME TModalMessageCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TModalMessageCommand * __thiscall
-TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this,byte param_1)
+TModalMessageCommand * TModalMessageCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   TModalMessageCommand::CreateTModalMessageCommandInstance(this);
@@ -46,7 +45,7 @@ TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this
 // GHIDRA_NAME TModalMessageCommand::CreateTModalMessageCommandInstance
 // GHIDRA_PROTO undefined __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(void)
 
-void __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(TModalMessageCommand *this)
+void TModalMessageCommand::CreateTModalMessageCommandInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -69,8 +68,7 @@ void __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(TModalM
 // GHIDRA_NAME TModalMessageCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TModalMessageCommand::GetTEventClassNamePointer(TModalMessageCommand *this)
+CRuntimeClass * TModalMessageCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;

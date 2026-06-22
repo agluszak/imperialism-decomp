@@ -7,8 +7,7 @@
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined2 param_1)
 
-undefined2 __thiscall
-TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,undefined2 param_1)
+undefined2 TInteriorMinister::_scalar_deleting_destructor_(undefined2 param_1)
 
 {
   return param_1;
@@ -18,8 +17,7 @@ TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,undefine
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined2 param_1)
 
-undefined2 __thiscall
-TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this,undefined2 param_1)
+undefined2 TInteriorMinister::GetTEventHandlerClassNamePointer(undefined2 param_1)
 
 {
   return param_1;
@@ -29,7 +27,7 @@ TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this,unde
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this)
+void TInteriorMinister::_scalar_deleting_destructor_()
 
 {
   return;
@@ -39,7 +37,7 @@ void __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMiniste
 // GHIDRA_NAME TInteriorMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TInteriorMinister::GetTMinisterClassNamePointer(TInteriorMinister *this)
+CRuntimeClass * TInteriorMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +47,7 @@ CRuntimeClass * __thiscall TInteriorMinister::GetTMinisterClassNamePointer(TInte
 // GHIDRA_NAME TInteriorMinister::ConstructTInteriorMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInteriorMinisterBaseState(void)
 
-TInteriorMinister * __thiscall
-TInteriorMinister::ConstructTInteriorMinisterBaseState(TInteriorMinister *this)
+TInteriorMinister * TInteriorMinister::ConstructTInteriorMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -64,8 +61,7 @@ TInteriorMinister::ConstructTInteriorMinisterBaseState(TInteriorMinister *this)
 // GHIDRA_NAME TInteriorMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TInteriorMinister * __thiscall
-TInteriorMinister::DeletingDestructTMinister(TInteriorMinister *this,byte param_1)
+TInteriorMinister * TInteriorMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTInteriorMinisterAndMaybeFree_Impl();
@@ -79,8 +75,7 @@ TInteriorMinister::DeletingDestructTMinister(TInteriorMinister *this,byte param_
 // GHIDRA_NAME TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall
-TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
+void TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
   undefined1 uVar1;
@@ -111,8 +106,7 @@ TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *t
 // GHIDRA_NAME TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall
-TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
+void TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
   code *pcVar1;
@@ -154,8 +148,7 @@ TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *thi
 // GHIDRA_NAME TInteriorMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-int __thiscall
-TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this,short param_1)
+int TInteriorMinister::DispatchNationStateEventCode10(short param_1)
 
 {
   if (g_apNationStates[param_1] != (TGreatPower *)0x0) {
@@ -168,7 +161,7 @@ TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this,short 
 // GHIDRA_NAME TInteriorMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TInteriorMinister::SetForeignMinisterReadyFlag14(TInteriorMinister *this)
+void TInteriorMinister::SetForeignMinisterReadyFlag14()
 
 {
   return;
@@ -178,7 +171,7 @@ void __thiscall TInteriorMinister::SetForeignMinisterReadyFlag14(TInteriorMinist
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this)
+void TInteriorMinister::_scalar_deleting_destructor_()
 
 {
   return;
@@ -188,7 +181,7 @@ void __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMiniste
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this)
+void TInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -198,7 +191,7 @@ void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMin
 // GHIDRA_NAME TInteriorMinister::OrphanCallChain_C7_I57_004be5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
 
-void __thiscall TInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TInteriorMinister *this)
+void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
 
 {
   TInteriorMinister_DeletingDestructTMinister_0x04 *pTVar1;
@@ -253,7 +246,7 @@ void __thiscall TInteriorMinister::OrphanCallChain_C7_I57_004be5b0(TInteriorMini
 // GHIDRA_NAME TInteriorMinister::OrphanRetStub_004be6d0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(void)
 
-void __thiscall TInteriorMinister::OrphanRetStub_004be6d0(TInteriorMinister *this)
+void TInteriorMinister::OrphanRetStub_004be6d0()
 
 {
   return;
@@ -263,7 +256,7 @@ void __thiscall TInteriorMinister::OrphanRetStub_004be6d0(TInteriorMinister *thi
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this)
+void TInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
   (**(code **)((this[1].vftable)->GetTMinisterClassNamePointer + 0x14))(0x10);
@@ -421,8 +414,7 @@ TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_NAME TInteriorMinister::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInteriorMinister * __thiscall
-TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,byte param_1)
+TInteriorMinister * TInteriorMinister::_scalar_deleting_destructor_(byte param_1)
 
 {
   TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(this);

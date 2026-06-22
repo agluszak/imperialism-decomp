@@ -48,7 +48,7 @@ CRuntimeClass * TPortZone::GetTPortZoneClassNamePointer(void)
 // GHIDRA_NAME TPortZone::RefreshTPortZoneDisplayNameFromLocalization
 // GHIDRA_PROTO undefined __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(void)
 
-void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone *this)
+void TPortZone::RefreshTPortZoneDisplayNameFromLocalization()
 
 {
   undefined4 unaff_ESI;
@@ -89,7 +89,7 @@ void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone
 // GHIDRA_NAME TPortZone::DispatchNationPendingActionEventCodes
 // GHIDRA_PROTO undefined __thiscall DispatchNationPendingActionEventCodes(void)
 
-void __thiscall TPortZone::DispatchNationPendingActionEventCodes(TPortZone *this)
+void TPortZone::DispatchNationPendingActionEventCodes()
 
 {
   TZone *this_00;

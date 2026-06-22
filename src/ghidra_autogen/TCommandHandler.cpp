@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
 // GHIDRA_PROTO undefined __thiscall TCommandHandler::CreateTCommandHandlerInstance(void)
 
-void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *this)
+void TCommandHandler::CreateTCommandHandlerInstance()
 
 {
   this->vftable = (TCommandHandlerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -19,7 +19,7 @@ void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *
 // GHIDRA_NAME TCommandHandler::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCommandHandler::GetTEventHandlerClassNamePointer(TCommandHandler *this)
+CRuntimeClass * TCommandHandler::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -29,8 +29,7 @@ CRuntimeClass * __thiscall TCommandHandler::GetTEventHandlerClassNamePointer(TCo
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCommandHandlerBaseState(int * param_1)
 
-void __thiscall
-TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this,int *param_1)
+void TCommandHandler::ConstructTCommandHandlerBaseState(int *param_1)
 
 {
   int iVar1;

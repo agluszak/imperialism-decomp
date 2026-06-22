@@ -37,7 +37,7 @@ TLineData * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
 // GHIDRA_NAME TTradeTotalsLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTradeTotalsLine::GetTLineDataClassNamePointer(TTradeTotalsLine *this)
+CRuntimeClass * TTradeTotalsLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TTradeTotalsLine::GetTLineDataClassNamePointer(TTrade
 // GHIDRA_NAME TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradeTotalsLineBaseState(void)
 
-TTradeTotalsLine * __thiscall
-TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
+TTradeTotalsLine * TTradeTotalsLine::ConstructTTradeTotalsLineBaseState()
 
 {
   TLineData::ConstructTLineDataBaseState((TLineData *)this);
@@ -60,8 +59,7 @@ TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree(byte param_1)
 
-TTradeTotalsLine * __thiscall
-TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,byte param_1)
+TTradeTotalsLine * TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(byte param_1)
 
 {
   TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(this);
@@ -75,7 +73,7 @@ TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,by
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(void)
 
-void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
+void TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl()
 
 {
   this->vftable =

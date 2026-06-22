@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNavyTacUnit::GetTTacticalUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNavyTacUnit::GetTTacticalUnitClassNamePointer(TNavyTacUnit *this)
+CRuntimeClass * TNavyTacUnit::GetTTacticalUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TNavyTacUnit::GetTTacticalUnitClassNamePointer(TNavyT
 // GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
-undefined4 __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40(TNavyTacUnit *this)
+undefined4 TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40()
 
 {
   return *(undefined4 *)&this->field_0x3c;
@@ -27,7 +27,7 @@ undefined4 __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40(TNavyTacUnit 
 // GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
 
-int __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60(TNavyTacUnit *this)
+int TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60()
 
 {
   short sVar1;
@@ -40,7 +40,7 @@ int __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60(TNavyTacUnit *this)
 // GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5d80(void)
 
-float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TNavyTacUnit *this)
+float10 TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
 
 {
   return (float10)*(float *)(&DAT_00669d48 + *(int *)&this->field_0xc * 4);
@@ -50,7 +50,7 @@ float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TNavyTacUnit *
 // GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5da0(void)
 
-float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TNavyTacUnit *this)
+float10 TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 
 {
   return (float10)*(float *)(&DAT_00669d28 + *(int *)&this->field_0xc * 4);

@@ -7,8 +7,7 @@
 // GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte param_1)
 
-CFrameWnd * __thiscall
-CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this,byte param_1)
+CFrameWnd * CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte param_1)
 
 {
   CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
@@ -22,8 +21,7 @@ CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this,byte pa
 // GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
 // GHIDRA_PROTO undefined __thiscall CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
 
-void __thiscall
-CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(CFrameWnd *this)
+void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()
 
 {
   undefined4 *puVar1;
@@ -55,7 +53,7 @@ CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(C
 // GHIDRA_NAME CFrameWnd::SerializeRecordList_0x18_WithBlockPool
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x18_WithBlockPool(CArchive * param_1)
 
-void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *this,CArchive *param_1)
+void CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CArchive *param_1)
 
 {
   undefined4 uVar1;
@@ -140,8 +138,7 @@ void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *thi
 // GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004847a0(byte param_1)
 
-CFrameWnd * __thiscall
-CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this,byte param_1)
+CFrameWnd * CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(byte param_1)
 
 {
   CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
@@ -155,8 +152,7 @@ CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this,byte pa
 // GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
 // GHIDRA_PROTO undefined __thiscall CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)
 
-void __thiscall
-CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(CFrameWnd *this)
+void CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()
 
 {
   undefined4 *puVar1;
@@ -194,7 +190,7 @@ CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(C
 /* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
    to site virtual Show handler (+0xA8). */
 
-void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this,int param_1)
+void CFrameWnd::ShowWindow(int param_1)
 
 {
   if (this->m_pCtrlSite == (int *)0x0) {
@@ -216,7 +212,7 @@ void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this,int param_1)
 /* Activates target view in frame context, updates active view focus/state, sends
    WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
 
-void __thiscall CFrameWnd::OnEndPrintPreview(CFrameWnd *this,int *param_1)
+void CFrameWnd::OnEndPrintPreview(int *param_1)
 
 {
   CFrameWndVtbl *pCVar1;
@@ -257,7 +253,7 @@ LAB_006141f0:
 // GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
 // GHIDRA_PROTO undefined __thiscall OnEnterIdle_61ddc2(int param_1, undefined4 param_2)
 
-void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this,int param_1,undefined4 param_2)
+void CFrameWnd::OnEnterIdle_61ddc2(int param_1, undefined4 param_2)
 
 {
   OnEnterIdle(param_1,param_2);

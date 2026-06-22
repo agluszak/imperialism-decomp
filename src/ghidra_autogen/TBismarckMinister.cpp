@@ -24,7 +24,7 @@ TBismarckMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_NAME TBismarckMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TBismarckMinister::GetTMinisterClassNamePointer(TBismarckMinister *this)
+CRuntimeClass * TBismarckMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,8 +34,7 @@ CRuntimeClass * __thiscall TBismarckMinister::GetTMinisterClassNamePointer(TBism
 // GHIDRA_NAME TBismarckMinister::ConstructTBismarckMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TBismarckMinister::ConstructTBismarckMinisterBaseState(void)
 
-TBismarckMinister * __thiscall
-TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
+TBismarckMinister * TBismarckMinister::ConstructTBismarckMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -48,8 +47,7 @@ TBismarckMinister::ConstructTBismarckMinisterBaseState(TBismarckMinister *this)
 // GHIDRA_NAME TBismarckMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TBismarckMinister * __thiscall
-TBismarckMinister::DeletingDestructTMinister(TBismarckMinister *this,byte param_1)
+TBismarckMinister * TBismarckMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTBismarckMinisterAndMaybeFree_Impl();

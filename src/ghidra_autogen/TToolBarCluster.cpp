@@ -7,8 +7,7 @@
 // GHIDRA_NAME TToolBarCluster::RefreshMapOrderEntryPanel
 // GHIDRA_PROTO void __thiscall TToolBarCluster::RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 
-void __thiscall
-TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrderEntry)
+void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
 
 {
   short sVar1;
@@ -92,8 +91,7 @@ TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
 // GHIDRA_NAME TToolBarCluster::RenderControlStateTextBySelectionCode
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::RenderControlStateTextBySelectionCode(LONG * param_1)
 
-void __thiscall
-TToolBarCluster::RenderControlStateTextBySelectionCode(TToolBarCluster *this,LONG *param_1)
+void TToolBarCluster::RenderControlStateTextBySelectionCode(LONG *param_1)
 
 {
   int iVar1;
@@ -269,8 +267,7 @@ TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
 // GHIDRA_NAME TToolBarCluster::InitializeCityProductionDialog
 // GHIDRA_PROTO undefined __thiscall InitializeCityProductionDialog(int param_1, int * param_2)
 
-void __thiscall
-TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int param_1,int *param_2)
+void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
 
 {
   TGreatPower *pTVar1;
@@ -687,8 +684,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
 // GHIDRA_NAME TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls
 // GHIDRA_PROTO undefined __thiscall InitializeDiplomacyMapViewOverlaysAndActionControls(void)
 
-void __thiscall
-TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls(TToolBarCluster *this)
+void TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls()
 
 {
   TToolBarClusterVtbl *pTVar1;
@@ -824,8 +820,7 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
 // GHIDRA_NAME TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
 
-undefined1 __thiscall
-TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(TToolBarCluster *this)
+undefined1 TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails()
 
 {
   char cVar1;
@@ -1143,8 +1138,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
    viewport size: width<641 and height<481 -> 0x7D1, otherwise 0x7D2. Then requests dialog root from
    callback factory manager and stores it in manager state. */
 
-void __thiscall
-TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarCluster *this)
+void TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize()
 
 {
   TToolBarClusterVtbl *pTVar1;
@@ -1561,8 +1555,7 @@ TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(char *param_1,CSt
    Special case:
    - For order type 5, restores cached mode/index before reactivating map context. */
 
-void __thiscall
-TToolBarCluster::CancelMapOrderEntryAndRestoreActive(TToolBarCluster *this,int *pMapOrderEntry)
+void TToolBarCluster::CancelMapOrderEntryAndRestoreActive(int *pMapOrderEntry)
 
 {
   int *piVar1;
@@ -1615,7 +1608,7 @@ TToolBarCluster::CancelMapOrderEntryAndRestoreActive(TToolBarCluster *this,int *
 // GHIDRA_NAME TToolBarCluster::BuildNavyOrderStatusLineText
 // GHIDRA_PROTO undefined __thiscall BuildNavyOrderStatusLineText(CString param_1)
 
-void __thiscall TToolBarCluster::BuildNavyOrderStatusLineText(TToolBarCluster *this,CString param_1)
+void TToolBarCluster::BuildNavyOrderStatusLineText(CString param_1)
 
 {
   int iVar1;
@@ -1737,8 +1730,7 @@ LAB_00554fd0:
    Special Cases:
    - Action code 0 means no context action is available for current tile/flags. */
 
-int __thiscall
-TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileIndex,int nInputFlags)
+int TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags)
 
 {
   TToolBarCluster *this_00;
@@ -1797,8 +1789,7 @@ TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileInde
 // GHIDRA_NAME TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
 
-void __thiscall
-TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(TToolBarCluster *this,int param_1)
+void TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
 
 {
   undefined uVar1;
@@ -1867,7 +1858,7 @@ LAB_00569047:
 /* Applies selected nation/country setup, updates localization/gameflow fields, and conditionally
    posts event 5E4. */
 
-void __thiscall TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4(TToolBarCluster *this)
+void TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4()
 
 {
   short sVar1;
@@ -2328,7 +2319,7 @@ TCluster * TToolBarCluster::CreateTToolBarClusterInstance(void)
 // GHIDRA_NAME TToolBarCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TToolBarCluster::GetTEventHandlerClassNamePointer(TToolBarCluster *this)
+CRuntimeClass * TToolBarCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -2338,8 +2329,7 @@ CRuntimeClass * __thiscall TToolBarCluster::GetTEventHandlerClassNamePointer(TTo
 // GHIDRA_NAME TToolBarCluster::ConstructTToolBarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTToolBarClusterBaseState(void)
 
-TToolBarCluster * __thiscall
-TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
+TToolBarCluster * TToolBarCluster::ConstructTToolBarClusterBaseState()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -2351,8 +2341,7 @@ TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
 // GHIDRA_NAME TToolBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TToolBarCluster * __thiscall
-TToolBarCluster::_scalar_deleting_destructor_(TToolBarCluster *this,byte param_1)
+TToolBarCluster * TToolBarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -2366,8 +2355,7 @@ TToolBarCluster::_scalar_deleting_destructor_(TToolBarCluster *this,byte param_1
 // GHIDRA_NAME TToolBarCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TToolBarCluster::OrphanRetStub_0059add0(TToolBarCluster *this,int param_1,void *param_2,int param_3)
+void TToolBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   uint uVar1;
@@ -2566,8 +2554,7 @@ LAB_00585059:
 // GHIDRA_NAME TToolBarCluster::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
-void __thiscall
-TToolBarCluster::SetForeignMinisterReadyFlag14(TToolBarCluster *this,undefined4 param_1)
+void TToolBarCluster::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 {
   code *pcVar1;
@@ -2649,7 +2636,7 @@ TToolBarCluster::SetForeignMinisterReadyFlag14(TToolBarCluster *this,undefined4 
 /* Rebuilds and refreshes turn-order status panel labels/controls based on active event code and
    current panel tag availability. */
 
-void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TToolBarCluster *this)
+void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
 
 {
   TToolBarClusterVtbl *pTVar1;
@@ -3189,7 +3176,7 @@ LAB_00585e06:
 // GHIDRA_NAME TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs
 // GHIDRA_PROTO undefined __thiscall SehCleanup_ReleaseTwoTempSharedStringRefs(void)
 
-void __thiscall TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(TToolBarCluster *this)
+void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -3218,7 +3205,7 @@ void __thiscall TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(TTool
 // GHIDRA_NAME TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors
 // GHIDRA_PROTO undefined __thiscall RefreshArmyInfoViewTextAndStyleDescriptors(void)
 
-void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToolBarCluster *this)
+void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
 
 {
   undefined uVar1;
@@ -3508,7 +3495,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
    - void.
    - Side-effects: UI caption updates, handler table toggles, and selection state resets. */
 
-void __thiscall TToolBarCluster::SetMapInteractionMode(TToolBarCluster *this,short nMode)
+void TToolBarCluster::SetMapInteractionMode(short nMode)
 
 {
   undefined uVar1;
@@ -3639,8 +3626,7 @@ void __thiscall TToolBarCluster::SetMapInteractionMode(TToolBarCluster *this,sho
    - These values are persisted in the order-entry object and reused when selecting the entry again.
     */
 
-void __thiscall
-TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrderEntry)
+void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
 
 {
   short sVar1;
@@ -3706,7 +3692,7 @@ TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrder
    If pMapOrderEntry is null, clears panel values; otherwise loads panel values from the selected
    entry. */
 
-void __thiscall TToolBarCluster::SetActiveMapOrderEntry(TToolBarCluster *this,void *pMapOrderEntry)
+void TToolBarCluster::SetActiveMapOrderEntry(void *pMapOrderEntry)
 
 {
   void *pMapOrderEntry_00;
@@ -3737,7 +3723,7 @@ void __thiscall TToolBarCluster::SetActiveMapOrderEntry(TToolBarCluster *this,vo
 
 /* Setting prototype: void OpenMapEntryOrderDialog(void* pMapOrderEntry) */
 
-void __thiscall TToolBarCluster::OpenMapEntryOrderDialog(TToolBarCluster *this,void *pMapOrderEntry)
+void TToolBarCluster::OpenMapEntryOrderDialog(void *pMapOrderEntry)
 
 {
   int iVar1;
@@ -4137,8 +4123,7 @@ LAB_0059830f:
    - If entry flag at +0x94 is clear, calls InvalidateMapRegionForOrderEntry(entry).
    - Otherwise no-op. */
 
-void __thiscall
-TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(TToolBarCluster *this,undefined4 param_1)
+void TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
 
 {
   if ((char)this[1].field0c == '\0') {
@@ -4875,8 +4860,7 @@ LAB_005bea42:
 // GHIDRA_NAME TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
 // GHIDRA_PROTO undefined __thiscall TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
 
-void __thiscall
-TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(TToolBarCluster *this,char param_1)
+void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
 
 {
   TToolBarCluster_slot_0x04_0x04 *pTVar1;
@@ -5215,7 +5199,7 @@ CString * __thiscall TToolBarCluster::GetFilePath(CDocTemplate *param_1,CString 
 // GHIDRA_NAME TToolBarCluster::ReadString_612132
 // GHIDRA_PROTO undefined __thiscall ReadString_612132(CString * param_1)
 
-bool __thiscall TToolBarCluster::ReadString_612132(TToolBarCluster *this,CString *param_1)
+bool TToolBarCluster::ReadString_612132(CString *param_1)
 
 {
   LPCSTR lpString;

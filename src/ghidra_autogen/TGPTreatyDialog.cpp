@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGPTreatyDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGPTreatyDialog * __thiscall
-TGPTreatyDialog::_scalar_deleting_destructor_(TGPTreatyDialog *this,byte param_1)
+TGPTreatyDialog * TGPTreatyDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TGPTreatyDialog::_scalar_deleting_destructor_(TGPTreatyDialog *this,byte param_1
 // GHIDRA_NAME TGPTreatyDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGPTreatyDialog::GetTEventHandlerClassNamePointer(TGPTreatyDialog *this)
+CRuntimeClass * TGPTreatyDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TGPTreatyDialog::GetTEventHandlerClassNamePointer(TGP
 // GHIDRA_NAME TGPTreatyDialog::ConstructTGPTreatyDialogBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTGPTreatyDialogBaseState(void)
 
-void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDialog *this)
+void TGPTreatyDialog::ConstructTGPTreatyDialogBaseState()
 
 {
   int iVar1;

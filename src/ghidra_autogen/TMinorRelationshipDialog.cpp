@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMinorRelationshipDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMinorRelationshipDialog * __thiscall
-TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog *this,byte param_1)
+TMinorRelationshipDialog * TMinorRelationshipDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog 
 // GHIDRA_NAME TMinorRelationshipDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDialog *this)
+CRuntimeClass * TMinorRelationshipDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,8 +31,7 @@ TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDia
 // GHIDRA_NAME TMinorRelationshipDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall
-TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDialog *this)
+void TMinorRelationshipDialog::GetTEventHandlerClassNamePointer()
 
 {
   undefined uVar1;

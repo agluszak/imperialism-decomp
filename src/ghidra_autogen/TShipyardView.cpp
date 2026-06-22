@@ -66,7 +66,7 @@ TNoHilitePicture * TShipyardView::CreateTShipyardViewInstance(void)
 // GHIDRA_NAME TShipyardView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipyardView::GetTEventHandlerClassNamePointer(TShipyardView *this)
+CRuntimeClass * TShipyardView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +76,7 @@ CRuntimeClass * __thiscall TShipyardView::GetTEventHandlerClassNamePointer(TShip
 // GHIDRA_NAME TShipyardView::ConstructTShipyardViewBaseState
 // GHIDRA_PROTO undefined __thiscall TShipyardView::ConstructTShipyardViewBaseState(void)
 
-TShipyardView * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipyardView *this)
+TShipyardView * TShipyardView::ConstructTShipyardViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -90,8 +90,7 @@ TShipyardView * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipy
 // GHIDRA_NAME TShipyardView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardView * __thiscall
-TShipyardView::_scalar_deleting_destructor_(TShipyardView *this,byte param_1)
+TShipyardView * TShipyardView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -105,7 +104,7 @@ TShipyardView::_scalar_deleting_destructor_(TShipyardView *this,byte param_1)
 // GHIDRA_NAME TShipyardView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TShipyardView::_scalar_deleting_destructor_(TShipyardView *this)
+void TShipyardView::_scalar_deleting_destructor_()
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0xb8);
@@ -135,7 +134,7 @@ void __thiscall TShipyardView::_scalar_deleting_destructor_(TShipyardView *this)
    3) Initialize slider ranges and default values from current city building entry.
    4) Update summary controls and trigger initial detail refresh. */
 
-void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
+void TShipyardView::OrphanRetStub_004c6fd0()
 
 {
   short sVar1;
@@ -321,7 +320,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
 // GHIDRA_NAME TShipyardView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void __thiscall TShipyardView::OrphanRetStub_004c6fb0(TShipyardView *this)
+void TShipyardView::OrphanRetStub_004c6fb0()
 
 {
   undefined4 uStack_10;
@@ -342,7 +341,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fb0(TShipyardView *this)
 // GHIDRA_NAME TShipyardView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this,int param_1,int param_2)
+void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TShipyardViewVtbl *pTVar1;
@@ -709,7 +708,7 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
    Returns:
    - void. */
 
-void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,int *pCityViewDialog)
+void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
 
 {
   int iVar1;
@@ -798,7 +797,7 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
 // GHIDRA_NAME TShipyardView::OrphanCallChain_C1_I15_004c9d20
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I15_004c9d20(int param_1)
 
-void __thiscall TShipyardView::OrphanCallChain_C1_I15_004c9d20(TShipyardView *this,int param_1)
+void TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1)
 
 {
   ushort uVar1;

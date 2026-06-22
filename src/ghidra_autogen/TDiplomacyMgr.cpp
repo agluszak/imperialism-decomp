@@ -7,7 +7,7 @@
 // GHIDRA_NAME TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTDiplomacyMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer(TDiplomacyMgr *this)
+CRuntimeClass * TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer(TDipl
 // GHIDRA_NAME TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90
 // GHIDRA_PROTO undefined __thiscall ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
 
-void __thiscall TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(TDiplomacyMgr *this)
+void TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90()
 
 {
   *(undefined4 *)&this->field_0x794 = 0;
@@ -32,8 +32,7 @@ void __thiscall TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(T
 // GHIDRA_NAME TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTDiplomacyMgrAndMaybeFree(byte param_1)
 
-TDiplomacyMgr * __thiscall
-TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte param_1)
+TDiplomacyMgr * TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004ee730();
@@ -47,8 +46,7 @@ TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte param_
 // GHIDRA_NAME TDiplomacyMgr::DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy
 // GHIDRA_PROTO undefined __thiscall DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy(void)
 
-void __thiscall
-TDiplomacyMgr::DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy(TDiplomacyMgr *this)
+void TDiplomacyMgr::DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()
 
 {
   if (*(int **)&this->field_0x18d4 != (int *)0x0) {
@@ -65,7 +63,7 @@ TDiplomacyMgr::DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy(TDiplomac
 // GHIDRA_NAME TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback
 // GHIDRA_PROTO undefined __thiscall SerializeThreeWordPlanesToOutputCallback(void)
 
-void __thiscall TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback(TDiplomacyMgr *this)
+void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
 
 {
   code *pcVar1;
@@ -168,8 +166,7 @@ void __thiscall TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback(TDiploma
 // GHIDRA_NAME TDiplomacyMgr::IsNationPairAtWar
 // GHIDRA_PROTO undefined __thiscall IsNationPairAtWar(short param_1, short param_2)
 
-undefined4 __thiscall
-TDiplomacyMgr::IsNationPairAtWar(TDiplomacyMgr *this,short param_1,short param_2)
+undefined4 TDiplomacyMgr::IsNationPairAtWar(short param_1, short param_2)
 
 {
   undefined uVar1;
@@ -189,7 +186,7 @@ TDiplomacyMgr::IsNationPairAtWar(TDiplomacyMgr *this,short param_1,short param_2
 // GHIDRA_NAME TDiplomacyMgr::HasAnyWarRelationForNation
 // GHIDRA_PROTO undefined __thiscall HasAnyWarRelationForNation(void)
 
-undefined1 __thiscall TDiplomacyMgr::HasAnyWarRelationForNation(TDiplomacyMgr *this)
+undefined1 TDiplomacyMgr::HasAnyWarRelationForNation()
 
 {
   TDiplomacyMgr_slot_0x04_0x04 *pTVar1;
@@ -212,8 +209,7 @@ undefined1 __thiscall TDiplomacyMgr::HasAnyWarRelationForNation(TDiplomacyMgr *t
 // GHIDRA_NAME TDiplomacyMgr::IsNationSlotInPrimaryGroupA
 // GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupA(short param_1, short param_2)
 
-undefined4 __thiscall
-TDiplomacyMgr::IsNationSlotInPrimaryGroupA(TDiplomacyMgr *this,short param_1,short param_2)
+undefined4 TDiplomacyMgr::IsNationSlotInPrimaryGroupA(short param_1, short param_2)
 
 {
   return CONCAT31((int3)(char)((ushort)param_2 >> 8),
@@ -224,8 +220,7 @@ TDiplomacyMgr::IsNationSlotInPrimaryGroupA(TDiplomacyMgr *this,short param_1,sho
 // GHIDRA_NAME TDiplomacyMgr::IsNationSlotInPrimaryGroupB
 // GHIDRA_PROTO undefined __thiscall IsNationSlotInPrimaryGroupB(short param_1, short param_2)
 
-undefined4 __thiscall
-TDiplomacyMgr::IsNationSlotInPrimaryGroupB(TDiplomacyMgr *this,short param_1,short param_2)
+undefined4 TDiplomacyMgr::IsNationSlotInPrimaryGroupB(short param_1, short param_2)
 
 {
   return CONCAT31((int3)(char)((ushort)param_2 >> 8),
@@ -236,8 +231,7 @@ TDiplomacyMgr::IsNationSlotInPrimaryGroupB(TDiplomacyMgr *this,short param_1,sho
 // GHIDRA_NAME TDiplomacyMgr::HasState300LinkBetweenNationPair
 // GHIDRA_PROTO undefined __thiscall HasState300LinkBetweenNationPair(short param_1, short param_2)
 
-int __thiscall
-TDiplomacyMgr::HasState300LinkBetweenNationPair(TDiplomacyMgr *this,short param_1,short param_2)
+int TDiplomacyMgr::HasState300LinkBetweenNationPair(short param_1, short param_2)
 
 {
   uint3 uVar1;
@@ -254,7 +248,7 @@ TDiplomacyMgr::HasState300LinkBetweenNationPair(TDiplomacyMgr *this,short param_
 // GHIDRA_NAME TDiplomacyMgr::IsPrimaryNationSlotIndex
 // GHIDRA_PROTO undefined __thiscall IsPrimaryNationSlotIndex(short param_1)
 
-bool __thiscall TDiplomacyMgr::IsPrimaryNationSlotIndex(TDiplomacyMgr *this,short param_1)
+bool TDiplomacyMgr::IsPrimaryNationSlotIndex(short param_1)
 
 {
   return param_1 < 7;

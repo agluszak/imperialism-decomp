@@ -38,8 +38,7 @@ thunk_TPictureButton * TPictureRadioButton::CreateTPictureRadioButtonInstance(vo
 // GHIDRA_NAME TPictureRadioButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPictureRadioButton::GetTEventHandlerClassNamePointer(TPictureRadioButton *this)
+CRuntimeClass * TPictureRadioButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +48,7 @@ TPictureRadioButton::GetTEventHandlerClassNamePointer(TPictureRadioButton *this)
 // GHIDRA_NAME TPictureRadioButton::ConstructTPictureRadioButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPictureRadioButtonBaseState(void)
 
-TPictureRadioButton * __thiscall
-TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *this)
+TPictureRadioButton * TPictureRadioButton::ConstructTPictureRadioButtonBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -63,8 +61,7 @@ TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *
 // GHIDRA_NAME TPictureRadioButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureRadioButton * __thiscall
-TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this,byte param_1)
+TPictureRadioButton * TPictureRadioButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -179,7 +176,7 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 // GHIDRA_NAME TPictureRadioButton::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-int __thiscall TPictureRadioButton::SetForeignMinisterReadyFlag14(TPictureRadioButton *this)
+int TPictureRadioButton::SetForeignMinisterReadyFlag14()
 
 {
   TPictureRadioButtonVtbl *pTVar1;

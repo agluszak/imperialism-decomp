@@ -7,7 +7,7 @@
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-undefined2 __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
+undefined2 TSoundPlayer::OrphanRetStub_0059add0()
 
 {
   return *(undefined2 *)&this->field_0x4e;
@@ -17,7 +17,7 @@ undefined2 __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return;
@@ -27,7 +27,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
+void TSoundPlayer::OrphanRetStub_0059add0()
 
 {
   return;
@@ -37,8 +37,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 * param_1)
 
-void __thiscall
-TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined4 *param_1)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(undefined4 *param_1)
 
 {
   undefined4 uVar1;
@@ -57,7 +56,7 @@ TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined4 *pa
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
-void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::OrphanRetStub_0059add0(int *param_1)
 
 {
   int iVar1;
@@ -80,7 +79,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *par
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int param_1)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   TSoundPlayer_slot_0x04_0x04 *pTVar1;
@@ -95,7 +94,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::_scalar_deleting_destructor_(int *param_1)
 
 {
   param_1[1] = param_1[1] - *(int *)&this->field_0x28;
@@ -107,7 +106,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   undefined uVar1;
@@ -129,7 +128,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return 0;
@@ -139,7 +138,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -149,7 +148,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
+void TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   return;
@@ -159,7 +158,7 @@ void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoun
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,int param_1)
+void TSoundPlayer::_scalar_deleting_destructor_(int param_1)
 
 {
   if ((*(int *)&this->field_0x18 != 0) && (*(int *)&this->field_0x18 == param_1)) {
@@ -173,7 +172,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,int param_1)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(int param_1)
 
 {
   if (param_1 != 0) {
@@ -187,7 +186,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-bool __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+bool TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer *pTVar1;
@@ -200,7 +199,7 @@ bool __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
+undefined4 TSoundPlayer::SetForeignMinisterReadyFlag14()
 
 {
   return 0;
@@ -218,7 +217,7 @@ undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *
    Returns true when already active or when current active view reports it can be replaced; sets
    global active view on success. */
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   char cVar1;
@@ -242,7 +241,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
@@ -265,7 +264,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return;
@@ -275,7 +274,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return;
@@ -285,7 +284,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -302,7 +301,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 /* Dispatches command ID 0x19 to parent handler via virtual slot +0x40.
    Companion wrappers send 0x1A and 0x1B for numeric decrement/increment actions. */
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x19,this,0);
@@ -320,7 +319,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 /* Dispatches city-production action code 0x1B through object vtable slot +0x40.
    Used as a tiny action wrapper from city/production method table. */
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1b,this,0);
@@ -331,7 +330,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return;
@@ -341,7 +340,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
+void TSoundPlayer::SetForeignMinisterReadyFlag14()
 
 {
   int *piVar1;
@@ -380,7 +379,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   if (*(int **)&this->field_0x20 != (int *)0x0) {
@@ -393,7 +392,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -403,8 +402,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1, int param_2)
 
-void __thiscall
-TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,int *param_1,int param_2)
+void TSoundPlayer::GetTEventHandlerClassNamePointer(int *param_1, int param_2)
 
 {
   int iVar1;
@@ -504,7 +502,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,int *param_1,i
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,int param_1)
+void TSoundPlayer::_scalar_deleting_destructor_(int param_1)
 
 {
   int iVar1;
@@ -568,7 +566,7 @@ LAB_0048aea6:
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(int *param_1)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -595,8 +593,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
    First checks direct child owner match, then scans child list and delegates via child vtable slot
    +0x94. */
 
-TSoundPlayer * __thiscall
-TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,int param_1)
+TSoundPlayer * TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 {
   undefined4 *puVar1;
@@ -651,7 +648,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,int param_1)
 // GHIDRA_NAME TSoundPlayer::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(int param_1)
 
-void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer *this,int param_1)
+void TSoundPlayer::UpdateControlCachedIntFromWindowText(int param_1)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -668,7 +665,7 @@ void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer 
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   undefined4 uVar1;
@@ -701,7 +698,7 @@ TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   char cVar1;
@@ -720,8 +717,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 * param_1, char param_2)
 
-void __thiscall
-TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *param_1,char param_2)
+void TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 *param_1, char param_2)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -750,7 +746,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *pa
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   int iVar1;
@@ -817,8 +813,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(undefined4 * param_1, char param_2)
 
-void __thiscall
-TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,undefined4 *param_1,char param_2)
+void TSoundPlayer::_scalar_deleting_destructor_(undefined4 *param_1, char param_2)
 
 {
   TSoundPlayer_slot_0x04_0x04 *pTVar1;
@@ -848,7 +843,7 @@ TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,undefined4 *param_
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int *param_1)
 
 {
   undefined uVar1;
@@ -898,7 +893,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(RECT * param_1)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,RECT *param_1)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(RECT *param_1)
 
 {
   if ((*(int *)&this->field_0x50 != 0) && (g_McAppUiActiveFlag_006950AC != 0)) {
@@ -911,7 +906,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   if ((g_McAppUiActiveFlag_006950AC != 0) && (*(int *)&this->field_0x50 != 0)) {
@@ -932,7 +927,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
    If capture object at this+0x20 exists, forwards to its vtable +0x13C handler; otherwise refreshes
    owner window once under DAT_006A1AF0 recursion guard. */
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   if (*(int **)&this->field_0x20 != (int *)0x0) {
@@ -955,7 +950,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
@@ -972,7 +967,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   BindScopedMapQuickDrawDcHandle(this);
@@ -983,7 +978,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   ReleaseScopedMapQuickDrawDcHandle(this);
@@ -994,7 +989,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0()
 
 {
   undefined1 *puVar1;
@@ -1022,7 +1017,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,int param_1)
+void TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -1042,8 +1037,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1)
 
-void __thiscall
-TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,undefined4 param_1)
+void TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -1096,7 +1090,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,undefined4 par
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int *param_1)
 
 {
   param_1[1] = param_1[1] + *(int *)&this->field_0x28;
@@ -1109,7 +1103,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::_scalar_deleting_destructor_(int *param_1)
 
 {
   int iVar1;
@@ -1125,7 +1119,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
-void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::OrphanRetStub_0059add0(int *param_1)
 
 {
   int iVar1;
@@ -1141,7 +1135,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *par
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LPRECT param_1)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,LPRECT param_1)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(LPRECT param_1)
 
 {
   OffsetRect(param_1,*(int *)&this->field_0x24,*(int *)&this->field_0x28);
@@ -1152,8 +1146,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 * param_1)
 
-void __thiscall
-TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *param_1)
+void TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 *param_1)
 
 {
   undefined4 uVar1;
@@ -1168,7 +1161,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *pa
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1)
 
-void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,undefined4 *param_1)
+void TSoundPlayer::SetForeignMinisterReadyFlag14(undefined4 *param_1)
 
 {
   int unaff_retaddr;
@@ -1188,7 +1181,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,u
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1)
 
-void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::SetForeignMinisterReadyFlag14(int *param_1)
 
 {
   int iVar1;
@@ -1222,8 +1215,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,i
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int param_1, int param_2, int * param_3)
 
-void __thiscall
-TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int param_1,int param_2,int *param_3)
+void TSoundPlayer::SetForeignMinisterReadyFlag14(int param_1, int param_2, int *param_3)
 
 {
   int iVar1;
@@ -1238,8 +1230,7 @@ TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int param_1,int p
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(LONG * param_1, LONG * param_2)
 
-void __thiscall
-TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,LONG *param_1,LONG *param_2)
+void TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(LONG *param_1, LONG *param_2)
 
 {
   tagRECT local_10;
@@ -1260,7 +1251,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,LONG *param_1,
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
@@ -1288,7 +1279,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   char cVar1;
@@ -1310,7 +1301,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
+undefined4 TSoundPlayer::SetForeignMinisterReadyFlag14()
 
 {
   if (((this->field_0x4d != '\0') && (*(int *)&this->field_0x44 != 0)) &&
@@ -1324,7 +1315,7 @@ undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
+void TSoundPlayer::OrphanRetStub_0059add0()
 
 {
   return;
@@ -1334,7 +1325,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined4 unaff_retaddr;
@@ -1351,7 +1342,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,char param_1)
+void TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -1464,7 +1455,7 @@ TSoundPlayer::UpdateControlCachedIntFromWindowText
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -1489,7 +1480,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1)
 
-void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int *param_1)
+void TSoundPlayer::SetForeignMinisterReadyFlag14(int *param_1)
 
 {
   int iVar1;
@@ -1506,7 +1497,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,i
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
+void TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   if (g_McAppUiFlag_006A1AFC == 0) {
@@ -1519,7 +1510,7 @@ void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoun
 // GHIDRA_NAME TSoundPlayer::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
-void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer *this)
+void TSoundPlayer::UpdateControlCachedIntFromWindowText()
 
 {
   undefined1 auStack_10 [16];
@@ -1535,7 +1526,7 @@ void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer 
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -1581,7 +1572,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
    child node.
    Used as a generic fan-out update/notification helper for linked child dialog/view objects. */
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -1619,7 +1610,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined2 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined2 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return *(undefined2 *)&this->field_0x54;
@@ -1629,7 +1620,7 @@ undefined2 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-byte __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+byte TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   BOOL BVar1;
@@ -1646,7 +1637,7 @@ byte __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -1656,7 +1647,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this)
+void TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return;
@@ -1666,7 +1657,7 @@ void __thiscall TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -1676,7 +1667,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -1724,7 +1715,7 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z_imperialismsrcgameTSoundP
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+CRuntimeClass * TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTSoundPlayer;
@@ -1787,7 +1778,7 @@ _DestructTSoundPlayerBaseState__YIXPAUSoundPlayerState___Z_imperialismsrcgameTSo
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-uint __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+uint TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   uint uVar1;
@@ -1876,8 +1867,7 @@ TStatusPicture * __cdecl TSoundPlayer::_scalar_deleting_destructor_(void)
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined1 param_1)
 
-void __thiscall
-TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined1 param_1)
+void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(undefined1 param_1)
 
 {
   this->field_0x74 = param_1;
@@ -1889,7 +1879,7 @@ TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined1 par
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
+void TSoundPlayer::OrphanRetStub_0059add0()
 
 {
   TSoundPlayerVtbl *pTVar1;
@@ -2034,7 +2024,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
+void TSoundPlayer::OrphanTiny_ReturnZero_0048a730()
 
 {
   return;
@@ -2044,7 +2034,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return;
@@ -2054,8 +2044,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
 // GHIDRA_PROTO undefined __thiscall InitializeSoundSubsystemAndAllocateChannelLists(undefined4 param_1)
 
-void __thiscall
-TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(TSoundPlayer *this,undefined4 param_1)
+void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 param_1)
 
 {
   char cVar1;
@@ -2109,7 +2098,7 @@ TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(TSoundPlayer *this
 // GHIDRA_NAME TSoundPlayer::ReturnConstantTrue_SoundPredicate
 // GHIDRA_PROTO undefined __thiscall ReturnConstantTrue_SoundPredicate(void)
 
-undefined1 __thiscall TSoundPlayer::ReturnConstantTrue_SoundPredicate(TSoundPlayer *this)
+undefined1 TSoundPlayer::ReturnConstantTrue_SoundPredicate()
 
 {
   return 1;
@@ -2119,7 +2108,7 @@ undefined1 __thiscall TSoundPlayer::ReturnConstantTrue_SoundPredicate(TSoundPlay
 // GHIDRA_NAME TSoundPlayer::RequestDirectSoundInitIfAllowed
 // GHIDRA_PROTO undefined __thiscall RequestDirectSoundInitIfAllowed(void)
 
-void __thiscall TSoundPlayer::RequestDirectSoundInitIfAllowed(TSoundPlayer *this)
+void TSoundPlayer::RequestDirectSoundInitIfAllowed()
 
 {
   if (this->field_0x20 != '\0') {
@@ -2134,7 +2123,7 @@ void __thiscall TSoundPlayer::RequestDirectSoundInitIfAllowed(TSoundPlayer *this
 // GHIDRA_NAME TSoundPlayer::ReturnConstantFalse_SoundPredicate
 // GHIDRA_PROTO undefined __thiscall ReturnConstantFalse_SoundPredicate(void)
 
-undefined1 __thiscall TSoundPlayer::ReturnConstantFalse_SoundPredicate(TSoundPlayer *this)
+undefined1 TSoundPlayer::ReturnConstantFalse_SoundPredicate()
 
 {
   return 0;
@@ -2144,7 +2133,7 @@ undefined1 __thiscall TSoundPlayer::ReturnConstantFalse_SoundPredicate(TSoundPla
 // GHIDRA_NAME TSoundPlayer::ClearDirectSoundInitPendingAndResetState
 // GHIDRA_PROTO undefined __thiscall ClearDirectSoundInitPendingAndResetState(void)
 
-void __thiscall TSoundPlayer::ClearDirectSoundInitPendingAndResetState(TSoundPlayer *this)
+void TSoundPlayer::ClearDirectSoundInitPendingAndResetState()
 
 {
   this->field_0x21 = 0;
@@ -2156,7 +2145,7 @@ void __thiscall TSoundPlayer::ClearDirectSoundInitPendingAndResetState(TSoundPla
 // GHIDRA_NAME TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48
 // GHIDRA_PROTO undefined __thiscall NotifyGlobalAudioObjectsViaVslot48(void)
 
-void __thiscall TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48(TSoundPlayer *this)
+void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48()
 
 {
   int iVar1;
@@ -2175,7 +2164,7 @@ void __thiscall TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48(TSoundPlayer *t
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TSoundPlayer::WrapperFor_ftol_At005e5020(TSoundPlayer *this,short param_1)
+void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1)
 
 {
   int iVar1;
@@ -2203,7 +2192,7 @@ void __thiscall TSoundPlayer::WrapperFor_ftol_At005e5020(TSoundPlayer *this,shor
 // GHIDRA_NAME TSoundPlayer::NoOpAudioTickCallback_005e50a0
 // GHIDRA_PROTO undefined __thiscall NoOpAudioTickCallback_005e50a0(void)
 
-void __thiscall TSoundPlayer::NoOpAudioTickCallback_005e50a0(TSoundPlayer *this)
+void TSoundPlayer::NoOpAudioTickCallback_005e50a0()
 
 {
   return;
@@ -2213,8 +2202,7 @@ void __thiscall TSoundPlayer::NoOpAudioTickCallback_005e50a0(TSoundPlayer *this)
 // GHIDRA_NAME TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState
 // GHIDRA_PROTO undefined __thiscall UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short param_1)
 
-undefined4 __thiscall
-TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(TSoundPlayer *this,short param_1)
+undefined4 TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short param_1)
 
 {
   int iVar1;
@@ -2239,7 +2227,7 @@ TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(TSoundPlayer 
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   (*this->vftable[0x16].slot_0x04)();
@@ -2250,7 +2238,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   return 0;
@@ -2260,7 +2248,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   return 0;
@@ -2270,7 +2258,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 // GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
+undefined4 TSoundPlayer::_scalar_deleting_destructor_()
 
 {
   CString::~CString((CString *)&stack0x00000004);
@@ -2281,7 +2269,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
+void TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   if (*(int **)&this->field_0x70 != (int *)0x0) {

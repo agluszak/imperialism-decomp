@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTechStorePage::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechStorePage * __thiscall
-TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this,byte param_1)
+TTechStorePage * TTechStorePage::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this,byte param_1)
 // GHIDRA_NAME TTechStorePage::OrphanVtableAssignStub_00479440
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00479440(void)
 
-CRuntimeClass * __thiscall TTechStorePage::OrphanVtableAssignStub_00479440(TTechStorePage *this)
+CRuntimeClass * TTechStorePage::OrphanVtableAssignStub_00479440()
 
 {
   return &CAmbitDocument::classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TTechStorePage::OrphanVtableAssignStub_00479440(TTech
 // GHIDRA_NAME TTechStorePage::OrphanVtableAssignStub_00479460
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00479460(void)
 
-undefined ** __thiscall TTechStorePage::OrphanVtableAssignStub_00479460(TTechStorePage *this)
+undefined ** TTechStorePage::OrphanVtableAssignStub_00479460()
 
 {
   return &PTR_PTR_0063e810;
@@ -42,8 +41,7 @@ undefined ** __thiscall TTechStorePage::OrphanVtableAssignStub_00479460(TTechSto
 // GHIDRA_NAME TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
 
-TTechStorePage * __thiscall
-TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(TTechStorePage *this,byte param_1)
+TTechStorePage * TTechStorePage::WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
 
 {
   DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory();
@@ -134,7 +132,7 @@ TPageView * TTechStorePage::CreateTTechStorePageInstance(void)
 // GHIDRA_NAME TTechStorePage::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTechStorePage::GetTEventHandlerClassNamePointer(TTechStorePage *this)
+CRuntimeClass * TTechStorePage::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -198,8 +196,7 @@ TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *par
 // GHIDRA_NAME TTechStorePage::DestructTTechStorePageAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTechStorePageAndMaybeFree(byte param_1)
 
-TTechStorePage * __thiscall
-TTechStorePage::DestructTTechStorePageAndMaybeFree(TTechStorePage *this,byte param_1)
+TTechStorePage * TTechStorePage::DestructTTechStorePageAndMaybeFree(byte param_1)
 
 {
   DestructTTechStorePageAndMaybeFree_Impl();

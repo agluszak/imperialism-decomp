@@ -39,7 +39,7 @@ TBehavior * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
 // GHIDRA_NAME TInfoBarBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-CRuntimeClass * __thiscall TInfoBarBehavior::GetTBehaviorClassNamePointer(TInfoBarBehavior *this)
+CRuntimeClass * TInfoBarBehavior::GetTBehaviorClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +49,7 @@ CRuntimeClass * __thiscall TInfoBarBehavior::GetTBehaviorClassNamePointer(TInfoB
 // GHIDRA_NAME TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInfoBarBehaviorBaseState(void)
 
-TInfoBarBehavior * __thiscall
-TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
+TInfoBarBehavior * TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -74,8 +73,7 @@ TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
 // GHIDRA_NAME TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTInfoBarBehaviorAndMaybeFree(byte param_1)
 
-TInfoBarBehavior * __thiscall
-TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this,byte param_1)
+TInfoBarBehavior * TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(byte param_1)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
@@ -142,7 +140,7 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
 // GHIDRA_NAME TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip
 // GHIDRA_PROTO undefined __thiscall RefreshInfoBarCursorPanelRegionClip(void)
 
-uint __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBehavior *this)
+uint TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip()
 
 {
   uint uVar1;

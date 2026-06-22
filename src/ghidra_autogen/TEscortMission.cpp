@@ -46,7 +46,7 @@ TMission * TEscortMission::CreateTEscortMission(void)
 // GHIDRA_NAME TEscortMission::DestroyTEscortMission
 // GHIDRA_PROTO undefined __thiscall DestroyTEscortMission(byte param_1)
 
-TEscortMission * __thiscall TEscortMission::DestroyTEscortMission(TEscortMission *this,byte param_1)
+TEscortMission * TEscortMission::DestroyTEscortMission(byte param_1)
 
 {
   ResetTEscortMissionToSentinelVtable();
@@ -70,8 +70,7 @@ undefined ** TEscortMission::GetTEscortMissionClassNamePointer(void)
 // GHIDRA_NAME TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId
 // GHIDRA_PROTO undefined __thiscall ResetEscortMissionDispatchFlagAndCopyTargetContextId(void)
 
-void __thiscall
-TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId(TEscortMission *this)
+void TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId()
 
 {
   this[0x11] = (TEscortMission)0x0;
@@ -85,8 +84,7 @@ TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId(TEscortMiss
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage(TEscortMission *this)
+void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage()
 
 {
   TGreatPower *this_00;
@@ -340,8 +338,7 @@ TEscortMission::HandleBeachheadMissionActionType0Or3ForTargetPort
 // GHIDRA_NAME TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context
 // GHIDRA_PROTO undefined __thiscall ResetBeachheadMissionChildFlagsAndDispatchField5Context(void)
 
-void __thiscall
-TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context(TEscortMission *this)
+void TEscortMission::ResetBeachheadMissionChildFlagsAndDispatchField5Context()
 
 {
   int iVar1;

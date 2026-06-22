@@ -37,7 +37,7 @@ TControl * TDlgWindow::CreateTDlgWindowInstance(void)
 // GHIDRA_NAME TDlgWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDlgWindow::GetTEventHandlerClassNamePointer(TDlgWindow *this)
+CRuntimeClass * TDlgWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -53,7 +53,7 @@ CRuntimeClass * __thiscall TDlgWindow::GetTEventHandlerClassNamePointer(TDlgWind
 /* Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode
    branch 0x3B6. */
 
-TDlgWindow * __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
+TDlgWindow * TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop()
 
 {
   TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
@@ -70,7 +70,7 @@ TDlgWindow * __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(
 
 /* Destructor wrapper for static-backdrop turn-event window entry. */
 
-TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *this,byte param_1)
+TDlgWindow * TDlgWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
@@ -84,7 +84,7 @@ TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *thi
 // GHIDRA_NAME TDlgWindow::AssertMcAppUILine2358
 // GHIDRA_PROTO undefined __thiscall TWindow::AssertMcAppUILine2358(void)
 
-void __thiscall TDlgWindow::AssertMcAppUILine2358(TDlgWindow *this)
+void TDlgWindow::AssertMcAppUILine2358()
 
 {
   TWindow::AssertMcAppUILine2358((TWindow *)this);

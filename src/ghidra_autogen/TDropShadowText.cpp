@@ -7,7 +7,7 @@
 // GHIDRA_NAME TDropShadowText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDropShadowText::GetTEventHandlerClassNamePointer(TDropShadowText *this)
+CRuntimeClass * TDropShadowText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,8 +32,7 @@ CRuntimeClass * __thiscall TDropShadowText::GetTEventHandlerClassNamePointer(TDr
    2. Clears option-state bytes used by selection logic.
    3. Installs selectable-option base vtable PTR_LAB_0066ce00. */
 
-TDropShadowText * __thiscall
-TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
+TDropShadowText * TDropShadowText::ConstructSelectableTextOptionEntryBase()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -50,8 +49,7 @@ TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
 // GHIDRA_NAME TDropShadowText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDropShadowText * __thiscall
-TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this,byte param_1)
+TDropShadowText * TDropShadowText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);
@@ -65,7 +63,7 @@ TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this,byte param_1
 // GHIDRA_NAME TDropShadowText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText *this)
+void TDropShadowText::OrphanTiny_ReturnZero_0048a730()
 
 {
   TDropShadowTextVtbl *pTVar1;
@@ -131,8 +129,7 @@ void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText 
 // GHIDRA_NAME TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc
 // GHIDRA_PROTO undefined __thiscall SelectClipRegionOnPrimaryAndSecondaryDc(int param_1)
 
-int __thiscall
-TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(TDropShadowText *this,int param_1)
+int TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(int param_1)
 
 {
   int iVar1;

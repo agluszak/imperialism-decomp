@@ -37,8 +37,7 @@ TNoHilitePicture * TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPict
 // GHIDRA_NAME TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer(TGameSetupMultiplayerPicture *this)
+CRuntimeClass * TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -78,8 +77,7 @@ TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
 // GHIDRA_NAME TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultiplayerPicture *this)
+void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TGameSetupMultiplayerPicture_slot_0x04_0x04 *pTVar1;

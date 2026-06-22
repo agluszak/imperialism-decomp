@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipOrder::GetTProductionOrderClassNamePointer(TShipOrder *this)
+CRuntimeClass * TShipOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TShipOrder::GetTProductionOrderClassNamePointer(TShip
 // GHIDRA_NAME TShipOrder::ConstructTShipOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTShipOrderBaseState(byte param_1)
 
-TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this,byte param_1)
+TShipOrder * TShipOrder::ConstructTShipOrderBaseState(byte param_1)
 
 {
   TShipOrder::DestructTShipOrderAndMaybeFree(this);
@@ -31,7 +31,7 @@ TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *thi
 // GHIDRA_NAME TShipOrder::DestructTShipOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(void)
 
-void __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
+void TShipOrder::DestructTShipOrderAndMaybeFree()
 
 {
   this->vftable = (TShipOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -42,7 +42,7 @@ void __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
 // GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins25_004b85a0(void)
 
-int __thiscall TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0(TShipOrder *this)
+int TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0()
 
 {
   int iVar1;
@@ -67,7 +67,7 @@ int __thiscall TShipOrder::OrphanLeaf_NoCall_Ins25_004b85a0(TShipOrder *this)
 // GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins39_004b8630(void)
 
-uint __thiscall TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630(TShipOrder *this)
+uint TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630()
 
 {
   short *psVar1;
@@ -102,7 +102,7 @@ uint __thiscall TShipOrder::OrphanLeaf_NoCall_Ins39_004b8630(TShipOrder *this)
 // GHIDRA_NAME TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TShipOrder *this)
+int TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   int in_EAX;
@@ -154,7 +154,7 @@ int __thiscall TShipOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TShipOrder *this)
 // GHIDRA_NAME TShipOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall TShipOrder::OrphanCallChain_C1_I16_004b5100(TShipOrder *this,short param_1)
+undefined4 TShipOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   short *psVar1;
@@ -218,7 +218,7 @@ undefined4 __thiscall TShipOrder::OrphanCallChain_C1_I16_004b5100(TShipOrder *th
 // GHIDRA_NAME TShipOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TShipOrder::OrphanRetStub_004b5160(TShipOrder *this)
+void TShipOrder::OrphanRetStub_004b5160()
 
 {
   if ((*(short *)&this->field_0x48 != 0) && (*(short *)&this->field_0x4 != 0)) {
@@ -234,7 +234,7 @@ void __thiscall TShipOrder::OrphanRetStub_004b5160(TShipOrder *this)
 // GHIDRA_NAME TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
 // GHIDRA_PROTO undefined __thiscall CommitQueuedNavyOrdersAndUpdateTierByCapability(void)
 
-void __thiscall TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability(TShipOrder *this)
+void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability()
 
 {
   short *psVar1;
@@ -341,7 +341,7 @@ LAB_004b8b05:
 // GHIDRA_NAME TShipOrder::CreateTItemOrderInstance
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
-void __thiscall TShipOrder::CreateTItemOrderInstance(TShipOrder *this)
+void TShipOrder::CreateTItemOrderInstance()
 
 {
   short sVar1;

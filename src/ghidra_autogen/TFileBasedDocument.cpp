@@ -7,7 +7,7 @@
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
 // GHIDRA_PROTO undefined __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(void)
 
-void __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
+void TFileBasedDocument::CreateTFileBasedDocumentInstance()
 
 {
   this->vftable =
@@ -19,8 +19,7 @@ void __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedD
 // GHIDRA_NAME TFileBasedDocument::GetTDocumentClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TFileBasedDocument::GetTDocumentClassNamePointer(TFileBasedDocument *this)
+CRuntimeClass * TFileBasedDocument::GetTDocumentClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -60,8 +59,7 @@ TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
 // GHIDRA_NAME TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTFileBasedDocumentAndMaybeFree(byte param_1)
 
-TFileBasedDocument * __thiscall
-TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(TFileBasedDocument *this,byte param_1)
+TFileBasedDocument * TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(byte param_1)
 
 {
   TCommandHandler::CreateTCommandHandlerInstance((TCommandHandler *)this);

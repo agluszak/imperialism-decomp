@@ -41,8 +41,7 @@ TUberCluster * TProductionCluster::CreateTProductionClusterInstance(void)
 // GHIDRA_NAME TProductionCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TProductionCluster::GetTEventHandlerClassNamePointer(TProductionCluster *this)
+CRuntimeClass * TProductionCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTProductionCluster;
@@ -52,8 +51,7 @@ TProductionCluster::GetTEventHandlerClassNamePointer(TProductionCluster *this)
 // GHIDRA_NAME TProductionCluster::ConstructTProductionClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTProductionClusterBaseState(void)
 
-TProductionCluster * __thiscall
-TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *this)
+TProductionCluster * TProductionCluster::ConstructTProductionClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -70,8 +68,7 @@ TProductionCluster::ConstructTProductionClusterBaseState(TProductionCluster *thi
 // GHIDRA_NAME TProductionCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TProductionCluster * __thiscall
-TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte param_1)
+TProductionCluster * TProductionCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -85,8 +82,7 @@ TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte p
 // GHIDRA_NAME TProductionCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void * param_1, int param_2)
 
-void __thiscall
-TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *this,void *param_1,int param_2)
+void TProductionCluster::OrphanRetStub_0059add0(void *param_1, int param_2)
 
 {
   undefined uVar1;

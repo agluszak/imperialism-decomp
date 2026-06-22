@@ -39,7 +39,7 @@ undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
 // GHIDRA_NAME TAssetMgr::GetTAssetMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAssetMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAssetMgr::GetTAssetMgrClassNamePointer(TAssetMgr *this)
+CRuntimeClass * TAssetMgr::GetTAssetMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -54,7 +54,7 @@ CRuntimeClass * __thiscall TAssetMgr::GetTAssetMgrClassNamePointer(TAssetMgr *th
 
 /* Setting prototype: void * TAssetMgr::ConstructUiViewManager(void *pUiViewManager) */
 
-void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiViewManager)
+void * TAssetMgr::ConstructUiViewManager(void *pUiViewManager)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -78,7 +78,7 @@ void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiVie
 // GHIDRA_NAME TAssetMgr::DestructTAssetMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTAssetMgrAndMaybeFree(byte param_1)
 
-TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,byte param_1)
+TAssetMgr * TAssetMgr::DestructTAssetMgrAndMaybeFree(byte param_1)
 
 {
   TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
@@ -92,7 +92,7 @@ TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,
 // GHIDRA_NAME TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
 // GHIDRA_PROTO undefined __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
 
-void __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(TAssetMgr *this)
+void TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -114,7 +114,7 @@ void __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df33
 // GHIDRA_NAME TAssetMgr::ResolveTurnEventDialogNodeByMessageContext
 // GHIDRA_PROTO undefined __thiscall ResolveTurnEventDialogNodeByMessageContext(void)
 
-void __thiscall TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TAssetMgr *this)
+void TAssetMgr::ResolveTurnEventDialogNodeByMessageContext()
 
 {
   (**(code **)(*DAT_006a1b24 + 0x28))();
@@ -125,7 +125,7 @@ void __thiscall TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TAssetMgr 
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df3f0
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df3f0(void)
 
-void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df3f0(TAssetMgr *this)
+void TAssetMgr::NoOpRuntimeUiCallback_005df3f0()
 
 {
   return;
@@ -135,7 +135,7 @@ void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df3f0(TAssetMgr *this)
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df410
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df410(void)
 
-void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df410(TAssetMgr *this)
+void TAssetMgr::NoOpRuntimeUiCallback_005df410()
 
 {
   return;
@@ -145,7 +145,7 @@ void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df410(TAssetMgr *this)
 // GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df780
 // GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df780(void)
 
-void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df780(TAssetMgr *this)
+void TAssetMgr::NoOpRuntimeUiCallback_005df780()
 
 {
   return;

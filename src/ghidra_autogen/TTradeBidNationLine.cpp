@@ -37,8 +37,7 @@ TLineData * TTradeBidNationLine::CreateTTradeBidNationLineInstance(void)
 // GHIDRA_NAME TTradeBidNationLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradeBidNationLine::GetTLineDataClassNamePointer(TTradeBidNationLine *this)
+CRuntimeClass * TTradeBidNationLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;

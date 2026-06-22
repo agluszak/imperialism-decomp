@@ -41,7 +41,7 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
 // GHIDRA_NAME TTextLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTextLine::GetTLineDataClassNamePointer(TTextLine *this)
+CRuntimeClass * TTextLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,7 +51,7 @@ CRuntimeClass * __thiscall TTextLine::GetTLineDataClassNamePointer(TTextLine *th
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
 // GHIDRA_PROTO undefined __thiscall TTextLine::ConstructTTextLineBaseState(void)
 
-TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
+TTextLine * TTextLine::ConstructTTextLineBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -78,7 +78,7 @@ TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
 // GHIDRA_NAME TTextLine::DestructTTextLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTextLineAndMaybeFree(byte param_1)
 
-TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this,byte param_1)
+TTextLine * TTextLine::DestructTTextLineAndMaybeFree(byte param_1)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
@@ -92,8 +92,7 @@ TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this,
 // GHIDRA_NAME TTextLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TTextLine::OrphanRetStub_0056f460(TTextLine *this,undefined4 param_1,undefined4 param_2)
+void TTextLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   int iVar1;

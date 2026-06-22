@@ -51,8 +51,7 @@ thunk_TPictureButton * TOffLimitsPicture::CreateTOffLimitsPictureInstance(void)
 // GHIDRA_NAME TOffLimitsPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TOffLimitsPicture::GetTEventHandlerClassNamePointer(TOffLimitsPicture *this)
+CRuntimeClass * TOffLimitsPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -62,8 +61,7 @@ TOffLimitsPicture::GetTEventHandlerClassNamePointer(TOffLimitsPicture *this)
 // GHIDRA_NAME TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(void)
 
-TOffLimitsPicture * __thiscall
-TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLimitsPicture *this)
+TOffLimitsPicture * TOffLimitsPicture::ConstructTOffLimitsPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -76,8 +74,7 @@ TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLimitsPicture *this)
 // GHIDRA_NAME TOffLimitsPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOffLimitsPicture * __thiscall
-TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte param_1)
+TOffLimitsPicture * TOffLimitsPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -91,7 +88,7 @@ TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte par
 // GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPicture *this)
+void TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 uVar1;
@@ -107,7 +104,7 @@ void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPi
 // GHIDRA_NAME TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730(TOffLimitsPicture *this)
+void TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;
@@ -132,7 +129,7 @@ void __thiscall TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730(TOffLimitsPict
 // GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPicture *this)
+void TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   DestroyClipStateRegionWrapperObject(*(undefined4 *)&this->field_0x90);

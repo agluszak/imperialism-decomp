@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878
 // GHIDRA_PROTO undefined __thiscall TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878(void)
 
-TTreatiesView * __thiscall TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878(TTreatiesView *this)
+TTreatiesView * TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -20,8 +20,7 @@ TTreatiesView * __thiscall TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878(
 // GHIDRA_NAME TTreatiesView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTreatiesView * __thiscall
-TTreatiesView::_scalar_deleting_destructor_(TTreatiesView *this,byte param_1)
+TTreatiesView * TTreatiesView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -65,7 +64,7 @@ TView * TTreatiesView::CreateTTreatiesViewInstance(void)
 // GHIDRA_NAME TTreatiesView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTreatiesView::GetTEventHandlerClassNamePointer(TTreatiesView *this)
+CRuntimeClass * TTreatiesView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -75,7 +74,7 @@ CRuntimeClass * __thiscall TTreatiesView::GetTEventHandlerClassNamePointer(TTrea
 // GHIDRA_NAME TTreatiesView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(CString param_1)
 
-void __thiscall TTreatiesView::OrphanCallChain_C6_I49_004875d0(TTreatiesView *this,CString param_1)
+void TTreatiesView::OrphanCallChain_C6_I49_004875d0(CString param_1)
 
 {
   TTreatiesView_slot_0x04_0x04 *pTVar1;
@@ -129,7 +128,7 @@ void __thiscall TTreatiesView::OrphanCallChain_C6_I49_004875d0(TTreatiesView *th
 // GHIDRA_NAME TTreatiesView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TTreatiesView::OrphanTiny_ReturnZero_0048a730(TTreatiesView *this)
+void TTreatiesView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -262,7 +261,7 @@ void __thiscall TTreatiesView::OrphanTiny_ReturnZero_0048a730(TTreatiesView *thi
 // GHIDRA_NAME TTreatiesView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall TTreatiesView::OrphanRetStub_00430550(TTreatiesView *this)
+void TTreatiesView::OrphanRetStub_00430550()
 
 {
   undefined uVar1;

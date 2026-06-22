@@ -7,7 +7,7 @@
 // GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
 
-TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(TEvent *this,byte param_1)
+TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
@@ -31,7 +31,7 @@ undefined ** TEvent::CreateTEventInstance(void)
 // GHIDRA_NAME TEvent::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEvent::GetTEventClassNamePointer(TEvent *this)
+CRuntimeClass * TEvent::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -41,7 +41,7 @@ CRuntimeClass * __thiscall TEvent::GetTEventClassNamePointer(TEvent *this)
 // GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
 
-TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(TEvent *this,byte param_1)
+TEvent * TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(byte param_1)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();

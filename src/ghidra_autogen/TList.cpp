@@ -38,7 +38,7 @@ undefined4 * TList::CreateTListInstance(void)
 // GHIDRA_NAME TList::OnActivateView
 // GHIDRA_PROTO undefined __thiscall OnActivateView(void)
 
-CRuntimeClass * __thiscall TList::OnActivateView(TList *this)
+CRuntimeClass * TList::OnActivateView()
 
 {
   return &g_pClassDescTList;
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TList::OnActivateView(TList *this)
 // GHIDRA_NAME TList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TList * __thiscall TList::_scalar_deleting_destructor_(TList *this,byte param_1)
+TList * TList::_scalar_deleting_destructor_(byte param_1)
 
 {
   WrapperFor_DestructCPtrListBaseState_At004888a0();

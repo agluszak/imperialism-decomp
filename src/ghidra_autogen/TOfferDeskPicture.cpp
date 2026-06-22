@@ -39,8 +39,7 @@ thunk_TPictureButton * TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
 // GHIDRA_NAME TOfferDeskPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TOfferDeskPicture::GetTEventHandlerClassNamePointer(TOfferDeskPicture *this)
+CRuntimeClass * TOfferDeskPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -50,8 +49,7 @@ TOfferDeskPicture::GetTEventHandlerClassNamePointer(TOfferDeskPicture *this)
 // GHIDRA_NAME TOfferDeskPicture::ConstructTOfferDeskPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(void)
 
-TOfferDeskPicture * __thiscall
-TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
+TOfferDeskPicture * TOfferDeskPicture::ConstructTOfferDeskPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -66,8 +64,7 @@ TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
 // GHIDRA_NAME TOfferDeskPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOfferDeskPicture * __thiscall
-TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte param_1)
+TOfferDeskPicture * TOfferDeskPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -81,7 +78,7 @@ TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte par
 // GHIDRA_NAME TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPicture *this)
+void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TOfferDeskPicture_slot_0x04_0x04 *pTVar1;
@@ -341,8 +338,7 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_NAME TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall
-TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int param_1)
+void TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;

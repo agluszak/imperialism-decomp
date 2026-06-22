@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTEView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTEView * __thiscall TTEView::_scalar_deleting_destructor_(TTEView *this,byte param_1)
+TTEView * TTEView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);
@@ -51,7 +51,7 @@ TStaticText * TTEView::CreateTTEViewInstance(void)
 // GHIDRA_NAME TTEView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTEView::GetTEventHandlerClassNamePointer(TTEView *this)
+CRuntimeClass * TTEView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -89,7 +89,7 @@ TTEView::ConstructTTEViewBaseState
 // GHIDRA_NAME TTEView::DestructTTEViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TTEView::DestructTTEViewAndMaybeFree(void)
 
-int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
+int TTEView::DestructTTEViewAndMaybeFree()
 
 {
   HDC pHVar1;
@@ -130,7 +130,7 @@ int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
 // GHIDRA_NAME TTEView::BuildHelpSubjectListControlsWithPrevNext
 // GHIDRA_PROTO undefined __thiscall BuildHelpSubjectListControlsWithPrevNext(void)
 
-void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
+void TTEView::BuildHelpSubjectListControlsWithPrevNext()
 
 {
   TTEView_slot_0x04_0x04 *pTVar1;
@@ -438,8 +438,7 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
 // GHIDRA_NAME TTEView::AppendInterNationEventSummaryTextEntry
 // GHIDRA_PROTO undefined __thiscall TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 * param_2)
 
-int __thiscall
-TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefined4 *param_2)
+int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *param_2)
 
 {
   char *pcVar1;
@@ -537,7 +536,7 @@ TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefi
 // GHIDRA_NAME TTEView::SelectObject_6129d7
 // GHIDRA_PROTO undefined __thiscall SelectObject_6129d7(HGDIOBJ param_1)
 
-void __thiscall TTEView::SelectObject_6129d7(TTEView *this,HGDIOBJ param_1)
+void TTEView::SelectObject_6129d7(HGDIOBJ param_1)
 
 {
   HGDIOBJ pvVar1;
@@ -570,7 +569,7 @@ void __thiscall TTEView::SelectObject_6129d7(TTEView *this,HGDIOBJ param_1)
 // GHIDRA_NAME TTEView::DeflateRect
 // GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
 
-void __thiscall TTEView::DeflateRect(TTEView *this,int *param_1)
+void TTEView::DeflateRect(int *param_1)
 
 {
   this->vftable = (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *param_1);

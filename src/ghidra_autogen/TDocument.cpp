@@ -24,8 +24,7 @@ TDocument * __cdecl TDocument::CreateObject(void)
 // GHIDRA_NAME TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_1)
 
-TDocument * __thiscall
-TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this,byte param_1)
+TDocument * TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(byte param_1)
 
 {
   TDocument::CreateTDocumentInstance(this);
@@ -39,7 +38,7 @@ TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this,byte pa
 // GHIDRA_NAME TDocument::CreateTDocumentInstance
 // GHIDRA_PROTO undefined __thiscall TDocument::CreateTDocumentInstance(void)
 
-void __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
+void TDocument::CreateTDocumentInstance()
 
 {
   this->vftable = (TDocumentVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -50,7 +49,7 @@ void __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
 // GHIDRA_NAME TDocument::GetTDocumentClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDocument::GetTDocumentClassNamePointer(TDocument *this)
+CRuntimeClass * TDocument::GetTDocumentClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -60,7 +59,7 @@ CRuntimeClass * __thiscall TDocument::GetTDocumentClassNamePointer(TDocument *th
 // GHIDRA_NAME TDocument::ConstructTDocumentBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
 
-TDocument * __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this,byte param_1)
+TDocument * TDocument::ConstructTDocumentBaseState(byte param_1)
 
 {
   TFileBasedDocument::CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
@@ -74,7 +73,7 @@ TDocument * __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this,by
 // GHIDRA_NAME TDocument::OrphanRetStub_00486530
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486530(void)
 
-void __thiscall TDocument::OrphanRetStub_00486530(TDocument *this)
+void TDocument::OrphanRetStub_00486530()
 
 {
   return;
@@ -84,7 +83,7 @@ void __thiscall TDocument::OrphanRetStub_00486530(TDocument *this)
 // GHIDRA_NAME TDocument::OrphanRetStub_00486550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486550(void)
 
-void __thiscall TDocument::OrphanRetStub_00486550(TDocument *this)
+void TDocument::OrphanRetStub_00486550()
 
 {
   return;

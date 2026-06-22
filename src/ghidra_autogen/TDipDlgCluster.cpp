@@ -37,7 +37,7 @@ TUberCluster * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
 // GHIDRA_NAME TDipDlgCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDipDlgCluster::GetTEventHandlerClassNamePointer(TDipDlgCluster *this)
+CRuntimeClass * TDipDlgCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TDipDlgCluster::GetTEventHandlerClassNamePointer(TDip
 // GHIDRA_NAME TDipDlgCluster::ConstructTDipDlgClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDipDlgClusterBaseState(void)
 
-TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
+TDipDlgCluster * TDipDlgCluster::ConstructTDipDlgClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -59,8 +59,7 @@ TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDi
 // GHIDRA_NAME TDipDlgCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDipDlgCluster * __thiscall
-TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this,byte param_1)
+TDipDlgCluster * TDipDlgCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -74,7 +73,7 @@ TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this,byte param_1)
 // GHIDRA_NAME TDipDlgCluster::OrphanVtableAssignStub_005714e0
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-bool __thiscall TDipDlgCluster::OrphanVtableAssignStub_005714e0(TDipDlgCluster *this)
+bool TDipDlgCluster::OrphanVtableAssignStub_005714e0()
 
 {
   undefined uVar1;

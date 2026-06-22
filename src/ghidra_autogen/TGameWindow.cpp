@@ -41,7 +41,7 @@ TControl * TGameWindow::CreateTGameWindowInstance(void)
 // GHIDRA_NAME TGameWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGameWindow::GetTEventHandlerClassNamePointer(TGameWindow *this)
+CRuntimeClass * TGameWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -56,7 +56,7 @@ CRuntimeClass * __thiscall TGameWindow::GetTEventHandlerClassNamePointer(TGameWi
 
 /* Destructor wrapper for viewport-adaptive turn-event window entry. */
 
-TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *this,byte param_1)
+TGameWindow * TGameWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
@@ -70,7 +70,7 @@ TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *
 // GHIDRA_NAME TGameWindow::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TGameWindow::OrphanCallChain_C11_I88_004874b0(TGameWindow *this)
+void TGameWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   TGameWindowVtbl *pTVar1;
@@ -124,7 +124,7 @@ TGameWindow::InvalidateWindowRectFromHandleField1C
    0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against
    already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC). */
 
-void __thiscall TGameWindow::OrphanTiny_ReturnZero_0048a730(TGameWindow *this)
+void TGameWindow::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -249,7 +249,7 @@ switchD_004ffe93_default:
 /* Layout/update hook for turn-order navigation window. Applies viewport-rect-driven layout update
    when active event code is 0x7D1, then chains the class update callback. */
 
-void __thiscall TGameWindow::UpdateTurnOrderNavigationWindowLayout(TGameWindow *this)
+void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
 
 {
   TGameWindowVtbl *pTVar1;
@@ -283,7 +283,7 @@ void __thiscall TGameWindow::UpdateTurnOrderNavigationWindowLayout(TGameWindow *
 /* No-op return stub (RET). Reached through a thunk-table entry used by turn-order-navigation vtable
    wiring. */
 
-void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *this)
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotA()
 
 {
   return;
@@ -299,7 +299,7 @@ void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *thi
 /* No-op return stub (RET). Secondary turn-order-navigation vtable slot mapped through thunk-table
    entry. */
 
-void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *this)
+void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 
 {
   return;
@@ -315,7 +315,7 @@ void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *thi
 /* Turn-order navigation window cleanup override: executes class-specific teardown path and clears
    the display-manager active dialog slot (DAT_006a2158 + 0x4). */
 
-void __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *this)
+void TGameWindow::_scalar_deleting_destructor_()
 
 {
   (*this->vftable[0x3c].slot_0x04)();

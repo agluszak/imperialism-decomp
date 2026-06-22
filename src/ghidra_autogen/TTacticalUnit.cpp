@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d40
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
-undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d40(TTacticalUnit *this)
+undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d40()
 
 {
   return 0;
@@ -17,7 +17,7 @@ undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d40(TTacticalUni
 // GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d60
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
 
-undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d60(TTacticalUnit *this)
+undefined4 TTacticalUnit::OrphanTiny_ReturnZero_005a5d60()
 
 {
   return 0;
@@ -29,7 +29,7 @@ undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d60(TTacticalUni
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TTacticalUnit *this)
+float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80()
 
 {
   return (float10)_DAT_00669ec0;
@@ -41,7 +41,7 @@ float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TTacticalUnit
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TTacticalUnit *this)
+float10 TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0()
 
 {
   return (float10)_DAT_00669ec0;
@@ -51,8 +51,7 @@ float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TTacticalUnit
 // GHIDRA_NAME TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byte param_1)
 
-TTacticalUnit * __thiscall
-TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this,byte param_1)
+TTacticalUnit * TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(byte param_1)
 
 {
   TTacticalUnit::CreateTTacticalUnitInstance(this);
@@ -66,7 +65,7 @@ TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this
 // GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
 // GHIDRA_PROTO undefined __thiscall TTacticalUnit::CreateTTacticalUnitInstance(void)
 
-void __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
+void TTacticalUnit::CreateTTacticalUnitInstance()
 
 {
   this->vftable = (TTacticalUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -77,7 +76,7 @@ void __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
 // GHIDRA_NAME TTacticalUnit::GetTTacticalUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTacticalUnit::GetTTacticalUnitClassNamePointer(TTacticalUnit *this)
+CRuntimeClass * TTacticalUnit::GetTTacticalUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -87,7 +86,7 @@ CRuntimeClass * __thiscall TTacticalUnit::GetTTacticalUnitClassNamePointer(TTact
 // GHIDRA_NAME TTacticalUnit::ConstructTTacticalUnitBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTacticalUnitBaseState(void)
 
-void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *this)
+void TTacticalUnit::ConstructTTacticalUnitBaseState()
 
 {
   undefined uVar1;
@@ -107,7 +106,7 @@ void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *th
 // GHIDRA_NAME TTacticalUnit::DestructTTacticalUnitAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTacticalUnitAndMaybeFree(int param_1)
 
-void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this,int param_1)
+void TTacticalUnit::DestructTTacticalUnitAndMaybeFree(int param_1)
 
 {
   int iVar1;

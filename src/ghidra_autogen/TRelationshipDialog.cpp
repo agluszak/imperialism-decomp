@@ -7,8 +7,7 @@
 // GHIDRA_NAME TRelationshipDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRelationshipDialog * __thiscall
-TRelationshipDialog::_scalar_deleting_destructor_(TRelationshipDialog *this,byte param_1)
+TRelationshipDialog * TRelationshipDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TRelationshipDialog::_scalar_deleting_destructor_(TRelationshipDialog *this,byte
 // GHIDRA_NAME TRelationshipDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TRelationshipDialog::GetTEventHandlerClassNamePointer(TRelationshipDialog *this)
+CRuntimeClass * TRelationshipDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TRelationshipDialog::GetTEventHandlerClassNamePointer(TRelationshipDialog *this)
 // GHIDRA_NAME TRelationshipDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TRelationshipDialog::GetTEventHandlerClassNamePointer(TRelationshipDialog *this)
+void TRelationshipDialog::GetTEventHandlerClassNamePointer()
 
 {
   undefined uVar1;
@@ -87,8 +85,7 @@ void __thiscall TRelationshipDialog::GetTEventHandlerClassNamePointer(TRelations
 // GHIDRA_NAME TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTRelationshipDialogAndMaybeFree(void)
 
-void __thiscall
-TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog *this)
+void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
 
 {
   int iVar1;

@@ -22,7 +22,7 @@
    3) Enable only valid actions for the current building state.
    4) Clear unused action slots. */
 
-void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBattleView *this)
+void TacticalBattleView::InitializeCityViewActionButtons()
 
 {
   short sVar1;
@@ -174,8 +174,7 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
    Notes:
    - Called when switching from civilian-selection mode to order/overlay interaction. */
 
-void __thiscall
-TacticalBattleView::EnterMapInteractionOverlayMode(TacticalBattleView *this,int *param_1)
+void TacticalBattleView::EnterMapInteractionOverlayMode(int *param_1)
 
 {
   int iVar1;
@@ -218,8 +217,7 @@ TacticalBattleView::EnterMapInteractionOverlayMode(TacticalBattleView *this,int 
 
 /* Setting prototype: void FinalizeTacticalTurnStateAndQueueEvent232A(void) */
 
-void __thiscall
-TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A(TacticalBattleView *this)
+void TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A()
 
 {
   int iVar1;
@@ -253,8 +251,7 @@ TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A(TacticalBattleVie
 
 /* Setting prototype: void HandleTacticalBattleCommandTag(int commandTag) */
 
-void __thiscall
-TacticalBattleView::HandleTacticalBattleCommandTag(TacticalBattleView *this,int commandTag)
+void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
 
 {
   int *piVar1;
@@ -309,7 +306,7 @@ TacticalBattleView::HandleTacticalBattleCommandTag(TacticalBattleView *this,int 
 
 /* WARNING: Removing unreachable block (ram,0x005a4018) */
 
-void __thiscall TacticalBattleView::HandleTacticalCommandTag_targ(TacticalBattleView *this)
+void TacticalBattleView::HandleTacticalCommandTag_targ()
 
 {
   int *piVar1;
@@ -449,8 +446,7 @@ undefined4 __fastcall TacticalBattleView::CreateTacticalBattleViewInstance(undef
 // GHIDRA_NAME TacticalBattleView::ConstructTacticalBattleViewBaseState
 // GHIDRA_PROTO undefined __thiscall TacticalBattleView::ConstructTacticalBattleViewBaseState(void)
 
-TacticalBattleView * __thiscall
-TacticalBattleView::ConstructTacticalBattleViewBaseState(TacticalBattleView *this)
+TacticalBattleView * TacticalBattleView::ConstructTacticalBattleViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -698,8 +694,7 @@ TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
 // GHIDRA_NAME TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags
 // GHIDRA_PROTO undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(void)
 
-void __thiscall
-TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags(TacticalBattleView *this)
+void TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags()
 
 {
   int iVar1;
@@ -734,7 +729,7 @@ TacticalBattleView::InitializeMapHintTextStyleAndThemeFlags(TacticalBattleView *
 // GHIDRA_NAME TacticalBattleView::OnEnable
 // GHIDRA_PROTO undefined __thiscall OnEnable(int param_1)
 
-void __thiscall TacticalBattleView::OnEnable(TacticalBattleView *this,int param_1)
+void TacticalBattleView::OnEnable(int param_1)
 
 {
   HWND pHVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTechCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTechCheater * __thiscall
-TTechCheater::_scalar_deleting_destructor_(TTechCheater *this,byte param_1)
+TTechCheater * TTechCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TTechCheater::_scalar_deleting_destructor_(TTechCheater *this,byte param_1)
 // GHIDRA_NAME TTechCheater::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTechCheater::GetTEventHandlerClassNamePointer(TTechCheater *this)
+CRuntimeClass * TTechCheater::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TTechCheater::GetTEventHandlerClassNamePointer(TTechC
 // GHIDRA_NAME TTechCheater::OrphanRetStub_004b1410
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
 
-void __thiscall TTechCheater::OrphanRetStub_004b1410(TTechCheater *this)
+void TTechCheater::OrphanRetStub_004b1410()
 
 {
   return;

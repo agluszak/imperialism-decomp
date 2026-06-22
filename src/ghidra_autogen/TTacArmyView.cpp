@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTacArmyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTacArmyView * __thiscall
-TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
+TTacArmyView * TTacArmyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
 // GHIDRA_NAME TTacArmyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTacArmyView::GetTEventHandlerClassNamePointer(TTacArmyView *this)
+CRuntimeClass * TTacArmyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TTacArmyView::GetTEventHandlerClassNamePointer(TTacAr
 // GHIDRA_NAME TTacArmyView::ConstructTTacArmyViewBaseState
 // GHIDRA_PROTO undefined __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(void)
 
-void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
+void TTacArmyView::ConstructTTacArmyViewBaseState()
 
 {
   undefined1 *puVar1;
@@ -192,7 +191,7 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
 // GHIDRA_NAME TTacArmyView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
-void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *this,int *param_1)
+void TTacArmyView::OrphanCallChain_C11_I88_004874b0(int *param_1)
 
 {
   TTacArmyView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -296,7 +295,7 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
 // GHIDRA_NAME TTacArmyView::OrphanRetStub_005a83c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_005a83c0(int param_1)
 
-void __thiscall TTacArmyView::OrphanRetStub_005a83c0(TTacArmyView *this,int param_1)
+void TTacArmyView::OrphanRetStub_005a83c0(int param_1)
 
 {
   byte bVar1;
@@ -1186,8 +1185,7 @@ LAB_005abc78:
 // GHIDRA_NAME TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
 // GHIDRA_PROTO undefined __thiscall TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
 
-void __thiscall
-TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,int param_1)
+void TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
 
 {
   TTacArmyView_slot_0x04_0x04 *pTVar1;

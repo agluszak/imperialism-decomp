@@ -37,7 +37,7 @@ TView * TLonelyTileView::CreateTLonelyTileViewInstance(void)
 // GHIDRA_NAME TLonelyTileView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TLonelyTileView::GetTEventHandlerClassNamePointer(TLonelyTileView *this)
+CRuntimeClass * TLonelyTileView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TLonelyTileView::GetTEventHandlerClassNamePointer(TLo
 // GHIDRA_NAME TLonelyTileView::ConstructTLonelyTileViewBaseState
 // GHIDRA_PROTO undefined __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(void)
 
-TLonelyTileView * __thiscall
-TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
+TLonelyTileView * TLonelyTileView::ConstructTLonelyTileViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -60,8 +59,7 @@ TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 // GHIDRA_NAME TLonelyTileView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLonelyTileView * __thiscall
-TLonelyTileView::_scalar_deleting_destructor_(TLonelyTileView *this,byte param_1)
+TLonelyTileView * TLonelyTileView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -75,7 +73,7 @@ TLonelyTileView::_scalar_deleting_destructor_(TLonelyTileView *this,byte param_1
 // GHIDRA_NAME TLonelyTileView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TLonelyTileView::OrphanTiny_ReturnZero_0048a730(TLonelyTileView *this)
+void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

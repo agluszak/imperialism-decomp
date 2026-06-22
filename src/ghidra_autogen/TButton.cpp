@@ -7,7 +7,7 @@
 // GHIDRA_NAME TButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte param_1)
+TButton * TButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TButton::CreateTButtonInstance(this);
@@ -21,7 +21,7 @@ TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte pa
 // GHIDRA_NAME TButton::CreateTButtonInstance
 // GHIDRA_PROTO undefined __thiscall TButton::CreateTButtonInstance(void)
 
-void __thiscall TButton::CreateTButtonInstance(TButton *this)
+void TButton::CreateTButtonInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -49,7 +49,7 @@ void __thiscall TButton::CreateTButtonInstance(TButton *this)
 // GHIDRA_NAME TButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TButton::GetTEventHandlerClassNamePointer(TButton *this)
+CRuntimeClass * TButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

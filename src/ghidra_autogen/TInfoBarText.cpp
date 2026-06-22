@@ -13,7 +13,7 @@
 /* Cursor/status text entry constructor. Derived from ConstructUiTextResourceEntryBase and
    repeatedly registered under tag 'curs' in command/control and turn-event UIs. */
 
-TInfoBarText * __thiscall TInfoBarText::ConstructUiCursorTextResourceEntry(TInfoBarText *this)
+TInfoBarText * TInfoBarText::ConstructUiCursorTextResourceEntry()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -35,8 +35,7 @@ TInfoBarText * __thiscall TInfoBarText::ConstructUiCursorTextResourceEntry(TInfo
 // GHIDRA_NAME TInfoBarText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarText * __thiscall
-TInfoBarText::_scalar_deleting_destructor_(TInfoBarText *this,byte param_1)
+TInfoBarText * TInfoBarText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);
@@ -89,7 +88,7 @@ TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
 // GHIDRA_NAME TInfoBarText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TInfoBarText::GetTEventHandlerClassNamePointer(TInfoBarText *this)
+CRuntimeClass * TInfoBarText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -99,7 +98,7 @@ CRuntimeClass * __thiscall TInfoBarText::GetTEventHandlerClassNamePointer(TInfoB
 // GHIDRA_NAME TInfoBarText::ConstructTInfoBarTextBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
 
-void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,RECT *param_1)
+void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -134,7 +133,7 @@ void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,
 // GHIDRA_NAME TInfoBarText::DestructTInfoBarTextAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTInfoBarTextAndMaybeFree(void)
 
-void __thiscall TInfoBarText::DestructTInfoBarTextAndMaybeFree(TInfoBarText *this)
+void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
 
 {
   TInfoBarTextVtbl *pTVar1;
@@ -165,7 +164,7 @@ void __thiscall TInfoBarText::DestructTInfoBarTextAndMaybeFree(TInfoBarText *thi
 // GHIDRA_NAME TInfoBarText::OrphanCallChain_C1_I05_005b6810
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_005b6810(void)
 
-void __thiscall TInfoBarText::OrphanCallChain_C1_I05_005b6810(TInfoBarText *this)
+void TInfoBarText::OrphanCallChain_C1_I05_005b6810()
 
 {
   (*this->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
@@ -176,7 +175,7 @@ void __thiscall TInfoBarText::OrphanCallChain_C1_I05_005b6810(TInfoBarText *this
 // GHIDRA_NAME TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920(TInfoBarText *this)
+void TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if ((TInfoBarText *)g_pCursorControlPanel == this) {

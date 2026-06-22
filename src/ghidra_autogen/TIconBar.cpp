@@ -37,7 +37,7 @@ TNoHilitePicture * TIconBar::CreateTIconBarInstance(void)
 // GHIDRA_NAME TIconBar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TIconBar::GetTEventHandlerClassNamePointer(TIconBar *this)
+CRuntimeClass * TIconBar::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TIconBar::GetTEventHandlerClassNamePointer(TIconBar *
 // GHIDRA_NAME TIconBar::ConstructTIconBarBaseState
 // GHIDRA_PROTO undefined __thiscall TIconBar::ConstructTIconBarBaseState(void)
 
-TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
+TIconBar * TIconBar::ConstructTIconBarBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -59,7 +59,7 @@ TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 // GHIDRA_NAME TIconBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this,byte param_1)
+TIconBar * TIconBar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -127,7 +127,7 @@ TIconBar::AddCityCommodityIconControl
 // GHIDRA_NAME TIconBar::SetPictureResourceIdAndRefresh
 // GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
-void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this,short param_1,bool param_2)
+void TIconBar::SetPictureResourceIdAndRefresh(short param_1, bool param_2)
 
 {
   undefined2 unaff_retaddr;
@@ -141,7 +141,7 @@ void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this,short pa
 // GHIDRA_NAME TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
-void __thiscall TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconBar *this,undefined2 param_1)
+void TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1)
 
 {
   *(undefined2 *)&this->field_0x96 = param_1;
@@ -152,7 +152,7 @@ void __thiscall TIconBar::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconBar *this
 // GHIDRA_NAME TIconBar::OrphanCallChain_C2_I15_00506110
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00506110(char param_1)
 
-void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this,char param_1)
+void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
 
 {
   TIconBarVtbl *pTVar1;
@@ -170,7 +170,7 @@ void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this,char pa
 // GHIDRA_NAME TIconBar::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TIconBar::OrphanTiny_ReturnZero_0048a730(TIconBar *this)
+void TIconBar::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

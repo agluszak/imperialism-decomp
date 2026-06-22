@@ -7,8 +7,7 @@
 // GHIDRA_NAME TRailheadDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailheadDialog * __thiscall
-TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1)
+TRailheadDialog * TRailheadDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1
 // GHIDRA_NAME TRailheadDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRailheadDialog::GetTEventHandlerClassNamePointer(TRailheadDialog *this)
+CRuntimeClass * TRailheadDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,8 +33,7 @@ CRuntimeClass * __thiscall TRailheadDialog::GetTEventHandlerClassNamePointer(TRa
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int param_1)
+void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
 
 {
   int iVar1;
@@ -99,8 +97,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
 // GHIDRA_NAME TRailheadDialog::DestructTRailheadDialogAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTRailheadDialogAndMaybeFree(int param_1)
 
-void __thiscall
-TRailheadDialog::DestructTRailheadDialogAndMaybeFree(TRailheadDialog *this,int param_1)
+void TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int param_1)
 
 {
   undefined uVar1;

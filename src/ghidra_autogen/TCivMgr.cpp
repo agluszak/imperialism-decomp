@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivMgr::GetTCivMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTCivMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivMgr::GetTCivMgrClassNamePointer(TCivMgr *this)
+CRuntimeClass * TCivMgr::GetTCivMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -42,8 +42,7 @@ CRuntimeClass * __thiscall TCivMgr::GetTCivMgrClassNamePointer(TCivMgr *this)
    Returns:
    - void */
 
-void __thiscall
-TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivMgr *this,int *pUnitOrderEntry)
+void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int *pUnitOrderEntry)
 
 {
   if (pUnitOrderEntry != (int *)0x0) {

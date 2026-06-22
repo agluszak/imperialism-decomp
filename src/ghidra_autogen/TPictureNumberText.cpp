@@ -37,8 +37,7 @@ TEditText * TPictureNumberText::CreateTPictureNumberTextInstance(void)
 // GHIDRA_NAME TPictureNumberText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TPictureNumberText::GetTEventHandlerClassNamePointer(TPictureNumberText *this)
+CRuntimeClass * TPictureNumberText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TPictureNumberText::GetTEventHandlerClassNamePointer(TPictureNumberText *this)
 // GHIDRA_NAME TPictureNumberText::ConstructTPictureNumberTextBaseState
 // GHIDRA_PROTO undefined __thiscall TPictureNumberText::ConstructTPictureNumberTextBaseState(void)
 
-TPictureNumberText * __thiscall
-TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *this)
+TPictureNumberText * TPictureNumberText::ConstructTPictureNumberTextBaseState()
 
 {
   TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
@@ -62,8 +60,7 @@ TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *thi
 // GHIDRA_NAME TPictureNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TPictureNumberText * __thiscall
-TPictureNumberText::_scalar_deleting_destructor_(TPictureNumberText *this,byte param_1)
+TPictureNumberText * TPictureNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);

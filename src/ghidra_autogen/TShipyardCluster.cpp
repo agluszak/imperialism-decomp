@@ -37,8 +37,7 @@ TUberCluster * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
 // GHIDRA_NAME TShipyardCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TShipyardCluster::GetTEventHandlerClassNamePointer(TShipyardCluster *this)
+CRuntimeClass * TShipyardCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTShipyardCluster;
@@ -48,8 +47,7 @@ TShipyardCluster::GetTEventHandlerClassNamePointer(TShipyardCluster *this)
 // GHIDRA_NAME TShipyardCluster::ConstructTradeMoveArrowControlPanel
 // GHIDRA_PROTO undefined __thiscall ConstructTradeMoveArrowControlPanel(void)
 
-TShipyardCluster * __thiscall
-TShipyardCluster::ConstructTradeMoveArrowControlPanel(TShipyardCluster *this)
+TShipyardCluster * TShipyardCluster::ConstructTradeMoveArrowControlPanel()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -62,8 +60,7 @@ TShipyardCluster::ConstructTradeMoveArrowControlPanel(TShipyardCluster *this)
 // GHIDRA_NAME TShipyardCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipyardCluster * __thiscall
-TShipyardCluster::_scalar_deleting_destructor_(TShipyardCluster *this,byte param_1)
+TShipyardCluster * TShipyardCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -77,7 +74,7 @@ TShipyardCluster::_scalar_deleting_destructor_(TShipyardCluster *this,byte param
 // GHIDRA_NAME TShipyardCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TShipyardCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipyardCluster *this)
+void TShipyardCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
@@ -101,7 +98,7 @@ void __thiscall TShipyardCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipyardClus
 // GHIDRA_NAME TShipyardCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void __thiscall TShipyardCluster::OrphanRetStub_00586ff0(TShipyardCluster *this)
+void TShipyardCluster::OrphanRetStub_00586ff0()
 
 {
   TShipyardCluster_slot_0x04_0x04 *pTVar1;

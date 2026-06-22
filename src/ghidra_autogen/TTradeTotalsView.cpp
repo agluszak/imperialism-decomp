@@ -37,8 +37,7 @@ TView * TTradeTotalsView::CreateTTradeTotalsViewInstance(void)
 // GHIDRA_NAME TTradeTotalsView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradeTotalsView::GetTEventHandlerClassNamePointer(TTradeTotalsView *this)
+CRuntimeClass * TTradeTotalsView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TTradeTotalsView::GetTEventHandlerClassNamePointer(TTradeTotalsView *this)
 // GHIDRA_NAME TTradeTotalsView::ConstructTTradeTotalsViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTradeTotalsViewBaseState(void)
 
-TTradeTotalsView * __thiscall
-TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
+TTradeTotalsView * TTradeTotalsView::ConstructTTradeTotalsViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -61,8 +59,7 @@ TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
 // GHIDRA_NAME TTradeTotalsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeTotalsView * __thiscall
-TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param_1)
+TTradeTotalsView * TTradeTotalsView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -76,7 +73,7 @@ TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param
 // GHIDRA_NAME TTradeTotalsView::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsView *this)
+void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
 
 {
   TSimMgrVtbl *pTVar1;

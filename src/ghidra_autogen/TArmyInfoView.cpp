@@ -40,7 +40,7 @@ _CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z_imperialismsrcgameTArmy
 // GHIDRA_NAME TArmyInfoView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyInfoView::GetTEventHandlerClassNamePointer(TArmyInfoView *this)
+CRuntimeClass * TArmyInfoView::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTArmyInfoView;
@@ -65,8 +65,7 @@ _ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z_imperialismsrcgameT
 // GHIDRA_NAME TArmyInfoView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyInfoView * __thiscall
-TArmyInfoView::_scalar_deleting_destructor_(TArmyInfoView *this,byte param_1)
+TArmyInfoView * TArmyInfoView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

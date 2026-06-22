@@ -17,7 +17,7 @@ CRuntimeClass * TMacViewMgr::GetTMacViewMgrRuntimeClass(void)
 // GHIDRA_NAME TMacViewMgr::ConstructTMacViewMgrInPlace
 // GHIDRA_PROTO undefined __thiscall ConstructTMacViewMgrInPlace(void)
 
-TMacViewMgr * __thiscall TMacViewMgr::ConstructTMacViewMgrInPlace(TMacViewMgr *this)
+TMacViewMgr * TMacViewMgr::ConstructTMacViewMgrInPlace()
 
 {
   CFrameWnd();
@@ -33,7 +33,7 @@ TMacViewMgr * __thiscall TMacViewMgr::ConstructTMacViewMgrInPlace(TMacViewMgr *t
 // GHIDRA_NAME TMacViewMgr::DestroyTMacViewMgrObject
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr::DestroyTMacViewMgrObject(void)
 
-void __thiscall TMacViewMgr::DestroyTMacViewMgrObject(TMacViewMgr *this)
+void TMacViewMgr::DestroyTMacViewMgrObject()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -98,8 +98,7 @@ void TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70(int param_1)
 // GHIDRA_NAME TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
 
-undefined4 __thiscall
-TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(TMacViewMgr *this,undefined4 param_1)
+undefined4 TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
 
 {
   undefined4 uVar1;
@@ -114,7 +113,7 @@ TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(TMacViewMgr *this,
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_OnCommand_ID_8009_Impl(void)
 
-void __thiscall TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl(TMacViewMgr *this)
+void TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl()
 
 {
   undefined4 uVar1;
@@ -371,7 +370,7 @@ undefined4 __fastcall TMacViewMgr::CreateTMacViewMgrInstance(undefined4 param_1)
 // GHIDRA_NAME TMacViewMgr::GetTMacViewMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMacViewMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMacViewMgr::GetTMacViewMgrClassNamePointer(TMacViewMgr *this)
+CRuntimeClass * TMacViewMgr::GetTMacViewMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -397,7 +396,7 @@ CRuntimeClass * __thiscall TMacViewMgr::GetTMacViewMgrClassNamePointer(TMacViewM
    - Clears large internal tables/buffers for per-tile/per-nation render state.
    - Initializes nested repeated callback-backed structures used by map render/update paths. */
 
-TMacViewMgr * __thiscall TMacViewMgr::ConstructStrategicMapViewSystem(TMacViewMgr *this)
+TMacViewMgr * TMacViewMgr::ConstructStrategicMapViewSystem()
 
 {
   int iVar1;
@@ -456,7 +455,7 @@ TMacViewMgr * __thiscall TMacViewMgr::ConstructStrategicMapViewSystem(TMacViewMg
 // GHIDRA_NAME TMacViewMgr::DestructTMacViewMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTMacViewMgrAndMaybeFree(short param_1)
 
-undefined4 __thiscall TMacViewMgr::DestructTMacViewMgrAndMaybeFree(TMacViewMgr *this,short param_1)
+undefined4 TMacViewMgr::DestructTMacViewMgrAndMaybeFree(short param_1)
 
 {
   return *(undefined4 *)(&this->field_0x8 + param_1 * 4);
@@ -466,8 +465,7 @@ undefined4 __thiscall TMacViewMgr::DestructTMacViewMgrAndMaybeFree(TMacViewMgr *
 // GHIDRA_NAME TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte param_1)
 
-TMacViewMgr * __thiscall
-TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(TMacViewMgr *this,byte param_1)
+TMacViewMgr * TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(byte param_1)
 
 {
   WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60();
@@ -498,7 +496,7 @@ TMacViewMgr::WrapperFor_FreeHeapBufferIfNotNull_At00509e30(TMacViewMgr *this,byt
    4. Invoke base destructor path.
    Returns: void. */
 
-void __thiscall TMacViewMgr::DestroyStrategicMapViewSystemResources(TMacViewMgr *this)
+void TMacViewMgr::DestroyStrategicMapViewSystemResources()
 
 {
   int iVar1;
@@ -556,7 +554,7 @@ void __thiscall TMacViewMgr::DestroyStrategicMapViewSystemResources(TMacViewMgr 
 // GHIDRA_NAME TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles
 // GHIDRA_PROTO undefined __thiscall ResetNationStateUiAndRefreshCityCapabilityHandles(void)
 
-void __thiscall TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles(TMacViewMgr *this)
+void TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles()
 
 {
   TMacViewMgrVtbl *pTVar1;
@@ -574,8 +572,7 @@ void __thiscall TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles(T
 // GHIDRA_NAME TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(void)
 
-void __thiscall
-TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(TMacViewMgr *this)
+void TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180()
 
 {
   TObject::WriteTo((TArmyPlayer *)this);
@@ -605,7 +602,7 @@ TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(TMacViewMgr 
    5. Release temporary bitmap objects and unlock destination.
    Returns: void. */
 
-void __thiscall TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722(TMacViewMgr *this)
+void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
 
 {
   undefined1 *puVar1;
@@ -698,7 +695,7 @@ void __thiscall TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722(TMa
    Used by strategic-map icon blitting routines.
    Returns: void. */
 
-void __thiscall TMacViewMgr::LoadStrategicMapUnitIconAtlas750(TMacViewMgr *this)
+void TMacViewMgr::LoadStrategicMapUnitIconAtlas750()
 
 {
   undefined4 uVar1;
@@ -721,7 +718,7 @@ void __thiscall TMacViewMgr::LoadStrategicMapUnitIconAtlas750(TMacViewMgr *this)
    Used by selection/no-order/working overlay blitters.
    Returns: void. */
 
-void __thiscall TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751(TMacViewMgr *this)
+void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751()
 
 {
   undefined4 uVar1;
@@ -744,7 +741,7 @@ void __thiscall TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751(TMacViewMgr *th
    Auxiliary strategic-map overlay surface.
    Returns: void. */
 
-void __thiscall TMacViewMgr::LoadStrategicMapOverlayAtlas8699(TMacViewMgr *this)
+void TMacViewMgr::LoadStrategicMapOverlayAtlas8699()
 
 {
   undefined4 uVar1;
@@ -767,7 +764,7 @@ void __thiscall TMacViewMgr::LoadStrategicMapOverlayAtlas8699(TMacViewMgr *this)
    Auxiliary strategic-map marker surface.
    Returns: void. */
 
-void __thiscall TMacViewMgr::LoadStrategicMapMarkerAtlas1372(TMacViewMgr *this)
+void TMacViewMgr::LoadStrategicMapMarkerAtlas1372()
 
 {
   undefined4 uVar1;
@@ -781,7 +778,7 @@ void __thiscall TMacViewMgr::LoadStrategicMapMarkerAtlas1372(TMacViewMgr *this)
 // GHIDRA_NAME TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext
 // GHIDRA_PROTO undefined __thiscall RenderOffscreenBitmapGridStripAndRestoreContext(void)
 
-void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMacViewMgr *this)
+void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
 
 {
   TAnimationVtbl *pTVar1;
@@ -1317,7 +1314,7 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
 // GHIDRA_NAME TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
 // GHIDRA_PROTO undefined __thiscall RebuildMapTileNeighborHighlightPolygonsForAllTiles(void)
 
-void __thiscall TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles(TMacViewMgr *this)
+void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles()
 
 {
   int iVar1;
@@ -1363,7 +1360,7 @@ void __thiscall TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles(
 // GHIDRA_NAME TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
 // GHIDRA_PROTO undefined __thiscall RebuildNationClipRegionsAndDispatchMapEvent(void)
 
-void __thiscall TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent(TMacViewMgr *this)
+void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
 
 {
   undefined4 uVar1;
@@ -1427,8 +1424,7 @@ TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 // GHIDRA_NAME TMacViewMgr::SyncSellTaggedChildControlWithNationState
 // GHIDRA_PROTO undefined __thiscall SyncSellTaggedChildControlWithNationState(int * param_1, short param_2)
 
-void __thiscall
-TMacViewMgr::SyncSellTaggedChildControlWithNationState(TMacViewMgr *this,int *param_1,short param_2)
+void TMacViewMgr::SyncSellTaggedChildControlWithNationState(int *param_1, short param_2)
 
 {
   int iVar1;
@@ -1491,7 +1487,7 @@ TMacViewMgr::SyncSellTaggedChildControlWithNationState(TMacViewMgr *this,int *pa
 // GHIDRA_NAME TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C
 // GHIDRA_PROTO undefined __thiscall ResolveTurnEventDialogOrFailAndInvokeSlot9C(void)
 
-int * __thiscall TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(TMacViewMgr *this)
+int * TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C()
 
 {
   int *piVar1;
@@ -1510,8 +1506,7 @@ int * __thiscall TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(TMacVi
 // GHIDRA_NAME TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 // GHIDRA_PROTO undefined __thiscall RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
 
-void __thiscall
-TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,word param_1)
+void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
 
 {
   short sVar1;
@@ -1966,7 +1961,7 @@ LAB_0050ce6a:
 // GHIDRA_NAME TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 // GHIDRA_PROTO undefined __thiscall DispatchTurnEvent3B8AndWaitForCompletionFlag(void)
 
-void __thiscall TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(TMacViewMgr *this)
+void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag()
 
 {
   short sVar1;
@@ -2022,8 +2017,7 @@ TMacViewMgr::CreateCityBuildingDialogBySlot
 // GHIDRA_NAME TMacViewMgr::OrphanCallChain_C10_I80_0050d470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2)
 
-int * __thiscall
-TMacViewMgr::OrphanCallChain_C10_I80_0050d470(TMacViewMgr *this,int param_1,undefined4 param_2)
+int * TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2)
 
 {
   int iVar1;
@@ -2067,7 +2061,7 @@ TMacViewMgr::OrphanCallChain_C10_I80_0050d470(TMacViewMgr *this,int param_1,unde
 // GHIDRA_NAME TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)
 
-void __thiscall TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(TMacViewMgr *this,undefined4 param_1)
+void TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)
 
 {
   int iVar1;
@@ -2121,8 +2115,7 @@ TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
 // GHIDRA_NAME TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1)
 
-undefined4 __thiscall
-TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(TMacViewMgr *this,short param_1)
+undefined4 TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1)
 
 {
   undefined4 uVar1;
@@ -2140,8 +2133,7 @@ TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(TMacViewMgr *this,shor
 // GHIDRA_NAME TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext
 // GHIDRA_PROTO undefined __thiscall RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
 
-void __thiscall
-TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(TMacViewMgr *this,int param_1)
+void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
 
 {
   undefined4 *puVar1;
@@ -2204,7 +2196,7 @@ TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(TMacViewMgr *this,in
 // GHIDRA_NAME TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_0050d8d0(void)
 
-void __thiscall TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0(TMacViewMgr *this)
+void TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0()
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -2220,7 +2212,7 @@ void __thiscall TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0(TMacViewMgr *this)
 // GHIDRA_NAME TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1)
 
-void __thiscall TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(TMacViewMgr *this,short param_1)
+void TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1)
 
 {
   if (*(int *)&this->field_0x4 != 0) {
@@ -2233,7 +2225,7 @@ void __thiscall TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0(TMacViewMgr *this,
 // GHIDRA_NAME TMacViewMgr::OrphanCallChain_C1_I10_0050d920
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_0050d920(void)
 
-void __thiscall TMacViewMgr::OrphanCallChain_C1_I10_0050d920(TMacViewMgr *this)
+void TMacViewMgr::OrphanCallChain_C1_I10_0050d920()
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -2247,8 +2239,7 @@ void __thiscall TMacViewMgr::OrphanCallChain_C1_I10_0050d920(TMacViewMgr *this)
 // GHIDRA_NAME TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950
 // GHIDRA_PROTO undefined __thiscall WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(void)
 
-void __thiscall
-TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(TMacViewMgr *this)
+void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950()
 
 {
   int iVar1;
@@ -2696,7 +2687,7 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
 // GHIDRA_NAME TMacViewMgr::Find_605e12
 // GHIDRA_PROTO undefined __thiscall Find_605e12(undefined1 param_1)
 
-int __thiscall TMacViewMgr::Find_605e12(TMacViewMgr *this,undefined1 param_1)
+int TMacViewMgr::Find_605e12(undefined1 param_1)
 
 {
   int iVar1;
@@ -2715,7 +2706,7 @@ int __thiscall TMacViewMgr::Find_605e12(TMacViewMgr *this,undefined1 param_1)
 // GHIDRA_NAME TMacViewMgr::OnIdle_6064b0
 // GHIDRA_PROTO undefined __thiscall OnIdle_6064b0(int param_1)
 
-bool __thiscall TMacViewMgr::OnIdle_6064b0(TMacViewMgr *this,int param_1)
+bool TMacViewMgr::OnIdle_6064b0(int param_1)
 
 {
   CFrameWnd *pCVar1;
@@ -2936,7 +2927,7 @@ void TMacViewMgr::DestroyTMacViewMgrBase(void)
 // GHIDRA_NAME TMacViewMgr::LoadAccelTable
 // GHIDRA_PROTO undefined __thiscall LoadAccelTable(LPCSTR param_1)
 
-bool __thiscall TMacViewMgr::LoadAccelTable(TMacViewMgr *this,LPCSTR param_1)
+bool TMacViewMgr::LoadAccelTable(LPCSTR param_1)
 
 {
   int iVar1;
@@ -2952,7 +2943,7 @@ bool __thiscall TMacViewMgr::LoadAccelTable(TMacViewMgr *this,LPCSTR param_1)
 // GHIDRA_NAME TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
 // GHIDRA_PROTO undefined __thiscall ResolveField12ValueFromActiveChildSlotB0(void)
 
-int __thiscall TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0(TMacViewMgr *this)
+int TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0()
 
 {
   undefined uVar1;
@@ -2975,7 +2966,7 @@ int __thiscall TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0(TMacViewMgr
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot038
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot038(LPMSG param_1)
 
-undefined4 __thiscall TMacViewMgr::TMacViewMgr_VtblSlot038(TMacViewMgr *this,LPMSG param_1)
+undefined4 TMacViewMgr::TMacViewMgr_VtblSlot038(LPMSG param_1)
 
 {
   undefined uVar1;
@@ -3014,7 +3005,7 @@ LAB_0061c822:
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot043
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot043(void)
 
-void __thiscall TMacViewMgr::TMacViewMgr_VtblSlot043(TMacViewMgr *this)
+void TMacViewMgr::TMacViewMgr_VtblSlot043()
 
 {
   if (this != (TMacViewMgr *)0x0) {
@@ -3027,7 +3018,7 @@ void __thiscall TMacViewMgr::TMacViewMgr_VtblSlot043(TMacViewMgr *this)
 // GHIDRA_NAME TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877
 // GHIDRA_PROTO undefined __thiscall ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
 
-void __thiscall TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877(TMacViewMgr *this)
+void TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877()
 
 {
   BOOL BVar1;
@@ -3056,8 +3047,7 @@ void __thiscall TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877(T
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot032
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot032(uint param_1, int param_2)
 
-undefined4 __thiscall
-TMacViewMgr::TMacViewMgr_VtblSlot032(TMacViewMgr *this,uint param_1,int param_2)
+undefined4 TMacViewMgr::TMacViewMgr_VtblSlot032(uint param_1, int param_2)
 
 {
   int iVar1;
@@ -3085,7 +3075,7 @@ TMacViewMgr::TMacViewMgr_VtblSlot032(TMacViewMgr *this,uint param_1,int param_2)
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot036
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot036(void)
 
-undefined1 * __thiscall TMacViewMgr::TMacViewMgr_VtblSlot036(TMacViewMgr *this)
+undefined1 * TMacViewMgr::TMacViewMgr_VtblSlot036()
 
 {
   int iVar1;
@@ -3266,8 +3256,7 @@ LAB_0061d0f8:
 // GHIDRA_NAME TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback
 // GHIDRA_PROTO undefined __thiscall SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
 
-void __thiscall
-TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback(TMacViewMgr *this,HMENU param_1)
+void TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
 
 {
   undefined uVar1;
@@ -3368,7 +3357,7 @@ void __fastcall TMacViewMgr::WrapperFor_GetDescendantWindow_At0061ddb2(int param
 // GHIDRA_NAME TMacViewMgr::OnSetPreviewMode
 // GHIDRA_PROTO undefined __thiscall OnSetPreviewMode(int param_1, int * param_2)
 
-void __thiscall TMacViewMgr::OnSetPreviewMode(TMacViewMgr *this,int param_1,int *param_2)
+void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
 
 {
   int *piVar1;
@@ -3466,7 +3455,7 @@ void __thiscall TMacViewMgr::OnSetPreviewMode(TMacViewMgr *this,int param_1,int 
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot050
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot050(void)
 
-TMacViewMgr * __thiscall TMacViewMgr::TMacViewMgr_VtblSlot050(TMacViewMgr *this)
+TMacViewMgr * TMacViewMgr::TMacViewMgr_VtblSlot050()
 
 {
   return this;
@@ -3476,7 +3465,7 @@ TMacViewMgr * __thiscall TMacViewMgr::TMacViewMgr_VtblSlot050(TMacViewMgr *this)
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot053
 // GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot053(int param_1)
 
-void __thiscall TMacViewMgr::TMacViewMgr_VtblSlot053(TMacViewMgr *this,int param_1)
+void TMacViewMgr::TMacViewMgr_VtblSlot053(int param_1)
 
 {
   BOOL BVar1;
@@ -3505,7 +3494,7 @@ void __thiscall TMacViewMgr::TMacViewMgr_VtblSlot053(TMacViewMgr *this,int param
 // GHIDRA_NAME TMacViewMgr::AddHead_623b4c
 // GHIDRA_PROTO undefined __thiscall AddHead_623b4c(TMacViewMgrVtbl * param_1)
 
-void __thiscall TMacViewMgr::AddHead_623b4c(TMacViewMgr *this,TMacViewMgrVtbl *param_1)
+void TMacViewMgr::AddHead_623b4c(TMacViewMgrVtbl *param_1)
 
 {
   *(TMacViewMgrVtbl **)((int)&param_1->GetTMacViewMgrClassNamePointer + *(int *)&this->field_0x4) =
@@ -3520,7 +3509,7 @@ void __thiscall TMacViewMgr::AddHead_623b4c(TMacViewMgr *this,TMacViewMgrVtbl *p
 
 /* WARNING: Removing unreachable block (ram,0x0062401d) */
 
-int __thiscall TMacViewMgr::GetData(TMacViewMgr *this,undefined *param_1)
+int TMacViewMgr::GetData(undefined *param_1)
 
 {
   TMacViewMgrVtbl *pTVar1;

@@ -37,7 +37,7 @@ TPictureButton * TScrollerButton::CreateTScrollerButtonInstance(void)
 // GHIDRA_NAME TScrollerButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TScrollerButton::GetTEventHandlerClassNamePointer(TScrollerButton *this)
+CRuntimeClass * TScrollerButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TScrollerButton::GetTEventHandlerClassNamePointer(TSc
 // GHIDRA_NAME TScrollerButton::ConstructTScrollerButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTScrollerButtonBaseState(void)
 
-TScrollerButton * __thiscall
-TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
+TScrollerButton * TScrollerButton::ConstructTScrollerButtonBaseState()
 
 {
   TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
@@ -60,8 +59,7 @@ TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
 // GHIDRA_NAME TScrollerButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollerButton * __thiscall
-TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1)
+TScrollerButton * TScrollerButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,7 +73,7 @@ TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1
 // GHIDRA_NAME TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit(TScrollerButton *this)
+void TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   return;

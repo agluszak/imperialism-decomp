@@ -2238,7 +2238,7 @@ void WrapperFor_ftol_At00583880(void)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2266,7 +2266,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2294,7 +2294,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2322,7 +2322,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2350,7 +2350,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2378,7 +2378,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2406,7 +2406,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2434,7 +2434,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2462,7 +2462,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2490,7 +2490,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2518,7 +2518,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2546,7 +2546,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2574,7 +2574,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2602,7 +2602,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2630,7 +2630,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2658,7 +2658,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2686,7 +2686,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2714,7 +2714,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2742,7 +2742,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2770,7 +2770,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 // GHIDRA_NAME TView::DestructTViewBaseState
 // GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::DestructTViewBaseState(TView *this)
+void TView::DestructTViewBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;

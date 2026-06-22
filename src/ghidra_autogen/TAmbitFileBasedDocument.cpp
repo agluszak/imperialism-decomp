@@ -7,8 +7,7 @@
 // GHIDRA_NAME TAmbitFileBasedDocument::GetTDocumentClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TAmbitFileBasedDocument::GetTDocumentClassNamePointer(TAmbitFileBasedDocument *this)
+CRuntimeClass * TAmbitFileBasedDocument::GetTDocumentClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TAmbitFileBasedDocument::GetTDocumentClassNamePointer(TAmbitFileBasedDocument *t
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
 // GHIDRA_PROTO undefined __thiscall TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(void)
 
-void __thiscall
-TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument *this)
+void TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState()
 
 {
   this->vftable = &TAmbitFileBasedDocumentVtbl_0064c170;
@@ -30,8 +28,7 @@ TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBas
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTDocumentBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(byte param_1)
 
-TAmbitFileBasedDocument * __thiscall
-TAmbitFileBasedDocument::ConstructTDocumentBaseState(TAmbitFileBasedDocument *this,byte param_1)
+TAmbitFileBasedDocument * TAmbitFileBasedDocument::ConstructTDocumentBaseState(byte param_1)
 
 {
   DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
@@ -45,7 +42,7 @@ TAmbitFileBasedDocument::ConstructTDocumentBaseState(TAmbitFileBasedDocument *th
 // GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e660
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e660(void)
 
-void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e660(TAmbitFileBasedDocument *this)
+void TAmbitFileBasedDocument::OrphanRetStub_0049e660()
 
 {
   return;
@@ -55,7 +52,7 @@ void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e660(TAmbitFileBasedD
 // GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e680
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e680(void)
 
-void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e680(TAmbitFileBasedDocument *this)
+void TAmbitFileBasedDocument::OrphanRetStub_0049e680()
 
 {
   return;
@@ -81,8 +78,7 @@ void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e680(TAmbitFileBasedD
    part of the pass.
    4. Finalize post-load visual/status state. */
 
-void __thiscall
-TAmbitFileBasedDocument::OrphanRetStub_00486530(TAmbitFileBasedDocument *this,void *pLoadContext)
+void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
 
 {
   TFileStream_ConstructTStreamBaseState_0x04 *pTVar1;
@@ -212,8 +208,7 @@ LAB_0049e7e4:
    3. Persists DAT_006A3FBC and DAT_006A43E4 alongside other subsystems.
    4. Flush/finalize stream output. */
 
-void __thiscall
-TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,void *pSaveContext)
+void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
 
 {
   TFileStream_GetTStreamClassNamePointer_0x00 *pTVar1;
@@ -335,7 +330,7 @@ TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,vo
 // GHIDRA_NAME TAmbitFileBasedDocument::AssertUAmbitLine1335
 // GHIDRA_PROTO undefined __thiscall AssertUAmbitLine1335(void)
 
-void __thiscall TAmbitFileBasedDocument::AssertUAmbitLine1335(TAmbitFileBasedDocument *this)
+void TAmbitFileBasedDocument::AssertUAmbitLine1335()
 
 {
   if (DAT_006a21c4 == 0) {

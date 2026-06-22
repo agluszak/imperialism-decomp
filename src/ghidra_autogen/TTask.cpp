@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTask::CreateTTaskInstance
 // GHIDRA_PROTO undefined __thiscall TTask::CreateTTaskInstance(void)
 
-void __thiscall TTask::CreateTTaskInstance(TTask *this)
+void TTask::CreateTTaskInstance()
 
 {
   TTask_ConstructTTaskBaseState_0x04 *pTVar1;
@@ -124,7 +124,7 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
 // GHIDRA_NAME TTask::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTask::GetTTaskClassNamePointer(TTask *this)
+CRuntimeClass * TTask::GetTTaskClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -134,7 +134,7 @@ CRuntimeClass * __thiscall TTask::GetTTaskClassNamePointer(TTask *this)
 // GHIDRA_NAME TTask::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
-TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this,byte param_1)
+TTask * TTask::ConstructTTaskBaseState(byte param_1)
 
 {
   TTask::DestructTTaskAndMaybeFree(this);
@@ -148,7 +148,7 @@ TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this,byte param_1)
 // GHIDRA_NAME TTask::DestructTTaskAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TTask::DestructTTaskAndMaybeFree(void)
 
-void __thiscall TTask::DestructTTaskAndMaybeFree(TTask *this)
+void TTask::DestructTTaskAndMaybeFree()
 
 {
   this->vftable = (TTaskVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -159,7 +159,7 @@ void __thiscall TTask::DestructTTaskAndMaybeFree(TTask *this)
 // GHIDRA_NAME TTask::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
-bool __thiscall TTask::OrphanLeaf_NoCall_Ins04_005adc30(TTask *this)
+bool TTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
 {
   *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + -1;
@@ -170,7 +170,7 @@ bool __thiscall TTask::OrphanLeaf_NoCall_Ins04_005adc30(TTask *this)
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int * param_1)
 
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *this,int *param_1)
+void TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int *param_1)
 
 {
   code *pcVar1;
@@ -186,7 +186,7 @@ void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *t
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int * param_1)
 
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *this,int *param_1)
+void TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int *param_1)
 
 {
   code *pcVar1;

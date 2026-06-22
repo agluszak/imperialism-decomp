@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivUnit::GetTUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
+CRuntimeClass * TCivUnit::GetTUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
 // GHIDRA_NAME TCivUnit::ConstructTUnitBaseState
 // GHIDRA_PROTO undefined __thiscall TUnit::ConstructTUnitBaseState(byte param_1)
 
-TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this,byte param_1)
+TCivUnit * TCivUnit::ConstructTUnitBaseState(byte param_1)
 
 {
   DestroyCivUnitOrderObject_Impl();
@@ -60,8 +60,7 @@ TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this,byte para
    Returns:
    - void */
 
-void __thiscall
-TCivUnit::SetUnitOrderTypeAndOwnerIndex(TCivUnit *this,int nOrderType,short nTargetTileIndex)
+void TCivUnit::SetUnitOrderTypeAndOwnerIndex(int nOrderType, short nTargetTileIndex)
 
 {
   short anOrderDurationByType [14];
@@ -124,7 +123,7 @@ TCivUnit::SetUnitOrderTypeAndOwnerIndex(TCivUnit *this,int nOrderType,short nTar
    - Productive orders persist multi-turn until countdown completion.
    - Sleep persists across turns by explicit bypass path. */
 
-void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *pCivUnitOrderState)
+void TCivUnit::NormalizeUnitOrderStateAfterLoad(int *pCivUnitOrderState)
 
 {
                     /* Order type 2 (Sleep) bypasses rollover clear and remains active. */
@@ -182,7 +181,7 @@ void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *p
    Returns:
    - void. */
 
-void __thiscall TCivUnit::DeserializeUnitOrderCoreState(TCivUnit *this,int *pArchiveStream)
+void TCivUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
 
 {
   TUnit::DeserializeUnitOrderCoreState((TUnit *)this,pArchiveStream);
@@ -221,7 +220,7 @@ void __thiscall TCivUnit::DeserializeUnitOrderCoreState(TCivUnit *this,int *pArc
    Returns:
    - void. */
 
-void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchiveStream)
+void TCivUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
 
 {
   TUnit::SerializeUnitOrderCoreState((TUnit *)this,pArchiveStream);
@@ -254,7 +253,7 @@ void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchi
    Persistence significance:
    - This controls when/where a unit becomes attached to a concrete map tile. */
 
-void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this,short param_1)
+void TCivUnit::OrphanRetStub_005c2610(short param_1)
 
 {
   undefined4 uVar1;
@@ -295,7 +294,7 @@ void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this,short param_1)
 // GHIDRA_NAME TCivUnit::OrphanRetStub_005c2470
 // GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2470(void)
 
-void __thiscall TCivUnit::OrphanRetStub_005c2470(TCivUnit *this)
+void TCivUnit::OrphanRetStub_005c2470()
 
 {
   (*this->vftable[5].GetTUnitClassNamePointer)(0xffffffff);
@@ -333,8 +332,7 @@ void __thiscall TCivUnit::OrphanRetStub_005c2470(TCivUnit *this)
    Returns:
    - void. */
 
-void __thiscall
-TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
+void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
 
 {
   TCivUnitVtbl *pTVar1;

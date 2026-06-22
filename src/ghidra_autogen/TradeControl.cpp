@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TCouncilView::OrphanRetStub_0059add0(void)
 
-void __thiscall TCouncilView::OrphanRetStub_0059add0(TradeControl *this)
+void TCouncilView::OrphanRetStub_0059add0()
 
 {
   TCouncilView::OrphanRetStub_0059add0((TCouncilView *)this);
@@ -23,7 +23,7 @@ void __thiscall TCouncilView::OrphanRetStub_0059add0(TradeControl *this)
 
 /* Setting prototype: bool LogUnhandledDialogMethodAndReturnFalse(void) */
 
-bool __thiscall TradeControl::LogUnhandledDialogMethodAndReturnFalse(TradeControl *this)
+bool TradeControl::LogUnhandledDialogMethodAndReturnFalse()
 
 {
   TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x58f);

@@ -39,8 +39,7 @@ TNoHilitePicture * TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
 // GHIDRA_NAME TTradeSchoolView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradeSchoolView::GetTEventHandlerClassNamePointer(TTradeSchoolView *this)
+CRuntimeClass * TTradeSchoolView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -50,8 +49,7 @@ TTradeSchoolView::GetTEventHandlerClassNamePointer(TTradeSchoolView *this)
 // GHIDRA_NAME TTradeSchoolView::ConstructTTradeSchoolViewBaseState
 // GHIDRA_PROTO undefined __thiscall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(void)
 
-TTradeSchoolView * __thiscall
-TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
+TTradeSchoolView * TTradeSchoolView::ConstructTTradeSchoolViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -66,8 +64,7 @@ TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
 // GHIDRA_NAME TTradeSchoolView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeSchoolView * __thiscall
-TTradeSchoolView::_scalar_deleting_destructor_(TTradeSchoolView *this,byte param_1)
+TTradeSchoolView * TTradeSchoolView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -105,8 +102,7 @@ TTradeSchoolView::_scalar_deleting_destructor_(TTradeSchoolView *this,byte param
    Returns:
    - void. */
 
-void __thiscall
-TTradeSchoolView::OrphanRetStub_004c6fd0(TTradeSchoolView *this,int *pCityViewDialog)
+void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
   TTradeSchoolViewVtbl *pTVar1;
@@ -353,7 +349,7 @@ TTradeSchoolView::OrphanRetStub_004c6fd0(TTradeSchoolView *this,int *pCityViewDi
 // GHIDRA_NAME TTradeSchoolView::OrphanRetStub_004c6fb0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
 
-void __thiscall TTradeSchoolView::OrphanRetStub_004c6fb0(TTradeSchoolView *this)
+void TTradeSchoolView::OrphanRetStub_004c6fb0()
 
 {
   uint uVar1;

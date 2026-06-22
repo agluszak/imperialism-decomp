@@ -62,7 +62,7 @@ TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
 // GHIDRA_NAME TGPCheater::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGPCheater * __thiscall TGPCheater::_scalar_deleting_destructor_(TGPCheater *this,byte param_1)
+TGPCheater * TGPCheater::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -76,7 +76,7 @@ TGPCheater * __thiscall TGPCheater::_scalar_deleting_destructor_(TGPCheater *thi
 // GHIDRA_NAME TGPCheater::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGPCheater::GetTEventHandlerClassNamePointer(TGPCheater *this)
+CRuntimeClass * TGPCheater::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

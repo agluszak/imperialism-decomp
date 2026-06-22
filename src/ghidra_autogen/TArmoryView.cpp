@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmoryView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmoryView *this)
+CRuntimeClass * TArmoryView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmory
 // GHIDRA_NAME TArmoryView::ConstructArmoryView
 // GHIDRA_PROTO undefined __thiscall ConstructArmoryView(void)
 
-TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
+TArmoryView * TArmoryView::ConstructArmoryView()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -31,7 +31,7 @@ TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
 // GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this,byte param_1)
+TArmoryView * TArmoryView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -70,7 +70,7 @@ TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *
    Returns:
    - void. */
 
-void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCityViewDialog)
+void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
   TArmoryView_slot_0x04_0x04 *pTVar1;
@@ -263,7 +263,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
    - refreshes numeric controls and invalidates the affected rect after successful step changes.
    - all other commands are delegated to HandleCityDialogToggleCommandOrForward. */
 
-void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this,int param_1,int param_2)
+void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TArmoryViewVtbl *pTVar1;
@@ -368,7 +368,7 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this,int param_
    Special Cases:
    - Mode 1 uses full workforce, mode 2 uses workforce/2, default uses workforce/4 before clamp. */
 
-void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCityViewDialog)
+void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 
 {
   TArmoryView_slot_0x04_0x04 *pTVar1;
@@ -521,7 +521,7 @@ LAB_004cfa43:
 // GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this)
+void TArmoryView::_scalar_deleting_destructor_()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);

@@ -17,7 +17,7 @@ undefined ** TMission::GetTMissionClassNamePointer(void)
 // GHIDRA_NAME TMission::ConstructTMission
 // GHIDRA_PROTO undefined __thiscall TMission::ConstructTMission(void)
 
-void __thiscall TMission::ConstructTMission(TMission *this)
+void TMission::ConstructTMission()
 
 {
   this[8] = (TMission)0x2;
@@ -31,7 +31,7 @@ void __thiscall TMission::ConstructTMission(TMission *this)
 // GHIDRA_NAME TMission::DeletingDestructTMission
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMission(byte param_1)
 
-TMission * __thiscall TMission::DeletingDestructTMission(TMission *this,byte param_1)
+TMission * TMission::DeletingDestructTMission(byte param_1)
 
 {
   TMission::DestructTMission(this);
@@ -45,7 +45,7 @@ TMission * __thiscall TMission::DeletingDestructTMission(TMission *this,byte par
 // GHIDRA_NAME TMission::DestructTMission
 // GHIDRA_PROTO undefined __thiscall TMission::DestructTMission(void)
 
-void __thiscall TMission::DestructTMission(TMission *this)
+void TMission::DestructTMission()
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -56,8 +56,7 @@ void __thiscall TMission::DestructTMission(TMission *this)
 // GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
 // GHIDRA_PROTO undefined __thiscall TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
 
-TMission * __thiscall
-TMission::ConstructTEscortMissionForPortContext(TMission *this,undefined4 param_1)
+TMission * TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
 
 {
   TMission::ConstructTMission(this);
@@ -134,7 +133,7 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
 // GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
 // GHIDRA_PROTO undefined __thiscall TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
-TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,undefined2 param_1)
+TMission * TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
 {
   undefined4 *puVar1;

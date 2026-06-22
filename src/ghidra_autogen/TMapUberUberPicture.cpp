@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMapUberUberPicture::OrphanRetStub_0045d2a0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
 
-void __thiscall TMapUberUberPicture::OrphanRetStub_0045d2a0(TMapUberUberPicture *this)
+void TMapUberUberPicture::OrphanRetStub_0045d2a0()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TMapUberUberPicture::OrphanRetStub_0045d2a0(TMapUberUberPicture 
 // GHIDRA_NAME TMapUberUberPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapUberUberPicture * __thiscall
-TMapUberUberPicture::_scalar_deleting_destructor_(TMapUberUberPicture *this,byte param_1)
+TMapUberUberPicture * TMapUberUberPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -62,8 +61,7 @@ TOffLimitsPicture * TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
 // GHIDRA_NAME TMapUberUberPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMapUberUberPicture::GetTEventHandlerClassNamePointer(TMapUberUberPicture *this)
+CRuntimeClass * TMapUberUberPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -73,7 +71,7 @@ TMapUberUberPicture::GetTEventHandlerClassNamePointer(TMapUberUberPicture *this)
 // GHIDRA_NAME TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberUberPicture *this)
+void TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920((TOffLimitsPicture *)this);
@@ -85,7 +83,7 @@ void __thiscall TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberUb
 // GHIDRA_NAME TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberUberPicture *this)
+void TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   g_pGlobalUiRootController[1].vftable = (TApplicationVtbl *)0x0;

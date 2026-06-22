@@ -39,7 +39,7 @@ TEventHandler * TAnimator::CreateTAnimatorInstance(void)
 // GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
+CRuntimeClass * TAnimator::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,7 +49,7 @@ CRuntimeClass * __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator
 // GHIDRA_NAME TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8
 // GHIDRA_PROTO undefined __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(void)
 
-TAnimator * __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(TAnimator *this)
+TAnimator * TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8()
 
 {
   TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
@@ -64,7 +64,7 @@ TAnimator * __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e
 // GHIDRA_NAME TAnimator::DestructTAnimatorAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTAnimatorAndMaybeFree(byte param_1)
 
-TAnimator * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte param_1)
+TAnimator * TAnimator::DestructTAnimatorAndMaybeFree(byte param_1)
 
 {
   DestructTAnimatorAndMaybeFree_Impl();
@@ -78,7 +78,7 @@ TAnimator * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,
 // GHIDRA_NAME TAnimator::OrphanCallChain_C2_I13_004a0c00
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I13_004a0c00(void)
 
-void __thiscall TAnimator::OrphanCallChain_C2_I13_004a0c00(TAnimator *this)
+void TAnimator::OrphanCallChain_C2_I13_004a0c00()
 
 {
   (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,1);
@@ -90,7 +90,7 @@ void __thiscall TAnimator::OrphanCallChain_C2_I13_004a0c00(TAnimator *this)
 // GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int param_1)
 
-uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int param_1)
+uint TAnimator::_scalar_deleting_destructor_(int param_1)
 
 {
   char cVar1;
@@ -125,7 +125,7 @@ uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int para
 // GHIDRA_NAME TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimator *this)
+void TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,0);
@@ -141,7 +141,7 @@ void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimato
 // GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this,int *param_1)
+void TAnimator::GetTEventHandlerClassNamePointer(int *param_1)
 
 {
   int iVar1;
@@ -160,7 +160,7 @@ void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this,int 
 // GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int *param_1)
+void TAnimator::_scalar_deleting_destructor_(int *param_1)
 
 {
   (**(code **)(*param_1 + 0x8c))(*(undefined4 *)&this->field_0x10);

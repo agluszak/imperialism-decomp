@@ -24,7 +24,7 @@ TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_NAME TNapoleonMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNapoleonMinister::GetTMinisterClassNamePointer(TNapoleonMinister *this)
+CRuntimeClass * TNapoleonMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,8 +34,7 @@ CRuntimeClass * __thiscall TNapoleonMinister::GetTMinisterClassNamePointer(TNapo
 // GHIDRA_NAME TNapoleonMinister::ConstructTNapoleonMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TNapoleonMinister::ConstructTNapoleonMinisterBaseState(void)
 
-TNapoleonMinister * __thiscall
-TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
+TNapoleonMinister * TNapoleonMinister::ConstructTNapoleonMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -48,8 +47,7 @@ TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)
 // GHIDRA_NAME TNapoleonMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TNapoleonMinister * __thiscall
-TNapoleonMinister::DeletingDestructTMinister(TNapoleonMinister *this,byte param_1)
+TNapoleonMinister * TNapoleonMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTNapoleonMinisterAndMaybeFree_Impl();

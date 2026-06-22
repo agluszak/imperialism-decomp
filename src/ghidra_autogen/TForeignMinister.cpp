@@ -7,8 +7,7 @@
 // GHIDRA_NAME TForeignMinister::ConstructTForeignMinister
 // GHIDRA_PROTO undefined __thiscall TForeignMinister::ConstructTForeignMinister(void)
 
-TForeignMinister * __thiscall
-TForeignMinister::ConstructTForeignMinister(TForeignMinister *this)
+TForeignMinister * TForeignMinister::ConstructTForeignMinister()
 
 {
   int iVar1;
@@ -36,7 +35,7 @@ TForeignMinister::ConstructTForeignMinister(TForeignMinister *this)
 // GHIDRA_NAME TForeignMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TForeignMinister::GetTMinisterClassNamePointer(TForeignMinister *this)
+CRuntimeClass * TForeignMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -46,7 +45,7 @@ CRuntimeClass * __thiscall TForeignMinister::GetTMinisterClassNamePointer(TForei
 // GHIDRA_NAME TForeignMinister::ConstructTForeignMinister
 // GHIDRA_PROTO undefined __thiscall ConstructTForeignMinister(void)
 
-TForeignMinister * __thiscall TForeignMinister::ConstructTForeignMinister(TForeignMinister *this)
+TForeignMinister * TForeignMinister::ConstructTForeignMinister()
 
 {
   int iVar1;
@@ -74,8 +73,7 @@ TForeignMinister * __thiscall TForeignMinister::ConstructTForeignMinister(TForei
 // GHIDRA_NAME TForeignMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TForeignMinister * __thiscall
-TForeignMinister::DeletingDestructTMinister(TForeignMinister *this,byte param_1)
+TForeignMinister * TForeignMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TForeignMinister::DestructTForeignMinister(this);
@@ -89,7 +87,7 @@ TForeignMinister::DeletingDestructTMinister(TForeignMinister *this,byte param_1)
 // GHIDRA_NAME TForeignMinister::DestructTForeignMinister
 // GHIDRA_PROTO undefined __thiscall TForeignMinister::DestructTForeignMinister(void)
 
-void __thiscall TForeignMinister::DestructTForeignMinister(TForeignMinister *this)
+void TForeignMinister::DestructTForeignMinister()
 
 {
   this->vftable =
@@ -101,7 +99,7 @@ void __thiscall TForeignMinister::DestructTForeignMinister(TForeignMinister *thi
 // GHIDRA_NAME TForeignMinister::InitializeForeignMinisterStateFlags
 // GHIDRA_PROTO undefined __thiscall InitializeForeignMinisterStateFlags(void)
 
-void __thiscall TForeignMinister::InitializeForeignMinisterStateFlags(TForeignMinister *this)
+void TForeignMinister::InitializeForeignMinisterStateFlags()
 
 {
   *(undefined4 *)&this->field_0x49 = 0x1010101;
@@ -132,7 +130,7 @@ TForeignMinister::AddToForeignMinisterCounterAtIndex
 // GHIDRA_NAME TForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister *this)
+void TForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   *(undefined2 *)&this->field_0x14 = 1;
@@ -157,7 +155,7 @@ TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets
 // GHIDRA_NAME TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TForeignMinister *this)
+void TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TIndexAndRankListVtbl *pTVar1;
@@ -256,7 +254,7 @@ LAB_0052f659:
 // GHIDRA_NAME TForeignMinister::SetForeignMinisterReadyFlag14
 // GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister *this)
+void TForeignMinister::SetForeignMinisterReadyFlag14()
 
 {
   TForeignMinisterVtbl *pTVar1;

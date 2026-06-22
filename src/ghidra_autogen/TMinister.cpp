@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
 // GHIDRA_PROTO undefined __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
-TMinister * __thiscall
-TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
 
 {
   TMinister::ConstructTMinister(this);
@@ -23,7 +22,7 @@ TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
-TMinister * __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+TMinister * TMinister::WrapperFor_thunk_ConstructTMinister_At004be840()
 
 {
   TMinister::ConstructTMinister(this);
@@ -38,7 +37,7 @@ TMinister * __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
 // GHIDRA_NAME TMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMinister::GetTMinisterClassNamePointer(TMinister *this)
+CRuntimeClass * TMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,7 +47,7 @@ CRuntimeClass * __thiscall TMinister::GetTMinisterClassNamePointer(TMinister *th
 // GHIDRA_NAME TMinister::ConstructTMinister
 // GHIDRA_PROTO undefined __thiscall TMinister::ConstructTMinister(void)
 
-void __thiscall TMinister::ConstructTMinister(TMinister *this)
+void TMinister::ConstructTMinister()
 
 {
   *(undefined2 *)&this->field_0xc = 0;
@@ -60,7 +59,7 @@ void __thiscall TMinister::ConstructTMinister(TMinister *this)
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this,byte param_1)
+TMinister * TMinister::DeletingDestructTMinister(byte param_1)
 
 {
   TMinister::DestructTMinister(this);
@@ -74,7 +73,7 @@ TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this,byte
 // GHIDRA_NAME TMinister::DestructTMinister
 // GHIDRA_PROTO undefined __thiscall TMinister::DestructTMinister(void)
 
-void __thiscall TMinister::DestructTMinister(TMinister *this)
+void TMinister::DestructTMinister()
 
 {
   this->vftable = (TMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -85,7 +84,7 @@ void __thiscall TMinister::DestructTMinister(TMinister *this)
 // GHIDRA_NAME TMinister::DeserializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
+void TMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
   TObject::ReadFrom((TMapDialog *)this);
@@ -97,7 +96,7 @@ void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *t
 // GHIDRA_NAME TMinister::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
-void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
+void TMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
   TObject::WriteTo((TArmyPlayer *)this);
@@ -109,7 +108,7 @@ void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *thi
 // GHIDRA_NAME TMinister::DispatchNationStateEventCode10
 // GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(short param_1)
 
-void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this,short param_1)
+void TMinister::DispatchNationStateEventCode10(short param_1)
 
 {
   (*g_apNationStates[param_1]->vftable[0xf].GetTCountryClassNamePointer)(0x10);
@@ -120,7 +119,7 @@ void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this,short 
 // GHIDRA_NAME TMinister::NoOpForeignMinisterUtilityStub
 // GHIDRA_PROTO undefined __thiscall NoOpForeignMinisterUtilityStub(void)
 
-void __thiscall TMinister::NoOpForeignMinisterUtilityStub(TMinister *this)
+void TMinister::NoOpForeignMinisterUtilityStub()
 
 {
   return;

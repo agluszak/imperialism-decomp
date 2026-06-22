@@ -37,7 +37,7 @@ TStaticText * TNoHiliteText::CreateTNoHiliteTextInstance(void)
 // GHIDRA_NAME TNoHiliteText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNoHiliteText::GetTEventHandlerClassNamePointer(TNoHiliteText *this)
+CRuntimeClass * TNoHiliteText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -67,7 +67,7 @@ CRuntimeClass * __thiscall TNoHiliteText::GetTEventHandlerClassNamePointer(TNoHi
    Returns:
    - this pointer. */
 
-TNoHiliteText * __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHiliteText *this)
+TNoHiliteText * TNoHiliteText::ConstructUiStatusListTextEntry()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -79,8 +79,7 @@ TNoHiliteText * __thiscall TNoHiliteText::ConstructUiStatusListTextEntry(TNoHili
 // GHIDRA_NAME TNoHiliteText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNoHiliteText * __thiscall
-TNoHiliteText::_scalar_deleting_destructor_(TNoHiliteText *this,byte param_1)
+TNoHiliteText * TNoHiliteText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);

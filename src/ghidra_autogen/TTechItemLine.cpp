@@ -37,7 +37,7 @@ TLineData * TTechItemLine::CreateTTechItemLineInstance(void)
 // GHIDRA_NAME TTechItemLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTechItemLine::GetTLineDataClassNamePointer(TTechItemLine *this)
+CRuntimeClass * TTechItemLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TTechItemLine::GetTLineDataClassNamePointer(TTechItem
 // GHIDRA_NAME TTechItemLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall TTechItemLine::OrphanRetStub_0056f460(TTechItemLine *this)
+void TTechItemLine::OrphanRetStub_0056f460()
 
 {
   TTechItemView *this_00;

@@ -38,7 +38,7 @@ thunk_TPictureButton * THelpPicture::CreateTHelpPictureInstance(void)
 // GHIDRA_NAME THelpPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall THelpPicture::GetTEventHandlerClassNamePointer(THelpPicture *this)
+CRuntimeClass * THelpPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -54,7 +54,7 @@ CRuntimeClass * __thiscall THelpPicture::GetTEventHandlerClassNamePointer(THelpP
 /* Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable
    PTR_LAB_00657080 and clearing two dword fields. */
 
-THelpPicture * __thiscall THelpPicture::ConstructPictureResourceEntryType57080(THelpPicture *this)
+THelpPicture * THelpPicture::ConstructPictureResourceEntryType57080()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -68,8 +68,7 @@ THelpPicture * __thiscall THelpPicture::ConstructPictureResourceEntryType57080(T
 // GHIDRA_NAME THelpPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpPicture * __thiscall
-THelpPicture::_scalar_deleting_destructor_(THelpPicture *this,byte param_1)
+THelpPicture * THelpPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -83,7 +82,7 @@ THelpPicture::_scalar_deleting_destructor_(THelpPicture *this,byte param_1)
 // GHIDRA_NAME THelpPicture::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this)
+void THelpPicture::OrphanCallChain_C6_I49_004875d0()
 
 {
   undefined4 uVar1;
@@ -162,7 +161,7 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
 // GHIDRA_NAME THelpPicture::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall THelpPicture::OrphanRetStub_0059add0(THelpPicture *this,int param_1,int param_2)
+void THelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   uint uVar1;
@@ -223,7 +222,7 @@ void __thiscall THelpPicture::OrphanRetStub_0059add0(THelpPicture *this,int para
 // GHIDRA_NAME THelpPicture::OrphanCallChain_C2_I34_00504120
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I34_00504120(void)
 
-void __thiscall THelpPicture::OrphanCallChain_C2_I34_00504120(THelpPicture *this)
+void THelpPicture::OrphanCallChain_C2_I34_00504120()
 
 {
   short sVar1;
@@ -254,7 +253,7 @@ void __thiscall THelpPicture::OrphanCallChain_C2_I34_00504120(THelpPicture *this
 // GHIDRA_NAME THelpPicture::OrphanCallChain_C2_I34_005041a0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I34_005041a0(void)
 
-void __thiscall THelpPicture::OrphanCallChain_C2_I34_005041a0(THelpPicture *this)
+void THelpPicture::OrphanCallChain_C2_I34_005041a0()
 
 {
   short sVar1;
@@ -285,7 +284,7 @@ void __thiscall THelpPicture::OrphanCallChain_C2_I34_005041a0(THelpPicture *this
 // GHIDRA_NAME THelpPicture::RefreshHelpSubjectListControlsWithPrevNext
 // GHIDRA_PROTO undefined __thiscall RefreshHelpSubjectListControlsWithPrevNext(void)
 
-void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPicture *this)
+void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
 
 {
   THelpPicture_slot_0x04_0x04 *pTVar1;

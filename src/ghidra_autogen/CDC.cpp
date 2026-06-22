@@ -7,7 +7,7 @@
 // GHIDRA_NAME CDC::CDC
 // GHIDRA_PROTO undefined __thiscall CDC(void)
 
-void __thiscall CDC::CDC(CDC *this)
+void CDC::CDC()
 
 {
   (this->cobject).vftable = (CObjectVtbl *)&_vftable_;

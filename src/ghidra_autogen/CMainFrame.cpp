@@ -19,7 +19,7 @@
    dispatch to main window.
    Returns 1 on successful startup, 0 on failure path. */
 
-undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
+undefined4 CMainFrame::OnEndPrintPreview()
 
 {
   CMainFrame *pCVar1;
@@ -250,8 +250,7 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
 // GHIDRA_NAME CMainFrame::AdjustWindowRectForClientAndScrollStyles
 // GHIDRA_PROTO undefined __thiscall AdjustWindowRectForClientAndScrollStyles(byte param_1)
 
-CMainFrame * __thiscall
-CMainFrame::AdjustWindowRectForClientAndScrollStyles(CMainFrame *this,byte param_1)
+CMainFrame * CMainFrame::AdjustWindowRectForClientAndScrollStyles(byte param_1)
 
 {
   TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
@@ -266,7 +265,7 @@ CMainFrame::AdjustWindowRectForClientAndScrollStyles(CMainFrame *this,byte param
 // GHIDRA_NAME CMainFrame::DispatchVirtualSlotF8_WithArg
 // GHIDRA_PROTO undefined __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(void)
 
-void __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(CMainFrame *this)
+void CMainFrame::DispatchVirtualSlotF8_WithArg()
 
 {
   return;
@@ -276,7 +275,7 @@ void __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(CMainFrame *this)
 // GHIDRA_NAME CMainFrame::OnEndPrintPreview
 // GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(undefined4 param_1)
 
-void __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this,undefined4 param_1)
+void CMainFrame::OnEndPrintPreview(undefined4 param_1)
 
 {
   undefined4 *puVar1;
@@ -293,7 +292,7 @@ void __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this,undefined4 param_
 // GHIDRA_NAME CMainFrame::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
-undefined4 * __thiscall CMainFrame::UpdateControlCachedIntFromWindowText(CMainFrame *this)
+undefined4 * CMainFrame::UpdateControlCachedIntFromWindowText()
 
 {
   undefined4 *puVar1;
@@ -318,7 +317,7 @@ undefined4 * __thiscall CMainFrame::UpdateControlCachedIntFromWindowText(CMainFr
 // GHIDRA_NAME CMainFrame::ConstructModuleLibraryCacheDualTableState
 // GHIDRA_PROTO undefined __thiscall ConstructModuleLibraryCacheDualTableState(void)
 
-void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame *this)
+void CMainFrame::ConstructModuleLibraryCacheDualTableState()
 
 {
   this->vftable = (CMainFrameVtbl *)0x0;
@@ -361,8 +360,7 @@ void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame
    - On failure, builds and shows a formatted missing-file error message.
    Returns nonzero if slot module handle is valid. */
 
-bool __thiscall
-CMainFrame::LoadModuleLibrarySlotWithErrorDialog(CMainFrame *this,LPCSTR param_1,CString param_2)
+bool CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
 
 {
   int iVar1;

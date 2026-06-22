@@ -84,7 +84,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,
 // GHIDRA_NAME ObjectPool::RemoveNode
 // GHIDRA_PROTO void __thiscall ObjectPool::RemoveNode(int self)
 
-void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
+void ObjectPool::RemoveNode(int self)
 
 {
   int *list_head;
@@ -205,7 +205,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 /* Setting prototype: void* FindMapOrderChildNodeById(int nChildNodeId) */
 
-void * __thiscall ObjectPool::FindMissionOrderNodeById(ObjectPool *this,int nChildNodeId)
+void * ObjectPool::FindMissionOrderNodeById(int nChildNodeId)
 
 {
   while( true ) {

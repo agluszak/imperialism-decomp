@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNavyMgr::ConstructNavyManager
 // GHIDRA_PROTO undefined __thiscall TNavyMgr::ConstructNavyManager(void)
 
-void __thiscall TNavyMgr::ConstructNavyManager(TNavyMgr *this)
+void TNavyMgr::ConstructNavyManager()
 
 {
   this->vftable = &TNavyMgrVtbl_0065c4c8;

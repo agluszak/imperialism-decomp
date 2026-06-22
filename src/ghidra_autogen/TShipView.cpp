@@ -7,7 +7,7 @@
 // GHIDRA_NAME TShipView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this,byte param_1)
+TShipView * TShipView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -51,7 +51,7 @@ TView * TShipView::CreateTShipViewInstance(void)
 // GHIDRA_NAME TShipView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TShipView::GetTEventHandlerClassNamePointer(TShipView *this)
+CRuntimeClass * TShipView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -61,7 +61,7 @@ CRuntimeClass * __thiscall TShipView::GetTEventHandlerClassNamePointer(TShipView
 // GHIDRA_NAME TShipView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
+void TShipView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -172,8 +172,7 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
 // GHIDRA_NAME TShipView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefined4 param_3)
 
-void __thiscall
-TShipView::OrphanRetStub_0059add0(TShipView *this,undefined4 param_1,int param_2,undefined4 param_3)
+void TShipView::OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefined4 param_3)
 
 {
   int *piVar1;

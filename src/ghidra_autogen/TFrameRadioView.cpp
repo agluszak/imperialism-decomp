@@ -7,8 +7,7 @@
 // GHIDRA_NAME TFrameRadioView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFrameRadioView * __thiscall
-TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1)
+TFrameRadioView * TFrameRadioView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,7 +21,7 @@ TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1
 // GHIDRA_NAME TFrameRadioView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TFrameRadioView::GetTEventHandlerClassNamePointer(TFrameRadioView *this)
+CRuntimeClass * TFrameRadioView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TFrameRadioView::GetTEventHandlerClassNamePointer(TFr
 // GHIDRA_NAME TFrameRadioView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TFrameRadioView::OrphanTiny_ReturnZero_0048a730(TFrameRadioView *this)
+void TFrameRadioView::OrphanTiny_ReturnZero_0048a730()
 
 {
   tagRECT tStack_10;
@@ -55,7 +54,7 @@ void __thiscall TFrameRadioView::OrphanTiny_ReturnZero_0048a730(TFrameRadioView 
 // GHIDRA_NAME TFrameRadioView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,int param_1)
+void TFrameRadioView::OrphanRetStub_0059add0(int param_1)
 
 {
   TFrameRadioViewVtbl *pTVar1;
@@ -101,8 +100,7 @@ void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,in
 // GHIDRA_NAME TFrameRadioView::OrphanCallChain_C2_I18_004fe190
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_004fe190(char param_1, char param_2)
 
-void __thiscall
-TFrameRadioView::OrphanCallChain_C2_I18_004fe190(TFrameRadioView *this,char param_1,char param_2)
+void TFrameRadioView::OrphanCallChain_C2_I18_004fe190(char param_1, char param_2)
 
 {
   TFrameRadioViewVtbl *pTVar1;

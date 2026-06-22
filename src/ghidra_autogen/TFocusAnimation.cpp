@@ -7,8 +7,7 @@
 // GHIDRA_NAME TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a0050(byte param_1)
 
-TFocusAnimation * __thiscall
-TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *this,byte param_1)
+TFocusAnimation * TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(byte param_1)
 
 {
   TFocusAnimation::CreateTFocusAnimationInstance(this);
@@ -22,7 +21,7 @@ TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *
 // GHIDRA_NAME TFocusAnimation::CreateTFocusAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TFocusAnimation::CreateTFocusAnimationInstance(void)
 
-void __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation *this)
+void TFocusAnimation::CreateTFocusAnimationInstance()
 
 {
   this->vftable = (TFocusAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -34,7 +33,7 @@ void __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation *
 // GHIDRA_NAME TFocusAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TFocusAnimation::GetTAnimationClassNamePointer(TFocusAnimation *this)
+CRuntimeClass * TFocusAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -44,7 +43,7 @@ CRuntimeClass * __thiscall TFocusAnimation::GetTAnimationClassNamePointer(TFocus
 // GHIDRA_NAME TFocusAnimation::ConstructTFocusAnimationBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTFocusAnimationBaseState(void)
 
-void __thiscall TFocusAnimation::ConstructTFocusAnimationBaseState(TFocusAnimation *this)
+void TFocusAnimation::ConstructTFocusAnimationBaseState()
 
 {
   int iVar1;
@@ -66,7 +65,7 @@ void __thiscall TFocusAnimation::ConstructTFocusAnimationBaseState(TFocusAnimati
 // GHIDRA_NAME TFocusAnimation::DestructTFocusAnimationAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTFocusAnimationAndMaybeFree(void)
 
-void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnimation *this)
+void TFocusAnimation::DestructTFocusAnimationAndMaybeFree()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -99,7 +98,7 @@ void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnima
 // GHIDRA_NAME TFocusAnimation::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
 
-void __thiscall TFocusAnimation::RenderBattleReportInsetWithPaletteShift(TFocusAnimation *this)
+void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
 {
   TFocusAnimationVtbl *pTVar1;
@@ -114,8 +113,7 @@ void __thiscall TFocusAnimation::RenderBattleReportInsetWithPaletteShift(TFocusA
 // GHIDRA_NAME TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(void)
 
-void __thiscall
-TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280(TFocusAnimation *this)
+void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280()
 
 {
   int iVar1;

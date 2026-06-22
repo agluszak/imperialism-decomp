@@ -7,7 +7,7 @@
 // GHIDRA_NAME TMinor::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMinor::GetTCountryClassNamePointer(TMinor *this)
+CRuntimeClass * TMinor::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -51,7 +51,7 @@ undefined4 * TMinor::CreateTMinorInstance(void)
 // GHIDRA_NAME TMinor::GetTCountryClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMinor::GetTCountryClassNamePointer(TMinor *this)
+CRuntimeClass * TMinor::GetTCountryClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -61,7 +61,7 @@ CRuntimeClass * __thiscall TMinor::GetTCountryClassNamePointer(TMinor *this)
 // GHIDRA_NAME TMinor::TMinor
 // GHIDRA_PROTO undefined __thiscall TMinor::TMinor(void)
 
-TMinor * __thiscall TMinor::TMinor(TMinor *this)
+TMinor * TMinor::TMinor()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -86,7 +86,7 @@ TMinor * __thiscall TMinor::TMinor(TMinor *this)
 // GHIDRA_NAME TMinor::DeserializeRecruitScenarioAndInstantiateOrders
 // GHIDRA_PROTO undefined __thiscall TMinor::DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
 
-void __thiscall TMinor::DeserializeRecruitScenarioAndInstantiateOrders(TMinor *this,int *param_1)
+void TMinor::DeserializeRecruitScenarioAndInstantiateOrders(int *param_1)
 
 {
   undefined1 uVar1;
@@ -167,7 +167,7 @@ void __thiscall TMinor::DeserializeRecruitScenarioAndInstantiateOrders(TMinor *t
 // GHIDRA_NAME TMinor::ReturnFalseNationStateCapabilityFlag90
 // GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag90(short param_1)
 
-undefined1 __thiscall TMinor::ReturnFalseNationStateCapabilityFlag90(TMinor *this,short param_1)
+undefined1 TMinor::ReturnFalseNationStateCapabilityFlag90(short param_1)
 
 {
   undefined1 uVar1;
@@ -184,7 +184,7 @@ undefined1 __thiscall TMinor::ReturnFalseNationStateCapabilityFlag90(TMinor *thi
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7ee0(short param_1)
 
-short __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0(TMinor *this,short param_1)
+short TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0(short param_1)
 
 {
   short sVar1;
@@ -200,7 +200,7 @@ short __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0(TMinor *this,short par
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins02_004d7f20
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7f20(short param_1)
 
-undefined4 __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7f20(TMinor *this,short param_1)
+undefined4 TMinor::OrphanLeaf_NoCall_Ins02_004d7f20(short param_1)
 
 {
   return CONCAT22(param_1 >> 0xf,*(undefined2 *)(&this->field_0x94 + param_1 * 2));
@@ -210,7 +210,7 @@ undefined4 __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7f20(TMinor *this,shor
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins02_004d7f40
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7f40(short param_1)
 
-undefined4 __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7f40(TMinor *this,short param_1)
+undefined4 TMinor::OrphanLeaf_NoCall_Ins02_004d7f40(short param_1)
 
 {
   return CONCAT22(param_1 >> 0xf,*(undefined2 *)(&this->field_0xc2 + param_1 * 2));
@@ -220,7 +220,7 @@ undefined4 __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7f40(TMinor *this,shor
 // GHIDRA_NAME TMinor::OrphanRetStub_004d7fa0
 // GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7fa0(undefined4 param_1, short param_2)
 
-void __thiscall TMinor::OrphanRetStub_004d7fa0(TMinor *this,undefined4 param_1,short param_2)
+void TMinor::OrphanRetStub_004d7fa0(undefined4 param_1, short param_2)
 
 {
   undefined2 uVar1;
@@ -279,7 +279,7 @@ void __thiscall TMinor::OrphanRetStub_004d7fa0(TMinor *this,undefined4 param_1,s
 // GHIDRA_NAME TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void)
 
-void __thiscall TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(TMinor *this)
+void TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0()
 
 {
   short sVar1;
@@ -413,7 +413,7 @@ LAB_004e4d5e:
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004d7fc0(short param_1)
 
-bool __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0(TMinor *this,short param_1)
+bool TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0(short param_1)
 
 {
   short sVar1;
@@ -434,8 +434,7 @@ bool __thiscall TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0(TMinor *this,short para
 // GHIDRA_NAME TMinor::ReturnFalseNationStateActionStub
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 param_2)
 
-int __thiscall
-TMinor::ReturnFalseNationStateActionStub(TMinor *this,undefined4 param_1,undefined4 param_2)
+int TMinor::ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 param_2)
 
 {
   char cVar1;
@@ -459,7 +458,7 @@ TMinor::ReturnFalseNationStateActionStub(TMinor *this,undefined4 param_1,undefin
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(short param_1, short param_2)
 
-void __thiscall TMinor::OrphanLeaf_NoCall_Ins07_004d8920(TMinor *this,short param_1,short param_2)
+void TMinor::OrphanLeaf_NoCall_Ins07_004d8920(short param_1, short param_2)
 
 {
   if (param_1 != *(short *)&this->field_0xc) {
@@ -475,8 +474,7 @@ void __thiscall TMinor::OrphanLeaf_NoCall_Ins07_004d8920(TMinor *this,short para
 // GHIDRA_NAME TMinor::CanInitiateJoinEmpireProposalToTarget
 // GHIDRA_PROTO undefined __thiscall TMinor::CanInitiateJoinEmpireProposalToTarget(short param_1, short param_2)
 
-undefined1 __thiscall
-TMinor::CanInitiateJoinEmpireProposalToTarget(TMinor *this,short param_1,short param_2)
+undefined1 TMinor::CanInitiateJoinEmpireProposalToTarget(short param_1, short param_2)
 
 {
   uint uVar1;
@@ -516,7 +514,7 @@ TMinor::CanInitiateJoinEmpireProposalToTarget(TMinor *this,short param_1,short p
 // GHIDRA_NAME TMinor::OrphanRetStub_004d7fe0
 // GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7fe0(short param_1, int param_2)
 
-void __thiscall TMinor::OrphanRetStub_004d7fe0(TMinor *this,short param_1,int param_2)
+void TMinor::OrphanRetStub_004d7fe0(short param_1, int param_2)
 
 {
   undefined uVar1;
@@ -603,7 +601,7 @@ void __thiscall TMinor::OrphanRetStub_004d7fe0(TMinor *this,short param_1,int pa
 // GHIDRA_NAME TMinor::OrphanRetStub_004d7f80
 // GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7f80(short param_1)
 
-void __thiscall TMinor::OrphanRetStub_004d7f80(TMinor *this,short param_1)
+void TMinor::OrphanRetStub_004d7f80(short param_1)
 
 {
   TMinorVtbl *pTVar1;
@@ -621,8 +619,7 @@ void __thiscall TMinor::OrphanRetStub_004d7f80(TMinor *this,short param_1)
 // GHIDRA_NAME TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
 // GHIDRA_PROTO undefined __thiscall TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(short param_1)
 
-void __thiscall
-TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(TMinor *this,short param_1)
+void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(short param_1)
 
 {
   int *piVar1;
@@ -805,7 +802,7 @@ TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(TMinor *this,short par
 // GHIDRA_NAME TMinor::ApplyJoinEmpireMode1TargetTransition
 // GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(int param_1)
 
-void __thiscall TMinor::ApplyJoinEmpireMode1TargetTransition(TMinor *this,int param_1)
+void TMinor::ApplyJoinEmpireMode1TargetTransition(int param_1)
 
 {
   TMinorVtbl *pTVar1;
@@ -889,7 +886,7 @@ void __thiscall TMinor::ApplyJoinEmpireMode1TargetTransition(TMinor *this,int pa
 // GHIDRA_NAME TMinor::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void __thiscall TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(TMinor *this)
+void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
   TMinorVtbl *pTVar1;
@@ -937,7 +934,7 @@ void __thiscall TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(TMinor *this
    - nProvinceId: province index, or -1 to clear activity overlays globally.
    Returns: void. */
 
-void __thiscall TMinor::ClearTileActivityOverlayByProvinceId(TMinor *this,int param_1)
+void TMinor::ClearTileActivityOverlayByProvinceId(int param_1)
 
 {
   short sVar1;
@@ -989,7 +986,7 @@ void __thiscall TMinor::ClearTileActivityOverlayByProvinceId(TMinor *this,int pa
 // GHIDRA_NAME TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells
 // GHIDRA_PROTO undefined __thiscall TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
 
-void __thiscall TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(TMinor *this,int param_1)
+void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int param_1)
 
 {
   TAutoGreatPower *this_00;
@@ -1056,8 +1053,7 @@ void __thiscall TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(TMinor 
    
    This function mutates queued unit-order targets during diplomacy/ownership transitions. */
 
-void __thiscall
-TMinor::ReassignUnitOrdersForCountryTargetChange(TMinor *this,short *param_1,char param_2)
+void TMinor::ReassignUnitOrdersForCountryTargetChange(short *param_1, char param_2)
 
 {
   TCountry *pTVar1;
@@ -1193,7 +1189,7 @@ TMinor::ReassignUnitOrdersForCountryTargetChange(TMinor *this,short *param_1,cha
 // GHIDRA_NAME TMinor::RemoveRegionIdFromNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::RemoveRegionIdFromNationOwnedRegionList(void)
 
-void __thiscall TMinor::RemoveRegionIdFromNationOwnedRegionList(TMinor *this)
+void TMinor::RemoveRegionIdFromNationOwnedRegionList()
 
 {
   TMinorVtbl *pTVar1;
@@ -1210,7 +1206,7 @@ void __thiscall TMinor::RemoveRegionIdFromNationOwnedRegionList(TMinor *this)
 // GHIDRA_NAME TMinor::AddRegionIdToNationOwnedRegionList
 // GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
-void __thiscall TMinor::AddRegionIdToNationOwnedRegionList(TMinor *this)
+void TMinor::AddRegionIdToNationOwnedRegionList()
 
 {
   (**(code **)(**(int **)&this->field_0x90 + 0x14))();
@@ -1242,7 +1238,7 @@ void __thiscall TMinor::AddRegionIdToNationOwnedRegionList(TMinor *this)
    
    Used during country ownership/order-manager transitions. */
 
-void __thiscall TMinor::GetTCountryClassNamePointer(TMinor *this,int param_1)
+void TMinor::GetTCountryClassNamePointer(int param_1)
 
 {
   TAutoGreatPower *this_00;
@@ -1275,7 +1271,7 @@ void __thiscall TMinor::GetTCountryClassNamePointer(TMinor *this,int param_1)
 // GHIDRA_NAME TMinor::ApplyJoinEmpireMode2FinalizeNationNameState
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
-void __thiscall TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(TMinor *this)
+void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState()
 
 {
   return;
@@ -1285,7 +1281,7 @@ void __thiscall TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(TMinor *this
 // GHIDRA_NAME TMinor::ApplyJoinEmpireModeForTargetNation
 // GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(byte param_1)
 
-TMinor * __thiscall TMinor::ApplyJoinEmpireModeForTargetNation(TMinor *this,byte param_1)
+TMinor * TMinor::ApplyJoinEmpireModeForTargetNation(byte param_1)
 
 {
   TTurnStartEvent::CreateTTurnStartEventInstance((TTurnStartEvent *)this);
@@ -1299,7 +1295,7 @@ TMinor * __thiscall TMinor::ApplyJoinEmpireModeForTargetNation(TMinor *this,byte
 // GHIDRA_NAME TMinor::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-CRuntimeClass * __thiscall TMinor::OrphanLeaf_NoCall_Ins07_004d8920(TMinor *this)
+CRuntimeClass * TMinor::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   return &TTurnStartEvent::classRuntimeClass;

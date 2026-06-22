@@ -38,8 +38,7 @@ thunk_TPictureButton * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(
 // GHIDRA_NAME TAlwaysPictureButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TAlwaysPictureButton::GetTEventHandlerClassNamePointer(TAlwaysPictureButton *this)
+CRuntimeClass * TAlwaysPictureButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTAlwaysPictureButton;
@@ -49,8 +48,7 @@ TAlwaysPictureButton::GetTEventHandlerClassNamePointer(TAlwaysPictureButton *thi
 // GHIDRA_NAME TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTAlwaysPictureButtonBaseState(void)
 
-TAlwaysPictureButton * __thiscall
-TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButton *this)
+TAlwaysPictureButton * TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -63,8 +61,7 @@ TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButto
 // GHIDRA_NAME TAlwaysPictureButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAlwaysPictureButton * __thiscall
-TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this,byte param_1)
+TAlwaysPictureButton * TAlwaysPictureButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -78,8 +75,7 @@ TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this,by
 // GHIDRA_NAME TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(char param_1)
 
-void __thiscall
-TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(TAlwaysPictureButton *this,char param_1)
+void TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
 
 {
   TAlwaysPictureButtonVtbl *pTVar1;

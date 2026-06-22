@@ -21,8 +21,7 @@ TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044f
 // GHIDRA_NAME TMultiMessagePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMultiMessagePicture * __thiscall
-TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,byte param_1)
+TMultiMessagePicture * TMultiMessagePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -36,8 +35,7 @@ TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,by
 // GHIDRA_NAME TMultiMessagePicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMultiMessagePicture::GetTEventHandlerClassNamePointer(TMultiMessagePicture *this)
+CRuntimeClass * TMultiMessagePicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;

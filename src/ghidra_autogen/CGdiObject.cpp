@@ -7,7 +7,7 @@
 // GHIDRA_NAME CGdiObject::~CGdiObject
 // GHIDRA_PROTO undefined __thiscall CGdiObject::~CGdiObject(void)
 
-void __thiscall CGdiObject::~CGdiObject(CGdiObject *this)
+void CGdiObject::~CGdiObject()
 
 {
   undefined4 *unaff_FS_OFFSET;

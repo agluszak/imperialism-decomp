@@ -37,8 +37,7 @@ TUberCluster * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 // GHIDRA_NAME TUnitToolbarCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TUnitToolbarCluster::GetTEventHandlerClassNamePointer(TUnitToolbarCluster *this)
+CRuntimeClass * TUnitToolbarCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTUnitToolbarCluster;
@@ -48,8 +47,7 @@ TUnitToolbarCluster::GetTEventHandlerClassNamePointer(TUnitToolbarCluster *this)
 // GHIDRA_NAME TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUnitToolbarClusterBaseState(void)
 
-TUnitToolbarCluster * __thiscall
-TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *this)
+TUnitToolbarCluster * TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -61,8 +59,7 @@ TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *
 // GHIDRA_NAME TUnitToolbarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnitToolbarCluster * __thiscall
-TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this,byte param_1)
+TUnitToolbarCluster * TUnitToolbarCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -104,8 +101,7 @@ TUnitToolbarCluster::OrphanRetStub_0059add0
 // GHIDRA_NAME TUnitToolbarCluster::OrphanVtableAssignStub_005714e0
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-undefined1 __thiscall
-TUnitToolbarCluster::OrphanVtableAssignStub_005714e0(TUnitToolbarCluster *this)
+undefined1 TUnitToolbarCluster::OrphanVtableAssignStub_005714e0()
 
 {
   return 1;
@@ -115,8 +111,7 @@ TUnitToolbarCluster::OrphanVtableAssignStub_005714e0(TUnitToolbarCluster *this)
 // GHIDRA_NAME TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(int param_1)
 
-void __thiscall
-TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this,int param_1)
+void TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
 
 {
   undefined uVar1;

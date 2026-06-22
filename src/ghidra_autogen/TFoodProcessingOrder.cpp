@@ -7,8 +7,7 @@
 // GHIDRA_NAME TFoodProcessingOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TFoodProcessingOrder::GetTProductionOrderClassNamePointer(TFoodProcessingOrder *this)
+CRuntimeClass * TFoodProcessingOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,8 +33,7 @@ TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
 // GHIDRA_NAME TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(void)
 
-void __thiscall
-TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
+void TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree()
 
 {
   this->vftable =
@@ -75,7 +73,7 @@ TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
 // GHIDRA_NAME TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TFoodProcessingOrder *this)
+int TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   int iVar1;
@@ -104,8 +102,7 @@ int __thiscall TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TFoodProce
 // GHIDRA_NAME TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(ushort param_1)
 
-undefined4 __thiscall
-TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(TFoodProcessingOrder *this,ushort param_1)
+undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
 
 {
   short *psVar1;
@@ -163,7 +160,7 @@ TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(TFoodProcessingOrder *this
 // GHIDRA_NAME TFoodProcessingOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TFoodProcessingOrder::OrphanRetStub_004b5160(TFoodProcessingOrder *this)
+void TFoodProcessingOrder::OrphanRetStub_004b5160()
 
 {
   int *piVar1;
@@ -182,7 +179,7 @@ void __thiscall TFoodProcessingOrder::OrphanRetStub_004b5160(TFoodProcessingOrde
 // GHIDRA_NAME TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
-void __thiscall TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(TFoodProcessingOrder *this)
+void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop()
 
 {
   return;

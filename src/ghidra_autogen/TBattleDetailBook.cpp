@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBattleDetailBook::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleDetailBook * __thiscall
-TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this,byte param_1)
+TBattleDetailBook * TBattleDetailBook::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -53,8 +52,7 @@ thunk_TPictureButton * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
 // GHIDRA_NAME TBattleDetailBook::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBattleDetailBook::GetTEventHandlerClassNamePointer(TBattleDetailBook *this)
+CRuntimeClass * TBattleDetailBook::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -64,8 +62,7 @@ TBattleDetailBook::GetTEventHandlerClassNamePointer(TBattleDetailBook *this)
 // GHIDRA_NAME TBattleDetailBook::OrphanCallChain_C1_I05_00415050
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00415050(int param_1, int param_2)
 
-void __thiscall
-TBattleDetailBook::OrphanCallChain_C1_I05_00415050(TBattleDetailBook *this,int param_1,int param_2)
+void TBattleDetailBook::OrphanCallChain_C1_I05_00415050(int param_1, int param_2)
 
 {
   undefined uVar1;

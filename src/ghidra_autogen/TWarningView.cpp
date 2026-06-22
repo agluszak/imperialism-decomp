@@ -40,7 +40,7 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarnin
 // GHIDRA_NAME TWarningView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TWarningView::GetTEventHandlerClassNamePointer(TWarningView *this)
+CRuntimeClass * TWarningView::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTWarningView;
@@ -65,8 +65,7 @@ _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWa
 // GHIDRA_NAME TWarningView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWarningView * __thiscall
-TWarningView::_scalar_deleting_destructor_(TWarningView *this,byte param_1)
+TWarningView * TWarningView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -124,7 +123,7 @@ switchD_0059299f_default:
 // GHIDRA_NAME TWarningView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *this)
+void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   code *pcVar1;

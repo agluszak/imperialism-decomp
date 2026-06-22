@@ -28,7 +28,7 @@
    Returns:
    - this pointer. */
 
-TDeluxeText * __thiscall TDeluxeText::ConstructUiColorTextResourceEntry(TDeluxeText *this)
+TDeluxeText * TDeluxeText::ConstructUiColorTextResourceEntry()
 
 {
   TStaticText::TStaticText((TStaticText *)this);
@@ -50,7 +50,7 @@ TDeluxeText * __thiscall TDeluxeText::ConstructUiColorTextResourceEntry(TDeluxeT
 // GHIDRA_NAME TDeluxeText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDeluxeText * __thiscall TDeluxeText::_scalar_deleting_destructor_(TDeluxeText *this,byte param_1)
+TDeluxeText * TDeluxeText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText((TStaticText *)this);
@@ -81,8 +81,7 @@ TDeluxeText * __thiscall TDeluxeText::_scalar_deleting_destructor_(TDeluxeText *
    4) Include special infrastructure blocks (fort/rail/port) when applicable.
    5) Attach cancel/close control and finalize layout. */
 
-void __thiscall
-TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSlotId)
+void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
 
 {
   undefined1 *puVar1;
@@ -603,7 +602,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
    Returns:
    - char* pointer to allocated influence map (caller frees via FUN_00606faf). */
 
-char * __thiscall TDeluxeText::BuildCityInfluenceLevelMap(TDeluxeText *this)
+char * TDeluxeText::BuildCityInfluenceLevelMap()
 
 {
   char *pcVar1;
@@ -688,7 +687,7 @@ char * __thiscall TDeluxeText::BuildCityInfluenceLevelMap(TDeluxeText *this)
    Returns:
    - char boolean: non-zero when port construction is allowed. */
 
-char __thiscall TDeluxeText::CanBuildPortAtTile(TDeluxeText *this,int nTileIndex)
+char TDeluxeText::CanBuildPortAtTile(int nTileIndex)
 
 {
   char *pcVar1;
@@ -798,7 +797,7 @@ char __thiscall TDeluxeText::CanBuildPortAtTile(TDeluxeText *this,int nTileIndex
    Returns:
    - char level in range 1..3. */
 
-char __thiscall TDeluxeText::GetNationFortLevelCap(TDeluxeText *this,int nNationId)
+char TDeluxeText::GetNationFortLevelCap(int nNationId)
 
 {
   if ((&this[3].field_0x92)[nNationId * 0x1d] != '\0') {
@@ -850,7 +849,7 @@ TStaticText * TDeluxeText::CreateTDeluxeTextInstance(void)
 // GHIDRA_NAME TDeluxeText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDeluxeText::GetTEventHandlerClassNamePointer(TDeluxeText *this)
+CRuntimeClass * TDeluxeText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -877,7 +876,7 @@ TDeluxeText::ConstructTDeluxeTextBaseState
 // GHIDRA_NAME TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920(TDeluxeText *this)
+void TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
@@ -890,7 +889,7 @@ void __thiscall TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920(TDeluxeText *this)
 // GHIDRA_NAME TDeluxeText::OrphanCallChain_C1_I08_005b60a0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_005b60a0(char param_1)
 
-void __thiscall TDeluxeText::OrphanCallChain_C1_I08_005b60a0(TDeluxeText *this,char param_1)
+void TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1)
 
 {
   this->field_0x94 = param_1;
@@ -902,8 +901,7 @@ void __thiscall TDeluxeText::OrphanCallChain_C1_I08_005b60a0(TDeluxeText *this,c
 // GHIDRA_NAME TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl
 // GHIDRA_PROTO undefined __thiscall TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
-void __thiscall
-TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *this,short param_1)
+void TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
 {
   undefined4 unaff_ESI;
@@ -936,7 +934,7 @@ TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *t
 // GHIDRA_NAME TDeluxeText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TDeluxeText::OrphanTiny_ReturnZero_0048a730(TDeluxeText *this)
+void TDeluxeText::OrphanTiny_ReturnZero_0048a730()
 
 {
   TDeluxeTextVtbl *pTVar1;
@@ -976,8 +974,7 @@ void __thiscall TDeluxeText::OrphanTiny_ReturnZero_0048a730(TDeluxeText *this)
 // GHIDRA_NAME TDeluxeText::ConstructTMapKeyBaseState_Impl
 // GHIDRA_PROTO undefined __thiscall TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
-void __thiscall
-TDeluxeText::ConstructTMapKeyBaseState_Impl(TDeluxeText *this,int param_1,undefined4 param_2)
+void TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
 {
   undefined4 uVar1;
@@ -994,8 +991,7 @@ TDeluxeText::ConstructTMapKeyBaseState_Impl(TDeluxeText *this,int param_1,undefi
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(void)
 
-void __thiscall
-TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(TDeluxeText *this)
+void TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0()
 
 {
   undefined4 uVar1;
@@ -1048,8 +1044,7 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
 // GHIDRA_NAME TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate
 // GHIDRA_PROTO undefined __thiscall TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
-undefined4 __thiscall
-TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this,char param_1)
+undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
 {
   short sVar1;
@@ -1120,8 +1115,7 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
 // GHIDRA_NAME TDeluxeText::BuildCityViewProductionControls_Impl
 // GHIDRA_PROTO undefined __thiscall TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
 
-void __thiscall
-TDeluxeText::BuildCityViewProductionControls_Impl(TDeluxeText *this,undefined4 param_1,int param_2)
+void TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
 
 {
   int *unaff_FS_OFFSET;

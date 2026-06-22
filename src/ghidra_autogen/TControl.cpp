@@ -23,8 +23,7 @@ TControl::LookupOrderCompatibilityMatrixValue
 // GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
-void __thiscall
-TMapDialog::OrphanTiny_ReturnZero_0048a730(TControl *this,undefined4 param_1)
+void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 {
   undefined uVar1;
@@ -174,7 +173,7 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_NAME TControl::TControl
 // GHIDRA_PROTO undefined __thiscall TControl::TControl(void)
 
-TControl * __thiscall TControl::TControl(TControl *this)
+TControl * TControl::TControl()
 
 {
   ushort uVar1;
@@ -262,7 +261,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
 // GHIDRA_NAME TControl::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined4 __thiscall TControl::OrphanCallChain_C11_I88_004874b0(TControl *this)
+undefined4 TControl::OrphanCallChain_C11_I88_004874b0()
 
 {
   TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x594);
@@ -273,8 +272,7 @@ undefined4 __thiscall TControl::OrphanCallChain_C11_I88_004874b0(TControl *this)
 // GHIDRA_NAME TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610
 // GHIDRA_PROTO undefined __thiscall TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(void)
 
-TControl * __thiscall
-TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(TControl *this)
+TControl * TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()
 
 {
   TControl::TControl(this);
@@ -290,7 +288,7 @@ TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610(TCo
 // GHIDRA_NAME TControl::InitializeDialogTemplateFAWithTextState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateFAWithTextState(void)
 
-TControl * __thiscall TControl::InitializeDialogTemplateFAWithTextState(TControl *this)
+TControl * TControl::InitializeDialogTemplateFAWithTextState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -323,7 +321,7 @@ TControl * __thiscall TControl::InitializeDialogTemplateFAWithTextState(TControl
 // GHIDRA_NAME TControl::InitializeDialogTemplateADWithTextState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateADWithTextState(void)
 
-TControl * __thiscall TControl::InitializeDialogTemplateADWithTextState(TControl *this)
+TControl * TControl::InitializeDialogTemplateADWithTextState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -356,7 +354,7 @@ TControl * __thiscall TControl::InitializeDialogTemplateADWithTextState(TControl
 // GHIDRA_NAME TControl::InitializeDialogTemplate104WithRegionState
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplate104WithRegionState(void)
 
-TControl * __thiscall TControl::InitializeDialogTemplate104WithRegionState(TControl *this)
+TControl * TControl::InitializeDialogTemplate104WithRegionState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -389,7 +387,7 @@ TControl * __thiscall TControl::InitializeDialogTemplate104WithRegionState(TCont
 // GHIDRA_NAME TControl::InitializeDialogTemplateA7WithSharedText
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateA7WithSharedText(void)
 
-TControl * __thiscall TControl::InitializeDialogTemplateA7WithSharedText(TControl *this)
+TControl * TControl::InitializeDialogTemplateA7WithSharedText()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -476,7 +474,7 @@ TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefine
 // GHIDRA_NAME TControl::InitializeDialogTemplateB1WithSharedText
 // GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateB1WithSharedText(void)
 
-TControl * __thiscall TControl::InitializeDialogTemplateB1WithSharedText(TControl *this)
+TControl * TControl::InitializeDialogTemplateB1WithSharedText()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -509,7 +507,7 @@ TControl * __thiscall TControl::InitializeDialogTemplateB1WithSharedText(TContro
 /* Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and
    label storage for dispatcher-created event packets. */
 
-TControl * __thiscall TControl::ConstructTurnEventUiEntryBase(TControl *this)
+TControl * TControl::ConstructTurnEventUiEntryBase()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -573,7 +571,7 @@ TControl * __thiscall TControl::ConstructTurnEventUiEntryBase(TControl *this)
    Returns:
    - this pointer. */
 
-TControl * __thiscall TControl::ConstructUiWindowResourceEntryBase(TControl *this)
+TControl * TControl::ConstructUiWindowResourceEntryBase()
 
 {
   int iVar1;
@@ -676,7 +674,7 @@ TView * TControl::CreateTControlInstance(void)
 // GHIDRA_NAME TControl::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TControl::GetTEventHandlerClassNamePointer(TControl *this)
+CRuntimeClass * TControl::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -693,7 +691,7 @@ CRuntimeClass * __thiscall TControl::GetTEventHandlerClassNamePointer(TControl *
    (e.g., map/load/quit/join/name/auto/curs/plat), indicating generic command-tag resource behavior.
     */
 
-TControl * __thiscall TControl::TControl(TControl *this)
+TControl * TControl::TControl()
 
 {
   ushort uVar1;
@@ -717,7 +715,7 @@ TControl * __thiscall TControl::TControl(TControl *this)
 // GHIDRA_NAME TControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TControl * __thiscall TControl::_scalar_deleting_destructor_(TControl *this,byte param_1)
+TControl * TControl::_scalar_deleting_destructor_(byte param_1)
 
 {
   TControl::DestructTControlBaseState(this);
@@ -783,8 +781,7 @@ TControl::SetCityProductionDialogPictureRectAndMaybeRefresh
 /* Setting prototype: void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)
     */
 
-void __thiscall
-TControl::SetControlStateFlagAndMaybeRefresh(TControl *this,bool fEnabledState,bool fRefreshNow)
+void TControl::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)
 
 {
   if ((fEnabledState != (bool)this->commandTagResourceByte) &&
@@ -798,7 +795,7 @@ TControl::SetControlStateFlagAndMaybeRefresh(TControl *this,bool fEnabledState,b
 // GHIDRA_NAME TControl::NoOpUiViewSlotHandler
 // GHIDRA_PROTO undefined __thiscall NoOpUiViewSlotHandler(void)
 
-void __thiscall TControl::NoOpUiViewSlotHandler(TControl *this)
+void TControl::NoOpUiViewSlotHandler()
 
 {
   return;
@@ -815,7 +812,7 @@ void __thiscall TControl::NoOpUiViewSlotHandler(TControl *this)
 /* Window-entry constructor over ConstructUiResourceEntryBase.
    Links node into global tracked-window list and installs vtable PTR_LAB_0064b340. */
 
-TControl * __thiscall TControl::ConstructUiWindowResourceEntryType4B340(TControl *this)
+TControl * TControl::ConstructUiWindowResourceEntryType4B340()
 
 {
   int iVar1;
@@ -879,7 +876,7 @@ TControl * __thiscall TControl::ConstructUiWindowResourceEntryType4B340(TControl
 // GHIDRA_NAME TControl::DestructTControlBaseState
 // GHIDRA_PROTO undefined __thiscall TControl::DestructTControlBaseState(void)
 
-void __thiscall TControl::DestructTControlBaseState(TControl *this)
+void TControl::DestructTControlBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -907,7 +904,7 @@ void __thiscall TControl::DestructTControlBaseState(TControl *this)
 // GHIDRA_NAME TControl::FinalizeModalDialogAndRestoreOwnerFocus
 // GHIDRA_PROTO undefined __thiscall TControl::FinalizeModalDialogAndRestoreOwnerFocus(void)
 
-undefined4 __thiscall TControl::FinalizeModalDialogAndRestoreOwnerFocus(TControl *this)
+undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
 
 {
   undefined4 uVar1;
@@ -1312,7 +1309,7 @@ TControl::OpenCityViewProductionDialog
    Returns:
    - void. Side-effects only: city entry order state and UI refresh. */
 
-void __thiscall TControl::ApplyCityProductionDialogChanges(TControl *this,int nDialogActionTag)
+void TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
 
 {
   TCity *this_00;
@@ -1381,7 +1378,7 @@ void __thiscall TControl::ApplyCityProductionDialogChanges(TControl *this,int nD
    3) Refresh slider-derived numeric displays and dependent icons.
    4) Update description/help text blocks for current building state. */
 
-void __thiscall TControl::RefreshCityViewProductionDetails(TControl *this,short nBuildingSlotId)
+void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
 
 {
   short sVar1;
@@ -1689,7 +1686,7 @@ void __thiscall TControl::RefreshCityViewProductionDetails(TControl *this,short 
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TControl *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
@@ -1700,7 +1697,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TControl *this)
 // GHIDRA_NAME TControl::DeleteCivilianMapInteractionManager
 // GHIDRA_PROTO undefined __thiscall DeleteCivilianMapInteractionManager(byte param_1)
 
-TControl * __thiscall TControl::DeleteCivilianMapInteractionManager(TControl *this,byte param_1)
+TControl * TControl::DeleteCivilianMapInteractionManager(byte param_1)
 
 {
   InitializeCivilianMapInteractionManagerBaseVtable();
@@ -1757,8 +1754,7 @@ TControl::LookupOrderCompatibilityMatrixValue
 // GHIDRA_NAME TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
 // GHIDRA_PROTO undefined __thiscall TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
 
-void __thiscall
-TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(TControl *this,short param_1)
+void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
 
 {
   TControlVtbl *pTVar1;
@@ -1958,7 +1954,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
 // GHIDRA_NAME TControl::RefreshOrderViewSupplyAndUseControlValues
 // GHIDRA_PROTO undefined __thiscall RefreshOrderViewSupplyAndUseControlValues(void)
 
-void __thiscall TControl::RefreshOrderViewSupplyAndUseControlValues(TControl *this)
+void TControl::RefreshOrderViewSupplyAndUseControlValues()
 
 {
   short sVar1;
@@ -2064,7 +2060,7 @@ void __thiscall TControl::RefreshOrderViewSupplyAndUseControlValues(TControl *th
 // GHIDRA_NAME TControl::RecomputeTownAdjacentTileYieldTotals
 // GHIDRA_PROTO undefined __thiscall RecomputeTownAdjacentTileYieldTotals(void)
 
-void __thiscall TControl::RecomputeTownAdjacentTileYieldTotals(TControl *this)
+void TControl::RecomputeTownAdjacentTileYieldTotals()
 
 {
   char *pcVar1;
@@ -2151,7 +2147,7 @@ void __thiscall TControl::RecomputeTownAdjacentTileYieldTotals(TControl *this)
 // GHIDRA_NAME TControl::UpdateSelectionRect
 // GHIDRA_PROTO void __thiscall TControl::UpdateSelectionRect(astruct_4 * this_obj)
 
-void __thiscall TControl::UpdateSelectionRect(TControl *this,astruct_4 *this_obj)
+void TControl::UpdateSelectionRect(astruct_4 *this_obj)
 
 {
   astruct_4 *paVar1;
@@ -2244,8 +2240,7 @@ void __thiscall TControl::UpdateSelectionRect(TControl *this,astruct_4 *this_obj
    Sets template/resource identifiers and clears per-dialog scratch fields used before
    modal/modeless creation. */
 
-TControl * __thiscall
-TControl::InitializeDialogTemplateFromId(TControl *this,uint param_1,undefined4 param_2)
+TControl * TControl::InitializeDialogTemplateFromId(uint param_1, undefined4 param_2)
 
 {
   ConstructObjectVtable00670b4cBase();
@@ -2299,7 +2294,7 @@ void TControl::GetScrollPosition(void)
 // GHIDRA_NAME TControl::GetDeviceScrollPosition
 // GHIDRA_PROTO undefined __thiscall GetDeviceScrollPosition(int * param_1)
 
-void __thiscall TControl::GetDeviceScrollPosition(TControl *this,int *param_1)
+void TControl::GetDeviceScrollPosition(int *param_1)
 
 {
   int iVar1;
@@ -2331,7 +2326,7 @@ void __thiscall TControl::GetDeviceScrollPosition(TControl *this,int *param_1)
 // GHIDRA_NAME TControl::ResizeParentToFit
 // GHIDRA_PROTO undefined __thiscall ResizeParentToFit(int param_1)
 
-void __thiscall TControl::ResizeParentToFit(TControl *this,int param_1)
+void TControl::ResizeParentToFit(int param_1)
 
 {
   TControl_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -2389,7 +2384,7 @@ void __thiscall TControl::ResizeParentToFit(TControl *this,int param_1)
 // GHIDRA_NAME TControl::SetRegistryKey
 // GHIDRA_PROTO undefined __thiscall SetRegistryKey(undefined4 param_1)
 
-void __thiscall TControl::SetRegistryKey(TControl *this,undefined4 param_1)
+void TControl::SetRegistryKey(undefined4 param_1)
 
 {
   int iVar1;

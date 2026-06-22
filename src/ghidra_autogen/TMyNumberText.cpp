@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMyNumberText::CloneCityDialogStateWithSharedStringInit
 // GHIDRA_PROTO undefined __thiscall CloneCityDialogStateWithSharedStringInit(int param_1)
 
-TMyNumberText * __thiscall
-TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this,int param_1)
+TMyNumberText * TMyNumberText::CloneCityDialogStateWithSharedStringInit(int param_1)
 
 {
   undefined2 uVar1;
@@ -91,7 +90,7 @@ TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
 // GHIDRA_NAME TMyNumberText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMyNumberText::GetTEventHandlerClassNamePointer(TMyNumberText *this)
+CRuntimeClass * TMyNumberText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -101,7 +100,7 @@ CRuntimeClass * __thiscall TMyNumberText::GetTEventHandlerClassNamePointer(TMyNu
 // GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
 // GHIDRA_PROTO undefined __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(void)
 
-TMyNumberText * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNumberText *this)
+TMyNumberText * TMyNumberText::ConstructTMyNumberTextBaseState()
 
 {
   TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
@@ -114,8 +113,7 @@ TMyNumberText * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNum
 // GHIDRA_NAME TMyNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMyNumberText * __thiscall
-TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this,byte param_1)
+TMyNumberText * TMyNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
@@ -129,7 +127,7 @@ TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this,byte param_1)
 // GHIDRA_NAME TMyNumberText::UpdateControlCachedIntFromWindowText
 // GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
-char * __thiscall TMyNumberText::UpdateControlCachedIntFromWindowText(TMyNumberText *this)
+char * TMyNumberText::UpdateControlCachedIntFromWindowText()
 
 {
   int unaff_ESI;

@@ -73,8 +73,7 @@ TCluster::OrphanRetStub_0059add0
 // GHIDRA_NAME TMapEditCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditCluster * __thiscall
-TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1)
+TMapEditCluster * TMapEditCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -88,7 +87,7 @@ TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1
 // GHIDRA_NAME TMapEditCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMapEditCluster *this)
+CRuntimeClass * TMapEditCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -98,8 +97,7 @@ CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMa
 // GHIDRA_NAME TMapEditCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TMapEditCluster::OrphanRetStub_0059add0(TMapEditCluster *this,int param_1,void *param_2,int param_3)
+void TMapEditCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   TCluster::OrphanRetStub_0059add0(this,param_1,param_2,param_3);

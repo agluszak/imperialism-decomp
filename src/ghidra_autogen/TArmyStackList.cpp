@@ -12,7 +12,7 @@
 
 /* Setting prototype: void InitializeMapContextActionManager(void) */
 
-void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList *this)
+void TArmyStackList::InitializeMapContextActionManager()
 
 {
   undefined4 *puVar1;
@@ -95,7 +95,7 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
 // GHIDRA_NAME TArmyStackList::OnActivateView
 // GHIDRA_PROTO undefined __thiscall OnActivateView(void)
 
-CRuntimeClass * __thiscall TArmyStackList::OnActivateView(TArmyStackList *this)
+CRuntimeClass * TArmyStackList::OnActivateView()
 
 {
   return &classRuntimeClass;
@@ -105,7 +105,7 @@ CRuntimeClass * __thiscall TArmyStackList::OnActivateView(TArmyStackList *this)
 // GHIDRA_NAME TArmyStackList::ConstructTArmyStackListBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArmyStackListBaseState(void)
 
-TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TArmyStackList *this)
+TArmyStackList * TArmyStackList::ConstructTArmyStackListBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -128,8 +128,7 @@ TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TAr
 // GHIDRA_NAME TArmyStackList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyStackList * __thiscall
-TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
+TArmyStackList * TArmyStackList::_scalar_deleting_destructor_(byte param_1)
 
 {
   TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
@@ -143,8 +142,7 @@ TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
 // GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
 // GHIDRA_PROTO undefined __thiscall TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
 
-void __thiscall
-TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *this)
+void TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -166,8 +164,7 @@ TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *
 // GHIDRA_NAME TArmyStackList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1, int param_2)
 
-short __thiscall
-TArmyStackList::GetTEventHandlerClassNamePointer(TArmyStackList *this,int param_1,int param_2)
+short TArmyStackList::GetTEventHandlerClassNamePointer(int param_1, int param_2)
 
 {
   if (*(short *)(param_1 + 6) < *(short *)(param_2 + 6)) {

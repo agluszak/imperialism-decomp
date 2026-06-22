@@ -38,7 +38,7 @@ TUberCluster * TRailCluster::CreateTradeMoveScaledControlPanel(void)
 // GHIDRA_NAME TRailCluster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRailCluster::GetTEventHandlerClassNamePointer(TRailCluster *this)
+CRuntimeClass * TRailCluster::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTRailCluster;
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TRailCluster::GetTEventHandlerClassNamePointer(TRailC
 // GHIDRA_NAME TRailCluster::TRailCluster
 // GHIDRA_PROTO undefined __thiscall TRailCluster(void)
 
-TRailCluster * __thiscall TRailCluster::TRailCluster(TRailCluster *this)
+TRailCluster * TRailCluster::TRailCluster()
 
 {
   TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
@@ -62,8 +62,7 @@ TRailCluster * __thiscall TRailCluster::TRailCluster(TRailCluster *this)
 // GHIDRA_NAME TRailCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailCluster * __thiscall
-TRailCluster::_scalar_deleting_destructor_(TRailCluster *this,byte param_1)
+TRailCluster * TRailCluster::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -77,7 +76,7 @@ TRailCluster::_scalar_deleting_destructor_(TRailCluster *this,byte param_1)
 // GHIDRA_NAME TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
 
-void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *this,short param_1)
+void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
 
 {
   uint uVar1;
@@ -147,7 +146,7 @@ void __thiscall TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRailCluster *thi
 // GHIDRA_NAME TRailCluster::OrphanRetStub_00586ff0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00586ff0(void)
 
-void __thiscall TRailCluster::OrphanRetStub_00586ff0(TRailCluster *this)
+void TRailCluster::OrphanRetStub_00586ff0()
 
 {
   (*this->vftable[0x3a].slot_0x04)();
@@ -158,8 +157,7 @@ void __thiscall TRailCluster::OrphanRetStub_00586ff0(TRailCluster *this)
 // GHIDRA_NAME TRailCluster::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
-void __thiscall
-TRailCluster::OrphanRetStub_0059add0(TRailCluster *this,int param_1,void *param_2,int param_3)
+void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_3)
 
 {
   TRailClusterVtbl *pTVar1;

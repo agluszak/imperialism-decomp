@@ -37,7 +37,7 @@ TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
 // GHIDRA_NAME TGWorldButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGWorldButton::GetTEventHandlerClassNamePointer(TGWorldButton *this)
+CRuntimeClass * TGWorldButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TGWorldButton::GetTEventHandlerClassNamePointer(TGWor
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
 // GHIDRA_PROTO undefined __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(void)
 
-TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
+TGWorldButton * TGWorldButton::ConstructTGWorldButtonBaseState()
 
 {
   TControl::TControl((TControl *)this);
@@ -60,8 +60,7 @@ TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorl
 // GHIDRA_NAME TGWorldButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldButton * __thiscall
-TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this,byte param_1)
+TGWorldButton * TGWorldButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -75,8 +74,7 @@ TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this,byte param_1)
 // GHIDRA_NAME TGWorldButton::OrphanCallChain_C2_I25_00572200
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
 
-void __thiscall
-TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this,char param_1,char param_2)
+void TGWorldButton::OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
 
 {
   TGWorldButtonVtbl *pTVar1;
@@ -102,7 +100,7 @@ TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this,char param_1,
 // GHIDRA_NAME TGWorldButton::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TGWorldButton::OrphanTiny_ReturnZero_0048a730(TGWorldButton *this)
+void TGWorldButton::OrphanTiny_ReturnZero_0048a730()
 
 {
   LONG local_30;

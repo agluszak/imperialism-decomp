@@ -7,8 +7,7 @@
 // GHIDRA_NAME TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
 // GHIDRA_PROTO undefined __thiscall TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(void)
 
-TGWorldPartView * __thiscall
-TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(TGWorldPartView *this)
+TGWorldPartView * TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -21,8 +20,7 @@ TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(TGWorl
 // GHIDRA_NAME TGWorldPartView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGWorldPartView * __thiscall
-TGWorldPartView::_scalar_deleting_destructor_(TGWorldPartView *this,byte param_1)
+TGWorldPartView * TGWorldPartView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -66,7 +64,7 @@ TView * TGWorldPartView::CreateTGWorldPartViewInstance(void)
 // GHIDRA_NAME TGWorldPartView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGWorldPartView::GetTEventHandlerClassNamePointer(TGWorldPartView *this)
+CRuntimeClass * TGWorldPartView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -76,7 +74,7 @@ CRuntimeClass * __thiscall TGWorldPartView::GetTEventHandlerClassNamePointer(TGW
 // GHIDRA_NAME TGWorldPartView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TGWorldPartView::OrphanTiny_ReturnZero_0048a730(TGWorldPartView *this)
+void TGWorldPartView::OrphanTiny_ReturnZero_0048a730()
 
 {
   LONG local_20;

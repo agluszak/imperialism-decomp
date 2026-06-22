@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTradePageBuyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradePageBuyView * __thiscall
-TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this,byte param_1)
+TTradePageBuyView * TTradePageBuyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -53,8 +52,7 @@ TPageView * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
 // GHIDRA_NAME TTradePageBuyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
+CRuntimeClass * TTradePageBuyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -64,8 +62,7 @@ TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
 // GHIDRA_PROTO undefined __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
 
-void __thiscall
-TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,short param_1)
+void TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -164,8 +161,7 @@ LAB_005bd863:
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree(byte param_1)
 
-TTradePageBuyView * __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this,byte param_1)
+TTradePageBuyView * TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(byte param_1)
 
 {
   TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(this);
@@ -179,8 +175,7 @@ TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(void)
 
-void __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(TTradePageBuyView *this)
+void TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl()
 
 {
   this->vftable =

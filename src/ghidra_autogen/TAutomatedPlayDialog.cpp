@@ -7,8 +7,7 @@
 // GHIDRA_NAME TAutomatedPlayDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TAutomatedPlayDialog * __thiscall
-TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this,byte param_1)
+TAutomatedPlayDialog * TAutomatedPlayDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this,by
 // GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
+CRuntimeClass * TAutomatedPlayDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *thi
 // GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
+void TAutomatedPlayDialog::GetTEventHandlerClassNamePointer()
 
 {
   undefined uVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSortByPriceList::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSortByPriceList::GetTEventHandlerClassNamePointer(TSortByPriceList *this)
+CRuntimeClass * TSortByPriceList::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTSortByPriceList;
@@ -18,7 +17,7 @@ TSortByPriceList::GetTEventHandlerClassNamePointer(TSortByPriceList *this)
 // GHIDRA_NAME TSortByPriceList::ConstructTSortByPriceList
 // GHIDRA_PROTO undefined __thiscall ConstructTSortByPriceList(void)
 
-TSortByPriceList * __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortByPriceList *this)
+TSortByPriceList * TSortByPriceList::ConstructTSortByPriceList()
 
 {
   TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
@@ -30,8 +29,7 @@ TSortByPriceList * __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortB
 // GHIDRA_NAME TSortByPriceList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSortByPriceList * __thiscall
-TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this,byte param_1)
+TSortByPriceList * TSortByPriceList::_scalar_deleting_destructor_(byte param_1)
 
 {
   CObArray::DestructCObArray();
@@ -68,8 +66,7 @@ void TSortByPriceList::~TSortByPriceList(void)
 // GHIDRA_NAME TSortByPriceList::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-int __thiscall
-TSortByPriceList::OrphanRetStub_0059add0(TSortByPriceList *this,int param_1,int param_2)
+int TSortByPriceList::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   return ((*(short *)(param_1 + 2) <= *(short *)(param_2 + 2)) - 1 & 2) - 1;

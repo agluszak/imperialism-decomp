@@ -37,8 +37,7 @@ thunk_TPictureButton * TradeScreenPicture::CreateTradeScreenPictureInstance(void
 // GHIDRA_NAME TradeScreenPicture::ConstructTradeScreenPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TradeScreenPicture::ConstructTradeScreenPictureBaseState(void)
 
-TradeScreenPicture * __thiscall
-TradeScreenPicture::ConstructTradeScreenPictureBaseState(TradeScreenPicture *this)
+TradeScreenPicture * TradeScreenPicture::ConstructTradeScreenPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);

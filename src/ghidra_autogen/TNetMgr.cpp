@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive * param_1)
 
-void __thiscall
-TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(TNetMgr *this,CArchive *param_1)
+void TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive *param_1)
 
 {
   TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
@@ -130,8 +129,7 @@ LAB_0049b033:
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
 // GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive * param_1)
 
-void __thiscall
-TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(TNetMgr *this,CArchive *param_1)
+void TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive *param_1)
 
 {
   TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
@@ -253,7 +251,7 @@ LAB_0049b471:
 // GHIDRA_NAME TNetMgr::CreateTNetMgrInstance
 // GHIDRA_PROTO undefined __thiscall TNetMgr::CreateTNetMgrInstance(void)
 
-TNetMgr * __thiscall TNetMgr::CreateTNetMgrInstance(TNetMgr *this)
+TNetMgr * TNetMgr::CreateTNetMgrInstance()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -278,7 +276,7 @@ TNetMgr * __thiscall TNetMgr::CreateTNetMgrInstance(TNetMgr *this)
 // GHIDRA_NAME TNetMgr::GetTNetMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTNetMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNetMgr::GetTNetMgrClassNamePointer(TNetMgr *this)
+CRuntimeClass * TNetMgr::GetTNetMgrClassNamePointer()
 
 {
   return &g_pClassDescTNetMgr;
@@ -288,7 +286,7 @@ CRuntimeClass * __thiscall TNetMgr::GetTNetMgrClassNamePointer(TNetMgr *this)
 // GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
 // GHIDRA_PROTO undefined __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(void)
 
-void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
+void TNetMgr::ConstructGlobalTurnEventQueueManager()
 
 {
   this->vftable = &TNetMgrVtbl_0066fa20;
@@ -299,7 +297,7 @@ void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
 // GHIDRA_NAME TNetMgr::DestructTNetMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTNetMgrAndMaybeFree(byte param_1)
 
-TNetMgr * __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(TNetMgr *this,byte param_1)
+TNetMgr * TNetMgr::DestructTNetMgrAndMaybeFree(byte param_1)
 
 {
   InitializeRuntimeClassVtablePointer_0066FEC4_Secondary();
@@ -313,7 +311,7 @@ TNetMgr * __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(TNetMgr *this,byte par
 // GHIDRA_NAME TNetMgr::ReleaseObjectIfNonNullViaVslot04
 // GHIDRA_PROTO undefined __thiscall ReleaseObjectIfNonNullViaVslot04(void)
 
-void __thiscall TNetMgr::ReleaseObjectIfNonNullViaVslot04(TNetMgr *this)
+void TNetMgr::ReleaseObjectIfNonNullViaVslot04()
 
 {
   if (this != (TNetMgr *)0x0) {
@@ -326,8 +324,7 @@ void __thiscall TNetMgr::ReleaseObjectIfNonNullViaVslot04(TNetMgr *this)
 // GHIDRA_NAME TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
 // GHIDRA_PROTO undefined __thiscall TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
-void __thiscall
-TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
+void TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
 
 {
   TNetMgrVtbl *pTVar1;
@@ -359,7 +356,7 @@ TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr 
 // GHIDRA_NAME TNetMgr::SerializeLinkedRecordListWithFreeNodePool
 // GHIDRA_PROTO undefined __thiscall SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1)
 
-void __thiscall TNetMgr::SerializeLinkedRecordListWithFreeNodePool(TNetMgr *this,CArchive *param_1)
+void TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive *param_1)
 
 {
   CArchive *this_00;
@@ -435,7 +432,7 @@ void __thiscall TNetMgr::SerializeLinkedRecordListWithFreeNodePool(TNetMgr *this
 // GHIDRA_NAME TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State
 // GHIDRA_PROTO undefined __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(void)
 
-void __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(TNetMgr *this)
+void TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State()
 
 {
   this->vftable = (TNetMgrVtbl *)&DAT_0066fa68;
@@ -450,8 +447,7 @@ void __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(TNet
 // GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
 // GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
-void __thiscall
-TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+void TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -476,7 +472,7 @@ TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr 
 // GHIDRA_NAME TNetMgr::SerializeDynamicDwordPointerArrayState
 // GHIDRA_PROTO undefined __thiscall SerializeDynamicDwordPointerArrayState(CArchive * param_1)
 
-void __thiscall TNetMgr::SerializeDynamicDwordPointerArrayState(TNetMgr *this,CArchive *param_1)
+void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
 
 {
   TNetMgrVtbl *pTVar1;
@@ -582,8 +578,7 @@ void __thiscall TNetMgr::SerializeDynamicDwordPointerArrayState(TNetMgr *this,CA
 // GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 
-TNetMgr * __thiscall
-TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(TNetMgr *this,byte param_1)
+TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
 
 {
   TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
@@ -597,8 +592,7 @@ TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(TNetMgr *this,byte param_
 // GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 
-TNetMgr * __thiscall
-TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(TNetMgr *this,byte param_1)
+TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 
 {
   TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
@@ -612,7 +606,7 @@ TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(TNetMgr *this,byte param_
 // GHIDRA_NAME TNetMgr::WriteWordToSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall WriteWordToSerializedBuffer(undefined2 param_1)
 
-TNetMgr * __thiscall TNetMgr::WriteWordToSerializedBuffer(TNetMgr *this,undefined2 param_1)
+TNetMgr * TNetMgr::WriteWordToSerializedBuffer(undefined2 param_1)
 
 {
   if (this[10].vftable < (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + 2U))
@@ -661,7 +655,7 @@ TNetMgr::WriteDwordToSerializedBuffer
    
    Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release */
 
-void __thiscall TNetMgr::CMapPtrToPtr_ctor(TNetMgr *this,TNetMgrVtbl *param_1)
+void TNetMgr::CMapPtrToPtr_ctor(TNetMgrVtbl *param_1)
 
 {
   this[1].vftable = (TNetMgrVtbl *)0x0;
@@ -678,7 +672,7 @@ void __thiscall TNetMgr::CMapPtrToPtr_ctor(TNetMgr *this,TNetMgrVtbl *param_1)
 // GHIDRA_NAME TNetMgr::InitHashTable
 // GHIDRA_PROTO undefined __thiscall InitHashTable(TNetMgrVtbl * param_1, int param_2)
 
-void __thiscall TNetMgr::InitHashTable(TNetMgr *this,TNetMgrVtbl *param_1,int param_2)
+void TNetMgr::InitHashTable(TNetMgrVtbl *param_1, int param_2)
 
 {
   TNetMgrVtbl *_Dst;
@@ -700,7 +694,7 @@ void __thiscall TNetMgr::InitHashTable(TNetMgr *this,TNetMgrVtbl *param_1,int pa
 // GHIDRA_NAME TNetMgr::GetOrCreateHandleMapEntryValueByKey
 // GHIDRA_PROTO undefined __thiscall GetOrCreateHandleMapEntryValueByKey(int param_1)
 
-code * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(TNetMgr *this,int param_1)
+code * TNetMgr::GetOrCreateHandleMapEntryValueByKey(int param_1)
 
 {
   int iVar1;
@@ -725,7 +719,7 @@ code * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(TNetMgr *this,int
 // GHIDRA_NAME TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount
 // GHIDRA_PROTO undefined __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
 
-void __thiscall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(TNetMgr *this)
+void TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount()
 
 {
   Flush();
@@ -737,7 +731,7 @@ void __thiscall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(TNetMgr
 // GHIDRA_NAME TNetMgr::WriteBytesToSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall WriteBytesToSerializedBuffer(int param_1, uint param_2)
 
-void __thiscall TNetMgr::WriteBytesToSerializedBuffer(TNetMgr *this,int param_1,uint param_2)
+void TNetMgr::WriteBytesToSerializedBuffer(int param_1, uint param_2)
 
 {
   uint uVar1;
@@ -772,7 +766,7 @@ void __thiscall TNetMgr::WriteBytesToSerializedBuffer(TNetMgr *this,int param_1,
 // GHIDRA_NAME TNetMgr::WriteCount
 // GHIDRA_PROTO undefined __thiscall WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 * param_1)
 
-void __thiscall TNetMgr::WriteCount(TNetMgr *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
+void TNetMgr::WriteCount(TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
 
 {
   if (param_1 < (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0xffff) {
@@ -789,7 +783,7 @@ void __thiscall TNetMgr::WriteCount(TNetMgr *this,TNetMgr_GetTNetMgrClassNamePoi
 // GHIDRA_NAME TNetMgr::WriteObject
 // GHIDRA_PROTO undefined __thiscall WriteObject(int * param_1)
 
-void __thiscall TNetMgr::WriteObject(TNetMgr *this,int *param_1)
+void TNetMgr::WriteObject(int *param_1)
 
 {
   undefined4 *puVar1;
@@ -908,7 +902,7 @@ void TNetMgr::MapObject(void)
 // GHIDRA_NAME TNetMgr::WriteClass
 // GHIDRA_PROTO undefined __thiscall WriteClass(int param_1)
 
-void __thiscall TNetMgr::WriteClass(TNetMgr *this,int param_1)
+void TNetMgr::WriteClass(int param_1)
 
 {
   uint uVar1;

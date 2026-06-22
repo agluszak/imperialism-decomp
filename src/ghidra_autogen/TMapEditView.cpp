@@ -59,8 +59,7 @@ TWorldView * TMapEditView::CreateTMapEditViewInstance(void)
 // GHIDRA_NAME TMapEditView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapEditView * __thiscall
-TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
+TMapEditView * TMapEditView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -74,7 +73,7 @@ TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
 // GHIDRA_NAME TMapEditView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapEditView::GetTEventHandlerClassNamePointer(TMapEditView *this)
+CRuntimeClass * TMapEditView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -111,8 +110,7 @@ CRuntimeClass * __thiscall TMapEditView::GetTEventHandlerClassNamePointer(TMapEd
    DrawStrategicMapUnitIconOverlay paths.
    - This function seeds default civilian/overlay icon variants before per-tile updates. */
 
-void __thiscall
-TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(TMapEditView *this,void *pMapView,int nInitToken)
+void TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(void *pMapView, int nInitToken)
 
 {
   int iVar1;
@@ -240,7 +238,7 @@ TMapEditView::HandleMapClickByInteractionMode
 // GHIDRA_NAME TMapEditView::InvokeDialogHooks1D8ThenE4
 // GHIDRA_PROTO undefined __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(short param_1)
 
-void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this,short param_1)
+void TMapEditView::InvokeDialogHooks1D8ThenE4(short param_1)
 
 {
   short sVar1;
@@ -297,8 +295,7 @@ void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this,shor
    Returns:
    - void */
 
-void __thiscall
-TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMapEditView *this,short param_1)
+void TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
 
 {
   ushort uVar1;
@@ -385,8 +382,7 @@ TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMapEditView *this,s
    Returns:
    - void */
 
-void __thiscall
-TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TMapEditView *this)
+void TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79()
 
 {
   char cVar1;
@@ -564,7 +560,7 @@ TMapEditView::ApplyTileIconOverlayFromEditorSelection
 // GHIDRA_NAME TMapEditView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall TMapEditView::OrphanTiny_ReturnZero_0048a730(TMapEditView *this,int param_1)
+void TMapEditView::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   int iVar1;

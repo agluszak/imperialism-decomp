@@ -92,7 +92,7 @@ TAmbitApplication::WrapperFor_FreeHeapBufferIfNotNull_At00413550
 // GHIDRA_NAME TAmbitApplication::OrphanRetStub_00414770
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00414770(void)
 
-void __thiscall TAmbitApplication::OrphanRetStub_00414770(TAmbitApplication *this)
+void TAmbitApplication::OrphanRetStub_00414770()
 
 {
   return;
@@ -102,8 +102,7 @@ void __thiscall TAmbitApplication::OrphanRetStub_00414770(TAmbitApplication *thi
 // GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
+CRuntimeClass * TAmbitApplication::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -113,8 +112,7 @@ TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
 // GHIDRA_NAME TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall
-TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAmbitApplication *this)
+void TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   if (DAT_006a327c != (int *)0x0) {
@@ -154,8 +152,7 @@ TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAmbitApplicatio
 // GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
-void __thiscall
-TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this,int *param_1)
+void TAmbitApplication::GetTEventHandlerClassNamePointer(int *param_1)
 
 {
   TObject::ReadFrom((TMapDialog *)this);
@@ -172,8 +169,7 @@ TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this,int 
 // GHIDRA_NAME TAmbitApplication::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall
-TAmbitApplication::_scalar_deleting_destructor_(TAmbitApplication *this,int *param_1)
+void TAmbitApplication::_scalar_deleting_destructor_(int *param_1)
 
 {
   TObject::WriteTo((TArmyPlayer *)this);
@@ -185,7 +181,7 @@ TAmbitApplication::_scalar_deleting_destructor_(TAmbitApplication *this,int *par
 // GHIDRA_NAME TAmbitApplication::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TAmbitApplication::OrphanTiny_ReturnZero_0048a730(TAmbitApplication *this)
+void TAmbitApplication::OrphanTiny_ReturnZero_0048a730()
 
 {
   if ((DAT_006a2158 != 0) && (*(int **)(DAT_006a2158 + 4) != (int *)0x0)) {
@@ -198,8 +194,7 @@ void __thiscall TAmbitApplication::OrphanTiny_ReturnZero_0048a730(TAmbitApplicat
 // GHIDRA_NAME TAmbitApplication::OrphanCallChain_C1_I04_0049e4e0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I04_0049e4e0(int * param_1)
 
-void __thiscall
-TAmbitApplication::OrphanCallChain_C1_I04_0049e4e0(TAmbitApplication *this,int *param_1)
+void TAmbitApplication::OrphanCallChain_C1_I04_0049e4e0(int *param_1)
 
 {
   (**(code **)(*param_1 + 0x1d0))();

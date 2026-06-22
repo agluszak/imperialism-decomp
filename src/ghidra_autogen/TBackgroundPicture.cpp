@@ -37,8 +37,7 @@ thunk_TPictureButton * TBackgroundPicture::CreateTBackgroundPictureInstance(void
 // GHIDRA_NAME TBackgroundPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBackgroundPicture::GetTEventHandlerClassNamePointer(TBackgroundPicture *this)
+CRuntimeClass * TBackgroundPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TBackgroundPicture::GetTEventHandlerClassNamePointer(TBackgroundPicture *this)
 // GHIDRA_NAME TBackgroundPicture::ConstructTBackgroundPictureBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTBackgroundPictureBaseState(void)
 
-TBackgroundPicture * __thiscall
-TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBackgroundPicture *this)
+TBackgroundPicture * TBackgroundPicture::ConstructTBackgroundPictureBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -62,8 +60,7 @@ TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBackgroundPicture *thi
 // GHIDRA_NAME TBackgroundPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBackgroundPicture * __thiscall
-TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this,byte param_1)
+TBackgroundPicture * TBackgroundPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -77,7 +74,7 @@ TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this,byte p
 // GHIDRA_NAME TBackgroundPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TBackgroundPicture::OrphanTiny_ReturnZero_0048a730(TBackgroundPicture *this)
+void TBackgroundPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);

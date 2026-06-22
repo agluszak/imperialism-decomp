@@ -37,8 +37,7 @@ thunk_TPictureButton * TNoHilitePicture::CreateTNoHilitePictureInstance(void)
 // GHIDRA_NAME TNoHilitePicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNoHilitePicture::GetTEventHandlerClassNamePointer(TNoHilitePicture *this)
+CRuntimeClass * TNoHilitePicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -56,8 +55,7 @@ TNoHilitePicture::GetTEventHandlerClassNamePointer(TNoHilitePicture *this)
    ConstructPictureResourceEntryBase.
    Clears extended state byte +0x90. */
 
-TNoHilitePicture * __thiscall
-TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
+TNoHilitePicture * TNoHilitePicture::ConstructPictureResourceEntryType606E8()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -70,8 +68,7 @@ TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
 // GHIDRA_NAME TNoHilitePicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNoHilitePicture * __thiscall
-TNoHilitePicture::_scalar_deleting_destructor_(TNoHilitePicture *this,byte param_1)
+TNoHilitePicture * TNoHilitePicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

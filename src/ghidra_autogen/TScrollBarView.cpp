@@ -7,8 +7,7 @@
 // GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScrollBarView * __thiscall
-TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,byte param_1)
+TScrollBarView * TScrollBarView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -52,7 +51,7 @@ TControl * TScrollBarView::CreateTScrollBarViewInstance(void)
 // GHIDRA_NAME TScrollBarView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TScrollBarView::GetTEventHandlerClassNamePointer(TScrollBarView *this)
+CRuntimeClass * TScrollBarView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -141,7 +140,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
 // GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
+void TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(int *)&this->field_0x90 != 0) {
@@ -155,7 +154,7 @@ void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView 
 // GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
+void TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 uStack_10;
@@ -207,7 +206,7 @@ LAB_005747fc:
 // GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(POINT * param_1)
 
-void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,POINT *param_1)
+void TScrollBarView::_scalar_deleting_destructor_(POINT *param_1)
 
 {
   int iVar1;
@@ -243,7 +242,7 @@ void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *thi
 // GHIDRA_NAME TScrollBarView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
-void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *this,LONG *param_1)
+void TScrollBarView::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
 
 {
   int iVar1;

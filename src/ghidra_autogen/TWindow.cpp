@@ -77,7 +77,7 @@ TView * TWindow::CreateTWindowInstance(void)
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+CRuntimeClass * TWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -87,7 +87,7 @@ CRuntimeClass * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *th
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TWindow * __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this,byte param_1)
+TWindow * TWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
@@ -101,8 +101,7 @@ TWindow * __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this,byte pa
 // GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(TWindow *this,undefined4 param_1,undefined4 param_2)
+void TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1, undefined4 param_2)
 
 {
   *(undefined4 *)&this->field_0x88 = param_1;
@@ -114,7 +113,7 @@ TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(TWindow *this,undefined4 param_1,undef
 // GHIDRA_NAME TWindow::AssertMcAppUILine2358
 // GHIDRA_PROTO undefined __thiscall TWindow::AssertMcAppUILine2358(void)
 
-void __thiscall TWindow::AssertMcAppUILine2358(TWindow *this)
+void TWindow::AssertMcAppUILine2358()
 
 {
   if (DAT_006a1b04 == 0) {
@@ -127,7 +126,7 @@ void __thiscall TWindow::AssertMcAppUILine2358(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I39_0048d900
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
 
-void __thiscall TWindow::OrphanCallChain_C2_I39_0048d900(TWindow *this,char param_1,char param_2)
+void TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
 
 {
   int iVar1;
@@ -163,7 +162,7 @@ void __thiscall TWindow::OrphanCallChain_C2_I39_0048d900(TWindow *this,char para
 // GHIDRA_NAME TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-undefined4 __thiscall TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWindow *this)
+undefined4 TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   if ((((*(int *)&this->field_0x98 != 0) && (g_McAppUiActiveFlag_006950AC != 0)) &&
@@ -177,8 +176,7 @@ undefined4 __thiscall TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWin
 // GHIDRA_NAME TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4 * param_1)
 
-void __thiscall
-TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(TWindow *this,undefined4 *param_1)
+void TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4 *param_1)
 
 {
   SetWindowTextOrDelegateToOwner(*param_1);
@@ -189,8 +187,7 @@ TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(TWindow *this,unde
 // GHIDRA_NAME TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 param_1)
 
-void __thiscall
-TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(TWindow *this,undefined4 param_1)
+void TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 param_1)
 
 {
   FUN_0060859f(param_1);
@@ -201,7 +198,7 @@ TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(TWindow *this,undefin
 // GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048da10
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048da10(void)
 
-int __thiscall TWindow::OrphanCallChain_C1_I08_0048da10(TWindow *this)
+int TWindow::OrphanCallChain_C1_I08_0048da10()
 
 {
   undefined uVar1;
@@ -218,7 +215,7 @@ int __thiscall TWindow::OrphanCallChain_C1_I08_0048da10(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins03_0048da40
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1)
 
-void __thiscall TWindow::OrphanLeaf_NoCall_Ins03_0048da40(TWindow *this,undefined1 param_1)
+void TWindow::OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1)
 
 {
   this->field_0x84 = param_1;
@@ -229,7 +226,7 @@ void __thiscall TWindow::OrphanLeaf_NoCall_Ins03_0048da40(TWindow *this,undefine
 // GHIDRA_NAME TWindow::ExecuteViewModalStateWithPushPopChain
 // GHIDRA_PROTO undefined __thiscall ExecuteViewModalStateWithPushPopChain(void)
 
-int __thiscall TWindow::ExecuteViewModalStateWithPushPopChain(TWindow *this)
+int TWindow::ExecuteViewModalStateWithPushPopChain()
 
 {
   TWindowVtbl *pTVar1;
@@ -320,7 +317,7 @@ LAB_0048db5a:
 // GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048dc60
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048dc60(void)
 
-undefined4 __thiscall TWindow::OrphanCallChain_C1_I08_0048dc60(TWindow *this)
+undefined4 TWindow::OrphanCallChain_C1_I08_0048dc60()
 
 {
   undefined uVar1;
@@ -337,8 +334,7 @@ undefined4 __thiscall TWindow::OrphanCallChain_C1_I08_0048dc60(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I12_0048dc90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TWindow::OrphanCallChain_C2_I12_0048dc90(TWindow *this,undefined4 param_1,undefined4 param_2)
+void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2)
 
 {
   undefined uVar1;
@@ -355,7 +351,7 @@ TWindow::OrphanCallChain_C2_I12_0048dc90(TWindow *this,undefined4 param_1,undefi
 // GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_0048dcc0(void)
 
-undefined1 * __thiscall TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0(TWindow *this)
+undefined1 * TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0()
 
 {
   return &this->field_0x74;
@@ -365,7 +361,7 @@ undefined1 * __thiscall TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0(TWindow *this)
 // GHIDRA_NAME TWindow::AssertMcAppUILine2554
 // GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2554(void)
 
-void __thiscall TWindow::AssertMcAppUILine2554(TWindow *this)
+void TWindow::AssertMcAppUILine2554()
 
 {
   if (DAT_006a1b08 == 0) {
@@ -378,7 +374,7 @@ void __thiscall TWindow::AssertMcAppUILine2554(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+void TWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   (**(code **)(*(int *)&this->field_0x74 + 0x3c))();
@@ -390,7 +386,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TWindow::OrphanRetStub_0059add0(TWindow *this,int param_1)
+void TWindow::OrphanRetStub_0059add0(int param_1)
 
 {
   undefined uVar1;
@@ -418,7 +414,7 @@ void __thiscall TWindow::OrphanRetStub_0059add0(TWindow *this,int param_1)
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I19_0048ddc0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_0048ddc0(TWindow * param_1)
 
-void __thiscall TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *this,TWindow *param_1)
+void TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *param_1)
 
 {
   TWindowVtbl *pTVar1;
@@ -439,7 +435,7 @@ void __thiscall TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *this,TWindow *
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+void TWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   TWindowVtbl *pTVar1;
@@ -555,7 +551,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 /* Resets child-selection state, notifies parent/control window with message 0x468, iterates child
    nodes calling vfunc +0xA0, then triggers vfunc +0x1CC. */
 
-void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+void TWindow::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
@@ -600,7 +596,7 @@ void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C2_I10_0048e120
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I10_0048e120(void)
 
-void __thiscall TWindow::OrphanCallChain_C2_I10_0048e120(TWindow *this)
+void TWindow::OrphanCallChain_C2_I10_0048e120()
 
 {
   TWindowVtbl *pTVar1;
@@ -637,7 +633,7 @@ TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined2 __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+undefined2 TWindow::_scalar_deleting_destructor_()
 
 {
   return 3;
@@ -647,7 +643,7 @@ undefined2 __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+void TWindow::GetTEventHandlerClassNamePointer()
 
 {
   if (DAT_006a1b10 == 0) {
@@ -660,7 +656,7 @@ void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+void TWindow::_scalar_deleting_destructor_()
 
 {
   if (DAT_006a1b14 == 0) {
@@ -673,7 +669,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+void TWindow::GetTEventHandlerClassNamePointer()
 
 {
   if (DAT_006a1b18 == 0) {
@@ -686,7 +682,7 @@ void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+void TWindow::_scalar_deleting_destructor_()
 
 {
   if (DAT_006a1b1c == 0) {
@@ -701,7 +697,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 /* WARNING: Removing unreachable block (ram,0x0048e2b1) */
 
-void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+void TWindow::_scalar_deleting_destructor_()
 
 {
   CObject *this_00;
@@ -774,7 +770,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-TWindow * __thiscall TWindow::OrphanTiny_ReturnZero_0048a730(TWindow *this)
+TWindow * TWindow::OrphanTiny_ReturnZero_0048a730()
 
 {
   return this;
@@ -784,7 +780,7 @@ TWindow * __thiscall TWindow::OrphanTiny_ReturnZero_0048a730(TWindow *this)
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-TWindow * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+TWindow * TWindow::GetTEventHandlerClassNamePointer()
 
 {
   return this;
@@ -794,7 +790,7 @@ TWindow * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+void TWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   return;
@@ -804,7 +800,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 // GHIDRA_NAME TWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+void TWindow::_scalar_deleting_destructor_()
 
 {
   return;
@@ -814,7 +810,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+void TWindow::GetTEventHandlerClassNamePointer()
 
 {
   return;
@@ -824,7 +820,7 @@ void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __thiscall TWindow::OrphanRetStub_0059ad90(TWindow *this)
+void TWindow::OrphanRetStub_0059ad90()
 
 {
   return;
@@ -834,7 +830,7 @@ void __thiscall TWindow::OrphanRetStub_0059ad90(TWindow *this)
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-undefined4 __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+undefined4 TWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x51e);

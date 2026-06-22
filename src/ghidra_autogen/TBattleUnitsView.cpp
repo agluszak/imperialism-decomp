@@ -7,8 +7,7 @@
 // GHIDRA_NAME TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940
 // GHIDRA_PROTO undefined __thiscall TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(void)
 
-TBattleUnitsView * __thiscall
-TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(TBattleUnitsView *this)
+TBattleUnitsView * TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940()
 
 {
   TMilitaryPageView::ConstructTMilitaryPageViewBaseState((TMilitaryPageView *)this);
@@ -21,8 +20,7 @@ TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(TBattleUnitsView *this)
 // GHIDRA_NAME TBattleUnitsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TBattleUnitsView * __thiscall
-TBattleUnitsView::_scalar_deleting_destructor_(TBattleUnitsView *this,byte param_1)
+TBattleUnitsView * TBattleUnitsView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -66,8 +64,7 @@ TMilitaryPageView * TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
 // GHIDRA_NAME TBattleUnitsView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TBattleUnitsView::GetTEventHandlerClassNamePointer(TBattleUnitsView *this)
+CRuntimeClass * TBattleUnitsView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -170,7 +167,7 @@ switchD_004b071e_default:
 // GHIDRA_NAME TBattleUnitsView::InvalidateWindowRectFromHandleField1C
 // GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
 
-void __thiscall TBattleUnitsView::InvalidateWindowRectFromHandleField1C(TBattleUnitsView *this)
+void TBattleUnitsView::InvalidateWindowRectFromHandleField1C()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTradeScreenPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTradeScreenPicture::GetTEventHandlerClassNamePointer(TTradeScreenPicture *this)
+CRuntimeClass * TTradeScreenPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TTradeScreenPicture::GetTEventHandlerClassNamePointer(TTradeScreenPicture *this)
 // GHIDRA_NAME TTradeScreenPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTradeScreenPicture * __thiscall
-TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte param_1)
+TTradeScreenPicture * TTradeScreenPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -33,8 +31,7 @@ TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte
 // GHIDRA_NAME TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(CString param_1)
 
-void __thiscall
-TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this,CString param_1)
+void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
 
 {
   TSimMgrVtbl *pTVar1;

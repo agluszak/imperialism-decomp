@@ -7,7 +7,7 @@
 // GHIDRA_NAME TEventHandler::CreateTEventHandlerInstance
 // GHIDRA_PROTO undefined __thiscall CreateTEventHandlerInstance(void)
 
-void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
+void TEventHandler::CreateTEventHandlerInstance()
 
 {
   int iVar1;
@@ -24,7 +24,7 @@ void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
 // GHIDRA_NAME TEventHandler::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEventHandler::GetTEventHandlerClassNamePointer(TEventHandler *this)
+CRuntimeClass * TEventHandler::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -34,7 +34,7 @@ CRuntimeClass * __thiscall TEventHandler::GetTEventHandlerClassNamePointer(TEven
 // GHIDRA_NAME TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults
 // GHIDRA_PROTO undefined __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void)
 
-void __thiscall TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(TEventHandler *this)
+void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults()
 
 {
   this->field0c = 0;
@@ -49,8 +49,7 @@ void __thiscall TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(TEven
 // GHIDRA_NAME TEventHandler::DestructTEventHandlerAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTEventHandlerAndMaybeFree(byte param_1)
 
-TEventHandler * __thiscall
-TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte param_1)
+TEventHandler * TEventHandler::DestructTEventHandlerAndMaybeFree(byte param_1)
 
 {
   DestructTEventHandlerAndMaybeFree_Impl();
@@ -64,7 +63,7 @@ TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte param_
 // GHIDRA_NAME TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(TEventHandler *this)
+void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   int *piVar1;
@@ -102,7 +101,7 @@ void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(TEve
 // GHIDRA_NAME TEventHandler::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-undefined4 __thiscall TEventHandler::OrphanTiny_ReturnZero_0048a730(TEventHandler *this)
+undefined4 TEventHandler::OrphanTiny_ReturnZero_0048a730()
 
 {
   return 0;

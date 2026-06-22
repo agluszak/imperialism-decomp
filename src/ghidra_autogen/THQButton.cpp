@@ -52,7 +52,7 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
 // GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(THQButton *this)
+void TPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   THQButton_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -196,7 +196,7 @@ thunk_TPictureButton * THQButton::CreateTHQButtonInstance(void)
 // GHIDRA_NAME THQButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall THQButton::GetTEventHandlerClassNamePointer(THQButton *this)
+CRuntimeClass * THQButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTHQButton;
@@ -206,7 +206,7 @@ CRuntimeClass * __thiscall THQButton::GetTEventHandlerClassNamePointer(THQButton
 // GHIDRA_NAME THQButton::THQButton
 // GHIDRA_PROTO undefined __thiscall THQButton(void)
 
-THQButton * __thiscall THQButton::THQButton(THQButton *this)
+THQButton * THQButton::THQButton()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -218,7 +218,7 @@ THQButton * __thiscall THQButton::THQButton(THQButton *this)
 // GHIDRA_NAME THQButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,byte param_1)
+THQButton * THQButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -232,7 +232,7 @@ THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,b
 // GHIDRA_NAME THQButton::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall THQButton::OrphanLeaf_NoCall_Ins07_004d8920(THQButton *this)
+void THQButton::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
@@ -252,7 +252,7 @@ void __thiscall THQButton::OrphanLeaf_NoCall_Ins07_004d8920(THQButton *this)
 // GHIDRA_NAME THQButton::SetModeAndBitmapBySelectionState
 // GHIDRA_PROTO undefined __thiscall SetModeAndBitmapBySelectionState(char param_1)
 
-void __thiscall THQButton::SetModeAndBitmapBySelectionState(THQButton *this,char param_1)
+void THQButton::SetModeAndBitmapBySelectionState(char param_1)
 
 {
   undefined2 uVar1;
@@ -300,7 +300,7 @@ LAB_0058b7a7:
 // GHIDRA_NAME THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
 // GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
-void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButton *this,int param_1)
+void THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   if (param_1 == 0xc) {
@@ -326,8 +326,7 @@ void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButto
 // GHIDRA_NAME THQButton::InvokeSlot1CCIfSlot28Enabled
 // GHIDRA_PROTO undefined __thiscall InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-THQButton::InvokeSlot1CCIfSlot28Enabled(THQButton *this,undefined4 param_1,undefined4 param_2)
+void THQButton::InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 param_2)
 
 {
   THQButtonVtbl *pTVar1;
@@ -345,7 +344,7 @@ THQButton::InvokeSlot1CCIfSlot28Enabled(THQButton *this,undefined4 param_1,undef
 // GHIDRA_NAME THQButton::SetSelectionStateAndRefreshBitmap
 // GHIDRA_PROTO undefined __thiscall SetSelectionStateAndRefreshBitmap(short param_1)
 
-void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this,short param_1)
+void THQButton::SetSelectionStateAndRefreshBitmap(short param_1)
 
 {
   undefined4 in_EAX;

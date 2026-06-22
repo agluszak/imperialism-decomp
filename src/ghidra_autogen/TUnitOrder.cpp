@@ -7,7 +7,7 @@
 // GHIDRA_NAME TUnitOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnitOrder *this)
+CRuntimeClass * TUnitOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnit
 // GHIDRA_NAME TUnitOrder::ConstructTUnitOrderBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUnitOrderBaseState(byte param_1)
 
-TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this,byte param_1)
+TUnitOrder * TUnitOrder::ConstructTUnitOrderBaseState(byte param_1)
 
 {
   TUnitOrder::DestructTUnitOrderAndMaybeFree(this);
@@ -31,7 +31,7 @@ TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *thi
 // GHIDRA_NAME TUnitOrder::DestructTUnitOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(void)
 
-void __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(TUnitOrder *this)
+void TUnitOrder::DestructTUnitOrderAndMaybeFree()
 
 {
   this->vftable = (TUnitOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -109,7 +109,7 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
    - this+0x40 limiting factor (0=resource,1=workforce,3=treasury)
    - return value = current pending amount (+0x04) + max allowed additional delta. */
 
-int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TUnitOrder *this)
+int TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   short sVar1;
@@ -221,8 +221,7 @@ LAB_004b70ec:
    Returns:
    - true when applied; false on invalid target. */
 
-bool __thiscall
-TUnitOrder::OrphanCallChain_C1_I16_004b5100(TUnitOrder *this,short nTargetOrderAmount)
+bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
 
 {
   short nMaxOrderAmount;
@@ -311,7 +310,7 @@ TUnitOrder::OrphanCallChain_C1_I16_004b5100(TUnitOrder *this,short nTargetOrderA
    Notes:
    - Used for preview/requirement displays and availability checks. */
 
-void __thiscall TUnitOrder::CreateTItemOrderInstance(TUnitOrder *this)
+void TUnitOrder::CreateTItemOrderInstance()
 
 {
   short sStack00000004;
@@ -376,7 +375,7 @@ void __thiscall TUnitOrder::CreateTItemOrderInstance(TUnitOrder *this)
    - Pending delta: context +0x04.
    - Committed queue count: city +0x4A[entryId]. */
 
-void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
+void TUnitOrder::OrphanRetStub_004b5160()
 
 {
   short nProgressValue;
@@ -582,8 +581,7 @@ LAB_004b7624:
 // GHIDRA_NAME TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int * param_1)
 
-void __thiscall
-TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,int *param_1)
+void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
 
 {
   code *pcVar1;
@@ -633,7 +631,7 @@ TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,in
    Returns:
    - void. */
 
-void __thiscall TUnitOrder::SyncCityEntryOrderStateWithArchive(TUnitOrder *this,int *pArchive)
+void TUnitOrder::SyncCityEntryOrderStateWithArchive(int *pArchive)
 
 {
   code *pcVar1;

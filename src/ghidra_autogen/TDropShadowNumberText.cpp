@@ -42,8 +42,7 @@ TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
 // GHIDRA_NAME TDropShadowNumberText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TDropShadowNumberText::GetTEventHandlerClassNamePointer(TDropShadowNumberText *this)
+CRuntimeClass * TDropShadowNumberText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -53,8 +52,7 @@ TDropShadowNumberText::GetTEventHandlerClassNamePointer(TDropShadowNumberText *t
 // GHIDRA_NAME TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
 // GHIDRA_PROTO undefined __thiscall TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(void)
 
-TDropShadowNumberText * __thiscall
-TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumberText *this)
+TDropShadowNumberText * TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState()
 
 {
   TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
@@ -72,8 +70,7 @@ TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumber
 // GHIDRA_NAME TDropShadowNumberText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDropShadowNumberText * __thiscall
-TDropShadowNumberText::_scalar_deleting_destructor_(TDropShadowNumberText *this,byte param_1)
+TDropShadowNumberText * TDropShadowNumberText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTEditTextAndMaybeFree((TView *)this);
@@ -87,7 +84,7 @@ TDropShadowNumberText::_scalar_deleting_destructor_(TDropShadowNumberText *this,
 // GHIDRA_NAME TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730(TDropShadowNumberText *this)
+void TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730()
 
 {
   TDropShadowNumberTextVtbl *pTVar1;

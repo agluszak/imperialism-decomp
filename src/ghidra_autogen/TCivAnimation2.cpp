@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCivAnimation2::CreateTCivAnimation2Instance
 // GHIDRA_PROTO undefined __thiscall TCivAnimation2::CreateTCivAnimation2Instance(void)
 
-void __thiscall TCivAnimation2::CreateTCivAnimation2Instance(TCivAnimation2 *this)
+void TCivAnimation2::CreateTCivAnimation2Instance()
 
 {
   this->vftable = (TCivAnimation2Vtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -18,7 +18,7 @@ void __thiscall TCivAnimation2::CreateTCivAnimation2Instance(TCivAnimation2 *thi
 // GHIDRA_NAME TCivAnimation2::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivAnimation2::GetTAnimationClassNamePointer(TCivAnimation2 *this)
+CRuntimeClass * TCivAnimation2::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -77,7 +77,7 @@ TCivAnimation2::ConstructTCivAnimation2BaseState
 // GHIDRA_NAME TCivAnimation2::DestructTCivAnimation2AndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCivAnimation2AndMaybeFree(void)
 
-uint __thiscall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(TCivAnimation2 *this)
+uint TCivAnimation2::DestructTCivAnimation2AndMaybeFree()
 
 {
   ushort uVar1;
@@ -154,8 +154,7 @@ LAB_0049f86f:
 // GHIDRA_NAME TCivAnimation2::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(int * param_1)
 
-void __thiscall
-TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int *param_1)
+void TCivAnimation2::RenderBattleReportInsetWithPaletteShift(int *param_1)
 
 {
   short sVar1;
@@ -281,7 +280,7 @@ TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int
 // GHIDRA_NAME TCivAnimation2::AddObjectToUiTransientRegistry
 // GHIDRA_PROTO undefined __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(void)
 
-void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *this)
+void TCivAnimation2::AddObjectToUiTransientRegistry()
 
 {
   (**(code **)(**(int **)&this->field_0x24 + 0x30))();
@@ -292,7 +291,7 @@ void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *t
 // GHIDRA_NAME TCivAnimation2::FindLinkedListNodeByIdFieldAt18
 // GHIDRA_PROTO undefined __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1)
 
-int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 *this,int param_1)
+int TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1)
 
 {
   int iVar1;

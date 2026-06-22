@@ -40,7 +40,7 @@ TView * TRailAmtBar::CreateTRailAmtBarInstance(void)
 // GHIDRA_NAME TRailAmtBar::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TRailAmtBar::GetTEventHandlerClassNamePointer(TRailAmtBar *this)
+CRuntimeClass * TRailAmtBar::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTRailAmtBar;
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TRailAmtBar::GetTEventHandlerClassNamePointer(TRailAm
 // GHIDRA_NAME TRailAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
-TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
+TRailAmtBar * TRailAmtBar::ConstructBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -66,7 +66,7 @@ TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
 // GHIDRA_NAME TRailAmtBar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *this,byte param_1)
+TRailAmtBar * TRailAmtBar::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -80,7 +80,7 @@ TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *
 // GHIDRA_NAME TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
-void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this,int param_1)
+void TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 {
   uint uVar1;
@@ -157,7 +157,7 @@ void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this,
 // GHIDRA_NAME TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 // GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __thiscall TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TRailAmtBar *this)
+void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
 
 {
   TRailAmtBarVtbl *pTVar1;
@@ -219,8 +219,7 @@ void __thiscall TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TRail
 // GHIDRA_NAME TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB
 // GHIDRA_PROTO undefined __thiscall RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1)
 
-void __thiscall
-TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAmtBar *this,undefined2 param_1)
+void TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1)
 
 {
   TRailAmtBarVtbl *pTVar1;

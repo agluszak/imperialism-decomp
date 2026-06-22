@@ -13,8 +13,7 @@
 /* Derived UI resource constructor for entries consistently tagged with 'plat' at dominant call
    sites. Initializes index/sentinel slot to -1. */
 
-TMapPreviewView * __thiscall
-TMapPreviewView::ConstructUiPlanetListResourceEntry(TMapPreviewView *this)
+TMapPreviewView * TMapPreviewView::ConstructUiPlanetListResourceEntry()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -27,8 +26,7 @@ TMapPreviewView::ConstructUiPlanetListResourceEntry(TMapPreviewView *this)
 // GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMapPreviewView * __thiscall
-TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1)
+TMapPreviewView * TMapPreviewView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -42,7 +40,7 @@ TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1
 // GHIDRA_NAME TMapPreviewView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMapPreviewView::GetTEventHandlerClassNamePointer(TMapPreviewView *this)
+CRuntimeClass * TMapPreviewView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -52,7 +50,7 @@ CRuntimeClass * __thiscall TMapPreviewView::GetTEventHandlerClassNamePointer(TMa
 // GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
+void TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   undefined4 uVar1;
@@ -114,7 +112,7 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
 // GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
+void TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x60);
@@ -126,7 +124,7 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
 // GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(int * param_1)
 
-void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,int *param_1)
+void TMapPreviewView::_scalar_deleting_destructor_(int *param_1)
 
 {
   byte bVar1;
@@ -158,7 +156,7 @@ void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *t
 // GHIDRA_NAME TMapPreviewView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMapPreviewView::OrphanTiny_ReturnZero_0048a730(TMapPreviewView *this)
+void TMapPreviewView::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

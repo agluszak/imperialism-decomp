@@ -37,7 +37,7 @@ TControl * THelpWindow::CreateTHelpWindowInstance(void)
 // GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
+CRuntimeClass * THelpWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -53,7 +53,7 @@ CRuntimeClass * __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWi
 /* Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing
    vtable PTR_LAB_006572c0. */
 
-THelpWindow * __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
+THelpWindow * THelpWindow::ConstructUiWindowResourceEntryType572C0()
 
 {
   TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
@@ -65,7 +65,7 @@ THelpWindow * __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(TH
 // GHIDRA_NAME THelpWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *this,byte param_1)
+THelpWindow * THelpWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
@@ -79,7 +79,7 @@ THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *
 // GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
+void THelpWindow::GetTEventHandlerClassNamePointer()
 
 {
   TFloatWindow::GetTEventHandlerClassNamePointer((TFloatWindow *)this);

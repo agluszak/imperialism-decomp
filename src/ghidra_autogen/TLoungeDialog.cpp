@@ -7,8 +7,7 @@
 // GHIDRA_NAME TLoungeDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TLoungeDialog * __thiscall
-TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
+TLoungeDialog * TLoungeDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -22,7 +21,7 @@ TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
 // GHIDRA_NAME TLoungeDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TLoungeDialog::GetTEventHandlerClassNamePointer(TLoungeDialog *this)
+CRuntimeClass * TLoungeDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -32,7 +31,7 @@ CRuntimeClass * __thiscall TLoungeDialog::GetTEventHandlerClassNamePointer(TLoun
 // GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *this)
+void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (DAT_00695278 != 0x4d6f696c) {
@@ -47,7 +46,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
 // GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *this)
+void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TLoungeDialogVtbl *pTVar1;
@@ -144,7 +143,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
 // GHIDRA_NAME TLoungeDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-uint __thiscall TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this)
+uint TLoungeDialog::_scalar_deleting_destructor_()
 
 {
   int iVar1;

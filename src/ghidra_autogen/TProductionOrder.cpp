@@ -7,8 +7,7 @@
 // GHIDRA_NAME TProductionOrder::GetTProductionOrderClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TProductionOrder::GetTProductionOrderClassNamePointer(TProductionOrder *this)
+CRuntimeClass * TProductionOrder::GetTProductionOrderClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,7 +17,7 @@ TProductionOrder::GetTProductionOrderClassNamePointer(TProductionOrder *this)
 // GHIDRA_NAME TProductionOrder::ConstructTProductionOrderBaseState
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ConstructTProductionOrderBaseState(void)
 
-void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProductionOrder *this)
+void TProductionOrder::ConstructTProductionOrderBaseState()
 
 {
   this->vftable = &TProductionOrderVtbl_0064fa18;
@@ -29,8 +28,7 @@ void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProduction
 // GHIDRA_NAME TProductionOrder::DestructTProductionOrderAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTProductionOrderAndMaybeFree(byte param_1)
 
-TProductionOrder * __thiscall
-TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this,byte param_1)
+TProductionOrder * TProductionOrder::DestructTProductionOrderAndMaybeFree(byte param_1)
 
 {
   DestructTProductionOrderAndMaybeFree_Impl();
@@ -88,7 +86,7 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
 // GHIDRA_NAME TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-undefined2 __thiscall TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TProductionOrder *this)
+undefined2 TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0()
 
 {
   return 0;
@@ -98,8 +96,7 @@ undefined2 __thiscall TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TProduc
 // GHIDRA_NAME TProductionOrder::OrphanCallChain_C1_I16_004b5100
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(short param_1)
 
-undefined4 __thiscall
-TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this,short param_1)
+undefined4 TProductionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
 
 {
   undefined uVar1;
@@ -117,7 +114,7 @@ TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this,short p
 // GHIDRA_NAME TProductionOrder::ResetCityOrderItemDerivedStateNoop
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
-void __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(TProductionOrder *this)
+void TProductionOrder::ResetCityOrderItemDerivedStateNoop()
 
 {
   return;
@@ -127,7 +124,7 @@ void __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(TProduction
 // GHIDRA_NAME TProductionOrder::OrphanRetStub_004b5160
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
 
-void __thiscall TProductionOrder::OrphanRetStub_004b5160(TProductionOrder *this)
+void TProductionOrder::OrphanRetStub_004b5160()
 
 {
   return;
@@ -137,8 +134,7 @@ void __thiscall TProductionOrder::OrphanRetStub_004b5160(TProductionOrder *this)
 // GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
 // GHIDRA_PROTO undefined __thiscall TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
 
-void __thiscall
-TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this,undefined4 *param_1)
+void TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4 *param_1)
 
 {
   int iVar1;

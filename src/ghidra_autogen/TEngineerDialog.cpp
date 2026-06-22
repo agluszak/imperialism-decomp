@@ -7,7 +7,7 @@
 // GHIDRA_NAME TEngineerDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEngineerDialog *this)
+CRuntimeClass * TEngineerDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEn
 // GHIDRA_NAME TEngineerDialog::ConstructEngineerDialog
 // GHIDRA_PROTO undefined __thiscall ConstructEngineerDialog(void)
 
-TEngineerDialog * __thiscall TEngineerDialog::ConstructEngineerDialog(TEngineerDialog *this)
+TEngineerDialog * TEngineerDialog::ConstructEngineerDialog()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -32,8 +32,7 @@ TEngineerDialog * __thiscall TEngineerDialog::ConstructEngineerDialog(TEngineerD
 // GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TEngineerDialog * __thiscall
-TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this,byte param_1)
+TEngineerDialog * TEngineerDialog::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -47,7 +46,7 @@ TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this,byte param_1
 // GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this)
+void TEngineerDialog::_scalar_deleting_destructor_()
 
 {
   if (*(int *)&this->field_0x60 != 0) {
@@ -81,7 +80,7 @@ void __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *t
    - blits footer strip from surface +0x64 for remaining tail.
    - used when Engineer dialog backing surface is present. */
 
-void __thiscall TEngineerDialog::OrphanTiny_ReturnZero_0048a730(TEngineerDialog *this)
+void TEngineerDialog::OrphanTiny_ReturnZero_0048a730()
 
 {
   int iVar1;

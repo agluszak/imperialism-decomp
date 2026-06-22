@@ -37,7 +37,7 @@ TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
 // GHIDRA_NAME TUnitsView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TUnitsView::GetTEventHandlerClassNamePointer(TUnitsView *this)
+CRuntimeClass * TUnitsView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TUnitsView::GetTEventHandlerClassNamePointer(TUnitsVi
 // GHIDRA_NAME TUnitsView::ConstructTUnitsViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTUnitsViewBaseState(void)
 
-TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
+TUnitsView * TUnitsView::ConstructTUnitsViewBaseState()
 
 {
   TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
@@ -60,7 +60,7 @@ TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *thi
 // GHIDRA_NAME TUnitsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TUnitsView * __thiscall TUnitsView::_scalar_deleting_destructor_(TUnitsView *this,byte param_1)
+TUnitsView * TUnitsView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -74,7 +74,7 @@ TUnitsView * __thiscall TUnitsView::_scalar_deleting_destructor_(TUnitsView *thi
 // GHIDRA_NAME TUnitsView::OrphanRetStub_004c6fd0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
 
-void __thiscall TUnitsView::OrphanRetStub_004c6fd0(TUnitsView *this)
+void TUnitsView::OrphanRetStub_004c6fd0()
 
 {
   short sVar1;

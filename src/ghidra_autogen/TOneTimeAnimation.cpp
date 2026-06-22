@@ -23,7 +23,7 @@ TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
 // GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(void)
 
-void __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(TOneTimeAnimation *this)
+void TOneTimeAnimation::CreateTOneTimeAnimationInstance()
 
 {
   this->vftable =
@@ -35,7 +35,7 @@ void __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(TOneTimeAnima
 // GHIDRA_NAME TOneTimeAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TOneTimeAnimation::GetTAnimationClassNamePointer(TOneTimeAnimation *this)
+CRuntimeClass * TOneTimeAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -70,7 +70,7 @@ TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
 // GHIDRA_NAME TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTOneTimeAnimationAndMaybeFree(void)
 
-void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTimeAnimation *this)
+void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
 
 {
   int iVar1;

@@ -24,8 +24,7 @@
    Returns:
    - this pointer. */
 
-void * __thiscall
-TSuperCivRoster::_scalar_deleting_destructor_(TSuperCivRoster *this,byte bFreeMemory)
+void * TSuperCivRoster::_scalar_deleting_destructor_(byte bFreeMemory)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -39,7 +38,7 @@ TSuperCivRoster::_scalar_deleting_destructor_(TSuperCivRoster *this,byte bFreeMe
 // GHIDRA_NAME TSuperCivRoster::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSuperCivRoster::GetTEventHandlerClassNamePointer(TSuperCivRoster *this)
+CRuntimeClass * TSuperCivRoster::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -119,8 +118,7 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
 // GHIDRA_NAME TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTSuperCivRosterAndMaybeFree(byte param_1)
 
-TSuperCivRoster * __thiscall
-TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this,byte param_1)
+TSuperCivRoster * TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(byte param_1)
 
 {
   DestructTSuperCivRosterAndMaybeFree_Impl();
@@ -174,7 +172,7 @@ TSuperCivRoster::DestructTSuperCivRosterAndMaybeFree(TSuperCivRoster *this,byte 
    - If no list item is selected (index -1), no selection update is applied.
    - Internal allocation/assertion failures follow engine nil-pointer/failure paths. */
 
-void __thiscall TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit(TSuperCivRoster *this)
+void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
 
 {
   short sVar1;

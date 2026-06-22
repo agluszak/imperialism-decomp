@@ -7,8 +7,7 @@
 // GHIDRA_NAME TScenarioChooser::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TScenarioChooser * __thiscall
-TScenarioChooser::_scalar_deleting_destructor_(TScenarioChooser *this,byte param_1)
+TScenarioChooser * TScenarioChooser::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -52,8 +51,7 @@ TNoHilitePicture * TScenarioChooser::CreateTScenarioChooserInstance(void)
 // GHIDRA_NAME TScenarioChooser::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TScenarioChooser::GetTEventHandlerClassNamePointer(TScenarioChooser *this)
+CRuntimeClass * TScenarioChooser::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -63,7 +61,7 @@ TScenarioChooser::GetTEventHandlerClassNamePointer(TScenarioChooser *this)
 // GHIDRA_NAME TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChooser *this)
+void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   code *pcVar1;
@@ -359,8 +357,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
 /* Scenario-selection scheduler helper. If g_pLocalizationTable +0x44 is active, runs
    ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
 
-void __thiscall
-TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser *this)
+void TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState()
 
 {
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
@@ -384,7 +381,7 @@ TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser
    - Enter-like keys (3, 0x0D): invoke virtual +0x1D0 action.
    - Escape key (0x1B): invoke virtual +0x1D4 cancel action. */
 
-void __thiscall TScenarioChooser::OrphanTiny_ReturnZero_0048a730(TScenarioChooser *this,int param_1)
+void TScenarioChooser::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;
@@ -415,7 +412,7 @@ void __thiscall TScenarioChooser::OrphanTiny_ReturnZero_0048a730(TScenarioChoose
    - In active flow branch, writes scenario tag (`scn0 + index`) and posts turn-event code 0x5E4.
    - In fallback branch, updates selector bitmap flags and refreshes current view. */
 
-void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChooser *this)
+void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
 
 {
   short sVar1;
@@ -519,7 +516,7 @@ void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TSce
 // GHIDRA_NAME TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChooser *this)
+void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int *piVar1;

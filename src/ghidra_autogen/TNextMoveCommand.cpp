@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNextMoveCommand::QueueTacticalEventPacket232A
 // GHIDRA_PROTO undefined __thiscall QueueTacticalEventPacket232A(void)
 
-void __thiscall TNextMoveCommand::QueueTacticalEventPacket232A(TNextMoveCommand *this)
+void TNextMoveCommand::QueueTacticalEventPacket232A()
 
 {
   TCommand *this_00;
@@ -74,7 +74,7 @@ TCommand * TNextMoveCommand::CreateTNextMoveCommandInstance(void)
 // GHIDRA_NAME TNextMoveCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNextMoveCommand::GetTEventClassNamePointer(TNextMoveCommand *this)
+CRuntimeClass * TNextMoveCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -84,8 +84,7 @@ CRuntimeClass * __thiscall TNextMoveCommand::GetTEventClassNamePointer(TNextMove
 // GHIDRA_NAME TNextMoveCommand::ConstructTNextMoveCommandBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTNextMoveCommandBaseState(void)
 
-TNextMoveCommand * __thiscall
-TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
+TNextMoveCommand * TNextMoveCommand::ConstructTNextMoveCommandBaseState()
 
 {
   TCommand::ConstructTurnEventPacketBase((TCommand *)this);
@@ -97,8 +96,7 @@ TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
 // GHIDRA_NAME TNextMoveCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(byte param_1)
 
-TNextMoveCommand * __thiscall
-TNextMoveCommand::OrphanCallChain_C1_I17_00487470(TNextMoveCommand *this,byte param_1)
+TNextMoveCommand * TNextMoveCommand::OrphanCallChain_C1_I17_00487470(byte param_1)
 
 {
   DestructTNextMoveCommandAndMaybeFree_Impl();
@@ -112,7 +110,7 @@ TNextMoveCommand::OrphanCallChain_C1_I17_00487470(TNextMoveCommand *this,byte pa
 // GHIDRA_NAME TNextMoveCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TNextMoveCommand::OrphanRetStub_00487a00(TNextMoveCommand *this)
+void TNextMoveCommand::OrphanRetStub_00487a00()
 
 {
   int *piVar1;

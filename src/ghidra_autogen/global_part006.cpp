@@ -11722,8 +11722,7 @@ LAB_004ebaff:
 // GHIDRA_NAME TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
 // GHIDRA_PROTO undefined __thiscall TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void)
 
-void __thiscall
-TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(TAutoGreatPower *this)
+void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner()
 
 {
   TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(this);

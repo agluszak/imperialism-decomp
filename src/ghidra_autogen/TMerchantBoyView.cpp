@@ -7,8 +7,7 @@
 // GHIDRA_NAME TMerchantBoyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TMerchantBoyView * __thiscall
-TMerchantBoyView::_scalar_deleting_destructor_(TMerchantBoyView *this,byte param_1)
+TMerchantBoyView * TMerchantBoyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TMerchantBoyView::_scalar_deleting_destructor_(TMerchantBoyView *this,byte param
 // GHIDRA_NAME TMerchantBoyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TMerchantBoyView::GetTEventHandlerClassNamePointer(TMerchantBoyView *this)
+CRuntimeClass * TMerchantBoyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,7 +31,7 @@ TMerchantBoyView::GetTEventHandlerClassNamePointer(TMerchantBoyView *this)
 // GHIDRA_NAME TMerchantBoyView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TMerchantBoyView::OrphanTiny_ReturnZero_0048a730(TMerchantBoyView *this)
+void TMerchantBoyView::OrphanTiny_ReturnZero_0048a730()
 
 {
   undefined2 extraout_var;

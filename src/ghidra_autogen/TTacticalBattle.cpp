@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTacticalBattle::OrphanRetStub_0059f710
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059f710(void)
 
-void __thiscall TTacticalBattle::OrphanRetStub_0059f710(TTacticalBattle *this)
+void TTacticalBattle::OrphanRetStub_0059f710()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TTacticalBattle::OrphanRetStub_0059f710(TTacticalBattle *this)
 // GHIDRA_NAME TTacticalBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(void)
 
-void __thiscall TTacticalBattle::CreateTTacticalBattleInstance(TTacticalBattle *this)
+void TTacticalBattle::CreateTTacticalBattleInstance()
 
 {
   *(undefined4 *)&this->field_0x44 = 1;
@@ -28,8 +28,7 @@ void __thiscall TTacticalBattle::CreateTTacticalBattleInstance(TTacticalBattle *
 // GHIDRA_NAME TTacticalBattle::GetTTacticalBattleClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalBattleClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalBattle::GetTTacticalBattleClassNamePointer(TTacticalBattle *this)
+CRuntimeClass * TTacticalBattle::GetTTacticalBattleClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -39,7 +38,7 @@ TTacticalBattle::GetTTacticalBattleClassNamePointer(TTacticalBattle *this)
 // GHIDRA_NAME TTacticalBattle::ConstructTTacticalBattleBaseState
 // GHIDRA_PROTO undefined __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(void)
 
-void __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBattle *this)
+void TTacticalBattle::ConstructTTacticalBattleBaseState()
 
 {
   this->vftable = &TTacticalBattleVtbl_0066a088;
@@ -57,8 +56,7 @@ void __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBatt
 // GHIDRA_NAME TTacticalBattle::DestructTTacticalBattleAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTacticalBattleAndMaybeFree(byte param_1)
 
-TTacticalBattle * __thiscall
-TTacticalBattle::DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this,byte param_1)
+TTacticalBattle * TTacticalBattle::DestructTTacticalBattleAndMaybeFree(byte param_1)
 
 {
   DestructTTacticalBattleAndMaybeFree_Impl();
@@ -72,8 +70,7 @@ TTacticalBattle::DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this,byte 
 // GHIDRA_NAME TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059fb50(void)
 
-void __thiscall
-TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50(TTacticalBattle *this)
+void TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50()
 
 {
   if (*(int *)&this->field_0x24 != 0) {
@@ -386,7 +383,7 @@ LAB_005a1f86:
 // GHIDRA_NAME TTacticalBattle::OrphanCallChain_C4_I30_005a2700
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I30_005a2700(int param_1)
 
-void __thiscall TTacticalBattle::OrphanCallChain_C4_I30_005a2700(TTacticalBattle *this,int param_1)
+void TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1)
 
 {
   int *piVar1;
@@ -487,8 +484,7 @@ LAB_005a32b7:
 // GHIDRA_NAME TTacticalBattle::ClearTacticalTileStateRunByStride
 // GHIDRA_PROTO undefined __thiscall ClearTacticalTileStateRunByStride(int param_1)
 
-void __thiscall
-TTacticalBattle::ClearTacticalTileStateRunByStride(TTacticalBattle *this,int param_1)
+void TTacticalBattle::ClearTacticalTileStateRunByStride(int param_1)
 
 {
   int *piVar1;

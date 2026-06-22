@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTradeMgr::GetTTradeMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTradeMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TTradeMgr::GetTTradeMgrClassNamePointer(TTradeMgr *this)
+CRuntimeClass * TTradeMgr::GetTTradeMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TTradeMgr::GetTTradeMgrClassNamePointer(TTradeMgr *th
 // GHIDRA_NAME TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990
 // GHIDRA_PROTO undefined __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(void)
 
-void __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(TTradeMgr *this)
+void TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990()
 
 {
   this->vftable = &TTradeMgrVtbl_0066d990;
@@ -28,7 +28,7 @@ void __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(T
 // GHIDRA_NAME TTradeMgr::DestructTTradeMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTradeMgrAndMaybeFree(byte param_1)
 
-TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this,byte param_1)
+TTradeMgr * TTradeMgr::DestructTTradeMgrAndMaybeFree(byte param_1)
 
 {
   TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(this);
@@ -42,7 +42,7 @@ TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this,
 // GHIDRA_NAME TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl
 // GHIDRA_PROTO undefined __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(void)
 
-void __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(TTradeMgr *this)
+void TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl()
 
 {
   this->vftable = (TTradeMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -53,7 +53,7 @@ void __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(TTradeMgr *this)
 // GHIDRA_NAME TTradeMgr::OrphanCallChain_C2_I25_005b7bc0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_005b7bc0(void)
 
-void __thiscall TTradeMgr::OrphanCallChain_C2_I25_005b7bc0(TTradeMgr *this)
+void TTradeMgr::OrphanCallChain_C2_I25_005b7bc0()
 
 {
   int *piVar1;
@@ -79,8 +79,7 @@ void __thiscall TTradeMgr::OrphanCallChain_C2_I25_005b7bc0(TTradeMgr *this)
 // GHIDRA_NAME TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int * param_1)
 
-void __thiscall
-TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(TTradeMgr *this,int *param_1)
+void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int *param_1)
 
 {
   undefined1 uVar1;
@@ -157,7 +156,7 @@ TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(TTradeMgr *this,int 
 // GHIDRA_NAME TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90
 // GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
 
-void __thiscall TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(TTradeMgr *this)
+void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
 
 {
   code *pcVar1;
@@ -243,7 +242,7 @@ void __thiscall TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(TTra
 // GHIDRA_NAME TTradeMgr::OrphanCallChain_C3_I50_005b7fc0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I50_005b7fc0(void)
 
-void __thiscall TTradeMgr::OrphanCallChain_C3_I50_005b7fc0(TTradeMgr *this)
+void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0()
 
 {
   undefined2 *puVar1;
@@ -299,7 +298,7 @@ void __thiscall TTradeMgr::OrphanCallChain_C3_I50_005b7fc0(TTradeMgr *this)
 // GHIDRA_NAME TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents
 // GHIDRA_PROTO undefined __thiscall AccumulateDiplomacyRelationChangesAndQueueEvents(void)
 
-void __thiscall TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents(TTradeMgr *this)
+void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents()
 
 {
   short sVar1;
@@ -620,7 +619,7 @@ void __thiscall TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents(TTra
 // GHIDRA_NAME TTradeMgr::DispatchNationMetricUpdatePassForAllSlots
 // GHIDRA_PROTO undefined __thiscall DispatchNationMetricUpdatePassForAllSlots(void)
 
-void __thiscall TTradeMgr::DispatchNationMetricUpdatePassForAllSlots(TTradeMgr *this)
+void TTradeMgr::DispatchNationMetricUpdatePassForAllSlots()
 
 {
   TTradeMgr_slot_0x04_0x04 *pTVar1;
@@ -641,7 +640,7 @@ void __thiscall TTradeMgr::DispatchNationMetricUpdatePassForAllSlots(TTradeMgr *
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TTradeMgr::ComputeNationMetricBaselineValueForSlot(TTradeMgr *this,short param_1)
+void TTradeMgr::ComputeNationMetricBaselineValueForSlot(short param_1)
 
 {
   short sVar1;
@@ -705,7 +704,7 @@ LAB_005b8c49:
 // GHIDRA_NAME TTradeMgr::GetNationMetricWeightedScoreForSlot
 // GHIDRA_PROTO undefined __thiscall GetNationMetricWeightedScoreForSlot(short param_1)
 
-float10 __thiscall TTradeMgr::GetNationMetricWeightedScoreForSlot(TTradeMgr *this,short param_1)
+float10 TTradeMgr::GetNationMetricWeightedScoreForSlot(short param_1)
 
 {
   return (float10)*(double *)(&this->field_0x10 + param_1 * 0xa0);
@@ -715,7 +714,7 @@ float10 __thiscall TTradeMgr::GetNationMetricWeightedScoreForSlot(TTradeMgr *thi
 // GHIDRA_NAME TTradeMgr::GetNationMetricAuxWordForSlot
 // GHIDRA_PROTO undefined __thiscall GetNationMetricAuxWordForSlot(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricAuxWordForSlot(TTradeMgr *this,short param_1)
+undefined4 TTradeMgr::GetNationMetricAuxWordForSlot(short param_1)
 
 {
   return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
@@ -807,7 +806,7 @@ LAB_005b8f0a:
 // GHIDRA_NAME TTradeMgr::GetNationMetricRosterWordAtOffset0E
 // GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0E(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0E(TTradeMgr *this,short param_1)
+undefined4 TTradeMgr::GetNationMetricRosterWordAtOffset0E(short param_1)
 
 {
   return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
@@ -818,7 +817,7 @@ undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0E(TTradeMgr *
 // GHIDRA_NAME TTradeMgr::GetNationMetricRosterWordAtOffset0C
 // GHIDRA_PROTO undefined __thiscall GetNationMetricRosterWordAtOffset0C(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0C(TTradeMgr *this,short param_1)
+undefined4 TTradeMgr::GetNationMetricRosterWordAtOffset0C(short param_1)
 
 {
   return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
@@ -829,8 +828,7 @@ undefined4 __thiscall TTradeMgr::GetNationMetricRosterWordAtOffset0C(TTradeMgr *
 // GHIDRA_NAME TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A
 // GHIDRA_PROTO undefined __thiscall ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(short param_1)
 
-undefined4 __thiscall
-TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(TTradeMgr *this,short param_1)
+undefined4 TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(short param_1)
 
 {
   if (param_1 == 0x16) {
@@ -847,7 +845,7 @@ TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(TTradeMgr *thi
 // GHIDRA_NAME TTradeMgr::GetNationMetricBucketValueByIndex
 // GHIDRA_PROTO undefined __thiscall GetNationMetricBucketValueByIndex(short param_1)
 
-undefined4 __thiscall TTradeMgr::GetNationMetricBucketValueByIndex(TTradeMgr *this,short param_1)
+undefined4 TTradeMgr::GetNationMetricBucketValueByIndex(short param_1)
 
 {
   return CONCAT22((short)((uint)(param_1 * 0xa0) >> 0x10),
@@ -858,8 +856,7 @@ undefined4 __thiscall TTradeMgr::GetNationMetricBucketValueByIndex(TTradeMgr *th
 // GHIDRA_NAME TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
 // GHIDRA_PROTO undefined __thiscall ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short param_1)
 
-void __thiscall
-TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(TTradeMgr *this,short param_1)
+void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short param_1)
 
 {
   int *piVar1;
@@ -914,8 +911,7 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(TTradeMgr *this
 // GHIDRA_NAME TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190
 // GHIDRA_PROTO undefined __thiscall WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(void)
 
-void __thiscall
-TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190(TTradeMgr *this)
+void TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190()
 
 {
   short sVar1;
@@ -936,7 +932,7 @@ TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9
 // GHIDRA_NAME TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
 // GHIDRA_PROTO undefined __thiscall RebuildNationMetricPassesAndClampRowsByBaseline(void)
 
-void __thiscall TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline(TTradeMgr *this)
+void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline()
 
 {
   TTradeMgr_slot_0x04_0x04 *pTVar1;
@@ -1081,8 +1077,7 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
 // GHIDRA_NAME TTradeMgr::SetNationMetricCellValueByIndex
 // GHIDRA_PROTO undefined __thiscall SetNationMetricCellValueByIndex(short param_1, undefined2 param_2)
 
-void __thiscall
-TTradeMgr::SetNationMetricCellValueByIndex(TTradeMgr *this,short param_1,undefined2 param_2)
+void TTradeMgr::SetNationMetricCellValueByIndex(short param_1, undefined2 param_2)
 
 {
   *(undefined2 *)(&this->field_0xa + param_1 * 0xa0) = param_2;
@@ -1093,7 +1088,7 @@ TTradeMgr::SetNationMetricCellValueByIndex(TTradeMgr *this,short param_1,undefin
 // GHIDRA_NAME TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
 // GHIDRA_PROTO undefined __thiscall RunNationUpdatePassesAndResetTransitionFlags(void)
 
-void __thiscall TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags(TTradeMgr *this)
+void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags()
 
 {
   char cVar1;
@@ -1139,7 +1134,7 @@ void __thiscall TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags(TTradeMg
 // GHIDRA_NAME TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
 // GHIDRA_PROTO undefined __thiscall RunNationMetricPreUpdatePassAcrossSecondaryNations(void)
 
-void __thiscall TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations(TTradeMgr *this)
+void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations()
 
 {
   TMinor **ppTVar1;
@@ -1164,7 +1159,7 @@ void __thiscall TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations(TT
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores(TTradeMgr *this)
+void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores()
 
 {
   char cVar1;
@@ -1278,7 +1273,7 @@ void __thiscall TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScore
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores(TTradeMgr *this)
+void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
 
 {
   TTradeMgrVtbl *pTVar1;
@@ -1456,8 +1451,7 @@ void __thiscall TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScor
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TTradeMgr::ComputeNationMetricPowerScale(TTradeMgr *this,double param_1,short param_2)
+float10 TTradeMgr::ComputeNationMetricPowerScale(double param_1, short param_2)
 
 {
   int iVar1;
@@ -1478,7 +1472,7 @@ TTradeMgr::ComputeNationMetricPowerScale(TTradeMgr *this,double param_1,short pa
 // GHIDRA_NAME TTradeMgr::IsNationMetricCellNegative
 // GHIDRA_PROTO undefined __thiscall IsNationMetricCellNegative(int param_1, int param_2)
 
-undefined4 __thiscall TTradeMgr::IsNationMetricCellNegative(TTradeMgr *this,int param_1,int param_2)
+undefined4 TTradeMgr::IsNationMetricCellNegative(int param_1, int param_2)
 
 {
   int iVar1;
@@ -1491,7 +1485,7 @@ undefined4 __thiscall TTradeMgr::IsNationMetricCellNegative(TTradeMgr *this,int 
 // GHIDRA_NAME TTradeMgr::IsNationMetricCellPositive
 // GHIDRA_PROTO undefined __thiscall IsNationMetricCellPositive(int param_1, int param_2)
 
-undefined4 __thiscall TTradeMgr::IsNationMetricCellPositive(TTradeMgr *this,int param_1,int param_2)
+undefined4 TTradeMgr::IsNationMetricCellPositive(int param_1, int param_2)
 
 {
   int iVar1;
@@ -1550,8 +1544,7 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter
 // GHIDRA_NAME TTradeMgr::SelectPreferredNationMetricCodeFromLookup
 // GHIDRA_PROTO undefined __thiscall SelectPreferredNationMetricCodeFromLookup(short param_1, short param_2)
 
-short __thiscall
-TTradeMgr::SelectPreferredNationMetricCodeFromLookup(TTradeMgr *this,short param_1,short param_2)
+short TTradeMgr::SelectPreferredNationMetricCodeFromLookup(short param_1, short param_2)
 
 {
   short sVar1;

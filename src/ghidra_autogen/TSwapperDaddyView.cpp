@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSwapperDaddyView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSwapperDaddyView * __thiscall
-TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte param_1)
+TSwapperDaddyView * TSwapperDaddyView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -22,8 +21,7 @@ TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte par
 // GHIDRA_NAME TSwapperDaddyView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSwapperDaddyView::GetTEventHandlerClassNamePointer(TSwapperDaddyView *this)
+CRuntimeClass * TSwapperDaddyView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -33,8 +31,7 @@ TSwapperDaddyView::GetTEventHandlerClassNamePointer(TSwapperDaddyView *this)
 // GHIDRA_NAME TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTSwapperDaddyViewBaseState(int param_1)
 
-int * __thiscall
-TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,int param_1)
+int * TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int param_1)
 
 {
   byte bVar1;

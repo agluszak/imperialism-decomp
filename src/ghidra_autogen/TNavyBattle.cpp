@@ -7,8 +7,7 @@
 // GHIDRA_NAME TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte param_1)
 
-TNavyBattle * __thiscall
-TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this,byte param_1)
+TNavyBattle * TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(byte param_1)
 
 {
   TNavyBattle::CreateTNavyBattleInstance(this);
@@ -22,7 +21,7 @@ TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this,byt
 // GHIDRA_NAME TNavyBattle::CreateTNavyBattleInstance
 // GHIDRA_PROTO undefined __thiscall TNavyBattle::CreateTNavyBattleInstance(void)
 
-void __thiscall TNavyBattle::CreateTNavyBattleInstance(TNavyBattle *this)
+void TNavyBattle::CreateTNavyBattleInstance()
 
 {
   this->vftable = (TNavyBattleVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -33,7 +32,7 @@ void __thiscall TNavyBattle::CreateTNavyBattleInstance(TNavyBattle *this)
 // GHIDRA_NAME TNavyBattle::GetTTacticalBattleClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalBattleClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNavyBattle::GetTTacticalBattleClassNamePointer(TNavyBattle *this)
+CRuntimeClass * TNavyBattle::GetTTacticalBattleClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -49,8 +48,7 @@ CRuntimeClass * __thiscall TNavyBattle::GetTTacticalBattleClassNamePointer(TNavy
 /* Setting prototype: void TryPlaceTacticalUnitOnTileAndAdvanceSelection(TacticalBattleUnit *pUnit,
    int targetTileIndex) */
 
-void __thiscall
-TNavyBattle::OrphanRetStub_0059f710(TNavyBattle *this,TacticalBattleUnit *pUnit,int targetTileIndex)
+void TNavyBattle::OrphanRetStub_0059f710(TacticalBattleUnit *pUnit, int targetTileIndex)
 
 {
   int iVar1;
@@ -201,8 +199,7 @@ LAB_005a58fd:
 // GHIDRA_NAME TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 // GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
-void __thiscall
-TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this,int param_1)
+void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1)
 
 {
   int iVar1;
@@ -273,7 +270,7 @@ TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this,i
 // GHIDRA_NAME TNavyBattle::CreateTTacticalBattleInstance
 // GHIDRA_PROTO undefined __thiscall CreateTTacticalBattleInstance(void)
 
-void __thiscall TNavyBattle::CreateTTacticalBattleInstance(TNavyBattle *this)
+void TNavyBattle::CreateTTacticalBattleInstance()
 
 {
   int *unaff_retaddr;
@@ -286,8 +283,7 @@ void __thiscall TNavyBattle::CreateTTacticalBattleInstance(TNavyBattle *this)
 // GHIDRA_NAME TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 // GHIDRA_PROTO undefined __thiscall ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(void)
 
-void __thiscall
-TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TNavyBattle *this)
+void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
 
 {
   short sVar1;
@@ -359,8 +355,7 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
 
 /* Setting prototype: void ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode) */
 
-void __thiscall
-TNavyBattle::ApplyTacticalDamageAndDeathState(TNavyBattle *this,float damageAmount,int damageMode)
+void TNavyBattle::ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
 
 {
   bool bVar1;

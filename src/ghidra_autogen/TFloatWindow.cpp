@@ -78,7 +78,7 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
 // GHIDRA_NAME TFloatWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *this)
+CRuntimeClass * TFloatWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -88,8 +88,7 @@ CRuntimeClass * __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloat
 // GHIDRA_NAME TFloatWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TFloatWindow * __thiscall
-TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this,byte param_1)
+TFloatWindow * TFloatWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowAndUnlinkGlobalWindowNode((TView *)this);
@@ -103,7 +102,7 @@ TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this,byte param_1)
 // GHIDRA_NAME TFloatWindow::OrphanVtableAssignStub_00492310
 // GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00492310(void)
 
-undefined4 __thiscall TFloatWindow::OrphanVtableAssignStub_00492310(TFloatWindow *this)
+undefined4 TFloatWindow::OrphanVtableAssignStub_00492310()
 
 {
   return 0x66776e64;
@@ -120,7 +119,7 @@ undefined4 __thiscall TFloatWindow::OrphanVtableAssignStub_00492310(TFloatWindow
 /* Alternate implementation of ResetChildSelectionAndNotifyParent468 with same
    notification/child-iteration flow. */
 
-void __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *this)
+void TFloatWindow::GetTEventHandlerClassNamePointer()
 
 {
   int iVar1;
@@ -165,8 +164,7 @@ void __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *thi
 // GHIDRA_NAME TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(CArchive * param_1)
 
-void __thiscall
-TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWindow *this,CArchive *param_1)
+void TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(CArchive *param_1)
 
 {
   int iVar1;
@@ -241,8 +239,7 @@ TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWindow *this,CArchi
 // GHIDRA_NAME TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
 
-TFloatWindow * __thiscall
-TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(TFloatWindow *this,byte param_1)
+TFloatWindow * TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(byte param_1)
 
 {
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();

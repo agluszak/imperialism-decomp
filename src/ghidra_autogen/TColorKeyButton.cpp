@@ -37,7 +37,7 @@ TColorKeyPicture * TColorKeyButton::CreateTColorKeyButtonInstance(void)
 // GHIDRA_NAME TColorKeyButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TColorKeyButton::GetTEventHandlerClassNamePointer(TColorKeyButton *this)
+CRuntimeClass * TColorKeyButton::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TColorKeyButton::GetTEventHandlerClassNamePointer(TCo
 // GHIDRA_NAME TColorKeyButton::ConstructTColorKeyButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTColorKeyButtonBaseState(void)
 
-TColorKeyButton * __thiscall
-TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
+TColorKeyButton * TColorKeyButton::ConstructTColorKeyButtonBaseState()
 
 {
   TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
@@ -60,8 +59,7 @@ TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
 // GHIDRA_NAME TColorKeyButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TColorKeyButton * __thiscall
-TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this,byte param_1)
+TColorKeyButton * TColorKeyButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -75,7 +73,7 @@ TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this,byte param_1
 // GHIDRA_NAME TColorKeyButton::OrphanCallChain_C2_I28_00571ff0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I28_00571ff0(char param_1)
 
-void __thiscall TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(TColorKeyButton *this,char param_1)
+void TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(char param_1)
 
 {
   TColorKeyButtonVtbl *pTVar1;
@@ -104,7 +102,7 @@ void __thiscall TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(TColorKeyButton
 // GHIDRA_NAME TColorKeyButton::OrphanCallChain_C1_I05_00572060
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00572060(void)
 
-void __thiscall TColorKeyButton::OrphanCallChain_C1_I05_00572060(TColorKeyButton *this)
+void TColorKeyButton::OrphanCallChain_C1_I05_00572060()
 
 {
   undefined uVar1;

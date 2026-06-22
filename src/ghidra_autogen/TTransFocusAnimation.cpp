@@ -7,8 +7,7 @@
 // GHIDRA_NAME TTransFocusAnimation::Sprite__CollectNonTransparentPixels
 // GHIDRA_PROTO int * __thiscall TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
 
-int * __thiscall
-TTransFocusAnimation::Sprite__CollectNonTransparentPixels(TTransFocusAnimation *this,uint this_ptr)
+int * TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
 
 {
   byte bVar1;
@@ -285,7 +284,7 @@ TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
 // GHIDRA_NAME TTransFocusAnimation::CreateTTransFocusAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(void)
 
-void __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(TTransFocusAnimation *this)
+void TTransFocusAnimation::CreateTTransFocusAnimationInstance()
 
 {
   this->vftable =
@@ -297,8 +296,7 @@ void __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(TTransF
 // GHIDRA_NAME TTransFocusAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTransFocusAnimation::GetTAnimationClassNamePointer(TTransFocusAnimation *this)
+CRuntimeClass * TTransFocusAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -348,8 +346,7 @@ TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
 // GHIDRA_NAME TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall
-TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit(TTransFocusAnimation *this)
+void TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   if (*(int *)&this->field_0x30 != 0) {
@@ -368,8 +365,7 @@ TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit(TTransFocusAn
 // GHIDRA_NAME TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip
 // GHIDRA_PROTO undefined __thiscall BlitTransientSurfaceToPrimaryRenderContextWithClip(void)
 
-void __thiscall
-TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransFocusAnimation *this)
+void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
 
 {
   int iVar1;
@@ -429,8 +425,7 @@ TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransF
 // GHIDRA_NAME TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw
 // GHIDRA_PROTO undefined __thiscall RenderFocusAnimationFrameWithScopedQuickDraw(void)
 
-void __thiscall
-TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAnimation *this)
+void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -461,8 +456,7 @@ TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAn
 // GHIDRA_NAME TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift
 // GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
 
-void __thiscall
-TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(TTransFocusAnimation *this)
+void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
 {
   TTransFocusAnimation_GetTAnimationClassNamePointer_0x00 *pTVar1;

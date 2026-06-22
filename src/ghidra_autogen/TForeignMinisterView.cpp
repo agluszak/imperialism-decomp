@@ -37,8 +37,7 @@ TView * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
 // GHIDRA_NAME TForeignMinisterView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TForeignMinisterView::GetTEventHandlerClassNamePointer(TForeignMinisterView *this)
+CRuntimeClass * TForeignMinisterView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TForeignMinisterView::GetTEventHandlerClassNamePointer(TForeignMinisterView *thi
 // GHIDRA_NAME TForeignMinisterView::ConstructTForeignMinisterViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTForeignMinisterViewBaseState(void)
 
-TForeignMinisterView * __thiscall
-TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterView *this)
+TForeignMinisterView * TForeignMinisterView::ConstructTForeignMinisterViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -62,8 +60,7 @@ TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterVie
 // GHIDRA_NAME TForeignMinisterView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TForeignMinisterView * __thiscall
-TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this,byte param_1)
+TForeignMinisterView * TForeignMinisterView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -141,7 +138,7 @@ TForeignMinisterView::OrphanRetStub_0059add0
 // GHIDRA_NAME TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I22_004f31d0(void)
 
-void __thiscall TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0(TForeignMinisterView *this)
+void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
 
 {
   TForeignMinisterViewVtbl *pTVar1;
@@ -161,7 +158,7 @@ void __thiscall TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0(TForeignMi
 // GHIDRA_NAME TForeignMinisterView::OrphanRetStub_004f3220
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004f3220(void)
 
-void __thiscall TForeignMinisterView::OrphanRetStub_004f3220(TForeignMinisterView *this)
+void TForeignMinisterView::OrphanRetStub_004f3220()
 
 {
   return;

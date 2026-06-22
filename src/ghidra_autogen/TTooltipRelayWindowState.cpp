@@ -162,8 +162,7 @@ TTooltipRelayWindowState::DispatchNegativeCommandRangeToFrameHandlers
 // GHIDRA_NAME TTooltipRelayWindowState::RemoveKey
 // GHIDRA_PROTO undefined __thiscall RemoveKey(uint param_1)
 
-undefined4 __thiscall
-TTooltipRelayWindowState::RemoveKey(TTooltipRelayWindowState *this,uint param_1)
+undefined4 TTooltipRelayWindowState::RemoveKey(uint param_1)
 
 {
   int iVar1;
@@ -343,8 +342,7 @@ TTooltipRelayWindowState::PreTranslateMessage_6084b2
 // GHIDRA_NAME TTooltipRelayWindowState::OnCommand
 // GHIDRA_PROTO undefined __thiscall OnCommand(uint param_1, int param_2)
 
-undefined4 __thiscall
-TTooltipRelayWindowState::OnCommand(TTooltipRelayWindowState *this,uint param_1,int param_2)
+undefined4 TTooltipRelayWindowState::OnCommand(uint param_1, int param_2)
 
 {
   undefined4 uVar1;

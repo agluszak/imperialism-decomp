@@ -7,7 +7,7 @@
 // GHIDRA_NAME CArchive::WriteByteToSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall WriteByteToSerializedBuffer(byte param_1)
 
-CArchive * __thiscall CArchive::WriteByteToSerializedBuffer(CArchive *this,byte param_1)
+CArchive * CArchive::WriteByteToSerializedBuffer(byte param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
@@ -22,7 +22,7 @@ CArchive * __thiscall CArchive::WriteByteToSerializedBuffer(CArchive *this,byte 
 // GHIDRA_NAME CArchive::ReadWordFromSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall ReadWordFromSerializedBuffer(undefined2 * param_1)
 
-CArchive * __thiscall CArchive::ReadWordFromSerializedBuffer(CArchive *this,undefined2 *param_1)
+CArchive * CArchive::ReadWordFromSerializedBuffer(undefined2 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
@@ -37,7 +37,7 @@ CArchive * __thiscall CArchive::ReadWordFromSerializedBuffer(CArchive *this,unde
 // GHIDRA_NAME CArchive::ReadDwordFromSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall ReadDwordFromSerializedBuffer(undefined4 * param_1)
 
-CArchive * __thiscall CArchive::ReadDwordFromSerializedBuffer(CArchive *this,undefined4 *param_1)
+CArchive * CArchive::ReadDwordFromSerializedBuffer(undefined4 *param_1)
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
@@ -52,7 +52,7 @@ CArchive * __thiscall CArchive::ReadDwordFromSerializedBuffer(CArchive *this,und
 // GHIDRA_NAME CArchive::ReadBytesFromSerializedBuffer
 // GHIDRA_PROTO undefined __thiscall ReadBytesFromSerializedBuffer(int param_1, uint param_2)
 
-int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this,int param_1,uint param_2)
+int CArchive::ReadBytesFromSerializedBuffer(int param_1, uint param_2)
 
 {
   int iVar1;
@@ -130,7 +130,7 @@ int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this,int param_
 // GHIDRA_NAME CArchive::FillBuffer
 // GHIDRA_PROTO undefined __thiscall FillBuffer(uint param_1)
 
-void __thiscall CArchive::FillBuffer(CArchive *this,uint param_1)
+void CArchive::FillBuffer(uint param_1)
 
 {
   byte *pbVar1;

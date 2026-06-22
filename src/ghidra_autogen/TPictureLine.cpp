@@ -7,7 +7,7 @@
 // GHIDRA_NAME TPictureLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TPictureLine::GetTLineDataClassNamePointer(TPictureLine *this)
+CRuntimeClass * TPictureLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,8 +17,7 @@ CRuntimeClass * __thiscall TPictureLine::GetTLineDataClassNamePointer(TPictureLi
 // GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTPictureLineBaseState(byte param_1)
 
-TPictureLine * __thiscall
-TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this,byte param_1)
+TPictureLine * TPictureLine::ConstructTPictureLineBaseState(byte param_1)
 
 {
   TPictureLine::DestructTPictureLineAndMaybeFree(this);
@@ -32,7 +31,7 @@ TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this,byte param_1)
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(void)
 
-void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *this)
+void TPictureLine::DestructTPictureLineAndMaybeFree()
 
 {
   this->vftable = (TPictureLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -43,8 +42,7 @@ void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *thi
 // GHIDRA_NAME TPictureLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TPictureLine::OrphanRetStub_0056f460(TPictureLine *this,undefined4 param_1,undefined4 param_2)
+void TPictureLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   thunk_TPictureButton *this_00;

@@ -90,8 +90,7 @@ TAttackProvinceMission::ConstructTAttackProvinceMission
 // GHIDRA_NAME TAttackProvinceMission::DestroyTAttackProvinceMission
 // GHIDRA_PROTO undefined __thiscall DestroyTAttackProvinceMission(byte param_1)
 
-TAttackProvinceMission * __thiscall
-TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *this,byte param_1)
+TAttackProvinceMission * TAttackProvinceMission::DestroyTAttackProvinceMission(byte param_1)
 
 {
   ResetTAttackProvinceMissionToSentinelVtable();
@@ -105,8 +104,7 @@ TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *th
 // GHIDRA_NAME TAttackProvinceMission::SerializeTAttackProvinceMission
 // GHIDRA_PROTO undefined __thiscall SerializeTAttackProvinceMission(int * param_1)
 
-void __thiscall
-TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *this,int *param_1)
+void TAttackProvinceMission::SerializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
@@ -122,8 +120,7 @@ TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *
 // GHIDRA_NAME TAttackProvinceMission::DeserializeTAttackProvinceMission
 // GHIDRA_PROTO undefined __thiscall DeserializeTAttackProvinceMission(int * param_1)
 
-void __thiscall
-TAttackProvinceMission::DeserializeTAttackProvinceMission(TAttackProvinceMission *this,int *param_1)
+void TAttackProvinceMission::DeserializeTAttackProvinceMission(int *param_1)
 
 {
   code *pcVar1;
@@ -258,8 +255,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
 // GHIDRA_NAME TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending
 // GHIDRA_PROTO undefined __thiscall SetDefendProvinceMissionStateFlag8ToPending(void)
 
-void __thiscall
-TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending(TAttackProvinceMission *this)
+void TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending()
 
 {
   this[8] = (TAttackProvinceMission)0x2;
@@ -302,8 +298,7 @@ TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
 // GHIDRA_NAME TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState
 // GHIDRA_PROTO undefined __thiscall UpdateInvadeMissionAndBeachheadChildState(void)
 
-void __thiscall
-TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState(TAttackProvinceMission *this)
+void TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState()
 
 {
   PopulateDefendProvinceMissionResourceWeightsFromTargetProvince();
@@ -332,8 +327,7 @@ TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
 // GHIDRA_NAME TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass
 // GHIDRA_PROTO undefined __thiscall TryResolveInvadeMissionTargetTerrainClass(void)
 
-undefined4 __thiscall
-TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(TAttackProvinceMission *this)
+undefined4 TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass()
 
 {
   char cVar1;
@@ -356,8 +350,7 @@ TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(TAttackProvinc
 // GHIDRA_NAME TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh
 // GHIDRA_PROTO undefined __thiscall ResetInvadeMissionTargetTerrainClassAndRefresh(void)
 
-void __thiscall
-TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh(TAttackProvinceMission *this)
+void TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh()
 
 {
   *(undefined2 *)(this + 0x14) = 0xffff;

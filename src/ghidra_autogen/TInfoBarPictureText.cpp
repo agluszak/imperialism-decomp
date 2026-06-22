@@ -46,8 +46,7 @@ TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
 // GHIDRA_NAME TInfoBarPictureText::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TInfoBarPictureText::GetTEventHandlerClassNamePointer(TInfoBarPictureText *this)
+CRuntimeClass * TInfoBarPictureText::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -57,8 +56,7 @@ TInfoBarPictureText::GetTEventHandlerClassNamePointer(TInfoBarPictureText *this)
 // GHIDRA_NAME TInfoBarPictureText::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TInfoBarPictureText * __thiscall
-TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte param_1)
+TInfoBarPictureText * TInfoBarPictureText::_scalar_deleting_destructor_(byte param_1)
 
 {
   TStaticText::~TStaticText(this);
@@ -72,8 +70,7 @@ TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
-void __thiscall
-TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
+void TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree()
 
 {
   CString *this_00;
@@ -110,8 +107,7 @@ TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText
 // GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarTextBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(RECT * param_1)
 
-void __thiscall
-TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPictureText *this,RECT *param_1)
+void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
 
 {
   TInfoBarPictureTextVtbl *pTVar1;

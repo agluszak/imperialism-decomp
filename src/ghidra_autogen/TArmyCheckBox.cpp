@@ -7,8 +7,7 @@
 // GHIDRA_NAME TArmyCheckBox::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArmyCheckBox * __thiscall
-TArmyCheckBox::_scalar_deleting_destructor_(TArmyCheckBox *this,byte param_1)
+TArmyCheckBox * TArmyCheckBox::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -55,7 +54,7 @@ TControl * TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
 // GHIDRA_NAME TArmyCheckBox::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyCheckBox::GetTEventHandlerClassNamePointer(TArmyCheckBox *this)
+CRuntimeClass * TArmyCheckBox::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -84,7 +83,7 @@ TArmyCheckBox::ConstructTArmyCheckBoxBaseState
 // GHIDRA_NAME TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTArmyCheckBoxAndMaybeFree(char param_1)
 
-void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *this,char param_1)
+void TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(char param_1)
 
 {
   TArmyCheckBoxVtbl *pTVar1;
@@ -117,7 +116,7 @@ void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *
 // GHIDRA_NAME TArmyCheckBox::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
-void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *this,int *param_1)
+void TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(int *param_1)
 
 {
   int iVar1;
@@ -171,7 +170,7 @@ void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *thi
 // GHIDRA_NAME TArmyCheckBox::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this,int param_1)
+void TArmyCheckBox::OrphanRetStub_0059add0(int param_1)
 
 {
   ushort uVar1;
@@ -190,7 +189,7 @@ void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this,int pa
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C6_I49_004875d0(TArmyCheckBox *this)
+void TArmyCheckBox::OrphanCallChain_C6_I49_004875d0()
 
 {
   *(undefined4 *)&this->field_0x60 = 4;
@@ -201,7 +200,7 @@ void __thiscall TArmyCheckBox::OrphanCallChain_C6_I49_004875d0(TArmyCheckBox *th
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C1_I10_004aa310
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_004aa310(char param_1)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(TArmyCheckBox *this,char param_1)
+void TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(char param_1)
 
 {
   if (param_1 != this->field_0x64) {
@@ -215,7 +214,7 @@ void __thiscall TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(TArmyCheckBox *th
 // GHIDRA_NAME TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340
 // GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004aa340(void)
 
-undefined1 __thiscall TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340(TArmyCheckBox *this)
+undefined1 TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340()
 
 {
   return this->field_0x84;
@@ -225,7 +224,7 @@ undefined1 __thiscall TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340(TArmyCheck
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_004aa3a0(void)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0(TArmyCheckBox *this)
+void TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0()
 
 {
   TArmyCheckBoxVtbl *pTVar1;
@@ -241,8 +240,7 @@ void __thiscall TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0(TArmyCheckBox *th
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2)
 
-void __thiscall
-TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(TArmyCheckBox *this,char param_1,undefined4 param_2)
+void TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2)
 
 {
   TArmyCheckBoxVtbl *pTVar1;
@@ -263,7 +261,7 @@ TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(TArmyCheckBox *this,char param_1,
 // GHIDRA_NAME TArmyCheckBox::OrphanCallChain_C1_I05_004aa430
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_004aa430(void)
 
-void __thiscall TArmyCheckBox::OrphanCallChain_C1_I05_004aa430(TArmyCheckBox *this)
+void TArmyCheckBox::OrphanCallChain_C1_I05_004aa430()
 
 {
   undefined uVar1;

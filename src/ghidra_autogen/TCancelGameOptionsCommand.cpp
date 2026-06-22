@@ -7,7 +7,7 @@
 // GHIDRA_NAME TCancelGameOptionsCommand::OrphanRetStub_00487a00
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-void __thiscall TCancelGameOptionsCommand::OrphanRetStub_00487a00(TCancelGameOptionsCommand *this)
+void TCancelGameOptionsCommand::OrphanRetStub_00487a00()
 
 {
   Config *pCVar1;
@@ -40,8 +40,7 @@ TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470
 // GHIDRA_NAME TCancelGameOptionsCommand::GetTEventClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCancelGameOptionsCommand::GetTEventClassNamePointer(TCancelGameOptionsCommand *this)
+CRuntimeClass * TCancelGameOptionsCommand::GetTEventClassNamePointer()
 
 {
   return &classRuntimeClass;

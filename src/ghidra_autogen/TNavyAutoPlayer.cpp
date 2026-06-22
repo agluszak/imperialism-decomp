@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
 // GHIDRA_PROTO undefined __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(void)
 
-void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
+void TNavyAutoPlayer::CreateTNavyAutoPlayerInstance()
 
 {
   this->vftable = (TNavyAutoPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -19,8 +19,7 @@ void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *
 // GHIDRA_NAME TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer(TNavyAutoPlayer *this)
+CRuntimeClass * TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -30,7 +29,7 @@ TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer(TNavyAutoPlayer *this)
 // GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
 
-void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad70(TNavyAutoPlayer *this)
+void TNavyAutoPlayer::OrphanRetStub_0059ad70()
 
 {
   char cVar1;
@@ -55,7 +54,7 @@ void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad70(TNavyAutoPlayer *this)
 // GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad90(TNavyAutoPlayer *this)
+void TNavyAutoPlayer::OrphanRetStub_0059ad90()
 
 {
   code *pcVar1;

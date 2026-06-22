@@ -7,8 +7,7 @@
 // GHIDRA_NAME TSetupRandomMapPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TSetupRandomMapPicture::GetTEventHandlerClassNamePointer(TSetupRandomMapPicture *this)
+CRuntimeClass * TSetupRandomMapPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -18,8 +17,7 @@ TSetupRandomMapPicture::GetTEventHandlerClassNamePointer(TSetupRandomMapPicture 
 // GHIDRA_NAME TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(void)
 
-TSetupRandomMapPicture * __thiscall
-TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *this)
+TSetupRandomMapPicture * TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -45,8 +43,7 @@ TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMap
 // GHIDRA_NAME TSetupRandomMapPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSetupRandomMapPicture * __thiscall
-TSetupRandomMapPicture::_scalar_deleting_destructor_(TSetupRandomMapPicture *this,byte param_1)
+TSetupRandomMapPicture * TSetupRandomMapPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(this);
@@ -60,8 +57,7 @@ TSetupRandomMapPicture::_scalar_deleting_destructor_(TSetupRandomMapPicture *thi
 // GHIDRA_NAME TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState
 // GHIDRA_PROTO undefined __thiscall TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(void)
 
-void __thiscall
-TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *this)
+void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -84,8 +80,7 @@ TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(TSetupRandomMapP
 // GHIDRA_NAME TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920(TSetupRandomMapPicture *this)
+void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
@@ -618,8 +613,7 @@ LAB_00577ce4:
 /* Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs
    ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
 
-void __thiscall
-TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPicture *this)
+void TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState()
 
 {
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
@@ -634,8 +628,7 @@ TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPictu
 // GHIDRA_NAME TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
-void __thiscall
-TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(TSetupRandomMapPicture *this,int param_1)
+void TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;

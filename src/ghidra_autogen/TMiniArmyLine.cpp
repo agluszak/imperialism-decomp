@@ -37,7 +37,7 @@ TLineData * TMiniArmyLine::CreateTMiniArmyLineInstance(void)
 // GHIDRA_NAME TMiniArmyLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniArmyLine::GetTLineDataClassNamePointer(TMiniArmyLine *this)
+CRuntimeClass * TMiniArmyLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TMiniArmyLine::GetTLineDataClassNamePointer(TMiniArmy
 // GHIDRA_NAME TMiniArmyLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this,undefined4 param_1,undefined4 param_2)
+void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   TControlVtbl *pTVar1;

@@ -7,8 +7,7 @@
 // GHIDRA_NAME TDealTabControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TDealTabControl * __thiscall
-TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this,byte param_1)
+TDealTabControl * TDealTabControl::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -56,7 +55,7 @@ TControl * TDealTabControl::CreateTDealTabControlInstance(void)
 // GHIDRA_NAME TDealTabControl::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDealTabControl::GetTEventHandlerClassNamePointer(TDealTabControl *this)
+CRuntimeClass * TDealTabControl::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -66,8 +65,7 @@ CRuntimeClass * __thiscall TDealTabControl::GetTEventHandlerClassNamePointer(TDe
 // GHIDRA_NAME TDealTabControl::ConstructTDealTabControlBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(int param_1, char param_2)
 
-void __thiscall
-TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int param_1,char param_2)
+void TDealTabControl::ConstructTDealTabControlBaseState(int param_1, char param_2)
 
 {
   undefined4 uVar1;
@@ -90,7 +88,7 @@ TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int par
 // GHIDRA_NAME TDealTabControl::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabControl *this)
+void TDealTabControl::OrphanCallChain_C11_I88_004874b0()
 
 {
   short sVar1;
@@ -152,8 +150,7 @@ void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabContro
 // GHIDRA_NAME TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
-void __thiscall
-TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *this,int param_1)
+void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
 {
   TDealTabControlVtbl *pTVar1;
@@ -206,7 +203,7 @@ TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *t
 // GHIDRA_NAME TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920(TDealTabControl *this)
+void TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   if (*(int *)&this->field_0x8c != 0) {

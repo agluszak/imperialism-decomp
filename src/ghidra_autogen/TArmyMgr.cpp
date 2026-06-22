@@ -7,7 +7,7 @@
 // GHIDRA_NAME TArmyMgr::CreateTArmyMgrInstance
 // GHIDRA_PROTO undefined __thiscall TArmyMgr::CreateTArmyMgrInstance(int * param_1)
 
-void __thiscall TArmyMgr::CreateTArmyMgrInstance(TArmyMgr *this,int *param_1)
+void TArmyMgr::CreateTArmyMgrInstance(int *param_1)
 
 {
   undefined1 *puVar1;
@@ -67,7 +67,7 @@ void __thiscall TArmyMgr::CreateTArmyMgrInstance(TArmyMgr *this,int *param_1)
 // GHIDRA_NAME TArmyMgr::GetTArmyMgrClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTArmyMgrClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArmyMgr::GetTArmyMgrClassNamePointer(TArmyMgr *this)
+CRuntimeClass * TArmyMgr::GetTArmyMgrClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -82,7 +82,7 @@ CRuntimeClass * __thiscall TArmyMgr::GetTArmyMgrClassNamePointer(TArmyMgr *this)
 
 /* Setting prototype: void ConstructMapContextActionManager(void) */
 
-void __thiscall TArmyMgr::ConstructMapContextActionManager(TArmyMgr *this)
+void TArmyMgr::ConstructMapContextActionManager()
 
 {
   this->vftable = &TArmyMgrVtbl_0064c928;
@@ -95,7 +95,7 @@ void __thiscall TArmyMgr::ConstructMapContextActionManager(TArmyMgr *this)
 // GHIDRA_NAME TArmyMgr::DestructTArmyMgrAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTArmyMgrAndMaybeFree(byte param_1)
 
-TArmyMgr * __thiscall TArmyMgr::DestructTArmyMgrAndMaybeFree(TArmyMgr *this,byte param_1)
+TArmyMgr * TArmyMgr::DestructTArmyMgrAndMaybeFree(byte param_1)
 
 {
   DestructTArmyMgrAndMaybeFree_Impl();
@@ -109,7 +109,7 @@ TArmyMgr * __thiscall TArmyMgr::DestructTArmyMgrAndMaybeFree(TArmyMgr *this,byte
 // GHIDRA_NAME TArmyMgr::WrapperFor_FreeHeapBufferIfNotNull_At004a1a00
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a1a00(void)
 
-void __thiscall TArmyMgr::WrapperFor_FreeHeapBufferIfNotNull_At004a1a00(TArmyMgr *this)
+void TArmyMgr::WrapperFor_FreeHeapBufferIfNotNull_At004a1a00()
 
 {
   int iVar1;
@@ -164,7 +164,7 @@ void __thiscall TArmyMgr::WrapperFor_FreeHeapBufferIfNotNull_At004a1a00(TArmyMgr
 // GHIDRA_NAME TArmyMgr::RebuildMapActionSelectionCachesAndContexts
 // GHIDRA_PROTO undefined __thiscall RebuildMapActionSelectionCachesAndContexts(int * param_1)
 
-void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *this,int *param_1)
+void TArmyMgr::RebuildMapActionSelectionCachesAndContexts(int *param_1)
 
 {
   short sVar1;
@@ -245,7 +245,7 @@ void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *t
 // GHIDRA_NAME TArmyMgr::DeserializeArmyManagerListFromStream
 // GHIDRA_PROTO undefined __thiscall DeserializeArmyManagerListFromStream(int * param_1)
 
-void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,int *param_1)
+void TArmyMgr::DeserializeArmyManagerListFromStream(int *param_1)
 
 {
   int iVar1;
@@ -271,7 +271,7 @@ void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,in
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C4_I26_004a1e40
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I26_004a1e40(void)
 
-void __thiscall TArmyMgr::OrphanCallChain_C4_I26_004a1e40(TArmyMgr *this)
+void TArmyMgr::OrphanCallChain_C4_I26_004a1e40()
 
 {
   TArmyMgrVtbl *pTVar1;
@@ -292,7 +292,7 @@ void __thiscall TArmyMgr::OrphanCallChain_C4_I26_004a1e40(TArmyMgr *this)
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C12_I108_004a2390
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C12_I108_004a2390(void)
 
-void __thiscall TArmyMgr::OrphanCallChain_C12_I108_004a2390(TArmyMgr *this)
+void TArmyMgr::OrphanCallChain_C12_I108_004a2390()
 
 {
   int iVar1;
@@ -373,7 +373,7 @@ LAB_004a2479:
 // GHIDRA_NAME TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F
 // GHIDRA_PROTO undefined __thiscall IterateLinkedListCursorAndClearPerTileByte0F(void)
 
-void __thiscall TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F(TArmyMgr *this)
+void TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F()
 
 {
   int *piVar1;
@@ -414,8 +414,7 @@ void __thiscall TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F(TArmyMgr 
 // GHIDRA_NAME TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 // GHIDRA_PROTO undefined __thiscall TryCreateTacticalBattleViewForTileArmies(int param_1, short param_2)
 
-undefined4 __thiscall
-TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyMgr *this,int param_1,short param_2)
+undefined4 TArmyMgr::TryCreateTacticalBattleViewForTileArmies(int param_1, short param_2)
 
 {
   undefined2 uVar1;
@@ -743,7 +742,7 @@ LAB_004a36ee:
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C2_I40_004a37b0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I40_004a37b0(int param_1)
 
-void __thiscall TArmyMgr::OrphanCallChain_C2_I40_004a37b0(TArmyMgr *this,int param_1)
+void TArmyMgr::OrphanCallChain_C2_I40_004a37b0(int param_1)
 
 {
   undefined4 *puVar1;
@@ -785,8 +784,7 @@ joined_r0x004a37c9:
 // GHIDRA_NAME TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState
 // GHIDRA_PROTO undefined __thiscall UpdateDualLinkedEntryMetersAndBlinkState(int param_1, int param_2)
 
-undefined4 __thiscall
-TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyMgr *this,int param_1,int param_2)
+undefined4 TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(int param_1, int param_2)
 
 {
   int *piVar1;
@@ -903,8 +901,7 @@ LAB_004a39ef:
 // GHIDRA_NAME TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(void)
 
-void __thiscall
-TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(TArmyMgr *this)
+void TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0()
 
 {
   char cVar1;
@@ -983,7 +980,7 @@ TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(TArmyMgr 
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C3_I52_004a3d90
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I52_004a3d90(short param_1)
 
-void __thiscall TArmyMgr::OrphanCallChain_C3_I52_004a3d90(TArmyMgr *this,short param_1)
+void TArmyMgr::OrphanCallChain_C3_I52_004a3d90(short param_1)
 
 {
   short sVar1;
@@ -1016,7 +1013,7 @@ void __thiscall TArmyMgr::OrphanCallChain_C3_I52_004a3d90(TArmyMgr *this,short p
 // GHIDRA_NAME TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx
 // GHIDRA_PROTO undefined __thiscall SelectMovableUnitOnCurrentTileAndPlaySfx(short param_1)
 
-char __thiscall TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(TArmyMgr *this,short param_1)
+char TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(short param_1)
 
 {
   short sVar1;
@@ -1049,7 +1046,7 @@ char __thiscall TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(TArmyMgr *thi
 // GHIDRA_NAME TArmyMgr::CommitCityActionGateCostIfAffordable
 // GHIDRA_PROTO undefined __thiscall CommitCityActionGateCostIfAffordable(void)
 
-uint __thiscall TArmyMgr::CommitCityActionGateCostIfAffordable(TArmyMgr *this)
+uint TArmyMgr::CommitCityActionGateCostIfAffordable()
 
 {
   short sVar1;
@@ -1119,7 +1116,7 @@ uint __thiscall TArmyMgr::CommitCityActionGateCostIfAffordable(TArmyMgr *this)
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C1_I34_004a4260
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I34_004a4260(void)
 
-void __thiscall TArmyMgr::OrphanCallChain_C1_I34_004a4260(TArmyMgr *this)
+void TArmyMgr::OrphanCallChain_C1_I34_004a4260()
 
 {
   short sVar1;
@@ -1144,8 +1141,7 @@ void __thiscall TArmyMgr::OrphanCallChain_C1_I34_004a4260(TArmyMgr *this)
 // GHIDRA_NAME TArmyMgr::HandleMapClickByComputedCursorState
 // GHIDRA_PROTO undefined __thiscall HandleMapClickByComputedCursorState(undefined4 param_1, undefined4 param_2)
 
-undefined1 __thiscall
-TArmyMgr::HandleMapClickByComputedCursorState(TArmyMgr *this,undefined4 param_1,undefined4 param_2)
+undefined1 TArmyMgr::HandleMapClickByComputedCursorState(undefined4 param_1, undefined4 param_2)
 
 {
   short sVar1;
@@ -1179,8 +1175,7 @@ TArmyMgr::HandleMapClickByComputedCursorState(TArmyMgr *this,undefined4 param_1,
 // GHIDRA_NAME TArmyMgr::HandleMapClickByCivilianCursorState
 // GHIDRA_PROTO undefined __thiscall HandleMapClickByCivilianCursorState(undefined4 param_1, undefined4 param_2)
 
-undefined1 __thiscall
-TArmyMgr::HandleMapClickByCivilianCursorState(TArmyMgr *this,undefined4 param_1,undefined4 param_2)
+undefined1 TArmyMgr::HandleMapClickByCivilianCursorState(undefined4 param_1, undefined4 param_2)
 
 {
   short sVar1;
@@ -1248,7 +1243,7 @@ LAB_004a4b81:
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C2_I54_004a4fc0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I54_004a4fc0(short param_1)
 
-void __thiscall TArmyMgr::OrphanCallChain_C2_I54_004a4fc0(TArmyMgr *this,short param_1)
+void TArmyMgr::OrphanCallChain_C2_I54_004a4fc0(short param_1)
 
 {
   bool bVar1;

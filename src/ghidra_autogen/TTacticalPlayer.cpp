@@ -7,7 +7,7 @@
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad70
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
 
-void __thiscall TTacticalPlayer::OrphanRetStub_0059ad70(TTacticalPlayer *this)
+void TTacticalPlayer::OrphanRetStub_0059ad70()
 
 {
   return;
@@ -17,7 +17,7 @@ void __thiscall TTacticalPlayer::OrphanRetStub_0059ad70(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __thiscall TTacticalPlayer::OrphanRetStub_0059ad90(TTacticalPlayer *this)
+void TTacticalPlayer::OrphanRetStub_0059ad90()
 
 {
   return;
@@ -27,7 +27,7 @@ void __thiscall TTacticalPlayer::OrphanRetStub_0059ad90(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot00
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot00(void)
 
-void __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot00(TTacticalPlayer *this)
+void TTacticalPlayer::TArmyTacUnit_VtblSlot00()
 
 {
   return;
@@ -37,7 +37,7 @@ void __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot00(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TTacticalPlayer::OrphanRetStub_0059add0(TTacticalPlayer *this)
+void TTacticalPlayer::OrphanRetStub_0059add0()
 
 {
   return;
@@ -47,7 +47,7 @@ void __thiscall TTacticalPlayer::OrphanRetStub_0059add0(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot04
 // GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot04(void)
 
-undefined1 __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot04(TTacticalPlayer *this)
+undefined1 TTacticalPlayer::TArmyTacUnit_VtblSlot04()
 
 {
   return 1;
@@ -57,7 +57,7 @@ undefined1 __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot04(TTacticalPlayer *
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ae10
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ae10(void)
 
-void __thiscall TTacticalPlayer::OrphanRetStub_0059ae10(TTacticalPlayer *this)
+void TTacticalPlayer::OrphanRetStub_0059ae10()
 
 {
   return;
@@ -67,8 +67,7 @@ void __thiscall TTacticalPlayer::OrphanRetStub_0059ae10(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(byte param_1)
 
-TTacticalPlayer * __thiscall
-TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *this,byte param_1)
+TTacticalPlayer * TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(byte param_1)
 
 {
   TTacticalPlayer::CreateTTacticalPlayerInstance(this);
@@ -82,7 +81,7 @@ TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *
 // GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
 // GHIDRA_PROTO undefined __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(void)
 
-void __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(TTacticalPlayer *this)
+void TTacticalPlayer::CreateTTacticalPlayerInstance()
 
 {
   this->vftable = (TTacticalPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
@@ -94,8 +93,7 @@ void __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(TTacticalPlayer *
 // GHIDRA_NAME TTacticalPlayer::GetTTacticalPlayerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTacticalPlayer::GetTTacticalPlayerClassNamePointer(TTacticalPlayer *this)
+CRuntimeClass * TTacticalPlayer::GetTTacticalPlayerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -105,7 +103,7 @@ TTacticalPlayer::GetTTacticalPlayerClassNamePointer(TTacticalPlayer *this)
 // GHIDRA_NAME TTacticalPlayer::ConstructTTacticalPlayerBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(void)
 
-void __thiscall TTacticalPlayer::ConstructTTacticalPlayerBaseState(TTacticalPlayer *this)
+void TTacticalPlayer::ConstructTTacticalPlayerBaseState()
 
 {
   if (*(int **)&this->field_0x4 != (int *)0x0) {
@@ -124,8 +122,7 @@ void __thiscall TTacticalPlayer::ConstructTTacticalPlayerBaseState(TTacticalPlay
 // GHIDRA_NAME TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
 
-void __thiscall
-TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(TTacticalPlayer *this)
+void TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0()
 
 {
   TAutoGreatPower *this_00;
@@ -144,7 +141,7 @@ TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(TTactica
 // GHIDRA_NAME TTacticalPlayer::WrapperFor_AddHead_At0059afe0
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(int * param_1)
 
-void __thiscall TTacticalPlayer::WrapperFor_AddHead_At0059afe0(TTacticalPlayer *this,int *param_1)
+void TTacticalPlayer::WrapperFor_AddHead_At0059afe0(int *param_1)
 
 {
   CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4),param_1);

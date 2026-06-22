@@ -7,7 +7,7 @@
 // GHIDRA_NAME TApplication::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TApplication::GetTEventHandlerClassNamePointer(TApplication *this)
+CRuntimeClass * TApplication::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -17,7 +17,7 @@ CRuntimeClass * __thiscall TApplication::GetTEventHandlerClassNamePointer(TAppli
 // GHIDRA_NAME TApplication::ConstructGlobalUiRootControllerState
 // GHIDRA_PROTO undefined __thiscall ConstructGlobalUiRootControllerState(void)
 
-TApplication * __thiscall TApplication::ConstructGlobalUiRootControllerState(TApplication *this)
+TApplication * TApplication::ConstructGlobalUiRootControllerState()
 
 {
   TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
@@ -39,8 +39,7 @@ TApplication * __thiscall TApplication::ConstructGlobalUiRootControllerState(TAp
 // GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTApplicationAndMaybeFree(byte param_1)
 
-TApplication * __thiscall
-TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte param_1)
+TApplication * TApplication::DestructTApplicationAndMaybeFree(byte param_1)
 
 {
   TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
@@ -91,8 +90,7 @@ TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At0
 // GHIDRA_NAME TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
 
-void __thiscall
-TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this,undefined4 param_1)
+void TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0x20 = param_1;
@@ -103,7 +101,7 @@ TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this,undefi
 // GHIDRA_NAME TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0
 // GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_20_004868a0(void)
 
-undefined4 __thiscall TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0(TApplication *this)
+undefined4 TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0()
 
 {
   return *(undefined4 *)&this->field_0x20;
@@ -201,7 +199,7 @@ LAB_00486a4b:
 
 /* Posts custom message 0xBC0 with caller-supplied lParam to main thread window. */
 
-void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this,LPARAM param_1)
+void TApplication::_scalar_deleting_destructor_(LPARAM param_1)
 
 {
   CWinThread *pCVar1;
@@ -223,8 +221,7 @@ void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this,LP
 // GHIDRA_NAME TApplication::DispatchReflectedControlMessageOrFallback
 // GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(undefined4 param_1)
 
-void __thiscall
-TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this,undefined4 param_1)
+void TApplication::DispatchReflectedControlMessageOrFallback(undefined4 param_1)
 
 {
   CWinThread *pCVar1;
@@ -337,8 +334,7 @@ TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this,undef
 // GHIDRA_NAME TApplication::SerializeRecordList_0x0C_WithBlockPool_B
 // GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_B(CArchive * param_1)
 
-void __thiscall
-TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this,CArchive *param_1)
+void TApplication::SerializeRecordList_0x0C_WithBlockPool_B(CArchive *param_1)
 
 {
   undefined4 uVar1;
@@ -414,8 +410,7 @@ TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this,CArchi
 // GHIDRA_NAME TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
 
-TApplication * __thiscall
-TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(TApplication *this,byte param_1)
+TApplication * TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(byte param_1)
 
 {
   TBehavior::CreateTBehaviorInstance((TBehavior *)this);

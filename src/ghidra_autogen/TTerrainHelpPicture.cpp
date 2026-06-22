@@ -21,8 +21,7 @@ TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d7
 // GHIDRA_NAME TTerrainHelpPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTerrainHelpPicture * __thiscall
-TTerrainHelpPicture::_scalar_deleting_destructor_(TTerrainHelpPicture *this,byte param_1)
+TTerrainHelpPicture * TTerrainHelpPicture::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -66,8 +65,7 @@ thunk_TPictureButton * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(vo
 // GHIDRA_NAME TTerrainHelpPicture::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTerrainHelpPicture::GetTEventHandlerClassNamePointer(TTerrainHelpPicture *this)
+CRuntimeClass * TTerrainHelpPicture::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -464,8 +462,7 @@ LAB_00505041:
 // GHIDRA_NAME TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTTerrainHelpPictureAndMaybeFree(void)
 
-void __thiscall
-TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture *this)
+void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
 
 {
   TTerrainHelpPictureVtbl *pTVar1;
@@ -620,8 +617,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
 // GHIDRA_NAME TTerrainHelpPicture::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
-void __thiscall
-TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this,int param_1,int param_2)
+void TTerrainHelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   undefined2 extraout_var;

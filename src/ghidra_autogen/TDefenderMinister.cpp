@@ -9,8 +9,7 @@
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 __thiscall
-TDefenderMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TDefenderMinister *this)
+float10 TDefenderMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
 
 {
   return (float10)_DAT_00654908;
@@ -20,7 +19,7 @@ TDefenderMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TDefenderMin
 // GHIDRA_NAME TDefenderMinister::GetTMinisterClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-CRuntimeClass * __thiscall TDefenderMinister::GetTMinisterClassNamePointer(TDefenderMinister *this)
+CRuntimeClass * TDefenderMinister::GetTMinisterClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -30,8 +29,7 @@ CRuntimeClass * __thiscall TDefenderMinister::GetTMinisterClassNamePointer(TDefe
 // GHIDRA_NAME TDefenderMinister::ConstructTDefenderMinisterBaseState
 // GHIDRA_PROTO undefined __thiscall TDefenderMinister::ConstructTDefenderMinisterBaseState(void)
 
-TDefenderMinister * __thiscall
-TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
+TDefenderMinister * TDefenderMinister::ConstructTDefenderMinisterBaseState()
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -44,8 +42,7 @@ TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 // GHIDRA_NAME TDefenderMinister::DeletingDestructTMinister
 // GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(byte param_1)
 
-TDefenderMinister * __thiscall
-TDefenderMinister::DeletingDestructTMinister(TDefenderMinister *this,byte param_1)
+TDefenderMinister * TDefenderMinister::DeletingDestructTMinister(byte param_1)
 
 {
   DestructTDefenderMinisterAndMaybeFree_Impl();

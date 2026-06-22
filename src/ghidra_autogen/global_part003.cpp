@@ -333,7 +333,7 @@ void SetQuickDrawTextOriginWithContextOffset(short param_1,short param_2)
 // GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TMapDialog *this)
+void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   int iVar1;
@@ -432,7 +432,7 @@ undefined4 GetResourceTypeRandomDrawBlockFlag(short param_1)
 
 /* Setting prototype: void ThunkApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry) */
 
-void __thiscall TSimMgr::ApplyMapOrderTypeExecutionEffects(TSimMgr *this,void *pMapOrderEntry)
+void TSimMgr::ApplyMapOrderTypeExecutionEffects(void *pMapOrderEntry)
 
 {
   int iVar1;
@@ -492,7 +492,7 @@ void __thiscall TSimMgr::ApplyMapOrderTypeExecutionEffects(TSimMgr *this,void *p
 // GHIDRA_NAME TCountry::SumWeightedNeighborLinkScoreForLinkedNodes
 // GHIDRA_PROTO undefined __thiscall TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void)
 
-int __thiscall TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(TCountry *this)
+int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes()
 
 {
   undefined uVar1;
@@ -534,8 +534,7 @@ TUniversityView::OrphanRetStub_004c6fd0
 // GHIDRA_NAME TacticalBattleView::HandleTacticalBattleCommandTag
 // GHIDRA_PROTO void __thiscall TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
 
-void __thiscall
-TacticalBattleView::HandleTacticalBattleCommandTag(TacticalBattleView *this,int commandTag)
+void TacticalBattleView::HandleTacticalBattleCommandTag(int commandTag)
 
 {
   int *piVar1;
@@ -588,7 +587,7 @@ TacticalBattleView::HandleTacticalBattleCommandTag(TacticalBattleView *this,int 
 // GHIDRA_NAME TEngineerDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEngineerDialog *this)
+CRuntimeClass * TEngineerDialog::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -853,7 +852,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
 // GHIDRA_NAME TEditText::ConstructUiNumericTextEntryBase
 // GHIDRA_PROTO undefined __thiscall TEditText::ConstructUiNumericTextEntryBase(void)
 
-TEditText * __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
+TEditText * TEditText::ConstructUiNumericTextEntryBase()
 
 {
   CString *this_00;
@@ -1031,7 +1030,7 @@ void __fastcall ResetDualAudioCuePools(int param_1)
 // GHIDRA_NAME TCivUnit::GetTUnitClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCivUnit::GetTUnitClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
+CRuntimeClass * TCivUnit::GetTUnitClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -1303,8 +1302,7 @@ TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 param_2,char 
 // GHIDRA_NAME TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection(void)
 
-void __thiscall
-TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection(TDiplomacyMapView *this)
+void TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection()
 
 {
   DispatchTurnEvent7D8AndUpdateMainViewSelection(this);
@@ -1315,7 +1313,7 @@ TDiplomacyMapView::DispatchTurnEvent7D8AndUpdateMainViewSelection(TDiplomacyMapV
 // GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod68
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod68(void)
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod68(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod68()
 
 {
   InvokeStrategicMapViewMethod68(this);
@@ -1326,8 +1324,7 @@ void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod68(TDiplomacyMapV
 // GHIDRA_NAME TDiplomacyMapView::SetCityDialogValueDword10
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::SetCityDialogValueDword10(void)
 
-void __thiscall
-TDiplomacyMapView::SetCityDialogValueDword10(TDiplomacyMapView *this)
+void TDiplomacyMapView::SetCityDialogValueDword10()
 
 {
   SetCityDialogValueDword10(this);
@@ -1338,8 +1335,7 @@ TDiplomacyMapView::SetCityDialogValueDword10(TDiplomacyMapView *this)
 // GHIDRA_NAME TViewMgr::UpdatePaletteIndexFromTurnEventCode
 // GHIDRA_PROTO undefined __thiscall TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 
-void __thiscall
-TViewMgr::UpdatePaletteIndexFromTurnEventCode(TViewMgr *this,undefined4 param_1)
+void TViewMgr::UpdatePaletteIndexFromTurnEventCode(undefined4 param_1)
 
 {
   UpdatePaletteIndexFromTurnEventCode(this,param_1);
@@ -1370,8 +1366,7 @@ TCivToolbar::ApplyEngineerRailCostDeltaForConnectedTiles
 // GHIDRA_NAME TCountry::SetTileTransportFlags
 // GHIDRA_PROTO int __thiscall TCountry::SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags)
 
-int __thiscall
-TCountry::SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTileTransportFlags)
+int TCountry::SetTileTransportFlags(short nTileIndex, ushort wTileTransportFlags)
 
 {
   byte *pbVar1;
@@ -1636,7 +1631,7 @@ undefined4 HandleCustomMessage2420DispatchTurnEvent(undefined4 param_1)
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   TSoundPlayer::GetTEventHandlerClassNamePointer(this);
@@ -1820,8 +1815,7 @@ switchD_005433b3_caseD_3:
 // GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
 // GHIDRA_PROTO void __thiscall TCityTask::DeserializeCityProductionQueueCommand(void * pArchive)
 
-void __thiscall
-TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
+void TCityTask::DeserializeCityProductionQueueCommand(void *pArchive)
 
 {
   DeserializeCityProductionQueueCommand(this,pArchive);
@@ -1832,7 +1826,7 @@ TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
 // GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod70
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod70(void)
 
-void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod70(TDiplomacyMapView *this)
+void TDiplomacyMapView::InvokeStrategicMapViewMethod70()
 
 {
   InvokeStrategicMapViewMethod70(this);
@@ -1953,8 +1947,7 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
 // GHIDRA_NAME TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90
 // GHIDRA_PROTO undefined __thiscall TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(void)
 
-void __thiscall
-TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(TDiplomacyMgr *this)
+void TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90()
 
 {
   *(undefined4 *)&this->field_0x794 = 0;
@@ -1969,7 +1962,7 @@ TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(TDiplomacyMgr *th
 // GHIDRA_NAME TCivWorkOrderState::TCivWorkOrderState
 // GHIDRA_PROTO undefined __thiscall TCivWorkOrderState::TCivWorkOrderState(void)
 
-void __thiscall TCivWorkOrderState::TCivWorkOrderState(TCivWorkOrderState *this)
+void TCivWorkOrderState::TCivWorkOrderState()
 
 {
   *(TCivUnitVtbl **)this = &_vftable_;
@@ -2008,7 +2001,7 @@ void __thiscall TNumberText::'scalar_deleting_destructor'(TNumberText *this,byte
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
+void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
   int *piVar1;
@@ -3905,8 +3898,7 @@ void DestroyUiResourcePoolStateAtExit(void)
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
 // GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
 
-void __thiscall
-CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(CObject *this)
+void CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()
 
 {
   CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);

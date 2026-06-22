@@ -40,7 +40,7 @@ TControl * TStatusButton::CreateTStatusButtonInstance(void)
 // GHIDRA_NAME TStatusButton::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TStatusButton::GetTEventHandlerClassNamePointer(TStatusButton *this)
+CRuntimeClass * TStatusButton::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTStatusButton;
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TStatusButton::GetTEventHandlerClassNamePointer(TStat
 // GHIDRA_NAME TStatusButton::ConstructTStatusButtonBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTStatusButtonBaseState(void)
 
-TStatusButton * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatusButton *this)
+TStatusButton * TStatusButton::ConstructTStatusButtonBaseState()
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -75,8 +75,7 @@ TStatusButton * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatu
 // GHIDRA_NAME TStatusButton::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TStatusButton * __thiscall
-TStatusButton::_scalar_deleting_destructor_(TStatusButton *this,byte param_1)
+TStatusButton * TStatusButton::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -92,8 +91,7 @@ TStatusButton::_scalar_deleting_destructor_(TStatusButton *this,byte param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TStatusButton *this,int param_1)
+void TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   TStatusButtonVtbl *pTVar1;

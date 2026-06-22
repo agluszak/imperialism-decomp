@@ -7,7 +7,7 @@
 // GHIDRA_NAME TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70
 // GHIDRA_PROTO undefined __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(void)
 
-TGrantsView * __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(TGrantsView *this)
+TGrantsView * TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -20,7 +20,7 @@ TGrantsView * __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(TGra
 // GHIDRA_NAME TGrantsView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TGrantsView * __thiscall TGrantsView::_scalar_deleting_destructor_(TGrantsView *this,byte param_1)
+TGrantsView * TGrantsView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -64,7 +64,7 @@ TView * TGrantsView::CreateTGrantsViewInstance(void)
 // GHIDRA_NAME TGrantsView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TGrantsView::GetTEventHandlerClassNamePointer(TGrantsView *this)
+CRuntimeClass * TGrantsView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -74,7 +74,7 @@ CRuntimeClass * __thiscall TGrantsView::GetTEventHandlerClassNamePointer(TGrants
 // GHIDRA_NAME TGrantsView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(CString param_1)
 
-void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,CString param_1)
+void TGrantsView::OrphanCallChain_C6_I49_004875d0(CString param_1)
 
 {
   TGrantsView_slot_0x04_0x04 *pTVar1;
@@ -128,7 +128,7 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,C
 // GHIDRA_NAME TGrantsView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
+void TGrantsView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;
@@ -283,7 +283,7 @@ void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
 // GHIDRA_NAME TGrantsView::OrphanRetStub_00430550
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
+void TGrantsView::OrphanRetStub_00430550()
 
 {
   undefined uVar1;
@@ -311,8 +311,7 @@ void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
 // GHIDRA_NAME TGrantsView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
-void __thiscall
-TGrantsView::OrphanRetStub_0059add0(TGrantsView *this,int param_1,int param_2,undefined4 param_3)
+void TGrantsView::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 {
   ushort uVar1;

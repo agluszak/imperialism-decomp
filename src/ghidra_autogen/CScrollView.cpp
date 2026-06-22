@@ -7,7 +7,7 @@
 // GHIDRA_NAME CScrollView::DoMouseWheel
 // GHIDRA_PROTO undefined __thiscall DoMouseWheel(short param_1)
 
-int __thiscall CScrollView::DoMouseWheel(CScrollView *this,short param_1)
+int CScrollView::DoMouseWheel(short param_1)
 
 {
   int iVar1;

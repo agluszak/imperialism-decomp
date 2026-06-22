@@ -7,7 +7,7 @@
 // GHIDRA_NAME TFuzzySet::CreateTFuzzySetInstance
 // GHIDRA_PROTO undefined __thiscall TFuzzySet::CreateTFuzzySetInstance(void)
 
-void __thiscall TFuzzySet::CreateTFuzzySetInstance(TFuzzySet *this)
+void TFuzzySet::CreateTFuzzySetInstance()
 
 {
   this->vftable = (TFuzzySetVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -18,7 +18,7 @@ void __thiscall TFuzzySet::CreateTFuzzySetInstance(TFuzzySet *this)
 // GHIDRA_NAME TFuzzySet::GetTFuzzySetClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTFuzzySetClassNamePointer(void)
 
-CRuntimeClass * __thiscall TFuzzySet::GetTFuzzySetClassNamePointer(TFuzzySet *this)
+CRuntimeClass * TFuzzySet::GetTFuzzySetClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -28,7 +28,7 @@ CRuntimeClass * __thiscall TFuzzySet::GetTFuzzySetClassNamePointer(TFuzzySet *th
 // GHIDRA_NAME TFuzzySet::ConstructTFuzzySetBaseState
 // GHIDRA_PROTO undefined __thiscall TFuzzySet::ConstructTFuzzySetBaseState(void)
 
-void __thiscall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *this)
+void TFuzzySet::ConstructTFuzzySetBaseState()
 
 {
   this->vftable = &TFuzzySetVtbl_006569c8;
@@ -39,7 +39,7 @@ void __thiscall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *this)
 // GHIDRA_NAME TFuzzySet::DestructTFuzzySetAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTFuzzySetAndMaybeFree(byte param_1)
 
-TFuzzySet * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this,byte param_1)
+TFuzzySet * TFuzzySet::DestructTFuzzySetAndMaybeFree(byte param_1)
 
 {
   DestructTFuzzySetAndMaybeFree_Impl();
@@ -53,7 +53,7 @@ TFuzzySet * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this,
 // GHIDRA_NAME TFuzzySet::OrphanCallChain_C2_I27_004ff780
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I27_004ff780(void)
 
-void __thiscall TFuzzySet::OrphanCallChain_C2_I27_004ff780(TFuzzySet *this)
+void TFuzzySet::OrphanCallChain_C2_I27_004ff780()
 
 {
   int iVar1;

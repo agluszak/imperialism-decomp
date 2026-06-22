@@ -7,8 +7,7 @@
 // GHIDRA_NAME TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060
 // GHIDRA_PROTO undefined __thiscall TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(void)
 
-TCouncilPanelView * __thiscall
-TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(TCouncilPanelView *this)
+TCouncilPanelView * TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -21,8 +20,7 @@ TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(TCouncilPanelView *this
 // GHIDRA_NAME TCouncilPanelView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TCouncilPanelView * __thiscall
-TCouncilPanelView::_scalar_deleting_destructor_(TCouncilPanelView *this,byte param_1)
+TCouncilPanelView * TCouncilPanelView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);
@@ -66,8 +64,7 @@ TView * TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
 // GHIDRA_NAME TCouncilPanelView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TCouncilPanelView::GetTEventHandlerClassNamePointer(TCouncilPanelView *this)
+CRuntimeClass * TCouncilPanelView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -77,7 +74,7 @@ TCouncilPanelView::GetTEventHandlerClassNamePointer(TCouncilPanelView *this)
 // GHIDRA_NAME TCouncilPanelView::OrphanTiny_ReturnZero_0048a730
 // GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall TCouncilPanelView::OrphanTiny_ReturnZero_0048a730(TCouncilPanelView *this)
+void TCouncilPanelView::OrphanTiny_ReturnZero_0048a730()
 
 {
   short sVar1;

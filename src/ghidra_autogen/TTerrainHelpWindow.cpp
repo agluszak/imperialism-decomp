@@ -37,8 +37,7 @@ TControl * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 // GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall
-TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
+CRuntimeClass * TTerrainHelpWindow::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -48,8 +47,7 @@ TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
 // GHIDRA_NAME TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
 // GHIDRA_PROTO undefined __thiscall TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(void)
 
-TTerrainHelpWindow * __thiscall
-TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
+TTerrainHelpWindow * TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState()
 
 {
   TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
@@ -61,8 +59,7 @@ TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *thi
 // GHIDRA_NAME TTerrainHelpWindow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TTerrainHelpWindow * __thiscall
-TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this,byte param_1)
+TTerrainHelpWindow * TTerrainHelpWindow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
@@ -76,7 +73,7 @@ TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this,byte p
 // GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
+void TTerrainHelpWindow::GetTEventHandlerClassNamePointer()
 
 {
   TFloatWindow::GetTEventHandlerClassNamePointer((TFloatWindow *)this);

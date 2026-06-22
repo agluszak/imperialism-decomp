@@ -32,8 +32,7 @@ undefined4 * CFileException::ConstructCFileException(void)
 // GHIDRA_NAME CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(byte param_1)
 
-CFileException * __thiscall
-CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(CFileException *this,byte param_1)
+CFileException * CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(byte param_1)
 
 {
   DestructCFileException();
@@ -96,7 +95,7 @@ void CFileException::DestructFileExceptionAndReleaseMessageString(void)
 // GHIDRA_NAME CFileException::CMemFile
 // GHIDRA_PROTO undefined __thiscall CMemFile(undefined4 param_1)
 
-CFileException * __thiscall CFileException::CMemFile(CFileException *this,undefined4 param_1)
+CFileException * CFileException::CMemFile(undefined4 param_1)
 
 {
   ConstructCFileException();
@@ -114,8 +113,7 @@ CFileException * __thiscall CFileException::CMemFile(CFileException *this,undefi
 // GHIDRA_NAME CFileException::CMemFile_619af8
 // GHIDRA_PROTO undefined __thiscall CMemFile_619af8(undefined4 param_1, uint param_2, int param_3)
 
-CFileException * __thiscall
-CFileException::CMemFile_619af8(CFileException *this,undefined4 param_1,uint param_2,int param_3)
+CFileException * CFileException::CMemFile_619af8(undefined4 param_1, uint param_2, int param_3)
 
 {
   ConstructCFileException();

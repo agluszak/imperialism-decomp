@@ -37,7 +37,7 @@ TLineData * TMiniCivLine::CreateTMiniCivLineInstance(void)
 // GHIDRA_NAME TMiniCivLine::GetTLineDataClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-CRuntimeClass * __thiscall TMiniCivLine::GetTLineDataClassNamePointer(TMiniCivLine *this)
+CRuntimeClass * TMiniCivLine::GetTLineDataClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall TMiniCivLine::GetTLineDataClassNamePointer(TMiniCivLi
 // GHIDRA_NAME TMiniCivLine::OrphanRetStub_0056f460
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this,undefined4 param_1,undefined4 param_2)
+void TMiniCivLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)
 
 {
   TControl *this_00;

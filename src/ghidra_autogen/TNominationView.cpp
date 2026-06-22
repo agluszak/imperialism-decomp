@@ -7,7 +7,7 @@
 // GHIDRA_NAME TNominationView::OrphanRetStub_004305c0
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_004305c0(void)
 
-void __thiscall TNominationView::OrphanRetStub_004305c0(TNominationView *this)
+void TNominationView::OrphanRetStub_004305c0()
 
 {
   return;
@@ -17,8 +17,7 @@ void __thiscall TNominationView::OrphanRetStub_004305c0(TNominationView *this)
 // GHIDRA_NAME TNominationView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TNominationView * __thiscall
-TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1)
+TNominationView * TNominationView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);
@@ -32,7 +31,7 @@ TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1
 // GHIDRA_NAME TNominationView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNominationView::GetTEventHandlerClassNamePointer(TNominationView *this)
+CRuntimeClass * TNominationView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -42,7 +41,7 @@ CRuntimeClass * __thiscall TNominationView::GetTEventHandlerClassNamePointer(TNo
 // GHIDRA_NAME TNominationView::OrphanCallChain_C6_I49_004875d0
 // GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView *this)
+void TNominationView::OrphanCallChain_C6_I49_004875d0()
 
 {
   TNominationView_slot_0x04_0x04 *pTVar1;
@@ -168,7 +167,7 @@ void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView
 // GHIDRA_NAME TNominationView::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
-void __thiscall TNominationView::OrphanRetStub_0059add0(TNominationView *this,int param_1)
+void TNominationView::OrphanRetStub_0059add0(int param_1)
 
 {
   if (param_1 == 10) {

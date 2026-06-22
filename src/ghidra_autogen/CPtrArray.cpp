@@ -7,7 +7,7 @@
 // GHIDRA_NAME CPtrArray::SetAtGrow
 // GHIDRA_PROTO undefined __thiscall SetAtGrow(int param_1, undefined4 param_2)
 
-void __thiscall CPtrArray::SetAtGrow(CPtrArray *this,int param_1,undefined4 param_2)
+void CPtrArray::SetAtGrow(int param_1, undefined4 param_2)
 
 {
   if (*(int *)(this + 8) <= param_1) {
@@ -21,7 +21,7 @@ void __thiscall CPtrArray::SetAtGrow(CPtrArray *this,int param_1,undefined4 para
 // GHIDRA_NAME CPtrArray::RemoveAt
 // GHIDRA_PROTO undefined __thiscall RemoveAt(int param_1, int param_2)
 
-void __thiscall CPtrArray::RemoveAt(CPtrArray *this,int param_1,int param_2)
+void CPtrArray::RemoveAt(int param_1, int param_2)
 
 {
   int iVar1;

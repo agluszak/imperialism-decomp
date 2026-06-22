@@ -37,7 +37,7 @@ TBehavior * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
 // GHIDRA_NAME THotspotBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-CRuntimeClass * __thiscall THotspotBehavior::GetTBehaviorClassNamePointer(THotspotBehavior *this)
+CRuntimeClass * THotspotBehavior::GetTBehaviorClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,8 +47,7 @@ CRuntimeClass * __thiscall THotspotBehavior::GetTBehaviorClassNamePointer(THotsp
 // GHIDRA_NAME THotspotBehavior::ConstructTHotspotBehaviorBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTHotspotBehaviorBaseState(void)
 
-THotspotBehavior * __thiscall
-THotspotBehavior::ConstructTHotspotBehaviorBaseState(THotspotBehavior *this)
+THotspotBehavior * THotspotBehavior::ConstructTHotspotBehaviorBaseState()
 
 {
   TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
@@ -60,8 +59,7 @@ THotspotBehavior::ConstructTHotspotBehaviorBaseState(THotspotBehavior *this)
 // GHIDRA_NAME THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTHotspotBehaviorAndMaybeFree(byte param_1)
 
-THotspotBehavior * __thiscall
-THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(THotspotBehavior *this,byte param_1)
+THotspotBehavior * THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(byte param_1)
 
 {
   DestructTHotspotBehaviorAndMaybeFree_Impl();
@@ -75,8 +73,7 @@ THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(THotspotBehavior *this,by
 // GHIDRA_NAME THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00
 // GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b0c00(void)
 
-uint __thiscall
-THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00(THotspotBehavior *this)
+uint THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00()
 
 {
   undefined4 uVar1;

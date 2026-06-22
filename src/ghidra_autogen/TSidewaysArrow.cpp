@@ -37,7 +37,7 @@ TUpDownPictureButton * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
 // GHIDRA_NAME TSidewaysArrow::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TSidewaysArrow::GetTEventHandlerClassNamePointer(TSidewaysArrow *this)
+CRuntimeClass * TSidewaysArrow::GetTEventHandlerClassNamePointer()
 
 {
   return &g_pClassDescTSidewaysArrow;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TSidewaysArrow::GetTEventHandlerClassNamePointer(TSid
 // GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
 // GHIDRA_PROTO undefined __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(void)
 
-TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
+TSidewaysArrow * TSidewaysArrow::ConstructTSidewaysArrowBaseState()
 
 {
   TUpDownPictureButton::ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
@@ -60,8 +60,7 @@ TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSi
 // GHIDRA_NAME TSidewaysArrow::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TSidewaysArrow * __thiscall
-TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this,byte param_1)
+TSidewaysArrow * TSidewaysArrow::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

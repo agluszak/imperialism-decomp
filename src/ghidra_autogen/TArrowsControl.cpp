@@ -37,7 +37,7 @@ thunk_TPictureButton * TArrowsControl::CreateTArrowsControlInstance(void)
 // GHIDRA_NAME TArrowsControl::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TArrowsControl::GetTEventHandlerClassNamePointer(TArrowsControl *this)
+CRuntimeClass * TArrowsControl::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TArrowsControl::GetTEventHandlerClassNamePointer(TArr
 // GHIDRA_NAME TArrowsControl::ConstructTArrowsControlBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTArrowsControlBaseState(void)
 
-TArrowsControl * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TArrowsControl *this)
+TArrowsControl * TArrowsControl::ConstructTArrowsControlBaseState()
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -60,8 +60,7 @@ TArrowsControl * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TAr
 // GHIDRA_NAME TArrowsControl::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TArrowsControl * __thiscall
-TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this,byte param_1)
+TArrowsControl * TArrowsControl::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructCityDialogSharedBaseState((TView *)this);

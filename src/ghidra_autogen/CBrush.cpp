@@ -7,7 +7,7 @@
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
 // GHIDRA_PROTO undefined __thiscall CBrush::InitializeGlobalClipRegionHandleState(void)
 
-CBrush * __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
+CBrush * CBrush::InitializeGlobalClipRegionHandleState()
 
 {
   CBrush *this_00;
@@ -32,8 +32,7 @@ CBrush * __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
 // GHIDRA_NAME CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
 // GHIDRA_PROTO undefined __thiscall Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(RECT * param_1)
 
-void __thiscall
-CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(CBrush *this,RECT *param_1)
+void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(RECT *param_1)
 
 {
   HRGN pHVar1;
@@ -52,7 +51,7 @@ CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(CBrush *
 // GHIDRA_NAME CBrush::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-CBrush * __thiscall CBrush::_scalar_deleting_destructor_(CBrush *this,byte param_1)
+CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
 
 {
   CGdiObject::~CGdiObject((CGdiObject *)this);
@@ -66,7 +65,7 @@ CBrush * __thiscall CBrush::_scalar_deleting_destructor_(CBrush *this,byte param
 // GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
 // GHIDRA_PROTO undefined __thiscall AttachRegionHandleToClipStateAndRegister(int param_1)
 
-bool __thiscall CBrush::AttachRegionHandleToClipStateAndRegister(CBrush *this,int param_1)
+bool CBrush::AttachRegionHandleToClipStateAndRegister(int param_1)
 
 {
   TNetMgr *this_00;

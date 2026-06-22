@@ -7,7 +7,7 @@
 // GHIDRA_NAME TOcean::DestroyTPortZoneManager
 // GHIDRA_PROTO undefined __thiscall DestroyTPortZoneManager(byte param_1)
 
-TOcean * __thiscall TOcean::DestroyTPortZoneManager(TOcean *this,byte param_1)
+TOcean * TOcean::DestroyTPortZoneManager(byte param_1)
 
 {
   ResetTPortZoneManagerToSentinelVtable();
@@ -21,7 +21,7 @@ TOcean * __thiscall TOcean::DestroyTPortZoneManager(TOcean *this,byte param_1)
 // GHIDRA_NAME TOcean::GetRuntimeClass
 // GHIDRA_PROTO undefined __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * __thiscall TOcean::GetRuntimeClass(TOcean *this)
+CRuntimeClass * TOcean::GetRuntimeClass()
 
 {
   return &classRuntimeClass;
@@ -31,7 +31,7 @@ CRuntimeClass * __thiscall TOcean::GetRuntimeClass(TOcean *this)
 // GHIDRA_NAME TOcean::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
 
-void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
+void TOcean::ReadFrom(int *param_1)
 
 {
   word *pwVar1;
@@ -208,7 +208,7 @@ void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
 // GHIDRA_NAME TOcean::WriteTo
 // GHIDRA_PROTO undefined __thiscall WriteTo(int * param_1)
 
-void __thiscall TOcean::WriteTo(TOcean *this,int *param_1)
+void TOcean::WriteTo(int *param_1)
 
 {
   word *pwVar1;
@@ -310,8 +310,7 @@ LAB_00562a16:
 // GHIDRA_NAME TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
 // GHIDRA_PROTO undefined __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
 
-void __thiscall
-TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOcean *this,short param_1)
+void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
 
 {
   TMapMgr *this_00;

@@ -37,7 +37,7 @@ TView * TOrderView::CreateTOrderViewInstance(void)
 // GHIDRA_NAME TOrderView::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TOrderView::GetTEventHandlerClassNamePointer(TOrderView *this)
+CRuntimeClass * TOrderView::GetTEventHandlerClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TOrderView::GetTEventHandlerClassNamePointer(TOrderVi
 // GHIDRA_NAME TOrderView::ConstructTOrderViewBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTOrderViewBaseState(void)
 
-TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
+TOrderView * TOrderView::ConstructTOrderViewBaseState()
 
 {
   TView::ConstructTViewBaseState((TView *)this);
@@ -60,7 +60,7 @@ TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *thi
 // GHIDRA_NAME TOrderView::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
 
-TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this,byte param_1)
+TOrderView * TOrderView::_scalar_deleting_destructor_(byte param_1)
 
 {
   TView::DestructTViewBaseState((TView *)this);

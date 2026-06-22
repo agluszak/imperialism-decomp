@@ -7,8 +7,7 @@
 // GHIDRA_NAME TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480
 // GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byte param_1)
 
-TCivAnimation * __thiscall
-TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this,byte param_1)
+TCivAnimation * TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(byte param_1)
 
 {
   TCivAnimation::CreateTCivAnimationInstance(this);
@@ -22,7 +21,7 @@ TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this
 // GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
 // GHIDRA_PROTO undefined __thiscall TCivAnimation::CreateTCivAnimationInstance(void)
 
-void __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
+void TCivAnimation::CreateTCivAnimationInstance()
 
 {
   this->vftable = (TCivAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -33,7 +32,7 @@ void __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
 // GHIDRA_NAME TCivAnimation::GetTAnimationClassNamePointer
 // GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCivAnimation::GetTAnimationClassNamePointer(TCivAnimation *this)
+CRuntimeClass * TCivAnimation::GetTAnimationClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -43,7 +42,7 @@ CRuntimeClass * __thiscall TCivAnimation::GetTAnimationClassNamePointer(TCivAnim
 // GHIDRA_NAME TCivAnimation::ConstructTCivAnimationBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCivAnimationBaseState(void)
 
-void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *this)
+void TCivAnimation::ConstructTCivAnimationBaseState()
 
 {
   ushort uVar1;
@@ -74,8 +73,7 @@ void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *th
 // GHIDRA_NAME TCivAnimation::DestructTCivAnimationAndMaybeFree
 // GHIDRA_PROTO undefined __thiscall DestructTCivAnimationAndMaybeFree(byte param_1)
 
-TCivAnimation * __thiscall
-TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this,byte param_1)
+TCivAnimation * TCivAnimation::DestructTCivAnimationAndMaybeFree(byte param_1)
 
 {
   TCivAnimation2::CreateTCivAnimation2Instance((TCivAnimation2 *)this);

@@ -15,7 +15,7 @@
    Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the
    source object. */
 
-void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
+void TCityTask::OrphanRetStub_0059add0()
 
 {
   TCityTask_GetTTaskClassNamePointer_0x00 *pTVar1;
@@ -47,7 +47,7 @@ void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   if (this != (TCityTask *)0x0) {
@@ -65,7 +65,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 
 /* Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1. */
 
-void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this)
+void TCityTask::DeserializeCityProductionQueueCommand()
 
 {
                     /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
@@ -86,7 +86,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
    Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
    +0x14 (clear) or +0x18 (set). */
 
-void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1)
+void TCityTask::GetTTaskClassNamePointer(int param_1)
 
 {
   int *unaff_FS_OFFSET;
@@ -120,8 +120,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1)
 // GHIDRA_NAME TCityTask::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
 
-int __thiscall
-TCityTask::GetTEventHandlerClassNamePointer(TCityTask *this,uint param_1,uint param_2)
+int TCityTask::GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
 
 {
   if (param_2 < param_1) {
@@ -214,7 +213,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
 
-void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1,int param_2)
+void TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
 
 {
   TCityTaskVtbl *pTVar1;
@@ -250,7 +249,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1,
 // GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins07_004d8920
 // GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
+void TCityTask::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TCityTaskVtbl *pTVar1;
@@ -273,8 +272,7 @@ void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
 // GHIDRA_NAME TCityTask::OrphanCallChain_C11_I88_004874b0
 // GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 
-void __thiscall
-TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this,undefined4 param_1,undefined4 param_2)
+void TCityTask::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 
 {
   TCityTaskVtbl *pTVar1;
@@ -297,7 +295,7 @@ TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this,undefined4 param_1,u
 // GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
 // GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   undefined4 in_stack_00000004;
@@ -310,7 +308,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   RemoveTailNodeAndReturnPayload();
@@ -321,7 +319,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+void TCityTask::GetTTaskClassNamePointer()
 
 {
   undefined4 in_stack_00000004;
@@ -334,7 +332,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
-void __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
+void TCityTask::ConstructTTaskBaseState()
 
 {
   RemoveHead();
@@ -345,7 +343,7 @@ void __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
 // GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
 // GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
-undefined4 __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
+undefined4 TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
 {
   return *(undefined4 *)&this->field_0x10;
@@ -355,7 +353,7 @@ undefined4 __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *thi
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(void)
 
-undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+undefined4 TCityTask::QueueCityOrderType10CommandIfReady()
 
 {
   int iVar1;
@@ -369,7 +367,7 @@ undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *t
 // GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
 // GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   int *piVar1;
@@ -385,7 +383,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   int iVar1;
@@ -404,7 +402,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
 
 {
   if (this != (TCityTask *)0x0) {
@@ -417,7 +415,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 // GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
 // GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
 
-void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this)
+void TCityTask::DeserializeCityProductionQueueCommand()
 
 {
   TCityTaskVtbl *pTVar1;
@@ -432,7 +430,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 // GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
-void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
+void TCityTask::OrphanRetStub_0059add0()
 
 {
   CPtrList::RemoveAll((CPtrList *)&this->field_0x4);
@@ -443,7 +441,7 @@ void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
 // GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
 // GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   return;
@@ -453,7 +451,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(void)
 
-void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+void TCityTask::QueueCityOrderType10CommandIfReady()
 
 {
   return;
@@ -463,8 +461,7 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
 // GHIDRA_NAME TCityTask::InvalidateWindowRectFromHandleField1C
 // GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(undefined4 * param_1)
 
-void __thiscall
-TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this,undefined4 *param_1)
+void TCityTask::InvalidateWindowRectFromHandleField1C(undefined4 *param_1)
 
 {
   int iVar1;
@@ -479,7 +476,7 @@ TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this,undefined4 *par
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
-CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+CRuntimeClass * TCityTask::GetTTaskClassNamePointer()
 
 {
   return &classRuntimeClass;
@@ -489,7 +486,7 @@ CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 // GHIDRA_NAME TCityTask::InitializeCityOrderCommandVtable
 // GHIDRA_PROTO undefined __thiscall TCityTask::InitializeCityOrderCommandVtable(void)
 
-void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
+void TCityTask::InitializeCityOrderCommandVtable()
 
 {
   this->vftable = &TCityTaskVtbl_0066a9a8;
@@ -500,7 +497,7 @@ void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
-TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this,byte param_1)
+TCityTask * TCityTask::ConstructTTaskBaseState(byte param_1)
 
 {
   DestroyTCityTask_Impl();
@@ -553,7 +550,7 @@ TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this,byte p
    - true when command is completed this pass.
    - false when additional passes/queued support work remain. */
 
-bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
+bool TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
 {
   short sVar1;
@@ -660,7 +657,7 @@ bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
 // GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(int * param_1)
 
-void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
+void TCityTask::QueueCityOrderType10CommandIfReady(int *param_1)
 
 {
   short sVar1;
@@ -724,8 +721,7 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,in
    - Sets queued flag (+0x0E) to avoid duplicate enqueue in same cycle.
    - Increments cycle counter (+0x06). */
 
-void __thiscall
-TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
+void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void *pCommandQueue)
 
 {
   int *piVar1;
@@ -823,8 +819,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pC
    Notes:
    - Slot id 5 uses task class 3 instead of 4 (special handling). */
 
-void __thiscall
-TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pCommandQueue)
+void TCityTask::DeserializeCityProductionQueueCommand(void *pCommandQueue)
 
 {
   short sVar1;
@@ -942,7 +937,7 @@ TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pCommandQ
    Notes:
    - 0x17 slot width matches city production/recruitment slot tables. */
 
-void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+void TCityTask::ApplyProductionDistributionToCitySlots()
 
 {
   int *piVar1;
@@ -998,7 +993,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
    - Actual city state mutation is deferred to command execution, which calls
    ApplyProductionDistributionToCitySlots. */
 
-void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommandQueue)
+void TCityTask::OrphanRetStub_0059add0(void *pCommandQueue)
 
 {
   short sVar1;
@@ -1044,7 +1039,7 @@ void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommand
 
 /* Serializes CityProductionQueueCommand fields (+4, +6, +0x0C, +0x0E) to archive stream. */
 
-void __thiscall TCityTask::SerializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
+void TCityTask::SerializeCityProductionQueueCommand(void *pArchive)
 
 {
   code *pcVar1;
@@ -1068,7 +1063,7 @@ void __thiscall TCityTask::SerializeCityProductionQueueCommand(TCityTask *this,v
 
 /* Deserializes CityProductionQueueCommand fields (+4, +6, +0x0C, +0x0E) from archive stream. */
 
-void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
+void TCityTask::DeserializeCityProductionQueueCommand(void *pArchive)
 
 {
   code *pcVar1;
@@ -1086,7 +1081,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
 // GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
-undefined4 __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
+undefined4 TCityTask::ConstructTTaskBaseState()
 
 {
   TCityTaskVtbl *pTVar1;
