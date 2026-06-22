@@ -15,5 +15,6 @@ CRuntimeClass* TClickZone::GetRuntimeClass() const {
 TClickZone::~TClickZone() {}
 
 // FUNCTION: IMPERIALISM 0x00572490
-void TClickZone::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TClickZone::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                      int arg4) {
 }
