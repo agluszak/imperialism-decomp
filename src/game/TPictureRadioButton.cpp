@@ -20,8 +20,9 @@ undefined TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At005
 }
 
 // FUNCTION: IMPERIALISM 0x00570f40
-undefined TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh() {
-  return 0;
+void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
+  (void)isPressed;
+  (void)notifyParent;
 }
 
 // FUNCTION: IMPERIALISM 0x00570fb0

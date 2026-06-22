@@ -125,7 +125,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571330)
-  virtual undefined HandleToggleButtonStateChangeAndRefresh() override; // slot 0x74 0x570f40
+  virtual void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x570f40
   virtual undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1) override; // slot 0x75 0x570de0
   virtual undefined WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0() override; // slot 0x76 0x570ea0
 // === END GENERATED DECLS (TPictureRadioButton) ===
