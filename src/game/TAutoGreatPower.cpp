@@ -196,7 +196,7 @@ undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0(int) {
 
 
 // FUNCTION: IMPERIALISM 0x004e7680
-void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {
+void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) {
   if (g_apNationStates[static_cast<short>(sourceNation)]->diplomacyEligibilityA0 != 0) {
     if (static_cast<short>(needSlot) != 5) {
       short relationScore = g_pDiplomacyTurnStateManager
@@ -382,9 +382,7 @@ void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0() {
 
 
 // FUNCTION: IMPERIALISM 0x004e7970
-undefined TAutoGreatPower::DispatchNationStateEventCode10() {
-  return 0;
-}
+void TAutoGreatPower::SnapshotDiplomacyState1c6Into250(void) {}
 
 
 // FUNCTION: IMPERIALISM 0x004e79d0

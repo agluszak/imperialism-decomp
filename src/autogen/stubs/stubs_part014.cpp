@@ -171,14 +171,6 @@ undefined4 AssignTrackedEntryActionsByProfileToOrdersOrUnits(void)
   return 0;
 }
 
-// ghidra_name thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner
-// ghidra_proto undefined thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner()
-// FUNCTION: IMPERIALISM 0x004ebea0
-undefined4 thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004ebff0
 // ghidra_proto undefined WrapperFor_ftol_At004ebff0()
 // FUNCTION: IMPERIALISM 0x004ebff0

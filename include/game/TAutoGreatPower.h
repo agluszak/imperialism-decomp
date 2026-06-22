@@ -59,7 +59,7 @@ public:
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
-  void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) override;
+  void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
   int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
@@ -100,8 +100,8 @@ public:
   void DispatchGreatPowerQuarterlyStatusMessageLevel2() override;
   void DispatchGreatPowerQuarterlyStatusMessageLevel1() override;
   void DispatchGreatPowerQuarterlyStatusMessageLevel0() override;
-  // slot 0x6a — 0x004e7970.
-  undefined DispatchNationStateEventCode10() override;
+  // slot 0x6a — 0x004e7970: AI leaves the base 1c6→250 snapshot empty.
+  void SnapshotDiplomacyState1c6Into250(void) override;
   // slot 0x80 — 0x004e7ca0.
   void DispatchTurnEvent2103WithNationFromRecord() override;
   // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.

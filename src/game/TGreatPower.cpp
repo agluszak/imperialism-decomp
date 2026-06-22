@@ -5066,37 +5066,6 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent1
   packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
 }
 
-// FUNCTION: IMPERIALISM 0x005416b0
-void TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2) {
-  struct TurnEvent1EPacketPayload {
-    TTurnEventPacketRoutingPrefix routing;
-    int packetTag;
-    unsigned char activeNationIdAfterTag;
-    unsigned char activeNationIdBeforePayload;
-    unsigned char acceptedFlag;
-    unsigned char commandCode;
-    unsigned char commandArgA;
-    unsigned char commandArgB;
-  };
-
-  bool accepted = this->ExecuteAdvisoryPromptAndApplyActionType1(arg1, arg2);
-  TurnEvent1EPacketPayload packetPayload;
-  packetPayload.packetTag = 0x74696D65;
-  packetPayload.activeNationIdAfterTag =
-      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
-  packetPayload.routing.eventCode = 0x1E;
-  packetPayload.routing.payloadSize = 0x24;
-  reinterpret_cast<void(__cdecl*)(void)>(thunk_SetTimeEmitPacketGameFlowTurnId)();
-  packetPayload.routing.targetNationId = -1;
-  packetPayload.activeNationIdBeforePayload =
-      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
-  packetPayload.acceptedFlag = accepted ? 1 : 0;
-  packetPayload.commandCode = 0x69;
-  packetPayload.commandArgA = static_cast<unsigned char>(arg1);
-  packetPayload.commandArgB = static_cast<unsigned char>(arg2);
-  packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
-}
-
 // FUNCTION: IMPERIALISM 0x0055f140
 unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
   TGlobalMapState* globalMapState = g_pGlobalMapState;

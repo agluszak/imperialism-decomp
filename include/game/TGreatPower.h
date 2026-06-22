@@ -415,7 +415,6 @@ public:
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(int proposalCode,
                                                                        int targetNationId);
-  void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);

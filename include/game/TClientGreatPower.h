@@ -3,191 +3,28 @@
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TClientGreatPower and its role. Base edge (TGreatPower) recovered from RTTI CRuntimeClass chain: TClientGreatPower -> TGreatPower -> TCountry -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065b728
 class TClientGreatPower : public TGreatPower {
 public:
-// === BEGIN GENERATED DECLS (TClientGreatPower) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x541390
-  virtual ~TClientGreatPower(); // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x4d9c70)
-  // slot 0x06 ReadFrom inherited unchanged (0x4d92e0)
-  // slot 0x07 Free inherited unchanged (0x4d9160)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4da500)
-  // slot 0x0b SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4da3e0)
-  // slot 0x0c SeedRecruitAndNavyOrdersForEligibleCoastalCities inherited unchanged (0x4d71b0)
-  // slot 0x0d CreateAndDispatchMilitaryRecruitOrderForNationSlot inherited unchanged (0x4d7770)
-  // slot 0x0e AddToNationMetricAtField10 inherited unchanged (0x4d7ae0)
-  // slot 0x0f PopulateSelectableEntryFlavorTextAndOrdinals inherited unchanged (0x4d8000)
-  // slot 0x10 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d87b0)
-  // slot 0x11 SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4d87e0)
-  // slot 0x12 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4dd040)
-  // slot 0x13 ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4e21b0)
-  // slot 0x14 SetNationTransferTargetCodeAndNotifyEligiblePeers inherited unchanged (0x4de860)
-  // slot 0x15 ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4d7c90)
-  // slot 0x16 ApplyJoinEmpireMode2FinalizeNationNameState inherited unchanged (0x4d7d50)
-  // slot 0x17 IsDiplomacyTargetClassCode200Match inherited unchanged (0x4d7d20)
-  // slot 0x18 RemoveRegionIdFromNationOwnedRegionList inherited unchanged (0x4e2270)
-  // slot 0x19 AddRegionIdToNationOwnedRegionList inherited unchanged (0x4e22b0)
-  // slot 0x1a SetNationPercentFieldByModeAndDescriptorLinks inherited unchanged (0x4e2330)
-  // slot 0x1b OrphanRetStub_004d7e90 inherited unchanged (0x4dda20)
-  // slot 0x1c OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4dda60)
-  // slot 0x1d OrphanLeaf_NoCall_Ins02_004d7f00 inherited unchanged (0x4d8c00)
-  // slot 0x1e OrphanLeaf_NoCall_Ins02_004d7f20 inherited unchanged (0x4dd740)
-  // slot 0x1f OrphanLeaf_NoCall_Ins02_004d7f40 inherited unchanged (0x4ddb20)
-  // slot 0x20 OrphanRetStub_004d7fa0 inherited unchanged (0x4ddc30)
-  // slot 0x21 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4ddd50)
-  // slot 0x22 ReturnFalseNationStateActionStub inherited unchanged (0x4ddbb0)
-  // slot 0x23 OrphanRetStub_004d7fe0 inherited unchanged (0x4defd0)
-  // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
-  // slot 0x25 OrphanRetStub_004d7f80 inherited unchanged (0x4dedf0)
-  virtual char ReturnFalseNationStateCapabilityFlag98() override; // slot 0x26 0x5412b0
-  // slot 0x27 ReturnFalseNationStateCapabilityFlag9C inherited unchanged (0x4d6750)
-  virtual undefined ReturnFalseNationStateCapabilityFlagA0() override; // slot 0x28 0x5412d0
-  // slot 0x29 NoOpNationSelectedRegionAndMapCellLabelHook inherited unchanged (0x4d6790)
-  // slot 0x2a NoOpNationPendingActionHook inherited unchanged (0x4da5c0)
-  // slot 0x2b PromoteNationPendingActionSlot5IfCapabilityActive inherited unchanged (0x4da860)
-  // slot 0x2c AdvanceNationPendingActionStateMachine inherited unchanged (0x4da8a0)
-  // slot 0x2d DispatchNationPendingActionEventCodes inherited unchanged (0x4da5e0)
-  // slot 0x2e SetNationPendingActionStateAndPayload inherited unchanged (0x4daa10)
-  // slot 0x2f QueueNationOrderManagerPayloadObject inherited unchanged (0x4daa50)
-  // slot 0x30 ClearQueuedNationOrdersAndResetOrderManager inherited unchanged (0x4daa80)
-  // slot 0x31 NoOpNationQueuedOrderHook inherited unchanged (0x4dab00)
-  // slot 0x32 ExecuteNationPendingActionStateMachine inherited unchanged (0x4dab20)
-  // slot 0x33 HasQueuedCivWorkOrderType7 inherited unchanged (0x4dae70)
-  // slot 0x34 UpdateOrderEntryAvailabilityByConnectedRegionMask inherited unchanged (0x4db7d0)
-  // slot 0x35 MarkConnectedOwnedRegionsInMaskRecursive inherited unchanged (0x4dbac0)
-  // slot 0x36 RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary inherited unchanged (0x4dc9f0)
-  // slot 0x37 OrphanRetStub_0059add0 inherited unchanged (0x4dca60)
-  // slot 0x38 GetTEventHandlerClassNamePointer inherited unchanged (0x4dcc30)
-  // slot 0x39 RebuildPrimaryNationStateForSlot_Impl inherited unchanged (0x4df810)
-  // slot 0x3a DeserializeRecruitScenarioAndInstantiateOrders inherited unchanged (0x4dfa20)
-  // slot 0x3b CreateAndQueueFrogCityMarkerForNationTile inherited unchanged (0x4dfae0)
-  // slot 0x3c DispatchGreatPowerQuarterlyStatusMessageLevel2 inherited unchanged (0x4e00d0)
-  // slot 0x3d DispatchGreatPowerQuarterlyStatusMessageLevel1 inherited unchanged (0x4e0140)
-  // slot 0x3e DispatchGreatPowerQuarterlyStatusMessageLevel0 inherited unchanged (0x4e01b0)
-  // slot 0x3f SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4dca80)
-  // slot 0x40 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4dcaa0)
-  // slot 0x41 ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4dcc50)
-  // slot 0x42 SetNationTransferTargetCodeAndNotifyEligiblePeers inherited unchanged (0x4dcca0)
-  // slot 0x43 ApplyNationResourceNeedTargetsToOrderState inherited unchanged (0x4dcd10)
-  // slot 0x44 SetNationResourceNeedCurrentByType inherited unchanged (0x4dce10)
-  // slot 0x45 SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4dcdd0)
-  // slot 0x46 IsNationResourceNeedCurrentAtTargetByType inherited unchanged (0x4dce40)
-  // slot 0x47 GetNationResourceNeedTargetByType inherited unchanged (0x4dce70)
-  // slot 0x48 TryIncrementNationResourceNeedTargetTowardCurrent inherited unchanged (0x4dce90)
-  // slot 0x49 IsNationResourceNeedCurrentSumExceedingCapA6 inherited unchanged (0x4dcf10)
-  // slot 0x4a ApplyJoinEmpireMode2FinalizeNationNameState inherited unchanged (0x4dcf60)
-  // slot 0x4b IsDiplomacyTargetClassCode200Match inherited unchanged (0x4dcfd0)
-  // slot 0x4c IterateLinkedListCursorEntries_004e0220 inherited unchanged (0x4e0220)
-  // slot 0x4d RebuildNationResourceYieldCountersAndDevelopmentTargets inherited unchanged (0x4dbd20)
-  // slot 0x4e AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents inherited unchanged (0x4dbf00)
-  // slot 0x4f OrphanRetStub_004d7e90 inherited unchanged (0x4dc3f0)
-  // slot 0x50 OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4dc440)
-  // slot 0x51 OrphanLeaf_NoCall_Ins02_004d7f00 inherited unchanged (0x4dc4c0)
-  // slot 0x52 CompareMissionScoreVariantsByMode inherited unchanged (0x4dc540)
-  // slot 0x53 BuildGreatPowerMapContextTriggeredNationEventMessages inherited unchanged (0x4dc660)
-  // slot 0x54 BuildGreatPowerEligibleNationEventMessagesFromLinkedList inherited unchanged (0x4dc840)
-  // slot 0x55 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4e0290)
-  // slot 0x56 ReturnFalseNationStateActionStub inherited unchanged (0x4e03a0)
-  // slot 0x57 OrphanRetStub_004d7fe0 inherited unchanged (0x4e03d0)
-  // slot 0x58 SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations inherited unchanged (0x4dd0c0)
-  // slot 0x59 RecomputeDiplomacyAidBudgetScoreFromResourceWeights inherited unchanged (0x4dd140)
-  // slot 0x5a ResetDiplomacyNeedScoresAndClearAidAllocationMatrix inherited unchanged (0x4dd1b0)
-  // slot 0x5b RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix inherited unchanged (0x4dd270)
-  // slot 0x5c ReleaseDiplomacyTrackedObjectSlots850 inherited unchanged (0x4dd310)
-  // slot 0x5d AddAmountToAidAllocationMatrixCellAndTotal inherited unchanged (0x4dd340)
-  // slot 0x5e SumAidAllocationMatrixColumnForTarget inherited unchanged (0x4dd3b0)
-  // slot 0x5f SumAidAllocationMatrixAllCells inherited unchanged (0x4dd3f0)
-  // slot 0x60 ComputeRemainingDiplomacyAidBudget inherited unchanged (0x4dd430)
-  // slot 0x61 ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches inherited unchanged (0x4dd470)
-  // slot 0x62 AssignFallbackNationsToUnfilledDiplomacyNeedSlots inherited unchanged (0x4dd4e0)
-  // slot 0x63 QueueNationOrderManagerPayloadObject inherited unchanged (0x4dd770)
-  // slot 0x64 ClearQueuedNationOrdersAndResetOrderManager inherited unchanged (0x4dd7b0)
-  // slot 0x65 OrphanCallChain_C1_I42_004dd7f0 inherited unchanged (0x4dd7f0)
-  // slot 0x66 ExecuteNationPendingActionStateMachine inherited unchanged (0x4dda40)
-  // slot 0x67 AssignNeedSlotFromSourceSlot19C inherited unchanged (0x4dda90)
-  // slot 0x68 GetTCountryClassNamePointer inherited unchanged (0x4ddad0)
-  // slot 0x69 VTableSlot69 inherited unchanged (0x4ddb40)
-  // slot 0x6a DispatchNationStateEventCode10 inherited unchanged (0x4ddb80)
-  // slot 0x6b ClearDiplomacyState1c6ForTarget inherited unchanged (0x4ddd20)
-  // slot 0x6c GetTEventHandlerClassNamePointer inherited unchanged (0x4ddd90)
-  // slot 0x6d HandleCityDialogHintClusterUpdate inherited unchanged (0x4dde80)
-  // slot 0x6e DeserializeRecruitScenarioAndInstantiateOrders inherited unchanged (0x4dde30)
-  // slot 0x6f ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4ddeb0)
-  // slot 0x70 GetTEventHandlerClassNamePointer inherited unchanged (0x4ddf20)
-  // slot 0x71 ClearFieldBlock1c6 inherited unchanged (0x4ddf90)
-  // slot 0x72 BeginTurnDiplomacyPrePassSlot1c8 inherited unchanged (0x4de2b0)
-  // slot 0x73 ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants inherited unchanged (0x4de2d0)
-  // slot 0x74 ApplyDiplomacyPolicyStateForTargetWithCostChecks inherited unchanged (0x4ddfc0)
-  // slot 0x75 SetDiplomacyGrantEntryForTargetAndUpdateTreasury inherited unchanged (0x4de340)
-  // slot 0x76 RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8 inherited unchanged (0x4de5e0)
-  // slot 0x77 CanAffordDiplomacyGrantEntryForTarget inherited unchanged (0x4de700)
-  // slot 0x78 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4de7e0)
-  // slot 0x79 SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4deca0)
-  // slot 0x7a CanAffordAdditionalDiplomacyCostAfterCommitments inherited unchanged (0x4de790)
-  virtual void ApplyAcceptedDiplomacyProposalCode() override; // slot 0x7b 0x5413b0
-  virtual undefined QueueInterNationEventForProposalCode12D_130() override; // slot 0x7c 0x541450
-  // slot 0x7d ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4df4b0)
-  // slot 0x7e ResetNationDiplomacyProposalQueue inherited unchanged (0x4df580)
-  // slot 0x7f IsDiplomacyTargetClassCode200Match inherited unchanged (0x4df5a0)
-  // slot 0x80 DispatchTurnEvent2103WithNationFromRecord inherited unchanged (0x4df5c0)
-  virtual void ProcessPendingDiplomacyProposalQueue() override; // slot 0x81 0x5414f0
-  // slot 0x82 ClassifyNationProductionTotalAgainstGlobalDistribution inherited unchanged (0x4e2880)
-  // slot 0x83 HasActiveCandidateNationSlots inherited unchanged (0x4e0400)
-  // slot 0x84 OrphanLeaf_NoCall_Ins02_004d7ee0 inherited unchanged (0x4e0420)
-  // slot 0x85 OrphanLeaf_NoCall_Ins02_004d7f00 inherited unchanged (0x4e0440)
-  // slot 0x86 ComputeNavyOrderIndustryCostWeightSumForNation inherited unchanged (0x4e0500)
-  // slot 0x87 OrphanLeaf_NoCall_Ins02_004d7f40 inherited unchanged (0x4e0550)
-  // slot 0x88 OrphanRetStub_004d7fa0 inherited unchanged (0x4e0590)
-  // slot 0x89 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4e05d0)
-  // slot 0x8a ReturnFalseNationStateActionStub inherited unchanged (0x4e0610)
-  // slot 0x8b OrphanRetStub_004d7fe0 inherited unchanged (0x4e0650)
-  // slot 0x8c ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4e0690)
-  // slot 0x8d GetNationRuntimeCityBuildingProductionValueBySlot inherited unchanged (0x4e0740)
-  // slot 0x8e IterateLinkedListCursorEntries_004e07b0 inherited unchanged (0x4e07b0)
-  // slot 0x8f IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890 inherited unchanged (0x4e0890)
-  // slot 0x90 ComputeCityOrderCapabilityAggregateScore inherited unchanged (0x4e09a0)
-  // slot 0x91 AddAmountToAidAllocationMatrixCellAndTotal inherited unchanged (0x4e0b20)
-  // slot 0x92 ComputeAdvisoryHandlerCase00Metric inherited unchanged (0x4e0c10)
-  // slot 0x93 ComputeAdvisoryHandlerCase01Metric inherited unchanged (0x4e0d80)
-  // slot 0x94 ComputeAdvisoryHandlerCase02Metric inherited unchanged (0x4e0e70)
-  // slot 0x95 ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers inherited unchanged (0x4e0fe0)
-  // slot 0x96 ComputeAdvisoryMatrixRatio23CByTargetSlot inherited unchanged (0x4e1170)
-  // slot 0x97 ComputeAdvisoryMetric240NormalizedBySelectionAndPeers inherited unchanged (0x4e1300)
-  // slot 0x98 ComputeAdvisoryMatrixRatio240ByTargetSlot inherited unchanged (0x4e1490)
-  // slot 0x99 ComputeAdvisoryHandlerCase07Metric inherited unchanged (0x4e1620)
-  // slot 0x9a ComputeArmyScoreStandingRatioForNationPair inherited unchanged (0x4e1750)
-  // slot 0x9b ComputeAdvisoryHandlerCase09Metric inherited unchanged (0x4e1910)
-  // slot 0x9c ComputeNavyScoreStandingRatioForNationPair inherited unchanged (0x4e1a40)
-  // slot 0x9d VTableSlot9D inherited unchanged (0x4e1c00)
-  // slot 0x9e EvaluateJoinWarAgainstNationAndQueueEvent inherited unchanged (0x4e1c20)
-  // slot 0x9f ExecuteAdvisoryPromptAndApplyActionType1 inherited unchanged (0x5416b0)
-  virtual undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback() override; // slot 0xa0 0x5415c0
-  // slot 0xa1 QueueWarTransitionAndNotifyThirdPartyIfNeeded inherited unchanged (0x4e27f0)
-  // slot 0xa2 DeserializeRecruitScenarioAndInstantiateOrders inherited unchanged (0x4e1f20)
-  // slot 0xa3 ComputeWarThresholdSlotA3 inherited unchanged (0x4e1f40)
-  // slot 0xa4 GetTEventHandlerClassNamePointer inherited unchanged (0x4e2190)
-  // slot 0xa5 ReleaseAllTrackedObjectsFromList89C inherited unchanged (0x4de810)
-  // slot 0xa6 NotifyRegionEventSlot298 inherited unchanged (0x4e2500)
-  // slot 0xa7 ResetNationDiplomacySlotsAndMarkRelatedNations inherited unchanged (0x4e25c0)
-  // slot 0xa8 ApplyMinorNationCapabilityActionType6 inherited unchanged (0x4e2630)
-  // slot 0xa9 ApplyMinorNationCapabilityActionType4 inherited unchanged (0x4e2720)
-  // slot 0xaa DispatchNationDiplomacySlotActionByMode inherited unchanged (0x4e27b0)
-  virtual void DispatchTurnEvent11F8NoPayloadSlot2AC() override; // slot 0xab 0x541790
-  // slot 0xac SumNationRuntimeFiveBucketValue44 inherited unchanged (0x4e06d0)
-  // slot 0xad SelectCandidateTilesWithLowGroundUnitCount inherited unchanged (0x4d8bc0)
-  // slot 0xae OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4d8be0)
-  // slot 0xaf UpdateGreatPowerPressureStateAndDispatchEscalationMessage inherited unchanged (0x4db380)
-  // slot 0xb0 SetNationTransferTargetCodeAndNotifyEligiblePeers inherited unchanged (0x4e2b00)
-  // slot 0xb1 BuildGreatPowerTurnMessageSummaryAndDispatch inherited unchanged (0x4e2b70)
-// === END GENERATED DECLS (TClientGreatPower) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TClientGreatPower 0xCTOR`).
+  CRuntimeClass* GetRuntimeClass() const override;
+  ~TClientGreatPower();
+
+  // slot 0x26 — 0x005412b0
+  char ReturnFalseNationStateCapabilityFlag98(void) override;
+  // slot 0x28 — 0x005412d0
+  char ShouldDispatchImmediatelySlot28(void) override;
+  // slot 0x7b — 0x005413b0
+  void ApplyAcceptedDiplomacyProposalCode(short proposalIndex) override;
+  // slot 0x7c — 0x00541450
+  void QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex) override;
+  // slot 0x81 — 0x005414f0
+  void ProcessPendingDiplomacyProposalQueue(void) override;
+  // slot 0x9f — 0x005416b0: client command 0x69 wrapper around slot 0x27c logic.
+  int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
+  // slot 0xa0 — 0x005415c0: client command 0x61 wrapper around slot 0x280 logic.
+  int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) override;
+  // slot 0xab — 0x00541790
+  void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
 
   TClientGreatPower();
 };
@@ -247,58 +84,58 @@ public:
 //   slot 0x31  byte 0xc4  0x004dab00  inherited NoOpNationQueuedOrderHook
 //   slot 0x32  byte 0xc8  0x004dab20  inherited ExecuteNationPendingActionStateMachine
 //   slot 0x33  byte 0xcc  0x004dae70  inherited HasQueuedCivWorkOrderType7
-//   slot 0x34  byte 0xd0  0x004db7d0  inherited GetTCountryClassNamePointer
-//   slot 0x35  byte 0xd4  0x004dbac0  inherited VTableSlot35
-//   slot 0x36  byte 0xd8  0x004dc9f0  inherited DispatchNationStateEventCode10
+//   slot 0x34  byte 0xd0  0x004db7d0  inherited UpdateOrderEntryAvailabilityByConnectedRegionMask
+//   slot 0x35  byte 0xd4  0x004dbac0  inherited MarkConnectedOwnedRegionsInMaskRecursive
+//   slot 0x36  byte 0xd8  0x004dc9f0  inherited RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
 //   slot 0x37  byte 0xdc  0x004dca60  inherited OrphanRetStub_0059add0
 //   slot 0x38  byte 0xe0  0x004dcc30  inherited GetTEventHandlerClassNamePointer
-//   slot 0x39  byte 0xe4  0x004df810  inherited HandleCityDialogHintClusterUpdate
+//   slot 0x39  byte 0xe4  0x004df810  inherited RebuildPrimaryNationStateForSlot_Impl
 //   slot 0x3a  byte 0xe8  0x004dfa20  inherited DeserializeRecruitScenarioAndInstantiateOrders
-//   slot 0x3b  byte 0xec  0x004dfae0  inherited ApplyJoinEmpireModeForTargetNation
-//   slot 0x3c  byte 0xf0  0x004e00d0  inherited GetTEventHandlerClassNamePointer
-//   slot 0x3d  byte 0xf4  0x004e0140  inherited VTableSlot3D
-//   slot 0x3e  byte 0xf8  0x004e01b0  inherited OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x3b  byte 0xec  0x004dfae0  inherited CreateAndQueueFrogCityMarkerForNationTile
+//   slot 0x3c  byte 0xf0  0x004e00d0  inherited DispatchGreatPowerQuarterlyStatusMessageLevel2
+//   slot 0x3d  byte 0xf4  0x004e0140  inherited DispatchGreatPowerQuarterlyStatusMessageLevel1
+//   slot 0x3e  byte 0xf8  0x004e01b0  inherited DispatchGreatPowerQuarterlyStatusMessageLevel0
 //   slot 0x3f  byte 0xfc  0x004dca80  inherited SelectCandidateTilesWithLowGroundUnitCount
 //   slot 0x40  byte 0x100  0x004dcaa0  inherited OrphanLeaf_NoCall_Ins07_004d8920
 //   slot 0x41  byte 0x104  0x004dcc50  inherited ApplyJoinEmpireModeForTargetNation
 //   slot 0x42  byte 0x108  0x004dcca0  inherited SetNationTransferTargetCodeAndNotifyEligiblePeers
-//   slot 0x43  byte 0x10c  0x004dcd10  inherited ApplyJoinEmpireMode1TargetTransition
-//   slot 0x44  byte 0x110  0x004dce10  inherited OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x43  byte 0x10c  0x004dcd10  inherited ApplyNationResourceNeedTargetsToOrderState
+//   slot 0x44  byte 0x110  0x004dce10  inherited SetNationResourceNeedCurrentByType
 //   slot 0x45  byte 0x114  0x004dcdd0  inherited SelectCandidateTilesWithLowGroundUnitCount
-//   slot 0x46  byte 0x118  0x004dce40  inherited OrphanLeaf_NoCall_Ins07_004d8920
-//   slot 0x47  byte 0x11c  0x004dce70  inherited ApplyJoinEmpireModeForTargetNation
-//   slot 0x48  byte 0x120  0x004dce90  inherited SetNationTransferTargetCodeAndNotifyEligiblePeers
-//   slot 0x49  byte 0x124  0x004dcf10  inherited ApplyJoinEmpireMode1TargetTransition
+//   slot 0x46  byte 0x118  0x004dce40  inherited IsNationResourceNeedCurrentAtTargetByType
+//   slot 0x47  byte 0x11c  0x004dce70  inherited GetNationResourceNeedTargetByType
+//   slot 0x48  byte 0x120  0x004dce90  inherited TryIncrementNationResourceNeedTargetTowardCurrent
+//   slot 0x49  byte 0x124  0x004dcf10  inherited IsNationResourceNeedCurrentSumExceedingCapA6
 //   slot 0x4a  byte 0x128  0x004dcf60  inherited ApplyJoinEmpireMode2FinalizeNationNameState
 //   slot 0x4b  byte 0x12c  0x004dcfd0  inherited IsDiplomacyTargetClassCode200Match
-//   slot 0x4c  byte 0x130  0x004e0220  inherited RemoveRegionIdFromNationOwnedRegionList
-//   slot 0x4d  byte 0x134  0x004dbd20  inherited AddRegionIdToNationOwnedRegionList
-//   slot 0x4e  byte 0x138  0x004dbf00  inherited SetNationPercentFieldByModeAndDescriptorLinks
+//   slot 0x4c  byte 0x130  0x004e0220  inherited IterateLinkedListCursorEntries_004e0220
+//   slot 0x4d  byte 0x134  0x004dbd20  inherited RebuildNationResourceYieldCountersAndDevelopmentTargets
+//   slot 0x4e  byte 0x138  0x004dbf00  inherited AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents
 //   slot 0x4f  byte 0x13c  0x004dc3f0  inherited OrphanRetStub_004d7e90
 //   slot 0x50  byte 0x140  0x004dc440  inherited OrphanLeaf_NoCall_Ins02_004d7ee0
 //   slot 0x51  byte 0x144  0x004dc4c0  inherited OrphanLeaf_NoCall_Ins02_004d7f00
-//   slot 0x52  byte 0x148  0x004dc540  inherited OrphanLeaf_NoCall_Ins02_004d7f20
-//   slot 0x53  byte 0x14c  0x004dc660  inherited OrphanLeaf_NoCall_Ins02_004d7f40
-//   slot 0x54  byte 0x150  0x004dc840  inherited OrphanRetStub_004d7fa0
+//   slot 0x52  byte 0x148  0x004dc540  inherited CompareMissionScoreVariantsByMode
+//   slot 0x53  byte 0x14c  0x004dc660  inherited BuildGreatPowerMapContextTriggeredNationEventMessages
+//   slot 0x54  byte 0x150  0x004dc840  inherited BuildGreatPowerEligibleNationEventMessagesFromLinkedList
 //   slot 0x55  byte 0x154  0x004e0290  inherited OrphanLeaf_NoCall_Ins02_004d7fc0
 //   slot 0x56  byte 0x158  0x004e03a0  inherited ReturnFalseNationStateActionStub
 //   slot 0x57  byte 0x15c  0x004e03d0  inherited OrphanRetStub_004d7fe0
-//   slot 0x58  byte 0x160  0x004dd0c0  inherited ReturnFalseNationStateCapabilityFlag90
-//   slot 0x59  byte 0x164  0x004dd140  inherited OrphanRetStub_004d7f80
-//   slot 0x5a  byte 0x168  0x004dd1b0  inherited ReturnFalseNationStateCapabilityFlag98
-//   slot 0x5b  byte 0x16c  0x004dd270  inherited ReturnFalseNationStateCapabilityFlag9C
-//   slot 0x5c  byte 0x170  0x004dd310  inherited ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x58  byte 0x160  0x004dd0c0  inherited SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations
+//   slot 0x59  byte 0x164  0x004dd140  inherited RecomputeDiplomacyAidBudgetScoreFromResourceWeights
+//   slot 0x5a  byte 0x168  0x004dd1b0  inherited ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
+//   slot 0x5b  byte 0x16c  0x004dd270  inherited RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix
+//   slot 0x5c  byte 0x170  0x004dd310  inherited ReleaseDiplomacyTrackedObjectSlots850
 //   slot 0x5d  byte 0x174  0x004dd340  inherited AddAmountToAidAllocationMatrixCellAndTotal
 //   slot 0x5e  byte 0x178  0x004dd3b0  inherited SumAidAllocationMatrixColumnForTarget
-//   slot 0x5f  byte 0x17c  0x004dd3f0  inherited PromoteNationPendingActionSlot5IfCapabilityActive
-//   slot 0x60  byte 0x180  0x004dd430  inherited AdvanceNationPendingActionStateMachine
-//   slot 0x61  byte 0x184  0x004dd470  inherited DispatchNationPendingActionEventCodes
-//   slot 0x62  byte 0x188  0x004dd4e0  inherited SetNationPendingActionStateAndPayload
+//   slot 0x5f  byte 0x17c  0x004dd3f0  inherited SumAidAllocationMatrixAllCells
+//   slot 0x60  byte 0x180  0x004dd430  inherited ComputeRemainingDiplomacyAidBudget
+//   slot 0x61  byte 0x184  0x004dd470  inherited ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
+//   slot 0x62  byte 0x188  0x004dd4e0  inherited AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 //   slot 0x63  byte 0x18c  0x004dd770  inherited QueueNationOrderManagerPayloadObject
 //   slot 0x64  byte 0x190  0x004dd7b0  inherited ClearQueuedNationOrdersAndResetOrderManager
 //   slot 0x65  byte 0x194  0x004dd7f0  inherited OrphanCallChain_C1_I42_004dd7f0
 //   slot 0x66  byte 0x198  0x004dda40  inherited ExecuteNationPendingActionStateMachine
-//   slot 0x67  byte 0x19c  0x004dda90  inherited HasQueuedCivWorkOrderType7
+//   slot 0x67  byte 0x19c  0x004dda90  inherited AssignNeedSlotFromSourceSlot19C
 //   slot 0x68  byte 0x1a0  0x004ddad0  inherited GetTCountryClassNamePointer
 //   slot 0x69  byte 0x1a4  0x004ddb40  inherited VTableSlot69
 //   slot 0x6a  byte 0x1a8  0x004ddb80  inherited DispatchNationStateEventCode10
@@ -308,44 +145,44 @@ public:
 //   slot 0x6e  byte 0x1b8  0x004dde30  inherited DeserializeRecruitScenarioAndInstantiateOrders
 //   slot 0x6f  byte 0x1bc  0x004ddeb0  inherited ApplyJoinEmpireModeForTargetNation
 //   slot 0x70  byte 0x1c0  0x004ddf20  inherited GetTEventHandlerClassNamePointer
-//   slot 0x71  byte 0x1c4  0x004ddf90  inherited VTableSlot71
-//   slot 0x72  byte 0x1c8  0x004de2b0  inherited OrphanLeaf_NoCall_Ins06_004d87b0
-//   slot 0x73  byte 0x1cc  0x004de2d0  inherited SelectCandidateTilesWithLowGroundUnitCount
-//   slot 0x74  byte 0x1d0  0x004ddfc0  inherited OrphanLeaf_NoCall_Ins07_004d8920
-//   slot 0x75  byte 0x1d4  0x004de340  inherited ApplyJoinEmpireModeForTargetNation
-//   slot 0x76  byte 0x1d8  0x004de5e0  inherited SetNationTransferTargetCodeAndNotifyEligiblePeers
-//   slot 0x77  byte 0x1dc  0x004de700  inherited ApplyJoinEmpireMode1TargetTransition
+//   slot 0x71  byte 0x1c4  0x004ddf90  inherited ClearFieldBlock1c6
+//   slot 0x72  byte 0x1c8  0x004de2b0  inherited BeginTurnDiplomacyPrePassSlot1c8
+//   slot 0x73  byte 0x1cc  0x004de2d0  inherited ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants
+//   slot 0x74  byte 0x1d0  0x004ddfc0  inherited ApplyDiplomacyPolicyStateForTargetWithCostChecks
+//   slot 0x75  byte 0x1d4  0x004de340  inherited SetDiplomacyGrantEntryForTargetAndUpdateTreasury
+//   slot 0x76  byte 0x1d8  0x004de5e0  inherited RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8
+//   slot 0x77  byte 0x1dc  0x004de700  inherited CanAffordDiplomacyGrantEntryForTarget
 //   slot 0x78  byte 0x1e0  0x004de7e0  inherited OrphanLeaf_NoCall_Ins06_004d87b0
 //   slot 0x79  byte 0x1e4  0x004deca0  inherited SelectCandidateTilesWithLowGroundUnitCount
-//   slot 0x7a  byte 0x1e8  0x004de790  inherited OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x7a  byte 0x1e8  0x004de790  inherited CanAffordAdditionalDiplomacyCostAfterCommitments
 //   slot 0x7b  byte 0x1ec  0x005413b0  override  ApplyJoinEmpireModeForTargetNation
 //   slot 0x7c  byte 0x1f0  0x00541450  override  SetNationTransferTargetCodeAndNotifyEligiblePeers
 //   slot 0x7d  byte 0x1f4  0x004df4b0  inherited ApplyJoinEmpireMode1TargetTransition
-//   slot 0x7e  byte 0x1f8  0x004df580  inherited ApplyJoinEmpireMode2FinalizeNationNameState
+//   slot 0x7e  byte 0x1f8  0x004df580  inherited ResetNationDiplomacyProposalQueue
 //   slot 0x7f  byte 0x1fc  0x004df5a0  inherited IsDiplomacyTargetClassCode200Match
-//   slot 0x80  byte 0x200  0x004df5c0  inherited RemoveRegionIdFromNationOwnedRegionList
+//   slot 0x80  byte 0x200  0x004df5c0  inherited DispatchTurnEvent2103WithNationFromRecord
 //   slot 0x81  byte 0x204  0x005414f0  override  AddRegionIdToNationOwnedRegionList
-//   slot 0x82  byte 0x208  0x004e2880  inherited SetNationPercentFieldByModeAndDescriptorLinks
-//   slot 0x83  byte 0x20c  0x004e0400  inherited OrphanRetStub_004d7e90
+//   slot 0x82  byte 0x208  0x004e2880  inherited ClassifyNationProductionTotalAgainstGlobalDistribution
+//   slot 0x83  byte 0x20c  0x004e0400  inherited HasActiveCandidateNationSlots
 //   slot 0x84  byte 0x210  0x004e0420  inherited OrphanLeaf_NoCall_Ins02_004d7ee0
 //   slot 0x85  byte 0x214  0x004e0440  inherited OrphanLeaf_NoCall_Ins02_004d7f00
-//   slot 0x86  byte 0x218  0x004e0500  inherited OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x86  byte 0x218  0x004e0500  inherited ComputeNavyOrderIndustryCostWeightSumForNation
 //   slot 0x87  byte 0x21c  0x004e0550  inherited OrphanLeaf_NoCall_Ins02_004d7f40
 //   slot 0x88  byte 0x220  0x004e0590  inherited OrphanRetStub_004d7fa0
 //   slot 0x89  byte 0x224  0x004e05d0  inherited OrphanLeaf_NoCall_Ins02_004d7fc0
 //   slot 0x8a  byte 0x228  0x004e0610  inherited ReturnFalseNationStateActionStub
 //   slot 0x8b  byte 0x22c  0x004e0650  inherited OrphanRetStub_004d7fe0
 //   slot 0x8c  byte 0x230  0x004e0690  inherited ReturnFalseNationStateCapabilityFlag90
-//   slot 0x8d  byte 0x234  0x004e0740  inherited OrphanRetStub_004d7f80
-//   slot 0x8e  byte 0x238  0x004e07b0  inherited ReturnFalseNationStateCapabilityFlag98
-//   slot 0x8f  byte 0x23c  0x004e0890  inherited ReturnFalseNationStateCapabilityFlag9C
-//   slot 0x90  byte 0x240  0x004e09a0  inherited ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x8d  byte 0x234  0x004e0740  inherited GetNationRuntimeCityBuildingProductionValueBySlot
+//   slot 0x8e  byte 0x238  0x004e07b0  inherited IterateLinkedListCursorEntries_004e07b0
+//   slot 0x8f  byte 0x23c  0x004e0890  inherited IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890
+//   slot 0x90  byte 0x240  0x004e09a0  inherited ComputeCityOrderCapabilityAggregateScore
 //   slot 0x91  byte 0x244  0x004e0b20  inherited AddAmountToAidAllocationMatrixCellAndTotal
-//   slot 0x92  byte 0x248  0x004e0c10  inherited SumAidAllocationMatrixColumnForTarget
-//   slot 0x93  byte 0x24c  0x004e0d80  inherited PromoteNationPendingActionSlot5IfCapabilityActive
-//   slot 0x94  byte 0x250  0x004e0e70  inherited AdvanceNationPendingActionStateMachine
-//   slot 0x95  byte 0x254  0x004e0fe0  inherited DispatchNationPendingActionEventCodes
-//   slot 0x96  byte 0x258  0x004e1170  inherited SetNationPendingActionStateAndPayload
+//   slot 0x92  byte 0x248  0x004e0c10  inherited ComputeAdvisoryHandlerCase00Metric
+//   slot 0x93  byte 0x24c  0x004e0d80  inherited ComputeAdvisoryHandlerCase01Metric
+//   slot 0x94  byte 0x250  0x004e0e70  inherited ComputeAdvisoryHandlerCase02Metric
+//   slot 0x95  byte 0x254  0x004e0fe0  inherited ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers
+//   slot 0x96  byte 0x258  0x004e1170  inherited ComputeAdvisoryMatrixRatio23CByTargetSlot
 //   slot 0x97  byte 0x25c  0x004e1300  inherited QueueNationOrderManagerPayloadObject
 //   slot 0x98  byte 0x260  0x004e1490  inherited ClearQueuedNationOrdersAndResetOrderManager
 //   slot 0x99  byte 0x264  0x004e1620  inherited OrphanCallChain_C1_I42_004dd7f0
@@ -360,7 +197,7 @@ public:
 //   slot 0xa2  byte 0x288  0x004e1f20  inherited DeserializeRecruitScenarioAndInstantiateOrders
 //   slot 0xa3  byte 0x28c  0x004e1f40  inherited ApplyJoinEmpireModeForTargetNation
 //   slot 0xa4  byte 0x290  0x004e2190  inherited GetTEventHandlerClassNamePointer
-//   slot 0xa5  byte 0x294  0x004de810  inherited VTableSlotA5
+//   slot 0xa5  byte 0x294  0x004de810  inherited VTableSlot01
 //   slot 0xa6  byte 0x298  0x004e2500  inherited OrphanLeaf_NoCall_Ins06_004d87b0
 //   slot 0xa7  byte 0x29c  0x004e25c0  inherited SelectCandidateTilesWithLowGroundUnitCount
 //   slot 0xa8  byte 0x2a0  0x004e2630  inherited OrphanLeaf_NoCall_Ins07_004d8920
@@ -373,7 +210,5 @@ public:
 //   slot 0xaf  byte 0x2bc  0x004db380  inherited ApplyJoinEmpireModeForTargetNation
 //   slot 0xb0  byte 0x2c0  0x004e2b00  inherited SetNationTransferTargetCodeAndNotifyEligiblePeers
 //   slot 0xb1  byte 0x2c4  0x004e2b70  inherited ApplyJoinEmpireMode1TargetTransition
-// object size 0x964 (RTTI) unverified against the header layout;
-// set curated.layout.size_verified to emit a sizeof static_assert.
-// clang-format on
 // === END GENERATED (TClientGreatPower) ===
+// clang-format on
