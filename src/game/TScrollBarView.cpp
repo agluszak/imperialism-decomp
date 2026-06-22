@@ -21,7 +21,8 @@ void TScrollBarView::NoOpUiLifecycleHook(int arg) {
 void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x00574830
-void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                          int arg4) {
 }
 
 // FUNCTION: IMPERIALISM 0x00574970

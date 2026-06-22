@@ -18,7 +18,8 @@ void TMapPreviewView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005789e0
-void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                           int arg4) {
 }
 
 // FUNCTION: IMPERIALISM 0x00578a80

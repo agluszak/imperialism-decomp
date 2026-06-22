@@ -79,7 +79,8 @@ public:
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x574970
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint * point) override; // slot 0x47 0x574830
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                    int arg4) override; // slot 0x47 0x574830
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
