@@ -1029,6 +1029,7 @@ address|target_cpp|ownership|note
 4d1830|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d1880|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d1e40|src/game/TPlaceCityDialog.cpp|manual|marker_sync
+4d1e60|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d2030|src/game/TCivMgr.cpp|manual|marker_sync
 4d2070|src/game/TCivMgr.cpp|manual|marker_sync
 4d2270|src/game/TCivMgr.cpp|manual|marker_sync

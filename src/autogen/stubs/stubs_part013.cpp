@@ -635,14 +635,6 @@ undefined4 ConstructTPlaceCityDialogBaseState(void)
   return 0;
 }
 
-// ghidra_name TControl::thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44
-// ghidra_proto undefined thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44()
-// FUNCTION: IMPERIALISM 0x004d1e60
-undefined4 thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004d1fb0
 // ghidra_proto undefined WrapperFor_ftol_At004d1fb0()
 // FUNCTION: IMPERIALISM 0x004d1fb0
