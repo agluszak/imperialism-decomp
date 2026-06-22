@@ -4,9 +4,7 @@
 #include "game/mfc.h"
 #include "game/CString.h"
 
-extern "C" unsigned int __cdecl strlen(const char* s);
 #if defined(_MSC_VER)
-#pragma intrinsic(strlen)
 #pragma optimize("y", on)
 #endif
 
@@ -30,20 +28,6 @@ static __inline void FailNilPointer(int line) {
 // CArchive that actually moves bytes.
 static __inline CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
-}
-
-// FUNCTION: IMPERIALISM 0x00489030
-void TFileStream::WriteCString(const CString& text) {
-  int length = text.GetLength();
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(reinterpret_cast<void*>((char*)static_cast<LPCSTR>(text)), length);
-}
-
-// FUNCTION: IMPERIALISM 0x00489070
-void TFileStream::WriteLengthPrefixedCString(char* text) {
-  unsigned int length = strlen(text);
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(text, length);
 }
 
 // FUNCTION: IMPERIALISM 0x004890f0
@@ -101,29 +85,22 @@ void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
-char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
+char TFileStream::ReadByte(void* outObject) {
   *reinterpret_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
                                              ->ReadObject(static_cast<const CRuntimeClass*>(0));
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00489330
-void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
+void TFileStream::WriteObjectSlotB4(void* objectRef, int flag) {
+  (void)flag;
   BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
 // FUNCTION: IMPERIALISM 0x00489360
-undefined TFileStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50() { return 0; }
+void TFileStream::streamSlot70() {}
 
 // FUNCTION: IMPERIALISM 0x00489390
-undefined TFileStream::OrphanCallChain_C2_I21_00489030() {
-  return 0;
+void TFileStream::streamSlotAc(CString* sharedString) {
+  (void)sharedString;
 }
-undefined TFileStream::OrphanLeaf_NoCall_Ins02_00489980(void) { return 0; }
-undefined TFileStream::OrphanRetStub_00488e30(void) { return 0; }
-undefined TFileStream::OrphanRetStub_00488e50(void) { return 0; }
-undefined TFileStream::OrphanRetStub_00488e70(void) { return 0; }
-undefined TFileStream::OrphanRetStub_004899a0(void) { return 0; }
-undefined TFileStream::OrphanTiny_ReturnZero_00488ad0(void) { return 0; }
-undefined TFileStream::OrphanTiny_ReturnZero_00488af0(void) { return 0; }
-void TFileStream::streamSlot70(void) {}

@@ -48,8 +48,11 @@ int TCountingStream::streamSlot30() {
 // FUNCTION: IMPERIALISM 0x00489520
 void TCountingStream::streamSlot34() {}
 
-undefined TCountingStream::OrphanRetStub_00488e70() { return 0; }
-undefined TCountingStream::OrphanRetStub_00488e30(void) { return 0; }
-undefined TCountingStream::OrphanRetStub_00488e50(void) { return 0; }
-undefined TCountingStream::OrphanTiny_ReturnZero_00488ad0(void) { return 0; }
-undefined TCountingStream::OrphanTiny_ReturnZero_00488af0(void) { return 0; }
+// FUNCTION: IMPERIALISM 0x00489550
+void TCountingStream::WriteBytesSlot78(void* data, int length) {
+  (void)data;
+  this->positionOrByteCount += length;
+  if (this->positionOrByteCount > this->maxExtentOrLimit) {
+    this->maxExtentOrLimit = this->positionOrByteCount;
+  }
+}

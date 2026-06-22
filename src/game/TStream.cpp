@@ -1,4 +1,10 @@
 #include "game/TStream.h"
+#include "game/CString.h"
+
+extern "C" unsigned int __cdecl strlen(const char* s);
+#if defined(_MSC_VER)
+#pragma intrinsic(strlen)
+#endif
 
 // MFC-style serialization foundation: compiled favor-size in the original.
 #if defined(_MSC_VER)
@@ -29,6 +35,9 @@ int TStream::streamSlot30() {
 void TStream::streamSlot34() {}        // TODO
 void TStream::ReadBytes(void*, int) {} // TODO: primitive (subclass overrides)
 
+// FUNCTION: IMPERIALISM 0x00488b10
+void TStream::AssertMcAppStreamLine304() {}
+
 // FUNCTION: IMPERIALISM 0x00488b60
 int TStream::ReadInteger() {
   return 0;
@@ -57,7 +66,9 @@ int TStream::streamSlot50() {
 
 // FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::streamSlot6c() {} // TODO: 0x00488ca0
-void TStream::streamSlot70() {} // TODO: 0x00489360
+
+// FUNCTION: IMPERIALISM 0x00488c50
+void TStream::streamSlot70() {} // TODO: 0x00488c50
 
 // FUNCTION: IMPERIALISM 0x00488ce0
 void TStream::streamSlot54(void* out) {
@@ -95,8 +106,13 @@ int TStream::streamSlot68() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488dd0
-void TStream::streamSlot74() {}               // TODO: 0x00488dd0
+void TStream::streamSlot74() {} // TODO: 0x00488dd0
+
+// FUNCTION: IMPERIALISM 0x00488e70
 void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
+
+// FUNCTION: IMPERIALISM 0x00488e00
+void TStream::AssertMcAppStreamLine596() {}
 
 // FUNCTION: IMPERIALISM 0x00488e90
 void TStream::streamSlot7c(unsigned char value) {
@@ -110,15 +126,6 @@ void TStream::streamSlot80(unsigned char value) {
 
 // FUNCTION: IMPERIALISM 0x00488ed0
 void TStream::streamSlot84() {} // TODO: 0x00488ed0
-void TStream::streamSlotA8() {} // TODO
-void TStream::streamSlotAc(void* sharedString) {
-  (void)sharedString;
-} // TODO: writes a CString/shared-string ref to the stream
-char TStream::ReadByte(void*) {
-  return 0;
-} // TODO: primitive 0x004892f0
-
-void TStream::WriteObjectSlotB4(void*, int) {} // TODO: primitive (subclass overrides)
 
 // ---------------------------------------------------------------------------
 // Typed read/write accessors: each delegates to a primitive vtable slot
@@ -165,3 +172,29 @@ void TStream::streamSlotA0(void* data) {
 void TStream::streamSlotA4(int value) {
   WriteBytesSlot78(&value, 4);
 }
+
+// FUNCTION: IMPERIALISM 0x00488ff0
+void TStream::OrphanCallChain_C2_I18_00488ff0() {}
+
+// FUNCTION: IMPERIALISM 0x00489030
+void TStream::streamSlotAc(CString* sharedString) {
+  int length = sharedString->GetLength();
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(reinterpret_cast<void*>((char*)static_cast<LPCSTR>(*sharedString)),
+                         length);
+}
+
+// FUNCTION: IMPERIALISM 0x00489070
+void TStream::WriteLengthPrefixedCString(char* text) {
+  unsigned int length = strlen(text);
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(text, length);
+}
+
+// FUNCTION: IMPERIALISM 0x00489980
+char TStream::ReadByte(void*) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004899a0
+void TStream::WriteObjectSlotB4(void*, int) {}

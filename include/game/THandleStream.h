@@ -7,7 +7,8 @@
 // VTABLE: IMPERIALISM 0x649410
 class THandleStream : public TStream {
 public:
-// === BEGIN GENERATED DECLS (THandleStream) — refreshed by recover-class; do not hand-edit ===
+  // clang-format off
+  // === BEGIN GENERATED DECLS (THandleStream) — refreshed by recover-class; do not hand-edit ===
   virtual ~THandleStream(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -17,10 +18,10 @@ public:
   virtual void Free() override; // slot 0x07 0x4896a0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanTiny_ReturnZero_00488ad0() override; // slot 0x0a 0x4896e0
-  virtual undefined OrphanRetStub_00488e30() override; // slot 0x0b 0x489740
-  virtual undefined OrphanTiny_ReturnZero_00488af0() override; // slot 0x0c 0x489700
-  virtual undefined OrphanRetStub_00488e50() override; // slot 0x0d 0x489760
+  // slot 0x0a streamSlot28 owned by the hand declaration below (0x4896e0)
+  // slot 0x0b streamSlot2c owned by the hand declaration below (0x489740)
+  // slot 0x0c streamSlot30 owned by the hand declaration below (0x489700)
+  // slot 0x0d streamSlot34 owned by the hand declaration below (0x489760)
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
   // slot 0x11 streamSlot44 inherited unchanged (0x488b90)
@@ -36,7 +37,7 @@ public:
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
   // slot 0x1c Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50 inherited unchanged (0x488c50)
   // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
-  virtual undefined OrphanRetStub_00488e70() override; // slot 0x1e 0x489810
+  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489810)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
   // slot 0x21 streamSlot84 inherited unchanged (0x488ed0)
@@ -56,9 +57,8 @@ public:
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
   virtual undefined OrphanLeaf_NoCall_Ins06_00489720(); // slot 0x31 0x489720
-// === END GENERATED DECLS (THandleStream) ===
-  // Behavior-derived: 0x00489550 advances currentExtent by a delta and tracks
-  // highWatermark as its running maximum. Field names remain provisional.
+  // === END GENERATED DECLS (THandleStream) ===
+  // clang-format on
   int currentExtent;
   int highWatermark;
   int handleOrBuffer;
@@ -69,9 +69,6 @@ public:
   THandleStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
-  // 0x00489550: advance currentExtent by delta, raising highWatermark to match.
-  void AdvanceExtent(int handle, int delta);
-
   int streamSlot28() override;
   void streamSlot2c() override;
   int streamSlot30() override;
@@ -80,7 +77,8 @@ public:
   void WriteBytesSlot78(void* data, int length) override;
 };
 
-// === BEGIN GENERATED (THandleStream) — refreshed by `just gen-class THandleStream`; do not hand-edit ===
+// === BEGIN GENERATED (THandleStream) — refreshed by `just gen-class THandleStream`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x00649410 (50 slots), object size 0x18, base TStream
 //   slot 0x00  byte 0x00  0x004895c0  override  GetTStreamClassNamePointer

@@ -11,7 +11,8 @@ class CString;
 // VTABLE: IMPERIALISM 0x00649230
 class TFileStream : public TStream {
 public:
-// === BEGIN GENERATED DECLS (TFileStream) — refreshed by recover-class; do not hand-edit ===
+  // clang-format off
+  // === BEGIN GENERATED DECLS (TFileStream) — refreshed by recover-class; do not hand-edit ===
   virtual ~TFileStream(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -21,10 +22,10 @@ public:
   // slot 0x07 Free inherited unchanged (0x488ab0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanTiny_ReturnZero_00488ad0() override; // slot 0x0a 0x489180
-  virtual undefined OrphanRetStub_00488e30() override; // slot 0x0b 0x4891c0
-  virtual undefined OrphanTiny_ReturnZero_00488af0() override; // slot 0x0c 0x4891a0
-  virtual undefined OrphanRetStub_00488e50() override; // slot 0x0d 0x4891f0
+  // slot 0x0a streamSlot28 owned by the hand declaration below (0x489180)
+  // slot 0x0b streamSlot2c owned by the hand declaration below (0x4891c0)
+  // slot 0x0c streamSlot30 owned by the hand declaration below (0x4891a0)
+  // slot 0x0d streamSlot34 owned by the hand declaration below (0x4891f0)
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
   // slot 0x11 streamSlot44 inherited unchanged (0x488b90)
@@ -38,9 +39,9 @@ public:
   // slot 0x19 OrphanCallChain_C1_I06_00488d80 inherited unchanged (0x488d80)
   // slot 0x1a OrphanCallChain_C1_I09_00488da0 inherited unchanged (0x488da0)
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
-  virtual undefined Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50() override; // slot 0x1c 0x489360
+  // slot 0x1c streamSlot70 owned by the hand declaration below (0x489360)
   // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
-  virtual undefined OrphanRetStub_00488e70() override; // slot 0x1e 0x489290
+  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489290)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
   // slot 0x21 streamSlot84 inherited unchanged (0x488ed0)
@@ -52,14 +53,15 @@ public:
   // slot 0x27 OrphanCallChain_C1_I06_00488f90 inherited unchanged (0x488f90)
   // slot 0x28 OrphanCallChain_C1_I06_00488fb0 inherited unchanged (0x488fb0)
   // slot 0x29 OrphanCallChain_C1_I06_00488fd0 inherited unchanged (0x488fd0)
-  // slot 0x2a CreateTFileStreamInstance inherited unchanged (0x489070)
-  virtual undefined OrphanCallChain_C2_I21_00489030() override; // slot 0x2b 0x489390
-  virtual undefined OrphanLeaf_NoCall_Ins02_00489980() override; // slot 0x2c 0x489300
-  virtual undefined OrphanRetStub_004899a0() override; // slot 0x2d 0x489330
+  // slot 0x2a WriteLengthPrefixedCString inherited unchanged (0x489070)
+  virtual void streamSlotAc(CString* sharedString) override;       // slot 0x2b 0x489390
+  virtual char ReadByte(void* outByte) override;                   // slot 0x2c 0x489300
+  virtual void WriteObjectSlotB4(void* object, int flag) override; // slot 0x2d 0x489330
   // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
-// === END GENERATED DECLS (TFileStream) ===
+  // === END GENERATED DECLS (TFileStream) ===
+  // clang-format on
   ArchiveStreamAdapter* backingArchiveOrStream;
 
   CRuntimeClass* GetRuntimeClass() const override;
@@ -82,16 +84,10 @@ public:
   // 0x00489300 / 0x00489330: forward polymorphic object read/write to the
   // backing CArchive. The read form stores the resolved object through its
   // out-param and returns a success byte.
-  char ReadObjectFromBackingArchive(void* outObject);
-  void WriteObjectToBackingArchive(void* objectRef);
-
-  // 0x00489070: serialize a length-prefixed C-string — write the length through
-  // virtual slot 0x22, then the bytes through slot 0x1e.
-  void WriteLengthPrefixedCString(char* text);
-  void WriteCString(const CString& text);
 };
 
-// === BEGIN GENERATED (TFileStream) — refreshed by `just gen-class TFileStream`; do not hand-edit ===
+// === BEGIN GENERATED (TFileStream) — refreshed by `just gen-class TFileStream`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x00649230 (49 slots), object size 0x08, base TStream
 //   slot 0x00  byte 0x00  0x004890f0  override  GetTStreamClassNamePointer

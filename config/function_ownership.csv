@@ -259,8 +259,8 @@ address|target_cpp|ownership|note
 488fb0|src/game/TStream.cpp|manual|marker_sync
 488fd0|src/game/TStream.cpp|manual|marker_sync
 488ff0|src/game/TStream.cpp|manual|marker_sync
-489030|src/game/TFileStream.cpp|manual|marker_sync
-489070|src/game/TFileStream.cpp|manual|marker_sync
+489030|src/game/TStream.cpp|manual|marker_sync
+489070|src/game/TStream.cpp|manual|marker_sync
 4890f0|src/game/TFileStream.cpp|manual|marker_sync
 489110|src/game/TFileStream.cpp|manual|marker_sync
 489130|src/game/TFileStream.cpp|manual|marker_sync
@@ -283,7 +283,7 @@ address|target_cpp|ownership|note
 4894d0|src/game/TCountingStream.cpp|manual|marker_sync
 489500|src/game/TCountingStream.cpp|manual|marker_sync
 489520|src/game/TCountingStream.cpp|manual|marker_sync
-489550|src/game/THandleStream.cpp|manual|marker_sync
+489550|src/game/TCountingStream.cpp|manual|marker_sync
 4895c0|src/game/THandleStream.cpp|manual|marker_sync
 4895e0|src/game/THandleStream.cpp|manual|marker_sync
 489610|src/game/THandleStream.cpp|manual|marker_sync

@@ -7,7 +7,8 @@
 // VTABLE: IMPERIALISM 0x649320
 class TCountingStream : public TStream {
 public:
-// === BEGIN GENERATED DECLS (TCountingStream) — refreshed by recover-class; do not hand-edit ===
+  // clang-format off
+  // === BEGIN GENERATED DECLS (TCountingStream) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCountingStream(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -17,10 +18,10 @@ public:
   // slot 0x07 Free inherited unchanged (0x488ab0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanTiny_ReturnZero_00488ad0() override; // slot 0x0a 0x4894b0
-  virtual undefined OrphanRetStub_00488e30() override; // slot 0x0b 0x4894d0
-  virtual undefined OrphanTiny_ReturnZero_00488af0() override; // slot 0x0c 0x489500
-  virtual undefined OrphanRetStub_00488e50() override; // slot 0x0d 0x489520
+  // slot 0x0a streamSlot28 owned by the hand declaration below (0x4894b0)
+  // slot 0x0b streamSlot2c owned by the hand declaration below (0x4894d0)
+  // slot 0x0c streamSlot30 owned by the hand declaration below (0x489500)
+  // slot 0x0d streamSlot34 owned by the hand declaration below (0x489520)
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x0f ReadBytes inherited unchanged (0x488b40)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
@@ -37,7 +38,7 @@ public:
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
   // slot 0x1c Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50 inherited unchanged (0x488c50)
   // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
-  virtual undefined OrphanRetStub_00488e70() override; // slot 0x1e 0x489550
+  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489550)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
   // slot 0x21 streamSlot84 inherited unchanged (0x488ed0)
@@ -56,7 +57,8 @@ public:
   // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
-// === END GENERATED DECLS (TCountingStream) ===
+  // === END GENERATED DECLS (TCountingStream) ===
+  // clang-format on
   int positionOrByteCount;
   int maxExtentOrLimit;
 
@@ -69,9 +71,11 @@ public:
   int streamSlot30() override;
   void streamSlot34() override;
   void ReadBytes(void* buffer, int sizeBytes) override;
+  void WriteBytesSlot78(void* data, int length) override;
 };
 
-// === BEGIN GENERATED (TCountingStream) — refreshed by `just gen-class TCountingStream`; do not hand-edit ===
+// === BEGIN GENERATED (TCountingStream) — refreshed by `just gen-class TCountingStream`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x00649320 (49 slots), object size 0x0c, base TStream
 //   slot 0x00  byte 0x00  0x004893f0  override  GetTStreamClassNamePointer

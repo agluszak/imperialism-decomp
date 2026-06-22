@@ -3,6 +3,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class CString;
+
 // Mac: TStream — serialization byte stream (ReadBytes, ReadInteger, WriteObjectSize, …).
 // VTABLE slots verified against IMPERIALISM.exe (e.g. minister roster 0x004d92e0 uses
 // [vt+0x3c] for all bulk reads, [vt+0x40] for integer mask, [vt+0xb0] for marker byte).
@@ -39,7 +41,7 @@ public:
   virtual void streamSlot64(void* out);                   // 25 (0x64) 0x00488d80
   virtual int streamSlot68();                             // 26 (0x68) 0x00488da0
   virtual void streamSlot6c();                            // 27 (0x6c) TODO: 0x00488ca0
-  virtual void streamSlot70();                            // 28 (0x70) TODO: 0x00489360
+  virtual void streamSlot70();                            // 28 (0x70) TODO: 0x00488c50
   virtual void streamSlot74();                            // 29 (0x74) TODO: 0x00488dd0
   virtual void WriteBytesSlot78(void* data, int length);  // 30 (0x78) primitive TODO
   virtual void streamSlot7c(unsigned char value);         // 31 (0x7c) 0x00488e90
@@ -53,8 +55,11 @@ public:
   virtual void streamSlot9c(void* data);                  // 39 (0x9c) 0x00488f90
   virtual void streamSlotA0(void* data);                  // 40 (0xa0) 0x00488fb0
   virtual void streamSlotA4(int value);                   // 41 (0xa4) 0x00488fd0
-  virtual void streamSlotA8();                            // 42 (0xa8) TODO
-  virtual void streamSlotAc(void* sharedString);          // 43 (0xac) writes a CString ref
+  virtual void WriteLengthPrefixedCString(char* text);    // 42 (0xa8) writes a C string
+  virtual void streamSlotAc(CString* sharedString);       // 43 (0xac) writes a CString ref
   virtual char ReadByte(void* outByte);                   // 44 (0xb0) primitive TODO: 0x004892f0
   virtual void WriteObjectSlotB4(void* object, int flag); // 45 (0xb4) writes a polymorphic object
+  virtual void OrphanCallChain_C2_I18_00488ff0();         // 46 (0xb8)
+  virtual void AssertMcAppStreamLine304();                // 47 (0xbc)
+  virtual void AssertMcAppStreamLine596();                // 48 (0xc0)
 };
