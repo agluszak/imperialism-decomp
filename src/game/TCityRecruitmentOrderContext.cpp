@@ -8,7 +8,7 @@ extern "C" TSimMgr* g_pLocalizationTable;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-// FUNCTION: IMPERIALISM 0x004b73b0
+// Body moved to TUnitOrder::OrphanRetStub_004b5160 for the real vtable owner.
 void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   short pendingDelta = this->pendingDelta;
   if (pendingDelta <= 0 || this->cityContext == 0) {

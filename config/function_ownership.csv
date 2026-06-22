@@ -801,7 +801,7 @@ address|target_cpp|ownership|note
 4b7080|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7210|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7320|src/game/TUnitOrder.cpp|manual|marker_sync
-4b73b0|src/game/TCityRecruitmentOrderContext.cpp|manual|marker_sync
+4b73b0|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7850|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7920|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7a20|src/game/TPowerPlantOrder.cpp|manual|marker_sync
