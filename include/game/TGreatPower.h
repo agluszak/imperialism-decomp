@@ -407,35 +407,19 @@ public:
   void AbsorbCityNeedVectorSlotFC(short* needVector);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   int GetMultiplierSlot21C(void);
-  void RebuildNationResourceYieldsAndRollField134Into136(void);
-  void InitializeMapActionCandidateStateAndQueueMission(int arg1);
-  void SelectAndQueueAdvisoryMapMissionsCase16(void);
   float ComputeMapActionContextCompositeScoreForNation(int nodeType);
   unsigned int ComputeMapActionContextNodeValueAverage(void);
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void SerializeGreatPowerTailStateToMessage(void* pMessage);
-  void QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2);
-  void ApplyIndexedResourceDeltaWithNeedClamp(int arg1, int arg2, int arg3);
-  void ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);
-  void ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2);
-  void QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3);
-  void ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1);
-  void AddRegionToNationAndQueueMapActionMission(int arg1);
   void QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(int proposalCode,
                                                                        int targetNationId);
-  void TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, int arg3, int arg4);
-  void ProcessPendingDiplomacyThenDispatchTurnEvent29A(void);
   void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
-  void DispatchNationField98CallbackD4(void);
-  void DispatchNationField9CCallback4C(void);
-  void DispatchNationField94Callbacks90And94(void);
 
   TCity* GetCityState(void) {
     return city;

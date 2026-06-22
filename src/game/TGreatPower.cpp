@@ -3817,8 +3817,9 @@ void TGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e0440
-#pragma optimize("y", on)
-#pragma optimize("", on)
+void TGreatPower::NotifyAllianceSlot214(int targetNation) {
+  (void)targetNation;
+}
 
 // FUNCTION: IMPERIALISM 0x004e0500
 #if defined(_MSC_VER)
@@ -4251,9 +4252,10 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e1c00
-#pragma optimize("y", on)
-#pragma optimize("", on)
-#pragma optimize("y", on)
+char TGreatPower::ReturnZeroSlot9D(int targetNation) {
+  (void)targetNation;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004e1c20
 char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
@@ -4320,13 +4322,13 @@ bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
 
 // FUNCTION: IMPERIALISM 0x004e1e40
 int TGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
-  this->QueueWarTransitionFromAdvisoryAction(targetNation, sourceNation, mode);
+  this->SetCandidateNationFlagAndPortZoneState(targetNation);
+  this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, mode, sourceNation);
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20
-#pragma optimize("y", on)
-#pragma optimize("", on)
+void TGreatPower::NoOpSlotA2(void) {}
 
 // --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
 // Helpers live in TGreatPower_power_score.cpp (TGreatPower_internal.h).
@@ -4396,8 +4398,7 @@ float TGreatPower::ComputeWarThresholdSlotA3(int targetNation) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e2190
-#pragma optimize("y", on)
-#pragma optimize("", on)
+void TGreatPower::NotifyWarResetSlot290(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e21b0
 void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
@@ -4739,141 +4740,6 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004e72c0
-void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
-  TStream* stream = reinterpret_cast<TStream*>(arg1);
-  this->ReadFrom(stream);
-  stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
-  SwapShortArrayBytes(this->actionMetricByQuarter, 6);
-
-  stream->ReadBytes(this->mapNodeStateFlags, 0x180);
-  stream->ReadBytes(this->portZoneStateFlags, 0x70);
-
-  TPtrList* missionQueue = this->missionQueue;
-  if (missionQueue->GetCountSlot48() != 0) {
-    missionQueue->FreePayloadsSlot54();
-  }
-  missionQueue->ReadFrom(reinterpret_cast<TStream*>(arg1));
-
-  int missionContext = 0;
-  stream->ReadBytes(&missionContext, 4);
-  for (int queueIndex = 1; queueIndex < 0x71; ++queueIndex) {
-    missionContext = 0;
-    char hasMission = stream->ReadByte(&missionContext);
-    if (hasMission != 0) {
-      missionQueue->AddTailSlot30(reinterpret_cast<void*>(missionContext));
-    }
-  }
-
-  if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x39) {
-    this->QueueMapActionMissionFromCandidateAndMarkState(5, -1, 0, -1);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e73f0
-#pragma optimize("y", on)
-void TGreatPower::SerializeGreatPowerTailStateToMessage(void* pMessage) {
-  this->WriteTo(static_cast<TStream*>(pMessage));
-
-  TMessageObject* message = reinterpret_cast<TMessageObject*>(pMessage);
-  short* quarterMetric = this->actionMetricByQuarter;
-  int remaining = 6;
-  do {
-    short value = *quarterMetric;
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&value);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-    message->AppendBytesSlot78(&value, 2);
-    ++quarterMetric;
-    --remaining;
-  } while (remaining != 0);
-
-  message->AppendBytesSlot78(this->mapNodeStateFlags, 0x180);
-  message->AppendBytesSlot78(this->portZoneStateFlags, 0x70);
-
-  TPtrList* missionQueue = this->missionQueue;
-  missionQueue->WriteTo(reinterpret_cast<TStream*>(pMessage));
-  int missionQueueCount = missionQueue->GetCountSlot48();
-
-  int zeroWord = 0;
-  message->AppendBytesSlot78(&zeroWord, 4);
-  int index = 1;
-  if (index <= missionQueueCount) {
-    do {
-      int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinalSlot4C(index));
-      message->WriteEntrySlotB4(value, 0);
-      ++index;
-    } while (index <= missionQueueCount);
-  }
-}
-#pragma optimize("", on)
-
-// FUNCTION: IMPERIALISM 0x004e7630
-void TGreatPower::ApplyIndexedResourceDeltaWithNeedClamp(int arg1, int arg2, int arg3) {
-  if (arg2 < 0 && arg1 > 6 && arg1 < 0x0D) {
-    this->needCurrentByType[arg1] = static_cast<short>(this->needCurrentByType[arg1] + arg2);
-  }
-
-  this->TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(arg1, arg2, arg3);
-}
-
-// FUNCTION: IMPERIALISM 0x004e78d0
-void TGreatPower::DispatchNationField98CallbackD4(void) {
-  static_cast<TCityInteriorMinister*>(this->interiorMinister)->CallD4();
-}
-
-// FUNCTION: IMPERIALISM 0x004e78f0
-void TGreatPower::DispatchNationField9CCallback4C(void) {
-  this->defenseMinister->Call4C();
-}
-
-// FUNCTION: IMPERIALISM 0x004e7990
-void TGreatPower::DispatchNationField94Callbacks90And94(void) {
-  this->foreignMinister->Call90();
-  this->foreignMinister->Call94();
-}
-
-// FUNCTION: IMPERIALISM 0x004e7b20
-void TGreatPower::ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
-  this->TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
-}
-
-// FUNCTION: IMPERIALISM 0x004e7b50
-void TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2) {
-  short policyCode = static_cast<short>(arg2);
-  switch (policyCode) {
-  case 0x12D:
-  case 0x12F:
-    return;
-  case 0x12E:
-  case 0x132: {
-    void* diplomacyState = g_pDiplomacyTurnStateManager;
-    if (diplomacyState != 0) {
-      char hasAllianceGuard =
-          g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(arg1, this->nationSlot);
-      if (hasAllianceGuard == 0) {
-        this->QueueDiplomacyProposalCodeForTargetNation(static_cast<short>(arg2),
-                                                        static_cast<short>(arg1));
-      }
-    }
-    return;
-  }
-  default:
-    this->QueueDiplomacyProposalCodeForTargetNation(static_cast<short>(arg2),
-                                                    static_cast<short>(arg1));
-    return;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e7c50
-void TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2) {
-  if (static_cast<short>(arg2) == 0x131) {
-    this->SetCandidateNationFlagAndPortZoneState(static_cast<short>(arg1));
-  }
-  this->TGreatPower::NotifyActionSlot94(arg1, arg2);
-}
-
 // FUNCTION: IMPERIALISM 0x004e8540
 void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3,
                                                                  int arg4) {
@@ -5160,99 +5026,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   return compositeScore;
 }
 
-// FUNCTION: IMPERIALISM 0x004e9a50
-void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
-  if (this->city == 0) {
-    return;
-  }
-
-  // TEMP: 0x004e92b0 (PopulateCase16AdvisoryMapNodeCandidateState) is still an
-  // autogen stub; call it through the generic thunk declaration until it is ported.
-  PopulateCase16AdvisoryMapNodeCandidateState();
-
-  int bestNodeIndex = -1;
-  float bestNodeScore = 0.0f;
-
-  for (int nodeIndex = 0; nodeIndex < 0x180; ++nodeIndex) {
-    if (this->mapNodeStateFlags[nodeIndex] != 1) {
-      continue;
-    }
-
-    float nodeScore = this->ComputeMapActionContextCompositeScoreForNation(nodeIndex);
-    if (bestNodeIndex < 0 || nodeScore > bestNodeScore) {
-      bestNodeIndex = nodeIndex;
-      bestNodeScore = nodeScore;
-    }
-  }
-
-  if (bestNodeIndex < 0) {
-    return;
-  }
-
-  this->QueueMapActionMissionFromCandidateAndMarkState(3, bestNodeIndex, 0, -1);
-
-  int strongestNation = -1;
-  int strongestNeed = 0;
-  for (int nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-    int needValue = static_cast<int>(this->needLevelByNation[nationSlot]);
-    if (needValue > strongestNeed) {
-      strongestNeed = needValue;
-      strongestNation = nationSlot;
-    }
-  }
-
-  if (strongestNation >= 0 && strongestNation != this->nationSlot) {
-    this->QueueInterNationEventType0FForNationPairContext(static_cast<short>(strongestNation),
-                                                          this->nationSlot);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e9ed0
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3) {
-  this->SetCandidateNationFlagAndPortZoneState(arg1);
-  this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg1, arg2, arg3);
-}
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x004ea150
-void TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1) {
-  this->TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(arg1);
-
-  int i = 0;
-  for (i = 0; i < 6; ++i) {
-    this->actionMetricByQuarter[i] = 0;
-  }
-  for (i = 0; i < kMapNodeCount; ++i) {
-    this->mapNodeStateFlags[i] = 0;
-  }
-  for (i = 0; i < kPortZoneCount; ++i) {
-    this->portZoneStateFlags[i] = 0;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004ea290
-void TGreatPower::AddRegionToNationAndQueueMapActionMission(int arg1) {
-  this->AddRegionIdToNationOwnedRegionList(arg1);
-
-  if (arg1 >= 0 && arg1 < kMapNodeCount) {
-    this->mapNodeStateFlags[arg1] = 1;
-    this->QueueMapActionMissionFromCandidateAndMarkState(3, arg1, 0, -1);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004ea470
-void TGreatPower::RebuildNationResourceYieldsAndRollField134Into136(void) {
-  this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  short carryValue = this->needCurrentByType[0x13];
-  this->needCurrentByType[0x13] = 0;
-  this->needCurrentByType[0x14] = static_cast<short>(this->needCurrentByType[0x14] + carryValue);
-}
-
 // FUNCTION: IMPERIALISM 0x004ffc10
 void TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void) {
   this->diplomacyEligibilityA0 = 0;
@@ -5291,34 +5064,6 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent1
 
   packetPayload.routing.SetPayloadNationIdFromSlotIndex(static_cast<int>(this->nationSlot));
   packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
-}
-
-// FUNCTION: IMPERIALISM 0x00541080
-void TGreatPower::TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, int arg3,
-                                                            int arg4) {
-  char dispatchedViaUi =
-      this->TryDispatchNationActionViaUiContextOrFallback(arg1, arg2, arg3, arg4);
-  if (dispatchedViaUi != 0) {
-    reinterpret_cast<void(__stdcall*)(int, int, int, int, int)>(
-        thunk_DispatchTurnEvent1AWithNationActionPayload)(this->nationSlot, arg1, arg2, arg3, arg4);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x005410f0
-void TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A(void) {
-  this->ProcessPendingDiplomacyProposalQueue();
-  int nationSlot = 0;
-
-  do {
-    TGreatPower* nationState = g_apNationStates[nationSlot];
-    if (nationState != 0 && nationState->diplomacyEligibilityA0 == 0) {
-      ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(g_pGameFlowState, nationSlot);
-    }
-    ++nationSlot;
-  } while (nationSlot < 7);
-
-  static_cast<TUiRuntimeContext*>(g_pGlobalUiRootController)
-      ->RequestDiplomacyDecisionSlot90(this->nationSlot, this->nationSlot, 0x29A);
 }
 
 // FUNCTION: IMPERIALISM 0x005416b0
@@ -5414,8 +5159,4 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
 
 
 int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
-char TGreatPower::ReturnZeroSlot9D(int) { return 0; }
-void TGreatPower::NoOpSlotA2(void) {}
-void TGreatPower::NotifyAllianceSlot214(int) {}
-void TGreatPower::NotifyWarResetSlot290(void) {}
 void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}
