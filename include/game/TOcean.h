@@ -22,10 +22,6 @@ public:
   // slot 0x04 Dump inherited unchanged (0x412c10)
   virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5628f0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x562340
-  // slot 0x07 (byte 0x1c) — the TObject Free slot, overridden. Body at 0x5621e0
-  // (Ghidra: DispatchNationPendingActionEventCodes, 264 bytes) sits in TOcean's own
-  // 0x562xxx cluster; it was mis-owned by TPortZone, whose 3-slot "vtable" 0x65c7e4
-  // is really an alias onto TOcean's vtable tail (0x65c7c8 + 0x1c).
   virtual void Free() override; // slot 0x07 0x5621e0
 // === END GENERATED DECLS (TOcean) ===
   short nationCount;                     // +0x04

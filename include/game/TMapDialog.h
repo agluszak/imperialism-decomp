@@ -5,7 +5,6 @@
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
-  void RenderWrappedMapQuickDrawOverlayFromStridedRecords(int overlayRecord);
   void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
 
   virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) override;

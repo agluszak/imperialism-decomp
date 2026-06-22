@@ -173,39 +173,3 @@ void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, i
       thunk_ProjectTileIndexToWrappedScreenOffsetByScale)(reinterpret_cast<TMapDialog*>(arg1), 0,
                                                           arg1, arg2, arg3, arg4, arg5);
 }
-
-// FUNCTION: IMPERIALISM 0x00596100
-void TMapDialog::RenderWrappedMapQuickDrawOverlayFromStridedRecords(int overlayRecord) {
-  QuickDrawSurfaceGuard surface;
-
-  short tileRow = 0;
-  unsigned short tileCol = 0;
-  short regionBand = 0;
-  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      &tileRow, reinterpret_cast<short*>(&tileCol));
-
-  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
-      (int)tileRow, (int)tileCol);
-  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
-    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
-    return;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
-    HandleMapClickByInteractionModeFromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
-}
