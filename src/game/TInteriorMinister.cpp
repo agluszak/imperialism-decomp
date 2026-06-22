@@ -56,6 +56,37 @@ void TInteriorMinister::NotifySlot44(void* receiver) {
   (void)receiver;
 }
 
+// Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
+// FUNCTION: IMPERIALISM 0x004be150
+void TInteriorMinister::InteriorSlot1D() {}
+
+// FUNCTION: IMPERIALISM 0x004be170
+void TInteriorMinister::InteriorSlot1E() {}
+
+// FUNCTION: IMPERIALISM 0x004be190
+void TInteriorMinister::InteriorSlot1F() {}
+
+// FUNCTION: IMPERIALISM 0x004be3f0
+void TInteriorMinister::InteriorSlot1A() {}
+
+// FUNCTION: IMPERIALISM 0x004be410
+void TInteriorMinister::InteriorSlot1B() {}
+
+// FUNCTION: IMPERIALISM 0x004be430
+void TInteriorMinister::InteriorSlot1C() {}
+
+// FUNCTION: IMPERIALISM 0x004be480
+void TInteriorMinister::InteriorSlot16() {}
+
+// FUNCTION: IMPERIALISM 0x004be4c0
+void TInteriorMinister::InteriorSlot17() {}
+
+// FUNCTION: IMPERIALISM 0x004be650
+void TInteriorMinister::InteriorSlot18() {}
+
+// FUNCTION: IMPERIALISM 0x004be690
+void TInteriorMinister::InteriorSlot19() {}
+
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif

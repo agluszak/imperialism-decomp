@@ -17,29 +17,29 @@ public:
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined DispatchNationStateEventCode10() override; // slot 0x0a 0x4bee20
+  virtual void MinisterSlot0A() override; // slot 0x0a 0x4bee20
   // slot 0x0b RebuildTerrainPreferenceEntriesAndAssignRanks inherited unchanged (0x52ed50)
   // slot 0x0c MapTerrainTypeToPreferenceRank inherited unchanged (0x52ee20)
   // slot 0x0d MapPreferenceRankToTerrainType inherited unchanged (0x52eea0)
   // slot 0x0e GetPreferenceTerrainTypeByEntryIndex inherited unchanged (0x52ef80)
   // slot 0x0f GetPreferenceGroupRankByEntryIndex inherited unchanged (0x52ef20)
   // slot 0x10 GetPreferenceScoreByEntryIndex inherited unchanged (0x52ef50)
-  virtual undefined NoOpForeignMinisterUtilityStub() override; // slot 0x11 0x4c0d90
+  virtual void NotifySlot44(void* receiver) override; // slot 0x11 0x4c0d90
   // slot 0x12 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be450)
   // slot 0x13 VTableSlot13 inherited unchanged (0x4be4f0)
   // slot 0x14 SetForeignMinisterReadyFlag14 inherited unchanged (0x4be520)
-  virtual undefined OrphanCallChain_C7_I57_004be5b0() override; // slot 0x15 0x4bf770
+  virtual void Call54() override; // slot 0x15 0x4bf770
   // slot 0x16 GetTEventHandlerClassNamePointer inherited unchanged (0x4be480)
   // slot 0x17 VTableSlot17 inherited unchanged (0x4be4c0)
   // slot 0x18 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be650)
   // slot 0x19 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4be690)
-  virtual undefined SetForeignMinisterReadyFlag14() override; // slot 0x1a 0x4beeb0
-  virtual undefined VTableSlot1B() override; // slot 0x1b 0x4beee0
-  virtual undefined GetTEventHandlerClassNamePointer() override; // slot 0x1c 0x4bef30
-  virtual undefined VTableSlot1D() override; // slot 0x1d 0x4be7b0
-  virtual undefined CreateTInteriorMinisterInstance() override; // slot 0x1e 0x4be7d0
-  virtual undefined VTableSlot1F() override; // slot 0x1f 0x4be7f0
-  virtual undefined GetTEventHandlerClassNamePointer_20(); // slot 0x20 0x4bed60
+  virtual void InteriorSlot1A() override; // slot 0x1a 0x4beeb0
+  virtual void InteriorSlot1B() override; // slot 0x1b 0x4beee0
+  virtual void InteriorSlot1C() override; // slot 0x1c 0x4bef30
+  virtual void InteriorSlot1D() override; // slot 0x1d 0x4be7b0
+  virtual void InteriorSlot1E() override; // slot 0x1e 0x4be7d0
+  virtual void InteriorSlot1F() override; // slot 0x1f 0x4be7f0
+  virtual void CityInteriorSlot20(); // slot 0x20 0x4bed60
   virtual undefined VTableSlot21(); // slot 0x21 0x4bf8a0
   virtual undefined GetTEventHandlerClassNamePointer_22(); // slot 0x22 0x4bfa50
   virtual undefined QueueCityProductionRebalanceCommandsByThresholds(); // slot 0x23 0x4bfb20
@@ -55,12 +55,12 @@ public:
   virtual undefined VTableSlot2D(); // slot 0x2d 0x4bef10
   virtual undefined SetForeignMinisterReadyFlag14_2e(); // slot 0x2e 0x4c0de0
   virtual undefined ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders(); // slot 0x2f 0x4c0e50
-  virtual undefined SelectBestSecondaryHomeTileByFrogCityScore(); // slot 0x30 0x4c11c0
+  virtual int GetHomeCityRecordIndexSlotC0(); // slot 0x30 0x4c11c0
   virtual undefined RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
   virtual undefined GetTEventHandlerClassNamePointer_32(); // slot 0x32 0x4c2010
   virtual undefined AutoAssignProspectingOrdersByTileHeuristics(); // slot 0x33 0x4c2120
   virtual undefined AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
-  virtual undefined BuildNationTileDevelopmentScoreListForTerrainClass(); // slot 0x35 0x4c1510
+  virtual void CallD4(); // slot 0x35 0x4c1510
   virtual undefined IterateLinkedListCursorEntries_004c2d50(); // slot 0x36 0x4c2d50
   virtual undefined HandleFrogCityTileSelectionAndDispatchOrders(); // slot 0x37 0x4c2e10
   virtual undefined SelectBestFrogCityTileFromCandidateSet(); // slot 0x38 0x4c3170
@@ -74,6 +74,11 @@ public:
   virtual undefined ChooseAndMarkNextCityProductionCommand(); // slot 0x40 0x4c4370
   virtual undefined ComputeCityProductionCommandLimitsFromBuildingOutputs(); // slot 0x41 0x4c4690
   virtual undefined RebuildCityOrderCommandAvailabilityAndPriorityCycle(); // slot 0x42 0x4c4840
+  virtual undefined UpdateMinisterProductionMetricsForResourceIndex(); // slot 0x43 0x4c49f0
+  virtual undefined CityMinisterSlot44(); // slot 0x44 0x4c4d40
+  virtual undefined CityMinisterSlot45(); // slot 0x45 0x4c4e60
+  virtual undefined CityMinisterSlot46(); // slot 0x46 0x4c4fe0
+  virtual undefined BuildFrogCityTerrainCountsAndOverlayStats(); // slot 0x47 0x4c5240
 // === END GENERATED DECLS (TCityInteriorMinister) ===
   TCityInteriorMinister();
   void InitializeCityInteriorState();
@@ -82,43 +87,7 @@ public:
   void WriteTo(TStream* stream) override;          // slot 0x14
   void ReadFrom(TStream* stream) override;         // slot 0x18
   void Free() override;                            // slot 0x1c
-  void MinisterSlot0A() override;                  // slot 0x28
-  void NotifySlot44(void* receiver) override;      // slot 0x44
-  void Call54() override;                          // slot 0x54
 
-  // TCityInteriorMinister-introduced virtuals (vtable 0x6508a8 slots 0x58-0xd4).
-  virtual void CityInteriorSlot16();          // 0x58
-  virtual void CityInteriorSlot17();          // 0x5c
-  virtual void CityInteriorSlot18();          // 0x60
-  virtual void CityInteriorSlot19();          // 0x64
-  virtual void CityInteriorSlot1A();          // 0x68
-  virtual void CityInteriorSlot1B();          // 0x6c
-  virtual void CityInteriorSlot1C();          // 0x70
-  virtual void CityInteriorSlot1D();          // 0x74
-  virtual void CityInteriorSlot1E();          // 0x78
-  virtual void CityInteriorSlot1F();          // 0x7c
-  virtual void CityInteriorSlot20();          // 0x80
-  virtual void CityInteriorSlot21();          // 0x84
-  virtual void CityInteriorSlot22();          // 0x88
-  virtual void CityInteriorSlot23();          // 0x8c
-  virtual void CityInteriorSlot24();          // 0x90
-  virtual void CityInteriorSlot25();          // 0x94
-  virtual void CityInteriorSlot26();          // 0x98
-  virtual void CityInteriorSlot27();          // 0x9c
-  virtual void CityInteriorSlot28();          // 0xa0
-  virtual void CityInteriorSlot29();          // 0xa4
-  virtual void CityInteriorSlot2A();          // 0xa8
-  virtual void CityInteriorSlot2B();          // 0xac
-  virtual void CityInteriorSlot2C();          // 0xb0
-  virtual void CityInteriorSlot2D();          // 0xb4
-  virtual void CityInteriorSlot2E();          // 0xb8
-  virtual void CityInteriorSlot2F();          // 0xbc
-  virtual int GetHomeCityRecordIndexSlotC0(); // 0xc0
-  virtual void CityInteriorSlot31();          // 0xc4
-  virtual void CityInteriorSlot32();          // 0xc8
-  virtual void CityInteriorSlot33();          // 0xcc
-  virtual void CityInteriorSlot34();          // 0xd0
-  virtual void CallD4();                      // 0xd4
 
   void* operator new(unsigned int size) {
     (void)size;

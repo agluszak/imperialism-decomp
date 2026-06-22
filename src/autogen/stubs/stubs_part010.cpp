@@ -1963,10 +1963,6 @@ undefined4 OrphanCallChain_C1_I08_00487a60(void)
   return 0;
 }
 
-// 0x00487b30/0x00487b60/0x00487bd0/0x00487cc0/0x00487d90/0x00487dd0 are the
-// TPtrList base list-engine virtuals (bytes 0x6c/0x70/0x74/0x78/0x64/0x68); they
-// are now owned by TPtrList::VirtualSlot6C..VirtualSlot78 in src/game/TPtrList.cpp.
-
 // ghidra_name FindOneBasedNodeIndexByValueInLinkedList
 // ghidra_proto undefined FindOneBasedNodeIndexByValueInLinkedList()
 // FUNCTION: IMPERIALISM 0x00487e10

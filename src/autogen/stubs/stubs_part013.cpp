@@ -75,14 +75,6 @@ undefined4 TraceDescendingTileScoreGradientToSource(void)
   return 0;
 }
 
-// ghidra_name UpdateMinisterProductionMetricsForResourceIndex
-// ghidra_proto undefined UpdateMinisterProductionMetricsForResourceIndex()
-// FUNCTION: IMPERIALISM 0x004c49f0
-undefined4 UpdateMinisterProductionMetricsForResourceIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I20_004c4c4c
 // ghidra_proto undefined OrphanCallChain_C1_I20_004c4c4c()
 // FUNCTION: IMPERIALISM 0x004c4c4c
@@ -91,42 +83,10 @@ undefined4 OrphanCallChain_C1_I20_004c4c4c(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I72_004c4d40
-// ghidra_proto undefined OrphanCallChain_C2_I72_004c4d40()
-// FUNCTION: IMPERIALISM 0x004c4d40
-undefined4 OrphanCallChain_C2_I72_004c4d40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C3_I79_004c4e60
-// ghidra_proto undefined OrphanCallChain_C3_I79_004c4e60()
-// FUNCTION: IMPERIALISM 0x004c4e60
-undefined4 OrphanCallChain_C3_I79_004c4e60(void)
-{
-  return 0;
-}
-
 // ghidra_name PlanAiDevelopmentActionsFromResourcePools_Impl
 // ghidra_proto undefined PlanAiDevelopmentActionsFromResourcePools_Impl()
 // FUNCTION: IMPERIALISM 0x004c4f90
 undefined4 PlanAiDevelopmentActionsFromResourcePools_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I151_004c4fe0
-// ghidra_proto undefined OrphanCallChain_C4_I151_004c4fe0()
-// FUNCTION: IMPERIALISM 0x004c4fe0
-undefined4 OrphanCallChain_C4_I151_004c4fe0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildFrogCityTerrainCountsAndOverlayStats
-// ghidra_proto undefined BuildFrogCityTerrainCountsAndOverlayStats()
-// FUNCTION: IMPERIALISM 0x004c5240
-undefined4 BuildFrogCityTerrainCountsAndOverlayStats(void)
 {
   return 0;
 }
