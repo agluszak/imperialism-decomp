@@ -4847,7 +4847,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
 
     int nodeWeight = terrainView->ownedRegionList->GetCountSlot48();
     int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
-    int linkedNodeTotal = SumWeightedNeighborLinkScoreForLinkedNodes(terrainView);
+    int linkedNodeTotal = terrainView->SumWeightedNeighborLinkScoreForLinkedNodes();
 
     float denominator = static_cast<float>(weightedNeighbor * nodeWeight) -
                         static_cast<float>(g_Compute_Advisory_Map_Value_00653FD4);

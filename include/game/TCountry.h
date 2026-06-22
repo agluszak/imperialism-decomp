@@ -41,7 +41,7 @@ public:
   virtual void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot);
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
-  virtual CString* GetIdentitySharedString1Slot58(void);
+  virtual void ApplyJoinEmpireMode2FinalizeNationNameState(void);
   virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
   virtual void RemoveRegionIdFromNationOwnedRegionList(int regionId);
   virtual void AddRegionIdToNationOwnedRegionList(int regionId);
@@ -64,14 +64,13 @@ public:
   virtual char ShouldDispatchImmediatelySlot28(void);
   virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
 
+  int SumWeightedNeighborLinkScoreForLinkedNodes(void);
+
   // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
   void DeserializeDiplomacyNationStateFromStream(TStream* stream);
   void SerializeDiplomacyNationStateToStream(TStream* stream);
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
-  void ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode, int mode);
-  void ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
-                                                         int payload);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 
   CString identitySharedString0;
@@ -111,7 +110,6 @@ int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encoded
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
-int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain);
 
 ASSERT_SIZE(TCountry, 0x94);
 

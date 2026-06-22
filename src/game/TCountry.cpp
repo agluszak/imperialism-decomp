@@ -359,7 +359,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
     this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
     return;
   }
-  this->GetIdentitySharedString1Slot58();
+  this->ApplyJoinEmpireMode2FinalizeNationNameState();
 }
 
 // FUNCTION: IMPERIALISM 0x004d7c00
@@ -409,8 +409,8 @@ char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7d50
-CString* TCountry::GetIdentitySharedString1Slot58(void) {
-  return &this->identitySharedString1;
+void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
+  this->identitySharedString0 = this->identitySharedString1;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d70
@@ -574,9 +574,9 @@ int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
-int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
+int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   int sum = 0;
-  TPtrList* linkedList = terrain->ownedRegionList;
+  TPtrList* linkedList = this->ownedRegionList;
   if (linkedList == 0) {
     return 0;
   }
@@ -649,8 +649,9 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
 
 // FUNCTION: IMPERIALISM 0x004d8920
 void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
-  (void)nationSlot;
-  (void)resetLevel;
+  if (nationSlot != this->nationSlot) {
+    this->needLevelByNation[nationSlot] = static_cast<short>(resetLevel);
+  }
 }
 
 // --- Diplomacy cluster (0x4E41C0+) — shape-pass stubs; tail-field bodies use TMinor/TGreatPower tail.

@@ -676,7 +676,7 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e59d0
-CString* TMinor::GetIdentitySharedString1Slot58(void) {
+void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   short decodedSlot =
       DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
   this->encodedNationSlot = -1;
@@ -684,7 +684,6 @@ CString* TMinor::GetIdentitySharedString1Slot58(void) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
-  return &this->identitySharedString1;
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40

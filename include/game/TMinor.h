@@ -20,7 +20,7 @@ public:
   void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
   void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
   void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) override;
-  CString* GetIdentitySharedString1Slot58(void) override;
+  void ApplyJoinEmpireMode2FinalizeNationNameState(void) override;
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
   int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
