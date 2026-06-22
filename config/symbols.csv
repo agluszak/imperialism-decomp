@@ -4274,7 +4274,7 @@ address|name|size|type|prototype
 561660|ReturnTrueForPortZoneCapabilityFlagA|3|function|undefined ReturnTrueForPortZoneCapabilityFlagA()
 561680|ReturnTrueForPortZoneCapabilityFlagB|3|function|undefined ReturnTrueForPortZoneCapabilityFlagB()
 5616a0|ReturnFalseForPortZoneCapabilityFlagC|3|function|undefined ReturnFalseForPortZoneCapabilityFlagC()
-5616c0|TZone::DestroyTPortZone|30|function|undefined DestroyTPortZone()
+5616c0|TPortZone::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 5616f0|ResetTPortZoneToSentinelVtableAndReleaseResources|171|function|undefined ResetTPortZoneToSentinelVtableAndReleaseResources()
 5617d0|TPortZone::GetTPortZoneClassNamePointer|6|function|undefined GetTPortZoneClassNamePointer()
 5617f0|TZone::DeserializeTPortZoneFromBinaryStream|32|function|undefined DeserializeTPortZoneFromBinaryStream()

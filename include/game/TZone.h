@@ -4,87 +4,54 @@
 
 #include "game/mfc.h"
 #include "game/CString.h"
+#include "game/TObject.h"
 
 struct CRuntimeClass;
 class TStream;
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
 // Per-nation seed contexts in TOcean use the first 0x48 bytes of this layout.
+//
+// The original TZone vtable (0x0065c6d8) is 32 slots, but slots 0x17..0x1b are
+// literal NULL and only slots 0x1c..0x1f follow them. MSVC500 has no way to emit a
+// mid-table NULL (a `= 0` pure virtual emits _purecall, any decl emits a concrete
+// addr), so we deliberately model TZone's vtable as ending at its last reachable
+// real slot (0x16). The handful of bodies the original placed at slots 0x1c..0x1f
+// are kept as ordinary non-virtual methods (paired by address marker, not slot).
 // VTABLE: IMPERIALISM 0x0065c6d8
-class TZone {
+class TZone : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TZone) — refreshed by recover-class; do not hand-edit ===
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x55eff0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
-  virtual void Free() override; // slot 0x07 0x55ec60
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined AssignZoneDisplayNameToOutputRef_2b_2b_2b_0b(); // slot 0x0b 0x55f070
-  virtual undefined AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_0c(); // slot 0x0c 0x55f090
-  virtual undefined ReturnTrueForZoneCapabilityFlagA(); // slot 0x0d 0x55e820
-  virtual undefined ReturnFalseForZoneCapabilityFlagB(); // slot 0x0e 0x55e840
-  virtual undefined ReturnFalseForZoneCapabilityFlagC(); // slot 0x0f 0x55e860
-  virtual undefined ReturnFalseForZoneCapabilityFlagD(); // slot 0x10 0x55e880
-  virtual undefined ReturnFalseForZoneCapabilityFlagE(); // slot 0x11 0x55e8a0
-  virtual undefined GetActiveNationSlotTile_34_34_34_14(); // slot 0x14 0x55fef0
-  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_15(); // slot 0x15 0x560150
-  virtual undefined SetMapOrderUiFlag_36_36_36_16(); // slot 0x16 0x560580
-  virtual undefined GetOrAppendUniqueZonePointerInSecondaryArray(); // slot 0x1c 0x55e9c0
-  virtual undefined GetOrAppendUniqueZonePointerInPrimaryArray(); // slot 0x1d 0x55e8e0
-  virtual undefined AppendZonePointerToPrimaryArray(); // slot 0x1e 0x55ead0
-  virtual undefined AppendZonePointerToSecondaryArray(); // slot 0x1f 0x55eba0
-  virtual undefined GetTPortZoneClassNamePointer(); // slot 0x20 0x5617d0
-  virtual undefined DestroyTPortZone(); // slot 0x21 0x5616c0
-  virtual void Serialize(CArchive& archive); // slot 0x22 0x485e90
-  // slot 0x23 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x24 Dump inherited unchanged (0x412c10)
-  virtual undefined SerializeTPortZoneToBinaryStream(); // slot 0x25 0x561820
-  virtual undefined DeserializeTPortZoneFromBinaryStream(); // slot 0x26 0x5617f0
-  virtual undefined DestroyTPortZoneAndClearOverlayMarkers(); // slot 0x27 0x561a70
-  // slot 0x28 InvokeObjectVtableMethod24 inherited unchanged (0x4798d0)
-  // slot 0x29 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined RefreshTPortZoneDisplayNameFromLocalization(); // slot 0x2a 0x5618b0
-  virtual undefined AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b(); // slot 0x2b 0x55f070
-  virtual undefined AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c(); // slot 0x2c 0x55f090
-  virtual undefined ReturnTrueForPortZoneCapabilityFlagA(); // slot 0x2d 0x561660
-  virtual undefined ReturnTrueForPortZoneCapabilityFlagB(); // slot 0x2e 0x561680
-  virtual undefined ReturnFalseForPortZoneCapabilityFlagC(); // slot 0x2f 0x5616a0
-  virtual undefined IsPortZoneOwnerNationEqual(); // slot 0x30 0x561b10
-  virtual undefined NotifyDiplomacyManagerForPortZoneOwnerNation(); // slot 0x31 0x561b50
-  virtual undefined CanPortZoneInteractWithNationUnderDiplomacyRules(); // slot 0x32 0x561dc0
-  virtual undefined FindNearestValidPortZoneOrCityContextTile(); // slot 0x33 0x561e40
-  virtual undefined GetActiveNationSlotTile_34_34_34_34(); // slot 0x34 0x55fef0
-  virtual undefined FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35(); // slot 0x35 0x560150
-  virtual undefined SetMapOrderUiFlag_36_36_36_36(); // slot 0x36 0x560580
-// === END GENERATED DECLS (TZone) ===
-  // vtable 0x0065c6d8 slots 0x00..0x58
-  virtual CRuntimeClass* GetRuntimeClass() const;
-  // slot 0x04 — scalar deleting destructor @ 0x562880 (SYNTHETIC; see TZone.cpp)
-  virtual void HandleTurnEventVtableSlot08(int arg1);
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& unused) const;
-  virtual void SerializeZoneToBinaryStream(void* streamState);
-  virtual void DeserializeZoneFromBinaryStream(int streamState);
-  virtual void RemoveZoneFromGlobalListAndRelease();
-  virtual void InvokeObjectVtableMethod24();
-  virtual void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
-  virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2);
-  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);
-  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef);
-  virtual bool QueryZoneCapabilityFlagA();
-  virtual bool QueryPortZoneCapability();
-  virtual bool QueryZoneCapabilityFlagC();
-  virtual bool QueryZoneCapabilityFlagD(int unused);
-  virtual bool QueryZoneCapabilityFlagE(int unused);
-  virtual bool HasZoneActiveChildCount(int unused);
-  virtual short FindNearestActiveSeaContextTileFromOffset216();
-  virtual short MapActionVtableSlot4C();
-  virtual short GetActiveNationSlotTile();
-  virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState);
-  virtual void SetMapOrderUiFlag(int flag);
+  // vtable 0x0065c6d8 — slots 0x00..0x16. Slots 0x02..0x04 (Serialize/AssertValid/
+  // Dump) and 0x08..0x09 (ShallowClone/ShallowFree) come from TObject/CObject.
+  CRuntimeClass* GetRuntimeClass() const override;                 // slot 0x00 0x55e6e0
+  ~TZone() override;                                               // slot 0x01 scalar dtor 0x562880
+  void WriteTo(TStream* stream) override;                          // slot 0x05 0x55eff0
+  void ReadFrom(TStream* stream) override;                         // slot 0x06 0x55ed20
+  void Free() override;                                            // slot 0x07 0x55ec60
+  virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2); // slot 0x0a 0x55f780
+  virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);  // slot 0x0b 0x55f070
+  virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef); // slot 0x0c 0x55f090
+  virtual bool QueryZoneCapabilityFlagA();                         // slot 0x0d 0x55e820
+  virtual bool QueryPortZoneCapability();                          // slot 0x0e 0x55e840
+  virtual bool QueryZoneCapabilityFlagC();                         // slot 0x0f 0x55e860
+  virtual bool QueryZoneCapabilityFlagD(int unused);               // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(int unused);               // slot 0x11 0x55e8a0
+  virtual bool HasZoneActiveChildCount(int unused);                // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216();    // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                         // slot 0x14 0x55fef0
+  virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
+  virtual void SetMapOrderUiFlag(int flag);                        // slot 0x16 0x560580
+  // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
+
+  // Original vtable slots 0x1c..0x1f, kept as non-virtual (paired by address).
+  undefined GetOrAppendUniqueZonePointerInSecondaryArray();        // 0x55e9c0
+  undefined GetOrAppendUniqueZonePointerInPrimaryArray();          // 0x55e8e0
+  undefined AppendZonePointerToPrimaryArray();                     // 0x55ead0
+  undefined AppendZonePointerToSecondaryArray();                   // 0x55eba0
+
+  // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
+  void InvokeObjectVtableMethod24();
+  void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 
   short field04;                  // +0x04
   char pad06[6];                  // +0x06
@@ -110,7 +77,6 @@ public:
   CString displayName;            // EH member; ctor initializes via empty shared-string ref
 
   TZone();
-  virtual ~TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
 
   // 0x0055ff70 — coastal-tile affinity heuristic (cdecl; used by FindBestCoastalTile).

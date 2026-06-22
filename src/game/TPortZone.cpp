@@ -26,25 +26,70 @@ TPortZone::TPortZone() : TZone() {
   field48 = -1;
 }
 
+// slot 0x0d — TZone::QueryZoneCapabilityFlagA override.
 // FUNCTION: IMPERIALISM 0x00561660
 bool TPortZone::QueryZoneCapabilityFlagA() {
   return true;
 }
 
+// slot 0x0e — TZone::QueryPortZoneCapability override.
 // FUNCTION: IMPERIALISM 0x00561680
 bool TPortZone::QueryPortZoneCapability() {
   return true;
 }
 
+// slot 0x0f — TZone::QueryZoneCapabilityFlagC override.
 // FUNCTION: IMPERIALISM 0x005616a0
 bool TPortZone::QueryZoneCapabilityFlagC() {
   return false;
 }
 
-// 0x005621e0 is TOcean::Free (TPortZone's "vtable" 0x65c7e4 aliases TOcean's
-// vtable tail), so it is owned there now. TPortZone's real slot-0 body is a
-// separate port; this unmarked GetRuntimeClass stub keeps the class compilable.
+// SYNTHETIC: IMPERIALISM 0x005616c0
+// TPortZone::`scalar deleting destructor'
+TPortZone::~TPortZone() {}
+
+// slot 0x00 — GetRuntimeClass override.
+// FUNCTION: IMPERIALISM 0x005617d0
 CRuntimeClass* TPortZone::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
 }
-TPortZone::~TPortZone() {}
+
+// slot 0x06 — TZone::ReadFrom override.
+// FUNCTION: IMPERIALISM 0x005617f0
+void TPortZone::ReadFrom(TStream* stream) {}
+
+// slot 0x05 — TZone::WriteTo override.
+// FUNCTION: IMPERIALISM 0x00561820
+void TPortZone::WriteTo(TStream* stream) {}
+
+// slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
+// FUNCTION: IMPERIALISM 0x005618b0
+void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {}
+
+// slot 0x07 — TZone::Free override.
+// FUNCTION: IMPERIALISM 0x00561a70
+void TPortZone::Free() {}
+
+// slot 0x10 — TZone::QueryZoneCapabilityFlagD override.
+// FUNCTION: IMPERIALISM 0x00561b10
+bool TPortZone::QueryZoneCapabilityFlagD(int unused) {
+  return false;
+}
+
+// slot 0x11 — TZone::QueryZoneCapabilityFlagE override.
+// FUNCTION: IMPERIALISM 0x00561b50
+bool TPortZone::QueryZoneCapabilityFlagE(int unused) {
+  return false;
+}
+
+// slot 0x12 — TZone::HasZoneActiveChildCount override.
+// FUNCTION: IMPERIALISM 0x00561dc0
+bool TPortZone::HasZoneActiveChildCount(int unused) {
+  return false;
+}
+
+// slot 0x13 — TZone::FindNearestActiveSeaContextTileFromOffset216 override.
+// FUNCTION: IMPERIALISM 0x00561e40
+short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
+  return 0;
+}

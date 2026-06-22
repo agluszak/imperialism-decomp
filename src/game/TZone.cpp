@@ -93,15 +93,6 @@ TZone::TZone()
   }
 }
 
-void TZone::AssertValid() const {
-  return;
-}
-
-void TZone::Dump(CDumpContext& unused) const {
-  (void)unused;
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x0055e820
 bool TZone::QueryZoneCapabilityFlagA() {
   return true;
@@ -156,7 +147,7 @@ undefined TZone::AppendZonePointerToSecondaryArray() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ec60
-void TZone::RemoveZoneFromGlobalListAndRelease() {
+void TZone::Free() {
   if (g_pMapActionContextListHead == this) {
     g_pMapActionContextListHead = prev18;
   }
@@ -519,51 +510,7 @@ int ZoneIsPortKind(TZone* node) {
 } // namespace
 
 // Destructors are compiler-generated (implicit virtual dtor).
-
-// FUNCTION: IMPERIALISM 0x005616c0
-undefined TZone::DestroyTPortZone() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005617f0
-undefined TZone::DeserializeTPortZoneFromBinaryStream() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561820
-undefined TZone::SerializeTPortZoneToBinaryStream() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005618b0
-undefined TZone::RefreshTPortZoneDisplayNameFromLocalization() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561a70
-undefined TZone::DestroyTPortZoneAndClearOverlayMarkers() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561b10
-undefined TZone::IsPortZoneOwnerNationEqual() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561b50
-undefined TZone::NotifyDiplomacyManagerForPortZoneOwnerNation() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561dc0
-undefined TZone::CanPortZoneInteractWithNationUnderDiplomacyRules() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00561e40
-undefined TZone::FindNearestValidPortZoneOrCityContextTile() {
-  return 0;
-}
+// PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
 // SYNTHETIC: IMPERIALISM 0x00562880
 // TZone::`scalar deleting destructor'
@@ -610,32 +557,3 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   return 0;
 }
 
-void TZone::Serialize(CArchive& archive) {}
-
-undefined TZone::ReturnTrueForPortZoneCapabilityFlagA() { return 0; }
-
-undefined TZone::ReturnTrueForPortZoneCapabilityFlagB() { return 0; }
-
-undefined TZone::ReturnFalseForPortZoneCapabilityFlagC() { return 0; }
-
-undefined TZone::GetTPortZoneClassNamePointer() { return 0; }
-short TZone::MapActionVtableSlot4C(void) { return 0; }
-undefined TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_0c(void) { return 0; }
-undefined TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c(void) { return 0; }
-undefined TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_0b(void) { return 0; }
-undefined TZone::AssignZoneDisplayNameToOutputRef_2b_2b_2b_2b(void) { return 0; }
-undefined TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_15(void) { return 0; }
-undefined TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35(void) { return 0; }
-undefined TZone::GetActiveNationSlotTile_34_34_34_14(void) { return 0; }
-undefined TZone::GetActiveNationSlotTile_34_34_34_34(void) { return 0; }
-undefined TZone::ReturnFalseForZoneCapabilityFlagB(void) { return 0; }
-undefined TZone::ReturnFalseForZoneCapabilityFlagC(void) { return 0; }
-undefined TZone::ReturnFalseForZoneCapabilityFlagD(void) { return 0; }
-undefined TZone::ReturnFalseForZoneCapabilityFlagE(void) { return 0; }
-undefined TZone::ReturnTrueForZoneCapabilityFlagA(void) { return 0; }
-undefined TZone::SetMapOrderUiFlag_36_36_36_16(void) { return 0; }
-undefined TZone::SetMapOrderUiFlag_36_36_36_36(void) { return 0; }
-void TZone::DeserializeZoneFromBinaryStream(int) {}
-void TZone::Free(void) {}
-void TZone::HandleTurnEventVtableSlot08(int) {}
-void TZone::SerializeZoneToBinaryStream(void *) {}
