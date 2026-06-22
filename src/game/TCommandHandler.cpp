@@ -1,5 +1,7 @@
 #include "game/TCommandHandler.h"
 
+TCommandHandler::TCommandHandler() : TEventHandler() {}
+
 // SYNTHETIC: IMPERIALISM 0x004865e0
 // TCommandHandler::`scalar deleting destructor'
 TCommandHandler::~TCommandHandler() {}

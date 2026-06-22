@@ -3,7 +3,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/TEventHandler.h"
+#include "game/TCommandHandler.h"
 #include <afxtempl.h>
 
 class TView;
@@ -15,9 +15,9 @@ class TView;
 // viewport-edge auto-scroll no-op, an intrusive-list insert/remove, and a per-entry tick
 // walk over the embedded list at +0x2c (secondary vtable 0x00648ca8). Size 0x48.
 // VTABLE: IMPERIALISM 0x00648bd8
-class TApplication : public TEventHandler {
+class TApplication : public TCommandHandler {
 public:
-// === BEGIN GENERATED DECLS (TApplication) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TApplication) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -54,41 +54,34 @@ public:
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ConstructTCommandHandlerBaseState inherited unchanged (0x486650)
-  virtual undefined OrphanTiny_SetDwordEcxOffset_20_00486880(undefined4 param_1) override; // slot 0x26 0x486880
-  virtual undefined OrphanTiny_GetDwordEcxOffset_20_004868a0() override; // slot 0x27 0x4868a0
-// === END GENERATED DECLS (TApplication) ===
+  virtual void SetActiveView(TView* view); // slot 0x26 0x486880
+  virtual TView* GetActiveView();          // slot 0x27 0x4868a0
+  virtual void HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2,
+                                                     int arg3); // slot 0x28 0x486990
+  virtual void InsertOrRemoveTrackedEntry(int value,
+                                          char insertFlag); // slot 0x29 0x4869b0
+  virtual void TickEachTrackedEntry(int arg);               // slot 0x2a 0x486b10
+  // === END GENERATED DECLS (TApplication) ===
   TApplication();
   ~TApplication() override;
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   virtual CRuntimeClass* GetRuntimeClass() const override;
 
-  // vtable index 0x25 (0x00486650): dispatch the queued command-handler argument by
-  // calling its vtable slot 0x0b then its slot 0x07 (release/destroy). DEFERRED: the
-  // argument's real type is a TCommandHandler descendant (not yet recovered as a class),
-  // and its slot 0x0b is a no-arg command-processing method distinct from TEventHandler's
-  // slot-0x0b SetControlValue(int). Porting this correctly needs TCommandHandler recovery
-  // first; kept as a placeholder so the vtable layout stays correct.
-  virtual void vmethod_0037();
   // vtable index 0x26 (0x00486880): store the active modal view pointer.
-  virtual void SetActiveView(TView* view);
   // vtable index 0x27 (0x004868a0): load the active modal view pointer.
-  virtual TView* GetActiveView();
   // vtable index 0x28 (0x00486990): viewport-edge auto-scroll hook; no-op in the original
   // (RET 0xc — takes 3 stack args). Kept as a real virtual so descendants can override.
-  virtual void HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2, int arg3);
   // vtable index 0x29 (0x004869b0): when insertFlag is nonzero, allocate (or reuse from
   // the free list) a 12-byte node, store `value` at node+8, and link it at the list head;
   // when zero, find the first node whose node+8 equals `value`, unlink it, and return the
   // node to the free list (freeing the block chain when the list becomes empty).
-  virtual void InsertOrRemoveTrackedEntry(int value, char insertFlag);
   // vtable index 0x2a (0x00486b10): walk the embedded list and invoke each entry's tick
   // method (slot at node+8 receiver, passing arg) via the per-entry thunk.
-  virtual void TickEachTrackedEntry(int arg);
 
-  TView* activeView;           // 0x20
-  int screenModeAt24;          // 0x24
-  int field28;                 // 0x28
+  TView* activeView;                  // 0x20
+  int screenModeAt24;                 // 0x24
+  int field28;                        // 0x28
   CList<void*, void*> trackedEntries; // 0x2c, vtable 0x00648ca8
 };
 
@@ -96,7 +89,8 @@ ASSERT_SIZE(TApplication, 0x48);
 
 extern TApplication* g_pApplicationUiRootController;
 
-// === BEGIN GENERATED (TApplication) — refreshed by `just gen-class TApplication`; do not hand-edit ===
+// === BEGIN GENERATED (TApplication) — refreshed by `just gen-class TApplication`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x00648bd8 (57 slots), object size 0x48, base TCommandHandler
 //   slot 0x00  byte 0x00  0x00486740  override  GetTEventHandlerClassNamePointer
