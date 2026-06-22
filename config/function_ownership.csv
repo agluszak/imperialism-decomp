@@ -2338,10 +2338,10 @@ address|target_cpp|ownership|note
 573170|src/game/TMegaPicture.cpp|manual|marker_sync
 5731d0|src/game/TMegaPicture.cpp|manual|marker_sync
 573270|src/game/TMegaPicture.cpp|manual|marker_sync
-573430|src/game/TNumberedItem.cpp|manual|marker_sync
-573650|src/game/TNumberedItem.cpp|manual|marker_sync
-573690|src/game/TNumberedItem.cpp|manual|marker_sync
-5736c0|src/game/TNumberedItem.cpp|manual|marker_sync
+573430|src/game/TMegaPicture.cpp|manual|marker_sync
+573650|src/game/TMegaPicture.cpp|manual|marker_sync
+573690|src/game/TMegaPicture.cpp|manual|marker_sync
+5736c0|src/game/TMegaPicture.cpp|manual|marker_sync
 5737b0|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573800|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573850|src/game/TOffLimitsPicture.cpp|manual|marker_sync

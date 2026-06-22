@@ -1,26 +1,27 @@
 #pragma once
 
-#include "game/TView.h"
+#include "game/TMegaPicture.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
 class TTEView;
 
-// TODO(manifest): describe TNumberedItem and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TNumberedItem -> TView -> TEventHandler -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x006582f0
-class TNumberedItem : public TView {
+// TODO(manifest): describe TNumberedItem and its role. Base edge (TMegaPicture) recovered from
+// constructor/vtable evidence: TNumberedItem -> TMegaPicture -> TNoHilitePicture -> TPicture ->
+// TControl -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM 0x006582f0
+class TNumberedItem : public TMegaPicture {
 public:
-// === BEGIN GENERATED DECLS (TNumberedItem) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TNumberedItem) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5077a0
-  virtual ~TNumberedItem(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TNumberedItem();                                // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x05 WriteTo inherited unchanged (0x485f70)
   // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  virtual void Free() override; // slot 0x07 0x573650
-  virtual TObject* ShallowClone() override; // slot 0x08 0x48f640
+  // slot 0x07 Free inherited unchanged (0x573650)
+  // slot 0x08 ShallowClone inherited unchanged (0x48f640)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a GetBoolSlot28 inherited unchanged (0x48a240)
   // slot 0x0b SetControlValue inherited unchanged (0x48a260)
@@ -59,7 +60,7 @@ public:
   // slot 0x2c HandleCursorHoverFallback inherited unchanged (0x48c250)
   // slot 0x2d vmethod_0073 inherited unchanged (0x48c1c0)
   // slot 0x2e RefreshCityProductionViewStateFromContext inherited unchanged (0x48c1e0)
-  virtual int QuerySelectedIndexSlotBC() override; // slot 0x2f 0x429450
+  // slot 0x2f QuerySelectedIndexSlotBC inherited unchanged (0x429450)
   // slot 0x30 InvalidateOffsetRegionUsingChildClipRect inherited unchanged (0x48b4b0)
   // slot 0x31 ForwardMapViewVirtualC4IfPresent inherited unchanged (0x48ab90)
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
@@ -83,7 +84,7 @@ public:
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x5078a0
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint * point) override; // slot 0x47 0x48e640
+  // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -103,7 +104,7 @@ public:
   // slot 0x58 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl inherited unchanged (0x48bce0)
   // slot 0x59 VTableSlot59 inherited unchanged (0x48b2d0)
   // slot 0x5a UpdateRectCacheIfChangedAndInvalidateCityDialog inherited unchanged (0x48c380)
-  virtual undefined VTableSlot5B() override; // slot 0x5b 0x48e940
+  // slot 0x5b VTableSlot5B inherited unchanged (0x48e940)
   // slot 0x5c vmethod_0092 inherited unchanged (0x48abe0)
   // slot 0x5d DetachUiElementFromOwnerListAndClearBackref inherited unchanged (0x48ae60)
   // slot 0x5e CtrlSlot94_GetWordField54_Impl inherited unchanged (0x48c970)
@@ -116,27 +117,29 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) override; // slot 0x68 0x48e850
-  virtual undefined DeserializeCityProductionQueueCommand(TTEView * param_1) override; // slot 0x69 0x48e980
-  virtual undefined AssertCityProductionGlobalStateInitialized() override; // slot 0x6a 0x429470
-  virtual undefined NoOpUiViewSlotHandler() override; // slot 0x6b 0x48e9c0
-  virtual undefined OrphanRetStub_00487a00() override; // slot 0x6c 0x48e9e0
-  virtual undefined SetCityProductionDialogPictureRectAndMaybeRefresh() override; // slot 0x6d 0x48e7d0
-  virtual void SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow) override; // slot 0x6e 0x48e7a0
-  virtual bool LogUnhandledDialogMethodAndReturnFalse() override; // slot 0x6f 0x4294a0
-  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x48e810
-  virtual void ResetPictureResourceEntry() override; // slot 0x71 0x48f520
-  virtual undefined LoadPictureResourceRegionAndRefresh() override; // slot 0x72 0x573430
-  virtual undefined UniversityDialogMethod_00405623() override; // slot 0x73 0x572bb0
-  virtual undefined OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2, char param_3) override; // slot 0x74 0x5736c0
-  virtual undefined OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2) override; // slot 0x75 0x573690
-// === END GENERATED DECLS (TNumberedItem) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNumberedItem 0xCTOR`).
+  // slot 0x68 DispatchPictureResourceCommand inherited unchanged (0x48e850)
+  // slot 0x69 DeserializeCityProductionQueueCommand inherited unchanged (0x48e980)
+  // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
+  // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
+  // slot 0x6c OrphanRetStub_00487a00 inherited unchanged (0x48e9e0)
+  // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
+  // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
+  // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
+  // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
+  // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573430)
+  // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
+  // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
+  // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
+  // === END GENERATED DECLS (TNumberedItem) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TNumberedItem
+  // 0xCTOR`).
 
   TNumberedItem();
 };
 
-// === BEGIN GENERATED (TNumberedItem) — refreshed by `just gen-class TNumberedItem`; do not hand-edit ===
+// === BEGIN GENERATED (TNumberedItem) — refreshed by `just gen-class TNumberedItem`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x006582f0 (118 slots), object size 0xb0, base TView
 //   slot 0x00  byte 0x00  0x005077a0  override  GetTEventHandlerClassNamePointer
