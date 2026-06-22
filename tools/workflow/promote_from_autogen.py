@@ -11,6 +11,7 @@ import re
 from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.thunk_names import ThunkResolver, load_thunk_map
 from tools.workflow.function_ownership import (
     DEFAULT_FUNCTION_OWNERSHIP_CSV,
     FunctionOwnership,
@@ -41,6 +42,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-cpp", required=True, help="Manual destination .cpp file.")
     parser.add_argument("--module", default="IMPERIALISM")
     parser.add_argument("--autogen-dir", default="src/ghidra_autogen")
+    parser.add_argument(
+        "--thunk-map",
+        default="config/thunk_map.csv",
+        help="Ghidra thunk_name|real_name map used to rewrite jmp-thunk/alias names.",
+    )
+    parser.add_argument(
+        "--no-resolve-thunks",
+        action="store_true",
+        help="Promote raw autogen text without rewriting thunk/alias names to real names.",
+    )
     parser.add_argument(
         "--ownership-csv",
         default=DEFAULT_FUNCTION_OWNERSHIP_CSV,
@@ -148,6 +159,10 @@ def main() -> int:
         raise SystemExit(f"Missing autogen directory: {autogen_dir}")
 
     available = collect_autogen_blocks(autogen_dir=autogen_dir, module=args.module)
+    if not args.no_resolve_thunks:
+        resolver = ThunkResolver(load_thunk_map(resolve_repo_path(repo_root, args.thunk_map)))
+        if resolver:
+            available = {addr: resolver.resolve(block) for addr, block in available.items()}
     requested: set[int] = set(explicit_addresses)
     if ranges:
         for addr in available:

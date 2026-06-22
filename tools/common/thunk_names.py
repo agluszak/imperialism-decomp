@@ -55,7 +55,12 @@ class ThunkResolver:
             branches.append(r"(" + "|".join(other_alts) + r")(?=\s*\()")
         if not branches:
             return None
-        return re.compile(r"(?<![:\w])(?:" + "|".join(branches) + r")\b")
+        # The leading `~` exclusion keeps a bare-name alias (e.g. ``CWnd`` ->
+        # ``CWnd::~CWnd``) from re-qualifying a name that is already a destructor
+        # token (``Foo::~CWnd(`` / ``~CWnd(``). Without it the rewrite is not a
+        # fixpoint and appends ``::~CWnd`` on every pass. A genuine bare call
+        # (``CWnd(``, not preceded by ``~``) is still rewritten.
+        return re.compile(r"(?<![:\w~])(?:" + "|".join(branches) + r")\b")
 
     def resolve(self, c_text: str) -> str:
         if self._re is None:

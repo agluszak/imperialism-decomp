@@ -63,7 +63,15 @@ sync-ghidra: _require-ghidra-install
     --name-overrides "{{name_overrides}}"
   just prune-ilt-thunks
   just dump-thunk-map
+  just resolve-autogen-thunks
   just symbols-anchor-gate
+
+# Rewrite Ghidra jmp-thunk / alias names in src/ghidra_autogen to the real names
+# (driven by config/thunk_map.csv), so promoted bodies read against real symbols.
+# Reference-only files (not compiled); deterministic + idempotent. Pass --check to
+# fail without writing (gate mode), or file paths to scope to specific files.
+resolve-autogen-thunks *args:
+  uv run python -m tools.workflow.resolve_autogen_thunks {{args}}
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 symbols-anchor-gate:
