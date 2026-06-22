@@ -67,63 +67,16 @@ endif()
 target_include_directories(Imperialism PRIVATE include)
 target_compile_definitions(Imperialism PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
 
-if(MSVC)
-    # Keep runtime static to mirror old retail distribution patterns.
-    set_property(
-        TARGET Imperialism
-        PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-    )
-
-    # Baseline flags for old-MSVC bring-up.
-    target_compile_options(Imperialism PRIVATE
-        /W3
-        /GX
-        /GR-
-    )
-    target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
-
-    if(IMPERIALISM_MATCH_FLAGS_CSV)
-        set(IMPERIALISM_MATCH_FLAGS_RAW "${IMPERIALISM_MATCH_FLAGS_CSV}")
-        if(IMPERIALISM_MATCH_FLAGS_RAW MATCHES ",")
-            string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
-        else()
-            # Backward-compat with slash-concatenated form like "/Oy-/Ob1".
-            string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
-            string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS}")
-        endif()
-        target_compile_options(
-            Imperialism
-            PRIVATE
-            $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_FLAGS}>
-        )
-    endif()
-
-    if(IMPERIALISM_MATCH_LINK_FLAGS_CSV)
-        set(IMPERIALISM_MATCH_LINK_FLAGS_RAW "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
-        if(IMPERIALISM_MATCH_LINK_FLAGS_RAW MATCHES ",")
-            string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
-        else()
-            string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
-            string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS}")
-        endif()
-        target_link_options(
-            Imperialism
-            PRIVATE
-            $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_LINK_FLAGS}>
-        )
-    endif()
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Lint-only modern compiler (clang/MinGW). Never used for reccmp; its job is
+if(IMPERIALISM_LINT_COMPILE_ONLY)
+    # Lint-only modern compiler (clang/MinGW or clang-cl). Never used for reccmp; its job is
     # to surface errors MSVC 5.0 silently accepts (missing `override`, narrowing,
-    # bad vtable signatures). The C++ standard comes from the toolchain file
-    # (C++14) so real `override`/`static_assert` activate.
+    # bad vtable signatures).
     option(IMPERIALISM_LINT_WERROR "Lint build: treat warnings as errors" OFF)
+
+    target_compile_definitions(Imperialism PRIVATE IMPERIALISM_LINT)
 
     target_compile_options(Imperialism PRIVATE
         # Tolerate residual MSVC-isms and old-MSVC pragmas in the sources.
-        # NB: do NOT add -fms-compatibility — it makes clang define _MSC_VER,
-        # which sends the MinGW system headers (windows.h) down an unsupported
-        # MSVC code path (VARARGS / __buildmemorybarrier errors).
         -fms-extensions
         -Wno-unknown-pragmas
         -Wno-ignored-pragmas
@@ -159,5 +112,52 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(Imperialism PRIVATE -Werror)
     endif()
 else()
-    target_compile_options(Imperialism PRIVATE -Wall -Wextra -Wpedantic)
+    if(MSVC)
+        # Keep runtime static to mirror old retail distribution patterns.
+        set_property(
+            TARGET Imperialism
+            PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+        )
+
+        # Baseline flags for old-MSVC bring-up.
+        target_compile_options(Imperialism PRIVATE
+            /W3
+            /GX
+            /GR-
+        )
+        target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
+
+        if(IMPERIALISM_MATCH_FLAGS_CSV)
+            set(IMPERIALISM_MATCH_FLAGS_RAW "${IMPERIALISM_MATCH_FLAGS_CSV}")
+            if(IMPERIALISM_MATCH_FLAGS_RAW MATCHES ",")
+                string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
+            else()
+                # Backward-compat with slash-concatenated form like "/Oy-/Ob1".
+                string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
+                string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS}")
+            endif()
+            target_compile_options(
+                Imperialism
+                PRIVATE
+                $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_FLAGS}>
+            )
+        endif()
+
+        if(IMPERIALISM_MATCH_LINK_FLAGS_CSV)
+            set(IMPERIALISM_MATCH_LINK_FLAGS_RAW "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
+            if(IMPERIALISM_MATCH_LINK_FLAGS_RAW MATCHES ",")
+                string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
+            else()
+                string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
+                string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS}")
+            endif()
+            target_link_options(
+                Imperialism
+                PRIVATE
+                $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_LINK_FLAGS}>
+            )
+        endif()
+    else()
+        target_compile_options(Imperialism PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
 endif()

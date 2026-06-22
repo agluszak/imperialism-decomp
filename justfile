@@ -264,9 +264,10 @@ lint flags="":
   mkdir -p "{{lint_build_dir}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
+    -e LINT=1 \
     -v "$PWD":/imperialism \
     -v "$PWD/{{lint_build_dir}}":/build \
-    "{{lint_docker_image}}"
+    "{{docker_image}}"
 
 build:
   just vtable-gate

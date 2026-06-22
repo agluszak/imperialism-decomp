@@ -10,7 +10,16 @@ RUN dpkg --add-architecture i386 \
     wget \
     wine \
     wine32 \
+    clang \
+    lld \
+    llvm \
+    cmake \
+    ninja-build \
  && rm -rf /var/lib/apt/lists/*
+
+RUN ln -sf clang /usr/bin/clang-cl \
+ && ln -sf llvm-ar /usr/bin/llvm-lib \
+ && ln -sf lld-link /usr/bin/lld-link
 
 # Initialize wine prefix once at build time.
 RUN wine wineboot --init || true

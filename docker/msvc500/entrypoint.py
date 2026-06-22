@@ -50,6 +50,42 @@ def configure_wine_env() -> None:
 
 
 def main() -> int:
+    lint_mode = os.getenv("LINT") == "1"
+    if lint_mode:
+        source_dir = "/imperialism"
+        build_dir = "/build"
+        toolchain = os.path.join(source_dir, "cmake", "clang-cl-i686.cmake")
+        extra_flags = shlex.split(os.getenv("CMAKE_FLAGS", ""))
+
+        try:
+            cache_file = os.path.join(build_dir, "CMakeCache.txt")
+            if os.path.exists(cache_file):
+                try:
+                    os.remove(cache_file)
+                except Exception:
+                    pass
+            run(
+                [
+                    "cmake",
+                    "-S",
+                    source_dir,
+                    "-B",
+                    build_dir,
+                    "-G",
+                    "Ninja",
+                    "-DCMAKE_TOOLCHAIN_FILE=" + toolchain,
+                    *extra_flags,
+                ]
+            )
+            run(["cmake", "--build", build_dir, "--", "-k", "0"])
+            return 0
+        except subprocess.CalledProcessError as exc:
+            print(
+                "ERROR: lint command failed with exit code {}".format(exc.returncode),
+                file=sys.stderr,
+            )
+            return exc.returncode
+
     try:
         configure_wine_env()
 
