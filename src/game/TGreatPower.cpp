@@ -2063,9 +2063,7 @@ void TGreatPower::NotifyCitySlot2C(void) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004dca80
-undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_3f() {
-  return 0;
-}
+void TGreatPower::OrphanRetStub_004dca80(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 #pragma optimize("y", on)
@@ -5413,110 +5411,11 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
                                            static_cast<int>(cityOwnerTag));
 }
 
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_1d() { return 0; }
 
-undefined TGreatPower::ExecuteNationPendingActionStateMachine_32() { return 0; }
 
-undefined TGreatPower::IsDiplomacyTargetClassCode200Match_7f() { return 0; }
 int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
-char TGreatPower::ReturnFalseNationStateCapabilityFlag90(void) { return 0; }
 char TGreatPower::ReturnZeroSlot9D(int) { return 0; }
-undefined TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_5d(void) { return 0; }
-undefined TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_91(void) { return 0; }
-undefined TGreatPower::AdvanceNationPendingActionStateMachine(void) { return 0; }
-undefined TGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState(void) { return 0; }
-undefined TGreatPower::ApplyMinorNationCapabilityActionType4(void) { return 0; }
-undefined TGreatPower::ApplyMinorNationCapabilityActionType6(void) { return 0; }
-undefined TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution(void) { return 0; }
-undefined TGreatPower::ClearFieldBlock1c6(void) { return 0; }
-undefined TGreatPower::ClearQueuedNationOrdersAndResetOrderManager_30(void) { return 0; }
-undefined TGreatPower::ClearQueuedNationOrdersAndResetOrderManager_64(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryHandlerCase00Metric(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryHandlerCase01Metric(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryHandlerCase02Metric(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryHandlerCase07Metric(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryHandlerCase09Metric(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryMatrixRatio23CByTargetSlot(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryMatrixRatio240ByTargetSlot(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void) { return 0; }
-undefined TGreatPower::ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void) { return 0; }
-undefined TGreatPower::ComputeCityOrderCapabilityAggregateScore(void) { return 0; }
-undefined TGreatPower::ComputeNavyOrderIndustryCostWeightSumForNation(void) { return 0; }
-undefined TGreatPower::CreateAndQueueFrogCityMarkerForNationTile(void) { return 0; }
-undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a(int *) { return 0; }
-undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_6e(void) { return 0; }
-undefined TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_a2(void) { return 0; }
-undefined TGreatPower::DispatchNationPendingActionEventCodes(void) { return 0; }
-undefined TGreatPower::DispatchNationStateEventCode10(void) { return 0; }
-undefined TGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void) { return 0; }
-undefined TGreatPower::ExecuteNationPendingActionStateMachine_66(void) { return 0; }
-undefined TGreatPower::GetNationResourceNeedTargetByType(void) { return 0; }
-undefined TGreatPower::GetNationRuntimeCityBuildingProductionValueBySlot(void) { return 0; }
-undefined TGreatPower::GetTCountryClassNamePointer(void) { return 0; }
-undefined TGreatPower::GetTEventHandlerClassNamePointer_38(void) { return 0; }
-undefined TGreatPower::GetTEventHandlerClassNamePointer_6c(void) { return 0; }
-undefined TGreatPower::GetTEventHandlerClassNamePointer_70(void) { return 0; }
-undefined TGreatPower::GetTEventHandlerClassNamePointer_a4(void) { return 0; }
-undefined TGreatPower::HandleCityDialogHintClusterUpdate(void) { return 0; }
-undefined TGreatPower::HasQueuedCivWorkOrderType7(void) { return 0; }
-undefined TGreatPower::IsDiplomacyTargetClassCode200Match_4b(void) { return 0; }
-undefined TGreatPower::IsNationResourceNeedCurrentAtTargetByType(void) { return 0; }
-undefined TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void) { return 0; }
-undefined TGreatPower::IterateLinkedListCursorEntries_004e0220(void) { return 0; }
-undefined TGreatPower::IterateLinkedListCursorEntries_004e07b0(void) { return 0; }
-undefined TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive(void) { return 0; }
-undefined TGreatPower::OrphanCallChain_C1_I42_004dd7f0(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_1c(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_50(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_84(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_51(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_85(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f20(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_1f(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_87(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_21(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_55(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0_0a(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0_78(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_12(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_40(void) { return 0; }
-undefined TGreatPower::OrphanLeaf_NoCall_Ins07_004d8920_ae(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7e90_1b(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7e90_4f(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7f80(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7fa0_20(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7fa0_88(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7fe0_23(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7fe0_57(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_004d7fe0_8b(void) { return 0; }
-undefined TGreatPower::OrphanRetStub_0059add0(void) { return 0; }
-undefined TGreatPower::PromoteNationPendingActionSlot5IfCapabilityActive(void) { return 0; }
-undefined TGreatPower::QueueNationOrderManagerPayloadObject_2f(void) { return 0; }
-undefined TGreatPower::QueueNationOrderManagerPayloadObject_63(void) { return 0; }
-undefined TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(void) { return 0; }
-undefined TGreatPower::RebuildPrimaryNationStateForSlot_Impl(void) { return 0; }
-undefined TGreatPower::ReleaseAllTrackedObjectsFromList89C(void) { return 0; }
-undefined TGreatPower::ReturnFalseNationStateActionStub_22(void) { return 0; }
-undefined TGreatPower::ReturnFalseNationStateActionStub_56(void) { return 0; }
-undefined TGreatPower::ReturnFalseNationStateActionStub_8a(void) { return 0; }
-undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_0b(void) { return 0; }
-undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_45(void) { return 0; }
-undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_79(void) { return 0; }
-undefined TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_ad(void) { return 0; }
-undefined TGreatPower::SumNationRuntimeFiveBucketValue44(void) { return 0; }
-undefined TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask(void) { return 0; }
-undefined TGreatPower::VTableSlot69(void) { return 0; }
-undefined TGreatPower::VTableSlot9D(void) { return 0; }
-void TGreatPower::ApplyJoinEmpireMode1TargetTransition(void) {}
-void TGreatPower::ApplyJoinEmpireModeForTargetNation_13(int,int) {}
-void TGreatPower::ApplyJoinEmpireModeForTargetNation_41(void) {}
-void TGreatPower::ApplyJoinEmpireModeForTargetNation_6f(void) {}
 void TGreatPower::NoOpSlotA2(void) {}
 void TGreatPower::NotifyAllianceSlot214(int) {}
 void TGreatPower::NotifyWarResetSlot290(void) {}
-void TGreatPower::OrphanRetStub_004dca80(void) {}
-void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_14(void) {}
-void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_42(void) {}
-void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_b0(void) {}
 void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}
