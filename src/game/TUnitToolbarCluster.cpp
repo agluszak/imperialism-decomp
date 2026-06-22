@@ -77,11 +77,12 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 
 
 // FUNCTION: IMPERIALISM 0x00586170
-void TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int nResourceIndex) {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x84) = nResourceIndex;
+void TUnitToolbarCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
+  (void)refreshFlag;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x84) = classState;
 
   TControl* resourceControl =
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + nResourceIndex);
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + classState);
   if (resourceControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;

@@ -18,6 +18,7 @@ int TNavyToolbarCluster::IsTradeControlAtMinimum() {
 }
 
 // FUNCTION: IMPERIALISM 0x005696f0
-undefined TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790() {
-  return 0;
+void TNavyToolbarCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
+  (void)classState;
+  (void)refreshFlag;
 }
