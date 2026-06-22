@@ -19,5 +19,6 @@ void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056a330
-void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                         int arg4) {
 }
