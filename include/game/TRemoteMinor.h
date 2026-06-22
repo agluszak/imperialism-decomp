@@ -7,58 +7,6 @@
 // VTABLE: IMPERIALISM 0x0065bde0
 class TRemoteMinor : public TMinor {
 public:
-// === BEGIN GENERATED DECLS (TRemoteMinor) — refreshed by recover-class; do not hand-edit ===
-  virtual ~TRemoteMinor(); // slot 0x01 (scalar deleting destructor)
-  virtual void Serialize(CArchive& archive); // slot 0x02 0x485e90
-  virtual void AssertValid() const; // slot 0x03 0x412bf0
-  virtual void Dump(CDumpContext &); // slot 0x04 0x412c10
-  virtual undefined SerializeDiplomacyNationStateToStream(); // slot 0x05 0x4e4390
-  virtual undefined DeserializeDiplomacyNationStateFromStream(); // slot 0x06 0x4e41c0
-  virtual void Free(); // slot 0x07 0x4d6ba0
-  virtual undefined InvokeObjectVtableMethod24(); // slot 0x08 0x4798d0
-  virtual TObject* ShallowFree(); // slot 0x09 0x415ce0
-  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_0a(); // slot 0x0a 0x4d70e0
-  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_0b(); // slot 0x0b 0x4d7070
-  virtual undefined SeedRecruitAndNavyOrdersForEligibleCoastalCities(); // slot 0x0c 0x4d71b0
-  virtual undefined CreateAndDispatchMilitaryRecruitOrderForNationSlot(); // slot 0x0d 0x4d7770
-  virtual undefined AddToNationMetricAtField10(); // slot 0x0e 0x4d7ae0
-  virtual undefined PopulateSelectableEntryFlavorTextAndOrdinals(); // slot 0x0f 0x4d8000
-  virtual undefined OrphanLeaf_NoCall_Ins06_004d87b0_10(); // slot 0x10 0x4d87b0
-  virtual undefined SelectCandidateTilesWithLowGroundUnitCount_11(); // slot 0x11 0x4d87e0
-  virtual undefined SetNationTradePolicyValueForTargetAndNotify(); // slot 0x12 0x4e4fa0
-  virtual void ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode); // slot 0x13 0x4d7b20
-  virtual undefined ProcessTurnEventNationStateTransitionAndDiplomacy(); // slot 0x14 0x4e5340
-  virtual undefined ApplyNationStateCode200AndQueueEvent1B(); // slot 0x15 0x4e5840
-  virtual undefined ApplyJoinEmpireMode2FinalizeNationNameState(); // slot 0x16 0x4e59d0
-  virtual undefined IsDiplomacyTargetClassCode200Match(); // slot 0x17 0x4d7d20
-  virtual undefined RemoveRegionIdFromNationOwnedRegionList(); // slot 0x18 0x4e64a0
-  virtual undefined AddRegionIdToNationOwnedRegionList(); // slot 0x19 0x4e64f0
-  virtual undefined SetNationPercentFieldByModeAndDescriptorLinks(); // slot 0x1a 0x4d7dd0
-  virtual undefined OrphanRetStub_004d7e90(); // slot 0x1b 0x4d7e90
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0(); // slot 0x1c 0x4e4630
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f00(); // slot 0x1d 0x4d7f00
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f20(); // slot 0x1e 0x4e4660
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f40(); // slot 0x1f 0x4e4680
-  virtual undefined IsDiplomacyPolicyAllowedForTargetClassState(); // slot 0x21 0x4e4ee0
-  virtual undefined ReturnFalseNationStateActionStub(); // slot 0x22 0x4e4f50
-  virtual undefined ResolveAndApplyDiplomacyPolicyTransition(); // slot 0x23 0x4e50d0
-  virtual undefined IsPolicyCodeInSpecialNationPolicySet(); // slot 0x24 0x4e45f0
-  virtual undefined TriggerNationWarTransitionHandlersIfNeeded(); // slot 0x25 0x4e5300
-  virtual char ReturnFalseNationStateCapabilityFlag98() override; // slot 0x26 0x4d6730
-  virtual char ReturnFalseNationStateCapabilityFlag9C() override; // slot 0x27 0x4d6750
-  virtual undefined SetNationSelectedRegionAndMapCellLabelAlt(); // slot 0x29 0x541d90
-  virtual undefined RebuildDiplomacyEconomicPressureFromMapState(); // slot 0x2a 0x4e46a0
-  virtual undefined Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(); // slot 0x2b 0x4e4bd0
-  virtual undefined CanInitiateJoinEmpireProposalToTarget(); // slot 0x2c 0x4e4ff0
-  virtual void HandleNetworkPortConstructionOrder(int nNationId); // slot 0x2d 0x4e5730
-  virtual undefined SetNationRowDisplayValueByDiplomacyPredicate(); // slot 0x2e 0x4e5a40
-  virtual undefined ClearTileActivityOverlayByProvinceId(); // slot 0x2f 0x4e5ac0
-  virtual undefined QueueInterNationEvent17ForState300AffectedNations(); // slot 0x30 0x4e5be0
-  virtual undefined ApplyDiplomacyRelationMaskToProvinceLinkedObjects(); // slot 0x31 0x4e5d90
-  virtual undefined ReassignUnitOrdersForCountryTargetChange(); // slot 0x32 0x4e6150
-  virtual undefined ReassignTileObjectOwnerAndNotifyForSelectedCells(); // slot 0x33 0x4e6040
-  virtual undefined RelinkTileUnitsToCountryOrderManager(); // slot 0x34 0x4e6520
-// === END GENERATED DECLS (TRemoteMinor) ===
   TRemoteMinor();
 
   static void* AllocateAndConstructTRemoteMinor();
@@ -70,6 +18,9 @@ public:
                                                       int multiplier) override;
   char ShouldDispatchImmediatelySlot28(void) override;
   void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) override;
+
+protected:
+  ~TRemoteMinor();
 
 private:
   unsigned char remoteMinorTail[0x2dc - 0x2cc];

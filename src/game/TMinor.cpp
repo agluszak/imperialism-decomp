@@ -893,19 +893,14 @@ void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   }
 }
 
-undefined TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells() { return 0; }
+// FUNCTION: IMPERIALISM 0x004e6040
+void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(void) {
+}
 
-undefined TMinor::ReassignUnitOrdersForCountryTargetChange() { return 0; }
+// FUNCTION: IMPERIALISM 0x004e6150
+void TMinor::ReassignUnitOrdersForCountryTargetChange(void) {
+}
 
-undefined TMinor::RelinkTileUnitsToCountryOrderManager() { return 0; }
-undefined TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) { return 0; }
-undefined TMinor::Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void) { return 0; }
-undefined TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0(void) { return 0; }
-undefined TMinor::OrphanLeaf_NoCall_Ins02_004d7f20(void) { return 0; }
-undefined TMinor::OrphanLeaf_NoCall_Ins02_004d7f40(void) { return 0; }
-undefined TMinor::OrphanLeaf_NoCall_Ins02_004d7fc0(void) { return 0; }
-undefined TMinor::OrphanLeaf_NoCall_Ins07_004d8920(void) { return 0; }
-undefined TMinor::OrphanRetStub_004d7f80(void) { return 0; }
-undefined TMinor::OrphanRetStub_004d7fa0(void) { return 0; }
-undefined TMinor::OrphanRetStub_004d7fe0(void) { return 0; }
-undefined TMinor::ReturnFalseNationStateActionStub(void) { return 0; }
+// FUNCTION: IMPERIALISM 0x004e6520
+void TMinor::RelinkTileUnitsToCountryOrderManager(void) {
+}

@@ -1,87 +1,80 @@
 #include "game/TRemoteGreatPower.h"
 
 // FUNCTION: IMPERIALISM 0x00541840
-undefined TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0() {
+char TRemoteGreatPower::ShouldDispatchImmediatelySlot28(void) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00541860
-void TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
+void TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541880
-void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {
+void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005418a0
-undefined TRemoteGreatPower::OrphanRetStub_0059add0() {
-  return 0;
+void TRemoteGreatPower::NotifyCitySlot2C(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005418c0
-undefined TRemoteGreatPower::GetTEventHandlerClassNamePointer() {
-  return 0;
+void TRemoteGreatPower::OrphanRetStub_004dcc30(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005418e0
-undefined TRemoteGreatPower::OrphanRetStub_005418e0() {
-  return 0;
+void TRemoteGreatPower::OrphanRetStub_005418e0(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541900
-undefined TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0() {
-  return 0;
+void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541920
-undefined TRemoteGreatPower::ClearFieldBlock1c6() {
-  return 0;
+void TRemoteGreatPower::ClearDiplomacyState1c6Block(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541940
 void TRemoteGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
+  (void)targetSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00541960
-void TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
+void TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541980
-undefined TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0() {
-  return 0;
+void TRemoteGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005419a0
-void TRemoteGreatPower::ResetNationDiplomacyProposalQueue() {
+void TRemoteGreatPower::ResetNationDiplomacyProposalQueue(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005419c0
-undefined TRemoteGreatPower::IsDiplomacyTargetClassCode200Match() {
-  return 0;
+void TRemoteGreatPower::ReleaseProposalQueueSlot7F(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005419e0
-void TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue() {
+void TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a00
-undefined TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0() {
-  return 0;
+void TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
+  (void)targetNation;
 }
 
 // FUNCTION: IMPERIALISM 0x00541a20
-undefined TRemoteGreatPower::ApplyMinorNationCapabilityActionType6() {
-  return 0;
+void TRemoteGreatPower::CallSlotA8(int targetNation) {
+  (void)targetNation;
 }
 
 // FUNCTION: IMPERIALISM 0x00541a40
-undefined TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount() {
-  return 0;
+void TRemoteGreatPower::NoOpTailStateHookSlot2B4(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a60
-undefined TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920() {
-  return 0;
+void TRemoteGreatPower::NoOpTailStateHookSlot2B8(int arg) {
+  (void)arg;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00541a80
@@ -94,9 +87,11 @@ CRuntimeClass* TRemoteGreatPower::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00541b40
-void TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook() {
+void TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x00541be0
-void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {
+void TRemoteGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 }

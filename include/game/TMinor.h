@@ -7,45 +7,6 @@
 // VTABLE: IMPERIALISM 0x00653c90
 class TMinor : public TCountry {
 public:
-// === BEGIN GENERATED DECLS (TMinor) — refreshed by recover-class; do not hand-edit ===
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x07 Free inherited unchanged (0x4d6ba0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d70e0)
-  // slot 0x0b SelectCandidateTilesWithLowGroundUnitCount_0b inherited unchanged (0x4d7070)
-  // slot 0x0c SeedRecruitAndNavyOrdersForEligibleCoastalCities inherited unchanged (0x4d71b0)
-  // slot 0x0d CreateAndDispatchMilitaryRecruitOrderForNationSlot inherited unchanged (0x4d7770)
-  // slot 0x0e AddToNationMetricAtField10 inherited unchanged (0x4d7ae0)
-  // slot 0x0f PopulateSelectableEntryFlavorTextAndOrdinals inherited unchanged (0x4d8000)
-  // slot 0x10 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d87b0)
-  // slot 0x11 SelectCandidateTilesWithLowGroundUnitCount_11 inherited unchanged (0x4d87e0)
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920() override; // slot 0x12 0x4e4fa0
-  // slot 0x13 ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4d7b20)
-  virtual undefined ApplyJoinEmpireMode2FinalizeNationNameState() override; // slot 0x16 0x4e59d0
-  // slot 0x17 IsDiplomacyTargetClassCode200Match inherited unchanged (0x4d7d20)
-  // slot 0x1a SetNationPercentFieldByModeAndDescriptorLinks inherited unchanged (0x4d7dd0)
-  // slot 0x1b OrphanRetStub_004d7e90 inherited unchanged (0x4d7e90)
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7ee0() override; // slot 0x1c 0x4e4630
-  // slot 0x1d OrphanLeaf_NoCall_Ins02_004d7f00 inherited unchanged (0x4d7f00)
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f20() override; // slot 0x1e 0x4e4660
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7f40() override; // slot 0x1f 0x4e4680
-  virtual undefined OrphanRetStub_004d7fa0() override; // slot 0x20 0x4e49b0
-  virtual undefined OrphanLeaf_NoCall_Ins02_004d7fc0() override; // slot 0x21 0x4e4ee0
-  virtual undefined ReturnFalseNationStateActionStub() override; // slot 0x22 0x4e4f50
-  virtual undefined OrphanRetStub_004d7fe0() override; // slot 0x23 0x4e50d0
-  virtual undefined OrphanRetStub_004d7f80() override; // slot 0x25 0x4e5300
-  // slot 0x26 ReturnFalseNationStateCapabilityFlag98 inherited unchanged (0x4d6730)
-  // slot 0x27 ReturnFalseNationStateCapabilityFlag9C inherited unchanged (0x4d6750)
-  // slot 0x28 ReturnFalseNationStateCapabilityFlagA0 inherited unchanged (0x4d6770)
-  // slot 0x29 NoOpNationSelectedRegionAndMapCellLabelHook inherited unchanged (0x4d6790)
-  virtual undefined Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(); // slot 0x2b 0x4e4bd0
-  virtual undefined ReassignUnitOrdersForCountryTargetChange(); // slot 0x32 0x4e6150
-  virtual undefined ReassignTileObjectOwnerAndNotifyForSelectedCells(); // slot 0x33 0x4e6040
-  virtual undefined RelinkTileUnitsToCountryOrderManager(); // slot 0x34 0x4e6520
-// === END GENERATED DECLS (TMinor) ===
   TMinor();
 
   static void* CreateTMinorInstance();
@@ -74,15 +35,19 @@ public:
   char ReturnFalseNationStateCapabilityFlag90(int arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
-  void RebuildDiplomacyEconomicPressureFromMapState() override;
-  void SeedRandomDiplomacyPolicyThresholds() override;
-  char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) override;
-  void HandleNetworkPortConstructionOrder(int nationId) override;
-  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
-                                                      short predicateCode) override;
-  void ClearTileActivityOverlayByProvinceId(int provinceId) override;
-  void QueueInterNationEvent17ForState300AffectedNations() override;
-  void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId) override;
+  virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
+  virtual void SeedRandomDiplomacyPolicyThresholds(void);
+  virtual char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
+  virtual void HandleNetworkPortConstructionOrder(int nationId);
+  virtual void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
+                                                            short predicateCode);
+  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);
+  virtual void QueueInterNationEvent17ForState300AffectedNations(void);
+  virtual void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
+
+  virtual void ReassignUnitOrdersForCountryTargetChange(void);
+  virtual void ReassignTileObjectOwnerAndNotifyForSelectedCells(void);
+  virtual void RelinkTileUnitsToCountryOrderManager(void);
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);
