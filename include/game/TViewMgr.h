@@ -7,35 +7,54 @@
 class TStream;
 class TToolBarClusterVtbl;
 
-// TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TViewMgr -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x0066f120
+// TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
+// CRuntimeClass chain: TViewMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TViewMgr) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TViewMgr) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5d5040
-  virtual ~TViewMgr(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TViewMgr();                                     // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x5d5250
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5d5250
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5d5200
-  virtual void Free() override; // slot 0x07 0x5d51e0
+  virtual void Free() override;                    // slot 0x07 0x5d51e0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined LoadTurnEventCursorTable(); // slot 0x0a 0x5d5100
-  virtual undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog(); // slot 0x0b 0x5dcaa0
-  virtual undefined UpdatePaletteIndexFromTurnEventCode(undefined4 param_1); // slot 0x0c 0x5d5780
-  virtual undefined ApplyTurnEventPaletteColorByEventCode(undefined4 param_1); // slot 0x0d 0x5d5750
-  virtual undefined ClassifyTurnStateForOverlayMode(); // slot 0x0e 0x5d5960
-  virtual undefined BuildAndShowTurnOverlayByMode(CString param_1, TToolBarClusterVtbl * * param_2); // slot 0x0f 0x5d6480
-  virtual undefined HandleTurnEventVtableSlot40RefreshGoldDialog(); // slot 0x10 0x5d57b0
-  virtual undefined ComputeTurnEventDialogPlacementByCode(); // slot 0x11 0x5d69b0
-  virtual undefined RefreshMainViewNationIndicatorForCurrentTurnEvent(); // slot 0x12 0x5d6b70
-// === END GENERATED DECLS (TViewMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TViewMgr 0xCTOR`).
+  virtual void LoadTurnEventCursorTable();                           // slot 0x0a 0x5d5100
+  virtual void HandleTurnEventVtableSlot2CInitializeHotKeyDialog();  // slot 0x0b 0x5dcaa0
+  virtual void UpdatePaletteIndexFromTurnEventCode(int eventCode);   // slot 0x0c 0x5d5780
+  virtual void ApplyTurnEventPaletteColorByEventCode(int eventCode); // slot 0x0d 0x5d5750
+  virtual int ClassifyTurnStateForOverlayMode();                     // slot 0x0e 0x5d5960
+  virtual void BuildAndShowTurnOverlayByMode(CString param_1,
+                                             TToolBarClusterVtbl** param_2); // slot 0x0f 0x5d6480
+  virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();               // slot 0x10 0x5d57b0
+  virtual void ComputeTurnEventDialogPlacementByCode();                      // slot 0x11 0x5d69b0
+  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();          // slot 0x12 0x5d6b70
+  // === END GENERATED DECLS (TViewMgr) ===
+
+  // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
+  // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
+  // provisional. Total size 0xfc, base TObject = 0x4.
+  short currentTurnEventCode;   // +0x04 (turn-event dispatch code)
+  short pad06;                  // +0x06
+  unsigned int turnStateSeedLo; // +0x08 (seeded from g_dat_006a5b58)
+  unsigned int turnStateSeedHi; // +0x0c (seeded from g_dat_006a5b5c)
+  unsigned char field10;        // +0x10
+  unsigned char pad11[3];       // +0x11
+  void* cursorTable[0x36];      // +0x14 .. 0xeb (54 turn-event cursor handles)
+  short fieldEc;                // +0xec
+  short padEe;                  // +0xee
+  unsigned int fieldF0;         // +0xf0
+  unsigned int fieldF4;         // +0xf4
+  short fieldF8;                // +0xf8
+  short padFa;                  // +0xfa
 
   TViewMgr();
 };
+
+ASSERT_SIZE(TViewMgr, 0xfc);
 
 // === BEGIN GENERATED (TViewMgr) — refreshed by `just gen-class TViewMgr`; do not hand-edit ===
 // clang-format off

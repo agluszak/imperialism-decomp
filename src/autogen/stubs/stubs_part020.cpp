@@ -643,14 +643,6 @@ undefined4 WrapperFor_ftol_At005d4f00(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::ConstructGlobalTurnEventState
-// ghidra_proto undefined ConstructGlobalTurnEventState()
-// FUNCTION: IMPERIALISM 0x005d5060
-undefined4 ConstructGlobalTurnEventState(void)
-{
-  return 0;
-}
-
 // ghidra_name SetTurnEventStateBaseVtable
 // ghidra_proto undefined SetTurnEventStateBaseVtable()
 // FUNCTION: IMPERIALISM 0x005d50e0

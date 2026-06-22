@@ -3125,6 +3125,7 @@ address|target_cpp|ownership|note
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d5040|src/game/TViewMgr.cpp|manual|marker_sync
+5d5060|src/game/TViewMgr.cpp|manual|marker_sync
 5d50b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d5100|src/game/TViewMgr.cpp|manual|marker_sync
 5d51e0|src/game/TViewMgr.cpp|manual|marker_sync
