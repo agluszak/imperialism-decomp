@@ -10,7 +10,8 @@ CRuntimeClass* TWarehouseView::GetRuntimeClass() const {
 TWarehouseView::~TWarehouseView() {}
 
 // FUNCTION: IMPERIALISM 0x004c7330
-void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                          int arg4) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c7360
