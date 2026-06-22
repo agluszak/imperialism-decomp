@@ -10,22 +10,23 @@ CRuntimeClass* TInfoBarText::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005b66b0
-undefined TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A() {
+undefined TInfoBarText::ConstructTInfoBarTextBaseState(RECT* param_1) {
+  (void)param_1;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6770
-undefined TInfoBarText::VTableSlot7F() {
+undefined TInfoBarText::DestructTInfoBarTextAndMaybeFree() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
-undefined TInfoBarText::Dump() {
+undefined TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6840
-undefined TInfoBarText::AssertValid() {
+undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags() {
   return 0;
 }
 

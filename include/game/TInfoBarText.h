@@ -135,10 +135,10 @@ public:
   // slot 0x7c WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480 inherited unchanged (0x5b6480)
   // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged (0x5b6360)
   // slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
-  virtual undefined VTableSlot7F() override; // slot 0x7f 0x5b6770
-  virtual undefined SerializeRecordList_0x0C_WithBlockPool_A() override; // slot 0x80 0x5b66b0
-  virtual undefined AssertValid() override; // slot 0x81 0x5b6840
-  virtual undefined Dump() override; // slot 0x82 0x5b6810
+  virtual undefined DestructTInfoBarTextAndMaybeFree() override; // slot 0x7f 0x5b6770
+  virtual undefined ConstructTInfoBarTextBaseState(RECT* param_1) override; // slot 0x80 0x5b66b0
+  virtual undefined InitializeMapHintTextStyleAndThemeFlags() override; // slot 0x81 0x5b6840
+  virtual undefined OrphanCallChain_C1_I05_005b6810() override; // slot 0x82 0x5b6810
 // === END GENERATED DECLS (TInfoBarText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarText 0xCTOR`).
 

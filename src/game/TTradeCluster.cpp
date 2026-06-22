@@ -90,13 +90,6 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
 #pragma optimize("y", off)
 #endif
 
-// FUNCTION: IMPERIALISM 0x004032fb
-void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TTradeCluster* self, int unusedEdx,
-                                                               unsigned char enabledFlag) {
-  (void)unusedEdx;
-  self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
-}
-
 // FUNCTION: IMPERIALISM 0x00587010
 void* CreateTradeSellControlPanel(void) {
   TTradeCluster* cluster =
@@ -591,36 +584,6 @@ void TTradeCluster::ApplyMoveValue(int metricClampMax) {
 
   if (greenControl != 0) {
     greenControl->SetEnabled(0, 1);
-  }
-}
-
-// Toggles the enabled state of the trade tool subcontrols (seas/year/trea/tree).
-// FUNCTION: IMPERIALISM 0x0059a180
-void TTradeCluster::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag) {
-  TAmtBar* toolControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(0x746f6f6c));
-  if (toolControl == 0) {
-    FailNilPointerWithAssert(kUSuperMapCppPath, kAssertLineToolSubcontrolToggle);
-  }
-
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x73656173));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x79656172));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726561));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
-  }
-  control = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(toolControl)->ResolveControlByTag(0x74726565));
-  if (control != 0) {
-    control->SetEnabled((int)enabledFlag, 1);
   }
 }
 

@@ -29,5 +29,4 @@ public:
   virtual void SetTradeOfferSecondaryBitmap() override;
   virtual int IsTradeControlAtMinimum() override;
   virtual void ApplyMoveValue(int value) override;
-  void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };

@@ -14,7 +14,11 @@ void TGameWindow::DispatchSlot9CToLinkedChildren() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd10
-char TGameWindow::DispatchUiMouseMoveToChildren() {
+char TGameWindow::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 

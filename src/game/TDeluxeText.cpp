@@ -5,7 +5,7 @@
 TDeluxeText::~TDeluxeText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5fd0
-CRuntimeClass* TDeluxeText::GetRuntimeClass_00() const {
+CRuntimeClass* TDeluxeText::GetRuntimeClass() const {
   return 0;
 }
 
@@ -43,7 +43,8 @@ undefined TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At0
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-CRuntimeClass* TDeluxeText::GetRuntimeClass_7e() {
+undefined TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1) {
+  (void)param_1;
   return 0;
 }
 

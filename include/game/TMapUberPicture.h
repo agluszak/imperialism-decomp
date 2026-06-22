@@ -11,7 +11,7 @@ class astruct_20;
 class TMapUberPicture : public TMapUberUberPicture {
 public:
 // === BEGIN GENERATED DECLS (TMapUberPicture) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass_00() const override; // slot 0x00 0x5969c0
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5969c0
   virtual ~TMapUberPicture(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -137,8 +137,8 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins23_00597a10() override; // slot 0x7b 0x597a10
   virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1) override; // slot 0x7c 0x598910
   virtual void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj) override; // slot 0x7d 0x599cf0
-  virtual CRuntimeClass* GetRuntimeClass_7e() override; // slot 0x7e 0x599fd0
-  virtual undefined VTableSlot7F() override; // slot 0x7f 0x59a180
+  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion() override; // slot 0x7e 0x599fd0
+  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag() override; // slot 0x7f 0x59a180
 // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 

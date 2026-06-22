@@ -18,6 +18,10 @@ void TMovieView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e2520
-char TMovieView::DispatchUiMouseMoveToChildren() {
+char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }

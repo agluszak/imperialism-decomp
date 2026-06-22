@@ -81,7 +81,8 @@ public:
   // slot 0x43 PaintVisibleChildrenIntersectingClipRect inherited unchanged (0x48b8d0)
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x4906a0
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
-  virtual char DispatchUiMouseMoveToChildren() override; // slot 0x46 0x490bc0
+  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
+                                             int arg4) override; // slot 0x46 0x490bc0
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
@@ -100,7 +101,7 @@ public:
   // slot 0x56 CtrlSlot86_GetCachedPosPoint_Impl inherited unchanged (0x48bb30)
   // slot 0x57 CopyRectFromBuildRectFromSlot158 inherited unchanged (0x429410)
   // slot 0x58 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl inherited unchanged (0x48bce0)
-  virtual undefined VTableSlot59() override; // slot 0x59 0x490e50
+  virtual void vmethod_0089() override; // slot 0x59 0x490e50
   // slot 0x5a UpdateRectCacheIfChangedAndInvalidateCityDialog inherited unchanged (0x48c380)
   // slot 0x5b VTableSlot5B inherited unchanged (0x48e940)
   // slot 0x5c vmethod_0092 inherited unchanged (0x48abe0)

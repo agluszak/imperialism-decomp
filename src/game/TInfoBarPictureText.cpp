@@ -10,11 +10,12 @@ CRuntimeClass* TInfoBarPictureText::GetRuntimeClass() const {
 TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
-undefined TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A() {
+undefined TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT* param_1) {
+  (void)param_1;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b5dd0
-undefined TInfoBarPictureText::VTableSlot7F() {
+undefined TInfoBarPictureText::DestructTInfoBarTextAndMaybeFree() {
   return 0;
 }

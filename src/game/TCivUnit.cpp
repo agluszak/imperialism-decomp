@@ -72,4 +72,3 @@ void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {}
-undefined TCivUnit::OrphanRetStub_005c2610(void) { return 0; }

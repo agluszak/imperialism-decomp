@@ -8,7 +8,7 @@ void TNetMgr::Dump_10(undefined4 dc) {}
 
 void TNetMgr::Dump_16(undefined4 dc) {}
 
-CRuntimeClass* TNetMgr::GetRuntimeClass_00() const { return 0; }
+CRuntimeClass* TNetMgr::GetRuntimeClass() const { return 0; }
 
 TNetMgr::~TNetMgr() {}
 

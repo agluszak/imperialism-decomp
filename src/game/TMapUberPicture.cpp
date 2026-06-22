@@ -1,7 +1,7 @@
 #include "game/TMapUberPicture.h"
 
 // FUNCTION: IMPERIALISM 0x005969c0
-CRuntimeClass* TMapUberPicture::GetRuntimeClass_00() const {
+CRuntimeClass* TMapUberPicture::GetRuntimeClass() const {
   return 0;
 }
 
@@ -78,8 +78,11 @@ void __fastcall TMapUberPicture::CreateToolWindow_00599CF0(astruct_20 * this_obj
 }
 
 // FUNCTION: IMPERIALISM 0x00599fd0
-CRuntimeClass* TMapUberPicture::GetRuntimeClass_7e() {
+undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
   return 0;
 }
 
-undefined TMapUberPicture::VTableSlot7F() { return 0; }
+// FUNCTION: IMPERIALISM 0x0059a180
+undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag() {
+  return 0;
+}

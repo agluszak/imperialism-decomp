@@ -29,7 +29,11 @@ undefined TIconSlider::OrphanCallChain_C2_I15_005065b0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005065f0
-char TIconSlider::DispatchUiMouseMoveToChildren() {
+char TIconSlider::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 

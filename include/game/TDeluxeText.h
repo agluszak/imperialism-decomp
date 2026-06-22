@@ -8,7 +8,7 @@
 class TDeluxeText : public TTEView {
 public:
 // === BEGIN GENERATED DECLS (TDeluxeText) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass_00() const override; // slot 0x00 0x5b5fd0
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5b5fd0
   virtual ~TDeluxeText(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -134,7 +134,7 @@ public:
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2) override; // slot 0x7b 0x5b64a0
   virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1) override; // slot 0x7c 0x5b6480
   virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1) override; // slot 0x7d 0x5b6360
-  virtual CRuntimeClass* GetRuntimeClass_7e() override; // slot 0x7e 0x5b63e0
+  virtual undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1) override; // slot 0x7e 0x5b63e0
 // === END GENERATED DECLS (TDeluxeText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText 0xCTOR`).
 

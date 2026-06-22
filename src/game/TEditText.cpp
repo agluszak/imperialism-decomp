@@ -45,7 +45,11 @@ void TEditText::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490bc0
-char TEditText::DispatchUiMouseMoveToChildren() {
+char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }
 
@@ -73,8 +77,7 @@ undefined TEditText::InitDialogWindowAndSyncTitleIfChanged() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50
-undefined TEditText::VTableSlot59() {
-  return 0;
+void TEditText::vmethod_0089() {
 }
 
 // SYNTHETIC: IMPERIALISM 0x00492f30
