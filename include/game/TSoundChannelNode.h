@@ -6,6 +6,8 @@
 // VTABLE: IMPERIALISM 0x00650a08
 class TSoundChannelNode {
 public:
+  virtual ~TSoundChannelNode() {}
+
 #define SOUND_CHANNEL_NODE_DUMMY(n) virtual void SoundChannelNodeDummy##n() = 0
   SOUND_CHANNEL_NODE_DUMMY(00);
   SOUND_CHANNEL_NODE_DUMMY(01);

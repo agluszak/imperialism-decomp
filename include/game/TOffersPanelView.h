@@ -113,7 +113,7 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_00430550 inherited unchanged (0x430550)
-  virtual undefined RunDiplomacyNegotiationPopupAndAwaitResponse() override; // slot 0x69 0x4f9450
+  virtual undefined RunDiplomacyNegotiationPopupAndAwaitResponse(); // slot 0x69 0x4f9450
 // === END GENERATED DECLS (TOffersPanelView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TOffersPanelView 0xCTOR`).
 

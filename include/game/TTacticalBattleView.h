@@ -115,15 +115,15 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1) override; // slot 0x68 0x5a8900
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1) override; // slot 0x69 0x5a89a0
-  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2) override; // slot 0x6a 0x5a89f0
-  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker() override; // slot 0x6b 0x5a8be0
-  virtual undefined OrphanRetStub_005a83c0() override; // slot 0x6c 0x5a83c0
-  virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog() override; // slot 0x6d 0x5a9170
-  virtual undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3) override; // slot 0x6e 0x5a9090
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3) override; // slot 0x6f 0x5a9240
-  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx) override; // slot 0x70 0x5a9550
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1); // slot 0x68 0x5a8900
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1); // slot 0x69 0x5a89a0
+  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2); // slot 0x6a 0x5a89f0
+  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
+  virtual undefined OrphanRetStub_005a83c0(); // slot 0x6c 0x5a83c0
+  virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog(); // slot 0x6d 0x5a9170
+  virtual undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3); // slot 0x6e 0x5a9090
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3); // slot 0x6f 0x5a9240
+  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx); // slot 0x70 0x5a9550
 // === END GENERATED DECLS (TTacticalBattleView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattleView 0xCTOR`).
 

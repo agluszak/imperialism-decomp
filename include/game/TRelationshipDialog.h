@@ -112,7 +112,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined VTableSlot68() override; // slot 0x68 0x5b2f10
+  virtual undefined VTableSlot68(); // slot 0x68 0x5b2f10
 // === END GENERATED DECLS (TRelationshipDialog) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRelationshipDialog 0xCTOR`).
 

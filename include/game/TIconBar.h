@@ -11,8 +11,8 @@ public:
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) override;
-  virtual undefined OrphanCallChain_C2_I15_00506110(char param_1) override;
-  virtual undefined OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1) override;
+  virtual undefined OrphanCallChain_C2_I15_00506110(char param_1);
+  virtual undefined OrphanTiny_SetWordEcxOffset_96_005060f0(undefined2 param_1);
 
   TIconBar();
 };

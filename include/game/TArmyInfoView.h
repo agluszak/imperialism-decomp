@@ -126,7 +126,7 @@ public:
   TArmyInfoView();
   CRuntimeClass* GetRuntimeClass() const override;
   // ~TArmyInfoView is compiler-generated (implicit virtual dtor).
-  bool IsSelected(short value = -1, bool refreshNow = true) override;
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };
 
 ASSERT_SIZE(TArmyInfoView, 0x90);

@@ -33,7 +33,7 @@ CRuntimeClass* TProxyGreatPower::GetRuntimeClass() const {
 
 
 // FUNCTION: IMPERIALISM 0x00540a00
-void TProxyGreatPower::AddToNationMetricAtField10() {
+void TProxyGreatPower::AddToNationMetricAtField10(int amount) {
 }
 
 

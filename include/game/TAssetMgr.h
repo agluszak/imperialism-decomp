@@ -18,11 +18,11 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined ResolveTurnEventDialogNodeByMessageContext() override; // slot 0x0a 0x5df3c0
-  virtual undefined NoOpRuntimeUiCallback_005df780() override; // slot 0x0b 0x5df780
-  virtual undefined NoOpRuntimeUiCallback_005df3f0() override; // slot 0x0c 0x5df3f0
-  virtual undefined NoOpRuntimeUiCallback_005df410() override; // slot 0x0d 0x5df410
-  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup() override; // slot 0x0e 0x5dfc10
+  virtual undefined ResolveTurnEventDialogNodeByMessageContext(); // slot 0x0a 0x5df3c0
+  virtual undefined NoOpRuntimeUiCallback_005df780(); // slot 0x0b 0x5df780
+  virtual undefined NoOpRuntimeUiCallback_005df3f0(); // slot 0x0c 0x5df3f0
+  virtual undefined NoOpRuntimeUiCallback_005df410(); // slot 0x0d 0x5df410
+  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup(); // slot 0x0e 0x5dfc10
 // === END GENERATED DECLS (TAssetMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr 0xCTOR`).
 

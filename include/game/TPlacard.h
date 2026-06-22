@@ -18,5 +18,5 @@ public:
 
   void NoOpUiLifecycleHook(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  bool IsSelected(short value = -1, bool refreshNow = true) override;
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };

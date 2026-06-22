@@ -124,7 +124,7 @@ public:
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x571620
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x571690
+  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x571690
 // === END GENERATED DECLS (TUpDownPictureButton) ===
   short glyph90;
   short timingWord92;

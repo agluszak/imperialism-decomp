@@ -123,8 +123,8 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined HandleSaveGameSlotSelectionAndPromptFlow() override; // slot 0x73 0x56d2a0
-  virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC() override; // slot 0x74 0x56d190
+  virtual undefined HandleSaveGameSlotSelectionAndPromptFlow(); // slot 0x73 0x56d2a0
+  virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
 // === END GENERATED DECLS (TLoadSavePicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TLoadSavePicture 0xCTOR`).
 

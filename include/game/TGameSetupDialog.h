@@ -10,7 +10,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   ~TGameSetupDialog();
 
-  undefined OrphanRetStub_005b2860() override;
+  virtual undefined OrphanRetStub_005b2860();
 
   TGameSetupDialog();
 };

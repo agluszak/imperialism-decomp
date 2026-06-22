@@ -123,10 +123,10 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanCallChain_C2_I34_00504120() override; // slot 0x73 0x504120
-  virtual undefined OrphanCallChain_C2_I34_005041a0() override; // slot 0x74 0x5041a0
-  virtual undefined RefreshHelpSubjectListControlsWithPrevNext() override; // slot 0x75 0x5046c0
-  virtual undefined BuildHelpSubjectListControlsWithPrevNext() override; // slot 0x76 0x504220
+  virtual undefined OrphanCallChain_C2_I34_00504120(); // slot 0x73 0x504120
+  virtual undefined OrphanCallChain_C2_I34_005041a0(); // slot 0x74 0x5041a0
+  virtual undefined RefreshHelpSubjectListControlsWithPrevNext(); // slot 0x75 0x5046c0
+  virtual undefined BuildHelpSubjectListControlsWithPrevNext(); // slot 0x76 0x504220
 // === END GENERATED DECLS (THelpPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery THelpPicture 0xCTOR`).
 

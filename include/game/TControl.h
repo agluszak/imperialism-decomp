@@ -113,22 +113,22 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB) override; // slot 0x68 0x48e850
+                                              void* eventDataB); // slot 0x68 0x48e850
   virtual void
-  DeserializeCityProductionQueueCommand(int* boundsBuffer) override; // slot 0x69 0x48e980
+  DeserializeCityProductionQueueCommand(int* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
-                                                          int arg2) override; // slot 0x6a 0x429470
-  virtual void NoOpUiViewSlotHandler(int arg1, int arg2) override;            // slot 0x6b 0x48e9c0
-  virtual undefined OrphanRetStub_00487a00() override;                        // slot 0x6c 0x48e9e0
+                                                          int arg2); // slot 0x6a 0x429470
+  virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0
+  virtual undefined OrphanRetStub_00487a00();                        // slot 0x6c 0x48e9e0
   virtual void
   SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
-                                                    char refreshNow) override; // slot 0x6d 0x48e7d0
+                                                    char refreshNow); // slot 0x6d 0x48e7d0
   virtual void
   SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef,
-                                        bool refreshNow) override; // slot 0x6e 0x48e7a0
-  virtual char LogUnhandledDialogMethodAndReturnFalse() override;  // slot 0x6f 0x4294a0
+                                        bool refreshNow); // slot 0x6e 0x48e7a0
+  virtual char LogUnhandledDialogMethodAndReturnFalse();  // slot 0x6f 0x4294a0
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
-                                                  bool refreshNow) override; // slot 0x70 0x48e810
+                                                  bool refreshNow); // slot 0x70 0x48e810
   // === END GENERATED DECLS (TControl) ===
   int hasCommandTagResource;
   unsigned char commandTagResourceByte;

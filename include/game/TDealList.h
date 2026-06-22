@@ -29,7 +29,7 @@ public:
   // slot 0x0e UpsertPtrListRecordByComparator inherited unchanged (0x4881f0)
   // slot 0x0f AppendCopiedRecordToPtrList inherited unchanged (0x4882c0)
   // slot 0x10 InsertCopiedRecordAtFrontOfPtrList inherited unchanged (0x488310)
-  virtual int CompareUnsignedIntsAscending(int lhs, int rhs) override; // slot 0x11 0x5ba260
+  virtual int CompareUnsignedIntsAscending(int lhs, int rhs); // slot 0x11 0x5ba260
 // === END GENERATED DECLS (TDealList) ===
 
   struct NationMetricCategoryRow {

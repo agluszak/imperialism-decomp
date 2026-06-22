@@ -124,7 +124,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
-  virtual undefined OrphanCallChain_C2_I16_00571b20(undefined4 param_1, undefined4 param_2) override; // slot 0x74 0x571b20
+  virtual undefined OrphanCallChain_C2_I16_00571b20(undefined4 param_1, undefined4 param_2); // slot 0x74 0x571b20
 // === END GENERATED DECLS (TOnOffRadioButton) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TOnOffRadioButton 0xCTOR`).
 

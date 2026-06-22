@@ -123,8 +123,8 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() override; // slot 0x73 0x5acb50
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5acc90
+  virtual undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(); // slot 0x73 0x5acb50
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
 // === END GENERATED DECLS (TTacticalToolbar) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalToolbar 0xCTOR`).
 

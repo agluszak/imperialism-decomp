@@ -16,30 +16,30 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   ~TMapMaker();
 
-  char GetBoolSlot28() override;
-  void SetControlValue(int value) override;
-  int QueryStepValue() override;
-  void vmethod_0013(int* cmd) override;
-  void vmethod_0014(int command) override;
-  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  void vmethod_0017(int param) override;
-  void ForwardParam(int param) override;
-  char CanHandleCityDialogActionFalse(int action) override;
-  int GetCityDialogValueDword10() override;
-  void SetCityDialogValueDword10(int value) override;
-  TView* OwnerPanel() override;
-  char vmethod_0023() override;
-  char vmethod_0024() override;
-  void vmethod_0025() override;
-  void vmethod_0026(int gate) override;
-  void HandleCityProductionNoOp() override;
-  void DispatchUiCommand19ToParent() override;
-  void DispatchCityProductionAction1A() override;
-  void DispatchCityProductionAction1B() override;
-  char ActivateCityProductionViewIfAllowed() override;
-  char vmethod_0080() override;
-  void vmethod_0081() override;
+  virtual char GetBoolSlot28();
+  virtual void SetControlValue(int value);
+  virtual int QueryStepValue();
+  virtual void vmethod_0013(int* cmd);
+  virtual void vmethod_0014(int command);
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
+  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
+  virtual void vmethod_0017(int param);
+  virtual void ForwardParam(int param);
+  virtual char CanHandleCityDialogActionFalse(int action);
+  virtual int GetCityDialogValueDword10();
+  virtual void SetCityDialogValueDword10(int value);
+  virtual TView* OwnerPanel();
+  virtual char vmethod_0023();
+  virtual char vmethod_0024();
+  virtual void vmethod_0025();
+  virtual void vmethod_0026(int gate);
+  virtual void HandleCityProductionNoOp();
+  virtual void DispatchUiCommand19ToParent();
+  virtual void DispatchCityProductionAction1A();
+  virtual void DispatchCityProductionAction1B();
+  virtual char ActivateCityProductionViewIfAllowed();
+  virtual char vmethod_0080();
+  virtual void vmethod_0081();
   // --- vtable ends at slot 0x21 (orig 0x22..0x28 are NULL; see note above) ---
 
   // Original vtable slots 0x29/0x2a, kept as non-virtual (paired by address).

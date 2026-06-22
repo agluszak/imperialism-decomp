@@ -118,7 +118,7 @@ public:
   // slot 0x6b OrphanCallChain_C8_I82_0056fc80 inherited unchanged (0x56fc80)
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
-  virtual undefined ConstructTSuperCivRosterBaseState() override; // slot 0x6e 0x4ab470
+  virtual undefined ConstructTSuperCivRosterBaseState(); // slot 0x6e 0x4ab470
 // === END GENERATED DECLS (TSuperCivRoster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TSuperCivRoster 0xCTOR`).
 

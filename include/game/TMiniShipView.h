@@ -122,7 +122,7 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual undefined OrphanRetStub_00569d50() override; // slot 0x71 0x569d50
+  virtual undefined OrphanRetStub_00569d50(); // slot 0x71 0x569d50
 // === END GENERATED DECLS (TMiniShipView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniShipView 0xCTOR`).
 

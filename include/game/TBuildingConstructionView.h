@@ -123,8 +123,8 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual void OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags) override; // slot 0x73 0x4c9eb0
-  virtual void ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag) override; // slot 0x74 0x4ca8f0
+  virtual void OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags); // slot 0x73 0x4c9eb0
+  virtual void ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag); // slot 0x74 0x4ca8f0
 // === END GENERATED DECLS (TBuildingConstructionView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TBuildingConstructionView 0xCTOR`).
 

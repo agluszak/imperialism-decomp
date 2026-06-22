@@ -126,7 +126,7 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanCallChain_C3_I13_00579580() override; // slot 0x76 0x579580
+  virtual undefined OrphanCallChain_C3_I13_00579580(); // slot 0x76 0x579580
 // === END GENERATED DECLS (TRadioText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRadioText 0xCTOR`).
 

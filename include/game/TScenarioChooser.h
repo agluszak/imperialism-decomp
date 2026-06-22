@@ -124,8 +124,8 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4() override; // slot 0x74 0x57a350
-  virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState() override; // slot 0x75 0x57a2d0
+  virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4(); // slot 0x74 0x57a350
+  virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
 // === END GENERATED DECLS (TScenarioChooser) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TScenarioChooser 0xCTOR`).
 

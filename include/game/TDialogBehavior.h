@@ -22,11 +22,11 @@ public:
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
-  virtual undefined OrphanCallChain_C1_I13_00487430(undefined4 param_1) override; // slot 0x0e 0x487430
-  virtual undefined OrphanCallChain_C1_I17_00487470(int param_1, int param_2) override; // slot 0x0f 0x487470
-  virtual undefined OrphanCallChain_C11_I88_004874b0(int param_1) override; // slot 0x10 0x4874b0
-  virtual undefined OrphanCallChain_C6_I49_004875d0(int param_1) override; // slot 0x11 0x4875d0
-  virtual undefined CreateTCommandInstance() override; // slot 0x12 0x487660
+  virtual undefined OrphanCallChain_C1_I13_00487430(undefined4 param_1); // slot 0x0e 0x487430
+  virtual undefined OrphanCallChain_C1_I17_00487470(int param_1, int param_2); // slot 0x0f 0x487470
+  virtual undefined OrphanCallChain_C11_I88_004874b0(int param_1); // slot 0x10 0x4874b0
+  virtual undefined OrphanCallChain_C6_I49_004875d0(int param_1); // slot 0x11 0x4875d0
+  virtual undefined CreateTCommandInstance(); // slot 0x12 0x487660
 // === END GENERATED DECLS (TDialogBehavior) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDialogBehavior 0xCTOR`).
 

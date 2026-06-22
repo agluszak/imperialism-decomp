@@ -28,7 +28,7 @@ public:
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b7c40
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b7c90
-  virtual undefined InitializeCityProductionState_Impl() override; // slot 0x11 0x4b7ab0
+  virtual undefined InitializeCityProductionState_Impl(); // slot 0x11 0x4b7ab0
 // === END GENERATED DECLS (TPowerPlantOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPowerPlantOrder 0xCTOR`).
 

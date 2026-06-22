@@ -21,8 +21,8 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2) override; // slot 0x0a 0x4b2270
-  virtual undefined CreateTCityInstance(int param_1, short param_2) override; // slot 0x0b 0x4b2340
+  virtual undefined OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2); // slot 0x0a 0x4b2270
+  virtual undefined CreateTCityInstance(int param_1, short param_2); // slot 0x0b 0x4b2340
 // === END GENERATED DECLS (TLaborPool) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TLaborPool 0xCTOR`).
 

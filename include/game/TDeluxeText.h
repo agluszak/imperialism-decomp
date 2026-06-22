@@ -126,15 +126,15 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1) override; // slot 0x76 0x5b60a0
-  virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl() override; // slot 0x77 0x5b60d0
-  virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0() override; // slot 0x78 0x5b62e0
-  virtual undefined ConstructTMapKeyBaseState_Impl() override; // slot 0x79 0x5b62a0
-  virtual undefined BuildCityViewProductionControls_Impl() override; // slot 0x7a 0x5b64e0
-  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2) override; // slot 0x7b 0x5b64a0
-  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1) override; // slot 0x7c 0x5b6480
-  virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1) override; // slot 0x7d 0x5b6360
-  virtual undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1) override; // slot 0x7e 0x5b63e0
+  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
+  virtual undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl(); // slot 0x77 0x5b60d0
+  virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
+  virtual undefined ConstructTMapKeyBaseState_Impl(); // slot 0x79 0x5b62a0
+  virtual undefined BuildCityViewProductionControls_Impl(); // slot 0x7a 0x5b64e0
+  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2); // slot 0x7b 0x5b64a0
+  virtual undefined WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1); // slot 0x7c 0x5b6480
+  virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1); // slot 0x7d 0x5b6360
+  virtual undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1); // slot 0x7e 0x5b63e0
 // === END GENERATED DECLS (TDeluxeText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText 0xCTOR`).
 

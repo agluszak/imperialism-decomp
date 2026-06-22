@@ -129,10 +129,10 @@ public:
   virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4c8a50
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  virtual undefined OrphanCallChain_C1_I15_004c9d20(int param_1) override; // slot 0x79 0x4c9d20
-  virtual void __fastcall RefreshCityViewStatusPanel(int * pCityViewDialog) override; // slot 0x7a 0x4c9a60
-  virtual undefined BuildIndustryActionCostSummaryTextByActionIndex() override; // slot 0x7b 0x4c97c0
-  virtual void InitializeCityViewActionButtons() override; // slot 0x7c 0x4c8d70
+  virtual undefined OrphanCallChain_C1_I15_004c9d20(int param_1); // slot 0x79 0x4c9d20
+  virtual void __fastcall RefreshCityViewStatusPanel(int * pCityViewDialog); // slot 0x7a 0x4c9a60
+  virtual undefined BuildIndustryActionCostSummaryTextByActionIndex(); // slot 0x7b 0x4c97c0
+  virtual void InitializeCityViewActionButtons(); // slot 0x7c 0x4c8d70
 // === END GENERATED DECLS (TShipyardView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TShipyardView 0xCTOR`).
 

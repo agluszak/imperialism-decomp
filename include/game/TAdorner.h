@@ -21,13 +21,13 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900() override; // slot 0x0a 0x49d900
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930() override; // slot 0x0b 0x49d930
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0() override; // slot 0x0c 0x49d9c0
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0() override; // slot 0x0d 0x49d9f0
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20() override; // slot 0x0e 0x49da20
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50() override; // slot 0x0f 0x49da50
-  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80() override; // slot 0x10 0x49da80
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(); // slot 0x0a 0x49d900
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(); // slot 0x0b 0x49d930
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(); // slot 0x0c 0x49d9c0
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(); // slot 0x0d 0x49d9f0
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(); // slot 0x0e 0x49da20
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(); // slot 0x0f 0x49da50
+  virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(); // slot 0x10 0x49da80
 // === END GENERATED DECLS (TAdorner) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAdorner 0xCTOR`).
 

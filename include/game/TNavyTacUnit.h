@@ -24,7 +24,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override; // slot 0x0d 0x5a6370
   // slot 0x0e VTableSlot0E inherited unchanged (0x5a5e70)
   // slot 0x0f CreateTArmyTacUnitInstance inherited unchanged (0x5a5eb0)
-  virtual undefined ConstructTNavyPlayerBaseState() override; // slot 0x10 0x59ed60
+  virtual undefined ConstructTNavyPlayerBaseState(); // slot 0x10 0x59ed60
 // === END GENERATED DECLS (TNavyTacUnit) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyTacUnit 0xCTOR`).
 

@@ -22,11 +22,11 @@ public:
   // slot 0x0b SelectCandidateTilesWithLowGroundUnitCount_0b inherited unchanged (0x4da3e0)
   // slot 0x0c SeedRecruitAndNavyOrdersForEligibleCoastalCities inherited unchanged (0x4d71b0)
   // slot 0x0d CreateAndDispatchMilitaryRecruitOrderForNationSlot inherited unchanged (0x4d7770)
-  virtual void AddToNationMetricAtField10() override; // slot 0x0e 0x540a00
+  virtual void AddToNationMetricAtField10(int amount) override; // slot 0x0e 0x540a00
   // slot 0x0f PopulateSelectableEntryFlavorTextAndOrdinals inherited unchanged (0x4d8000)
   // slot 0x10 OrphanLeaf_NoCall_Ins06_004d87b0 inherited unchanged (0x4d87b0)
   // slot 0x11 SelectCandidateTilesWithLowGroundUnitCount_11 inherited unchanged (0x4d87e0)
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920() override; // slot 0x12 0x540c20
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920(); // slot 0x12 0x540c20
   // slot 0x13 ApplyJoinEmpireModeForTargetNation inherited unchanged (0x4e21b0)
   // slot 0x14 SetNationTransferTargetCodeAndNotifyEligiblePeers inherited unchanged (0x4de860)
   // slot 0x15 ApplyJoinEmpireMode1TargetTransition inherited unchanged (0x4d7c90)
@@ -42,20 +42,20 @@ public:
   // slot 0x1f OrphanLeaf_NoCall_Ins02_004d7f40 inherited unchanged (0x4ddb20)
   // slot 0x20 OrphanRetStub_004d7fa0 inherited unchanged (0x4ddc30)
   // slot 0x21 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4ddd50)
-  virtual undefined ReturnFalseNationStateActionStub() override; // slot 0x22 0x540ba0
+  virtual undefined ReturnFalseNationStateActionStub(); // slot 0x22 0x540ba0
   // slot 0x23 OrphanRetStub_004d7fe0 inherited unchanged (0x540ac0)
   // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
   // slot 0x25 OrphanRetStub_004d7f80 inherited unchanged (0x4dedf0)
   virtual char ReturnFalseNationStateCapabilityFlag98() override; // slot 0x26 0x5408c0
   // slot 0x27 ReturnFalseNationStateCapabilityFlag9C inherited unchanged (0x4d6750)
-  virtual undefined ReturnFalseNationStateCapabilityFlagA0() override; // slot 0x28 0x5408e0
+  virtual undefined ReturnFalseNationStateCapabilityFlagA0(); // slot 0x28 0x5408e0
   // slot 0x29 NoOpNationSelectedRegionAndMapCellLabelHook inherited unchanged (0x4d6790)
   // slot 0x2a NoOpNationPendingActionHook inherited unchanged (0x4da5c0)
   // slot 0x2b PromoteNationPendingActionSlot5IfCapabilityActive inherited unchanged (0x4da860)
   // slot 0x2c AdvanceNationPendingActionStateMachine inherited unchanged (0x4da8a0)
   // slot 0x2d DispatchNationPendingActionEventCodes inherited unchanged (0x4da5e0)
   // slot 0x2e SetNationPendingActionStateAndPayload inherited unchanged (0x4daa10)
-  virtual undefined QueueNationOrderManagerPayloadObject_2f() override; // slot 0x2f 0x540c70
+  virtual undefined QueueNationOrderManagerPayloadObject_2f(); // slot 0x2f 0x540c70
   // slot 0x30 ClearQueuedNationOrdersAndResetOrderManager_30 inherited unchanged (0x4daa80)
   // slot 0x31 NoOpNationQueuedOrderHook inherited unchanged (0x4dab00)
   // slot 0x32 ExecuteNationPendingActionStateMachine inherited unchanged (0x4dab20)
@@ -167,8 +167,8 @@ public:
   // slot 0x9c ComputeNavyScoreStandingRatioForNationPair inherited unchanged (0x4e1a40)
   // slot 0x9d VTableSlot9D inherited unchanged (0x4e1c00)
   // slot 0x9e EvaluateJoinWarAgainstNationAndQueueEvent inherited unchanged (0x4e1c20)
-  virtual undefined ExecuteAdvisoryPromptAndApplyActionType1() override; // slot 0x9f 0x540cf0
-  virtual undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback() override; // slot 0xa0 0x540dc0
+  virtual undefined ExecuteAdvisoryPromptAndApplyActionType1(); // slot 0x9f 0x540cf0
+  virtual undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback(); // slot 0xa0 0x540dc0
   // slot 0xa1 QueueWarTransitionAndNotifyThirdPartyIfNeeded inherited unchanged (0x4e27f0)
   // slot 0xa2 DeserializeRecruitScenarioAndInstantiateOrders_a2 inherited unchanged (0x4e1f20)
   // slot 0xa3 ComputeWarThresholdSlotA3 inherited unchanged (0x4e1f40)

@@ -100,7 +100,7 @@ undefined TTechStorePage::ForwardCityDialogParamToChildSlot48() {
 
 
 // FUNCTION: IMPERIALISM 0x00606cf4
-char TTechStorePage::CanHandleCityDialogActionFalse() {
+char TTechStorePage::CanHandleCityDialogActionFalse(int action) {
   return 0;
 }
 
@@ -110,7 +110,7 @@ void TTechStorePage::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
 
 
 // FUNCTION: IMPERIALISM 0x00606cff
-void TTechStorePage::SetCityDialogValueDword10() {
+void TTechStorePage::SetCityDialogValueDword10(int value) {
 }
 
 
@@ -127,7 +127,7 @@ undefined TTechStorePage::DispatchQueuedUiCommandAndRelease() {
 
 
 // FUNCTION: IMPERIALISM 0x00610a57
-void TTechStorePage::ReadFrom() {
+void TTechStorePage::ReadFrom(TStream* stream) {
 }
 
 
@@ -144,6 +144,6 @@ undefined TTechStorePage::CanStartCityProductionActionFalse(undefined4 param_1, 
 
 
 // FUNCTION: IMPERIALISM 0x006118ed
-void TTechStorePage::WriteTo(uint param_1, uint param_2, int param_3, undefined4 param_4) {
+void TTechStorePage::WriteTo(TStream* stream) {
 }
 

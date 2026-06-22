@@ -16,9 +16,9 @@ public:
                                              int arg4) override;
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                          int arg4) override;
-  virtual undefined UpdateTurnOrderNavigationWindowLayout() override;
-  virtual undefined NoOpTurnOrderNavigationVtableSlotA() override;
-  virtual undefined NoOpTurnOrderNavigationVtableSlotB() override;
+  virtual undefined UpdateTurnOrderNavigationWindowLayout();
+  virtual undefined NoOpTurnOrderNavigationVtableSlotA();
+  virtual undefined NoOpTurnOrderNavigationVtableSlotB();
 
   TGameWindow();
 };

@@ -21,17 +21,17 @@ public:
   virtual void Free() override; // slot 0x07 0x4b6990
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2) override; // slot 0x0a 0x4b5d10
-  virtual undefined OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2, short param_3) override; // slot 0x0b 0x4b5dc0
-  virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1) override; // slot 0x0c 0x4b5d50
-  virtual undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2) override; // slot 0x0d 0x4b66a0
-  virtual undefined Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0() override; // slot 0x0e 0x4b5ed0
-  virtual undefined OrphanLeaf_NoCall_Ins111_004b6260(short * param_1, ushort * param_2) override; // slot 0x0f 0x4b6260
-  virtual undefined OrphanCallChain_C2_I61_004b65b0() override; // slot 0x10 0x4b65b0
-  virtual undefined OrphanCallChain_C2_I24_004b5e80() override; // slot 0x11 0x4b5e80
-  virtual undefined OrphanLeaf_NoCall_Ins50_004b63e0() override; // slot 0x12 0x4b63e0
-  virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2) override; // slot 0x13 0x4b67e0
-  virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0() override; // slot 0x14 0x4b64c0
+  virtual undefined OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2); // slot 0x0a 0x4b5d10
+  virtual undefined OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2, short param_3); // slot 0x0b 0x4b5dc0
+  virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1); // slot 0x0c 0x4b5d50
+  virtual undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1, short param_2); // slot 0x0d 0x4b66a0
+  virtual undefined Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(); // slot 0x0e 0x4b5ed0
+  virtual undefined OrphanLeaf_NoCall_Ins111_004b6260(short * param_1, ushort * param_2); // slot 0x0f 0x4b6260
+  virtual undefined OrphanCallChain_C2_I61_004b65b0(); // slot 0x10 0x4b65b0
+  virtual undefined OrphanCallChain_C2_I24_004b5e80(); // slot 0x11 0x4b5e80
+  virtual undefined OrphanLeaf_NoCall_Ins50_004b63e0(); // slot 0x12 0x4b63e0
+  virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2); // slot 0x13 0x4b67e0
+  virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0(); // slot 0x14 0x4b64c0
 // === END GENERATED DECLS (TPopulationMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPopulationMgr 0xCTOR`).
 

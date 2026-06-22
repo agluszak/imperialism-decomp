@@ -123,7 +123,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox() override; // slot 0x73 0x573940
+  virtual undefined ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox(); // slot 0x73 0x573940
 // === END GENERATED DECLS (TOffLimitsPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TOffLimitsPicture 0xCTOR`).
 

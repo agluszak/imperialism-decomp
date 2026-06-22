@@ -28,7 +28,7 @@ public:
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b5620
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b5510
-  virtual undefined InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) override; // slot 0x11 0x4b5290
+  virtual undefined InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5); // slot 0x11 0x4b5290
 // === END GENERATED DECLS (TItemOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TItemOrder 0xCTOR`).
 

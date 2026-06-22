@@ -25,7 +25,7 @@ public:
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b8420
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b8440
-  virtual undefined ConstructTPopGrowthOrderBaseState() override; // slot 0x11 0x4b8160
+  virtual undefined ConstructTPopGrowthOrderBaseState(); // slot 0x11 0x4b8160
 // === END GENERATED DECLS (TPopGrowthOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPopGrowthOrder 0xCTOR`).
 

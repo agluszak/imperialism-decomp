@@ -21,8 +21,8 @@ public:
   virtual void Free() override; // slot 0x07 0x501070
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined InitializeHelpManagerIndexArrayAndState() override; // slot 0x0a 0x500680
-  virtual undefined OrphanCallChain_C1_I22_00500f10() override; // slot 0x0b 0x500f10
+  virtual undefined InitializeHelpManagerIndexArrayAndState(); // slot 0x0a 0x500680
+  virtual undefined OrphanCallChain_C1_I22_00500f10(); // slot 0x0b 0x500f10
 // === END GENERATED DECLS (THelpMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery THelpMgr 0xCTOR`).
 

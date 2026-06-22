@@ -119,30 +119,30 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point) override; // slot 0x67 0x492d60
   virtual undefined
-  OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1) override; // slot 0x68 0x48da40
+  OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1); // slot 0x68 0x48da40
   virtual undefined
   OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1,
-                                   undefined4 param_2) override;      // slot 0x69 0x48d8a0
-  virtual undefined OrphanCallChain_C1_I08_0048da10() override;       // slot 0x6a 0x48da10
-  virtual undefined ExecuteViewModalStateWithPushPopChain() override; // slot 0x6b 0x48da60
-  virtual undefined OrphanCallChain_C1_I08_0048dc60() override;       // slot 0x6c 0x48dc60
+                                   undefined4 param_2);      // slot 0x69 0x48d8a0
+  virtual undefined OrphanCallChain_C1_I08_0048da10();       // slot 0x6a 0x48da10
+  virtual undefined ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
+  virtual undefined OrphanCallChain_C1_I08_0048dc60();       // slot 0x6c 0x48dc60
   virtual undefined
   OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
-                                  undefined4 param_2) override;  // slot 0x6d 0x48dc90
-  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0() override; // slot 0x6e 0x48dcc0
-  virtual undefined AssertMcAppUILine2554() override;            // slot 0x6f 0x48dce0
+                                  undefined4 param_2);  // slot 0x6d 0x48dc90
+  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0(); // slot 0x6e 0x48dcc0
+  virtual undefined AssertMcAppUILine2554();            // slot 0x6f 0x48dce0
   virtual undefined
-  OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) override; // slot 0x70 0x48ddc0
+  OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1); // slot 0x70 0x48ddc0
   virtual undefined WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(
-      char param_1, char param_2) override;           // slot 0x71 0x48e150
-  virtual undefined AssertMcAppUILine2358() override; // slot 0x72 0x48d8d0
+      char param_1, char param_2);           // slot 0x71 0x48e150
+  virtual undefined AssertMcAppUILine2358(); // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
-                                                    char param_2) override; // slot 0x73 0x48d900
-  virtual undefined OrphanCallChain_C2_I10_0048e120() override;             // slot 0x74 0x48e120
+                                                    char param_2); // slot 0x73 0x48d900
+  virtual undefined OrphanCallChain_C2_I10_0048e120();             // slot 0x74 0x48e120
   virtual undefined WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(
-      undefined4* param_1) override; // slot 0x75 0x48d9c0
+      undefined4* param_1); // slot 0x75 0x48d9c0
   virtual undefined WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(
-      undefined4 param_1) override; // slot 0x76 0x48d9f0
+      undefined4 param_1); // slot 0x76 0x48d9f0
                                     // === END GENERATED DECLS (TWindow) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TWindow 0xCTOR`).
 

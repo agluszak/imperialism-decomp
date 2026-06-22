@@ -123,8 +123,8 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined UpdateDealBookResourceSelectionAndToggleControls() override; // slot 0x73 0x5baf70
-  virtual undefined BuildSelectedNationOrderCapabilityRows() override; // slot 0x74 0x5bb2e0
+  virtual undefined UpdateDealBookResourceSelectionAndToggleControls(); // slot 0x73 0x5baf70
+  virtual undefined BuildSelectedNationOrderCapabilityRows(); // slot 0x74 0x5bb2e0
 // === END GENERATED DECLS (TDealBookPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDealBookPicture 0xCTOR`).
 

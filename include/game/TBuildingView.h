@@ -124,11 +124,11 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  virtual undefined ApplyCityViewSelectionPayloadAndRefreshControls() override; // slot 0x74 0x4c6f30
-  virtual undefined OrphanRetStub_004c6fd0() override; // slot 0x75 0x4c6fd0
-  virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4c6fb0
-  virtual undefined SetUniversityDialogLocalizedTextAndRefresh() override; // slot 0x77 0x4c70e0
-  virtual undefined SetUniversityDialogTextAndRefresh() override; // slot 0x78 0x4c6ff0
+  virtual undefined ApplyCityViewSelectionPayloadAndRefreshControls(); // slot 0x74 0x4c6f30
+  virtual undefined OrphanRetStub_004c6fd0(); // slot 0x75 0x4c6fd0
+  virtual undefined OrphanRetStub_004c6fb0(); // slot 0x76 0x4c6fb0
+  virtual undefined SetUniversityDialogLocalizedTextAndRefresh(); // slot 0x77 0x4c70e0
+  virtual undefined SetUniversityDialogTextAndRefresh(); // slot 0x78 0x4c6ff0
 // === END GENERATED DECLS (TBuildingView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TBuildingView 0xCTOR`).
 

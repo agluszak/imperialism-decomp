@@ -116,8 +116,8 @@ public:
   // slot 0x69 OrphanCallChain_C1_I09_004f2ef0 inherited unchanged (0x4f2ef0)
   // slot 0x6a OrphanCallChain_C2_I08_004f2ec0 inherited unchanged (0x4f2ec0)
   // slot 0x6b OrphanLeaf_NoCall_Ins03_004f2ea0 inherited unchanged (0x4f2ea0)
-  virtual undefined OrphanCallChain_C3_I22_004f31d0() override; // slot 0x6c 0x4f31d0
-  virtual undefined OrphanRetStub_004f3220() override; // slot 0x6d 0x4f3220
+  virtual undefined OrphanCallChain_C3_I22_004f31d0(); // slot 0x6c 0x4f31d0
+  virtual undefined OrphanRetStub_004f3220(); // slot 0x6d 0x4f3220
 // === END GENERATED DECLS (TForeignMinisterView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TForeignMinisterView 0xCTOR`).
 

@@ -124,9 +124,9 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined OrphanCallChain_C1_I08_004cc440(int param_1) override; // slot 0x73 0x4cc440
-  virtual void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue) override; // slot 0x74 0x4cc550
-  virtual undefined UpdateCityViewValueControl() override; // slot 0x75 0x4cc640
+  virtual undefined OrphanCallChain_C1_I08_004cc440(int param_1); // slot 0x73 0x4cc440
+  virtual void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue); // slot 0x74 0x4cc550
+  virtual undefined UpdateCityViewValueControl(); // slot 0x75 0x4cc640
 // === END GENERATED DECLS (TPurchaseCluster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPurchaseCluster 0xCTOR`).
 

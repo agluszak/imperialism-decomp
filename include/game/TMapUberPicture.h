@@ -128,17 +128,17 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined OrphanRetStub_0045d2a0() override; // slot 0x74 0x5977a0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00598950() override; // slot 0x75 0x598950
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1) override; // slot 0x76 0x598870
-  virtual undefined OrphanCallChain_C2_I18_005988c0() override; // slot 0x77 0x5988c0
-  virtual undefined OrphanCallChain_C2_I14_00598990() override; // slot 0x78 0x598990
-  virtual undefined OrphanCallChain_C2_I16_005989d0() override; // slot 0x79 0x5989d0
-  virtual undefined OrphanCallChain_C1_I06_00598a20() override; // slot 0x7a 0x598a20
-  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10() override; // slot 0x7b 0x597a10
-  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1) override; // slot 0x7c 0x598910
-  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj) override; // slot 0x7d 0x599cf0
-  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion() override; // slot 0x7e 0x599fd0
-  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag() override; // slot 0x7f 0x59a180
+  virtual undefined OrphanLeaf_NoCall_Ins09_00598950(); // slot 0x75 0x598950
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1); // slot 0x76 0x598870
+  virtual undefined OrphanCallChain_C2_I18_005988c0(); // slot 0x77 0x5988c0
+  virtual undefined OrphanCallChain_C2_I14_00598990(); // slot 0x78 0x598990
+  virtual undefined OrphanCallChain_C2_I16_005989d0(); // slot 0x79 0x5989d0
+  virtual undefined OrphanCallChain_C1_I06_00598a20(); // slot 0x7a 0x598a20
+  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10(); // slot 0x7b 0x597a10
+  virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
+  virtual void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj); // slot 0x7d 0x599cf0
+  virtual undefined SwapToolInfoSubviewAndRefreshClipRegion(); // slot 0x7e 0x599fd0
+  virtual undefined SetTradeToolSubcontrolEnabledStateByFlag(); // slot 0x7f 0x59a180
 // === END GENERATED DECLS (TMapUberPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 

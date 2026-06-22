@@ -22,34 +22,34 @@ public:
   virtual void Free() override; // slot 0x07 0x542b10
   virtual TObject* ShallowClone() override; // slot 0x08 0x48a7c0
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual byte GetTEventHandlerClassNamePointer_0a(CityDialogController * pDialog) override; // slot 0x0a 0x48a240
-  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue) override; // slot 0x0b 0x48a260
-  virtual int UpdateControlCachedIntFromWindowText(CityDialogController * pDialog) override; // slot 0x0c 0x48a2c0
-  virtual undefined OrphanRetStub_0059add0_0d(int * param_1) override; // slot 0x0d 0x48a3b0
-  virtual undefined OrphanCallChain_C11_I88_004874b0_0e() override; // slot 0x0e 0x48a3f0
-  virtual undefined OrphanRetStub_0059add0_0f(undefined4 param_1, undefined4 param_2, undefined4 param_3) override; // slot 0x0f 0x48a280
-  virtual undefined OrphanTiny_ReturnZero_0048a730_10() override; // slot 0x10 0x48a2e0
-  virtual undefined VTableSlot11(undefined4 param_1) override; // slot 0x11 0x48a310
-  virtual undefined OrphanTiny_ReturnZero_0048a730_12(undefined4 param_1) override; // slot 0x12 0x48a380
-  virtual undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue() override; // slot 0x13 0x544e30
-  virtual int OrphanTiny_ReturnZero_0048a730_14(CityDialogController * pDialog) override; // slot 0x14 0x415d50
-  virtual void VTableSlot15(int value) override; // slot 0x15 0x415d70
-  virtual undefined OrphanTiny_ReturnZero_0048a730_16() override; // slot 0x16 0x48a730
-  virtual undefined VTableSlot17() override; // slot 0x17 0x48a530
-  virtual undefined SetForeignMinisterReadyFlag14() override; // slot 0x18 0x48a550
-  virtual undefined VTableSlot19() override; // slot 0x19 0x48a690
-  virtual undefined GetTEventHandlerClassNamePointer_1a() override; // slot 0x1a 0x48a6b0
-  virtual undefined VTableSlot1B() override; // slot 0x1b 0x48a650
-  virtual undefined GetTEventHandlerClassNamePointer_1c() override; // slot 0x1c 0x48a6d0
-  virtual undefined VTableSlot1D() override; // slot 0x1d 0x48a670
-  virtual undefined GetTEventHandlerClassNamePointer_1e() override; // slot 0x1e 0x48a6f0
-  virtual undefined VTableSlot1F() override; // slot 0x1f 0x48a570
-  virtual undefined GetTEventHandlerClassNamePointer_20() override; // slot 0x20 0x48a5e0
-  virtual undefined VTableSlot21() override; // slot 0x21 0x48a710
-  virtual undefined GetTEventHandlerClassNamePointer_22() override; // slot 0x22 0x48a500
-  virtual undefined VTableSlot23(int param_1) override; // slot 0x23 0x48a4a0
-  virtual undefined OrphanCallChain_C11_I88_004874b0_24(int param_1) override; // slot 0x24 0x48a4d0
-  virtual undefined InitializeMultiplayerManagerForSessionContext(CString param_1) override; // slot 0x25 0x542900
+  virtual byte GetTEventHandlerClassNamePointer_0a(CityDialogController * pDialog); // slot 0x0a 0x48a240
+  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue); // slot 0x0b 0x48a260
+  virtual int UpdateControlCachedIntFromWindowText(CityDialogController * pDialog); // slot 0x0c 0x48a2c0
+  virtual undefined OrphanRetStub_0059add0_0d(int * param_1); // slot 0x0d 0x48a3b0
+  virtual undefined OrphanCallChain_C11_I88_004874b0_0e(); // slot 0x0e 0x48a3f0
+  virtual undefined OrphanRetStub_0059add0_0f(undefined4 param_1, undefined4 param_2, undefined4 param_3); // slot 0x0f 0x48a280
+  virtual undefined OrphanTiny_ReturnZero_0048a730_10(); // slot 0x10 0x48a2e0
+  virtual undefined VTableSlot11(undefined4 param_1); // slot 0x11 0x48a310
+  virtual undefined OrphanTiny_ReturnZero_0048a730_12(undefined4 param_1); // slot 0x12 0x48a380
+  virtual undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(); // slot 0x13 0x544e30
+  virtual int OrphanTiny_ReturnZero_0048a730_14(CityDialogController * pDialog); // slot 0x14 0x415d50
+  virtual void VTableSlot15(int value); // slot 0x15 0x415d70
+  virtual undefined OrphanTiny_ReturnZero_0048a730_16(); // slot 0x16 0x48a730
+  virtual undefined VTableSlot17(); // slot 0x17 0x48a530
+  virtual undefined SetForeignMinisterReadyFlag14(); // slot 0x18 0x48a550
+  virtual undefined VTableSlot19(); // slot 0x19 0x48a690
+  virtual undefined GetTEventHandlerClassNamePointer_1a(); // slot 0x1a 0x48a6b0
+  virtual undefined VTableSlot1B(); // slot 0x1b 0x48a650
+  virtual undefined GetTEventHandlerClassNamePointer_1c(); // slot 0x1c 0x48a6d0
+  virtual undefined VTableSlot1D(); // slot 0x1d 0x48a670
+  virtual undefined GetTEventHandlerClassNamePointer_1e(); // slot 0x1e 0x48a6f0
+  virtual undefined VTableSlot1F(); // slot 0x1f 0x48a570
+  virtual undefined GetTEventHandlerClassNamePointer_20(); // slot 0x20 0x48a5e0
+  virtual undefined VTableSlot21(); // slot 0x21 0x48a710
+  virtual undefined GetTEventHandlerClassNamePointer_22(); // slot 0x22 0x48a500
+  virtual undefined VTableSlot23(int param_1); // slot 0x23 0x48a4a0
+  virtual undefined OrphanCallChain_C11_I88_004874b0_24(int param_1); // slot 0x24 0x48a4d0
+  virtual undefined InitializeMultiplayerManagerForSessionContext(CString param_1); // slot 0x25 0x542900
 // === END GENERATED DECLS (TMultiplayerMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMultiplayerMgr 0xCTOR`).
 

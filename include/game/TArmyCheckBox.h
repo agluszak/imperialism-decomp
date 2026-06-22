@@ -121,12 +121,12 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x4aa310
-  virtual undefined OrphanLeaf_NoCall_Ins02_004aa340() override; // slot 0x71 0x4aa340
-  virtual undefined SetArmyUnitLineActiveFlagAndNotify() override; // slot 0x72 0x4aa360
-  virtual undefined VTableSlot73(char param_1) override; // slot 0x73 0x4aa030
-  virtual undefined OrphanCallChain_C2_I16_004aa3a0() override; // slot 0x74 0x4aa3a0
-  virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2) override; // slot 0x75 0x4aa3e0
-  virtual undefined OrphanCallChain_C1_I05_004aa430() override; // slot 0x76 0x4aa430
+  virtual undefined OrphanLeaf_NoCall_Ins02_004aa340(); // slot 0x71 0x4aa340
+  virtual undefined SetArmyUnitLineActiveFlagAndNotify(); // slot 0x72 0x4aa360
+  virtual undefined VTableSlot73(char param_1); // slot 0x73 0x4aa030
+  virtual undefined OrphanCallChain_C2_I16_004aa3a0(); // slot 0x74 0x4aa3a0
+  virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2); // slot 0x75 0x4aa3e0
+  virtual undefined OrphanCallChain_C1_I05_004aa430(); // slot 0x76 0x4aa430
 // === END GENERATED DECLS (TArmyCheckBox) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyCheckBox 0xCTOR`).
 

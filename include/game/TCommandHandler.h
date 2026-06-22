@@ -45,7 +45,7 @@ public:
   // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
-  virtual undefined ConstructTCommandHandlerBaseState() override; // slot 0x25 0x486650
+  virtual undefined ConstructTCommandHandlerBaseState(); // slot 0x25 0x486650
 // === END GENERATED DECLS (TCommandHandler) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCommandHandler 0xCTOR`).
 

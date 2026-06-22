@@ -112,12 +112,12 @@ public:
   // slot 0x65 AssertMcAppUILine1914_e9 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922_ea inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb inherited unchanged (0x48bac0)
-  virtual undefined OrphanCallChain_C1_I06_0056fbb0() override; // slot 0x68 0x56fbb0
-  virtual undefined OrphanCallChain_C1_I06_0056fbd0() override; // slot 0x69 0x56fbd0
-  virtual undefined ResetSelectableOptionEntriesExceptColorAndOkay() override; // slot 0x6a 0x56fbf0
-  virtual undefined OrphanCallChain_C8_I82_0056fc80() override; // slot 0x6b 0x56fc80
-  virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1) override; // slot 0x6c 0x56fdb0
-  virtual undefined OrphanCallChain_C4_I18_0056ff90() override; // slot 0x6d 0x56ff90
+  virtual undefined OrphanCallChain_C1_I06_0056fbb0(); // slot 0x68 0x56fbb0
+  virtual undefined OrphanCallChain_C1_I06_0056fbd0(); // slot 0x69 0x56fbd0
+  virtual undefined ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
+  virtual undefined OrphanCallChain_C8_I82_0056fc80(); // slot 0x6b 0x56fc80
+  virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1); // slot 0x6c 0x56fdb0
+  virtual undefined OrphanCallChain_C4_I18_0056ff90(); // slot 0x6d 0x56ff90
 // === END GENERATED DECLS (TPageView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPageView 0xCTOR`).
 

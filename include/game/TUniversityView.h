@@ -129,7 +129,7 @@ public:
   virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cbb20
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex) override; // slot 0x79 0x4cb320
+  virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex); // slot 0x79 0x4cb320
 // === END GENERATED DECLS (TUniversityView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TUniversityView 0xCTOR`).
 

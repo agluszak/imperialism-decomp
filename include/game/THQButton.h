@@ -125,8 +125,8 @@ public:
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override; // slot 0x70 0x58b750
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x58b890
-  virtual void SetSelectionStateAndRefreshBitmap(short selectionState) override; // slot 0x74 0x58b8d0
+  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x58b890
+  virtual void SetSelectionStateAndRefreshBitmap(short selectionState); // slot 0x74 0x58b8d0
 // === END GENERATED DECLS (THQButton) ===
   short glyph90;
   short timingWord92;

@@ -18,8 +18,8 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanRetStub_0056f460() override; // slot 0x0a 0x56f460
-  virtual undefined OrphanRetStub_0056f480() override; // slot 0x0b 0x56f480
+  virtual undefined OrphanRetStub_0056f460(); // slot 0x0a 0x56f460
+  virtual undefined OrphanRetStub_0056f480(); // slot 0x0b 0x56f480
 // === END GENERATED DECLS (TLineData) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TLineData 0xCTOR`).
 

@@ -7,6 +7,8 @@
 // VTABLE: IMPERIALISM (provisional — full layout unrecovered)
 class TStrategicMapViewSystem {
 public:
+  virtual ~TStrategicMapViewSystem() {}
+
 #define STRATEGIC_MAP_VIEW_DUMMY(n) virtual void StrategicMapViewDummy##n() = 0
   STRATEGIC_MAP_VIEW_DUMMY(00);
   STRATEGIC_MAP_VIEW_DUMMY(01);

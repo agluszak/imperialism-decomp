@@ -18,14 +18,14 @@ public:
   virtual void Free() override; // slot 0x07 0x59aee0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanRetStub_0059ad70() override; // slot 0x0a 0x59ad70
-  virtual undefined OrphanRetStub_0059ad90() override; // slot 0x0b 0x59ad90
-  virtual undefined TArmyTacUnit_VtblSlot00() override; // slot 0x0c 0x59adb0
-  virtual undefined OrphanRetStub_0059add0() override; // slot 0x0d 0x59add0
-  virtual undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() override; // slot 0x0e 0x59afa0
-  virtual undefined WrapperFor_AddHead_At0059afe0(int * param_1) override; // slot 0x0f 0x59afe0
-  virtual undefined TArmyTacUnit_VtblSlot04() override; // slot 0x10 0x59adf0
-  virtual undefined OrphanRetStub_0059ae10() override; // slot 0x11 0x59ae10
+  virtual undefined OrphanRetStub_0059ad70(); // slot 0x0a 0x59ad70
+  virtual undefined OrphanRetStub_0059ad90(); // slot 0x0b 0x59ad90
+  virtual undefined TArmyTacUnit_VtblSlot00(); // slot 0x0c 0x59adb0
+  virtual undefined OrphanRetStub_0059add0(); // slot 0x0d 0x59add0
+  virtual undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(); // slot 0x0e 0x59afa0
+  virtual undefined WrapperFor_AddHead_At0059afe0(int * param_1); // slot 0x0f 0x59afe0
+  virtual undefined TArmyTacUnit_VtblSlot04(); // slot 0x10 0x59adf0
+  virtual undefined OrphanRetStub_0059ae10(); // slot 0x11 0x59ae10
 // === END GENERATED DECLS (TTacticalPlayer) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalPlayer 0xCTOR`).
 

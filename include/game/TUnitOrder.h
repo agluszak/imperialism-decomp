@@ -28,7 +28,7 @@ public:
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b7320
-  virtual void InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode) override; // slot 0x11 0x4b6fe0
+  virtual void InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
 // === END GENERATED DECLS (TUnitOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TUnitOrder 0xCTOR`).
 

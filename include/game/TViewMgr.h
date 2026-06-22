@@ -22,15 +22,15 @@ public:
   virtual void Free() override; // slot 0x07 0x5d51e0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined LoadTurnEventCursorTable() override; // slot 0x0a 0x5d5100
-  virtual undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog() override; // slot 0x0b 0x5dcaa0
-  virtual undefined UpdatePaletteIndexFromTurnEventCode(undefined4 param_1) override; // slot 0x0c 0x5d5780
-  virtual undefined ApplyTurnEventPaletteColorByEventCode(undefined4 param_1) override; // slot 0x0d 0x5d5750
-  virtual undefined ClassifyTurnStateForOverlayMode() override; // slot 0x0e 0x5d5960
-  virtual undefined BuildAndShowTurnOverlayByMode(CString param_1, TToolBarClusterVtbl * * param_2) override; // slot 0x0f 0x5d6480
-  virtual undefined HandleTurnEventVtableSlot40RefreshGoldDialog() override; // slot 0x10 0x5d57b0
-  virtual undefined ComputeTurnEventDialogPlacementByCode() override; // slot 0x11 0x5d69b0
-  virtual undefined RefreshMainViewNationIndicatorForCurrentTurnEvent() override; // slot 0x12 0x5d6b70
+  virtual undefined LoadTurnEventCursorTable(); // slot 0x0a 0x5d5100
+  virtual undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog(); // slot 0x0b 0x5dcaa0
+  virtual undefined UpdatePaletteIndexFromTurnEventCode(undefined4 param_1); // slot 0x0c 0x5d5780
+  virtual undefined ApplyTurnEventPaletteColorByEventCode(undefined4 param_1); // slot 0x0d 0x5d5750
+  virtual undefined ClassifyTurnStateForOverlayMode(); // slot 0x0e 0x5d5960
+  virtual undefined BuildAndShowTurnOverlayByMode(CString param_1, TToolBarClusterVtbl * * param_2); // slot 0x0f 0x5d6480
+  virtual undefined HandleTurnEventVtableSlot40RefreshGoldDialog(); // slot 0x10 0x5d57b0
+  virtual undefined ComputeTurnEventDialogPlacementByCode(); // slot 0x11 0x5d69b0
+  virtual undefined RefreshMainViewNationIndicatorForCurrentTurnEvent(); // slot 0x12 0x5d6b70
 // === END GENERATED DECLS (TViewMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TViewMgr 0xCTOR`).
 

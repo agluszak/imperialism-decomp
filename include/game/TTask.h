@@ -21,7 +21,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanLeaf_NoCall_Ins04_005adc30() override; // slot 0x0a 0x5adc30
+  virtual undefined OrphanLeaf_NoCall_Ins04_005adc30(); // slot 0x0a 0x5adc30
 // === END GENERATED DECLS (TTask) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTask 0xCTOR`).
 

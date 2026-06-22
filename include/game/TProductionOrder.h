@@ -21,13 +21,13 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined InitializeBasicCityOrderContext(int param_1, undefined2 param_2) override; // slot 0x0a 0x4b4f70
-  virtual undefined OrphanCallChain_C1_I16_004b5100(short param_1) override; // slot 0x0b 0x4b5100
-  virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0() override; // slot 0x0c 0x4b50e0
-  virtual undefined OrphanRetStub_004b5160() override; // slot 0x0d 0x4b5160
-  virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b5140
-  virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1) override; // slot 0x0f 0x4b5180
-  virtual undefined CreateTItemOrderInstance() override; // slot 0x10 0x4b51b0
+  virtual undefined InitializeBasicCityOrderContext(int param_1, undefined2 param_2); // slot 0x0a 0x4b4f70
+  virtual undefined OrphanCallChain_C1_I16_004b5100(short param_1); // slot 0x0b 0x4b5100
+  virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0(); // slot 0x0c 0x4b50e0
+  virtual undefined OrphanRetStub_004b5160(); // slot 0x0d 0x4b5160
+  virtual undefined ResetCityOrderItemDerivedStateNoop(); // slot 0x0e 0x4b5140
+  virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1); // slot 0x0f 0x4b5180
+  virtual undefined CreateTItemOrderInstance(); // slot 0x10 0x4b51b0
 // === END GENERATED DECLS (TProductionOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TProductionOrder 0xCTOR`).
 

@@ -121,7 +121,7 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual undefined OrphanRetStub_004ab800() override; // slot 0x71 0x4ab800
+  virtual undefined OrphanRetStub_004ab800(); // slot 0x71 0x4ab800
 // === END GENERATED DECLS (TMiniCivView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniCivView 0xCTOR`).
 

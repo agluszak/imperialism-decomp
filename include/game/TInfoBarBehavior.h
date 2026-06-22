@@ -22,8 +22,8 @@ public:
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
-  virtual undefined InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2) override; // slot 0x0e 0x4b0e20
-  virtual undefined RefreshInfoBarCursorPanelRegionClip() override; // slot 0x0f 0x4b0f50
+  virtual undefined InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2); // slot 0x0e 0x4b0e20
+  virtual undefined RefreshInfoBarCursorPanelRegionClip(); // slot 0x0f 0x4b0f50
 // === END GENERATED DECLS (TInfoBarBehavior) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarBehavior 0xCTOR`).
 

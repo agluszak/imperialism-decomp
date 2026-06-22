@@ -132,7 +132,7 @@ public:
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bc20();
   void RenderArmyPlacardWithShadow();
   void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x58bfe0
-  bool IsSelected(short value = -1, bool refreshNow = true) override;
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };
 
 // === BEGIN GENERATED (TArmyPlacard) — refreshed by `just gen-class TArmyPlacard`; do not hand-edit ===

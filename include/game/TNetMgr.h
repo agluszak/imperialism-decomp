@@ -18,16 +18,16 @@ public:
   virtual void Free() override; // slot 0x07 0x5e3470
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual CRuntimeClass * GetRuntimeClass_0c() override; // slot 0x0c 0x606fba
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1) override; // slot 0x0d 0x5e4a30
-  virtual undefined SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1) override; // slot 0x0e 0x5e4610
-  virtual void AssertValid_0f() override; // slot 0x0f 0x412bf0
-  virtual void Dump_10(undefined4 dc) override; // slot 0x10 0x412c10
-  virtual CRuntimeClass * GetRuntimeClass_12() override; // slot 0x12 0x606fba
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1) override; // slot 0x13 0x5e4a60
-  virtual undefined SerializeDynamicDwordPointerArrayState(CArchive * param_1) override; // slot 0x14 0x5e4830
-  virtual void AssertValid_15() override; // slot 0x15 0x412bf0
-  virtual void Dump_16(undefined4 dc) override; // slot 0x16 0x412c10
+  virtual CRuntimeClass * GetRuntimeClass_0c(); // slot 0x0c 0x606fba
+  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1); // slot 0x0d 0x5e4a30
+  virtual undefined SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1); // slot 0x0e 0x5e4610
+  virtual void AssertValid_0f(); // slot 0x0f 0x412bf0
+  virtual void Dump_10(undefined4 dc); // slot 0x10 0x412c10
+  virtual CRuntimeClass * GetRuntimeClass_12(); // slot 0x12 0x606fba
+  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1); // slot 0x13 0x5e4a60
+  virtual undefined SerializeDynamicDwordPointerArrayState(CArchive * param_1); // slot 0x14 0x5e4830
+  virtual void AssertValid_15(); // slot 0x15 0x412bf0
+  virtual void Dump_16(undefined4 dc); // slot 0x16 0x412c10
 // === END GENERATED DECLS (TNetMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNetMgr 0xCTOR`).
 

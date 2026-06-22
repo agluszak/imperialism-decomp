@@ -21,35 +21,35 @@ public:
   virtual void Free() override; // slot 0x07 0x509f70
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined BuildStrategicMapCommodityIconAtlasFrom700To722() override; // slot 0x0a 0x50a1a0
-  virtual undefined LoadStrategicMapUnitIconAtlas750() override; // slot 0x0b 0x50a3b0
-  virtual undefined LoadStrategicMapUnitOverlayAtlas751() override; // slot 0x0c 0x50a3e0
-  virtual undefined LoadStrategicMapOverlayAtlas8699() override; // slot 0x0d 0x50a410
-  virtual undefined LoadStrategicMapMarkerAtlas1372() override; // slot 0x0e 0x50a440
-  virtual undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3) override; // slot 0x0f 0x50bbc0
-  virtual undefined SyncSellTaggedChildControlWithNationState(int * param_1, short param_2) override; // slot 0x10 0x50bc50
-  virtual undefined RefreshCityProductionDetailPanelAndArrowWidgets(word param_1) override; // slot 0x11 0x50bea0
-  virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C() override; // slot 0x12 0x50be30
-  virtual undefined DispatchTurnEvent3B8AndWaitForCompletionFlag() override; // slot 0x13 0x50d310
-  virtual undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2) override; // slot 0x14 0x50d470
-  virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2, undefined4 param_3) override; // slot 0x15 0x50d360
-  virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) override; // slot 0x16 0x50d5b0
-  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8d0() override; // slot 0x17 0x50d8d0
-  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1) override; // slot 0x18 0x50d8f0
-  virtual undefined OrphanCallChain_C1_I10_0050d920() override; // slot 0x19 0x50d920
-  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext() override; // slot 0x1a 0x50a9f0
-  virtual undefined WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950() override; // slot 0x1b 0x50d950
-  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress() override; // slot 0x1c 0x50b640
-  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles() override; // slot 0x1d 0x50b9e0
-  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent() override; // slot 0x1e 0x50bad0
-  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(int * param_1, short param_2, short param_3, short param_4) override; // slot 0x1f 0x50da80
-  virtual void DrawStrategicMapUnitIcon(int * pDstSurface, short nIconVariant, short nDstX, short nYShift) override; // slot 0x20 0x50dd40
-  virtual void DrawStrategicMapUnitIconOverlay(int * pDstSurface, ushort wOverlayIconId, short nVariantRow, short nDstX, short nYShift) override; // slot 0x21 0x50df40
-  virtual undefined CopySpriteSurfaceToStrideBuffer(int * param_1, undefined4 * param_2, short param_3) override; // slot 0x22 0x50d9e0
-  virtual undefined RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) override; // slot 0x23 0x50d700
-  virtual undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1) override; // slot 0x24 0x50d6c0
-  virtual undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1, short param_2) override; // slot 0x25 0x50d680
-  virtual undefined VTableSlot26(short param_1) override; // slot 0x26 0x509e10
+  virtual undefined BuildStrategicMapCommodityIconAtlasFrom700To722(); // slot 0x0a 0x50a1a0
+  virtual undefined LoadStrategicMapUnitIconAtlas750(); // slot 0x0b 0x50a3b0
+  virtual undefined LoadStrategicMapUnitOverlayAtlas751(); // slot 0x0c 0x50a3e0
+  virtual undefined LoadStrategicMapOverlayAtlas8699(); // slot 0x0d 0x50a410
+  virtual undefined LoadStrategicMapMarkerAtlas1372(); // slot 0x0e 0x50a440
+  virtual undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3); // slot 0x0f 0x50bbc0
+  virtual undefined SyncSellTaggedChildControlWithNationState(int * param_1, short param_2); // slot 0x10 0x50bc50
+  virtual undefined RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
+  virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(); // slot 0x12 0x50be30
+  virtual undefined DispatchTurnEvent3B8AndWaitForCompletionFlag(); // slot 0x13 0x50d310
+  virtual undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2); // slot 0x14 0x50d470
+  virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2, undefined4 param_3); // slot 0x15 0x50d360
+  virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1); // slot 0x16 0x50d5b0
+  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8d0(); // slot 0x17 0x50d8d0
+  virtual undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1); // slot 0x18 0x50d8f0
+  virtual undefined OrphanCallChain_C1_I10_0050d920(); // slot 0x19 0x50d920
+  virtual undefined RenderOffscreenBitmapGridStripAndRestoreContext(); // slot 0x1a 0x50a9f0
+  virtual undefined WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(); // slot 0x1b 0x50d950
+  virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress(); // slot 0x1c 0x50b640
+  virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
+  virtual undefined RebuildNationClipRegionsAndDispatchMapEvent(); // slot 0x1e 0x50bad0
+  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(int * param_1, short param_2, short param_3, short param_4); // slot 0x1f 0x50da80
+  virtual void DrawStrategicMapUnitIcon(int * pDstSurface, short nIconVariant, short nDstX, short nYShift); // slot 0x20 0x50dd40
+  virtual void DrawStrategicMapUnitIconOverlay(int * pDstSurface, ushort wOverlayIconId, short nVariantRow, short nDstX, short nYShift); // slot 0x21 0x50df40
+  virtual undefined CopySpriteSurfaceToStrideBuffer(int * param_1, undefined4 * param_2, short param_3); // slot 0x22 0x50d9e0
+  virtual undefined RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700
+  virtual undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
+  virtual undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1, short param_2); // slot 0x25 0x50d680
+  virtual undefined VTableSlot26(short param_1); // slot 0x26 0x509e10
 // === END GENERATED DECLS (TMacViewMgr) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMacViewMgr 0xCTOR`).
 

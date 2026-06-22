@@ -10,7 +10,7 @@ public:
   CArchive* archive; // 0x04
 
   ArchiveStreamAdapter(CArchive* pArchive) : archive(pArchive) {}
-  virtual ~ArchiveStreamAdapter();
+  ~ArchiveStreamAdapter() override;
 };
 
 ASSERT_SIZE(ArchiveStreamAdapter, 0x8);

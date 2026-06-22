@@ -126,8 +126,8 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
-  virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1) override; // slot 0x76 0x5076d0
-  virtual undefined Helper_Uses_ConstructTMyNumberTextBaseState_At00507570() override; // slot 0x77 0x507570
+  virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1); // slot 0x76 0x5076d0
+  virtual undefined Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(); // slot 0x77 0x507570
 // === END GENERATED DECLS (TNumberedIcon) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNumberedIcon 0xCTOR`).
 

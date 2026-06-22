@@ -121,7 +121,7 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual undefined ConstructTDealTabControlBaseState() override; // slot 0x71 0x5bc780
+  virtual undefined ConstructTDealTabControlBaseState(); // slot 0x71 0x5bc780
 // === END GENERATED DECLS (TDealTabControl) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDealTabControl 0xCTOR`).
 

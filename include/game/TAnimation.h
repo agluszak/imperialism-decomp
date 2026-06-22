@@ -18,9 +18,9 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 0x0a 0x49f140
-  virtual undefined RenderBattleReportInsetWithPaletteShift() override; // slot 0x0b 0x49f190
-  virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle() override; // slot 0x0c 0x49f2d0
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140(); // slot 0x0a 0x49f140
+  virtual undefined RenderBattleReportInsetWithPaletteShift(); // slot 0x0b 0x49f190
+  virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
   // These three are regular (non-virtual) methods — the orig TAnimation vtable
   // ends at byte 0x30; declaring them virtual appended 3 phantom slots.
   undefined EnsureBitmapResourceLoadedAndCopyRectSize(); // 0x495b70

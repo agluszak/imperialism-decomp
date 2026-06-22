@@ -132,7 +132,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor).
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  bool IsSelected(short value = -1, bool refreshNow = true) override;
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };
 
 // === BEGIN GENERATED (TCombatReportView) — refreshed by `just gen-class TCombatReportView`; do not hand-edit ===

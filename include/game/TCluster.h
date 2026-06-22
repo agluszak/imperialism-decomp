@@ -121,8 +121,8 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  virtual int GetField84() override; // slot 0x71 0x491770
-  virtual void SetControlClassAndRefresh(int classState, int refreshFlag) override; // slot 0x72 0x491790
+  virtual int GetField84(); // slot 0x71 0x491770
+  virtual void SetControlClassAndRefresh(int classState, int refreshFlag); // slot 0x72 0x491790
 // === END GENERATED DECLS (TCluster) ===
   int field84;
 

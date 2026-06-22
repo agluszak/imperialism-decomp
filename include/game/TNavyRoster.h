@@ -118,7 +118,7 @@ public:
   // slot 0x6b OrphanCallChain_C8_I82_0056fc80 inherited unchanged (0x56fc80)
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
-  virtual undefined InitializePagedListLineDataControlsAndHeaderBitmap() override; // slot 0x6e 0x564dc0
+  virtual undefined InitializePagedListLineDataControlsAndHeaderBitmap(); // slot 0x6e 0x564dc0
 // === END GENERATED DECLS (TNavyRoster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyRoster 0xCTOR`).
 

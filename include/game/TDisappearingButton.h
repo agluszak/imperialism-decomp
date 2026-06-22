@@ -123,7 +123,7 @@ public:
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x568c40
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanCallChain_C2_I18_00568c90() override; // slot 0x73 0x568c90
+  virtual undefined OrphanCallChain_C2_I18_00568c90(); // slot 0x73 0x568c90
 // === END GENERATED DECLS (TDisappearingButton) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDisappearingButton 0xCTOR`).
 

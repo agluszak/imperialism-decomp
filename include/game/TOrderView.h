@@ -112,8 +112,8 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined PopulateDialogControlsFromSelectedProductionEntry() override; // slot 0x68 0x506b00
-  virtual undefined RefreshOrderViewSupplyAndUseControlValues() override; // slot 0x69 0x506f90
+  virtual undefined PopulateDialogControlsFromSelectedProductionEntry(); // slot 0x68 0x506b00
+  virtual undefined RefreshOrderViewSupplyAndUseControlValues(); // slot 0x69 0x506f90
 // === END GENERATED DECLS (TOrderView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TOrderView 0xCTOR`).
 

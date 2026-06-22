@@ -48,7 +48,7 @@ public:
   // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
-  virtual undefined OrphanCallChain_C2_I13_004a0c00() override; // slot 0x25 0x4a0c00
+  virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
 // === END GENERATED DECLS (TAnimator) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimator 0xCTOR`).
 
