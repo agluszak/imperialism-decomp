@@ -12,6 +12,7 @@ from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.thunk_names import ThunkResolver, load_thunk_map
+from tools.workflow.reshape_autogen_signatures import reshape_text
 from tools.workflow.function_ownership import (
     DEFAULT_FUNCTION_OWNERSHIP_CSV,
     FunctionOwnership,
@@ -51,6 +52,11 @@ def parse_args() -> argparse.Namespace:
         "--no-resolve-thunks",
         action="store_true",
         help="Promote raw autogen text without rewriting thunk/alias names to real names.",
+    )
+    parser.add_argument(
+        "--no-reshape-signatures",
+        action="store_true",
+        help="Promote raw autogen text without reshaping __thiscall heads into C++ members.",
     )
     parser.add_argument(
         "--ownership-csv",
@@ -163,6 +169,8 @@ def main() -> int:
         resolver = ThunkResolver(load_thunk_map(resolve_repo_path(repo_root, args.thunk_map)))
         if resolver:
             available = {addr: resolver.resolve(block) for addr, block in available.items()}
+    if not args.no_reshape_signatures:
+        available = {addr: reshape_text(block) for addr, block in available.items()}
     requested: set[int] = set(explicit_addresses)
     if ranges:
         for addr in available:

@@ -63,8 +63,15 @@ sync-ghidra: _require-ghidra-install
     --name-overrides "{{name_overrides}}"
   just prune-ilt-thunks
   just dump-thunk-map
-  just resolve-autogen-thunks
+  just normalize-autogen
   just symbols-anchor-gate
+
+# Normalize src/ghidra_autogen so promoted bodies read against real symbols and
+# real C++ member signatures: resolve jmp-thunk/alias names, then reshape
+# `__thiscall Cls::Method(Cls *this, ...)` heads into `Cls::Method(...)`.
+normalize-autogen *args:
+  just resolve-autogen-thunks {{args}}
+  just reshape-autogen-signatures {{args}}
 
 # Rewrite Ghidra jmp-thunk / alias names in src/ghidra_autogen to the real names
 # (driven by config/thunk_map.csv), so promoted bodies read against real symbols.
@@ -72,6 +79,12 @@ sync-ghidra: _require-ghidra-install
 # fail without writing (gate mode), or file paths to scope to specific files.
 resolve-autogen-thunks *args:
   uv run python -m tools.workflow.resolve_autogen_thunks {{args}}
+
+# Reshape Ghidra `__thiscall Cls::Method(Cls *this, ...)` definition heads in
+# src/ghidra_autogen into real C++ member definitions `Cls::Method(...)` (drops
+# the convention + explicit `this`). Reference-only; deterministic + idempotent.
+reshape-autogen-signatures *args:
+  uv run python -m tools.workflow.reshape_autogen_signatures {{args}}
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 symbols-anchor-gate:
