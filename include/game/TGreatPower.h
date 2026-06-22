@@ -35,10 +35,8 @@ public:
   void Free() override; // body 0x004d9160
   // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
   // tracked-order list and each tracked order to the stream.
-  void WriteCoreStateAndTrackedOrdersToStream(void* stream) override;
-  // slot 0x0b — body 0x004da3e0 (RET 0x8): reads the same scalar block, clears the
-  // tracked-order list, then recreates one TCivUnit per stream count entry.
-  void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) override;
+  void WriteCoreFieldsToStream(TStream* stream) override;
+  void ReadCoreFieldsFromStream(TStream* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
   void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;

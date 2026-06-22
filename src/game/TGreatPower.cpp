@@ -1113,14 +1113,8 @@ void TGreatPower::WriteTo(TStream* stream) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004da3e0
-#pragma optimize("y", on)
-void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState, int unusedArg) {
-  (void)unusedArg;
-  TStream* stream = static_cast<TStream*>(streamState);
-  stream->ReadBytes(&this->encodedNationSlot, 2);
-  stream->ReadBytes(&this->treasuryValue10, 4);
-  stream->ReadBytes(&this->ownerNationSlot, 4);
-  stream->ReadBytes(&this->serializedField8c, 4);
+void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
+  TCountry::ReadCoreFieldsFromStream(stream, unusedArg);
 
   if (this->trackedObjectList->GetCountSlot48() != 0) {
     this->trackedObjectList->FreePayloadsSlot54();
@@ -1134,18 +1128,12 @@ void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState,
     civOrder->ReadFrom(stream);
   }
 }
-#pragma optimize("", on)
 
 // --- Slot 0x0a/0x0b stream serialization pair and status-flag slots 0x2b-0x33 ---
 
 // FUNCTION: IMPERIALISM 0x004da500
-#pragma optimize("y", on)
-void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
-  TStream* stream = static_cast<TStream*>(streamState);
-  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
-  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->ownerNationSlot, 4);
-  stream->WriteBytesSlot78(&this->serializedField8c, 4);
+void TGreatPower::WriteCoreFieldsToStream(TStream* stream) {
+  TCountry::WriteCoreFieldsToStream(stream);
 
   this->trackedObjectList->WriteTo(stream);
   int orderCount = this->trackedObjectList->GetCountSlot48();
@@ -1156,7 +1144,6 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
     order->WriteTo(stream);
   }
 }
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004da5c0
 void TGreatPower::NoOpNationPendingActionHook(void) {}

@@ -203,14 +203,20 @@ void TCountry::WriteTo(TStream* stream) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7070
-void TCountry::ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) {
-  (void)stream;
+void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   (void)unusedArg;
+  stream->ReadBytes(&this->encodedNationSlot, 2);
+  stream->ReadBytes(&this->treasuryValue10, 4);
+  stream->ReadBytes(&this->ownerNationSlot, 4);
+  stream->ReadBytes(&this->serializedField8c, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d70e0
-void TCountry::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
-  (void)stream;
+void TCountry::WriteCoreFieldsToStream(TStream* stream) {
+  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
+  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
+  stream->WriteBytesSlot78(&this->ownerNationSlot, 4);
+  stream->WriteBytesSlot78(&this->serializedField8c, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0

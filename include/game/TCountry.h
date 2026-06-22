@@ -29,8 +29,8 @@ public:
 
   // slots 0x0a-0x29 — concrete TCountry prefix. Slots 0x2a-0x33 are NULL in the
   // original base table and remain undeclared; pure virtuals would emit _purecall.
-  virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
-  virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
+  virtual void WriteCoreFieldsToStream(TStream* stream);
+  virtual void ReadCoreFieldsFromStream(TStream* stream, int unusedArg);
   virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
   virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
   virtual void AddToNationMetricAtField10(int amount);
