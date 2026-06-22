@@ -61,6 +61,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
+  virtual void NoOpUiLifecycleHook(int styleSeed) override; // slot 0x37 0x586d60
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -121,7 +122,7 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual undefined OrphanRetStub_00586ff0(); // slot 0x74 0x586ff0
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x586ff0
 // === END GENERATED DECLS (TAmtBarCluster) ===
   short metricSlotAt88;
   short pad_8a;
@@ -129,8 +130,6 @@ public:
   short valueAt8e;
   TAmtBarCluster();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NoOpUiLifecycleHook(int styleSeed) override;
-  virtual void ApplyMoveValue(int value) override;
 
   static TAmtBarCluster* CreateInstance();
 };

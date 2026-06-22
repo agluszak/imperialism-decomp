@@ -70,6 +70,4 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   reinterpret_cast<void(__cdecl*)(int)>(ppuVar2[0x45])(0);
 }
 
-undefined T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(void) { return 0;}
-
 T2PictToggleButton::~T2PictToggleButton() {}

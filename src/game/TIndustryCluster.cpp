@@ -198,10 +198,4 @@ void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 }
 
 
-undefined TIndustryCluster::OrphanRetStub_00586ff0(void) { return 0;}
-
-undefined TIndustryCluster::UpdateTradeBarFromSelectedMetricRatio_B(void) { return 0;}
-
-undefined TIndustryCluster::UpdateTradeMoveControlsFromDrag(void) { return 0;}
-
 TIndustryCluster::~TIndustryCluster() {}

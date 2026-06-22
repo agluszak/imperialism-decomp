@@ -27,7 +27,11 @@ void TTacticalBattleView::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a8660
-void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint * point) {
+void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
 }
 
 // FUNCTION: IMPERIALISM 0x005a8900
@@ -55,7 +59,9 @@ void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a8d40
-void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback() {
+void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+  (void)point;
+  (void)hitArg;
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
@@ -74,5 +80,6 @@ undefined TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9
 }
 
 // FUNCTION: IMPERIALISM 0x005a9550
-void __fastcall TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13 * ui_ctx) {
+void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13* ui_ctx) {
+  (void)ui_ctx;
 }

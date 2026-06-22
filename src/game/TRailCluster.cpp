@@ -254,10 +254,4 @@ void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 
-undefined TRailCluster::OrphanRetStub_00586ff0(void) { return 0;}
-
-undefined TRailCluster::UpdateTradeBarFromSelectedMetricRatio_A(void) { return 0;}
-
-undefined TRailCluster::UpdateTradeMoveControlsFromScaledDrag(void) { return 0;}
-
 TRailCluster::~TRailCluster() {}

@@ -124,9 +124,9 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual undefined OrphanRetStub_00586ff0() override; // slot 0x74 0x5899c0
-  virtual undefined UpdateTradeMoveControlsFromScaledDrag(); // slot 0x75 0x5899f0
-  virtual undefined UpdateTradeBarFromSelectedMetricRatio_A(); // slot 0x76 0x589d10
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x5899c0
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x5899f0
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0); // slot 0x76 0x589d10
 // === END GENERATED DECLS (TRailCluster) ===
   TAmtBar* selectedMetricControl; // 0x88
   short selectedMetricValue;      // 0x8c
@@ -135,9 +135,6 @@ public:
   TRailCluster();
   CRuntimeClass* GetRuntimeClass() const override;
   void NoOpUiLifecycleHook(int styleSeed) override;
-  virtual void ApplyMoveValue(int value) override;
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
 };
 
 ASSERT_SIZE(TRailCluster, 0x90);

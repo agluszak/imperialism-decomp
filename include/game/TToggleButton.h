@@ -124,12 +124,10 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x571330
-  virtual undefined HandleToggleButtonStateChangeAndRefresh() override; // slot 0x74 0x571350
+  virtual void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x571350
 // === END GENERATED DECLS (TToggleButton) ===
   TToggleButton();
   CRuntimeClass* GetRuntimeClass() const override;
-
-  void Select(bool isPressed, bool notifyParent);
 };
 
 ASSERT_SIZE(TToggleButton, 0x90);

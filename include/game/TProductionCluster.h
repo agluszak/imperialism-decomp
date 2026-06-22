@@ -127,9 +127,9 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual undefined SetTAmtBarClusterWordField8c(); // slot 0x74 0x586a60
-  virtual undefined SetTAmtBarClusterWordField8e(); // slot 0x75 0x586ab0
-  virtual undefined OrphanLeaf_NoCall_Ins05_00586a80(); // slot 0x76 0x586a80
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x586a60
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x586ab0
+  virtual int GetControlFlag(int value90 = 0, int value94 = 0); // slot 0x76 0x586a80
 // === END GENERATED DECLS (TProductionCluster) ===
   int field88;
   short field8c;
@@ -139,9 +139,6 @@ public:
 
   TProductionCluster();
   CRuntimeClass* GetRuntimeClass() const override;
-  virtual void ApplyMoveValue(int value) override;
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
-  virtual int GetControlFlag(int value90 = 0, int value94 = 0) override;
 };
 
 ASSERT_SIZE(TProductionCluster, 0x98);

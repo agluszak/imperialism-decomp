@@ -1,11 +1,9 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
 src/game/TCivDescription.cpp|0|2|0|0|2
 src/game/TDealList.cpp|0|3|0|0|3
-src/game/TDiplomacyMapView.cpp|0|0|0|0|0
-src/game/TFocusAnimation.cpp|0|0|0|0|0
 src/game/TMapDialog.cpp|0|1|0|0|1
 src/game/TMapOrderEntry.cpp|0|1|0|0|1
-src/game/TTransFocusAnimation.cpp|0|0|0|0|0
+src/game/TUberCluster.cpp|1|0|0|0|1
 src/game/TWorldView.cpp|0|5|0|0|5
 src/ghidra_autogen/CAmbitDocument.cpp|0|0|7|0|7
 src/ghidra_autogen/CCmdTarget.cpp|0|0|3|0|3
@@ -13,7 +11,7 @@ src/ghidra_autogen/CDocument.cpp|0|0|9|0|9
 src/ghidra_autogen/CFrameWnd.cpp|0|0|1|0|1
 src/ghidra_autogen/CMainFrame.cpp|0|0|1|0|1
 src/ghidra_autogen/CWnd.cpp|0|0|1|0|1
-src/ghidra_autogen/LinkedListQueryOwner.cpp|0|0|7|0|7
+src/ghidra_autogen/LinkedListQueryOwner.cpp|0|0|4|0|4
 src/ghidra_autogen/T2PictToggleButton.cpp|0|0|1|0|1
 src/ghidra_autogen/TAmbitApplication.cpp|0|0|2|0|2
 src/ghidra_autogen/TAmbitFileBasedDocument.cpp|0|0|30|0|30
@@ -110,7 +108,7 @@ src/ghidra_autogen/TGameSetupPicture.cpp|0|0|13|0|13
 src/ghidra_autogen/TGameWindow.cpp|0|0|17|0|17
 src/ghidra_autogen/TGarrisonView.cpp|0|0|1|0|1
 src/ghidra_autogen/TGrantsView.cpp|0|0|6|0|6
-src/ghidra_autogen/TGreatPower.cpp|0|0|275|0|275
+src/ghidra_autogen/TGreatPower.cpp|0|0|270|0|270
 src/ghidra_autogen/THQButton.cpp|0|0|6|0|6
 src/ghidra_autogen/THelpMgr.cpp|0|0|1|0|1
 src/ghidra_autogen/THelpPicture.cpp|0|0|21|0|21
@@ -245,7 +243,7 @@ src/ghidra_autogen/TTerrainHelpPicture.cpp|0|0|8|0|8
 src/ghidra_autogen/TTextList.cpp|0|0|1|0|1
 src/ghidra_autogen/TTextileForeignMinister.cpp|0|0|6|0|6
 src/ghidra_autogen/TToggleButton.cpp|0|0|7|0|7
-src/ghidra_autogen/TToolBarCluster.cpp|0|0|143|0|143
+src/ghidra_autogen/TToolBarCluster.cpp|0|0|142|0|142
 src/ghidra_autogen/TTown.cpp|0|0|8|0|8
 src/ghidra_autogen/TTownNameDialog.cpp|0|0|2|0|2
 src/ghidra_autogen/TTradeBidNationView.cpp|0|0|1|0|1

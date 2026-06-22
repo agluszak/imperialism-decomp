@@ -102,10 +102,4 @@ int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2)
 }
 
 
-undefined TProductionCluster::OrphanLeaf_NoCall_Ins05_00586a80(void) { return 0;}
-
-undefined TProductionCluster::SetTAmtBarClusterWordField8c(void) { return 0;}
-
-undefined TProductionCluster::SetTAmtBarClusterWordField8e(void) { return 0;}
-
 TProductionCluster::~TProductionCluster() {}

@@ -30,6 +30,7 @@ undefined TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a61c0
-undefined TArmyTacUnit::VTableSlot0E() {
+undefined TArmyTacUnit::VTableSlot0E(int param_1) {
+  (void)param_1;
   return 0;
 }

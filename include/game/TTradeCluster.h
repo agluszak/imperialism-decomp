@@ -20,13 +20,13 @@ public:
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   void NoOpUiLifecycleHook(int styleSeed) override; // 0xdc 0x587130
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
-  virtual int GetBoolSlot1DC() override;
-  virtual void DoControlAction() override;
-  virtual void SetTradeBidControlBitmap() override;
-  virtual void SetTradeOfferControlBitmap() override;
-  virtual void SetTradeOfferSecondaryBitmap() override;
   virtual int IsTradeControlAtMinimum() override;
-  virtual void ApplyMoveValue(int value) override;
+  virtual void ApplyMoveValue(int value);
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
+  virtual int GetBoolSlot1DC();
+  virtual void DoControlAction();
+  virtual void SetTradeBidControlBitmap();
+  virtual void SetTradeOfferControlBitmap();
+  virtual void SetTradeOfferSecondaryBitmap();
 };

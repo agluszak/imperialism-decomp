@@ -122,12 +122,12 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x5866b0
 // === END GENERATED DECLS (TCityBarCluster) ===
   TCityBarCluster();
   CRuntimeClass* GetRuntimeClass() const override;
 
   static TCityBarCluster* CreateInstance();
-  void ApplyMoveValue(int value) override;
 
   void UpdateTradeSummaryMetricControlsFromRecord(int recordContext);
 };

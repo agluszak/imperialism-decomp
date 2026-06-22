@@ -64,7 +64,7 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback() override; // slot 0x35 0x5a8d40
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) override; // slot 0x35 0x5a8d40
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5a84d0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
@@ -82,7 +82,7 @@ public:
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x430bf0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint * point) override; // slot 0x47 0x5a8660
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x47 0x5a8660
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -123,7 +123,7 @@ public:
   virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog() override; // slot 0x6d 0x5a9170
   virtual undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3) override; // slot 0x6e 0x5a9090
   virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3) override; // slot 0x6f 0x5a9240
-  virtual void __fastcall DrawUiTilesAndOverlay(astruct_13 * ui_ctx) override; // slot 0x70 0x5a9550
+  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx) override; // slot 0x70 0x5a9550
 // === END GENERATED DECLS (TTacticalBattleView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattleView 0xCTOR`).
 

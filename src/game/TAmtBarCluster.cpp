@@ -67,6 +67,4 @@ void TAmtBarCluster::ApplyMoveValue(int value) {
 }
 
 
-undefined TAmtBarCluster::OrphanRetStub_00586ff0(void) { return 0;}
-
 TAmtBarCluster::~TAmtBarCluster() {}

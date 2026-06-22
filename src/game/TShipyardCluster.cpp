@@ -153,6 +153,4 @@ void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, 
 }
 
 
-undefined TShipyardCluster::OrphanRetStub_00586ff0(void) { return 0;}
-
 TShipyardCluster::~TShipyardCluster() {}

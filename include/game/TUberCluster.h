@@ -124,23 +124,9 @@ public:
   virtual int IsTradeControlAtMinimum(); // slot 0x73 0x5714e0
 // === END GENERATED DECLS (TUberCluster) ===
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
+  void DispatchRuntimeApplyMoveValue(int value);
   TUberCluster();
   CRuntimeClass* GetRuntimeClass() const override;
-
-  // Slots 0x74 - 0x7B are NULL in the original TUberCluster vtable (filled only by concrete
-  // slots NULL (abstract: filled only by concrete cluster subclasses, hand-constructed via
-  // manual-vptr factories). We cannot model that cleanly: pure virtuals emit _purecall (not
-  // NULL) under MSVC500, and the base IsTradeControl* / HandleTradeMoveControlAdjustment code
-  // makes a virtual call to slot 0x1D0 (ApplyMoveValue) which forces a base declaration. Kept
-  // as concrete no-op stubs; these 8 slots therefore stay mismatched vs the NULL original.
-  virtual void ApplyMoveValue(int value);
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
-  virtual int GetBoolSlot1DC();
-  virtual void DoControlAction();
-  virtual void SetTradeBidControlBitmap();
-  virtual void SetTradeOfferControlBitmap();
-  virtual void SetTradeOfferSecondaryBitmap();
 
   void InitializeTradeMoveAndBarControls(unsigned int styleSeed = 0);
 };

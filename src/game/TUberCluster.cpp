@@ -63,6 +63,14 @@ TUberCluster::TUberCluster() : TCluster() {}
 int TUberCluster::IsTradeControlAtMinimum() {
   return 1;
 }
+
+void TUberCluster::DispatchRuntimeApplyMoveValue(int value) {
+  // Slot 0x74 (ApplyMoveValue) is NULL in the static TUberCluster vtable; McApp patches it
+  // at runtime on concrete cluster instances.
+  void* slotFn = (*reinterpret_cast<void***>(this))[0x74];
+  reinterpret_cast<void(__fastcall*)(TUberCluster*, int /*edx*/, int)>(slotFn)(this, 0, value);
+}
+
 // Helper shared by TAmtBarCluster::NoOpUiLifecycleHook (0x586d60); the original address
 // is owned by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
@@ -102,7 +110,7 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
     }
     short availableValue = (short)(reinterpret_cast<TAmtBar*>(availableControl)->QueryValue());
     if (moveValue < availableValue) {
-      this->ApplyMoveValue(moveValue + 1);
+      this->DispatchRuntimeApplyMoveValue(moveValue + 1);
     }
   } else if (normalizedCommand == 1) {
     TControl* moveControl = this->ResolveControlByTag(0x6d6f7665); // kControlTagMove
@@ -111,27 +119,11 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
     }
     int moveValue = reinterpret_cast<TAmtBar*>(moveControl)->QueryValue();
     if ((short)moveValue != 0) {
-      this->ApplyMoveValue(moveValue - 1);
+      this->DispatchRuntimeApplyMoveValue(moveValue - 1);
     }
   }
   this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
                               reinterpret_cast<TEvent*>(eventExtra));
 }
-
-void TUberCluster::ApplyMoveValue(int) {}
-
-void TUberCluster::DoControlAction(void) {}
-
-int TUberCluster::GetBoolSlot1DC(void) { return 0;}
-
-int TUberCluster::GetControlFlag(int,int) { return 0;}
-
-int TUberCluster::NotifyControlSelectionChange(void *,int) { return 0;}
-
-void TUberCluster::SetTradeBidControlBitmap(void) {}
-
-void TUberCluster::SetTradeOfferControlBitmap(void) {}
-
-void TUberCluster::SetTradeOfferSecondaryBitmap(void) {}
 
 TUberCluster::~TUberCluster() {}

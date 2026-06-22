@@ -124,9 +124,9 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual undefined OrphanRetStub_00586ff0() override; // slot 0x74 0x588c30
-  virtual undefined UpdateTradeMoveControlsFromDrag(); // slot 0x75 0x588c60
-  virtual undefined UpdateTradeBarFromSelectedMetricRatio_B(); // slot 0x76 0x588f60
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x588c30
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x588c60
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0); // slot 0x76 0x588f60
 // === END GENERATED DECLS (TIndustryCluster) ===
   TAmtBar* selectedMetricControl; // 0x88
   short selectedMetricValue;      // 0x8c
@@ -135,9 +135,6 @@ public:
   TIndustryCluster();
   CRuntimeClass* GetRuntimeClass() const override;
   void NoOpUiLifecycleHook(int styleSeed) override;
-  virtual void ApplyMoveValue(int value) override;
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
 };
 
 ASSERT_SIZE(TIndustryCluster, 0x90);

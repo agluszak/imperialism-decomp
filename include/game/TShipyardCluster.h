@@ -124,7 +124,7 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  virtual undefined OrphanRetStub_00586ff0() override; // slot 0x74 0x58a690
+  virtual void ApplyMoveValue(int value); // slot 0x74 0x58a690
 // === END GENERATED DECLS (TShipyardCluster) ===
   int field_88;
   short field_8c;
@@ -133,7 +133,6 @@ public:
   TShipyardCluster();
   CRuntimeClass* GetRuntimeClass() const override;
   void NoOpUiLifecycleHook(int styleSeed) override;
-  virtual void ApplyMoveValue(int value) override;
 };
 
 ASSERT_SIZE(TShipyardCluster, 0x90);

@@ -13,7 +13,6 @@ address|target_cpp|ownership|note
 4053d5|src/game/TSimMgr.cpp|manual|marker_sync
 405529|src/game/config.cpp|manual|marker_sync
 405ab5|src/game/TCapacityOrder.cpp|manual|marker_sync
-405f8d|src/game/TToggleButton.cpp|manual|marker_sync
 4064e2|src/game/TView.cpp|manual|marker_sync
 406758|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 406aaf|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -2634,7 +2633,7 @@ address|target_cpp|ownership|note
 58b750|src/game/THQButton.cpp|manual|marker_sync
 58b7f0|src/game/THQButton.cpp|manual|marker_sync
 58b890|src/game/THQButton.cpp|manual|marker_sync
-58b8d0|src/game/TNumberedArrowButton.cpp|manual|marker_sync
+58b8d0|src/game/THQButton.cpp|manual|marker_sync
 58b960|src/game/TPlacard.cpp|manual|marker_sync
 58b9f0|src/game/TPlacard.cpp|manual|marker_sync
 58ba10|src/game/TPlacard.cpp|manual|marker_sync
