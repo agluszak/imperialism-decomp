@@ -15,8 +15,12 @@ live in `heuristics.md` next to this file — read it before tuning a body.
    high-impact non-trivial bodies over tiny thunks. `just compare 0xADDR` once
    first to confirm it is a real body, not a `jmp` trampoline.
 2. **Promote** the Ghidra text:
-   - `just promote src/game/<Class>.cpp --address 0x...`
+   - `just promote-shaped src/game/<Class>.cpp --address 0x...` (preferred — shapes
+     member signatures when `config/classes/<Class>.yml` exists)
+   - `just promote src/game/<Class>.cpp --address 0x...` (raw autogen copy)
    - or `just promote-range src/game/<Class>.cpp 0xLOW 0xHIGH`
+   - After bulk promote, if `just decomplint` reports `function_out_of_order`:
+     `uv run python -m tools.workflow.reorder_marked_functions <file.cpp>`
 3. **Shape pass** — make it compile-safe C++ that preserves the original control
    flow:
    - keep call order, branching shape, and fail-and-continue behavior from Ghidra;

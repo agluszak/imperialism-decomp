@@ -395,6 +395,21 @@ promote-range target_cpp start end:
     --ownership-csv "{{function_ownership}}" \
     --range "{{start}}:{{end}}"
 
+# Promote autogen blocks with shape_body when config/classes/<Class>.yml exists.
+promote-shaped target_cpp *args:
+  uv run python -m tools.workflow.promote_shaped \
+    --target-cpp "{{target_cpp}}" \
+    --ownership-csv "{{function_ownership}}" \
+    {{args}}
+
+# Manifest-driven class generator (header block + shaped slot bodies). Dry-run by default.
+gen-class cls *args:
+  uv run python -m tools.workflow.gen_class "{{cls}}" {{args}}
+
+# Score every // FUNCTION marker in src/game/<Class>.cpp (single PDB parse).
+compare-class cls:
+  just compare --file "src/game/{{cls}}.cpp"
+
 full-sync-build:
   just tooling-check
   just sync-ghidra
