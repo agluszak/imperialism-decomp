@@ -5,28 +5,28 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AE60
 // GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(void)
+// GHIDRA_PROTO undefined __thiscall TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(void)
 
 TShipyardView * __thiscall
 TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
           (TShipyardView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = (TShipyardViewVtbl *)&TScenarioChooserVtbl_00644540;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AF80
 // GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(void)
+// GHIDRA_PROTO undefined __thiscall TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(void)
 
 TShipyardView * __thiscall
 TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
           (TShipyardView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = (TShipyardViewVtbl *)&TGameScorePictureVtbl_00644970;
   return this;
 }
@@ -51,7 +51,7 @@ TNoHilitePicture * TShipyardView::CreateTShipyardViewInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xcc);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this[1].vftable = (TNoHilitePictureVtbl *)0x0;
     this->vftable = (TNoHilitePictureVtbl *)&TShipyardViewVtbl_00651b30;
     this[1].field04 = 0;
@@ -64,7 +64,7 @@ TNoHilitePicture * TShipyardView::CreateTShipyardViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82A0
 // GHIDRA_NAME TShipyardView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipyardView::GetTEventHandlerClassNamePointer(TShipyardView *this)
 
@@ -74,12 +74,12 @@ CRuntimeClass * __thiscall TShipyardView::GetTEventHandlerClassNamePointer(TShip
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82C0
 // GHIDRA_NAME TShipyardView::ConstructTShipyardViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipyardViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipyardView::ConstructTShipyardViewBaseState(void)
 
 TShipyardView * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipyardView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TShipyardViewVtbl_00651b30;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
@@ -94,7 +94,7 @@ TShipyardView * __thiscall
 TShipyardView::_scalar_deleting_destructor_(TShipyardView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -109,7 +109,7 @@ void __thiscall TShipyardView::_scalar_deleting_destructor_(TShipyardView *this)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0xb8);
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
     (*g_pUiViewManager->vftable[6].slot_0x04)(0x23f7);
   }
@@ -190,7 +190,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
     uVar4 = (*pTVar8)();
     if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar7 = *(int *)CONCAT31(extraout_var,uVar4);
     (**(code **)(iVar7 + 0xa4))();
@@ -199,7 +199,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
     uVar4 = (*pTVar8)();
     if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar4);
     pcVar10 = (code *)0x1;
@@ -217,7 +217,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
     local_28 = local_28 + 1;
     local_1c = (undefined *)((int)local_1c + -1);
   } while (local_1c != (undefined *)0x0);
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_20 = &this->field_0xa4;
   local_28 = 0;
   local_24 = (undefined1 *)0x636c7530;
@@ -245,7 +245,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
       uVar4 = (*pTVar8)();
       if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       iVar7 = *(int *)CONCAT31(extraout_var_02,uVar4);
       (**(code **)(iVar7 + 0xa4))();
@@ -262,7 +262,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
       piVar6 = (int *)(*pcVar10)(0x6e756d62);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x274);
       }
       iVar7 = *piVar6;
@@ -276,14 +276,14 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
     local_1c = local_1c + 2;
     local_24 = local_24 + 1;
   } while ((short)local_28 < 8);
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   uVar4 = (*pTVar8)();
   iVar7 = *(int *)CONCAT31(extraout_var_03,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))();
   iVar9 = 0xe;
   (**(code **)(iVar7 + 0x1cc))();
-  thunk_BuildUiTextStyleDescriptor(&local_24,0);
+  BuildUiTextStyleDescriptor(&local_24,0);
   iVar7 = 0;
   do {
     uVar4 = (*pTVar8)();
@@ -293,12 +293,12 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
     (**(code **)(iVar2 + 0x1cc))(0x2736,iVar9 + 0xf,1);
     iVar7 = iVar7 + 1;
   } while ((short)iVar7 < 2);
-  thunk_BuildUiTextStyleDescriptor(&local_24,0);
+  BuildUiTextStyleDescriptor(&local_24,0);
   uVar4 = (*pTVar8)();
   iVar7 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))(&local_28);
-  thunk_BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
+  BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
   uVar4 = (*pTVar8)(0x64657363);
   iVar7 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -308,7 +308,7 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
   *(undefined2 *)&this->field_0xa0 = 0;
   (*pTVar3[0x3e].GetTEventHandlerClassNamePointer)
             (CONCAT22(extraout_var_08,*(undefined2 *)&this->field_0xa4));
-  thunk_BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
+  BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
   uVar4 = (*pTVar8)(0x73656c65);
   iVar7 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -334,13 +334,13 @@ void __thiscall TShipyardView::OrphanRetStub_004c6fb0(TShipyardView *this)
   uStack_c = 0xb4;
   uStack_8 = 0x124;
   uStack_4 = 0xf0;
-  thunk_InvalidateCityDialogRectRegion(&uStack_10,1);
+  InvalidateCityDialogRectRegion(&uStack_10,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8AC0
 // GHIDRA_NAME TShipyardView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this,int param_1,int param_2)
 
@@ -399,13 +399,13 @@ void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this,int pa
       piVar8 = (int *)(*apcStack_20[0])();
       if (piVar8 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x2fd);
       }
       piVar9 = (int *)(**(code **)(*piVar8 + 0x94))(0x6e756d62);
       if (piVar9 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x2ff);
       }
       iVar3 = *piVar9;
@@ -420,13 +420,13 @@ void __thiscall TShipyardView::OrphanRetStub_0059add0(TShipyardView *this,int pa
                             *(undefined2 *)(&this->field_0xa4 + *(short *)&this->field_0xa0 * 2)));
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9150
 // GHIDRA_NAME TShipyardView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(int pDialogState, int * pRenderRectData)
+// GHIDRA_PROTO void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int pDialogState, int * pRenderRectData)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void RenderCityViewProductionDialogMetrics(int pDialogState, int* pRenderRectData)
 // GHIDRA_COMMENT_END
@@ -499,7 +499,7 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
   local_80[1] = 0x66;
   local_80[3] = 0x56;
   local_80[4] = 0x66;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   local_68.right = 0xe5;
   local_68.left = 0x16;
@@ -532,24 +532,24 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
                   ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
                    (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_58,&local_68,
                    0x24,(astruct_19 *)0x0);
-        thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xb2);
+        SetQuickDrawTextOriginWithContextOffset(local_68.right,0xb2);
         FormatStringWithVarArgsToSharedRef(&local_84,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4])
         ;
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_84);
+        THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
         FormatStringWithVarArgsToSharedRef
                   (&local_84,&g_szDecimalFormat,
                    (int)*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2));
         if (*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2) <
             pnCommoditySlotInfo[4]) {
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b69);
-          thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_84);
+          SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
+          THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
         }
         else {
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
-          thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_84);
+          SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
+          THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
         }
       }
       nMetricColumnX = nMetricColumnX + 0x28;
@@ -569,11 +569,11 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2736,nMetricColumnX + 0x10,&local_84);
       uVar1 = local_80[nMetricColumnX];
       nValueTextY = CONCAT22((short)((uint)unaff_EBP >> 0x10),local_80[nMetricColumnX + 6]);
-      thunk_SetQuickDrawTextOriginWithContextOffset(nValueTextY,uVar1);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_84);
+      SetQuickDrawTextOriginWithContextOffset(nValueTextY,uVar1);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
       switch(nMetricColumnX) {
       case 0:
-        nMetricRawValue = thunk_GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId);
+        nMetricRawValue = GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId);
         nMetricValue = (int)nMetricRawValue / 100;
         break;
       case 1:
@@ -592,7 +592,7 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
         nMetricValue = (int)nMetricRawValue;
         break;
       case 5:
-        nMetricRawValue = thunk_GetResourceDescriptorWeightWord0ByType(nCommoditySpriteId);
+        nMetricRawValue = GetResourceDescriptorWeightWord0ByType(nCommoditySpriteId);
         nMetricValue = (int)nMetricRawValue;
         break;
       default:
@@ -601,8 +601,8 @@ TShipyardView::OrphanTiny_ReturnZero_0048a730
       FormatStringWithVarArgsToSharedRef(&local_84,&g_szDecimalFormat,nMetricValue);
 switchD_004c9540_default:
       unaff_EBP = nValueTextY + 0x3c;
-      thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_84);
+      SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_84);
       nMetricColumnX = nMetricColumnX + 1;
     } while (nMetricColumnX < 6);
   }
@@ -746,7 +746,7 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     iStack_60 = 0x4c9abe;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   pTVar6 = (TShipyardView_slot_0x04_0x04 *)0x2716;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -755,19 +755,19 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
   pcStack_24 = local_34.m_pchData;
   iStack_60 = 1;
   uStack_28 = uStack_38;
-  thunk_InvalidateCityDialogRectRegion(&local_30);
+  InvalidateCityDialogRectRegion(&local_30);
   iStack_60 = 0x68697374;
                     /* Loop over six status counters (sta0..sta5). */
   uVar2 = (*pTVar5)();
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x410);
   }
   iVar4 = *(int *)CONCAT31(extraout_var_00,uVar2);
   (**(code **)(iVar4 + 0x1cc))(0x23f7,uStack_14,0);
   (**(code **)(iVar4 + 300))(&stack0xffffffb0);
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffffbc,1);
+  InvalidateCityDialogRectRegion(&stack0xffffffbc,1);
   iVar4 = 0;
   iStack_60 = 0x73746130;
   do {
@@ -775,7 +775,7 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
     pTVar5 = pTVar6;
     if ((int *)CONCAT31(extraout_var_01,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x418);
       pTVar5 = pTVar6;
     }
@@ -783,7 +783,7 @@ void __thiscall TShipyardView::RefreshCityViewStatusPanel(TShipyardView *this,in
     sVar3 = GetResourceDescriptorWord08ByTypeOffset(uStack_28,iVar4,0);
     (**(code **)(iVar1 + 0x1e4))((int)sVar3);
     (**(code **)(iVar1 + 300))(&iStack_60);
-    thunk_InvalidateCityDialogRectRegion(&stack0xffffffbc,1);
+    InvalidateCityDialogRectRegion(&stack0xffffffbc,1);
     iVar4 = iVar4 + 1;
     iStack_60 = iStack_60 + 1;
     pTVar6 = pTVar5;

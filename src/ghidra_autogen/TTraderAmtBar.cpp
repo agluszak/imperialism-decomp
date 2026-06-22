@@ -23,7 +23,7 @@ TView * TTraderAmtBar::CreateTTraderAmtBarInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
@@ -38,7 +38,7 @@ TView * TTraderAmtBar::CreateTTraderAmtBarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AED0
 // GHIDRA_NAME TTraderAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTraderAmtBar::GetTEventHandlerClassNamePointer(TTraderAmtBar *this)
 
@@ -48,12 +48,12 @@ CRuntimeClass * __thiscall TTraderAmtBar::GetTEventHandlerClassNamePointer(TTrad
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AEF0
 // GHIDRA_NAME TTraderAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
 TTraderAmtBar * __thiscall TTraderAmtBar::ConstructBaseState(TTraderAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TTraderAmtBarVtbl_00666ba0;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
@@ -70,7 +70,7 @@ TTraderAmtBar * __thiscall
 TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState_0058AF60((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -79,7 +79,7 @@ TTraderAmtBar::_scalar_deleting_destructor_(TTraderAmtBar *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AF80
 // GHIDRA_NAME TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TTraderAmtBar *this)
 
@@ -119,7 +119,7 @@ void __thiscall TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TTraderAmtBar *t
   }
   *(undefined2 *)&this->field_0x64 = *(undefined2 *)&pTVar1->field_0xa4;
   *(undefined2 *)&this->field_0x66 = 0x37;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
@@ -227,11 +227,11 @@ void __thiscall TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TTr
       uStack_4c = DAT_006a4454;
       (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&uStack_50);
       if (0 < *(short *)&this->field_0x60) {
-        thunk_SetQuickDrawTextOriginWithContextOffset(0,0);
+        SetQuickDrawTextOriginWithContextOffset(0,0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,5);
-        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,0);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,5);
+        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,0);
         ResetQuickDrawStrokeState();
       }
       SnapshotHitRegionToClipCache(pLVar5);

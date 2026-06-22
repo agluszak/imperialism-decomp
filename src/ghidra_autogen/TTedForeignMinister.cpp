@@ -16,7 +16,7 @@ TTedForeignMinister::GetTMinisterClassNamePointer(TTedForeignMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005311D0
 // GHIDRA_NAME TTedForeignMinister::ConstructTTedForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTTedForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTedForeignMinister::ConstructTTedForeignMinister(void)
 
 TTedForeignMinister * __thiscall
 TTedForeignMinister::ConstructTTedForeignMinister(TTedForeignMinister *this)
@@ -51,7 +51,7 @@ TTedForeignMinister * __thiscall
 TTedForeignMinister::DeletingDestructTMinister(TTedForeignMinister *this,byte param_1)
 
 {
-  DestructTTedForeignMinister(this);
+  TTedForeignMinister::DestructTTedForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -60,7 +60,7 @@ TTedForeignMinister::DeletingDestructTMinister(TTedForeignMinister *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531270
 // GHIDRA_NAME TTedForeignMinister::DestructTTedForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTTedForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTedForeignMinister::DestructTTedForeignMinister(void)
 
 void __thiscall TTedForeignMinister::DestructTTedForeignMinister(TTedForeignMinister *this)
 
@@ -72,7 +72,7 @@ void __thiscall TTedForeignMinister::DestructTTedForeignMinister(TTedForeignMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531290
 // GHIDRA_NAME TTedForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTedForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTedForeignMinister *this)
 
@@ -191,7 +191,7 @@ LAB_005314a2:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531550
 // GHIDRA_NAME TTedForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TTedForeignMinister::SetForeignMinisterReadyFlag14(TTedForeignMinister *this)
 
@@ -291,7 +291,7 @@ LAB_0053167c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531770
 // GHIDRA_NAME TTedForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, int param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 param_1, int param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TTedForeignMinister::UpdateControlCachedIntFromWindowText
@@ -384,7 +384,7 @@ TTedForeignMinister::UpdateControlCachedIntFromWindowText
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531A10
 // GHIDRA_NAME TTedForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 void __thiscall
 TTedForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TTedForeignMinister *this)

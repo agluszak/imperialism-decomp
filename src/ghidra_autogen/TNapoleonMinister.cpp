@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED490
 // GHIDRA_NAME TNapoleonMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -32,7 +32,7 @@ CRuntimeClass * __thiscall TNapoleonMinister::GetTMinisterClassNamePointer(TNapo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED4E0
 // GHIDRA_NAME TNapoleonMinister::ConstructTNapoleonMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNapoleonMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TNapoleonMinister::ConstructTNapoleonMinisterBaseState(void)
 
 TNapoleonMinister * __thiscall
 TNapoleonMinister::ConstructTNapoleonMinisterBaseState(TNapoleonMinister *this)

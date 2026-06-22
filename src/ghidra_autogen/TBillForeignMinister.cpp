@@ -16,7 +16,7 @@ TBillForeignMinister::GetTMinisterClassNamePointer(TBillForeignMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531BE0
 // GHIDRA_NAME TBillForeignMinister::ConstructTBillForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTBillForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TBillForeignMinister::ConstructTBillForeignMinister(void)
 
 TBillForeignMinister * __thiscall
 TBillForeignMinister::ConstructTBillForeignMinister(TBillForeignMinister *this)
@@ -52,7 +52,7 @@ TBillForeignMinister * __thiscall
 TBillForeignMinister::DeletingDestructTMinister(TBillForeignMinister *this,byte param_1)
 
 {
-  DestructTBillForeignMinister(this);
+  TBillForeignMinister::DestructTBillForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -61,7 +61,7 @@ TBillForeignMinister::DeletingDestructTMinister(TBillForeignMinister *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531C80
 // GHIDRA_NAME TBillForeignMinister::DestructTBillForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTBillForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TBillForeignMinister::DestructTBillForeignMinister(void)
 
 void __thiscall TBillForeignMinister::DestructTBillForeignMinister(TBillForeignMinister *this)
 
@@ -73,7 +73,7 @@ void __thiscall TBillForeignMinister::DestructTBillForeignMinister(TBillForeignM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531CA0
 // GHIDRA_NAME TBillForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TBillForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
@@ -88,7 +88,7 @@ TBillForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531CE0
 // GHIDRA_NAME TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader
@@ -103,7 +103,7 @@ TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531D20
 // GHIDRA_NAME TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TBillForeignMinister *this)
 
@@ -152,7 +152,7 @@ void __thiscall TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TBillFore
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531E50
 // GHIDRA_NAME TBillForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TBillForeignMinister::SetForeignMinisterReadyFlag14(TBillForeignMinister *this)
 
@@ -310,7 +310,7 @@ LAB_005320cd:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532190
 // GHIDRA_NAME TBillForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
 
 void __thiscall
 TBillForeignMinister::UpdateControlCachedIntFromWindowText
@@ -475,7 +475,7 @@ LAB_005323bb:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532520
 // GHIDRA_NAME TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 void __thiscall
 TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBillForeignMinister *this)
@@ -535,7 +535,7 @@ void __thiscall TBillForeignMinister::_scalar_deleting_destructor_(TBillForeignM
     if (1 < sVar2) {
       return;
     }
-    sVar1 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+    sVar1 = TControl::LookupOrderCompatibilityMatrixValue
                       ((TControl *)g_pDiplomacyTurnStateManager,
                        *(short *)(*(int *)&this->field_0x4 + 0xc),(short)iVar3,(short)unaff_EDI,
                        (short)unaff_ESI);
@@ -564,12 +564,12 @@ TBillForeignMinister::UpdateDiplomatProgressFromProductionSlots2And4
   undefined3 extraout_var;
   
   *(undefined2 *)&param_1->field_0x5e = 3;
-  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
+  iVar4 = TCity::GetCityBuildingProductionValueBySlot(param_1,2);
   sVar3 = (short)iVar4 + 2;
   *(short *)&param_1->field_0x200 =
        *(short *)&param_1->field_0x200 + (sVar3 - *(short *)&param_1->field_0x1e0);
   *(short *)&param_1->field_0x1e0 = sVar3;
-  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,4);
+  iVar4 = TCity::GetCityBuildingProductionValueBySlot(param_1,4);
   pTVar1 = param_1->vftable;
   sVar3 = (short)iVar4 + 2;
   *(short *)&param_1->field_0x204 =

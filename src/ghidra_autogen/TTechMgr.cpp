@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TTechMgr::GetTTechMgrClassNamePointer(TTechMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEF80
 // GHIDRA_NAME TTechMgr::ConstructCityOrderCapabilityStateVtable
-// GHIDRA_PROTO undefined __thiscall ConstructCityOrderCapabilityStateVtable(void)
+// GHIDRA_PROTO undefined __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(void)
 
 void __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(TTechMgr *this)
 
@@ -80,7 +80,7 @@ void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this,int
   code *pcVar4;
   undefined4 uVar5;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   if (DAT_00695278 < 0x27) {
     pcVar4 = *(code **)(*param_1 + 0x3c);
     (*pcVar4)(&this->field_0x4,0x3a);
@@ -242,7 +242,7 @@ void __thiscall TTechMgr::SerializeCityOrderCapabilityState(TTechMgr *this)
   int local_4;
   
   puStack_1c = (undefined4 *)0x5af721;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puVar3 = (undefined2 *)&this->field_0x4;
   local_4 = 0x1d;
   pcVar1 = *(code **)(*_uStack00000004 + 0x78);

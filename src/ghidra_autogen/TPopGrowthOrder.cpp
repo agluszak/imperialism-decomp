@@ -20,7 +20,7 @@ TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8140
 // GHIDRA_NAME TPopGrowthOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
@@ -31,7 +31,7 @@ TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8160
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(int param_1)
+// GHIDRA_PROTO undefined __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1)
 
 void __thiscall
 TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int param_1)
@@ -184,7 +184,7 @@ void __thiscall TPopGrowthOrder::OrphanRetStub_004b5160(TPopGrowthOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8420
 // GHIDRA_NAME TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
 void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOrder *this)
 
@@ -194,7 +194,7 @@ void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8440
 // GHIDRA_NAME TPopGrowthOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
 void __thiscall TPopGrowthOrder::CreateTItemOrderInstance(TPopGrowthOrder *this)
 

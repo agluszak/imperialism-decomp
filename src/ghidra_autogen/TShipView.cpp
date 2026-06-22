@@ -10,7 +10,7 @@
 TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -39,7 +39,7 @@ TView * TShipView::CreateTShipViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TShipViewVtbl_0065ce28;
     pTVar1 = this;
   }
@@ -49,7 +49,7 @@ TView * TShipView::CreateTShipViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565470
 // GHIDRA_NAME TShipView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipView::GetTEventHandlerClassNamePointer(TShipView *this)
 
@@ -59,7 +59,7 @@ CRuntimeClass * __thiscall TShipView::GetTEventHandlerClassNamePointer(TShipView
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005654E0
 // GHIDRA_NAME TShipView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
 
@@ -107,12 +107,12 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
   AssignStringSharedFromRef();
   local_4._0_1_ = 2;
   CString::~CString(&CStack_58);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  SetQuickDrawTextOriginWithContextOffset(0x50);
   CStack_54.m_pchData = &stack0xffffff90;
   SetQuickDrawFillColor();
   CStack_54.m_pchData = &stack0xffffff90;
   SetQuickDrawStrokeColor();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   if (*(int *)(*(int *)&this->field_0x60 + 0x20) != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,9);
     src_ref = (CString *)AssignSharedStringConcatCStrAndRef(&CStack_54,s_Adm__0069578c);
@@ -124,8 +124,8 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
     CString::~CString(&CStack_58);
     local_4._0_1_ = 2;
     CString::~CString(&CStack_54);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    SetQuickDrawTextOriginWithContextOffset(0x50);
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
   }
   sVar2 = *(short *)(*(int *)&this->field_0x60 + 0x1c);
   sVar1 = GetNavyOrderNormalizationBaseByNationType();
@@ -154,10 +154,10 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
              (astruct_19 *)0x0);
   puStack_50 = &stack0xffffff90;
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
-  thunk_DrawCenteredGuideLineOnMapDc(0x50);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  SetQuickDrawTextOriginWithContextOffset(0x50);
+  DrawCenteredGuideLineOnMapDc(0x50);
+  DrawCenteredGuideLineOnMapDc(0xa2);
+  DrawCenteredGuideLineOnMapDc(0xa2);
   local_4._0_1_ = 1;
   TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(local_2c,4,8);
   local_4 = (uint)local_4._1_3_ << 8;
@@ -170,7 +170,7 @@ void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005658D0
 // GHIDRA_NAME TShipView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TShipView::OrphanRetStub_0059add0(TShipView *this,undefined4 param_1,int param_2,undefined4 param_3)
@@ -219,7 +219,7 @@ TShipView::OrphanRetStub_0059add0(TShipView *this,undefined4 param_1,int param_2
   else if (*(int *)(param_2 + 0x1c) == 0x6e616d65) {
     RunEngineerOrderNameEditDialogAndApply();
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 

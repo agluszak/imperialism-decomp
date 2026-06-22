@@ -11,7 +11,7 @@ TGameSetupDialog * __thiscall
 TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2820
 // GHIDRA_NAME TGameSetupDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TGameSetupDialog::GetTEventHandlerClassNamePointer(TGameSetupDialog *this)
@@ -61,7 +61,7 @@ TCluster * TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&TMapEditClusterVtbl_0066b578;
     pTVar1 = this;
   }

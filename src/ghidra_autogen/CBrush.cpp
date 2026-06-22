@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00494040
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
-// GHIDRA_PROTO undefined __thiscall InitializeGlobalClipRegionHandleState(void)
+// GHIDRA_PROTO undefined __thiscall CBrush::InitializeGlobalClipRegionHandleState(void)
 
 CBrush * __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
 

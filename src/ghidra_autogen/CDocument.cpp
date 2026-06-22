@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
 // GHIDRA_NAME CDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
 // GHIDRA_COMMENT_END
@@ -20,7 +20,7 @@ void __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004796A0
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
 undefined4 __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this)
 
@@ -30,7 +30,7 @@ undefined4 __thiscall CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocumen
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004796C0
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
 
 void __thiscall
 CDocument::SerializeTMinisterBaseOrderArrayHeader(CDocument *this,undefined4 param_1)
@@ -52,7 +52,7 @@ undefined4 __thiscall CDocument::_scalar_deleting_destructor_(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C54
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
 
@@ -72,7 +72,7 @@ undefined4 __thiscall CDocument::OrphanRetStub_004be6d0(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C5C
 // GHIDRA_NAME CDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 undefined4 __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *this)
 
@@ -82,7 +82,7 @@ undefined4 __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C5F
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins07_004d8920(CDocument *this)
 
@@ -92,7 +92,7 @@ undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins07_004d8920(CDocument *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CAC
 // GHIDRA_NAME CDocument::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 undefined * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
 
@@ -102,7 +102,7 @@ undefined * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CB2
 // GHIDRA_NAME CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 undefined * __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocument *this)
 
@@ -112,7 +112,7 @@ undefined * __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CB8
 // GHIDRA_NAME CDocument::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 undefined * __thiscall CDocument::OrphanRetStub_0059add0(CDocument *this)
 
@@ -122,7 +122,7 @@ undefined * __thiscall CDocument::OrphanRetStub_0059add0(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF9
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined * __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
 
@@ -132,7 +132,7 @@ undefined * __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CFF
 // GHIDRA_NAME CDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
 undefined4 __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
 
@@ -142,7 +142,7 @@ undefined4 __thiscall CDocument::ConstructTTaskBaseState(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606D04
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
 
@@ -162,7 +162,7 @@ undefined * __thiscall CDocument::OrphanCallChain_C7_I57_004be5b0(CDocument *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610965
 // GHIDRA_NAME CDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 undefined ** __thiscall CDocument::OrphanCallChain_C11_I88_004874b0(CDocument *this)
 
@@ -248,7 +248,7 @@ void CDocument::DestructCDocumentBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A57
 // GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall CDocument::GetTEventHandlerClassNamePointer(CDocument *this)
 
@@ -279,7 +279,7 @@ void __thiscall CDocument::DisconnectViews(CDocument *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A80
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
 
 void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this,char *param_1)
 
@@ -291,7 +291,7 @@ void __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this,char
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A9E
 // GHIDRA_NAME CDocument::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 void __thiscall CDocument::GetTTaskClassNamePointer(CDocument *this)
 
@@ -391,7 +391,7 @@ void __thiscall CDocument::RenumberAndActivateVisibleDocumentFrames(CDocument *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610C08
 // GHIDRA_NAME CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CDocument *this)
 
@@ -714,7 +714,7 @@ void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,int *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611420
 // GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 undefined4 __thiscall CDocument::OrphanLeaf_NoCall_Ins04_005adc30(CDocument *this)
 
@@ -1015,7 +1015,7 @@ void CDocument::ReleaseSerializedArchiveBufferState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006239A2
 // GHIDRA_NAME CDocument::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 CRuntimeClass * __thiscall CDocument::SetForeignMinisterReadyFlag14(CDocument *this)
 

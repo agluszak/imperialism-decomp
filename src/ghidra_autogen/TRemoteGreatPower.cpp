@@ -16,7 +16,7 @@ TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0(TRemoteGreatPower *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541860
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(void)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
 
 undefined1 __thiscall TRemoteGreatPower::ApplyJoinEmpireModeForTargetNation(TRemoteGreatPower *this)
 
@@ -36,7 +36,7 @@ void __thiscall TRemoteGreatPower::DispatchNationStateEventCode10(TRemoteGreatPo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005418A0
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *this)
 
@@ -46,7 +46,7 @@ void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005418C0
 // GHIDRA_NAME TRemoteGreatPower::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TRemoteGreatPower::GetTEventHandlerClassNamePointer(TRemoteGreatPower *this)
 
@@ -86,7 +86,7 @@ void __thiscall TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPowe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541940
 // GHIDRA_NAME TRemoteGreatPower::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TRemoteGreatPower::OrphanRetStub_0059add0(TRemoteGreatPower *this)
 
@@ -116,7 +116,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins06_004d87b0(TRemoteGreat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005419A0
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
 void __thiscall
 TRemoteGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState(TRemoteGreatPower *this)
@@ -137,7 +137,7 @@ void __thiscall TRemoteGreatPower::IsDiplomacyTargetClassCode200Match(TRemoteGre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005419E0
 // GHIDRA_NAME TRemoteGreatPower::AddRegionIdToNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
 void __thiscall TRemoteGreatPower::AddRegionIdToNationOwnedRegionList(TRemoteGreatPower *this)
 
@@ -160,7 +160,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0(TRemoteGreat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A20
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreatPower *this)
 
@@ -170,7 +170,7 @@ void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreat
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A40
 // GHIDRA_NAME TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount
-// GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::SelectCandidateTilesWithLowGroundUnitCount(void)
 
 void __thiscall
 TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount(TRemoteGreatPower *this)
@@ -181,7 +181,7 @@ TRemoteGreatPower::SelectCandidateTilesWithLowGroundUnitCount(TRemoteGreatPower 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541A60
 // GHIDRA_NAME TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TRemoteGreatPower::OrphanLeaf_NoCall_Ins07_004d8920(TRemoteGreatPower *this)
 
@@ -197,7 +197,7 @@ TRemoteGreatPower * __thiscall
 TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this,byte param_1)
 
 {
-  DestructTRemoteGreatPower(this);
+  TRemoteGreatPower::DestructTRemoteGreatPower(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -206,7 +206,7 @@ TRemoteGreatPower::_scalar_deleting_destructor_(TRemoteGreatPower *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541AB0
 // GHIDRA_NAME TRemoteGreatPower::DestructTRemoteGreatPower
-// GHIDRA_PROTO undefined __thiscall DestructTRemoteGreatPower(void)
+// GHIDRA_PROTO undefined __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(void)
 
 void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *this)
 
@@ -231,7 +231,7 @@ void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541B20
 // GHIDRA_NAME TRemoteGreatPower::GetTCountryClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTCountryClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
 CRuntimeClass * __thiscall TRemoteGreatPower::GetTCountryClassNamePointer(TRemoteGreatPower *this)
 
@@ -241,12 +241,12 @@ CRuntimeClass * __thiscall TRemoteGreatPower::GetTCountryClassNamePointer(TRemot
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541BE0
 // GHIDRA_NAME TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
 void __thiscall TRemoteGreatPower::ApplyJoinEmpireMode1TargetTransition(TRemoteGreatPower *this)
 
 {
-  thunk_RemoveNationSlotAndNotifyPeers(*(undefined2 *)&this->field_0xc);
+  RemoveNationSlotAndNotifyPeers(*(undefined2 *)&this->field_0xc);
   return;
 }
 

@@ -11,7 +11,7 @@ TLoungeDialog * __thiscall
 TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6D0
 // GHIDRA_NAME TLoungeDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TLoungeDialog::GetTEventHandlerClassNamePointer(TLoungeDialog *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TLoungeDialog::GetTEventHandlerClassNamePointer(TLoun
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D6F0
 // GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *this)
 
@@ -39,13 +39,13 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
     TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
               ((TMultiplayerMgr *)g_pGameFlowState,this,'\0');
   }
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054D730
 // GHIDRA_NAME TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *this)
 
@@ -60,7 +60,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
   undefined4 uVar7;
   code *pcVar8;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
             ((TMultiplayerMgr *)g_pGameFlowState,this,'\x01');
   pTVar1 = this->vftable;
@@ -136,7 +136,7 @@ void __thiscall TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920(TLoungeDialog *t
   }
   uVar7 = (*(code *)0x2b6c)(0x6d657373,0,0xe,0x2b6c,1,0x2742,iVar6);
   ConfigureUiControlStyleValueAndCaptionFromStringResource(uVar7);
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
@@ -297,7 +297,7 @@ uint __thiscall TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this)
   }
   CString::CString(&local_1c);
   uStack_4 = 3;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_1c,0x2742,cVar4);
+  LoadUiStringResourceByGroupAndIndex(&local_1c,0x2742,cVar4);
   uVar3 = (*local_18)(0x6d657373);
   iVar8 = *(int *)CONCAT31(extraout_var_00,uVar3);
   (**(code **)(iVar8 + 0xc))();
@@ -310,7 +310,7 @@ uint __thiscall TLoungeDialog::_scalar_deleting_destructor_(TLoungeDialog *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0
 // GHIDRA_NAME TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int * param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int * param_2)
 
 void __thiscall
 TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -356,9 +356,9 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
         if (((*(int *)&g_pLocalizationTable->field_0x44 != 1) || (!bVar3)) ||
            (cVar5 = DispatchGameStateEventIfLocalizedPromptAccepted(0x6367616d), cVar5 != '\0')) {
           if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-            thunk_DispatchTaggedGameStateEvent1F20(0x6367616d,0xffffffff,0xfffffffe);
+            DispatchTaggedGameStateEvent1F20(0x6367616d,0xffffffff,0xfffffffe);
           }
-          thunk_ResetLocalUiStateAndPostTurnEvent5E5();
+          ResetLocalUiStateAndPostTurnEvent5E5();
         }
       }
       else {
@@ -404,7 +404,7 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
     TryInvokeNationStateReplacementForSlot(uVar1 + 0x8d9e9bd0);
   }
 LAB_0054e36b:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

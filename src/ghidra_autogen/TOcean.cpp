@@ -65,8 +65,8 @@ void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
     g_pMapActionContextDistanceCache = (void *)0x0;
     g_nMapActionContextCount = -1;
   }
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  TObject::ReadFrom((TMapDialog *)this);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   pwVar1 = &this->nationCount;
   iVar8 = 0;
   if (0 < (short)*pwVar1) {
@@ -125,7 +125,7 @@ void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
   *(int **)(unaff_EBP + 8) = piVar6;
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
   }
   iVar9 = 0;
   if (0 < *psStack_4) {
@@ -165,7 +165,7 @@ void __thiscall TOcean::ReadFrom(TOcean *this,int *param_1)
   *(dword *)(pwVar13 + 8) = dVar7;
   if (dVar7 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
   }
   iVar8 = 0;
   if (0 < *(short *)&pTVar4->vftable) {
@@ -223,7 +223,7 @@ void __thiscall TOcean::WriteTo(TOcean *this,int *param_1)
   word *pwVar8;
   code *pcVar9;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pwVar1 = &this->nationCount;
   pwVar8 = pwVar1;
   (**(code **)(*param_1 + 0x78))(pwVar1,2);
@@ -308,7 +308,7 @@ LAB_00562a16:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057C9A0
 // GHIDRA_NAME TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
-// GHIDRA_PROTO undefined __thiscall RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
+// GHIDRA_PROTO undefined __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
 
 void __thiscall
 TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOcean *this,short param_1)

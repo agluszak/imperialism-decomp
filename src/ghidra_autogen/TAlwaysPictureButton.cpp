@@ -36,7 +36,7 @@ thunk_TPictureButton * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709D0
 // GHIDRA_NAME TAlwaysPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TAlwaysPictureButton::GetTEventHandlerClassNamePointer(TAlwaysPictureButton *this)
@@ -67,7 +67,7 @@ TAlwaysPictureButton * __thiscall
 TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

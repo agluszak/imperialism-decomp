@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B57E0
 // GHIDRA_NAME TOrItemOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(TOrItemOrder *this)
 
@@ -15,13 +15,13 @@ CRuntimeClass * __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(TOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5820
 // GHIDRA_NAME TOrItemOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
 TOrItemOrder * __thiscall
 TOrItemOrder::ConstructTItemOrderBaseState(TOrItemOrder *this,byte param_1)
 
 {
-  DestructTOrItemOrderAndMaybeFree(this);
+  TOrItemOrder::DestructTOrItemOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ TOrItemOrder::ConstructTItemOrderBaseState(TOrItemOrder *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5850
 // GHIDRA_NAME TOrItemOrder::DestructTOrItemOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTOrItemOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(void)
 
 void __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
 
@@ -41,7 +41,7 @@ void __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5870
 // GHIDRA_NAME TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TOrItemOrder::InitializeCityProductionState_Impl_At004b5870

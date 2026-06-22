@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6660
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTurnStartEventInstance(void)
+// GHIDRA_PROTO undefined __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(void)
 
 void __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent *this)
 

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415CE0
 // GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Vtable slot +0x24 handler.
 // GHIDRA_COMMENT Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the source object.
@@ -45,7 +45,7 @@ void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004798B0
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
 
@@ -76,7 +76,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E90
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Vtable slot +0x08 handler.
 // GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
@@ -118,7 +118,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B30
 // GHIDRA_NAME TCityTask::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
 
 int __thiscall
 TCityTask::GetTEventHandlerClassNamePointer(TCityTask *this,uint param_1,uint param_2)
@@ -160,7 +160,7 @@ TCityTask::ApplyProductionDistributionToCitySlots
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487BD0
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(undefined * param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(undefined * param_1, int param_2)
 
 int __thiscall
 TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -212,7 +212,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487CC0
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
 
 void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1,int param_2)
 
@@ -248,7 +248,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this,int param_1,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487D90
 // GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
 
@@ -271,7 +271,7 @@ void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487DD0
 // GHIDRA_NAME TCityTask::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 
 void __thiscall
 TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this,undefined4 param_1,undefined4 param_2)
@@ -308,7 +308,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488670
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
 
@@ -319,7 +319,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488690
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
@@ -332,7 +332,7 @@ void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004886B0
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
 void __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
 
@@ -343,7 +343,7 @@ void __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004886D0
 // GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 undefined4 __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
 
@@ -353,7 +353,7 @@ undefined4 __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004886F0
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
-// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(void)
 
 undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
 
@@ -383,7 +383,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488750
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
 
@@ -402,7 +402,7 @@ void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTas
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488790
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
 
@@ -430,7 +430,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004887E0
 // GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
 
@@ -451,7 +451,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488820
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
-// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(void)
 
 void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
 
@@ -477,7 +477,7 @@ TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this,undefined4 *par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD00
 // GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
@@ -487,7 +487,7 @@ CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD20
 // GHIDRA_NAME TCityTask::InitializeCityOrderCommandVtable
-// GHIDRA_PROTO undefined __thiscall InitializeCityOrderCommandVtable(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::InitializeCityOrderCommandVtable(void)
 
 void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
 
@@ -498,7 +498,7 @@ void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD40
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
 TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this,byte param_1)
 
@@ -512,7 +512,7 @@ TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADDE0
 // GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO bool __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Executes one deferred city-order command and schedules follow-up support commands when needed.
 // GHIDRA_COMMENT Algorithm:
@@ -658,7 +658,7 @@ bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE010
 // GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
-// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(int * param_1)
 
 void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
 
@@ -704,7 +704,7 @@ void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE0E0
 // GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO void __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
+// GHIDRA_PROTO void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Queues support resource commands for recruitment deficits.
 // GHIDRA_COMMENT
@@ -970,7 +970,7 @@ void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE4B0
 // GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
-// GHIDRA_PROTO void __thiscall OrphanRetStub_0059add0(void * pCommandQueue)
+// GHIDRA_PROTO void __thiscall TSoundPlayer::OrphanRetStub_0059add0(void * pCommandQueue)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Queues a city production/recruitment command object for later execution.
 // GHIDRA_COMMENT
@@ -1037,7 +1037,7 @@ void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommand
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE570
 // GHIDRA_NAME TCityTask::SerializeCityProductionQueueCommand
-// GHIDRA_PROTO void __thiscall SerializeCityProductionQueueCommand(void * pArchive)
+// GHIDRA_PROTO void __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(void * pArchive)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serializes CityProductionQueueCommand fields (+4, +6, +0x0C, +0x0E) to archive stream.
 // GHIDRA_COMMENT_END
@@ -1051,7 +1051,7 @@ void __thiscall TCityTask::SerializeCityProductionQueueCommand(TCityTask *this,v
   
   pcVar1 = *(code **)(*(int *)pArchive + 0x78);
   (*pcVar1)(&this->field_0x10,1);
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);
@@ -1073,7 +1073,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*(int *)pArchive + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -1084,7 +1084,7 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AED50
 // GHIDRA_NAME TCityTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
 undefined4 __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
 

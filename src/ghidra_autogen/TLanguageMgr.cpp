@@ -24,7 +24,7 @@ undefined4 __fastcall TLanguageMgr::CreateTLanguageMgrInstance(undefined4 param_
   this = (TLanguageMgr *)AllocateWithFallbackHandler(0x34,param_1);
   local_4 = 0;
   if (this != (TLanguageMgr *)0x0) {
-    uVar1 = ConstructTLanguageMgrBaseState(this);
+    uVar1 = TLanguageMgr::ConstructTLanguageMgrBaseState(this);
     *unaff_FS_OFFSET = local_c;
     return uVar1;
   }
@@ -44,7 +44,7 @@ CRuntimeClass * __thiscall TLanguageMgr::GetTLanguageMgrClassNamePointer(TLangua
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507C60
 // GHIDRA_NAME TLanguageMgr::ConstructTLanguageMgrBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTLanguageMgrBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(void)
 
 TLanguageMgr * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguageMgr *this)
 

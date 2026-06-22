@@ -35,7 +35,7 @@ TToggleButton * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584910
 // GHIDRA_NAME T2PictToggleButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 T2PictToggleButton::GetTEventHandlerClassNamePointer(T2PictToggleButton *this)
@@ -65,7 +65,7 @@ T2PictToggleButton * __thiscall
 T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

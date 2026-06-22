@@ -37,7 +37,7 @@ TTacticalBattle::GetTTacticalBattleClassNamePointer(TTacticalBattle *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F770
 // GHIDRA_NAME TTacticalBattle::ConstructTTacticalBattleBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTacticalBattleBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(void)
 
 void __thiscall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBattle *this)
 
@@ -123,7 +123,7 @@ TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400
   int local_18 [6];
   
   cVar3 = '\0';
-  thunk_ComputeHexNeighborTileIndices(param_1,local_18);
+  ComputeHexNeighborTileIndices_005A0420(param_1,local_18);
   if (param_2 == 5) {
     iVar1 = 0;
   }
@@ -162,7 +162,7 @@ TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
   int iVar4;
   int aiStack_18 [6];
   
-  thunk_MoveTacticalUnitTowardTile(param_1,param_2);
+  MoveTacticalUnitTowardTile(param_1,param_2);
   if (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 7) {
     *(undefined1 *)(param_1 + 0x18) = 0;
   }
@@ -171,7 +171,7 @@ TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
        (cVar2 = HasValidTacticalFollowupTargetForCurrentAction(), cVar2 != '\0')) {
       return;
     }
-    thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
+    ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
     iVar4 = 0;
     piVar3 = aiStack_18;
     do {
@@ -184,7 +184,7 @@ TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
       piVar3 = piVar3 + 1;
     } while (iVar4 < 6);
   }
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
@@ -204,7 +204,7 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
   (*this->vftable[8].GetTTacticalBattleClassNamePointer)(param_1);
   if ((*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 4) ||
      (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 5)) {
-    thunk_ComputeHexNeighborTileIndices
+    ComputeHexNeighborTileIndices_005A0420
               (*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);
     iVar3 = 0;
     piVar2 = (int *)&stack0xffffffe0;
@@ -214,7 +214,7 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
       iVar3 = iVar3 + 1;
       piVar2 = piVar2 + 1;
       if (5 < iVar3) {
-        TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+        TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
         return;
       }
     }
@@ -222,7 +222,7 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
       return;
     }
   }
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
@@ -270,7 +270,7 @@ TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
     bVar5 = false;
   }
   iVar7 = TestGridSegmentCrossesViewportThreshold(param_2,param_1[2]);
-  thunk_ComputeHexNeighborTileIndices(param_1[2],aiStack_18);
+  ComputeHexNeighborTileIndices_005A0420(param_1[2],aiStack_18);
   iVar8 = 0;
   piVar11 = aiStack_18;
   do {
@@ -297,7 +297,7 @@ LAB_005a1f86:
   iVar8 = *(int *)&this->field_0x4;
   if (bVar5) {
     iVar13 = ftol();
-    thunk_ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,iVar7,iVar13);
+    TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,iVar7,iVar13);
     if (*(int *)&this->field_0x8 != 0) {
       CenterViewportAroundGridIndexAndSnap(param_2);
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
@@ -320,7 +320,7 @@ LAB_005a1f86:
        (iStack_24 = -(iVar7 >> 0x1f), 0 < *(int *)(&this->field_0x54 + (iVar7 / 0x3a) * 4))) {
       if (*(float *)(&DAT_00669830 + iStack_20 * 4) == _DAT_00669ec0) {
         iVar8 = ftol();
-        thunk_ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,iVar7,iVar8);
+        TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,iVar7,iVar8);
       }
       iVar8 = *(int *)&this->field_0x4;
       iStack_28 = (int)*(short *)(&DAT_00695528 + piVar1[3] * 2);
@@ -421,13 +421,13 @@ TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket
   (**(code **)(iVar2 + 0xc))();
   param_1[0x10] = param_2;
   if (*(int *)&this->field_0x8 != 0) {
-    thunk_InvalidateTacticalHexTileRect(iVar1);
+    InvalidateTacticalHexTileRect(iVar1);
   }
   if (param_1[10] != 0) {
     param_1[10] = 0;
     return;
   }
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
@@ -471,12 +471,12 @@ TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket
   }
   *(undefined4 *)(*(int *)&this->field_0x4 + 8 + *(int *)(param_1 + 0x40) * 0x14) = 0;
   if (*(int *)&this->field_0x8 != 0) {
-    thunk_InvalidateTacticalHexTileRect(*(undefined4 *)(param_1 + 0x40));
+    InvalidateTacticalHexTileRect(*(undefined4 *)(param_1 + 0x40));
   }
   *(undefined4 *)(param_1 + 0x40) = 0xffffffff;
 LAB_005a32b7:
   if (*(int *)(param_1 + 0x28) == 0) {
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+    TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
     return;
   }
   *(undefined4 *)(param_1 + 0x28) = 0;
@@ -498,7 +498,7 @@ TTacticalBattle::ClearTacticalTileStateRunByStride(TTacticalBattle *this,int par
       param_1 = param_1 - *(int *)&this->field_0x40) {
     *piVar1 = -1;
     if (*(int *)&this->field_0x8 != 0) {
-      thunk_InvalidateTacticalHexTileRect(param_1);
+      InvalidateTacticalHexTileRect(param_1);
     }
   }
   return;
@@ -522,12 +522,12 @@ TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
     NoOpCallbackRet10(0x6d696e65,0,param_2,iVar1);
   }
-  thunk_ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,param_2,iVar1);
+  TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,param_2,iVar1);
   if (*(int *)&this->field_0x8 != 0) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3a9d,0,1);
     (**(code **)(**(int **)&this->field_0x8 + 0x1b8))(param_2,0xf98,6);
   }
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
@@ -545,13 +545,13 @@ TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
   
   (**(code **)(*param_1 + 0xc))();
   iVar2 = param_1[10];
-  thunk_HandleTacticalCommandTag_digg(param_1,param_2,0);
-  thunk_MoveTacticalUnitTowardTile(param_1,param_2);
+  HandleTacticalCommandTag_digg(param_1,param_2,0);
+  MoveTacticalUnitTowardTile(param_1,param_2);
   pTVar1 = this->vftable;
   param_1[10] = (int)(short)iVar2 - (int)*(short *)(&DAT_00669898 + param_1[3] * 2) / 2;
   (*pTVar1[5].GetTTacticalBattleClassNamePointer)(param_1);
   if (param_1[10] == 0) {
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+    TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   }
   return;
 }
@@ -582,13 +582,13 @@ TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty
     *(undefined4 *)(&this->field_0x54 + sideBandIndex * 4) = 0;
     iVar1 = *(int *)&this->field_0x34 + -6 + sideBandIndex * 0x3a;
     if (*(int *)&this->field_0x8 != 0) {
-      thunk_InvalidateTacticalHexTileRect(iVar1);
+      InvalidateTacticalHexTileRect(iVar1);
     }
     if (*(int *)&this->field_0x8 != 0) {
-      thunk_InvalidateTacticalHexTileRect(iVar1 + 1);
+      InvalidateTacticalHexTileRect(iVar1 + 1);
     }
     if (*(int *)&this->field_0x8 != 0) {
-      thunk_InvalidateTacticalHexTileRect(iVar1 + 0x1d);
+      InvalidateTacticalHexTileRect(iVar1 + 0x1d);
     }
   }
   return;

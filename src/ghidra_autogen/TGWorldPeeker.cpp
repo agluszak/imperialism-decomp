@@ -11,7 +11,7 @@ TGWorldPeeker * __thiscall
 TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
 // GHIDRA_NAME TGWorldPeeker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWorldPeeker *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
 // GHIDRA_NAME TGWorldPeeker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LONG * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
 void __thiscall TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(TGWorldPeeker *this,LONG *param_1)
 

@@ -47,12 +47,12 @@ CRuntimeClass * __thiscall TAssetMgr::GetTAssetMgrClassNamePointer(TAssetMgr *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF280
 // GHIDRA_NAME TAssetMgr::ConstructUiViewManager
-// GHIDRA_PROTO void * __thiscall ConstructUiViewManager(void * pUiViewManager)
+// GHIDRA_PROTO void * __thiscall TAssetMgr::ConstructUiViewManager(void * pUiViewManager)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void * ConstructUiViewManager(void *pUiViewManager)
+// GHIDRA_COMMENT Setting prototype: void * TAssetMgr::ConstructUiViewManager(void *pUiViewManager)
 // GHIDRA_COMMENT_END
 
-/* Setting prototype: void * ConstructUiViewManager(void *pUiViewManager) */
+/* Setting prototype: void * TAssetMgr::ConstructUiViewManager(void *pUiViewManager) */
 
 void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiViewManager)
 
@@ -81,7 +81,7 @@ void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiVie
 TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,byte param_1)
 
 {
-  WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
+  TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -90,7 +90,7 @@ TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF330
 // GHIDRA_NAME TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
+// GHIDRA_PROTO undefined __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
 
 void __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(TAssetMgr *this)
 

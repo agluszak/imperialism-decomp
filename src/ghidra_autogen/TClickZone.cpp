@@ -25,7 +25,7 @@ TControl * TClickZone::CreateTClickZoneInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TClickZoneVtbl_00660180;
     *(undefined2 *)&this[1].vftable = 7000;
     pTVar1 = this;
@@ -46,7 +46,7 @@ void __thiscall TClickZone::OrphanRetStub_005723d0(TClickZone *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005723F0
 // GHIDRA_NAME TClickZone::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TClickZone::GetTEventHandlerClassNamePointer(TClickZone *this)
 
@@ -67,7 +67,7 @@ CRuntimeClass * __thiscall TClickZone::GetTEventHandlerClassNamePointer(TClickZo
 TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZone *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &TClickZoneVtbl_00660180;
   *(undefined2 *)&this->field_0x84 = 7000;
   return this;
@@ -80,7 +80,7 @@ TClickZone * __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZon
 TClickZone * __thiscall TClickZone::_scalar_deleting_destructor_(TClickZone *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

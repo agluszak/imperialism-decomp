@@ -16,7 +16,7 @@ TDiplomatForeignMinister::GetTMinisterClassNamePointer(TDiplomatForeignMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532780
 // GHIDRA_NAME TDiplomatForeignMinister::ConstructTDiplomatForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTDiplomatForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomatForeignMinister::ConstructTDiplomatForeignMinister(void)
 
 TDiplomatForeignMinister * __thiscall
 TDiplomatForeignMinister::ConstructTDiplomatForeignMinister(TDiplomatForeignMinister *this)
@@ -51,7 +51,7 @@ TDiplomatForeignMinister * __thiscall
 TDiplomatForeignMinister::DeletingDestructTMinister(TDiplomatForeignMinister *this,byte param_1)
 
 {
-  DestructTDiplomatForeignMinister(this);
+  TDiplomatForeignMinister::DestructTDiplomatForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -60,7 +60,7 @@ TDiplomatForeignMinister::DeletingDestructTMinister(TDiplomatForeignMinister *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532820
 // GHIDRA_NAME TDiplomatForeignMinister::DestructTDiplomatForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTDiplomatForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomatForeignMinister::DestructTDiplomatForeignMinister(void)
 
 void __thiscall
 TDiplomatForeignMinister::DestructTDiplomatForeignMinister(TDiplomatForeignMinister *this)
@@ -73,7 +73,7 @@ TDiplomatForeignMinister::DestructTDiplomatForeignMinister(TDiplomatForeignMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532840
 // GHIDRA_NAME TDiplomatForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 void __thiscall
 TDiplomatForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
@@ -118,7 +118,7 @@ TDiplomatForeignMinister::_scalar_deleting_destructor_(TDiplomatForeignMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005328F0
 // GHIDRA_NAME TDiplomatForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
 TDiplomatForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomatForeignMinister *this)
@@ -254,7 +254,7 @@ TDiplomatForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomatForeignMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532C60
 // GHIDRA_NAME TDiplomatForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall
 TDiplomatForeignMinister::SetForeignMinisterReadyFlag14(TDiplomatForeignMinister *this)
@@ -402,7 +402,7 @@ TDiplomatForeignMinister::SetForeignMinisterReadyFlag14(TDiplomatForeignMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00532F70
 // GHIDRA_NAME TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(int param_1, undefined4 param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(int param_1, undefined4 param_2, short param_3)
 
 void __thiscall
 TDiplomatForeignMinister::UpdateControlCachedIntFromWindowText

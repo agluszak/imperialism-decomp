@@ -11,7 +11,7 @@ TScenarioChooser * __thiscall
 TScenarioChooser::_scalar_deleting_destructor_(TScenarioChooser *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TNoHilitePicture * TScenarioChooser::CreateTScenarioChooserInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TScenarioChooserVtbl_00644540;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TNoHilitePicture * TScenarioChooser::CreateTScenarioChooserInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579B60
 // GHIDRA_NAME TScenarioChooser::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TScenarioChooser::GetTEventHandlerClassNamePointer(TScenarioChooser *this)
@@ -61,7 +61,7 @@ TScenarioChooser::GetTEventHandlerClassNamePointer(TScenarioChooser *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579B80
 // GHIDRA_NAME TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChooser *this)
 
@@ -118,7 +118,7 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
   puStack_8 = &LAB_00636b68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   DAT_006a43f0 = 0;
   uStack_84 = 0x6c697374;
   local_6c = this->vftable[0x12].slot_0x04;
@@ -139,9 +139,9 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
       ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x0;
       puStack_94 = (undefined1 *)0x579c32;
       pTStack_90 = pTVar9;
-      thunk_BuildScenarioPathForModeAndIndex();
+      BuildScenarioPathForModeAndIndex();
       ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579c3f;
-      cVar3 = thunk_TryGetFileMetadataForPath();
+      cVar3 = TryGetFileMetadataForPath();
       if (cVar3 != '\0') {
         pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x579c5c;
         OpenBufferedStreamWithMode40();
@@ -184,12 +184,12 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
   uStack_54 = 0;
   uStack_53 = 0;
   pcStack_98 = (code *)0x579d42;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CString::CString(&CStack_68);
   puStack_8 = (undefined1 *)0x2;
   ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x2b6c;
   pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x579d75;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579d83;
   piVar5 = (int *)(*pcStack_70)();
   iVar8 = *piVar5;
@@ -218,7 +218,7 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
   puStack_bc = &uStack_84;
   puStack_b8 = (undefined1 *)0x0;
   uStack_c0 = 0x579dea;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pcStack_b0 = (code *)0x73646573;
   uStack_b4 = 0x579df8;
   piVar5 = (int *)(*pcStack_98)();
@@ -278,7 +278,7 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057A050
 // GHIDRA_NAME TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -345,7 +345,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
   else if ((param_1 == 0x14) && (*(int *)(param_2 + 0x1c) == 0x65786974)) {
     (*this->vftable[0x3a].slot_0x04)();
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
@@ -364,16 +364,16 @@ TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState(TScenarioChooser
 
 {
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-    thunk_ResetLocalUiStateAndPostTurnEvent5E5();
+    ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
-  thunk_PostTurnEventCodeMessage2420(0x5dc);
+  PostTurnEventCodeMessage2420(0x5dc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057A310
 // GHIDRA_NAME TScenarioChooser::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles scenario-selection key input.
 // GHIDRA_COMMENT - Enter-like keys (3, 0x0D): invoke virtual +0x1D0 action.
@@ -478,7 +478,7 @@ void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TSce
         CString::~CString(aCStack_54);
         CString::CString(&CStack_5c);
         puStack_8 = (undefined1 *)0x1;
-        thunk_LoadUiStringResourceByGroupAndIndex(&CStack_5c,0x2742,3);
+        LoadUiStringResourceByGroupAndIndex(&CStack_5c,0x2742,3);
         RunTaggedOptionDialogAndReturnSelectionTag(CStack_5c.m_pchData,&DAT_006a4220,0,0,0,0);
         puStack_8 = (undefined1 *)0xffffffff;
         CString::~CString(&CStack_5c);
@@ -494,7 +494,7 @@ void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TSce
       CString::AssignFromPtr((CString *)&g_pGameFlowState->field_0xb0,(CString *)&DAT_006a4220);
       g_pGameFlowState->field_0xdc = (char)piStack_58[0x1a];
       *(int *)&g_pGameFlowState->field_0xe0 = *(short *)&this->field_0x142 + 0x73636e30;
-      thunk_PostTurnEventCodeMessage2420(0x5e4);
+      PostTurnEventCodeMessage2420(0x5e4);
       puStack_8 = (undefined1 *)0xffffffff;
       CString::~CString((CString *)&stack0xffffffa0);
       *unaff_FS_OFFSET = local_4c[0xf];
@@ -517,7 +517,7 @@ void __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TSce
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AB30
 // GHIDRA_NAME TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChooser *this)
 
@@ -534,7 +534,7 @@ void __thiscall TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920(TScenarioChoo
     piVar1 = piVar1 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 

@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00453800
 // GHIDRA_NAME TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40
-// GHIDRA_PROTO undefined __thiscall ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
+// GHIDRA_PROTO undefined __thiscall TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
 
 TOverlayRadioButton * __thiscall
 TOverlayRadioButton::ConstructUiClickablePictureResourceEntry_Vtbl643A40(TOverlayRadioButton *this)
 
 {
-  TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry((TCivilianButton *)this);
+  TRadioPictureButton::TRadioPictureButton((TCivilianButton *)this);
   this->vftable = &TRadioPictureButton::_vftable_;
   *(undefined4 *)&this->field_0x98 = 0;
   return this;
@@ -25,7 +25,7 @@ TOverlayRadioButton * __thiscall
 TOverlayRadioButton::_scalar_deleting_destructor_(TOverlayRadioButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -34,7 +34,7 @@ TOverlayRadioButton::_scalar_deleting_destructor_(TOverlayRadioButton *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAAF0
 // GHIDRA_NAME TOverlayRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TOverlayRadioButton::GetTEventHandlerClassNamePointer(TOverlayRadioButton *this)
@@ -45,12 +45,12 @@ TOverlayRadioButton::GetTEventHandlerClassNamePointer(TOverlayRadioButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAB10
 // GHIDRA_NAME TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TOverlayRadioButton::OrphanTiny_ReturnZero_0048a730(TOverlayRadioButton *this)
 
 {
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   if (*(int *)&this->field_0x98 != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency

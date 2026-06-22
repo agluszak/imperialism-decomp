@@ -27,7 +27,7 @@ CRuntimeClass * __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialog
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487370
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDialogBehaviorBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(void)
 
 void __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *this)
 
@@ -93,7 +93,7 @@ TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this,int param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004874B0
 // GHIDRA_NAME TDialogBehavior::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1)
 
 void __thiscall TDialogBehavior::OrphanCallChain_C11_I88_004874b0(TDialogBehavior *this,int param_1)
 

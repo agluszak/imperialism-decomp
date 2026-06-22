@@ -11,7 +11,7 @@ TTechItemView * __thiscall
 TTechItemView::_scalar_deleting_destructor_(TTechItemView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TView * TTechItemView::CreateTTechItemViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTechItemViewVtbl_0066af08;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TView * TTechItemView::CreateTTechItemViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B12C0
 // GHIDRA_NAME TTechItemView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTechItemView::GetTEventHandlerClassNamePointer(TTechItemView *this)
 
@@ -60,7 +60,7 @@ CRuntimeClass * __thiscall TTechItemView::GetTEventHandlerClassNamePointer(TTech
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B12E0
 // GHIDRA_NAME TTechItemView::ConstructTTechItemViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTechItemViewBaseState(int param_1, undefined4 param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TTechItemView::ConstructTTechItemViewBaseState(int param_1, undefined4 param_2, int param_3)
 
 void __thiscall
 TTechItemView::ConstructTTechItemViewBaseState
@@ -125,7 +125,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   CStack_68.m_pchData = (char *)0x0;
   uStack_6c = 5;
   local_4._0_1_ = 4;
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  InitializeUiResourceEntryFrameAndParent();
   CStack_68.m_pchData = (char *)0x94;
   *(undefined4 *)&this->field_0x60 = in_stack_00000010;
   *(int *)&this->field_0x64 = in_stack_00000014;
@@ -137,7 +137,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   }
   else {
     CStack_68.m_pchData = (char *)0x5b1393;
-    piVar3 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(this_00);
+    piVar3 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(this_00);
   }
   CStack_68.m_pchData = (char *)(in_stack_00000014 * 2 + 0x8ff);
   uStack_6c = 5;
@@ -156,16 +156,16 @@ TTechItemView::ConstructTTechItemViewBaseState
   local_2c = (TLineData *)(uint)(uVar1 & 0xffff);
   uStack_28 = (TDeluxeText *)((uint)uStack_28._2_2_ << 0x10);
   local_54.m_pchData = (char *)0x0;
-  thunk_MapUiThemeCodeToStyleFlags();
-  thunk_MapUiThemeCodeToStyleFlags();
-  thunk_BuildUiTextStyleDescriptor();
+  MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
+  BuildUiTextStyleDescriptor();
   pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
   CStack_c.m_pchData._0_1_ = 6;
   if (pTVar4 == (TDeluxeText *)0x0) {
     pTVar4 = (TDeluxeText *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
+    TStaticText::TStaticText((TStaticText *)pTVar4);
     pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
     CStack_c.m_pchData._0_1_ = 7;
     ClearColorRgbaBytes();
@@ -214,7 +214,7 @@ TTechItemView::ConstructTTechItemViewBaseState
     pTVar4 = (TDeluxeText *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
+    TStaticText::TStaticText((TStaticText *)pTVar4);
     pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
     pTStack_20._0_1_ = 0xc;
     ClearColorRgbaBytes();
@@ -255,7 +255,7 @@ TTechItemView::ConstructTTechItemViewBaseState
       pTVar4 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
+      TStaticText::TStaticText((TStaticText *)pTVar4);
       pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
       local_34._0_1_ = 0x11;
       pTVar4->field_0x98 = 0;
@@ -306,7 +306,7 @@ TTechItemView::ConstructTTechItemViewBaseState
         piVar3 = (int *)0x0;
       }
       else {
-        piVar3 = (int *)TLineData::thunk_ConstructPictureScreenVariantEntry(local_2c);
+        piVar3 = (int *)TLineData::ConstructPictureScreenVariantEntry(local_2c);
       }
       local_40.m_pchData._0_1_ = 4;
       uStack_6c = 0x53;
@@ -326,7 +326,7 @@ TTechItemView::ConstructTTechItemViewBaseState
       pTVar4 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
+      TStaticText::TStaticText((TStaticText *)pTVar4);
       pTVar4->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
       local_34._0_1_ = 0xe;
       ClearColorRgbaBytes();
@@ -382,7 +382,7 @@ LAB_005b1b70:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1E20
 // GHIDRA_NAME TTechItemView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(CString param_1, CString param_2, CString param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(CString param_1, CString param_2, CString param_3)
 
 void __thiscall
 TTechItemView::OrphanRetStub_0059add0
@@ -412,7 +412,7 @@ TTechItemView::OrphanRetStub_0059add0
   CStack_8.m_pchData = &LAB_00638b00;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_1.m_pchData != (char *)0xa) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+    TView::OrphanRetStub_0059add0
               ((TView *)this,param_1.m_pchData,param_2.m_pchData,param_3.m_pchData);
     goto LAB_005b2141;
   }
@@ -460,8 +460,8 @@ TTechItemView::OrphanRetStub_0059add0
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&CStack_10,CStack_8.m_pchData);
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_10);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&CStack_10);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     aCStack_18[0].m_pchData._0_1_ = 2;
     CString::~CString(&CStack_10);
     aCStack_18[0].m_pchData._0_1_ = 1;

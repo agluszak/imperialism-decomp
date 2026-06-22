@@ -4,14 +4,14 @@
 // Bucket: TMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004089F4
-// GHIDRA_NAME TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
+// GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
+// GHIDRA_PROTO undefined __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
 TMinister * __thiscall
-TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
-  ConstructTMinister(this);
+  TMinister::ConstructTMinister(this);
   *(undefined4 *)&this[0x18].field_0xc = 0;
   *(undefined2 *)&this[1].field_0x4 = 1;
   *(undefined2 *)&this[1].field_0x6 = 1;
@@ -26,7 +26,7 @@ TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 TMinister * __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
-  ConstructTMinister(this);
+  TMinister::ConstructTMinister(this);
   *(undefined4 *)&this[0x18].field_0xc = 0;
   *(undefined2 *)&this[1].field_0x4 = 1;
   *(undefined2 *)&this[1].field_0x6 = 1;
@@ -46,7 +46,7 @@ CRuntimeClass * __thiscall TMinister::GetTMinisterClassNamePointer(TMinister *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB80
 // GHIDRA_NAME TMinister::ConstructTMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall TMinister::ConstructTMinister(void)
 
 void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
@@ -63,7 +63,7 @@ void __thiscall TMinister::ConstructTMinister(TMinister *this)
 TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this,byte param_1)
 
 {
-  DestructTMinister(this);
+  TMinister::DestructTMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBD0
 // GHIDRA_NAME TMinister::DestructTMinister
-// GHIDRA_PROTO undefined __thiscall DestructTMinister(void)
+// GHIDRA_PROTO undefined __thiscall TMinister::DestructTMinister(void)
 
 void __thiscall TMinister::DestructTMinister(TMinister *this)
 
@@ -83,24 +83,24 @@ void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ECC0
 // GHIDRA_NAME TMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
 
 {
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   (**(code **)(*param_1 + 0x3c))(&this->field_0xc,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052ECF0
 // GHIDRA_NAME TMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *this,int *param_1)
 
 {
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (**(code **)(*param_1 + 0x78))(&this->field_0xc,2);
   return;
 }

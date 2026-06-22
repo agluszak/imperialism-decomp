@@ -37,7 +37,7 @@ thunk_TPictureButton * TRadioPictureButton::CreateTRadioPictureButtonInstance(vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717A0
 // GHIDRA_NAME TRadioPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TRadioPictureButton::GetTEventHandlerClassNamePointer(TRadioPictureButton *this)
@@ -75,7 +75,7 @@ TRadioPictureButton * __thiscall
 TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -84,7 +84,7 @@ TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571850
 // GHIDRA_NAME TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
 TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -95,12 +95,12 @@ TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
   }
   if (param_1 != 0x1f) {
     if (param_1 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,0);

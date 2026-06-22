@@ -25,7 +25,7 @@ TNoHilitePicture * TIconBar::CreateTIconBarInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TIconBarVtbl_00657a28;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TNoHilitePicture * TIconBar::CreateTIconBarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505FD0
 // GHIDRA_NAME TIconBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TIconBar::GetTEventHandlerClassNamePointer(TIconBar *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TIconBar::GetTEventHandlerClassNamePointer(TIconBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505FF0
 // GHIDRA_NAME TIconBar::ConstructTIconBarBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTIconBarBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TIconBar::ConstructTIconBarBaseState(void)
 
 TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TIconBarVtbl_00657a28;
   return this;
 }
@@ -62,7 +62,7 @@ TIconBar * __thiscall TIconBar::ConstructTIconBarBaseState(TIconBar *this)
 TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -71,7 +71,7 @@ TIconBar * __thiscall TIconBar::_scalar_deleting_destructor_(TIconBar *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506070
 // GHIDRA_NAME TIconBar::AddCityCommodityIconControl
-// GHIDRA_PROTO void __thiscall AddCityCommodityIconControl(int * pCityView, int * pRect, int * pLayoutData, int nXPad, int nYPad, int nIconId, int nAmount)
+// GHIDRA_PROTO void __thiscall TIconBar::AddCityCommodityIconControl(int * pCityView, int * pRect, int * pLayoutData, int nXPad, int nYPad, int nIconId, int nAmount)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Adds one city commodity icon control entry.
 // GHIDRA_COMMENT
@@ -133,7 +133,7 @@ void __thiscall TIconBar::SetPictureResourceIdAndRefresh(TIconBar *this,short pa
   undefined2 unaff_retaddr;
   
   *(short *)&this->field_0x94 = param_1 + -700;
-  TPicture::thunk_SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_retaddr);
+  TPicture::SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_retaddr);
   return;
 }
 
@@ -168,7 +168,7 @@ void __thiscall TIconBar::OrphanCallChain_C2_I15_00506110(TIconBar *this,char pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506150
 // GHIDRA_NAME TIconBar::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TIconBar::OrphanTiny_ReturnZero_0048a730(TIconBar *this)
 

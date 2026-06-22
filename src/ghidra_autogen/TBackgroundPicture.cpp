@@ -35,7 +35,7 @@ thunk_TPictureButton * TBackgroundPicture::CreateTBackgroundPictureInstance(void
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C60
 // GHIDRA_NAME TBackgroundPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TBackgroundPicture::GetTEventHandlerClassNamePointer(TBackgroundPicture *this)
@@ -66,7 +66,7 @@ TBackgroundPicture * __thiscall
 TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,12 +75,12 @@ TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D00
 // GHIDRA_NAME TBackgroundPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TBackgroundPicture::OrphanTiny_ReturnZero_0048a730(TBackgroundPicture *this)
 
 {
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   return;
 }
 

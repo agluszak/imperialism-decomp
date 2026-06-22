@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005346F0
 // GHIDRA_NAME TSortByPriceList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TSortByPriceList::GetTEventHandlerClassNamePointer(TSortByPriceList *this)
@@ -34,7 +34,7 @@ TSortByPriceList * __thiscall
 TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this,byte param_1)
 
 {
-  ~TSortByPriceList();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -43,7 +43,7 @@ TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
 // GHIDRA_NAME TSortByPriceList::~TSortByPriceList
-// GHIDRA_PROTO undefined ~TSortByPriceList()
+// GHIDRA_PROTO undefined CObArray::DestructCObArray()
 
 void TSortByPriceList::~TSortByPriceList(void)
 
@@ -66,7 +66,7 @@ void TSortByPriceList::~TSortByPriceList(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005347B0
 // GHIDRA_NAME TSortByPriceList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 int __thiscall
 TSortByPriceList::OrphanRetStub_0059add0(TSortByPriceList *this,int param_1,int param_2)

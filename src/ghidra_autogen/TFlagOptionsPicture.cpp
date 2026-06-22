@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D8C0
 // GHIDRA_NAME TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0(void)
+// GHIDRA_PROTO undefined __thiscall TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0(void)
 
 TFlagOptionsPicture * __thiscall
 TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
@@ -25,7 +25,7 @@ TFlagOptionsPicture * __thiscall
 TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ thunk_TPictureButton * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B290
 // GHIDRA_NAME TFlagOptionsPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TFlagOptionsPicture::GetTEventHandlerClassNamePointer(TFlagOptionsPicture *this)
@@ -75,7 +75,7 @@ TFlagOptionsPicture::GetTEventHandlerClassNamePointer(TFlagOptionsPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
 // GHIDRA_NAME TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, undefined1 * param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, undefined1 * param_2)
 
 void __thiscall
 TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -102,7 +102,7 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   puStack_8 = &LAB_00635d50;
   *unaff_FS_OFFSET = &local_c;
   if (param_1.m_pchData != (char *)0xa) {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
               ((TMapDialog *)this,(int)param_1.m_pchData);
     *unaff_FS_OFFSET = local_c;
     return;
@@ -132,9 +132,9 @@ LAB_0056b474:
         (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
           if (g_pGameFlowState->field_0xf4 != '\0') {
-            thunk_TrySaveGameAndMaybeShowFailureDialog();
+            TrySaveGameAndMaybeShowFailureDialog();
           }
-          thunk_DispatchTaggedGameStateEvent1F20();
+          DispatchTaggedGameStateEvent1F20();
         }
         else if (*(int *)(param_2 + 0x1c) == 0x71756974) {
           PostWmCloseToMainThreadWindow();
@@ -147,7 +147,7 @@ LAB_0056b474:
     }
     if (uVar1 == 0x6c6f6164) {
       if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-        thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
+        ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
       uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
@@ -172,9 +172,9 @@ LAB_0056b526:
       if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
         CString::CString((CString *)&stack0x0000000c);
         local_4._0_1_ = 1;
-        thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x0000000c);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        LoadUiStringResourceByGroupAndIndex();
+        AssignStringSharedRefAndReturnThis(&stack0x0000000c);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
         CString::~CString((CString *)&stack0x0000000c);
       }
@@ -184,7 +184,7 @@ LAB_0056b526:
       goto LAB_0056b529;
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,10);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,10);
 LAB_0056b529:
   local_4 = 0xffffffff;
   CString::~CString(&param_1);
@@ -194,7 +194,7 @@ LAB_0056b529:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B640
 // GHIDRA_NAME TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TFlagOptionsPicture *this)
 
@@ -215,7 +215,7 @@ void __thiscall TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TFlagOptio
   puStack_8 = &LAB_00635d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   CString::CString((CString *)&stack0x00000004);
   iVar3 = 0;
   local_4 = 0;

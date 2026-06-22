@@ -46,7 +46,7 @@ CRuntimeClass * TPortZone::GetTPortZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005618B0
 // GHIDRA_NAME TPortZone::RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO undefined __thiscall RefreshTPortZoneDisplayNameFromLocalization(void)
+// GHIDRA_PROTO undefined __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(void)
 
 void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone *this)
 

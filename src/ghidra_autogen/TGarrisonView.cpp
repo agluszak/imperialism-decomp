@@ -36,7 +36,7 @@ TMilitaryPageView * TGarrisonView::CreateTGarrisonViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A87F0
 // GHIDRA_NAME TGarrisonView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGarrisonView::GetTEventHandlerClassNamePointer(TGarrisonView *this)
 
@@ -46,7 +46,7 @@ CRuntimeClass * __thiscall TGarrisonView::GetTEventHandlerClassNamePointer(TGarr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8810
 // GHIDRA_NAME TGarrisonView::ConstructTGarrisonViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTGarrisonViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(void)
 
 TGarrisonView * __thiscall TGarrisonView::ConstructTGarrisonViewBaseState(TGarrisonView *this)
 
@@ -65,7 +65,7 @@ TGarrisonView * __thiscall
 TGarrisonView::_scalar_deleting_destructor_(TGarrisonView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -118,7 +118,7 @@ void __thiscall TGarrisonView::InvalidateWindowRectFromHandleField1C(TGarrisonVi
     if (cVar3 != '\0') {
 LAB_004a8aa3:
       if (*(short *)&g_pLocalizationTable->field_0x58 != 0) {
-        cVar3 = thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2746,9,1,1);
+        cVar3 = ShowLocalizedUiPromptByGroupAndIndex(0x2746,9,1,1);
       }
       if (cVar3 != '\0') {
         sVar5 = *(short *)&this->field_0x8c;

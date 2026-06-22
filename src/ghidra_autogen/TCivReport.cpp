@@ -38,7 +38,7 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C10
 // GHIDRA_NAME TCivReport::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCivReport::GetTEventHandlerClassNamePointer(TCivReport *this)
 
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TCivReport::GetTEventHandlerClassNamePointer(TCivRepo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C30
 // GHIDRA_NAME TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z(void)
 
 TCivReport * __thiscall
 TCivReport::
@@ -68,7 +68,7 @@ _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivRep
 TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -152,7 +152,7 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
   CStack_78.m_pchData =
        (char *)CONCAT22((short)((uint)CStack_74.m_pchData >> 0x10),*(undefined2 *)(param_1 + 4));
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  AssignSharedStringFromIndexedA8EntryNameField();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff9c,(char *)pCStack_68);
   AppendSingleByteToSharedStringFromArg();
   switch(*(undefined4 *)(param_1 + 8)) {
@@ -269,7 +269,7 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
     else {
       uVar10 = 0xc;
     }
-    thunk_BuildUiTextStyleDescriptor(&local_54,0,uVar10,0x2b6a);
+    BuildUiTextStyleDescriptor(&local_54,0,uVar10,0x2b6a);
     piVar6 = (int *)(*pcVar2)(iVar8 + 0x74746c30);
     iVar3 = *piVar6;
     (**(code **)(iVar3 + 0xc))();

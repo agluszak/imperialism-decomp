@@ -191,7 +191,7 @@ void __thiscall SerializeTMission(TArmyPlayer *param_1,int *param_2)
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14(param_1);
+  TObject::WriteTo(param_1);
   pcVar1 = *(code **)(*param_2 + 0x78);
   (*pcVar1)(&param_1->field_0x4,2);
   (*pcVar1)(&param_1->field_0x8,1);
@@ -211,7 +211,7 @@ void __thiscall DeserializeTMission(TMapDialog *param_1,int *param_2)
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18(param_1);
+  TObject::ReadFrom(param_1);
   pcVar1 = *(code **)(*param_2 + 0x3c);
   (*pcVar1)(&param_1->field04,2);
   (*pcVar1)(&param_1->padding_08_to_0b,1);
@@ -670,7 +670,7 @@ void __fastcall CleanupTMissionAndReleaseOwnedOrders(int *param_1)
   param_1[8] = 0;
   while (piVar1 != (int *)0x0) {
     *(undefined4 *)(*(int *)param_1[9] + 0x2c) = 0;
-    piVar1 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext((TShip *)param_1[9],unaff_EDI);
+    piVar1 = TShip::DeleteMapOrderChildLinkAndReturnNext((TShip *)param_1[9],unaff_EDI);
     param_1[9] = (int)piVar1;
   }
   if (param_1 != (int *)0x0) {
@@ -703,7 +703,7 @@ void __thiscall SerializeTNavyMissionCommon(int param_1,int *param_2)
     iVar5 = -1;
   }
   else {
-    sVar4 = thunk_GetShortAtOffset14OrInvalid();
+    sVar4 = GetShortAtOffset14OrInvalid();
     iVar5 = (int)sVar4;
   }
   iVar1 = *param_2;
@@ -713,7 +713,7 @@ void __thiscall SerializeTNavyMissionCommon(int param_1,int *param_2)
     iVar5 = -1;
   }
   else {
-    sVar4 = thunk_GetShortAtOffset14OrInvalid();
+    sVar4 = GetShortAtOffset14OrInvalid();
     iVar5 = (int)sVar4;
   }
   (*pcVar2)(iVar5);
@@ -811,7 +811,7 @@ undefined4 __fastcall ClearMissionQueuedOrderLinksAndOwnerPointers(int param_1)
   piVar1 = *(int **)(param_1 + 0x24);
   while (piVar1 != (int *)0x0) {
     *(undefined4 *)(**(int **)(param_1 + 0x24) + 0x2c) = 0;
-    piVar1 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext
+    piVar1 = TShip::DeleteMapOrderChildLinkAndReturnNext
                        (*(TShip **)(param_1 + 0x24),unaff_EDI);
     *(int **)(param_1 + 0x24) = piVar1;
   }
@@ -1100,7 +1100,7 @@ void __fastcall ProcessMapOrderEntryContextMode(int *param_1)
     RebuildMapOrderEntryChildrenForContext(param_1[6],piVar3);
     if (*piVar3 != 0) {
       SetTaskForceOwnerPointer(0);
-      thunk_SetMapOrderType3Or4AndQueue((void *)*piVar3,'\0');
+      SetMapOrderType3Or4AndQueue((void *)*piVar3,'\0');
     }
   }
   else if (iVar2 == 1) {
@@ -1109,7 +1109,7 @@ void __fastcall ProcessMapOrderEntryContextMode(int *param_1)
     RebuildMapOrderEntryChildrenForContext(param_1[5],param_1 + 8);
     this = (void *)param_1[8];
     if (this != (void *)0x0) {
-      thunk_SetMapOrderType9AndQueue(this,piVar3);
+      SetMapOrderType9AndQueue(this,piVar3);
       return;
     }
   }
@@ -1196,7 +1196,7 @@ void QueueMissionOrderEntriesAcrossSelectionRange(int param_1,int *param_2,int *
     *(undefined1 *)((int)pvVar3 + 0xc) = 1;
     pvVar3 = TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(this);
     if (*(int **)(this + 8) == in_stack_0000001c) {
-      thunk_SetMapOrderType9AndQueue(pvVar3,(int *)param_1);
+      SetMapOrderType9AndQueue(pvVar3,(int *)param_1);
     }
     else {
       PromoteMapOrderChainAndQueue(pvVar3,in_stack_0000001c);
@@ -1225,7 +1225,7 @@ void QueueMissionOrderEntryAndPropagateSelectionRange(int param_1,undefined4 *pa
   undefined4 *in_stack_0000001c;
   
   do {
-    thunk_SetMapOrderType9AndQueue(in_ECX,unaff_retaddr);
+    SetMapOrderType9AndQueue(in_ECX,unaff_retaddr);
     while( true ) {
       unaff_ESI = unaff_ESI + (((int)unaff_EBX - (int)*in_stack_0000001c) / 0x38) * 0x38;
       if (((unaff_ESI != (TScatteredShipsMission *)*in_stack_0000001c) && (unaff_ESI != unaff_EBX))
@@ -2075,7 +2075,7 @@ uint __fastcall ValidateMissionTerrainCoverageAndRefreshTargetContext(int *param
         cVar2 = (*(*ppTVar4)->vftable[0xb].slot_0x04)((int)(short)param_1[1]);
         if (cVar2 == '\0') goto LAB_0053893a;
       }
-      cVar2 = thunk_ContainsPointerArrayEntryMatchingByteKey(iVar5);
+      cVar2 = ContainsPointerArrayEntryMatchingByteKey(iVar5);
       if (cVar2 != '\0') {
         bVar1 = true;
       }
@@ -2087,7 +2087,7 @@ LAB_0053893a:
   if (!bVar1) {
     (*g_apNationStates[(short)param_1[1]]->vftable[1].slot_0x04)();
     uVar6 = 0;
-    sVar3 = thunk_GetShortAtOffset14OrInvalid(0);
+    sVar3 = GetShortAtOffset14OrInvalid(0);
     SetByteFlagAtOffsetAF0ByIndex((int)sVar3,uVar6);
     return 0;
   }
@@ -2130,7 +2130,7 @@ float10 ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
   local_10[1] = 0.0;
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  iVar4 = thunk_GetNavyPrimaryOrderListHead();
+  iVar4 = GetNavyPrimaryOrderListHead();
   iVar5 = iVar4;
   for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
     if (*(int *)(iVar4 + 8) == param_2) {
@@ -2201,7 +2201,7 @@ float10 ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(short pa
   local_10[1] = 0.0;
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  for (iVar3 = thunk_GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
+  for (iVar3 = GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
     if ((*(int *)(iVar3 + 8) == param_2) && (param_1 == *(short *)(iVar3 + 0x14))) {
       sVar2 = GetNavyOrderNormalizationBaseByNationType();
       fVar1 = (float)((int)*(short *)(iVar3 + 0x1c) / (int)sVar2);
@@ -2271,7 +2271,7 @@ ComputeNavyOrderDistributionSimilarityScoreForMissionNation(int param_1,int para
   uVar1 = *(undefined2 *)(param_1 + 4);
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  iVar5 = thunk_GetNavyPrimaryOrderListHead();
+  iVar5 = GetNavyPrimaryOrderListHead();
   iVar6 = iVar5;
   for (; iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x24)) {
     if (*(int *)(iVar5 + 8) == param_2) {
@@ -2344,7 +2344,7 @@ void __fastcall UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(int par
   undefined4 unaff_EDI;
   float local_10 [4];
   
-  iVar7 = thunk_FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
+  iVar7 = FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
   if (*(int *)(iVar7 + 0x2c) == 0) {
     iVar8 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar7 + 0x28),8);
     if (iVar8 == 0) {
@@ -2367,7 +2367,7 @@ void __fastcall UpdateControlSeaZoneMissionStateFromTargetNavySimilarity(int par
     local_10[1] = 0.0;
     local_10[2] = 0.0;
     local_10[3] = 0.0;
-    iVar7 = thunk_GetNavyPrimaryOrderListHead();
+    iVar7 = GetNavyPrimaryOrderListHead();
     iVar10 = iVar7;
     for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
       if (*(int *)(iVar7 + 8) == iVar8) {
@@ -2530,7 +2530,7 @@ void __thiscall ResolveAndQueuePortZoneMapOrder(int param_1,TControlSeaZoneMissi
                       (iVar6,CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)(param_1 + 4)));
     if (cVar1 != '\0') {
       uVar5 = uVar5 | 1 << ((byte)iVar6 & 0x1f);
-      iVar2 = thunk_FindFirstPortZoneContextByNation(iVar6);
+      iVar2 = FindFirstPortZoneContextByNation(iVar6);
       if (*(int *)(iVar2 + 0x2c) == 0) {
         iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar2 + 0x28),8);
         if (iVar3 == 0) {
@@ -2547,16 +2547,16 @@ void __thiscall ResolveAndQueuePortZoneMapOrder(int param_1,TControlSeaZoneMissi
         *(undefined4 *)(iVar2 + 0x30) = 1;
       }
       if (**(int **)(iVar2 + 0x28) == *(int *)(param_2 + 0x18)) {
-        local_8 = thunk_FindFirstPortZoneContextByNation(iVar6);
+        local_8 = FindFirstPortZoneContextByNation(iVar6);
       }
     }
     iVar6 = iVar6 + 1;
   } while (iVar6 < 7);
   if (((*(ushort *)(*(int *)(param_2 + 0x18) + 0x10) & (ushort)uVar5) == 0) && (local_8 != 0)) {
-    TControlSeaZoneMission::thunk_SetMapOrderType6AndQueue(param_2,local_8);
+    TControlSeaZoneMission::SetMapOrderType6AndQueue(param_2,local_8);
     return;
   }
-  thunk_SetMapOrderType3Or4AndQueue(param_2,'\0');
+  SetMapOrderType3Or4AndQueue(param_2,'\0');
   return;
 }
 
@@ -2575,7 +2575,7 @@ void __fastcall ResolveAndCacheMissionPortZoneContextForNationTarget(int param_1
   undefined2 extraout_var_01;
   undefined2 uVar4;
   
-  iVar1 = thunk_FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
+  iVar1 = FindFirstPortZoneContextByNation(*(undefined2 *)(param_1 + 4));
   uVar4 = extraout_var;
   if (*(int *)(iVar1 + 0x2c) == 0) {
     iVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar1 + 0x28),8);
@@ -2595,7 +2595,7 @@ void __fastcall ResolveAndCacheMissionPortZoneContextForNationTarget(int param_1
     *(undefined4 *)(iVar1 + 0x30) = 1;
   }
   if (**(int **)(iVar1 + 0x28) == *(int *)(param_1 + 0x14)) {
-    thunk_FindFirstPortZoneContextByNation
+    FindFirstPortZoneContextByNation
               (CONCAT22((short)((uint)*(int *)(param_1 + 0x14) >> 0x10),*(undefined2 *)(param_1 + 4)
                        ));
     return;
@@ -2681,7 +2681,7 @@ float10 __thiscall ComputeNavyOrderDistributionSimilarityScoreForNation(int para
   local_10[1] = 0.0;
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  iVar4 = thunk_GetNavyPrimaryOrderListHead();
+  iVar4 = GetNavyPrimaryOrderListHead();
   iVar5 = iVar4;
   for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
     if (*(int *)(iVar4 + 8) == param_2) {
@@ -2833,7 +2833,7 @@ void __thiscall TryQueueProvinceOrderFromContextMessage(void *this,int msg_ctx)
                                     (short)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 +
                                                     iVar2 * 0xa8)));
   if (cVar1 != false) {
-    thunk_SetMapOrderType5AndQueue
+    SetMapOrderType5AndQueue
               (unaff_ESI,
                *(int *)&g_pGlobalMapState->field_0x10 +
                *(short *)(*(int *)((int)this + 0x3c) + 0x30) * 0xa8);
@@ -2946,7 +2946,7 @@ float10 __fastcall ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(
         local_10[1] = 0.0;
         local_10[2] = 0.0;
         local_10[3] = 0.0;
-        for (iVar8 = thunk_GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
+        for (iVar8 = GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
             ) {
           if (((*(short *)(iVar8 + 0x14) == sVar5) &&
               (cVar4 = InvokeOrderNodeOwnerVfunc38(), cVar4 != '\0')) &&
@@ -3003,7 +3003,7 @@ float10 __fastcall ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(
   local_10[1] = 0.0;
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  for (iVar7 = thunk_GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
+  for (iVar7 = GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
     if (((*(short *)(iVar7 + 0x14) == sVar5) &&
         (cVar4 = InvokeOrderNodeOwnerVfunc38(), cVar4 != '\0')) &&
        (sVar6 = GetNavyOrderNormalizationBaseByNationType(), sVar6 <= *(short *)(iVar7 + 0x1c))) {
@@ -3069,7 +3069,7 @@ float10 ComputeNavyOrderDistributionScoreForNation(short param_1)
   local_10[1] = 0.0;
   local_10[2] = 0.0;
   local_10[3] = 0.0;
-  for (iVar4 = thunk_GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
+  for (iVar4 = GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
     if (((*(short *)(iVar4 + 0x14) == param_1) &&
         (cVar2 = InvokeOrderNodeOwnerVfunc38(), cVar2 != '\0')) &&
        (sVar3 = GetNavyOrderNormalizationBaseByNationType(), sVar3 <= *(short *)(iVar4 + 0x1c))) {
@@ -3120,7 +3120,7 @@ float10 ComputeNavyOrderDistributionScoreForNation(short param_1)
 void __thiscall QueueMapOrderType6FromContextPointer(int param_1,TControlSeaZoneMission *param_2)
 
 {
-  TControlSeaZoneMission::thunk_SetMapOrderType6AndQueue(param_2,*(int *)(param_1 + 0x3c));
+  TControlSeaZoneMission::SetMapOrderType6AndQueue(param_2,*(int *)(param_1 + 0x3c));
   return;
 }
 
@@ -3354,7 +3354,7 @@ undefined4 __fastcall EvaluateMissionAndQueueEligibleUnitsByMovementClass(int *p
   uVar2 = InitializeLinkedListCursorFromOwnerHead();
   iVar3 = LinkedListCursorHasCurrent();
   while (iVar3 != 0) {
-    sVar1 = thunk_GetUnitMovementClassId();
+    sVar1 = GetUnitMovementClassId();
     if (sVar1 != 0) {
       (**(code **)(*param_1 + 0x88))(uVar2,1);
     }
@@ -4017,7 +4017,7 @@ uint __fastcall ReturnMissionIfMovementClassMatchesTargetTile(uint param_1)
 {
   short sVar1;
   
-  sVar1 = thunk_GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
+  sVar1 = GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
   return ~-(uint)(sVar1 != *(short *)(param_1 + 4)) & param_1;
 }
 
@@ -4087,7 +4087,7 @@ bool __fastcall TryResolveAttackProvinceMissionTargetTerrainClass(int param_1)
     do {
       sVar3 = *(short *)(param_1 + 4);
       sVar6 = *local_18;
-      sVar5 = thunk_GetTileNormalizedMovementClassId((int)sVar6);
+      sVar5 = GetTileNormalizedMovementClassId((int)sVar6);
       if (sVar5 == sVar3) {
         if (*(short *)(param_1 + 0x14) != -1) {
           iVar7 = (int)sVar6;
@@ -4099,7 +4099,7 @@ bool __fastcall TryResolveAttackProvinceMissionTargetTerrainClass(int param_1)
           if ('\0' < *(char *)(iVar4 + 8 + iVar7 * 0xa8)) {
             psVar8 = (short *)(iVar2 + 10);
             do {
-              sVar5 = thunk_GetTileNormalizedMovementClassId((int)*psVar8);
+              sVar5 = GetTileNormalizedMovementClassId((int)*psVar8);
               if (sVar3 == sVar5) {
                 local_20 = (float)((int)local_20 + 1);
               }
@@ -4124,7 +4124,7 @@ bool __fastcall TryResolveAttackProvinceMissionTargetTerrainClass(int param_1)
         if ('\0' < *(char *)(iVar4 + 8 + iVar7 * 0xa8)) {
           psVar8 = (short *)(iVar2 + 10);
           do {
-            sVar6 = thunk_GetTileNormalizedMovementClassId((int)*psVar8);
+            sVar6 = GetTileNormalizedMovementClassId((int)*psVar8);
             if (sVar3 == sVar6) {
               local_1c = (float)((int)local_1c + 1);
             }
@@ -4275,7 +4275,7 @@ int * __fastcall TryValidateOrRetargetDefendProvinceMissionTarget(int *param_1)
   else {
     iVar5 = (int)*(short *)((int)param_1 + 6);
     if (iVar6 == iVar5) {
-      iVar5 = thunk_GetTileNormalizedMovementClassId((int)(short)param_1[5]);
+      iVar5 = GetTileNormalizedMovementClassId((int)(short)param_1[5]);
       if ((short)iVar5 == (short)*piVar1) goto LAB_0053e101;
       iVar5 = (**(code **)(*param_1 + 0xa0))();
       if ((char)iVar5 != '\0') goto LAB_0053e101;
@@ -4326,7 +4326,7 @@ void __fastcall ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile30(int 
   if ('\0' < *(char *)(iVar3 + 8 + iVar5 * 0xa8)) {
     psVar7 = (short *)(iVar1 + 10);
     do {
-      sVar4 = thunk_GetTileNormalizedMovementClassId((int)*psVar7);
+      sVar4 = GetTileNormalizedMovementClassId((int)*psVar7);
       if (sVar2 == sVar4) {
         local_c = local_c + 1;
       }
@@ -4516,7 +4516,7 @@ float10 ComputeDefendProvinceMissionCrossNationSupportVectorScore(undefined4 par
     if (((sVar4 < 7) && (iVar10 = (int)sVar4, iVar10 != iVar9)) &&
        (cVar2 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)
                           (CONCAT22((short)((uint)local_40 >> 0x10),sVar4),iVar9), cVar2 != '\0')) {
-      cVar2 = thunk_TileHasMovementClassId((int)(short)param_1,local_44);
+      cVar2 = TileHasMovementClassId((int)(short)param_1,local_44);
       sVar4 = (short)local_44;
       if (cVar2 == '\0') {
         if ((0 < local_1c[iVar10]) &&
@@ -4529,7 +4529,7 @@ float10 ComputeDefendProvinceMissionCrossNationSupportVectorScore(undefined4 par
           }
           for (; iVar12 != 0; iVar12 = *(int *)(iVar12 + 0x14)) {
             sVar4 = GetCityActionGateValueFromOrderTemplate();
-            sVar5 = thunk_GetUnitMovementClassId();
+            sVar5 = GetUnitMovementClassId();
             if ((0 < sVar5) && (iVar1 = local_1c[iVar10], sVar4 < iVar1)) {
               AccumulateUnitOrderPriorityVectorContribution
                         (iVar12,local_30,0x3f800000,(float)(int)sVar3);
@@ -4546,7 +4546,7 @@ float10 ComputeDefendProvinceMissionCrossNationSupportVectorScore(undefined4 par
           iVar10 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8);
         }
         for (; iVar10 != 0; iVar10 = *(int *)(iVar10 + 0x14)) {
-          sVar4 = thunk_GetUnitMovementClassId();
+          sVar4 = GetUnitMovementClassId();
           if (0 < sVar4) {
             AccumulateUnitOrderPriorityVectorContribution
                       (iVar10,local_30,0x3f800000,(float)(int)sVar3);
@@ -4669,7 +4669,7 @@ uint __fastcall ReturnInvadeMissionIfMovementClassMatchesTargetTile(uint param_1
 {
   short sVar1;
   
-  sVar1 = thunk_GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
+  sVar1 = GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x14));
   return ~-(uint)(sVar1 != *(short *)(param_1 + 4)) & param_1;
 }
 
@@ -4881,13 +4881,13 @@ void RecomputeNationOrderPriorityMetrics(void)
   iVar13 = 0;
   pfVar11 = (float *)&DAT_006a3ae0;
   do {
-    cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar13);
+    cVar4 = IsNationSlotEligibleForEventProcessing(iVar13);
     if (cVar4 != '\0') {
       local_14[0] = 0.0;
       local_14[1] = 0.0;
       local_14[2] = 0.0;
       local_14[3] = 0.0;
-      for (iVar7 = thunk_GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24))
+      for (iVar7 = GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24))
       {
         if (*(short *)(iVar7 + 0x14) == iVar13) {
           sVar6 = GetNavyOrderNormalizationBaseByNationType();
@@ -4937,7 +4937,7 @@ void RecomputeNationOrderPriorityMetrics(void)
       uVar8 = InitializeLinkedListCursorFromOwnerHead();
       iVar7 = LinkedListCursorHasCurrent();
       while (iVar7 != 0) {
-        sVar6 = thunk_GetUnitMovementClassId();
+        sVar6 = GetUnitMovementClassId();
         if (sVar6 != 0) {
           AccumulateUnitOrderPriorityVectorContribution(uVar8,local_14,0x3f800000,DAT_0065a908);
         }
@@ -4999,7 +4999,7 @@ void RecomputeNationOrderPriorityMetrics(void)
       uVar8 = InitializeLinkedListCursorFromOwnerHead();
       iVar7 = LinkedListCursorHasCurrent();
       while (iVar7 != 0) {
-        sVar6 = thunk_GetUnitMovementClassId();
+        sVar6 = GetUnitMovementClassId();
         if (sVar6 == 0) {
           AccumulateUnitOrderPriorityVectorContribution(uVar8,local_14,0x3f800000,DAT_0065a908);
         }
@@ -5048,7 +5048,7 @@ void RecomputeNationOrderPriorityMetrics(void)
   iVar13 = 0;
   ppTVar12 = g_apNationStates;
   do {
-    cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar13);
+    cVar4 = IsNationSlotEligibleForEventProcessing(iVar13);
     if (cVar4 != '\0') {
       (*(*ppTVar12)->vftable[0x56].slot_0x04)();
     }
@@ -5114,7 +5114,7 @@ float ComputeBestNationTileDevelopmentScore(int param_1)
             fVar13 = *(float *)(pcVar2 + 0xb64) + fStack_30;
             cVar4 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)(param_1);
             if (cVar4 != '\0') {
-              fVar12 = (float10)thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore
+              fVar12 = (float10)ComputeDefendProvinceMissionCrossNationSupportVectorScore
                                           (iVar6);
               fVar13 = (float)(fVar12 * (float10)_DAT_0065a8f8 + (float10)fVar13);
             }
@@ -5127,7 +5127,7 @@ float ComputeBestNationTileDevelopmentScore(int param_1)
             sVar8 = (short)param_1;
             psVar11 = (short *)(iVar10 + 10);
             do {
-              sVar5 = thunk_GetTileNormalizedMovementClassId((int)*psVar11);
+              sVar5 = GetTileNormalizedMovementClassId((int)*psVar11);
               if (sVar8 == sVar5) {
                 iStack_2c = iStack_2c + 1;
               }
@@ -5420,7 +5420,7 @@ int FindActiveNationSlotIndexInGameFlowList(void)
   int iVar2;
   int *piVar3;
   
-  iVar1 = FUN_00405a3d();
+  iVar1 = GetSessionActiveNationId();
   iVar2 = 0;
   piVar3 = (int *)&g_pGameFlowState->field_0x48;
   do {
@@ -5455,7 +5455,7 @@ TCommand * AllocateAndConstructTurnEventPacket_Vtbl0065bff0(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
     pTVar1 = this;
   }
@@ -5613,7 +5613,7 @@ ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(TNextDiplomationCommand *p
     local_1c = 1;
     local_10 = 0x1c;
     local_14 = 0;
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,0);
+    EnqueueOrSendTurnEventPacketToNation(&local_1c,0);
     if ((*(int *)&param_1[9].field_0x10 == 0) &&
        (param_1[10].vftable != (TNextDiplomationCommandVtbl *)0xffffffff)) {
       TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(param_1);
@@ -5679,7 +5679,7 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
       local_50 = 1;
       local_44 = 0x1c;
       local_48 = 0;
-      thunk_EnqueueOrSendTurnEventPacketToNation(&local_50,0);
+      EnqueueOrSendTurnEventPacketToNation(&local_50,0);
       if ((*(int *)&param_1[9].field_0x10 == 0) &&
          (param_1[10].vftable != (TNextDiplomationCommandVtbl *)0xffffffff)) {
         TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(param_1);
@@ -5708,9 +5708,9 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable[8].GetTCountryClassNamePointer)();
     CString::CString(&CStack_54);
     uStack_4 = 0;
-    thunk_AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
+    AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
     strncpy(acStack_30,CStack_54.m_pchData,0x21);
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_50,0);
+    EnqueueOrSendTurnEventPacketToNation(&local_50,0);
     uStack_4 = 0xffffffff;
     CString::~CString(&CStack_54);
   default:
@@ -5770,7 +5770,7 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     local_38 = CONCAT22(local_38._2_2_,*(undefined2 *)&g_pGameFlowState->field_0xf0);
     local_34 = UiRuntimeContext::GetActiveNationId();
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_50,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_50,0);
 switchD_005433b3_caseD_3:
   sVar4 = UiRuntimeContext::GetActiveNationId();
   iVar6 = (int)sVar4;
@@ -5790,7 +5790,7 @@ switchD_005433b3_caseD_3:
   }
   local_48 = 0;
   (&local_38)[iVar6] = 0x72656479;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_50,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_50,0);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -5844,7 +5844,7 @@ void __fastcall EnsureGameFlowStateAndPostTurnEvent5E5(Config *param_1)
   }
   ReturnTrueRuntimeCredentialInitStub();
   (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(g_pGameFlowState,1);
-  thunk_PostTurnEventCodeMessage2420(0x5e5);
+  PostTurnEventCodeMessage2420(0x5e5);
   *(undefined4 *)&param_1->field_0xd8 = 0x70726570;
 LAB_005445e2:
   *unaff_FS_OFFSET = uStack_c;
@@ -5888,7 +5888,7 @@ void EmitTurnEvent3Mode18WithActiveNation(void)
   local_c = 0x18;
   local_18 = 3;
   local_10 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_18,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_18,1);
   return;
 }
 
@@ -5919,7 +5919,7 @@ void __fastcall EmitTurnEvent10ForFlaggedNationSlots(int param_1)
       local_18 = 0x10;
       local_c = 0x18;
       local_10 = *(undefined4 *)((int)&g_pGameFlowState->vftable + iVar1);
-      thunk_EnqueueOrSendTurnEventPacketToNation(&local_18,0);
+      EnqueueOrSendTurnEventPacketToNation(&local_18,0);
     }
     iVar1 = iVar1 + 4;
     bVar2 = bVar2 + 1;
@@ -6113,10 +6113,10 @@ undefined4 __thiscall InitializeProtocolOptionControlFromProvider(int param_1,in
   (**(code **)(iVar3 + 0xc))();
   iVar3 = (**(code **)(iVar3 + 0x94))(unaff_retaddr);
   if (iVar3 != 0) {
-    thunk_SetSelectedTextOptionByTag(unaff_ESI,1);
+    SetSelectedTextOptionByTag(unaff_ESI,1);
     return 1;
   }
-  thunk_SetSelectedTextOptionByTag(0x70726f30,1);
+  SetSelectedTextOptionByTag(0x70726f30,1);
   return 1;
 }
 
@@ -6135,7 +6135,7 @@ undefined4 __fastcall ResetGameFlowStateAndPostTurnEvent5DC(int param_1)
   }
   *(undefined4 *)(param_1 + 0xd8) = 0x6e616461;
   *(undefined4 *)(param_1 + 0x40) = 0;
-  thunk_PostTurnEventCodeMessage2420(0x5dc);
+  PostTurnEventCodeMessage2420(0x5dc);
   return 1;
 }
 
@@ -6220,7 +6220,7 @@ undefined4 __fastcall ResetGameFlowStateAndPostTurnEvent5DCAlt(int param_1)
   }
   *(undefined4 *)(param_1 + 0xd8) = 0x6e616461;
   *(undefined4 *)(param_1 + 0x40) = 0;
-  thunk_PostTurnEventCodeMessage2420(0x5dc);
+  PostTurnEventCodeMessage2420(0x5dc);
   return 1;
 }
 
@@ -6257,7 +6257,7 @@ undefined4 __thiscall ApplyJoinGameSelectionAndPostTurnEvent5E4(int param_1,unde
     CString::AssignFromPtr((CString *)(param_1 + 0xb4),this);
     *(undefined4 *)(param_1 + 0x40) = 0;
     *(undefined4 *)&g_pLocalizationTable->field_0x44 = 2;
-    thunk_PostTurnEventCodeMessage2420(0x5e4);
+    PostTurnEventCodeMessage2420(0x5e4);
     local_4 = 0xffffffff;
     CString::~CString(&local_14);
     *unaff_FS_OFFSET = local_c;
@@ -6320,7 +6320,7 @@ undefined4 __thiscall ResetNationStatusSlotsAndInitializeNameControls(int param_
     *puVar4 = 0x756e6173;
     CString::CString(&local_2c);
     local_4 = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex(&local_2c,0x2759,1);
+    LoadUiStringResourceByGroupAndIndex(&local_2c,0x2759,1);
     piVar2 = (int *)(*local_28)(iVar5 + 0x6e616d30);
     iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();
@@ -6341,7 +6341,7 @@ undefined4 __thiscall ResetNationStatusSlotsAndInitializeNameControls(int param_
     local_2c.m_pchData = (char *)0x0;
     local_28 = (code *)0xffffffff;
     uStack_24 = 0x18;
-    thunk_EnqueueOrSendTurnEventPacketToNation(&stack0xffffffd0,0);
+    EnqueueOrSendTurnEventPacketToNation(&stack0xffffffd0,0);
     uVar3 = extraout_var;
   }
   *unaff_FS_OFFSET = uStack_18;
@@ -6363,7 +6363,7 @@ undefined1 __fastcall ResetLocalUiStateAndPostTurnEvent5E5(int param_1)
 {
   *(undefined4 *)(param_1 + 0x40) = 0;
   ResetNationStatusArraysAndTurnEventContext();
-  thunk_PostTurnEventCodeMessage2420(0x5e5);
+  PostTurnEventCodeMessage2420(0x5e5);
   *(undefined4 *)(param_1 + 100) = 0;
   return 1;
 }
@@ -6389,7 +6389,7 @@ undefined4 __fastcall ResetDialogContextField40AndEmitTurnEvent3Mode18(int param
   local_c = 0x18;
   local_18 = 3;
   local_10 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_18,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_18,1);
   NoOpDialogModeTagChangedHook(0);
   return 1;
 }
@@ -6401,7 +6401,7 @@ undefined4 __fastcall ResetDialogContextField40AndEmitTurnEvent3Mode18(int param
 void TouchSessionActiveNationId(void)
 
 {
-  FUN_00405a3d();
+  GetSessionActiveNationId();
   return;
 }
 
@@ -6462,7 +6462,7 @@ void CreateAndSendTurnEvent11_MapOffsetAndFlags
   local_4 = param_4;
   local_2 = param_5;
   local_20 = (*(int *)&g_pLocalizationTable->field_0x44 == 1) - 1;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_28,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_28,0);
   return;
 }
 
@@ -6490,7 +6490,7 @@ void CreateAndSendTurnEvent12_TwoShorts(undefined2 param_1,undefined2 param_2)
   local_10 = 0x1c;
   local_1c = 0x12;
   local_2 = param_2;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_1c,0);
   return;
 }
 
@@ -6525,7 +6525,7 @@ void CreateAndSendTurnEvent13_NationAndNineDwords(int param_1,undefined4 *param_
     param_2 = param_2 + 1;
     puVar2 = puVar2 + 1;
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_40,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_40,0);
   return;
 }
 
@@ -6556,7 +6556,7 @@ void CreateAndSendTurnEvent20_ShortAndTwoBytes
   local_2 = param_2;
   local_1 = param_3;
   local_14 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
   return;
 }
 
@@ -6586,7 +6586,7 @@ void CreateAndSendTurnEvent21_ThreeBytes(undefined1 param_1,undefined1 param_2,u
   local_3 = param_2;
   local_2 = param_3;
   local_14 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
   return;
 }
 
@@ -6614,7 +6614,7 @@ void CreateAndSendTurnEvent22_ByteAndShort(undefined1 param_1,undefined2 param_2
   local_10 = 0x1c;
   local_1c = 0x22;
   local_2 = param_2;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_1c,1);
   return;
 }
 
@@ -6674,7 +6674,7 @@ void DispatchTurnEvent1AWithNationActionPayload
     ppTVar2 = ppTVar2 + 1;
     puVar3 = (undefined4 *)((int)puVar3 + 2);
   } while ((int)ppTVar2 < 0x6a438c);
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_34,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_34,1);
   return;
 }
 
@@ -6714,7 +6714,7 @@ void CreateAndSendTurnEvent1B_FiveShortsAndDword
   local_c = param_3;
   local_8 = param_5;
   local_4 = param_6;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
   return;
 }
 
@@ -6754,7 +6754,7 @@ void CreateAndSendTurnEvent1C_BoolAndSixShorts
   local_8 = param_5;
   local_4 = param_4;
   local_2 = param_7;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_28,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_28,0);
   return;
 }
 
@@ -6828,7 +6828,7 @@ void DispatchTurnEventPacketWithCodeAndPayloadBuffer
   uVar3 = (**(code **)(iVar1 + 0x28))();
   *(undefined4 *)((int)pvVar2 + 0xc) = uVar3;
   (**(code **)(iVar1 + 0x1c))();
-  thunk_EnqueueOrSendTurnEventPacketToNation(pvVar2,(short)param_2 == -3);
+  EnqueueOrSendTurnEventPacketToNation(pvVar2,(short)param_2 == -3);
   GlobalFree(hMem);
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -6937,7 +6937,7 @@ void DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_2,int 
   }
   local_8 = param_1;
   local_4 = param_2;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,param_3 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&local_20,param_3 == -3);
   return;
 }
 
@@ -7016,7 +7016,7 @@ void __thiscall DispatchTextPairEvent8FromContext(int param_1,undefined1 param_2
     pcVar4 = pcVar4 + 1;
     pcVar5 = pcVar5 + 1;
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_5c,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_5c,0);
   return;
 }
 
@@ -7208,11 +7208,11 @@ void CreateCivilianWorkOrdersForSelectedNations(int *param_1,int param_2)
       this_00 = (TCivWorkOrderState *)0x0;
       uStack_4 = 0;
       if (this != (TCivWorkOrderState *)0x0) {
-        this_00 = (TCivWorkOrderState *)TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(this)
+        this_00 = (TCivWorkOrderState *)TCivWorkOrderState::TCivWorkOrderState(this)
         ;
       }
       uStack_4 = 0xffffffff;
-      TCivWorkOrderState::thunk_InitializeCivWorkOrderState(this_00,0,-1,nOrderOwnerNationId);
+      InitializeCivWorkOrderState(this_00,0,-1,nOrderOwnerNationId);
       iVar1 = *(int *)this_00;
       (**(code **)(iVar1 + 0x18))(param_1);
       (**(code **)(iVar1 + 0xc))();
@@ -7304,7 +7304,7 @@ void CreateAndSendTurnEvent0C_Text256AndTwoFlags
   local_4 = param_2;
   local_3 = param_3;
   local_114 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_11c,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_11c,1);
   return;
 }
 
@@ -7364,7 +7364,7 @@ void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)
     pdwSrcTileRecord = pdwSrcTileRecord + 1;
     pdwDstEventTileRecord = pdwDstEventTileRecord + 1;
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&nEventType,0);
+  EnqueueOrSendTurnEventPacketToNation(&nEventType,0);
   return;
 }
 
@@ -7501,7 +7501,7 @@ void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)
   local_12 = *(undefined1 *)(nCityRecordBase + 0xa2);
   local_11 = *(undefined1 *)(nCityRecordBase + 0xa3);
   CString::AssignFromPtr(&local_10,(CString *)(nCityRecordBase + 0xa4));
-  thunk_EnqueueOrSendTurnEventPacketToNation(&nEventType,0);
+  EnqueueOrSendTurnEventPacketToNation(&nEventType,0);
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
   *unaff_FS_OFFSET = local_c;
@@ -7603,7 +7603,7 @@ TCommand * AllocateAndConstructPoseMessageDialogTurnEventPacket(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TPoseMessageDialogVtbl_0065c0e8;
     pTVar1 = this;
   }
@@ -7635,7 +7635,7 @@ void DispatchSimpleTurnEventEsopWithParam(TCommandVtbl *param_1)
     pTVar1 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TPoseMessageDialogVtbl_0065c0e8;
     pTVar1 = this;
   }
@@ -7680,7 +7680,7 @@ void RefreshPoseMessageDialogNationSelectionControls(void)
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634d58;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  iVar4 = FUN_00405a3d();
+  iVar4 = GetSessionActiveNationId();
   iVar7 = 0;
   piVar5 = (int *)&g_pGameFlowState->field_0x48;
   do {
@@ -7688,7 +7688,7 @@ void RefreshPoseMessageDialogNationSelectionControls(void)
     iVar7 = iVar7 + 1;
     piVar5 = piVar5 + 1;
   } while (iVar7 < 7);
-  iVar4 = FUN_00405a3d();
+  iVar4 = GetSessionActiveNationId();
   iVar7 = 0;
   piVar5 = (int *)&g_pGameFlowState->field_0x48;
   do {
@@ -7701,10 +7701,10 @@ LAB_0054b217:
   if (iVar7 == -1) {
     CString::CString((CString *)&stack0x00000004);
     uStack_4 = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex();
+    LoadUiStringResourceByGroupAndIndex();
     puStack_1c = &stack0xffffffb4;
-    thunk_AssignStringSharedRefAndReturnThis(&stack0x00000004);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&stack0x00000004);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     uStack_4 = 0xffffffff;
     CString::~CString((CString *)&stack0x00000004);
   }
@@ -7712,7 +7712,7 @@ LAB_0054b217:
     uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iStack_2c = 0;
     iVar7 = 0x48;
@@ -7723,7 +7723,7 @@ LAB_0054b217:
       piVar5 = (int *)(*pcVar1)();
       iVar4 = *piVar5;
       (**(code **)(iVar4 + 0xc))();
-      iVar6 = FUN_00405a3d();
+      iVar6 = GetSessionActiveNationId();
       iVar2 = *(int *)((int)&g_pGameFlowState->vftable + iVar7);
       (**(code **)(iVar4 + 0xa8))();
       if (iStack_c == -1) {
@@ -7746,7 +7746,7 @@ LAB_0054b217:
     uStack_15 = 0;
     uStack_14 = 0;
     uStack_13 = 0;
-    thunk_BuildUiTextStyleDescriptor(&puStack_1c);
+    BuildUiTextStyleDescriptor(&puStack_1c);
     piVar5 = (int *)(*pcVar1)();
     iVar4 = *piVar5;
     (**(code **)(iVar4 + 0xc))();
@@ -7834,7 +7834,7 @@ void DispatchTurnEventCode9WithTwoTextTokens
     pcVar4 = pcVar4 + 1;
     pcVar5 = pcVar5 + 1;
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_64,1);
+  EnqueueOrSendTurnEventPacketToNation(&local_64,1);
   return;
 }
 
@@ -7936,7 +7936,7 @@ void EmitNationDiplomacyNeedStateSnapshotEvent15(char param_1,int param_2)
   local_c = pTVar1->field_0x8f4;
   local_8 = *(undefined4 *)&pTVar1->field_0x8f8;
   local_4 = pTVar1->field_0x8fc;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_6e4,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_6e4,0);
   return;
 }
 
@@ -7979,7 +7979,7 @@ SetNationStatusCodeForSlotOrActiveAndEmitEvent25(int param_1,undefined4 param_2,
   }
   local_2c = 0;
   local_1c[param_3] = param_2;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_34,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_34,0);
   return;
 }
 
@@ -7998,7 +7998,7 @@ undefined4 __thiscall GetNationStatusCodeForSlotOrActiveNation(int param_1,int p
     sVar1 = UiRuntimeContext::GetActiveNationId();
     param_2 = (int)sVar1;
     if (param_2 == -1) {
-      iVar2 = FUN_00405a3d();
+      iVar2 = GetSessionActiveNationId();
       param_2 = 0;
       piVar3 = (int *)&g_pGameFlowState->field_0x48;
       do {
@@ -8068,7 +8068,7 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
       InitializeNationStatusEvent25PayloadDefaults();
       local_38 = 0;
       auStack_28[iVar6] = 0x61776f6c;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       *(undefined4 *)(&param_1->field_0x48 + iVar5 * 4) = 0xfffffffe;
       *(uint *)&param_1->field_0xe8 = *(uint *)&param_1->field_0xe8 | 1 << ((byte)iVar5 & 0x1f);
       if ((*(int *)&param_1->field_0xd8 == 0x696e6974) &&
@@ -8126,7 +8126,7 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
           pcVar8 = pcVar8 + 1;
         }
         local_8c = (byte)iVar5;
-        thunk_EnqueueOrSendTurnEventPacketToNation();
+        EnqueueOrSendTurnEventPacketToNation();
       }
       else {
         CString::CString(&local_b4);
@@ -8136,17 +8136,17 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
         CString::AssignFromPtr(&local_b0,(CString *)(&param_1->field_0x78 + iVar5 * 4));
         CString::CString(&local_ac);
         local_4._0_1_ = 2;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         scanBracketExpressions(g_pLocalizationTable,&local_b4,local_ac.m_pchData);
         local_a8 = (TCommand *)&stack0xffffff2c;
-        thunk_AssignStringSharedRefAndReturnThis(&local_b4);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&local_b4);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         if ((g_pGameFlowState != param_1) || (param_1->field_0xf4 == '\0')) {
           this = (TCommand *)AllocateWithFallbackHandler();
           local_4._0_1_ = 3;
           local_a8 = this;
           if (this != (TCommand *)0x0) {
-            TCommand::thunk_ConstructTurnEventPacketBase(this);
+            TCommand::ConstructTurnEventPacketBase(this);
             this->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
           }
           local_4._0_1_ = 2;
@@ -8246,7 +8246,7 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
       SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(0xfffffffe);
       local_14 = 0x64656875;
       local_10 = param_2;
-      thunk_EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
+      EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
     }
     pTVar1 = g_apNationStates[param_2];
     if (((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 != '\0')) && (param_2 != sVar7)) {
@@ -8475,7 +8475,7 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
     local_2c = 1;
     local_24 = 0;
     local_20 = 0x1c;
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
+    EnqueueOrSendTurnEventPacketToNation(&local_2c,0);
     if ((*(int *)&param_1[9].field_0x10 == 0) &&
        (param_1[10].vftable != (TNextDiplomationCommandVtbl *)0xffffffff)) {
       TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(param_1);
@@ -8546,7 +8546,7 @@ void EmitTurnEvent26DiplomacyMatrixSnapshot(void)
     puVar3 = puVar3 + 1;
     puVar4 = puVar4 + 1;
   }
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_814,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_814,0);
   return;
 }
 
@@ -8577,7 +8577,7 @@ void DispatchJoinEmpireModeEventPacket24_27
   local_24 = 0x27;
   local_8 = param_2;
   local_4 = param_3;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_24,0);
   return;
 }
 
@@ -8646,7 +8646,7 @@ void __fastcall ResetNationStatusArraysAndTurnEventContext(int param_1)
   local_10 = param_1;
   CString::CString(&local_14);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_14,0x2759,1);
+  LoadUiStringResourceByGroupAndIndex(&local_14,0x2759,1);
   this = (CString *)(param_1 + 0x94);
   iVar1 = 7;
   do {
@@ -8683,7 +8683,7 @@ undefined4 __fastcall HandleActiveNationAwolTransitionOrRecovery(int param_1)
   *(undefined4 *)(param_1 + 0x48 + sVar3 * 4) = 0xfffffffe;
   cVar2 = CheckConnectivityOrShowLocalizedWarningAndReturnReady();
   if (cVar2 != '\0') {
-    uVar4 = FUN_00405a3d();
+    uVar4 = GetSessionActiveNationId();
     sVar3 = UiRuntimeContext::GetActiveNationId();
     *(undefined4 *)(param_1 + 0x48 + sVar3 * 4) = uVar4;
     return 1;
@@ -8731,7 +8731,7 @@ void CreateAndQueueTurnEventPacketTagPOGC(void)
     pTVar1 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
     pTVar1 = this;
   }
@@ -8913,7 +8913,7 @@ void EmitTurnEvent2CNationStateCompositeForSlot(int param_1,int param_2)
     local_6 = *(undefined2 *)(*(int *)(iVar9 + 0x18) + 4);
     local_4 = *(undefined2 *)(*(int *)(iVar9 + 0x18) + 6);
     local_2 = *(undefined2 *)(*(int *)(iVar9 + 0x18) + 8);
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_18c,param_2 == -3);
+    EnqueueOrSendTurnEventPacketToNation(&local_18c,param_2 == -3);
   }
   return;
 }
@@ -9005,7 +9005,7 @@ void EmitTurnEvent19NationStateArraysForSlot(undefined4 param_1,int param_2)
     pwVar6[0x17] = *(word *)(&pTVar1->field_0x14 + iVar7 * 2);
     pwVar6 = pwVar6 + 1;
   } while (iVar8 < 0x17);
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_118,param_2 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&local_118,param_2 == -3);
   return;
 }
 
@@ -9055,7 +9055,7 @@ void CreateAndSendTurnEvent2D_TableRowShortArray(short param_1,int param_2)
     *puVar4 = *(undefined2 *)(&pTVar1->field_0x14 + sVar2 * 2);
     puVar4 = puVar4 + 1;
   } while (iVar3 < 0x17);
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_4c,param_2 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&local_4c,param_2 == -3);
   return;
 }
 
@@ -9082,13 +9082,13 @@ undefined4 TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 pa
   iVar1 = ProbeNationReachabilityAndMarkAwolBitmask();
   cVar3 = '\x01' - (iVar1 != 0);
   if (cVar3 != '\0') {
-    iVar1 = thunk_SaveGameWithModeAndOptionalLabel(param_1,param_2);
+    iVar1 = SaveGameWithModeAndOptionalLabel(param_1,param_2);
   }
   uVar2 = (undefined3)((uint)iVar1 >> 8);
   if ((param_3 != '\0') && (cVar3 == '\0')) {
     CString::CString((CString *)&param_3);
     local_4 = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex(&param_3,0x2742,0x28);
+    LoadUiStringResourceByGroupAndIndex(&param_3,0x2742,0x28);
     CreateModalMessageCommandAndQueue(&param_3,0);
     local_4 = 0xffffffff;
     CString::~CString((CString *)&param_3);
@@ -9133,7 +9133,7 @@ TNoHilitePicture * AllocateAndConstructTLoungeDialog(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TLoungeDialogVtbl_006433b8;
     pTVar1 = this;
   }
@@ -9186,13 +9186,13 @@ void TryInvokeNationStateReplacementForSlot(CString param_1)
           CString::CString(&param_1);
           iStack_4 = CONCAT31(iStack_4._1_3_,2);
           FormatOverlayTerrainLabelText();
-          thunk_LoadUiStringResourceByGroupAndIndex();
+          LoadUiStringResourceByGroupAndIndex();
           scanBracketExpressions(g_pLocalizationTable,&CStack_14,CStack_18.m_pchData);
           puStack_10 = &stack0xffffffd4;
-          thunk_AssignStringSharedRefAndReturnThis(&CStack_14);
-          cVar2 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+          AssignStringSharedRefAndReturnThis(&CStack_14);
+          cVar2 = DispatchLocalizedUiMessageWithTemplateA13A0();
           if (cVar2 != '\0') {
-            thunk_DispatchTaggedGameStateEvent1F20();
+            DispatchTaggedGameStateEvent1F20();
             ReplaceNationStateForSlotAndRefreshStatus();
           }
           iStack_4._0_1_ = 1;
@@ -9266,13 +9266,13 @@ void __fastcall RefreshMapAndMessageControlsForCurrentContext(int *param_1)
   uStack_1c = uStack_2c;
   uStack_18 = uStack_28;
   pTStack_24 = pTVar3;
-  thunk_InvalidateCityDialogRectRegion(&pTStack_24,1);
+  InvalidateCityDialogRectRegion(&pTStack_24,1);
   piVar5 = (int *)(*pcVar2)(0x6d657373);
   iVar4 = *piVar5;
   (**(code **)(iVar4 + 0xc))();
   CString::CString((CString *)&stack0xffffffc0);
   uStack_10 = 1;
-  thunk_LoadUiStringResourceByGroupAndIndex(&stack0xffffffc0,0x2742,0x10);
+  LoadUiStringResourceByGroupAndIndex(&stack0xffffffc0,0x2742,0x10);
   (**(code **)(iVar4 + 0x1c8))(&stack0xffffffc0,1);
   (**(code **)(iVar1 + 0xe4))();
   uStack_18 = uStack_18 & 0xffffff00;
@@ -9306,7 +9306,7 @@ TNoHilitePicture * AllocateAndConstructTJoinSelectorDialog(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TJoinSelectorDialogVtbl_006435e8;
     pTVar1 = this;
   }
@@ -9336,11 +9336,11 @@ void __thiscall AddJoinableGameOptionEntry(int *param_1,undefined4 param_2)
   
   piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x67616d65);
   (**(code **)(*piVar1 + 0xc))();
-  piVar1 = (int *)thunk_CreateSelectableTextOptionChildEntry
+  piVar1 = (int *)CreateSelectableTextOptionChildEntry
                             (param_2,param_2,unaff_retaddr,0x12,0xffffffff);
   ApplyUiTextStyleAndThemeFlags(piVar1,0,0xc,0x2b6b,0x2b6c);
   (**(code **)(*piVar1 + 0x1c4))(0xfffffffe,0);
-  thunk_SetSelectedTextOptionByTag(param_2,0);
+  SetSelectedTextOptionByTag(param_2,0);
   return;
 }
 
@@ -9603,7 +9603,7 @@ LAB_0054f3b8:
   }
   if ((pOrderEntry != 0) && (*(int *)(pOrderEntry + 8) == 5)) {
     iVar4 = pCityState;
-    iVar3 = TGreatPower::thunk_GetCityIndexFromCityStatePointer
+    iVar3 = TGreatPower::GetCityIndexFromCityStatePointer
                       (*(TGreatPower **)(pOrderEntry + 0xc),pCityState);
     TrimExcessNavyOrderSupportAndRebuildOrderBuffer
               ((int)*(char *)(nSideIndex + pCityState),iVar3,iVar4);
@@ -9680,14 +9680,14 @@ TShip * CreateNavyPrimaryOrderNodeAndAssignDisplayName
   local_4 = 0xffffffff;
   if (pTVar4 == (TShip *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x1fc);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x1fc);
   }
   key_id = param_3;
   *(undefined4 *)&pTVar4->field_0x8 = param_2;
   *(short *)&pTVar4->field_0x4 = sVar2;
   *(short *)&pTVar4->field_0x14 = (short)param_3;
   if (param_4 == (char *)0x0) {
-    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
               ((TAdmiral *)g_apTerrainTypeDescriptorTable[(short)param_3]);
     for (pTVar1 = g_pNavyPrimaryOrderListHead; pTVar1 != (TShip *)0x0;
         pTVar1 = *(TShip **)&pTVar1->field_0x24) {
@@ -9726,7 +9726,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip *param_1)
   TShip *pTVar2;
   
 LAB_0054fbf8:
-  TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+  TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
             ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)&param_1->field_0x14]);
   pTVar2 = g_pNavyPrimaryOrderListHead;
   do {

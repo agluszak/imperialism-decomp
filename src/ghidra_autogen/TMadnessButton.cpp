@@ -11,7 +11,7 @@ TMadnessButton * __thiscall
 TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
 // GHIDRA_NAME TMadnessButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMadnessButton::GetTEventHandlerClassNamePointer(TMadnessButton *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TMadnessButton::GetTEventHandlerClassNamePointer(TMad
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EAF0
 // GHIDRA_NAME TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920(TMadnessButton *this)
 
@@ -84,7 +84,7 @@ void __thiscall TMadnessButton::OrphanCallChain_C4_I45_00571d40(TMadnessButton *
       puStack_8 = (undefined1 *)0x0;
       (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&stack0xffffffc8);
       uStack_4 = 0xffffffff;
-      thunk_DestroyScopedMapQuickDrawContext();
+      DestroyScopedMapQuickDrawContext();
     }
   }
   *unaff_FS_OFFSET = uStack_c;

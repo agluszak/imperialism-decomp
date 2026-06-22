@@ -101,7 +101,7 @@ void __thiscall CString::EnsureCapacityOrAllocate(CString *this,int required_cap
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006058E2
 // GHIDRA_NAME CString::~CString
-// GHIDRA_PROTO void __thiscall ~CString(void)
+// GHIDRA_PROTO void __thiscall CString::~CString(void)
 
 void __thiscall CString::~CString(CString *this)
 

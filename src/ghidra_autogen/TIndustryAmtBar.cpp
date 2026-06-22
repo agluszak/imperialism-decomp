@@ -23,7 +23,7 @@ TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
@@ -38,7 +38,7 @@ TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005891B0
 // GHIDRA_NAME TIndustryAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TIndustryAmtBar::GetTEventHandlerClassNamePointer(TIndustryAmtBar *this)
 
@@ -48,12 +48,12 @@ CRuntimeClass * __thiscall TIndustryAmtBar::GetTEventHandlerClassNamePointer(TIn
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005891D0
 // GHIDRA_NAME TIndustryAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
 TIndustryAmtBar * __thiscall TIndustryAmtBar::ConstructBaseState(TIndustryAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TIndustryAmtBarVtbl_00666110;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
@@ -70,7 +70,7 @@ TIndustryAmtBar * __thiscall
 TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -79,7 +79,7 @@ TIndustryAmtBar::_scalar_deleting_destructor_(TIndustryAmtBar *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589260
 // GHIDRA_NAME TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryAmtBar *this)
 
@@ -107,7 +107,7 @@ void __thiscall TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryAmtBa
   }
   pvVar2 = this_00->orderSlotsE4[sVar4];
   *(void **)&this->field_0x68 = pvVar2;
-  iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
+  iVar5 = TCity::GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
   iVar3 = this->field34;
   sVar6 = (short)iVar5;
   sVar4 = (**(code **)(**(int **)&this->field_0x68 + 0x30))();
@@ -116,7 +116,7 @@ void __thiscall TIndustryAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TIndustryAmtBa
   sVar4 = *(short *)(*(int *)&this->field_0x68 + 4);
   *(undefined2 *)&this->field_0x66 = 0x3a;
   *(short *)&this->field_0x60 = (short)((sVar4 * iVar3) / (int)sVar6);
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
@@ -154,23 +154,23 @@ TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TIndustryAmtBar *
     cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
     if (cVar2 != '\0') {
       (*pTVar1[0x25].GetTEventHandlerClassNamePointer)();
-      thunk_ApplyRectClipRegionToGlobalClipState();
+      ApplyRectClipRegionToGlobalClipState();
       (*pTVar1[0x25].slot_0x04)();
       (*pTVar1[0x27].GetTEventHandlerClassNamePointer)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
-        thunk_SetQuickDrawTextOriginWithContextOffset(0);
-        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
+        SetQuickDrawTextOriginWithContextOffset(0);
+        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1);
         ResetQuickDrawStrokeState();
         uVar4 = extraout_var_02;
       }
-      thunk_SetQuickDrawTextOriginWithContextOffset
+      SetQuickDrawTextOriginWithContextOffset
                 (CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
       SetQuickDrawFillColor();
       ResetQuickDrawStrokeState();
-      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
+      DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
       ;
       SnapshotHitRegionToClipCache();
       uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
@@ -226,7 +226,7 @@ TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA
       iStack_10 = this->field38 + iStack_20;
       iStack_1c = iStack_24;
       iStack_18 = iStack_20;
-      thunk_InvalidateCityDialogRectRegion(&iStack_1c,1);
+      InvalidateCityDialogRectRegion(&iStack_1c,1);
     }
   }
   local_4 = 0xffffffff;
@@ -279,7 +279,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
     piVar7 = (int *)CONCAT31(extraout_var,uVar5);
     if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xcf2);
     }
     iVar4 = *piVar7;
@@ -292,12 +292,12 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
     RStack_30.left = auStack_40._0_4_;
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
-    thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
+    InvalidateCityDialogRectRegion(&tStack_20,1);
     uVar5 = (*pTVar1)(0x62617220);
     piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
     if (piVar9 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xcf9);
     }
     if ((short)piVar9[0x19] == 0) {
@@ -327,7 +327,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
     OffsetRect((LPRECT)&LStack_58,this->ownerOffsetX,this->ownerOffsetY);
     auStack_40._0_4_ = iVar3 + iVar4;
     CopyRect((LPRECT)(auStack_40 + 8),(RECT *)&stack0xffffffb8);
-    thunk_InvalidateCityDialogRectRegion(auStack_40 + 8,1);
+    InvalidateCityDialogRectRegion(auStack_40 + 8,1);
     (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
   }
   return;
@@ -350,7 +350,7 @@ void __thiscall TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A(TIndust
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd1d);
   }
   if ((short)piVar4[0x19] != 0) {

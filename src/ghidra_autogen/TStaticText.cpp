@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004294D0
 // GHIDRA_NAME TStaticText::AssignSharedStringFromField84
-// GHIDRA_PROTO undefined __thiscall AssignSharedStringFromField84(CString * param_1)
+// GHIDRA_PROTO undefined __thiscall TStaticText::AssignSharedStringFromField84(CString * param_1)
 
 void __thiscall TStaticText::AssignSharedStringFromField84(TStaticText *this,CString *param_1)
 
@@ -39,7 +39,7 @@ TView * TStaticText::CreateTStaticTextInstance(void)
     *unaff_FS_OFFSET = local_c;
     return (TView *)0x0;
   }
-  TView::thunk_ConstructTViewBaseState(this);
+  TView::ConstructTViewBaseState(this);
   *(undefined1 *)&this[1].field04 = 0;
   this[1].vftable = (TViewVtbl *)0x1;
   this[1].padding_08_to_0b = 0;
@@ -71,7 +71,7 @@ TView * TStaticText::CreateTStaticTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F870
 // GHIDRA_NAME TStaticText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TStaticText::GetTEventHandlerClassNamePointer(TStaticText *this)
 
@@ -121,7 +121,7 @@ TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
   puStack_8 = &LAB_0062f023;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -159,7 +159,7 @@ TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
 TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *this,byte param_1)
 
 {
-  ~TStaticText(this);
+  TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -168,7 +168,7 @@ TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FC00
 // GHIDRA_NAME TStaticText::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 undefined1 __thiscall TStaticText::OrphanCallChain_C11_I88_004874b0(TStaticText *this)
 
@@ -182,7 +182,7 @@ undefined1 __thiscall TStaticText::OrphanCallChain_C11_I88_004874b0(TStaticText 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FC30
 // GHIDRA_NAME TStaticText::~TStaticText
-// GHIDRA_PROTO undefined __thiscall ~TStaticText(void)
+// GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
 void __thiscall TStaticText::~TStaticText(TStaticText *this)
 
@@ -218,7 +218,7 @@ void __thiscall TStaticText::~TStaticText(TStaticText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FE60
 // GHIDRA_NAME TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
-// GHIDRA_PROTO undefined __thiscall AssignTextSharedRefIfChangedAndMaybeInvalidate(CString * param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString * param_1, char param_2)
 
 void __thiscall
 TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
@@ -240,7 +240,7 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FED0
 // GHIDRA_NAME TStaticText::LoadUiStringAndDispatchViaVslot1C8
-// GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
+// GHIDRA_PROTO undefined __thiscall TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_2)
 
 void __thiscall
 TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,short param_2)
@@ -263,7 +263,7 @@ TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,
   CString::CString(&local_10);
   CStack_18.m_pchData = (char *)(int)param_2;
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,(int)param_1);
+  LoadUiStringResourceByGroupAndIndex(&local_10,(int)param_1);
   (*this->vftable[0x39].GetTEventHandlerClassNamePointer)(&local_10);
   uStack_c = 0xffffffff;
   CString::~CString(&CStack_18);
@@ -273,7 +273,7 @@ TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this,short param_1,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FF70
 // GHIDRA_NAME TStaticText::OrphanCallChain_C1_I09_0048ff70
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2)
 
 void __thiscall
 TStaticText::OrphanCallChain_C1_I09_0048ff70(TStaticText *this,undefined2 param_1,char param_2)
@@ -288,7 +288,7 @@ TStaticText::OrphanCallChain_C1_I09_0048ff70(TStaticText *this,undefined2 param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FFB0
 // GHIDRA_NAME TStaticText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TStaticText::OrphanTiny_ReturnZero_0048a730(TStaticText *this)
 

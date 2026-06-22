@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0A0
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNavyAutoPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(void)
 
 void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
 
@@ -142,7 +142,7 @@ void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad90(TNavyAutoPlayer *this)
   }
   FreeHeapBufferIfNotNull(uVar2);
   if ((*(TNextMoveCommand **)&this->field_0x14)[1].vftable == pTStack_18) {
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
+    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
   }
   return;
 }

@@ -11,7 +11,7 @@ TCivAnimation * __thiscall
 TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this,byte param_1)
 
 {
-  CreateTCivAnimationInstance(this);
+  TCivAnimation::CreateTCivAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4B0
 // GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTCivAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TCivAnimation::CreateTCivAnimationInstance(void)
 
 void __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
 
@@ -54,7 +54,7 @@ void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *th
   if (iVar2 != *(int *)&this->field_0x14) {
     return;
   }
-  thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+  InvalidateCityDialogRectRegion(&this->field_0x1c,1);
   *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
   *(undefined4 *)&this->field_0x10 = 0;
   if (*(short *)&this->field_0x8 != *(short *)&this->field_0xa) {

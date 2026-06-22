@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430B50
 // GHIDRA_NAME TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940
-// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntry_Vtbl00640940(void)
+// GHIDRA_PROTO undefined __thiscall TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(void)
 
 TBattleUnitsView * __thiscall
 TBattleUnitsView::ConstructUiResourceEntry_Vtbl00640940(TBattleUnitsView *this)
@@ -25,7 +25,7 @@ TBattleUnitsView * __thiscall
 TBattleUnitsView::_scalar_deleting_destructor_(TBattleUnitsView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ TMilitaryPageView * TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B06D0
 // GHIDRA_NAME TBattleUnitsView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TBattleUnitsView::GetTEventHandlerClassNamePointer(TBattleUnitsView *this)
@@ -75,7 +75,7 @@ TBattleUnitsView::GetTEventHandlerClassNamePointer(TBattleUnitsView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B06F0
 // GHIDRA_NAME TBattleUnitsView::ConstructTBattleUnitsViewBaseState
-// GHIDRA_PROTO undefined ConstructTBattleUnitsViewBaseState()
+// GHIDRA_PROTO undefined TBattleUnitsView::ConstructTBattleUnitsViewBaseState()
 
 void __thiscall
 TBattleUnitsView::ConstructTBattleUnitsViewBaseState
@@ -173,7 +173,7 @@ switchD_004b071e_default:
 void __thiscall TBattleUnitsView::InvalidateWindowRectFromHandleField1C(TBattleUnitsView *this)
 
 {
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   if (*(int *)&this->field_0x84 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x84);
     *(undefined4 *)&this->field_0x84 = 0;

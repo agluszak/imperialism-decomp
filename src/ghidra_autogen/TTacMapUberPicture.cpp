@@ -24,7 +24,7 @@ TTacMapUberPicture * __thiscall
 TTacMapUberPicture::_scalar_deleting_destructor_(TTacMapUberPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -63,7 +63,7 @@ TOffLimitsPicture * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD380
 // GHIDRA_NAME TTacMapUberPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTacMapUberPicture::GetTEventHandlerClassNamePointer(TTacMapUberPicture *this)
@@ -74,7 +74,7 @@ TTacMapUberPicture::GetTEventHandlerClassNamePointer(TTacMapUberPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3A0
 // GHIDRA_NAME TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacMapUberPicture *this)
 
@@ -91,7 +91,7 @@ void __thiscall TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacMapUber
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3F0
 // GHIDRA_NAME TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730(TTacMapUberPicture *this)
 

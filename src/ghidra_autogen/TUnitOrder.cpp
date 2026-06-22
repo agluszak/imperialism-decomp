@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F50
 // GHIDRA_NAME TUnitOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnitOrder *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnit
 TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this,byte param_1)
 
 {
-  DestructTUnitOrderAndMaybeFree(this);
+  TUnitOrder::DestructTUnitOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -29,7 +29,7 @@ TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6FC0
 // GHIDRA_NAME TUnitOrder::DestructTUnitOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTUnitOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(void)
 
 void __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(TUnitOrder *this)
 
@@ -288,7 +288,7 @@ TUnitOrder::OrphanCallChain_C1_I16_004b5100(TUnitOrder *this,short nTargetOrderA
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7320
 // GHIDRA_NAME TUnitOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds projected resource/labor cost vector for a given city-entry amount.
 // GHIDRA_COMMENT
@@ -424,7 +424,7 @@ void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
                              *(undefined2 *)(nSpawnTileOrOrderObj + 0x14));
           }
           nSpawnTileOrOrderObj =
-               thunk_FindReachableRecruitSpawnTileWithVisitedReset
+               FindReachableRecruitSpawnTileWithVisitedReset
                          (uVar4,*(short *)&this->field_0x48 == 4);
           if ((short)nSpawnTileOrOrderObj != -1) {
             adwTempAlloc[0] = AllocateWithFallbackHandler(0x28);
@@ -434,11 +434,11 @@ void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
             else {
               pNewCivOrderState =
                    (TCivWorkOrderState *)
-                   TCivWorkOrderState::thunk_InitializeCivUnitOrderObject
+                   TCivWorkOrderState::TCivWorkOrderState
                              ((TCivWorkOrderState *)adwTempAlloc[0]);
             }
             pOwnerNationState = *(int *)(*(int *)&this->field_0x8 + 0xac);
-            TCivWorkOrderState::thunk_InitializeCivWorkOrderState
+            InitializeCivWorkOrderState
                       (pNewCivOrderState,
                        CONCAT22((short)((uint)pOwnerNationState >> 0x10),
                                 *(undefined2 *)&this->field_0x48),nSpawnTileOrOrderObj,
@@ -588,7 +588,7 @@ TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,in
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -638,7 +638,7 @@ void __thiscall TUnitOrder::SyncCityEntryOrderStateWithArchive(TUnitOrder *this,
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*pArchive + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);

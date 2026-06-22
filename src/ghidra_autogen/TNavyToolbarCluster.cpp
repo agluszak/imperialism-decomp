@@ -35,7 +35,7 @@ TUberCluster * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694B0
 // GHIDRA_NAME TNavyToolbarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TNavyToolbarCluster::GetTEventHandlerClassNamePointer(TNavyToolbarCluster *this)
@@ -46,7 +46,7 @@ TNavyToolbarCluster::GetTEventHandlerClassNamePointer(TNavyToolbarCluster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694D0
 // GHIDRA_NAME TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyToolbarClusterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(void)
 
 TNavyToolbarCluster * __thiscall
 TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
@@ -65,7 +65,7 @@ TNavyToolbarCluster * __thiscall
 TNavyToolbarCluster::_scalar_deleting_destructor_(TNavyToolbarCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -74,7 +74,7 @@ TNavyToolbarCluster::_scalar_deleting_destructor_(TNavyToolbarCluster *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569550
 // GHIDRA_NAME TNavyToolbarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TNavyToolbarCluster::OrphanRetStub_0059add0
@@ -96,7 +96,7 @@ TNavyToolbarCluster::OrphanRetStub_0059add0
       uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
       this_00 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x6d61696e);
       (**(code **)(*this_00 + 0xc))();
-      pvVar4 = thunk_GetActiveMapOrderEntry(this_00);
+      pvVar4 = GetActiveMapOrderEntry(this_00);
       if (pvVar4 != (void *)0x0) {
         SetTaskForceOwnerPointer(uVar5);
       }
@@ -111,7 +111,7 @@ TNavyToolbarCluster::OrphanRetStub_0059add0
         uVar3 = GetAsyncKeyState(0x11);
         if ((uVar3 & 0x8000) == 0) {
           puVar1 = g_pUiRuntimeContext->vftable;
-          pvVar4 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
+          pvVar4 = GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
           (**(code **)(puVar1 + 0xf0))(pvVar4);
         }
         else {
@@ -122,7 +122,7 @@ TNavyToolbarCluster::OrphanRetStub_0059add0
       goto LAB_00569662;
     }
 LAB_00569626:
-    pvVar4 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
+    pvVar4 = GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
     if (pvVar4 != (void *)0x0) {
       ApplyTaskForceSelectionModeForCurrentNationOrders(*(int *)((int)param_2 + 0x1c) == 0x646f6e65)
       ;
@@ -134,9 +134,9 @@ LAB_00569626:
     if (uVar5 != 0x6e657874) goto LAB_00569662;
     this_01 = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
   }
-  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this_01);
+  TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(this_01);
 LAB_00569662:
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 

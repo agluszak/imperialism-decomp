@@ -42,14 +42,14 @@ TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle(TBattle
   
   local_28 = 0;
   uVar5 = *(undefined4 *)&g_pUiAnimator->field_0x20;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
   piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130
                             (*(short *)&this->padding_08_to_0b + (short)this->field0c);
   NoOpRuntimeCallback_00497c00(piVar3);
   if (*piVar3 != 0) {
-    thunk_SetActiveQuickDrawSurfaceContext(uVar5,local_28);
-    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(uVar5);
-    thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
+    SetActiveQuickDrawSurfaceContext(uVar5,local_28);
+    uVar4 = GetSurfaceObjectAtContextOffset24(uVar5);
+    ReturnConstantTrueQuickDrawFlag(uVar4);
     puVar1 = (undefined4 *)*piVar3;
     (**(code **)*puVar1)();
     *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
@@ -71,16 +71,16 @@ TBattleReportView::RenderBattleReportViewSurfaceSpriteWithResourceHandle(TBattle
       FreeHeapBufferIfNotNull(this_00);
     }
     FreeHeapBufferIfNotNull(piVar3);
-    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(uVar5);
-    thunk_NoOpQuickDrawLifecycleHookB(uVar5);
-    thunk_SetActiveQuickDrawSurfaceContext(local_24,local_28);
+    uVar5 = GetSurfaceObjectAtContextOffset24(uVar5);
+    NoOpQuickDrawLifecycleHookB(uVar5);
+    SetActiveQuickDrawSurfaceContext(local_24,local_28);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0FA0
 // GHIDRA_NAME TBattleReportView::RemoveUiTransientRegistryObjectByTag
-// GHIDRA_PROTO undefined __thiscall RemoveUiTransientRegistryObjectByTag(int param_1)
+// GHIDRA_PROTO undefined __thiscall TBattleReportView::RemoveUiTransientRegistryObjectByTag(int param_1)
 
 void __thiscall
 TBattleReportView::RemoveUiTransientRegistryObjectByTag(TBattleReportView *this,int param_1)
@@ -146,7 +146,7 @@ TDiplomacyMapView * TBattleReportView::CreateTBattleReportViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ACB40
 // GHIDRA_NAME TBattleReportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TBattleReportView::GetTEventHandlerClassNamePointer(TBattleReportView *this)
@@ -208,7 +208,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
   
   ProbeStackPagesForLargeFrameAllocation();
   iStack_18 = 0x4acb7d;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this_01);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this_01);
   iStack_14 = 0x4acb84;
   TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this_01);
   iStack_14 = 0x2b67;
@@ -218,7 +218,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
   uStack0000001f = 0;
   uStack00000020 = 0;
   uStack00000021 = 0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iStack_14 = 0x2b67;
   iStack_18 = 0xe;
   puStack_1c = (undefined1 *)0x0;
@@ -227,7 +227,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
     *puVar11 = 0;
     puVar11 = puVar11 + 1;
   }
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pTVar1 = this_01->vftable[0x12].slot_0x04;
   iStack_14 = 0x72657375;
   iStack_18 = 0x4acbe1;
@@ -238,13 +238,13 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
   puStack_1c = &stack0x00000014;
   iStack_18 = 0;
   (**(code **)(iVar9 + 0x1b4))();
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   uVar3 = (*pTVar1)();
   iVar9 = *(int *)CONCAT31(extraout_var_00,uVar3);
   (**(code **)(iVar9 + 0xc))();
   (**(code **)(iVar9 + 0x1b4))();
   puStack_3c = (undefined1 *)0x4acc43;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   uVar3 = (*pTVar1)();
   iVar9 = *(int *)CONCAT31(extraout_var_01,uVar3);
   (**(code **)(iVar9 + 0xc))();
@@ -262,7 +262,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
   iStack_48 = 10;
   piStack_50 = &iStack_18;
   ppuStack_4c = (undefined1 **)0x0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iStack_44 = 0x66736870;
   iStack_48 = 0x4acca7;
   uVar3 = (*pTVar1)();
@@ -288,7 +288,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
       }
       *(int *)&this_01->field_0x24c8 = iVar5 + -1;
       pcVar8 = (char *)(**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))();
-      RefreshMapContextSelectionPanelAndInfoLabels(this_01,pcVar8);
+      TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(this_01,pcVar8);
       (*this_01->vftable[10].slot_0x04)();
       this_00 = (TAnimation *)AllocateWithFallbackHandler();
       if (this_00 == (TAnimation *)0x0) {
@@ -324,7 +324,7 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
       puStack_3c = (undefined1 *)&pTStack_8c;
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                 ((TToolBarCluster *)&pTStack_8c,PTR_g_szEmptyString_0064dc30);
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
       iStack_88 = 0x6661646d;
       pTStack_8c = (TToolBarClusterVtbl *)0x4ad1ed;
       uVar3 = (*pTVar1)();
@@ -355,9 +355,9 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
       LoadUiStringByGroupAndIndexToControlObject(0x273d,0x1d,uVar3);
       uVar3 = (*pTVar1)(0x71756572);
       LoadUiStringByGroupAndIndexToControlObject(0x273d,0x1e,uVar3);
-      thunk_ResetDualAudioCuePools();
-      thunk_PushCueToDualAudioCuePools(5);
-      thunk_SelectAndScheduleRandomAudioCue();
+      ResetDualAudioCuePools();
+      PushCueToDualAudioCuePools(5);
+      SelectAndScheduleRandomAudioCue();
       return;
     }
     iVar6 = (**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))();
@@ -377,8 +377,8 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
     iVar10 = (int)sStack_34 % 0x6c;
     puStack_1c = (undefined1 *)0x1;
     iStack_18 = 0;
-    thunk_StepHexRowColByDirectionWithWrapRules();
-    thunk_StepHexRowColByDirectionWithWrapRules();
+    StepHexRowColByDirectionWithWrapRules();
+    StepHexRowColByDirectionWithWrapRules();
     while ((int)puStack_1c < 10) {
       if (((iVar12 < 0) || (0x3b < iVar12)) || ((iVar10 < 0 || (0x6b < iVar10)))) {
         iVar7 = -1;
@@ -410,10 +410,10 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
         if (5 < iStack_18) {
           iStack_18 = 0;
           puStack_1c = puStack_1c + 1;
-          thunk_StepHexRowColByDirectionWithWrapRules();
+          StepHexRowColByDirectionWithWrapRules();
         }
       }
-      thunk_StepHexRowColByDirectionWithWrapRules();
+      StepHexRowColByDirectionWithWrapRules();
     }
     iVar10 = (int)sStack_34;
     iStack_48 = iVar10 / 0x6c;
@@ -421,8 +421,8 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
     iStack_44 = iVar10 % 0x6c;
     iVar12 = 0;
     puStack_3c = (undefined1 *)0x0;
-    thunk_StepHexRowColByDirectionWithWrapRules();
-    thunk_StepHexRowColByDirectionWithWrapRules();
+    StepHexRowColByDirectionWithWrapRules();
+    StepHexRowColByDirectionWithWrapRules();
     while ((int)puStack_40 < 3) {
       if (((iStack_48 < 0) || (0x3b < iStack_48)) || ((iStack_44 < 0 || (0x6b < iStack_44)))) {
         iVar7 = -1;
@@ -446,10 +446,10 @@ void __thiscall TBattleReportView::ConstructTBattleReportViewBaseState(TBattleRe
         if (5 < (int)puStack_3c) {
           puStack_3c = (undefined1 *)0x0;
           puStack_40 = puStack_40 + 1;
-          thunk_StepHexRowColByDirectionWithWrapRules();
+          StepHexRowColByDirectionWithWrapRules();
         }
       }
-      thunk_StepHexRowColByDirectionWithWrapRules();
+      StepHexRowColByDirectionWithWrapRules();
     }
     (&stack0xfffffffc)[iVar10] = (&stack0xfffffffc)[iVar10] + '\x01';
     SplitTileIndexToHexRasterColumnX2AndRow();
@@ -486,7 +486,7 @@ void __thiscall TBattleReportView::_scalar_deleting_destructor_(TBattleReportVie
 
 {
   if (*(int *)&this->field_0x24cc != 0) {
-    RemoveUiTransientRegistryObjectByTag
+    TBattleReportView::RemoveUiTransientRegistryObjectByTag
               ((TBattleReportView *)g_pUiAnimator,*(int *)(*(int *)&this->field_0x24cc + 0x18));
   }
   TCouncilView::_scalar_deleting_destructor_((TCouncilView *)this);
@@ -546,7 +546,7 @@ TBattleReportView::DispatchReflectedControlMessageOrFallback(TBattleReportView *
       DAT_006a23b4 = DAT_006a23b4 == '\0';
       (*pTVar1[0x1f].slot_0x04)();
       uStack_4 = 0xffffffff;
-      param_1 = thunk_DestroyScopedMapQuickDrawContext();
+      param_1 = DestroyScopedMapQuickDrawContext();
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -608,7 +608,7 @@ TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,int para
       if (uVar1 == 0x6e657874) {
         if (*(int *)&this->field_0x24c8 < (*(int **)&g_pMapContextActionManager->field_0x4)[2]) {
           pcVar9 = (char *)(**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))();
-          RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar9);
+          TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar9);
         }
         goto LAB_004adb34;
       }
@@ -617,7 +617,7 @@ TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,int para
         if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
           iStack_50 = 0x4ad81b;
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+          TemporarilyClearAndRestoreUiInvalidationFlag();
         }
         iVar10 = *(int *)CONCAT31(extraout_var,uVar3);
         (**(code **)(iVar10 + 0x1a0))();
@@ -734,7 +734,7 @@ TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,int para
         piStack_94 = piVar4;
         TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                   ((TToolBarCluster *)&pTStack_98,PTR_g_szEmptyString_0064dc30);
-        InitializeAndRunMainRoutine();
+        RunEnableAndProcessFlagWithScopedSharedStringCleanup();
         piStack_94 = (int *)0x6f6b6179;
         pTStack_98 = (TToolBarClusterVtbl *)0x4ada4e;
         pTStack_98 = (TToolBarClusterVtbl *)(*pcVar2)();
@@ -761,14 +761,14 @@ TBattleReportView::_scalar_deleting_destructor_(TBattleReportView *this,int para
       if (uVar1 == 0x70726576) {
         if (1 < *(int *)&this->field_0x24c8) {
           pcVar9 = (char *)(**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))();
-          RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar9);
+          TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar9);
         }
         goto LAB_004adb34;
       }
     }
     param_1 = 10;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_004adb34:
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -783,7 +783,7 @@ TBattleReportView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndF
           (TBattleReportView *this,undefined4 *param_1,undefined4 param_2)
 
 {
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+  TMapDialog::SetForeignMinisterReadyFlag14
             ((TControl *)this,param_1,param_2);
   return;
 }
@@ -815,14 +815,14 @@ TBattleReportView::WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels
     }
   }
   if (pcVar2 != (char *)0x0) {
-    RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar2);
+    TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(this,pcVar2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ADFC0
 // GHIDRA_NAME TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
-// GHIDRA_PROTO undefined __thiscall RefreshMapContextSelectionPanelAndInfoLabels(char * param_1)
+// GHIDRA_PROTO undefined __thiscall TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(char * param_1)
 
 /* WARNING: Removing unreachable block (ram,0x004ae440) */
 
@@ -894,7 +894,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     uStack_14 = iStack_1c + 0x12;
     iStack_10 = iStack_18 + 0x12;
     iStack_50 = 1;
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     iVar5 = extraout_ECX;
   }
   uVar6 = (undefined2)((uint)iVar5 >> 0x10);
@@ -907,7 +907,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     uStack_14 = iStack_1c + 0x12;
     iStack_10 = iStack_18 + 0x12;
     iStack_50 = 1;
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     uVar6 = extraout_var_11;
   }
   iStack_24 = CONCAT22(uVar6,(short)param_1[3]);
@@ -933,7 +933,7 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     puStack_8 = (undefined1 *)0x0;
     CString::CString(&CStack_34);
     puStack_8._0_1_ = 1;
-    thunk_AssignSharedStringFromIndexedA8EntryNameField();
+    AssignSharedStringFromIndexedA8EntryNameField();
     FormatOverlayTerrainLabelText();
     CString::CString(&CStack_38);
     puStack_8._0_1_ = 2;
@@ -1128,7 +1128,7 @@ TBattleReportView::WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080
 {
   undefined *unaff_ESI;
   
-  thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90((undefined *)0x5,unaff_ESI);
+  WrapperFor_InvalidateCityDialogRectRegion_At004f6d90((undefined *)0x5,unaff_ESI);
   (**(code **)(**(int **)&this->field_0xb4 + 0x1a4))(param_1,param_2,param_3);
   return;
 }

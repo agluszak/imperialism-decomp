@@ -23,7 +23,7 @@ TView * TRailAmtBar::CreateTRailAmtBarInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
@@ -38,7 +38,7 @@ TView * TRailAmtBar::CreateTRailAmtBarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F70
 // GHIDRA_NAME TRailAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TRailAmtBar::GetTEventHandlerClassNamePointer(TRailAmtBar *this)
 
@@ -48,12 +48,12 @@ CRuntimeClass * __thiscall TRailAmtBar::GetTEventHandlerClassNamePointer(TRailAm
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F90
 // GHIDRA_NAME TRailAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
 TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TRailAmtBarVtbl_00666558;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
@@ -69,7 +69,7 @@ TRailAmtBar * __thiscall TRailAmtBar::ConstructBaseState(TRailAmtBar *this)
 TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -78,7 +78,7 @@ TRailAmtBar * __thiscall TRailAmtBar::_scalar_deleting_destructor_(TRailAmtBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A020
 // GHIDRA_NAME TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this,int param_1)
 
@@ -149,7 +149,7 @@ void __thiscall TRailAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TRailAmtBar *this,
   }
   *(undefined2 *)&this->field_0x60 = uVar6;
   *(undefined2 *)&this->field_0x66 = 0x3a;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
@@ -186,23 +186,23 @@ void __thiscall TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TRail
     cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
     if (cVar2 != '\0') {
       (*pTVar1[0x25].GetTEventHandlerClassNamePointer)();
-      thunk_ApplyRectClipRegionToGlobalClipState();
+      ApplyRectClipRegionToGlobalClipState();
       (*pTVar1[0x25].slot_0x04)();
       (*pTVar1[0x27].GetTEventHandlerClassNamePointer)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
-        thunk_SetQuickDrawTextOriginWithContextOffset(0);
+        SetQuickDrawTextOriginWithContextOffset(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
-        thunk_DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1);
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
+        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1);
         ResetQuickDrawStrokeState();
         uVar4 = extraout_var_02;
       }
-      thunk_SetQuickDrawTextOriginWithContextOffset
+      SetQuickDrawTextOriginWithContextOffset
                 (CONCAT22(uVar4,*(undefined2 *)&this->field_0x62));
       SetQuickDrawFillColor();
       ResetQuickDrawStrokeState();
-      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
+      DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
       ;
       SnapshotHitRegionToClipCache();
       uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
@@ -257,7 +257,7 @@ TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(TRailAmtBar *this,undef
       iStack_10 = this->field38 + iStack_20;
       iStack_1c = iStack_24;
       iStack_18 = iStack_20;
-      thunk_InvalidateCityDialogRectRegion(&iStack_1c,1);
+      InvalidateCityDialogRectRegion(&iStack_1c,1);
     }
   }
   local_4 = 0xffffffff;

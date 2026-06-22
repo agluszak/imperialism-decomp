@@ -11,7 +11,7 @@ TTradeOfferNationView * __thiscall
 TTradeOfferNationView::_scalar_deleting_destructor_(TTradeOfferNationView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTradeOfferNationViewVtbl_0066e2f8;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD260
 // GHIDRA_NAME TTradeOfferNationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradeOfferNationView::GetTEventHandlerClassNamePointer(TTradeOfferNationView *this)
@@ -61,7 +61,7 @@ TTradeOfferNationView::GetTEventHandlerClassNamePointer(TTradeOfferNationView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD2D0
 // GHIDRA_NAME TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0(TTradeOfferNationView *this)
 
@@ -112,8 +112,8 @@ void __thiscall TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0(TTradeOf
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   uVar2 = (*g_pNationInteractionStateManager->vftable[0x10].GetTTradeMgrClassNamePointer)();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);

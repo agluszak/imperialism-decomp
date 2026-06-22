@@ -373,7 +373,7 @@ bool __thiscall WrapperFor_ImageList_Read_At005e6ad1(IStreamVtbl *param_1,undefi
   local_c.lpVtbl = param_1;
   pIStack_8 = param_1;
   FUN_005e711d(param_2);
-  p_Var1 = ImageList_Read(&local_c);
+  p_Var1 = COMCTL32.DLL::ImageList_Read(&local_c);
   param_1->AddRef = (_func_5233 *)p_Var1;
   return p_Var1 != (HIMAGELIST)0x0;
 }
@@ -391,7 +391,7 @@ void __thiscall WrapperFor_ImageList_Write_At005e6afe(IStreamVtbl *param_1,undef
   local_c.lpVtbl = param_1;
   pIStack_8 = param_1;
   FUN_005e711d(param_2);
-  ImageList_Write((HIMAGELIST)param_1->AddRef,&local_c);
+  COMCTL32.DLL::ImageList_Write((HIMAGELIST)param_1->AddRef,&local_c);
   return;
 }
 
@@ -756,10 +756,10 @@ undefined4 WrapperFor_memcmp_At005e713a(undefined4 param_1,void *param_2,undefin
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E716D
-// GHIDRA_NAME thunk_NoOpRuntimeCallback_005e717b
-// GHIDRA_PROTO undefined thunk_NoOpRuntimeCallback_005e717b()
+// GHIDRA_NAME NoOpRuntimeCallback_005e717b
+// GHIDRA_PROTO undefined NoOpRuntimeCallback_005e717b()
 
-void thunk_NoOpRuntimeCallback_005e717b(void)
+void NoOpRuntimeCallback_005e717b(void)
 
 {
   return;
@@ -1024,7 +1024,7 @@ void WrapperFor_RtlUnwind_At005e7470(PVOID param_1,PEXCEPTION_RECORD param_2)
   undefined4 *unaff_FS_OFFSET;
   
   puVar1 = (undefined4 *)*unaff_FS_OFFSET;
-  RtlUnwind(param_1,(PVOID)0x5e749c,param_2,(PVOID)0x0);
+  KERNEL32.DLL::RtlUnwind(param_1,(PVOID)0x5e749c,param_2,(PVOID)0x0);
   param_2->ExceptionFlags = param_2->ExceptionFlags & 0xfffffffd;
   *puVar1 = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = puVar1;
@@ -1221,7 +1221,7 @@ int FindFrameRecordRangeByPcAndDepth
 void global_unwind2(PVOID param_1)
 
 {
-  RtlUnwind(param_1,(PVOID)0x5e77b8,(PEXCEPTION_RECORD)0x0,(PVOID)0x0);
+  KERNEL32.DLL::RtlUnwind(param_1,(PVOID)0x5e77b8,(PEXCEPTION_RECORD)0x0,(PVOID)0x0);
   return;
 }
 

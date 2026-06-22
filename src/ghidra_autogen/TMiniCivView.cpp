@@ -50,7 +50,7 @@ TControl * TMiniCivView::CreateTMiniCivViewInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     CString::CString((CString *)&this[1].field_0x4);
     this->vftable = (TControlVtbl *)&TMiniCivViewVtbl_0064d9d0;
@@ -62,7 +62,7 @@ TControl * TMiniCivView::CreateTMiniCivViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB950
 // GHIDRA_NAME TMiniCivView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMiniCivView::GetTEventHandlerClassNamePointer(TMiniCivView *this)
 
@@ -72,7 +72,7 @@ CRuntimeClass * __thiscall TMiniCivView::GetTEventHandlerClassNamePointer(TMiniC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB970
 // GHIDRA_NAME TMiniCivView::ConstructTMiniCivViewBaseState
-// GHIDRA_PROTO undefined ConstructTMiniCivViewBaseState()
+// GHIDRA_PROTO undefined TMiniCivView::ConstructTMiniCivViewBaseState()
 
 void __thiscall
 TMiniCivView::ConstructTMiniCivViewBaseState
@@ -103,7 +103,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   puStack_8 = &LAB_00630758;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent
+  InitializeUiResourceEntryFrameAndParent
             (0,param_2.m_pchData,param_3.m_pchData,param_4.m_pchData,5);
   CVar2.m_pchData = param_5.m_pchData;
   *(char **)(param_1 + 0x84) = param_5.m_pchData;
@@ -111,7 +111,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   param_5.m_pchData = &stack0xffffffb8;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffffb8,PTR_g_szEmptyString_0064cb18);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   CString::CString(&param_3);
   local_4 = 0;
   CString::CString(&param_4);
@@ -236,7 +236,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC000
 // GHIDRA_NAME TMiniCivView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
 
@@ -277,12 +277,12 @@ void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
        (char *)CONCAT22((short)((uint)*(int *)&this->field_0x84 >> 0x10),
                         *(undefined2 *)(*(int *)&this->field_0x84 + 4));
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   CString::CString((CString *)&stack0xffffffb0);
   uStack_10 = 2;
   FormatOverlayTerrainLabelText();
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  AssignSharedStringFromIndexedA8EntryNameField();
   AssignSharedStringConcatRefAndCStr(&local_40);
   uStack_10 = 3;
   src_ref = (CString *)AssignSharedStringConcatRefAndRef(&CStack_44);
@@ -297,10 +297,10 @@ void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
   uStack_10 = 2;
   CString::~CString(&local_40);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc);
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   uVar1 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)();
   RStack_2c.left = (LONG)(short)CONCAT31(extraout_var,uVar1);
   RStack_2c.right = RStack_2c.left + 0x40;
@@ -329,7 +329,7 @@ void __thiscall TMiniCivView::OrphanTiny_ReturnZero_0048a730(TMiniCivView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC320
 // GHIDRA_NAME TMiniCivView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)
 
 void __thiscall
 TMiniCivView::OrphanRetStub_0059add0(TMiniCivView *this,int param_1,TMiniCivView *param_2)
@@ -342,7 +342,7 @@ TMiniCivView::OrphanRetStub_0059add0(TMiniCivView *this,int param_1,TMiniCivView
     (*pTVar1->vftable[1].slot_0x04)();
     *(undefined2 *)&pTVar1[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

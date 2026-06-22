@@ -111,7 +111,7 @@ TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeach
   iVar11 = *(int *)(this + 0x14);
   uVar1 = *(undefined2 *)(this + 4);
   local_10[3] = 0.0;
-  iVar7 = thunk_GetNavyPrimaryOrderListHead();
+  iVar7 = GetNavyPrimaryOrderListHead();
   iVar8 = iVar7;
   for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
     if (*(int *)(iVar7 + 8) == iVar11) {
@@ -214,7 +214,7 @@ TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady(TBeachheadMiss
   piVar1 = *(int **)(this + 0x24);
   while (piVar1 != (int *)0x0) {
     *(undefined4 *)(**(int **)(this + 0x24) + 0x2c) = 0;
-    piVar1 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(*(TShip **)(this + 0x24),unaff_ESI);
+    piVar1 = TShip::DeleteMapOrderChildLinkAndReturnNext(*(TShip **)(this + 0x24),unaff_ESI);
     *(int **)(this + 0x24) = piVar1;
   }
   return 1;

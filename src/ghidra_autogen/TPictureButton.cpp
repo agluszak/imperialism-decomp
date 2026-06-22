@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EFC0
 // GHIDRA_NAME TPictureButton::TPictureButton
-// GHIDRA_PROTO undefined __thiscall TPictureButton(void)
+// GHIDRA_PROTO undefined __thiscall TPictureButton::TPictureButton(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for picture-oriented UI resource entries.
 // GHIDRA_COMMENT
@@ -33,7 +33,7 @@ TPictureButton * __thiscall TPictureButton::TPictureButton(TPictureButton *this)
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -85,7 +85,7 @@ thunk_TPictureButton * TPictureButton::CreateTPictureButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707D0
 // GHIDRA_NAME TPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPictureButton::GetTEventHandlerClassNamePointer(TPictureButton *this)
 
@@ -120,7 +120,7 @@ TPictureButton * __thiscall
 TPictureButton::_scalar_deleting_destructor_(TPictureButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

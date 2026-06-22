@@ -10,7 +10,7 @@
 TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this,byte param_1)
 
 {
-  CreateTScrollerInstance(this);
+  TScroller::CreateTScrollerInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -19,7 +19,7 @@ TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB00
 // GHIDRA_NAME TScroller::CreateTScrollerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTScrollerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TScroller::CreateTScrollerInstance(void)
 
 void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
 
@@ -47,7 +47,7 @@ void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB90
 // GHIDRA_NAME TScroller::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TScroller::GetTEventHandlerClassNamePointer(TScroller *this)
 
@@ -107,7 +107,7 @@ TView * TScroller::DestructTScrollerAndMaybeFree(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     local_10 = this;
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4._0_1_ = 1;
     CString::CString((CString *)&this[1].field0c);
     this[1].field04 = 0;

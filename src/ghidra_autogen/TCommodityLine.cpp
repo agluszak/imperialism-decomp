@@ -131,7 +131,7 @@ void __thiscall TCommodityLine::OrphanRetStub_0056f460(TCommodityLine *this)
   local_11 = 0;
   local_10 = (uint)local_10._2_2_ << 0x10;
   CStack_64.m_pchData = (char *)0x5c15eb;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CStack_54.m_pchData = (char *)local_38;
   uStack_58 = CONCAT22((short)((uint)CStack_54.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
   CStack_5c.m_pchData = (char *)0x5c1603;

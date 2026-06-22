@@ -11,7 +11,7 @@ TTechStorePage * __thiscall
 TTechStorePage::_scalar_deleting_destructor_(TTechStorePage *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -132,7 +132,7 @@ TPageView * TTechStorePage::CreateTTechStorePageInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0EF0
 // GHIDRA_NAME TTechStorePage::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTechStorePage::GetTEventHandlerClassNamePointer(TTechStorePage *this)
 
@@ -142,7 +142,7 @@ CRuntimeClass * __thiscall TTechStorePage::GetTEventHandlerClassNamePointer(TTec
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0F10
 // GHIDRA_NAME TTechStorePage::ConstructTTechStorePageBaseState
-// GHIDRA_PROTO undefined ConstructTTechStorePageBaseState()
+// GHIDRA_PROTO undefined TTechStorePage::ConstructTTechStorePageBaseState()
 
 void __thiscall
 TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,TLineDataVtbl *param_2)

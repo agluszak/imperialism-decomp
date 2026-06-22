@@ -23,7 +23,7 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
   this = (TCluster *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&TPurchaseClusterVtbl_00652210;
     this[1].vftable = (TClusterVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TCluster * TPurchaseCluster::CreateTPurchaseClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC3A0
 // GHIDRA_NAME TPurchaseCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TPurchaseCluster::GetTEventHandlerClassNamePointer(TPurchaseCluster *this)
@@ -52,7 +52,7 @@ TPurchaseCluster * __thiscall
 TPurchaseCluster::ConstructTPurchaseClusterBaseState(TPurchaseCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &TPurchaseClusterVtbl_00652210;
   *(undefined4 *)&this->field_0x88 = 0;
   return this;
@@ -66,7 +66,7 @@ TPurchaseCluster * __thiscall
 TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -99,7 +99,7 @@ void __thiscall TPurchaseCluster::_scalar_deleting_destructor_(TPurchaseCluster 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC490
 // GHIDRA_NAME TPurchaseCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TPurchaseCluster::OrphanRetStub_0059add0
@@ -133,7 +133,7 @@ TPurchaseCluster::OrphanRetStub_0059add0
               (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   }
 LAB_004cc4fb:
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 
@@ -183,14 +183,14 @@ TPurchaseCluster::SetCityViewValueControlAmount
   piVar2 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x781);
   }
   (**(code **)(*piVar2 + 0x1e4))((int)unaff_retaddr,0);
   if (cStack_4 != '\0') {
     LStack_2c = piVar2[9] + this->ownerOffsetX;
     CopyRect(&tStack_1c,(RECT *)&LStack_2c);
-    thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
+    InvalidateCityDialogRectRegion(&tStack_1c,1);
     (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
   }
   return;
@@ -209,7 +209,7 @@ void __thiscall TPurchaseCluster::UpdateCityViewValueControl(TPurchaseCluster *t
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x76616c75);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x793);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();

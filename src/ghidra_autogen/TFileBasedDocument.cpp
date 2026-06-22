@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486420
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
-// GHIDRA_PROTO undefined __thiscall CreateTFileBasedDocumentInstance(void)
+// GHIDRA_PROTO undefined __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(void)
 
 void __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
 
@@ -48,7 +48,7 @@ TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
   local_4 = 0;
   pTVar1 = (TEventHandler *)0x0;
   if (this != (TEventHandler *)0x0) {
-    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults(this);
+    TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(this);
     this->vftable = (TEventHandlerVtbl *)&TCommandHandlerVtbl_00648b20;
     pTVar1 = this;
   }

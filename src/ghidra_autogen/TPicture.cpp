@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
 // GHIDRA_NAME TPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *
 TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -29,7 +29,7 @@ TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
 // GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(TPicture *this)
 
@@ -118,7 +118,7 @@ TPicture::SetPictureResourceIdAndRefresh
   (*pTVar1[0x38].slot_0x04)();
   *(short *)&this->field_0x84 = nPictureId;
   if (nPictureId != -1) {
-    uVar2 = thunk_LoadBmpResourceByIdCached(_nPictureId);
+    uVar2 = LoadBmpResourceByIdCached(_nPictureId);
     *(undefined4 *)&this->field_0x8c = uVar2;
   }
   if (*(int *)&this->field_0x8c == 0) {

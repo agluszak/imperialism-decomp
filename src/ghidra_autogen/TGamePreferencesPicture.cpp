@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D960
 // GHIDRA_NAME TGamePreferencesPicture::ConstructTurnEventMainPictureEntry_1036
-// GHIDRA_PROTO int * __thiscall ConstructTurnEventMainPictureEntry_1036(int * pEntry)
+// GHIDRA_PROTO int * __thiscall TGamePreferencesPicture::ConstructTurnEventMainPictureEntry_1036(int * pEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event code 0x1036.
 // GHIDRA_COMMENT_END
@@ -31,7 +31,7 @@ TGamePreferencesPicture * __thiscall
 TGamePreferencesPicture::_scalar_deleting_destructor_(TGamePreferencesPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -70,7 +70,7 @@ thunk_TPictureButton * TGamePreferencesPicture::CreateTGamePreferencesPictureIns
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A590
 // GHIDRA_NAME TGamePreferencesPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TGamePreferencesPicture::GetTEventHandlerClassNamePointer(TGamePreferencesPicture *this)
@@ -81,7 +81,7 @@ TGamePreferencesPicture::GetTEventHandlerClassNamePointer(TGamePreferencesPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A5B0
 // GHIDRA_NAME TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
 TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGamePreferencesPicture *this)
@@ -162,7 +162,7 @@ TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGamePreferencesPictur
   CString::CString(&local_38);
   local_4 = 0;
   uStack_58 = 0x56a5f3;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_54 = 0x63757273;
   uStack_58 = 0x56a602;
   g_pCursorControlPanel = (TControl *)(**(code **)(*piVar9 + 0x94))();
@@ -438,7 +438,7 @@ LAB_0056a843:
       acStack_a8[5] = -0x56;
       acStack_a8[6] = 'V';
       acStack_a8[7] = '\0';
-      thunk_LoadUiStringResourceByGroupAndIndex();
+      LoadUiStringResourceByGroupAndIndex();
       ppiStack_98 = (int **)0x38;
       uStack_9c = 0xc;
       pCStack_a0 = (CString *)0x0;
@@ -480,7 +480,7 @@ LAB_0056a843:
       CStack_c4.m_pchData = acStack_a8;
       pcStack_c0 = (char *)0x2763;
       uStack_c8 = 0x56ab46;
-      thunk_LoadUiStringResourceByGroupAndIndex();
+      LoadUiStringResourceByGroupAndIndex();
       pcStack_c0 = acStack_a8;
       uStack_bc = 0;
       CStack_c4.m_pchData = "hl+";
@@ -497,7 +497,7 @@ LAB_0056a843:
       (**(code **)(iVar5 + 0xc))();
       uStack_c8 = 0x17;
       CStack_cc.m_pchData = (char *)0x2763;
-      thunk_LoadUiStringResourceByGroupAndIndex(acStack_b4);
+      LoadUiStringResourceByGroupAndIndex(acStack_b4);
       CStack_cc.m_pchData = acStack_b4;
       uStack_c8 = 0;
       (**(code **)(iVar5 + 0x1c8))();
@@ -508,7 +508,7 @@ LAB_0056a843:
       (**(code **)(iVar5 + 0xa4))(1,0);
       (**(code **)(iVar5 + 0xa8))(1,0);
       LoadSettingValueByKeyIntoOut(&pcStack_ac,PTR_s_AutoRes_0065ddcc,1);
-      thunk_SetSelectedTextOptionByTag
+      SetSelectedTextOptionByTag
                 ((-(uint)(pcStack_ac != (code *)0x0) & 0xaf60404) + 0x6e6f6f6f,0);
       uStack_90 = uStack_90 & 0xffffff00;
       CString::~CString(&CStack_cc);
@@ -522,7 +522,7 @@ LAB_0056a843:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056AE10
 // GHIDRA_NAME TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2, int * param_3)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2, int * param_3)
 
 void __thiscall
 TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -563,7 +563,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
                 (*(undefined2 *)&g_pLocalizationTable->field_0x4e);
       if (*(int *)&g_pLocalizationTable->field_0x8 == 1) {
-        thunk_PostTurnEventCodeMessage2420(0x5dc);
+        PostTurnEventCodeMessage2420(0x5dc);
       }
       else {
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
@@ -613,27 +613,27 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       InitializeOrLoadEntryArray14AndClampLimits(1);
       if ((*(int *)&g_pLocalizationTable->field_0x8 == 1) ||
          (*(int *)&g_pLocalizationTable->field_0x8 == 3)) {
-        thunk_PostTurnEventCodeMessage2420(0x5dc);
+        PostTurnEventCodeMessage2420(0x5dc);
       }
       else {
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
       }
       uVar5 = (*pTVar1)(0x6f706361);
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar5) + 0xc))();
-      iVar8 = thunk_ApplyAutoResolutionModeAndPersist
+      iVar8 = ApplyAutoResolutionModeAndPersist
                         (((int *)CONCAT31(extraout_var_03,uVar5))[0x22] == 0x79657373);
       CVar9 = param_2;
       if (iVar8 == 0) {
-        thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2763,7,2,0);
+        ShowLocalizedUiPromptByGroupAndIndex(0x2763,7,2,0);
         CVar9 = param_2;
       }
     }
     else {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,10);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,10);
     }
   }
   else {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
     CVar9 = param_2;
   }
   if (((param_1 == 4) && (0x6f707460 < *(uint *)((int)CVar9.m_pchData + 0x1c))) &&

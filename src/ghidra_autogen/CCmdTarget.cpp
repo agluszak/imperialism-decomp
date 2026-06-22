@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005EAD10
 // GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 
 void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *this)
 
@@ -70,7 +70,7 @@ undefined4 __thiscall CCmdTarget::OrphanCallChain_C7_I57_004be5b0(CCmdTarget *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF4
 // GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 undefined4 __thiscall CCmdTarget::SetForeignMinisterReadyFlag14(CCmdTarget *this)
 
@@ -109,7 +109,7 @@ void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060841A
 // GHIDRA_NAME CCmdTarget::OrphanCallChain_C1_I09_0048ff70
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I09_0048ff70()
+// GHIDRA_PROTO undefined TEditText::OrphanCallChain_C1_I09_0048ff70()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Destroys attached window handle or forwards destruction to site object.
 // GHIDRA_COMMENT Uses handle-map lookup/detach helpers to keep MFC HWND mapping consistent.
@@ -144,7 +144,7 @@ BOOL __fastcall CCmdTarget::OrphanCallChain_C1_I09_0048ff70(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060852E
 // GHIDRA_NAME CCmdTarget::AssignSharedStringFromField84
-// GHIDRA_PROTO undefined AssignSharedStringFromField84()
+// GHIDRA_PROTO undefined TStaticText::AssignSharedStringFromField84()
 
 uint __thiscall
 CCmdTarget::AssignSharedStringFromField84
@@ -244,7 +244,7 @@ CCmdTarget::OrphanCallChain_C2_I39_0048d900(CWnd *param_1,undefined4 param_2,int
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006089EF
 // GHIDRA_NAME CCmdTarget::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins07_004d8920()
+// GHIDRA_PROTO undefined TCommand::OrphanLeaf_NoCall_Ins07_004d8920()
 
 void __thiscall
 CCmdTarget::OrphanLeaf_NoCall_Ins07_004d8920(int *param_1,undefined4 param_2,undefined4 param_3)
@@ -265,7 +265,7 @@ CCmdTarget::OrphanLeaf_NoCall_Ins07_004d8920(int *param_1,undefined4 param_2,und
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00608A2B
 // GHIDRA_NAME CCmdTarget::SetEditSelectionAndScrollCaret
-// GHIDRA_PROTO undefined SetEditSelectionAndScrollCaret()
+// GHIDRA_PROTO undefined TEditText::SetEditSelectionAndScrollCaret()
 
 void CCmdTarget::SetEditSelectionAndScrollCaret(void)
 
@@ -312,7 +312,7 @@ void CCmdTarget::SetEditSelectionAndScrollCaret(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006091D9
 // GHIDRA_NAME CCmdTarget::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined UpdateControlCachedIntFromWindowText()
+// GHIDRA_PROTO undefined TNumberText::UpdateControlCachedIntFromWindowText()
 
 undefined4 __thiscall
 CCmdTarget::UpdateControlCachedIntFromWindowText
@@ -344,7 +344,7 @@ CCmdTarget::UpdateControlCachedIntFromWindowText
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A770
 // GHIDRA_NAME CCmdTarget::InitDialogWindowAndSyncTitleIfChanged
-// GHIDRA_PROTO undefined InitDialogWindowAndSyncTitleIfChanged()
+// GHIDRA_PROTO undefined TToolBarCluster::InitDialogWindowAndSyncTitleIfChanged()
 
 void __thiscall CCmdTarget::InitDialogWindowAndSyncTitleIfChanged(int param_1,undefined4 param_2)
 
@@ -359,31 +359,31 @@ void __thiscall CCmdTarget::InitDialogWindowAndSyncTitleIfChanged(int param_1,un
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610728
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined GetTEventHandlerClassNamePointer()
+// GHIDRA_PROTO undefined TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *param_1,int param_2)
 
 {
-  GetTEventHandlerClassNamePointer(param_1,param_2);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(param_1,param_2);
   param_1[3].m_xDispatch = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061073E
 // GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined ConstructTTaskBaseState()
+// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
 
 void __thiscall CCmdTarget::ConstructTTaskBaseState(CCmdTarget *param_1,int param_2)
 
 {
-  OrphanRetStub_0059add0(param_1,param_2);
+  TSoundPlayer::OrphanRetStub_0059add0(param_1,param_2);
   param_1[3].m_xDispatch = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610752
 // GHIDRA_NAME CCmdTarget::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined ConstructTTaskBaseState()
+// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
 
 int * CCmdTarget::ConstructTTaskBaseState(void)
 
@@ -497,7 +497,7 @@ LAB_006108ed:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006108FE
 // GHIDRA_NAME CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins04_005adc30()
+// GHIDRA_PROTO undefined TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
 void CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
@@ -524,7 +524,7 @@ void CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613E49
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint param_1, uint param_2, int param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 undefined4 __thiscall
 CCmdTarget::GetTEventHandlerClassNamePointer
@@ -555,7 +555,7 @@ CCmdTarget::GetTEventHandlerClassNamePointer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061404D
 // GHIDRA_NAME CCmdTarget::RenderControlStateTextBySelectionCode
-// GHIDRA_PROTO undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::RenderControlStateTextBySelectionCode(int param_1)
 
 undefined4 __thiscall
 CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this,int param_1)
@@ -587,7 +587,7 @@ CCmdTarget::RenderControlStateTextBySelectionCode(CCmdTarget *this,int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006148AF
 // GHIDRA_NAME CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTarget *this)
 
@@ -631,7 +631,7 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A04
 // GHIDRA_NAME CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(undefined4 param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(undefined4 param_1, undefined4 param_2)
 
 void __thiscall
 CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this,undefined4 param_1,undefined4 param_2)
@@ -643,7 +643,7 @@ CCmdTarget::OrphanLeaf_NoCall_Ins04_005adc30(CCmdTarget *this,undefined4 param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A19
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
 void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this,int param_1)
 
@@ -654,7 +654,7 @@ void __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(CCmdTarget *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614A23
 // GHIDRA_NAME CCmdTarget::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall CCmdTarget::OrphanRetStub_0059add0(CCmdTarget *this,int param_1)
 
@@ -720,7 +720,7 @@ LAB_00614ad0:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614AEB
 // GHIDRA_NAME CCmdTarget::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
 int __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *this)
 
@@ -736,7 +736,7 @@ int __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614B12
 // GHIDRA_NAME CCmdTarget::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)
 
 uint __thiscall CCmdTarget::SerializeTMinisterBaseOrderArrayHeader(CCmdTarget *this)
 
@@ -804,7 +804,7 @@ undefined4 __thiscall CCmdTarget::DeletingDestructTMinister(CCmdTarget *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614C41
 // GHIDRA_NAME CCmdTarget::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 void __thiscall CCmdTarget::GetTTaskClassNamePointer(CCmdTarget *this)
 
@@ -860,7 +860,7 @@ void __thiscall CCmdTarget::_scalar_deleting_destructor_(CCmdTarget *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614CA9
 // GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(uint param_1, uint param_2, int param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(uint param_1, uint param_2, int param_3, undefined4 param_4)
 
 void __thiscall
 CCmdTarget::SetForeignMinisterReadyFlag14
@@ -882,7 +882,7 @@ CCmdTarget::SetForeignMinisterReadyFlag14
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614E98
 // GHIDRA_NAME CCmdTarget::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined GetTEventHandlerClassNamePointer()
+// GHIDRA_PROTO undefined TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(undefined4 param_1,byte param_2)
 
@@ -896,7 +896,7 @@ undefined4 __thiscall CCmdTarget::GetTEventHandlerClassNamePointer(undefined4 pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615517
 // GHIDRA_NAME CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTarget *this)
 
@@ -914,7 +914,7 @@ void __thiscall CCmdTarget::ReleaseRuntimeSelectionOwnerAndDestroyObject(CCmdTar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006158EE
 // GHIDRA_NAME CCmdTarget::LoadUiStringAndDispatchViaVslot1C8
-// GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(LPRECT param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TStaticText::LoadUiStringAndDispatchViaVslot1C8(LPRECT param_1, int param_2)
 
 void __thiscall
 CCmdTarget::LoadUiStringAndDispatchViaVslot1C8(CCmdTarget *this,LPRECT param_1,int param_2)
@@ -984,7 +984,7 @@ CCmdTarget::CreateChildWindowFromRect
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006159B9
 // GHIDRA_NAME CCmdTarget::SetEditSelectionAndScrollCaret
-// GHIDRA_PROTO undefined SetEditSelectionAndScrollCaret()
+// GHIDRA_PROTO undefined TEditText::SetEditSelectionAndScrollCaret()
 
 void __thiscall
 CCmdTarget::SetEditSelectionAndScrollCaret(int *param_1,byte param_2,undefined4 param_3,int param_4)

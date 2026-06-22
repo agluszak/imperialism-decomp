@@ -56,7 +56,7 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2DD0
 // GHIDRA_NAME TMilitaryUnit::GetTMilitaryUnitClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTMilitaryUnitClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(TMilitaryUnit *this)
 
@@ -66,7 +66,7 @@ CRuntimeClass * __thiscall TMilitaryUnit::GetTMilitaryUnitClassNamePointer(TMili
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2ED0
 // GHIDRA_NAME TMilitaryUnit::DestroyMilitaryUnitOrderObject
-// GHIDRA_PROTO undefined __thiscall DestroyMilitaryUnitOrderObject(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DestroyMilitaryUnitOrderObject(byte param_1)
 
 TMilitaryUnit * __thiscall
 TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this,byte param_1)
@@ -81,7 +81,7 @@ TMilitaryUnit::DestroyMilitaryUnitOrderObject(TMilitaryUnit *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2FD0
 // GHIDRA_NAME TMilitaryUnit::DeserializeMilitaryUnitOrderState
-// GHIDRA_PROTO undefined __thiscall DeserializeMilitaryUnitOrderState(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(int * param_1)
 
 void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
 
@@ -124,7 +124,7 @@ void __thiscall TMilitaryUnit::DeserializeMilitaryUnitOrderState(TMilitaryUnit *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C30A0
 // GHIDRA_NAME TMilitaryUnit::SerializeMilitaryUnitOrderState
-// GHIDRA_PROTO undefined __thiscall SerializeMilitaryUnitOrderState(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(int * param_1)
 
 void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *this,int *param_1)
 
@@ -156,7 +156,7 @@ void __thiscall TMilitaryUnit::SerializeMilitaryUnitOrderState(TMilitaryUnit *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C31C0
 // GHIDRA_NAME TMilitaryUnit::DetachUnitOrderFromOwnerAndReset
-// GHIDRA_PROTO undefined __thiscall DetachUnitOrderFromOwnerAndReset(void)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(void)
 
 void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *this)
 
@@ -174,7 +174,7 @@ void __thiscall TMilitaryUnit::DetachUnitOrderFromOwnerAndReset(TMilitaryUnit *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3200
 // GHIDRA_NAME TMilitaryUnit::RelinkMilitaryUnitByTileIndex
-// GHIDRA_PROTO undefined __thiscall RelinkMilitaryUnitByTileIndex(short param_1)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(short param_1)
 
 void __thiscall TMilitaryUnit::RelinkMilitaryUnitByTileIndex(TMilitaryUnit *this,short param_1)
 

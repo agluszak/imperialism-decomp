@@ -35,7 +35,7 @@ TMegaPicture * TNumberedIcon::CreateTNumberedIconInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507380
 // GHIDRA_NAME TNumberedIcon::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNumberedIcon::GetTEventHandlerClassNamePointer(TNumberedIcon *this)
 
@@ -64,7 +64,7 @@ TNumberedIcon * __thiscall
 TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -80,7 +80,7 @@ void __thiscall TNumberedIcon::OrphanCallChain_C6_I49_004875d0(TNumberedIcon *th
 {
   TNumberedIconVtbl *pTVar1;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   (*pTVar1[0x3a].slot_0x04)(5,1);
   (*pTVar1[0x3b].slot_0x04)();

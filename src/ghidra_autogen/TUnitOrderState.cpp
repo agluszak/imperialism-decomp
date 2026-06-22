@@ -4,11 +4,11 @@
 // Bucket: TUnitOrderState.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00402EEB
-// GHIDRA_NAME TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
-// GHIDRA_PROTO undefined __thiscall thunk_RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
+// GHIDRA_NAME TUnitOrderState::RegisterUnitOrderWithOwnerManager
+// GHIDRA_PROTO undefined __thiscall TUnitOrderState::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
 
 void __thiscall
-TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+TUnitOrderState::RegisterUnitOrderWithOwnerManager
           (TUnitOrderState *this,undefined2 param_1,short param_2)
 
 {
@@ -27,7 +27,7 @@ TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
   }
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
   }
   (**(code **)(*piVar2 + 0x30))(this);
   *(short *)(this + 0x18) = param_2;
@@ -92,7 +92,7 @@ TUnitOrderState::RegisterUnitOrderWithOwnerManager
   }
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
   }
   (**(code **)(*piVar2 + 0x30))(this);
   *(short *)(this + 0x18) = param_2;

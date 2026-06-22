@@ -23,7 +23,7 @@ TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x104);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this[1].vftable = (TNoHilitePictureVtbl *)0x0;
     this->vftable = (TNoHilitePictureVtbl *)&TWarehouseViewVtbl_006516a0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7290
 // GHIDRA_NAME TWarehouseView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TWarehouseView::GetTEventHandlerClassNamePointer(TWarehouseView *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TWarehouseView::GetTEventHandlerClassNamePointer(TWar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72B0
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTWarehouseViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(void)
 
 TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWarehouseView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined4 *)&this->field_0x94 = 0;
   this->vftable = &TWarehouseViewVtbl_006516a0;
   return this;
@@ -64,7 +64,7 @@ TWarehouseView * __thiscall
 TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -172,7 +172,7 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   pcStack_c0 = (code *)0x0;
   local_4 = 0;
   CStack_c8.m_pchData = (char *)0x4c73bc;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pTVar1 = this->vftable[0x12].slot_0x04;
   iStack_b8 = 0x6e616d65;
   CStack_bc.m_pchData = (char *)0x4c73d4;
@@ -205,7 +205,7 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   TStack_ec.GetTEventHandlerClassNamePointer =
        (TView_GetTEventHandlerClassNamePointer_0x00 *)&stack0xffffff58;
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pdVar10 = TradeSummarySelectionMap_006960e0.summaryTags;
   puVar12 = (undefined4 *)&this->field_0xa0;
   CStack_c4.m_pchData = (char *)0x17;
@@ -340,7 +340,7 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&TStack_ec,PTR_g_szEmptyString_00651028);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_bc;
   TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x20;
   pTStack_f4 = (TViewVtbl *)0x4c774d;
@@ -364,13 +364,13 @@ void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
       }
       else {
         pTStack_f4 = (TViewVtbl *)0x4c77ab;
-        TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+        TView::ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
         pTVar13 = extraout_EAX;
       }
       pTStack_f4 = (TViewVtbl *)0x0;
       CStack_f8.m_pchData = (char *)0x5;
       iStack_40 = CONCAT31(iStack_40._1_3_,3);
-      thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+      InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
       if (iStack_d8 - 7U < 0x10) {
         CStack_f8.m_pchData = (char *)(uint)*(byte *)((int)&PTR_caseD_13_004c7b5c + iStack_d8 + 1);
         switch(iStack_d8) {
@@ -436,8 +436,8 @@ LAB_004c7958:
       }
       TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
       pTStack_f4 = pTVar13;
-      thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
-      InitializeAndRunMainRoutine();
+      AssignStringSharedRefAndReturnThis(&TStack_e0);
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     }
     pTVar14 = (TViewVtbl *)((int)&pTVar14->GetTEventHandlerClassNamePointer + 1);
     iStack_d8 = iStack_d8 + 1;
@@ -456,21 +456,21 @@ LAB_004c7958:
         }
         else {
           pTStack_f4 = (TViewVtbl *)0x4c79e0;
-          TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+          TView::ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
           pTVar14 = extraout_EAX_00;
         }
         pTStack_f4 = (TViewVtbl *)0x0;
         CStack_f8.m_pchData = (char *)0x5;
         iStack_40 = CONCAT31(iStack_40._1_3_,3);
-        thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+        InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
         pTStack_f4 = &TStack_e0;
         CStack_f8.m_pchData = (char *)0x22;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
         TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
         CStack_f8.m_pchData = extraout_ECX_02;
         pTStack_f4 = pTVar14;
-        thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
-        InitializeAndRunMainRoutine();
+        AssignStringSharedRefAndReturnThis(&TStack_e0);
+        RunEnableAndProcessFlagWithScopedSharedStringCleanup();
       }
       iVar2 = *(int *)&this->field_0x100;
       if ((iVar2 != 0) && (*(int *)(iVar2 + 8) != 0)) {
@@ -485,21 +485,21 @@ LAB_004c7958:
         }
         else {
           pTStack_f4 = (TViewVtbl *)0x4c7a8a;
-          TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+          TView::ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
           pTVar14 = extraout_EAX_01;
         }
         pTStack_f4 = (TViewVtbl *)0x0;
         CStack_f8.m_pchData = (char *)0x5;
         iStack_40 = CONCAT31(iStack_40._1_3_,3);
-        thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+        InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
         pTStack_f4 = &TStack_e0;
         CStack_f8.m_pchData = (char *)0x21;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
         TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
         CStack_f8.m_pchData = extraout_ECX_03;
         pTStack_f4 = pTVar14;
-        thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
-        InitializeAndRunMainRoutine();
+        AssignStringSharedRefAndReturnThis(&TStack_e0);
+        RunEnableAndProcessFlagWithScopedSharedStringCleanup();
       }
       iStack_40._0_1_ = 2;
       pTStack_f4 = (TViewVtbl *)0x4c7af7;

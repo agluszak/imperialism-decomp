@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D49A0
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(byte param_1)
 
 TLandSaleEvent * __thiscall
 TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this,byte param_1)
@@ -20,7 +20,7 @@ TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E66F0
 // GHIDRA_NAME TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 CRuntimeClass * __thiscall TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920(TLandSaleEvent *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920(TLan
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6740
 // GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
 void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLandSaleEvent *this)
 
@@ -95,8 +95,8 @@ void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLan
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd8,local_24.m_pchData);
   local_1c.m_pchData = &stack0xffffffb4;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffd8);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&stack0xffffffd8);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   iStack_10._0_1_ = 2;
   CString::~CString((CString *)&stack0xffffffd8);
   iStack_10._0_1_ = 1;
@@ -111,7 +111,7 @@ void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLan
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00549FF0
 // GHIDRA_NAME TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32
-// GHIDRA_PROTO undefined __thiscall HandleTurnEventCodes28_2E_2F_30_31_32(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int * param_1)
 
 void __thiscall
 TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this,int *param_1)
@@ -215,7 +215,7 @@ TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this,int *
         piVar7 = (int *)0x0;
       }
       else {
-        piVar7 = (int *)TTown::thunk_ConstructFrogCityMarker((TTown *)pTStack_4);
+        piVar7 = (int *)TTown::FUN_005b6c60((TTown *)pTStack_4);
       }
       uStack_c = 0xffffffff;
       uVar8 = UiRuntimeContext::GetActiveNationId();

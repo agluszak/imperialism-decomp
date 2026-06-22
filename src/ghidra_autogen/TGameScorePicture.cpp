@@ -11,7 +11,7 @@ TGameScorePicture * __thiscall
 TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TNoHilitePicture * TGameScorePicture::CreateTGameScorePictureInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TGameScorePictureVtbl_00644970;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TNoHilitePicture * TGameScorePicture::CreateTGameScorePictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B080
 // GHIDRA_NAME TGameScorePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TGameScorePicture::GetTEventHandlerClassNamePointer(TGameScorePicture *this)
@@ -61,7 +61,7 @@ TGameScorePicture::GetTEventHandlerClassNamePointer(TGameScorePicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B0A0
 // GHIDRA_NAME TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -106,7 +106,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
   *unaff_FS_OFFSET = &uStack_c;
   pCStack_50 = (CString *)0x57b0cc;
   local_1c[0] = this;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   CStack_4c.m_pchData = (char *)0x57b0d5;
   CString::CString(&local_30);
   iVar5 = 0;
@@ -126,20 +126,20 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
   local_38[2] = 0;
   local_38[3] = 0;
   CStack_4c.m_pchData = (char *)0x57b12a;
-  thunk_ResetDualAudioCuePools();
+  ResetDualAudioCuePools();
   CStack_4c.m_pchData = (char *)0xb;
   pCStack_50 = (CString *)0x57b137;
-  thunk_PushCueToDualAudioCuePools();
+  PushCueToDualAudioCuePools();
   CStack_4c.m_pchData = "hh+";
-  thunk_SelectAndScheduleRandomAudioCue();
+  SelectAndScheduleRandomAudioCue();
   CStack_4c.m_pchData = (char *)0x2b68;
   pCStack_50 = (CString *)0xe;
   CStack_54.m_pchData = (char *)0x0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CStack_4c.m_pchData = local_38;
   pCStack_50 = (CString *)0x2b6a;
   CStack_54.m_pchData = (char *)0x57b166;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   CStack_4c.m_pchData = (char *)0x57b174;
   UiRuntimeContext::GetActiveNationId();
   CStack_4c.m_pchData = (char *)0x57b183;
@@ -155,7 +155,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
     if (iVar5 == 0xb) {
       pCStack_50 = (CString *)0x2b68;
       CStack_54.m_pchData = (char *)0x12;
-      thunk_BuildUiTextStyleDescriptor();
+      BuildUiTextStyleDescriptor();
     }
     CStack_54.m_pchData = (char *)local_1c;
     pCStack_50 = (CString *)0x1;
@@ -220,7 +220,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
   scanBracketExpressions(g_pLocalizationTable,&uStack_c,unaff_EBP);
   (**(code **)(iVar5 + 0x1c8))();
   CStack_74.m_pchData = (char *)&local_30;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   (**(code **)(iVar5 + 0x1b4))();
   ((int *)CONCAT31(extraout_var_00,uVar2))[0x25] = 0x2761;
   uVar2 = (*pTVar1)();
@@ -230,7 +230,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
   iVar6 = 0x2761;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   (**(code **)(iVar5 + 0x1c8))(&local_2c,1);
-  thunk_BuildUiTextStyleDescriptor(&pCStack_50,0,0xe,0x2b68);
+  BuildUiTextStyleDescriptor(&pCStack_50,0,0xe,0x2b68);
   (**(code **)(iVar5 + 0x1b4))(&pCStack_50,1);
   ((int *)CONCAT31(extraout_var_01,uVar2))[0x25] = iVar6;
   CString::~CString((CString *)&stack0xffffffc4);
@@ -242,7 +242,7 @@ void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B620
 // GHIDRA_NAME TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Command callback helper: runs completion handler and, for command-id 10 with tag 'done', reinitializes game flow and posts turn-event code 0x5E0.
 // GHIDRA_COMMENT_END
@@ -255,9 +255,9 @@ TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TGameScorePicture *this,int param_1,int param_2)
 
 {
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x646f6e65)) {
-    thunk_ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
+    ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
   }
   return;
 }

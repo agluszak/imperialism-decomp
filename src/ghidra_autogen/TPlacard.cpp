@@ -35,7 +35,7 @@ thunk_TPictureButton * TPlacard::CreateTPlacardInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B9F0
 // GHIDRA_NAME TPlacard::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPlacard::GetTEventHandlerClassNamePointer(TPlacard *this)
 
@@ -45,7 +45,7 @@ CRuntimeClass * __thiscall TPlacard::GetTEventHandlerClassNamePointer(TPlacard *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA10
 // GHIDRA_NAME TPlacard::TPlacard
-// GHIDRA_PROTO undefined __thiscall TPlacard(void)
+// GHIDRA_PROTO undefined __thiscall TPlacard::TPlacard(void)
 
 TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 
@@ -63,7 +63,7 @@ TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,12 +72,12 @@ TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BAB0
 // GHIDRA_NAME TPlacard::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TPlacard::OrphanLeaf_NoCall_Ins07_004d8920(TPlacard *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   if (*(short *)&this->field_0x90 == 0) {
     (*this->vftable[0x14].slot_0x04)(0,1);
     return;
@@ -112,7 +112,7 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
       local_20.right = local_20.left + 0x14;
       local_20.bottom = this->field38 + -1;
       CopyRect(&tStack_10,&local_20);
-      thunk_InvalidateCityDialogRectRegion(&tStack_10,1);
+      InvalidateCityDialogRectRegion(&tStack_10,1);
     }
   }
   return;
@@ -120,7 +120,7 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BC60
 // GHIDRA_NAME TPlacard::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TPlacard::OrphanTiny_ReturnZero_0048a730(TPlacard *this)
 
@@ -138,7 +138,7 @@ void __thiscall TPlacard::OrphanTiny_ReturnZero_0048a730(TPlacard *this)
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
   FormatStringWithVarArgsToSharedRef(&local_10,&g_szDecimalFormat);
   if (*(short *)&this->field_0x90 < 10) {
@@ -150,14 +150,14 @@ void __thiscall TPlacard::OrphanTiny_ReturnZero_0048a730(TPlacard *this)
   else {
     iVar1 = this->field34 / 2 + -10;
   }
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b67);
+  MapUiThemeCodeToStyleFlags(0x2b6c);
+  MapUiThemeCodeToStyleFlags(0x2b67);
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar1 + 1);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(iVar1 + 1);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar1);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(iVar1);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_4 = 0xffffffff;
   CString::~CString(&local_10);

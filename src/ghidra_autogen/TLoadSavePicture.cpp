@@ -38,7 +38,7 @@ TLoadSavePicture * __thiscall
 TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -47,7 +47,7 @@ TLoadSavePicture::_scalar_deleting_destructor_(TLoadSavePicture *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056BCA0
 // GHIDRA_NAME TLoadSavePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TLoadSavePicture::GetTEventHandlerClassNamePointer(TLoadSavePicture *this)
@@ -58,7 +58,7 @@ TLoadSavePicture::GetTEventHandlerClassNamePointer(TLoadSavePicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056BCC0
 // GHIDRA_NAME TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920(TLoadSavePicture *this)
 
@@ -118,19 +118,19 @@ void __thiscall TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920(TLoadSavePict
   this->field_0x90 = DAT_00695278 == -2;
   *(undefined2 *)&this->field_0x92 = 0xffff;
   CStack_80.m_pchData = "hh+";
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   CStack_7c.m_pchData = (char *)0x2b68;
   CStack_80.m_pchData = (char *)0xc;
   CStack_88.m_pchData = &this->field_0x94;
   CStack_84.m_pchData = (char *)0x1;
   CStack_8c.m_pchData = (char *)0x56bd1c;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CStack_88.m_pchData = &this->field_0x9e;
   CStack_7c.m_pchData = (char *)0x2b6c;
   CStack_80.m_pchData = (char *)0xc;
   CStack_84.m_pchData = (char *)0x0;
   CStack_8c.m_pchData = (char *)0x56bd35;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pTVar1 = this->vftable[0x12].slot_0x04;
   CStack_7c.m_pchData = (char *)0x63757273;
   CStack_80.m_pchData = (char *)0x56bd49;
@@ -181,7 +181,7 @@ void __thiscall TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920(TLoadSavePict
     CString::AssignFromCStr(&CStack_14,PTR_DAT_0065ddd8);
     uStack_1c = 1;
     CString::~CString((CString *)&stack0xffffff88);
-    cVar4 = thunk_TryGetFileMetadataForPath();
+    cVar4 = TryGetFileMetadataForPath();
     if (cVar4 == '\0') {
       if (this->field_0x90 == '\0') {
         (**(code **)(iVar9 + 0x1cc))();
@@ -224,7 +224,7 @@ LAB_0056c0cb:
     this_00 = (TLoadSavePicture *)(**(code **)(iVar9 + 0x94))();
     (*this_00->vftable[1].slot_0x04)();
     CStack_a4.m_pchData = (char *)0x56c108;
-    RasterizeHexNeighborTerrainPaletteMap(this_00,0);
+    TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,0);
     sVar5 = UiRuntimeContext::GetActiveNationId();
     *(int *)&this_00->field_0x68 = (int)sVar5;
     ApplyPaletteMaskToTileBufferByEventCode();
@@ -310,10 +310,10 @@ LAB_0056c0cb:
     CString::AssignFromCStr(&CStack_10,PTR_DAT_0065ddd8);
     CStack_18.m_pchData._0_1_ = 1;
     CString::~CString((CString *)&stack0xffffff8c);
-    cVar4 = thunk_TryGetFileMetadataForPath();
+    cVar4 = TryGetFileMetadataForPath();
     if (cVar4 != '\0') {
       (*pTVar1)();
-      thunk_QueueDeferredUiEventPacket();
+      QueueDeferredUiEventPacket();
     }
     if (this->field_0x90 == '\0') goto LAB_0056c0cb;
     uVar3 = (*pTVar1)();
@@ -390,13 +390,13 @@ code_r0x0056c450:
     pcVar10 = pcVar10 + 1;
     pcVar12 = pcVar12 + 1;
   }
-  cVar4 = thunk_TrySaveGameAndMaybeShowFailureDialog();
+  cVar4 = TrySaveGameAndMaybeShowFailureDialog();
   if (cVar4 != '\0') {
     CString::CString(&CStack_80);
     uStack_1c = 6;
     CString::CString((CString *)&stack0xffffff88);
     uStack_1c = 7;
-    thunk_LoadUiStringResourceByGroupAndIndex();
+    LoadUiStringResourceByGroupAndIndex();
     CStack_a4.m_pchData = (char *)0x56c4d8;
     scanBracketExpressions(g_pLocalizationTable,&CStack_80,unaff_EDI);
     CreateModalMessageCommandAndQueue();
@@ -411,7 +411,7 @@ code_r0x0056c450:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056C740
 // GHIDRA_NAME TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLoadSavePictureAndMaybeFree(int param_1)
+// GHIDRA_PROTO undefined __thiscall TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
 
 void __thiscall
 TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,int param_1)
@@ -476,12 +476,12 @@ TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,in
   CString::AssignFromCStr((CString *)(local_9c + 4),PTR_DAT_0065ddd8);
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_a0);
-  cVar2 = thunk_TryGetFileMetadataForPath();
+  cVar2 = TryGetFileMetadataForPath();
   if (cVar2 != '\0') {
     iVar4 = AllocateWithFallbackHandler();
     if (iVar4 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     OpenBufferedStreamWithMode40();
     ReadBufferedStreamLocked();
@@ -497,7 +497,7 @@ TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,in
     this_00 = (TLoadSavePicture *)CONCAT31(extraout_var,uVar3);
     local_9c._8_4_ = this_00->vftable;
     (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 8))->slot_0x04)();
-    RasterizeHexNeighborTerrainPaletteMap(this_00,iVar4);
+    TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,iVar4);
     *(int *)&this_00->field_0x68 = (int)local_9c[7];
     ApplyPaletteMaskToTileBufferByEventCode();
     (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 0xe0))->slot_0x04)();
@@ -547,7 +547,7 @@ TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,in
     local_9c._48_4_ = local_9c._32_4_;
     iStack_60 = local_9c._44_4_;
     CopyRect(&tStack_5c,(RECT *)(local_9c + 0x30));
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     local_4._0_1_ = 5;
     CString::~CString((CString *)(local_9c + 0x10));
     local_4._0_1_ = 4;
@@ -563,7 +563,7 @@ TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(TLoadSavePicture *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056CD10
 // GHIDRA_NAME TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
 
 void __thiscall
 TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -606,7 +606,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           this_00 = (TEditText *)AllocateWithFallbackHandler(0xa0);
           iStack_4._0_1_ = 1;
           if (this_00 != (TEditText *)0x0) {
-            piVar6 = (int *)TEditText::thunk_ConstructUiNumericTextEntryBase(this_00);
+            piVar6 = (int *)TEditText::ConstructUiNumericTextEntryBase(this_00);
           }
           iStack_4 = (uint)iStack_4._1_3_ << 8;
           WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
@@ -639,7 +639,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           RStack_2c.left = RStack_3c.left;
           RStack_2c.bottom = RStack_3c.bottom;
           CopyRect(&tStack_1c,&RStack_2c);
-          thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
+          InvalidateCityDialogRectRegion(&tStack_1c,1);
         }
         iVar2 = *(int *)CVar3.m_pchData;
         (**(code **)(iVar2 + 0x1b4))(&this->field_0x94,0);
@@ -649,15 +649,15 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         RStack_2c.left = RStack_3c.left;
         RStack_2c.bottom = RStack_3c.bottom;
         CopyRect(&tStack_1c,&RStack_2c);
-        thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
+        InvalidateCityDialogRectRegion(&tStack_1c,1);
         *(short *)&this->field_0x92 = sVar5;
-        DestructTLoadSavePictureAndMaybeFree(this,(int)sVar5);
+        TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(this,(int)sVar5);
       }
     }
     if (1 < *(int *)&g_pApplicationUiRootController->field_0x24) {
       uVar4 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
       if (CONCAT31(extraout_var_00,uVar4) != 0) {
-        thunk_QueueDeferredUiEventPacket(this,10,CONCAT31(extraout_var_00,uVar4));
+        QueueDeferredUiEventPacket(this,10,CONCAT31(extraout_var_00,uVar4));
       }
     }
   }
@@ -678,10 +678,10 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         RStack_3c.left = RStack_2c.left;
         RStack_3c.bottom = RStack_2c.bottom;
         CopyRect(&tStack_1c,&RStack_3c);
-        thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
+        InvalidateCityDialogRectRegion(&tStack_1c,1);
       }
       *(undefined2 *)&this->field_0x92 = 0xa1;
-      DestructTLoadSavePictureAndMaybeFree(this,0xa1);
+      TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(this,0xa1);
     }
   }
   else if ((param_1 == 10) && (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179)) {
@@ -705,16 +705,16 @@ void __thiscall TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC(TLoa
     return;
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
-    thunk_ResetLocalUiStateAndPostTurnEvent5E5();
+    ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
-  thunk_PostTurnEventCodeMessage2420(0x5dc);
+  PostTurnEventCodeMessage2420(0x5dc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056D1E0
 // GHIDRA_NAME TLoadSavePicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePicture *this,int param_1)
 
@@ -734,7 +734,7 @@ void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePictur
     if (iVar4 != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar4 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket(this,10,iVar4);
+      QueueDeferredUiEventPacket(this,10,iVar4);
     }
   }
   else if (sVar1 == 0x1b) {
@@ -742,7 +742,7 @@ void __thiscall TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(TLoadSavePictur
     uVar3 = (*pTVar2)(0x636e636c);
     if (CONCAT31(extraout_var,uVar3) != 0) {
       uVar3 = (*pTVar2)(0x636e636c);
-      thunk_QueueDeferredUiEventPacket(this,0x14,uVar3);
+      QueueDeferredUiEventPacket(this,0x14,uVar3);
       return;
     }
   }
@@ -782,7 +782,7 @@ void __thiscall TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow(TLoad
   *unaff_FS_OFFSET = &uStack_c;
   if (*(short *)&this->field_0x92 == -1) {
     if (this->field_0x90 == '\0') {
-      thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2758,0x17,1,0);
+      ShowLocalizedUiPromptByGroupAndIndex(0x2758,0x17,1,0);
       *unaff_FS_OFFSET = uStack_c;
       return;
     }
@@ -828,10 +828,10 @@ void __thiscall TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow(TLoad
       pcVar10 = pcVar10 + 1;
     }
     if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
-      thunk_SaveGameWithModeAndOptionalLabel((int)*(short *)&this->field_0x92,PTR_DAT_0065ddd0);
+      SaveGameWithModeAndOptionalLabel((int)*(short *)&this->field_0x92,PTR_DAT_0065ddd0);
     }
     else {
-      thunk_TrySaveGameAndMaybeShowFailureDialog
+      TrySaveGameAndMaybeShowFailureDialog
                 ((int)*(short *)&this->field_0x92,PTR_DAT_0065ddd4,1);
     }
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
@@ -850,17 +850,17 @@ LAB_0056d4d7:
     sVar1 = *(short *)&this->field_0x92;
     CString::CString(aCStack_14);
     uStack_4 = 0;
-    thunk_BuildSavePathStringForMode(aCStack_14,(int)sVar1,puVar9);
-    cVar3 = thunk_TryGetFileMetadataForPath(aCStack_14);
+    BuildSavePathStringForMode(aCStack_14,(int)sVar1,puVar9);
+    cVar3 = TryGetFileMetadataForPath(aCStack_14);
     if (cVar3 != '\0') {
       SetLoadedTagOnLocalizationEntryIfPresent(aCStack_14);
     }
     goto LAB_0056d4d7;
   }
-  thunk_ResetDualAudioCuePools();
-  thunk_PushCueToDualAudioCuePools(2);
-  thunk_PushCueToDualAudioCuePools(3);
-  thunk_SelectAndScheduleRandomAudioCue();
+  ResetDualAudioCuePools();
+  PushCueToDualAudioCuePools(2);
+  PushCueToDualAudioCuePools(3);
+  SelectAndScheduleRandomAudioCue();
 LAB_0056d50c:
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -868,7 +868,7 @@ LAB_0056d50c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578C10
 // GHIDRA_NAME TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap
-// GHIDRA_PROTO undefined __thiscall RasterizeHexNeighborTerrainPaletteMap(int param_1)
+// GHIDRA_PROTO undefined __thiscall TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param_1)
 
 void __thiscall
 TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSavePicture *this,int param_1)
@@ -895,9 +895,9 @@ TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(TLoadSavePicture *this,i
   short local_6;
   short local_4;
   
-  uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   local_18 = GetSurfaceHeaderFromSurfaceObject(uVar5);
-  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   uVar10 = *(ushort *)(*piVar6 + 4) & 0x3fff;
   local_14 = 0;
   do {

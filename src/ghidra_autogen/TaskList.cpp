@@ -36,7 +36,7 @@ undefined4 * TaskList::CreateTaskListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEB90
 // GHIDRA_NAME TaskList::ConstructTaskListBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTaskListBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TaskList::ConstructTaskListBaseState(void)
 
 TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
 
@@ -59,7 +59,7 @@ TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEC30
 // GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
-// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At005aec30(void)
+// GHIDRA_PROTO undefined __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(void)
 
 void __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(TaskList *this)
 

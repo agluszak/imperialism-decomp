@@ -23,7 +23,7 @@ TView * TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x0;
     this->vftable = (TViewVtbl *)&TDefenseMinisterViewVtbl_00655518;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TView * TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F32D0
 // GHIDRA_NAME TDefenseMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TDefenseMinisterView::GetTEventHandlerClassNamePointer(TDefenseMinisterView *this)
@@ -52,7 +52,7 @@ TDefenseMinisterView * __thiscall
 TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState(TDefenseMinisterView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 0;
   this->vftable = &TDefenseMinisterViewVtbl_00655518;
   return this;
@@ -66,7 +66,7 @@ TDefenseMinisterView * __thiscall
 TDefenseMinisterView::_scalar_deleting_destructor_(TDefenseMinisterView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,7 +75,7 @@ TDefenseMinisterView::_scalar_deleting_destructor_(TDefenseMinisterView *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3370
 // GHIDRA_NAME TDefenseMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, CString param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, CString param_3)
 
 void __thiscall
 TDefenseMinisterView::OrphanRetStub_0059add0
@@ -115,8 +115,8 @@ TDefenseMinisterView::OrphanRetStub_0059add0
         uStack_28 = 1;
         puStack_2c = &DAT_006a2fc0;
         local_4 = auStack_30;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x4f34fc;
         CString::~CString((CString *)&stack0x00000000);
         *unaff_FS_OFFSET = (int)pCVar4;
@@ -138,7 +138,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
   }
   if (param_1 != 10) {
     uStack_24 = 0x4f3434;
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+    TView::OrphanRetStub_0059add0
               ((TView *)this,param_1,param_2,param_3.m_pchData);
     *unaff_FS_OFFSET = local_c;
     return;
@@ -150,7 +150,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
   }
   if (iVar1 != 0x6f6b6179) {
     uStack_24 = 0x4f33c5;
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+    TView::OrphanRetStub_0059add0
               ((TView *)this,10,param_2,param_3.m_pchData);
     *unaff_FS_OFFSET = local_c;
     return;

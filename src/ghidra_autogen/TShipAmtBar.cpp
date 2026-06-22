@@ -23,7 +23,7 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
@@ -38,7 +38,7 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB40
 // GHIDRA_NAME TShipAmtBar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipAmtBar::GetTEventHandlerClassNamePointer(TShipAmtBar *this)
 
@@ -48,12 +48,12 @@ CRuntimeClass * __thiscall TShipAmtBar::GetTEventHandlerClassNamePointer(TShipAm
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB60
 // GHIDRA_NAME TShipAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRailAmtBar::ConstructBaseState(void)
 
 TShipAmtBar * __thiscall TShipAmtBar::ConstructBaseState(TShipAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TShipAmtBarVtbl_00666998;
   *(undefined2 *)&this->field_0x60 = 0;
   *(undefined2 *)&this->field_0x62 = 0;
@@ -69,7 +69,7 @@ TShipAmtBar * __thiscall TShipAmtBar::ConstructBaseState(TShipAmtBar *this)
 TShipAmtBar * __thiscall TShipAmtBar::_scalar_deleting_destructor_(TShipAmtBar *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -78,7 +78,7 @@ TShipAmtBar * __thiscall TShipAmtBar::_scalar_deleting_destructor_(TShipAmtBar *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABF0
 // GHIDRA_NAME TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TShipAmtBar *this)
 
@@ -99,7 +99,7 @@ void __thiscall TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TShipAmtBar *this)
   *(short *)&this->field_0x64 = sVar1;
   *(undefined2 *)&this->field_0x66 = 0x3a;
   *(short *)&this->field_0x60 = (short)(0 / (longlong)(int)sVar1);
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
@@ -148,15 +148,15 @@ void __thiscall TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TShip
       uStack_2c = uStack_3c;
       uStack_28 = uStack_38;
       uStack_24 = uStack_34;
-      thunk_ApplyRectClipRegionToGlobalClipState(auStack_30);
+      ApplyRectClipRegionToGlobalClipState(auStack_30);
       (*pTVar1[0x25].slot_0x04)(auStack_20);
       (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&stack0xffffffb4);
       if (0 < *(short *)&this->field_0x60) {
-        thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
+        SetQuickDrawTextOriginWithContextOffset(0,1);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
-        thunk_DrawCenteredGuideLineOnMapDc
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
+        DrawCenteredGuideLineOnMapDc
                   (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
         ResetQuickDrawStrokeState();
       }

@@ -23,7 +23,7 @@ TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TGWorldButtonVtbl_0065ff60;
     *(undefined2 *)&this[1].vftable = 0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572110
 // GHIDRA_NAME TGWorldButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGWorldButton::GetTEventHandlerClassNamePointer(TGWorldButton *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TGWorldButton::GetTEventHandlerClassNamePointer(TGWor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572130
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTGWorldButtonBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(void)
 
 TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &TGWorldButtonVtbl_0065ff60;
   *(undefined2 *)&this->field_0x84 = 0;
   return this;
@@ -64,7 +64,7 @@ TGWorldButton * __thiscall
 TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -100,7 +100,7 @@ TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this,char param_1,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572270
 // GHIDRA_NAME TGWorldButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TGWorldButton::OrphanTiny_ReturnZero_0048a730(TGWorldButton *this)
 

@@ -35,7 +35,7 @@ TUberCluster * TTradeCluster::CreateTradeSellControlPanel(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587090
 // GHIDRA_NAME TTradeCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTradeCluster::GetTEventHandlerClassNamePointer(TTradeCluster *this)
 
@@ -45,7 +45,7 @@ CRuntimeClass * __thiscall TTradeCluster::GetTEventHandlerClassNamePointer(TTrad
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005870B0
 // GHIDRA_NAME TTradeCluster::ConstructTradeSellControlPanel
-// GHIDRA_PROTO undefined __thiscall ConstructTradeSellControlPanel(void)
+// GHIDRA_PROTO undefined __thiscall TTradeCluster::ConstructTradeSellControlPanel(void)
 
 TTradeCluster * __thiscall TTradeCluster::ConstructTradeSellControlPanel(TTradeCluster *this)
 
@@ -63,7 +63,7 @@ TTradeCluster * __thiscall
 TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TTradeCluster::_scalar_deleting_destructor_(TTradeCluster *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587130
 // GHIDRA_NAME TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *this)
 
@@ -104,7 +104,7 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
   local_13 = 0;
   uVar2 = (*pTVar1)(0x53656c6c);
   if ((int *)CONCAT31(extraout_var,uVar2) != (int *)0x0) {
-    thunk_InitializeUiTextStyleDescriptor(auStack_20,0,0xe,0x2b68,2);
+    InitializeUiTextStyleDescriptor(auStack_20,0,0xe,0x2b68,2);
     iVar9 = *(int *)CONCAT31(extraout_var,uVar2);
     (**(code **)(iVar9 + 0x1b4))(auStack_20,0);
     (**(code **)(iVar9 + 0x1c4))(0xffffffff,0);
@@ -115,7 +115,7 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
   uVar2 = (*pTVar1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x7a2);
   }
   iStack_28 = *(int *)CONCAT31(extraout_var_00,uVar2);
@@ -124,14 +124,14 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
   piVar4 = (int *)(*unaff_EDI)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x7a6);
   }
   iVar8 = 0x72676874;
   piVar5 = (int *)(*unaff_EDI)();
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x7a8);
   }
   iVar7 = 0;
@@ -146,18 +146,18 @@ void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *t
     piVar4 = (int *)(*pcVar6)(0x67726565);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x7b8);
     }
     (**(code **)(*piVar4 + 0xa4))(0,0);
   }
-  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls((TAmtBarCluster *)this);
+  TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920((TAmtBarCluster *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005873E0
 // GHIDRA_NAME TTradeCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *param_2,int param_3)
@@ -194,7 +194,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
       uVar4 = (*pTVar1[0x12].slot_0x04)(0x53656c6c);
       if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x816);
       }
       iVar10 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0x1e8))();
@@ -204,7 +204,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
       piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6d436170);
       if (piVar8 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x81d);
       }
       if ((unaff_EBP < iVar10) && (iVar10 = (**(code **)(*piVar8 + 0x1e8))(), unaff_EBP < iVar10)) {
@@ -218,7 +218,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
     uVar4 = (*pTVar1[0x12].slot_0x04)(0x53656c6c);
     if ((int *)CONCAT31(extraout_var_01,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x82f);
     }
     iVar10 = (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar4) + 0x1e8))();
@@ -282,7 +282,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
     piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6d436170);
     if (piVar8 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x85a);
     }
     (**(code **)(*piVar8 + 0x1e8))();
@@ -295,7 +295,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
     uVar4 = (*pTVar3)(0x62617220);
     if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x874);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar4) + 0xa8))(1,0);
@@ -308,7 +308,7 @@ TTradeCluster::OrphanRetStub_0059add0(TTradeCluster *this,int param_1,void *para
     uVar4 = (*pTVar3)(0x62617220);
     if ((int *)CONCAT31(extraout_var_06,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x896);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_06,uVar4) + 0xa8))(0,1);
@@ -365,7 +365,7 @@ void __thiscall TTradeCluster::OrphanRetStub_00586ff0(TTradeCluster *this)
   uVar2 = (*pTVar1)(0x53656c6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9e0);
   }
   sStack_4 = (short)this;
@@ -374,13 +374,13 @@ void __thiscall TTradeCluster::OrphanRetStub_00586ff0(TTradeCluster *this)
   piVar4 = (int *)CONCAT31(extraout_var_00,uVar2);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9e4);
   }
   uVar2 = (*pTVar1)(0x67726565);
   if ((int *)CONCAT31(extraout_var_01,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9e7);
   }
   if (unaff_DI != 0) {

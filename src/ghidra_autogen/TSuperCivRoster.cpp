@@ -28,7 +28,7 @@ void * __thiscall
 TSuperCivRoster::_scalar_deleting_destructor_(TSuperCivRoster *this,byte bFreeMemory)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((bFreeMemory & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -37,7 +37,7 @@ TSuperCivRoster::_scalar_deleting_destructor_(TSuperCivRoster *this,byte bFreeMe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB450
 // GHIDRA_NAME TSuperCivRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TSuperCivRoster::GetTEventHandlerClassNamePointer(TSuperCivRoster *this)
 
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TSuperCivRoster::GetTEventHandlerClassNamePointer(TSu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB470
 // GHIDRA_NAME TSuperCivRoster::ConstructTSuperCivRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSuperCivRoster::ConstructTSuperCivRosterBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
 TSuperCivRoster::ConstructTSuperCivRosterBaseState
@@ -74,7 +74,7 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   puStack_8 = &LAB_0063063a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
   this->controlTag = 0x70616765;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
   sVar3 = UiRuntimeContext::GetActiveNationId();
@@ -207,14 +207,14 @@ void __thiscall TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit(TSuperCiv
   pViewManagerContext = (int *)CONCAT31(pViewManagerContext._1_3_,pViewManagerContext._0_1_);
   if (pViewManagerContext == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x232);
   }
   iVar2 = *pViewManagerContext;
   pCivilianLedgerDialog = (int *)(**(code **)(iVar2 + 0x94))(0x70616765);
   if (pCivilianLedgerDialog == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x233);
   }
   iVar3 = pCivilianLedgerDialog[8];
@@ -243,7 +243,7 @@ void __thiscall TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit(TSuperCiv
     uVar4 = 0;
   }
   else {
-    uVar4 = TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)nLedgerPageHandle);
+    uVar4 = TStaticText::TStaticText((TStaticText *)nLedgerPageHandle);
   }
   uStack_18 = 0xffffffff;
   pTStack_2c = (TPageView *)0x12;

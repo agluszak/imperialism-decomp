@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TRailCityMinister::GetTMinisterClassNamePointer(TRail
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C62F0
 // GHIDRA_NAME TRailCityMinister::ConstructTRailCityMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTRailCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRailCityMinister::ConstructTRailCityMinisterBaseState(void)
 
 TRailCityMinister * __thiscall
 TRailCityMinister::ConstructTRailCityMinisterBaseState(TRailCityMinister *this)
@@ -80,7 +80,7 @@ TRailCityMinister::DeletingDestructTMinister(TRailCityMinister *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C63A0
 // GHIDRA_NAME TRailCityMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TRailCityMinister::GetTEventHandlerClassNamePointer(TRailCityMinister *this)
 

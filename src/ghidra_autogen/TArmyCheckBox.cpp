@@ -11,7 +11,7 @@ TArmyCheckBox * __thiscall
 TArmyCheckBox::_scalar_deleting_destructor_(TArmyCheckBox *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -38,7 +38,7 @@ TControl * TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TArmyCheckBoxVtbl_0064cec0;
     *(undefined4 *)&this[1].field_0x4 = 0;
     *(undefined4 *)&this[1].field_0xc = 0;
@@ -53,7 +53,7 @@ TControl * TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9FC0
 // GHIDRA_NAME TArmyCheckBox::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyCheckBox::GetTEventHandlerClassNamePointer(TArmyCheckBox *this)
 
@@ -63,7 +63,7 @@ CRuntimeClass * __thiscall TArmyCheckBox::GetTEventHandlerClassNamePointer(TArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9FE0
 // GHIDRA_NAME TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyCheckBoxBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
+// GHIDRA_PROTO undefined __thiscall TArmyCheckBox::ConstructTArmyCheckBoxBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
 void __thiscall
 TArmyCheckBox::ConstructTArmyCheckBoxBaseState
@@ -74,7 +74,7 @@ TArmyCheckBox::ConstructTArmyCheckBoxBaseState
   undefined4 in_stack_00000018;
   undefined4 in_stack_0000001c;
   
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,4,4,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,4,4,0);
   *(undefined4 *)&this->field_0x90 = in_stack_00000018;
   *(undefined4 *)&this->field_0x88 = in_stack_0000001c;
   return;
@@ -115,7 +115,7 @@ void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA100
 // GHIDRA_NAME TArmyCheckBox::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
 void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *this,int *param_1)
 
@@ -169,7 +169,7 @@ void __thiscall TArmyCheckBox::OrphanTiny_ReturnZero_0048a730(TArmyCheckBox *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA280
 // GHIDRA_NAME TArmyCheckBox::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this,int param_1)
 
@@ -182,7 +182,7 @@ void __thiscall TArmyCheckBox::OrphanRetStub_0059add0(TArmyCheckBox *this,int pa
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1);
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

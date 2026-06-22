@@ -16,7 +16,7 @@ TTraderForeignMinister::GetTMinisterClassNamePointer(TTraderForeignMinister *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005338A0
 // GHIDRA_NAME TTraderForeignMinister::ConstructTTraderForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTTraderForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTraderForeignMinister::ConstructTTraderForeignMinister(void)
 
 TTraderForeignMinister * __thiscall
 TTraderForeignMinister::ConstructTTraderForeignMinister(TTraderForeignMinister *this)
@@ -51,7 +51,7 @@ TTraderForeignMinister * __thiscall
 TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this,byte param_1)
 
 {
-  DestructTTraderForeignMinister(this);
+  TTraderForeignMinister::DestructTTraderForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -60,7 +60,7 @@ TTraderForeignMinister::DeletingDestructTMinister(TTraderForeignMinister *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533940
 // GHIDRA_NAME TTraderForeignMinister::DestructTTraderForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTTraderForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(void)
 
 void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderForeignMinister *this)
 
@@ -72,7 +72,7 @@ void __thiscall TTraderForeignMinister::DestructTTraderForeignMinister(TTraderFo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533960
 // GHIDRA_NAME TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
 TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTraderForeignMinister *this)
@@ -146,7 +146,7 @@ TTraderForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTraderForeignMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533B10
 // GHIDRA_NAME TTraderForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TTraderForeignMinister::SetForeignMinisterReadyFlag14(TTraderForeignMinister *this)
 
@@ -267,7 +267,7 @@ void __thiscall TTraderForeignMinister::SetForeignMinisterReadyFlag14(TTraderFor
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533DB0
 // GHIDRA_NAME TTraderForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
 
 void __thiscall
 TTraderForeignMinister::UpdateControlCachedIntFromWindowText
@@ -305,7 +305,7 @@ TTraderForeignMinister::UpdateControlCachedIntFromWindowText
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533E90
 // GHIDRA_NAME TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 void __thiscall
 TTraderForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive

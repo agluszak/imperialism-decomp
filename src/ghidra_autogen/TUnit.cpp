@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2470
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2470
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2470(void)
+// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2470(void)
 
 void __thiscall TUnit::OrphanRetStub_005c2470(TUnit *this)
 
@@ -25,12 +25,12 @@ CRuntimeClass * __thiscall TUnit::GetTUnitClassNamePointer(TUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C24E0
 // GHIDRA_NAME TUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TUnit::ConstructTUnitBaseState(byte param_1)
 
 TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this,byte param_1)
 
 {
-  DestructTUnitAndMaybeFree(this);
+  TUnit::DestructTUnitAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -39,7 +39,7 @@ TUnit * __thiscall TUnit::ConstructTUnitBaseState(TUnit *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2510
 // GHIDRA_NAME TUnit::DestructTUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTUnitAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TUnit::DestructTUnitAndMaybeFree(void)
 
 void __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
 
@@ -50,7 +50,7 @@ void __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2610
 // GHIDRA_NAME TUnit::OrphanRetStub_005c2610
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(void)
+// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2610(void)
 
 void __thiscall TUnit::OrphanRetStub_005c2610(TUnit *this)
 
@@ -73,7 +73,7 @@ TUnit::SetUnitOrderTypeAndOwnerIndex(TUnit *this,undefined4 nOrderType,undefined
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2660
 // GHIDRA_NAME TUnit::NormalizeUnitOrderStateAfterLoad
-// GHIDRA_PROTO undefined __thiscall NormalizeUnitOrderStateAfterLoad(void)
+// GHIDRA_PROTO undefined __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(void)
 
 void __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(TUnit *this)
 
@@ -86,7 +86,7 @@ void __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(TUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2680
 // GHIDRA_NAME TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy
-// GHIDRA_PROTO undefined __thiscall UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
+// GHIDRA_PROTO undefined __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(void)
 
 void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
 
@@ -115,7 +115,7 @@ void __thiscall TUnit::UnlinkFromNationOrTerrainOwnerListAndDestroy(TUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2700
 // GHIDRA_NAME TUnit::DeserializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall DeserializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_PROTO void __thiscall TCivUnit::DeserializeUnitOrderCoreState(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserialize common unit-order core fields from archive stream and restore runtime links.
 // GHIDRA_COMMENT
@@ -164,7 +164,7 @@ void __thiscall TUnit::DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveSt
   undefined1 *pnSourceTileIndex;
   undefined2 wSavedOrderOwnerIndex;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pReadBytesFn = *(code **)(*pArchiveStream + 0x3c);
   (*pReadBytesFn)(&this->field_0x4,2);
   pnSourceTileIndex = &this->field_0x6;
@@ -189,7 +189,7 @@ void __thiscall TUnit::DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveSt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C27D0
 // GHIDRA_NAME TUnit::SerializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall SerializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_PROTO void __thiscall TUnit::SerializeUnitOrderCoreState(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serialize common unit-order core fields to archive stream.
 // GHIDRA_COMMENT
@@ -235,7 +235,7 @@ void __thiscall TUnit::SerializeUnitOrderCoreState(TUnit *this,int *pArchiveStre
 {
   code *pWriteBytesFn;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pWriteBytesFn = *(code **)(*pArchiveStream + 0x78);
   (*pWriteBytesFn)(&this->field_0x4,2);
   (*pWriteBytesFn)(&this->field_0x6,2);

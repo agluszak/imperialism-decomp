@@ -35,7 +35,7 @@ TUberCluster * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585FF0
 // GHIDRA_NAME TUnitToolbarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TUnitToolbarCluster::GetTEventHandlerClassNamePointer(TUnitToolbarCluster *this)
@@ -65,7 +65,7 @@ TUnitToolbarCluster * __thiscall
 TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -74,7 +74,7 @@ TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
 // GHIDRA_NAME TUnitToolbarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TUnitToolbarCluster::OrphanRetStub_0059add0
@@ -85,14 +85,14 @@ TUnitToolbarCluster::OrphanRetStub_0059add0
   undefined3 extraout_var;
   int *piVar2;
   
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (param_1 == 0x68)) ||
       (param_1 == 0x67)) || ((param_1 == 10 || (param_1 == 0xc)))) {
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x6d61696e);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x57b);
     }
     (**(code **)(*piVar2 + 0x3c))(param_1,param_2,param_3);
@@ -146,7 +146,7 @@ TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this,i
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444c4f47);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x5a7);
     }
     (**(code **)(*piVar2 + 0x3c))(0xc,piVar4,0);

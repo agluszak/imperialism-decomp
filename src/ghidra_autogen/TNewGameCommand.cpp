@@ -16,7 +16,7 @@
 void __thiscall TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
 
 {
-  thunk_ReinitializeGameFlowAndPostTurnEventCode(0);
+  ReinitializeGameFlowAndPostTurnEventCode(0);
   return;
 }
 
@@ -28,7 +28,7 @@ TNewGameCommand * __thiscall
 TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this,byte param_1)
 
 {
-  CreateTNewGameCommandInstance(this);
+  TNewGameCommand::CreateTNewGameCommandInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -37,7 +37,7 @@ TNewGameCommand::OrphanCallChain_C1_I17_00487470(TNewGameCommand *this,byte para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE00
 // GHIDRA_NAME TNewGameCommand::CreateTNewGameCommandInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNewGameCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNewGameCommand::CreateTNewGameCommandInstance(void)
 
 void __thiscall TNewGameCommand::CreateTNewGameCommandInstance(TNewGameCommand *this)
 
@@ -79,7 +79,7 @@ TApplication * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
   local_4 = 0;
   pTVar1 = (TApplication *)0x0;
   if (this != (TApplication *)0x0) {
-    TApplication::thunk_ConstructGlobalUiRootControllerState(this);
+    TApplication::ConstructGlobalUiRootControllerState(this);
     this->vftable = (TApplicationVtbl *)&TAmbitApplicationVtbl_0063e398;
     pTVar1 = this;
   }
@@ -136,7 +136,7 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
             bVar4 = bVar4 | 2;
           }
           if (bVar4 != 0) {
-            iVar3 = thunk_GetTickCountDiv16();
+            iVar3 = GetTickCountDiv16();
             if ((iVar3 < DAT_006a21c0) || (DAT_006a21c0 + 3 < iVar3)) {
               DAT_006a21c0 = iVar3;
               (**(code **)((this[3].vftable)->GetTEventClassNamePointer + 0x1d0))(bVar4);
@@ -153,7 +153,7 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
 // GHIDRA_NAME TNewGameCommand::InitializeBasicCityOrderContext
-// GHIDRA_PROTO undefined __thiscall InitializeBasicCityOrderContext(int param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TNewGameCommand::InitializeBasicCityOrderContext(int param_1, undefined2 param_2)
 
 void __thiscall
 TNewGameCommand::InitializeBasicCityOrderContext

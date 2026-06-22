@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430250
 // GHIDRA_NAME TBook::ConstructPictureResourceEntry_Vtbl0063f650
-// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl0063f650(void)
+// GHIDRA_PROTO undefined __thiscall TBook::ConstructPictureResourceEntry_Vtbl0063f650(void)
 
 TBook * __thiscall TBook::ConstructPictureResourceEntry_Vtbl0063f650(TBook *this)
 
@@ -24,7 +24,7 @@ TBook * __thiscall TBook::ConstructPictureResourceEntry_Vtbl0063f650(TBook *this
 TBook * __thiscall TBook::_scalar_deleting_destructor_(TBook *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ thunk_TPictureButton * TBook::CreateTBookInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F540
 // GHIDRA_NAME TBook::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TBook::GetTEventHandlerClassNamePointer(TBook *this)
 
@@ -74,7 +74,7 @@ CRuntimeClass * __thiscall TBook::GetTEventHandlerClassNamePointer(TBook *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F560
 // GHIDRA_NAME TBook::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TBook::OrphanLeaf_NoCall_Ins07_004d8920(TBook *this)
 
@@ -84,7 +84,7 @@ void __thiscall TBook::OrphanLeaf_NoCall_Ins07_004d8920(TBook *this)
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable[0x12].slot_0x04;
   uVar2 = (*pTVar1)(0x6c636f72);
   *(uint *)&this->field_0x90 = CONCAT31(extraout_var,uVar2);
@@ -97,7 +97,7 @@ void __thiscall TBook::OrphanLeaf_NoCall_Ins07_004d8920(TBook *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F5E0
 // GHIDRA_NAME TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this,int param_1,int param_2)
@@ -136,7 +136,7 @@ LAB_0056f65f:
       uVar6 = uVar6 + 1;
     } while (uVar6 < 0x70616767);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

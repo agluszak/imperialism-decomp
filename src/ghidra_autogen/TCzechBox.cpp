@@ -5,12 +5,12 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D6F0
 // GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
+// GHIDRA_PROTO undefined __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
 
 TCzechBox * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
 
 {
-  ConstructTCzechBoxBaseState(this);
+  TCzechBox::ConstructTCzechBoxBaseState(this);
   this[1].vftable = (TCzechBoxVtbl *)0x0;
   this->vftable = (TCzechBoxVtbl *)&TMadnessButtonVtbl_00641df0;
   return this;
@@ -49,7 +49,7 @@ thunk_TPictureButton * TCzechBox::CreateTCzechBoxInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C00
 // GHIDRA_NAME TCzechBox::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCzechBox::GetTEventHandlerClassNamePointer(TCzechBox *this)
 
@@ -59,7 +59,7 @@ CRuntimeClass * __thiscall TCzechBox::GetTEventHandlerClassNamePointer(TCzechBox
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C20
 // GHIDRA_NAME TCzechBox::ConstructTCzechBoxBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCzechBoxBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TCzechBox::ConstructTCzechBoxBaseState(void)
 
 TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 
@@ -78,7 +78,7 @@ TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -87,7 +87,7 @@ TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571CB0
 // GHIDRA_NAME TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBox *this,int param_1)
 
@@ -95,13 +95,13 @@ void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBo
   if (param_1 == 0x21) {
     (*this->vftable[0x3b].slot_0x04)(1);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571CF0
 // GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920(TCzechBox *this)
 

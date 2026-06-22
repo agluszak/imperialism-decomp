@@ -100,7 +100,7 @@ TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNa
   iVar11 = *(int *)(this + 0x14);
   uVar1 = *(undefined2 *)(this + 4);
   local_10[3] = 0.0;
-  iVar7 = thunk_GetNavyPrimaryOrderListHead();
+  iVar7 = GetNavyPrimaryOrderListHead();
   iVar8 = iVar7;
   for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
     if (*(int *)(iVar7 + 8) == iVar11) {
@@ -270,7 +270,7 @@ TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,in
   }
   *(TControlSeaZoneMission **)&pTVar7->field_0x4 = this;
 LAB_005537d2:
-  thunk_FinalizeQueuedMapOrderEntry((int *)this);
+  FinalizeQueuedMapOrderEntry((int *)this);
   return;
 }
 

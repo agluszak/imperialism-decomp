@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5570
 // GHIDRA_NAME TDropShadowText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDropShadowText::GetTEventHandlerClassNamePointer(TDropShadowText *this)
 
@@ -36,7 +36,7 @@ TDropShadowText * __thiscall
 TDropShadowText::ConstructSelectableTextOptionEntryBase(TDropShadowText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->field_0x94 = 0;
   this->field_0x95 = 0;
   this->field_0x96 = 0;
@@ -63,7 +63,7 @@ TDropShadowText::_scalar_deleting_destructor_(TDropShadowText *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5650
 // GHIDRA_NAME TDropShadowText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(TDropShadowText *this)
 

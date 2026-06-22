@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486610
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTCommandHandlerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TCommandHandler::CreateTCommandHandlerInstance(void)
 
 void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *this)
 
@@ -17,7 +17,7 @@ void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486630
 // GHIDRA_NAME TCommandHandler::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCommandHandler::GetTEventHandlerClassNamePointer(TCommandHandler *this)
 

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8CC0
 // GHIDRA_NAME TCapacityOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(TCapacityOrder *this)
 
@@ -15,13 +15,13 @@ CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
 // GHIDRA_NAME TCapacityOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
 TCapacityOrder * __thiscall
 TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this,byte param_1)
 
 {
-  DestructTCapacityOrderAndMaybeFree(this);
+  TCapacityOrder::DestructTCapacityOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D30
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(void)
 
 void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
 
@@ -41,7 +41,7 @@ void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D50
 // GHIDRA_NAME TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b8d50(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50

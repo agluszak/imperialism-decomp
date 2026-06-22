@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CED80
 // GHIDRA_NAME TArmoryView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmoryView *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmory
 TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TArmoryViewVtbl_00652b10;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
@@ -34,7 +34,7 @@ TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
 TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -111,7 +111,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
   
   iStack_34 = 0x2b6b;
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   sVar3 = 0;
   pTVar1 = this->vftable[0x12].slot_0x04;
   dwCountControlTag = 0x6e756d30;
@@ -121,20 +121,20 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
     uVar2 = (*pTVar1)();
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar8 = 1;
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
     uVar2 = (*pTVar1)();
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     piVar4 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x94))();
     if (piVar4 == (int *)0x0) {
       puStack_58 = (undefined1 *)0x4cef7b;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar7 = *piVar4;
     (**(code **)(iVar7 + 0xa8))();
@@ -148,7 +148,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
     dwCountControlTag = dwCountControlTag + 1;
   } while (sVar3 < 8);
   iStack_34 = 0x2b6b;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iStack_34 = 0x7469746c;
   uVar2 = (*pTVar1)();
   iVar8 = *(int *)CONCAT31(extraout_var_01,uVar2);
@@ -157,7 +157,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
   (**(code **)(iVar8 + 0x1cc))();
   puStack_58 = &stack0xffffffdc;
   iStack_5c = 0x4cf034;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   uVar2 = (*pTVar1)();
   iVar8 = *(int *)CONCAT31(extraout_var_02,uVar2);
   (**(code **)(iVar8 + 0xc))();
@@ -168,7 +168,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
   puStack_64 = &stack0xffffffd0;
   piStack_60 = (int *)0x0;
   uStack_68 = 0x4cf06b;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_58 = (undefined1 *)0x636f7374;
   iStack_5c = 0x4cf077;
   uVar2 = (*pTVar1)();
@@ -228,7 +228,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
                     /* Loop bound for four advanced availability rows. */
   } while ((short)uStack_68 < 4);
   iStack_88 = 0x2b6b;
-  thunk_BuildUiTextStyleDescriptor(&piStack_60,0,10);
+  BuildUiTextStyleDescriptor(&piStack_60,0,10);
   iStack_88 = 0x64657363;
   uVar2 = (*pTVar1)();
   iVar8 = *(int *)CONCAT31(extraout_var_09,uVar2);
@@ -246,7 +246,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCity
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CF350
 // GHIDRA_NAME TArmoryView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles Armory view UI command routing for selection and +/- adjustments.
 // GHIDRA_COMMENT - command 0x0C: updates selected row index from control id range 0x7630..0x7638 and notifies slot +0x1E4.
@@ -312,13 +312,13 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this,int param_
         uVar3 = (*this->vftable[0x12].slot_0x04)(*(short *)&this->field_0xa4 + 0x6e756d30);
         if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb87);
         }
         piVar6 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x94))(0x6e756d62);
         if (piVar6 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb88);
         }
         iVar2 = *piVar6;
@@ -326,12 +326,12 @@ void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this,int param_
         (**(code **)(iVar2 + 300))(&stack0xffffffc0);
         local_34.left = (LONG)unaff_EDI;
         CopyRect(atStack_24,&local_34);
-        thunk_InvalidateCityDialogRectRegion(atStack_24,1);
+        InvalidateCityDialogRectRegion(atStack_24,1);
         (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
       }
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
@@ -407,8 +407,8 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCity
   tStack_50.top = (LONG)pTVar1;
   uVar3 = (*pTVar1)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
-  thunk_MapUiThemeCodeToStyleFlags();
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
                     /* No selected specialist entry: skip refresh and exit. */
   if (*(int *)&this->field_0xa8 == 0) goto LAB_004cfa43;
   sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x4c);
@@ -416,7 +416,7 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCity
   piVar5 = (int *)CONCAT31(extraout_var_00,uVar3);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   if (sVar4 != -1) {
     iVar2 = *piVar5;
@@ -429,12 +429,12 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCity
   local_40._8_4_ = tStack_50.right;
   auStack_30._4_4_ = local_40._4_4_;
   CopyRect((LPRECT)(auStack_30 + 8),(RECT *)(local_40 + 8));
-  thunk_InvalidateCityDialogRectRegion();
+  InvalidateCityDialogRectRegion();
   sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x4e);
   piVar5 = (int *)(*(code *)0x0)();
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   if (sVar4 != -1) {
     iVar2 = *piVar5;
@@ -447,20 +447,20 @@ void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCity
   local_40._0_4_ = tStack_50.left;
   LStack_34 = tStack_50.bottom;
   CopyRect((LPRECT)auStack_30,(RECT *)local_40);
-  thunk_InvalidateCityDialogRectRegion();
+  InvalidateCityDialogRectRegion();
   pcVar9 = (code *)&stack0xffffffa4;
   (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
   piVar5 = (int *)(*unaff_EBP)();
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar2 = *piVar5;
   (**(code **)(iVar2 + 0x1c8))();
   (**(code **)(iVar2 + 0x1b8))();
   (**(code **)(iVar2 + 300))(&stack0xffffff94);
   CopyRect(&tStack_50,(RECT *)&stack0xffffffa0);
-  thunk_InvalidateCityDialogRectRegion(&tStack_50,1);
+  InvalidateCityDialogRectRegion(&tStack_50,1);
   sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x56);
   iVar2 = *(int *)(*(int *)&this->field_0x94 + 0x1d8);
                     /* Mode switch chooses workforce scaling rule before clamp. */
@@ -490,7 +490,7 @@ clamp_to_available_worker_pool:
   piVar5 = (int *)(*pcVar9)(0x61766130);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xbe4);
   }
   iVar2 = *piVar5;
@@ -504,7 +504,7 @@ clamp_to_available_worker_pool:
   (**(code **)(iVar2 + 0x1b8))(puVar8,0);
   (**(code **)(iVar2 + 300))(&stack0xffffff7c);
   CopyRect((LPRECT)&stack0xffffff98,(RECT *)&stack0xffffff88);
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffff98,1);
+  InvalidateCityDialogRectRegion(&stack0xffffff98,1);
   (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
 LAB_004cfa43:
   puStack_8._0_1_ = 1;
@@ -524,7 +524,7 @@ LAB_004cfa43:
 void __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this)
 
 {
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
     (*g_pUiViewManager->vftable[6].slot_0x04)(0x23f8);
   }

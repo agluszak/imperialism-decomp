@@ -16,7 +16,7 @@
 TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)&this->field_0xa0 = 0;
   this->vftable = (TNumberTextVtbl *)&DAT_0063e8b0;
   return this;
@@ -59,7 +59,7 @@ TView * TNumberText::CreateTNumberTextInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined1 *)&this[1].field04 = 0;
     this[1].vftable = (TViewVtbl *)0x1;
     this[1].padding_08_to_0b = 0;
@@ -102,7 +102,7 @@ TView * TNumberText::CreateTNumberTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491040
 // GHIDRA_NAME TNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumberText *this)
 
@@ -112,7 +112,7 @@ CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumber
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491060
 // GHIDRA_NAME TNumberText::ConstructTNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNumberTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
+// GHIDRA_PROTO undefined __thiscall TNumberText::ConstructTNumberTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
 void __thiscall
 TNumberText::ConstructTNumberTextBaseState
@@ -134,7 +134,7 @@ TNumberText::ConstructTNumberTextBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004910E0
 // GHIDRA_NAME TNumberText::DestructTNumberTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TNumberText::DestructTNumberTextAndMaybeFree(CString param_1, undefined4 param_2)
 
 void __thiscall
 TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,CString param_1,undefined4 param_2)
@@ -171,7 +171,7 @@ TNumberText::DestructTNumberTextAndMaybeFree(TNumberText *this,CString param_1,u
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004911C0
 // GHIDRA_NAME TNumberText::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
 undefined4 __thiscall TNumberText::UpdateControlCachedIntFromWindowText(TNumberText *this)
 
@@ -204,7 +204,7 @@ undefined4 __thiscall TNumberText::UpdateControlCachedIntFromWindowText(TNumberT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004912B0
 // GHIDRA_NAME TNumberText::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 int __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(TNumberText *this)
 

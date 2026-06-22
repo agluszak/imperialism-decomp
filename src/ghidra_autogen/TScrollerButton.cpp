@@ -25,7 +25,7 @@ TPictureButton * TScrollerButton::CreateTScrollerButtonInstance(void)
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    TPictureButton::ConstructUiTabCursorPictureEntry(this);
     this->vftable = (TPictureButtonVtbl *)&TScrollerButtonVtbl_006616e8;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TPictureButton * TScrollerButton::CreateTScrollerButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F20
 // GHIDRA_NAME TScrollerButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TScrollerButton::GetTEventHandlerClassNamePointer(TScrollerButton *this)
 
@@ -51,7 +51,7 @@ TScrollerButton * __thiscall
 TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
   this->vftable = &TScrollerButtonVtbl_006616e8;
   return this;
 }
@@ -64,7 +64,7 @@ TScrollerButton * __thiscall
 TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574FC0
 // GHIDRA_NAME TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit(TScrollerButton *this)
 

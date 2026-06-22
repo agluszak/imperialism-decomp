@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TTaskForce::GetTTaskForceClassNamePointer(TTaskForce 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TTaskForce::ConstructTTaskForce(undefined4 param_1, undefined2 param_2)
 
 void __thiscall
 TTaskForce::ConstructTTaskForce(TTaskForce *this,undefined4 param_1,undefined2 param_2)

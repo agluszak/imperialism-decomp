@@ -4,11 +4,11 @@
 // Bucket: TCivilianButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409980
-// GHIDRA_NAME TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
+// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton
+// GHIDRA_PROTO undefined __thiscall TRadioPictureButton::TRadioPictureButton(void)
 
 TCivilianButton * __thiscall
-TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(TCivilianButton *this)
+TRadioPictureButton::TRadioPictureButton(TCivilianButton *this)
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -21,7 +21,7 @@ TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(TCivilianButton 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B340
 // GHIDRA_NAME TCivilianButton::CreateTCivilianButtonInstance
-// GHIDRA_PROTO TCivilianButton * __cdecl CreateTCivilianButtonInstance(void)
+// GHIDRA_PROTO TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
 TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
@@ -41,7 +41,7 @@ TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
   local_4 = 0;
   pTVar1 = (TCivilianButton *)0x0;
   if (this != (TCivilianButton *)0x0) {
-    thunk_ConstructUiClickablePictureResourceEntry(this);
+    TRadioPictureButton::TRadioPictureButton(this);
     this->vftable = &_vftable_;
     *(undefined4 *)&this->field_0x60 = 0xc;
     pTVar1 = this;
@@ -52,7 +52,7 @@ TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3C0
 // GHIDRA_NAME TCivilianButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCivilianButton::GetTEventHandlerClassNamePointer(TCivilianButton *this)
 
@@ -67,7 +67,7 @@ CRuntimeClass * __thiscall TCivilianButton::GetTEventHandlerClassNamePointer(TCi
 TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *this)
 
 {
-  thunk_ConstructUiClickablePictureResourceEntry(this);
+  TRadioPictureButton::TRadioPictureButton(this);
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0xc;
   return this;
@@ -81,7 +81,7 @@ TCivilianButton * __thiscall
 TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -116,7 +116,7 @@ TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this,int pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B4F0
 // GHIDRA_NAME TCivilianButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TCivilianButton::OrphanTiny_ReturnZero_0048a730(TCivilianButton *this)
 
@@ -125,7 +125,7 @@ void __thiscall TCivilianButton::OrphanTiny_ReturnZero_0048a730(TCivilianButton 
   RECT local_10;
   
   if (this->field04 != 0) {
-    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+    TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   }
   UpdatePaletteIndexWithDefaultFallback(0x10);
   local_10.left = (LONG)*(short *)&this->field_0x98;

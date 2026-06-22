@@ -25,7 +25,7 @@ TNoHilitePicture * TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPict
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TGameSetupMultiplayerPictureVtbl_00661d80;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TNoHilitePicture * TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPict
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F10
 // GHIDRA_NAME TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer(TGameSetupMultiplayerPicture *this)
@@ -46,14 +46,14 @@ TGameSetupMultiplayerPicture::GetTEventHandlerClassNamePointer(TGameSetupMultipl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F30
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTGameSetupMultiplayerPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState(void)
 
 TGameSetupMultiplayerPicture * __thiscall
 TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
           (TGameSetupMultiplayerPicture *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TGameSetupMultiplayerPictureVtbl_00661d80;
   return this;
 }
@@ -67,7 +67,7 @@ TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
           (TGameSetupMultiplayerPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -76,7 +76,7 @@ TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575FB0
 // GHIDRA_NAME TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
 TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultiplayerPicture *this)
@@ -91,7 +91,7 @@ TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultipl
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable[0x12].slot_0x04;
   uVar2 = (*pTVar1)(0x70726f74);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
@@ -115,7 +115,7 @@ TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultipl
     uVar2 = (*pTVar1)(0x63757273);
     g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_00,uVar2);
     (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-    thunk_BuildUiTextStyleDescriptor(&stack0xffffffd8,0,0xe,0x2b6c);
+    BuildUiTextStyleDescriptor(&stack0xffffffd8,0,0xe,0x2b6c);
     (*g_pCursorControlPanel->vftable[0x3c].slot_0x04)(&stack0xffffffd8,1);
     (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6b,0x2b6c);
     (*g_pCursorControlPanel->vftable[0x38].slot_0x04)(1,0);
@@ -140,7 +140,7 @@ TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupMultipl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576230
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches setup/menu command tags and posts follow-up turn-event codes (load/random/scenario/join/multiplayer paths).
 // GHIDRA_COMMENT_END
@@ -190,9 +190,9 @@ LAB_005763d6:
       if (cVar3 == '\0') {
         CString::CString(&param_2);
         local_4 = 3;
-        thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis(&param_2);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        LoadUiStringResourceByGroupAndIndex();
+        AssignStringSharedRefAndReturnThis(&param_2);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         ResetGameFlowStateAndPostTurnEvent5DC();
         this_00 = &param_2;
 LAB_00576781:
@@ -204,25 +204,25 @@ LAB_00576781:
     }
     else if ((uVar1 == 0x72616e64) || (uVar1 == 0x7363656e)) {
 LAB_005762a1:
-      cVar3 = thunk_ReturnTrueStub();
+      cVar3 = ReturnTrueStub();
       while (cVar3 == '\0') {
         CString::CString(&local_18);
         local_4 = 0;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         local_14.m_pchData = &stack0xffffffc4;
-        thunk_AssignStringSharedRefAndReturnThis(&local_18);
-        cVar3 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&local_18);
+        cVar3 = DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = -1;
         this_00 = &local_18;
         if (cVar3 == '\0') goto LAB_00576781;
         CString::~CString(this_00);
-        cVar3 = thunk_ReturnTrueStub();
+        cVar3 = ReturnTrueStub();
       }
       CString::CString(&local_18,*(char **)&g_pGameFlowState->field_0x74);
       local_4 = 1;
       CString::CString(&local_1c);
       local_4._0_1_ = 2;
-      thunk_LoadUiStringResourceByGroupAndIndex();
+      LoadUiStringResourceByGroupAndIndex();
       iVar5 = RunTaggedOptionDialogAndReturnSelectionTag(local_1c.m_pchData,&local_18);
       if (iVar5 != 0x63616e63) {
         iVar5 = CompareAnsiStringsWithMbcsAwareness();
@@ -234,10 +234,10 @@ LAB_005762a1:
           CString::~CString(&local_18);
           goto LAB_005763d6;
         }
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         param_2.m_pchData = &stack0xffffffc4;
-        thunk_AssignStringSharedRefAndReturnThis(&local_1c);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&local_1c);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
       }
       local_4 = CONCAT31(local_4._1_3_,1);
       CString::~CString(&local_1c);
@@ -269,7 +269,7 @@ LAB_005764ac:
         if (cVar3 != '\0') {
           *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
 LAB_0057670d:
-          thunk_PostTurnEventCodeMessage2420();
+          PostTurnEventCodeMessage2420();
         }
       }
       else if (uVar1 == 0x6d756c74) {
@@ -286,7 +286,7 @@ LAB_0057670d:
     }
     else if (((uVar1 == 0x73706974) &&
              (cVar3 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0(), cVar3 != '\0')
-             ) && (cVar3 = thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2759,8,0,1), cVar3 != '\0'))
+             ) && (cVar3 = ShowLocalizedUiPromptByGroupAndIndex(0x2759,8,0,1), cVar3 != '\0'))
     {
       DeleteLegacyCliSaveImpFiles();
       CString::CString(&local_14);
@@ -295,12 +295,12 @@ LAB_0057670d:
       local_4._0_1_ = 5;
       CString::CString(&local_18);
       local_4._0_1_ = 6;
-      thunk_LoadUiStringResourceByGroupAndIndex();
+      LoadUiStringResourceByGroupAndIndex();
       FormatStringWithVarArgsToSharedRef();
       scanBracketExpressions(g_pLocalizationTable,&local_14,local_1c.m_pchData);
       local_10 = &stack0xffffffc4;
-      thunk_AssignStringSharedRefAndReturnThis(&local_14);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&local_14);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       uVar4 = (*this->vftable[0x12].slot_0x04)();
       iVar5 = *(int *)CONCAT31(extraout_var_01,uVar4);
       (**(code **)(iVar5 + 0xc))();
@@ -308,7 +308,7 @@ LAB_0057670d:
       local_10 = &stack0xffffffcc;
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                 ((TToolBarCluster *)&stack0xffffffcc,(char *)&g_szEmptyString);
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
       local_4._0_1_ = 5;
       CString::~CString(&local_18);
       local_4 = CONCAT31(local_4._1_3_,4);
@@ -317,7 +317,7 @@ LAB_0057670d:
       CString::~CString(&local_14);
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_00576786:
   *unaff_FS_OFFSET = local_c;
   return;

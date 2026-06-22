@@ -25,7 +25,7 @@ TStaticText * TMyStaticText::CreateTMyStaticTextInstance(void)
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     this->vftable = (TStaticTextVtbl *)&TMyStaticTextVtbl_0066cbc8;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TStaticText * TMyStaticText::CreateTMyStaticTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5400
 // GHIDRA_NAME TMyStaticText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMyStaticText::GetTEventHandlerClassNamePointer(TMyStaticText *this)
 
@@ -45,13 +45,13 @@ CRuntimeClass * __thiscall TMyStaticText::GetTEventHandlerClassNamePointer(TMySt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5420
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_PROTO undefined __thiscall ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
+// GHIDRA_PROTO undefined __thiscall TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
 
 TMyStaticText * __thiscall
 TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->vftable = &TMyStaticTextVtbl_0066cbc8;
   return this;
 }

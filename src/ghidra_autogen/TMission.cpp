@@ -15,7 +15,7 @@ undefined ** TMission::GetTMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535020
 // GHIDRA_NAME TMission::ConstructTMission
-// GHIDRA_PROTO undefined __thiscall ConstructTMission(void)
+// GHIDRA_PROTO undefined __thiscall TMission::ConstructTMission(void)
 
 void __thiscall TMission::ConstructTMission(TMission *this)
 
@@ -34,7 +34,7 @@ void __thiscall TMission::ConstructTMission(TMission *this)
 TMission * __thiscall TMission::DeletingDestructTMission(TMission *this,byte param_1)
 
 {
-  DestructTMission(this);
+  TMission::DestructTMission(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -43,7 +43,7 @@ TMission * __thiscall TMission::DeletingDestructTMission(TMission *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535080
 // GHIDRA_NAME TMission::DestructTMission
-// GHIDRA_PROTO undefined __thiscall DestructTMission(void)
+// GHIDRA_PROTO undefined __thiscall TMission::DestructTMission(void)
 
 void __thiscall TMission::DestructTMission(TMission *this)
 
@@ -54,13 +54,13 @@ void __thiscall TMission::DestructTMission(TMission *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539A20
 // GHIDRA_NAME TMission::ConstructTEscortMissionForPortContext
-// GHIDRA_PROTO undefined __thiscall ConstructTEscortMissionForPortContext(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TMission::ConstructTEscortMissionForPortContext(undefined4 param_1)
 
 TMission * __thiscall
 TMission::ConstructTEscortMissionForPortContext(TMission *this,undefined4 param_1)
 
 {
-  ConstructTMission(this);
+  TMission::ConstructTMission(this);
   *(undefined4 *)(this + 0x14) = param_1;
   *(undefined4 *)(this + 0x18) = 0;
   *(undefined4 *)(this + 0x1c) = 0;
@@ -77,7 +77,7 @@ TMission::ConstructTEscortMissionForPortContext(TMission *this,undefined4 param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AB50
 // GHIDRA_NAME TMission::ConstructBlockadePortMissionForContext
-// GHIDRA_PROTO undefined ConstructBlockadePortMissionForContext()
+// GHIDRA_PROTO undefined TMission::ConstructBlockadePortMissionForContext()
 
 TMission * __thiscall
 TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
@@ -110,7 +110,7 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
     param_2[0xc] = 1;
   }
   uVar1 = *(undefined4 *)param_2[10];
-  ConstructTMission(param_1);
+  TMission::ConstructTMission(param_1);
   *(undefined4 *)(param_1 + 0x14) = uVar1;
   *(undefined4 *)(param_1 + 0x18) = 0;
   *(undefined4 *)(param_1 + 0x1c) = 0;
@@ -132,7 +132,7 @@ TMission::ConstructBlockadePortMissionForContext(TMission *param_1,int *param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C0A0
 // GHIDRA_NAME TMission::ConstructTArmyMissionWithNodeKey
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyMissionWithNodeKey(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall TMission::ConstructTArmyMissionWithNodeKey(undefined2 param_1)
 
 TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,undefined2 param_1)
 
@@ -147,7 +147,7 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,
   puStack_8 = &LAB_0063443a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  ConstructTMission(this);
+  TMission::ConstructTMission(this);
   local_4 = 0;
   *(undefined ***)this = &g_vtblTArmyMission;
   *(undefined2 *)(this + 0x14) = param_1;
@@ -165,7 +165,7 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,
   *(undefined4 **)(this + 0x18) = puVar1;
   if (puVar1 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMissionSubs_cpp_00697be0,0x842);
   }
   *(undefined4 *)(this + 0x1c) = 0;
@@ -179,7 +179,7 @@ TMission * __thiscall TMission::ConstructTArmyMissionWithNodeKey(TMission *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F2D0
 // GHIDRA_NAME TMission::ConstructTInvadeMissionWithOptionalBeachhead
-// GHIDRA_PROTO undefined __thiscall ConstructTInvadeMissionWithOptionalBeachhead(int param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TMission::ConstructTInvadeMissionWithOptionalBeachhead(int param_1, undefined2 param_2)
 
 TMission * __thiscall
 TMission::ConstructTInvadeMissionWithOptionalBeachhead
@@ -196,7 +196,7 @@ TMission::ConstructTInvadeMissionWithOptionalBeachhead
   puStack_8 = &LAB_006344d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  ConstructTArmyMissionWithNodeKey(this,0xffff);
+  TMission::ConstructTArmyMissionWithNodeKey(this,0xffff);
   *(undefined2 *)(this + 0x32) = 0xffff;
   *(undefined2 *)(this + 0x30) = param_2;
   local_4 = 0;
@@ -209,7 +209,7 @@ TMission::ConstructTInvadeMissionWithOptionalBeachhead
       this_00 = (TMission *)0x0;
     }
     else {
-      ConstructTMission(this_00);
+      TMission::ConstructTMission(this_00);
       *(int *)(this_00 + 0x14) = param_1;
       *(undefined4 *)(this_00 + 0x18) = 0;
       *(undefined4 *)(this_00 + 0x1c) = 0;
@@ -263,7 +263,7 @@ void __thiscall TMission::DeserializeTInvadeMission(int param_1,int *param_2)
     pTVar3 = (TMission *)0x0;
   }
   else {
-    ConstructTMission(pTVar3);
+    TMission::ConstructTMission(pTVar3);
     *(undefined4 *)(pTVar3 + 0x14) = 0;
     *(undefined4 *)(pTVar3 + 0x18) = 0;
     *(undefined4 *)(pTVar3 + 0x1c) = 0;

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA360
 // GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO undefined __thiscall SetArmyUnitLineActiveFlagAndNotify(char param_1)
+// GHIDRA_PROTO undefined __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
 
 void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this,char param_1)
 
@@ -108,14 +108,14 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this,int param_1)
   else {
     CStack_3c.m_pchData = (char *)0x56514d;
     local_24 = this_00;
-    TView::thunk_ConstructTViewBaseState(this_00);
+    TView::ConstructTViewBaseState(this_00);
     this_00->vftable = (TViewVtbl *)&TShipViewVtbl_0065ce28;
   }
   local_24 = *(TView **)&this->field_0x10;
   iVar1 = *(int *)&this->field_0x18;
   CStack_3c.m_pchData = (char *)0x0;
   local_4 = (TClickZone *)0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  InitializeUiResourceEntryFrameAndParent();
   CStack_3c.m_pchData = (char *)0x94;
   this_00[1].vftable = (TViewVtbl *)local_24;
   this_00[1].field04 = iVar1;
@@ -126,7 +126,7 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this,int param_1)
   }
   else {
     CStack_3c.m_pchData = (char *)0x5651b5;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this_01);
+    TControl::TControl((TControl *)this_01);
     this_01->vftable = &TArmyCheckBoxVtbl_0064cec0;
     *(undefined4 *)&this_01->field_0x88 = 0;
     *(undefined4 *)&this_01->field_0x90 = 0;
@@ -153,19 +153,19 @@ void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this,int param_1)
     iVar1 = 0;
   }
   else {
-    iVar1 = TClickZone::thunk_ConstructUiCommandTagResourceEntry(local_4);
+    iVar1 = TClickZone::ConstructUiCommandTagResourceEntry(local_4);
   }
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
   local_24 = (TView *)0x40;
   local_20 = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,this_00);
+  InitializeUiResourceEntryFrameAndParent(0,this_00);
   *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   local_10 = &stack0xffffffac;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_3c);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_3c);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_18 = 0xffffffff;
   CString::~CString(&CStack_3c);
   *unaff_FS_OFFSET = local_20;

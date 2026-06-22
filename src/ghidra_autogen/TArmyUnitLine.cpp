@@ -126,7 +126,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int pa
   }
   else {
     uStack_50 = 0x4a8e3f;
-    TView::thunk_ConstructTViewBaseState(pTVar7);
+    TView::ConstructTViewBaseState(pTVar7);
     pTVar7->vftable = (TViewVtbl *)&TArmyUnitViewVtbl_0064d100;
   }
   pTVar3 = *(TViewVtbl **)&this->field_0x10;
@@ -137,7 +137,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int pa
   pTStack_64 = (TControl *)param_1;
   pCStack_68 = (CString *)0x0;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  InitializeUiResourceEntryFrameAndParent();
   uStack_50 = 0x94;
   pTVar7[1].vftable = pTVar3;
   CStack_54.m_pchData = (char *)0x4a8e7b;
@@ -148,7 +148,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int pa
   }
   else {
     uStack_50 = 0x4a8e99;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    TControl::TControl(this_00);
     this_00->vftable = (TControlVtbl *)&TArmyCheckBoxVtbl_0064cec0;
     *(undefined4 *)&this_00[1].field_0x4 = 0;
     *(undefined4 *)&this_00[1].field_0xc = 0;
@@ -168,7 +168,7 @@ void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this,int pa
   local_24 = 0;
   local_20 = 0;
   pTStack_64 = (TControl *)pTVar7;
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  InitializeUiResourceEntryFrameAndParent();
   *(undefined4 *)&this_00->field_0x1c = 0x63686563;
   *(undefined4 *)&this_00[1].field_0xc = uVar2;
   *(int *)&this_00[1].field_0x4 = (int)sVar1 << 7;
@@ -198,14 +198,14 @@ LAB_004a8f66:
   iStack_c = 2;
   pTVar5 = g_pLocalizationTable->vftable;
   pCStack_5c = (CString *)0x4a8f8c;
-  pCStack_5c = (CString *)thunk_GetUnitMovementClassId();
+  pCStack_5c = (CString *)GetUnitMovementClassId();
   piStack_60 = (int *)0x2726;
   pTStack_64 = (TControl *)0x4a8f9e;
   (*pTVar5[0x10].slot_0x04)();
   pTStack_10 = (TClickZone *)&pCStack_68;
   pTStack_64 = this_00;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_64 = (TControl *)0x4a8fc0;
   cVar6 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
   if (cVar6 != '\0') {
@@ -263,8 +263,8 @@ LAB_004a8f66:
     }
     CStack_38.m_pchData = (char *)&pCStack_68;
     pTStack_64 = (TControl *)piVar8;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     local_18._0_1_ = 7;
     pTStack_64 = (TControl *)0x4a91b6;
     CString::~CString(&CStack_30);
@@ -290,7 +290,7 @@ LAB_004a8f66:
   }
   else {
     pTStack_64 = (TControl *)0x4a920f;
-    iVar9 = TClickZone::thunk_ConstructUiCommandTagResourceEntry(pTStack_10);
+    iVar9 = TClickZone::ConstructUiCommandTagResourceEntry(pTStack_10);
   }
   pTStack_64 = (TControl *)0x0;
   pCStack_68 = (CString *)0x4;
@@ -299,14 +299,14 @@ LAB_004a8f66:
   local_24 = 0x18;
   CStack_30.m_pchData = (char *)0x40;
   iStack_2c = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,pTVar7);
+  InitializeUiResourceEntryFrameAndParent(0,pTVar7);
   *(undefined4 *)(iVar9 + 0x1c) = 0x6e616d65;
   pTStack_64 = (TControl *)&stack0xffffffb8;
   pCStack_68 = (CString *)0x1;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   local_1c.m_pchData = &stack0xffffff8c;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_54);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_54);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_24 = -1;
   CString::~CString(&CStack_54);
   *unaff_FS_OFFSET = iStack_2c;

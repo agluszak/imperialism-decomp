@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00413780
 // GHIDRA_NAME CAmbitDocument::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Imperialism application shutdown/ExitInstance-equivalent (via thunk at 0x00407e14).
 // GHIDRA_COMMENT Restores display mode, releases core global systems/managers, unloads custom fonts, posts font-change broadcast, and finalizes framework cleanup.
@@ -68,7 +68,7 @@ void __thiscall CAmbitDocument::SetForeignMinisterReadyFlag14(CAmbitDocument *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00413A20
 // GHIDRA_NAME CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(undefined4 param_1)
 
 void __thiscall
 CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
@@ -82,7 +82,7 @@ CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004145F0
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
 undefined4 __thiscall
 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
@@ -125,7 +125,7 @@ void __thiscall CAmbitDocument::_scalar_deleting_destructor_(CAmbitDocument *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006055D0
 // GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined ConstructTTaskBaseState()
+// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Clears local pending state and posts custom message 0x36A to active thread window before invoking thread callback +0x74.
 // GHIDRA_COMMENT_END
@@ -148,7 +148,7 @@ CAmbitDocument::ConstructTTaskBaseState(int param_1,undefined4 param_2,undefined
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006063B8
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins04_005adc30()
+// GHIDRA_PROTO undefined TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
 
 void __fastcall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 
@@ -161,7 +161,7 @@ void __fastcall CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int *param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606451
 // GHIDRA_NAME CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 
 undefined4 __thiscall
 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(CAmbitDocument *this,int param_1)
@@ -255,7 +255,7 @@ LAB_0060685d:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606934
 // GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined ConstructTTaskBaseState()
+// GHIDRA_PROTO undefined TShipBuildingTask::ConstructTTaskBaseState()
 
 void __fastcall CAmbitDocument::ConstructTTaskBaseState(int param_1)
 
@@ -271,7 +271,7 @@ void __fastcall CAmbitDocument::ConstructTTaskBaseState(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060694F
 // GHIDRA_NAME CAmbitDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Core thread message pump step.
 // GHIDRA_COMMENT Calls GetMessageA, optional pre-translation hook, then TranslateMessage/DispatchMessageA unless message 0x36A is filtered.
@@ -308,7 +308,7 @@ undefined4 __thiscall CAmbitDocument::ConstructTTaskBaseState(CAmbitDocument *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061849D
 // GHIDRA_NAME CAmbitDocument::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined OrphanRetStub_0059add0()
+// GHIDRA_PROTO undefined TSoundPlayer::OrphanRetStub_0059add0()
 
 void __thiscall CAmbitDocument::OrphanRetStub_0059add0(int param_1,int param_2)
 
@@ -333,7 +333,7 @@ void __thiscall CAmbitDocument::OrphanRetStub_0059add0(int param_1,int param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061852A
 // GHIDRA_NAME CAmbitDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(LPCSTR param_1, uint param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(LPCSTR param_1, uint param_2, int param_3)
 
 int __thiscall
 CAmbitDocument::OrphanCallChain_C11_I88_004874b0
@@ -383,7 +383,7 @@ CAmbitDocument::OrphanCallChain_C11_I88_004874b0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006186A4
 // GHIDRA_NAME CAmbitDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined OrphanCallChain_C11_I88_004874b0()
+// GHIDRA_PROTO undefined TEditText::OrphanCallChain_C11_I88_004874b0()
 
 undefined4 __fastcall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(int param_1)
 
@@ -401,7 +401,7 @@ undefined4 __fastcall CAmbitDocument::OrphanCallChain_C11_I88_004874b0(int param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006186B7
 // GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
 
 void __thiscall
 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -419,7 +419,7 @@ CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006186F2
 // GHIDRA_NAME CAmbitDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined GetTEventHandlerClassNamePointer()
+// GHIDRA_PROTO undefined TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 void __thiscall CAmbitDocument::GetTEventHandlerClassNamePointer(int param_1,undefined4 param_2)
 
@@ -430,7 +430,7 @@ void __thiscall CAmbitDocument::GetTEventHandlerClassNamePointer(int param_1,und
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061873C
 // GHIDRA_NAME CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 undefined4 __thiscall
 CAmbitDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject(CAmbitDocument *this)

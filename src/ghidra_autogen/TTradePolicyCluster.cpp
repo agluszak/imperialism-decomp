@@ -35,7 +35,7 @@ TUberCluster * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584280
 // GHIDRA_NAME TTradePolicyCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradePolicyCluster::GetTEventHandlerClassNamePointer(TTradePolicyCluster *this)
@@ -65,7 +65,7 @@ TTradePolicyCluster * __thiscall
 TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -74,7 +74,7 @@ TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
 // GHIDRA_NAME TTradePolicyCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TTradePolicyCluster::OrphanRetStub_0059add0
@@ -87,7 +87,7 @@ TTradePolicyCluster::OrphanRetStub_0059add0
   int *piVar3;
   
   if (param_1 != 0x67) {
-    TMapEditCluster::thunk_DispatchPanelControlEvent
+    TCluster::OrphanRetStub_0059add0
               ((TMapEditCluster *)this,param_1,param_2,param_3);
     return;
   }
@@ -97,7 +97,7 @@ TTradePolicyCluster::OrphanRetStub_0059add0
   piVar3 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x636c7573);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x203);
   }
   (**(code **)(*piVar3 + 0x1c8))(0x20202020);

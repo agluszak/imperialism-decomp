@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6A30
 // GHIDRA_NAME TTrainingOrder::CreateTTrainingOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTrainingOrderInstance(short param_1)
+// GHIDRA_PROTO undefined __thiscall TTrainingOrder::CreateTTrainingOrderInstance(short param_1)
 
 void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *this,short param_1)
 
@@ -23,7 +23,7 @@ void __thiscall TTrainingOrder::CreateTTrainingOrderInstance(TTrainingOrder *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6A90
 // GHIDRA_NAME TTrainingOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTrainingOrder::GetTProductionOrderClassNamePointer(TTrainingOrder *this)
 
@@ -39,7 +39,7 @@ TTrainingOrder * __thiscall
 TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *this,byte param_1)
 
 {
-  DestructTTrainingOrderAndMaybeFree(this);
+  TTrainingOrder::DestructTTrainingOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -48,7 +48,7 @@ TTrainingOrder::ConstructTTrainingOrderBaseState(TTrainingOrder *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B00
 // GHIDRA_NAME TTrainingOrder::DestructTTrainingOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTrainingOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(void)
 
 void __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(TTrainingOrder *this)
 
@@ -59,7 +59,7 @@ void __thiscall TTrainingOrder::DestructTTrainingOrderAndMaybeFree(TTrainingOrde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6B20
 // GHIDRA_NAME TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)
 
 void __thiscall
 TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20
@@ -199,7 +199,7 @@ TTrainingOrder::OrphanCallChain_C1_I16_004b5100(TTrainingOrder *this,short param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6DE0
 // GHIDRA_NAME TTrainingOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
 void __thiscall TTrainingOrder::CreateTItemOrderInstance(TTrainingOrder *this)
 
@@ -259,7 +259,7 @@ void __thiscall TTrainingOrder::OrphanRetStub_004b5160(TTrainingOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F00
 // GHIDRA_NAME TTrainingOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
 void __thiscall TTrainingOrder::ResetCityOrderItemDerivedStateNoop(TTrainingOrder *this)
 

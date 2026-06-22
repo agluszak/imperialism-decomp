@@ -10,7 +10,7 @@
 TScrollView * __thiscall TScrollView::_scalar_deleting_destructor_(TScrollView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -39,7 +39,7 @@ TView * TScrollView::CreateTScrollViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TScrollViewVtbl_006417e0;
     pTVar1 = this;
   }
@@ -49,7 +49,7 @@ TView * TScrollView::CreateTScrollViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573C90
 // GHIDRA_NAME TScrollView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TScrollView::GetTEventHandlerClassNamePointer(TScrollView *this)
 
@@ -59,19 +59,19 @@ CRuntimeClass * __thiscall TScrollView::GetTEventHandlerClassNamePointer(TScroll
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CB0
 // GHIDRA_NAME TScrollView::ConstructTScrollViewBaseState
-// GHIDRA_PROTO undefined ConstructTScrollViewBaseState()
+// GHIDRA_PROTO undefined TScrollView::ConstructTScrollViewBaseState()
 
 void TScrollView::ConstructTScrollViewBaseState
                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CE0
 // GHIDRA_NAME TScrollView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TScrollView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollView *this)
 
@@ -89,7 +89,7 @@ void __thiscall TScrollView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollView *this)
   puStack_8 = &LAB_0063665a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x7363726f);
   *(uint *)&this->field_0x60 = CONCAT31(extraout_var,uVar1);
   this_00 = (TControl *)AllocateWithFallbackHandler(0x94);
@@ -98,7 +98,7 @@ void __thiscall TScrollView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollView *this)
     this_00 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    TControl::TControl(this_00);
     this_00->vftable = (TControlVtbl *)&TScrollBarViewVtbl_006614c8;
     *(undefined4 *)&this_00[1].field_0xc = 0;
   }

@@ -23,7 +23,7 @@ TUpDownPictureButton * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
   this = (TUpDownPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (this != (TUpDownPictureButton *)0x0) {
-    TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(this);
+    TUpDownPictureButton::ConstructPictureScreenResourceEntry(this);
     this->vftable = (TUpDownPictureButtonVtbl *)&TSidewaysArrowVtbl_00663540;
     this[1].vftable = (TUpDownPictureButtonVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TUpDownPictureButton * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B30
 // GHIDRA_NAME TSidewaysArrow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TSidewaysArrow::GetTEventHandlerClassNamePointer(TSidewaysArrow *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TSidewaysArrow::GetTEventHandlerClassNamePointer(TSid
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B50
 // GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(void)
 
 TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
 
 {
-  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
+  TUpDownPictureButton::ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
   this->vftable = &TSidewaysArrowVtbl_00663540;
   *(undefined4 *)&this->field_0x94 = 0;
   return this;
@@ -64,7 +64,7 @@ TSidewaysArrow * __thiscall
 TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TSidewaysArrow::_scalar_deleting_destructor_(TSidewaysArrow *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583BD0
 // GHIDRA_NAME TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, void * param_2, void * param_3, void * param_4)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, void * param_2, void * param_3, void * param_4)
 
 void __thiscall
 TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -85,11 +85,11 @@ TSidewaysArrow::QueueCityRecruitmentSupportCommandsIfDeficit
   uint uVar3;
   int iVar4;
   
-  TControl::thunk_DispatchPictureResourceCommand((TControl *)this,param_1,param_2,param_3,param_4);
+  TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit((TControl *)this,param_1,param_2,param_3,param_4);
   if (param_1 != 2) {
-    uVar3 = thunk_GetTickCountDiv16();
+    uVar3 = GetTickCountDiv16();
     if (*(int *)&this->field_0x94 + 5U <= uVar3) {
-      iVar4 = thunk_GetTickCountDiv16();
+      iVar4 = GetTickCountDiv16();
       *(int *)&this->field_0x94 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x94 = iVar4 + 10;

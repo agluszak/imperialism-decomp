@@ -25,7 +25,7 @@ TView * TLonelyTileView::CreateTLonelyTileViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TLonelyTileViewVtbl_00657740;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TView * TLonelyTileView::CreateTLonelyTileViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AC0
 // GHIDRA_NAME TLonelyTileView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TLonelyTileView::GetTEventHandlerClassNamePointer(TLonelyTileView *this)
 
@@ -45,13 +45,13 @@ CRuntimeClass * __thiscall TLonelyTileView::GetTEventHandlerClassNamePointer(TLo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AE0
 // GHIDRA_NAME TLonelyTileView::ConstructTLonelyTileViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTLonelyTileViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(void)
 
 TLonelyTileView * __thiscall
 TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TLonelyTileViewVtbl_00657740;
   return this;
 }
@@ -64,7 +64,7 @@ TLonelyTileView * __thiscall
 TLonelyTileView::_scalar_deleting_destructor_(TLonelyTileView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TLonelyTileView::_scalar_deleting_destructor_(TLonelyTileView *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505B60
 // GHIDRA_NAME TLonelyTileView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TLonelyTileView::OrphanTiny_ReturnZero_0048a730(TLonelyTileView *this)
 

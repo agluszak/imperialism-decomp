@@ -27,7 +27,7 @@ TView * TStratReportView::
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TStratReportViewVtbl_00667d08;
     pTVar1 = this;
   }
@@ -37,7 +37,7 @@ TView * TStratReportView::
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3A0
 // GHIDRA_NAME TStratReportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TStratReportView::GetTEventHandlerClassNamePointer(TStratReportView *this)
@@ -56,7 +56,7 @@ _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsr
           (TStratReportView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TStratReportViewVtbl_00667d08;
   return this;
 }
@@ -69,7 +69,7 @@ TStratReportView * __thiscall
 TStratReportView::_scalar_deleting_destructor_(TStratReportView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -91,7 +91,7 @@ TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E460
 // GHIDRA_NAME TStratReportView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportView *this)
 
@@ -118,7 +118,7 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
   *unaff_FS_OFFSET = &uStack_c;
   local_10.m_pchData = &stack0xffffffc8;
   SetQuickDrawFillColor();
-  thunk_FillRectWithQuickDrawBrushAndContextOffset();
+  FillRectWithQuickDrawBrushAndContextOffset();
   CString::CString(&local_24);
   local_4 = 0;
   CString::CString(&local_1c);
@@ -132,8 +132,8 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
   SetQuickDrawStyleWord_1D4C_AndMarkDirty();
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
   SetQuickDrawStyleWord_1D50_AndMarkDirty();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
-  thunk_AssignSharedStringFromIndexedA8EntryNameField
+  SetQuickDrawTextOriginWithContextOffset(0xc);
+  AssignSharedStringFromIndexedA8EntryNameField
             ((int)*(short *)(*(int *)&this->field_0x60 + 2));
   pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Battle_of_0069935c);
   local_4._0_1_ = 4;
@@ -144,7 +144,7 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
   CString::~CString(&stack0x00000004);
   local_4._0_1_ = 3;
   CString::~CString(&local_14);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   FormatOverlayTerrainLabelText();
   pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Winner__00699350);
   local_4._0_1_ = 6;
@@ -155,8 +155,8 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
   CString::~CString(&stack0x00000004);
   local_4 = CONCAT31(local_4._1_3_,3);
   CString::~CString(&local_14);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(0xc);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
   iVar3 = 0;
   iVar4 = 4;
@@ -177,8 +177,8 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
       CString::~CString(&local_14);
       local_4 = CONCAT31(local_4._1_3_,3);
       CString::~CString(&local_10);
-      thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawTextOriginWithContextOffset(0xc);
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
     }
     iVar4 = iVar4 + 2;
     iVar3 = iVar3 + 1;
@@ -194,8 +194,8 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
   CString::~CString(&stack0x00000004);
   local_4 = CONCAT31(local_4._1_3_,3);
   CString::~CString(&local_10);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(0xc);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStyleWord_1D4E_AndMarkDirty();
   iVar3 = 0;
   iVar4 = 0x40;
@@ -216,8 +216,8 @@ void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportVie
       CString::~CString(&local_10);
       local_4 = CONCAT31(local_4._1_3_,3);
       CString::~CString(&local_14);
-      thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawTextOriginWithContextOffset(0xc);
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
     }
     iVar4 = iVar4 + 2;
     iVar3 = iVar3 + 1;

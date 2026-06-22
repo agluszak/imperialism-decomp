@@ -64,7 +64,7 @@ TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this,undefined4 param_1,undef
   this_00 = (TControl *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
   if (this_00 != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    TControl::TControl(this_00);
     local_4 = CONCAT31(local_4._1_3_,1);
     CString::CString((CString *)&this_00[1].field_0x4);
     this_00->vftable = (TControlVtbl *)&TMiniCivViewVtbl_0064d9d0;

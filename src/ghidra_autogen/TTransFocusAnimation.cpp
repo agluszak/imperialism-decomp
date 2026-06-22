@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047C3D0
 // GHIDRA_NAME TTransFocusAnimation::Sprite__CollectNonTransparentPixels
-// GHIDRA_PROTO int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)
+// GHIDRA_PROTO int * __thiscall TTransFocusAnimation::Sprite__CollectNonTransparentPixels(uint this_ptr)
 
 int * __thiscall
 TTransFocusAnimation::Sprite__CollectNonTransparentPixels(TTransFocusAnimation *this,uint this_ptr)
@@ -274,7 +274,7 @@ TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
           (TTransFocusAnimation *this,byte param_1)
 
 {
-  CreateTTransFocusAnimationInstance(this);
+  TTransFocusAnimation::CreateTTransFocusAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -283,7 +283,7 @@ TTransFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0430
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0460
 // GHIDRA_NAME TTransFocusAnimation::CreateTTransFocusAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTransFocusAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(void)
 
 void __thiscall TTransFocusAnimation::CreateTTransFocusAnimationInstance(TTransFocusAnimation *this)
 
@@ -306,7 +306,7 @@ TTransFocusAnimation::GetTAnimationClassNamePointer(TTransFocusAnimation *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A04A0
 // GHIDRA_NAME TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTransFocusAnimationBaseState(undefined4 param_1, int * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall TTransFocusAnimation::ConstructTTransFocusAnimationBaseState(undefined4 param_1, int * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
@@ -346,7 +346,7 @@ TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0570
 // GHIDRA_NAME TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
 void __thiscall
 TTransFocusAnimation::QueueCityRecruitmentSupportCommandsIfDeficit(TTransFocusAnimation *this)
@@ -396,7 +396,7 @@ TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransF
   local_2c.right = local_1c.right - local_1c.left;
   local_1c.bottom = *(LONG *)&this->field_0x28;
   local_2c.bottom = local_1c.bottom - local_1c.top;
-  thunk_ApplyRectClipRegionToGlobalClipState(&local_2c);
+  ApplyRectClipRegionToGlobalClipState(&local_2c);
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x13);
   SetQuickDrawFillColorFromPaletteIndex(0);
@@ -452,14 +452,14 @@ TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAn
   uStack_28 = 0;
   (*this->vftable[5].slot_0x04)(&uStack_2c);
   puStack_8 = (undefined1 *)0xffffffff;
-  thunk_DestroyScopedMapQuickDrawContext();
+  DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_10;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0810
 // GHIDRA_NAME TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
 
 void __thiscall
 TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(TTransFocusAnimation *this)
@@ -514,10 +514,10 @@ TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift(TTransFocusAnimati
   pTVar1 = this->vftable[7].GetTAnimationClassNamePointer;
   (*pTVar1)();
   uStack_3c = 0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_34,&uStack_3c);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_3c);
+  GetActiveQuickDrawSurfaceContextAndFlags(&uStack_34,&uStack_3c);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_3c);
   (*pTVar1)();
-  thunk_SetActiveQuickDrawSurfaceContext(uStack_34,uStack_3c);
+  SetActiveQuickDrawSurfaceContext(uStack_34,uStack_3c);
   return;
 }
 

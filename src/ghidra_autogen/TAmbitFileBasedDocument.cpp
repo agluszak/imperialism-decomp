@@ -16,7 +16,7 @@ TAmbitFileBasedDocument::GetTDocumentClassNamePointer(TAmbitFileBasedDocument *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5F0
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTAmbitFileBasedDocumentBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(void)
 
 void __thiscall
 TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument *this)
@@ -122,15 +122,15 @@ TAmbitFileBasedDocument::OrphanRetStub_00486530(TAmbitFileBasedDocument *this,vo
     CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 3;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&pLoadContext);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   else {
     CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 2;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&pLoadContext);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   local_8._0_1_ = 0;
   bVar2 = true;
@@ -142,8 +142,8 @@ LAB_0049e7e4:
       CString::CString((CString *)&pLoadContext);
       local_8._0_1_ = 4;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&pLoadContext);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       bVar2 = true;
       local_8._0_1_ = 0;
       CString::~CString((CString *)&pLoadContext);
@@ -152,7 +152,7 @@ LAB_0049e7e4:
       iVar4 = AllocateWithFallbackHandler();
       if (iVar4 == 0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       (*pTVar1)();
       (*pTVar1)();
@@ -180,7 +180,7 @@ LAB_0049e7e4:
   }
   (*this_01->vftable[3].ConstructTStreamBaseState)();
   for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
-    cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+    cVar3 = IsNationSlotEligibleForEventProcessing();
     if (cVar3 != '\0') {
       cVar3 = (*g_apNationStates[iVar4]->vftable[0x14].GetTCountryClassNamePointer)();
       if (cVar3 == '\0') {
@@ -261,7 +261,7 @@ TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,vo
   if (puVar3 == (undefined1 *)0x0) {
     CStack_64.m_pchData = (char *)0x49ebed;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar4 = 0x1950;
   do {
@@ -339,7 +339,7 @@ void __thiscall TAmbitFileBasedDocument::AssertUAmbitLine1335(TAmbitFileBasedDoc
 
 {
   if (DAT_006a21c4 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UAmbit_cpp_0069527c,0x537);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UAmbit_cpp_0069527c,0x537);
   }
   return;
 }

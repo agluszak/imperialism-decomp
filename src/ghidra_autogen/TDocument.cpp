@@ -28,7 +28,7 @@ TDocument * __thiscall
 TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this,byte param_1)
 
 {
-  CreateTDocumentInstance(this);
+  TDocument::CreateTDocumentInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -37,7 +37,7 @@ TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486380
 // GHIDRA_NAME TDocument::CreateTDocumentInstance
-// GHIDRA_PROTO undefined __thiscall CreateTDocumentInstance(void)
+// GHIDRA_PROTO undefined __thiscall TDocument::CreateTDocumentInstance(void)
 
 void __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
 

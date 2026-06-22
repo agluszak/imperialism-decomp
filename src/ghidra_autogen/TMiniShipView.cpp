@@ -21,7 +21,7 @@ TMiniShipView * __thiscall
 TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ TControl * TMiniShipView::CreateTMiniShipViewInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TMiniShipViewVtbl_0065db68;
     pTVar1 = this;
   }
@@ -60,7 +60,7 @@ TControl * TMiniShipView::CreateTMiniShipViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569E40
 // GHIDRA_NAME TMiniShipView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMiniShipView::GetTEventHandlerClassNamePointer(TMiniShipView *this)
 
@@ -70,7 +70,7 @@ CRuntimeClass * __thiscall TMiniShipView::GetTEventHandlerClassNamePointer(TMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569EB0
 // GHIDRA_NAME TMiniShipView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *this)
 
@@ -108,8 +108,8 @@ void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *thi
   uStack_10 = CONCAT31(uStack_10._1_3_,1);
   CString::~CString((CString *)&stack0xffffffa0);
   TViewMgr::CreateTViewMgrInstance(&stack0xffffff98);
-  thunk_SetQuickDrawTextOriginWithContextOffset(10);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(10);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   sVar3 = *(short *)(*(int *)&this->field_0x84 + 0x1c);
   sVar2 = GetNavyOrderNormalizationBaseByNationType();
   sVar3 = (short)((sVar3 * 0x14) / (int)sVar2) + 1;
@@ -136,10 +136,10 @@ void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *thi
              (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_4c,&local_5c,0x24,
              (astruct_19 *)0x0);
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x8b);
-  thunk_DrawCenteredGuideLineOnMapDc(0x8b);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
+  SetQuickDrawTextOriginWithContextOffset(0x8b);
+  DrawCenteredGuideLineOnMapDc(0x8b);
+  DrawCenteredGuideLineOnMapDc(0xdd);
+  DrawCenteredGuideLineOnMapDc(0xdd);
   if (*(int *)(*(int *)&this->field_0x84 + 0x20) != 0) {
     sVar3 = UiRuntimeContext::GetActiveNationId();
     RStack_2c.left = (LONG)(short)((sVar3 + 7) * 0x10);

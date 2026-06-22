@@ -24,7 +24,7 @@ TView * TCluster::CreateTClusterInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x1;
     *(undefined1 *)&this[1].field04 = 0;
     this[1].padding_08_to_0b = 0;
@@ -47,7 +47,7 @@ TView * TCluster::CreateTClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004913E0
 // GHIDRA_NAME TCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCluster::GetTEventHandlerClassNamePointer(TCluster *this)
 
@@ -64,7 +64,7 @@ TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -97,7 +97,7 @@ TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491650
 // GHIDRA_NAME TCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO void __thiscall OrphanRetStub_0059add0(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_PROTO void __thiscall TSoundPlayer::OrphanRetStub_0059add0(int nEventClass, void * pEventPayload, int nEventFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int nEventFlags)
 // GHIDRA_COMMENT_END
@@ -222,7 +222,7 @@ void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this,int par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004918A0
 // GHIDRA_NAME TCluster::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 TView * __thiscall TCluster::OrphanCallChain_C11_I88_004874b0(TCluster *this)
 
@@ -233,7 +233,7 @@ TView * __thiscall TCluster::OrphanCallChain_C11_I88_004874b0(TCluster *this)
   
   uVar1 = (*this->vftable[4].slot_0x04)();
   this_00 = (TView *)CONCAT31(extraout_var,uVar1);
-  TView::thunk_CopyCityDialogStateFromSource(this_00,(TView *)this);
+  TView::CopyCityDialogStateFromSource(this_00,(TView *)this);
   this_00[1].vftable = *(TViewVtbl **)&this->field_0x60;
   *(undefined1 *)&this_00[1].field04 = this->field_0x64;
   this_00[1].padding_08_to_0b = *(undefined4 *)&this->field_0x68;

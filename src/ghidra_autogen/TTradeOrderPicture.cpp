@@ -35,7 +35,7 @@ thunk_TPictureButton * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584460
 // GHIDRA_NAME TTradeOrderPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradeOrderPicture::GetTEventHandlerClassNamePointer(TTradeOrderPicture *this)
@@ -46,7 +46,7 @@ TTradeOrderPicture::GetTEventHandlerClassNamePointer(TTradeOrderPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584480
 // GHIDRA_NAME TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTradeOrderPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(void)
 
 TTradeOrderPicture * __thiscall
 TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(TTradeOrderPicture *this)
@@ -65,7 +65,7 @@ TTradeOrderPicture * __thiscall
 TTradeOrderPicture::_scalar_deleting_destructor_(TTradeOrderPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -74,7 +74,7 @@ TTradeOrderPicture::_scalar_deleting_destructor_(TTradeOrderPicture *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584500
 // GHIDRA_NAME TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTradeOrderPicture *this)
 

@@ -51,7 +51,7 @@ void __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06(TArmyTacUnit *this)
   int iVar1;
   int iVar2;
   
-  iVar1 = TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)&this->field_0x14);
+  iVar1 = TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(*(TArmyTacUnit **)&this->field_0x14);
   iVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x48))();
   if (iVar1 < iVar2) {
     RecomputeTacticalCursorProjectionScoresAndPruneList(iVar1);
@@ -206,7 +206,7 @@ LAB_0059e5be:
     }
     else {
       iVar7 = 0;
-      thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(iVar2 + 8),local_18);
+      ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(iVar2 + 8),local_18);
       iVar5 = 0;
       piVar6 = local_18;
       do {
@@ -226,7 +226,7 @@ LAB_0059e5be:
     }
   }
   if ((*(TNextMoveCommand **)&this->field_0x14)[2].field_0x10 != '\0') {
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
+    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
   }
   return;
 }
@@ -271,8 +271,8 @@ undefined1 __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
     uStack_2c = 1;
     puStack_30 = &DAT_006a4650;
     pCStack_1c = (CString *)auStack_34;
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_20);
-    uVar1 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&CStack_20);
+    uVar1 = DispatchLocalizedUiMessageWithTemplateA13A0();
     uStack_10 = 0xffffffff;
     uStack_28 = 0x59eae3;
     CString::~CString(&CStack_20);
@@ -285,7 +285,7 @@ undefined1 __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot09(TArmyTacUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4240
 // GHIDRA_NAME TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
-// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot06_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(void)
 
 int __thiscall TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl(TArmyTacUnit *this)
 
@@ -350,7 +350,7 @@ CRuntimeClass * __thiscall TArmyTacUnit::GetTTacticalUnitClassNamePointer(TArmyT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5F20
 // GHIDRA_NAME TArmyTacUnit::ConstructTArmyTacUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyTacUnitBaseState(int param_1)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
 
 void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,int param_1)
 
@@ -389,7 +389,7 @@ void __thiscall TArmyTacUnit::ConstructTArmyTacUnitBaseState(TArmyTacUnit *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5FE0
 // GHIDRA_NAME TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTArmyTacUnitAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -424,7 +424,7 @@ void __thiscall TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree(TArmyTacUnit *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6120
 // GHIDRA_NAME TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
 int __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(TArmyTacUnit *this)
 

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00556590
 // GHIDRA_NAME TNavyMgr::ConstructNavyManager
-// GHIDRA_PROTO undefined __thiscall ConstructNavyManager(void)
+// GHIDRA_PROTO undefined __thiscall TNavyMgr::ConstructNavyManager(void)
 
 void __thiscall TNavyMgr::ConstructNavyManager(TNavyMgr *this)
 

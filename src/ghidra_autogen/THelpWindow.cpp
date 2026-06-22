@@ -25,7 +25,7 @@ TControl * THelpWindow::CreateTHelpWindowInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    TControl::ConstructUiWindowResourceEntryType4B340(this);
     this->vftable = (TControlVtbl *)&THelpWindowVtbl_006572c0;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TControl * THelpWindow::CreateTHelpWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BD0
 // GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
 
@@ -56,7 +56,7 @@ CRuntimeClass * __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWi
 THelpWindow * __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
   this->vftable = &THelpWindowVtbl_006572c0;
   return this;
 }
@@ -77,7 +77,7 @@ THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504C70
 // GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
 

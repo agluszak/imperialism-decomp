@@ -25,7 +25,7 @@ TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    TPictureButton::ConstructUiTabCursorPictureEntry(this);
     this->vftable = (TPictureButtonVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B50
 // GHIDRA_NAME TClosePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TClosePicture::GetTEventHandlerClassNamePointer(TClosePicture *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TClosePicture::GetTEventHandlerClassNamePointer(TClos
 TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -63,7 +63,7 @@ TClosePicture * __thiscall
 TClosePicture::_scalar_deleting_destructor_(TClosePicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

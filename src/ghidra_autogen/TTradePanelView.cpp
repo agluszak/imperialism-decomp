@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430420
 // GHIDRA_NAME TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68
-// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntry_Vtbl0063fc68(void)
+// GHIDRA_PROTO undefined __thiscall TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(void)
 
 TTradePanelView * __thiscall
 TTradePanelView::ConstructUiResourceEntry_Vtbl0063fc68(TTradePanelView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 0;
   this->vftable = &TTradePanelViewVtbl_0063fc68;
   return this;
@@ -25,7 +25,7 @@ TTradePanelView * __thiscall
 TTradePanelView::_scalar_deleting_destructor_(TTradePanelView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -52,7 +52,7 @@ TView * TTradePanelView::CreateTTradePanelViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x0;
     this->vftable = (TViewVtbl *)&TTradePanelViewVtbl_0063fc68;
     *unaff_FS_OFFSET = local_c;
@@ -64,7 +64,7 @@ TView * TTradePanelView::CreateTTradePanelViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8760
 // GHIDRA_NAME TTradePanelView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTradePanelView::GetTEventHandlerClassNamePointer(TTradePanelView *this)
 
@@ -106,7 +106,7 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
   iVar4 = 0;
   local_4 = 0;
   iStack_30 = 0x4f87b9;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
   CStack_2c.m_pchData = (char *)0x636c7573;
   local_14 = this->vftable[0x12].slot_0x04;
@@ -121,8 +121,8 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     local_14 = (TTradePanelView_slot_0x04_0x04 *)&puStack_34;
     iStack_30 = uVar3;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     iVar4 = iVar4 + 1;
   } while (iVar4 < 7);
   iStack_30 = 0x6c696e6b;
@@ -131,8 +131,8 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
   puStack_34 = &stack0xffffffe0;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_10.m_pchData = acStack_44;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_2c);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_2c);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   acStack_44[0] = '}';
   acStack_44[1] = -0x78;
   acStack_44[2] = 'O';
@@ -146,8 +146,8 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
   CString::AssignFromPtr(&CStack_2c,&CStack_10);
   local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
   CString::~CString(&CStack_10);
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_2c);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_2c);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_18.m_pchData = (char *)0xffffffff;
   CString::~CString(&CStack_2c);
   *unaff_FS_OFFSET = unaff_EBP;
@@ -156,7 +156,7 @@ void __thiscall TTradePanelView::OrphanCallChain_C6_I49_004875d0(TTradePanelView
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8940
 // GHIDRA_NAME TTradePanelView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView *this)
 
@@ -234,11 +234,11 @@ void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView 
   pCStack_60 = &local_44;
   uStack_64 = 0x2b6b;
   uStack_68 = 0x4f8a4c;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   pCStack_60 = (CString *)&local_48;
   uStack_64 = 0x2b68;
   uStack_68 = 0x4f8a5e;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   pCStack_60 = &local_4c;
   uStack_64 = 0x2a;
   uStack_68 = 0x2733;
@@ -248,14 +248,14 @@ void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView 
   iVar3 = -iVar2;
   SetQuickDrawColorAndSyncGlobals();
   puStack_6c = (undefined1 *)(-(int)puVar5 + 0x170);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
+  SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
   puStack_6c = &stack0xffffffa8;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
   puStack_6c = puVar4;
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
+  SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
   puStack_6c = &stack0xffffffa8;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   puStack_6c = (undefined1 *)0x2b68;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   iVar3 = 0;
@@ -267,14 +267,14 @@ void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView 
     puVar6 = (undefined1 *)CONCAT22((short)((uint)puVar5 >> 0x10),local_34[iVar3 + 4] - sVar1);
     SetQuickDrawColorAndSyncGlobals();
     puStack_6c = puVar4 + 1;
-    thunk_SetQuickDrawTextOriginWithContextOffset(puVar6 + 1);
+    SetQuickDrawTextOriginWithContextOffset(puVar6 + 1);
     puStack_6c = &stack0xffffffa8;
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     SetQuickDrawColorAndSyncGlobals();
     puStack_6c = puVar4;
-    thunk_SetQuickDrawTextOriginWithContextOffset(puVar6);
+    SetQuickDrawTextOriginWithContextOffset(puVar6);
     puStack_6c = &stack0xffffffa8;
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     iVar3 = iVar3 + 1;
     puVar5 = local_48;
   } while (iVar3 < 6);
@@ -287,20 +287,20 @@ void __thiscall TTradePanelView::OrphanTiny_ReturnZero_0048a730(TTradePanelView 
     puVar6 = (undefined1 *)
              CONCAT22((short)((uint)puVar6 >> 0x10),
                       *(short *)((int)local_34 + iVar3) - (short)local_48);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
     puVar4 = (undefined1 *)
              (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_20 + iVar3) - sVar1 / 2)
              - iVar2);
     SetQuickDrawColorAndSyncGlobals();
     puStack_6c = puVar6 + 1;
-    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4 + 1);
+    SetQuickDrawTextOriginWithContextOffset(puVar4 + 1);
     puStack_6c = &stack0xffffffa8;
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     SetQuickDrawColorAndSyncGlobals();
     puStack_6c = puVar6;
-    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4);
+    SetQuickDrawTextOriginWithContextOffset(puVar4);
     puStack_6c = &stack0xffffffa8;
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     iVar3 = iVar3 + 2;
     local_4c.m_pchData = local_4c.m_pchData + 1;
   } while (iVar3 < 6);
@@ -336,7 +336,7 @@ void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piStack_14 = (int *)0x74726161;
   pTStack_18 = (TToolBarClusterVtbl *)0x4f8d8f;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c8))();
@@ -347,7 +347,7 @@ void __thiscall TTradePanelView::OrphanRetStub_00430550(TTradePanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8DD0
 // GHIDRA_NAME TTradePanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TTradePanelView::OrphanRetStub_0059add0
@@ -362,21 +362,21 @@ TTradePanelView::OrphanRetStub_0059add0
       *(short *)(*(int *)&this->field_0x60 + 0xc0) = (short)iVar1;
       if ((&DAT_00696950)[iVar1] == 300) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xb;
-        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
+        TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
         return;
       }
       if ((short)(&DAT_00696950)[iVar1] < 0x60) {
         *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 9;
-        TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
+        TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
         return;
       }
       *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 10;
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,0xc,param_2,param_3);
+      TView::OrphanRetStub_0059add0((TView *)this,0xc,param_2,param_3);
       return;
     }
     *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xc;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 

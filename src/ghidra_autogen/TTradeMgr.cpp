@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TTradeMgr::GetTTradeMgrClassNamePointer(TTradeMgr *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A20
 // GHIDRA_NAME TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990
-// GHIDRA_PROTO undefined __thiscall ConstructNationInteractionStateManager_Vtbl0066d990(void)
+// GHIDRA_PROTO undefined __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(void)
 
 void __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(TTradeMgr *this)
 
@@ -31,7 +31,7 @@ void __thiscall TTradeMgr::ConstructNationInteractionStateManager_Vtbl0066d990(T
 TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this,byte param_1)
 
 {
-  DestructTTradeMgrAndMaybeFree_Impl(this);
+  TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TTradeMgr * __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree(TTradeMgr *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A70
 // GHIDRA_NAME TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTTradeMgrAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(void)
 
 void __thiscall TTradeMgr::DestructTTradeMgrAndMaybeFree_Impl(TTradeMgr *this)
 
@@ -92,7 +92,7 @@ TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(TTradeMgr *this,int 
   undefined4 *puVar7;
   
   piVar3 = param_1;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   if (DAT_00695278 < 0x27) {
     (**(code **)(*param_1 + 0x3c))(&this->field_0x8,0xaa0);
   }
@@ -177,7 +177,7 @@ void __thiscall TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(TTra
   int local_8;
   
   piVar2 = _uStack00000004;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puVar4 = &this->field_0xa;
   local_8 = 0x11;
   pcVar1 = *(code **)(*piVar2 + 0x78);
@@ -1052,7 +1052,7 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
         (*g_apTerrainTypeDescriptorTable[unaff_EBX]->vftable[0xd].slot_0x04)(param_3);
       }
     }
-    sVar2 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+    sVar2 = TControl::LookupOrderCompatibilityMatrixValue
                       ((TControl *)g_pDiplomacyTurnStateManager,sVar2,(short)unaff_EBX,sVar5,uVar6);
     if (0 < sVar2) {
       iVar3 = iVar4 * 0x17 + unaff_EBX;
@@ -1104,7 +1104,7 @@ void __thiscall TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags(TTradeMg
   iVar2 = 0;
   ppTVar4 = g_apNationStates;
   do {
-    cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar2);
+    cVar1 = IsNationSlotEligibleForEventProcessing(iVar2);
     if ((cVar1 != '\0') && (*ppTVar4 != (TGreatPower *)0x0)) {
       (*(*ppTVar4)->vftable[0x2d].GetTCountryClassNamePointer)();
     }
@@ -1123,7 +1123,7 @@ void __thiscall TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags(TTradeMg
   iVar2 = 0;
   ppTVar4 = g_apNationStates;
   do {
-    cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar2);
+    cVar1 = IsNationSlotEligibleForEventProcessing(iVar2);
     if ((cVar1 != '\0') && (*ppTVar4 != (TGreatPower *)0x0)) {
       (*(*ppTVar4)->vftable[0x30].slot_0x04)();
     }
@@ -1216,7 +1216,7 @@ void __thiscall TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScore
   iVar6 = 0;
   ppTVar4 = g_apNationStates;
   do {
-    cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar6);
+    cVar1 = IsNationSlotEligibleForEventProcessing(iVar6);
     if (cVar1 != '\0') {
       (*(*ppTVar4)->vftable[0x31].GetTCountryClassNamePointer)();
     }
@@ -1231,7 +1231,7 @@ void __thiscall TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScore
     ppTVar4 = g_apNationStates;
     local_1c = 0;
     do {
-      cVar1 = thunk_IsNationSlotEligibleForEventProcessing(local_1c);
+      cVar1 = IsNationSlotEligibleForEventProcessing(local_1c);
       if (cVar1 != '\0') {
         uVar2 = (*(*ppTVar4)->vftable[0xf].slot_0x04)(local_18);
         sVar3 = (short)CONCAT31(extraout_var,uVar2);

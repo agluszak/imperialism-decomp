@@ -4,10 +4,10 @@
 // Bucket: CProcessLocalObject.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622AAC
-// GHIDRA_NAME CProcessLocalObject::thunk_CProcessLocalObject
-// GHIDRA_PROTO void __thiscall thunk_CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
-void __thiscall CProcessLocalObject::thunk_CProcessLocalObject(CProcessLocalObject *this)
+void __thiscall CProcessLocalObject::~CProcessLocalObject(CProcessLocalObject *this)
 
 {
   ~CProcessLocalObject(this);
@@ -15,8 +15,8 @@ void __thiscall CProcessLocalObject::thunk_CProcessLocalObject(CProcessLocalObje
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006244CE
-// GHIDRA_NAME CProcessLocalObject::thunk_~CProcessLocalObject
-// GHIDRA_PROTO void __thiscall thunk_~CProcessLocalObject(void)
+// GHIDRA_NAME CProcessLocalObject::~CProcessLocalObject
+// GHIDRA_PROTO void __thiscall CProcessLocalObject::~CProcessLocalObject(void)
 
 void __thiscall CProcessLocalObject::thunk__CProcessLocalObject(CProcessLocalObject *this)
 

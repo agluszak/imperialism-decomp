@@ -37,7 +37,7 @@ thunk_TPictureButton * TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE550
 // GHIDRA_NAME TOfferDeskPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TOfferDeskPicture::GetTEventHandlerClassNamePointer(TOfferDeskPicture *this)
@@ -48,7 +48,7 @@ TOfferDeskPicture::GetTEventHandlerClassNamePointer(TOfferDeskPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE570
 // GHIDRA_NAME TOfferDeskPicture::ConstructTOfferDeskPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOfferDeskPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(void)
 
 TOfferDeskPicture * __thiscall
 TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
@@ -70,7 +70,7 @@ TOfferDeskPicture * __thiscall
 TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -79,7 +79,7 @@ TOfferDeskPicture::_scalar_deleting_destructor_(TOfferDeskPicture *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE600
 // GHIDRA_NAME TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPicture *this)
 
@@ -127,7 +127,7 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   undefined3 extraout_var_00;
   
   piStack_28 = (int *)0x5be613;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_24 = 0x74726561;
   pTVar1 = this->vftable[0x12].slot_0x04;
   piStack_28 = (int *)0x5be624;
@@ -210,7 +210,7 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   pTStack_58 = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_5c,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_5c = (TToolBarClusterVtbl *)0x2;
   uStack_64 = 0x5be75b;
   pTStack_58 = (TOfferDeskPicture *)CONCAT31(extraout_var_01,uVar5);
@@ -241,7 +241,7 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   puStack_40 = (undefined1 *)&pTStack_6c;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_6c,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iStack_68 = 0x77616974;
   pTStack_6c = (TToolBarClusterVtbl *)0x5be7d5;
   uVar5 = (*pTVar1)();
@@ -249,19 +249,19 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   puStack_44 = &stack0xffffff90;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff90,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_6c = (TToolBarClusterVtbl *)0x626f6f6b;
   (*pTVar1)();
   puStack_48 = &stack0xffffff8c;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff8c,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   LoadUiStringByGroupAndIndexToControlObject();
   (*pTVar1)();
   pTStack_4c = (TView *)&stack0xffffff88;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff88,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   (*pTVar1)();
   LoadUiStringByGroupAndIndexToControlObject(0x2730,3);
   uVar5 = (*pTVar1)();
@@ -270,7 +270,7 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
   (**(code **)(iVar3 + 0xc))();
   uVar4 = (uint3)uStack_64;
   uStack_64 = (uint)(uVar4 & 0xffff);
-  thunk_BuildUiTextStyleDescriptor(&iStack_68,0,0xe,0x2b67);
+  BuildUiTextStyleDescriptor(&iStack_68,0,0xe,0x2b67);
   (**(code **)(iVar3 + 0x1b4))(&iStack_68,0);
   (**(code **)(iVar3 + 0x1c4))(1,0);
   uVar5 = (*pTVar1)(0x61636365);
@@ -289,7 +289,7 @@ void __thiscall TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOfferDeskPi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF740
 // GHIDRA_NAME TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -333,13 +333,13 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
               ((TControl *)CONCAT31(extraout_var,uVar3),
                (astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF860
 // GHIDRA_NAME TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall
 TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int param_1)
@@ -359,7 +359,7 @@ TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int pa
     if (iVar3 != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
                 (CONCAT22((short)((uint3)extraout_var_00 >> 8),*(undefined2 *)(iVar3 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket(this,10,iVar3);
+      QueueDeferredUiEventPacket(this,10,iVar3);
     }
   }
   else if (sVar1 == 0x1b) {
@@ -368,7 +368,7 @@ TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int pa
     if (iVar3 != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar3 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket(this,10,iVar3);
+      QueueDeferredUiEventPacket(this,10,iVar3);
       return;
     }
   }
@@ -377,7 +377,7 @@ TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(TOfferDeskPicture *this,int pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0930
 // GHIDRA_NAME TOfferDeskPicture::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TOfferDeskPicture::UpdateControlCachedIntFromWindowText

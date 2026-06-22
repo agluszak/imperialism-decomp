@@ -38,7 +38,7 @@ _CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z_imperialismsrcgameTArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591580
 // GHIDRA_NAME TArmyInfoView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyInfoView::GetTEventHandlerClassNamePointer(TArmyInfoView *this)
 
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TArmyInfoView::GetTEventHandlerClassNamePointer(TArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915A0
 // GHIDRA_NAME TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z(void)
 
 TArmyInfoView * __thiscall
 TArmyInfoView::
@@ -69,7 +69,7 @@ TArmyInfoView * __thiscall
 TArmyInfoView::_scalar_deleting_destructor_(TArmyInfoView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

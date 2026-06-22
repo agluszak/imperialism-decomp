@@ -15,7 +15,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ad90(TArmyPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0B20
 // GHIDRA_NAME TArmyPlayer::InitializeUiTransientObjectRegistry
-// GHIDRA_PROTO undefined InitializeUiTransientObjectRegistry()
+// GHIDRA_PROTO undefined TArmyPlayer::InitializeUiTransientObjectRegistry()
 
 void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,undefined4 param_2)
 
@@ -66,7 +66,7 @@ TArmyPlayer * __thiscall
 TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this,byte param_1)
 
 {
-  CreateTArmyPlayerInstance(this);
+  TArmyPlayer::CreateTArmyPlayerInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,7 +75,7 @@ TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140(TArmyPlayer *this,byt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B170
 // GHIDRA_NAME TArmyPlayer::CreateTArmyPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTArmyPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TArmyPlayer::CreateTArmyPlayerInstance(void)
 
 void __thiscall TArmyPlayer::CreateTArmyPlayerInstance(TArmyPlayer *this)
 
@@ -111,7 +111,7 @@ TArmyPlayer::ConstructTTacticalPlayerBaseState(TArmyPlayer *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B3E0
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TArmyPlayer::OrphanRetStub_0059add0(TArmyPlayer *this)
 
@@ -173,7 +173,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ad70(TArmyPlayer *this)
     uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0xf19);
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UTacPlayer_cpp_00699d84,0x18d);
     }
     iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
@@ -226,7 +226,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ad90(TArmyPlayer *this)
     if (*(short *)(&DAT_00695528 +
                   (int)(*(TNextMoveCommand **)&this->field_0x14)[1].vftable[1].
                        OrphanCallChain_C1_I17_00487470 * 2) != 8) {
-      TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
+      TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
       return;
     }
   }
@@ -255,7 +255,7 @@ void __thiscall TArmyPlayer::OrphanRetStub_0059ae10(TArmyPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4790
 // GHIDRA_NAME TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupAndMaybeDispatchTurnEventED8(int param_1, int param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
+// GHIDRA_PROTO undefined __thiscall TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8(int param_1, int param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5)
 
 void __thiscall
 TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8

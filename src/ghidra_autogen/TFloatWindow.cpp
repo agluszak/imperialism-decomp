@@ -30,7 +30,7 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
     *unaff_FS_OFFSET = local_c;
     return (TView *)0x0;
   }
-  TView::thunk_ConstructTViewBaseState(this);
+  TView::ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
   TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].field14);
   this[1].field38 = 0;
@@ -66,7 +66,7 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
   }
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
-  thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
+  SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
   this[1].controlTag = (int)this;
   this[1].field04 = (int)this;
   this->vftable = (TViewVtbl *)&DAT_0064b340;
@@ -76,7 +76,7 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491F90
 // GHIDRA_NAME TFloatWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *this)
 
@@ -111,7 +111,7 @@ undefined4 __thiscall TFloatWindow::OrphanVtableAssignStub_00492310(TFloatWindow
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492330
 // GHIDRA_NAME TFloatWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Alternate implementation of ResetChildSelectionAndNotifyParent468 with same notification/child-iteration flow.
 // GHIDRA_COMMENT_END

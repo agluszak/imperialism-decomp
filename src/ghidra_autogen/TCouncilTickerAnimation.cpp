@@ -12,7 +12,7 @@ TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
           (TCouncilTickerAnimation *this,byte param_1)
 
 {
-  CreateTCouncilTickerAnimationInstance(this);
+  TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -21,7 +21,7 @@ TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF50
 // GHIDRA_NAME TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTCouncilTickerAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(void)
 
 void __thiscall
 TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAnimation *this)
@@ -45,7 +45,7 @@ TCouncilTickerAnimation::GetTAnimationClassNamePointer(TCouncilTickerAnimation *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF90
 // GHIDRA_NAME TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCouncilTickerAnimationBaseState(undefined4 param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(undefined4 param_1, undefined4 param_2)
 
 void __thiscall
 TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
@@ -87,7 +87,7 @@ TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep(TCouncilTick
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC2E0
 // GHIDRA_NAME TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
-// GHIDRA_PROTO undefined __thiscall InitializeDiplomacyCouncilViewControlsAndTicker(void)
+// GHIDRA_PROTO undefined __thiscall TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(void)
 
 void __thiscall
 TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
@@ -151,7 +151,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   puStack_38 = (undefined1 *)0x0;
   puStack_3c = local_18;
   puStack_40 = (undefined1 *)0x4fc336;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pTVar2 = this->vftable[0x12].slot_0x04;
   uStack_30 = 0x63616e30;
   puStack_34 = (undefined1 *)0x4fc34a;
@@ -245,7 +245,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
     else {
       this_00->vftable = &TCouncilTickerAnimationVtbl_0064c410;
     }
-    ConstructTCouncilTickerAnimationBaseState(this_00,this,2);
+    TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(this_00,this,2);
     TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
     uVar3 = (*pTVar2)(0x656e6420);

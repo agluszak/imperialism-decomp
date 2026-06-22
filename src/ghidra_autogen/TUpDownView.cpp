@@ -23,7 +23,7 @@ TControl * TUpDownView::CreateTUpDownViewInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TUpDownViewVtbl_00663770;
     this[1].vftable = (TControlVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TControl * TUpDownView::CreateTUpDownViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D30
 // GHIDRA_NAME TUpDownView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TUpDownView::GetTEventHandlerClassNamePointer(TUpDownView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TUpDownView::GetTEventHandlerClassNamePointer(TUpDown
 TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &TUpDownViewVtbl_00663770;
   *(undefined4 *)&this->field_0x84 = 0;
   return this;
@@ -63,7 +63,7 @@ TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView 
 TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TUpDownView * __thiscall TUpDownView::_scalar_deleting_destructor_(TUpDownView *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DD0
 // GHIDRA_NAME TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
 void __thiscall
 TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(TUpDownView *this,int param_1,int param_2)
@@ -85,9 +85,9 @@ TUpDownView::QueueCityRecruitmentSupportCommandsIfDeficit(TUpDownView *this,int 
   int in_stack_00000010;
   
   if (param_1 != 2) {
-    uVar3 = thunk_GetTickCountDiv16();
+    uVar3 = GetTickCountDiv16();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {
-      iVar4 = thunk_GetTickCountDiv16();
+      iVar4 = GetTickCountDiv16();
       *(int *)&this->field_0x84 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x84 = iVar4 + 10;

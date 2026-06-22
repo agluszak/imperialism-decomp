@@ -11,7 +11,7 @@ TNetSelectPicture * __thiscall
 TNetSelectPicture::_scalar_deleting_destructor_(TNetSelectPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TNetSelectPicture::_scalar_deleting_destructor_(TNetSelectPicture *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576980
 // GHIDRA_NAME TNetSelectPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TNetSelectPicture::GetTEventHandlerClassNamePointer(TNetSelectPicture *this)
@@ -31,18 +31,18 @@ TNetSelectPicture::GetTEventHandlerClassNamePointer(TNetSelectPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769A0
 // GHIDRA_NAME TNetSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TNetSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920(TNetSelectPicture *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769C0
 // GHIDRA_NAME TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -57,7 +57,7 @@ TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var_00;
   
   if (DAT_006a4264 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USetupScreens_cpp_00698ab8,0x2e6);
   }
   if (((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) {
@@ -75,7 +75,7 @@ TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
                 (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c),1);
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

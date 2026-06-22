@@ -20,7 +20,7 @@ TArmyBattle::WrapperFor_FreeHeapBufferIfNotNull_At004a5c50(TArmyBattle *this,byt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7F0
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyBattleBaseStateImpl(void)
+// GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
 
 void __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
 
@@ -52,7 +52,7 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4690
 // GHIDRA_NAME TArmyBattle::CreateTArmyBattleInstance
-// GHIDRA_PROTO undefined CreateTArmyBattleInstance()
+// GHIDRA_PROTO undefined TArmyBattle::CreateTArmyBattleInstance()
 
 uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
 
@@ -81,7 +81,7 @@ CRuntimeClass * __thiscall TArmyBattle::GetTTacticalBattleClassNamePointer(TArmy
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4770
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyBattleBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(void)
 
 void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 
@@ -113,7 +113,7 @@ void __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4990
 // GHIDRA_NAME TArmyBattle::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
 void __thiscall TArmyBattle::OrphanCallChain_C11_I88_004874b0(TArmyBattle *this,int *param_1)
 
@@ -429,9 +429,9 @@ int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this,int *para
         return (int *)((int)piVar1 + -5);
       }
     }
-    thunk_HandleTacticalCommandTag_depl(param_1,param_2,0);
-    uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
-    thunk_ApplyTacticalDoneSelectionAndRefreshUi(uVar2);
+    HandleTacticalCommandTag_depl(param_1,param_2,0);
+    uVar2 = SelectNextTacticalUnitForDoneCommand();
+    ApplyTacticalDoneSelectionAndRefreshUi(uVar2);
     iVar3 = 0;
     if (0 < *(int *)&this->field_0x3c) {
       do {
@@ -440,7 +440,7 @@ int * __thiscall TArmyBattle::OrphanRetStub_0059f710(TArmyBattle *this,int *para
       } while (iVar3 < *(int *)&this->field_0x3c);
     }
     if (*(char *)(*(int *)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x10) != '\0') {
-      piVar1 = (int *)thunk_HandleTacticalCommandTag_retr();
+      piVar1 = (int *)HandleTacticalCommandTag_retr();
       return piVar1;
     }
     piVar1 = (int *)0x0;

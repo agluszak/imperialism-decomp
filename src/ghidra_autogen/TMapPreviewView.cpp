@@ -17,7 +17,7 @@ TMapPreviewView * __thiscall
 TMapPreviewView::ConstructUiPlanetListResourceEntry(TMapPreviewView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TMapPreviewViewVtbl_006419d8;
   *(undefined4 *)&this->field_0x64 = 0xffffffff;
   return this;
@@ -31,7 +31,7 @@ TMapPreviewView * __thiscall
 TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578830
 // GHIDRA_NAME TMapPreviewView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapPreviewView::GetTEventHandlerClassNamePointer(TMapPreviewView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TMapPreviewView::GetTEventHandlerClassNamePointer(TMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578850
 // GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
 
@@ -79,7 +79,7 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
   puStack_8 = &LAB_00636aa8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(undefined4 *)&this->field_0x68 = 0xffffffff;
   this->field04 = 1;
   DAT_006a1890 = DAT_006a1890 + 1;
@@ -91,9 +91,9 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
   uStack_1c = local_2c;
   puVar6 = &this->field_0x60;
   (**(code **)(*DAT_006a2158 + 0x2c))(puVar6,8,auStack_20);
-  uVar1 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
+  uVar1 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
   puVar2 = (undefined4 *)GetSurfaceHeaderFromSurfaceObject(uVar1);
-  piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
+  piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
   uVar4 = (unaff_ESI - (int)&local_2c) * (*(ushort *)(*piVar3 + 4) & 0x3fff);
   if (0 < (int)uVar4) {
     for (uVar5 = uVar4 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
@@ -112,13 +112,13 @@ void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewVie
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005789B0
 // GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x60);
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
@@ -137,9 +137,9 @@ void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *t
   int *piVar6;
   int iVar7;
   
-  uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  uVar4 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar5 = GetSurfaceHeaderFromSurfaceObject(uVar4);
-  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
   iVar7 = 0;
   bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * param_1[1] + iVar5 + *param_1);
   do {
@@ -156,7 +156,7 @@ void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578A80
 // GHIDRA_NAME TMapPreviewView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMapPreviewView::OrphanTiny_ReturnZero_0048a730(TMapPreviewView *this)
 

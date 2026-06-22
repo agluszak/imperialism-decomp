@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044FA80
 // GHIDRA_NAME TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
+// GHIDRA_PROTO undefined __thiscall TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
 
 TMultiMessagePicture * __thiscall
 TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
@@ -25,7 +25,7 @@ TMultiMessagePicture * __thiscall
 TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -34,7 +34,7 @@ TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
 // GHIDRA_NAME TMultiMessagePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TMultiMessagePicture::GetTEventHandlerClassNamePointer(TMultiMessagePicture *this)
@@ -45,7 +45,7 @@ TMultiMessagePicture::GetTEventHandlerClassNamePointer(TMultiMessagePicture *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECC0
 // GHIDRA_NAME TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, CString param_2, TMultiMessagePicture_slot_0x04_0x04 * param_3)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(CString param_1, CString param_2, TMultiMessagePicture_slot_0x04_0x04 * param_3)
 
 void __thiscall
 TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -77,7 +77,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     iVar7 = *(int *)(param_2.m_pchData + 0x1c);
     if ((iVar7 != 0x63616e63) && (iVar7 != 0x636e636c)) {
       if (iVar7 != 0x6f6b6179) {
-        TMapDialog::thunk_HandleCityDialogToggleCommandOrForward
+        TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
                   ((TMapDialog *)this,(int)param_1.m_pchData);
         goto LAB_0054edfd;
       }

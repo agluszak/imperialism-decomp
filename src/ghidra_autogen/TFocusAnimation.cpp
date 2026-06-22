@@ -11,7 +11,7 @@ TFocusAnimation * __thiscall
 TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *this,byte param_1)
 
 {
-  CreateTFocusAnimationInstance(this);
+  TFocusAnimation::CreateTFocusAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TFocusAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004a0050(TFocusAnimation *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0080
 // GHIDRA_NAME TFocusAnimation::CreateTFocusAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTFocusAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TFocusAnimation::CreateTFocusAnimationInstance(void)
 
 void __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation *this)
 
@@ -89,7 +89,7 @@ void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnima
     (*this->vftable[5].slot_0x04)(&uStack_2c);
     (**(code **)(**(int **)&this->field_0x4 + 0xfc))();
     uStack_4 = 0xffffffff;
-    thunk_DestroyScopedMapQuickDrawContext();
+    DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -97,7 +97,7 @@ void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnima
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0250
 // GHIDRA_NAME TFocusAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
+// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(void)
 
 void __thiscall TFocusAnimation::RenderBattleReportInsetWithPaletteShift(TFocusAnimation *this)
 

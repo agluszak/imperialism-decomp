@@ -4,10 +4,10 @@
 // Bucket: global_part019.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063629F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063629f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063629f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063629f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -15,10 +15,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063629f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006362C7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362c7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362c7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362c7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -26,10 +26,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362c7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006362ED
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362ed
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362ed()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362ed(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -37,10 +37,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006362ed(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063630D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063630d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063630d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063630d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -48,10 +48,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063630d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063632F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063632f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063632f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063632f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -59,10 +59,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063632f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063634F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063634f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063634f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063634f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -70,10 +70,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063634f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063636F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063636f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063636f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063636f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -81,10 +81,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063636f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063638F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063638f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063638f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063638f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -92,10 +92,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063638f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006363AF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363af
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363af()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363af(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -103,10 +103,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363af(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006363CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -114,10 +114,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006363EF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363ef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363ef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363ef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -125,10 +125,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006363ef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063640F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063640f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063640f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063640f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -136,10 +136,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063640f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063642F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063642f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063642f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063642f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -147,10 +147,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063642f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063644F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063644f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063644f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063644f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -158,10 +158,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063644f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063646F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063646f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063646f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063646f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -169,10 +169,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063646f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063648F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063648f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063648f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063648f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -180,10 +180,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063648f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006364AF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364af
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364af()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364af(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -191,10 +191,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364af(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006364CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -202,10 +202,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006364F7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364f7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364f7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364f7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -213,10 +213,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006364f7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063651D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063651d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063651d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063651d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -224,10 +224,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063651d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063653D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063653d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063653d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063653d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -235,10 +235,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063653d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063655F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063655f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063655f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063655f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -246,10 +246,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063655f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063657F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063657f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063657f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063657f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -257,10 +257,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063657f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063659F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063659f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063659f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063659f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -268,10 +268,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063659f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006365BF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365bf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365bf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365bf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -279,10 +279,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365bf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006365DF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365df
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365df()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365df(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -290,10 +290,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365df(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006365FF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365ff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365ff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365ff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -301,10 +301,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006365ff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063661F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063661f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063661f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063661f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -312,10 +312,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063661f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063663F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063663f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063663f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063663f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -323,10 +323,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063663f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063665F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063665f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063665f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063665f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -334,10 +334,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063665f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063667D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063667d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063667d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063667d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -345,10 +345,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063667d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006366AD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366ad
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366ad()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366ad(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -356,10 +356,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366ad(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006366CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -367,10 +367,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006366F9
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366f9
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366f9()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366f9(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -378,10 +378,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006366f9(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063671F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063671f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063671f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063671f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -389,10 +389,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063671f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063673F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063673f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063673f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063673f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -400,10 +400,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063673f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063675F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063675f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063675f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063675f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -411,10 +411,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063675f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063677D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063677d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063677d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063677d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -422,10 +422,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063677d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006367AD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367ad
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367ad()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367ad(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -433,10 +433,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367ad(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006367CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -444,10 +444,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006367cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636807
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636807
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636807()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636807(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -455,10 +455,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636807(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063682F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063682f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063682f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063682f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -466,10 +466,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063682f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063687D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063687d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063687d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063687d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -477,10 +477,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063687d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006368AF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368af
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368af()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368af(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -488,10 +488,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368af(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006368CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -499,10 +499,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006368F7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368f7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368f7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368f7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -510,10 +510,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006368f7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063691D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063691d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063691d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063691d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -521,10 +521,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063691d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063693D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063693d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063693d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063693d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -532,10 +532,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063693d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063697F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063697f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063697f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063697f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -543,10 +543,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063697f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006369CD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006369cd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006369cd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006369cd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -554,10 +554,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006369cd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636A05
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a05
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a05()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a05(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -565,10 +565,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a05(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636A2F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a2f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a2f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a2f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -576,10 +576,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a2f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636A55
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a55
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a55()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a55(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -587,10 +587,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a55(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636A6D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a6d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a6d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a6d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -598,10 +598,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a6d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636A8F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a8f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a8f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a8f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -609,10 +609,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636a8f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636AAD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aad
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aad()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aad(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -620,10 +620,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aad(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636ACF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636acf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636acf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636acf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -631,10 +631,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636acf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636AEF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -642,10 +642,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636aef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636B17
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b17
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b17()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b17(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -653,10 +653,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b17(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636B3F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b3f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b3f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b3f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -664,10 +664,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b3f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636B6D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b6d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b6d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b6d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -675,10 +675,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b6d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636B9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -686,10 +686,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636b9d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636BBD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bbd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bbd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bbd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -697,10 +697,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bbd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636BDF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bdf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bdf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bdf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -708,10 +708,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bdf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636BFD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bfd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bfd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bfd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -719,10 +719,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636bfd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636C1F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c1f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c1f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c1f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -730,10 +730,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c1f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636C5D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c5d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c5d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c5d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -741,10 +741,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c5d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636C7F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c7f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c7f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c7f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -752,10 +752,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c7f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636C9F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c9f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c9f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c9f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -763,10 +763,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636c9f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636CDB
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cdb
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cdb()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cdb(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -774,10 +774,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cdb(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636CFD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cfd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cfd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cfd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -785,10 +785,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636cfd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636D1D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d1d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d1d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d1d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -796,10 +796,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d1d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636D7B
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d7b
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d7b()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d7b(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -807,10 +807,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636d7b(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636DB7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636db7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636db7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636db7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -818,10 +818,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636db7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636DDF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ddf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ddf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ddf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -829,10 +829,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ddf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636DFD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636dfd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636dfd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636dfd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -840,10 +840,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636dfd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636E91
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636e91
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636e91()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636e91(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -851,10 +851,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636e91(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636EE3
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ee3
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ee3()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ee3(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -862,10 +862,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636ee3(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636F1F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636f1f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636f1f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636f1f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -873,10 +873,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636f1f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636FA5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fa5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fa5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fa5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -884,10 +884,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fa5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00636FE5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fe5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fe5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fe5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -895,10 +895,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636fe5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637085
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637085
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637085()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637085(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -906,10 +906,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637085(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006370C5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370c5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370c5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370c5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -917,10 +917,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370c5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006370F5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370f5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370f5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370f5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -928,10 +928,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006370f5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637125
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637125
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637125()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637125(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -939,10 +939,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637125(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637155
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637155
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637155()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637155(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -950,10 +950,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637155(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006372DA
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -961,10 +961,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006372da(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637366
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -972,10 +972,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637366(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063739F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -983,10 +983,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063739f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006373D0
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -994,10 +994,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006373d0(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063741D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063741d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063741d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063741d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1005,10 +1005,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063741d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637455
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637455
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637455()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637455(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1016,10 +1016,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637455(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063746F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063746f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063746f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063746f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1027,10 +1027,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063746f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063748F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063748f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063748f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063748f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1038,10 +1038,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063748f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006374AD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374ad
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374ad()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374ad(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1049,10 +1049,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374ad(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006374E5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374e5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374e5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374e5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1060,10 +1060,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006374e5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637515
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637515
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637515()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637515(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1071,10 +1071,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637515(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063752F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063752f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063752f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063752f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1082,10 +1082,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063752f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063754F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063754f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063754f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063754f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1093,10 +1093,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063754f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063756F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063756f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063756f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063756f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1104,10 +1104,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063756f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063758F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063758f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063758f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063758f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1115,10 +1115,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063758f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006375AF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375af
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375af()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375af(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1126,10 +1126,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375af(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006375CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1137,10 +1137,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006375EF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375ef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375ef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375ef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1148,10 +1148,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006375ef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063760F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063760f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063760f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063760f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1159,10 +1159,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063760f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063762F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1170,10 +1170,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063762f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063764F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1181,10 +1181,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063764f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637677
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1192,10 +1192,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637677(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063769D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1203,10 +1203,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063769d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006376BF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1214,10 +1214,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376bf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006376DD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1225,10 +1225,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006376dd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637725
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1236,10 +1236,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637725(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637785
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1247,10 +1247,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637785(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006377B5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1258,10 +1258,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377b5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006377CF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1269,10 +1269,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377cf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006377F7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1280,10 +1280,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006377f7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063781D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1291,10 +1291,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063781d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637845
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1302,10 +1302,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637845(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063785F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1313,10 +1313,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063785f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063787F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1324,10 +1324,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063787f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063789F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063789f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063789f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063789f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1335,10 +1335,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063789f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006378BF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378bf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378bf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378bf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1346,10 +1346,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378bf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006378DF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378df
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378df()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378df(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1357,10 +1357,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378df(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006378FF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378ff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378ff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378ff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1368,10 +1368,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006378ff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063791D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063791d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063791d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063791d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1379,10 +1379,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063791d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063793F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063793f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063793f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063793f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1390,10 +1390,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063793f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063795F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063795f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063795f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063795f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1401,10 +1401,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063795f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063797D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063797d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063797d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063797d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1412,10 +1412,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063797d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063799D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063799d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063799d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063799d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1423,10 +1423,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063799d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006379BF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379bf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379bf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379bf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1434,10 +1434,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379bf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006379DF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379df
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379df()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379df(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1445,10 +1445,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379df(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006379FD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379fd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379fd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379fd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1456,10 +1456,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006379fd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637A1D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a1d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a1d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a1d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1467,10 +1467,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a1d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637A3F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a3f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a3f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a3f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1478,10 +1478,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a3f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637A5F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a5f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a5f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a5f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1489,10 +1489,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a5f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637A7D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a7d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a7d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a7d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1500,10 +1500,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a7d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637A9F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a9f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a9f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a9f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1511,10 +1511,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637a9f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637AD5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ad5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ad5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ad5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1522,10 +1522,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ad5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637AFF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637aff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637aff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637aff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1533,10 +1533,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637aff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637B1F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b1f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b1f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b1f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1544,10 +1544,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b1f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637B3F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b3f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b3f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b3f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1555,10 +1555,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b3f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637B5D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b5d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b5d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b5d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1566,10 +1566,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b5d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637B7F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b7f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b7f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b7f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1577,10 +1577,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b7f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637B9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1588,10 +1588,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637b9d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637BBF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bbf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bbf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bbf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1599,10 +1599,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bbf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637BDD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bdd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bdd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bdd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1610,10 +1610,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bdd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637BFF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1621,10 +1621,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637bff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637C8D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637c8d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637c8d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637c8d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1632,10 +1632,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637c8d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637CED
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ced
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ced()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ced(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1643,10 +1643,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ced(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637D2D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d2d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d2d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d2d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1654,10 +1654,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d2d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637D4F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d4f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d4f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d4f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1665,10 +1665,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d4f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637D6D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d6d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d6d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d6d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1676,10 +1676,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d6d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637D8F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d8f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d8f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d8f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1687,10 +1687,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637d8f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637E25
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e25
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e25()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e25(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1698,10 +1698,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e25(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637E5F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e5f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e5f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e5f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1709,10 +1709,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e5f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637E7F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e7f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e7f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e7f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1720,10 +1720,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e7f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637E9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1731,10 +1731,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637e9d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637EC5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ec5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ec5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ec5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1742,10 +1742,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637ec5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637EDD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637edd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637edd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637edd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1753,10 +1753,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637edd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637EFD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637efd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637efd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637efd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1764,10 +1764,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637efd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637F1F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f1f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f1f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f1f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1775,10 +1775,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f1f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637F9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1786,10 +1786,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637f9d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00637FCF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637fcf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637fcf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637fcf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1797,10 +1797,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00637fcf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063804D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063804d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063804d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063804d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1808,10 +1808,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063804d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063807F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063807f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063807f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063807f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1819,10 +1819,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063807f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006380CD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380cd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380cd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380cd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1830,10 +1830,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380cd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006380FF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380ff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380ff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380ff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1841,10 +1841,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006380ff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638145
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638145
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638145()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638145(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1852,10 +1852,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638145(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063816F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063816f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063816f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063816f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1863,10 +1863,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063816f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063818F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063818f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063818f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063818f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1874,10 +1874,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063818f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006381AF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381af
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381af()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381af(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1885,10 +1885,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381af(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006381D5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381d5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381d5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381d5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1896,10 +1896,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381d5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006381EF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381ef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381ef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381ef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1907,10 +1907,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006381ef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063825D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063825d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063825d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063825d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1918,10 +1918,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063825d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063828D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063828d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063828d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063828d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1929,10 +1929,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063828d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006382C0
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382c0
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382c0()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382c0(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1940,10 +1940,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382c0(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006382DD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382dd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382dd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382dd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1951,10 +1951,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382dd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006382FF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382ff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382ff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382ff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1962,10 +1962,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006382ff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063831F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063831f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063831f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063831f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1973,10 +1973,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063831f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638365
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638365
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638365()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638365(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1984,10 +1984,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638365(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006383C5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383c5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383c5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383c5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -1995,10 +1995,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383c5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006383ED
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383ed
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383ed()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383ed(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2006,10 +2006,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006383ed(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638440
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638440
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638440()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638440(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2017,10 +2017,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638440(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063846F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063846f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063846f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063846f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2028,10 +2028,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063846f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063848F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063848f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063848f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063848f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2039,10 +2039,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063848f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006384CD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384cd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384cd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384cd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2050,10 +2050,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384cd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006384EF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384ef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384ef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384ef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2061,10 +2061,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006384ef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063850F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063850f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063850f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063850f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2072,10 +2072,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063850f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638549
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638549
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638549()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638549(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2083,10 +2083,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638549(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063856D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063856d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063856d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063856d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2094,10 +2094,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063856d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006385C7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385c7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385c7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385c7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2105,10 +2105,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385c7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006385EF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385ef
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385ef()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385ef(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2116,10 +2116,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006385ef(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006386A5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386a5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386a5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386a5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2127,10 +2127,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386a5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006386F9
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386f9
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386f9()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386f9(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2138,10 +2138,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006386f9(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638725
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638725
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638725()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638725(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2149,10 +2149,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638725(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063873F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063873f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063873f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063873f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2160,10 +2160,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063873f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063875F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063875f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063875f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063875f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2171,10 +2171,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063875f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638785
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638785
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638785()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638785(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2182,10 +2182,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638785(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063879F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063879f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063879f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063879f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2193,10 +2193,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063879f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006387BD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387bd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387bd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387bd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2204,10 +2204,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387bd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006387DF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387df
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387df()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387df(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2215,10 +2215,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387df(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006387FD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387fd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387fd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387fd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2226,10 +2226,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006387fd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063881F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063881f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063881f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063881f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2237,10 +2237,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063881f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063883F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063883f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063883f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063883f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2248,10 +2248,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063883f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063885F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063885f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063885f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063885f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2259,10 +2259,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063885f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063887F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063887f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063887f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063887f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2270,10 +2270,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063887f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006388B5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388b5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388b5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388b5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2281,10 +2281,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388b5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006388E7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388e7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388e7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388e7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2292,10 +2292,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006388e7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063890D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063890d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063890d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063890d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2303,10 +2303,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063890d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063892D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063892d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063892d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063892d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2314,10 +2314,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063892d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063895D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063895d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063895d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063895d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2325,10 +2325,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063895d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063897F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063897f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063897f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063897f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2336,10 +2336,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063897f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0063899F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063899f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063899f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063899f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2347,10 +2347,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063899f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006389BF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389bf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389bf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389bf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2358,10 +2358,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389bf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006389DF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389df
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389df()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389df(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2369,10 +2369,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389df(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006389FF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389ff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389ff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389ff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2380,10 +2380,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006389ff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638AB1
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ab1
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ab1()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ab1(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2391,10 +2391,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ab1(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638B05
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b05
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b05()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b05(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2402,10 +2402,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b05(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638B2F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b2f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b2f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b2f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2413,10 +2413,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b2f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638B57
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b57
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b57()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b57(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2424,10 +2424,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b57(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638B87
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b87
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b87()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b87(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2435,10 +2435,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638b87(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638BAF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638baf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638baf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638baf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2446,10 +2446,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638baf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638BD7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638bd7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638bd7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638bd7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2457,10 +2457,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638bd7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638C07
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c07
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c07()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c07(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2468,10 +2468,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c07(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638C2D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c2d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c2d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c2d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2479,10 +2479,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c2d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638C57
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c57
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c57()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c57(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2490,10 +2490,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c57(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638C7D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c7d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c7d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c7d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2501,10 +2501,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638c7d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638CA7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ca7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ca7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ca7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2512,10 +2512,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ca7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638CCD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ccd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ccd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ccd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2523,10 +2523,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ccd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638CF7
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638cf7
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638cf7()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638cf7(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2534,10 +2534,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638cf7(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638D1D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d1d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d1d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d1d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2545,10 +2545,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d1d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638D47
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d47
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d47()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d47(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2556,10 +2556,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d47(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638D6F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d6f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d6f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d6f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2567,10 +2567,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d6f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638D8D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2578,10 +2578,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638DB5
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2589,10 +2589,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638DCF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2600,10 +2600,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638DED
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2611,10 +2611,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638E0F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2622,10 +2622,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638E2F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2633,10 +2633,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638E4F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2644,10 +2644,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638E6F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2655,10 +2655,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638E9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2666,10 +2666,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638EBF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2677,10 +2677,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638EDD
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2688,10 +2688,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638EFF
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2699,10 +2699,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638F1D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2710,10 +2710,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638F3D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2721,10 +2721,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638F5F
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f5f
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f5f()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f5f(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2732,10 +2732,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f5f(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638F7D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f7d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f7d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f7d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();
@@ -2743,10 +2743,10 @@ void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f7d(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00638F9D
-// GHIDRA_NAME thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f9d
-// GHIDRA_PROTO undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f9d()
+// GHIDRA_NAME ForwardStructuredExceptionDispatchThroughFrameInfo
+// GHIDRA_PROTO undefined ForwardStructuredExceptionDispatchThroughFrameInfo()
 
-void thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f9d(void)
+void ForwardStructuredExceptionDispatchThroughFrameInfo(void)
 
 {
   ForwardStructuredExceptionDispatchThroughFrameInfo();

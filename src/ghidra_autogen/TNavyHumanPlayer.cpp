@@ -11,7 +11,7 @@ TNavyHumanPlayer * __thiscall
 TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer *this,byte param_1)
 
 {
-  CreateTNavyHumanPlayerInstance(this);
+  TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TNavyHumanPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ef20(TNavyHumanPlayer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EF50
 // GHIDRA_NAME TNavyHumanPlayer::CreateTNavyHumanPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNavyHumanPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(void)
 
 void __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(TNavyHumanPlayer *this)
 

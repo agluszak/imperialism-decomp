@@ -132,7 +132,7 @@ TArmyStackList * __thiscall
 TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
 
 {
-  WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
+  TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -141,7 +141,7 @@ TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A84F0
 // GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
+// GHIDRA_PROTO undefined __thiscall TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
 
 void __thiscall
 TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *this)
@@ -164,7 +164,7 @@ TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8560
 // GHIDRA_NAME TArmyStackList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1, int param_2)
 
 short __thiscall
 TArmyStackList::GetTEventHandlerClassNamePointer(TArmyStackList *this,int param_1,int param_2)

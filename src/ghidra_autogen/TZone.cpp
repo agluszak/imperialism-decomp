@@ -24,7 +24,7 @@ undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
   this = (TZone *)AllocateWithFallbackHandler(0x48,param_1);
   local_4 = 0;
   if (this != (TZone *)0x0) {
-    uVar1 = ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
+    uVar1 = TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
     *unaff_FS_OFFSET = local_c;
     return uVar1;
   }
@@ -34,7 +34,7 @@ undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E700
 // GHIDRA_NAME TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList
-// GHIDRA_PROTO undefined __thiscall ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
+// GHIDRA_PROTO undefined __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
 
 TZone * __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone *this)
 
@@ -217,7 +217,7 @@ void __thiscall TZone::AppendZonePointerToSecondaryArray(TZone *this,undefined4 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FB60
 // GHIDRA_NAME TZone::SetMapActionContextTargetTileAndRefreshMarkers
-// GHIDRA_PROTO undefined __thiscall SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, short param_2)
+// GHIDRA_PROTO undefined __thiscall TZone::SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, short param_2)
 
 void __thiscall
 TZone::SetMapActionContextTargetTileAndRefreshMarkers(TZone *this,undefined4 param_1,short param_2)
@@ -232,7 +232,7 @@ TZone::SetMapActionContextTargetTileAndRefreshMarkers(TZone *this,undefined4 par
   
   *(short *)&this->field_0x12 = (short)param_1;
   if (param_2 == -1) {
-    param_2 = thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_1,0);
+    param_2 = ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_1,0);
   }
   *(int *)&this->field_0xc = (int)param_2;
   *(undefined2 *)&this->field_0x20 = *(undefined2 *)&this->field_0xc;
@@ -244,10 +244,10 @@ TZone::SetMapActionContextTargetTileAndRefreshMarkers(TZone *this,undefined4 par
   }
   InputState::SetMapTileStateByteAndNotifyObserver
             (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x20),0xfffffff0);
-  uVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules
+  uVar2 = StepHexTileIndexByDirectionWithWrapRules
                     (CONCAT22(extraout_var_02,*(undefined2 *)&this->field_0x20),5);
   InputState::SetMapTileStateByteAndNotifyObserver(uVar2,0xffffffee);
-  uVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules
+  uVar2 = StepHexTileIndexByDirectionWithWrapRules
                     (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x20),0);
   InputState::SetMapTileStateByteAndNotifyObserver(uVar2,0xffffffec);
   return;
@@ -255,7 +255,7 @@ TZone::SetMapActionContextTargetTileAndRefreshMarkers(TZone *this,undefined4 par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FF70
 // GHIDRA_NAME TZone::ScoreCoastalTileForContextAndCityStateAffinity
-// GHIDRA_PROTO undefined ScoreCoastalTileForContextAndCityStateAffinity()
+// GHIDRA_PROTO undefined TZone::ScoreCoastalTileForContextAndCityStateAffinity()
 
 int TZone::ScoreCoastalTileForContextAndCityStateAffinity
               (undefined4 param_1,TZone *param_2,int param_3)
@@ -289,7 +289,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity
   }
   iVar6 = 0;
   do {
-    sVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(param_1,iVar6);
+    sVar2 = StepHexTileIndexByDirectionWithWrapRules(param_1,iVar6);
     if (sVar2 != -1) {
       pcVar1 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24);
       if (*pcVar1 == '\x05') {
@@ -299,7 +299,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity
                  (iVar3 = CObject::IsKindOf((CObject *)pTVar4), iVar3 == 0))) {
             pTVar4 = *(TZone **)&pTVar4->field_0x18;
           }
-          for (; pTVar4 != (TZone *)0x0; pTVar4 = GetNextPortZone(pTVar4,unaff_EDI)) {
+          for (; pTVar4 != (TZone *)0x0; pTVar4 = TZone::GetNextPortZone(pTVar4,unaff_EDI)) {
             if (((*(short *)&pTVar4->field_0xc == sVar2) || (*(short *)&pTVar4->field_0x20 == sVar2)
                 ) || (*(short *)&pTVar4[1].vftable == sVar2)) goto LAB_00560099;
           }
@@ -340,7 +340,7 @@ LAB_00560099:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005616F0
 // GHIDRA_NAME TZone::ResetTPortZoneToSentinelVtableAndReleaseResources
-// GHIDRA_PROTO undefined __thiscall ResetTPortZoneToSentinelVtableAndReleaseResources(void)
+// GHIDRA_PROTO undefined __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(void)
 
 void __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(TZone *this)
 
@@ -382,7 +382,7 @@ void __thiscall TZone::ResetTPortZoneToSentinelVtableAndReleaseResources(TZone *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005617F0
 // GHIDRA_NAME TZone::DeserializeTPortZoneFromBinaryStream
-// GHIDRA_PROTO undefined __thiscall DeserializeTPortZoneFromBinaryStream(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TZone::DeserializeTPortZoneFromBinaryStream(int * param_1)
 
 void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(TZone *this,int *param_1)
 
@@ -402,7 +402,7 @@ void __thiscall TZone::SerializeTPortZoneToBinaryStream(TZone *this,int *param_1
   int iVar1;
   code *pcVar2;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xac))(&this->field_0x8);
   pcVar2 = *(code **)(iVar1 + 0x78);
@@ -432,12 +432,12 @@ undefined4 __thiscall TZone::IsPortZoneOwnerNationEqual(TZone *this,short param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00561D40
 // GHIDRA_NAME TZone::GetNextPortZone
-// GHIDRA_PROTO void * __thiscall GetNextPortZone(void * pCurrentPortZone)
+// GHIDRA_PROTO void * __thiscall TZone::GetNextPortZone(void * pCurrentPortZone)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void* GetNextPortZone(void* pCurrentPortZone)
+// GHIDRA_COMMENT Setting prototype: void* TZone::GetNextPortZone(void* pCurrentPortZone)
 // GHIDRA_COMMENT_END
 
-/* Setting prototype: void* GetNextPortZone(void* pCurrentPortZone) */
+/* Setting prototype: void* TZone::GetNextPortZone(void* pCurrentPortZone) */
 
 void * __thiscall TZone::GetNextPortZone(TZone *this,void *pCurrentPortZone)
 
@@ -482,7 +482,7 @@ TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this,int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005627A0
 // GHIDRA_NAME TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList
-// GHIDRA_PROTO undefined __thiscall ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
+// GHIDRA_PROTO undefined __thiscall TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
 
 void __thiscall TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(TZone *this)
 

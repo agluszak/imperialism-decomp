@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00427200
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 undefined2 __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
@@ -25,7 +25,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00427240
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
@@ -35,7 +35,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00427260
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 * param_1)
 
 void __thiscall
 TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined4 *param_1)
@@ -55,7 +55,7 @@ TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined4 *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00427290
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
 void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *param_1)
 
@@ -78,7 +78,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004272D0
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int param_1)
 
@@ -137,7 +137,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430BF0
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
 
@@ -147,7 +147,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430C10
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
 
@@ -171,7 +171,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A4D0
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int param_1)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,int param_1)
 
@@ -185,7 +185,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A500
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 bool __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -198,7 +198,7 @@ bool __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A550
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
 
@@ -240,7 +240,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A5E0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -283,7 +283,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A6B0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -293,7 +293,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A6D0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches command ID 0x19 to parent handler via virtual slot +0x40.
 // GHIDRA_COMMENT Companion wrappers send 0x1A and 0x1B for numeric decrement/increment actions.
@@ -311,7 +311,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A6F0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches city-production action code 0x1B through object vtable slot +0x40.
 // GHIDRA_COMMENT Used as a tiny action wrapper from city/production method table.
@@ -339,7 +339,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048AAF0
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
 
@@ -391,7 +391,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ABC0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -401,7 +401,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ABE0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1, int param_2)
 
 void __thiscall
 TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,int *param_1,int param_2)
@@ -519,7 +519,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
     piVar4 = piVar2;
     if (piVar4 == (int *)0x0) {
       if (g_McAppUiFlag_006A1AE0 == 0) {
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x152);
+        TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x152);
       }
       goto LAB_0048aea6;
     }
@@ -566,7 +566,7 @@ LAB_0048aea6:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048AF80
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,int *param_1)
 
@@ -585,7 +585,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048AFD0
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Finds a city-production child object by HWND.
 // GHIDRA_COMMENT First checks direct child owner match, then scans child list and delegates via child vtable slot +0x94.
@@ -649,7 +649,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B070
 // GHIDRA_NAME TSoundPlayer::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(int param_1)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(int param_1)
 
 void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer *this,int param_1)
 
@@ -666,7 +666,7 @@ void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B1A0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -684,7 +684,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B1C0
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -718,7 +718,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B250
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 * param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 * param_1, char param_2)
 
 void __thiscall
 TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *param_1,char param_2)
@@ -730,7 +730,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *pa
   if (param_2 != '\0') {
     cVar2 = (*this->vftable[0x1d].slot_0x04)();
     if (cVar2 != '\0') {
-      thunk_InvalidateCityDialogRectRegion(0,1);
+      InvalidateCityDialogRectRegion(0,1);
     }
   }
   pTVar1 = this->vftable;
@@ -740,7 +740,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *pa
   if (param_2 != '\0') {
     cVar2 = (*pTVar1[0x1d].slot_0x04)();
     if (cVar2 != '\0') {
-      thunk_InvalidateCityDialogRectRegion(0,0);
+      InvalidateCityDialogRectRegion(0,0);
     }
   }
   return;
@@ -846,7 +846,7 @@ TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,undefined4 *param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B4B0
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int *param_1)
 
@@ -896,7 +896,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B690
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(RECT * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(RECT * param_1)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,RECT *param_1)
 
@@ -915,7 +915,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 {
   if ((g_McAppUiActiveFlag_006950AC != 0) && (*(int *)&this->field_0x50 != 0)) {
-    thunk_InvalidateCityDialogRectRegion(0,1);
+    InvalidateCityDialogRectRegion(0,1);
   }
   return;
 }
@@ -953,13 +953,13 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B770
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
 {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
-    thunk_SetGlobalQuickDrawOrigin
+    SetGlobalQuickDrawOrigin
               (*(undefined2 *)&this->field_0x2c,
                CONCAT22((short)((uint)g_McAppUiActiveRenderContext_006A1AF4 >> 0x10),
                         *(undefined2 *)&this->field_0x30));
@@ -970,7 +970,7 @@ undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlaye
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B7B0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -992,7 +992,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B810
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
 
@@ -1020,7 +1020,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B860
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,int param_1)
 
@@ -1034,13 +1034,13 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
     (*pTVar1[0x21].slot_0x04)(&stack0xffffffec,param_1);
     return;
   }
-  thunk_InvalidateCityDialogRectRegion(0,0);
+  InvalidateCityDialogRectRegion(0,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048B8D0
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1)
 
 void __thiscall
 TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,undefined4 param_1)
@@ -1094,7 +1094,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,undefined4 par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BA40
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * param_1)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,int *param_1)
 
@@ -1123,7 +1123,7 @@ void __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BAC0
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int * param_1)
 
 void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *param_1)
 
@@ -1139,7 +1139,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this,int *par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BB00
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LPRECT param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LPRECT param_1)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,LPRECT param_1)
 
@@ -1150,7 +1150,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BB30
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 * param_1)
 
 void __thiscall
 TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *param_1)
@@ -1166,7 +1166,7 @@ TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,undefined4 *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BB60
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1)
 
 void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,undefined4 *param_1)
 
@@ -1186,7 +1186,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,u
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BBB0
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1)
 
 void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int *param_1)
 
@@ -1220,7 +1220,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,i
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BC30
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int param_1, int param_2, int * param_3)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int param_1, int param_2, int * param_3)
 
 void __thiscall
 TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int param_1,int param_2,int *param_3)
@@ -1236,7 +1236,7 @@ TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int param_1,int p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BC60
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(LONG * param_1, LONG * param_2)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(LONG * param_1, LONG * param_2)
 
 void __thiscall
 TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,LONG *param_1,LONG *param_2)
@@ -1258,7 +1258,7 @@ TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this,LONG *param_1,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BCE0
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -1308,7 +1308,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C050
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
 
@@ -1322,7 +1322,7 @@ undefined4 __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C1C0
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
@@ -1332,7 +1332,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C1E0
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
 
@@ -1349,7 +1349,7 @@ void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C380
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(char param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this,char param_1)
 
@@ -1370,7 +1370,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
     if (param_1 != '\0') {
       cVar5 = (*pTVar1[0x1d].slot_0x04)();
       if (cVar5 != '\0') {
-        thunk_InvalidateCityDialogRectRegion(0,1);
+        InvalidateCityDialogRectRegion(0,1);
       }
     }
     LVar2 = unaff_retaddr->top;
@@ -1384,7 +1384,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
     if (param_1 != '\0') {
       cVar5 = (*pTVar1[0x1d].slot_0x04)();
       if (cVar5 != '\0') {
-        thunk_InvalidateCityDialogRectRegion(0,0);
+        InvalidateCityDialogRectRegion(0,0);
       }
     }
   }
@@ -1393,7 +1393,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C590
 // GHIDRA_NAME TSoundPlayer::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 undefined4 __thiscall
 TSoundPlayer::UpdateControlCachedIntFromWindowText
@@ -1487,7 +1487,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C750
 // GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1)
 
 void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,int *param_1)
 
@@ -1495,7 +1495,7 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,i
   int iVar1;
   
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x772);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x772);
   }
   iVar1 = NoOpQuickDrawContextSelectionHook();
   Rectangle(*(HDC *)(iVar1 + 4),*param_1,param_1[1],param_1[2],param_1[3]);
@@ -1504,20 +1504,20 @@ void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this,i
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C7A0
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
 
 {
   if (g_McAppUiFlag_006A1AFC == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x77a);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x77a);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C7D0
 // GHIDRA_NAME TSoundPlayer::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
 void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer *this)
 
@@ -1525,7 +1525,7 @@ void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer 
   undefined1 auStack_10 [16];
   
   if (g_McAppUiFlag_006A1B00 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x782);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x782);
   }
   (*this->vftable[0x2b].slot_0x04)(auStack_10);
   return;
@@ -1533,7 +1533,7 @@ void __thiscall TSoundPlayer::UpdateControlCachedIntFromWindowText(TSoundPlayer 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C820
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -1571,7 +1571,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C890
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Iterates linked list container at object+0x44 and dispatches child virtual slot +0xA0 for each child node.
 // GHIDRA_COMMENT Used as a generic fan-out update/notification helper for linked child dialog/view objects.
@@ -1617,7 +1617,7 @@ void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C970
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined2 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -1644,7 +1644,7 @@ byte __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C9E0
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
 
@@ -1654,7 +1654,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CA00
 // GHIDRA_NAME TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *this)
 
@@ -1664,7 +1664,7 @@ void __thiscall TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CA20
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this)
 
@@ -1674,7 +1674,7 @@ void __thiscall TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CA40
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -1705,7 +1705,7 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z_imperialismsrcgameTSoundP
   this = (TEventHandler *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
   if (this != (TEventHandler *)0x0) {
-    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults(this);
+    TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(this);
     this->vftable = (TEventHandlerVtbl *)&TSoundPlayerVtbl_00668a60;
     this[6].field0c = 0;
     this[7].vftable = (TEventHandlerVtbl *)0x0;
@@ -1722,7 +1722,7 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z_imperialismsrcgameTSoundP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593350
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -1740,7 +1740,7 @@ _ConstructTSoundPlayerBaseState__YIPAUSoundPlayerState___Z_imperialismsrcgameTSo
           (TSoundPlayer *this)
 
 {
-  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   this->vftable = &TSoundPlayerVtbl_00668a60;
   *(undefined4 *)&this->field_0x6c = 0;
   *(undefined4 *)&this->field_0x70 = 0;
@@ -1771,7 +1771,7 @@ _DestructTSoundPlayerAndMaybeFree__YIPAUSoundPlayerState___Z_imperialismsrcgameT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005933E0
 // GHIDRA_NAME TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z
-// GHIDRA_PROTO undefined __thiscall ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z(void)
 
 void __thiscall
 TSoundPlayer::
@@ -1832,7 +1832,7 @@ uint __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *this)
         DAT_006a4520 = 0;
         pTVar2 = (TSimMgr *)ForwardMciStatusCommand814IgnoreFailure();
         if ((char)pTVar2 == '\0') {
-          uVar1 = thunk_SelectAndScheduleRandomAudioCue();
+          uVar1 = SelectAndScheduleRandomAudioCue();
           return uVar1 & 0xffffff00;
         }
       }
@@ -1874,7 +1874,7 @@ TStatusPicture * __cdecl TSoundPlayer::_scalar_deleting_destructor_(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595C40
 // GHIDRA_NAME TSoundPlayer::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined1 param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined1 param_1)
 
 void __thiscall
 TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined1 param_1)
@@ -1887,7 +1887,7 @@ TSoundPlayer::OrphanCallChain_C11_I88_004874b0(TSoundPlayer *this,undefined1 par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595C70
 // GHIDRA_NAME TSoundPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
@@ -1975,7 +1975,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
               (uVar7,&this->field_0x60,&local_88,&local_8c,uVar5);
     sVar3 = (short)uVar5;
     ApplyHitRegionToClipState(unaff_EBP);
-    thunk_SetGlobalQuickDrawOrigin
+    SetGlobalQuickDrawOrigin
               (CONCAT22(extraout_var_02,*(undefined2 *)&this->field_0x2c),
                CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x30));
     local_88 = (int)sVar3;
@@ -2020,7 +2020,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
     }
     SnapshotHitRegionToClipCache(local_80);
     local_4._0_1_ = 1;
-    thunk_DestroyScopedMapQuickDrawContext();
+    DestroyScopedMapQuickDrawContext();
   }
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseOrCacheQuickDrawSurface();
@@ -2032,7 +2032,7 @@ void __thiscall TSoundPlayer::OrphanRetStub_0059add0(TSoundPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596020
 // GHIDRA_NAME TSoundPlayer::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TSoundPlayer::OrphanTiny_ReturnZero_0048a730(TSoundPlayer *this)
 
@@ -2062,7 +2062,7 @@ TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(TSoundPlayer *this
   undefined4 *puVar2;
   
   InitializePacketHeaderFields_Tag20202020(0);
-  cVar1 = thunk_InitializeDirectSoundDeviceAndChannels_004061D1();
+  cVar1 = InitializeDirectSoundDeviceAndChannels();
   this->field_0x20 = cVar1;
   if (cVar1 == '\0') {
     (*this->vftable[0x14].slot_0x04)();
@@ -2124,7 +2124,7 @@ void __thiscall TSoundPlayer::RequestDirectSoundInitIfAllowed(TSoundPlayer *this
 {
   if (this->field_0x20 != '\0') {
     this->field_0x21 = 1;
-    thunk_InitializeDirectSoundDeviceAndChannels();
+    InitializeDirectSoundDeviceAndChannels();
     return;
   }
   return;
@@ -2237,7 +2237,7 @@ TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(TSoundPlayer 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5140
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -2258,7 +2258,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E5190
 // GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
@@ -2279,7 +2279,7 @@ undefined4 __thiscall TSoundPlayer::_scalar_deleting_destructor_(TSoundPlayer *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E51D0
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject(TSoundPlayer *this)
 

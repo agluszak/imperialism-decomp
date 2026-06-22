@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005725B0
 // GHIDRA_NAME TTextPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTextPictureButton::GetTEventHandlerClassNamePointer(TTextPictureButton *this)
@@ -31,7 +31,7 @@ TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572790
 // GHIDRA_NAME TTextPictureButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TTextPictureButton::OrphanTiny_ReturnZero_0048a730(TTextPictureButton *this)
 
@@ -46,32 +46,32 @@ void __thiscall TTextPictureButton::OrphanTiny_ReturnZero_0048a730(TTextPictureB
   undefined4 uStack00000004;
   tagSIZE local_8;
   
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   uVar4 = (uint)(this->field_0x64 != '\0');
   uStack00000004 = 0;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
             (0,*(undefined2 *)&this->field_0x98,
              CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x9c));
-  thunk_MapUiThemeCodeToStyleFlags
+  MapUiThemeCodeToStyleFlags
             (CONCAT22(extraout_var,*(undefined2 *)&this->field_0x9c),&stack0x00000004);
   SetQuickDrawColorAndSyncGlobals(uStack00000004);
   puVar1 = &this->field_0x94;
-  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(puVar1);
+  sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(puVar1);
   iVar3 = NoOpQuickDrawContextSelectionHook();
   GetTextExtentPointA(*(HDC *)(iVar3 + 8),*(LPCSTR *)puVar1,*(int *)(*(LPCSTR *)puVar1 + -8),
                       &local_8);
   iVar3 = (int)(local_8.cy + (local_8.cy >> 0x1f & 3U)) >> 2;
   local_8.cx = -iVar3;
-  thunk_SetQuickDrawTextOriginWithContextOffset
+  SetQuickDrawTextOriginWithContextOffset
             ((this->field34 / 2 - (int)sVar2 / 2) + 1 + uVar4,this->field38 / 2 + iVar3 + 1 + uVar4)
   ;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
-  thunk_MapUiThemeCodeToStyleFlags
+  THQButton::DrawTextWithCachedQuickDrawStyleState(puVar1);
+  MapUiThemeCodeToStyleFlags
             (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x9a),&stack0x00000004);
   SetQuickDrawColorAndSyncGlobals(uStack00000004);
-  thunk_SetQuickDrawTextOriginWithContextOffset
+  SetQuickDrawTextOriginWithContextOffset
             ((this->field34 / 2 - (int)sVar2 / 2) + uVar4,(this->field38 / 2 - local_8.cx) + uVar4);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
+  THQButton::DrawTextWithCachedQuickDrawStyleState(puVar1);
   return;
 }
 

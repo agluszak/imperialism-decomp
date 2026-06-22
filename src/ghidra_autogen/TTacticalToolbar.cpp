@@ -11,7 +11,7 @@ TTacticalToolbar * __thiscall
 TTacticalToolbar::_scalar_deleting_destructor_(TTacticalToolbar *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -38,7 +38,7 @@ TCluster * TTacticalToolbar::CreateTTacticalToolbarInstance(void)
   this = (TCluster *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&TTacticalToolbarVtbl_00644d98;
     this[1].vftable = (TClusterVtbl *)0x0;
     this[1].field04 = 0;
@@ -53,7 +53,7 @@ TCluster * TTacticalToolbar::CreateTTacticalToolbarInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AC820
 // GHIDRA_NAME TTacticalToolbar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTacticalToolbar::GetTEventHandlerClassNamePointer(TTacticalToolbar *this)
@@ -64,7 +64,7 @@ TTacticalToolbar::GetTEventHandlerClassNamePointer(TTacticalToolbar *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AC840
 // GHIDRA_NAME TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalToolbar *this)
 
@@ -85,7 +85,7 @@ void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalTool
   int iStack_c;
   
   puStack_10 = (undefined1 *)0x5ac84e;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_c = 0x68656c70;
   pTVar1 = this->vftable[0x12].slot_0x04;
   puStack_10 = (undefined1 *)0x5ac85f;
@@ -128,18 +128,18 @@ void __thiscall TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalTool
   pTStack_20 = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_24,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_20 = (TTacticalToolbar *)this->ownerContext;
   puStack_10 = (undefined1 *)&pTStack_24;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_24,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AC950
 // GHIDRA_NAME TTacticalToolbar::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 int __thiscall TTacticalToolbar::OrphanCallChain_C11_I88_004874b0(TTacticalToolbar *this)
 
@@ -238,7 +238,7 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
               (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + (short)param_1[8]),1);
   }
   (**(code **)(iVar2 + 0xa4))(param_1 != (int *)0x0,1);
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffffd8,1);
+  InvalidateCityDialogRectRegion(&stack0xffffffd8,1);
   CString::CString(&CStack_8);
   if (param_1 != (int *)0x0) {
     (**(code **)(*param_1 + 0xc))();
@@ -274,13 +274,13 @@ TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
               (CONCAT22((short)((uint)iVar1 >> 0x10),(short)iVar1 + *(short *)(param_1 + 0x20)),1);
   }
   (**(code **)(iVar2 + 0xa4))(param_1 != 0,1);
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffffe4,1);
+  InvalidateCityDialogRectRegion(&stack0xffffffe4,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACF90
 // GHIDRA_NAME TTacticalToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TTacticalToolbar::OrphanRetStub_0059add0
@@ -301,10 +301,10 @@ TTacticalToolbar::OrphanRetStub_0059add0
     }
     if ((commandTag != 0x72657472) && (commandTag != 0x74617267)) goto LAB_005acfe5;
   }
-  TacticalBattleView::thunk_HandleTacticalBattleCommandTag
+  TacticalBattleView::HandleTacticalBattleCommandTag
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005acfe5:
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
   return;
 }

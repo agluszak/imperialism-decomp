@@ -10,7 +10,7 @@
 TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this,byte param_1)
 
 {
-  CreateTRadioInstance(this);
+  TRadio::CreateTRadioInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -19,7 +19,7 @@ TRadio * __thiscall TRadio::_scalar_deleting_destructor_(TRadio *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EE00
 // GHIDRA_NAME TRadio::CreateTRadioInstance
-// GHIDRA_PROTO undefined __thiscall CreateTRadioInstance(void)
+// GHIDRA_PROTO undefined __thiscall TRadio::CreateTRadioInstance(void)
 
 void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
 
@@ -47,7 +47,7 @@ void __thiscall TRadio::CreateTRadioInstance(TRadio *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EE90
 // GHIDRA_NAME TRadio::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TRadio::GetTEventHandlerClassNamePointer(TRadio *this)
 
@@ -76,7 +76,7 @@ TView * TRadio::ConstructTRadioBaseState(void)
   this = (TView *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x1;
     *(undefined1 *)&this[1].field04 = 0;
     this[1].padding_08_to_0b = 0;
@@ -140,7 +140,7 @@ TRadio::Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0048
   this[1].padding_08_to_0b = uVar3;
   this->vftable = (TRadioVtbl *)&TPictureVtbl_0064a930;
   if (sVar2 != -1) {
-    thunk_IncrementDialogResourceRefCountByShortIdInRegistry
+    IncrementDialogResourceRefCountByShortIdInRegistry
               (CONCAT22((short)((uint)uVar3 >> 0x10),sVar2));
   }
   *unaff_FS_OFFSET = local_c;

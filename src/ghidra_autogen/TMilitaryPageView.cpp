@@ -35,7 +35,7 @@ TPageView * TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564900
 // GHIDRA_NAME TMilitaryPageView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TMilitaryPageView::GetTEventHandlerClassNamePointer(TMilitaryPageView *this)
@@ -46,7 +46,7 @@ TMilitaryPageView::GetTEventHandlerClassNamePointer(TMilitaryPageView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564920
 // GHIDRA_NAME TMilitaryPageView::ConstructTMilitaryPageViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTMilitaryPageViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TMilitaryPageView::ConstructTMilitaryPageViewBaseState(void)
 
 TMilitaryPageView * __thiscall
 TMilitaryPageView::ConstructTMilitaryPageViewBaseState(TMilitaryPageView *this)
@@ -66,7 +66,7 @@ TMilitaryPageView * __thiscall
 TMilitaryPageView::_scalar_deleting_destructor_(TMilitaryPageView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,7 +75,7 @@ TMilitaryPageView::_scalar_deleting_destructor_(TMilitaryPageView *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005649A0
 // GHIDRA_NAME TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920(TMilitaryPageView *this)
 
@@ -97,20 +97,20 @@ void __thiscall TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920(TMilitaryPag
   pTStack_c = this;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_10,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564BF0
 // GHIDRA_NAME TMilitaryPageView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TMilitaryPageView::GetTEventHandlerClassNamePointer(TMilitaryPageView *this)
 
 {
   int *piVar1;
   
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
                     /* WARNING: Could not recover jumptable at 0x00564c0f. Too many branches */

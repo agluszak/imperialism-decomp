@@ -23,7 +23,7 @@ TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TMiniMapViewVtbl_00669170;
     *(undefined4 *)&this[1].field_0xc = 0;
     *(undefined4 *)&this[1].field_0x10 = 0;
@@ -40,7 +40,7 @@ TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A360
 // GHIDRA_NAME TMiniMapView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMiniMapView::GetTEventHandlerClassNamePointer(TMiniMapView *this)
 
@@ -55,7 +55,7 @@ CRuntimeClass * __thiscall TMiniMapView::GetTEventHandlerClassNamePointer(TMiniM
 TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &TMiniMapViewVtbl_00669170;
   *(undefined4 *)&this->field_0x90 = 0;
   *(undefined4 *)&this->field_0x94 = 0;
@@ -74,7 +74,7 @@ TMiniMapView * __thiscall
 TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -83,7 +83,7 @@ TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A540
 // GHIDRA_NAME TMiniMapView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TMiniMapView::OrphanCallChain_C11_I88_004874b0(TMiniMapView *this)
 
@@ -168,7 +168,7 @@ void __thiscall TMiniMapView::OrphanCallChain_C11_I88_004874b0(TMiniMapView *thi
                  (astruct_19 *)0x0);
     }
     else {
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+      FillRectWithQuickDrawBrushAndContextOffset(&local_30);
     }
     local_30.top = local_20.top;
     local_30.bottom = local_20.bottom;
@@ -180,7 +180,7 @@ void __thiscall TMiniMapView::OrphanCallChain_C11_I88_004874b0(TMiniMapView *thi
     local_10.right = iVar10;
     if ((g_pGlobalMapState->field_0x20 != '\0') &&
        (local_20.right - local_30.left <= this->field34 / 2)) {
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+      FillRectWithQuickDrawBrushAndContextOffset(&local_30);
       goto LAB_0059a792;
     }
     dstRect = &local_30;
@@ -196,15 +196,15 @@ LAB_0059a792:
   }
   iVar10 = CONCAT22((short)((uint)LVar9 >> 0x10),*(short *)&this->field_0x94 + local_34);
   SetQuickDrawFillColor(0xffffff);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar6,iVar10);
-  thunk_DrawCenteredGuideLineOnMapDc
+  SetQuickDrawTextOriginWithContextOffset(iVar6,iVar10);
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar6,iVar10);
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar6,
              CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar10);
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (iVar6,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar10);
-  thunk_DrawCenteredGuideLineOnMapDc(iVar6,iVar10);
+  DrawCenteredGuideLineOnMapDc(iVar6,iVar10);
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
   return;
@@ -212,7 +212,7 @@ LAB_0059a792:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A920
 // GHIDRA_NAME TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)
 
 void __thiscall
 TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit

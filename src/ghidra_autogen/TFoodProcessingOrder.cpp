@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7DF0
 // GHIDRA_NAME TFoodProcessingOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TFoodProcessingOrder::GetTProductionOrderClassNamePointer(TFoodProcessingOrder *this)
@@ -23,7 +23,7 @@ TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
           (TFoodProcessingOrder *this,byte param_1)
 
 {
-  DestructTFoodProcessingOrderAndMaybeFree(this);
+  TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -32,7 +32,7 @@ TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E60
 // GHIDRA_NAME TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTFoodProcessingOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(void)
 
 void __thiscall
 TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
@@ -45,7 +45,7 @@ TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E80
 // GHIDRA_NAME TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b7e80(int param_1)
+// GHIDRA_PROTO undefined __thiscall TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80(int param_1)
 
 void __thiscall
 TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80
@@ -180,7 +180,7 @@ void __thiscall TFoodProcessingOrder::OrphanRetStub_004b5160(TFoodProcessingOrde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B80A0
 // GHIDRA_NAME TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
 void __thiscall TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(TFoodProcessingOrder *this)
 
@@ -190,7 +190,7 @@ void __thiscall TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(TFoodPr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B80C0
 // GHIDRA_NAME TFoodProcessingOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(int param_1, ushort param_2)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(int param_1, ushort param_2)
 
 void __thiscall
 TFoodProcessingOrder::CreateTItemOrderInstance

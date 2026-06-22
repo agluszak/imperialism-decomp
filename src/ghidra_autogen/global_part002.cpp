@@ -4,11 +4,11 @@
 // Bucket: global_part002.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004052DB
-// GHIDRA_NAME thunk_ReinitializeGameFlowWithoutPostingTurnEvent
-// GHIDRA_PROTO undefined __thiscall thunk_ReinitializeGameFlowWithoutPostingTurnEvent(void)
+// GHIDRA_NAME TNewGameCommand::OrphanRetStub_00487a00
+// GHIDRA_PROTO undefined __thiscall TNewGameCommand::OrphanRetStub_00487a00(void)
 
 void __thiscall
-TNewGameCommand::thunk_ReinitializeGameFlowWithoutPostingTurnEvent(TNewGameCommand *this)
+TNewGameCommand::OrphanRetStub_00487a00(TNewGameCommand *this)
 
 {
   OrphanRetStub_00487a00(this);
@@ -16,11 +16,11 @@ TNewGameCommand::thunk_ReinitializeGameFlowWithoutPostingTurnEvent(TNewGameComma
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004052E0
-// GHIDRA_NAME thunk_HandleTacticalCommandTag_digg
-// GHIDRA_PROTO undefined thunk_HandleTacticalCommandTag_digg()
+// GHIDRA_NAME HandleTacticalCommandTag_digg
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_digg()
 
 void __thiscall
-thunk_HandleTacticalCommandTag_digg(int param_1,int param_2,int param_3,char param_4)
+HandleTacticalCommandTag_digg(int param_1,int param_2,int param_3,char param_4)
 
 {
   byte *pbVar1;
@@ -35,7 +35,7 @@ thunk_HandleTacticalCommandTag_digg(int param_1,int param_2,int param_3,char par
     NoOpCallbackRet10(0x64696767,param_2,param_3,0);
   }
   iVar4 = *(int *)(param_2 + 8);
-  thunk_ComputeHexNeighborTileIndices(iVar4,aiStack_18);
+  ComputeHexNeighborTileIndices_005A0420(iVar4,aiStack_18);
   iVar5 = 0;
   piVar3 = aiStack_18;
   do {
@@ -73,10 +73,10 @@ thunk_HandleTacticalCommandTag_digg(int param_1,int param_2,int param_3,char par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405312
-// GHIDRA_NAME thunk_GenerateMappedFlavorTextByTableSlot
-// GHIDRA_PROTO undefined thunk_GenerateMappedFlavorTextByTableSlot()
+// GHIDRA_NAME GenerateMappedFlavorTextByTableSlot
+// GHIDRA_PROTO undefined GenerateMappedFlavorTextByTableSlot()
 
-void thunk_GenerateMappedFlavorTextByTableSlot(undefined4 param_1,short param_2)
+void GenerateMappedFlavorTextByTableSlot(undefined4 param_1,short param_2)
 
 {
   GenerateMappedFlavorTextUntilValidationPasses
@@ -85,26 +85,26 @@ void thunk_GenerateMappedFlavorTextByTableSlot(undefined4 param_1,short param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405335
-// GHIDRA_NAME thunk_ConstructTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_NAME TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
+// GHIDRA_PROTO undefined __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(void)
 
 TDlgWindow * __thiscall
-TDlgWindow::thunk_ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
+TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryBase((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
   this->vftable = &TDlgWindowVtbl_00656ce8;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040533A
-// GHIDRA_NAME thunk_ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiGoldLabelResourceEntry(void)
+// GHIDRA_NAME TLineData::ConstructUiGoldLabelResourceEntry
+// GHIDRA_PROTO undefined __thiscall TLineData::ConstructUiGoldLabelResourceEntry(void)
 
-TLineData * __thiscall TLineData::thunk_ConstructUiGoldLabelResourceEntry(TLineData *this)
+TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = (TLineDataVtbl *)&TRadioTextClusterVtbl_00662418;
   *(undefined2 *)&this[8].field_0xc = 0x4b;
   *(undefined2 *)&this[8].field_0xe = 0x49;
@@ -115,11 +115,11 @@ TLineData * __thiscall TLineData::thunk_ConstructUiGoldLabelResourceEntry(TLineD
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405344
-// GHIDRA_NAME thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
-// GHIDRA_PROTO undefined thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
+// GHIDRA_NAME ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
+// GHIDRA_PROTO undefined ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
 
 int __thiscall
-thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
+ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
           (int param_1,short param_2,char param_3)
 
 {
@@ -245,10 +245,10 @@ LAB_00517ad7:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405362
-// GHIDRA_NAME thunk_InitializeCitySiteView
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeCitySiteView(void)
+// GHIDRA_NAME TMapDialog::InitializeCitySiteView
+// GHIDRA_PROTO undefined __thiscall TMapDialog::InitializeCitySiteView(void)
 
-TMapDialog * __thiscall TMapDialog::thunk_InitializeCitySiteView(TMapDialog *this)
+TMapDialog * __thiscall TMapDialog::InitializeCitySiteView(TMapDialog *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -271,7 +271,7 @@ TMapDialog * __thiscall TMapDialog::thunk_InitializeCitySiteView(TMapDialog *thi
   this->vftable = &TMapDialogVtbl_00658a58;
   *(undefined4 *)&this->field_0x64 = 0;
   uStack_4 = 0;
-  thunk_SplitTileIndexToRowAndColumn
+  TMapDialog::SplitTileIndexToRowAndColumn
             (CONCAT22((short)((uint)&uStack_14 >> 0x10),*(undefined2 *)&g_pGlobalMapState->field_0x6
                      ),&uStack_18,&uStack_14);
   (*this->vftable[0x3c].slot_0x04)(uStack_14,uStack_18);
@@ -287,20 +287,20 @@ TMapDialog * __thiscall TMapDialog::thunk_InitializeCitySiteView(TMapDialog *thi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004053A3
-// GHIDRA_NAME thunk_GetDefendProvinceMissionClassName
-// GHIDRA_PROTO undefined thunk_GetDefendProvinceMissionClassName()
+// GHIDRA_NAME TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer
+// GHIDRA_PROTO undefined TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer()
 
-undefined ** TDefendProvinceMission::thunk_GetDefendProvinceMissionClassName(void)
+undefined ** TDefendProvinceMission::GetTDefendProvinceMissionClassNamePointer(void)
 
 {
   return &PTR_s_TDefendProvinceMission_00697a58;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040540C
-// GHIDRA_NAME thunk_UpdateUiResourceContextMetricWord27
-// GHIDRA_PROTO undefined thunk_UpdateUiResourceContextMetricWord27()
+// GHIDRA_NAME UpdateUiResourceContextMetricWord27
+// GHIDRA_PROTO undefined UpdateUiResourceContextMetricWord27()
 
-void thunk_UpdateUiResourceContextMetricWord27(undefined2 param_1)
+void UpdateUiResourceContextMetricWord27(undefined2 param_1)
 
 {
   int *piVar1;
@@ -312,10 +312,10 @@ void thunk_UpdateUiResourceContextMetricWord27(undefined2 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040541B
-// GHIDRA_NAME thunk_ConstructUiTextResourceEntryBase
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiTextResourceEntryBase(void)
+// GHIDRA_NAME TStaticText::TStaticText
+// GHIDRA_PROTO undefined __thiscall TStaticText::TStaticText(void)
 
-TStaticText * __thiscall TStaticText::thunk_ConstructUiTextResourceEntryBase(TStaticText *this)
+TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
 
 {
   CString *this_00;
@@ -330,7 +330,7 @@ TStaticText * __thiscall TStaticText::thunk_ConstructUiTextResourceEntryBase(TSt
   puStack_8 = &LAB_0062f023;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 1;
   this->field_0x64 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -362,11 +362,11 @@ TStaticText * __thiscall TStaticText::thunk_ConstructUiTextResourceEntryBase(TSt
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040545C
-// GHIDRA_NAME thunk_InitializeDialogTemplateDEWithTextState
-// GHIDRA_PROTO undefined thunk_InitializeDialogTemplateDEWithTextState()
+// GHIDRA_NAME InitializeDialogTemplateDEWithTextState
+// GHIDRA_PROTO undefined InitializeDialogTemplateDEWithTextState()
 
 TControl * __thiscall
-thunk_InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param_2)
+InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -397,8 +397,8 @@ thunk_InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405475
-// GHIDRA_NAME thunk_BuildMapOrderBattleSideSnapshot
-// GHIDRA_PROTO void __cdecl thunk_BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
+// GHIDRA_NAME BuildMapOrderBattleSideSnapshot
+// GHIDRA_PROTO void __cdecl BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ThunkBuildMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
 // GHIDRA_COMMENT_END
@@ -407,7 +407,7 @@ thunk_InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param
    nSideIndex, int pOrderEntry) */
 
 void __cdecl
-thunk_BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrderEntry)
+BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,int pOrderEntry)
 
 {
   char cVar1;
@@ -514,11 +514,11 @@ thunk_BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState,int nSideIndex,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040547A
-// GHIDRA_NAME thunk_ApplyCityProductionDialogChanges
-// GHIDRA_PROTO void __thiscall thunk_ApplyCityProductionDialogChanges(int nDialogActionTag)
+// GHIDRA_NAME TControl::ApplyCityProductionDialogChanges
+// GHIDRA_PROTO void __thiscall TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
 
 void __thiscall
-TControl::thunk_ApplyCityProductionDialogChanges(TControl *this,int nDialogActionTag)
+TControl::ApplyCityProductionDialogChanges(TControl *this,int nDialogActionTag)
 
 {
   ApplyCityProductionDialogChanges(this,nDialogActionTag);
@@ -526,10 +526,10 @@ TControl::thunk_ApplyCityProductionDialogChanges(TControl *this,int nDialogActio
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054B1
-// GHIDRA_NAME thunk_PopUiResourcePoolNode
-// GHIDRA_PROTO undefined thunk_PopUiResourcePoolNode()
+// GHIDRA_NAME PopUiResourcePoolNode_00479A80
+// GHIDRA_PROTO undefined PopUiResourcePoolNode_00479A80()
 
-void thunk_PopUiResourcePoolNode(void)
+void PopUiResourcePoolNode_00479A80(void)
 
 {
   undefined4 *puVar1;
@@ -559,10 +559,10 @@ void thunk_PopUiResourcePoolNode(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054C0
-// GHIDRA_NAME thunk_TryMarkLosingMapOrderEntryFromForceBalance
-// GHIDRA_PROTO undefined thunk_TryMarkLosingMapOrderEntryFromForceBalance()
+// GHIDRA_NAME TryMarkLosingMapOrderEntryFromForceBalance
+// GHIDRA_PROTO undefined TryMarkLosingMapOrderEntryFromForceBalance()
 
-int __thiscall thunk_TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int param_2)
+int __thiscall TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int param_2)
 
 {
   int *piVar1;
@@ -610,7 +610,7 @@ int __thiscall thunk_TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int 
         uVar7 = *(ushort *)(&DAT_00698124 + *(short *)(*piVar1 + 4) * 0x24);
       }
     }
-    sVar4 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+    sVar4 = CalculateMapOrderEntryAverageChildRatingX10();
     sVar4 = ((-(ushort)(uVar7 != 10000) & uVar7) + 5) * 10 - sVar4;
     iVar5 = GenerateThreadLocalRandom15();
     iVar6 = (int)sVar4;
@@ -637,8 +637,8 @@ int __thiscall thunk_TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int 
     if (aiStack_c[*(int *)(param_2 + 4)] * (int)sVar2 <= sVar4 * 100) {
       return CONCAT31((int3)((uint)(sVar4 * 100) >> 8),1);
     }
-    sVar4 = thunk_GetMinActionThresholdFromEntryChildren();
-    sVar2 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+    sVar4 = GetMinActionThresholdFromEntryChildren();
+    sVar2 = CalculateMapOrderEntryAverageChildRatingX10();
     sVar2 = (sVar4 + 5) * 10 - sVar2;
     iVar5 = GenerateThreadLocalRandom15();
     iVar6 = (int)sVar2;
@@ -651,10 +651,10 @@ int __thiscall thunk_TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054C5
-// GHIDRA_NAME thunk_BuildScenarioPathForModeAndIndex
-// GHIDRA_PROTO undefined thunk_BuildScenarioPathForModeAndIndex()
+// GHIDRA_NAME BuildScenarioPathForModeAndIndex
+// GHIDRA_PROTO undefined BuildScenarioPathForModeAndIndex()
 
-void thunk_BuildScenarioPathForModeAndIndex(CString param_1,int param_2,CString *param_3)
+void BuildScenarioPathForModeAndIndex(CString param_1,int param_2,CString *param_3)
 
 {
   CString *pCVar1;
@@ -703,10 +703,10 @@ LAB_005dfe2e:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004054ED
-// GHIDRA_NAME thunk_ConstructUiWindowResourceEntryType4B340
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiWindowResourceEntryType4B340(void)
+// GHIDRA_NAME TControl::ConstructUiWindowResourceEntryType4B340
+// GHIDRA_PROTO undefined __thiscall TControl::ConstructUiWindowResourceEntryType4B340(void)
 
-TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryType4B340(TControl *this)
+TControl * __thiscall TControl::ConstructUiWindowResourceEntryType4B340(TControl *this)
 
 {
   int iVar1;
@@ -722,7 +722,7 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryType4B340(TC
   puStack_8 = &LAB_0062f333;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   uStack_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this->field74);
   *(undefined4 *)&this[1].field_0x14 = 0;
@@ -758,7 +758,7 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryType4B340(TC
   }
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
-  thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
+  SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
   this->commandTagDefaultParam1 = (int)this;
   *(TControl **)&this->commandTagResourceByte = this;
   this->vftable = (TControlVtbl *)&DAT_0064b340;
@@ -767,10 +767,10 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryType4B340(TC
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405506
-// GHIDRA_NAME thunk_HasActiveMapOrderEntryChildren
-// GHIDRA_PROTO undefined thunk_HasActiveMapOrderEntryChildren()
+// GHIDRA_NAME HasActiveMapOrderEntryChildren
+// GHIDRA_PROTO undefined HasActiveMapOrderEntryChildren()
 
-uint __fastcall thunk_HasActiveMapOrderEntryChildren(int param_1)
+uint __fastcall HasActiveMapOrderEntryChildren(int param_1)
 
 {
   bool bVar1;
@@ -797,11 +797,11 @@ uint __fastcall thunk_HasActiveMapOrderEntryChildren(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405556
-// GHIDRA_NAME thunk_HandleTurnEvent2103_RunNationStatusReportUpdate
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEvent2103_RunNationStatusReportUpdate(void)
+// GHIDRA_NAME TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(void)
 
 void __thiscall
-TDiplomacyMapView::thunk_HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplomacyMapView *this)
+TDiplomacyMapView::HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplomacyMapView *this)
 
 {
   int iVar1;
@@ -818,10 +818,10 @@ TDiplomacyMapView::thunk_HandleTurnEvent2103_RunNationStatusReportUpdate(TDiplom
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004055A6
-// GHIDRA_NAME thunk_DestructStaticDialogTemplateD0Object
-// GHIDRA_PROTO undefined thunk_DestructStaticDialogTemplateD0Object()
+// GHIDRA_NAME DestructStaticDialogTemplateD0Object
+// GHIDRA_PROTO undefined DestructStaticDialogTemplateD0Object()
 
-void __fastcall thunk_DestructStaticDialogTemplateD0Object(CDialog *param_1)
+void __fastcall DestructStaticDialogTemplateD0Object(CDialog *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -841,10 +841,10 @@ void __fastcall thunk_DestructStaticDialogTemplateD0Object(CDialog *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004055BA
-// GHIDRA_NAME thunk_GetShortAtOffset14OrInvalid
-// GHIDRA_PROTO undefined thunk_GetShortAtOffset14OrInvalid()
+// GHIDRA_NAME GetShortAtOffset14OrInvalid
+// GHIDRA_PROTO undefined GetShortAtOffset14OrInvalid()
 
-undefined2 __fastcall thunk_GetShortAtOffset14OrInvalid(int param_1)
+undefined2 __fastcall GetShortAtOffset14OrInvalid(int param_1)
 
 {
   if (param_1 == 0) {
@@ -854,51 +854,51 @@ undefined2 __fastcall thunk_GetShortAtOffset14OrInvalid(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004055E2
-// GHIDRA_NAME thunk_HandleTacticalCommandTag_skip
-// GHIDRA_PROTO undefined thunk_HandleTacticalCommandTag_skip()
+// GHIDRA_NAME HandleTacticalCommandTag_skip
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_skip()
 
-void __fastcall thunk_HandleTacticalCommandTag_skip(int param_1)
+void __fastcall HandleTacticalCommandTag_skip(int param_1)
 
 {
   if (*(short *)(&DAT_00695528 +
                 (int)(*(TNextMoveCommand **)(param_1 + 0x14))[1].vftable[1].
                      OrphanCallChain_C1_I17_00487470 * 2) != 8) {
     *(undefined1 *)(param_1 + 0x20) = 1;
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)(param_1 + 0x14));
+    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)(param_1 + 0x14));
     return;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405605
-// GHIDRA_NAME thunk_ConstructUiResourceEntryTypeB
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiResourceEntryTypeB(void)
+// GHIDRA_NAME TToolBarCluster::ConstructTToolBarClusterBaseState
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::ConstructTToolBarClusterBaseState(void)
 
 TToolBarCluster * __thiscall
-TToolBarCluster::thunk_ConstructUiResourceEntryTypeB(TToolBarCluster *this)
+TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &TToolBarClusterVtbl_00664b00;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405623
-// GHIDRA_NAME thunk_UniversityDialogMethod_00405623
-// GHIDRA_PROTO undefined __thiscall thunk_UniversityDialogMethod_00405623(void)
+// GHIDRA_NAME TNumberedItem::UniversityDialogMethod_00405623
+// GHIDRA_PROTO undefined __thiscall TNumberedItem::UniversityDialogMethod_00405623(void)
 
-void __thiscall TNumberedItem::thunk_UniversityDialogMethod_00405623(TNumberedItem *this)
+void __thiscall TNumberedItem::UniversityDialogMethod_00405623(TNumberedItem *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405628
-// GHIDRA_NAME thunk_ConstructUiTabCursorPictureEntry
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiTabCursorPictureEntry(void)
+// GHIDRA_NAME TPictureButton::ConstructUiTabCursorPictureEntry
+// GHIDRA_PROTO undefined __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(void)
 
 TPictureButton * __thiscall
-TPictureButton::thunk_ConstructUiTabCursorPictureEntry(TPictureButton *this)
+TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton *this)
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -908,10 +908,10 @@ TPictureButton::thunk_ConstructUiTabCursorPictureEntry(TPictureButton *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040565F
-// GHIDRA_NAME thunk_DispatchTurnStateSpecialAdvisoriesAndReturnCount
-// GHIDRA_PROTO undefined thunk_DispatchTurnStateSpecialAdvisoriesAndReturnCount()
+// GHIDRA_NAME DispatchTurnStateSpecialAdvisoriesAndReturnCount
+// GHIDRA_PROTO undefined DispatchTurnStateSpecialAdvisoriesAndReturnCount()
 
-short thunk_DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
+short DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
 
 {
   short sVar1;
@@ -996,17 +996,17 @@ short thunk_DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
         scanBracketExpressions(g_pLocalizationTable,&CStack_38,CStack_40.m_pchData);
         puStack_10 = &stack0xffffffa0;
         pCStack_68 = (CString *)0x501585;
-        thunk_AssignStringSharedRefAndReturnThis();
+        AssignStringSharedRefAndReturnThis();
         puStack_14 = &stack0xffffff9c;
         uStack_4._0_1_ = 5;
 LAB_00501596:
         pCStack_68 = &CStack_3c;
         pCStack_6c = (CString *)0x50159b;
-        thunk_AssignStringSharedRefAndReturnThis();
+        AssignStringSharedRefAndReturnThis();
         pCStack_68 = (CString *)0x3;
         uStack_4._0_1_ = 4;
         pCStack_6c = (CString *)0x5015ac;
-        thunk_DispatchLocalizedUiMessageWithTemplate();
+        DispatchLocalizedUiMessageWithTemplate();
         sVar9 = sVar9 + 1;
       }
       else if (sVar1 == 0x13a) {
@@ -1022,7 +1022,7 @@ LAB_00501596:
           scanBracketExpressions(g_pLocalizationTable,&CStack_38,CStack_40.m_pchData);
           puStack_10 = &stack0xffffffa0;
           pCStack_68 = (CString *)0x5014ee;
-          thunk_AssignStringSharedRefAndReturnThis();
+          AssignStringSharedRefAndReturnThis();
           puStack_14 = &stack0xffffff9c;
           uStack_4._0_1_ = 6;
           goto LAB_00501596;
@@ -1041,7 +1041,7 @@ LAB_00501596:
           scanBracketExpressions(g_pLocalizationTable,&CStack_38,CStack_40.m_pchData);
           puStack_14 = &stack0xffffffa0;
           pCStack_68 = (CString *)0x50141e;
-          thunk_AssignStringSharedRefAndReturnThis();
+          AssignStringSharedRefAndReturnThis();
           puStack_10 = &stack0xffffff9c;
           uStack_4._0_1_ = 7;
           goto LAB_00501596;
@@ -1073,15 +1073,15 @@ LAB_00501596:
     puStack_14 = &stack0xffffff9c;
     pCStack_68 = &CStack_3c;
     pCStack_6c = (CString *)0x501696;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     puStack_18 = (undefined1 *)&pCStack_68;
     pCStack_6c = &CStack_40;
     puStack_8._0_1_ = 0xb;
     pCStack_68 = extraout_ECX;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     pCStack_6c = (CString *)0x3;
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,8);
-    thunk_DispatchLocalizedUiMessageWithTemplate();
+    DispatchLocalizedUiMessageWithTemplate();
   }
   CString::CString(&CStack_28,PTR_g_szEmptyString_00656f60);
   puStack_8._0_1_ = 0xc;
@@ -1099,13 +1099,13 @@ LAB_00501596:
     puStack_18 = (undefined1 *)&pCStack_68;
     pCStack_6c = (CString *)&stack0xffffffb8;
     pCStack_68 = extraout_ECX_00;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     CStack_1c.m_pchData = (char *)&pCStack_6c;
     iStack_c._0_1_ = 0xd;
     pCStack_6c = extraout_ECX_01;
-    thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffbc);
+    AssignStringSharedRefAndReturnThis(&stack0xffffffbc);
     iStack_c = CONCAT31(iStack_c._1_3_,8);
-    thunk_DispatchLocalizedUiMessageWithTemplate(3);
+    DispatchLocalizedUiMessageWithTemplate(3);
   }
   if (((CStack_28.m_pchData != (char *)0x0) && (*(short *)(CStack_28.m_pchData + 6) != 0)) &&
      (*(short *)(CStack_28.m_pchData + 8) == 0)) {
@@ -1117,13 +1117,13 @@ LAB_00501596:
     puStack_18 = (undefined1 *)&pCStack_68;
     pCStack_6c = (CString *)&stack0xffffffb8;
     pCStack_68 = extraout_ECX_02;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     CStack_1c.m_pchData = (char *)&pCStack_6c;
     iStack_c._0_1_ = 0xe;
     pCStack_6c = extraout_ECX_03;
-    thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffbc);
+    AssignStringSharedRefAndReturnThis(&stack0xffffffbc);
     iStack_c = CONCAT31(iStack_c._1_3_,8);
-    thunk_DispatchLocalizedUiMessageWithTemplate(5);
+    DispatchLocalizedUiMessageWithTemplate(5);
     sVar9 = sVar9 + 1;
   }
   iStack_c._0_1_ = 4;
@@ -1143,10 +1143,10 @@ LAB_00501596:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405664
-// GHIDRA_NAME thunk_ClearMapOrderProcessedFlagsChain
-// GHIDRA_PROTO void __thiscall thunk_ClearMapOrderProcessedFlagsChain(int * pOrderNode)
+// GHIDRA_NAME TSimMgr::ClearMapOrderProcessedFlagsChain
+// GHIDRA_PROTO void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(int * pOrderNode)
 
-void __thiscall TSimMgr::thunk_ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOrderNode)
+void __thiscall TSimMgr::ClearMapOrderProcessedFlagsChain(TSimMgr *this,int *pOrderNode)
 
 {
   for (; this != (TSimMgr *)0x0; this = *(TSimMgr **)&this->field_0x2c) {
@@ -1156,10 +1156,10 @@ void __thiscall TSimMgr::thunk_ClearMapOrderProcessedFlagsChain(TSimMgr *this,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405678
-// GHIDRA_NAME thunk_SpawnTacticalUiMarkerAtUnitTile
-// GHIDRA_PROTO undefined __thiscall thunk_SpawnTacticalUiMarkerAtUnitTile(void)
+// GHIDRA_NAME TAnimation::SpawnTacticalUiMarkerAtUnitTile
+// GHIDRA_PROTO undefined __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(void)
 
-void __thiscall TAnimation::thunk_SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
+void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
 
 {
   int iVar1;
@@ -1191,17 +1191,17 @@ void __thiscall TAnimation::thunk_SpawnTacticalUiMarkerAtUnitTile(TAnimation *th
     else {
       this_00->vftable = &TAnimationVtbl_0064c300;
     }
-    ConstructTAnimationBaseState(this_00,this,&iStack_10,2,0,10,0x2711);
+    TAnimation::ConstructTAnimationBaseState(this_00,this,&iStack_10,2,0,10,0x2711);
     TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056AF
-// GHIDRA_NAME thunk_HandlePostDispatchTurnStateEventUpdates
-// GHIDRA_PROTO undefined thunk_HandlePostDispatchTurnStateEventUpdates()
+// GHIDRA_NAME HandlePostDispatchTurnStateEventUpdates
+// GHIDRA_PROTO undefined HandlePostDispatchTurnStateEventUpdates()
 
-void thunk_HandlePostDispatchTurnStateEventUpdates(void)
+void HandlePostDispatchTurnStateEventUpdates(void)
 
 {
   undefined uVar1;
@@ -1215,9 +1215,9 @@ void thunk_HandlePostDispatchTurnStateEventUpdates(void)
     (*g_apNationStates[sVar3]->vftable[0x16].slot_0x04)();
     (*g_apNationStates[sVar3]->vftable[0x58].slot_0x04)();
     if (*(short *)&g_pLocalizationTable->field_0x58 != 0) {
-      sVar3 = thunk_DispatchTurnStateSpecialAdvisoriesAndReturnCount();
+      sVar3 = DispatchTurnStateSpecialAdvisoriesAndReturnCount();
       if (sVar3 < 2) {
-        thunk_ShowPeriodicCapabilityReminderIfNeeded();
+        ShowPeriodicCapabilityReminderIfNeeded();
       }
     }
   }
@@ -1225,7 +1225,7 @@ void thunk_HandlePostDispatchTurnStateEventUpdates(void)
           (*(short *)&g_pLocalizationTable->field_0x58 != 0)) {
     uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
     if (DAT_006a31bc < (short)CONCAT31(extraout_var,uVar1)) {
-      cVar2 = thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded();
+      cVar2 = ShowPeriodicNationComparisonAdvisoryIfNeeded();
       if (cVar2 != '\0') {
         uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
         DAT_006a31bc = (short)CONCAT31(extraout_var_00,uVar1);
@@ -1237,22 +1237,22 @@ void thunk_HandlePostDispatchTurnStateEventUpdates(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004056E1
-// GHIDRA_NAME thunk_GetCityDialogZeroValue
-// GHIDRA_PROTO undefined __thiscall thunk_GetCityDialogZeroValue(void)
+// GHIDRA_NAME TSoundPlayer::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TSoundPlayer::thunk_GetCityDialogZeroValue(TSoundPlayer *this)
+void __thiscall TSoundPlayer::SetForeignMinisterReadyFlag14(TSoundPlayer *this)
 
 {
-  SetForeignMinisterReadyFlag14(this);
+  TCommand::SetForeignMinisterReadyFlag14(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405704
-// GHIDRA_NAME thunk_RebuildMapContextAndGlobalMapState
-// GHIDRA_PROTO undefined thunk_RebuildMapContextAndGlobalMapState()
+// GHIDRA_NAME RebuildMapContextAndGlobalMapState
+// GHIDRA_PROTO undefined RebuildMapContextAndGlobalMapState()
 
 void __thiscall
-thunk_RebuildMapContextAndGlobalMapState
+RebuildMapContextAndGlobalMapState
           (char *param_1,char param_2,undefined4 param_3,undefined1 param_4)
 
 {
@@ -1338,17 +1338,17 @@ LAB_0057c929:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040570E
-// GHIDRA_NAME thunk_ApplyRailSectionEndpointDirectionFlags
-// GHIDRA_PROTO undefined thunk_ApplyRailSectionEndpointDirectionFlags()
+// GHIDRA_NAME ApplyRailSectionEndpointDirectionFlags
+// GHIDRA_PROTO undefined ApplyRailSectionEndpointDirectionFlags()
 
 void __thiscall
-thunk_ApplyRailSectionEndpointDirectionFlags(int param_1,short param_2,short param_3)
+ApplyRailSectionEndpointDirectionFlags(int param_1,short param_2,short param_3)
 
 {
   char *pcVar1;
   short sVar2;
   
-  sVar2 = thunk_GetHexDirectionBetweenTiles(param_2,param_3);
+  sVar2 = GetHexDirectionBetweenTiles(param_2,param_3);
   *(char *)(*(int *)(param_1 + 0xc) + 0x17 + param_2 * 0x24) =
        *(char *)(*(int *)(param_1 + 0xc) + 0x17 + param_2 * 0x24) + (&DAT_00696eb2)[(sVar2 + 3) * 2]
   ;
@@ -1358,25 +1358,25 @@ thunk_ApplyRailSectionEndpointDirectionFlags(int param_1,short param_2,short par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004057A4
-// GHIDRA_NAME thunk_TemporarilyClearAndRestoreUiInvalidationFlag
-// GHIDRA_PROTO undefined thunk_TemporarilyClearAndRestoreUiInvalidationFlag()
+// GHIDRA_NAME TemporarilyClearAndRestoreUiInvalidationFlag
+// GHIDRA_PROTO undefined TemporarilyClearAndRestoreUiInvalidationFlag()
 
-void thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void)
+void TemporarilyClearAndRestoreUiInvalidationFlag(void)
 
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004057CC
-// GHIDRA_NAME thunk_AddPendingTurnOverlayCode
-// GHIDRA_PROTO undefined __thiscall thunk_AddPendingTurnOverlayCode(short param_1)
+// GHIDRA_NAME TDiplomacyMapView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::'scalar_deleting_destructor'(short param_1)
 
 void __thiscall
-TDiplomacyMapView::thunk_AddPendingTurnOverlayCode(TDiplomacyMapView *this,short param_1)
+TDiplomacyMapView::'scalar_deleting_destructor'(TDiplomacyMapView *this,short param_1)
 
 {
   *(short *)&this->field_0xec = *(short *)&this->field_0xec + param_1;
@@ -1384,10 +1384,10 @@ TDiplomacyMapView::thunk_AddPendingTurnOverlayCode(TDiplomacyMapView *this,short
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004057F9
-// GHIDRA_NAME thunk_HandleTacticalCommandTag_retr
-// GHIDRA_PROTO undefined thunk_HandleTacticalCommandTag_retr()
+// GHIDRA_NAME HandleTacticalCommandTag_retr
+// GHIDRA_PROTO undefined HandleTacticalCommandTag_retr()
 
-void __fastcall thunk_HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
+void __fastcall HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
 
 {
   int iVar1;
@@ -1395,7 +1395,7 @@ void __fastcall thunk_HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
   int *piVar3;
   
   *(uint *)(param_1 + 0xc) = (uint)(*(int *)(param_1 + 0xc) == 0);
-  uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
+  uVar2 = SelectNextTacticalUnitForDoneCommand();
   *(undefined4 *)(param_1 + 0x1c) = uVar2;
   if (*(int *)(param_1 + 8) != 0) {
     piVar3 = (int *)(**(code **)(**(int **)(*(int *)(param_1 + 8) + 0x20) + 0x94))(0x746f6f6c);
@@ -1405,7 +1405,7 @@ void __fastcall thunk_HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
     (**(code **)(iVar1 + 0x13c))();
   }
   if ((char)(*(int **)(param_1 + *(int *)(param_1 + 0xc) * 4 + 0x14))[4] != '\0') {
-    TacticalBattleView::thunk_FinalizeTacticalTurnStateAndQueueEvent232A(param_1);
+    TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A(param_1);
     return;
   }
   (**(code **)(**(int **)(param_1 + *(int *)(param_1 + 0xc) * 4 + 0x14) + 0x28))();
@@ -1413,15 +1413,15 @@ void __fastcall thunk_HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405803
-// GHIDRA_NAME thunk_RecomputeMapOrderChildAggregateMetric
-// GHIDRA_PROTO void __thiscall thunk_RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
+// GHIDRA_NAME RecomputeMapOrderChildAggregateMetric
+// GHIDRA_PROTO void __thiscall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ThunkRecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)
 // GHIDRA_COMMENT_END
 
 /* Setting prototype: void ThunkRecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry) */
 
-void __thiscall thunk_RecomputeMapOrderChildAggregateMetric(void *this,int *pMapOrderEntry)
+void __thiscall RecomputeMapOrderChildAggregateMetric(void *this,int *pMapOrderEntry)
 
 {
   int iVar1;
@@ -1438,32 +1438,32 @@ void __thiscall thunk_RecomputeMapOrderChildAggregateMetric(void *this,int *pMap
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040583A
-// GHIDRA_NAME thunk_HandleCityDialogNoOpSlot14
-// GHIDRA_PROTO undefined __thiscall thunk_HandleCityDialogNoOpSlot14(void)
+// GHIDRA_NAME TObject::WriteTo
+// GHIDRA_PROTO undefined __thiscall TObject::WriteTo(void)
 
-void __thiscall TArmyPlayer::thunk_HandleCityDialogNoOpSlot14(TArmyPlayer *this)
+void __thiscall TObject::WriteTo(TArmyPlayer *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405853
-// GHIDRA_NAME thunk_GetArmoryViewClassName
-// GHIDRA_PROTO undefined __thiscall thunk_GetArmoryViewClassName(void)
+// GHIDRA_NAME TArmoryView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TArmoryView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TArmoryView::thunk_GetArmoryViewClassName(TArmoryView *this)
+void __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmoryView *this)
 
 {
-  GetTEventHandlerClassNamePointer(this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405880
-// GHIDRA_NAME thunk_BlitStrategicMapUnitActivityOverlayFrame
-// GHIDRA_PROTO void __thiscall thunk_BlitStrategicMapUnitActivityOverlayFrame(int * pDstSurface, short nOverlayRowIndex, short nDstXOffset, short nDstYOffsetFromBottom)
+// GHIDRA_NAME TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
+// GHIDRA_PROTO void __thiscall TCivDescription::BlitStrategicMapUnitActivityOverlayFrame(int * pDstSurface, short nOverlayRowIndex, short nDstXOffset, short nDstYOffsetFromBottom)
 
 void __thiscall
-TCivDescription::thunk_BlitStrategicMapUnitActivityOverlayFrame
+TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
           (TCivDescription *this,int *pDstSurface,short nOverlayRowIndex,short nDstXOffset,
           short nDstYOffsetFromBottom)
 
@@ -1479,9 +1479,9 @@ TCivDescription::thunk_BlitStrategicMapUnitActivityOverlayFrame
   char *pcVar9;
   int iVar10;
   
-  piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xbc);
+  piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xbc);
   uVar1 = *(ushort *)(*pDstSurface + 4);
-  thunk_ReturnConstantTrueQuickDrawFlag(piVar3);
+  ReturnConstantTrueQuickDrawFlag(piVar3);
   iVar4 = GetSurfaceHeaderFromSurfaceObject(piVar3);
   uVar2 = *(ushort *)(*piVar3 + 4);
   iVar5 = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
@@ -1505,15 +1505,15 @@ TCivDescription::thunk_BlitStrategicMapUnitActivityOverlayFrame
     pcVar6 = pcVar7 + iVar10 + -0x25;
     pcVar8 = pcVar9 + (short)(uVar2 & 0x3fff) + -0x25;
   } while (iVar4 != 0);
-  thunk_NoOpQuickDrawLifecycleHookB(piVar3);
+  NoOpQuickDrawLifecycleHookB(piVar3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004058A8
-// GHIDRA_NAME thunk_RefreshTradeMoveBarAndTurnControl
-// GHIDRA_PROTO undefined __thiscall thunk_RefreshTradeMoveBarAndTurnControl(void)
+// GHIDRA_NAME TShipyardCluster::OrphanRetStub_00586ff0
+// GHIDRA_PROTO undefined __thiscall TShipyardCluster::OrphanRetStub_00586ff0(void)
 
-void __thiscall TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(TShipyardCluster *this)
+void __thiscall TShipyardCluster::OrphanRetStub_00586ff0(TShipyardCluster *this)
 
 {
   OrphanRetStub_00586ff0(this);
@@ -1521,33 +1521,33 @@ void __thiscall TShipyardCluster::thunk_RefreshTradeMoveBarAndTurnControl(TShipy
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004058F3
-// GHIDRA_NAME thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName
-// GHIDRA_PROTO undefined thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName()
+// GHIDRA_NAME RemoveDuplicateNavySecondaryOrdersByDisplayName
+// GHIDRA_PROTO undefined RemoveDuplicateNavySecondaryOrdersByDisplayName()
 
-void __fastcall thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName(int param_1)
+void __fastcall RemoveDuplicateNavySecondaryOrdersByDisplayName(int param_1)
 
 {
   int iVar1;
   int iVar2;
   
-  TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+  TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
             ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)(param_1 + 4)]);
   for (iVar1 = g_pNavySecondaryOrderListHead; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x14)) {
     if ((iVar1 != param_1) &&
        (iVar2 = CompareAnsiStringsWithMbcsAwareness
                           (*(undefined4 *)(iVar1 + 0xc),*(undefined4 *)(param_1 + 0xc)), iVar2 == 0)
        ) {
-      thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+      RemoveDuplicateNavySecondaryOrdersByDisplayName();
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405902
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlot7C
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlot7C(void)
+// GHIDRA_NAME TDiplomacyMapView::HasRenderableParentAndContent
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HasRenderableParentAndContent(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot7C(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::HasRenderableParentAndContent(TDiplomacyMapView *this)
 
 {
   int iVar1;
@@ -1557,7 +1557,7 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot7C(TDip
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x54e)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x54e)
     ;
   }
   iVar1 = *piVar3;
@@ -1575,11 +1575,11 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot7C(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040592F
-// GHIDRA_NAME thunk_SelectUniversityRecruitmentEntry
-// GHIDRA_PROTO void __thiscall thunk_SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex)
+// GHIDRA_NAME TToolBarCluster::SelectUniversityRecruitmentEntry
+// GHIDRA_PROTO void __thiscall TToolBarCluster::SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex)
 
 void __thiscall
-TToolBarCluster::thunk_SelectUniversityRecruitmentEntry
+TToolBarCluster::SelectUniversityRecruitmentEntry
           (TToolBarCluster *this,short nRecruitmentEntryIndex)
 
 {
@@ -1588,11 +1588,11 @@ TToolBarCluster::thunk_SelectUniversityRecruitmentEntry
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040593E
-// GHIDRA_NAME thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection
-// GHIDRA_PROTO undefined __thiscall thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
+// GHIDRA_NAME TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
+// GHIDRA_PROTO undefined __thiscall TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
 
 void __thiscall
-TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmyRoster *this)
+TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmyRoster *this)
 
 {
   short sVar1;
@@ -1627,14 +1627,14 @@ TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(TSup
   piVar5 = (int *)CONCAT31(extraout_var,uVar4);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x202);
   }
   iVar2 = *piVar5;
   piVar6 = (int *)(**(code **)(iVar2 + 0x94))(0x70616765);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x203);
   }
   iVar3 = piVar6[8];
@@ -1663,7 +1663,7 @@ TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(TSup
     uVar7 = 0;
   }
   else {
-    uVar7 = TStaticText::thunk_ConstructUiTextResourceEntryBase(this_01);
+    uVar7 = TStaticText::TStaticText(this_01);
   }
   uStack_18 = 0xffffffff;
   pTStack_2c = (TPageView *)0x12;
@@ -1678,7 +1678,7 @@ TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(TSup
   (**(code **)(iVar2 + 0xa0))();
   (**(code **)(iVar2 + 0x1c))();
   if (sVar1 != -1) {
-    TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)unaff_EDI[0x3c],1);
+    TToolBarCluster::SetMapInteractionMode((TCivToolbar *)unaff_EDI[0x3c],1);
     SetActiveProvinceSelection(sVar1);
     (**(code **)(*(int *)unaff_EDI[0x3c] + 0x1e8))
               (CONCAT22((short)((uint)(sVar1 * 0x15) >> 0x10),
@@ -1690,10 +1690,10 @@ TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(TSup
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040594D
-// GHIDRA_NAME thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded
-// GHIDRA_PROTO undefined thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded()
+// GHIDRA_NAME ShowPeriodicNationComparisonAdvisoryIfNeeded
+// GHIDRA_PROTO undefined ShowPeriodicNationComparisonAdvisoryIfNeeded()
 
-undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
+undefined1 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
 
 {
   TGreatPower *pTVar1;
@@ -1771,7 +1771,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     }
     ppTVar12 = g_apNationStates;
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if (cVar3 != '\0') {
         pTVar1 = *ppTVar12;
         if (pTVar1 == (TGreatPower *)0x0) {
@@ -1807,7 +1807,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 4;
     break;
   case 1:
@@ -1815,7 +1815,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     puStack_10 = puVar6;
     do {
       if ((((short)ppCVar11 != sVar4) &&
-          (cVar3 = thunk_IsNationSlotEligibleForEventProcessing(), cVar3 != '\0')) &&
+          (cVar3 = IsNationSlotEligibleForEventProcessing(), cVar3 != '\0')) &&
          (iVar7 = ComputeSelectedMilitaryPowerScore(), (short)puVar6 < iVar7)) {
         puVar6 = (undefined1 *)ComputeSelectedMilitaryPowerScore();
         ppCStack_14 = ppCVar11;
@@ -1831,7 +1831,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 0xd;
     break;
   case 2:
@@ -1841,7 +1841,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     sVar4 = 0;
     ppTVar12 = g_apNationStates;
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if ((cVar3 != '\0') &&
          (uVar2 = (*(*ppTVar12)->vftable[0x46].slot_0x04)(),
          (int)(short)uVar10 < CONCAT31(extraout_var_01,uVar2))) {
@@ -1861,7 +1861,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 7;
     break;
   case 3:
@@ -1869,7 +1869,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     ppTVar12 = g_apNationStates;
     sVar4 = *(short *)&g_apNationStates[(int)ppCStack_14]->field_0xa4;
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if ((cVar3 != '\0') && (sVar4 < *(short *)&(*ppTVar12)->field_0xa4)) {
         sVar4 = *(short *)&(*ppTVar12)->field_0xa4;
       }
@@ -1886,7 +1886,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 5;
     break;
   case 4:
@@ -1897,7 +1897,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     puStack_10 = puVar6;
     do {
       if ((((short)ppCVar11 != sVar4) &&
-          (cVar3 = thunk_IsNationSlotEligibleForEventProcessing(), cVar3 != '\0')) &&
+          (cVar3 = IsNationSlotEligibleForEventProcessing(), cVar3 != '\0')) &&
          (uVar2 = (*(*ppTVar12)->vftable[0x43].GetTCountryClassNamePointer)(),
          (int)(short)puVar6 < CONCAT31(extraout_var_20,uVar2))) {
         uVar2 = (*(*ppTVar12)->vftable[0x43].GetTCountryClassNamePointer)();
@@ -1916,7 +1916,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 0xe;
     break;
   case 5:
@@ -1926,7 +1926,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     sVar4 = 0;
     ppTVar12 = g_apNationStates;
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if ((cVar3 != '\0') &&
          (uVar2 = (*(*ppTVar12)->vftable[0x46].slot_0x04)(),
          (int)(short)uVar10 < CONCAT31(extraout_var_05,uVar2))) {
@@ -1946,14 +1946,14 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 8;
     break;
   case 6:
     ppCStack_14 = (CString **)(int)sVar4;
     sVar4 = ComputeNationRuntimeAdvisoryMetricCase6();
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if ((cVar3 != '\0') && (sVar5 = ComputeNationRuntimeAdvisoryMetricCase6(), sVar4 < sVar5)) {
         sVar4 = ComputeNationRuntimeAdvisoryMetricCase6();
       }
@@ -1969,7 +1969,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 6;
     break;
   case 7:
@@ -1979,7 +1979,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     sVar4 = 0;
     ppTVar12 = g_apNationStates;
     do {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar3 = IsNationSlotEligibleForEventProcessing();
       if ((cVar3 != '\0') &&
          (uVar2 = (*(*ppTVar12)->vftable[0x46].slot_0x04)(),
          (int)(short)uVar10 < CONCAT31(extraout_var_09,uVar2))) {
@@ -1999,7 +1999,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
     pCStack_4c = &CStack_24;
     puStack_10 = &stack0xffffffb8;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     iStack_4._0_1_ = 9;
     break;
   case 8:
@@ -2012,7 +2012,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
       sVar4 = 0;
       ppTVar12 = g_apNationStates;
       do {
-        cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+        cVar3 = IsNationSlotEligibleForEventProcessing();
         if ((cVar3 != '\0') &&
            (uVar2 = (*(*ppTVar12)->vftable[0x46].slot_0x04)(),
            (int)(short)uVar10 < CONCAT31(extraout_var_13,uVar2))) {
@@ -2032,7 +2032,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
         scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
         pCStack_4c = &CStack_24;
         puStack_10 = &stack0xffffffb8;
-        thunk_AssignStringSharedRefAndReturnThis();
+        AssignStringSharedRefAndReturnThis();
         iStack_4._0_1_ = 0xb;
       }
       else {
@@ -2044,7 +2044,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
         scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
         pCStack_4c = &CStack_24;
         puStack_10 = &stack0xffffffb8;
-        thunk_AssignStringSharedRefAndReturnThis();
+        AssignStringSharedRefAndReturnThis();
         iStack_4._0_1_ = 10;
       }
     }
@@ -2054,7 +2054,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
       sVar4 = 0;
       ppTVar12 = g_apNationStates;
       do {
-        cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+        cVar3 = IsNationSlotEligibleForEventProcessing();
         if ((cVar3 != '\0') &&
            (uVar2 = (*(*ppTVar12)->vftable[0x46].slot_0x04)(),
            (int)(short)uVar10 < CONCAT31(extraout_var_16,uVar2))) {
@@ -2074,7 +2074,7 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
       scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_1c.m_pchData);
       pCStack_4c = &CStack_24;
       puStack_10 = &stack0xffffffb8;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       iStack_4._0_1_ = 0xc;
     }
     break;
@@ -2082,9 +2082,9 @@ undefined1 thunk_ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
     goto switchD_00501c69_default;
   }
   ppCStack_14 = &pCStack_4c;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_18);
+  AssignStringSharedRefAndReturnThis(&CStack_18);
   iStack_4 = CONCAT31(iStack_4._1_3_,3);
-  thunk_DispatchLocalizedUiMessageWithTemplate(5);
+  DispatchLocalizedUiMessageWithTemplate(5);
   uStack_25 = 1;
 switchD_00501c69_default:
   iStack_4._0_1_ = 2;
@@ -2100,11 +2100,11 @@ switchD_00501c69_default:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004059A2
-// GHIDRA_NAME thunk_ResolveCivilianTileOrderActionCode
-// GHIDRA_PROTO int __thiscall thunk_ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
+// GHIDRA_NAME TCivToolbar::ResolveCivilianTileOrderActionCode
+// GHIDRA_PROTO int __thiscall TCivToolbar::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
 
 int __thiscall
-TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
+TCivToolbar::ResolveCivilianTileOrderActionCode
           (TCivToolbar *this,short nTileIndex,short nInputHint)
 
 {
@@ -2119,7 +2119,7 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
   int iVar8;
   
   sVar4 = UiRuntimeContext::GetActiveNationId();
-  piVar6 = thunk_GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
+  piVar6 = TCivToolbar::GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
   iVar8 = (int)nTileIndex;
   iVar7 = 1;
   if ((g_pGlobalMapState->field_0x20 != '\0') && ((iVar8 % 0x6c == 0 || (iVar8 % 0x6c == 0x6b)))) {
@@ -2128,11 +2128,11 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
   if ((int *)this->field04 == (int *)0x0) {
     iVar7 = 0;
     sVar4 = UiRuntimeContext::GetActiveNationId();
-    piVar6 = thunk_GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
+    piVar6 = TCivToolbar::GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
     if (piVar6 != (int *)0x0) {
       sVar4 = UiRuntimeContext::GetActiveNationId();
-      piVar6 = thunk_GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
-      bVar2 = thunk_IsCivilianOrderInIdleSelectionState(piVar6,unaff_EDI);
+      piVar6 = TCivToolbar::GetTileUnitEntryByOwner((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar4);
+      bVar2 = IsCivilianOrderInIdleSelectionState(piVar6,unaff_EDI);
       if (!bVar2) {
         return 10;
       }
@@ -2148,7 +2148,7 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
     }
     bVar2 = IsMappedShortcutKeyPressed(2);
     if (bVar2) {
-      cVar3 = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+      cVar3 = TCivToolbar::CanAssignCivilianOrderToTile(this,nTileIndex);
       if (cVar3 != '\0') {
         return 3;
       }
@@ -2170,7 +2170,7 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
         if (nTileIndex == sVar4) {
           return 4;
         }
-        sVar4 = thunk_GetHexDirectionBetweenTiles(sVar4,nTileIndex);
+        sVar4 = GetHexDirectionBetweenTiles(sVar4,nTileIndex);
         if ((sVar4 != 1) && (sVar4 != 4)) {
           if ((sVar4 != 0) && (sVar4 != 3)) {
             return 7;
@@ -2184,13 +2184,13 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
         sVar4 = *(short *)(iVar1 + 0x18);
         sVar5 = UiRuntimeContext::GetActiveNationId();
         if (sVar4 == sVar5) {
-          bVar2 = thunk_IsCivilianOrderInIdleSelectionState
+          bVar2 = IsCivilianOrderInIdleSelectionState
                             (*(void **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar8),
                              unaff_EDI);
           return (-(uint)bVar2 & 0xfffffff8) + 10;
         }
       }
-      cVar3 = thunk_CanAssignCivilianOrderToTile(this,nTileIndex);
+      cVar3 = TCivToolbar::CanAssignCivilianOrderToTile(this,nTileIndex);
       if (cVar3 != '\0') {
         iVar7 = 3;
       }
@@ -2200,10 +2200,10 @@ TCivToolbar::thunk_ResolveCivilianTileOrderActionCode
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004059E8
-// GHIDRA_NAME thunk_UpdateTacticalActionControlBitmapForCurrentUnit
-// GHIDRA_PROTO undefined thunk_UpdateTacticalActionControlBitmapForCurrentUnit()
+// GHIDRA_NAME UpdateTacticalActionControlBitmapForCurrentUnit
+// GHIDRA_PROTO undefined UpdateTacticalActionControlBitmapForCurrentUnit()
 
-void __fastcall thunk_UpdateTacticalActionControlBitmapForCurrentUnit(int param_1)
+void __fastcall UpdateTacticalActionControlBitmapForCurrentUnit(int param_1)
 
 {
   int iVar1;
@@ -2219,11 +2219,11 @@ void __fastcall thunk_UpdateTacticalActionControlBitmapForCurrentUnit(int param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004059F7
-// GHIDRA_NAME thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
-// GHIDRA_PROTO undefined thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()
+// GHIDRA_NAME RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
+// GHIDRA_PROTO undefined RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()
 
 void __thiscall
-thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(int param_1,short param_2)
+RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(int param_1,short param_2)
 
 {
   TShip *pTVar1;
@@ -2282,10 +2282,10 @@ LAB_00557270:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A33
-// GHIDRA_NAME thunk_RegisterUiResourceEntry
-// GHIDRA_PROTO undefined thunk_RegisterUiResourceEntry()
+// GHIDRA_NAME RegisterUiResourceEntry
+// GHIDRA_PROTO undefined RegisterUiResourceEntry()
 
-void thunk_RegisterUiResourceEntry
+void RegisterUiResourceEntry
                (undefined4 param_1,int param_2,int *param_3,undefined4 param_4,undefined4 param_5,
                undefined4 param_6,undefined4 param_7,undefined4 param_8,undefined4 param_9,
                undefined4 param_10,int param_11)
@@ -2343,7 +2343,7 @@ void thunk_RegisterUiResourceEntry
   uStack_10 = param_6;
   uStack_4 = param_5;
   DAT_006a13e8 = puVar4;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,uVar5,&uStack_8,&uStack_10,0,0,1);
+  InitializeUiResourceEntryFrameAndParent(0,uVar5,&uStack_8,&uStack_10,0,0,1);
   iVar3 = *param_3;
   param_3[0xf] = param_11;
   param_3[7] = param_2;
@@ -2353,10 +2353,10 @@ void thunk_RegisterUiResourceEntry
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A4C
-// GHIDRA_NAME thunk_ResolveCivilianTileSelectionOrReportActionCode
-// GHIDRA_PROTO ushort __stdcall thunk_ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
+// GHIDRA_NAME ResolveCivilianTileSelectionOrReportActionCode
+// GHIDRA_PROTO ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
 
-ushort thunk_ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,short nClickMode)
+ushort ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,short nClickMode)
 
 {
   bool bVar1;
@@ -2367,13 +2367,13 @@ ushort thunk_ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,sho
   
   iVar4 = 0;
   sVar2 = UiRuntimeContext::GetActiveNationId();
-  piVar3 = TCivToolbar::thunk_GetTileUnitEntryByOwner
+  piVar3 = TCivToolbar::GetTileUnitEntryByOwner
                      ((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar2);
   if (piVar3 != (int *)0x0) {
     sVar2 = UiRuntimeContext::GetActiveNationId();
-    piVar3 = TCivToolbar::thunk_GetTileUnitEntryByOwner
+    piVar3 = TCivToolbar::GetTileUnitEntryByOwner
                        ((TCivToolbar *)g_pGlobalMapState,nTileIndex,sVar2);
-    bVar1 = thunk_IsCivilianOrderInIdleSelectionState(piVar3,unaff_EDI);
+    bVar1 = IsCivilianOrderInIdleSelectionState(piVar3,unaff_EDI);
     if (bVar1) {
       if ((nClickMode == 2) ||
          ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + nTileIndex * 0x24) >> 5 & 1) ==
@@ -2392,10 +2392,10 @@ ushort thunk_ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,sho
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A5B
-// GHIDRA_NAME thunk_EnqueueOrSendTurnEventPacketToNation
-// GHIDRA_PROTO undefined thunk_EnqueueOrSendTurnEventPacketToNation()
+// GHIDRA_NAME EnqueueOrSendTurnEventPacketToNation
+// GHIDRA_PROTO undefined EnqueueOrSendTurnEventPacketToNation()
 
-undefined4 thunk_EnqueueOrSendTurnEventPacketToNation(undefined4 *param_1,char param_2)
+undefined4 EnqueueOrSendTurnEventPacketToNation(undefined4 *param_1,char param_2)
 
 {
   SIZE_T dwBytes;
@@ -2471,10 +2471,10 @@ undefined4 thunk_EnqueueOrSendTurnEventPacketToNation(undefined4 *param_1,char p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A79
-// GHIDRA_NAME thunk_BuildNationRankingRowsForNation
-// GHIDRA_PROTO undefined thunk_BuildNationRankingRowsForNation()
+// GHIDRA_NAME BuildNationRankingRowsForNation
+// GHIDRA_PROTO undefined BuildNationRankingRowsForNation()
 
-void __thiscall thunk_BuildNationRankingRowsForNation(int param_1,int param_2)
+void __thiscall BuildNationRankingRowsForNation(int param_1,int param_2)
 
 {
   int *piVar1;
@@ -2641,11 +2641,11 @@ LAB_0055bec3:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A8D
-// GHIDRA_NAME thunk_UpdateUniversityDialogSelectionState
-// GHIDRA_PROTO undefined __thiscall thunk_UpdateUniversityDialogSelectionState(undefined4 param_1, undefined1 param_2, undefined4 param_3, undefined2 param_4)
+// GHIDRA_NAME TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
+// GHIDRA_PROTO undefined __thiscall TLineData::ApplyCityViewSelectionPayloadAndRefreshControls(undefined4 param_1, undefined1 param_2, undefined4 param_3, undefined2 param_4)
 
 void __thiscall
-TLineData::thunk_UpdateUniversityDialogSelectionState
+TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
           (TLineData *this,undefined4 param_1,undefined1 param_2,undefined4 param_3,
           undefined2 param_4)
 
@@ -2667,10 +2667,10 @@ TLineData::thunk_UpdateUniversityDialogSelectionState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405A97
-// GHIDRA_NAME thunk_GetTradeSellControlValue
-// GHIDRA_PROTO undefined __thiscall thunk_GetTradeSellControlValue(void)
+// GHIDRA_NAME TAmtBarCluster::QueryTradeSellControlQuantity
+// GHIDRA_PROTO undefined __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(void)
 
-void __thiscall TAmtBarCluster::thunk_GetTradeSellControlValue(TAmtBarCluster *this)
+void __thiscall TAmtBarCluster::QueryTradeSellControlQuantity(TAmtBarCluster *this)
 
 {
   QueryTradeSellControlQuantity(this);
@@ -2678,10 +2678,10 @@ void __thiscall TAmtBarCluster::thunk_GetTradeSellControlValue(TAmtBarCluster *t
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405ACE
-// GHIDRA_NAME thunk_ResolveTacticalReactionChecksForTile
-// GHIDRA_PROTO undefined thunk_ResolveTacticalReactionChecksForTile()
+// GHIDRA_NAME ResolveTacticalReactionChecksForTile
+// GHIDRA_PROTO undefined ResolveTacticalReactionChecksForTile()
 
-undefined4 __thiscall thunk_ResolveTacticalReactionChecksForTile(int *param_1,int param_2)
+undefined4 __thiscall ResolveTacticalReactionChecksForTile(int *param_1,int param_2)
 
 {
   int iVar1;
@@ -2702,7 +2702,7 @@ undefined4 __thiscall thunk_ResolveTacticalReactionChecksForTile(int *param_1,in
       iVar6 = piVar3[2];
       uVar4 = (**(code **)(*piVar3 + 0x2c))();
       uVar5 = ftol(uVar4);
-      cVar2 = thunk_IsTacticalTargetTileReachableForAction(iVar6,param_2,uVar5,uVar4);
+      cVar2 = IsTacticalTargetTileReachableForAction(iVar6,param_2,uVar5,uVar4);
       if (cVar2 != '\0') {
         (**(code **)(*param_1 + 0x40))(piVar3,param_2);
         if ((int *)param_1[2] != (int *)0x0) {
@@ -2724,10 +2724,10 @@ undefined4 __thiscall thunk_ResolveTacticalReactionChecksForTile(int *param_1,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405AF6
-// GHIDRA_NAME thunk_UpdateTradeMoveControlsFromDrag
-// GHIDRA_PROTO undefined __thiscall thunk_UpdateTradeMoveControlsFromDrag(char param_1)
+// GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
+// GHIDRA_PROTO undefined __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
 
-void __thiscall TAmtBar::thunk_UpdateTradeMoveControlsFromDrag(TAmtBar *this,char param_1)
+void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this,char param_1)
 
 {
   UpdateTradeMoveControlsFromDrag(this,param_1);
@@ -2735,12 +2735,12 @@ void __thiscall TAmtBar::thunk_UpdateTradeMoveControlsFromDrag(TAmtBar *this,cha
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405B4B
-// GHIDRA_NAME thunk_HandleTacticalCommandTag_targ
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTacticalCommandTag_targ(void)
+// GHIDRA_NAME TacticalBattleView::HandleTacticalCommandTag_targ
+// GHIDRA_PROTO undefined __thiscall TacticalBattleView::HandleTacticalCommandTag_targ(void)
 
 /* WARNING: Removing unreachable block (ram,0x005a4018) */
 
-void __thiscall TacticalBattleView::thunk_HandleTacticalCommandTag_targ(TacticalBattleView *this)
+void __thiscall TacticalBattleView::HandleTacticalCommandTag_targ(TacticalBattleView *this)
 
 {
   int *piVar1;
@@ -2787,7 +2787,7 @@ void __thiscall TacticalBattleView::thunk_HandleTacticalCommandTag_targ(Tactical
       else {
         uVar7 = (**(code **)(*piVar10 + 0x2c))();
         uVar8 = ftol(uVar7);
-        cVar5 = thunk_IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
+        cVar5 = IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
       }
       if (cVar5 != '\0') {
         CenterViewportAroundGridIndexAndSnap(piStack_18[2]);
@@ -2816,7 +2816,7 @@ void __thiscall TacticalBattleView::thunk_HandleTacticalCommandTag_targ(Tactical
         else {
           uVar7 = (**(code **)(*piVar4 + 0x2c))();
           uVar8 = ftol(uVar7);
-          cVar5 = thunk_IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
+          cVar5 = IsTacticalTargetTileReachableForAction(iVar6,iVar9,uVar8,uVar7);
         }
         if ((cVar5 != '\0') && (piVar1 = piVar10, piStack_18 == (int *)0x0)) {
           CenterViewportAroundGridIndexAndSnap(piVar10[2]);
@@ -2835,10 +2835,10 @@ void __thiscall TacticalBattleView::thunk_HandleTacticalCommandTag_targ(Tactical
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405B7D
-// GHIDRA_NAME thunk_MeasureTextExtentWithCachedQuickDrawStyle
-// GHIDRA_PROTO undefined thunk_MeasureTextExtentWithCachedQuickDrawStyle()
+// GHIDRA_NAME MeasureTextExtentWithCachedQuickDrawStyle
+// GHIDRA_PROTO undefined MeasureTextExtentWithCachedQuickDrawStyle()
 
-uint thunk_MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
+uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
 
 {
   int *piVar1;
@@ -2913,10 +2913,10 @@ uint thunk_MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405BA0
-// GHIDRA_NAME thunk_InitializeGlobalRuntimeSystemsFromConfig
-// GHIDRA_PROTO undefined thunk_InitializeGlobalRuntimeSystemsFromConfig()
+// GHIDRA_NAME InitializeGlobalRuntimeSystemsFromConfig
+// GHIDRA_PROTO undefined InitializeGlobalRuntimeSystemsFromConfig()
 
-void __fastcall thunk_InitializeGlobalRuntimeSystemsFromConfig(int param_1)
+void __fastcall InitializeGlobalRuntimeSystemsFromConfig(int param_1)
 
 {
   TLanguageMgr *this;
@@ -3038,10 +3038,10 @@ void __fastcall thunk_InitializeGlobalRuntimeSystemsFromConfig(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405BB4
-// GHIDRA_NAME thunk_InvokeStrategicMapViewMethod6C
-// GHIDRA_PROTO undefined __thiscall thunk_InvokeStrategicMapViewMethod6C(void)
+// GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod6C
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(void)
 
-void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod6C(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod6C(TDiplomacyMapView *this)
 
 {
   InvokeStrategicMapViewMethod6C(this);
@@ -3049,10 +3049,10 @@ void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod6C(TDiploma
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C40
-// GHIDRA_NAME thunk_ClearUiResourceContext
-// GHIDRA_PROTO undefined thunk_ClearUiResourceContext()
+// GHIDRA_NAME ClearUiResourceContext
+// GHIDRA_PROTO undefined ClearUiResourceContext()
 
-void thunk_ClearUiResourceContext(void)
+void ClearUiResourceContext(void)
 
 {
   g_pUiResourceContext = (int *)0x0;
@@ -3060,21 +3060,21 @@ void thunk_ClearUiResourceContext(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C59
-// GHIDRA_NAME thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
+// GHIDRA_NAME TObject::ShallowFree
+// GHIDRA_PROTO undefined __thiscall TObject::ShallowFree(void)
 
-void __thiscall TCityTask::thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer(TCityTask *this)
+void __thiscall TObject::ShallowFree(TCityTask *this)
 
 {
-  OrphanRetStub_0059add0(this);
+  TSoundPlayer::OrphanRetStub_0059add0(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C72
-// GHIDRA_NAME thunk_DestructEngineerDialogBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructEngineerDialogBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructEngineerDialogBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -3099,10 +3099,10 @@ void __thiscall TView::thunk_DestructEngineerDialogBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405CEF
-// GHIDRA_NAME thunk_ZeroUiResourceContextStyleBytes
-// GHIDRA_PROTO undefined thunk_ZeroUiResourceContextStyleBytes()
+// GHIDRA_NAME ZeroUiResourceContextStyleBytes
+// GHIDRA_PROTO undefined ZeroUiResourceContextStyleBytes()
 
-void __fastcall thunk_ZeroUiResourceContextStyleBytes(undefined1 *param_1)
+void __fastcall ZeroUiResourceContextStyleBytes(undefined1 *param_1)
 
 {
   *param_1 = 0;
@@ -3117,10 +3117,10 @@ void __fastcall thunk_ZeroUiResourceContextStyleBytes(undefined1 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D3A
-// GHIDRA_NAME thunk_GetBlockadePortMissionClassName
-// GHIDRA_PROTO undefined thunk_GetBlockadePortMissionClassName()
+// GHIDRA_NAME TBlockadePortMission::GetTBlockadePortMissionClassNamePointer
+// GHIDRA_PROTO undefined TBlockadePortMission::GetTBlockadePortMissionClassNamePointer()
 
-void TBlockadePortMission::thunk_GetBlockadePortMissionClassName(void)
+void TBlockadePortMission::GetTBlockadePortMissionClassNamePointer(void)
 
 {
   GetTBlockadePortMissionClassNamePointer();
@@ -3128,10 +3128,10 @@ void TBlockadePortMission::thunk_GetBlockadePortMissionClassName(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D71
-// GHIDRA_NAME thunk_SetUiResourceStateFlags
-// GHIDRA_PROTO undefined thunk_SetUiResourceStateFlags()
+// GHIDRA_NAME SetUiResourceStateFlags
+// GHIDRA_PROTO undefined SetUiResourceStateFlags()
 
-void thunk_SetUiResourceStateFlags(undefined1 param_1,undefined1 param_2)
+void SetUiResourceStateFlags(undefined1 param_1,undefined1 param_2)
 
 {
   int *piVar1;
@@ -3143,22 +3143,22 @@ void thunk_SetUiResourceStateFlags(undefined1 param_1,undefined1 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D85
-// GHIDRA_NAME thunk_GetCityDialogValueDword10
-// GHIDRA_PROTO int __thiscall thunk_GetCityDialogValueDword10(CityDialogController * pDialog)
+// GHIDRA_NAME TMapDialog::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO int __thiscall TMapDialog::OrphanTiny_ReturnZero_0048a730(CityDialogController * pDialog)
 
 int __thiscall
-TMapDialog::thunk_GetCityDialogValueDword10(TMapDialog *this,CityDialogController *pDialog)
+TMapDialog::OrphanTiny_ReturnZero_0048a730(TMapDialog *this,CityDialogController *pDialog)
 
 {
   int iVar1;
   
-  iVar1 = OrphanTiny_ReturnZero_0048a730(this,pDialog);
+  iVar1 = TDropShadowText::OrphanTiny_ReturnZero_0048a730(this,pDialog);
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405D8A
-// GHIDRA_NAME thunk_PostTurnEvent5DCOrResetLocalUiState
-// GHIDRA_PROTO undefined __thiscall thunk_PostTurnEvent5DCOrResetLocalUiState(void)
+// GHIDRA_NAME TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState
+// GHIDRA_PROTO undefined __thiscall TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk for PostTurnEvent5DCOrResetLocalUiState.
 // GHIDRA_COMMENT_END
@@ -3166,7 +3166,7 @@ TMapDialog::thunk_GetCityDialogValueDword10(TMapDialog *this,CityDialogControlle
 /* Thunk for PostTurnEvent5DCOrResetLocalUiState. */
 
 void __thiscall
-TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPicture *this)
+TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMapPicture *this)
 
 {
   PostTurnEvent5DCOrResetLocalUiState(this);
@@ -3174,10 +3174,10 @@ TSetupRandomMapPicture::thunk_PostTurnEvent5DCOrResetLocalUiState(TSetupRandomMa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405DA8
-// GHIDRA_NAME thunk_RemovePortZoneByTile
-// GHIDRA_PROTO void __stdcall thunk_RemovePortZoneByTile(short nTileIndex)
+// GHIDRA_NAME RemovePortZoneByTile
+// GHIDRA_PROTO void __stdcall RemovePortZoneByTile(short nTileIndex)
 
-void thunk_RemovePortZoneByTile(short nTileIndex)
+void RemovePortZoneByTile(short nTileIndex)
 
 {
   int iVar1;
@@ -3202,12 +3202,12 @@ LAB_005642a6:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E07
-// GHIDRA_NAME thunk_RevalidateAndRequeueMapOrdersForTurn
-// GHIDRA_PROTO void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
+// GHIDRA_NAME RevalidateAndRequeueMapOrdersForTurn
+// GHIDRA_PROTO void RevalidateAndRequeueMapOrdersForTurn(void)
 
 /* WARNING: Unknown calling convention -- yet parameter storage is locked */
 
-void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
+void RevalidateAndRequeueMapOrdersForTurn(void)
 
 {
   short *psVar1;
@@ -3222,7 +3222,7 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
   int iVar7;
   TCountry **ppTStack_4;
   
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   for (pTVar4 = g_pMapActionContextListHead; pTVar4 != (TZone *)0x0;
       pTVar4 = *(TZone **)&pTVar4->field_0x18) {
     iVar7 = 0;
@@ -3239,7 +3239,7 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
                  *(short *)(&DAT_00698114 + *(short *)(*piVar2 + 4) * 0x24);
           }
           pMapOrderEntry[2] = 8;
-          thunk_RequeueMapOrderEntry(pMapOrderEntry,unaff_EBP);
+          RequeueMapOrderEntry(pMapOrderEntry,unaff_EBP);
           pMapOrderEntry = (int *)CreateTaskForceFromNavyOrdersForNationIfEligible(iVar7);
         }
         if (pMapOrderEntry != (int *)0x0) {
@@ -3253,7 +3253,7 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
             pMapOrderEntry[5] = 0;
             while (this != (TShip *)0x0) {
               if (this->field_0xc == '\0') {
-                TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+                TScatteredShipsMission::SetMapOrderActiveChildEntry
                           ((TScatteredShipsMission *)this->vftable,(int *)0x0);
                 psVar1 = (short *)((int)pMapOrderEntry +
                                   *(short *)(&DAT_00698120 +
@@ -3263,7 +3263,7 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
                 if (this == (TShip *)pMapOrderEntry[4]) {
                   pMapOrderEntry[4] = *(int *)&this->field_0x4;
                 }
-                this = (TShip *)TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(this,unaff_EBP);
+                this = (TShip *)TShip::DeleteMapOrderChildLinkAndReturnNext(this,unaff_EBP);
               }
               else {
                 this = *(TShip **)&this->field_0x4;
@@ -3276,18 +3276,18 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
               pMapOrderEntry[5] = iVar6;
             }
             (**(code **)(*pMapOrderEntry + 0xc))();
-            cVar5 = thunk_MoveMapOrderEntryToQueueHeadIfValid(pMapOrderEntry);
+            cVar5 = MoveMapOrderEntryToQueueHeadIfValid(pMapOrderEntry);
             if (cVar5 != '\0') {
-              thunk_FinalizeQueuedMapOrderEntry(pMapOrderEntry);
+              FinalizeQueuedMapOrderEntry(pMapOrderEntry);
             }
           }
           else {
             pMapOrderEntry[2] = 7;
-            thunk_RebuildMapOrderEntryChildren();
+            RebuildMapOrderEntryChildren();
             (**(code **)(*pMapOrderEntry + 0xc))();
-            cVar5 = thunk_MoveMapOrderEntryToQueueHeadIfValid(pMapOrderEntry);
+            cVar5 = MoveMapOrderEntryToQueueHeadIfValid(pMapOrderEntry);
             if (cVar5 != '\0') {
-              thunk_FinalizeQueuedMapOrderEntry(pMapOrderEntry);
+              FinalizeQueuedMapOrderEntry(pMapOrderEntry);
             }
           }
         }
@@ -3300,10 +3300,10 @@ void thunk_RevalidateAndRequeueMapOrdersForTurn(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405E16
-// GHIDRA_NAME thunk_RenderTerrainAndMinorNationLegendLabels
-// GHIDRA_PROTO undefined thunk_RenderTerrainAndMinorNationLegendLabels()
+// GHIDRA_NAME RenderTerrainAndMinorNationLegendLabels
+// GHIDRA_PROTO undefined RenderTerrainAndMinorNationLegendLabels()
 
-void __fastcall thunk_RenderTerrainAndMinorNationLegendLabels(int param_1)
+void __fastcall RenderTerrainAndMinorNationLegendLabels(int param_1)
 
 {
   short sVar1;
@@ -3335,8 +3335,8 @@ void __fastcall thunk_RenderTerrainAndMinorNationLegendLabels(int param_1)
   uStack_30 = 0;
   iStack_24 = param_1;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,10,0x2b68,1);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&uStack_2c);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_30);
+  MapUiThemeCodeToStyleFlags(0x2b68,&uStack_2c);
+  MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_30);
   ppTVar7 = g_apTerrainTypeDescriptorTable;
   puVar6 = (undefined2 *)(param_1 + 0x234);
   do {
@@ -3348,23 +3348,23 @@ void __fastcall thunk_RenderTerrainAndMinorNationLegendLabels(int param_1)
         if (((*ppTVar7 == (TCountry *)0x0) ||
             (sVar1 = *(short *)&(*ppTVar7)->field_0xe, sVar1 < 100)) || (199 < sVar1)) {
           FormatOverlayTerrainLabelText(&CStack_28);
-          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&uStack_2c);
+          MapUiThemeCodeToStyleFlags(0x2b68,&uStack_2c);
           uVar8 = 0x2b6b;
         }
         else {
           LoadNationDisplayNameSharedRefFromField8(&CStack_28);
-          thunk_MapUiThemeCodeToStyleFlags(0x2b67,&uStack_2c);
+          MapUiThemeCodeToStyleFlags(0x2b67,&uStack_2c);
           uVar8 = 0x2b6f;
         }
-        thunk_MapUiThemeCodeToStyleFlags(uVar8,&uStack_30);
+        MapUiThemeCodeToStyleFlags(uVar8,&uStack_30);
         unaff_ESI = CONCAT22((short)((uint)unaff_ESI >> 0x10),puVar6[6]);
         unaff_EDI = CONCAT22((short)((uint)unaff_EDI >> 0x10),*puVar6);
         SetQuickDrawColorAndSyncGlobals(uStack_30);
-        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_28);
+        SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
+        THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_28);
         SetQuickDrawColorAndSyncGlobals(uStack_2c);
-        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_28);
+        SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
+        THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_28);
         uStack_4 = 0xffffffff;
         CString::~CString(&CStack_28);
       }
@@ -3383,15 +3383,15 @@ void __fastcall thunk_RenderTerrainAndMinorNationLegendLabels(int param_1)
         uStack_4 = 1;
         if (*(short *)&pTVar3->field_0xe == -1) {
           FormatOverlayTerrainLabelText(&CStack_28);
-          thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_2c);
-          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&uStack_30);
+          MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_2c);
+          MapUiThemeCodeToStyleFlags(0x2b68,&uStack_30);
         }
         else {
           if (pTVar3 != (TCountry *)0x0) {
             if ((99 < *(short *)&pTVar3->field_0xe) && (*(short *)&pTVar3->field_0xe < 200)) {
               LoadNationDisplayNameSharedRefFromField8(&CStack_28);
-              thunk_MapUiThemeCodeToStyleFlags(0x2b67,&uStack_2c);
-              thunk_MapUiThemeCodeToStyleFlags(0x2b6f,&uStack_30);
+              MapUiThemeCodeToStyleFlags(0x2b67,&uStack_2c);
+              MapUiThemeCodeToStyleFlags(0x2b6f,&uStack_30);
               goto LAB_004f4d17;
             }
           }
@@ -3414,9 +3414,9 @@ void __fastcall thunk_RenderTerrainAndMinorNationLegendLabels(int param_1)
           else {
             iVar5 = uVar2 - 200;
           }
-          thunk_MapUiThemeCodeToStyleFlags
+          MapUiThemeCodeToStyleFlags
                     (CONCAT22((short)((uint)iVar5 >> 0x10),auStack_1c[(short)iVar5]),&uStack_2c);
-          thunk_MapUiThemeCodeToStyleFlags(0x2b68,&uStack_30);
+          MapUiThemeCodeToStyleFlags(0x2b68,&uStack_30);
           FormatOverlayTerrainLabelText(&CStack_28);
         }
 LAB_004f4d17:
@@ -3425,11 +3425,11 @@ LAB_004f4d17:
         unaff_EDI = CONCAT22((short)((uint)unaff_EDI >> 0x10),*puVar6);
         uStack_4._0_1_ = 2;
         SetQuickDrawColorAndSyncGlobals(uStack_30);
-        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_28);
+        SetQuickDrawTextOriginWithContextOffset(unaff_EDI + 1,unaff_ESI + 1);
+        THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_28);
         SetQuickDrawColorAndSyncGlobals(uStack_2c);
-        thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_28);
+        SetQuickDrawTextOriginWithContextOffset(unaff_EDI,unaff_ESI);
+        THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_28);
         uStack_4 = CONCAT31(uStack_4._1_3_,1);
         thunk_DispatchHandleMapLookupWithReadPtrProbe(uStack_20,0);
         uStack_4 = 0xffffffff;
@@ -3446,10 +3446,10 @@ LAB_004f4d17:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405EF2
-// GHIDRA_NAME thunk_HandlePendingEventActivationByCode
-// GHIDRA_PROTO undefined thunk_HandlePendingEventActivationByCode()
+// GHIDRA_NAME HandlePendingEventActivationByCode
+// GHIDRA_PROTO undefined HandlePendingEventActivationByCode()
 
-char __thiscall thunk_HandlePendingEventActivationByCode(int param_1,short param_2)
+char __thiscall HandlePendingEventActivationByCode(int param_1,short param_2)
 
 {
   bool bVar1;
@@ -3494,7 +3494,7 @@ char __thiscall thunk_HandlePendingEventActivationByCode(int param_1,short param
       } while (cVar5 == '\0');
     }
     if ((cVar5 != '\0') && (!bVar1)) {
-      thunk_ActivatePendingEventAndRefreshView(iVar4);
+      ActivatePendingEventAndRefreshView(iVar4);
       return cVar5;
     }
     if (*(int **)(param_1 + 8) != (int *)0x0) {
@@ -3507,24 +3507,24 @@ char __thiscall thunk_HandlePendingEventActivationByCode(int param_1,short param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F47
-// GHIDRA_NAME thunk_RenderUniversityRecruitmentRequirementGrid
-// GHIDRA_PROTO void __thiscall thunk_RenderUniversityRecruitmentRequirementGrid(RECT * pClipRect)
+// GHIDRA_NAME TUniversityView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO void __thiscall TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT * pClipRect)
 
 void __thiscall
-TUniversityView::thunk_RenderUniversityRecruitmentRequirementGrid
+TUniversityView::OrphanTiny_ReturnZero_0048a730
           (TUniversityView *this,RECT *pClipRect)
 
 {
-  OrphanTiny_ReturnZero_0048a730(this,pClipRect);
+  TDropShadowText::OrphanTiny_ReturnZero_0048a730(this,pClipRect);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F97
-// GHIDRA_NAME thunk_InitializeDialogTemplateDCBaseState
-// GHIDRA_PROTO undefined thunk_InitializeDialogTemplateDCBaseState()
+// GHIDRA_NAME InitializeDialogTemplateDCBaseState
+// GHIDRA_PROTO undefined InitializeDialogTemplateDCBaseState()
 
 TControl * __thiscall
-thunk_InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
+InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
 
 {
   TControl::InitializeDialogTemplateFromId(param_1,0xdc,param_2);
@@ -3540,33 +3540,33 @@ thunk_InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F9C
-// GHIDRA_NAME thunk_IsCurrentActiveCityProductionView
-// GHIDRA_PROTO undefined __thiscall thunk_IsCurrentActiveCityProductionView(void)
+// GHIDRA_NAME TSoundPlayer::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TSoundPlayer::thunk_IsCurrentActiveCityProductionView(TSoundPlayer *this)
+void __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(TSoundPlayer *this)
 
 {
-  GetTEventHandlerClassNamePointer(this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FC4
-// GHIDRA_NAME thunk_QueueCityOrderType10CommandIfReady
-// GHIDRA_PROTO undefined __thiscall thunk_QueueCityOrderType10CommandIfReady(int * param_1)
+// GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityOrderType10CommandIfReady(int * param_1)
 
-void __thiscall TCityTask::thunk_QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
+void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this,int *param_1)
 
 {
-  QueueCityOrderType10CommandIfReady(this,param_1);
+  TCityTask::QueueCityOrderType10CommandIfReady(this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405FEC
-// GHIDRA_NAME thunk_SetUiColorDescriptorGoldTriplet
-// GHIDRA_PROTO undefined thunk_SetUiColorDescriptorGoldTriplet()
+// GHIDRA_NAME SetUiColorDescriptorGoldTriplet
+// GHIDRA_PROTO undefined SetUiColorDescriptorGoldTriplet()
 
 void __thiscall
-thunk_SetUiColorDescriptorGoldTriplet
+SetUiColorDescriptorGoldTriplet
           (int param_1,undefined1 param_2,undefined4 param_3,undefined4 param_4)
 
 {
@@ -3578,11 +3578,11 @@ thunk_SetUiColorDescriptorGoldTriplet
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406023
-// GHIDRA_NAME thunk_ApplyTacticalDamageAndDeathState
-// GHIDRA_PROTO void __thiscall thunk_ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
+// GHIDRA_NAME TNavyBattle::ApplyTacticalDamageAndDeathState
+// GHIDRA_PROTO void __thiscall TNavyBattle::ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)
 
 void __thiscall
-TNavyBattle::thunk_ApplyTacticalDamageAndDeathState
+TNavyBattle::ApplyTacticalDamageAndDeathState
           (TNavyBattle *this,float damageAmount,int damageMode)
 
 {
@@ -3627,10 +3627,10 @@ TNavyBattle::thunk_ApplyTacticalDamageAndDeathState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004060A5
-// GHIDRA_NAME thunk_GetMapContextActionLabelToken
-// GHIDRA_PROTO ushort __cdecl thunk_GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
+// GHIDRA_NAME GetMapContextActionLabelToken
+// GHIDRA_PROTO ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
 
-ushort __cdecl thunk_GetMapContextActionLabelToken(short nTileIndex,int dwInputFlags)
+ushort __cdecl GetMapContextActionLabelToken(short nTileIndex,int dwInputFlags)
 
 {
   int *piVar1;
@@ -3644,17 +3644,17 @@ ushort __cdecl thunk_GetMapContextActionLabelToken(short nTileIndex,int dwInputF
   undefined2 uVar9;
   ushort uVar10;
   
-  iVar5 = thunk_GetMapContextActionCode(nTileIndex,dwInputFlags);
+  iVar5 = GetMapContextActionCode(nTileIndex,dwInputFlags);
   if (iVar5 == 0) {
-    pvVar6 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
+    pvVar6 = GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
     if (pvVar6 != (void *)0x0) {
       if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + nTileIndex * 0x24) == '\x05') {
-        pTVar7 = thunk_GetMapActionContextByTileIndex(nTileIndex);
+        pTVar7 = GetMapActionContextByTileIndex(nTileIndex);
         if (pTVar7 == (TScatteredShipsMission *)0x0) {
           bVar2 = false;
         }
         else {
-          cVar3 = thunk_HasNoMapOrderEntryChildrenQueued();
+          cVar3 = HasNoMapOrderEntryChildrenQueued();
           if ((cVar3 == '\0') && (iVar5 = *(int *)((int)pvVar6 + 0x10), iVar5 != 0)) {
 LAB_00559e7e:
             if (*(char *)(iVar5 + 0xc) == '\0') goto code_r0x00559e85;
@@ -3677,7 +3677,7 @@ LAB_00559e92:
         }
 LAB_00559ee6:
         if (bVar2) {
-          iVar5 = thunk_ResolveMapOrderCommandFromActionContext(pTVar7);
+          iVar5 = ResolveMapOrderCommandFromActionContext(pTVar7);
           return (&g_awMapContextActionLabelTokenByCommand)[iVar5];
         }
       }
@@ -3719,10 +3719,10 @@ code_r0x00559e85:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004060B9
-// GHIDRA_NAME thunk_BuildCityDialogMinisterControls
-// GHIDRA_PROTO undefined __thiscall thunk_BuildCityDialogMinisterControls(int * param_1)
+// GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
+// GHIDRA_PROTO undefined __thiscall TNewTownView::BuildCityDialogMinisterControls(int * param_1)
 
-void __thiscall TNewTownView::thunk_BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
+void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this,int *param_1)
 
 {
   BuildCityDialogMinisterControls(this,param_1);
@@ -3730,11 +3730,11 @@ void __thiscall TNewTownView::thunk_BuildCityDialogMinisterControls(TNewTownView
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004060EB
-// GHIDRA_NAME thunk_HandleCivilianTileSelectionOrReportClick
-// GHIDRA_PROTO bool __thiscall thunk_HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
+// GHIDRA_NAME TCivToolbar::HandleCivilianTileSelectionOrReportClick
+// GHIDRA_PROTO bool __thiscall TCivToolbar::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)
 
 bool __thiscall
-TCivToolbar::thunk_HandleCivilianTileSelectionOrReportClick
+TCivToolbar::HandleCivilianTileSelectionOrReportClick
           (TCivToolbar *this,short nTileIndex,short nClickMode)
 
 {
@@ -3745,10 +3745,10 @@ TCivToolbar::thunk_HandleCivilianTileSelectionOrReportClick
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040610E
-// GHIDRA_NAME thunk_ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructPictureScreenVariantEntry(void)
+// GHIDRA_NAME TLineData::ConstructPictureScreenVariantEntry
+// GHIDRA_PROTO undefined __thiscall TLineData::ConstructPictureScreenVariantEntry(void)
 
-TLineData * __thiscall TLineData::thunk_ConstructPictureScreenVariantEntry(TLineData *this)
+TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -3774,10 +3774,10 @@ TLineData * __thiscall TLineData::thunk_ConstructPictureScreenVariantEntry(TLine
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406113
-// GHIDRA_NAME thunk_PopUiResourcePoolNode
-// GHIDRA_PROTO undefined thunk_PopUiResourcePoolNode()
+// GHIDRA_NAME PopUiResourcePoolNode_00479A80
+// GHIDRA_PROTO undefined PopUiResourcePoolNode_00479A80()
 
-undefined4 __fastcall thunk_PopUiResourcePoolNode(int param_1)
+undefined4 __fastcall PopUiResourcePoolNode_00479A80(int param_1)
 
 {
   undefined4 *puVar1;
@@ -3814,23 +3814,23 @@ undefined4 __fastcall thunk_PopUiResourcePoolNode(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040611D
-// GHIDRA_NAME thunk_HandleTradeMoveStepCommand
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTradeMoveStepCommand(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TIndustryCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TIndustryCluster::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
-TIndustryCluster::thunk_HandleTradeMoveStepCommand
+TIndustryCluster::OrphanRetStub_0059add0
           (TIndustryCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  OrphanRetStub_0059add0(this,param_1,param_2,param_3);
+  TSoundPlayer::OrphanRetStub_0059add0(this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040619F
-// GHIDRA_NAME thunk_BuildUiMessageTextFromBracketTemplate
-// GHIDRA_PROTO undefined thunk_BuildUiMessageTextFromBracketTemplate()
+// GHIDRA_NAME BuildUiMessageTextFromBracketTemplate
+// GHIDRA_PROTO undefined BuildUiMessageTextFromBracketTemplate()
 
-void thunk_BuildUiMessageTextFromBracketTemplate(int *param_1,CString *param_2)
+void BuildUiMessageTextFromBracketTemplate(int *param_1,CString *param_2)
 
 {
   char *pcVar1;
@@ -3910,23 +3910,23 @@ void thunk_BuildUiMessageTextFromBracketTemplate(int *param_1,CString *param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004061B8
-// GHIDRA_NAME thunk_ConstructUiNumericTextEntry
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiNumericTextEntry(void)
+// GHIDRA_NAME TNumberText::ConstructUiNumericTextEntry
+// GHIDRA_PROTO undefined __thiscall TNumberText::ConstructUiNumericTextEntry(void)
 
-TNumberText * __thiscall TNumberText::thunk_ConstructUiNumericTextEntry(TNumberText *this)
+TNumberText * __thiscall TNumberText::ConstructUiNumericTextEntry(TNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)&this->field_0xa0 = 0;
   this->vftable = (TNumberTextVtbl *)&DAT_0063e8b0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004061D1
-// GHIDRA_NAME thunk_InitializeDirectSoundDeviceAndChannels_004061D1
-// GHIDRA_PROTO undefined thunk_InitializeDirectSoundDeviceAndChannels_004061D1()
+// GHIDRA_NAME InitializeDirectSoundDeviceAndChannels
+// GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels()
 
-undefined4 __fastcall thunk_InitializeDirectSoundDeviceAndChannels_004061D1(int *param_1)
+undefined4 __fastcall InitializeDirectSoundDeviceAndChannels(int *param_1)
 
 {
   HMODULE pHVar1;
@@ -3941,7 +3941,7 @@ undefined4 __fastcall thunk_InitializeDirectSoundDeviceAndChannels_004061D1(int 
     pHVar1 = LoadLibraryExA(*(LPCSTR *)(DAT_006a1348 + 0xdc),(HANDLE)0x0,2);
     param_1[0xc] = (int)pHVar1;
   }
-  iVar2 = DirectSoundCreate(0,param_1,0);
+  iVar2 = DSOUND.DLL::DirectSoundCreate(0,param_1,0);
   param_1[0xd] = iVar2;
   if (iVar2 == 0) {
     pCVar3 = AfxGetThread();
@@ -3973,10 +3973,10 @@ undefined4 __fastcall thunk_InitializeDirectSoundDeviceAndChannels_004061D1(int 
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004061DB
-// GHIDRA_NAME thunk_RefreshMainViewNationIndicatorForCurrentTurnEvent
-// GHIDRA_PROTO undefined __thiscall thunk_RefreshMainViewNationIndicatorForCurrentTurnEvent(void)
+// GHIDRA_NAME TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
+// GHIDRA_PROTO undefined __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(void)
 
-void __thiscall TViewMgr::thunk_RefreshMainViewNationIndicatorForCurrentTurnEvent(TViewMgr *this)
+void __thiscall TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent(TViewMgr *this)
 
 {
   RefreshMainViewNationIndicatorForCurrentTurnEvent(this);
@@ -3984,10 +3984,10 @@ void __thiscall TViewMgr::thunk_RefreshMainViewNationIndicatorForCurrentTurnEven
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040623A
-// GHIDRA_NAME thunk_SetUiResourceContextStringCode
-// GHIDRA_PROTO undefined thunk_SetUiResourceContextStringCode()
+// GHIDRA_NAME SetUiResourceContextStringCode
+// GHIDRA_PROTO undefined SetUiResourceContextStringCode()
 
-void thunk_SetUiResourceContextStringCode(int param_1)
+void SetUiResourceContextStringCode(int param_1)
 
 {
   g_pUiResourceContext[0x21] = param_1;
@@ -3995,10 +3995,10 @@ void thunk_SetUiResourceContextStringCode(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406271
-// GHIDRA_NAME thunk_ComputeWeightedNeighborLinkScoreForNode
-// GHIDRA_PROTO undefined thunk_ComputeWeightedNeighborLinkScoreForNode()
+// GHIDRA_NAME ComputeWeightedNeighborLinkScoreForNode
+// GHIDRA_PROTO undefined ComputeWeightedNeighborLinkScoreForNode()
 
-void thunk_ComputeWeightedNeighborLinkScoreForNode(undefined4 param_1)
+void ComputeWeightedNeighborLinkScoreForNode(undefined4 param_1)
 
 {
   ComputeWeightedNeighborLinkScoreForNodeIndex(param_1);
@@ -4006,11 +4006,11 @@ void thunk_ComputeWeightedNeighborLinkScoreForNode(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040630C
-// GHIDRA_NAME thunk_InitializeCityProductionDialog
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeCityProductionDialog(int param_1, int * param_2)
+// GHIDRA_NAME TToolBarCluster::InitializeCityProductionDialog
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::InitializeCityProductionDialog(int param_1, int * param_2)
 
 void __thiscall
-TToolBarCluster::thunk_InitializeCityProductionDialog
+TToolBarCluster::InitializeCityProductionDialog
           (TToolBarCluster *this,int param_1,int *param_2)
 
 {
@@ -4019,10 +4019,10 @@ TToolBarCluster::thunk_InitializeCityProductionDialog
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040638E
-// GHIDRA_NAME thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
-// GHIDRA_PROTO undefined thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter()
+// GHIDRA_NAME ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
+// GHIDRA_PROTO undefined ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter()
 
-float10 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
+float10 ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
                   (undefined4 param_1,int param_2)
 
 {
@@ -4043,7 +4043,7 @@ float10 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
   afStack_10[1] = 0.0;
   afStack_10[2] = 0.0;
   afStack_10[3] = 0.0;
-  iVar4 = thunk_GetNavyPrimaryOrderListHead();
+  iVar4 = GetNavyPrimaryOrderListHead();
   iVar5 = iVar4;
   for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
     if (*(int *)(iVar4 + 8) == param_2) {
@@ -4094,10 +4094,10 @@ float10 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406398
-// GHIDRA_NAME thunk_ResolveMapOrderChainsForTurnPhase
-// GHIDRA_PROTO void __thiscall thunk_ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
+// GHIDRA_NAME TSimMgr::ResolveMapOrderChainsForTurnPhase
+// GHIDRA_PROTO void __thiscall TSimMgr::ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
 
-void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,int *pOrderManager)
+void __thiscall TSimMgr::ResolveMapOrderChainsForTurnPhase(TSimMgr *this,int *pOrderManager)
 
 {
   int iVar1;
@@ -4142,13 +4142,13 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
                               (CONCAT22(uVar12,*(undefined2 *)(iVar10 + 0x1c)),
                                CONCAT22(uVar12,*(undefined2 *)(iVar1 + 0x1c))), cVar4 != '\0')) &&
            (*(int *)(iVar10 + 8) == 6)) {
-          cVar4 = thunk_ShouldAttemptMapOrderPairResolution(iVar10);
+          cVar4 = ShouldAttemptMapOrderPairResolution(iVar10);
           if ((cVar4 == '\0') ||
-             (cVar4 = thunk_TryMarkLosingMapOrderEntryFromForceBalance(iVar10), cVar4 == '\0')) {
+             (cVar4 = TryMarkLosingMapOrderEntryFromForceBalance(iVar10), cVar4 == '\0')) {
             cVar4 = '\0';
           }
           else {
-            cVar4 = thunk_TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
+            cVar4 = TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
           }
           if (cVar4 != '\0') {
             return;
@@ -4177,14 +4177,14 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
             uVar8 = 0;
           }
           if ((char)uVar8 != '\0') {
-            uVar9 = thunk_ShouldAttemptMapOrderPairResolution(iVar10);
+            uVar9 = ShouldAttemptMapOrderPairResolution(iVar10);
             if (((char)uVar9 == '\0') ||
-               (uVar9 = thunk_TryMarkLosingMapOrderEntryFromForceBalance(iVar10),
+               (uVar9 = TryMarkLosingMapOrderEntryFromForceBalance(iVar10),
                (char)uVar9 == '\0')) {
               uVar9 = uVar9 & 0xffffff00;
             }
             else {
-              uVar9 = thunk_TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
+              uVar9 = TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
             }
             if ((char)uVar9 != '\0') {
               return;
@@ -4199,7 +4199,7 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
   for (pTVar13 = *(TSimMgr **)&this->field_0x4; pTVar13 != (TSimMgr *)0x0;
       pTVar13 = *(TSimMgr **)&pTVar13->field_0x2c) {
     if ((*(int *)&pTVar13->field_0x8 == 1) && (pTVar13->field_0x26 == '\0')) {
-      thunk_ApplyMapOrderTypeExecutionEffects(pTVar13,unaff_EDI);
+      TSimMgr::ApplyMapOrderTypeExecutionEffects(pTVar13,unaff_EDI);
     }
   }
   for (iVar1 = *(int *)&this->field_0x4; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x2c)) {
@@ -4218,14 +4218,14 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
         iVar10 = CONCAT31(extraout_var_00,cVar4);
         if (((cVar4 != '\0') && (iVar10 = *(int *)(iVar1 + 0x18), *(int *)(iVar11 + 0x18) == iVar10)
             ) && (*(int *)(iVar11 + 8) != 6)) {
-          uVar9 = thunk_ShouldAttemptMapOrderPairResolution(iVar11);
+          uVar9 = ShouldAttemptMapOrderPairResolution(iVar11);
           if (((char)uVar9 == '\0') ||
-             (uVar9 = thunk_TryMarkLosingMapOrderEntryFromForceBalance(iVar11), (char)uVar9 == '\0')
+             (uVar9 = TryMarkLosingMapOrderEntryFromForceBalance(iVar11), (char)uVar9 == '\0')
              ) {
             uVar9 = uVar9 & 0xffffff00;
           }
           else {
-            uVar9 = thunk_TryResolveMapOrderEntryPairExecution(iVar11,auStack_4);
+            uVar9 = TryResolveMapOrderEntryPairExecution(iVar11,auStack_4);
           }
           if ((char)uVar9 != '\0') {
             return;
@@ -4243,7 +4243,7 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
           pTVar13 = *(TSimMgr **)&pTVar13->field_0x2c) {
         if (((*(int *)&pTVar13->field_0x8 == 5) || (*(int *)&pTVar13->field_0x8 == 8)) &&
            (pTVar13->field_0x26 == '\0')) {
-          thunk_ApplyMapOrderTypeExecutionEffects(pTVar13,unaff_EDI);
+          TSimMgr::ApplyMapOrderTypeExecutionEffects(pTVar13,unaff_EDI);
         }
       }
       ProcessNationMapOrderInteractionsAndApplyOutcomes(1);
@@ -4269,10 +4269,10 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
         pTVar13 = extraout_EDX;
         if (((cVar4 != '\0') && (*(int *)(iVar10 + 0x18) == *(int *)(iVar1 + 0x18))) &&
            (pTVar13 = *(TSimMgr **)(iVar10 + 8), pTVar13 == (TSimMgr *)0x5)) {
-          sVar5 = thunk_GetMapOrderEntryChildCount();
+          sVar5 = GetMapOrderEntryChildCount();
           pTVar13 = extraout_EDX_00;
           if ((sVar5 == 0) ||
-             (sVar5 = thunk_GetMapOrderEntryChildCount(), pTVar13 = extraout_EDX_01, sVar5 == 0)) {
+             (sVar5 = GetMapOrderEntryChildCount(), pTVar13 = extraout_EDX_01, sVar5 == 0)) {
             bVar3 = false;
           }
           else if (((*(int *)(iVar1 + 8) == 6) || (*(int *)(iVar10 + 8) == 6)) ||
@@ -4281,11 +4281,11 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
             bVar3 = true;
           }
           else {
-            sVar6 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
-            sVar5 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+            sVar6 = CalculateMapOrderEntryAverageChildRatingX10();
+            sVar5 = CalculateMapOrderEntryAverageChildRatingX10();
             sVar5 = (sVar6 + 0x32) - sVar5;
-            sVar6 = thunk_GetMapOrderEntryChildCount();
-            sVar7 = thunk_GetMapOrderEntryChildCount();
+            sVar6 = GetMapOrderEntryChildCount();
+            sVar7 = GetMapOrderEntryChildCount();
             if (10 < (short)(sVar6 + sVar7)) {
               sVar5 = sVar5 + -10 + sVar6 + sVar7;
             }
@@ -4294,9 +4294,9 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
             bVar3 = (int)pTVar13 < (int)sVar5;
           }
           if ((bVar3) &&
-             (cVar4 = thunk_TryMarkLosingMapOrderEntryFromForceBalance(iVar10),
+             (cVar4 = TryMarkLosingMapOrderEntryFromForceBalance(iVar10),
              pTVar13 = extraout_EDX_02, cVar4 != '\0')) {
-            cVar4 = thunk_TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
+            cVar4 = TryResolveMapOrderEntryPairExecution(iVar10,auStack_4);
             pTVar13 = extraout_EDX_03;
           }
           else {
@@ -4314,11 +4314,11 @@ void __thiscall TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase(TSimMgr *this,i
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004063BB
-// GHIDRA_NAME thunk_SetGlobalRegionDevelopmentStageByte
-// GHIDRA_PROTO undefined __thiscall thunk_SetGlobalRegionDevelopmentStageByte(short param_1, undefined1 param_2)
+// GHIDRA_NAME TGlobalMapState::SetRegionDevelopmentStageByte
+// GHIDRA_PROTO undefined __thiscall TGlobalMapState::SetRegionDevelopmentStageByte(short param_1, undefined1 param_2)
 
 void __thiscall
-TGlobalMapState::thunk_SetGlobalRegionDevelopmentStageByte
+TGlobalMapState::SetRegionDevelopmentStageByte
           (TGlobalMapState *this,short param_1,undefined1 param_2)
 
 {
@@ -4327,8 +4327,8 @@ TGlobalMapState::thunk_SetGlobalRegionDevelopmentStageByte
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004063CF
-// GHIDRA_NAME thunk_HandleCommand10AndPostTurnEvent5DC
-// GHIDRA_PROTO undefined __thiscall thunk_HandleCommand10AndPostTurnEvent5DC(int param_1)
+// GHIDRA_NAME THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk for HandleCommand10AndPostTurnEvent5DC.
 // GHIDRA_COMMENT_END
@@ -4336,16 +4336,16 @@ TGlobalMapState::thunk_SetGlobalRegionDevelopmentStageByte
 /* Thunk for HandleCommand10AndPostTurnEvent5DC. */
 
 void __thiscall
-THighScoresPicture::thunk_HandleCommand10AndPostTurnEvent5DC(THighScoresPicture *this,int param_1)
+THighScoresPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(THighScoresPicture *this,int param_1)
 
 {
-  ReleaseRuntimeSelectionOwnerAndDestroyObject(this,param_1);
+  TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406410
-// GHIDRA_NAME thunk_BuildUniversityDialogShell
-// GHIDRA_PROTO int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)
+// GHIDRA_NAME BuildUniversityDialogShell
+// GHIDRA_PROTO int * __cdecl BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: int * ThunkBuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)
 // GHIDRA_COMMENT_END
@@ -4353,7 +4353,7 @@ THighScoresPicture::thunk_HandleCommand10AndPostTurnEvent5DC(THighScoresPicture 
 /* Setting prototype: int * ThunkBuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)
     */
 
-int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
+int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
 
 {
   code *pcVar1;
@@ -4447,7 +4447,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     else {
       piStack_38 = (int *)0x4749ff;
-      piVar4 = (int *)TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+      piVar4 = (int *)TControl::ConstructUiWindowResourceEntryType4B340(this);
     }
     uStack_4 = 0xffffffff;
     if (g_pUiResourceHead == (int *)0x0) {
@@ -4460,7 +4460,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     pTStack_3c = (TEditText *)0x474a39;
     g_pUiResourceContext = piVar4;
     piStack_38 = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     piStack_38 = (int *)0x1;
     pTStack_3c = (TEditText *)0x0;
     ppTStack_44 = &pTStack_24;
@@ -4473,7 +4473,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     uStack_18 = 0x3d;
     pTStack_54 = (TStaticText *)0x474a71;
     piStack_4c = (int *)uVar13;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piStack_38 = (int *)0x0;
     pTStack_3c = (TEditText *)0x1;
@@ -4509,7 +4509,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     puStack_58 = (undefined1 *)0x474af5;
     (*pcVar1)();
     puStack_58 = (undefined1 *)0x474afc;
-    thunk_SetUiColorDescriptorGoldTriplet();
+    SetUiColorDescriptorGoldTriplet();
     piStack_4c = (int *)0xac;
     g_pUiResourceContext = (int *)0x0;
     uStack_50 = 0x474b0c;
@@ -4531,13 +4531,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     uStack_50 = 0x474b60;
     g_pUiResourceContext = piVar4;
     piStack_4c = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     piStack_4c = (int *)0x1;
     uStack_50 = 0;
     puStack_58 = &stack0xffffffd0;
     pTStack_54 = (TStaticText *)0x0;
     piStack_38 = (int *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piStack_4c = (int *)0x0;
     uStack_50 = 1;
@@ -4567,7 +4567,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -4577,14 +4577,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     ppuStack_70 = &puStack_48;
     uStack_6c = 0;
     puStack_48 = (undefined4 *)0x17;
     ppTStack_44 = (TEditText **)0x15;
     uStack_50 = 0x60;
     piStack_4c = (int *)0xe5;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x61706170;
     pTVar6->field3c = 0;
@@ -4604,10 +4604,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     pTStack_84 = (TStaticText *)0x3;
     puStack_88 = &DAT_00694378;
-    thunk_BindUiResourceTextAndStyle();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -4618,7 +4618,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar6 = (TEditText *)AllocateWithFallbackHandler();
     puStack_48 = (undefined4 *)0x3;
     pTStack_3c = pTVar6;
@@ -4626,7 +4626,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -4637,10 +4637,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_88 = &stack0xffffffa0;
     pTStack_84 = (TStaticText *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x63706170;
     pTVar6->field3c = 0;
@@ -4660,8 +4660,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -4672,13 +4672,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_54 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTStack_54 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTStack_54);
+      piVar4 = (int *)TStaticText::TStaticText(pTStack_54);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4686,8 +4686,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x66697831;
     piVar4[0xf] = 0;
@@ -4703,17 +4703,17 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     ppuStack_70 = (undefined4 **)0x5;
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     ppuStack_70 = (undefined4 **)0xffffffff;
     piVar5 = piVar4;
@@ -4722,10 +4722,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_88 = (undefined *)0x49;
     pTStack_84 = (TStaticText *)0xe;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x66697830;
     piVar4[0xf] = 0;
@@ -4741,16 +4741,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4758,8 +4758,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x66697832;
     piVar4[0xf] = 0;
@@ -4776,16 +4776,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_84 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTStack_84 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTStack_84);
+      piVar4 = (int *)TStaticText::TStaticText(pTStack_84);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4793,8 +4793,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x63617368;
     piVar4[0xf] = 0;
@@ -4810,16 +4810,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4827,8 +4827,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x64657363;
     piVar4[0xf] = 0;
@@ -4844,16 +4844,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4861,8 +4861,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x74726561;
     piVar4[0xf] = 0;
@@ -4878,16 +4878,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4895,8 +4895,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x7469746c;
     piVar4[0xf] = 0;
@@ -4912,16 +4912,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar7 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTVar7 == (TStaticText *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      piVar4 = (int *)TStaticText::TStaticText(pTVar7);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4929,8 +4929,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x756e6974;
     piVar4[0xf] = 0;
@@ -4946,16 +4946,16 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
-    thunk_BindUiResourceTextAndStyle();
+    SetUiResourceContextTagWord();
+    BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar8 = (TCluster *)AllocateWithFallbackHandler();
     if (pTVar8 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTVar8);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTVar8);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4963,8 +4963,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x73656c65;
     piVar4[0xf] = 0;
@@ -4987,7 +4987,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTVar8);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTVar8);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -4995,8 +4995,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x636c7530;
     piVar4[0xf] = 0;
@@ -5027,8 +5027,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6e756d30;
     piVar4[0xf] = 0;
@@ -5052,7 +5052,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -5062,10 +5062,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_158 = &stack0xfffffed0;
     pTStack_154 = (TCivilianButton *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
@@ -5084,7 +5084,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       iVar10 = 0;
     }
     else {
-      iVar10 = thunk_ZeroUiResourceContextStyleBytes();
+      iVar10 = ZeroUiResourceContextStyleBytes();
     }
     piVar4[0x12] = iVar10;
     *(undefined4 *)(iVar10 + 4) = 0;
@@ -5097,10 +5097,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     pTStack_16c = (TCivilianButton *)0x3;
     puStack_170 = &DAT_00694378;
-    thunk_BindUiResourceTextAndStyle();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -5111,14 +5111,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5126,10 +5126,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_170 = &stack0xfffffeb8;
     pTStack_16c = (TCivilianButton *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6d696e75;
     piVar4[0xf] = 0;
@@ -5151,13 +5151,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5165,10 +5165,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_188 = &stack0xfffffea0;
     pTStack_184 = (TCluster *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x706c7573;
     piVar4[0xf] = 0;
@@ -5190,14 +5190,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTStack_154 = (TCivilianButton *)AllocateWithFallbackHandler();
     if (pTStack_154 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTStack_154);
+      piVar4 = (int *)TRadioPictureButton::TRadioPictureButton(pTStack_154);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5205,10 +5205,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_1a0 = &stack0xfffffe88;
     uStack_19c = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x63697630;
     piVar4[0xf] = 0;
@@ -5230,13 +5230,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_16c = (TCivilianButton *)AllocateWithFallbackHandler();
     if (pTStack_16c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTStack_16c);
+      piVar4 = (int *)TRadioPictureButton::TRadioPictureButton(pTStack_16c);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5244,10 +5244,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_1b8 = &stack0xfffffe70;
     uStack_1b4 = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x63697631;
     piVar4[0xf] = 0;
@@ -5269,13 +5269,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_184 = (TCluster *)AllocateWithFallbackHandler();
     if (pTStack_184 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTStack_184);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTStack_184);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5283,10 +5283,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_1d0 = &stack0xfffffe58;
     uStack_1cc = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x636c7531;
     piVar4[0xf] = 0;
@@ -5322,10 +5322,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_1b8 = (undefined1 *)0x12;
     uStack_1b4 = 0x14;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6e756d31;
     piVar4[0xf] = 0;
@@ -5350,7 +5350,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -5361,12 +5361,12 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     ppuStack_1f8 = &puStack_1d0;
     pTStack_1f4 = (TCivilianButton *)0x0;
     puStack_1d0 = (undefined1 *)0x13;
     uStack_1cc = 0x11;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
@@ -5385,7 +5385,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       iVar10 = 0;
     }
     else {
-      iVar10 = thunk_ZeroUiResourceContextStyleBytes();
+      iVar10 = ZeroUiResourceContextStyleBytes();
     }
     piVar4[0x12] = iVar10;
     *(undefined4 *)(iVar10 + 4) = 0;
@@ -5398,10 +5398,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     pTStack_20c = (TCluster *)0x3;
     puStack_210 = &DAT_00694378;
-    thunk_BindUiResourceTextAndStyle();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -5412,15 +5412,15 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     puStack_1d0 = (undefined1 *)0x19;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     puStack_1d0 = (undefined1 *)0xffffffff;
     piVar5 = piVar4;
@@ -5429,10 +5429,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_210 = &stack0xfffffe18;
     pTStack_20c = (TCluster *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6d696e75;
     piVar4[0xf] = 0;
@@ -5454,13 +5454,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5468,10 +5468,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_228 = &stack0xfffffe00;
     uStack_224 = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x706c7573;
     piVar4[0xf] = 0;
@@ -5493,14 +5493,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTStack_1f4 = (TCivilianButton *)AllocateWithFallbackHandler();
     if (pTStack_1f4 == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTStack_1f4);
+      piVar4 = (int *)TRadioPictureButton::TRadioPictureButton(pTStack_1f4);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5508,10 +5508,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_240 = &stack0xfffffde8;
     uStack_23c = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x63697632;
     piVar4[0xf] = 0;
@@ -5533,13 +5533,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_20c = (TCluster *)AllocateWithFallbackHandler();
     if (pTStack_20c == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTStack_20c);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTStack_20c);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5547,10 +5547,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_258 = &stack0xfffffdd0;
     uStack_254 = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x636c7532;
     piVar4[0xf] = 0;
@@ -5586,10 +5586,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_240 = (undefined1 *)0x12;
     uStack_23c = 0x14;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6e756d32;
     piVar4[0xf] = 0;
@@ -5614,7 +5614,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -5625,12 +5625,12 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     ppuStack_280 = &puStack_258;
     pTStack_27c = (TCivilianButton *)0x0;
     puStack_258 = (undefined1 *)0x13;
     uStack_254 = 0x11;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
@@ -5649,7 +5649,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       iVar10 = 0;
     }
     else {
-      iVar10 = thunk_ZeroUiResourceContextStyleBytes();
+      iVar10 = ZeroUiResourceContextStyleBytes();
     }
     piVar4[0x12] = iVar10;
     *(undefined4 *)(iVar10 + 4) = 0;
@@ -5662,10 +5662,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     pTStack_294 = (TCluster *)0x3;
     puStack_298 = &DAT_00694378;
-    thunk_BindUiResourceTextAndStyle();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -5676,15 +5676,15 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     puStack_258 = (undefined1 *)0x20;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     puStack_258 = (undefined1 *)0xffffffff;
     piVar5 = piVar4;
@@ -5693,10 +5693,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_298 = &stack0xfffffd90;
     pTStack_294 = (TCluster *)0x0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6d696e75;
     piVar4[0xf] = 0;
@@ -5718,13 +5718,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5732,10 +5732,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_2b0 = &stack0xfffffd78;
     uStack_2ac = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x706c7573;
     piVar4[0xf] = 0;
@@ -5757,14 +5757,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTStack_27c = (TCivilianButton *)AllocateWithFallbackHandler();
     if (pTStack_27c == (TCivilianButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTStack_27c);
+      piVar4 = (int *)TRadioPictureButton::TRadioPictureButton(pTStack_27c);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5772,10 +5772,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_2c8 = &stack0xfffffd60;
     uStack_2c4 = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x63697633;
     piVar4[0xf] = 0;
@@ -5797,13 +5797,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTStack_294 = (TCluster *)AllocateWithFallbackHandler();
     if (pTStack_294 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTStack_294);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTStack_294);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5811,10 +5811,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_2e0 = &stack0xfffffd48;
     uStack_2dc = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x636c7533;
     piVar4[0xf] = 0;
@@ -5850,10 +5850,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_2c8 = (undefined1 *)0x12;
     uStack_2c4 = 0x14;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6e756d33;
     piVar4[0xf] = 0;
@@ -5878,7 +5878,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -5889,12 +5889,12 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     ppuStack_308 = &puStack_2e0;
     pTStack_304 = (TCluster *)0x0;
     puStack_2e0 = (undefined1 *)0x13;
     uStack_2dc = 0x11;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
@@ -5913,7 +5913,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       iVar10 = 0;
     }
     else {
-      iVar10 = thunk_ZeroUiResourceContextStyleBytes();
+      iVar10 = ZeroUiResourceContextStyleBytes();
     }
     piVar4[0x12] = iVar10;
     *(undefined4 *)(iVar10 + 4) = 0;
@@ -5926,10 +5926,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1b] = piVar5[1];
     piVar4[0x1c] = piVar5[2];
     piVar4[0x1d] = piVar5[3];
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     uStack_31c = 3;
     puStack_320 = &DAT_00694378;
-    thunk_BindUiResourceTextAndStyle();
+    BindUiResourceTextAndStyle();
     piVar4 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
     *(undefined2 *)(piVar4 + 0x27) = 0xff;
@@ -5940,15 +5940,15 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x2a] = 0xff;
     (**(code **)(iVar10 + 0x1e4))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     puStack_2e0 = (undefined1 *)0x27;
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     puStack_2e0 = (undefined1 *)0xffffffff;
     piVar5 = piVar4;
@@ -5957,10 +5957,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_320 = &stack0xfffffd08;
     uStack_31c = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6d696e75;
     piVar4[0xf] = 0;
@@ -5982,13 +5982,13 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
     pTVar11 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      piVar4 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -5996,10 +5996,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_338 = &stack0xfffffcf0;
     uStack_334 = 0;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x706c7573;
     piVar4[0xf] = 0;
@@ -6020,14 +6020,14 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     piVar4[0x1d] = piVar5[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     pTStack_304 = (TCluster *)AllocateWithFallbackHandler();
     if (pTStack_304 == (TCluster *)0x0) {
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = (int *)TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTStack_304);
+      piVar4 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTStack_304);
     }
     piVar5 = piVar4;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -6035,8 +6035,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x636c7534;
     piVar4[0xf] = 0;
@@ -6069,10 +6069,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = piVar5;
     g_pUiResourceContext = piVar4;
-    thunk_PushUiResourcePoolNode();
+    PushUiResourcePoolNode();
     puStack_338 = (undefined1 *)0x12;
     uStack_334 = 0x14;
-    thunk_InitializeUiResourceEntryFrameAndParent();
+    InitializeUiResourceEntryFrameAndParent();
     iVar10 = *piVar4;
     piVar4[7] = 0x6e756d34;
     piVar4[0xf] = 0;
@@ -6096,7 +6096,7 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       pTVar6 = (TEditText *)0x0;
     }
     else {
-      TEditText::thunk_ConstructUiNumericTextEntryBase(pTVar6);
+      TEditText::ConstructUiNumericTextEntryBase(pTVar6);
       pTVar6[1].vftable = (TEditTextVtbl *)0x0;
       pTVar6->vftable = (TEditTextVtbl *)&DAT_0063e8b0;
     }
@@ -6107,8 +6107,8 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
     }
     g_pUiResourceHead = (int *)pTVar3;
     g_pUiResourceContext = (int *)pTVar6;
-    thunk_PushUiResourcePoolNode();
-    thunk_InitializeUiResourceEntryFrameAndParent(0);
+    PushUiResourcePoolNode();
+    InitializeUiResourceEntryFrameAndParent(0);
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
@@ -6124,290 +6124,290 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
       iVar12 = 0;
     }
     else {
-      iVar12 = thunk_ZeroUiResourceContextStyleBytes();
+      iVar12 = ZeroUiResourceContextStyleBytes();
     }
     piVar4[0x12] = iVar12;
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     *(int *)(piVar4[0x12] + 4) = iVar10;
-    thunk_SetUiResourceContextTagWord();
+    SetUiResourceContextTagWord();
     *(int *)piVar4[0x12] = iVar10;
-    thunk_SetUiResourceLayoutValues(6,3,3);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
-    thunk_UpdateUiResourceContextMetricWord27();
+    SetUiResourceLayoutValues(6,3,3);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
+    UpdateUiResourceContextMetricWord27();
     DispatchUiResourceContextVslot1E4WithCoords(0);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar14 = (TCivilianButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar14 = (TCivilianButton *)AllocateUiResourceNode();
     if (pTVar14 == (TCivilianButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTVar14);
+      uVar13 = TRadioPictureButton::TRadioPictureButton(pTVar14);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x63697634,uVar13,9,0xaf,0x40,0x3c,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(0xc,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar14 = (TCivilianButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x63697634,uVar13,9,0xaf,0x40,0x3c,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(0xc,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar14 = (TCivilianButton *)AllocateUiResourceNode();
     if (pTVar14 == (TCivilianButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTVar14);
+      uVar13 = TRadioPictureButton::TRadioPictureButton(pTVar14);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x63697638,uVar13,0x58,0x103,0x40,0x3c,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(0xc,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar8 = (TCluster *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x63697638,uVar13,0x58,0x103,0x40,0x3c,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(0xc,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar8 = (TCluster *)AllocateUiResourceNode();
     if (pTVar8 == (TCluster *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTVar8);
+      uVar13 = TCluster::ConstructUiResourceEntryType4B0C0(pTVar8);
     }
-    thunk_RegisterUiResourceEntry(0x636c7573,0x636c7538,uVar13,0x5a,0x13f,0x3d,0x19,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(5,0,0);
-    thunk_SetUiResourceContextStringCode();
-    thunk_ClearUiResourceContext();
-    ptVar9 = (thunk_TPictureButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x636c7573,0x636c7538,uVar13,0x5a,0x13f,0x3d,0x19,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(5,0,0);
+    SetUiResourceContextStringCode();
+    ClearUiResourceContext();
+    ptVar9 = (thunk_TPictureButton *)AllocateUiResourceNode();
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
       uVar13 = thunk_TPictureButton::TPictureButton(ptVar9);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x6e756d38,uVar13,0x15,0,0x12,0x14,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    pTVar15 = (TNumberText *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x6e756d38,uVar13,0x15,0,0x12,0x14,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    pTVar15 = (TNumberText *)AllocateUiResourceNode();
     if (pTVar15 == (TNumberText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TNumberText::thunk_ConstructUiNumericTextEntry(pTVar15);
+      uVar13 = TNumberText::ConstructUiNumericTextEntry(pTVar15);
     }
-    thunk_RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar13,0xffffffff,0,0x13,0x11,0,1);
-    thunk_SetUiResourceStateFlags();
+    RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar13,0xffffffff,0,0x13,0x11,0,1);
+    SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    thunk_SetUiResourceLayoutValues(6,3,3);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
-    thunk_UpdateUiResourceContextMetricWord27();
+    SetUiResourceLayoutValues(6,3,3);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
+    UpdateUiResourceContextMetricWord27();
     DispatchUiResourceContextVslot1E4WithCoords(0);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar8 = (TCluster *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar8 = (TCluster *)AllocateUiResourceNode();
     if (pTVar8 == (TCluster *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TCluster::thunk_ConstructUiResourceEntryType4B0C0(pTVar8);
+      uVar13 = TCluster::ConstructUiResourceEntryType4B0C0(pTVar8);
     }
-    thunk_RegisterUiResourceEntry(0x636c7573,0x636c7535,uVar13,0x5a,0xeb,0x3d,0x19,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(5,0,0);
-    thunk_SetUiResourceContextStringCode();
-    thunk_ClearUiResourceContext();
-    ptVar9 = (thunk_TPictureButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x636c7573,0x636c7535,uVar13,0x5a,0xeb,0x3d,0x19,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(5,0,0);
+    SetUiResourceContextStringCode();
+    ClearUiResourceContext();
+    ptVar9 = (thunk_TPictureButton *)AllocateUiResourceNode();
     if (ptVar9 == (thunk_TPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
       uVar13 = thunk_TPictureButton::TPictureButton(ptVar9);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x6e756d35,uVar13,0x15,0,0x12,0x14,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    pTVar15 = (TNumberText *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x6e756d35,uVar13,0x15,0,0x12,0x14,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    pTVar15 = (TNumberText *)AllocateUiResourceNode();
     if (pTVar15 == (TNumberText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TNumberText::thunk_ConstructUiNumericTextEntry(pTVar15);
+      uVar13 = TNumberText::ConstructUiNumericTextEntry(pTVar15);
     }
-    thunk_RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar13,0xffffffff,0,0x13,0x11,0,1);
-    thunk_SetUiResourceStateFlags();
+    RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar13,0xffffffff,0,0x13,0x11,0,1);
+    SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    thunk_SetUiResourceLayoutValues(6,3,3);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
-    thunk_UpdateUiResourceContextMetricWord27();
+    SetUiResourceLayoutValues(6,3,3);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_00694378,3,0,9);
+    UpdateUiResourceContextMetricWord27();
     DispatchUiResourceContextVslot1E4WithCoords(0);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar11 = (TUpDownPictureButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x6d696e75,uVar13,0,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     if (pTVar11 == (TUpDownPictureButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(pTVar11);
+      uVar13 = TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(10,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar14 = (TCivilianButton *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x706c7573,uVar13,0x28,0,0x14,0x14,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(10,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar14 = (TCivilianButton *)AllocateUiResourceNode();
     if (pTVar14 == (TCivilianButton *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(pTVar14);
+      uVar13 = TRadioPictureButton::TRadioPictureButton(pTVar14);
     }
-    thunk_RegisterUiResourceEntry(0x70696374,0x63697635,uVar13,0x58,0xaf,0x40,0x3c,1,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(0xc,0,0);
-    thunk_ApplyUiResourceLayoutFromContext();
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    pTVar15 = (TNumberText *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x70696374,0x63697635,uVar13,0x58,0xaf,0x40,0x3c,1,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(0xc,0,0);
+    ApplyUiResourceLayoutFromContext();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    pTVar15 = (TNumberText *)AllocateUiResourceNode();
     if (pTVar15 == (TNumberText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TNumberText::thunk_ConstructUiNumericTextEntry(pTVar15);
+      uVar13 = TNumberText::ConstructUiNumericTextEntry(pTVar15);
     }
-    thunk_RegisterUiResourceEntry(0x6e6d6272,0x63657870,uVar13,0x25,0xba,0x17,0x15,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(6,3,3);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_006943ac,3,0,9);
-    thunk_UpdateUiResourceContextMetricWord27();
+    RegisterUiResourceEntry(0x6e6d6272,0x63657870,uVar13,0x25,0xba,0x17,0x15,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(6,3,3);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_006943ac,3,0,9);
+    UpdateUiResourceContextMetricWord27();
     DispatchUiResourceContextVslot1E4WithCoords(1);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar15 = (TNumberText *)thunk_AllocateUiResourceNode();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar15 = (TNumberText *)AllocateUiResourceNode();
     if (pTVar15 == (TNumberText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TNumberText::thunk_ConstructUiNumericTextEntry(pTVar15);
+      uVar13 = TNumberText::ConstructUiNumericTextEntry(pTVar15);
     }
-    thunk_RegisterUiResourceEntry(0x6e6d6272,0x61657870,uVar13,0x25,0xe5,0x17,0x15,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(6,3,3);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_006943ac,3,0,9);
-    thunk_UpdateUiResourceContextMetricWord27();
+    RegisterUiResourceEntry(0x6e6d6272,0x61657870,uVar13,0x25,0xe5,0x17,0x15,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(6,3,3);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(0xffffffff,0xffffffff,&DAT_006943ac,3,0,9);
+    UpdateUiResourceContextMetricWord27();
     DispatchUiResourceContextVslot1E4WithCoords(1);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar7 = (TStaticText *)thunk_AllocateUiResourceNode();
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar7 = (TStaticText *)AllocateUiResourceNode();
     if (pTVar7 == (TStaticText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      uVar13 = TStaticText::TStaticText(pTVar7);
     }
-    thunk_RegisterUiResourceEntry(0x73746174,0x66697833,uVar13,0x65,0xfe,0x24,0x1a,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(0xd,0,0);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(4000,4,s_Level_1_00694b38,3,0,9);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    pTVar7 = (TStaticText *)thunk_AllocateUiResourceNode();
+    RegisterUiResourceEntry(0x73746174,0x66697833,uVar13,0x65,0xfe,0x24,0x1a,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(0xd,0,0);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(4000,4,s_Level_1_00694b38,3,0,9);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    pTVar7 = (TStaticText *)AllocateUiResourceNode();
     if (pTVar7 == (TStaticText *)0x0) {
       uVar13 = 0;
     }
     else {
-      uVar13 = TStaticText::thunk_ConstructUiTextResourceEntryBase(pTVar7);
+      uVar13 = TStaticText::TStaticText(pTVar7);
     }
-    thunk_RegisterUiResourceEntry(0x73746174,0x66697834,uVar13,0x8d,0xfe,0x24,0x1a,0,1);
-    thunk_SetUiResourceStateFlags();
-    thunk_SetUiResourceLayoutValues(0xd,0,0);
-    thunk_SetUiResourceContextTagWord(0);
-    thunk_BindUiResourceTextAndStyle(4000,4,s_Level_1_00694b38,3,0,9);
-    thunk_ClearUiResourceContext();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
-    thunk_PopUiResourcePoolNode();
+    RegisterUiResourceEntry(0x73746174,0x66697834,uVar13,0x8d,0xfe,0x24,0x1a,0,1);
+    SetUiResourceStateFlags();
+    SetUiResourceLayoutValues(0xd,0,0);
+    SetUiResourceContextTagWord(0);
+    BindUiResourceTextAndStyle(4000,4,s_Level_1_00694b38,3,0,9);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
+    PopUiResourcePoolNode_00479A80();
     if (g_pUiResourceHead != (int *)0x0) {
-      thunk_PropagateUiResourceContextRecursive();
+      PropagateUiResourceContextRecursive();
     }
     piVar4 = g_pUiResourceHead;
     *unaff_FS_OFFSET = 0x13;
@@ -6418,10 +6418,10 @@ int * __cdecl thunk_BuildUniversityDialogShell(dword dwPanelId,short nDialogType
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406438
-// GHIDRA_NAME thunk_RefreshUniversityAdvancedStatus
-// GHIDRA_PROTO undefined __thiscall thunk_RefreshUniversityAdvancedStatus(void)
+// GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TEngineerDialog::'scalar_deleting_destructor'(void)
 
-void __thiscall TEngineerDialog::thunk_RefreshUniversityAdvancedStatus(TEngineerDialog *this)
+void __thiscall TEngineerDialog::'scalar_deleting_destructor'(TEngineerDialog *this)
 
 {
   _scalar_deleting_destructor_(this);
@@ -6429,10 +6429,10 @@ void __thiscall TEngineerDialog::thunk_RefreshUniversityAdvancedStatus(TEngineer
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004064BA
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlot70
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlot70(void)
+// GHIDRA_NAME TDiplomacyMapView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot70(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(TDiplomacyMapView *this)
 
 {
   int iVar1;
@@ -6442,7 +6442,7 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot70(TDip
   piVar3 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x4ff)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x4ff)
     ;
   }
   iVar1 = *piVar3;
@@ -6457,8 +6457,8 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot70(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004064DD
-// GHIDRA_NAME thunk_InitializeTurnOrderNavigationDialogByViewportSize
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeTurnOrderNavigationDialogByViewportSize(void)
+// GHIDRA_NAME TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT 5-byte thunk-table entry that jumps to InitializeTurnOrderNavigationDialogByViewportSize (0x004FE840). Kept as explicit thunk for vtable/callgraph readability.
 // GHIDRA_COMMENT_END
@@ -6467,7 +6467,7 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot70(TDip
    (0x004FE840). Kept as explicit thunk for vtable/callgraph readability. */
 
 void __thiscall
-TToolBarCluster::thunk_InitializeTurnOrderNavigationDialogByViewportSize(TToolBarCluster *this)
+TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarCluster *this)
 
 {
   InitializeTurnOrderNavigationDialogByViewportSize(this);
@@ -6475,10 +6475,10 @@ TToolBarCluster::thunk_InitializeTurnOrderNavigationDialogByViewportSize(TToolBa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004064E2
-// GHIDRA_NAME thunk_ConstructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTViewBaseState(void)
+// GHIDRA_NAME TView::ConstructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::ConstructTViewBaseState(void)
 
-void __thiscall TView::thunk_ConstructTViewBaseState(TView *this)
+void __thiscall TView::ConstructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -6514,10 +6514,10 @@ void __thiscall TView::thunk_ConstructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406514
-// GHIDRA_NAME thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
+// GHIDRA_NAME TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog
+// GHIDRA_PROTO undefined __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(void)
 
-void __thiscall TViewMgr::thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TViewMgr *this)
+void __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TViewMgr *this)
 
 {
   HandleTurnEventVtableSlot2CInitializeHotKeyDialog(this);
@@ -6525,10 +6525,10 @@ void __thiscall TViewMgr::thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialo
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406546
-// GHIDRA_NAME thunk_FillRectWithQuickDrawBrushAndContextOffset
-// GHIDRA_PROTO undefined thunk_FillRectWithQuickDrawBrushAndContextOffset()
+// GHIDRA_NAME FillRectWithQuickDrawBrushAndContextOffset
+// GHIDRA_PROTO undefined FillRectWithQuickDrawBrushAndContextOffset()
 
-void thunk_FillRectWithQuickDrawBrushAndContextOffset(RECT *param_1)
+void FillRectWithQuickDrawBrushAndContextOffset(RECT *param_1)
 
 {
   int iVar1;
@@ -6571,11 +6571,11 @@ void thunk_FillRectWithQuickDrawBrushAndContextOffset(RECT *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406555
-// GHIDRA_NAME thunk_QueueCivilianWorkOrderWithCostCheck
-// GHIDRA_PROTO bool __thiscall thunk_QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 param_2)
+// GHIDRA_NAME TMapMgr::QueueCivilianWorkOrderWithCostCheck
+// GHIDRA_PROTO bool __thiscall TMapMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 param_2)
 
 bool __thiscall
-TMapMgr::thunk_QueueCivilianWorkOrderWithCostCheck
+TMapMgr::QueueCivilianWorkOrderWithCostCheck
           (TMapMgr *this,short nTileIndex,undefined2 param_2)
 
 {
@@ -6632,8 +6632,8 @@ TMapMgr::thunk_QueueCivilianWorkOrderWithCostCheck
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&CStack_18,CStack_48.m_pchData);
     puStack_40 = &stack0xffffff98;
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_18);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&CStack_18);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     CString::~CString(&CStack_18);
     CString::~CString(&CStack_48);
     CString::~CString(&CStack_44);
@@ -6650,10 +6650,10 @@ TMapMgr::thunk_QueueCivilianWorkOrderWithCostCheck
     if (*(short *)(&stack0xffffffc8 + *(short *)(*(int *)&this->field_0x4 + 4) * 2) != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
     }
-    iVar4 = thunk_GetTickCountDiv16();
+    iVar4 = GetTickCountDiv16();
     do {
-      thunk_PumpUiMessagesAndBackgroundTasks(1);
-      iVar5 = thunk_GetTickCountDiv16();
+      PumpUiMessagesAndBackgroundTasks(1);
+      iVar5 = GetTickCountDiv16();
       if (iVar5 < iVar4) break;
     } while (iVar5 - iVar4 < 0x1e);
     *(undefined2 *)(*(int *)&this->field_0x4 + 0x26) = (undefined2)uStack_14;
@@ -6667,17 +6667,17 @@ TMapMgr::thunk_QueueCivilianWorkOrderWithCostCheck
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040656E
-// GHIDRA_NAME thunk_InitializeTMinisterBaseOrderArrayMetrics
-// GHIDRA_PROTO undefined thunk_InitializeTMinisterBaseOrderArrayMetrics()
+// GHIDRA_NAME InitializeTMinisterBaseOrderArrayMetrics
+// GHIDRA_PROTO undefined InitializeTMinisterBaseOrderArrayMetrics()
 
 void __thiscall
-thunk_InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1,undefined4 param_2)
+InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1,undefined4 param_2)
 
 {
   undefined2 *puVar1;
   int iVar2;
   
-  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1,param_2);
+  TIndexAndRankList::InitializeTMinisterBaseOrderArray(param_1,param_2);
   puVar1 = (undefined2 *)&param_1->field_0x14;
   *(undefined2 *)&param_1->field_0x10 = 0;
   *(undefined2 *)&param_1->field_0x12 = 0;
@@ -6696,21 +6696,21 @@ thunk_InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1,undefi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406596
-// GHIDRA_NAME thunk_GetBeachheadMissionClassName
-// GHIDRA_PROTO undefined thunk_GetBeachheadMissionClassName()
+// GHIDRA_NAME TBeachheadMission::GetTBeachheadMissionClassNamePointer
+// GHIDRA_PROTO undefined TBeachheadMission::GetTBeachheadMissionClassNamePointer()
 
-undefined ** TBeachheadMission::thunk_GetBeachheadMissionClassName(void)
+undefined ** TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 
 {
   return &PTR_s_TBeachheadMission_006979e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004065AF
-// GHIDRA_NAME thunk_HandleTacticalCommandTag_raly
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTacticalCommandTag_raly(int param_1, int param_2, undefined4 param_3, char param_4)
+// GHIDRA_NAME TArmyStack::HandleTacticalCommandTag_raly
+// GHIDRA_PROTO undefined __thiscall TArmyStack::HandleTacticalCommandTag_raly(int param_1, int param_2, undefined4 param_3, char param_4)
 
 void __thiscall
-TArmyStack::thunk_HandleTacticalCommandTag_raly
+TArmyStack::HandleTacticalCommandTag_raly
           (TArmyStack *this,int param_1,int param_2,undefined4 param_3,char param_4)
 
 {
@@ -6734,10 +6734,10 @@ TArmyStack::thunk_HandleTacticalCommandTag_raly
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004065FA
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlotB8
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlotB8(void)
+// GHIDRA_NAME TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotB8(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::OrphanCallChain_C3_I32_0048c6d0(TDiplomacyMapView *this)
 
 {
   OrphanCallChain_C3_I32_0048c6d0(this);
@@ -6745,10 +6745,10 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotB8(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004065FF
-// GHIDRA_NAME thunk_GetMapImprovementTierBucketOffset
-// GHIDRA_PROTO undefined __thiscall thunk_GetMapImprovementTierBucketOffset(short param_1)
+// GHIDRA_NAME TMapMgr::GetMapImprovementTierBucketOffset
+// GHIDRA_PROTO undefined __thiscall TMapMgr::GetMapImprovementTierBucketOffset(short param_1)
 
-int __thiscall TMapMgr::thunk_GetMapImprovementTierBucketOffset(TMapMgr *this,short param_1)
+int __thiscall TMapMgr::GetMapImprovementTierBucketOffset(TMapMgr *this,short param_1)
 
 {
   undefined2 in_stack_00000006;
@@ -6760,10 +6760,10 @@ int __thiscall TMapMgr::thunk_GetMapImprovementTierBucketOffset(TMapMgr *this,sh
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040666D
-// GHIDRA_NAME thunk_ComputeTurnEventDialogPlacementByCode
-// GHIDRA_PROTO undefined __thiscall thunk_ComputeTurnEventDialogPlacementByCode(void)
+// GHIDRA_NAME TViewMgr::ComputeTurnEventDialogPlacementByCode
+// GHIDRA_PROTO undefined __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(void)
 
-void __thiscall TViewMgr::thunk_ComputeTurnEventDialogPlacementByCode(TViewMgr *this)
+void __thiscall TViewMgr::ComputeTurnEventDialogPlacementByCode(TViewMgr *this)
 
 {
   ComputeTurnEventDialogPlacementByCode(this);
@@ -6771,11 +6771,11 @@ void __thiscall TViewMgr::thunk_ComputeTurnEventDialogPlacementByCode(TViewMgr *
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004066A9
-// GHIDRA_NAME thunk_QueuePortConstructionOrder
-// GHIDRA_PROTO void __thiscall thunk_QueuePortConstructionOrder(int * pMapContext, short nTileIndex, short nNationId, undefined2 param_4)
+// GHIDRA_NAME TMapMgr::QueuePortConstructionOrder
+// GHIDRA_PROTO void __thiscall TMapMgr::QueuePortConstructionOrder(int * pMapContext, short nTileIndex, short nNationId, undefined2 param_4)
 
 void __thiscall
-TMapMgr::thunk_QueuePortConstructionOrder
+TMapMgr::QueuePortConstructionOrder
           (TMapMgr *this,int *pMapContext,short nTileIndex,short nNationId,undefined2 param_4)
 
 {
@@ -6784,11 +6784,11 @@ TMapMgr::thunk_QueuePortConstructionOrder
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040670D
-// GHIDRA_NAME thunk_InitializeTMinisterBaseOrderArray
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeTMinisterBaseOrderArray(undefined4 param_1)
+// GHIDRA_NAME TIndexAndRankList::InitializeTMinisterBaseOrderArray
+// GHIDRA_PROTO undefined __thiscall TIndexAndRankList::InitializeTMinisterBaseOrderArray(undefined4 param_1)
 
 void __thiscall
-TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray
+TIndexAndRankList::InitializeTMinisterBaseOrderArray
           (TIndexAndRankList *this,undefined4 param_1)
 
 {
@@ -6819,10 +6819,10 @@ TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406730
-// GHIDRA_NAME thunk_ProcessTurnInstructionStreamAndFinalizePhase
-// GHIDRA_PROTO undefined thunk_ProcessTurnInstructionStreamAndFinalizePhase()
+// GHIDRA_NAME ProcessTurnInstructionStreamAndFinalizePhase
+// GHIDRA_PROTO undefined ProcessTurnInstructionStreamAndFinalizePhase()
 
-void __fastcall thunk_ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
+void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
 
 {
   TZone *pTVar1;
@@ -6853,12 +6853,12 @@ void __fastcall thunk_ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   DAT_006a4398 = '\0';
   DAT_006a43b8 = 0;
   iStack_4 = 0;
-  thunk_BuildScenarioPathForModeAndIndex(*(short *)(param_1 + 0x114) + -1,2);
+  BuildScenarioPathForModeAndIndex(*(short *)(param_1 + 0x114) + -1,2);
   for (pTVar1 = g_pMapActionContextListHead; pTVar1 != (TZone *)0x0;
       pTVar1 = *(TZone **)&pTVar1->field_0x18) {
     CString::CString(&CStack_1c);
     iStack_4._0_1_ = 1;
-    thunk_GetShortAtOffset14OrInvalid();
+    GetShortAtOffset14OrInvalid();
     FormatStringWithVarArgsToSharedRef(&CStack_1c,&g_szDecimalFormat);
     CString::AssignFromPtr((CString *)&pTVar1->field_0x8,&CStack_1c);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
@@ -6866,11 +6866,11 @@ void __fastcall thunk_ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   }
   CStack_1c.m_pchData = &stack0xffffffd0;
   CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,&CStack_10);
-  uVar4 = thunk_LoadTableResourceStreamByName();
-  iStack_14 = thunk_GetResourceStreamSize();
+  uVar4 = LoadTableResourceStreamByName();
+  iStack_14 = GetResourceStreamSize();
   puVar5 = (undefined4 *)AllocateWithFallbackHandler();
-  thunk_ReadResourceStreamIntoBufferAndAdvance(uVar4,puVar5);
-  thunk_ReleaseResourceStreamIfNotNull();
+  ReadResourceStreamIntoBufferAndAdvance(uVar4,puVar5);
+  ReleaseResourceStreamIfNotNull();
   CVar8.m_pchData = (char *)0x0;
   puStack_18 = puVar5;
   if (puVar5 < (undefined4 *)(iStack_14 + (int)puVar5)) {
@@ -6923,13 +6923,13 @@ void __fastcall thunk_ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040677B
-// GHIDRA_NAME thunk_ConstructArmoryView
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructArmoryView(void)
+// GHIDRA_NAME TArmoryView::ConstructArmoryView
+// GHIDRA_PROTO undefined __thiscall TArmoryView::ConstructArmoryView(void)
 
-TArmoryView * __thiscall TArmoryView::thunk_ConstructArmoryView(TArmoryView *this)
+TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TArmoryViewVtbl_00652b10;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
@@ -6937,11 +6937,11 @@ TArmoryView * __thiscall TArmoryView::thunk_ConstructArmoryView(TArmoryView *thi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040678A
-// GHIDRA_NAME thunk_InitializeNationStateIdentityAndOwnedRegionList
-// GHIDRA_PROTO undefined thunk_InitializeNationStateIdentityAndOwnedRegionList()
+// GHIDRA_NAME InitializeNationStateIdentityAndOwnedRegionList
+// GHIDRA_PROTO undefined InitializeNationStateIdentityAndOwnedRegionList()
 
 void __thiscall
-thunk_InitializeNationStateIdentityAndOwnedRegionList(int param_1,undefined2 param_2)
+InitializeNationStateIdentityAndOwnedRegionList(int param_1,undefined2 param_2)
 
 {
   CString *this;
@@ -7047,10 +7047,10 @@ thunk_InitializeNationStateIdentityAndOwnedRegionList(int param_1,undefined2 par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040678F
-// GHIDRA_NAME thunk_StepHexRowColByDirectionWithWrapRules
-// GHIDRA_PROTO undefined thunk_StepHexRowColByDirectionWithWrapRules()
+// GHIDRA_NAME StepHexRowColByDirectionWithWrapRules
+// GHIDRA_PROTO undefined StepHexRowColByDirectionWithWrapRules()
 
-undefined4 thunk_StepHexRowColByDirectionWithWrapRules(byte *param_1,int *param_2,int param_3)
+undefined4 StepHexRowColByDirectionWithWrapRules(byte *param_1,int *param_2,int param_3)
 
 {
   int iVar1;
@@ -7093,10 +7093,10 @@ undefined4 thunk_StepHexRowColByDirectionWithWrapRules(byte *param_1,int *param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004067B7
-// GHIDRA_NAME thunk_LoadNextUiWindowTraversalEntry
-// GHIDRA_PROTO undefined thunk_LoadNextUiWindowTraversalEntry()
+// GHIDRA_NAME LoadNextUiWindowTraversalEntry
+// GHIDRA_PROTO undefined LoadNextUiWindowTraversalEntry()
 
-int __fastcall thunk_LoadNextUiWindowTraversalEntry(int *param_1)
+int __fastcall LoadNextUiWindowTraversalEntry(int *param_1)
 
 {
   int *piVar1;
@@ -7114,10 +7114,10 @@ int __fastcall thunk_LoadNextUiWindowTraversalEntry(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004067C1
-// GHIDRA_NAME thunk_DestructCityDialogSharedBaseState
-// GHIDRA_PROTO undefined __thiscall thunk_DestructCityDialogSharedBaseState(void)
+// GHIDRA_NAME TView::DestructCityDialogSharedBaseState
+// GHIDRA_PROTO undefined __thiscall TView::DestructCityDialogSharedBaseState(void)
 
-void __thiscall TView::thunk_DestructCityDialogSharedBaseState(TView *this)
+void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
 
 {
   short sVar1;
@@ -7133,7 +7133,7 @@ void __thiscall TView::thunk_DestructCityDialogSharedBaseState(TView *this)
   sVar1 = (short)this[1].ownerOffsetX;
   uStack_4 = 0;
   if (sVar1 != -1) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+    DecrementDialogResourceRefCountByShortIdAndCleanup
               (CONCAT22((short)((uint)uStack_c >> 0x10),sVar1));
   }
   *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
@@ -7153,10 +7153,10 @@ void __thiscall TView::thunk_DestructCityDialogSharedBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004067E9
-// GHIDRA_NAME thunk_LoadTurnEventCursorTable
-// GHIDRA_PROTO undefined __thiscall thunk_LoadTurnEventCursorTable(void)
+// GHIDRA_NAME TViewMgr::LoadTurnEventCursorTable
+// GHIDRA_PROTO undefined __thiscall TViewMgr::LoadTurnEventCursorTable(void)
 
-void __thiscall TViewMgr::thunk_LoadTurnEventCursorTable(TViewMgr *this)
+void __thiscall TViewMgr::LoadTurnEventCursorTable(TViewMgr *this)
 
 {
   LoadTurnEventCursorTable(this);
@@ -7164,20 +7164,20 @@ void __thiscall TViewMgr::thunk_LoadTurnEventCursorTable(TViewMgr *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004068D4
-// GHIDRA_NAME thunk_NoOpCityProductionDialogPictureHook
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpCityProductionDialogPictureHook(void)
+// GHIDRA_NAME TCouncilView::OrphanRetStub_00487a00
+// GHIDRA_PROTO undefined __thiscall TCouncilView::OrphanRetStub_00487a00(void)
 
-void __thiscall TCouncilView::thunk_NoOpCityProductionDialogPictureHook(TCouncilView *this)
+void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004068F2
-// GHIDRA_NAME thunk_ClassifyTurnStateForOverlayMode
-// GHIDRA_PROTO undefined __thiscall thunk_ClassifyTurnStateForOverlayMode(void)
+// GHIDRA_NAME TViewMgr::ClassifyTurnStateForOverlayMode
+// GHIDRA_PROTO undefined __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(void)
 
-undefined4 __thiscall TViewMgr::thunk_ClassifyTurnStateForOverlayMode(TViewMgr *this)
+undefined4 __thiscall TViewMgr::ClassifyTurnStateForOverlayMode(TViewMgr *this)
 
 {
   switch(*(undefined2 *)&g_pLocalizationTable->field_0x8) {
@@ -7205,10 +7205,10 @@ undefined4 __thiscall TViewMgr::thunk_ClassifyTurnStateForOverlayMode(TViewMgr *
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040691F
-// GHIDRA_NAME thunk_NoOpTurnEventStateVtableSlotD4
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpTurnEventStateVtableSlotD4(void)
+// GHIDRA_NAME TDiplomacyMapView::IsCurrentActiveCityProductionView
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::IsCurrentActiveCityProductionView(void)
 
-void __thiscall TDiplomacyMapView::thunk_NoOpTurnEventStateVtableSlotD4(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::IsCurrentActiveCityProductionView(TDiplomacyMapView *this)
 
 {
   IsCurrentActiveCityProductionView(this);
@@ -7216,33 +7216,33 @@ void __thiscall TDiplomacyMapView::thunk_NoOpTurnEventStateVtableSlotD4(TDiploma
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406951
-// GHIDRA_NAME thunk_GetCityProductionControllerField60
-// GHIDRA_PROTO undefined __thiscall thunk_GetCityProductionControllerField60(void)
+// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TMapDialog::'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TMapDialog::thunk_GetCityProductionControllerField60(TMapDialog *this)
+undefined4 __thiscall TMapDialog::'scalar_deleting_destructor'(TMapDialog *this)
 
 {
   return *(undefined4 *)&this->field_0x60;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406965
-// GHIDRA_NAME thunk_HandleTradeMoveArrowControlEvent
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTradeMoveArrowControlEvent(int param_1, void * param_2, int param_3)
+// GHIDRA_NAME TShipyardCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TShipyardCluster::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
-TShipyardCluster::thunk_HandleTradeMoveArrowControlEvent
+TShipyardCluster::OrphanRetStub_0059add0
           (TShipyardCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  OrphanRetStub_0059add0(this,param_1,param_2,param_3);
+  TSoundPlayer::OrphanRetStub_0059add0(this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040699C
-// GHIDRA_NAME thunk_RebuildMapOrderEntryChildren
-// GHIDRA_PROTO undefined thunk_RebuildMapOrderEntryChildren()
+// GHIDRA_NAME RebuildMapOrderEntryChildren
+// GHIDRA_PROTO undefined RebuildMapOrderEntryChildren()
 
-void __fastcall thunk_RebuildMapOrderEntryChildren(int param_1)
+void __fastcall RebuildMapOrderEntryChildren(int param_1)
 
 {
   short *psVar1;
@@ -7287,12 +7287,12 @@ void __fastcall thunk_RebuildMapOrderEntryChildren(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004069E2
-// GHIDRA_NAME thunk_SetGlobalBlitTransparentColorRaw
-// GHIDRA_PROTO undefined thunk_SetGlobalBlitTransparentColorRaw()
+// GHIDRA_NAME SetGlobalBlitTransparentColorRaw
+// GHIDRA_PROTO undefined SetGlobalBlitTransparentColorRaw()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void thunk_SetGlobalBlitTransparentColorRaw(undefined4 param_1)
+void SetGlobalBlitTransparentColorRaw(undefined4 param_1)
 
 {
   _DAT_00695100 = param_1;
@@ -7300,11 +7300,11 @@ void thunk_SetGlobalBlitTransparentColorRaw(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004069EC
-// GHIDRA_NAME thunk_ForwardCityDialogParamToChildSlot44
-// GHIDRA_PROTO undefined __thiscall thunk_ForwardCityDialogParamToChildSlot44(undefined4 param_1)
+// GHIDRA_NAME TMapDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TMapDialog::'scalar_deleting_destructor'(undefined4 param_1)
 
 void __thiscall
-TMapDialog::thunk_ForwardCityDialogParamToChildSlot44(TMapDialog *this,undefined4 param_1)
+TMapDialog::'scalar_deleting_destructor'(TMapDialog *this,undefined4 param_1)
 
 {
   undefined uVar1;
@@ -7318,20 +7318,20 @@ TMapDialog::thunk_ForwardCityDialogParamToChildSlot44(TMapDialog *this,undefined
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406A4B
-// GHIDRA_NAME thunk_GetRankingTableStringBaseAtOffset28
-// GHIDRA_PROTO undefined thunk_GetRankingTableStringBaseAtOffset28()
+// GHIDRA_NAME GetRankingTableStringBaseAtOffset28
+// GHIDRA_PROTO undefined GetRankingTableStringBaseAtOffset28()
 
-int __fastcall thunk_GetRankingTableStringBaseAtOffset28(int param_1)
+int __fastcall GetRankingTableStringBaseAtOffset28(int param_1)
 
 {
   return param_1 + 0x28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406A6E
-// GHIDRA_NAME thunk_DestroyCivilianMapManager
-// GHIDRA_PROTO undefined __thiscall thunk_DestroyCivilianMapManager(byte param_1)
+// GHIDRA_NAME TControl::DeleteCivilianMapInteractionManager
+// GHIDRA_PROTO undefined __thiscall TControl::DeleteCivilianMapInteractionManager(byte param_1)
 
-void __thiscall TControl::thunk_DestroyCivilianMapManager(TControl *this,byte param_1)
+void __thiscall TControl::DeleteCivilianMapInteractionManager(TControl *this,byte param_1)
 
 {
   DeleteCivilianMapInteractionManager(this,param_1);
@@ -7339,11 +7339,11 @@ void __thiscall TControl::thunk_DestroyCivilianMapManager(TControl *this,byte pa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AAF
-// GHIDRA_NAME thunk_ProcessQueuedWarTransitions
-// GHIDRA_PROTO undefined __thiscall thunk_ProcessQueuedWarTransitions(void)
+// GHIDRA_NAME TNextDiplomationCommand::ProcessQueuedWarTransitions
+// GHIDRA_PROTO undefined __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(void)
 
 void __thiscall
-TNextDiplomationCommand::thunk_ProcessQueuedWarTransitions(TNextDiplomationCommand *this)
+TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplomationCommand *this)
 
 {
   ProcessQueuedWarTransitions(this);
@@ -7351,10 +7351,10 @@ TNextDiplomationCommand::thunk_ProcessQueuedWarTransitions(TNextDiplomationComma
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AD2
-// GHIDRA_NAME thunk_GetPendingTurnOverlayCode
-// GHIDRA_PROTO undefined __thiscall thunk_GetPendingTurnOverlayCode(void)
+// GHIDRA_NAME TDiplomacyMapView::InitializeForeignMinisterStateFlags
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InitializeForeignMinisterStateFlags(void)
 
-void __thiscall TDiplomacyMapView::thunk_GetPendingTurnOverlayCode(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::InitializeForeignMinisterStateFlags(TDiplomacyMapView *this)
 
 {
   InitializeForeignMinisterStateFlags(this);
@@ -7362,10 +7362,10 @@ void __thiscall TDiplomacyMapView::thunk_GetPendingTurnOverlayCode(TDiplomacyMap
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406AFA
-// GHIDRA_NAME thunk_BuildUiTextStyleDescriptor
-// GHIDRA_PROTO undefined thunk_BuildUiTextStyleDescriptor()
+// GHIDRA_NAME BuildUiTextStyleDescriptor
+// GHIDRA_PROTO undefined BuildUiTextStyleDescriptor()
 
-void thunk_BuildUiTextStyleDescriptor
+void BuildUiTextStyleDescriptor
                (undefined2 *param_1,undefined4 param_2,short param_3,undefined4 param_4)
 
 {
@@ -7384,7 +7384,7 @@ void thunk_BuildUiTextStyleDescriptor
   CString::CString(&CStack_10);
   uStack_4 = 0;
   param_1[1] = 0;
-  thunk_MapUiThemeCodeToStyleFlags(param_4,&uStack_14);
+  MapUiThemeCodeToStyleFlags(param_4,&uStack_14);
   *(undefined4 *)(param_1 + 3) = uStack_14;
   param_1[2] = param_3;
   if (param_3 < 0xc) {
@@ -7400,23 +7400,23 @@ void thunk_BuildUiTextStyleDescriptor
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B04
-// GHIDRA_NAME thunk_AdvanceCivWorkOrderAndApplyCompletion
-// GHIDRA_PROTO void __thiscall thunk_AdvanceCivWorkOrderAndApplyCompletion(int * pCivUnitOrderState)
+// GHIDRA_NAME TCivUnit::NormalizeUnitOrderStateAfterLoad
+// GHIDRA_PROTO void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(int * pCivUnitOrderState)
 
 void __thiscall
-TCivUnit::thunk_AdvanceCivWorkOrderAndApplyCompletion(TCivUnit *this,int *pCivUnitOrderState)
+TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *pCivUnitOrderState)
 
 {
-  NormalizeUnitOrderStateAfterLoad(this,pCivUnitOrderState);
+  TUnit::NormalizeUnitOrderStateAfterLoad(this,pCivUnitOrderState);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406B09
-// GHIDRA_NAME thunk_IsTacticalTargetTileReachableForAction
-// GHIDRA_PROTO undefined thunk_IsTacticalTargetTileReachableForAction()
+// GHIDRA_NAME IsTacticalTargetTileReachableForAction
+// GHIDRA_PROTO undefined IsTacticalTargetTileReachableForAction()
 
 uint __thiscall
-thunk_IsTacticalTargetTileReachableForAction
+IsTacticalTargetTileReachableForAction
           (int param_1,int param_2,int param_3,char param_4,int param_5)
 
 {
@@ -7451,7 +7451,7 @@ LAB_005a3ea3:
   if (((*(int *)(uVar6 + 4) != 0) &&
       (*(short *)(&DAT_00695528 + *(int *)(*(int *)(uVar6 + 4) + 0xc) * 2) == 8)) &&
      (*(char *)(uVar6 + 0x10) != '\0')) {
-    thunk_ComputeHexNeighborTileIndices(param_2,aiStack_18);
+    ComputeHexNeighborTileIndices_005A0420(param_2,aiStack_18);
     uVar6 = 0;
     piVar4 = aiStack_18;
     while (*piVar4 != param_3) {
@@ -7483,11 +7483,11 @@ LAB_005a3ea3:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406BFE
-// GHIDRA_NAME thunk_QueueCityOrderInputDeltaCommands
-// GHIDRA_PROTO void __thiscall thunk_QueueCityOrderInputDeltaCommands(void * pCommandQueue)
+// GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
+// GHIDRA_PROTO void __thiscall TCityTask::DeserializeCityProductionQueueCommand(void * pCommandQueue)
 
 void __thiscall
-TCityTask::thunk_QueueCityOrderInputDeltaCommands(TCityTask *this,void *pCommandQueue)
+TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pCommandQueue)
 
 {
   DeserializeCityProductionQueueCommand(this,pCommandQueue);
@@ -7495,10 +7495,10 @@ TCityTask::thunk_QueueCityOrderInputDeltaCommands(TCityTask *this,void *pCommand
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406C8A
-// GHIDRA_NAME thunk_SetMapOrderType9AndQueue
-// GHIDRA_PROTO void __thiscall thunk_SetMapOrderType9AndQueue(int * pMapOrderEntry)
+// GHIDRA_NAME SetMapOrderType9AndQueue
+// GHIDRA_PROTO void __thiscall SetMapOrderType9AndQueue(int * pMapOrderEntry)
 
-void __thiscall thunk_SetMapOrderType9AndQueue(void *this,int *pMapOrderEntry)
+void __thiscall SetMapOrderType9AndQueue(void *this,int *pMapOrderEntry)
 
 {
   short *psVar1;
@@ -7578,16 +7578,16 @@ void __thiscall thunk_SetMapOrderType9AndQueue(void *this,int *pMapOrderEntry)
   }
   *(void **)&pTVar8->field_0x4 = this;
 LAB_00553089:
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CCB
-// GHIDRA_NAME thunk_HandleEngineerConstructionAction
-// GHIDRA_PROTO bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+// GHIDRA_NAME TViewMgr::HandleEngineerConstructionAction
+// GHIDRA_PROTO bool __thiscall TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 
 bool __thiscall
-TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
+TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
 
 {
   uint uVar1;
@@ -7642,8 +7642,8 @@ TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,CStack_1c.m_pchData);
         pTStack_14 = (TViewMgr *)&stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 7;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
@@ -7676,8 +7676,8 @@ TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,CStack_1c.m_pchData);
         pTStack_14 = (TViewMgr *)&stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 4;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
@@ -7712,8 +7712,8 @@ TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,CStack_20.m_pchData);
         CStack_18.m_pchData = &stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 1;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
@@ -7749,8 +7749,8 @@ TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,CStack_1c.m_pchData);
       pTStack_14 = (TViewMgr *)&stack0xffffffbc;
-      thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&stack0x00000000);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       puStack_8._0_1_ = 10;
       CString::~CString((CString *)&stack0x00000000);
       puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
@@ -7763,7 +7763,7 @@ TViewMgr::thunk_HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex
     sVar3 = UiRuntimeContext::GetActiveNationId();
     *(int *)&g_apNationStates[sVar3]->field_0x10 =
          *(int *)&g_apNationStates[sVar3]->field_0x10 - iVar5;
-    thunk_ApplyRailSectionEndpointDirectionFlags();
+    ApplyRailSectionEndpointDirectionFlags();
     (**(code **)(*piVar2 + 0x34))();
     uVar8 = 0x2329;
     pTVar7 = g_pSfxPlaybackSystem->vftable;
@@ -7774,10 +7774,10 @@ LAB_004d40cd:
 finalize_engineer_action_and_refresh:
   if ((char)uVar9 != '\0') {
     (*this->vftable[6].GetTViewMgrClassNamePointer)();
-    iVar5 = thunk_GetTickCountDiv16();
+    iVar5 = GetTickCountDiv16();
     do {
-      thunk_PumpUiMessagesAndBackgroundTasks(1);
-      iVar6 = thunk_GetTickCountDiv16();
+      PumpUiMessagesAndBackgroundTasks(1);
+      iVar6 = GetTickCountDiv16();
       if (iVar6 < iVar5) break;
     } while (iVar6 - iVar5 < 0x1e);
   }
@@ -7789,10 +7789,10 @@ finalize_engineer_action_and_refresh:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CDF
-// GHIDRA_NAME thunk_DispatchTacticalActionByHoverStateIndex
-// GHIDRA_PROTO undefined thunk_DispatchTacticalActionByHoverStateIndex()
+// GHIDRA_NAME DispatchTacticalActionByHoverStateIndex
+// GHIDRA_PROTO undefined DispatchTacticalActionByHoverStateIndex()
 
-void __thiscall thunk_DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *param_1,int param_2)
+void __thiscall DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *param_1,int param_2)
 
 {
   int *piVar1;
@@ -7813,7 +7813,7 @@ void __thiscall thunk_DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *
     (*param_1->vftable[7].OrphanCallChain_C1_I17_00487470)(param_1[1].vftable,param_2);
     return;
   case 6:
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(param_1);
+    TNextMoveCommand::QueueTacticalEventPacket232A(param_1);
     return;
   case 7:
     (*param_1->vftable[0xc].GetTEventClassNamePointer)(param_1[1].vftable,param_2);
@@ -7838,8 +7838,8 @@ void __thiscall thunk_DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406CEE
-// GHIDRA_NAME thunk_ResolveOrderCommandFromProvinceContext
-// GHIDRA_PROTO undefined thunk_ResolveOrderCommandFromProvinceContext()
+// GHIDRA_NAME ResolveMapOrderCommandFromProvinceContext
+// GHIDRA_PROTO undefined ResolveMapOrderCommandFromProvinceContext()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resolves province-context command ID for TryQueueMapOrderFromTileAction.
 // GHIDRA_COMMENT
@@ -7854,7 +7854,7 @@ void __thiscall thunk_DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *
    - Calls manager virtual check (*DAT_006A43D0 + 0x48) with (entryOwnerType, provinceId).
    - Returns command 0x10 when allowed, else 0x01 fallback. */
 
-char __thiscall thunk_ResolveOrderCommandFromProvinceContext(int param_1,char *param_2)
+char __thiscall ResolveMapOrderCommandFromProvinceContext(int param_1,char *param_2)
 
 {
   char cVar1;
@@ -7866,30 +7866,30 @@ char __thiscall thunk_ResolveOrderCommandFromProvinceContext(int param_1,char *p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406D0C
-// GHIDRA_NAME thunk_NumericEntryMethod_00406d0c
-// GHIDRA_PROTO undefined __thiscall thunk_NumericEntryMethod_00406d0c(void)
+// GHIDRA_NAME TNumberText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TNumberText::GetTEventHandlerClassNamePointer(void)
 
-CRuntimeClass * __thiscall TNumberText::thunk_NumericEntryMethod_00406d0c(TNumberText *this)
+CRuntimeClass * __thiscall TNumberText::GetTEventHandlerClassNamePointer(TNumberText *this)
 
 {
   return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406EB5
-// GHIDRA_NAME thunk_NoOpCityProductionDialogMethod
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpCityProductionDialogMethod(void)
+// GHIDRA_NAME TControl::NoOpUiViewSlotHandler
+// GHIDRA_PROTO undefined __thiscall TControl::NoOpUiViewSlotHandler(void)
 
-void __thiscall TControl::thunk_NoOpCityProductionDialogMethod(TControl *this)
+void __thiscall TControl::NoOpUiViewSlotHandler(TControl *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406EFB
-// GHIDRA_NAME thunk_DispatchTaggedGameStateEvent1F20
-// GHIDRA_PROTO undefined thunk_DispatchTaggedGameStateEvent1F20()
+// GHIDRA_NAME DispatchTaggedGameStateEvent1F20
+// GHIDRA_PROTO undefined DispatchTaggedGameStateEvent1F20()
 
-void thunk_DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_2,int param_3)
+void DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_2,int param_3)
 
 {
   undefined4 uStack_20;
@@ -7917,15 +7917,15 @@ void thunk_DispatchTaggedGameStateEvent1F20(undefined4 param_1,undefined4 param_
   }
   uStack_8 = param_1;
   uStack_4 = param_2;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_20,param_3 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&uStack_20,param_3 == -3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406F23
-// GHIDRA_NAME thunk_InvokeStrategicMapViewMethod74
-// GHIDRA_PROTO undefined __thiscall thunk_InvokeStrategicMapViewMethod74(void)
+// GHIDRA_NAME TDiplomacyMapView::InvokeStrategicMapViewMethod74
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(void)
 
-void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod74(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod74(TDiplomacyMapView *this)
 
 {
   InvokeStrategicMapViewMethod74(this);
@@ -7933,10 +7933,10 @@ void __thiscall TDiplomacyMapView::thunk_InvokeStrategicMapViewMethod74(TDiploma
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406F5F
-// GHIDRA_NAME thunk_SetActiveQuickDrawSurfaceContext
-// GHIDRA_PROTO undefined thunk_SetActiveQuickDrawSurfaceContext()
+// GHIDRA_NAME SetActiveQuickDrawSurfaceContext
+// GHIDRA_PROTO undefined SetActiveQuickDrawSurfaceContext()
 
-void thunk_SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext *param_1,undefined4 param_2)
+void SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext *param_1,undefined4 param_2)
 
 {
   if ((TQuickDrawSurfaceContext *)PTR_DAT_006950f8 != param_1) {
@@ -7962,10 +7962,10 @@ void thunk_SetActiveQuickDrawSurfaceContext(TQuickDrawSurfaceContext *param_1,un
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406F78
-// GHIDRA_NAME thunk_ShowPeriodicCapabilityReminderIfNeeded
-// GHIDRA_PROTO undefined thunk_ShowPeriodicCapabilityReminderIfNeeded()
+// GHIDRA_NAME ShowPeriodicCapabilityReminderIfNeeded
+// GHIDRA_PROTO undefined ShowPeriodicCapabilityReminderIfNeeded()
 
-void thunk_ShowPeriodicCapabilityReminderIfNeeded(void)
+void ShowPeriodicCapabilityReminderIfNeeded(void)
 
 {
   undefined uVar1;
@@ -8021,12 +8021,12 @@ void thunk_ShowPeriodicCapabilityReminderIfNeeded(void)
     puStack_34 = &DAT_006a3180;
     puStack_14 = (undefined1 *)&ppCStack_38;
     pCStack_3c = &CStack_20;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     puStack_10 = (undefined1 *)&pCStack_3c;
     iStack_4._0_1_ = 3;
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_1c);
+    AssignStringSharedRefAndReturnThis(&CStack_1c);
     iStack_4._0_1_ = 2;
-    thunk_DispatchLocalizedUiMessageWithTemplate(5);
+    DispatchLocalizedUiMessageWithTemplate(5);
   }
   iStack_4._0_1_ = 1;
   pCStack_2c = (CString *)0x501b46;
@@ -8042,10 +8042,10 @@ void thunk_ShowPeriodicCapabilityReminderIfNeeded(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406FFA
-// GHIDRA_NAME thunk_ApplyAutoResolutionModeAndPersist
-// GHIDRA_PROTO undefined thunk_ApplyAutoResolutionModeAndPersist()
+// GHIDRA_NAME ApplyAutoResolutionModeAndPersist
+// GHIDRA_PROTO undefined ApplyAutoResolutionModeAndPersist()
 
-undefined4 __thiscall thunk_ApplyAutoResolutionModeAndPersist(int param_1,int param_2)
+undefined4 __thiscall ApplyAutoResolutionModeAndPersist(int param_1,int param_2)
 
 {
   int iVar1;
@@ -8100,11 +8100,11 @@ undefined4 __thiscall thunk_ApplyAutoResolutionModeAndPersist(int param_1,int pa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040713A
-// GHIDRA_NAME thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState
-// GHIDRA_PROTO undefined thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState()
+// GHIDRA_NAME InitializeHotKeyDialogTemplateA1WithTripleTextState
+// GHIDRA_PROTO undefined InitializeHotKeyDialogTemplateA1WithTripleTextState()
 
 TControl * __thiscall
-thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4 param_2)
+InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -8134,11 +8134,11 @@ thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,unde
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040716C
-// GHIDRA_NAME thunk_SumNavyOrderPriorityForNationAndNodeType
-// GHIDRA_PROTO undefined __thiscall thunk_SumNavyOrderPriorityForNationAndNodeType(int param_1)
+// GHIDRA_NAME TGreatPower::SumNavyOrderPriorityForNationAndNodeType
+// GHIDRA_PROTO undefined __thiscall TGreatPower::SumNavyOrderPriorityForNationAndNodeType(int param_1)
 
 int __thiscall
-TGreatPower::thunk_SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,int param_1)
+TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,int param_1)
 
 {
   TGreatPower *this_00;
@@ -8146,11 +8146,11 @@ TGreatPower::thunk_SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,in
   int iVar2;
   
   iVar2 = 0;
-  for (this_00 = (TGreatPower *)thunk_GetNavyPrimaryOrderListHead(); this_00 != (TGreatPower *)0x0;
+  for (this_00 = (TGreatPower *)GetNavyPrimaryOrderListHead(); this_00 != (TGreatPower *)0x0;
       this_00 = *(TGreatPower **)&this_00->field_0x24) {
     if ((*(short *)&this_00->field_0x14 == *(short *)&this->field_0xc) &&
        (*(int *)&this_00->field_0x8 == param_1)) {
-      iVar1 = ComputeOrderNodeCompositeEconomicScore(this_00);
+      iVar1 = TGreatPower::ComputeOrderNodeCompositeEconomicScore(this_00);
       iVar2 = iVar2 + iVar1;
     }
   }
@@ -8158,10 +8158,10 @@ TGreatPower::thunk_SumNavyOrderPriorityForNationAndNodeType(TGreatPower *this,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004071AD
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlotE4
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlotE4(void)
+// GHIDRA_NAME TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotE4(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::CtrlSlot38_SwitchActiveChildAndNotify_Impl(TDiplomacyMapView *this)
 
 {
   CtrlSlot38_SwitchActiveChildAndNotify_Impl(this);
@@ -8169,11 +8169,11 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotE4(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040723E
-// GHIDRA_NAME thunk_DispatchUiMouseMoveToChildren
-// GHIDRA_PROTO undefined __thiscall thunk_DispatchUiMouseMoveToChildren(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_NAME TView::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall TView::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 undefined4 __thiscall
-TView::thunk_DispatchUiMouseMoveToChildren
+TView::SetForeignMinisterReadyFlag14
           (TView *this,undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
@@ -8232,25 +8232,25 @@ TView::thunk_DispatchUiMouseMoveToChildren
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040724D
-// GHIDRA_NAME thunk_NoOpTurnOrderNavigationVtableSlotA
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpTurnOrderNavigationVtableSlotA(void)
+// GHIDRA_NAME TGameWindow::NoOpTurnOrderNavigationVtableSlotA
+// GHIDRA_PROTO undefined __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotA (0x00500200).
 // GHIDRA_COMMENT_END
 
 /* Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotA (0x00500200). */
 
-void __thiscall TGameWindow::thunk_NoOpTurnOrderNavigationVtableSlotA(TGameWindow *this)
+void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotA(TGameWindow *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407252
-// GHIDRA_NAME thunk_ComputeMaxRecruitableDeltaForCityEntry
-// GHIDRA_PROTO int __thiscall thunk_ComputeMaxRecruitableDeltaForCityEntry(void)
+// GHIDRA_NAME TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-int __thiscall TUnitOrder::thunk_ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *this)
+int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TUnitOrder *this)
 
 {
   int iVar1;
@@ -8260,10 +8260,10 @@ int __thiscall TUnitOrder::thunk_ComputeMaxRecruitableDeltaForCityEntry(TUnitOrd
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040725C
-// GHIDRA_NAME thunk_InitializeCityViewProductionRows
-// GHIDRA_PROTO void __thiscall thunk_InitializeCityViewProductionRows(void)
+// GHIDRA_NAME TShipyardView::OrphanRetStub_004c6fd0
+// GHIDRA_PROTO void __thiscall TShipyardView::OrphanRetStub_004c6fd0(void)
 
-void __thiscall TShipyardView::thunk_InitializeCityViewProductionRows(TShipyardView *this)
+void __thiscall TShipyardView::OrphanRetStub_004c6fd0(TShipyardView *this)
 
 {
   OrphanRetStub_004c6fd0(this);
@@ -8271,20 +8271,20 @@ void __thiscall TShipyardView::thunk_InitializeCityViewProductionRows(TShipyardV
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004072A7
-// GHIDRA_NAME thunk_GetByteFlagAtOffset8
-// GHIDRA_PROTO undefined thunk_GetByteFlagAtOffset8()
+// GHIDRA_NAME GetByteFlagAtOffset8
+// GHIDRA_PROTO undefined GetByteFlagAtOffset8()
 
-undefined1 __fastcall thunk_GetByteFlagAtOffset8(int param_1)
+undefined1 __fastcall GetByteFlagAtOffset8(int param_1)
 
 {
   return *(undefined1 *)(param_1 + 8);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004072AC
-// GHIDRA_NAME thunk_CreateAndSendTurnEvent21_ThreeBytes
-// GHIDRA_PROTO undefined thunk_CreateAndSendTurnEvent21_ThreeBytes()
+// GHIDRA_NAME CreateAndSendTurnEvent21_ThreeBytes
+// GHIDRA_PROTO undefined CreateAndSendTurnEvent21_ThreeBytes()
 
-void thunk_CreateAndSendTurnEvent21_ThreeBytes
+void CreateAndSendTurnEvent21_ThreeBytes
                (undefined1 param_1,undefined1 param_2,undefined1 param_3)
 
 {
@@ -8307,15 +8307,15 @@ void thunk_CreateAndSendTurnEvent21_ThreeBytes
   uStack_3 = param_2;
   uStack_2 = param_3;
   uStack_14 = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_1c,1);
+  EnqueueOrSendTurnEventPacketToNation(&uStack_1c,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004072D9
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlotF0
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlotF0(void)
+// GHIDRA_NAME TDiplomacyMapView::DetachActiveCityProductionChildIfMatches
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotF0(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::DetachActiveCityProductionChildIfMatches(TDiplomacyMapView *this)
 
 {
   DetachActiveCityProductionChildIfMatches(this);
@@ -8323,10 +8323,10 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotF0(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040731A
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlotD0
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlotD0(void)
+// GHIDRA_NAME TDiplomacyMapView::InvokeVslotF4WithZeroArgs
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeVslotF4WithZeroArgs(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotD0(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::InvokeVslotF4WithZeroArgs(TDiplomacyMapView *this)
 
 {
   InvokeVslotF4WithZeroArgs(this);
@@ -8334,10 +8334,10 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotD0(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407333
-// GHIDRA_NAME thunk_ApplyTacticalDoneSelectionAndRefreshUi
-// GHIDRA_PROTO undefined thunk_ApplyTacticalDoneSelectionAndRefreshUi()
+// GHIDRA_NAME ApplyTacticalDoneSelectionAndRefreshUi
+// GHIDRA_PROTO undefined ApplyTacticalDoneSelectionAndRefreshUi()
 
-void __thiscall thunk_ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
+void __thiscall ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
 
 {
   int iVar1;
@@ -8360,22 +8360,22 @@ void __thiscall thunk_ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int pa
       CenterViewportAroundGridIndexAndSnap(iVar1);
     }
     (**(code **)(*(int *)param_1[2] + 0xe4))();
-    TAnimation::thunk_SpawnTacticalUiMarkerAtUnitTile((TAnimation *)param_1[2]);
+    TAnimation::SpawnTacticalUiMarkerAtUnitTile((TAnimation *)param_1[2]);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040739C
-// GHIDRA_NAME thunk_SetCityDialogFlagByte4
-// GHIDRA_PROTO void __thiscall thunk_SetCityDialogFlagByte4(char flagValue)
+// GHIDRA_NAME TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO void __thiscall TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void thunk_SetCityDialogFlagByte4(CityDialogController *this, char flagValue)
+// GHIDRA_COMMENT Setting prototype: void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(CityDialogController *this, char flagValue)
 // GHIDRA_COMMENT_END
 
-/* Setting prototype: void thunk_SetCityDialogFlagByte4(CityDialogController *this, char flagValue)
+/* Setting prototype: void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(CityDialogController *this, char flagValue)
     */
 
-void __thiscall TMapDialog::thunk_SetCityDialogFlagByte4(TMapDialog *this,char flagValue)
+void __thiscall TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapDialog *this,char flagValue)
 
 {
   this->field04 = (int)flagValue;
@@ -8383,10 +8383,10 @@ void __thiscall TMapDialog::thunk_SetCityDialogFlagByte4(TMapDialog *this,char f
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040742D
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlotE8
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlotE8(void)
+// GHIDRA_NAME TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotE8(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(TDiplomacyMapView *this)
 
 {
   CtrlSlot39_DispatchSlot9CToLinkedChildren_Impl(this);
@@ -8394,8 +8394,8 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotE8(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407446
-// GHIDRA_NAME thunk_ApplyScenarioSelectionAndPostTurnEvent5E4
-// GHIDRA_PROTO undefined __thiscall thunk_ApplyScenarioSelectionAndPostTurnEvent5E4(void)
+// GHIDRA_NAME TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4
+// GHIDRA_PROTO undefined __thiscall TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk for ApplyScenarioSelectionAndPostTurnEvent5E4.
 // GHIDRA_COMMENT_END
@@ -8403,7 +8403,7 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlotE8(TDip
 /* Thunk for ApplyScenarioSelectionAndPostTurnEvent5E4. */
 
 void __thiscall
-TScenarioChooser::thunk_ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChooser *this)
+TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChooser *this)
 
 {
   ApplyScenarioSelectionAndPostTurnEvent5E4(this);
@@ -8411,10 +8411,10 @@ TScenarioChooser::thunk_ApplyScenarioSelectionAndPostTurnEvent5E4(TScenarioChoos
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407450
-// GHIDRA_NAME thunk_InitializeDialogTemplateE0
-// GHIDRA_PROTO undefined thunk_InitializeDialogTemplateE0()
+// GHIDRA_NAME InitializeDialogTemplateE0
+// GHIDRA_PROTO undefined InitializeDialogTemplateE0()
 
-TControl * __thiscall thunk_InitializeDialogTemplateE0(TControl *param_1,undefined4 param_2)
+TControl * __thiscall InitializeDialogTemplateE0(TControl *param_1,undefined4 param_2)
 
 {
   TControl::InitializeDialogTemplateFromId(param_1,0xe0,param_2);
@@ -8423,10 +8423,10 @@ TControl * __thiscall thunk_InitializeDialogTemplateE0(TControl *param_1,undefin
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407464
-// GHIDRA_NAME thunk_GetCityBuildingDisplayCapacityBySlot
-// GHIDRA_PROTO undefined __thiscall thunk_GetCityBuildingDisplayCapacityBySlot(short param_1)
+// GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
+// GHIDRA_PROTO undefined __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
 
-void __thiscall TCity::thunk_GetCityBuildingDisplayCapacityBySlot(TCity *this,short param_1)
+void __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this,short param_1)
 
 {
   GetCityBuildingDisplayCapacityBySlot(this,param_1);
@@ -8434,10 +8434,10 @@ void __thiscall TCity::thunk_GetCityBuildingDisplayCapacityBySlot(TCity *this,sh
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004074D2
-// GHIDRA_NAME thunk_PropagateUiResourceContextRecursive
-// GHIDRA_PROTO undefined thunk_PropagateUiResourceContextRecursive()
+// GHIDRA_NAME PropagateUiResourceContextRecursive
+// GHIDRA_PROTO undefined PropagateUiResourceContextRecursive()
 
-void __thiscall thunk_PropagateUiResourceContextRecursive(int param_1,undefined4 param_2)
+void __thiscall PropagateUiResourceContextRecursive(int param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -8459,7 +8459,7 @@ void __thiscall thunk_PropagateUiResourceContextRecursive(int param_1,undefined4
     puVar2 = (undefined4 *)*puVar2;
   }
   while (iVar1 != 0) {
-    thunk_PropagateUiResourceContextRecursive(param_2);
+    PropagateUiResourceContextRecursive(param_2);
     if (puVar2 == (undefined4 *)0x0) {
       iVar1 = 0;
       puVar2 = (undefined4 *)0x0;
@@ -8473,12 +8473,12 @@ void __thiscall thunk_PropagateUiResourceContextRecursive(int param_1,undefined4
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407559
-// GHIDRA_NAME thunk_SaveGameWithModeAndOptionalLabel
-// GHIDRA_PROTO undefined thunk_SaveGameWithModeAndOptionalLabel()
+// GHIDRA_NAME SaveGameWithModeAndOptionalLabel
+// GHIDRA_PROTO undefined SaveGameWithModeAndOptionalLabel()
 
 /* WARNING: Removing unreachable block (ram,0x0056dcec) */
 
-void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
+void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
 
 {
   undefined *text;
@@ -8520,10 +8520,10 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
     uStack_4._1_1_ = 0;
     uStack_4._2_2_ = 0;
     do {
-      thunk_BuildSavePathStringForMode(&CStack_50,pcVar7,0);
-      cVar1 = thunk_TryGetFileMetadataForPath(&CStack_50);
+      BuildSavePathStringForMode(&CStack_50,pcVar7,0);
+      cVar1 = TryGetFileMetadataForPath(&CStack_50);
       if ((cVar1 != '\0') &&
-         (iVar2 = thunk_ReadScenarioIndexFromSaveHeader(CStack_50.m_pchData), iVar2 == iVar9)) {
+         (iVar2 = ReadScenarioIndexFromSaveHeader(CStack_50.m_pchData), iVar2 == iVar9)) {
         CVar6.m_pchData = pcVar7;
       }
       pcVar7 = pcVar7 + 1;
@@ -8538,7 +8538,7 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
     uStack_4._0_1_ = 1;
     uStack_4._1_1_ = 0;
     uStack_4._2_2_ = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex(&CStack_50,0x2758,9);
+    LoadUiStringResourceByGroupAndIndex(&CStack_50,0x2758,9);
     uVar4 = 0xffffffff;
     uStack_4._0_1_ = 0xff;
     uStack_4._1_1_ = 0xff;
@@ -8599,7 +8599,7 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
   CString::AssignFromCStr(&param_1,PTR_DAT_0065ddd8);
   uStack_4._0_1_ = 2;
   CString::~CString(&param_2);
-  cVar1 = thunk_ShowSavedStatusDialogAndReturnAccepted(&param_1);
+  cVar1 = ShowSavedStatusDialogAndReturnAccepted(&param_1);
   if (cVar1 == '\0') {
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       g_pGameFlowState->field_0xf4 = 0;
@@ -8608,7 +8608,7 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
   else {
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       g_pGameFlowState->field_0xf4 = bStack_51;
-      thunk_DispatchTaggedGameStateEvent1F20(0x73617665,bStack_51,0xfffffffe);
+      DispatchTaggedGameStateEvent1F20(0x73617665,bStack_51,0xfffffffe);
     }
     text = PTR_DAT_0065ddd4;
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) && (CVar6.m_pchData != (char *)0xa1)) {
@@ -8631,7 +8631,7 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
       CString::AssignFromCStr(&param_1,PTR_DAT_0065ddd8);
       uStack_4._0_1_ = 2;
       CString::~CString(&param_2);
-      cVar1 = thunk_TryGetFileMetadataForPath(&param_1);
+      cVar1 = TryGetFileMetadataForPath(&param_1);
       if (cVar1 != '\0') {
         uVar3 = OpenBufferedStreamWithMode40(param_1.m_pchData,&DAT_00698720);
         iVar2 = ReadBufferedStreamLocked(auStack_4c,1,0xc,uVar3);
@@ -8655,10 +8655,10 @@ void thunk_SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004075A9
-// GHIDRA_NAME thunk_ShowLocalizedUiPromptByGroupAndIndex
-// GHIDRA_PROTO char __stdcall thunk_ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
+// GHIDRA_NAME ShowLocalizedUiPromptByGroupAndIndex
+// GHIDRA_PROTO char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
 
-char thunk_ShowLocalizedUiPromptByGroupAndIndex
+char ShowLocalizedUiPromptByGroupAndIndex
                (int uiStringIndex,int uiStringGroup,int promptFlagA,int promptFlagB)
 
 {
@@ -8675,9 +8675,9 @@ char thunk_ShowLocalizedUiPromptByGroupAndIndex
   *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&CStack_10);
   uStack_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_10);
-  cVar1 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  LoadUiStringResourceByGroupAndIndex();
+  AssignStringSharedRefAndReturnThis(&CStack_10);
+  cVar1 = DispatchLocalizedUiMessageWithTemplateA13A0();
   uStack_4 = 0xffffffff;
   CString::~CString(&CStack_10);
   *unaff_FS_OFFSET = uStack_c;
@@ -8685,10 +8685,10 @@ char thunk_ShowLocalizedUiPromptByGroupAndIndex
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004075E5
-// GHIDRA_NAME thunk_TryGetFileMetadataForPath
-// GHIDRA_PROTO undefined thunk_TryGetFileMetadataForPath()
+// GHIDRA_NAME TryGetFileMetadataForPath
+// GHIDRA_PROTO undefined TryGetFileMetadataForPath()
 
-void thunk_TryGetFileMetadataForPath(undefined4 *param_1)
+void TryGetFileMetadataForPath(undefined4 *param_1)
 
 {
   undefined1 auStack_118 [280];
@@ -8698,10 +8698,10 @@ void thunk_TryGetFileMetadataForPath(undefined4 *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407612
-// GHIDRA_NAME thunk_SetUiResourceLayoutValues
-// GHIDRA_PROTO undefined thunk_SetUiResourceLayoutValues()
+// GHIDRA_NAME SetUiResourceLayoutValues
+// GHIDRA_PROTO undefined SetUiResourceLayoutValues()
 
-void thunk_SetUiResourceLayoutValues(int param_1,int param_2,int param_3,int param_4,int param_5)
+void SetUiResourceLayoutValues(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 {
   int *piVar1;
@@ -8716,20 +8716,20 @@ void thunk_SetUiResourceLayoutValues(int param_1,int param_2,int param_3,int par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040761C
-// GHIDRA_NAME thunk_ReturnConstantTrueQuickDrawFlag
-// GHIDRA_PROTO undefined thunk_ReturnConstantTrueQuickDrawFlag()
+// GHIDRA_NAME ReturnConstantTrueQuickDrawFlag
+// GHIDRA_PROTO undefined ReturnConstantTrueQuickDrawFlag()
 
-undefined1 thunk_ReturnConstantTrueQuickDrawFlag(void)
+undefined1 ReturnConstantTrueQuickDrawFlag(void)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040765D
-// GHIDRA_NAME thunk_IsCivilianOrderInIdleSelectionState
-// GHIDRA_PROTO bool __thiscall thunk_IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
+// GHIDRA_NAME IsCivilianOrderInIdleSelectionState
+// GHIDRA_PROTO bool __thiscall IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
 
-bool __thiscall thunk_IsCivilianOrderInIdleSelectionState(void *this,void *pCivilianOrderEntry)
+bool __thiscall IsCivilianOrderInIdleSelectionState(void *this,void *pCivilianOrderEntry)
 
 {
   int iVar1;
@@ -8742,10 +8742,10 @@ bool __thiscall thunk_IsCivilianOrderInIdleSelectionState(void *this,void *pCivi
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004076A8
-// GHIDRA_NAME thunk_FindFirstPortZoneContextByNation
-// GHIDRA_PROTO undefined thunk_FindFirstPortZoneContextByNation()
+// GHIDRA_NAME FindFirstPortZoneContextByNation
+// GHIDRA_PROTO undefined FindFirstPortZoneContextByNation()
 
-void thunk_FindFirstPortZoneContextByNation(short param_1)
+void FindFirstPortZoneContextByNation(short param_1)
 
 {
   TZone *this;
@@ -8767,10 +8767,10 @@ void thunk_FindFirstPortZoneContextByNation(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004076B7
-// GHIDRA_NAME thunk_AssignStringSharedRefAndReturnThis
-// GHIDRA_PROTO undefined thunk_AssignStringSharedRefAndReturnThis()
+// GHIDRA_NAME AssignStringSharedRefAndReturnThis
+// GHIDRA_PROTO undefined AssignStringSharedRefAndReturnThis()
 
-CString * __thiscall thunk_AssignStringSharedRefAndReturnThis(CString *param_1,CString *param_2)
+CString * __thiscall AssignStringSharedRefAndReturnThis(CString *param_1,CString *param_2)
 
 {
   CString::StringSharedRef_AssignFromPtr(param_1,param_2);
@@ -8778,10 +8778,10 @@ CString * __thiscall thunk_AssignStringSharedRefAndReturnThis(CString *param_1,C
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004076D0
-// GHIDRA_NAME thunk_RefreshNavyOrderCycleAndClearReadyFlags
-// GHIDRA_PROTO undefined thunk_RefreshNavyOrderCycleAndClearReadyFlags()
+// GHIDRA_NAME RefreshNavyOrderCycleAndClearReadyFlags
+// GHIDRA_PROTO undefined RefreshNavyOrderCycleAndClearReadyFlags()
 
-void __fastcall thunk_RefreshNavyOrderCycleAndClearReadyFlags(int param_1)
+void __fastcall RefreshNavyOrderCycleAndClearReadyFlags(int param_1)
 
 {
   TShip *pTVar1;
@@ -8799,10 +8799,10 @@ void __fastcall thunk_RefreshNavyOrderCycleAndClearReadyFlags(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004076E9
-// GHIDRA_NAME thunk_InitializeMapContextActionManager
-// GHIDRA_PROTO void __thiscall thunk_InitializeMapContextActionManager(void)
+// GHIDRA_NAME TArmyStackList::InitializeMapContextActionManager
+// GHIDRA_PROTO void __thiscall TArmyStackList::InitializeMapContextActionManager(void)
 
-void __thiscall TArmyStackList::thunk_InitializeMapContextActionManager(TArmyStackList *this)
+void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList *this)
 
 {
   undefined4 *puVar1;
@@ -8851,24 +8851,24 @@ void __thiscall TArmyStackList::thunk_InitializeMapContextActionManager(TArmySta
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407702
-// GHIDRA_NAME thunk_DispatchGlobalTurnEventCode
-// GHIDRA_PROTO undefined __thiscall thunk_DispatchGlobalTurnEventCode(undefined4 param_1, short param_2)
+// GHIDRA_NAME TDiplomacyMapView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(undefined4 param_1, short param_2)
 
 void __thiscall
-TDiplomacyMapView::thunk_DispatchGlobalTurnEventCode
+TDiplomacyMapView::GetTEventHandlerClassNamePointer
           (TDiplomacyMapView *this,undefined4 param_1,short param_2)
 
 {
-  GetTEventHandlerClassNamePointer(this,param_1,param_2);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(this,param_1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040771B
-// GHIDRA_NAME thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
+// GHIDRA_NAME TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
 
 void __thiscall
-TDiplomacyMapView::thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView(TDiplomacyMapView *this)
+TDiplomacyMapView::HandleTurnEvent7D8_ActivateDiplomacyMapView(TDiplomacyMapView *this)
 
 {
   HandleTurnEvent7D8_ActivateDiplomacyMapView(this);
@@ -8876,10 +8876,10 @@ TDiplomacyMapView::thunk_HandleTurnEvent7D8_ActivateDiplomacyMapView(TDiplomacyM
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040772F
-// GHIDRA_NAME thunk_ApplyUiResourceLayoutFromContext
-// GHIDRA_PROTO undefined thunk_ApplyUiResourceLayoutFromContext()
+// GHIDRA_NAME ApplyUiResourceLayoutFromContext
+// GHIDRA_PROTO undefined ApplyUiResourceLayoutFromContext()
 
-void thunk_ApplyUiResourceLayoutFromContext(undefined4 param_1)
+void ApplyUiResourceLayoutFromContext(undefined4 param_1)
 
 {
   (**(code **)(*g_pUiResourceContext + 0x1c8))(param_1,0);
@@ -8887,10 +8887,10 @@ void thunk_ApplyUiResourceLayoutFromContext(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407833
-// GHIDRA_NAME thunk_FinalizeQueuedMapOrderEntry
-// GHIDRA_PROTO undefined __stdcall thunk_FinalizeQueuedMapOrderEntry(int * pMapOrderEntry)
+// GHIDRA_NAME FinalizeQueuedMapOrderEntry
+// GHIDRA_PROTO undefined __stdcall FinalizeQueuedMapOrderEntry(int * pMapOrderEntry)
 
-void thunk_FinalizeQueuedMapOrderEntry(int *pMapOrderEntry)
+void FinalizeQueuedMapOrderEntry(int *pMapOrderEntry)
 
 {
   int *piVar1;
@@ -8911,7 +8911,7 @@ void thunk_FinalizeQueuedMapOrderEntry(int *pMapOrderEntry)
       sVar3 = UiRuntimeContext::GetActiveNationId();
     }
     if ((*(byte *)(piVar1 + 4) & '\x01' << ((byte)sVar3 & 0x1f)) != 0) {
-      for (iVar4 = thunk_GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24))
+      for (iVar4 = GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24))
       {
         if (((*(int **)(iVar4 + 8) == piVar1) && (*(short *)(iVar4 + 0x14) == sVar3)) &&
            (*(int *)(iVar4 + 0xc) == 0)) {
@@ -8936,10 +8936,10 @@ LAB_00564364:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407838
-// GHIDRA_NAME thunk_ConstructTurnEventUiEntryBase
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructTurnEventUiEntryBase(void)
+// GHIDRA_NAME TControl::ConstructTurnEventUiEntryBase
+// GHIDRA_PROTO undefined __thiscall TControl::ConstructTurnEventUiEntryBase(void)
 
-TControl * __thiscall TControl::thunk_ConstructTurnEventUiEntryBase(TControl *this)
+TControl * __thiscall TControl::ConstructTurnEventUiEntryBase(TControl *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -8954,7 +8954,7 @@ TControl * __thiscall TControl::thunk_ConstructTurnEventUiEntryBase(TControl *th
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pTStack_10 = this;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   uStack_4 = 0;
   CString::CString((CString *)&this->field6C);
   this->commandTagResourceByte = 0;
@@ -8977,33 +8977,33 @@ TControl * __thiscall TControl::thunk_ConstructTurnEventUiEntryBase(TControl *th
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040793C
-// GHIDRA_NAME thunk_GetNavyPrimaryOrderListHead
-// GHIDRA_PROTO undefined thunk_GetNavyPrimaryOrderListHead()
+// GHIDRA_NAME GetNavyPrimaryOrderListHead
+// GHIDRA_PROTO undefined GetNavyPrimaryOrderListHead()
 
-TShip * thunk_GetNavyPrimaryOrderListHead(void)
+TShip * GetNavyPrimaryOrderListHead(void)
 
 {
   return g_pNavyPrimaryOrderListHead;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004079A0
-// GHIDRA_NAME thunk_DispatchTurnEvent7D8IfTurnFlowIdle
-// GHIDRA_PROTO undefined __thiscall thunk_DispatchTurnEvent7D8IfTurnFlowIdle(undefined4 param_1)
+// GHIDRA_NAME TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 void __thiscall
-TDiplomacyMapView::thunk_DispatchTurnEvent7D8IfTurnFlowIdle
+TDiplomacyMapView::OrphanTiny_ReturnZero_0048a730
           (TDiplomacyMapView *this,undefined4 param_1)
 
 {
-  OrphanTiny_ReturnZero_0048a730(this,param_1);
+  TDropShadowText::OrphanTiny_ReturnZero_0048a730(this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004079AA
-// GHIDRA_NAME thunk_RebuildMinorNationDispositionLookupTables
-// GHIDRA_PROTO undefined thunk_RebuildMinorNationDispositionLookupTables()
+// GHIDRA_NAME RebuildMinorNationDispositionLookupTables
+// GHIDRA_PROTO undefined RebuildMinorNationDispositionLookupTables()
 
-void __thiscall thunk_RebuildMinorNationDispositionLookupTables(int param_1,undefined4 param_2)
+void __thiscall RebuildMinorNationDispositionLookupTables(int param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -9034,7 +9034,7 @@ void __thiscall thunk_RebuildMinorNationDispositionLookupTables(int param_1,unde
       iVar5 = 0;
       puVar6 = puVar8 + 0x170;
       do {
-        thunk_IsNationSlotEligibleForEventProcessing(iVar5);
+        IsNationSlotEligibleForEventProcessing(iVar5);
         puVar6[-0x211] = 0x5a;
         iVar1 = iVar5 + iStack_4;
         *(undefined2 *)(param_1 + -0x422 + (iVar5 + iStack_4) * 2) = 0x5a;
@@ -9048,7 +9048,7 @@ void __thiscall thunk_RebuildMinorNationDispositionLookupTables(int param_1,unde
       puVar6 = puStack_8;
       puVar9 = puVar8;
       do {
-        cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iStack_18);
+        cVar2 = IsNationSlotEligibleForEventProcessing(iStack_18);
         if (cVar2 == '\0') {
           *puVar9 = 0x5a;
           *puVar6 = 0x5a;
@@ -9097,7 +9097,7 @@ LAB_004f261c:
       iVar5 = 0;
       ppTVar7 = g_apNationStates;
       do {
-        cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iVar5);
+        cVar2 = IsNationSlotEligibleForEventProcessing(iVar5);
         if (cVar2 != '\0') {
           (*(*ppTVar7)->vftable[9].GetTCountryClassNamePointer)(iStack_14,100);
         }
@@ -9117,22 +9117,22 @@ LAB_004f261c:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407A7C
-// GHIDRA_NAME thunk_NumericEntryMethod_00407a7c
-// GHIDRA_PROTO undefined __thiscall thunk_NumericEntryMethod_00407a7c(void)
+// GHIDRA_NAME TNumberText::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TNumberText::thunk_NumericEntryMethod_00407a7c(TNumberText *this)
+void __thiscall TNumberText::OrphanCallChain_C11_I88_004874b0(TNumberText *this)
 
 {
-  OrphanCallChain_C11_I88_004874b0(this);
+  TEditText::OrphanCallChain_C11_I88_004874b0(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407ACC
-// GHIDRA_NAME thunk_ConstructBuildingExpansionView
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructBuildingExpansionView(void)
+// GHIDRA_NAME TBuildingExpansionView::ConstructBuildingExpansionView
+// GHIDRA_PROTO undefined __thiscall TBuildingExpansionView::ConstructBuildingExpansionView(void)
 
 TBuildingExpansionView * __thiscall
-TBuildingExpansionView::thunk_ConstructBuildingExpansionView(TBuildingExpansionView *this)
+TBuildingExpansionView::ConstructBuildingExpansionView(TBuildingExpansionView *this)
 
 {
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
@@ -9141,10 +9141,10 @@ TBuildingExpansionView::thunk_ConstructBuildingExpansionView(TBuildingExpansionV
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407AE5
-// GHIDRA_NAME thunk_UpdateTurnEventPaletteByCode
-// GHIDRA_PROTO undefined thunk_UpdateTurnEventPaletteByCode()
+// GHIDRA_NAME UpdateTurnEventPaletteByCode
+// GHIDRA_PROTO undefined UpdateTurnEventPaletteByCode()
 
-void thunk_UpdateTurnEventPaletteByCode(undefined4 param_1,char param_2)
+void UpdateTurnEventPaletteByCode(undefined4 param_1,char param_2)
 
 {
   uint palette_index;
@@ -9159,11 +9159,11 @@ void thunk_UpdateTurnEventPaletteByCode(undefined4 param_1,char param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B3F
-// GHIDRA_NAME thunk_HandleCivilianTileOrderAction
-// GHIDRA_PROTO bool __thiscall thunk_HandleCivilianTileOrderAction(short nTileIndex, short nInputHint, undefined2 param_3)
+// GHIDRA_NAME TCivToolbar::HandleCivilianTileOrderAction
+// GHIDRA_PROTO bool __thiscall TCivToolbar::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint, undefined2 param_3)
 
 bool __thiscall
-TCivToolbar::thunk_HandleCivilianTileOrderAction
+TCivToolbar::HandleCivilianTileOrderAction
           (TCivToolbar *this,short nTileIndex,short nInputHint,undefined2 param_3)
 
 {
@@ -9174,10 +9174,10 @@ TCivToolbar::thunk_HandleCivilianTileOrderAction
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B44
-// GHIDRA_NAME thunk_ConvertHexTileIndexToRowAndDoubleColumn
-// GHIDRA_PROTO void __stdcall thunk_ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)
+// GHIDRA_NAME ConvertHexTileIndexToRowAndDoubleColumn
+// GHIDRA_PROTO void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)
 
-void thunk_ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex,uint *outRow,int *outCol2X)
+void ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex,uint *outRow,int *outCol2X)
 
 {
   *outRow = tileIndex / 0x1d;
@@ -9186,10 +9186,10 @@ void thunk_ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex,uint *outRow,in
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407B4E
-// GHIDRA_NAME thunk_ApplyProductionDistributionToCitySlots
-// GHIDRA_PROTO void __thiscall thunk_ApplyProductionDistributionToCitySlots(void)
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(void)
 
-void __thiscall TCityTask::thunk_ApplyProductionDistributionToCitySlots(TCityTask *this)
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
 
 {
   ApplyProductionDistributionToCitySlots(this);
@@ -9197,11 +9197,11 @@ void __thiscall TCityTask::thunk_ApplyProductionDistributionToCitySlots(TCityTas
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407BDA
-// GHIDRA_NAME thunk_HandleGlobalMapNationContextSelection
-// GHIDRA_PROTO undefined __thiscall thunk_HandleGlobalMapNationContextSelection(undefined4 param_1)
+// GHIDRA_NAME TDiplomacyMapView::HandleGlobalMapNationContextSelection
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleGlobalMapNationContextSelection(undefined4 param_1)
 
 void __thiscall
-TDiplomacyMapView::thunk_HandleGlobalMapNationContextSelection
+TDiplomacyMapView::HandleGlobalMapNationContextSelection
           (TDiplomacyMapView *this,undefined4 param_1)
 
 {
@@ -9210,22 +9210,22 @@ TDiplomacyMapView::thunk_HandleGlobalMapNationContextSelection
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407BEE
-// GHIDRA_NAME thunk_QueueCityProductionOrderCommand
-// GHIDRA_PROTO void __thiscall thunk_QueueCityProductionOrderCommand(void * pCommandQueue)
+// GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
+// GHIDRA_PROTO void __thiscall TCityTask::OrphanRetStub_0059add0(void * pCommandQueue)
 
 void __thiscall
-TCityTask::thunk_QueueCityProductionOrderCommand(TCityTask *this,void *pCommandQueue)
+TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommandQueue)
 
 {
-  OrphanRetStub_0059add0(this,pCommandQueue);
+  TSoundPlayer::OrphanRetStub_0059add0(this,pCommandQueue);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C07
-// GHIDRA_NAME thunk_SetSelectedTextOptionByTag
-// GHIDRA_PROTO undefined thunk_SetSelectedTextOptionByTag()
+// GHIDRA_NAME SetSelectedTextOptionByTag
+// GHIDRA_PROTO undefined SetSelectedTextOptionByTag()
 
-void __thiscall thunk_SetSelectedTextOptionByTag(int *param_1,int param_2,char param_3)
+void __thiscall SetSelectedTextOptionByTag(int *param_1,int param_2,char param_3)
 
 {
   int iVar1;
@@ -9252,19 +9252,19 @@ void __thiscall thunk_SetSelectedTextOptionByTag(int *param_1,int param_2,char p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C16
-// GHIDRA_NAME thunk_GetCityDialogValueViaChildSlot58
-// GHIDRA_PROTO undefined __thiscall thunk_GetCityDialogValueViaChildSlot58(void)
+// GHIDRA_NAME TMapDialog::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall TMapDialog::SetForeignMinisterReadyFlag14(void)
 
-void __thiscall TMapDialog::thunk_GetCityDialogValueViaChildSlot58(TMapDialog *this)
+void __thiscall TMapDialog::SetForeignMinisterReadyFlag14(TMapDialog *this)
 
 {
-  SetForeignMinisterReadyFlag14(this);
+  TCommand::SetForeignMinisterReadyFlag14(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C34
-// GHIDRA_NAME thunk_ResolveMapOrderPairConflictStep
-// GHIDRA_PROTO void __cdecl thunk_ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)
+// GHIDRA_NAME ResolveMapOrderPairConflictStep
+// GHIDRA_PROTO void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ThunkResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)
 // GHIDRA_COMMENT_END
@@ -9273,7 +9273,7 @@ void __thiscall TMapDialog::thunk_GetCityDialogValueViaChildSlot58(TMapDialog *t
 /* Setting prototype: void ThunkResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int *
    pRightOrderEntry) */
 
-void __cdecl thunk_ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRightOrderEntry)
+void __cdecl ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRightOrderEntry)
 
 {
   int *piVar1;
@@ -9344,8 +9344,8 @@ void __cdecl thunk_ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRi
   uStack_4 = 0;
   uStack_270 = 1;
   uStack_271 = 0;
-  thunk_BuildMapOrderBattleSideSnapshot((int)auStack_274,0,(int)pLeftOrderEntry);
-  thunk_BuildMapOrderBattleSideSnapshot((int)auStack_274,1,(int)pRightOrderEntry);
+  BuildMapOrderBattleSideSnapshot((int)auStack_274,0,(int)pLeftOrderEntry);
+  BuildMapOrderBattleSideSnapshot((int)auStack_274,1,(int)pRightOrderEntry);
   iVar13 = 0;
   aiStack_28c[2] = 0;
   if ((pLeftOrderEntry != (int *)0x0) && (iVar18 = pLeftOrderEntry[4], iVar18 != 0)) {
@@ -9607,17 +9607,17 @@ void __cdecl thunk_ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRi
       pTVar11 = (TShip *)0x0;
     }
     else if (*(short *)&pTVar11->vftable[3].DestructTShipAndFreeIfOwned < 1) {
-      TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+      TScatteredShipsMission::SetMapOrderActiveChildEntry
                 ((TScatteredShipsMission *)pTVar11->vftable,(int *)0x0);
       (**(code **)(pTVar11->vftable->GetTShipClassNamePointer + 0x1c))();
-      piVar12 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
-      pTVar11 = (TShip *)thunk_PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
+      piVar12 = TShip::DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
+      pTVar11 = (TShip *)PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
     }
     else {
-      thunk_PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
+      PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
     }
     pLeftOrderEntry[4] = (int)pTVar11;
-    thunk_RecomputeMapOrderChildAggregateMetric(pLeftOrderEntry,unaff_EDI);
+    RecomputeMapOrderChildAggregateMetric(pLeftOrderEntry,unaff_EDI);
     bStack_2b6 = pLeftOrderEntry[4] == 0;
     if (bStack_2b6) {
       *(undefined1 *)((int)pLeftOrderEntry + 0x26) = 1;
@@ -9627,17 +9627,17 @@ void __cdecl thunk_ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRi
       pTVar11 = (TShip *)0x0;
     }
     else if (*(short *)&pTVar11->vftable[3].DestructTShipAndFreeIfOwned < 1) {
-      TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+      TScatteredShipsMission::SetMapOrderActiveChildEntry
                 ((TScatteredShipsMission *)pTVar11->vftable,(int *)0x0);
       (**(code **)(pTVar11->vftable->GetTShipClassNamePointer + 0x1c))();
-      piVar12 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
-      pTVar11 = (TShip *)thunk_PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
+      piVar12 = TShip::DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
+      pTVar11 = (TShip *)PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
     }
     else {
-      thunk_PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
+      PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
     }
     pRightOrderEntry[4] = (int)pTVar11;
-    thunk_RecomputeMapOrderChildAggregateMetric(pRightOrderEntry,unaff_EDI);
+    RecomputeMapOrderChildAggregateMetric(pRightOrderEntry,unaff_EDI);
     cStack_2bd = pRightOrderEntry[4] == 0;
     if ((bool)cStack_2bd) {
       *(undefined1 *)((int)pRightOrderEntry + 0x26) = 1;
@@ -9726,15 +9726,15 @@ LAB_0055b160:
       }
       for (puVar2 = (undefined4 *)piVar12[4]; puVar2 != (undefined4 *)0x0;
           puVar2 = (undefined4 *)puVar2[1]) {
-        thunk_AdjustMapOrderNodeStatCapped499((void *)*puVar2,(short)((iVar13 * 3) / (int)sVar9));
+        AdjustMapOrderNodeStatCapped499((void *)*puVar2,(short)((iVar13 * 3) / (int)sVar9));
       }
     }
     if (piVar15 != (int *)0x0) {
       *(undefined1 *)((int)piVar15 + 0x26) = 1;
     }
   }
-  thunk_RefreshMapOrderBattleSideSnapshot((int)auStack_274,0,(int)pLeftOrderEntry);
-  thunk_RefreshMapOrderBattleSideSnapshot((int)auStack_274,1,(int)pRightOrderEntry);
+  RefreshMapOrderBattleSideSnapshot((int)auStack_274,0,(int)pLeftOrderEntry);
+  RefreshMapOrderBattleSideSnapshot((int)auStack_274,1,(int)pRightOrderEntry);
   DispatchMapInteractionPayloadAndResetWorkingFields(auStack_274,0);
   uStack_4 = 0xffffffff;
   FreeHeapBufferIfNotNull(uStack_24);
@@ -9744,10 +9744,10 @@ LAB_0055b160:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C43
-// GHIDRA_NAME thunk_ConstructUiWindowResourceEntryBase
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiWindowResourceEntryBase(void)
+// GHIDRA_NAME TControl::ConstructUiWindowResourceEntryBase
+// GHIDRA_PROTO undefined __thiscall TControl::ConstructUiWindowResourceEntryBase(void)
 
-TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryBase(TControl *this)
+TControl * __thiscall TControl::ConstructUiWindowResourceEntryBase(TControl *this)
 
 {
   int iVar1;
@@ -9763,7 +9763,7 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryBase(TContro
   puStack_8 = &LAB_0062ede3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   uStack_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this->field74);
   *(undefined4 *)&this[1].field_0x14 = 0;
@@ -9799,7 +9799,7 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryBase(TContro
   }
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
-  thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
+  SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
   this->commandTagDefaultParam1 = (int)this;
   *(TControl **)&this->commandTagResourceByte = this;
   *unaff_FS_OFFSET = uStack_c;
@@ -9807,22 +9807,22 @@ TControl * __thiscall TControl::thunk_ConstructUiWindowResourceEntryBase(TContro
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407C57
-// GHIDRA_NAME thunk_HandleTurnEventVtableSlot08ConditionalDispatch
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventVtableSlot08ConditionalDispatch(int param_1)
+// GHIDRA_NAME TObject::Serialize
+// GHIDRA_PROTO undefined __thiscall TObject::Serialize(int param_1)
 
 void __thiscall
-TCityTask::thunk_HandleTurnEventVtableSlot08ConditionalDispatch(TCityTask *this,int param_1)
+TObject::Serialize(TCityTask *this,int param_1)
 
 {
-  GetTTaskClassNamePointer(this,param_1);
+  TCityTask::GetTTaskClassNamePointer(this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407CCA
-// GHIDRA_NAME thunk_NumericEntryMethod_00407cca
-// GHIDRA_PROTO undefined __thiscall thunk_NumericEntryMethod_00407cca(void)
+// GHIDRA_NAME TEditText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TEditText::'scalar_deleting_destructor'(void)
 
-void __thiscall TEditText::thunk_NumericEntryMethod_00407cca(TEditText *this)
+void __thiscall TEditText::'scalar_deleting_destructor'(TEditText *this)
 
 {
   _scalar_deleting_destructor_(this);
@@ -9830,10 +9830,10 @@ void __thiscall TEditText::thunk_NumericEntryMethod_00407cca(TEditText *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D1F
-// GHIDRA_NAME thunk_RequeueMapOrderEntry
-// GHIDRA_PROTO void __thiscall thunk_RequeueMapOrderEntry(int * pMapOrderEntry)
+// GHIDRA_NAME RequeueMapOrderEntry
+// GHIDRA_PROTO void __thiscall RequeueMapOrderEntry(int * pMapOrderEntry)
 
-void __thiscall thunk_RequeueMapOrderEntry(void *this,int *pMapOrderEntry)
+void __thiscall RequeueMapOrderEntry(void *this,int *pMapOrderEntry)
 
 {
   short *psVar1;
@@ -9912,15 +9912,15 @@ void __thiscall thunk_RequeueMapOrderEntry(void *this,int *pMapOrderEntry)
   }
   *(void **)&pTVar8->field_0x4 = this;
 LAB_00554762:
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D3D
-// GHIDRA_NAME thunk_ProcessTacticalUnitState1TurnStep
-// GHIDRA_PROTO undefined thunk_ProcessTacticalUnitState1TurnStep()
+// GHIDRA_NAME ProcessTacticalUnitState1TurnStep
+// GHIDRA_PROTO undefined ProcessTacticalUnitState1TurnStep()
 
-void __thiscall thunk_ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int *param_2)
+void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int *param_2)
 
 {
   int iVar1;
@@ -9936,7 +9936,7 @@ void __thiscall thunk_ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_
   
   iVar7 = 999;
   iVar1 = param_2[2];
-  thunk_BuildTacticalDistanceFieldForSide(param_2[8] == 0);
+  BuildTacticalDistanceFieldForSide(param_2[8] == 0);
   iVar8 = 0;
   iStack_1c = iVar1;
   if (0 < *(int *)&param_1[2].field_0x4) {
@@ -9952,7 +9952,7 @@ void __thiscall thunk_ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_
     } while (iVar8 < *(int *)&param_1[2].field_0x4);
   }
   if (iStack_1c != param_2[2]) {
-    thunk_MoveTacticalUnitTowardTile(param_2,iStack_1c);
+    MoveTacticalUnitTowardTile(param_2,iStack_1c);
   }
   if (param_2[7] != 1) goto LAB_005a1345;
   iStack_1c = 0;
@@ -10008,16 +10008,16 @@ void __thiscall thunk_ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_
   }
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 LAB_005a1345:
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A(param_1);
+  TNextMoveCommand::QueueTacticalEventPacket232A(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407D6A
-// GHIDRA_NAME thunk_ResetCivWorkOrderAndRefreshCounters
-// GHIDRA_PROTO void __thiscall thunk_ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)
+// GHIDRA_NAME TCivUnit::ResetCivWorkOrderAndRefreshCounters
+// GHIDRA_PROTO void __thiscall TCivUnit::ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)
 
 void __thiscall
-TCivUnit::thunk_ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
+TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
 
 {
   ResetCivWorkOrderAndRefreshCounters(this,pCivUnitOrderState);
@@ -10025,10 +10025,10 @@ TCivUnit::thunk_ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnit
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E64
-// GHIDRA_NAME thunk_GetUnitMovementClassId
-// GHIDRA_PROTO undefined thunk_GetUnitMovementClassId()
+// GHIDRA_NAME GetUnitMovementClassId
+// GHIDRA_PROTO undefined GetUnitMovementClassId()
 
-undefined4 __fastcall thunk_GetUnitMovementClassId(int param_1)
+undefined4 __fastcall GetUnitMovementClassId(int param_1)
 
 {
   return CONCAT22(*(short *)(param_1 + 4) >> 0xf,
@@ -10036,34 +10036,34 @@ undefined4 __fastcall thunk_GetUnitMovementClassId(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E7D
-// GHIDRA_NAME thunk_InitializeTradeSellControlState
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeTradeSellControlState(void)
+// GHIDRA_NAME TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTradeCluster::thunk_InitializeTradeSellControlState(TTradeCluster *this)
+void __thiscall TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920(TTradeCluster *this)
 
 {
-  OrphanLeaf_NoCall_Ins07_004d8920(this);
+  TCommand::OrphanLeaf_NoCall_Ins07_004d8920(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407E96
-// GHIDRA_NAME thunk_HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(void)
+// GHIDRA_NAME TDiplomacyMapView::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall
-TDiplomacyMapView::thunk_HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
+TDiplomacyMapView::SetForeignMinisterReadyFlag14
           (TDiplomacyMapView *this)
 
 {
-  SetForeignMinisterReadyFlag14(this);
+  TCommand::SetForeignMinisterReadyFlag14(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407EBE
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlot74
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlot74(void)
+// GHIDRA_NAME TDiplomacyMapView::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot74(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::GetTBehaviorClassNamePointer(TDiplomacyMapView *this)
 
 {
   GetTBehaviorClassNamePointer(this);
@@ -10071,8 +10071,8 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot74(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407EE1
-// GHIDRA_NAME thunk_GetMapContextActionCode
-// GHIDRA_PROTO int __cdecl thunk_GetMapContextActionCode(short nTileIndex, int dwInputFlags)
+// GHIDRA_NAME GetMapContextActionCode
+// GHIDRA_PROTO int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Map-tile context-action code resolver (thunk entry).
 // GHIDRA_COMMENT
@@ -10095,7 +10095,7 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot74(TDip
    
    Also updates g_pCachedMapActionContext when scanning active queue for 7..13 cases. */
 
-int __cdecl thunk_GetMapContextActionCode(short nTileIndex,int dwInputFlags)
+int __cdecl GetMapContextActionCode(short nTileIndex,int dwInputFlags)
 
 {
   char cVar1;
@@ -10156,7 +10156,7 @@ LAB_00559b0a:
       else {
         pvVar7 = (void *)0x0;
       }
-      pvVar4 = thunk_GetMapActionContextByTileIndex(nTileIndex);
+      pvVar4 = GetMapActionContextByTileIndex(nTileIndex);
       return 10 - (uint)(pvVar4 != pvVar7);
     }
   }
@@ -10164,10 +10164,10 @@ LAB_00559b0a:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407EE6
-// GHIDRA_NAME thunk_CalculateMapOrderEntryAverageChildRatingX10
-// GHIDRA_PROTO undefined thunk_CalculateMapOrderEntryAverageChildRatingX10()
+// GHIDRA_NAME CalculateMapOrderEntryAverageChildRatingX10
+// GHIDRA_PROTO undefined CalculateMapOrderEntryAverageChildRatingX10()
 
-int __fastcall thunk_CalculateMapOrderEntryAverageChildRatingX10(int param_1)
+int __fastcall CalculateMapOrderEntryAverageChildRatingX10(int param_1)
 
 {
   int *piVar1;
@@ -10189,10 +10189,10 @@ int __fastcall thunk_CalculateMapOrderEntryAverageChildRatingX10(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407F63
-// GHIDRA_NAME thunk_SetTimeEmitPacketGameFlowTurnId
-// GHIDRA_PROTO undefined thunk_SetTimeEmitPacketGameFlowTurnId()
+// GHIDRA_NAME SetTimeEmitPacketGameFlowTurnId
+// GHIDRA_PROTO undefined SetTimeEmitPacketGameFlowTurnId()
 
-void __fastcall thunk_SetTimeEmitPacketGameFlowTurnId(int param_1)
+void __fastcall SetTimeEmitPacketGameFlowTurnId(int param_1)
 
 {
   *(undefined2 *)(param_1 + 0x18) = *(undefined2 *)&g_pGameFlowState->field_0xf0;
@@ -10200,15 +10200,15 @@ void __fastcall thunk_SetTimeEmitPacketGameFlowTurnId(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407FD6
-// GHIDRA_NAME thunk_DeleteMapOrderChildLinkAndReturnNext
-// GHIDRA_PROTO int * __thiscall thunk_DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
+// GHIDRA_NAME TShip::DeleteMapOrderChildLinkAndReturnNext
+// GHIDRA_PROTO int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: int * ThunkDeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
 // GHIDRA_COMMENT_END
 
 /* Setting prototype: int * ThunkDeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode) */
 
-int * __thiscall TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pChildLinkNode)
+int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pChildLinkNode)
 
 {
   int *piVar1;
@@ -10225,10 +10225,10 @@ int * __thiscall TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(TShip *this,i
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408035
-// GHIDRA_NAME thunk_DestroyScopedMapQuickDrawContext
-// GHIDRA_PROTO undefined thunk_DestroyScopedMapQuickDrawContext()
+// GHIDRA_NAME DestroyScopedMapQuickDrawContext
+// GHIDRA_PROTO undefined DestroyScopedMapQuickDrawContext()
 
-void __fastcall thunk_DestroyScopedMapQuickDrawContext(int param_1)
+void __fastcall DestroyScopedMapQuickDrawContext(int param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10253,10 +10253,10 @@ void __fastcall thunk_DestroyScopedMapQuickDrawContext(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040809E
-// GHIDRA_NAME thunk_SelectNextTacticalUnitForDoneCommand
-// GHIDRA_PROTO undefined thunk_SelectNextTacticalUnitForDoneCommand()
+// GHIDRA_NAME SelectNextTacticalUnitForDoneCommand
+// GHIDRA_PROTO undefined SelectNextTacticalUnitForDoneCommand()
 
-void __fastcall thunk_SelectNextTacticalUnitForDoneCommand(int param_1)
+void __fastcall SelectNextTacticalUnitForDoneCommand(int param_1)
 
 {
   int iVar1;
@@ -10282,8 +10282,8 @@ void __fastcall thunk_SelectNextTacticalUnitForDoneCommand(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080A3
-// GHIDRA_NAME thunk_SetMapOrderActiveChildEntry
-// GHIDRA_PROTO void __thiscall thunk_SetMapOrderActiveChildEntry(int * pActiveChildEntry)
+// GHIDRA_NAME TScatteredShipsMission::SetMapOrderActiveChildEntry
+// GHIDRA_PROTO void __thiscall TScatteredShipsMission::SetMapOrderActiveChildEntry(int * pActiveChildEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ThunkSetMapOrderActiveChildEntry(int * pActiveChildEntry)
 // GHIDRA_COMMENT_END
@@ -10291,7 +10291,7 @@ void __fastcall thunk_SelectNextTacticalUnitForDoneCommand(int param_1)
 /* Setting prototype: void ThunkSetMapOrderActiveChildEntry(int * pActiveChildEntry) */
 
 void __thiscall
-TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+TScatteredShipsMission::SetMapOrderActiveChildEntry
           (TScatteredShipsMission *this,int *pActiveChildEntry)
 
 {
@@ -10310,10 +10310,10 @@ TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004080C6
-// GHIDRA_NAME thunk_InitializeTradeMoveAndBarControls
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeTradeMoveAndBarControls(void)
+// GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(TAmtBarCluster *this)
+void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster *this)
 
 {
   TAmtBarCluster_slot_0x04_0x04 *pTVar1;
@@ -10327,7 +10327,7 @@ void __thiscall TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(TAmtBarC
   uStack_4 = uStack_4 & 0xffff0000;
   uVar3 = (*pTVar1)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
-    thunk_BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
+    BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0x1b4))(&stack0xfffffff0,0);
     (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);
@@ -10335,19 +10335,19 @@ void __thiscall TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(TAmtBarC
   uVar3 = (*pTVar1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x725);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xdc))(uStack_4);
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408116
-// GHIDRA_NAME thunk_ConstructMapContextActionManager
-// GHIDRA_PROTO void __thiscall thunk_ConstructMapContextActionManager(void)
+// GHIDRA_NAME TArmyMgr::ConstructMapContextActionManager
+// GHIDRA_PROTO void __thiscall TArmyMgr::ConstructMapContextActionManager(void)
 
-void __thiscall TArmyMgr::thunk_ConstructMapContextActionManager(TArmyMgr *this)
+void __thiscall TArmyMgr::ConstructMapContextActionManager(TArmyMgr *this)
 
 {
   this->vftable = &TArmyMgrVtbl_0064c928;
@@ -10357,22 +10357,22 @@ void __thiscall TArmyMgr::thunk_ConstructMapContextActionManager(TArmyMgr *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408120
-// GHIDRA_NAME thunk_CommitCityDialogMinisterValues
-// GHIDRA_PROTO undefined __thiscall thunk_CommitCityDialogMinisterValues(void)
+// GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TTransportView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TTransportView::thunk_CommitCityDialogMinisterValues(TTransportView *this)
+void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
 
 {
-  GetTEventHandlerClassNamePointer(this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040819D
-// GHIDRA_NAME thunk_HandleArmoryViewSelectionAndStepCommand
-// GHIDRA_PROTO undefined __thiscall thunk_HandleArmoryViewSelectionAndStepCommand(int param_1, int param_2)
+// GHIDRA_NAME TArmoryView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall
-TArmoryView::thunk_HandleArmoryViewSelectionAndStepCommand
+TArmoryView::OrphanRetStub_0059add0
           (TArmoryView *this,int param_1,int param_2)
 
 {
@@ -10422,13 +10422,13 @@ TArmoryView::thunk_HandleArmoryViewSelectionAndStepCommand
         uVar3 = (*this->vftable[0x12].slot_0x04)(*(short *)&this->field_0xa4 + 0x6e756d30);
         if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb87);
         }
         piVar6 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x94))(0x6e756d62);
         if (piVar6 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb88);
         }
         iVar2 = *piVar6;
@@ -10436,20 +10436,20 @@ TArmoryView::thunk_HandleArmoryViewSelectionAndStepCommand
         (**(code **)(iVar2 + 300))(&stack0xffffffc0);
         RStack_34.left = (LONG)unaff_EDI;
         CopyRect(atStack_24,&RStack_34);
-        thunk_InvalidateCityDialogRectRegion(atStack_24,1);
+        InvalidateCityDialogRectRegion(atStack_24,1);
         (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
       }
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004081A7
-// GHIDRA_NAME thunk_ReleaseTurnEventDialogIfPresent
-// GHIDRA_PROTO undefined __thiscall thunk_ReleaseTurnEventDialogIfPresent(void)
+// GHIDRA_NAME TViewMgr::ReleaseTurnEventDialogIfPresent
+// GHIDRA_PROTO undefined __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(void)
 
-void __thiscall TViewMgr::thunk_ReleaseTurnEventDialogIfPresent(TViewMgr *this)
+void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
 
 {
   if (this != (TViewMgr *)0x0) {
@@ -10459,11 +10459,11 @@ void __thiscall TViewMgr::thunk_ReleaseTurnEventDialogIfPresent(TViewMgr *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408247
-// GHIDRA_NAME thunk_OpenMapEntryOrderDialog
-// GHIDRA_PROTO void __thiscall thunk_OpenMapEntryOrderDialog(void * pMapOrderEntry)
+// GHIDRA_NAME TToolBarCluster::OpenMapEntryOrderDialog
+// GHIDRA_PROTO void __thiscall TToolBarCluster::OpenMapEntryOrderDialog(void * pMapOrderEntry)
 
 void __thiscall
-TToolBarCluster::thunk_OpenMapEntryOrderDialog(TToolBarCluster *this,void *pMapOrderEntry)
+TToolBarCluster::OpenMapEntryOrderDialog(TToolBarCluster *this,void *pMapOrderEntry)
 
 {
   int iVar1;
@@ -10573,18 +10573,18 @@ TToolBarCluster::thunk_OpenMapEntryOrderDialog(TToolBarCluster *this,void *pMapO
   uStack_27 = 0;
   pCStack_8c = (CString *)0x598005;
   pTStack_4c = this;
-  thunk_InitializeUiTextStyleDescriptor();
-  thunk_BuildUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x598033;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x59804b;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     pCStack_8c = (CString *)0x598077;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *piVar4;
   iVar7 = 1;
@@ -10691,7 +10691,7 @@ LAB_0059830f:
     puStack_d0 = (undefined4 *)&stack0xffffff50;
     puStack_d4 = (undefined4 *)0x5982b8;
     (**(code **)(*(int *)this_01->field0c + 0x2c))();
-    thunk_LoadUiStringResourceByGroupAndIndex();
+    LoadUiStringResourceByGroupAndIndex();
     scanBracketExpressions(g_pLocalizationTable,&uStack_c4,pcStack_c0);
   }
   (*(code *)ppuStack_c8[0x72])();
@@ -10808,23 +10808,23 @@ LAB_0059830f:
   (**(code **)(iVar1 + 0x1c))();
   if (iVar7 == 0x63616e63) {
     iVar1 = this_01->field18;
-    thunk_CancelMapOrderEntryAndRestoreActive(this_01,(int *)0x0);
+    TToolBarCluster::CancelMapOrderEntryAndRestoreActive(this_01,(int *)0x0);
     this_00 = pTStack_178;
-    TCivToolbar::thunk_SetMapInteractionMode(pTStack_178,2);
+    TToolBarCluster::SetMapInteractionMode(pTStack_178,2);
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(this_00[1].field0c);
+      InvalidateMapRegionForOrderEntry(this_00[1].field0c);
     }
     this_00[1].field0c = iVar1;
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(iVar1);
+      InvalidateMapRegionForOrderEntry(iVar1);
     }
     if (iVar1 == 0) {
       pMapOrderEntry_00 = (void *)0x0;
     }
     else {
-      pMapOrderEntry_00 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(iVar1);
+      pMapOrderEntry_00 = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(iVar1);
     }
-    thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pMapOrderEntry_00);
+    TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pMapOrderEntry_00);
   }
   aiStack_130[0]._0_1_ = 4;
   TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&iStack_144,4,3,&LAB_00405fa1);
@@ -10843,10 +10843,10 @@ LAB_0059830f:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040824C
-// GHIDRA_NAME thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
-// GHIDRA_PROTO undefined thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation()
+// GHIDRA_NAME ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
+// GHIDRA_PROTO undefined ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation()
 
-float10 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
+float10 ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
                   (short param_1,int param_2)
 
 {
@@ -10864,7 +10864,7 @@ float10 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
   afStack_10[1] = 0.0;
   afStack_10[2] = 0.0;
   afStack_10[3] = 0.0;
-  for (iVar3 = thunk_GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
+  for (iVar3 = GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
     if ((*(int *)(iVar3 + 8) == param_2) && (param_1 == *(short *)(iVar3 + 0x14))) {
       sVar2 = GetNavyOrderNormalizationBaseByNationType();
       fVar1 = (float)((int)*(short *)(iVar3 + 0x1c) / (int)sVar2);
@@ -10907,11 +10907,11 @@ float10 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408251
-// GHIDRA_NAME thunk_FindReachableRecruitSpawnTileWithVisitedReset
-// GHIDRA_PROTO undefined thunk_FindReachableRecruitSpawnTileWithVisitedReset()
+// GHIDRA_NAME FindReachableRecruitSpawnTileWithVisitedReset
+// GHIDRA_PROTO undefined FindReachableRecruitSpawnTileWithVisitedReset()
 
 void __thiscall
-thunk_FindReachableRecruitSpawnTileWithVisitedReset
+FindReachableRecruitSpawnTileWithVisitedReset
           (int param_1,undefined4 param_2,undefined4 param_3)
 
 {
@@ -10929,10 +10929,10 @@ thunk_FindReachableRecruitSpawnTileWithVisitedReset
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040828D
-// GHIDRA_NAME thunk_MoveMapOrderEntryToQueueHeadIfValid
-// GHIDRA_PROTO undefined thunk_MoveMapOrderEntryToQueueHeadIfValid()
+// GHIDRA_NAME MoveMapOrderEntryToQueueHeadIfValid
+// GHIDRA_PROTO undefined MoveMapOrderEntryToQueueHeadIfValid()
 
-uint __thiscall thunk_MoveMapOrderEntryToQueueHeadIfValid(int param_1,int *param_2)
+uint __thiscall MoveMapOrderEntryToQueueHeadIfValid(int param_1,int *param_2)
 
 {
   int *piVar1;
@@ -10976,33 +10976,33 @@ LAB_005570f4:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004082B5
-// GHIDRA_NAME thunk_QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO void __thiscall thunk_QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
 
 void __thiscall
-TCityTask::thunk_QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
+TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
 
 {
-  QueueCityRecruitmentSupportCommandsIfDeficit(this,pCommandQueue);
+  TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(this,pCommandQueue);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004082CE
-// GHIDRA_NAME thunk_CloneEngineerDialogStateToNewInstance
-// GHIDRA_PROTO undefined __thiscall thunk_CloneEngineerDialogStateToNewInstance(void)
+// GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall TView::OrphanCallChain_C11_I88_004874b0(void)
 
-void __thiscall TView::thunk_CloneEngineerDialogStateToNewInstance(TView *this)
+void __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
 
 {
-  OrphanCallChain_C11_I88_004874b0(this);
+  TEditText::OrphanCallChain_C11_I88_004874b0(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408328
-// GHIDRA_NAME thunk_NormalizeWrappedMapCoord108x60
-// GHIDRA_PROTO undefined thunk_NormalizeWrappedMapCoord108x60()
+// GHIDRA_NAME NormalizeWrappedMapCoord108x60
+// GHIDRA_PROTO undefined NormalizeWrappedMapCoord108x60()
 
-void thunk_NormalizeWrappedMapCoord108x60(short *param_1,short *param_2)
+void NormalizeWrappedMapCoord108x60(short *param_1,short *param_2)
 
 {
   short sVar1;
@@ -11028,11 +11028,11 @@ LAB_0051306d:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040833C
-// GHIDRA_NAME thunk_BuildPathToTargetByDistanceField
-// GHIDRA_PROTO undefined thunk_BuildPathToTargetByDistanceField()
+// GHIDRA_NAME BuildPathToTargetByDistanceField
+// GHIDRA_PROTO undefined BuildPathToTargetByDistanceField()
 
 int __thiscall
-thunk_BuildPathToTargetByDistanceField(int param_1,int param_2,int param_3,int param_4,int param_5)
+BuildPathToTargetByDistanceField(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 {
   char cVar1;
@@ -11060,7 +11060,7 @@ thunk_BuildPathToTargetByDistanceField(int param_1,int param_2,int param_3,int p
   }
   iVar12 = 0;
   sVar3 = *(short *)(*(int *)(param_1 + 0x24) + param_2 * 2);
-  thunk_ComputeHexNeighborTileIndices(param_2,aiStack_18);
+  ComputeHexNeighborTileIndices_005A0420(param_2,aiStack_18);
   iVar9 = *(int *)(param_1 + 0x24);
   piVar11 = aiStack_30;
   piVar10 = aiStack_18;
@@ -11130,7 +11130,7 @@ LAB_005a17eb:
     if (0 < iVar12) {
       piVar11 = aiStack_30;
       do {
-        iVar9 = thunk_BuildPathToTargetByDistanceField(*piVar11,param_3 + 1,param_4,param_5);
+        iVar9 = BuildPathToTargetByDistanceField(*piVar11,param_3 + 1,param_4,param_5);
         if (iVar9 != -1) {
           *(int *)(param_5 + param_3 * 4) = param_2;
           return iVar9;
@@ -11145,35 +11145,35 @@ LAB_005a17eb:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040834B
-// GHIDRA_NAME thunk_ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiWindowResourceEntryType572C0(void)
+// GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
+// GHIDRA_PROTO undefined __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(void)
 
 THelpWindow * __thiscall
-THelpWindow::thunk_ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
+THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
   this->vftable = &THelpWindowVtbl_006572c0;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004083D2
-// GHIDRA_NAME thunk_GetCityProductionViewTypeName
-// GHIDRA_PROTO undefined __thiscall thunk_GetCityProductionViewTypeName(void)
+// GHIDRA_NAME TCityProductionView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TCityProductionView::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
-TCityProductionView::thunk_GetCityProductionViewTypeName(TCityProductionView *this)
+TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
 
 {
   return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040844F
-// GHIDRA_NAME thunk_CloneCityDialogExtendedStateToNewInstance
-// GHIDRA_PROTO CityDialogController * __thiscall thunk_CloneCityDialogExtendedStateToNewInstance(CityDialogController * pSource)
+// GHIDRA_NAME TMapDialog::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO CityDialogController * __thiscall TMapDialog::GetTBehaviorClassNamePointer(CityDialogController * pSource)
 
 CityDialogController * __thiscall
-TMapDialog::thunk_CloneCityDialogExtendedStateToNewInstance
+TMapDialog::GetTBehaviorClassNamePointer
           (TMapDialog *this,CityDialogController *pSource)
 
 {
@@ -11184,8 +11184,8 @@ TMapDialog::thunk_CloneCityDialogExtendedStateToNewInstance
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408454
-// GHIDRA_NAME thunk_SetPictureResourceIdAndRefresh
-// GHIDRA_PROTO void __thiscall thunk_SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow, undefined2 param_3)
+// GHIDRA_NAME TPicture::SetPictureResourceIdAndRefresh
+// GHIDRA_PROTO void __thiscall TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow, undefined2 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ThunkSetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
 // GHIDRA_COMMENT_END
@@ -11194,7 +11194,7 @@ TMapDialog::thunk_CloneCityDialogExtendedStateToNewInstance
     */
 
 void __thiscall
-TPicture::thunk_SetPictureResourceIdAndRefresh
+TPicture::SetPictureResourceIdAndRefresh
           (TPicture *this,short nPictureId,bool fRefreshNow,undefined2 param_3)
 
 {
@@ -11206,7 +11206,7 @@ TPicture::thunk_SetPictureResourceIdAndRefresh
   (*pTVar1[0x38].slot_0x04)();
   *(short *)&this->field_0x84 = nPictureId;
   if (nPictureId != -1) {
-    uVar2 = thunk_LoadBmpResourceByIdCached(_nPictureId);
+    uVar2 = LoadBmpResourceByIdCached(_nPictureId);
     *(undefined4 *)&this->field_0x8c = uVar2;
   }
   if (*(int *)&this->field_0x8c == 0) {
@@ -11221,10 +11221,10 @@ TPicture::thunk_SetPictureResourceIdAndRefresh
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040857B
-// GHIDRA_NAME thunk_ComputeDefendProvinceMissionLocalSupportVectorScore
-// GHIDRA_PROTO undefined thunk_ComputeDefendProvinceMissionLocalSupportVectorScore()
+// GHIDRA_NAME ComputeDefendProvinceMissionLocalSupportVectorScore
+// GHIDRA_PROTO undefined ComputeDefendProvinceMissionLocalSupportVectorScore()
 
-float10 thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(undefined4 param_1)
+float10 ComputeDefendProvinceMissionLocalSupportVectorScore(undefined4 param_1)
 
 {
   short sVar1;
@@ -11282,20 +11282,20 @@ float10 thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(undefined4 par
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408594
-// GHIDRA_NAME thunk_ReturnTrueStub
-// GHIDRA_PROTO undefined thunk_ReturnTrueStub()
+// GHIDRA_NAME ReturnTrueStub
+// GHIDRA_PROTO undefined ReturnTrueStub()
 
-undefined4 thunk_ReturnTrueStub(void)
+undefined4 ReturnTrueStub(void)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408611
-// GHIDRA_NAME thunk_HandleTurnEventDialogFactorySlot78
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEventDialogFactorySlot78(void)
+// GHIDRA_NAME TDiplomacyMapView::EvaluateControlInputGate
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::EvaluateControlInputGate(void)
 
-void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot78(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::EvaluateControlInputGate(TDiplomacyMapView *this)
 
 {
   EvaluateControlInputGate(this);
@@ -11303,14 +11303,14 @@ void __thiscall TDiplomacyMapView::thunk_HandleTurnEventDialogFactorySlot78(TDip
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408620
-// GHIDRA_NAME thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
+// GHIDRA_NAME TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)
 
 TGreatPower * __thiscall
-TGreatPower::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGreatPower *this)
+TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGreatPower *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryBase((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
   this->vftable = (TGreatPowerVtbl *)&TGameWindowVtbl_00656a98;
   this->field_0xa0 = 0;
   *(undefined4 *)&this->field_0xa4 = 0;
@@ -11321,20 +11321,20 @@ TGreatPower::thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(TGrea
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408625
-// GHIDRA_NAME thunk_NoOpTurnEventStateVtableSlot10
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpTurnEventStateVtableSlot10(void)
+// GHIDRA_NAME CObject::Dump
+// GHIDRA_PROTO undefined __thiscall CObject::Dump(void)
 
-void __thiscall CPtrList::thunk_NoOpTurnEventStateVtableSlot10(CPtrList *this)
+void __thiscall CObject::Dump(CPtrList *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408639
-// GHIDRA_NAME thunk_InitializeCityViewActionButtons
-// GHIDRA_PROTO void __thiscall thunk_InitializeCityViewActionButtons(void)
+// GHIDRA_NAME TacticalBattleView::InitializeCityViewActionButtons
+// GHIDRA_PROTO void __thiscall TacticalBattleView::InitializeCityViewActionButtons(void)
 
-void __thiscall TacticalBattleView::thunk_InitializeCityViewActionButtons(TacticalBattleView *this)
+void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBattleView *this)
 
 {
   InitializeCityViewActionButtons(this);
@@ -11342,11 +11342,11 @@ void __thiscall TacticalBattleView::thunk_InitializeCityViewActionButtons(Tactic
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408657
-// GHIDRA_NAME thunk_ForwardEngineerDialogCommandToChildSlot40
-// GHIDRA_PROTO undefined __thiscall thunk_ForwardEngineerDialogCommandToChildSlot40(undefined4 param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_NAME TView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TView::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
-TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+TView::OrphanRetStub_0059add0
           (TView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
@@ -11361,11 +11361,11 @@ TView::thunk_ForwardEngineerDialogCommandToChildSlot40
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408670
-// GHIDRA_NAME thunk_DispatchLocalizedUiMessageWithTemplate
-// GHIDRA_PROTO undefined thunk_DispatchLocalizedUiMessageWithTemplate()
+// GHIDRA_NAME DispatchLocalizedUiMessageWithTemplate
+// GHIDRA_PROTO undefined DispatchLocalizedUiMessageWithTemplate()
 
 undefined1
-thunk_DispatchLocalizedUiMessageWithTemplate
+DispatchLocalizedUiMessageWithTemplate
           (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
           undefined1 *param_6)
 
@@ -11394,7 +11394,7 @@ thunk_DispatchLocalizedUiMessageWithTemplate
   uStack_28 = 0x5d5c83;
   uStack_28 = NoOpRuntimeCallback_005d5d10();
   param_6 = auStack_2c;
-  thunk_AssignStringSharedRefAndReturnThis(&param_2);
+  AssignStringSharedRefAndReturnThis(&param_2);
   uVar1 = TCivToolbar::RunNationInfoModalAndReturnNonCancel(param_1);
   uStack_4 = uStack_4 & 0xffffff00;
   uStack_18 = 0x5d5cb1;
@@ -11407,10 +11407,10 @@ thunk_DispatchLocalizedUiMessageWithTemplate
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408684
-// GHIDRA_NAME thunk_InvokeObjectVtableMethod24
-// GHIDRA_PROTO undefined __thiscall thunk_InvokeObjectVtableMethod24(void)
+// GHIDRA_NAME TObject::ShallowClone
+// GHIDRA_PROTO undefined __thiscall TObject::ShallowClone(void)
 
-void __thiscall TCityTask::thunk_InvokeObjectVtableMethod24(TCityTask *this)
+void __thiscall TObject::ShallowClone(TCityTask *this)
 
 {
   DeserializeCityProductionQueueCommand(this);
@@ -11418,10 +11418,10 @@ void __thiscall TCityTask::thunk_InvokeObjectVtableMethod24(TCityTask *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408710
-// GHIDRA_NAME thunk_ConstructDataLibraryLoadState
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructDataLibraryLoadState(void)
+// GHIDRA_NAME CMainFrame::ConstructModuleLibraryCacheDualTableState
+// GHIDRA_PROTO undefined __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(void)
 
-void __thiscall CMainFrame::thunk_ConstructDataLibraryLoadState(CMainFrame *this)
+void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame *this)
 
 {
   this->vftable = (CMainFrameVtbl *)0x0;
@@ -11448,10 +11448,10 @@ void __thiscall CMainFrame::thunk_ConstructDataLibraryLoadState(CMainFrame *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408715
-// GHIDRA_NAME thunk_PostTurnEventCodeMessage2420
-// GHIDRA_PROTO undefined thunk_PostTurnEventCodeMessage2420()
+// GHIDRA_NAME PostTurnEventCodeMessage2420
+// GHIDRA_PROTO undefined PostTurnEventCodeMessage2420()
 
-void thunk_PostTurnEventCodeMessage2420(short param_1)
+void PostTurnEventCodeMessage2420(short param_1)
 
 {
   CWinThread *pCVar1;
@@ -11470,21 +11470,21 @@ void thunk_PostTurnEventCodeMessage2420(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408724
-// GHIDRA_NAME thunk_NoOpTurnEventStateVtableSlotFC
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpTurnEventStateVtableSlotFC(void)
+// GHIDRA_NAME TDiplomacyMapView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(void)
 
-void __thiscall TDiplomacyMapView::thunk_NoOpTurnEventStateVtableSlotFC(TDiplomacyMapView *this)
+void __thiscall TDiplomacyMapView::GetTEventHandlerClassNamePointer(TDiplomacyMapView *this)
 
 {
-  GetTEventHandlerClassNamePointer(this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408738
-// GHIDRA_NAME thunk_ShouldAttemptMapOrderPairResolution
-// GHIDRA_PROTO undefined thunk_ShouldAttemptMapOrderPairResolution()
+// GHIDRA_NAME ShouldAttemptMapOrderPairResolution
+// GHIDRA_PROTO undefined ShouldAttemptMapOrderPairResolution()
 
-uint __thiscall thunk_ShouldAttemptMapOrderPairResolution(int param_1,int param_2)
+uint __thiscall ShouldAttemptMapOrderPairResolution(int param_1,int param_2)
 
 {
   int *piVar1;
@@ -11580,11 +11580,11 @@ uint __thiscall thunk_ShouldAttemptMapOrderPairResolution(int param_1,int param_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004087C9
-// GHIDRA_NAME thunk_InitializeDialogTemplateDBWithTextState
-// GHIDRA_PROTO undefined thunk_InitializeDialogTemplateDBWithTextState()
+// GHIDRA_NAME InitializeDialogTemplateDBWithTextState
+// GHIDRA_PROTO undefined InitializeDialogTemplateDBWithTextState()
 
 TControl * __thiscall
-thunk_InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param_2)
+InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -11613,11 +11613,11 @@ thunk_InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004087D8
-// GHIDRA_NAME thunk_RenderStrategicMapTileCell
-// GHIDRA_PROTO undefined __thiscall thunk_RenderStrategicMapTileCell(short param_1)
+// GHIDRA_NAME TCivDescription::RenderStrategicMapTileCell
+// GHIDRA_PROTO undefined __thiscall TCivDescription::RenderStrategicMapTileCell(short param_1)
 
 void __thiscall
-TCivDescription::thunk_RenderStrategicMapTileCell(TCivDescription *this,short param_1)
+TCivDescription::RenderStrategicMapTileCell(TCivDescription *this,short param_1)
 
 {
   RenderStrategicMapTileCell(this,param_1);
@@ -11625,36 +11625,36 @@ TCivDescription::thunk_RenderStrategicMapTileCell(TCivDescription *this,short pa
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408819
-// GHIDRA_NAME thunk_GetArmyMissionClassName
-// GHIDRA_PROTO undefined thunk_GetArmyMissionClassName()
+// GHIDRA_NAME TArmyMission::GetTArmyMissionClassNamePointer
+// GHIDRA_PROTO undefined TArmyMission::GetTArmyMissionClassNamePointer()
 
-undefined ** TArmyMission::thunk_GetArmyMissionClassName(void)
+undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 
 {
   return &PTR_s_TArmyMission_00697a28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408832
-// GHIDRA_NAME thunk_NoOpTurnOrderNavigationVtableSlotB
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpTurnOrderNavigationVtableSlotB(void)
+// GHIDRA_NAME TGameWindow::NoOpTurnOrderNavigationVtableSlotB
+// GHIDRA_PROTO undefined __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotB (0x00500220).
 // GHIDRA_COMMENT_END
 
 /* Thunk-table entry: jumps to NoOpTurnOrderNavigationVtableSlotB (0x00500220). */
 
-void __thiscall TGameWindow::thunk_NoOpTurnOrderNavigationVtableSlotB(TGameWindow *this)
+void __thiscall TGameWindow::NoOpTurnOrderNavigationVtableSlotB(TGameWindow *this)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408869
-// GHIDRA_NAME thunk_DispatchTurnEvent3B8AndWaitForCompletion
-// GHIDRA_PROTO undefined __thiscall thunk_DispatchTurnEvent3B8AndWaitForCompletion(void)
+// GHIDRA_NAME TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(void)
 
 void __thiscall
-TDiplomacyMapView::thunk_DispatchTurnEvent3B8AndWaitForCompletion(TDiplomacyMapView *this)
+TDiplomacyMapView::DispatchTurnEvent3B8AndWaitForCompletion(TDiplomacyMapView *this)
 
 {
   DispatchTurnEvent3B8AndWaitForCompletion(this);
@@ -11662,10 +11662,10 @@ TDiplomacyMapView::thunk_DispatchTurnEvent3B8AndWaitForCompletion(TDiplomacyMapV
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004088C8
-// GHIDRA_NAME thunk_HandleCityDialogNoOpA
-// GHIDRA_PROTO undefined __thiscall thunk_HandleCityDialogNoOpA(void)
+// GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::thunk_HandleCityDialogNoOpA(TSoundPlayer *this)
+void __thiscall TSoundPlayer::'scalar_deleting_destructor'(TSoundPlayer *this)
 
 {
   _scalar_deleting_destructor_(this);
@@ -11673,11 +11673,11 @@ void __thiscall TSoundPlayer::thunk_HandleCityDialogNoOpA(TSoundPlayer *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408904
-// GHIDRA_NAME thunk_SetCivWorkOrderTypeTargetTileAndDuration
-// GHIDRA_PROTO void __thiscall thunk_SetCivWorkOrderTypeTargetTileAndDuration(int nOrderType, short nTargetTileIndex)
+// GHIDRA_NAME TCivUnit::SetUnitOrderTypeAndOwnerIndex
+// GHIDRA_PROTO void __thiscall TCivUnit::SetUnitOrderTypeAndOwnerIndex(int nOrderType, short nTargetTileIndex)
 
 void __thiscall
-TCivUnit::thunk_SetCivWorkOrderTypeTargetTileAndDuration
+TCivUnit::SetUnitOrderTypeAndOwnerIndex
           (TCivUnit *this,int nOrderType,short nTargetTileIndex)
 
 {
@@ -11686,29 +11686,29 @@ TCivUnit::thunk_SetCivWorkOrderTypeTargetTileAndDuration
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408922
-// GHIDRA_NAME thunk_HandleTurnEvent2260_RefreshMainHudTitles
-// GHIDRA_PROTO undefined __thiscall thunk_HandleTurnEvent2260_RefreshMainHudTitles(void)
+// GHIDRA_NAME TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
-TDiplomacyMapView::thunk_HandleTurnEvent2260_RefreshMainHudTitles(TDiplomacyMapView *this)
+TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920(TDiplomacyMapView *this)
 
 {
-  OrphanLeaf_NoCall_Ins07_004d8920(this);
+  TCommand::OrphanLeaf_NoCall_Ins07_004d8920(this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004089AE
-// GHIDRA_NAME thunk_InitializeTForeignMinisterStateAndCounters
-// GHIDRA_PROTO undefined thunk_InitializeTForeignMinisterStateAndCounters()
+// GHIDRA_NAME InitializeTForeignMinisterStateAndCounters
+// GHIDRA_PROTO undefined InitializeTForeignMinisterStateAndCounters()
 
 void __thiscall
-thunk_InitializeTForeignMinisterStateAndCounters(TIndexAndRankList *param_1,undefined4 param_2)
+InitializeTForeignMinisterStateAndCounters(TIndexAndRankList *param_1,undefined4 param_2)
 
 {
   int iVar1;
   undefined4 *puVar2;
   
-  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1,param_2);
+  TIndexAndRankList::InitializeTMinisterBaseOrderArray(param_1,param_2);
   *(undefined2 *)&param_1->field_0x10 = 0xfff6;
   *(undefined2 *)&param_1->field_0x12 = 0;
   *(undefined2 *)&param_1->field_0x14 = 0;
@@ -11725,12 +11725,12 @@ thunk_InitializeTForeignMinisterStateAndCounters(TIndexAndRankList *param_1,unde
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408A03
-// GHIDRA_NAME thunk_InvalidateCityDialogRectRegion
-// GHIDRA_PROTO undefined thunk_InvalidateCityDialogRectRegion()
+// GHIDRA_NAME InvalidateCityDialogRectRegion
+// GHIDRA_PROTO undefined InvalidateCityDialogRectRegion()
 
 /* WARNING: Removing unreachable block (ram,0x0048b5ff) */
 
-void __thiscall thunk_InvalidateCityDialogRectRegion(int *param_1,RECT *param_2)
+void __thiscall InvalidateCityDialogRectRegion(int *param_1,RECT *param_2)
 
 {
   tagRECT tStack_10;
@@ -11751,10 +11751,10 @@ void __thiscall thunk_InvalidateCityDialogRectRegion(int *param_1,RECT *param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408A5D
-// GHIDRA_NAME thunk_ResetUiInputCaptureState
-// GHIDRA_PROTO undefined __thiscall thunk_ResetUiInputCaptureState(void)
+// GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::'scalar_deleting_destructor'(void)
 
-void __thiscall TSoundPlayer::thunk_ResetUiInputCaptureState(TSoundPlayer *this)
+void __thiscall TSoundPlayer::'scalar_deleting_destructor'(TSoundPlayer *this)
 
 {
   if (*(int **)&this->field_0x20 != (int *)0x0) {

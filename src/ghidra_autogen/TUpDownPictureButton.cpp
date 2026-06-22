@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571580
 // GHIDRA_NAME TUpDownPictureButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TUpDownPictureButton::GetTEventHandlerClassNamePointer(TUpDownPictureButton *this)
@@ -36,7 +36,7 @@ TUpDownPictureButton * __thiscall
 TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

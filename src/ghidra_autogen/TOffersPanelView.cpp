@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8F50
 // GHIDRA_NAME TOffersPanelView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TOffersPanelView::GetTEventHandlerClassNamePointer(TOffersPanelView *this)
@@ -16,13 +16,13 @@ TOffersPanelView::GetTEventHandlerClassNamePointer(TOffersPanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8F70
 // GHIDRA_NAME TOffersPanelView::ConstructTOffersPanelViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOffersPanelViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TOffersPanelView::ConstructTOffersPanelViewBaseState(void)
 
 TOffersPanelView * __thiscall
 TOffersPanelView::ConstructTOffersPanelViewBaseState(TOffersPanelView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TOffersPanelViewVtbl_00655fb0;
   *(undefined4 *)&this->field_0x60 = 0;
   *(undefined4 *)&this->field_0x68 = 0;
@@ -38,7 +38,7 @@ TOffersPanelView * __thiscall
 TOffersPanelView::_scalar_deleting_destructor_(TOffersPanelView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -105,8 +105,8 @@ void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelVi
   local_1f = 0;
   local_1e = 0;
   local_1d = 0;
-  thunk_MapUiThemeCodeToStyleFlags();
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  MapUiThemeCodeToStyleFlags();
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   puStack_38 = (undefined1 *)0x61636365;
   pTVar1 = this->vftable[0x12].slot_0x04;
   *(TView **)&this->field_0x60 = this->ownerContext;
@@ -114,19 +114,19 @@ void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelVi
   *(int *)&this->field_0x68 = CONCAT31(extraout_var,uVar3);
   if (CONCAT31(extraout_var,uVar3) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   uVar3 = (*pTVar1)();
   *(int *)&this->field_0x6c = CONCAT31(extraout_var_00,uVar3);
   if (CONCAT31(extraout_var_00,uVar3) == 0) {
     uStack_50 = 0x4f90c3;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   *(undefined2 *)(*(int *)&this->field_0x68 + 0x92) = 5000;
   *(undefined2 *)(*(int *)&this->field_0x6c + 0x92) = 5000;
   uStack_50 = 0x4f9100;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   uVar3 = (*pTVar1)();
   piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
   iVar2 = *piVar4;
@@ -162,21 +162,21 @@ void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelVi
   uStack_78 = *(undefined4 *)&this->field_0x68;
   puStack_38 = (undefined1 *)&uStack_78;
   puStack_74 = (undefined4 *)uStack_78;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_74 = &uStack_60;
   uStack_78 = 7;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_6c);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_6c);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   uStack_84 = 0x4f91f9;
   CString::CString((CString *)&stack0xffffffbc,(char *)&g_szEmptyString);
   uStack_84 = 0x4f920c;
   CString::AssignFromPtr(&CStack_6c,(CString *)&stack0xffffffbc);
   CString::~CString((CString *)&stack0xffffffbc);
   puStack_64 = (undefined1 *)&uStack_84;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_6c);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_6c);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   CString::~CString(&CStack_6c);
   *unaff_FS_OFFSET = uStack_54;
   return;
@@ -184,7 +184,7 @@ void __thiscall TOffersPanelView::OrphanCallChain_C6_I49_004875d0(TOffersPanelVi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9300
 // GHIDRA_NAME TOffersPanelView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TOffersPanelView::OrphanRetStub_0059add0
@@ -197,13 +197,13 @@ TOffersPanelView::OrphanRetStub_0059add0
   if (((param_1 != 5) && (param_1 == 10)) && ((iVar1 == 0x61636365 || (iVar1 == 0x72656a65)))) {
     *(int *)&this->field_0x64 = iVar1;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9350
 // GHIDRA_NAME TOffersPanelView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelView *this,int param_1)
 
@@ -222,7 +222,7 @@ void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelVie
     if (iVar3 != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
                 (CONCAT22((short)((uint3)extraout_var_00 >> 8),*(undefined2 *)(iVar3 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket(this,10,iVar3);
+      QueueDeferredUiEventPacket(this,10,iVar3);
     }
   }
   else if (sVar1 == 0x1b) {
@@ -231,7 +231,7 @@ void __thiscall TOffersPanelView::OrphanTiny_ReturnZero_0048a730(TOffersPanelVie
     if (iVar3 != 0) {
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar3 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket(this,10,iVar3);
+      QueueDeferredUiEventPacket(this,10,iVar3);
       return;
     }
   }
@@ -405,7 +405,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   if ((char)pTStack_20 == '\0') {
     iRam736865c9 = 0;
     do {
-      thunk_PumpUiMessagesAndBackgroundTasks(1);
+      PumpUiMessagesAndBackgroundTasks(1);
     } while (iRam736865c9 == 0);
     if (iRam736865c9 == 0x61636365) {
       CString::~CString((CString *)&stack0xffffffbc);

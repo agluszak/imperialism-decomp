@@ -29,7 +29,7 @@ TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0
 // GHIDRA_NAME TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-// GHIDRA_PROTO undefined __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0

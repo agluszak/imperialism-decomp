@@ -25,7 +25,7 @@ TCommand * TNextTradeCommand::CreateTNextTradeCommandInstance(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TNextTradeCommandVtbl_0066da90;
     pTVar1 = this;
   }
@@ -45,13 +45,13 @@ CRuntimeClass * __thiscall TNextTradeCommand::GetTEventClassNamePointer(TNextTra
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA400
 // GHIDRA_NAME TNextTradeCommand::ConstructTNextTradeCommandBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNextTradeCommandBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::ConstructTNextTradeCommandBaseState(void)
 
 TNextTradeCommand * __thiscall
 TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
+  TCommand::ConstructTurnEventPacketBase((TCommand *)this);
   this->vftable = &TNextTradeCommandVtbl_0066da90;
   return this;
 }
@@ -64,7 +64,7 @@ TNextTradeCommand * __thiscall
 TNextTradeCommand::OrphanCallChain_C1_I17_00487470(TNextTradeCommand *this,byte param_1)
 
 {
-  DestructTNextTradeCommandAndMaybeFree_Impl(this);
+  TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TNextTradeCommand::OrphanCallChain_C1_I17_00487470(TNextTradeCommand *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA460
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(void)
 
 void __thiscall
 TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(TNextTradeCommand *this)
@@ -97,7 +97,7 @@ void __thiscall TNextTradeCommand::OrphanRetStub_00487a00(TNextTradeCommand *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C04F0
 // GHIDRA_NAME TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// GHIDRA_PROTO undefined __thiscall CreateNextTradeCommandAndFormatPrompt(void)
+// GHIDRA_PROTO undefined __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(void)
 
 void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTradeCommand *this)
 
@@ -137,12 +137,12 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
   uVar3 = (*pTVar1)();
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   piVar6 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   cVar4 = (**(code **)(*piVar6 + 0x1cc))();
   *(short *)&this[6].field_0xa = (short)cVar4;
@@ -151,7 +151,7 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar3);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar2 = *piVar6;
   sVar5 = (**(code **)(iVar2 + 0x1e8))();
@@ -176,7 +176,7 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
       else {
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       (**(code **)(*DAT_006a2158 + 0x4c))();
       puVar9 = &stack0xffffffe4;
       (**(code **)(iVar2 + 0x1dc))();
@@ -216,7 +216,7 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
       uVar7 = 0;
     }
     else {
-      uVar7 = ConstructTNextTradeCommandBaseState(this_00);
+      uVar7 = TNextTradeCommand::ConstructTNextTradeCommandBaseState(this_00);
     }
     InitializeRangePairFromDiplomacyConstants();
     (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(uVar7);

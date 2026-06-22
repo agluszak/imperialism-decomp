@@ -11,7 +11,7 @@ TNavyBattle * __thiscall
 TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this,byte param_1)
 
 {
-  CreateTNavyBattleInstance(this);
+  TNavyBattle::CreateTNavyBattleInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TNavyBattle::WrapperFor_FreeHeapBufferIfNotNull_At005a54d0(TNavyBattle *this,byt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5500
 // GHIDRA_NAME TNavyBattle::CreateTNavyBattleInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNavyBattleInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNavyBattle::CreateTNavyBattleInstance(void)
 
 void __thiscall TNavyBattle::CreateTNavyBattleInstance(TNavyBattle *this)
 
@@ -78,11 +78,11 @@ LAB_005a5610:
     if (*(int **)&this->field_0x8 != (int *)0x0) {
       (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(pUnit);
     }
-    nextUnitSelection = thunk_SelectNextTacticalUnitForDoneCommand();
+    nextUnitSelection = SelectNextTacticalUnitForDoneCommand();
     *(int *)&this->field_0x1c = nextUnitSelection;
     if (*(char *)(*(int *)(&this->field_0x14 + *(int *)&this->field_0xc * 4) + 0x10) != '\0') {
       *(uint *)&this->field_0xc = (uint)(*(int *)&this->field_0xc == 0);
-      uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
+      uVar2 = SelectNextTacticalUnitForDoneCommand();
       *(undefined4 *)&this->field_0x1c = uVar2;
       if (*(int *)&this->field_0x8 != 0) {
         pSideListCursor =
@@ -93,7 +93,7 @@ LAB_005a5610:
         (**(code **)(targetRow + 0x13c))();
       }
       if ((char)(*(int **)(&this->field_0x14 + *(int *)&this->field_0xc * 4))[4] != '\0') {
-        TacticalBattleView::thunk_FinalizeTacticalTurnStateAndQueueEvent232A
+        TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A
                   ((TacticalBattleView *)this);
         return;
       }
@@ -140,7 +140,7 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
   (**(code **)((int)pDefenderUnit->pVtable + 0xc))();
   attackerRow = pAttackerUnit->tileIndex / 0x1d;
   iVar1 = (attackerRow & 1) + (pAttackerUnit->tileIndex % 0x1d) * 2;
-  thunk_ConvertHexTileIndexToRowAndDoubleColumn
+  ConvertHexTileIndexToRowAndDoubleColumn
             (targetTileIndex,(uint *)&targetRow,&targetDoubleColumn);
   if (targetDoubleColumn < iVar1) {
     targetDoubleColumn = iVar1 * 2 - targetDoubleColumn;
@@ -176,7 +176,7 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
     fVar2 = (float10)(**(code **)((int)pController->pVtable + 0x30))();
     iVar1 = pController->statHealthA;
     fVar3 = (float10)(**(code **)((int)pDefenderUnit->pVtable + 0x34))();
-    thunk_ApplyTacticalDamageAndDeathState
+    TNavyBattle::ApplyTacticalDamageAndDeathState
               ((TNavyBattle *)pDefenderUnit,
                (float)(fVar3 * (float10)(float)((float10)iVar1 * fVar2)),damageMode);
     if (*(int **)&this->field_0x8 != (int *)0x0) {
@@ -237,7 +237,7 @@ TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TNavyBattle *this,i
       if (0 < *(int *)&this->field_0x3c) {
         do {
           if (local_1c <= *psVar5) {
-            thunk_ComputeHexNeighborTileIndices(local_24,local_18);
+            ComputeHexNeighborTileIndices_005A0420(local_24,local_18);
             piVar6 = local_18;
             psVar7 = (short *)&this->field_0x7c;
             local_28 = 6;
@@ -278,7 +278,7 @@ void __thiscall TNavyBattle::CreateTTacticalBattleInstance(TNavyBattle *this)
 {
   int *unaff_retaddr;
   
-  TSimMgr::thunk_ResolveMapOrderChainsForTurnPhase((TSimMgr *)g_pNavyOrderManager,unaff_retaddr);
+  TSimMgr::ResolveMapOrderChainsForTurnPhase((TSimMgr *)g_pNavyOrderManager,unaff_retaddr);
   return;
 }
 
@@ -296,7 +296,7 @@ TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TNavyBatt
   
   (*this->vftable[8].GetTTacticalBattleClassNamePointer)();
   if (*(int *)&this->field_0x44 == 0) {
-    thunk_ComputeHexNeighborTileIndices
+    ComputeHexNeighborTileIndices_005A0420
               (*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);
     iVar3 = 0;
     piVar2 = (int *)&stack0xffffffe0;
@@ -310,7 +310,7 @@ TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(TNavyBatt
       piVar2 = piVar2 + 1;
     } while (iVar3 < 6);
   }
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
@@ -328,9 +328,9 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
   int iVar3;
   int aiStack_18 [6];
   
-  thunk_MoveTacticalUnitTowardTile(param_1,param_2);
+  MoveTacticalUnitTowardTile(param_1,param_2);
   if (*(char *)(param_1 + 0x18) == '\0') {
-    thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
+    ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)&this->field_0x1c + 8),aiStack_18);
     iVar3 = 0;
     piVar2 = aiStack_18;
     while (((*piVar2 == -1 ||
@@ -339,13 +339,13 @@ TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
       iVar3 = iVar3 + 1;
       piVar2 = piVar2 + 1;
       if (5 < iVar3) {
-        TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+        TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
         return;
       }
     }
   }
   if ((*(int *)(param_1 + 0x1c) != 0) || (*(int *)&this->field_0x44 != 0)) {
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+    TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   }
   return;
 }

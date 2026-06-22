@@ -38,7 +38,7 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z_imperialismincl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8B0
 // GHIDRA_NAME TCombatReportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TCombatReportView::GetTEventHandlerClassNamePointer(TCombatReportView *this)
@@ -49,7 +49,7 @@ TCombatReportView::GetTEventHandlerClassNamePointer(TCombatReportView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8D0
 // GHIDRA_NAME TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall ?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z(void)
 
 TCombatReportView * __thiscall
 TCombatReportView::
@@ -70,7 +70,7 @@ TCombatReportView * __thiscall
 TCombatReportView::_scalar_deleting_destructor_(TCombatReportView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -190,7 +190,7 @@ TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,ch
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     iStack_5c = 0x58cada;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   puVar12 = &stack0xffffffcc;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x1c8))();
@@ -291,7 +291,7 @@ TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,ch
   if (piVar8 == (int *)0x0) {
     pCStack_a4 = (CString *)0x58cd6e;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   uVar11 = 1;
   (**(code **)(*piVar8 + 0x1c8))();
@@ -357,7 +357,7 @@ TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,ch
   piVar8 = (int *)(*(code *)(iVar7 % 6))(0x6c6f7373);
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1394);
   }
   (**(code **)(*piVar8 + 0x1c8))(&stack0xffffff60,1);
@@ -390,7 +390,7 @@ TCombatReportView::BuildCombatReportLossesSummaryText(TCombatReportView *this,ch
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058D2B0
 // GHIDRA_NAME TCombatReportView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportView *this)
 
@@ -424,7 +424,7 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
   local_38._0_4_ = this;
   CString::CString(&local_50);
   local_4 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   if (*(short *)&this->field_0x94 != 0) {
     SetQuickDrawFillColor();
     SetQuickDrawStyleWord_1D4C_AndMarkDirty();
@@ -440,8 +440,8 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
       local_44 = *(short *)&this->field_0x9a;
       sVar5 = (*(short *)&this->field_0x94 - *(short *)&this->field_0x9c) * 4;
     }
-    thunk_SetQuickDrawTextOriginWithContextOffset(6);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    SetQuickDrawTextOriginWithContextOffset(6);
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     SetQuickDrawStyleWord_1D50_AndMarkDirty();
     SetQuickDrawStyleWord_1D4E_AndMarkDirty();
     local_4c = 0xc0;
@@ -449,7 +449,7 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
     do {
       iVar3 = local_4c;
       if (local_44 <= sVar5) break;
-      thunk_SetQuickDrawTextOriginWithContextOffset(6);
+      SetQuickDrawTextOriginWithContextOffset(6);
       CString::CString(&local_48);
       local_4._0_1_ = 1;
       if (*(short *)&this->field_0x94 < *(short *)&this->field_0x9c) {
@@ -474,7 +474,7 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
       CString::~CString(&local_40);
       uStack_10 = CONCAT31(uStack_10._1_3_,1);
       CString::~CString(&local_3c);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa4);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffa4);
       auStack_28._0_4_ = 0;
       auStack_28._12_4_ = 6;
       iVar4 = (int)(short)iVar3;
@@ -490,13 +490,13 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
                  (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,(RECT *)auStack_28,
                  (RECT *)local_38,0,(astruct_19 *)0x0);
       iVar3 = iVar3 + 3;
-      thunk_SetQuickDrawTextOriginWithContextOffset(7,iVar3);
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
+      SetQuickDrawTextOriginWithContextOffset(7,iVar3);
+      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x34);
       iVar1 = (*(int *)(pcVar6 + 0x18) * 3) / 7 + 7;
-      thunk_DrawCenteredGuideLineOnMapDc(iVar1,iVar3);
+      DrawCenteredGuideLineOnMapDc(iVar1,iVar3);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x33);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar1 - (*(int *)(pcVar6 + 0x1c) * 3) / 7,iVar3);
+      DrawCenteredGuideLineOnMapDc(iVar1 - (*(int *)(pcVar6 + 0x1c) * 3) / 7,iVar3);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
       auStack_28._12_4_ = 0;
       uStack_18 = 6;
@@ -557,7 +557,7 @@ void __thiscall TCombatReportView::OrphanTiny_ReturnZero_0048a730(TCombatReportV
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058D950
 // GHIDRA_NAME TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -612,7 +612,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
       uVar3 = (*pTVar2)(0x70677570);
       if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x145d);
       }
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xa4))(0,1);
@@ -623,7 +623,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     uVar3 = (*this->vftable[0x12].slot_0x04)(0x7067646e);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1460);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0xa4))(1,1);
@@ -633,7 +633,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     RStack_2c.bottom = 0x149;
     CopyRect(&tStack_1c,&RStack_2c);
 LAB_0058dbdf:
-    thunk_InvalidateCityDialogRectRegion(&tStack_1c,1);
+    InvalidateCityDialogRectRegion(&tStack_1c,1);
   }
   else if (*(int *)(param_2 + 0x1c) == 0x7067646e) {
     sVar1 = *(short *)&this->field_0x94;
@@ -653,7 +653,7 @@ LAB_0058dbdf:
       uVar3 = (*pTVar2)(0x70677570);
       if ((int *)CONCAT31(extraout_var_03,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1470);
       }
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0xa4))(1,1);
@@ -665,7 +665,7 @@ LAB_0058dbdf:
       uVar3 = (*this->vftable[0x12].slot_0x04)(0x7067646e);
       if ((int *)CONCAT31(extraout_var_04,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1477);
       }
       (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar3) + 0xa4))(0,1);
@@ -708,7 +708,7 @@ LAB_0058dbdf:
     CString::~CString(&CStack_3c);
   }
 LAB_0058dd08:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

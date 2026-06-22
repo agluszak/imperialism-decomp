@@ -55,7 +55,7 @@ void __thiscall
 InitializeCivWorkOrderState(void *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+  TUnitOrderState::RegisterUnitOrderWithOwnerManager
             (this,(short)nOrderType,(short)pOwnerContext);
   *(undefined2 *)((int)this + 0x24) = 0;
   *(undefined2 *)((int)this + 0x26) = 0xffff;
@@ -142,7 +142,7 @@ void __fastcall TickCivWorkOrderCountdownAndComplete(int *param_1)
 {
   *(short *)(param_1 + 9) = (short)param_1[9] + -1;
   if ((short)param_1[9] < 1) {
-    thunk_ApplyCompletedCivWorkOrderToMapState(param_1);
+    ApplyCompletedCivWorkOrderToMapState(param_1);
     param_1[2] = 0;
   }
   return;
@@ -488,7 +488,7 @@ void WrapperFor_thunk_GetTickCountDiv16_At005c3b00(void)
 {
   int iVar1;
   
-  iVar1 = thunk_GetTickCountDiv16();
+  iVar1 = GetTickCountDiv16();
   if (iVar1 != 0) {
     DAT_006a5aec = iVar1;
   }
@@ -531,7 +531,7 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
   tagRECT local_10;
   
   local_28 = 0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_24,&local_28);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_24,&local_28);
   piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
   NoOpRuntimeCallback_00497c00(piVar3);
   if (*piVar3 != 0) {
@@ -542,9 +542,9 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
     pLVar5 = &local_20;
     local_1c = local_10.top;
     (**(code **)(*DAT_006a2158 + 0x2c))(local_2c,8);
-    thunk_SetActiveQuickDrawSurfaceContext(pLVar5,unaff_EDI);
-    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(pLVar5);
-    thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
+    SetActiveQuickDrawSurfaceContext(pLVar5,unaff_EDI);
+    uVar4 = GetSurfaceObjectAtContextOffset24(pLVar5);
+    ReturnConstantTrueQuickDrawFlag(uVar4);
     NoOpRuntimeCallback_00497c00(piVar3);
     puVar1 = (undefined4 *)*piVar3;
     if (puVar1 != (undefined4 *)0x0) {
@@ -563,9 +563,9 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
         FreeHeapBufferIfNotNull(this);
       }
       FreeHeapBufferIfNotNull(piVar3);
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24(pLVar5);
-      thunk_NoOpQuickDrawLifecycleHookB(uVar4);
-      thunk_SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
+      uVar4 = GetSurfaceObjectAtContextOffset24(pLVar5);
+      NoOpQuickDrawLifecycleHookB(uVar4);
+      SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
       return pLVar5;
     }
   }
@@ -657,7 +657,7 @@ void BuildUiTextStyleDescriptor
   CString::CString(&local_10);
   local_4 = 0;
   param_1[1] = 0;
-  thunk_MapUiThemeCodeToStyleFlags(param_4,&local_14);
+  MapUiThemeCodeToStyleFlags(param_4,&local_14);
   *(undefined4 *)(param_1 + 3) = local_14;
   param_1[2] = param_3;
   if (param_3 < 0xc) {
@@ -702,7 +702,7 @@ void InitializeUiTextStyleDescriptor
   CString::CString(&local_10);
   local_4 = 0;
   param_1[1] = param_2;
-  thunk_MapUiThemeCodeToStyleFlags(param_4,&local_14);
+  MapUiThemeCodeToStyleFlags(param_4,&local_14);
   param_1[2] = param_3;
   *(undefined4 *)(param_1 + 3) = local_14;
   *param_1 = param_5;
@@ -750,7 +750,7 @@ int * ApplyControlThemeStyleAndOptionalCaption
   CString::CString(&CStack_1c);
   CStack_4.m_pchData = (char *)0x0;
   uStack_16 = 0;
-  thunk_MapUiThemeCodeToStyleFlags(param_4,&param_1);
+  MapUiThemeCodeToStyleFlags(param_4,&param_1);
   local_12 = SUB41(param_1,0);
   local_11 = (undefined1)((uint)param_1 >> 8);
   local_10 = (undefined1)((uint)param_1 >> 0x10);
@@ -810,7 +810,7 @@ int * ConfigureUiControlStyleValueAndCaptionFromStringResource
   *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&local_1c);
   local_4.m_pchData = (char *)0x0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_1c,param_6.m_pchData,param_7);
+  LoadUiStringResourceByGroupAndIndex(&local_1c,param_6.m_pchData,param_7);
   text_or_resource_id.m_pchData = local_1c.m_pchData;
   local_12 = 0;
   iVar1 = *param_1;
@@ -822,7 +822,7 @@ int * ConfigureUiControlStyleValueAndCaptionFromStringResource
   WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970();
   local_4.m_pchData._0_1_ = 1;
   uStack_16 = 0;
-  thunk_MapUiThemeCodeToStyleFlags(param_4,&param_7);
+  MapUiThemeCodeToStyleFlags(param_4,&param_7);
   local_12 = (undefined1)param_7;
   local_11 = (undefined1)((uint)param_7 >> 8);
   local_10 = (undefined1)((uint)param_7 >> 0x10);
@@ -918,7 +918,7 @@ void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
   uStack_5 = 0;
   uStack_4 = 0;
   uStack_3 = 0;
-  thunk_BuildUiTextStyleDescriptor(&local_c,param_1,param_2,param_3);
+  BuildUiTextStyleDescriptor(&local_c,param_1,param_2,param_3);
   SetQuickDrawStyleWord_1D4E_AndMarkDirty(CONCAT22(uStack_8,uStack_a));
   SetQuickDrawStyleWord_1D50_AndMarkDirty(CONCAT13(uStack_5,CONCAT12(local_6,uStack_8)));
   SetQuickDrawStyleWord_1D4C_AndMarkDirty(CONCAT22(uStack_a,local_c));
@@ -946,7 +946,7 @@ void InitializeUiTextStyleDescriptorAndApplyQuickDraw
   uStack_5 = 0;
   uStack_4 = 0;
   uStack_3 = 0;
-  thunk_InitializeUiTextStyleDescriptor(&local_c,param_1,param_2,param_3,param_4);
+  InitializeUiTextStyleDescriptor(&local_c,param_1,param_2,param_3,param_4);
   SetQuickDrawStyleWord_1D4E_AndMarkDirty(CONCAT22(uStack_8,uStack_a));
   SetQuickDrawStyleWord_1D50_AndMarkDirty(CONCAT13(uStack_5,CONCAT12(local_6,uStack_8)));
   SetQuickDrawStyleWord_1D4C_AndMarkDirty(CONCAT22(uStack_a,local_c));
@@ -973,9 +973,9 @@ void ApplyUiTextStyleAndThemeFlags
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
-  thunk_BuildUiTextStyleDescriptor(local_c,param_2,param_3,param_5);
+  BuildUiTextStyleDescriptor(local_c,param_2,param_3,param_5);
   (**(code **)(*param_1 + 0x1b4))(local_c,0);
-  thunk_MapUiThemeCodeToStyleFlags(param_2,param_1 + 0x25);
+  MapUiThemeCodeToStyleFlags(param_2,param_1 + 0x25);
   return;
 }
 
@@ -998,9 +998,9 @@ void ApplyControlTextStyleDescriptorFromThemeCode
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
-  thunk_BuildUiTextStyleDescriptor(local_c,param_2,param_3,param_5);
+  BuildUiTextStyleDescriptor(local_c,param_2,param_3,param_5);
   (**(code **)(*param_1 + 0x1b4))(local_c,0);
-  thunk_MapUiThemeCodeToStyleFlags(param_2,param_1 + 0x2b);
+  MapUiThemeCodeToStyleFlags(param_2,param_1 + 0x2b);
   return;
 }
 
@@ -1027,11 +1027,11 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
   CString::CString(&local_10);
   CStack_14.m_pchData = (char *)(int)param_2;
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
+  LoadUiStringResourceByGroupAndIndex();
   CStack_14.m_pchData = param_3;
   (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_14);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_14);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   CString::~CString(&CStack_14);
   *unaff_FS_OFFSET = local_10.m_pchData;
@@ -1060,10 +1060,10 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(undefined4 param_1,short para
   CString::CString(&local_10);
   CStack_14.m_pchData = (char *)(int)param_2;
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
+  LoadUiStringResourceByGroupAndIndex();
   CStack_14.m_pchData = param_3;
   (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_14);
+  AssignStringSharedRefAndReturnThis(&CStack_14);
   EnableAndProcessFlagWithSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   CString::~CString(&CStack_14);
@@ -1090,9 +1090,9 @@ void LoadUiStringByGroupAndIndexToControlObject(void)
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10);
-  thunk_AssignStringSharedRefAndReturnThis(&local_10);
-  InitializeAndRunMainRoutine();
+  LoadUiStringResourceByGroupAndIndex(&local_10);
+  AssignStringSharedRefAndReturnThis(&local_10);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
   *unaff_FS_OFFSET = local_c;
@@ -1118,8 +1118,8 @@ void LoadUiStringAndDispatchSharedMessageCommand(void)
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10);
-  thunk_AssignStringSharedRefAndReturnThis(&local_10);
+  LoadUiStringResourceByGroupAndIndex(&local_10);
+  AssignStringSharedRefAndReturnThis(&local_10);
   EnableAndProcessFlagWithSharedStringCleanup();
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -1202,8 +1202,8 @@ int * InitializeMainRoutineContextAndRun(CString param_1,undefined4 param_2)
   (**(code **)(*piVar1 + 0xc))();
   param_1.m_pchData = acStack_1c;
   piStack_18 = piVar1;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&stack0x00000000);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   piStack_18 = (int *)0x5c4b26;
   CString::~CString((CString *)&stack0x00000000);
@@ -1240,7 +1240,7 @@ int * AssignSharedStringToTaggedControlAndProcessState(CString param_1,undefined
   (**(code **)(*piVar1 + 0xc))();
   param_1.m_pchData = acStack_1c;
   piStack_18 = piVar1;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
+  AssignStringSharedRefAndReturnThis(&stack0x00000000);
   EnableAndProcessFlagWithSharedStringCleanup();
   puStack_8 = (undefined1 *)0xffffffff;
   piStack_18 = (int *)0x5c4be6;
@@ -9917,8 +9917,8 @@ void FormatAndAssignTurnStateSharedTextFromTemplate
   CString::AssignFromCStr(&local_1c,&DAT_0069b648);
   CString::AssignFromCStr(&local_1c,param_7);
   puVar1 = extraout_ECX;
-  thunk_AssignStringSharedRefAndReturnThis(&local_1c);
-  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
+  AssignStringSharedRefAndReturnThis(&local_1c);
+  TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
             ((TViewMgr *)g_pUiRuntimeContext,puVar1);
   local_4._0_1_ = 2;
   CString::~CString(&local_1c);
@@ -10313,13 +10313,13 @@ DispatchLocalizedUiMessageWithTemplateA13A0
   iStack_24 = (int)param_3;
   pTStack_28 = (TToolBarClusterVtbl *)&param_1;
   local_4 = 0;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   param_3 = &pTStack_28;
   local_4._0_1_ = 1;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_28,(char *)&g_szEmptyString);
   local_4 = (uint)local_4._1_3_ << 8;
-  uVar1 = thunk_DispatchLocalizedUiMessageWithTemplate(3);
+  uVar1 = DispatchLocalizedUiMessageWithTemplate(3);
   local_4 = -1;
   iStack_18 = 0x5d5b75;
   CString::~CString((CString *)&param_1);
@@ -10361,7 +10361,7 @@ DispatchLocalizedUiMessageWithTemplate
   uStack_28 = 0x5d5c83;
   uStack_28 = NoOpRuntimeCallback_005d5d10();
   param_6 = auStack_2c;
-  thunk_AssignStringSharedRefAndReturnThis(&param_2);
+  AssignStringSharedRefAndReturnThis(&param_2);
   uVar1 = TCivToolbar::RunNationInfoModalAndReturnNonCancel(param_1);
   local_4 = local_4 & 0xffffff00;
   uStack_18 = 0x5d5cb1;
@@ -10492,22 +10492,22 @@ void __thiscall HandleTurnStateExitAndPostFollowupEventCode(int param_1,short pa
     *(undefined4 *)(param_1 + 0xf4) = 0;
     switch(*(undefined4 *)&g_pLocalizationTable->field_0x8) {
     case 1:
-      thunk_PostTurnEventCodeMessage2420(0x5dc);
+      PostTurnEventCodeMessage2420(0x5dc);
       return;
     case 0xe:
     case 0x16:
     case 0x17:
-      thunk_PostTurnEventCodeMessage2420(0x7e0);
+      PostTurnEventCodeMessage2420(0x7e0);
       return;
     case 0x19:
       uVar2 = UiRuntimeContext::GetActiveNationId();
-      cVar1 = thunk_IsNationSlotEligibleForEventProcessing(uVar2);
+      cVar1 = IsNationSlotEligibleForEventProcessing(uVar2);
       if (cVar1 != '\0') {
-        thunk_PostTurnEventCodeMessage2420(0x5eb);
+        PostTurnEventCodeMessage2420(0x5eb);
         return;
       }
     }
-    thunk_ReinitializeGameFlowAndPostTurnEventCode(0);
+    ReinitializeGameFlowAndPostTurnEventCode(0);
   }
   return;
 }
@@ -10577,10 +10577,10 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   if (piVar3 == (int *)0x0) {
     puStack_50 = (undefined4 *)0x5dbed7;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   puStack_50 = (undefined4 *)0x5dbefc;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0x1b4))();
   puStack_50 = (undefined4 *)0x5dbf1d;
@@ -10604,9 +10604,9 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   ppuStack_74 = ppuStack_58;
   uStack_7c = 0x5dbf76;
   ppuStack_58 = (undefined1 **)&ppuStack_74;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   puStack_78 = (undefined4 *)0x5dbf7b;
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   ppuStack_70 = (undefined1 **)0x686f7374;
   ppuStack_74 = (undefined1 **)0x5dbf87;
   piVar3 = (int *)(*pcVar1)();
@@ -10621,9 +10621,9 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   ppuStack_88 = &puStack_6c;
   CStack_8c.m_pchData = (char *)0x5dbfbc;
   piStack_80 = piVar3;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   ppuStack_88 = (undefined4 **)0x5dbfc1;
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piStack_80 = (int *)0x686f7374;
   pppuStack_84 = (undefined1 ***)0x5dbfcd;
   pcVar4 = (char *)(*pcVar1)();
@@ -10634,8 +10634,8 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puStack_78 = &ppiStack_94;
   CStack_90.m_pchData = pcVar4;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   CStack_90.m_pchData = (char *)0x6a6f696e;
   ppiStack_94 = (int **)0x5dc00c;
   (*pcVar1)();
@@ -10643,9 +10643,9 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   ppuStack_88 = (undefined4 **)&stack0xffffff5c;
   pCStack_a8 = &CStack_8c;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   pCStack_a8 = (CString *)0x5dc03f;
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   (*pcVar1)();
   pCStack_a8 = (CString *)0x5dc05b;
   CString::CString(&CStack_8c,s_These_books_are_for_show_0069b6fc);
@@ -10655,8 +10655,8 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   ppuStack_70 = (undefined1 **)((uint)ppuStack_70._1_3_ << 8);
   CString::~CString(&CStack_8c);
   ppuStack_88 = &pCStack_a8;
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_90);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_90);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   ppuStack_70 = (undefined1 **)0xffffffff;
   CString::~CString(&CStack_90);
   *unaff_FS_OFFSET = puStack_78;
@@ -10681,7 +10681,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView(void)
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0xf6c)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0xf6c)
     ;
   }
   (**(code **)(g_pUiRuntimeContext->vftable + 0x44))(piVar3,&stack0xfffffff4);
@@ -10728,7 +10728,7 @@ TCommand * Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     CString::CString((CString *)(this + 1));
     this->vftable = (TCommandVtbl *)&TModalMessageCommandVtbl_0066f2f0;
@@ -10792,7 +10792,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *piVar4;
   text_or_resource_id_00 = (char *)0x1;
@@ -10808,7 +10808,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   (**(code **)(iVar1 + 0xc))();
   pCStack_5c = (CString *)&pcStack_24;
   CStack_60.m_pchData = (char *)0x5de0c7;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CVar9.m_pchData = (char *)0x0;
   (**(code **)(iVar1 + 0x1b4))();
   pCStack_5c = (CString *)0x5de0e7;
@@ -10833,7 +10833,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   pcStack_70 = (code *)&stack0xffffffc8;
   uStack_6c = 0;
   uStack_74 = 0x5de150;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_68 = &stack0xffffffc8;
   pcVar8 = (code *)0x0;
   uStack_6c = 0x5de162;
@@ -10854,7 +10854,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   (**(code **)(*piVar4 + 0x1c0))();
   CStack_84.m_pchData = (char *)&uStack_6c;
   uStack_6c = 0;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c);
+  MapUiThemeCodeToStyleFlags(0x2b6c);
   CStack_84.m_pchData = (char *)&uStack_6c;
   (**(code **)(*DAT_006a2158 + 0x54))();
   UpdatePaletteIndexWithDefaultFallback(0x3b);
@@ -10887,7 +10887,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
     CString::~CString(&CStack_60);
     ApplyUiTextStyleAndThemeFlags(uStack_6c,0,0xc,0x2b6b,0x2b6c);
     (**(code **)(iVar7 + 0x1c4))(1,0);
-    thunk_SetSelectedTextOptionByTag((-(uint)(unaff_EBX != (int *)0x0) & 0x5090a01) + 0x6f6e6531,0);
+    SetSelectedTextOptionByTag((-(uint)(unaff_EBX != (int *)0x0) & 0x5090a01) + 0x6f6e6531,0);
   }
   if (cStack_30 != '\0') {
     unaff_EBX = (int *)(*pcVar8)(0x63616e63);
@@ -10926,7 +10926,7 @@ bool __fastcall RefreshCurrentUiViewAndActivePanelState(int *param_1)
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *piVar3;
   (**(code **)(iVar1 + 0x1a0))();
@@ -10958,7 +10958,7 @@ void __fastcall DispatchUiRuntimeMessage101AAndRefreshActiveView(int *param_1)
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x33f);
   }
   (**(code **)(*param_1 + 0x44))(piVar3,&stack0xfffffff4);
@@ -10997,9 +10997,9 @@ char ShowLocalizedUiPromptByGroupAndIndex
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  thunk_AssignStringSharedRefAndReturnThis(&local_10);
-  promptResult = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  LoadUiStringResourceByGroupAndIndex();
+  AssignStringSharedRefAndReturnThis(&local_10);
+  promptResult = DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
   *unaff_FS_OFFSET = local_c;
@@ -11030,7 +11030,7 @@ void CreateModalMessageCommandAndQueue(CString *param_1,undefined4 param_2)
     pTVar1 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     CString::CString((CString *)(this + 1));
     this->vftable = (TCommandVtbl *)&TModalMessageCommandVtbl_0066f2f0;
@@ -11065,12 +11065,12 @@ char DispatchGameStateEventIfLocalizedPromptAccepted(void)
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  thunk_AssignStringSharedRefAndReturnThis(&local_10);
-  cVar1 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  LoadUiStringResourceByGroupAndIndex();
+  AssignStringSharedRefAndReturnThis(&local_10);
+  cVar1 = DispatchLocalizedUiMessageWithTemplateA13A0();
   if ((cVar1 != '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
     UiRuntimeContext::GetActiveNationId();
-    thunk_DispatchTaggedGameStateEvent1F20();
+    DispatchTaggedGameStateEvent1F20();
   }
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -11263,7 +11263,7 @@ int * LoadTableResourceStreamByName(CString param_1)
     local_4 = CONCAT31(local_4._1_3_,5);
     iVar3 = (**(code **)(*piVar4 + 0x28))(param_1.m_pchData,2,local_20);
     if ((iVar3 == 0) && (DAT_006a5d20 == 0)) {
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WAssetMgr_cpp_0069b794,0xce);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WAssetMgr_cpp_0069b794,0xce);
     }
     local_20[0] = &PTR_GetCFileExceptionRuntimeClass_00672234;
     local_4 = CONCAT31(local_4._1_3_,6);
@@ -11815,7 +11815,7 @@ void DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot
   if (((param_3 < 0) || (9 < param_3)) || (*(code **)(&DAT_006a5cf8 + param_3 * 4) == (code *)0x0))
   {
     if (DAT_006a5d24 == 0) {
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WAssetMgr_cpp_0069b794,0x263);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WAssetMgr_cpp_0069b794,0x263);
     }
   }
   else {
@@ -12608,7 +12608,7 @@ undefined4 UpdateCursorHelperWindowTextFromUiString(void)
   OnInitDialog();
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,0x275c,1);
+  LoadUiStringResourceByGroupAndIndex(&local_10,0x275c,1);
   SetWindowTextOrDelegateToOwner(local_10.m_pchData);
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -12736,14 +12736,14 @@ void DestroyRuntimeClassState_0066FA50_AtExit(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2705
-// GHIDRA_NAME thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO undefined __thiscall thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
+// GHIDRA_NAME TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
+// GHIDRA_PROTO undefined __thiscall TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
 void __thiscall
-TNetMgr::thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
+TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
 
 {
-  DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
+  TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
   return;
 }
 
@@ -12760,14 +12760,14 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2755
-// GHIDRA_NAME thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+// GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
+// GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 void __thiscall
-TNetMgr::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
 
 {
-  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
   return;
 }
 
@@ -12784,14 +12784,14 @@ void InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E27A5
-// GHIDRA_NAME thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+// GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
+// GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 void __thiscall
-TNetMgr::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
 
 {
-  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
   return;
 }
 
@@ -13209,7 +13209,7 @@ undefined4 CreateRuntimeSelectionRecordEntryIfTagNotReserved(char *param_1,char 
       iVar3 = DAT_006a5f18;
       ResizeDwordPointerArrayAndZeroNewSlots(DAT_006a5f18 + 1,0xffffffff);
       *(undefined4 **)(DAT_006a5f14 + iVar3 * 4) = puVar1;
-      uVar2 = thunk_CreateSelectableTextOptionChildEntry
+      uVar2 = CreateSelectableTextOptionChildEntry
                         (iVar3 + 0x70726f30,iVar3,((CString *)(puVar1 + 4))->m_pchData,0xf,
                          0xffffffff);
       ApplyUiTextStyleAndThemeFlags(uVar2,0,0xc,0x2b6b,0x2b6c);
@@ -13260,7 +13260,7 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   if (DAT_006a5f30 < 1) {
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&stack0xffffffe0,s_No_games_found_to_join__0069b8c8);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     return false;
   }
   puVar10 = (undefined4 *)0x5e3;
@@ -13283,7 +13283,7 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
   if (0 < DAT_006a5f30) {
     do {
       iVar1 = *(int *)(DAT_006a5f2c + iVar4 * 4);
-      thunk_AddJoinableGameOptionEntry(*(undefined4 *)(iVar1 + 0x10),iVar1);
+      AddJoinableGameOptionEntry(*(undefined4 *)(iVar1 + 0x10),iVar1);
       iVar4 = iVar4 + 1;
     } while (iVar4 < DAT_006a5f30);
   }
@@ -13587,11 +13587,11 @@ LAB_005e3803:
   puVar1 = extraout_ECX_00;
 LAB_005e3849:
   local_10 = &stack0xffffffe4;
-  thunk_AssignStringSharedRefAndReturnThis(&local_14);
-  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
+  AssignStringSharedRefAndReturnThis(&local_14);
+  TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
             ((TViewMgr *)g_pUiRuntimeContext,puVar1);
   if (DAT_006a601c == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   local_4 = 0xffffffff;
   CString::~CString(&local_14);
@@ -13922,14 +13922,14 @@ uint * __fastcall PopNextTurnEventPacketOrProcessSpecialQueueRecords(undefined4 
     switch(uVar3) {
     case 0x31:
     case 0x101:
-      thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2759,6,0,0);
+      ShowLocalizedUiPromptByGroupAndIndex(0x2759,6,0,0);
       HandleActiveNationAwolTransitionOrRecovery();
       GlobalFree(puVar2);
       break;
     default:
 switchD_005e40b2_caseD_32:
       if (DAT_006a6020 == 0) {
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WNetMgr_cpp_0069b8e4,0x2f6);
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_WNetMgr_cpp_0069b8e4,0x2f6);
       }
     case 0x102:
     case 0x103:
@@ -14012,13 +14012,13 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
   local_4 = 0;
   uStack_24 = 0x5e4364;
   puStack_20 = (undefined1 *)&local_14;
-  thunk_LoadUiStringResourceByGroupAndIndex();
+  LoadUiStringResourceByGroupAndIndex();
   uStack_18 = 0;
   uStack_1c = 0;
   puStack_20 = &DAT_006a5ed8;
   local_10 = (undefined1 *)&uStack_24;
-  thunk_AssignStringSharedRefAndReturnThis(&local_14);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&local_14);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_18 = 0x5e439a;
   CString::~CString(&local_14);
@@ -14068,7 +14068,7 @@ int ProbeNationReachabilityAndMarkAwolBitmask(void)
           iVar4 = iVar4 + (1 << ((byte)iVar5 & 0x1f));
         }
         else {
-          thunk_SetEventPayloadNationIdFromSlotIndex(iVar5);
+          SetEventPayloadNationIdFromSlotIndex(iVar5);
           local_18 = DAT_006a5fc0;
           iVar3 = local_14;
           if (local_14 == -1) {
@@ -14259,10 +14259,10 @@ void InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4E15
-// GHIDRA_NAME thunk_SendMciCommand804IfDeviceOpenAndClearHandle
-// GHIDRA_PROTO undefined thunk_SendMciCommand804IfDeviceOpenAndClearHandle()
+// GHIDRA_NAME SendMciCommand804IfDeviceOpenAndClearHandle
+// GHIDRA_PROTO undefined SendMciCommand804IfDeviceOpenAndClearHandle()
 
-void thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
+void SendMciCommand804IfDeviceOpenAndClearHandle(void)
 
 {
   SendMciCommand804IfDeviceOpenAndClearHandle();

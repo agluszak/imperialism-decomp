@@ -39,7 +39,7 @@ void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this,u
 TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte param_1)
 
 {
-  CObArray::thunk_DestructCObArray();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -48,7 +48,7 @@ TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488510
 // GHIDRA_NAME TPtrList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPtrList::GetTEventHandlerClassNamePointer(TPtrList *this)
 

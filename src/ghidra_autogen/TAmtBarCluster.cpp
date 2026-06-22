@@ -73,7 +73,7 @@ TUberCluster * TAmtBarCluster::CreateTradeMoveControlPanelBasic(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586CC0
 // GHIDRA_NAME TAmtBarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TAmtBarCluster::GetTEventHandlerClassNamePointer(TAmtBarCluster *this)
 
@@ -102,7 +102,7 @@ TAmtBarCluster * __thiscall
 TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -111,7 +111,7 @@ TAmtBarCluster::_scalar_deleting_destructor_(TAmtBarCluster *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D60
 // GHIDRA_NAME TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster *this)
 
@@ -127,7 +127,7 @@ void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster 
   local_4 = local_4 & 0xffff0000;
   uVar3 = (*pTVar1)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
-    thunk_BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
+    BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0x1b4))(&stack0xfffffff0,0);
     (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);
@@ -135,17 +135,17 @@ void __thiscall TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBarCluster 
   uVar3 = (*pTVar1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x725);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xdc))(local_4);
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E70
 // GHIDRA_NAME TAmtBarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *param_2,int param_3)
@@ -166,14 +166,14 @@ TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *pa
     uVar3 = (*pTVar2)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x749);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e8))();
     uVar3 = (*pTVar2)(0x61766169);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x74d);
     }
     sVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e8))();
@@ -186,7 +186,7 @@ TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *pa
     uVar3 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x759);
     }
     iVar5 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1e8))();
@@ -194,7 +194,7 @@ TAmtBarCluster::OrphanRetStub_0059add0(TAmtBarCluster *this,int param_1,void *pa
       (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar5 + -1);
     }
   }
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   return;
 }
 
@@ -249,7 +249,7 @@ undefined4 __thiscall TAmtBarCluster::IsTradeBidControlActionable(TAmtBarCluster
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x8de);
   }
   if (((short)piVar3[0x21] == 0x83f) || ((short)piVar3[0x21] == 0x84d)) {
@@ -285,7 +285,7 @@ undefined4 __thiscall TAmtBarCluster::IsTradeOfferControlActionable(TAmtBarClust
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x8f2);
   }
   if (((short)piVar3[0x21] == 0x841) || ((short)piVar3[0x21] == 0x84f)) {
@@ -321,7 +321,7 @@ void __thiscall TAmtBarCluster::SetTradeBidSecondaryBitmapState(TAmtBarCluster *
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x63617264);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x907);
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
@@ -381,7 +381,7 @@ void __thiscall TAmtBarCluster::SetTradeBidControlBitmapState(TAmtBarCluster *th
   piVar5 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x92e);
   }
   iVar2 = *piVar5;
@@ -397,19 +397,19 @@ void __thiscall TAmtBarCluster::SetTradeBidControlBitmapState(TAmtBarCluster *th
   uVar3 = (*pTVar1)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x93f);
   }
   uVar4 = (*pTVar1)(0x6c656674);
   if (CONCAT31(extraout_var_01,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x941);
   }
   uVar4 = (*pTVar1)(0x72676874);
   if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x943);
   }
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
@@ -461,7 +461,7 @@ void __thiscall TAmtBarCluster::SetTradeOfferControlBitmapState(TAmtBarCluster *
   uVar3 = (*pTVar1)(0x6f666672);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x95c);
   }
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -479,19 +479,19 @@ void __thiscall TAmtBarCluster::SetTradeOfferControlBitmapState(TAmtBarCluster *
   uVar3 = (*pTVar1)(0x67726565);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x970);
   }
   iVar4 = (*(code *)0x1)(0x6c656674);
   if (iVar4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x972);
   }
   piVar5 = (int *)(*(code *)&stack0xffffffdc)(0x72676874);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x974);
   }
   iVar6 = 1;
@@ -546,7 +546,7 @@ void __thiscall TAmtBarCluster::SetTradeOfferSecondaryBitmapState(TAmtBarCluster
   uVar4 = (*pTVar1)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x98f);
   }
   iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
@@ -579,19 +579,19 @@ LAB_00588133:
   uVar4 = (*pTVar1)(0x67726565);
   if (CONCAT31(extraout_var_01,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9ad);
   }
   uVar4 = (*pTVar1)(0x6c656674);
   if (CONCAT31(extraout_var_02,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9af);
   }
   uVar4 = (*pTVar1)(0x72676874);
   if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9b1);
   }
   iVar7 = 0;

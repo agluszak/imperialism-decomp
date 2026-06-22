@@ -51,7 +51,7 @@ undefined ** TObject::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485F50
 // GHIDRA_NAME TObject::DestructTObjectAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTObjectAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TObject::DestructTObjectAndMaybeFree(void)
 
 void __thiscall TObject::DestructTObjectAndMaybeFree(TObject *this)
 

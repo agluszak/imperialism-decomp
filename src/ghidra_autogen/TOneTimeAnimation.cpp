@@ -12,7 +12,7 @@ TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
           (TOneTimeAnimation *this,byte param_1)
 
 {
-  CreateTOneTimeAnimationInstance(this);
+  TOneTimeAnimation::CreateTOneTimeAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -21,7 +21,7 @@ TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD20
 // GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTOneTimeAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(void)
 
 void __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(TOneTimeAnimation *this)
 
@@ -43,7 +43,7 @@ CRuntimeClass * __thiscall TOneTimeAnimation::GetTAnimationClassNamePointer(TOne
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
 // GHIDRA_NAME TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOneTimeAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
@@ -87,7 +87,7 @@ void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTim
   if ((this->field_0x2c == '\0') &&
      (iVar1 = *(int *)&this->field_0x10 + 1, *(int *)&this->field_0x10 = iVar1,
      iVar1 == *(int *)&this->field_0x14)) {
-    thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+    InvalidateCityDialogRectRegion(&this->field_0x1c,1);
     ConstructScopedMapQuickDrawContext(*(undefined4 *)&this->field_0x4);
     uStack_4 = 0;
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
@@ -101,7 +101,7 @@ void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTim
       this->field_0x2c = 1;
     }
     uStack_4 = 0xffffffff;
-    thunk_DestroyScopedMapQuickDrawContext();
+    DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

@@ -21,7 +21,7 @@ THostGreatPower * __thiscall
 THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1)
 
 {
-  DestructTHostGreatPower(this);
+  THostGreatPower::DestructTHostGreatPower(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ THostGreatPower::_scalar_deleting_destructor_(THostGreatPower *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540F70
 // GHIDRA_NAME THostGreatPower::DestructTHostGreatPower
-// GHIDRA_PROTO undefined __thiscall DestructTHostGreatPower(void)
+// GHIDRA_PROTO undefined __thiscall THostGreatPower::DestructTHostGreatPower(void)
 
 void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
 
@@ -55,7 +55,7 @@ void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540FE0
 // GHIDRA_NAME THostGreatPower::GetTCountryClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTCountryClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
 CRuntimeClass * __thiscall THostGreatPower::GetTCountryClassNamePointer(THostGreatPower *this)
 
@@ -65,7 +65,7 @@ CRuntimeClass * __thiscall THostGreatPower::GetTCountryClassNamePointer(THostGre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541000
 // GHIDRA_NAME THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
-// GHIDRA_PROTO undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMinor::DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
 
 void __thiscall
 THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower *this,int *param_1)
@@ -81,7 +81,7 @@ THostGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(THostGreatPower 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541040
 // GHIDRA_NAME THostGreatPower::HandleCityDialogHintClusterUpdate
-// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::HandleCityDialogHintClusterUpdate(int * param_1)
 
 void __thiscall
 THostGreatPower::HandleCityDialogHintClusterUpdate(THostGreatPower *this,int *param_1)
@@ -94,7 +94,7 @@ THostGreatPower::HandleCityDialogHintClusterUpdate(THostGreatPower *this,int *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541080
 // GHIDRA_NAME THostGreatPower::ReturnFalseNationStateActionStub
-// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ReturnFalseNationStateActionStub(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 undefined4 __thiscall
 THostGreatPower::ReturnFalseNationStateActionStub
@@ -107,7 +107,7 @@ THostGreatPower::ReturnFalseNationStateActionStub
   
   cVar1 = TGreatPower::ReturnFalseNationStateActionStub((TGreatPower *)this,param_1,param_2);
   if (cVar1 != '\0') {
-    thunk_DispatchTurnEvent1AWithNationActionPayload
+    DispatchTurnEvent1AWithNationActionPayload
               (CONCAT22(extraout_var,*(undefined2 *)&this->field_0xc),param_1,param_2,param_3,
                param_4);
     return 1;
@@ -117,7 +117,7 @@ THostGreatPower::ReturnFalseNationStateActionStub
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005410F0
 // GHIDRA_NAME THostGreatPower::AddRegionIdToNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
 void __thiscall THostGreatPower::AddRegionIdToNationOwnedRegionList(THostGreatPower *this)
 
@@ -133,7 +133,7 @@ void __thiscall THostGreatPower::AddRegionIdToNationOwnedRegionList(THostGreatPo
     if (*ppTVar2 != (TGreatPower *)0x0) {
       cVar1 = (*(*ppTVar2)->vftable[0x14].GetTCountryClassNamePointer)();
       if (cVar1 == '\0') {
-        thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(iVar3);
+        ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(iVar3);
       }
     }
     ppTVar2 = ppTVar2 + 1;
@@ -146,7 +146,7 @@ void __thiscall THostGreatPower::AddRegionIdToNationOwnedRegionList(THostGreatPo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541170
 // GHIDRA_NAME THostGreatPower::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
 void __thiscall THostGreatPower::ApplyJoinEmpireMode1TargetTransition(THostGreatPower *this)
 
@@ -157,7 +157,7 @@ void __thiscall THostGreatPower::ApplyJoinEmpireMode1TargetTransition(THostGreat
   int iVar4;
   
   if (this->field_0x964 == '\0') {
-    thunk_DispatchTaggedGameStateEvent1F20
+    DispatchTaggedGameStateEvent1F20
               (0x6c6f7374,
                CONCAT22(*(short *)&this->field_0xc >> 0xf,
                         CONCAT11(0xff,(char)*(short *)&this->field_0xc)),0xfffffffd);
@@ -168,7 +168,7 @@ void __thiscall THostGreatPower::ApplyJoinEmpireMode1TargetTransition(THostGreat
   ppTVar3 = g_apNationStates;
   do {
     if (iVar4 != *(short *)&this->field_0xc) {
-      cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar4);
+      cVar1 = IsNationSlotEligibleForEventProcessing(iVar4);
       if ((cVar1 != '\0') && ((*ppTVar3)->field_0xa0 != '\0')) {
         sVar2 = sVar2 + 1;
       }

@@ -102,14 +102,14 @@ LAB_004a20db:
           sVar3 = sVar2;
           if (local_10 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0x333);
           }
         }
         puVar9 = (undefined4 *)AllocateWithFallbackHandler(8);
         if (puVar9 == (undefined4 *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
         }
         *puVar9 = local_24;
@@ -129,7 +129,7 @@ LAB_004a20db:
       iVar8 = 0;
       pTVar13 = this + 1;
       do {
-        uVar7 = thunk_GetTileNormalizedMovementClassId(iVar8);
+        uVar7 = GetTileNormalizedMovementClassId(iVar8);
         *(undefined2 *)&pTVar13->vftable = uVar7;
         iVar8 = iVar8 + 1;
         pTVar13 = (TArmyStack *)((int)&pTVar13->vftable + 2);
@@ -175,7 +175,7 @@ LAB_004a223f:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7590
 // GHIDRA_NAME TArmyStack::CreateTArmyStackInstance
-// GHIDRA_PROTO undefined CreateTArmyStackInstance()
+// GHIDRA_PROTO undefined TArmyStack::CreateTArmyStackInstance()
 
 void TArmyStack::CreateTArmyStackInstance(void)
 
@@ -196,7 +196,7 @@ void TArmyStack::CreateTArmyStackInstance(void)
       piVar4 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar2 * 0xa8);
     }
     for (; piVar4 != (int *)0x0; piVar4 = (int *)piVar4[5]) {
-      sVar2 = thunk_GetUnitMovementClassId();
+      sVar2 = GetUnitMovementClassId();
       if ((sVar2 != 0) && (piVar4[2] != 1)) {
         (**(code **)(*piVar4 + 0x34))(0,0xffffffff);
       }
@@ -206,7 +206,7 @@ void TArmyStack::CreateTArmyStackInstance(void)
   }
   this = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
   if ((this != (TCivToolbar *)0x0) && (cVar1 = (*this->vftable[0x3d].slot_0x04)(), cVar1 == '\0')) {
-    TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this);
+    TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(this);
   }
   return;
 }
@@ -223,7 +223,7 @@ CRuntimeClass * __thiscall TArmyStack::GetTArmyStackClassNamePointer(TArmyStack 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A76F0
 // GHIDRA_NAME TArmyStack::ConstructTArmyStackBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTArmyStackBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TArmyStack::ConstructTArmyStackBaseState(void)
 
 void __thiscall TArmyStack::ConstructTArmyStackBaseState(TArmyStack *this)
 
@@ -250,7 +250,7 @@ TArmyStack * __thiscall TArmyStack::DestructTArmyStackAndMaybeFree(TArmyStack *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7770
 // GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(undefined1 param_1, undefined2 param_2, undefined2 param_3)
+// GHIDRA_PROTO undefined __thiscall TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(undefined1 param_1, undefined2 param_2, undefined2 param_3)
 
 void __thiscall
 TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
@@ -331,7 +331,7 @@ TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(TArmyStack *this
           piVar5 = (int *)AllocateWithFallbackHandler(8);
           if (piVar5 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
           }
           *piVar5 = iVar3;
@@ -429,7 +429,7 @@ joined_r0x004a79d0:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7C20
 // GHIDRA_NAME TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)
+// GHIDRA_PROTO undefined __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)
 
 void __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(TArmyStack *this)
 
@@ -507,7 +507,7 @@ TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(TArmyStack *this,int
           do {
             if (((local_44 < *(int *)&this[1].field_0x18) && (local_44 != local_3c)) &&
                (local_20 <= *local_40)) {
-              thunk_ComputeHexNeighborTileIndices(iVar8,local_18);
+              ComputeHexNeighborTileIndices_005A0420(iVar8,local_18);
               local_34 = local_18;
               local_38 = 0;
               do {
@@ -617,7 +617,7 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(TArmyStack 
     if (0 < *(int *)&this[2].field_0x4) {
       do {
         if (*param_1 == local_1c) {
-          thunk_ComputeHexNeighborTileIndices(iVar6,local_18);
+          ComputeHexNeighborTileIndices_005A0420(iVar6,local_18);
           piVar3 = local_18;
           iVar4 = 6;
           do {
@@ -666,8 +666,8 @@ TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(TArmyStack *this,in
       iVar4 = *(int *)(in_stack_00000008 + 4) / 10 + 0x14;
     }
   }
-  thunk_HandleTacticalCommandTag_raly(this,in_stack_00000008,iVar4,iVar3,'\0');
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
+  TArmyStack::HandleTacticalCommandTag_raly(this,in_stack_00000008,iVar4,iVar3,'\0');
+  TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 

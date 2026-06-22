@@ -11,7 +11,7 @@ TGameInfoPicture * __thiscall
 TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B850
 // GHIDRA_NAME TGameInfoPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
@@ -31,7 +31,7 @@ TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B870
 // GHIDRA_NAME TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
 void __thiscall
 TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this,CString param_1)
@@ -50,7 +50,7 @@ TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this,CStrin
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   CString::CString(&param_1);
   uStack_4 = 0;
   iVar3 = 0;
@@ -78,7 +78,7 @@ TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this,CStrin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B9B0
 // GHIDRA_NAME TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -121,7 +121,7 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         if (uVar1 != 0x6275746d) {
           if (uVar1 == 0x6275746e) {
             if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
-              thunk_ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
+              ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
             }
             else {
               (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
@@ -138,14 +138,14 @@ TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         }
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
-      thunk_AssignStringSharedRefAndReturnThis(&local_10);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&local_10);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056bb37;
     }
 LAB_0056bb1b:
     param_1 = 10;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_0056bb37:
   local_4 = 0xffffffff;
   CString::~CString(&local_10);

@@ -23,7 +23,7 @@ TEditText * TPictureNumberText::CreateTPictureNumberTextInstance(void)
   this = (TEditText *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
   if (this != (TEditText *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    TEditText::ConstructUiNumericTextEntryBase(this);
     this[1].vftable = (TEditTextVtbl *)0x0;
     this->vftable = (TEditTextVtbl *)&TPictureNumberTextVtbl_0066c740;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TEditText * TPictureNumberText::CreateTPictureNumberTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51C0
 // GHIDRA_NAME TPictureNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TPictureNumberText::GetTEventHandlerClassNamePointer(TPictureNumberText *this)
@@ -46,13 +46,13 @@ TPictureNumberText::GetTEventHandlerClassNamePointer(TPictureNumberText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51E0
 // GHIDRA_NAME TPictureNumberText::ConstructTPictureNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTPictureNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TPictureNumberText::ConstructTPictureNumberTextBaseState(void)
 
 TPictureNumberText * __thiscall
 TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)&this->field_0xa0 = 0;
   this->vftable = &TPictureNumberTextVtbl_0066c740;
   return this;

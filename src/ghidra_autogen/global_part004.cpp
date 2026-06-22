@@ -1010,9 +1010,9 @@ undefined4 RefreshNewGameCommandWindowTextAndData(void)
   OnInitDialog();
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x11);
+  LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x11);
   SetWindowTextOrDelegateToOwner(local_10.m_pchData);
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x13);
+  LoadUiStringResourceByGroupAndIndex(&local_10,0x2763,0x13);
   SetWindowTextOrDelegateToOwner(local_10.m_pchData);
   UpdateData(0);
   local_4 = 0xffffffff;
@@ -1583,7 +1583,7 @@ void AssertDiplomacyDialogsLine61(void)
 
 {
   if (DAT_006a15cc == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_DiplomacyDialogs_cpp_00694cc0,0x3d);
   }
   return;
@@ -1708,10 +1708,10 @@ void DestroyRuntimeSelectionRecordArrayStateAtExit(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047F745
-// GHIDRA_NAME thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()
+// GHIDRA_NAME DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
+// GHIDRA_PROTO undefined DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()
 
-void thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
+void DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
 
 {
   DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
@@ -1880,7 +1880,7 @@ undefined4 AppendRuntimeSelectionRecordEntry(undefined4 *param_1,char *param_2)
 undefined4 AssertDirectPlayLine111(void)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x6f);
+  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x6f);
   return 0;
 }
 
@@ -1891,7 +1891,7 @@ undefined4 AssertDirectPlayLine111(void)
 undefined4 AssertDirectPlayLine118(void)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x76);
+  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x76);
   return 0;
 }
 
@@ -1904,7 +1904,7 @@ bool __fastcall WrapperFor_Ordinal_4_At0047fb80(int param_1)
 {
   int iVar1;
   
-  iVar1 = Ordinal_4(0,param_1 + 8,0,0,0);
+  iVar1 = DPLAYX.DLL::Ordinal_4(0,param_1 + 8,0,0,0);
   *(int *)(param_1 + 0xc) = iVar1;
   return -1 < iVar1;
 }
@@ -1988,7 +1988,7 @@ bool __fastcall RebuildRuntimeSelectionSource(int param_1)
   }
   DAT_006a15ec = 0;
   DAT_006a15e8 = 0;
-  iVar2 = Ordinal_2(&LAB_00402847,param_1);
+  iVar2 = DPLAYX.DLL::Ordinal_2(&LAB_00402847,param_1);
   *(int *)(param_1 + 0xc) = iVar2;
   return iVar2 == 0;
 }
@@ -2038,7 +2038,7 @@ bool __thiscall OpenRuntimeSelectionSourceWithOptionalSeed(int *param_1,undefine
       } while (iVar4 < DAT_006a15e8);
     }
     ResizeDynamicPointerArrayWithGrowthStep(0,0xffffffff);
-    iVar4 = Ordinal_2(&LAB_00402847,param_1);
+    iVar4 = DPLAYX.DLL::Ordinal_2(&LAB_00402847,param_1);
     param_1[3] = iVar4;
     iVar4 = (**(code **)(*param_1 + 0x1c))(&stack0xffffffe8);
     if (iVar4 == 0) {
@@ -2051,7 +2051,7 @@ bool __thiscall OpenRuntimeSelectionSourceWithOptionalSeed(int *param_1,undefine
     piStack_8 = (int *)puVar3[2];
     uStack_4 = puVar3[3];
   }
-  iVar4 = Ordinal_1(&uStack_10,&param_2,0);
+  iVar4 = DPLAYX.DLL::Ordinal_1(&uStack_10,&param_2,0);
   param_1[3] = iVar4;
   if (-1 < iVar4) {
     iVar4 = (**(code **)*piStack_8)(piStack_8,&DAT_0066faf0,param_1 + 1);
@@ -2380,7 +2380,7 @@ undefined4 ShowRuntimeSelectionDialogAndReturnRecord(undefined4 *param_1)
   puStack_8 = &LAB_0062e502;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_InitializeDialogTemplateBaseState(0x104,0);
+  InitializeDialogTemplateBaseState(0x104,0);
   local_4 = 0;
   ConstructObjectVtable00670b4cBase();
   local_bc.field74 = (int)&PTR_LAB_00671d1c;
@@ -2523,7 +2523,7 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl(CDialog *para
 undefined4 ReportDirectPlayAssertionStub(void)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x1b3);
+  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_DirectPlay_cpp_00694ce4,0x1b3);
   return 0;
 }
 
@@ -3635,7 +3635,7 @@ void __thiscall DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void
       (**(code **)(**(int **)((int)this + 0x40) + 0x1c))();
     }
     *(undefined4 *)((int)this + 0x40) = 0;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
+    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
   }
   if (*(int **)((int)this + 0x48) != (int *)0x0) {
     (**(code **)(**(int **)((int)this + 0x48) + 4))(1);
@@ -3914,7 +3914,7 @@ void __thiscall SetUiRuntimeContextAndActivateMain(int param_1,undefined4 param_
 
 {
   *(undefined4 *)(param_1 + 0x40) = param_2;
-  thunk_PropagateUiResourceContextRecursive(param_1);
+  PropagateUiResourceContextRecursive(param_1);
   (**(code **)(**(int **)(param_1 + 0x40) + 0x94))(0x6d61696e);
   return;
 }
@@ -3926,7 +3926,7 @@ void __thiscall SetUiRuntimeContextAndActivateMain(int param_1,undefined4 param_
 void __fastcall WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380(int param_1)
 
 {
-  thunk_PropagateUiResourceContextRecursive(param_1);
+  PropagateUiResourceContextRecursive(param_1);
   (**(code **)(**(int **)(param_1 + 0x40) + 0x94))(0x6d61696e);
   return;
 }
@@ -3957,10 +3957,10 @@ undefined4 __fastcall ReinitializeIncludeViewMainPaneAndRedrawWindow(int param_1
       (**(code **)(**(int **)(param_1 + 0x40) + 0x1c))();
     }
     *(undefined4 *)(param_1 + 0x40) = 0;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   }
   if (DAT_006a17bc == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_IncludeView_cpp_00694d10,0x1d2);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_IncludeView_cpp_00694d10,0x1d2);
   }
   iVar2 = (**(code **)(**(int **)(param_1 + 0x40) + 0x94))(0x6d61696e);
   *(undefined4 *)(param_1 + 0x44) = *(undefined4 *)(iVar2 + 0x8c);
@@ -4010,7 +4010,7 @@ WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530(int par
       (**(code **)(**(int **)(param_1 + 0x40) + 0x1c))();
     }
     *(undefined4 *)(param_1 + 0x40) = 0;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   }
   return;
 }
@@ -4136,7 +4136,7 @@ HandleIncludeViewPointerUpdateAndNotifyChildren
     NotifyCaptureOwnerState1AndMaybeUpdateCoords(param_1,param_2,param_3);
     if (*(int *)((int)this + 0x74) != 0) {
       if (DAT_006a17c4 == 0) {
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_IncludeView_cpp_00694d10,0x2b7);
       }
       param_2 = uVar1;
@@ -4673,7 +4673,7 @@ void __thiscall ConfigureTopLevelWindowStyleAndPlacement(int param_1,int param_2
 undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0(void)
 
 {
-  thunk_HandleStartupCommand100();
+  HandleStartupCommand100();
   return 0;
 }
 
@@ -4694,7 +4694,7 @@ undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0(void)
 void DispatchStartupCommand100ToAppSingleton(void)
 
 {
-  thunk_HandleStartupCommand100();
+  HandleStartupCommand100();
   return;
 }
 
@@ -4794,7 +4794,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
   puStack_8 = &LAB_0062e91c;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeDialogTemplateC2WithTextState(0);
+  InitializeDialogTemplateC2WithTextState(0);
   local_4 = 0;
   PrepareAndCreateDialogFromTemplateResource();
   SetRange(0,6,0);
@@ -4928,7 +4928,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
     iVar2 = TControl::FinalizeModalDialogAndRestoreOwnerFocus(&TStack_bc);
     if (iVar2 != 1) break;
     if (iRam006a1838 == 0) {
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_d__Ambit_MainFrm_cpp_00694e38,0x26e);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_d__Ambit_MainFrm_cpp_00694e38,0x26e);
     }
     iStack_4 = 7;
     Dtor_CListBox_FID_61e8cb();
@@ -5160,7 +5160,7 @@ ApplicationUiRootController * CreateTApplicationInstance(void)
   this = (ApplicationUiRootController *)AllocateWithFallbackHandler(0x48);
   local_4 = 0;
   if (this != (ApplicationUiRootController *)0x0) {
-    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+    TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
     *(undefined4 *)&this->field_0x20 = 0;
     *(undefined4 *)&this->field_0x24 = 0;
     *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
@@ -5484,10 +5484,10 @@ TIndexAndRankList * Helper_Uses_CPtrArray_ctor_At00488030(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004884F0
-// GHIDRA_NAME thunk_DestructCObArray
-// GHIDRA_PROTO undefined thunk_DestructCObArray()
+// GHIDRA_NAME CObArray::DestructCObArray
+// GHIDRA_PROTO undefined CObArray::DestructCObArray()
 
-void CObArray::thunk_DestructCObArray(void)
+void CObArray::DestructCObArray(void)
 
 {
   undefined4 uVar1;

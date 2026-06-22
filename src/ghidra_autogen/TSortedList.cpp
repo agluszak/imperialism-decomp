@@ -36,7 +36,7 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8640
 // GHIDRA_NAME TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
-// GHIDRA_PROTO undefined __thiscall WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void)
+// GHIDRA_PROTO undefined __thiscall TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void)
 
 TSortedList * __thiscall
 TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640

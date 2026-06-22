@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430520
 // GHIDRA_NAME TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060
-// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntry_Vtbl00640060(void)
+// GHIDRA_PROTO undefined __thiscall TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(void)
 
 TCouncilPanelView * __thiscall
 TCouncilPanelView::ConstructUiResourceEntry_Vtbl00640060(TCouncilPanelView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 0;
   this->vftable = &TCouncilPanelViewVtbl_00640060;
   return this;
@@ -25,7 +25,7 @@ TCouncilPanelView * __thiscall
 TCouncilPanelView::_scalar_deleting_destructor_(TCouncilPanelView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -52,7 +52,7 @@ TView * TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x0;
     this->vftable = (TViewVtbl *)&TCouncilPanelViewVtbl_00640060;
     *unaff_FS_OFFSET = local_c;
@@ -64,7 +64,7 @@ TView * TCouncilPanelView::CreateTCouncilPanelViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB010
 // GHIDRA_NAME TCouncilPanelView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TCouncilPanelView::GetTEventHandlerClassNamePointer(TCouncilPanelView *this)
@@ -75,7 +75,7 @@ TCouncilPanelView::GetTEventHandlerClassNamePointer(TCouncilPanelView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB030
 // GHIDRA_NAME TCouncilPanelView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TCouncilPanelView::OrphanTiny_ReturnZero_0048a730(TCouncilPanelView *this)
 
@@ -114,18 +114,18 @@ void __thiscall TCouncilPanelView::OrphanTiny_ReturnZero_0048a730(TCouncilPanelV
   local_1c.m_pchData._3_1_ = 0;
   iVar3 = this->field34 / 2;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0x12);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6b);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68);
+  MapUiThemeCodeToStyleFlags(0x2b6b);
+  MapUiThemeCodeToStyleFlags(0x2b68);
   if (*(short *)&g_pDiplomacyTurnStateManager->field_0x784 == -1) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x34);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     iVar3 = iVar3 - (int)sVar1 / 2;
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,0x25);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,0x25);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,0x24);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset(iVar3,0x24);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
   }
   else {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x35,&local_20);
@@ -135,69 +135,69 @@ void __thiscall TCouncilPanelView::OrphanTiny_ReturnZero_0048a730(TCouncilPanelV
                                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U))
                             >> 2) / 10) * 10 + 0x717);
     scanBracketExpressions(g_pLocalizationTable,&local_1c,unaff_EDI);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     iVar4 = iVar3 - (int)sVar1 / 2;
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1,0x25);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_1c);
+    SetQuickDrawTextOriginWithContextOffset(iVar4 + 1,0x25);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_1c);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,0x24);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_1c);
+    SetQuickDrawTextOriginWithContextOffset(iVar4,0x24);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_1c);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b68);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
     CString::AssignFromCStr((CString *)&stack0xffffffd4,&DAT_00696b10);
-    iVar4 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+    iVar4 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar4) + 1,0x3d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar4) + 1,0x3d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar4,0x3c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar4,0x3c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     FormatStringWithVarArgsToSharedRef
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x788);
     iVar4 = iVar3 + 4;
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x3d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x3d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,0x3c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar4,0x3c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
     CString::AssignFromCStr((CString *)&stack0xffffffd4,&DAT_00696b10);
-    iVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+    iVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x4d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x4d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x4c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x4c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     FormatStringWithVarArgsToSharedRef
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78a);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x4d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x4d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,0x4c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar4,0x4c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x36,&stack0xffffffd4);
-    iVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+    iVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x5d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x5d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x5c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x5c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd4);
     FormatStringWithVarArgsToSharedRef
               (&local_20,&g_szDecimalFormat,
                (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78c);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x5d);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x5d);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
     SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,0x5c);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_20);
+    SetQuickDrawTextOriginWithContextOffset(iVar4,0x5c);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_20);
   }
   local_10.m_pchData._0_1_ = 1;
   CString::~CString(&local_1c);

@@ -25,7 +25,7 @@ TControl * TDlgWindow::CreateTDlgWindowInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryBase(this);
+    TControl::ConstructUiWindowResourceEntryBase(this);
     this->vftable = (TControlVtbl *)&TDlgWindowVtbl_00656ce8;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TControl * TDlgWindow::CreateTDlgWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500300
 // GHIDRA_NAME TDlgWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDlgWindow::GetTEventHandlerClassNamePointer(TDlgWindow *this)
 
@@ -56,7 +56,7 @@ CRuntimeClass * __thiscall TDlgWindow::GetTEventHandlerClassNamePointer(TDlgWind
 TDlgWindow * __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryBase((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryBase((TControl *)this);
   this->vftable = &TDlgWindowVtbl_00656ce8;
   return this;
 }
@@ -82,16 +82,16 @@ TDlgWindow * __thiscall TDlgWindow::_scalar_deleting_destructor_(TDlgWindow *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005003A0
 // GHIDRA_NAME TDlgWindow::AssertMcAppUILine2358
-// GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
+// GHIDRA_PROTO undefined __thiscall TWindow::AssertMcAppUILine2358(void)
 
 void __thiscall TDlgWindow::AssertMcAppUILine2358(TDlgWindow *this)
 
 {
   TWindow::AssertMcAppUILine2358((TWindow *)this);
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+  TemporarilyClearAndRestoreUiInvalidationFlag
             (s_D__Ambit_Cross_UGameWindow_cpp_00696bc0,0x27a);
   if (*(short *)(DAT_006a2158 + 10) != 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UGameWindow_cpp_00696bc0,0x27f);
   }
   return;

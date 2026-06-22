@@ -128,7 +128,7 @@ LAB_0049b033:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049B330
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive * param_1)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive * param_1)
 
 void __thiscall
 TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(TNetMgr *this,CArchive *param_1)
@@ -251,7 +251,7 @@ LAB_0049b471:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E3310
 // GHIDRA_NAME TNetMgr::CreateTNetMgrInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNetMgrInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNetMgr::CreateTNetMgrInstance(void)
 
 TNetMgr * __thiscall TNetMgr::CreateTNetMgrInstance(TNetMgr *this)
 
@@ -286,7 +286,7 @@ CRuntimeClass * __thiscall TNetMgr::GetTNetMgrClassNamePointer(TNetMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33E0
 // GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
-// GHIDRA_PROTO undefined __thiscall ConstructGlobalTurnEventQueueManager(void)
+// GHIDRA_PROTO undefined __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(void)
 
 void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
 
@@ -324,7 +324,7 @@ void __thiscall TNetMgr::ReleaseObjectIfNonNullViaVslot04(TNetMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4580
 // GHIDRA_NAME TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
+// GHIDRA_PROTO undefined __thiscall TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
 void __thiscall
 TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
@@ -433,7 +433,7 @@ void __thiscall TNetMgr::SerializeLinkedRecordListWithFreeNodePool(TNetMgr *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4780
 // GHIDRA_NAME TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State
-// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA68_State(void)
+// GHIDRA_PROTO undefined __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(void)
 
 void __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(TNetMgr *this)
 
@@ -448,7 +448,7 @@ void __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(TNet
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E47B0
 // GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO undefined __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+// GHIDRA_PROTO undefined __thiscall TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 void __thiscall
 TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
@@ -586,7 +586,7 @@ TNetMgr * __thiscall
 TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(TNetMgr *this,byte param_1)
 
 {
-  DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
+  TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -601,7 +601,7 @@ TNetMgr * __thiscall
 TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(TNetMgr *this,byte param_1)
 
 {
-  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

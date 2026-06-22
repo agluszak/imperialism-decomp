@@ -23,7 +23,7 @@ TView * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TForeignMinisterViewVtbl_00655308;
     this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TView * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2FB0
 // GHIDRA_NAME TForeignMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TForeignMinisterView::GetTEventHandlerClassNamePointer(TForeignMinisterView *this)
@@ -52,7 +52,7 @@ TForeignMinisterView * __thiscall
 TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TForeignMinisterViewVtbl_00655308;
   *(undefined4 *)&this->field_0x60 = 0;
   return this;
@@ -66,7 +66,7 @@ TForeignMinisterView * __thiscall
 TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,7 +75,7 @@ TForeignMinisterView::_scalar_deleting_destructor_(TForeignMinisterView *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3050
 // GHIDRA_NAME TForeignMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TForeignMinisterView::OrphanRetStub_0059add0
@@ -119,12 +119,12 @@ TForeignMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (param_1 != 10) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+    TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
     return;
   }
   if (uVar1 != 0x6261636b) {
     if (uVar1 != 0x6f6b6179) {
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,10,param_2,param_3);
+      TView::OrphanRetStub_0059add0((TView *)this,10,param_2,param_3);
       return;
     }
     pTVar2 = this->vftable;

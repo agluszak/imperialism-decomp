@@ -23,7 +23,7 @@ TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     *(undefined1 *)&this[1].field04 = 0;
     *(undefined1 *)((int)&this[1].field04 + 1) = 0;
     *(undefined1 *)((int)&this[1].field04 + 2) = 0;
@@ -44,7 +44,7 @@ TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5BB0
 // GHIDRA_NAME TInfoBarPictureText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TInfoBarPictureText::GetTEventHandlerClassNamePointer(TInfoBarPictureText *this)
@@ -61,7 +61,7 @@ TInfoBarPictureText * __thiscall
 TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte param_1)
 
 {
-  DestructTInfoBarPictureTextAndMaybeFree(this);
+  TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -70,7 +70,7 @@ TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTInfoBarPictureTextAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
 void __thiscall
 TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
@@ -143,7 +143,7 @@ TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPictureText *this,RE
     RStack_30.right = LStack_38;
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
-    thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
+    InvalidateCityDialogRectRegion(&tStack_20,1);
     UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
     (*pTVar1[0x1c].slot_0x04)();
   }
@@ -188,7 +188,7 @@ TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
   RStack_30.right = LStack_38;
   RStack_30.bottom = LStack_34;
   CopyRect(&tStack_20,&RStack_30);
-  thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
+  InvalidateCityDialogRectRegion(&tStack_20,1);
   UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
   (*pTVar1[0x1c].slot_0x04)();
   puStack_8 = (undefined1 *)0xffffffff;

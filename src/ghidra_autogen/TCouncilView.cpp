@@ -5,20 +5,20 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00429470
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this)
 
 {
   if (g_McAppUiFlag_006A143C == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x56f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x56f);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00430630
 // GHIDRA_NAME TCouncilView::ConstructPictureResourceEntry_Vtbl00640258
-// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl00640258(void)
+// GHIDRA_PROTO undefined __thiscall TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(void)
 
 TCouncilView * __thiscall
 TCouncilView::ConstructPictureResourceEntry_Vtbl00640258(TCouncilView *this)
@@ -126,7 +126,7 @@ TCouncilView::WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E850
 // GHIDRA_NAME TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO void __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)
+// GHIDRA_PROTO void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA, void* pEventDataB)
 // GHIDRA_COMMENT_END
@@ -205,13 +205,13 @@ void __thiscall TCouncilView::OrphanRetStub_00487a00(TCouncilView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3E30
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
 
 {
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   return;
 }
 
@@ -226,13 +226,13 @@ void __thiscall TCouncilView::_scalar_deleting_destructor_(TCouncilView *this)
     DestroyClipStateRegionWrapperObject(*(int *)&this->field_0x9c);
   }
   *(undefined4 *)&this->field_0x9c = 0;
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F5F90
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
 
@@ -242,7 +242,7 @@ void __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F7130
 // GHIDRA_NAME TCouncilView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 void __thiscall TCouncilView::OrphanTiny_ReturnZero_0048a730(TCouncilView *this,undefined4 param_1)
 
@@ -251,7 +251,7 @@ void __thiscall TCouncilView::OrphanTiny_ReturnZero_0048a730(TCouncilView *this,
     (**(code **)(**(int **)&this->field_0xb4 + 0x48))(param_1);
     return;
   }
-  TControl::thunk_ForwardCityDialogParamToChildSlot48((TControl *)this,param_1);
+  TMapDialog::OrphanTiny_ReturnZero_0048a730((TControl *)this,param_1);
   return;
 }
 
@@ -287,7 +287,7 @@ TDiplomacyMapView * TCouncilView::CreateTCouncilViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBA50
 // GHIDRA_NAME TCouncilView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCouncilView::GetTEventHandlerClassNamePointer(TCouncilView *this)
 
@@ -336,7 +336,7 @@ void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCo
   CString::CString(&local_18);
   local_4 = CONCAT31(local_4._1_3_,2);
   uStack_30 = 0x4fbac5;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pcStack_2c = (char *)0x4fbacc;
   TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this);
   *(undefined4 *)&this->field_0x94 = 5;
@@ -408,7 +408,7 @@ void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
 // GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this,int param_1,int param_2)
 
@@ -433,12 +433,12 @@ void __thiscall TCouncilView::OrphanRetStub_0059add0(TCouncilView *this,int para
       puVar2 = puVar2 + 1;
     } while ((int)piVar1 < 0x696990);
     if ((int)puVar2 < 6) {
-      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
+      WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(puVar2,unaff_ESI);
       return;
     }
   }
   else {
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   }
   return;
 }
@@ -452,7 +452,7 @@ TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallba
           (TCouncilView *this,undefined4 *param_1,undefined4 param_2)
 
 {
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+  TMapDialog::SetForeignMinisterReadyFlag14
             ((TControl *)this,param_1,param_2);
   if ((int)*(short *)&this->field_0x528 < *(short *)&this->field_0x24c8 + 2) {
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);

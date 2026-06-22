@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F180
 // GHIDRA_NAME TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
@@ -17,7 +17,7 @@ TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
   undefined1 *puVar3;
   int iVar4;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0xc,2);
   (*pcVar2)(&this->field_0x10,2);
@@ -66,7 +66,7 @@ TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F2B0
 // GHIDRA_NAME TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
@@ -96,7 +96,7 @@ TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
   
   piStack_18 = param_1;
   puStack_1c = (undefined1 *)0x52f2c1;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puStack_1c = &this->field_0xc;
   piStack_18 = (int *)0x2;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -201,7 +201,7 @@ TArmsForeignMinister::DispatchNationStateEventCode10(TArmsForeignMinister *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F730
 // GHIDRA_NAME TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 undefined4 __thiscall
 TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *this)
@@ -228,7 +228,7 @@ TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F7B0
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
 
@@ -284,7 +284,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
       if (bVar2) goto LAB_0052f8bf;
       iVar6 = GenerateThreadLocalRandom15();
       local_10 = (TArmsForeignMinister *)(iVar6 % 7);
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing(local_10);
+      cVar3 = IsNationSlotEligibleForEventProcessing(local_10);
       if (cVar3 != '\0') {
         cVar3 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)
                           (local_10,CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
@@ -310,7 +310,7 @@ LAB_0052f8bf:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F9D0
 // GHIDRA_NAME TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
 TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmsForeignMinister *this)
@@ -384,7 +384,7 @@ TArmsForeignMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmsForeignM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052FCC0
 // GHIDRA_NAME TArmsForeignMinister::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TArmsForeignMinister::OrphanRetStub_0059add0(TArmsForeignMinister *this)
 
@@ -411,7 +411,7 @@ void __thiscall TArmsForeignMinister::OrphanRetStub_0059add0(TArmsForeignMiniste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052FD10
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
 
@@ -439,7 +439,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052FD80
 // GHIDRA_NAME TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 void __thiscall
 TArmsForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TArmsForeignMinister *this)
@@ -460,7 +460,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052FDC0
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this)
 
@@ -486,7 +486,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
   iVar5 = 0;
   do {
     if ((short)iVar3 != *(short *)(*(int *)&this->field_0x4 + 0xc)) {
-      cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iVar3);
+      cVar2 = IsNationSlotEligibleForEventProcessing(iVar3);
       if (cVar2 != '\0') {
         if ((bVar1) &&
            (*(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
@@ -553,7 +553,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
       psVar4 = (short *)(**(code **)(*local_18 + 0x2c))((int)(short)iVar7);
       sVar2 = *psVar4;
       if (psVar4[1] < 0xff) {
-        sVar1 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+        sVar1 = TControl::LookupOrderCompatibilityMatrixValue
                           ((TControl *)g_pDiplomacyTurnStateManager,
                            *(short *)(*(int *)&this->field_0x4 + 0xc),sVar2,(short)unaff_EDI,
                            (short)unaff_ESI);
@@ -582,7 +582,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
         psVar4 = (short *)(**(code **)(*local_18 + 0x2c))((int)(short)iVar6);
         sVar2 = *psVar4;
         iVar7 = (int)sVar2;
-        sVar1 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+        sVar1 = TControl::LookupOrderCompatibilityMatrixValue
                           ((TControl *)g_pDiplomacyTurnStateManager,
                            *(short *)(*(int *)&this->field_0x4 + 0xc),sVar2,(short)unaff_EDI,
                            (short)unaff_ESI);
@@ -614,7 +614,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
           psVar4 = (short *)(**(code **)(*local_18 + 0x2c))((int)(short)iVar6);
           iVar7 = CONCAT22((short)((uint)iVar7 >> 0x10),*psVar4);
           if ((psVar4[1] < 0xff) &&
-             (sVar2 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+             (sVar2 = TControl::LookupOrderCompatibilityMatrixValue
                                 ((TControl *)g_pDiplomacyTurnStateManager,
                                  *(short *)(*(int *)&this->field_0x4 + 0xc),*psVar4,(short)unaff_EDI
                                  ,(short)unaff_ESI), sVar2 == 0)) {
@@ -635,7 +635,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00530200
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -686,7 +686,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
   ppTVar11 = g_apSecondaryNationStateSlots + 7;
   do {
     if ((*ppTVar11 != (TMinor *)0x0) &&
-       (sVar8 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+       (sVar8 = TControl::LookupOrderCompatibilityMatrixValue
                           ((TControl *)g_pDiplomacyTurnStateManager,
                            *(short *)(*(int *)&this->field_0x4 + 0xc),(short)iVar13,(short)unaff_EDI
                            ,(short)unaff_ESI), sVar8 == 2)) {
@@ -754,7 +754,7 @@ void __thiscall TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsFore
       sVar8 = *(short *)(*(int *)&this->field_0x4 + 0xc);
       *pfVar1 = 0.0;
       if ((iVar13 != sVar8) &&
-         (cVar6 = thunk_IsNationSlotEligibleForEventProcessing(iVar13), cVar6 != '\0')) {
+         (cVar6 = IsNationSlotEligibleForEventProcessing(iVar13), cVar6 != '\0')) {
         cVar6 = IsNationCodeLinkedInNationGraph
                           ((int)*(short *)(*(int *)&this->field_0x4 + 0xc),iVar13);
         if (cVar6 == '\0') {
@@ -814,7 +814,7 @@ LAB_0053054c:
     ppTStack_38 = g_apNationStates;
     do {
       if (((iVar13 != *(short *)(*(int *)&this->field_0x4 + 0xc)) &&
-          (cVar6 = thunk_IsNationSlotEligibleForEventProcessing(iVar13), cVar6 != '\0')) &&
+          (cVar6 = IsNationSlotEligibleForEventProcessing(iVar13), cVar6 != '\0')) &&
          (cVar6 = (*g_pDiplomacyTurnStateManager->vftable[9].GetTDiplomacyMgrClassNamePointer)
                             (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                                       *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),iVar13),
@@ -877,7 +877,7 @@ LAB_0053054c:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005308B0
 // GHIDRA_NAME TArmsForeignMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(float param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(float param_1)
 
 undefined1 __thiscall
 TArmsForeignMinister::GetTEventHandlerClassNamePointer(TArmsForeignMinister *this,float param_1)
@@ -960,7 +960,7 @@ void __thiscall TArmsForeignMinister::_scalar_deleting_destructor_(TArmsForeignM
       return;
     }
     if (((iVar2 != *(short *)(*(int *)&this->field_0x4 + 0xc)) &&
-        (cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar2), cVar1 != '\0')) &&
+        (cVar1 = IsNationSlotEligibleForEventProcessing(iVar2), cVar1 != '\0')) &&
        (cVar1 = (*this->vftable[0xe].GetTMinisterClassNamePointer)(iVar2), cVar1 != '\0')) {
       (**(code **)(**(int **)&this->field_0x4 + 0x210))(iVar2);
     }
@@ -1086,7 +1086,7 @@ LAB_00530d24:
         (**(code **)(*piVar9 + 0x24))();
       }
       if (iStack_18 != -1) {
-        sVar6 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+        sVar6 = TControl::LookupOrderCompatibilityMatrixValue
                           ((TControl *)g_pDiplomacyTurnStateManager,
                            *(short *)(*(int *)&this->field_0x4 + 0xc),(short)iStack_18,
                            (short)unaff_EDI,(short)unaff_ESI);
@@ -1104,7 +1104,7 @@ LAB_00530d24:
   sVar6 = 7;
   iVar11 = 0x22;
   do {
-    sVar7 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+    sVar7 = TControl::LookupOrderCompatibilityMatrixValue
                       ((TControl *)g_pDiplomacyTurnStateManager,
                        *(short *)(*(int *)&this->field_0x4 + 0xc),sVar6,(short)unaff_EDI,
                        (short)unaff_ESI);
@@ -1179,7 +1179,7 @@ switchD_00530fea_caseD_12d:
     case 0x130:
       cVar4 = (**(code **)(*piVar2 + 0x278))((int)sVar1);
       if (cVar4 == '\0') goto LAB_00531084;
-      TCountry::thunk_QueueInterNationEventRecordDeduped
+      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                 ((TCountry *)g_pInterNationEventQueueManager,0x1c,
                  (int)*(short *)(*(int *)&this->field_0x4 + 0xc),(int)psVar5[1],'\0');
       break;
@@ -1201,7 +1201,7 @@ LAB_00531084:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531110
 // GHIDRA_NAME TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TArmsForeignMinister::OrphanCallChain_C11_I88_004874b0(TArmsForeignMinister *this)
 
@@ -1222,7 +1222,7 @@ TArmsForeignMinister::GetTMinisterClassNamePointer(TArmsForeignMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534010
 // GHIDRA_NAME TArmsForeignMinister::ConstructTArmsForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTArmsForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::ConstructTArmsForeignMinister(void)
 
 TArmsForeignMinister * __thiscall
 TArmsForeignMinister::ConstructTArmsForeignMinister(TArmsForeignMinister *this)
@@ -1257,7 +1257,7 @@ TArmsForeignMinister * __thiscall
 TArmsForeignMinister::DeletingDestructTMinister(TArmsForeignMinister *this,byte param_1)
 
 {
-  DestructTArmsForeignMinister(this);
+  TArmsForeignMinister::DestructTArmsForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -1266,7 +1266,7 @@ TArmsForeignMinister::DeletingDestructTMinister(TArmsForeignMinister *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005340B0
 // GHIDRA_NAME TArmsForeignMinister::DestructTArmsForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTArmsForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(void)
 
 void __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(TArmsForeignMinister *this)
 
@@ -1278,7 +1278,7 @@ void __thiscall TArmsForeignMinister::DestructTArmsForeignMinister(TArmsForeignM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005340D0
 // GHIDRA_NAME TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TArmsForeignMinister *this)
 
@@ -1312,7 +1312,7 @@ void __thiscall TArmsForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TArmsFore
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534190
 // GHIDRA_NAME TArmsForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TArmsForeignMinister::SetForeignMinisterReadyFlag14(TArmsForeignMinister *this)
 
@@ -1445,7 +1445,7 @@ LAB_005343ac:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534450
 // GHIDRA_NAME TArmsForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, undefined4 param_3, short param_4)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, undefined4 param_3, short param_4)
 
 void __thiscall
 TArmsForeignMinister::UpdateControlCachedIntFromWindowText

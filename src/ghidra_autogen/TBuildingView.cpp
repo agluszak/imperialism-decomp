@@ -23,7 +23,7 @@ TNoHilitePicture * TBuildingView::CreateTBuildingViewInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TBuildingViewVtbl_00651458;
     this[1].vftable = (TNoHilitePictureVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TNoHilitePicture * TBuildingView::CreateTBuildingViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6E90
 // GHIDRA_NAME TBuildingView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuildingView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuil
 TBuildingView * __thiscall TBuildingView::ConstructTBuildingViewBaseState(TBuildingView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TBuildingViewVtbl_00651458;
   *(undefined4 *)&this->field_0x94 = 0;
   return this;
@@ -64,7 +64,7 @@ TBuildingView * __thiscall
 TBuildingView::_scalar_deleting_destructor_(TBuildingView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -108,24 +108,24 @@ TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TBuildingView *this,in
   (**(code **)(iVar1 + 300))(&stack0xffffffc4);
   RStack_30.left = 0;
   CopyRect(atStack_20,&RStack_30);
-  thunk_InvalidateCityDialogRectRegion(atStack_20,1);
+  InvalidateCityDialogRectRegion(atStack_20,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7180
 // GHIDRA_NAME TBuildingView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TBuildingView::GetTEventHandlerClassNamePointer(TBuildingView *this)
 
 {
   if (this->field_0x9c != '\0') {
     *(undefined4 *)(*(int *)&this->field_0x98 + 0xac + *(short *)&this->field_0x9e * 4) = 0;
-    TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+    TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
     return;
   }
   (**(code **)(g_pUiRuntimeContext->vftable + 0xb0))(*(undefined2 *)&this->field_0x9e);
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   return;
 }
 

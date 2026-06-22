@@ -102,8 +102,8 @@ TMapMgr::QueueCivilianWorkOrderWithCostCheck(TMapMgr *this,short nTileIndex,unde
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&awOrderQueuedSfxByClass,CStack_48.m_pchData);
     puStack_40 = &stack0xffffff98;
-    thunk_AssignStringSharedRefAndReturnThis(&awOrderQueuedSfxByClass);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&awOrderQueuedSfxByClass);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     CString::~CString(&awOrderQueuedSfxByClass);
     CString::~CString(&CStack_48);
     CString::~CString(&CStack_44);
@@ -122,10 +122,10 @@ TMapMgr::QueueCivilianWorkOrderWithCostCheck(TMapMgr *this,short nTileIndex,unde
                         */
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
     }
-    nFeedbackStartTickDiv16 = thunk_GetTickCountDiv16();
+    nFeedbackStartTickDiv16 = GetTickCountDiv16();
     do {
-      thunk_PumpUiMessagesAndBackgroundTasks(1);
-      nFeedbackNowTickDiv16 = thunk_GetTickCountDiv16();
+      PumpUiMessagesAndBackgroundTasks(1);
+      nFeedbackNowTickDiv16 = GetTickCountDiv16();
       if (nFeedbackNowTickDiv16 < nFeedbackStartTickDiv16) break;
     } while (nFeedbackNowTickDiv16 - nFeedbackStartTickDiv16 < 0x1e);
                     /* Queued marker write + immediate cash deduction occur in this success path. */
@@ -192,12 +192,12 @@ CRuntimeClass * __thiscall TMapMgr::GetTMapMgrClassNamePointer(TMapMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050E3D0
 // GHIDRA_NAME TMapMgr::ConstructGlobalMapState
-// GHIDRA_PROTO void * __thiscall ConstructGlobalMapState(void * pGlobalMapState)
+// GHIDRA_PROTO void * __thiscall TMapMgr::ConstructGlobalMapState(void * pGlobalMapState)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void * ConstructGlobalMapState(void *pGlobalMapState)
+// GHIDRA_COMMENT Setting prototype: void * TMapMgr::ConstructGlobalMapState(void *pGlobalMapState)
 // GHIDRA_COMMENT_END
 
-/* Setting prototype: void * ConstructGlobalMapState(void *pGlobalMapState) */
+/* Setting prototype: void * TMapMgr::ConstructGlobalMapState(void *pGlobalMapState) */
 
 void * __thiscall TMapMgr::ConstructGlobalMapState(TMapMgr *this,void *pGlobalMapState)
 
@@ -278,7 +278,7 @@ TMapMgr::WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(TMapMgr *this,int *par
   code *pcVar5;
   int iVar6;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   iVar4 = *param_1;
   pcVar1 = *(code **)(iVar4 + 0x3c);
   (*pcVar1)(&this->field_0x6,2);
@@ -343,7 +343,7 @@ TMapMgr::WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(TMapMgr *this,int *par
   int iVar3;
   undefined4 uVar4;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   iVar2 = *param_1;
   pcVar1 = *(code **)(iVar2 + 0x78);
   (*pcVar1)(&this->field_0x6,2);
@@ -393,7 +393,7 @@ void __thiscall TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0(TMapM
     *(int *)&this->field_0xc = iVar1;
     if (iVar1 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0x198);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0x198);
     }
   }
   CStack_14.m_pchData = (char *)0x1950;
@@ -447,7 +447,7 @@ void __thiscall TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0(TMapM
     *(undefined4 **)&this->field_0x10 = puVar2;
     if (puVar2 == (undefined4 *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0x1c7);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0x1c7);
     }
   }
   iVar1 = 0;
@@ -539,19 +539,19 @@ void __thiscall TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream(TM
   CString::~CString(&local_18);
   local_10 = &stack0xffffffd0;
   CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,&local_1c);
-  uVar3 = thunk_LoadTableResourceStreamByName();
+  uVar3 = LoadTableResourceStreamByName();
   puVar4 = (undefined1 *)AllocateWithFallbackHandler();
   local_14 = 0x1950;
   local_10 = puVar4;
-  thunk_ReadResourceStreamIntoBufferAndAdvance(uVar3,puVar4);
-  thunk_ReleaseResourceStreamIfNotNull();
+  ReadResourceStreamIntoBufferAndAdvance(uVar3,puVar4);
+  ReleaseResourceStreamIfNotNull();
   iVar7 = 0;
   do {
     bVar1 = *(byte *)(iVar6 + (int)puVar4);
     uVar5 = (ushort)bVar1;
     if (uVar5 < 0x17) {
       *(undefined1 *)(*(int *)&this->field_0xc + iVar7) = 0;
-      uVar2 = ResolveRegionTileSubtypeCodeForTileIndex(this,(short)iVar6);
+      uVar2 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(this,(short)iVar6);
       *(undefined1 *)(*(int *)&this->field_0xc + 0x13 + iVar7) = uVar2;
       *(byte *)(*(int *)&this->field_0xc + 3 + iVar7) = bVar1;
       *(byte *)(*(int *)&this->field_0xc + 4 + iVar7) = bVar1;
@@ -1044,7 +1044,7 @@ void __thiscall TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(TMapMgr *t
       *(undefined1 *)(iVar6 + 0x11 + iVar7) = 0xff;
     } while (iVar5 < 2);
     *(undefined1 *)(*(int *)&this->field_0xc + 0x11 + iVar7) = 0x11;
-    uVar3 = ResolveRegionTileSubtypeCodeForTileIndex(this,(short)param_1);
+    uVar3 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(this,(short)param_1);
     *(undefined1 *)(*(int *)&this->field_0xc + 0x13 + iVar7) = uVar3;
     ComputeHexNeighborTileIndices((short)param_1,local_c,this->field_0x20);
     iVar7 = 0;
@@ -1181,7 +1181,7 @@ void __thiscall TMapMgr::OrphanLeaf_NoCall_Ins01_00511610(TMapMgr *this,short pa
       *(undefined1 *)(*(int *)&this->field_0xc + 0x11 + iVar6) = 0x12;
     }
   }
-  uVar2 = ResolveRegionTileSubtypeCodeForTileIndex(this,param_1);
+  uVar2 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(this,param_1);
   *(undefined1 *)(*(int *)&this->field_0xc + 0x13 + iVar6) = uVar2;
   return;
 }
@@ -1235,7 +1235,7 @@ TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
           (TMapMgr *this,undefined4 param_1)
 
 {
-  thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_1,1);
+  ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_1,1);
   return;
 }
 
@@ -1609,7 +1609,7 @@ TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(TMapMgr *this,short param_1,sh
   byte *pbVar1;
   short sVar2;
   
-  sVar2 = thunk_GetHexDirectionBetweenTiles(param_1,param_2);
+  sVar2 = GetHexDirectionBetweenTiles(param_1,param_2);
   *(byte *)(*(int *)&this->field_0xc + 6 + param_1 * 0x24) =
        *(byte *)(*(int *)&this->field_0xc + 6 + param_1 * 0x24) | (&DAT_00696ea2)[(sVar2 + 3) * 2];
   pbVar1 = (byte *)(*(int *)&this->field_0xc + 6 + param_2 * 0x24);
@@ -1619,7 +1619,7 @@ TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(TMapMgr *this,short param_1,sh
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00514110
 // GHIDRA_NAME TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
-// GHIDRA_PROTO undefined __thiscall ResolveRegionTileSubtypeCodeForTileIndex(short param_1)
+// GHIDRA_PROTO undefined __thiscall TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short param_1)
 
 int __thiscall TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(TMapMgr *this,short param_1)
 
@@ -1779,7 +1779,7 @@ TMapMgr::FloodFillTileRegionMarker(TMapMgr *this,short nTileIndex,short nOwnerNa
           ;
           if (DAT_00695278 == -3) goto LAB_00514527;
           if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-            thunk_DispatchCityRedrawInvalidateEvent(sVar1);
+            DispatchCityRedrawInvalidateEvent(sVar1);
           }
         }
         if ((DAT_00695278 != -3) && (*(int *)&g_pLocalizationTable->field_0x44 == 1)) {
@@ -1860,14 +1860,14 @@ TMapMgr::QueuePortConstructionOrder
       pMapContext = (int *)0x0;
     }
     else {
-      pMapContext = (int *)TTown::thunk_ConstructFrogCityMarker(this_00);
+      pMapContext = (int *)TTown::FUN_005b6c60(this_00);
     }
     local_4 = 0xffffffff;
     InitializeFrogCityMarkerFields(&g_szEmptyString,piVar7,1,_nTileIndex);
     piVar3 = *(int **)&g_apNationStates[nTileIndex]->field_0x898;
     if (piVar3 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0xfda);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0xfda);
     }
     piVar8 = pMapContext;
     (**(code **)(*piVar3 + 0x30))();
@@ -1892,10 +1892,10 @@ TMapMgr::QueuePortConstructionOrder
                     /* Persist pending-order marker in tile flags (bit 0x04). */
   pbVar2 = (byte *)(*(int *)&this->field_0xc + 0x1c + iVar5);
   *pbVar2 = *pbVar2 | 4;
-  thunk_EnsurePortZoneForTile(nTileIndex_00,uVar6);
+  EnsurePortZoneForTile(nTileIndex_00,uVar6);
   if ((DAT_00695278 != -3) && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     DispatchTurnEvent31TaggedPayload(0x746f776e,unaff_EBX,0xfffffffe);
-    thunk_DispatchCityRedrawInvalidateEvent(*(short *)(*(int *)&this->field_0xc + 0x14 + iVar5));
+    DispatchCityRedrawInvalidateEvent(*(short *)(*(int *)&this->field_0xc + 0x14 + iVar5));
     DispatchTileRedrawInvalidateEvent(nTileIndex_00);
   }
   *unaff_FS_OFFSET = local_10;
@@ -2057,8 +2057,8 @@ TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(TMapMgr *this,short nTil
     }
     iVar15 = iVar15 + 1;
   } while (iVar15 < 7);
-  thunk_EnsurePortZoneForTile((short)iVar11,(short)pTVar16);
-  uVar6 = ResolveRegionTileSubtypeCodeForTileIndex(unaff_EDI,(short)iVar11);
+  EnsurePortZoneForTile((short)iVar11,(short)pTVar16);
+  uVar6 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(unaff_EDI,(short)iVar11);
   *(undefined1 *)(iVar13 + 0x13 + *(int *)&unaff_EDI->field_0xc) = uVar6;
   return;
 }
@@ -2438,7 +2438,7 @@ LAB_005153d5:
       }
       else {
         if ('\x06' < cVar1) {
-          sVar2 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+          sVar2 = TControl::LookupOrderCompatibilityMatrixValue
                             ((TControl *)g_pDiplomacyTurnStateManager,nSourceClass,(short)cVar1,
                              (short)unaff_EDI,(short)unaff_ESI);
           if (sVar2 != 2) {
@@ -2487,7 +2487,7 @@ TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(TMapMgr *this
   do {
     pcVar5[0xe] = '\x01';
     if ((((*pcVar5 != '\x05') && ('\x06' < pcVar5[4])) &&
-        (sVar4 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+        (sVar4 = TControl::LookupOrderCompatibilityMatrixValue
                            ((TControl *)g_pDiplomacyTurnStateManager,nSourceClass,(short)pcVar5[4],
                             (short)unaff_EDI,(short)unaff_ESI), sVar4 == 2)) &&
        ((pcVar5[0x18] == -1 && ((&DAT_00658738)[pcVar5[0x13]] != '\0')))) {
@@ -2899,7 +2899,7 @@ TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
   if (sVar3 != -1) {
     iVar8 = sVar3 * 0x24;
     *(undefined2 *)(iVar8 + 0x1c + *(int *)&this->field_0xc) = 0;
-    uVar5 = ResolveRegionTileSubtypeCodeForTileIndex(this,sVar3);
+    uVar5 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(this,sVar3);
     *(undefined1 *)(iVar8 + 0x13 + *(int *)&this->field_0xc) = uVar5;
     *(undefined1 *)(iVar8 + 0x11 + *(int *)&this->field_0xc) = 0x11;
   }
@@ -2908,7 +2908,7 @@ TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
   *(short *)(iVar7 + 4 + *(int *)&this->field_0x10) = (short)param_2;
   pbVar1 = (byte *)(iVar8 + 0x1c + *(int *)&this->field_0xc);
   *pbVar1 = *pbVar1 | 0x20;
-  uVar5 = ResolveRegionTileSubtypeCodeForTileIndex(this,(short)param_2);
+  uVar5 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(this,(short)param_2);
   *(undefined1 *)(iVar8 + 0x13 + *(int *)&this->field_0xc) = uVar5;
   iVar8 = *(int *)&this->field_0x10;
   iVar9 = 0;
@@ -3712,7 +3712,7 @@ void __thiscall TMapMgr::ApplyMapImprovementSelectionState(TMapMgr *this,void *p
   }
   uVar1 = *(undefined2 *)((int)param_1 + 4);
   pTVar2 = this->vftable;
-  bVar3 = thunk_IsCivilianOrderInIdleSelectionState(param_1,unaff_EBX);
+  bVar3 = IsCivilianOrderInIdleSelectionState(param_1,unaff_EBX);
   (*pTVar2[0x22].slot_0x04)
             (CONCAT22((short)((uint)unaff_EDI >> 0x10),uVar1),0,CONCAT31(extraout_var,bVar3));
   return;

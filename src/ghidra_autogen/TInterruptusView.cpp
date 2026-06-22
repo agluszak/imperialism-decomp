@@ -25,7 +25,7 @@ TInterruptusView * __cdecl TInterruptusView::CreateObject(void)
   local_4 = 0;
   pTVar1 = (TInterruptusView *)0x0;
   if (this != (TInterruptusView *)0x0) {
-    TView::thunk_ConstructTViewBaseState((TView *)this);
+    TView::ConstructTViewBaseState((TView *)this);
     this->vftable = &TInterruptusViewVtbl_0064e7d8;
     pTVar1 = this;
   }
@@ -41,7 +41,7 @@ TInterruptusView * __thiscall
 TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ TInterruptusView::_scalar_deleting_destructor_(TInterruptusView *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFD80
 // GHIDRA_NAME TInterruptusView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TInterruptusView::GetTEventHandlerClassNamePointer(TInterruptusView *this)
@@ -61,7 +61,7 @@ TInterruptusView::GetTEventHandlerClassNamePointer(TInterruptusView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFDA0
 // GHIDRA_NAME TInterruptusView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TInterruptusView::OrphanTiny_ReturnZero_0048a730(TInterruptusView *this)
 

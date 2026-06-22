@@ -35,7 +35,7 @@ thunk_TPictureButton * TArrowsControl::CreateTArrowsControlInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583950
 // GHIDRA_NAME TArrowsControl::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArrowsControl::GetTEventHandlerClassNamePointer(TArrowsControl *this)
 
@@ -64,7 +64,7 @@ TArrowsControl * __thiscall
 TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839F0
 // GHIDRA_NAME TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
 void __thiscall
 TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -87,9 +87,9 @@ TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
   int in_stack_00000010;
   
   if (param_1 != 2) {
-    uVar3 = thunk_GetTickCountDiv16();
+    uVar3 = GetTickCountDiv16();
     if (*(int *)&this->field_0x90 + 5U <= uVar3) {
-      iVar4 = thunk_GetTickCountDiv16();
+      iVar4 = GetTickCountDiv16();
       *(int *)&this->field_0x90 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x90 = iVar4 + 10;

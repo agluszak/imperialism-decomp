@@ -33,7 +33,7 @@ TView * TWorldView::CreateTWorldViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x7c);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TWorldViewVtbl_00668cb0;
     *(undefined2 *)&this[1].field0c = 0;
     *(undefined2 *)((int)&this[1].field0c + 2) = 0;
@@ -59,7 +59,7 @@ void __thiscall TWorldView::OrphanRetStub_00594fc0(TWorldView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594FE0
 // GHIDRA_NAME TWorldView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TWorldView::GetTEventHandlerClassNamePointer(TWorldView *this)
 
@@ -69,12 +69,12 @@ CRuntimeClass * __thiscall TWorldView::GetTEventHandlerClassNamePointer(TWorldVi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595000
 // GHIDRA_NAME TWorldView::ConstructTWorldViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTWorldViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TWorldView::ConstructTWorldViewBaseState(void)
 
 TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TWorldViewVtbl_00668cb0;
   *(undefined2 *)&this->field_0x6c = 0;
   *(undefined2 *)&this->field_0x6e = 0;
@@ -91,7 +91,7 @@ TWorldView * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *thi
 TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -100,18 +100,18 @@ TWorldView * __thiscall TWorldView::_scalar_deleting_destructor_(TWorldView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595090
 // GHIDRA_NAME TWorldView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TWorldView::OrphanLeaf_NoCall_Ins07_004d8920(TWorldView *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005950B0
 // GHIDRA_NAME TWorldView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
 TWorldView::OrphanRetStub_0059add0
@@ -127,13 +127,13 @@ TWorldView::OrphanRetStub_0059add0
     uVar2 = UiRuntimeContext::GetActiveNationId();
     (**(code **)(puVar1 + 0xe0))(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x7a),uVar2);
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595130
 // GHIDRA_NAME TWorldView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(int * pKeyEvent)
+// GHIDRA_PROTO void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int * pKeyEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches map-screen hotkeys.
 // GHIDRA_COMMENT
@@ -187,11 +187,11 @@ void __thiscall TWorldView::OrphanTiny_ReturnZero_0048a730(TWorldView *this,int 
     cHotkey = (char)pKeyEvent[7];
     if (cHotkey == 't') {
                     /* Hotkey 't': open civilian ledger/list dialog. */
-      TSuperCivRoster::thunk_ShowCivilianLedgerDialogAndSelectUnit
+      TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit
                 ((TSuperCivRoster *)g_pUiRuntimeContext);
     }
     else if (cHotkey == 'u') {
-      TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection
+      TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
                 ((TSuperArmyRoster *)g_pUiRuntimeContext);
     }
     else if (cHotkey == 'v') {
@@ -245,8 +245,8 @@ void __thiscall TWorldView::OrphanTiny_ReturnZero_0048a730(TWorldView *this,int 
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&local_14,local_20.m_pchData);
       local_18.m_pchData = &stack0xffffffc4;
-      thunk_AssignStringSharedRefAndReturnThis(&local_14);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&local_14);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       this_00 = &local_14;
 LAB_00595484:
       local_4 = CONCAT31(local_4._1_3_,8);
@@ -274,7 +274,7 @@ LAB_00595484:
     do {
       CString::CString(&local_1c);
       local_4._0_1_ = 4;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      AssignSharedStringFromIndexedA8EntryNameField();
       nLoopResult = CompareAnsiStringsWithMbcsAwareness();
       if (nLoopResult == 0) {
         (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
@@ -291,8 +291,8 @@ LAB_00595484:
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&local_1c,local_20.m_pchData);
       local_10.m_pchData = &stack0xffffffc4;
-      thunk_AssignStringSharedRefAndReturnThis(&local_1c);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&local_1c);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
 LAB_005952db:
       local_4._0_1_ = 3;
       CString::~CString(&local_1c);
@@ -335,7 +335,7 @@ LAB_005952db:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595810
 // GHIDRA_NAME TWorldView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT If current hit-test index maps to a runtime cursor slot, sets mapped cursor; otherwise loads and sets default arrow cursor.
 // GHIDRA_COMMENT_END
@@ -373,7 +373,7 @@ TWorldView::OrphanCallChain_C11_I88_004874b0(TWorldView *this,undefined4 param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005958B0
 // GHIDRA_NAME TWorldView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
 
@@ -422,7 +422,7 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
     case 0:
       uVar4 = LookupMapCursorTokenByStateIndex(uVar5,CONCAT22(uVar7,*(undefined2 *)puVar1));
       if ((uVar4 == 0) &&
-         (uVar4 = thunk_GetMapContextActionLabelTokenByActionCode
+         (uVar4 = GetMapContextActionLabelTokenByActionCode
                             (*(short *)&this->field_0x6c,
                              CONCAT22(extraout_var_04,*(undefined2 *)puVar1)), uVar4 == 0)) {
         uVar4 = TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex
@@ -433,9 +433,9 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
     case 1:
       uVar4 = LookupMapCursorTokenByStateIndex(uVar5,CONCAT22(uVar7,*(undefined2 *)puVar1));
       if (((uVar4 == 0) &&
-          (uVar4 = thunk_ResolveCivilianTileSelectionOrReportActionCode
+          (uVar4 = ResolveCivilianTileSelectionOrReportActionCode
                              (*(short *)&this->field_0x6c,*(short *)puVar1), uVar4 == 0)) &&
-         (uVar4 = thunk_GetMapContextActionLabelTokenByActionCode
+         (uVar4 = GetMapContextActionLabelTokenByActionCode
                             (*(short *)&this->field_0x6c,
                              CONCAT22(extraout_var_01,*(undefined2 *)puVar1)), uVar4 == 0)) {
         uVar4 = LookupCivilianMapCursorTokenByStateIndex
@@ -446,9 +446,9 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
     case 2:
       uVar4 = LookupMapCursorTokenByStateIndex(uVar5,CONCAT22(sVar3 >> 0xf,*(undefined2 *)puVar1));
       if ((uVar4 == 0) &&
-         (uVar4 = thunk_ResolveCivilianTileSelectionOrReportActionCode
+         (uVar4 = ResolveCivilianTileSelectionOrReportActionCode
                             (*(short *)&this->field_0x6c,*(short *)puVar1), uVar4 == 0)) {
-        uVar4 = thunk_GetMapContextActionLabelToken
+        uVar4 = GetMapContextActionLabelToken
                           (*(short *)&this->field_0x6c,
                            CONCAT22(extraout_var_06,*(undefined2 *)puVar1));
       }
@@ -456,9 +456,9 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
     default:
       uVar4 = LookupMapCursorTokenByStateIndex(uVar5,CONCAT22(uVar7,*(undefined2 *)puVar1));
       if ((uVar4 == 0) &&
-         (uVar4 = thunk_ResolveCivilianTileSelectionOrReportActionCode
+         (uVar4 = ResolveCivilianTileSelectionOrReportActionCode
                             (*(short *)&this->field_0x6c,*(short *)puVar1), uVar4 == 0)) {
-        uVar4 = thunk_GetMapContextActionLabelTokenByActionCode
+        uVar4 = GetMapContextActionLabelTokenByActionCode
                           (*(short *)&this->field_0x6c,
                            CONCAT22(extraout_var_03,*(undefined2 *)puVar1));
       }
@@ -483,7 +483,7 @@ void __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this)
     if (*(short *)&this->field_0x6c != *(short *)&this->field_0x6e) {
       (*pTVar2[0x36].slot_0x04)();
     }
-    thunk_DestroyScopedMapQuickDrawContext();
+    DestroyScopedMapQuickDrawContext();
     *(undefined2 *)&this->field_0x6e = *(undefined2 *)&this->field_0x6c;
     *(undefined2 *)&this->field_0x6a = *(undefined2 *)&this->field_0x68;
     *(undefined2 *)&this->field_0x72 = *(undefined2 *)puVar1;
@@ -544,7 +544,7 @@ void __thiscall TWorldView::OrphanRetStub_005960e0(TWorldView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596100
 // GHIDRA_NAME TWorldView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this,undefined4 param_1)
 
@@ -571,7 +571,7 @@ undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this
   pTVar1 = this->vftable;
   local_4 = 0;
   (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,local_14,local_18,&local_1c);
-  thunk_NormalizeWrappedMapCoord108x60(&stack0xffffffdc,&stack0xffffffd8);
+  NormalizeWrappedMapCoord108x60(&stack0xffffffdc,&stack0xffffffd8);
   uVar3 = ComputeStridedRecordAddress6C(unaff_EBP,unaff_ESI);
   if (*(int *)(puStack_8 + 0x24) == 1) {
     (*pTVar1[0x39].slot_0x04)(uVar3,unaff_EDI);
@@ -604,7 +604,7 @@ undefined4 __thiscall TWorldView::SetForeignMinisterReadyFlag14(TWorldView *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596270
 // GHIDRA_NAME TWorldView::InvokeDialogHooks1D8ThenE4
-// GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(void)
+// GHIDRA_PROTO undefined __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(void)
 
 void __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(TWorldView *this)
 
@@ -644,23 +644,23 @@ TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TWorldView *this
     puVar4 = puVar2;
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24) == '\x05') {
-    pvVar3 = thunk_GetMapActionContextByTileIndex(param_1);
+    pvVar3 = GetMapActionContextByTileIndex(param_1);
     this_00 = (TCivToolbar *)this->ownerContext;
-    TCivToolbar::thunk_SetMapInteractionMode(this_00,2);
+    TToolBarCluster::SetMapInteractionMode(this_00,2);
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(this_00[1].field0c);
+      InvalidateMapRegionForOrderEntry(this_00[1].field0c);
     }
     this_00[1].field0c = (int)pvVar3;
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(pvVar3);
+      InvalidateMapRegionForOrderEntry(pvVar3);
     }
     if (pvVar3 == (void *)0x0) {
       pvVar3 = (void *)0x0;
     }
     else {
-      pvVar3 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pvVar3);
+      pvVar3 = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(pvVar3);
     }
-    TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pvVar3);
+    TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pvVar3);
   }
   _DAT_006a4608 = (int)param_1;
   puVar4[2] = 0x79;
@@ -738,7 +738,7 @@ TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(TWorldView *this,u
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596680
 // GHIDRA_NAME TWorldView::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(void)
+// GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(void)
 
 void __thiscall TWorldView::OrphanRetStub_00596680(TWorldView *this)
 

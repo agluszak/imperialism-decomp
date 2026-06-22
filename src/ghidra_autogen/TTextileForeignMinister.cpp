@@ -16,7 +16,7 @@ TTextileForeignMinister::GetTMinisterClassNamePointer(TTextileForeignMinister *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533110
 // GHIDRA_NAME TTextileForeignMinister::ConstructTTextileForeignMinister
-// GHIDRA_PROTO undefined __thiscall ConstructTTextileForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTextileForeignMinister::ConstructTTextileForeignMinister(void)
 
 TTextileForeignMinister * __thiscall
 TTextileForeignMinister::ConstructTTextileForeignMinister(TTextileForeignMinister *this)
@@ -51,7 +51,7 @@ TTextileForeignMinister * __thiscall
 TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this,byte param_1)
 
 {
-  DestructTTextileForeignMinister(this);
+  TTextileForeignMinister::DestructTTextileForeignMinister(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -60,7 +60,7 @@ TTextileForeignMinister::DeletingDestructTMinister(TTextileForeignMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005331B0
 // GHIDRA_NAME TTextileForeignMinister::DestructTTextileForeignMinister
-// GHIDRA_PROTO undefined __thiscall DestructTTextileForeignMinister(void)
+// GHIDRA_PROTO undefined __thiscall TTextileForeignMinister::DestructTTextileForeignMinister(void)
 
 void __thiscall
 TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister *this)
@@ -73,7 +73,7 @@ TTextileForeignMinister::DestructTTextileForeignMinister(TTextileForeignMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005331D0
 // GHIDRA_NAME TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall
 TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTextileForeignMinister *this)
@@ -151,7 +151,7 @@ TTextileForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TTextileForeignMiniste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533380
 // GHIDRA_NAME TTextileForeignMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall
 TTextileForeignMinister::SetForeignMinisterReadyFlag14(TTextileForeignMinister *this)
@@ -262,7 +262,7 @@ TTextileForeignMinister::SetForeignMinisterReadyFlag14(TTextileForeignMinister *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00533670
 // GHIDRA_NAME TTextileForeignMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 param_1, undefined4 param_2, short param_3)
 
 void __thiscall
 TTextileForeignMinister::UpdateControlCachedIntFromWindowText
@@ -317,12 +317,12 @@ TTextileForeignMinister::UpdateTextileProgressFromProductionSlots1And2
   
   *(short *)&param_1->field_0x60 = *(short *)&param_1->field_0x60 + 2;
   *(short *)&param_1->field_0x5e = *(short *)&param_1->field_0x5e + 1;
-  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,2);
+  iVar2 = TCity::GetCityBuildingProductionValueBySlot(param_1,2);
   sVar1 = (short)iVar2 + 2;
   *(short *)&param_1->field_0x200 =
        *(short *)&param_1->field_0x200 + (sVar1 - *(short *)&param_1->field_0x1e0);
   *(short *)&param_1->field_0x1e0 = sVar1;
-  iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,1);
+  iVar2 = TCity::GetCityBuildingProductionValueBySlot(param_1,1);
   sVar1 = (short)iVar2 + 1;
   *(short *)&param_1->field_0x1fe =
        *(short *)&param_1->field_0x1fe + (sVar1 - *(short *)&param_1->field_0x1de);

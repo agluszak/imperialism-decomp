@@ -37,7 +37,7 @@ thunk_TPictureButton * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719D0
 // GHIDRA_NAME TOnOffRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TOnOffRadioButton::GetTEventHandlerClassNamePointer(TOnOffRadioButton *this)
@@ -70,7 +70,7 @@ TOnOffRadioButton * __thiscall
 TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -79,7 +79,7 @@ TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
 // GHIDRA_NAME TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
 TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButton *this,int param_1)
@@ -89,12 +89,12 @@ TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButto
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
   }
   if (param_1 != 0x1f) {
     if (param_1 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,1);

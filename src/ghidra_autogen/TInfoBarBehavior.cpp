@@ -120,11 +120,11 @@ TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
       piVar2 = (int *)0x0;
     }
     else {
-      TView::thunk_ConstructTViewBaseState(unaff_EBX);
+      TView::ConstructTViewBaseState(unaff_EBX);
       piVar2 = extraout_EAX;
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-    thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,&DAT_006a2410,param_2 + 0xd,0,0,0);
+    InitializeUiResourceEntryFrameAndParent(0,param_2,&DAT_006a2410,param_2 + 0xd,0,0,0);
     iVar3 = *piVar2;
     piVar2[7] = 0x64756d79;
     (**(code **)(iVar3 + 0xa8))(1,0);
@@ -150,7 +150,7 @@ uint __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBe
   
   uVar1 = 0;
   if (g_pCursorControlPanel != (TControl *)0x0) {
-    thunk_AssignStringSharedRefAndReturnThis(&this->field_0x10);
+    AssignStringSharedRefAndReturnThis(&this->field_0x10);
     (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
     (**(code **)(**(int **)&this->field_0x8 + 0xf8))();
     uVar1 = GetRegionBoxToRectIfPresent(unaff_retaddr);

@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall THandleStream::GetTStreamClassNamePointer(THandleStre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004895E0
 // GHIDRA_NAME THandleStream::ConstructTHandleStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTHandleStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall THandleStream::ConstructTHandleStreamBaseState(void)
 
 void __thiscall THandleStream::ConstructTHandleStreamBaseState(THandleStream *this)
 
@@ -37,7 +37,7 @@ THandleStream * __thiscall
 THandleStream::ConstructTStreamBaseState(THandleStream *this,byte param_1)
 
 {
-  ~THandleStream(this);
+  THandleStream::~THandleStream(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -46,7 +46,7 @@ THandleStream::ConstructTStreamBaseState(THandleStream *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489640
 // GHIDRA_NAME THandleStream::~THandleStream
-// GHIDRA_PROTO undefined __thiscall ~THandleStream(void)
+// GHIDRA_PROTO undefined __thiscall THandleStream::~THandleStream(void)
 
 void __thiscall THandleStream::~THandleStream(THandleStream *this)
 

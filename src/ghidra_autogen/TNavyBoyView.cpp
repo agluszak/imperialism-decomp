@@ -11,7 +11,7 @@ TNavyBoyView * __thiscall
 TNavyBoyView::_scalar_deleting_destructor_(TNavyBoyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TNavyBoyView::_scalar_deleting_destructor_(TNavyBoyView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF090
 // GHIDRA_NAME TNavyBoyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNavyBoyView::GetTEventHandlerClassNamePointer(TNavyBoyView *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TNavyBoyView::GetTEventHandlerClassNamePointer(TNavyB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF0B0
 // GHIDRA_NAME TNavyBoyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TNavyBoyView::OrphanTiny_ReturnZero_0048a730(TNavyBoyView *this)
 
@@ -134,8 +134,8 @@ void __thiscall TNavyBoyView::OrphanTiny_ReturnZero_0048a730(TNavyBoyView *this)
   CString::~CString(&CStack_cc);
   iStack_64._0_1_ = 2;
   CString::~CString(&CStack_d4);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(0x50);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   iVar3 = *(int *)&this->field_0x60;
   sVar1 = GetResourceDescriptorWord14ByType();
   sVar1 = (short)((*(short *)(iVar3 + 2) * 0x14) / (int)sVar1) + 1;
@@ -157,9 +157,9 @@ void __thiscall TNavyBoyView::OrphanTiny_ReturnZero_0048a730(TNavyBoyView *this)
     CString::CString(&CStack_d4);
     iStack_64._0_1_ = 9;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c,0x1b);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x88 - (int)sVar1 / 2);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+    SetQuickDrawTextOriginWithContextOffset(0x88 - (int)sVar1 / 2);
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     iStack_64._0_1_ = 2;
     CString::~CString(&CStack_d4);
   }
@@ -172,10 +172,10 @@ void __thiscall TNavyBoyView::OrphanTiny_ReturnZero_0048a730(TNavyBoyView *this)
   }
   CStack_cc.m_pchData = &stack0xffffff18;
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
-  thunk_DrawCenteredGuideLineOnMapDc(0x50);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  SetQuickDrawTextOriginWithContextOffset(0x50);
+  DrawCenteredGuideLineOnMapDc(0x50);
+  DrawCenteredGuideLineOnMapDc(0xa2);
+  DrawCenteredGuideLineOnMapDc(0xa2);
   iStack_64._0_1_ = 1;
   TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&CStack_a4,4,0xe);
   iStack_64 = (uint)iStack_64._1_3_ << 8;
@@ -208,7 +208,7 @@ TView * TNavyBoyView::DestructTNavyBoyViewAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TMerchantBoyViewVtbl_0064e3e8;
     pTVar1 = this;
   }

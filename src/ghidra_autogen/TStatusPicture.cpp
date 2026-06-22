@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D840
 // GHIDRA_NAME TStatusPicture::ConstructTurnEventMainPictureEntry_10CC
-// GHIDRA_PROTO int * __thiscall ConstructTurnEventMainPictureEntry_10CC(int * pEntry)
+// GHIDRA_PROTO int * __thiscall TStatusPicture::ConstructTurnEventMainPictureEntry_10CC(int * pEntry)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event code 0x10CC.
 // GHIDRA_COMMENT_END
@@ -31,7 +31,7 @@ TStatusPicture * __thiscall
 TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TStatusPicture::_scalar_deleting_destructor_(TStatusPicture *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593F00
 // GHIDRA_NAME TStatusPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TStatusPicture::GetTEventHandlerClassNamePointer(TStatusPicture *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TStatusPicture::GetTEventHandlerClassNamePointer(TSta
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593F20
 // GHIDRA_NAME TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture *this)
 
@@ -81,12 +81,12 @@ void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture 
   puStack_8 = &LAB_006381aa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iVar7 = 0;
   iVar6 = 0x70696330;
   iVar10 = 0x50;
   do {
-    cVar3 = thunk_IsNationSlotEligibleForEventProcessing(iVar7);
+    cVar3 = IsNationSlotEligibleForEventProcessing(iVar7);
     if (cVar3 != '\0') {
       this_00 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
       iVar8 = 0;
@@ -127,7 +127,7 @@ void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture 
   puVar9 = (undefined2 *)&this->field_0xb0;
   piVar11 = (int *)&this->field_0x94;
   do {
-    cVar3 = thunk_IsNationSlotEligibleForEventProcessing(iVar6);
+    cVar3 = IsNationSlotEligibleForEventProcessing(iVar6);
     if (cVar3 == '\0') {
       *puVar9 = 0xffff;
     }
@@ -148,7 +148,7 @@ void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture 
     local_4 = local_4 + 0x10;
     iVar6 = iVar6 + 1;
   } while (local_4 < 0x70);
-  SortSevenEntriesAndUpdatePictureWidgets(this);
+  TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(this);
   g_pCursorControlPanel = (TControl *)(*unaff_EBP)(0x63757273);
   (*g_pCursorControlPanel->vftable[1].slot_0x04)();
   (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
@@ -158,7 +158,7 @@ void __thiscall TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920(TStatusPicture 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005942F0
 // GHIDRA_NAME TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -202,7 +202,7 @@ TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         puVar10 = (undefined2 *)0xb1;
         piVar12 = (int *)&this->field_0x94;
         do {
-          cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar11);
+          cVar4 = IsNationSlotEligibleForEventProcessing(iVar11);
           if (cVar4 == '\0') {
             *puVar10 = 0xffff;
           }
@@ -223,7 +223,7 @@ TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           iVar9 = iVar9 + 0x10;
           iVar11 = iVar11 + 1;
         } while (iVar9 < 0x70);
-        SortSevenEntriesAndUpdatePictureWidgets(this);
+        TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(this);
       }
       else {
         RecomputeNationComparisonValuesAndNormalizeScale();
@@ -245,13 +245,13 @@ TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     SelectAndActivatePendingEventTypeOffsetFrom1A0B(uVar13);
   }
 LAB_00594498:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594540
 // GHIDRA_NAME TStatusPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *this)
 
@@ -270,16 +270,16 @@ void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *t
   CStack_8.m_pchData = &LAB_006381d0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   CString::CString((CString *)&stack0x00000004);
   local_4 = 0;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)
             (0x2757,CONCAT22((short)((uint)&stack0x00000004 >> 0x10),*(short *)&this->field_0x90 + 8
                             ),&stack0x00000004);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6a);
-  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_8,0x3c);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x140 - (int)sVar1 / 2);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_8);
+  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_8,0x3c);
+  SetQuickDrawTextOriginWithContextOffset(0x140 - (int)sVar1 / 2);
+  THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_8);
   iVar2 = 100;
   psVar3 = (short *)&this->field_0xb0;
   iVar4 = 7;
@@ -288,14 +288,14 @@ void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *t
       CString::CString((CString *)&stack0xffffffd0);
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc,0x2b6a);
       FormatOverlayTerrainLabelText(&stack0xffffffd0);
-      thunk_SetQuickDrawTextOriginWithContextOffset(0x9a,iVar2 + -8);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd0);
+      SetQuickDrawTextOriginWithContextOffset(0x9a,iVar2 + -8);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffffd0);
       sVar1 = *psVar3;
       SetQuickDrawFillColor(0);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd8);
+      FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd8);
       OffsetRect((LPRECT)&stack0xffffffd8,-1,-1);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(sVar1);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd8);
+      FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd8);
       iVar2 = iVar2 + 0x37;
       CString::~CString((CString *)&stack0xffffffd0);
     }
@@ -309,7 +309,7 @@ void __thiscall TStatusPicture::OrphanTiny_ReturnZero_0048a730(TStatusPicture *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594C00
 // GHIDRA_NAME TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
-// GHIDRA_PROTO undefined __thiscall SortSevenEntriesAndUpdatePictureWidgets(void)
+// GHIDRA_PROTO undefined __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(void)
 
 void __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture *this)
 

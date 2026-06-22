@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486740
 // GHIDRA_NAME TApplication::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TApplication::GetTEventHandlerClassNamePointer(TApplication *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TApplication::GetTEventHandlerClassNamePointer(TAppli
 TApplication * __thiscall TApplication::ConstructGlobalUiRootControllerState(TApplication *this)
 
 {
-  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   *(undefined4 *)&this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x24 = 0;
   *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
@@ -43,7 +43,7 @@ TApplication * __thiscall
 TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte param_1)
 
 {
-  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
+  TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -52,7 +52,7 @@ TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004867E0
 // GHIDRA_NAME TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-// GHIDRA_PROTO undefined __thiscall DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(void)
+// GHIDRA_PROTO undefined __thiscall TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(void)
 
 void __thiscall
 TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
@@ -243,7 +243,7 @@ TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this,undef
     PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe140,0);
     return;
   default:
-    TMapDialog::thunk_ForwardCityDialogParamToChildSlot44((TMapDialog *)this,param_1);
+    TMapDialog::'scalar_deleting_destructor'((TMapDialog *)this,param_1);
     return;
   case 10:
   case 0xb:

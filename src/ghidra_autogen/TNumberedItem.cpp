@@ -123,7 +123,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     pTStack_78 = (TNumberedItem *)0x4d1934;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   tStack_3c.left = *(int *)CONCAT31(extraout_var,uVar4);
   (**(code **)(tStack_3c.left + 300))();
@@ -138,7 +138,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   uVar4 = (*pTVar1[0x12].slot_0x04)();
   if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
   CVar12.m_pchData = (char *)&tStack_3c.top;
@@ -148,7 +148,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   piVar6 = (int *)(*unaff_EDI)();
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar2 = *piVar6;
   (**(code **)(iVar2 + 300))();
@@ -167,7 +167,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
       pTStack_78 = (TNumberedItem *)AllocateWithFallbackHandler();
       tStack_3c.left._0_1_ = 2;
       if (pTStack_78 != (TNumberedItem *)0x0) {
-        ConstructTNumberedItemBaseState(pTStack_78);
+        TNumberedItem::ConstructTNumberedItemBaseState(pTStack_78);
       }
       tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,1);
       WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850();
@@ -218,7 +218,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   CStack_c4.m_pchData = (char *)&pTStack_78;
   CStack_c0.m_pchData = (char *)0x0;
   puStack_c8 = (undefined1 *)0x4d1c49;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   CStack_c0.m_pchData = (char *)0x4d1c5b;
   (**(code **)(iVar8 + 0x1b4))();
   CStack_c0.m_pchData = (char *)0x7469746c;
@@ -230,7 +230,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   CStack_c4.m_pchData = (char *)0x2b6a;
   puStack_c8 = (undefined1 *)0xe;
   CStack_cc.m_pchData = (char *)0x0;
-  thunk_BuildUiTextStyleDescriptor(&stack0xffffff7c);
+  BuildUiTextStyleDescriptor(&stack0xffffff7c);
   puStack_c8 = &stack0xffffff7c;
   CStack_c4.m_pchData = (char *)0x0;
   CStack_cc.m_pchData = (char *)0x4d1c92;
@@ -279,7 +279,7 @@ TMegaPicture * TNumberedItem::CreateTNumberedItemInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005077A0
 // GHIDRA_NAME TNumberedItem::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNumberedItem::GetTEventHandlerClassNamePointer(TNumberedItem *this)
 
@@ -289,7 +289,7 @@ CRuntimeClass * __thiscall TNumberedItem::GetTEventHandlerClassNamePointer(TNumb
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005077C0
 // GHIDRA_NAME TNumberedItem::ConstructTNumberedItemBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNumberedItemBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TNumberedItem::ConstructTNumberedItemBaseState(void)
 
 TNumberedItem * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumberedItem *this)
 
@@ -309,7 +309,7 @@ TNumberedItem * __thiscall
 TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -318,7 +318,7 @@ TNumberedItem::_scalar_deleting_destructor_(TNumberedItem *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005078A0
 // GHIDRA_NAME TNumberedItem::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TNumberedItem::OrphanTiny_ReturnZero_0048a730(TNumberedItem *this)
 
@@ -367,9 +367,9 @@ void __thiscall TNumberedItem::OrphanTiny_ReturnZero_0048a730(TNumberedItem *thi
     sVar2 = (short)this->field38 + -5;
     sVar1 = (short)this->field34 + -0x18;
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar1,sVar2);
+  SetQuickDrawTextOriginWithContextOffset(sVar1,sVar2);
   FormatStringWithVarArgsToSharedRef(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_30);
+  THQButton::DrawTextWithCachedQuickDrawStyleState(&local_30);
   local_4 = 0xffffffff;
   CString::~CString(&local_30);
   *unaff_FS_OFFSET = local_c;

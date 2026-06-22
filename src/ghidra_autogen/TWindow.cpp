@@ -30,7 +30,7 @@ TView * TWindow::CreateTWindowInstance(void)
     *unaff_FS_OFFSET = local_c;
     return (TView *)0x0;
   }
-  TView::thunk_ConstructTViewBaseState(this);
+  TView::ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
   TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].field14);
   this[1].field38 = 0;
@@ -66,7 +66,7 @@ TView * TWindow::CreateTWindowInstance(void)
   }
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
-  thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
+  SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
   this[1].controlTag = (int)this;
   this[1].field04 = (int)this;
   *unaff_FS_OFFSET = local_c;
@@ -75,7 +75,7 @@ TView * TWindow::CreateTWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D220
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
@@ -112,13 +112,13 @@ TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(TWindow *this,undefined4 param_1,undef
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D8D0
 // GHIDRA_NAME TWindow::AssertMcAppUILine2358
-// GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
+// GHIDRA_PROTO undefined __thiscall TWindow::AssertMcAppUILine2358(void)
 
 void __thiscall TWindow::AssertMcAppUILine2358(TWindow *this)
 
 {
   if (DAT_006a1b04 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x936);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x936);
   }
   return;
 }
@@ -161,7 +161,7 @@ void __thiscall TWindow::OrphanCallChain_C2_I39_0048d900(TWindow *this,char para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D980
 // GHIDRA_NAME TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 undefined4 __thiscall TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWindow *this)
 
@@ -369,14 +369,14 @@ void __thiscall TWindow::AssertMcAppUILine2554(TWindow *this)
 
 {
   if (DAT_006a1b08 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x9fa);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x9fa);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DD10
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
@@ -388,7 +388,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DD50
 // GHIDRA_NAME TWindow::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall TWindow::OrphanRetStub_0059add0(TWindow *this,int param_1)
 
@@ -400,7 +400,7 @@ void __thiscall TWindow::OrphanRetStub_0059add0(TWindow *this,int param_1)
   
   if (param_1 == 0x1a) {
     if (DAT_006a1b0c == 0) {
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xa1a);
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xa1a);
     }
   }
   else {
@@ -437,7 +437,7 @@ void __thiscall TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *this,TWindow *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DE00
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
@@ -483,7 +483,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
     local_1c = this;
     AdvanceSelectableTextOptionEntryIterator();
     while (local_10 != (int *)0x0) {
-      thunk_PropagateUiResourceContextRecursive(iVar3);
+      PropagateUiResourceContextRecursive(iVar3);
       if (local_20 == (undefined4 *)0x0) {
         local_10 = (int *)0x0;
       }
@@ -546,7 +546,7 @@ void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E060
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resets child-selection state, notifies parent/control window with message 0x468, iterates child nodes calling vfunc +0xA0, then triggers vfunc +0x1CC.
 // GHIDRA_COMMENT_END
@@ -645,13 +645,13 @@ undefined2 __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E1E0
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
 {
   if (DAT_006a1b10 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xac4);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xac4);
   }
   return;
 }
@@ -664,20 +664,20 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 {
   if (DAT_006a1b14 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xad9);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xad9);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E240
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
 {
   if (DAT_006a1b18 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaee);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaee);
   }
   return;
 }
@@ -690,7 +690,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 {
   if (DAT_006a1b1c == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaff);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaff);
   }
   return;
 }
@@ -772,7 +772,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492CC0
 // GHIDRA_NAME TWindow::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 TWindow * __thiscall TWindow::OrphanTiny_ReturnZero_0048a730(TWindow *this)
 
@@ -782,7 +782,7 @@ TWindow * __thiscall TWindow::OrphanTiny_ReturnZero_0048a730(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492CE0
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 TWindow * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
@@ -792,7 +792,7 @@ TWindow * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492D00
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
@@ -812,7 +812,7 @@ void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492D40
 // GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
@@ -832,12 +832,12 @@ void __thiscall TWindow::OrphanRetStub_0059ad90(TWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492D80
 // GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 undefined4 __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x51e);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x51e);
   return 0;
 }
 

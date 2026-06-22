@@ -88,7 +88,7 @@ void __thiscall TCity::TCity(TCity *this)
 TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
 
 {
-  ~TCity(this);
+  TCity::~TCity(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -97,7 +97,7 @@ TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2550
 // GHIDRA_NAME TCity::~TCity
-// GHIDRA_PROTO undefined __thiscall ~TCity(void)
+// GHIDRA_PROTO undefined __thiscall TCity::~TCity(void)
 
 void __thiscall TCity::~TCity(TCity *this)
 
@@ -181,7 +181,7 @@ void __thiscall TCity::DeserializeCityProductionState(TCity *this,int *param_1)
   *unaff_FS_OFFSET = (int)&iStack_c;
   piStack_2c = param_1;
   puStack_30 = (undefined1 *)0x4b30f4;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   puStack_30 = &this->field_0x4;
   piStack_2c = (int *)0x1;
   pcVar2 = *(code **)(*param_1 + 0x3c);
@@ -487,7 +487,7 @@ void __thiscall TCity::SerializeCityProductionState(TCity *this,int *param_1)
   
   piStack_1c = param_1;
   puStack_20 = (undefined1 *)0x4b35e3;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puStack_20 = &this->field_0x4;
   piStack_1c = (int *)0x1;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -903,7 +903,7 @@ void __thiscall TCity::RefreshOrderStateSlot0C(TCity *this)
       sVar1 = *(short *)((int)*ppvVar4 + 4);
       uVar2 = *(undefined2 *)((int)*ppvVar4 + 0x48);
       if (sVar1 != 0) {
-        sVar3 = thunk_GetResourceTypeRandomDrawBlockFlag(uVar2);
+        sVar3 = GetResourceTypeRandomDrawBlockFlag(uVar2);
         if (sVar3 == 0) {
           (**(code **)(**(int **)&this->field_0xac + 0x2c0))(1,uVar2,sVar1);
         }
@@ -1081,7 +1081,7 @@ void __thiscall TCity::Refresh80(TCity *this)
       cVar1 = (**(code **)(**(int **)&this->field_0xac + 0xa0))();
       if (((cVar1 == '\0') || (*(int *)&g_pLocalizationTable->field_0x44 != 2)) &&
          (_g_Sanitize_City_Counter_Value_006A24D4 == 0)) {
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UCity_cpp_00695f18,0x47f);
       }
       *pwVar3 = 0;
@@ -1193,7 +1193,7 @@ void __thiscall TCity::CreateAltownCityObject(TCity *this)
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)(*(int *)&this->field_0xac + 0x898) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53a);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53a);
   }
   this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
   local_4 = 0;
@@ -1202,13 +1202,13 @@ void __thiscall TCity::CreateAltownCityObject(TCity *this)
     uVar2 = extraout_var;
   }
   else {
-    piVar1 = (int *)TTown::thunk_ConstructFrogCityMarker(this_00);
+    piVar1 = (int *)TTown::FUN_005b6c60(this_00);
     uVar2 = extraout_var_00;
   }
   local_4 = 0xffffffff;
   if (piVar1 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53c);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53c);
     uVar2 = extraout_var_01;
   }
   InitializeFrogCityMarkerFields

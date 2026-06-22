@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047D960
 // GHIDRA_NAME CGdiObject::~CGdiObject
-// GHIDRA_PROTO undefined __thiscall ~CGdiObject(void)
+// GHIDRA_PROTO undefined __thiscall CGdiObject::~CGdiObject(void)
 
 void __thiscall CGdiObject::~CGdiObject(CGdiObject *this)
 

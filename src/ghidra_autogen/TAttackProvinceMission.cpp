@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E8B50
 // GHIDRA_NAME TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// GHIDRA_PROTO undefined __thiscall SetMapStateByteFlag970WithRuntimeGate(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(int param_1, int param_2)
 
 void __thiscall
 TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
@@ -72,7 +72,7 @@ undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D780
 // GHIDRA_NAME TAttackProvinceMission::ConstructTAttackProvinceMission
-// GHIDRA_PROTO undefined __thiscall ConstructTAttackProvinceMission(undefined2 param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TAttackProvinceMission::ConstructTAttackProvinceMission(undefined2 param_1, undefined2 param_2)
 
 TAttackProvinceMission * __thiscall
 TAttackProvinceMission::ConstructTAttackProvinceMission
@@ -150,7 +150,7 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
   
   this_00 = g_apNationStates[*(short *)(this + 4)];
   (*this_00->vftable[1].slot_0x04)();
-  SetMapStateByteFlag970WithRuntimeGate
+  TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
             ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
@@ -230,7 +230,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
         return 1;
       }
       do {
-        sVar4 = thunk_GetUnitMovementClassId();
+        sVar4 = GetUnitMovementClassId();
         if (sVar4 != 0) {
           (**(code **)(iVar8 + 0x88))(uVar5,1);
         }
@@ -244,7 +244,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
   uVar5 = InitializeLinkedListCursorFromOwnerHead();
   iVar8 = LinkedListCursorHasCurrent();
   while (iVar8 != 0) {
-    sVar4 = thunk_GetUnitMovementClassId();
+    sVar4 = GetUnitMovementClassId();
     if (sVar4 != 0) {
       (**(code **)(*(int *)this + 0x88))(uVar5,1);
     }

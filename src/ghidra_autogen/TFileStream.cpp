@@ -41,7 +41,7 @@ CRuntimeClass * __thiscall TFileStream::GetTStreamClassNamePointer(TFileStream *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489110
 // GHIDRA_NAME TFileStream::ConstructTFileStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFileStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TFileStream::ConstructTFileStreamBaseState(void)
 
 void __thiscall TFileStream::ConstructTFileStreamBaseState(TFileStream *this)
 
@@ -67,7 +67,7 @@ TFileStream * __thiscall TFileStream::ConstructTStreamBaseState(TFileStream *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489160
 // GHIDRA_NAME TFileStream::SetBackingArchive
-// GHIDRA_PROTO undefined __thiscall SetBackingArchive(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TFileStream::SetBackingArchive(undefined4 param_1)
 
 void __thiscall TFileStream::SetBackingArchive(TFileStream *this,undefined4 param_1)
 
@@ -136,7 +136,7 @@ void __thiscall TFileStream::OrphanRetStub_00488b40(TFileStream *this)
   
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
   }
   CArchive::ReadBytesFromSerializedBuffer
             (*(CArchive **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);
@@ -155,7 +155,7 @@ void __thiscall TFileStream::OrphanRetStub_00488e70(TFileStream *this)
   
   if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
   }
   TNetMgr::WriteBytesToSerializedBuffer
             (*(TNetMgr **)(*(int *)&this->field_0x4 + 4),in_stack_00000004,in_stack_00000008);

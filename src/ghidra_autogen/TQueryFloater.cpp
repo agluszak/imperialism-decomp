@@ -11,7 +11,7 @@ TQueryFloater * __thiscall
 TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ thunk_TPictureButton * TQueryFloater::CreateTQueryFloaterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E8C0
 // GHIDRA_NAME TQueryFloater::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TQueryFloater::GetTEventHandlerClassNamePointer(TQueryFloater *this)
 
@@ -60,7 +60,7 @@ CRuntimeClass * __thiscall TQueryFloater::GetTEventHandlerClassNamePointer(TQuer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E8E0
 // GHIDRA_NAME TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *this)
 
@@ -83,7 +83,7 @@ void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *t
   undefined4 uStack_20;
   
   uStack_24 = 0x56e8f3;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_20 = 0x7469746c;
   pTVar4 = this->vftable[0x12].slot_0x04;
   uStack_24 = 0x56e91c;
@@ -101,7 +101,7 @@ void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *t
   puStack_34 = (undefined1 *)0xc;
   puStack_3c = &stack0xffffffe4;
   uStack_38 = 0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_34 = &stack0xffffffe4;
   uStack_30 = 0;
   uStack_38 = 0x56e95b;
@@ -109,7 +109,7 @@ void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *t
   uStack_38 = 0;
   puStack_3c = (undefined1 *)0x1;
   (**(code **)(iVar3 + 0x1c4))();
-  thunk_BuildUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b6c);
+  BuildUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b6c);
   iVar3 = 0;
   do {
     uVar2 = (*pTVar4)(iVar3 + 0x74657830);
@@ -128,7 +128,7 @@ void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EA20
 // GHIDRA_NAME TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -183,8 +183,8 @@ TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
 LAB_0056ec87:
-      thunk_AssignStringSharedRefAndReturnThis(&local_10);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&local_10);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056ecbe;
     }
     uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
@@ -208,7 +208,7 @@ LAB_0056ec87:
         uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
         (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar2) + 0x1b4))();
         if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
-          thunk_ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
+          ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
         }
         else {
           (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();

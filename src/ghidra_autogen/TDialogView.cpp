@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D790
 // GHIDRA_NAME TDialogView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDialogView::GetTEventHandlerClassNamePointer(TDialogView *this)
 
@@ -15,15 +15,15 @@ CRuntimeClass * __thiscall TDialogView::GetTEventHandlerClassNamePointer(TDialog
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D880
 // GHIDRA_NAME TDialogView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
 
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -34,7 +34,7 @@ void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
 TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

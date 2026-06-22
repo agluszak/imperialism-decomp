@@ -68,12 +68,12 @@ TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this,undefined4 param_1,und
     this_00 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    TControl::TControl(this_00);
     this_00->vftable = (TControlVtbl *)&TMiniShipViewVtbl_0065db68;
   }
   pTVar1 = *(TControlVtbl **)&this->field_0x10;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
   this_00[1].vftable = pTVar1;
   this_00->hasCommandTagResource = 0x22;
   *unaff_FS_OFFSET = local_c;

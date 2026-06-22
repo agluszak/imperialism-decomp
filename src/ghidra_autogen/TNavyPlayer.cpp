@@ -11,7 +11,7 @@ TNavyPlayer * __thiscall
 TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this,byte param_1)
 
 {
-  CreateTNavyPlayerInstance(this);
+  TNavyPlayer::CreateTNavyPlayerInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TNavyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ebb0(TNavyPlayer *this,byt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EBE0
 // GHIDRA_NAME TNavyPlayer::CreateTNavyPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTNavyPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TNavyPlayer::CreateTNavyPlayerInstance(void)
 
 void __thiscall TNavyPlayer::CreateTNavyPlayerInstance(TNavyPlayer *this)
 
@@ -66,7 +66,7 @@ TNavyPlayer::DestructTNavyPlayerAndMaybeFree(TNavyPlayer *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EDD0
 // GHIDRA_NAME TNavyPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TNavyPlayer::OrphanRetStub_0059add0(TNavyPlayer *this)
 

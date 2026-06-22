@@ -4478,12 +4478,12 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005F66D4
-// GHIDRA_NAME thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale
-// GHIDRA_PROTO undefined thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale()
+// GHIDRA_NAME InitializeLocaleDecimalSeparatorFromRuntimeLocale
+// GHIDRA_PROTO undefined InitializeLocaleDecimalSeparatorFromRuntimeLocale()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-undefined4 thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale(void)
+undefined4 InitializeLocaleDecimalSeparatorFromRuntimeLocale(void)
 
 {
   _DAT_0069edac = 1;
@@ -4805,10 +4805,10 @@ RebuildLocaleWideCharClassificationTables_005f6af9
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005F6D2D
-// GHIDRA_NAME thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue
-// GHIDRA_PROTO undefined thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue(undefined4 param_1)
+// GHIDRA_NAME OrphanTail_FreeFourSavedPointersAndReturnTrue
+// GHIDRA_PROTO undefined OrphanTail_FreeFourSavedPointersAndReturnTrue(undefined4 param_1)
 
-undefined4 thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue(void)
+undefined4 OrphanTail_FreeFourSavedPointersAndReturnTrue(void)
 
 {
   undefined4 in_stack_00000014;
@@ -7079,10 +7079,10 @@ void WrapperFor_TerminateMfcApplicationState_At005fa815(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FA81A
-// GHIDRA_NAME thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
-// GHIDRA_PROTO undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829()
+// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829
+// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829()
 
-void thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
+void WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
 
 {
   WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829();
@@ -7112,10 +7112,10 @@ void WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FA83A
-// GHIDRA_NAME thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a
-// GHIDRA_PROTO undefined thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a()
+// GHIDRA_NAME WrapperFor_AfxTermLocalData_At005fa80b
+// GHIDRA_PROTO undefined WrapperFor_AfxTermLocalData_At005fa80b()
 
-void thunk_WrapperFor_AfxTermLocalData_At005fa80b_At005fa83a(void)
+void WrapperFor_AfxTermLocalData_At005fa80b(void)
 
 {
   FUN_0062415e(0,1);
@@ -7831,10 +7831,10 @@ WrapperFor_InitString_At005ff3f6
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FF429
-// GHIDRA_NAME thunk_GetThisField10Value
-// GHIDRA_PROTO undefined thunk_GetThisField10Value()
+// GHIDRA_NAME GetThisField10Value
+// GHIDRA_PROTO undefined GetThisField10Value()
 
-undefined4 thunk_GetThisField10Value(void)
+undefined4 GetThisField10Value(void)
 
 {
   int unaff_ESI;
@@ -8020,10 +8020,10 @@ int __fastcall DoModal(int param_1)
     *(int *)(iVar4 + 0x18) = param_1;
   }
   if (*(int *)(param_1 + 0xa8) == 0) {
-    iVar5 = GetSaveFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
+    iVar5 = COMDLG32.DLL::GetSaveFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
   }
   else {
-    iVar5 = GetOpenFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
+    iVar5 = COMDLG32.DLL::GetOpenFileNameA((LPOPENFILENAMEA)(param_1 + 0x5c));
   }
   *(undefined4 *)(iVar4 + 0x18) = 0;
   if (bVar1) {
@@ -8204,10 +8204,10 @@ void __fastcall CenterWindowWithinParentFromHandleField1C(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE27
-// GHIDRA_NAME thunk_RegisterCommdlgLbSelChangedNotifyMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgLbSelChangedNotifyMessage()
+// GHIDRA_NAME RegisterCommdlgLbSelChangedNotifyMessage
+// GHIDRA_PROTO undefined RegisterCommdlgLbSelChangedNotifyMessage()
 
-void thunk_RegisterCommdlgLbSelChangedNotifyMessage(void)
+void RegisterCommdlgLbSelChangedNotifyMessage(void)
 
 {
   DAT_006a7f94 = RegisterWindowMessageA("commdlg_LBSelChangedNotify");
@@ -8226,10 +8226,10 @@ void RegisterCommdlgLbSelChangedNotifyMessage(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE3D
-// GHIDRA_NAME thunk_RegisterCommdlgShareViolationMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgShareViolationMessage()
+// GHIDRA_NAME RegisterCommdlgShareViolationMessage
+// GHIDRA_PROTO undefined RegisterCommdlgShareViolationMessage()
 
-void thunk_RegisterCommdlgShareViolationMessage(void)
+void RegisterCommdlgShareViolationMessage(void)
 
 {
   DAT_006a7f8c = RegisterWindowMessageA("commdlg_ShareViolation");
@@ -8248,10 +8248,10 @@ void RegisterCommdlgShareViolationMessage(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE53
-// GHIDRA_NAME thunk_RegisterCommdlgFileNameOkMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgFileNameOkMessage()
+// GHIDRA_NAME RegisterCommdlgFileNameOkMessage
+// GHIDRA_PROTO undefined RegisterCommdlgFileNameOkMessage()
 
-void thunk_RegisterCommdlgFileNameOkMessage(void)
+void RegisterCommdlgFileNameOkMessage(void)
 
 {
   DAT_006a7f98 = RegisterWindowMessageA("commdlg_FileNameOK");
@@ -8270,10 +8270,10 @@ void RegisterCommdlgFileNameOkMessage(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE69
-// GHIDRA_NAME thunk_RegisterCommdlgColorOkMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgColorOkMessage()
+// GHIDRA_NAME RegisterCommdlgColorOkMessage
+// GHIDRA_PROTO undefined RegisterCommdlgColorOkMessage()
 
-void thunk_RegisterCommdlgColorOkMessage(void)
+void RegisterCommdlgColorOkMessage(void)
 
 {
   DAT_006a7f90 = RegisterWindowMessageA("commdlg_ColorOK");
@@ -8292,10 +8292,10 @@ void RegisterCommdlgColorOkMessage(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE7F
-// GHIDRA_NAME thunk_RegisterCommdlgHelpMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgHelpMessage()
+// GHIDRA_NAME RegisterCommdlgHelpMessage
+// GHIDRA_PROTO undefined RegisterCommdlgHelpMessage()
 
-void thunk_RegisterCommdlgHelpMessage(void)
+void RegisterCommdlgHelpMessage(void)
 
 {
   DAT_006a7f9c = RegisterWindowMessageA("commdlg_help");
@@ -8314,12 +8314,12 @@ void RegisterCommdlgHelpMessage(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFE95
-// GHIDRA_NAME thunk_RegisterCommdlgSetRgbColorMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommdlgSetRgbColorMessage()
+// GHIDRA_NAME RegisterCommdlgSetRgbColorMessage
+// GHIDRA_PROTO undefined RegisterCommdlgSetRgbColorMessage()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void thunk_RegisterCommdlgSetRgbColorMessage(void)
+void RegisterCommdlgSetRgbColorMessage(void)
 
 {
   _DAT_006a7fa0 = RegisterWindowMessageA("commdlg_SetRGBColor");
@@ -9127,20 +9127,20 @@ undefined4 AfxDlgProc(undefined4 param_1,int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00604BCD
-// GHIDRA_NAME thunk_NoOpPaddingStub_00604c3c
-// GHIDRA_PROTO undefined thunk_NoOpPaddingStub_00604c3c()
+// GHIDRA_NAME NoOpPaddingStub_00604c3c
+// GHIDRA_PROTO undefined NoOpPaddingStub_00604c3c()
 
-void thunk_NoOpPaddingStub_00604c3c(void)
+void NoOpPaddingStub_00604c3c(void)
 
 {
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00604C32
-// GHIDRA_NAME thunk_NoOpPaddingStub_00604c3c_00604C32
-// GHIDRA_PROTO undefined thunk_NoOpPaddingStub_00604c3c_00604C32()
+// GHIDRA_NAME NoOpPaddingStub_00604c3c
+// GHIDRA_PROTO undefined NoOpPaddingStub_00604c3c()
 
-void thunk_NoOpPaddingStub_00604c3c_00604C32(void)
+void NoOpPaddingStub_00604c3c(void)
 
 {
   return;
@@ -9694,10 +9694,10 @@ long HandleWndProcExceptionWithNodeTypeDispatch_00605613(CException *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060564E
-// GHIDRA_NAME thunk_DispatchVirtualSlot18OnImplicitObject
-// GHIDRA_PROTO undefined thunk_DispatchVirtualSlot18OnImplicitObject()
+// GHIDRA_NAME DispatchVirtualSlot18OnImplicitObject
+// GHIDRA_PROTO undefined DispatchVirtualSlot18OnImplicitObject()
 
-void thunk_DispatchVirtualSlot18OnImplicitObject(void)
+void DispatchVirtualSlot18OnImplicitObject(void)
 
 {
   int in_EAX;

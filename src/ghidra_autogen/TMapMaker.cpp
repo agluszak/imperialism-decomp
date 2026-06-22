@@ -285,7 +285,7 @@ LAB_0051212a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525950
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
 
@@ -295,7 +295,7 @@ CRuntimeClass * __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525970
 // GHIDRA_NAME TMapMaker::ConstructTMapMaker
-// GHIDRA_PROTO undefined __thiscall ConstructTMapMaker(void)
+// GHIDRA_PROTO undefined __thiscall TMapMaker::ConstructTMapMaker(void)
 
 void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
 
@@ -312,7 +312,7 @@ void __thiscall TMapMaker::ConstructTMapMaker(TMapMaker *this)
 TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,byte param_1)
 
 {
-  DestructTMapMaker(this);
+  TMapMaker::DestructTMapMaker(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -321,7 +321,7 @@ TMapMaker * __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005259C0
 // GHIDRA_NAME TMapMaker::DestructTMapMaker
-// GHIDRA_PROTO undefined __thiscall DestructTMapMaker(void)
+// GHIDRA_PROTO undefined __thiscall TMapMaker::DestructTMapMaker(void)
 
 void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
 
@@ -332,7 +332,7 @@ void __thiscall TMapMaker::DestructTMapMaker(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00526BA0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(uint * param_1, uint * param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint * param_1, uint * param_2)
 
 void __thiscall
 TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,uint *param_1,uint *param_2)
@@ -347,7 +347,7 @@ TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,uint *param_1,uint *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00526C20
 // GHIDRA_NAME TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMaker *this)
 
@@ -500,7 +500,7 @@ void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMake
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527040
 // GHIDRA_NAME TMapMaker::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 
 int __thiscall
 TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this,int param_1,int param_2)
@@ -618,7 +618,7 @@ TMapMaker::UpdateControlCachedIntFromWindowText(TMapMaker *this,int param_1,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527300
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
 
 uint __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,undefined4 param_1,int param_2)
 
@@ -707,7 +707,7 @@ LAB_0052745a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005274D0
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
 
 uint __thiscall
 TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,undefined4 param_1,int param_2)
@@ -756,7 +756,7 @@ TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,undefined4 param_1,int
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005275A0
 // GHIDRA_NAME TMapMaker::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 
@@ -844,7 +844,7 @@ void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527730
 // GHIDRA_NAME TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMapMaker *this)
 
@@ -1216,7 +1216,7 @@ LAB_00528081:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528140
 // GHIDRA_NAME TMapMaker::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int param_1, int param_2, char param_3)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int param_1, int param_2, char param_3)
 
 int __thiscall
 TMapMaker::SetForeignMinisterReadyFlag14(TMapMaker *this,int param_1,int param_2,char param_3)
@@ -1319,7 +1319,7 @@ LAB_00528295:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005283C0
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2, int param_3)
 
 int __thiscall
 TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2,int param_3)
@@ -1495,7 +1495,7 @@ void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528780
 // GHIDRA_NAME TMapMaker::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, int param_2)
 
 int __thiscall TMapMaker::OrphanTiny_ReturnZero_0048a730(TMapMaker *this,int param_1,int param_2)
 
@@ -1905,7 +1905,7 @@ LAB_00529187:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005292F0
 // GHIDRA_NAME TMapMaker::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 
@@ -1942,7 +1942,7 @@ void __thiscall TMapMaker::OrphanCallChain_C11_I88_004874b0(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005296A0
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(short param_1, short param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(short param_1, short param_2, short param_3)
 
 void __thiscall
 TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,short param_1,short param_2,short param_3)
@@ -2022,7 +2022,7 @@ LAB_0052977b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005297E0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
 void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
 
@@ -2092,7 +2092,7 @@ int __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this,int param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00529F60
 // GHIDRA_NAME TMapMaker::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(char param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(char param_1)
 
 void __thiscall TMapMaker::OrphanRetStub_0059add0(TMapMaker *this,char param_1)
 
@@ -2192,7 +2192,7 @@ void __thiscall TMapMaker::_scalar_deleting_destructor_(TMapMaker *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052C0A0
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TMapMaker::GetTEventHandlerClassNamePointer
@@ -2237,7 +2237,7 @@ TMapMaker::GetTEventHandlerClassNamePointer
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052E840
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 undefined4 __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this)
 
@@ -2266,7 +2266,7 @@ undefined4 __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052E890
 // GHIDRA_NAME TMapMaker::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
 void __thiscall TMapMaker::GetTEventHandlerClassNamePointer(TMapMaker *this,short param_1)
 

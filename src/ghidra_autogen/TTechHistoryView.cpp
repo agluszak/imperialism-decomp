@@ -11,7 +11,7 @@ TTechHistoryView * __thiscall
 TTechHistoryView::_scalar_deleting_destructor_(TTechHistoryView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TView * TTechHistoryView::CreateTTechHistoryViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTechHistoryViewVtbl_00645ab0;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TView * TTechHistoryView::CreateTTechHistoryViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22A0
 // GHIDRA_NAME TTechHistoryView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTechHistoryView::GetTEventHandlerClassNamePointer(TTechHistoryView *this)
@@ -61,7 +61,7 @@ TTechHistoryView::GetTEventHandlerClassNamePointer(TTechHistoryView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22C0
 // GHIDRA_NAME TTechHistoryView::ConstructTTechHistoryViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTechHistoryViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(void)
 
 void __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistoryView *this)
 
@@ -133,15 +133,15 @@ void __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistor
   puStack_68 = &local_54;
   pTStack_6c = (TDeluxeText *)0x2b6a;
   iStack_70 = 0x5b2328;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   puStack_68 = &local_50;
   pTStack_6c = (TDeluxeText *)0x2b68;
   iStack_70 = 0x5b233a;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   puStack_68 = (undefined1 *)0x2b6a;
   pTStack_6c = (TDeluxeText *)0xc;
   iStack_70 = 0;
-  thunk_BuildUiTextStyleDescriptor(&iStack_38);
+  BuildUiTextStyleDescriptor(&iStack_38);
   pTVar2 = pTVar1[0x12].slot_0x04;
   puStack_68 = (undefined1 *)0x7469746c;
   pTStack_6c = (TDeluxeText *)0x5b2361;
@@ -168,7 +168,7 @@ void __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistor
   }
   else {
     pTStack_6c = this_00;
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
+    TStaticText::TStaticText((TStaticText *)this_00);
     this_00->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
     uStack_24 = CONCAT31(uStack_24._1_3_,1);
     this_00->field_0x98 = 0;
@@ -229,10 +229,10 @@ TView * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TGameSetupDialogVtbl_0066b380;
     pTVar1 = this;
   }

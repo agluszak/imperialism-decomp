@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5D40
 // GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
 undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d40(TTacticalUnit *this)
 
@@ -55,7 +55,7 @@ TTacticalUnit * __thiscall
 TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this,byte param_1)
 
 {
-  CreateTTacticalUnitInstance(this);
+  TTacticalUnit::CreateTTacticalUnitInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5DF0
 // GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTacticalUnitInstance(void)
+// GHIDRA_PROTO undefined __thiscall TTacticalUnit::CreateTTacticalUnitInstance(void)
 
 void __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
 

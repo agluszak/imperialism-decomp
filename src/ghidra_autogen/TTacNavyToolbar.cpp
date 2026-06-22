@@ -32,7 +32,7 @@ TTacNavyToolbar * __thiscall
 TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -41,7 +41,7 @@ TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD160
 // GHIDRA_NAME TTacNavyToolbar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTacNavyToolbar::GetTEventHandlerClassNamePointer(TTacNavyToolbar *this)
 
@@ -51,7 +51,7 @@ CRuntimeClass * __thiscall TTacNavyToolbar::GetTEventHandlerClassNamePointer(TTa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD180
 // GHIDRA_NAME TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolbar *this)
 
@@ -63,7 +63,7 @@ void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolba
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD1B0
 // GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this,int param_1,void *param_2,int param_3)
@@ -101,10 +101,10 @@ LAB_005ad1ef:
     }
     if ((commandTag != 0x72657472) && (commandTag != 0x74617267)) goto LAB_005ad237;
   }
-  TacticalBattleView::thunk_HandleTacticalBattleCommandTag
+  TacticalBattleView::HandleTacticalBattleCommandTag
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005ad237:
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
   return;
 }

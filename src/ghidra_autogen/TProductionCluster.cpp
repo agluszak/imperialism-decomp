@@ -39,7 +39,7 @@ TUberCluster * TProductionCluster::CreateTProductionClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586900
 // GHIDRA_NAME TProductionCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TProductionCluster::GetTEventHandlerClassNamePointer(TProductionCluster *this)
@@ -74,7 +74,7 @@ TProductionCluster * __thiscall
 TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -83,7 +83,7 @@ TProductionCluster::_scalar_deleting_destructor_(TProductionCluster *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869C0
 // GHIDRA_NAME TProductionCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void * param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void * param_1, int param_2)
 
 void __thiscall
 TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *this,void *param_1,int param_2)
@@ -96,14 +96,14 @@ TProductionCluster::OrphanRetStub_0059add0(TProductionCluster *this,void *param_
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x76616c75);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x6ad);
   }
   if ((((*(int *)&this->field_0x90 != 0) && (*(int *)&this->field_0x88 != 0)) &&
       (99 < unaff_retaddr)) && (unaff_retaddr < 0x66)) {
     (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(unaff_retaddr,this,0);
   }
-  TMapEditCluster::thunk_DispatchPanelControlEvent
+  TCluster::OrphanRetStub_0059add0
             ((TMapEditCluster *)this,unaff_retaddr,param_1,param_2);
   return;
 }

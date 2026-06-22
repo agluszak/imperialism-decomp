@@ -130,7 +130,7 @@ TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTil
   if ('\0' < *(char *)(iVar3 + 8 + iVar5 * 0xa8)) {
     psVar7 = (short *)(iVar1 + 10);
     do {
-      sVar4 = thunk_GetTileNormalizedMovementClassId((int)*psVar7);
+      sVar4 = GetTileNormalizedMovementClassId((int)*psVar7);
       if (sVar2 == sVar4) {
         local_c = local_c + 1;
       }
@@ -207,7 +207,7 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   cVar2 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)
                     (CONCAT22((short)((uint)uVar4 >> 0x10),*(undefined2 *)(this + 4)));
   if (cVar2 != '\0') {
-    fVar10 = (float10)thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore
+    fVar10 = (float10)ComputeDefendProvinceMissionCrossNationSupportVectorScore
                                 (CONCAT22(extraout_var_00,*(undefined2 *)(this + 0x14)));
     if (unaff_EBX < _DAT_0065a8f8 * (float)fVar10) {
       unaff_EBX = _DAT_0065a8f8 * (float)fVar10;

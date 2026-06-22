@@ -4,11 +4,11 @@
 // Bucket: TMapEditCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004023AB
-// GHIDRA_NAME TMapEditCluster::thunk_DispatchPanelControlEvent
-// GHIDRA_PROTO void __thiscall thunk_DispatchPanelControlEvent(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_NAME TCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO void __thiscall TCluster::OrphanRetStub_0059add0(int nEventClass, void * pEventPayload, int nEventFlags)
 
 void __thiscall
-TMapEditCluster::thunk_DispatchPanelControlEvent
+TCluster::OrphanRetStub_0059add0
           (TMapEditCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
 
 {
@@ -77,7 +77,7 @@ TMapEditCluster * __thiscall
 TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -86,7 +86,7 @@ TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2950
 // GHIDRA_NAME TMapEditCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMapEditCluster *this)
 
@@ -96,13 +96,13 @@ CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2970
 // GHIDRA_NAME TMapEditCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TMapEditCluster::OrphanRetStub_0059add0(TMapEditCluster *this,int param_1,void *param_2,int param_3)
 
 {
-  thunk_DispatchPanelControlEvent(this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0(this,param_1,param_2,param_3);
   return;
 }
 
@@ -128,10 +128,10 @@ TView * TMapEditCluster::DestructTMapEditClusterAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TMinorTradeBidsDialogVtbl_0066b7a0;
     pTVar1 = this;
   }

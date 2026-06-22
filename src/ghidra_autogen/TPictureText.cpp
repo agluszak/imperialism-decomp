@@ -25,7 +25,7 @@ TStaticText * TPictureText::CreateTPictureTextInstance(void)
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     this->vftable = (TStaticTextVtbl *)&TPictureTextVtbl_0066c990;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TStaticText * TPictureText::CreateTPictureTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B52E0
 // GHIDRA_NAME TPictureText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPictureText::GetTEventHandlerClassNamePointer(TPictureText *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TPictureText::GetTEventHandlerClassNamePointer(TPictu
 TPictureText * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->vftable = &TPictureTextVtbl_0066c990;
   return this;
 }

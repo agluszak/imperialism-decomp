@@ -87,20 +87,20 @@ TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this,undefined4 param_1,und
   }
   else {
     pTStack_44 = (TControl *)0x4aa9a3;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar3);
+    TControl::TControl(pTVar3);
     pTVar3->vftable = (TControlVtbl *)&TMiniArmyViewVtbl_0064d550;
   }
   pTVar1 = *(TControlVtbl **)&this->field_0x10;
   pTStack_44 = (TControl *)0x0;
   pTStack_48 = (TView *)0x5;
   local_4 = -1;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5);
   pTVar3[1].vftable = pTVar1;
   pTVar3->hasCommandTagResource = 0x22;
   pTStack_44 = pTVar3;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_48,PTR_g_szEmptyString_0064cb18);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_44 = (TControl *)0x4aaa05;
   cVar2 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
   if (cVar2 != '\0') {
@@ -163,8 +163,8 @@ TMiniArmyLine::OrphanRetStub_0056f460(TMiniArmyLine *this,undefined4 param_1,und
     }
     local_14 = (TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *)&pTStack_48;
     pTStack_44 = (TControl *)piVar4;
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_24);
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis(&CStack_24);
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     local_4._0_1_ = 5;
     pTStack_44 = (TControl *)0x4aac02;
     CString::~CString(&local_18);

@@ -11,7 +11,7 @@ TScrollBarView * __thiscall
 TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -38,7 +38,7 @@ TControl * TScrollBarView::CreateTScrollBarViewInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TScrollBarViewVtbl_006614c8;
     *(undefined4 *)&this[1].field_0xc = 0;
     *unaff_FS_OFFSET = local_c;
@@ -50,7 +50,7 @@ TControl * TScrollBarView::CreateTScrollBarViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574490
 // GHIDRA_NAME TScrollBarView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TScrollBarView::GetTEventHandlerClassNamePointer(TScrollBarView *this)
 
@@ -60,7 +60,7 @@ CRuntimeClass * __thiscall TScrollBarView::GetTEventHandlerClassNamePointer(TScr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005744B0
 // GHIDRA_NAME TScrollBarView::ConstructTScrollBarViewBaseState
-// GHIDRA_PROTO undefined ConstructTScrollBarViewBaseState()
+// GHIDRA_PROTO undefined TScrollBarView::ConstructTScrollBarViewBaseState()
 
 void __thiscall
 TScrollBarView::ConstructTScrollBarViewBaseState
@@ -89,7 +89,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   puStack_38 = (undefined4 *)0x0;
   iStack_3c = 4;
   iStack_40 = 4;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4);
+  InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4);
   *(int **)(param_1 + 0x84) = *(int **)(param_1 + 0x20);
   puStack_38 = (undefined4 *)0x5744fa;
   (**(code **)(**(int **)(param_1 + 0x20) + 0xc))();
@@ -110,7 +110,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    piVar2 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(this);
   }
   pTStack_10 = (TPictureButton *)0xffffffff;
   InitializePictureEntryBaseAndRefresh(param_1,&stack0xffffffd8,&stack0xffffffd0,5,5,0xbbb);
@@ -123,7 +123,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTStack_10);
+    piVar2 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTStack_10);
   }
   iStack_3c = *(int *)(param_1 + 0x38) + -0x12;
   puStack_38 = (undefined4 *)0x12;
@@ -139,7 +139,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005746E0
 // GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
 
@@ -147,13 +147,13 @@ void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView 
   if (*(int *)&this->field_0x90 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x90);
   }
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574720
 // GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
 
@@ -163,7 +163,7 @@ void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView 
   int iStack_8;
   int iStack_4;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x84 = this->ownerContext;
   (*this->ownerContext->vftable[1].slot_0x04)();
   iStack_8 = this->field34;
@@ -179,7 +179,7 @@ void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005747C0
 // GHIDRA_NAME TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -199,7 +199,7 @@ TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     AdjustCityDialogScrollRangeByDeltaAndClamp(0,uVar1);
   }
 LAB_005747fc:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
@@ -241,7 +241,7 @@ void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574970
 // GHIDRA_NAME TScrollBarView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(LONG * param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(LONG * param_1)
 
 void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *this,LONG *param_1)
 
@@ -335,7 +335,7 @@ void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574D10
 // GHIDRA_NAME TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)
 
 void __thiscall
 TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit

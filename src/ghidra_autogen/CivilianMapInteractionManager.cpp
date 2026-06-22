@@ -4,11 +4,11 @@
 // Bucket: CivilianMapInteractionManager.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401816
-// GHIDRA_NAME CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
-// GHIDRA_PROTO undefined __thiscall thunk_GetTCivMgrClassNamePointer_At00401816(void)
+// GHIDRA_NAME TCivMgr::GetTCivMgrClassNamePointer
+// GHIDRA_PROTO undefined __thiscall TCivMgr::GetTCivMgrClassNamePointer(void)
 
 void __thiscall
-CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
+TCivMgr::GetTCivMgrClassNamePointer
           (CivilianMapInteractionManager *this)
 
 {
@@ -18,7 +18,7 @@ CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2050
 // GHIDRA_NAME CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
-// GHIDRA_PROTO undefined __thiscall InitializeCivilianMapInteractionManagerVtable(void)
+// GHIDRA_PROTO undefined __thiscall CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable(void)
 
 void __thiscall
 CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable

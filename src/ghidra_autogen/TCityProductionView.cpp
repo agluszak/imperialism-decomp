@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA2C0
 // GHIDRA_NAME TCityProductionView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
@@ -25,7 +25,7 @@ TCityProductionView::InitializeCityProductionView(TCityProductionView *this)
   int iVar1;
   undefined4 *puVar2;
   
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TCityProductionViewVtbl_0064fc20;
   *(undefined2 *)&this->field_0xa4 = 0xffff;
   this->field_0xa6 = 0;
@@ -56,7 +56,7 @@ TCityProductionView * __thiscall
 TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -142,7 +142,7 @@ TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,v
   int iStack_1c;
   tagRECT tStack_10;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 1;
   sVar3 = UiRuntimeContext::GetActiveNationId();
   iVar12 = 0;
@@ -165,14 +165,14 @@ TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,v
     }
     uVar2 = (*pTVar11->vftable[0xb].slot_0x04)(iVar12);
     pTVar6 = (TTransFocusAnimation *)
-             thunk_LoadBmpResourceByIdCached(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar12);
+             LoadBmpResourceByIdCached(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar12);
     piVar7 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels(pTVar6,0xffffffff);
     DeleteObject();
     iVar14 = *(int *)*puVar13;
     pHVar8 = CreatePolygonRgn((POINT *)(piVar7 + 2),*piVar7,2);
     CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar14 + 0x14),(int)pHVar8);
     FreeHeapBufferIfNotNull(piVar7);
-    thunk_ReleaseHashIndexedRecordByHandle(pTVar6);
+    ReleaseHashIndexedRecordByHandle(pTVar6);
     InitializeCityBuildingControlRegions_Impl
               (*puVar13,(int)(short)(&g_anCityBuildingSlotCoords)
                                     [(int)g_nCityBuildingSlotXOffsetIndex + iVar12 * 2],
@@ -223,7 +223,7 @@ TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,v
                      (int)(short)((-(ushort)(iStack_1c != 7) & 2) + 5),(int)sVar4);
           TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
           *(TTransFocusAnimation **)(&this->field_0x12c + (iVar14 + iStack_24) * 4) = pTVar6;
-          thunk_InvalidateCityDialogRectRegion(&tStack_10,1);
+          InvalidateCityDialogRectRegion(&tStack_10,1);
           this->field_0xa6 = 1;
         }
         iVar14 = iVar14 + 1;
@@ -263,13 +263,13 @@ void __thiscall TCityProductionView::_scalar_deleting_destructor_(TCityProductio
     iVar3 = iVar3 + -1;
   } while (iVar3 != 0);
   *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA7B0
 // GHIDRA_NAME TCityProductionView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(tagRECT * pTargetRect)
+// GHIDRA_PROTO void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(tagRECT * pTargetRect)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Render city-screen building icons and special overlays.
 // GHIDRA_COMMENT Algorithm:
@@ -377,9 +377,9 @@ TCityProductionView::OrphanTiny_ReturnZero_0048a730(TCityProductionView *this,ta
     return;
   }
   this->field_0xa6 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   local_20 = (int *)0x0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_1c,&local_20);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_1c,&local_20);
   piVar7 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(7000);
   CopyRect(&local_10,(RECT *)(*piVar7 + 8));
   (**(code **)(*DAT_006a2158 + 0x2c))(&pTargetRect,8,&local_10);
@@ -394,12 +394,12 @@ TCityProductionView::OrphanTiny_ReturnZero_0048a730(TCityProductionView *this,ta
     FreeHeapBufferIfNotNull(this_00);
   }
   FreeHeapBufferIfNotNull(piVar7);
-  thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
+  SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+  uVar8 = GetSurfaceObjectAtContextOffset24(local_10.right);
+  ReturnConstantTrueQuickDrawFlag(uVar8);
   psVar16 = &g_anCityBuildingSlotOrder;
   do {
-    thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+    SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
     sVar6 = UiRuntimeContext::GetActiveNationId();
     if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
       pTVar12 = (TCity *)0x0;
@@ -442,7 +442,7 @@ LAB_004ba985:
                 (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar6 * 2],
                 puVar9,unaff_EBP,unaff_ESI);
       if ((sVar6 == 0xf) && ('2' < *(char *)(*(int *)&pTVar12->field_0xac + 0x8d2))) {
-        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+        SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
         uVar15 = 0x1b9e;
         uVar14 = 0x3c;
         uVar8 = 0xa6;
@@ -450,7 +450,7 @@ LAB_004ba985:
       else {
         if ((sVar6 != 0xe) || (*(char *)(*(int *)&pTVar12->field_0xac + 0x8d3) < '3'))
         goto LAB_004baac3;
-        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+        SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
         uVar15 = 0x1b9f;
         uVar14 = 0x143;
         uVar8 = 0x6d;
@@ -473,9 +473,9 @@ LAB_004baac3:
         } while (iVar13 != 0);
         iVar10 = iVar10 + -1;
       } while (iVar10 != 0);
-      thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
-      uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
-      thunk_NoOpQuickDrawLifecycleHookB(uVar8);
+      SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+      uVar8 = GetSurfaceObjectAtContextOffset24(local_10.right);
+      NoOpQuickDrawLifecycleHookB(uVar8);
       WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&local_10.right);
       (**(code **)(*local_20 + 0x1d4))();
       return;
@@ -525,7 +525,7 @@ TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
   tStack_10.right = param_1->right;
   tStack_10.bottom = param_1->bottom;
   OffsetRect(&tStack_10,(int)param_4,(int)param_3);
-  thunk_SetActiveQuickDrawSurfaceContext(param_6,in_stack_0000001c);
+  SetActiveQuickDrawSurfaceContext(param_6,in_stack_0000001c);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   if (*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
     iVar4 = *(int *)(*(int *)(*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
@@ -592,15 +592,15 @@ TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProduct
   }
   ResetQuickDrawStrokeState();
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(1);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xa8 * 2;
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
              *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
   SetQuickDrawFillColor(0);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xaa * 2;
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
              *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
   return;
@@ -716,7 +716,7 @@ TCityProductionView::_scalar_deleting_destructor_
   if ((((pCursorPoint[1] < 0x24) || (0x1e2 < pCursorPoint[1])) || (*pCursorPoint < 0x33)) ||
      (0x24d < *pCursorPoint)) {
     local_4._0_1_ = uVar4;
-    TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+    TMapDialog::SetForeignMinisterReadyFlag14
               ((TControl *)this,pCursorPoint,nEventFlags);
   }
   else {
@@ -789,7 +789,7 @@ LAB_004bb114:
             }
             else {
               pvVar2 = this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)];
-              TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
+              TCity::GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
               FormatStringWithVarArgsToSharedRef(&stack0xffffffa8);
               FormatStringWithVarArgsToSharedRef(&local_50);
               (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
@@ -806,7 +806,7 @@ LAB_004bb114:
             }
           }
           local_48.m_pchData = &stack0xffffff88;
-          thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffa0);
+          AssignStringSharedRefAndReturnThis(&stack0xffffffa0);
           (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
         }
         if ((nBuildingSlotId == 6) || (nBuildingSlotId == 0xb)) {
@@ -830,14 +830,14 @@ LAB_004bb114:
           if ((short)CONCAT31(extraout_var_00,uVar5) == 0) {
             ConstructScopedMapQuickDrawContext();
             local_4._0_1_ = 7;
-            thunk_SetGlobalQuickDrawOrigin();
+            SetGlobalQuickDrawOrigin();
             ApplyHitRegionToClipState();
             SnapshotHitRegionToClipCache();
             SetQuickDrawFillColor();
             TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState();
             SnapshotHitRegionToClipCache();
             local_4 = (char *)CONCAT31(local_4._1_3_,6);
-            thunk_DestroyScopedMapQuickDrawContext();
+            DestroyScopedMapQuickDrawContext();
           }
           *(short *)&this->field_0xa4 = nBuildingSlotId;
         }
@@ -922,7 +922,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_22;
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4b9);
     uVar6 = extraout_var_23;
   }
@@ -931,7 +931,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar2 = (*pTVar1)(0x74726169);
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4bc);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1cc))
@@ -940,7 +940,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   piVar3 = (int *)CONCAT31(extraout_var_01,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4bf);
   }
   (**(code **)(*piVar3 + 0x1cc))
@@ -949,7 +949,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   piVar3 = (int *)CONCAT31(extraout_var_02,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4c2);
   }
   (**(code **)(*piVar3 + 0x1cc))
@@ -961,7 +961,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_10;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4c8);
     uVar6 = extraout_var_11;
   }
@@ -971,7 +971,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_12;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4cc);
     uVar6 = extraout_var_13;
   }
@@ -981,7 +981,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_14;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d0);
     uVar6 = extraout_var_15;
   }
@@ -991,7 +991,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_16;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d5);
     uVar6 = extraout_var_17;
   }
@@ -1001,7 +1001,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_18;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d8);
     uVar6 = extraout_var_19;
   }
@@ -1011,7 +1011,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar6 = extraout_var_20;
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4db);
     uVar6 = extraout_var_21;
   }
@@ -1019,7 +1019,7 @@ TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProdu
   uVar2 = (*pTVar1)(0x6c616250);
   if ((int *)CONCAT31(extraout_var_09,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4e0);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_09,uVar2) + 0x1cc))
@@ -1074,7 +1074,7 @@ TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators(TCityProduc
       nBuildingSlotId = (short)iVar2;
       if (*(short *)((int)this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)] + 4) < 1) {
         sVar1 = *(short *)((int)this_00->orderSlotsE4 + nBuildingSlotId * 2 + 0x118);
-        iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
+        iVar2 = TCity::GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
         bVar4 = sVar1 < (short)iVar2;
       }
       else {
@@ -1096,7 +1096,7 @@ TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators(TCityProduc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BC610
 // GHIDRA_NAME TCityProductionView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall TCityProductionView::OrphanRetStub_0059add0(TCityProductionView *this,int param_1)
 
@@ -1105,7 +1105,7 @@ void __thiscall TCityProductionView::OrphanRetStub_0059add0(TCityProductionView 
     (**(code **)(*g_pStrategicMapViewSystem + 0x58))(param_1 + -10000,this->pCity,this);
     return;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
@@ -1158,7 +1158,7 @@ LAB_004bc6b8:
     }
   }
   else if (*(int *)(&this->field_0xac + (int)puVar8 * 4) == 0) {
-    iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
+    iVar7 = TCity::GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
     uVar6 = extraout_var;
     if (((short)iVar7 == 0) &&
        (cVar2 = (*this->pCity->vftable[0xf].GetTCityClassNamePointer)(puVar8),
@@ -1188,7 +1188,7 @@ LAB_004bc6b8:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BC870
 // GHIDRA_NAME TCityProductionView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, undefined4 * param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, undefined4 * param_2)
 
 void __thiscall
 TCityProductionView::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -1299,12 +1299,12 @@ TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityPr
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   ApplyHitRegionToClipState(0);
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_34,&stack0xffffffc4);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
-  thunk_ApplyRectClipRegionToGlobalClipState(&uStack_20);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_34,&stack0xffffffc4);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
+  ApplyRectClipRegionToGlobalClipState(&uStack_20);
   this->field_0xa6 = 1;
   (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&uStack_30);
-  thunk_SetActiveQuickDrawSurfaceContext(0,unaff_EDI);
+  SetActiveQuickDrawSurfaceContext(0,unaff_EDI);
   SnapshotHitRegionToClipCache(unaff_ESI);
   uStack_c = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
@@ -1366,7 +1366,7 @@ void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProduct
   uVar2 = (*(code *)local_14.m_pchData)();
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
   iVar5 = 0x148;
@@ -1374,7 +1374,7 @@ void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProduct
   do {
     if (*(int *)((int)&this->pCity->vftable + iVar5) == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8)
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8)
       ;
     }
     iVar5 = iVar5 + 4;
@@ -1393,7 +1393,7 @@ void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProduct
   piVar4 = (int *)(*(code *)local_20.m_pchData)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x5f8);
   }
   (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffd0,1);
@@ -1404,7 +1404,7 @@ void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProduct
     iVar1 = *(int *)((int)&this->pCity->vftable + iVar5);
     if (iVar1 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x600);
     }
     CVar6.m_pchData = CVar6.m_pchData + *(ushort *)(iVar1 + 4);
@@ -1427,7 +1427,7 @@ void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProduct
   piVar4 = (int *)(*unaff_EBP)(0x75756e69);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x606);
   }
   (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffc4,1);

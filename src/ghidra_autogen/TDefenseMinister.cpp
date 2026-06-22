@@ -4,11 +4,11 @@
 // Bucket: TDefenseMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00407CD9
-// GHIDRA_NAME TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall thunk_ConstructTDefenseMinisterBaseState(void)
+// GHIDRA_NAME TDefenseMinister::ConstructTDefenseMinisterBaseState
+// GHIDRA_PROTO undefined __thiscall TDefenseMinister::ConstructTDefenseMinisterBaseState(void)
 
 TDefenseMinister * __thiscall
-TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
+TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
 
 {
   TMinister::ConstructTMinister((TMinister *)this);
@@ -18,7 +18,7 @@ TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(TDefenseMinister *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0A0
 // GHIDRA_NAME TDefenseMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -102,7 +102,7 @@ TDefenseMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TDefenseMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC2F0
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
 void __thiscall
 TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,int *param_1)
@@ -146,7 +146,7 @@ TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,int *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC3D0
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
 undefined2 __thiscall
 TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
@@ -179,7 +179,7 @@ TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC450
 // GHIDRA_NAME TDefenseMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 int __thiscall TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this)
 
@@ -205,7 +205,7 @@ int __thiscall TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinist
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC4C0
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this)
 
@@ -226,7 +226,7 @@ void __thiscall TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinis
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC540
 // GHIDRA_NAME TDefenseMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister *this)
 
@@ -306,7 +306,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   puStack_8 = (undefined1 *)0xffffffff;
   if (piVar7 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x12f);
   }
   piStack_3c = (int *)AllocateWithFallbackHandler(0x20);
@@ -322,7 +322,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   puStack_8 = (undefined1 *)0xffffffff;
   if (piStack_3c == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x130);
   }
   piStack_34 = (int *)AllocateWithFallbackHandler(0x20);
@@ -338,7 +338,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
   puStack_8 = (undefined1 *)0xffffffff;
   if (piStack_34 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x131);
   }
   iVar16 = 1;
@@ -393,7 +393,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
     pcVar10 = (code *)AllocateWithFallbackHandler((int)pcVar15 * 2);
     if (pcVar10 == (code *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UDefenseMinister__00696860,0x15e);
     }
     iVar8 = 0;
@@ -480,7 +480,7 @@ void __thiscall TDefenseMinister::SetForeignMinisterReadyFlag14(TDefenseMinister
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ECBB0
 // GHIDRA_NAME TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int * param_1)
 
 undefined4 * __thiscall
 TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister *this,int *param_1)
@@ -507,7 +507,7 @@ TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister 
   puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
   if (puVar6 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x1a9);
   }
   puVar11 = puVar6;
@@ -616,7 +616,7 @@ TDefenseMinister::ReleaseRuntimeSelectionOwnerAndDestroyObject(TDefenseMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ECF20
 // GHIDRA_NAME TDefenseMinister::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
 int * __thiscall TDefenseMinister::UpdateControlCachedIntFromWindowText(TDefenseMinister *this)
 
@@ -676,7 +676,7 @@ int * __thiscall TDefenseMinister::UpdateControlCachedIntFromWindowText(TDefense
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED050
 // GHIDRA_NAME TDefenseMinister::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(char param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(char param_1)
 
 int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this,char param_1)
 
@@ -719,13 +719,13 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
   piVar6 = (int *)AllocateWithFallbackHandler(0x6540);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x24a);
   }
   piVar7 = (int *)AllocateWithFallbackHandler(0x6540);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDefenseMinister__00696860,0x24e);
   }
   iVar14 = (int)piVar6 - (int)piVar7;
@@ -833,7 +833,7 @@ int * __thiscall TDefenseMinister::OrphanRetStub_0059add0(TDefenseMinister *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED620
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 void __thiscall
 TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
@@ -889,7 +889,7 @@ TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ED950
 // GHIDRA_NAME TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 void __thiscall
 TDefenseMinister::OrphanLeaf_NoCall_Ins07_004d8920(TDefenseMinister *this,int param_1)
@@ -999,7 +999,7 @@ void __thiscall TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EE20
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
 short __thiscall
 TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)
@@ -1075,7 +1075,7 @@ TDefenseMinister::_scalar_deleting_destructor_(TDefenseMinister *this,short para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EF50
 // GHIDRA_NAME TDefenseMinister::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(short param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(short param_1)
 
 undefined2 __thiscall
 TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this,short param_1)
@@ -1089,7 +1089,7 @@ TDefenseMinister::OrphanCallChain_C11_I88_004874b0(TDefenseMinister *this,short 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EF80
 // GHIDRA_NAME TDefenseMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(short param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(short param_1)
 
 undefined2 __thiscall
 TDefenseMinister::GetTEventHandlerClassNamePointer(TDefenseMinister *this,short param_1)

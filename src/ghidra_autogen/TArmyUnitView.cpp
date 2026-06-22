@@ -25,7 +25,7 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TArmyUnitViewVtbl_0064d100;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94C0
 // GHIDRA_NAME TArmyUnitView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyUnitView::GetTEventHandlerClassNamePointer(TArmyUnitView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TArmyUnitView::GetTEventHandlerClassNamePointer(TArmy
 TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TArmyUnitViewVtbl_0064d100;
   return this;
 }
@@ -63,7 +63,7 @@ TArmyUnitView * __thiscall
 TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A95B0
 // GHIDRA_NAME TArmyUnitView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *this)
 
@@ -100,14 +100,14 @@ void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *thi
   local_38.left = 0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
   CString::AssignFromPtr((CString *)&local_38.right,(CString *)(*(int *)&this->field_0x60 + 0x24));
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   local_38.left = 0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(0x40);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x34) / 0x19 + 1;
   if (0x14 < sVar1) {
@@ -133,10 +133,10 @@ void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *thi
              (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_28,&local_38,0x24,
              (astruct_19 *)0x0);
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
-  thunk_DrawCenteredGuideLineOnMapDc(0x41);
-  thunk_DrawCenteredGuideLineOnMapDc(0x93);
-  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  SetQuickDrawTextOriginWithContextOffset(0x41);
+  DrawCenteredGuideLineOnMapDc(0x41);
+  DrawCenteredGuideLineOnMapDc(0x93);
+  DrawCenteredGuideLineOnMapDc(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x38);
   sVar2 = (sVar1 / 100) * 0xb;
   if (0x31 < (int)sVar1 % 100) {
@@ -168,7 +168,7 @@ void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9990
 // GHIDRA_NAME TArmyUnitView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, CString param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, CString param_2, undefined4 param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches Cross_UArmyViews command tags.
 // GHIDRA_COMMENT - Handles 'chec' by cycling/checking selected entry and then calling g_pUiRuntimeContext vfunc +0x48 with a computed state code.
@@ -227,7 +227,7 @@ TArmyUnitView::OrphanRetStub_0059add0
     else if (piVar6[2] != 0xe) {
       (**(code **)(*piVar6 + 0x34))();
     }
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     piVar6 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
                       *(short *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x96) * 4);
     if (piVar6 != (int *)0x0) {
@@ -242,8 +242,8 @@ TArmyUnitView::OrphanRetStub_0059add0
       CString::CString(&param_2);
       local_4 = 0;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      thunk_AssignStringSharedRefAndReturnThis(&param_2);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&param_2);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
       CString::~CString(&param_2);
     }
@@ -253,7 +253,7 @@ TArmyUnitView::OrphanRetStub_0059add0
       piVar6 = (int *)CONCAT31(extraout_var,uVar4);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyViews_cpp_00695858)
+        TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyViews_cpp_00695858)
         ;
       }
       piVar6[0x22] = (piVar6[0x23] + *(short *)(*(int *)&this->field_0x60 + 4) * 2) * 0x40;
@@ -266,9 +266,9 @@ TArmyUnitView::OrphanRetStub_0059add0
     }
   }
   else if (iVar1 == 0x6e616d65) {
-    thunk_HandleCrossUArmyViewsNameCommand();
+    HandleCrossUArmyViewsNameCommand();
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40
+  TView::OrphanRetStub_0059add0
             ((TView *)this,param_1,CVar2.m_pchData,param_3);
   *unaff_FS_OFFSET = uStack_c;
   return;

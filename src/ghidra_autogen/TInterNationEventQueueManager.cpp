@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055C970
 // GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
-// GHIDRA_PROTO undefined QueueInterNationEventIntoNationBucket()
+// GHIDRA_PROTO undefined TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket()
 
 void __thiscall
 TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
@@ -14,7 +14,7 @@ TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
 {
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      thunk_CreateAndSendTurnEvent13_NationAndNineDwords(param_2,param_3);
+      CreateAndSendTurnEvent13_NationAndNineDwords(param_2,param_3);
       return;
     }
     (**(code **)(**(int **)(param_1 + 0xed4 + param_2 * 4) + 0x38))(param_3);
@@ -106,7 +106,7 @@ TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
   
   if (g_pLocalizationTable->field_0x7a == '\0') {
     if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      thunk_CreateAndSendTurnEvent21_ThreeBytes(param_1,param_2,param_3);
+      CreateAndSendTurnEvent21_ThreeBytes(param_1,param_2,param_3);
       return;
     }
     piVar1 = *(int **)&this->field_0xef0;

@@ -31,7 +31,7 @@ TMacViewMgr * __thiscall TMacViewMgr::ConstructTMacViewMgrInPlace(TMacViewMgr *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484C70
 // GHIDRA_NAME TMacViewMgr::DestroyTMacViewMgrObject
-// GHIDRA_PROTO undefined __thiscall DestroyTMacViewMgrObject(void)
+// GHIDRA_PROTO undefined __thiscall TMacViewMgr::DestroyTMacViewMgrObject(void)
 
 void __thiscall TMacViewMgr::DestroyTMacViewMgrObject(TMacViewMgr *this)
 
@@ -74,7 +74,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl(int param_1,
     return 0xffffffff;
   }
   func_0x0040577c(param_1);
-  uVar2 = ResolveBmpResourceHandleWithDefault3B6();
+  uVar2 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
   *(undefined4 *)(param_1 + 0xbc) = uVar2;
   TryRealizeViewPaletteAndInvalidateWindow();
   return 0;
@@ -96,7 +96,7 @@ void TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485150
 // GHIDRA_NAME TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150
-// GHIDRA_PROTO undefined __thiscall WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(undefined4 param_1)
 
 undefined4 __thiscall
 TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(TMacViewMgr *this,undefined4 param_1)
@@ -119,7 +119,7 @@ void __thiscall TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl(TMacViewMgr *thi
 {
   undefined4 uVar1;
   
-  uVar1 = ResolveBmpResourceHandleWithDefault3B6();
+  uVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
   *(undefined4 *)&this->field_0xbc = uVar1;
   TryRealizeViewPaletteAndInvalidateWindow();
   return;
@@ -190,7 +190,7 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
     return 1;
   }
   uVar4 = 0;
-  ResolveBmpResourceHandleWithDefault3B6(param_2,0);
+  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(param_2,0);
   TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(pvVar3,uVar4);
   GetClientRect(*(HWND *)(param_1 + 0x1c),&tStack_1c);
   FillSolidRect(param_2,&tStack_1c,*(ulong *)(param_1 + 0xc0));
@@ -200,20 +200,20 @@ undefined4 __thiscall TMacViewMgr::TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl(int para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004995A0
 // GHIDRA_NAME TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0
-// GHIDRA_PROTO undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
+// GHIDRA_PROTO undefined TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
 
 undefined4 TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0(void)
 
 {
   int iVar1;
   
-  iVar1 = ResolveBmpResourceHandleWithDefault3B6();
+  iVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
   return *(undefined4 *)(iVar1 + 8);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004995C0
 // GHIDRA_NAME TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6
-// GHIDRA_PROTO undefined ResolveBmpResourceHandleWithDefault3B6()
+// GHIDRA_PROTO undefined TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Resolves bitmap handle for a resource entry; when id is unset it loads default bitmap 0x3B6 from cache and manages reference-counted cache nodes.
 // GHIDRA_COMMENT_END
@@ -244,7 +244,7 @@ int __fastcall TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(int *param_1)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   if (*param_1 == 0) {
-    uVar5 = thunk_LoadBmpResourceByIdCached(0x3b6);
+    uVar5 = LoadBmpResourceByIdCached(0x3b6);
     psVar6 = (short *)AllocateWithFallbackHandler(0xc);
     local_4 = 0;
     if (psVar6 == (short *)0x0) {
@@ -359,7 +359,7 @@ undefined4 __fastcall TMacViewMgr::CreateTMacViewMgrInstance(undefined4 param_1)
   this = (TMacViewMgr *)AllocateWithFallbackHandler(0xd84,param_1);
   local_4 = 0;
   if (this != (TMacViewMgr *)0x0) {
-    uVar1 = ConstructStrategicMapViewSystem(this);
+    uVar1 = TMacViewMgr::ConstructStrategicMapViewSystem(this);
     *unaff_FS_OFFSET = local_c;
     return uVar1;
   }
@@ -379,7 +379,7 @@ CRuntimeClass * __thiscall TMacViewMgr::GetTMacViewMgrClassNamePointer(TMacViewM
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00509CA0
 // GHIDRA_NAME TMacViewMgr::ConstructStrategicMapViewSystem
-// GHIDRA_PROTO undefined __thiscall ConstructStrategicMapViewSystem(void)
+// GHIDRA_PROTO undefined __thiscall TMacViewMgr::ConstructStrategicMapViewSystem(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructor for strategic map view/render system object (allocated at startup into global g_pStrategicMapViewSystem).
 // GHIDRA_COMMENT
@@ -562,7 +562,7 @@ void __thiscall TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles(T
   TMacViewMgrVtbl *pTVar1;
   
   *(undefined4 *)&this->field_0x4 = 0;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pTVar1 = this->vftable;
   (*pTVar1[0xe].slot_0x04)();
   (*pTVar1[0xe].GetTMacViewMgrClassNamePointer)();
@@ -578,7 +578,7 @@ void __thiscall
 TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180(TMacViewMgr *this)
 
 {
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   return;
 }
 
@@ -636,12 +636,12 @@ void __thiscall TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722(TMa
   local_10[3] = 0x18;
   local_18 = puVar1;
   (**(code **)(*DAT_006a2158 + 0x2c))(puVar1,8,local_10);
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_20,&stack0xffffffd4);
-  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_EBP);
-  uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_20,&stack0xffffffd4);
+  SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_EBP);
+  uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+  ReturnConstantTrueQuickDrawFlag(uVar5);
   ResetQuickDrawStrokeState();
-  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
   puVar7 = (undefined4 *)GetSurfaceHeaderFromSurfaceObject(piVar6);
   uVar8 = (iStack_14 - iStack_1c) * (local_10[0] - (int)local_18);
   puVar10 = puVar7;
@@ -679,9 +679,9 @@ void __thiscall TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722(TMa
     FreeHeapBufferIfNotNull(piVar6);
     iVar11 = iVar11 + 1;
   } while ((short)iVar11 < 0x17);
-  uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*puStack_24);
-  thunk_NoOpQuickDrawLifecycleHookB(uVar5);
-  thunk_SetActiveQuickDrawSurfaceContext(local_20,unaff_EBP);
+  uVar5 = GetSurfaceObjectAtContextOffset24(*puStack_24);
+  NoOpQuickDrawLifecycleHookB(uVar5);
+  SetActiveQuickDrawSurfaceContext(local_20,unaff_EBP);
   return;
 }
 
@@ -837,15 +837,15 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
   pTStack_4c = (TAnimation *)&stack0xffffffc8;
   pTStack_50 = (TAnimation *)&stack0xffffffcc;
   puStack_54 = (undefined4 *)0x50aa42;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags();
+  GetActiveQuickDrawSurfaceContextAndFlags();
   pTStack_50 = *(TAnimation **)puVar10;
   puStack_54 = (undefined4 *)0x50aa52;
-  thunk_SetActiveQuickDrawSurfaceContext();
+  SetActiveQuickDrawSurfaceContext();
   pTStack_4c = *(TAnimation **)puVar10;
   pTStack_50 = (TAnimation *)0x50aa5d;
-  pTStack_4c = (TAnimation *)thunk_GetSurfaceObjectAtContextOffset24();
+  pTStack_4c = (TAnimation *)GetSurfaceObjectAtContextOffset24();
   pTStack_50 = (TAnimation *)0x50aa66;
-  thunk_ReturnConstantTrueQuickDrawFlag();
+  ReturnConstantTrueQuickDrawFlag();
   pTStack_4c = (TAnimation *)0x50aa6e;
   ResetQuickDrawStrokeState();
   local_2c._0_4_ = 0;
@@ -996,11 +996,11 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
   pTStack_4c = *(TAnimation **)puVar10;
   pTStack_50 = (TAnimation *)0x50aca1;
   local_2c._0_4_ = local_2c._0_4_ + 0x40;
-  pTStack_4c = (TAnimation *)thunk_GetSurfaceObjectAtContextOffset24();
+  pTStack_4c = (TAnimation *)GetSurfaceObjectAtContextOffset24();
   pTStack_50 = (TAnimation *)0x50acaa;
-  thunk_NoOpQuickDrawLifecycleHookB();
+  NoOpQuickDrawLifecycleHookB();
   puStack_54 = (undefined4 *)0x50acbc;
-  thunk_SetActiveQuickDrawSurfaceContext();
+  SetActiveQuickDrawSurfaceContext();
   pTStack_4c = (TAnimation *)&uStack_1c;
   puVar12 = (undefined4 *)(unaff_EBX + 0x66c);
   pTStack_50 = (TAnimation *)0x8;
@@ -1014,16 +1014,16 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
   pTStack_58 = (TAnimation *)&pTStack_44;
   pTStack_5c = (TAnimation *)&pTStack_40;
   iStack_60 = 0x50ad03;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags();
+  GetActiveQuickDrawSurfaceContextAndFlags();
   pTStack_5c = (TAnimation *)*puVar12;
   pTStack_58 = pTStack_44;
   iStack_60 = 0x50ad13;
-  thunk_SetActiveQuickDrawSurfaceContext();
+  SetActiveQuickDrawSurfaceContext();
   pTStack_58 = (TAnimation *)*puVar12;
   pTStack_5c = (TAnimation *)0x50ad1e;
-  pTStack_58 = (TAnimation *)thunk_GetSurfaceObjectAtContextOffset24();
+  pTStack_58 = (TAnimation *)GetSurfaceObjectAtContextOffset24();
   pTStack_5c = (TAnimation *)0x50ad27;
-  thunk_ReturnConstantTrueQuickDrawFlag();
+  ReturnConstantTrueQuickDrawFlag();
   pTStack_58 = (TAnimation *)0x50ad2f;
   ResetQuickDrawStrokeState();
   local_2c._0_4_ = 0x40;
@@ -1202,13 +1202,13 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
   } while ((short)iVar14 < 2);
   pTStack_58 = *(TAnimation **)(unaff_EBX + 0x66c);
   pTStack_5c = (TAnimation *)0x50b00a;
-  pTStack_58 = (TAnimation *)thunk_GetSurfaceObjectAtContextOffset24();
+  pTStack_58 = (TAnimation *)GetSurfaceObjectAtContextOffset24();
   pTStack_5c = (TAnimation *)0x50b013;
-  thunk_NoOpQuickDrawLifecycleHookB();
+  NoOpQuickDrawLifecycleHookB();
   pTStack_58 = pTStack_44;
   pTStack_5c = pTStack_40;
   iStack_60 = 0x50b025;
-  thunk_SetActiveQuickDrawSurfaceContext();
+  SetActiveQuickDrawSurfaceContext();
   pTStack_58 = (TAnimation *)(local_2c + 4);
   iStack_60 = unaff_EBX + 0x670;
   pTStack_5c = (TAnimation *)0x8;
@@ -1224,10 +1224,10 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
   local_2c._0_4_ = 0x90;
   local_2c._4_4_ = 0x26;
   (**(code **)(*DAT_006a2158 + 0x2c))(puVar12);
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&pTStack_58,&pTStack_5c);
-  thunk_SetActiveQuickDrawSurfaceContext(*puVar12,pTStack_5c);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*puVar12);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
+  GetActiveQuickDrawSurfaceContextAndFlags(&pTStack_58,&pTStack_5c);
+  SetActiveQuickDrawSurfaceContext(*puVar12,pTStack_5c);
+  uVar8 = GetSurfaceObjectAtContextOffset24(*puVar12);
+  ReturnConstantTrueQuickDrawFlag(uVar8);
   ResetQuickDrawStrokeState();
   pTStack_50 = (TAnimation *)0x0;
   pTStack_4c = (TAnimation *)0x0;
@@ -1258,19 +1258,19 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
     iVar14 = iVar14 + 1;
     pTStack_50 = (TAnimation *)puVar10;
   } while ((short)iVar14 < 0x242);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*puVar12);
-  thunk_NoOpQuickDrawLifecycleHookB(uVar8);
-  thunk_SetActiveQuickDrawSurfaceContext(pTStack_58,pTStack_5c);
+  uVar8 = GetSurfaceObjectAtContextOffset24(*puVar12);
+  NoOpQuickDrawLifecycleHookB(uVar8);
+  SetActiveQuickDrawSurfaceContext(pTStack_58,pTStack_5c);
   piVar9 = puStack_54 + 0x1ae;
   pTStack_40 = (TAnimation *)0x0;
   if (*piVar9 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(piVar9);
   }
   (**(code **)(*DAT_006a2158 + 0x2c))(piVar9,8,&pTStack_40);
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&puStack_64,&uStack_68);
-  thunk_SetActiveQuickDrawSurfaceContext(*piVar9,uStack_68);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*piVar9);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
+  GetActiveQuickDrawSurfaceContextAndFlags(&puStack_64,&uStack_68);
+  SetActiveQuickDrawSurfaceContext(*piVar9,uStack_68);
+  uVar8 = GetSurfaceObjectAtContextOffset24(*piVar9);
+  ReturnConstantTrueQuickDrawFlag(uVar8);
   ResetQuickDrawStrokeState();
   piVar11 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x244);
   puVar12 = (undefined4 *)*piVar11;
@@ -1290,9 +1290,9 @@ void __thiscall TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext(TMa
     FreeHeapBufferIfNotNull(pTVar5);
   }
   FreeHeapBufferIfNotNull(piVar11);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*piVar9);
-  thunk_NoOpQuickDrawLifecycleHookB(uVar8);
-  thunk_SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
+  uVar8 = GetSurfaceObjectAtContextOffset24(*piVar9);
+  NoOpQuickDrawLifecycleHookB(uVar8);
+  SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
   iVar14 = 0;
   do {
     BuildBitmapMaskOpcodeBufferFromResourceRows(iVar14 + 0x2740,0x40,0x40,0x1680,0x10);
@@ -1372,7 +1372,7 @@ void __thiscall TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent(TMacVie
   undefined4 *puVar4;
   
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-    thunk_DispatchTaggedGameStateEvent1F20(0x72656765,0,0xfffffffd);
+    DispatchTaggedGameStateEvent1F20(0x72656765,0,0xfffffffd);
   }
   if (*(int *)&this->field_0x64 != 0) {
     uVar1 = CreateClipStateRegionWrapperObject();
@@ -1458,7 +1458,7 @@ TMacViewMgr::SyncSellTaggedChildControlWithNationState(TMacViewMgr *this,int *pa
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x53656c6c);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x8e4);
   }
   if (sVar5 < 0) {
@@ -1499,7 +1499,7 @@ int * __thiscall TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(TMacVi
   piVar1 = (int *)(**(code **)(*DAT_006a1b24 + 0x28))();
   if (piVar1 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x917);
   }
   (**(code **)(*piVar1 + 0x9c))();
@@ -1567,12 +1567,12 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     iVar6 = (**(code **)(*_uStack0000000c + 0x94))();
     if (iVar6 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     CStack_8.m_pchData = &stack0xffffff90;
-    thunk_AssignStringSharedRefAndReturnThis(&local_48);
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis(&local_48);
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     CStack_8.m_pchData = (char *)AllocateWithFallbackHandler();
     abStack_14[0] = 1;
     if ((TMyStaticText *)CStack_8.m_pchData == (TMyStaticText *)0x0) {
@@ -1588,15 +1588,15 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     abStack_14[0] = 0;
     local_38.m_pchData = (char *)0xa2;
     InitializeTextEntryBaseAndOptionalStringResource(iVar6,&local_38,&local_30,5,5);
-    thunk_BuildUiTextStyleDescriptor(&iStack_28,0);
+    BuildUiTextStyleDescriptor(&iStack_28,0);
     iVar3 = *piVar7;
     (**(code **)(iVar3 + 0x1b4))();
     (**(code **)(iVar3 + 0x1c4))(0xffffffff,0);
     piVar7[7] = 0x74657874;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,1,&stack0xffffffa8);
     _wStack00000008 = &stack0xffffffa0;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     if (pTVar2 == (TGreatPower *)0x0) {
       wVar12 = 0;
     }
@@ -1640,7 +1640,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
   local_30 = piVar7;
   if (piVar7 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    piVar7 = (int *)thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    piVar7 = (int *)TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   uVar8 = (undefined2)((uint)piVar7 >> 0x10);
   wVar12 = param_1;
@@ -1650,7 +1650,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
          (char *)CONCAT22(uVar8,pTVar2->needTargetByType[0] + pTVar2->needTargetByType[1]);
     wVar9 = pTVar2->needCurrentByType[1] + pTVar2->needCurrentByType[0];
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0);
     wVar11 = (word)iVar6;
     wVar12 = (wVar11 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
     FormatStringWithVarArgsToSharedRef(&CStack_8);
@@ -1665,7 +1665,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[2];
     wStack00000008 = pTVar2->needTargetByType[2];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,4);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,4);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[2];
     FormatStringWithVarArgsToSharedRef();
@@ -1678,7 +1678,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[(int)piVar10];
     wStack00000008 = pTVar2->needTargetByType[(int)piVar10];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,2);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,2);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 - this_00->fieldB6[(int)local_3c.m_pchData];
     FormatStringWithVarArgsToSharedRef();
@@ -1699,7 +1699,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[6];
     wStack00000008 = pTVar2->needTargetByType[6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,6);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,6);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[6];
     FormatStringWithVarArgsToSharedRef();
@@ -1711,7 +1711,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[8];
     wStack00000008 = pTVar2->needTargetByType[8];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,1);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[8];
     FormatStringWithVarArgsToSharedRef();
@@ -1723,7 +1723,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[9];
     wStack00000008 = pTVar2->needTargetByType[9];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,5);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[9];
     FormatStringWithVarArgsToSharedRef();
@@ -1735,7 +1735,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[0xb];
     wStack00000008 = pTVar2->needTargetByType[0xb];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,3);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[0xb];
     FormatStringWithVarArgsToSharedRef();
@@ -1747,7 +1747,7 @@ TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(TMacViewMgr *this,w
     wVar9 = pTVar2->needCurrentByType[0xc];
     wStack00000008 = pTVar2->needTargetByType[0xc];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,0xb);
+    iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0xb);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[0xc];
     FormatStringWithVarArgsToSharedRef();
@@ -1830,8 +1830,8 @@ LAB_0050ca3b:
     *(word *)(local_30 + 0x26) = wVar12;
   }
   local_30 = (int *)&stack0xffffff9c;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   if (wVar9 == 0) {
     iVar6 = *piVar7;
     (**(code **)(iVar6 + 0xa4))();
@@ -1839,13 +1839,13 @@ LAB_0050ca3b:
     piVar7 = (int *)(*pcVar4)();
     if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     (**(code **)(*piVar7 + 0x1c))();
     piVar7 = (int *)(*pcVar4)();
     if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68);
     }
     (**(code **)(*piVar7 + 0x1c))();
   }
@@ -1854,7 +1854,7 @@ LAB_0050ca3b:
     piVar10 = (int *)(*pcVar4)();
     if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iStack_28 = piVar10[0xd];
     aiStack_24[0] = piVar10[0xe];
@@ -1871,12 +1871,12 @@ LAB_0050ca3b:
       ;
     }
     auStack_c[0] = 7;
-    thunk_InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_30);
+    InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_30);
     *(undefined4 *)(iVar6 + 0x1c) = 0x6c656674;
     piVar10 = (int *)(*pcVar4)();
     if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     pTStack_2c = (TMyStaticText *)piVar10[0xd];
     iStack_28 = piVar10[0xe];
@@ -1893,7 +1893,7 @@ LAB_0050ca3b:
       ;
     }
     local_10 = 7;
-    thunk_InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_34,&pTStack_2c);
+    InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_34,&pTStack_2c);
     *(undefined4 *)(iVar6 + 0x1c) = 0x72676874;
     local_38.m_pchData = (char *)AllocateWithFallbackHandler();
     local_10 = 10;
@@ -1910,15 +1910,15 @@ LAB_0050ca3b:
     local_10 = 7;
     local_30 = (int *)0x12;
     InitializeTextEntryBaseAndOptionalStringResource(piVar7,&local_34,&pTStack_2c,5);
-    thunk_BuildUiTextStyleDescriptor(aiStack_24);
+    BuildUiTextStyleDescriptor(aiStack_24);
     iVar6 = *piVar10;
     (**(code **)(iVar6 + 0x1b4))();
     (**(code **)(iVar6 + 0x1c4))(0xffffffff);
     piVar10[7] = 0x74657874;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,4,&stack0xffffffac);
     pTStack_2c = (TMyStaticText *)&stack0xffffffa0;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     if ((param_1 == 0x16) || (param_1 == 0x15)) {
       pTStack_2c = (TMyStaticText *)AllocateWithFallbackHandler();
       local_4._0_1_ = 0xb;
@@ -1975,7 +1975,7 @@ void __thiscall TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(TMacVi
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3b8);
   sVar1 = *(short *)(unaff_retaddr + 0x14);
   while (sVar1 == 0) {
-    thunk_PumpUiMessagesAndBackgroundTasks(1);
+    PumpUiMessagesAndBackgroundTasks(1);
     sVar1 = *(short *)(unaff_retaddr + 0x14);
   }
   return;
@@ -2002,7 +2002,7 @@ TMacViewMgr::CreateCityBuildingDialogBySlot
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb4f);
   }
   (**(code **)(*piVar3 + 0x1d0))(unaff_retaddr,param_2,param_3,param_1);
@@ -2044,7 +2044,7 @@ TMacViewMgr::OrphanCallChain_C10_I80_0050d470(TMacViewMgr *this,int param_1,unde
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb72);
   }
   (**(code **)(*piVar3 + 0x1d0))(unaff_retaddr,param_2,in_stack_0000000c,param_1);
@@ -2084,7 +2084,7 @@ void __thiscall TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(TMacViewMgr *this,u
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xb98);
   }
   iVar2 = *piVar4;
@@ -2161,13 +2161,13 @@ TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(TMacViewMgr *this,in
   puVar1 = (undefined4 *)(&this->field_0x8 + (short)param_1 * 4);
   uVar3 = CreateClipStateRegionWrapperObject();
   *puVar1 = uVar3;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_14,local_18);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_14,local_18);
   piVar4 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar6 + 4000);
   CopyRect(&local_10,(RECT *)(*piVar4 + 8));
   (**(code **)(*DAT_006a2158 + 0x2c))(&param_1,1,&local_10);
-  thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_EDI);
-  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar3);
+  SetActiveQuickDrawSurfaceContext(local_10.right,unaff_EDI);
+  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.right);
+  ReturnConstantTrueQuickDrawFlag(uVar3);
   NoOpRuntimeCallback_00497c00(piVar4);
   puVar5 = (undefined4 *)*piVar4;
   if (puVar5 != (undefined4 *)0x0) {
@@ -2187,16 +2187,16 @@ TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(TMacViewMgr *this,in
     FreeHeapBufferIfNotNull(this_00);
   }
   FreeHeapBufferIfNotNull(piVar4);
-  puVar5 = (undefined4 *)thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
+  puVar5 = (undefined4 *)GetSurfaceObjectAtContextOffset24(local_10.right);
   iVar6 = RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
   if (iVar6 != 0) {
     RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
     RebuildSpriteNonTransparentPolygonRegion(*puVar1,*puVar5);
   }
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&local_10.right);
-  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
-  thunk_NoOpQuickDrawLifecycleHookB(uVar3);
-  thunk_SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
+  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.right);
+  NoOpQuickDrawLifecycleHookB(uVar3);
+  SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
   return;
 }
 
@@ -2257,7 +2257,7 @@ TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(TMacViewMg
   piVar2 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0xc27);
   }
   iVar1 = *piVar2;
@@ -2345,15 +2345,15 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
   char *pcVar9;
   
   if (param_2 < 100) {
-    piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x674);
+    piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x674);
     sVar7 = param_2 << 5;
   }
   else {
-    piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x680);
+    piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x680);
     sVar7 = (param_2 + -100) * 0x20;
   }
   uVar1 = *(ushort *)(*param_1 + 4);
-  thunk_ReturnConstantTrueQuickDrawFlag(piVar3);
+  ReturnConstantTrueQuickDrawFlag(piVar3);
   iVar4 = GetSurfaceHeaderFromSurfaceObject(piVar3);
   uVar2 = *(ushort *)(*piVar3 + 4);
   iVar5 = GetSurfaceHeaderFromSurfaceObject(param_1);
@@ -2462,7 +2462,7 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
     pcVar6 = pcVar6 + iVar8;
     pcVar9 = pcVar9 + (short)(uVar2 & 0x3fff);
   } while (iVar4 != 0);
-  thunk_NoOpQuickDrawLifecycleHookB(piVar3);
+  NoOpQuickDrawLifecycleHookB(piVar3);
   return;
 }
 
@@ -2519,9 +2519,9 @@ TMacViewMgr::DrawStrategicMapUnitIcon
   ushort wSrcStrideRaw;
   
   pUnitIconAtlasSurface =
-       (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x678);
+       (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x678);
   wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
-  thunk_ReturnConstantTrueQuickDrawFlag(pUnitIconAtlasSurface);
+  ReturnConstantTrueQuickDrawFlag(pUnitIconAtlasSurface);
   nRemainingRows = GetSurfaceHeaderFromSurfaceObject(pUnitIconAtlasSurface);
   wSrcStrideRaw = *(ushort *)(*pUnitIconAtlasSurface + 4);
   pDstSurfacePixels = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
@@ -2594,7 +2594,7 @@ TMacViewMgr::DrawStrategicMapUnitIcon
     pbDstRow = pbDstRow + nDstStrideBytes;
     pbSrcRow = pbSrcRow + (short)(wSrcStrideRaw & 0x3fff);
   } while (nRemainingRows != 0);
-  thunk_NoOpQuickDrawLifecycleHookB(pUnitIconAtlasSurface);
+  NoOpQuickDrawLifecycleHookB(pUnitIconAtlasSurface);
   return;
 }
 
@@ -2656,13 +2656,13 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   ushort wDstStrideRaw;
   
   pOverlayAtlasSurface =
-       (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x67c);
+       (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x67c);
   if ((0 < nVariantRow) &&
      (nOverlaySourceRow =
            *(short *)(&g_anStrategicMapOverlaySourceRowByIconId + (short)wOverlayIconId * 2),
      -1 < nOverlaySourceRow)) {
     wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
-    thunk_ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
+    ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
     nRemainingRows = GetSurfaceHeaderFromSurfaceObject(pOverlayAtlasSurface);
     wOverlayIconId = *(ushort *)(*pOverlayAtlasSurface + 4) & 0x3fff;
     nRemainingCols = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
@@ -2687,7 +2687,7 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
       pbDstCursor = pbDstPixel + nDstStrideBytes + -0x25;
       pbSrcCursor = pbSrcPixel + (short)wOverlayIconId + -0x25;
     } while (nRemainingRows != 0);
-    thunk_NoOpQuickDrawLifecycleHookB(pOverlayAtlasSurface);
+    NoOpQuickDrawLifecycleHookB(pOverlayAtlasSurface);
   }
   return;
 }

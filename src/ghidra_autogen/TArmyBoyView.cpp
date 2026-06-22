@@ -11,7 +11,7 @@ TArmyBoyView * __thiscall
 TArmyBoyView::_scalar_deleting_destructor_(TArmyBoyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TArmyBoyView::_scalar_deleting_destructor_(TArmyBoyView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEBA0
 // GHIDRA_NAME TArmyBoyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyBoyView::GetTEventHandlerClassNamePointer(TArmyBoyView *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TArmyBoyView::GetTEventHandlerClassNamePointer(TArmyB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEBC0
 // GHIDRA_NAME TArmyBoyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TArmyBoyView::OrphanTiny_ReturnZero_0048a730(TArmyBoyView *this)
 
@@ -59,10 +59,10 @@ void __thiscall TArmyBoyView::OrphanTiny_ReturnZero_0048a730(TArmyBoyView *this)
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   local_38.m_pchData = (char *)0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
+  SetQuickDrawTextOriginWithContextOffset(0x40);
   CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   local_4._0_1_ = 1;
   CString::~CString(&local_38);
   local_38.m_pchData = &stack0xffffffb8;
@@ -96,9 +96,9 @@ void __thiscall TArmyBoyView::OrphanTiny_ReturnZero_0048a730(TArmyBoyView *this)
       uVar3 = 0x1f;
     }
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c,uVar3);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+    SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     local_4._0_1_ = 1;
     CString::~CString(&local_38);
   }
@@ -113,10 +113,10 @@ void __thiscall TArmyBoyView::OrphanTiny_ReturnZero_0048a730(TArmyBoyView *this)
   SetQuickDrawFillColor();
   local_38.m_pchData = &stack0xffffffb8;
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
-  thunk_DrawCenteredGuideLineOnMapDc(0x41);
-  thunk_DrawCenteredGuideLineOnMapDc(0x93);
-  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  SetQuickDrawTextOriginWithContextOffset(0x41);
+  DrawCenteredGuideLineOnMapDc(0x41);
+  DrawCenteredGuideLineOnMapDc(0x93);
+  DrawCenteredGuideLineOnMapDc(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x24);
   sVar2 = sVar1 * 0xb;
   if (0x31 < (int)sVar1 % 100) {
@@ -169,7 +169,7 @@ TView * TArmyBoyView::DestructTArmyBoyViewAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TNavyBoyViewVtbl_0064e1f0;
     pTVar1 = this;
   }

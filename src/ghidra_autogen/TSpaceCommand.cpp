@@ -38,12 +38,12 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   *unaff_FS_OFFSET = &uStack_c;
   iVar11 = 0;
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   pTVar1 = this->vftable;
   (*pTVar1[5].GetTEventClassNamePointer)();
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   this_00 = (TMapMaker *)AllocateWithFallbackHandler(0x2a8);
   uStack_4 = 0;
@@ -98,12 +98,12 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
       uStack_4 = 0xffffffff;
       CString::~CString(&param_1);
     }
-    GenerateMapFromTuningStringAndApplyScenarioOverrides
+    TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
               (pTStack_14,*(undefined4 *)&this->field_0xc,*(undefined4 **)&this->field_0x10,
                (undefined4 *)&this->field_0x1c);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   if (!bVar5) {
     iVar12 = 0;
@@ -118,7 +118,7 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
     } while ((short)iVar12 < 0x1950);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   RebuildTileOwnerNeighborCachesAndFallbackAssignments();
   if (bVar5) {
@@ -135,7 +135,7 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
         if ('\0' < *(char *)(iVar12 + 8 + iVar9)) {
           iVar10 = iVar12 + 10;
           do {
-            SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar10 + iVar9),iVar11);
+            TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar10 + iVar9),iVar11);
             iVar9 = *(int *)&this->field_0x10;
             iVar13 = iVar13 + 1;
             iVar10 = iVar10 + 2;
@@ -148,20 +148,20 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   }
   iVar11 = 0;
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   if (!bVar5) {
     (*this->vftable[8].OrphanCallChain_C1_I17_00487470)();
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   RebuildUMapperRouteRecordsAndActiveMapRects();
   (*g_pLocalizationTable->vftable[0x10].GetTSimMgrClassNamePointer)();
   DAT_006a5aec = 0;
   DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   if (!bVar5) {
     pTVar2 = this->vftable[6].OrphanCallChain_C1_I17_00487470;
@@ -173,11 +173,11 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
     } while ((short)iVar11 < 0x1950);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   (**(code **)(g_pUiRuntimeContext->vftable + 0xc4))();
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-    UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   this->field_0x8 = 1;
   if (pTStack_14 != (TSpaceCommand *)0x0) {
@@ -191,7 +191,7 @@ LAB_0050efe5:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050F6B0
 // GHIDRA_NAME TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren
-// GHIDRA_PROTO undefined __thiscall SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(int param_1, int param_2)
 
 void __thiscall
 TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int param_1,int param_2)
@@ -210,7 +210,7 @@ TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int 
     if ('\0' < *(char *)(iVar1 + 8 + iVar3)) {
       iVar2 = iVar3 + 10;
       do {
-        SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar2 + iVar1),param_2);
+        TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar2 + iVar1),param_2);
         iVar1 = *(int *)&this->field_0x10;
         iVar4 = iVar4 + 1;
         iVar2 = iVar2 + 2;
@@ -222,7 +222,7 @@ TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(TSpaceCommand *this,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525A30
 // GHIDRA_NAME TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
-// GHIDRA_PROTO undefined __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
+// GHIDRA_PROTO undefined __thiscall TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides(undefined4 param_1, undefined4 * param_2, undefined4 * param_3)
 
 void __thiscall
 TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
@@ -361,7 +361,7 @@ LAB_00525acd:
   do {
     do {
       if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-        UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+        TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
       }
       (*pTVar1[5].OrphanCallChain_C1_I17_00487470)();
       cVar2 = (*pTVar1[0xd].GetTEventClassNamePointer)();
@@ -380,7 +380,7 @@ LAB_00525acd:
       }
     } while (bVar11);
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     pTVar3 = this + 0x10;
     iVar10 = 0x17;
@@ -394,25 +394,25 @@ LAB_00525acd:
       iVar10 = iVar10 + -1;
     } while (iVar10 != 0);
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     (*pTVar1[7].GetTEventClassNamePointer)();
     if ((DAT_006a4268 != (TSpaceCommand *)0x0) &&
-       (UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268), DAT_006a4268 != (TSpaceCommand *)0x0)
+       (TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268), DAT_006a4268 != (TSpaceCommand *)0x0)
        ) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     (*pTVar1[0xf].GetTEventClassNamePointer)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     (*pTVar1[7].OrphanCallChain_C1_I17_00487470)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     RotateMapColumnsByPeakCityTileDensity();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     (*pTVar1[0xc].OrphanCallChain_C1_I17_00487470)(0);
     pcVar5 = (char *)*param_2;
@@ -716,18 +716,18 @@ LAB_00526242:
     }
 LAB_005262cf:
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
     cVar2 = ValidateSeedCandidateExistsForEachTerrainClass();
     if (cVar2 != '\0') {
       if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-        UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+        TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
       }
       return;
     }
     (*g_pGlobalMapState->vftable[5].GetTMapMgrClassNamePointer)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
-      UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
+      TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
   } while( true );
 }
@@ -739,7 +739,7 @@ LAB_005262cf:
 void __thiscall TSpaceCommand::OrphanRetStub_00487a00(TSpaceCommand *this)
 
 {
-  GenerateRandomMapAndRefreshSetupPreview(*(TSpaceCommand **)&this->field_0x18);
+  TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(*(TSpaceCommand **)&this->field_0x18);
   return;
 }
 
@@ -751,7 +751,7 @@ TSpaceCommand * __thiscall
 TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this,byte param_1)
 
 {
-  CreateTSpaceCommandInstance(this);
+  TSpaceCommand::CreateTSpaceCommandInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -760,7 +760,7 @@ TSpaceCommand::OrphanCallChain_C1_I17_00487470(TSpaceCommand *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575240
 // GHIDRA_NAME TSpaceCommand::CreateTSpaceCommandInstance
-// GHIDRA_PROTO undefined __thiscall CreateTSpaceCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall TSpaceCommand::CreateTSpaceCommandInstance(void)
 
 void __thiscall TSpaceCommand::CreateTSpaceCommandInstance(TSpaceCommand *this)
 
@@ -801,7 +801,7 @@ TNoHilitePicture * TSpaceCommand::ConstructTSpaceCommandBaseState(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&THighScoresPictureVtbl_00643ea8;
     pTVar1 = this;
   }
@@ -835,7 +835,7 @@ TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
     pTVar1 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this_00);
+    TCommand::ConstructTurnEventPacketBase(this_00);
     this_00->vftable = (TCommandVtbl *)&TSpaceCommandVtbl_00661b10;
     pTVar1 = this_00;
   }
@@ -850,7 +850,7 @@ TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578330
 // GHIDRA_NAME TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview
-// GHIDRA_PROTO undefined __thiscall GenerateRandomMapAndRefreshSetupPreview(void)
+// GHIDRA_PROTO undefined __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(void)
 
 void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCommand *this)
 
@@ -902,7 +902,7 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
   CStack_5c.m_pchData = &stack0xffffffc0;
   piStack_58 = (int *)0x2758;
   puStack_8 = (undefined1 *)0x0;
-  thunk_LoadUiStringResourceByGroupAndIndex();
+  LoadUiStringResourceByGroupAndIndex();
   pcStack_24 = *(code **)(iVar2 + 0x1ec);
   piStack_58 = (int *)&stack0xffffffc0;
   iStack_54 = 1;
@@ -932,15 +932,15 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
     (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
   }
   DAT_006a4268 = this;
-  uVar4 = thunk_GetTickCountDiv16();
+  uVar4 = GetTickCountDiv16();
   *(undefined4 *)&this[4].field_0x1c = uVar4;
   this[5].vftable = (TSpaceCommandVtbl *)0x0;
-  UpdateMapGenerationProgressSpinnerFrame(this);
+  TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(this);
   uStack_94 = 1;
   uStack_98 = 0x5784c7;
-  thunk_RebuildMapContextAndGlobalMapState();
+  RebuildMapContextAndGlobalMapState();
   DAT_006a4268 = (TSpaceCommand *)0x0;
-  UpdateMapGenerationProgressSpinnerFrame(this);
+  TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(this);
   uVar3 = (*pTVar1)();
   pTStack_3c = (TLoadSavePicture *)CONCAT31(extraout_var_04,uVar3);
   (*pTStack_3c->vftable[1].slot_0x04)();
@@ -973,7 +973,7 @@ void __thiscall TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview(TSpaceCom
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578680
 // GHIDRA_NAME TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame
-// GHIDRA_PROTO undefined __thiscall UpdateMapGenerationProgressSpinnerFrame(void)
+// GHIDRA_PROTO undefined __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(void)
 
 void __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(TSpaceCommand *this)
 
@@ -996,10 +996,10 @@ void __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(TSpaceCom
   puStack_8 = &LAB_00636a68;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_44 = 0x5786a2;
-  uVar3 = thunk_GetTickCountDiv16();
+  uVar3 = GetTickCountDiv16();
   if (*(uint *)&this[4].field_0x1c < uVar3) {
     uStack_44 = 0x5786af;
-    uVar4 = thunk_GetTickCountDiv16();
+    uVar4 = GetTickCountDiv16();
     pTVar5 = this[5].vftable;
     *(undefined4 *)&this[4].field_0x1c = uVar4;
     pTVar5 = (TSpaceCommandVtbl *)((int)&pTVar5->GetTEventClassNamePointer + 1);
@@ -1020,7 +1020,7 @@ void __thiscall TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(TSpaceCom
   (**(code **)(iVar1 + 0xf8))();
   (**(code **)(iVar1 + 300))(&stack0xffffffc0);
   (**(code **)(iVar1 + 0x110))(&uStack_44);
-  thunk_DestroyScopedMapQuickDrawContext();
+  DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_20;
   return;
 }

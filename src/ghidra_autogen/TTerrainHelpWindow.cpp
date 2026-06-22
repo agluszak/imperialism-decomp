@@ -25,7 +25,7 @@ TControl * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    TControl::ConstructUiWindowResourceEntryType4B340(this);
     this->vftable = (TControlVtbl *)&TTerrainHelpWindowVtbl_00657500;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TControl * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D20
 // GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
@@ -46,13 +46,13 @@ TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D40
 // GHIDRA_NAME TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTerrainHelpWindowBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(void)
 
 TTerrainHelpWindow * __thiscall
 TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
   this->vftable = &TTerrainHelpWindowVtbl_00657500;
   return this;
 }
@@ -74,7 +74,7 @@ TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504DC0
 // GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
 

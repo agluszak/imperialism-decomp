@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405529
 // GHIDRA_NAME Config::InitDefaults
-// GHIDRA_PROTO undefined4 * __thiscall InitDefaults(astruct_11 * this_obj)
+// GHIDRA_PROTO undefined4 * __thiscall TMultiplayerMgr::ConstructMultiplayerManager(astruct_11 * this_obj)
 
 undefined4 * __thiscall Config::InitDefaults(Config *this,astruct_11 *this_obj)
 
@@ -19,7 +19,7 @@ undefined4 * __thiscall Config::InitDefaults(Config *this,astruct_11 *this_obj)
   puStack_8 = &LAB_00634793;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   uStack_4 = 0;
   CallCallbackRepeatedly(&this->field_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;

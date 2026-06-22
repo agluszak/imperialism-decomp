@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28F0
 // GHIDRA_NAME TCivUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TUnit::ConstructTUnitBaseState(byte param_1)
 
 TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this,byte param_1)
 
@@ -90,7 +90,7 @@ TCivUnit::SetUnitOrderTypeAndOwnerIndex(TCivUnit *this,int nOrderType,short nTar
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2A90
 // GHIDRA_NAME TCivUnit::NormalizeUnitOrderStateAfterLoad
-// GHIDRA_PROTO void __thiscall NormalizeUnitOrderStateAfterLoad(int * pCivUnitOrderState)
+// GHIDRA_PROTO void __thiscall TUnit::NormalizeUnitOrderStateAfterLoad(int * pCivUnitOrderState)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Advances civilian work orders at turn rollover and applies completion effects.
 // GHIDRA_COMMENT Algorithm:
@@ -143,7 +143,7 @@ void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *p
     if (0 < *(short *)&this->field_0x24) {
       return;
     }
-    thunk_ApplyCompletedCivWorkOrderToMapState((int *)this);
+    ApplyCompletedCivWorkOrderToMapState((int *)this);
   }
                     /* Non-sleep immediate orders (e.g. Next Unit/No Orders) fall through and are
                        cleared to type 0 at turn rollover. */
@@ -153,7 +153,7 @@ void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2B10
 // GHIDRA_NAME TCivUnit::DeserializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall DeserializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_PROTO void __thiscall TCivUnit::DeserializeUnitOrderCoreState(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Deserialize civilian-order state.
 // GHIDRA_COMMENT
@@ -192,7 +192,7 @@ void __thiscall TCivUnit::DeserializeUnitOrderCoreState(TCivUnit *this,int *pArc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2B40
 // GHIDRA_NAME TCivUnit::SerializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall SerializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_PROTO void __thiscall TUnit::SerializeUnitOrderCoreState(int * pArchiveStream)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Serialize civilian-order state.
 // GHIDRA_COMMENT
@@ -231,7 +231,7 @@ void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2B70
 // GHIDRA_NAME TCivUnit::OrphanRetStub_005c2610
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(short param_1)
+// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2610(short param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Relinks a civilian unit object into per-tile occupant chain (tile record +0x20 linked list).
 // GHIDRA_COMMENT
@@ -293,7 +293,7 @@ void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this,short param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2C40
 // GHIDRA_NAME TCivUnit::OrphanRetStub_005c2470
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2470(void)
+// GHIDRA_PROTO undefined __thiscall TCivUnit::OrphanRetStub_005c2470(void)
 
 void __thiscall TCivUnit::OrphanRetStub_005c2470(TCivUnit *this)
 

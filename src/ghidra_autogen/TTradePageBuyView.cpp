@@ -11,7 +11,7 @@ TTradePageBuyView * __thiscall
 TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -51,7 +51,7 @@ TPageView * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD670
 // GHIDRA_NAME TTradePageBuyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
@@ -62,7 +62,7 @@ TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD690
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTradePageBuyViewBaseState(short param_1)
+// GHIDRA_PROTO undefined __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
 
 void __thiscall
 TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,short param_1)
@@ -124,7 +124,7 @@ LAB_005bd73a:
       local_1c = (uint)(uVar2 & 0xffff);
       uStack_18 = 0;
       uStack_17 = 0;
-      thunk_BuildUiTextStyleDescriptor(&local_20,4,0xc,0x2b6a);
+      BuildUiTextStyleDescriptor(&local_20,4,0xc,0x2b6a);
       CopyTwoDwordsAndWordToObjectOffset14(&local_20);
       (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
       do {
@@ -168,7 +168,7 @@ TTradePageBuyView * __thiscall
 TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this,byte param_1)
 
 {
-  DestructTTradePageBuyViewAndMaybeFree_Impl(this);
+  TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -177,7 +177,7 @@ TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD930
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(void)
 
 void __thiscall
 TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(TTradePageBuyView *this)

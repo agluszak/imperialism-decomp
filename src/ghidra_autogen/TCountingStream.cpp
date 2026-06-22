@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TCountingStream::GetTStreamClassNamePointer(TCounting
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489410
 // GHIDRA_NAME TCountingStream::ConstructTCountingStreamBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCountingStreamBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TCountingStream::ConstructTCountingStreamBaseState(void)
 
 void __thiscall TCountingStream::ConstructTCountingStreamBaseState(TCountingStream *this)
 
@@ -34,7 +34,7 @@ TCountingStream * __thiscall
 TCountingStream::ConstructTStreamBaseState(TCountingStream *this,byte param_1)
 
 {
-  ~TCountingStream(this);
+  TCountingStream::~TCountingStream(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -43,7 +43,7 @@ TCountingStream::ConstructTStreamBaseState(TCountingStream *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489470
 // GHIDRA_NAME TCountingStream::~TCountingStream
-// GHIDRA_PROTO undefined __thiscall ~TCountingStream(void)
+// GHIDRA_PROTO undefined __thiscall TCountingStream::~TCountingStream(void)
 
 void __thiscall TCountingStream::~TCountingStream(TCountingStream *this)
 

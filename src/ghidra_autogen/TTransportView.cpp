@@ -11,7 +11,7 @@ TTransportView * __thiscall
 TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TTransportView::_scalar_deleting_destructor_(TTransportView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD3C0
 // GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
 
@@ -61,7 +61,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x73757070);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x783);
   }
   pdVar6 = TradeSummarySelectionMap_006960e0.summaryTags;
@@ -70,7 +70,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
     piVar4 = (int *)(*pcVar1)(*pdVar6);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x787);
     }
     (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(local_4 + 0x10e + sVar5 * 2),1);
@@ -80,7 +80,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
   piVar4 = (int *)(*(code *)this)(0x7472616e);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x78d);
   }
   sVar5 = 0;
@@ -90,7 +90,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
     piVar4 = (int *)(*pcVar2)(*pdVar6);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x791);
     }
     (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(puStack_8 + sVar5 * 2 + 0x13c),1);
@@ -100,7 +100,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
   piVar4 = (int *)(*pcStack_1c)(0x746f7461);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x797);
   }
   if (puStack_8 == (undefined1 *)0x0) {
@@ -117,7 +117,7 @@ TTransportView::ApplyCityDialogMinisterValues(TTransportView *this,undefined4 pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD690
 // GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
 
@@ -133,7 +133,7 @@ void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView 
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x7472616e);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x7a7);
   }
   iVar4 = 0;
@@ -143,7 +143,7 @@ void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView 
     piVar2 = (int *)(*pcStack_c)(*pdVar5);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x7ab);
     }
     pcStack_c = (code *)**(int **)&this->field_0x60;

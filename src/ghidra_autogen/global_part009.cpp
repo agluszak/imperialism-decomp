@@ -89,10 +89,10 @@ void __fastcall PruneOrPromoteOrderNodeWhenChildCostDepleted(int *param_1)
           *(int *)(piVar2[2] + 4) = piVar2[1];
         }
         FreeHeapBufferIfNotNull(piVar2);
-        piVar2 = thunk_PruneDefeatedMapOrderChildrenAndReturnHead(this,unaff_EDI);
+        piVar2 = PruneDefeatedMapOrderChildrenAndReturnHead(this,unaff_EDI);
       }
       else {
-        thunk_PruneDefeatedMapOrderChildrenAndReturnHead((void *)piVar2[1],unaff_EDI);
+        PruneDefeatedMapOrderChildrenAndReturnHead((void *)piVar2[1],unaff_EDI);
       }
     }
     *(int **)(iVar1 + 0x10) = piVar2;
@@ -333,7 +333,7 @@ void __thiscall ReassignOrderNodeNationAndRebindParentCounters(TShipVtbl *param_
         this = (TShip *)0x0;
       }
       else if (param_1 == this->vftable) {
-        this = (TShip *)TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(this,unaff_EDI);
+        this = (TShip *)TShip::DeleteMapOrderChildLinkAndReturnNext(this,unaff_EDI);
       }
       else {
         RemoveLinkedOrderNodeByValueRecursive(param_1);
@@ -406,14 +406,14 @@ undefined4 * CreateNavySecondaryOrderNodeWithSentinelNation(void)
     *(undefined4 **)(puVar2[5] + 0x18) = puVar2;
   }
   if (*(short *)(puVar2 + 1) != -1) {
-    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
               ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)(puVar2 + 1)]);
     for (puVar1 = g_pNavySecondaryOrderListHead; puVar1 != (undefined4 *)0x0;
         puVar1 = (undefined4 *)puVar1[5]) {
       if ((puVar1 != puVar2) &&
          (iVar3 = CompareAnsiStringsWithMbcsAwareness
                             (puVar1[3],((CString *)(puVar2 + 3))->m_pchData), iVar3 == 0)) {
-        thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+        RemoveDuplicateNavySecondaryOrdersByDisplayName();
       }
     }
   }
@@ -631,11 +631,11 @@ void BuildNavyOrderResourceDeltaSummaryText(CString param_1,CString param_2,CStr
   local_4._0_1_ = 1;
   CString::CString(&local_28);
   local_4._0_1_ = 2;
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_24,0x2762,0x1f);
-  thunk_LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0x20);
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_28,0x2762,0x21);
+  LoadUiStringResourceByGroupAndIndex(&local_24,0x2762,0x1f);
+  LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0x20);
+  LoadUiStringResourceByGroupAndIndex(&local_28,0x2762,0x21);
   if ((short)pcVar1 == 0) {
-    thunk_LoadUiStringResourceByGroupAndIndex(param_1.m_pchData,0x2762,0x1e);
+    LoadUiStringResourceByGroupAndIndex(param_1.m_pchData,0x2762,0x1e);
   }
   else {
     CString::CString(&local_34,PTR_g_szEmptyString_0065c2a8);
@@ -723,7 +723,7 @@ void BuildNavyOrderResourceDeltaSummaryText(CString param_1,CString param_2,CStr
       local_4._0_1_ = 8;
       CString::CString(&param_1);
       local_4._0_1_ = 9;
-      thunk_LoadUiStringResourceByGroupAndIndex(&param_2,0x2762,(1 < local_10) + '\"');
+      LoadUiStringResourceByGroupAndIndex(&param_2,0x2762,(1 < local_10) + '\"');
       scanBracketExpressions(g_pLocalizationTable,&param_1,param_2.m_pchData);
       AssignStringSharedFromRef(&param_1);
       local_4._0_1_ = 8;
@@ -744,7 +744,7 @@ void BuildNavyOrderResourceDeltaSummaryText(CString param_1,CString param_2,CStr
     CString::CString(&local_30);
     local_4._0_1_ = 0xb;
     CString::AssignFromPtr(&local_30,(CString *)src_ref.m_pchData);
-    thunk_LoadUiStringResourceByGroupAndIndex(&local_2c,0x2762,sVar5 + 0x24);
+    LoadUiStringResourceByGroupAndIndex(&local_2c,0x2762,sVar5 + 0x24);
     scanBracketExpressions(g_pLocalizationTable,src_ref.m_pchData,local_2c.m_pchData);
     local_4._0_1_ = 10;
     CString::~CString(&local_30);
@@ -939,14 +939,14 @@ void __fastcall RemoveDuplicateNavySecondaryOrdersByDisplayName(int param_1)
   int iVar1;
   int iVar2;
   
-  TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+  TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
             ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)(param_1 + 4)]);
   for (iVar1 = g_pNavySecondaryOrderListHead; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x14)) {
     if ((iVar1 != param_1) &&
        (iVar2 = CompareAnsiStringsWithMbcsAwareness
                           (*(undefined4 *)(iVar1 + 0xc),*(undefined4 *)(param_1 + 0xc)), iVar2 == 0)
        ) {
-      thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+      RemoveDuplicateNavySecondaryOrdersByDisplayName();
     }
   }
   return;
@@ -1006,7 +1006,7 @@ undefined4 * __thiscall CreateLinkedOrderNode(int param_1,undefined4 param_2)
   }
   if (puVar1 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x64e);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x64e);
   }
   return puVar1;
 }
@@ -1043,7 +1043,7 @@ int * __thiscall PruneDefeatedMapOrderChildrenAndReturnHead(void *this,int *pChi
     FreeHeapBufferIfNotNull(this);
     this = piVar1;
   }
-  thunk_PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)((int)this + 4),unaff_EDI);
+  PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)((int)this + 4),unaff_EDI);
   return this;
 }
 
@@ -1238,7 +1238,7 @@ void __thiscall SetMapOrderType9AndQueue(void *this,int *pMapOrderEntry)
 LAB_00553089:
                     /* Queue-head insertion path: place pMapOrderEntry at DAT_006A43E4->pHead and
                        fix bidirectional links. */
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
@@ -1331,7 +1331,7 @@ void __thiscall SetMapOrderType3Or4AndQueue(void *this,char fUseType4)
   }
   *(void **)&pTVar8->field_0x4 = this;
 LAB_00553205:
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
@@ -1458,7 +1458,7 @@ void __thiscall PromoteMapOrderChainAndQueue(void *this,int *pMapOrderEntry)
   *(undefined4 *)((int)this + 0x14) = 0;
   while (this_00 != (TShip *)0x0) {
     if (this_00->field_0xc == '\0') {
-      TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+      TScatteredShipsMission::SetMapOrderActiveChildEntry
                 ((TScatteredShipsMission *)this_00->vftable,(int *)0x0);
       psVar1 = (short *)((int)this +
                         *(short *)(&DAT_00698120 +
@@ -1468,17 +1468,17 @@ void __thiscall PromoteMapOrderChainAndQueue(void *this,int *pMapOrderEntry)
       if (this_00 == *(TShip **)((int)this + 0x10)) {
         *(undefined4 *)((int)this + 0x10) = *(undefined4 *)&this_00->field_0x4;
       }
-      this_00 = (TShip *)TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
+      this_00 = (TShip *)TShip::DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
     }
     else {
       this_00 = *(TShip **)&this_00->field_0x4;
     }
   }
-  thunk_RecomputeMapOrderChildAggregateMetric(this,unaff_EDI);
+  RecomputeMapOrderChildAggregateMetric(this,unaff_EDI);
   (**(code **)(*(int *)this + 0xc))();
-  cVar3 = thunk_MoveMapOrderEntryToQueueHeadIfValid(this);
+  cVar3 = MoveMapOrderEntryToQueueHeadIfValid(this);
   if (cVar3 != '\0') {
-    thunk_FinalizeQueuedMapOrderEntry(this);
+    FinalizeQueuedMapOrderEntry(this);
   }
   return;
 }
@@ -1573,7 +1573,7 @@ void __thiscall SetMapOrderType5AndQueue(void *this,int nOrderTarget)
   }
   *(void **)&pTVar8->field_0x4 = this;
 LAB_00553952:
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
@@ -1735,7 +1735,7 @@ int * __thiscall GetOrCreateTaskForceOrderNodeByTemplate(int *param_1,int param_
     }
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x80f);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0x80f);
     }
     if (piVar3 == (int *)param_1[4]) {
       param_1[4] = (int)piVar4;
@@ -1864,10 +1864,10 @@ uint __fastcall PruneInactiveTaskForceOrderHead(int param_1)
         *(int *)(piVar1[2] + 4) = piVar1[1];
       }
       FreeHeapBufferIfNotNull(piVar1);
-      piVar1 = thunk_PruneDefeatedMapOrderChildrenAndReturnHead(this,unaff_EDI);
+      piVar1 = PruneDefeatedMapOrderChildrenAndReturnHead(this,unaff_EDI);
     }
     else {
-      thunk_PruneDefeatedMapOrderChildrenAndReturnHead((void *)piVar1[1],unaff_EDI);
+      PruneDefeatedMapOrderChildrenAndReturnHead((void *)piVar1[1],unaff_EDI);
     }
   }
   *(int **)(param_1 + 0x10) = piVar1;
@@ -2118,7 +2118,7 @@ void __thiscall RequeueMapOrderEntry(void *this,int *pMapOrderEntry)
   }
   *(void **)&pTVar8->field_0x4 = this;
 LAB_00554762:
-  thunk_FinalizeQueuedMapOrderEntry(this);
+  FinalizeQueuedMapOrderEntry(this);
   return;
 }
 
@@ -2386,11 +2386,11 @@ void __fastcall BuildTaskForceSelectionOverlayLabelText(int param_1)
   local_4._0_1_ = 3;
   CString::CString(&local_20);
   local_4 = CONCAT31(local_4._1_3_,4);
-  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,0x2762,(iVar2 != 1) + '\x11');
+  LoadUiStringResourceByGroupAndIndex(&local_10,0x2762,(iVar2 != 1) + '\x11');
   FormatOverlayTerrainLabelText(&local_14);
   (**(code **)(**(int **)(param_1 + 0x18) + 0x2c))(&local_18);
   FormatStringWithVarArgsToSharedRef(&local_20,&g_szDecimalFormat,iVar2);
-  thunk_LoadUiStringResourceByGroupAndIndex(&stack0xffffffdc,0x2762,*(short *)(param_1 + 8) + 0x13);
+  LoadUiStringResourceByGroupAndIndex(&stack0xffffffdc,0x2762,*(short *)(param_1 + 8) + 0x13);
   scanBracketExpressions(g_pLocalizationTable,unaff_retaddr,local_14.m_pchData);
   puStack_8._0_1_ = 3;
   CString::~CString((CString *)&stack0xffffffdc);
@@ -2443,7 +2443,7 @@ switchD_005550d1_caseD_2:
     PruneNavyOrderIfUnserviceableOrNoChildren();
     return param_1;
   case 5:
-    iVar3 = TGreatPower::thunk_GetCityIndexFromCityStatePointer((TGreatPower *)param_1[3],unaff_EDI)
+    iVar3 = TGreatPower::GetCityIndexFromCityStatePointer((TGreatPower *)param_1[3],unaff_EDI)
     ;
     cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar3 * 0xa8);
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[9].GetTDiplomacyMgrClassNamePointer)
@@ -2481,12 +2481,12 @@ void __thiscall BuildTaskForcePrimaryObjectiveDescriptionText(int param_1,void *
   CString::CString(&local_20);
   local_4 = 0;
   if ((param_1 == 0) || (*(int *)(param_1 + 0x14) == 0)) {
-    thunk_LoadUiStringResourceByGroupAndIndex(param_2,0x2762,0xd);
+    LoadUiStringResourceByGroupAndIndex(param_2,0x2762,0xd);
   }
   else if (*(int *)(*(int *)(param_1 + 0x14) + 0x20) == 0) {
     CString::CString(&local_18);
     local_4._0_1_ = 5;
-    thunk_LoadUiStringResourceByGroupAndIndex(&local_18,0x2762,0xf);
+    LoadUiStringResourceByGroupAndIndex(&local_18,0x2762,0xf);
     CString::AssignFromPtr(&local_20,(CString *)(*(int *)(param_1 + 0x14) + 0x18));
     scanBracketExpressions(g_pLocalizationTable,param_2,local_18.m_pchData);
     local_4 = (uint)local_4._1_3_ << 8;
@@ -2497,7 +2497,7 @@ void __thiscall BuildTaskForcePrimaryObjectiveDescriptionText(int param_1,void *
     local_4._0_1_ = 1;
     CString::CString(&local_1c);
     local_4._0_1_ = 2;
-    thunk_LoadUiStringResourceByGroupAndIndex(&local_18,0x2762,0xe);
+    LoadUiStringResourceByGroupAndIndex(&local_18,0x2762,0xe);
     src_ref = (CString *)
               AssignSharedStringConcatCStrAndRef
                         (&local_10,s_Adm__0069578c,*(int *)(*(int *)(param_1 + 0x14) + 0x20) + 0xc);
@@ -2577,10 +2577,10 @@ undefined4 __thiscall ResolveTaskForceOrderConflictAndPickCandidate(int *param_1
         else {
           sVar6 = (short)((iVar7 * 10) / iVar9);
         }
-        sVar3 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+        sVar3 = CalculateMapOrderEntryAverageChildRatingX10();
         sVar8 = (sVar6 - sVar3) + 0x32;
-        sVar4 = thunk_GetMapOrderEntryChildCount();
-        sVar5 = thunk_GetMapOrderEntryChildCount();
+        sVar4 = GetMapOrderEntryChildCount();
+        sVar5 = GetMapOrderEntryChildCount();
         if (10 < (short)(sVar4 + sVar5)) {
           sVar8 = (sVar6 - sVar3) + 0x28 + sVar4 + sVar5;
         }
@@ -2633,7 +2633,7 @@ LAB_0055552a:
           sVar6 = sVar6 + 1;
         }
       }
-      if ((sVar6 != 0) && (sVar6 = thunk_GetMapOrderEntryChildCount(), sVar6 != 0)) {
+      if ((sVar6 != 0) && (sVar6 = GetMapOrderEntryChildCount(), sVar6 != 0)) {
         if ((*(short *)&g_pLocalizationTable->field_0x4a != 0) &&
            ((iVar7 = param_1[7], sVar6 = UiRuntimeContext::GetActiveNationId(),
             sVar6 == (short)iVar7 ||
@@ -2641,7 +2641,7 @@ LAB_0055552a:
             sVar6 == (short)iVar7)))) {
           return 1;
         }
-        thunk_ResolveMapOrderPairConflictStep(param_1,param_2);
+        ResolveMapOrderPairConflictStep(param_1,param_2);
       }
     }
   }
@@ -2799,7 +2799,7 @@ int __thiscall TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int param_
         uVar7 = *(ushort *)(&DAT_00698124 + *(short *)(*piVar1 + 4) * 0x24);
       }
     }
-    sVar4 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+    sVar4 = CalculateMapOrderEntryAverageChildRatingX10();
     sVar4 = ((-(ushort)(uVar7 != 10000) & uVar7) + 5) * 10 - sVar4;
     iVar5 = GenerateThreadLocalRandom15();
     iVar6 = (int)sVar4;
@@ -2826,8 +2826,8 @@ int __thiscall TryMarkLosingMapOrderEntryFromForceBalance(int param_1,int param_
     if (local_c[*(int *)(param_2 + 4)] * (int)sVar2 <= sVar4 * 100) {
       return CONCAT31((int3)((uint)(sVar4 * 100) >> 8),1);
     }
-    sVar4 = thunk_GetMinActionThresholdFromEntryChildren();
-    sVar2 = thunk_CalculateMapOrderEntryAverageChildRatingX10();
+    sVar4 = GetMinActionThresholdFromEntryChildren();
+    sVar2 = CalculateMapOrderEntryAverageChildRatingX10();
     sVar2 = (sVar4 + 5) * 10 - sVar2;
     iVar5 = GenerateThreadLocalRandom15();
     iVar6 = (int)sVar2;
@@ -2919,7 +2919,7 @@ TryResolveMapOrderEntryPairExecution(int *param_1,int *param_2,undefined4 *param
              sVar2 == (short)iVar1)))) {
         return 1;
       }
-      thunk_ResolveMapOrderPairConflictStep(param_1,param_2);
+      ResolveMapOrderPairConflictStep(param_1,param_2);
       *param_3 = 0;
     }
   }
@@ -3397,7 +3397,7 @@ void __thiscall DeserializeNavyOrderListsByNation(int param_1,int *param_2,undef
     }
   }
   else {
-    thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(param_3);
+    RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(param_3);
   }
   puVar8 = local_1c;
   pTVar1 = *(TShip **)(*param_2 + 0x3c);
@@ -3416,7 +3416,7 @@ void __thiscall DeserializeNavyOrderListsByNation(int param_1,int *param_2,undef
     iStack_c = -1;
     if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd11);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd11);
     }
     iVar2 = *piVar6;
     (**(code **)(iVar2 + 0x18))(uStack_4);
@@ -3450,13 +3450,13 @@ void __thiscall DeserializeNavyOrderListsByNation(int param_1,int *param_2,undef
         *(int **)(piVar6[5] + 0x18) = piVar6;
       }
       if ((short)piVar6[1] != -1) {
-        thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+        RemoveDuplicateNavySecondaryOrdersByDisplayName();
       }
     }
     local_14 = -1;
     if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd24);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd24);
     }
     iVar2 = *piVar6;
     (**(code **)(iVar2 + 0x18))(iStack_c);
@@ -3496,7 +3496,7 @@ void __thiscall DeserializeNavyOrderListsByNation(int param_1,int *param_2,undef
     }
     if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd37);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xd37);
     }
     iVar2 = *piVar6;
     (**(code **)(iVar2 + 0x18))(local_14);
@@ -3555,7 +3555,7 @@ void __thiscall CancelNationOrdersAndResetPrimaryFlags(int param_1,int param_2)
       this = (TToolBarCluster *)this->field2c;
     } while (this != (TToolBarCluster *)0x0);
     if (this == (TToolBarCluster *)0x0) break;
-    TToolBarCluster::thunk_CancelMapOrderEntryAndRestoreActive(this,(int *)0x1);
+    TToolBarCluster::CancelMapOrderEntryAndRestoreActive(this,(int *)0x1);
   }
   for (; pTVar1 != (TShip *)0x0; pTVar1 = *(TShip **)&pTVar1->field_0x24) {
     if (*(short *)&pTVar1->field_0x14 == param_2) {
@@ -3585,7 +3585,7 @@ void __fastcall ResetPrimaryOrderActiveFlagsAndClearManagerState(int param_1)
     (**(code **)(*piVar2 + 0x1c))();
   }
   *(undefined4 *)(param_1 + 4) = 0;
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   return;
 }
 
@@ -3895,14 +3895,14 @@ undefined4 * CreateNavySecondaryOrderEntryAndDeduplicateDisplayName(undefined2 p
       *(undefined4 **)(puVar2[5] + 0x18) = puVar2;
     }
     if (*(short *)(puVar2 + 1) != -1) {
-      TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+      TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
                 ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)(puVar2 + 1)]);
       for (puVar1 = g_pNavySecondaryOrderListHead; puVar1 != (undefined4 *)0x0;
           puVar1 = (undefined4 *)puVar1[5]) {
         if ((puVar1 != puVar2) &&
            (iVar3 = CompareAnsiStringsWithMbcsAwareness
                               (puVar1[3],((CString *)(puVar2 + 3))->m_pchData), iVar3 == 0)) {
-          thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+          RemoveDuplicateNavySecondaryOrdersByDisplayName();
         }
       }
     }
@@ -3910,7 +3910,7 @@ undefined4 * CreateNavySecondaryOrderEntryAndDeduplicateDisplayName(undefined2 p
   local_4 = 0xffffffff;
   if (puVar2 == (undefined4 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xe21);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNavy_cpp_006983c8,0xe21);
   }
   *unaff_FS_OFFSET = local_c;
   return puVar2;
@@ -3975,7 +3975,7 @@ void RevalidateAndRequeueMapOrdersForTurn(void)
   int iChildNode;
   short *pnOrderClassCounter;
   
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   for (pTVar2 = g_pMapActionContextListHead; pTVar2 != (TZone *)0x0;
       pTVar2 = *(TZone **)&pTVar2->field_0x18) {
     nOrderBucketIndex = 0;
@@ -3992,7 +3992,7 @@ void RevalidateAndRequeueMapOrdersForTurn(void)
                  *(short *)(&DAT_00698114 + *(short *)(*piVar1 + 4) * 0x24);
           }
           pOrderEntry[2] = 8;
-          thunk_RequeueMapOrderEntry(pOrderEntry,unaff_EBP);
+          RequeueMapOrderEntry(pOrderEntry,unaff_EBP);
           pOrderEntry = (int *)CreateTaskForceFromNavyOrdersForNationIfEligible(nOrderBucketIndex);
         }
         if (pOrderEntry != (int *)0x0) {
@@ -4007,7 +4007,7 @@ void RevalidateAndRequeueMapOrdersForTurn(void)
             pOrderEntry[5] = 0;
             while (pChildOrderNode != (TShip *)0x0) {
               if (pChildOrderNode->field_0xc == '\0') {
-                TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+                TScatteredShipsMission::SetMapOrderActiveChildEntry
                           ((TScatteredShipsMission *)pChildOrderNode->vftable,(int *)0x0);
                 pnOrderClassCounter =
                      (short *)((int)pOrderEntry +
@@ -4019,7 +4019,7 @@ void RevalidateAndRequeueMapOrdersForTurn(void)
                   pOrderEntry[4] = *(int *)&pChildOrderNode->field_0x4;
                 }
                 pChildOrderNode =
-                     (TShip *)TShip::thunk_DeleteMapOrderChildLinkAndReturnNext
+                     (TShip *)TShip::DeleteMapOrderChildLinkAndReturnNext
                                         (pChildOrderNode,unaff_EBP);
               }
               else {
@@ -4034,18 +4034,18 @@ void RevalidateAndRequeueMapOrdersForTurn(void)
               pOrderEntry[5] = nRebuiltChildChainHead;
             }
             (**(code **)(*pOrderEntry + 0xc))();
-            fCanKeepOrder = thunk_MoveMapOrderEntryToQueueHeadIfValid(pOrderEntry);
+            fCanKeepOrder = MoveMapOrderEntryToQueueHeadIfValid(pOrderEntry);
             if (fCanKeepOrder != '\0') {
-              thunk_FinalizeQueuedMapOrderEntry(pOrderEntry);
+              FinalizeQueuedMapOrderEntry(pOrderEntry);
             }
           }
           else {
             pOrderEntry[2] = 7;
-            thunk_RebuildMapOrderEntryChildren();
+            RebuildMapOrderEntryChildren();
             (**(code **)(*pOrderEntry + 0xc))();
-            fCanKeepOrder = thunk_MoveMapOrderEntryToQueueHeadIfValid(pOrderEntry);
+            fCanKeepOrder = MoveMapOrderEntryToQueueHeadIfValid(pOrderEntry);
             if (fCanKeepOrder != '\0') {
-              thunk_FinalizeQueuedMapOrderEntry(pOrderEntry);
+              FinalizeQueuedMapOrderEntry(pOrderEntry);
             }
           }
         }
@@ -4372,10 +4372,10 @@ LAB_00558249:
                   uStack_270 = 1;
                   uStack_271 = 0;
                   uStack_272 = 1;
-                  thunk_BuildMapOrderBattleSideSnapshot((int)auStack_274,0,(int)piVar22);
-                  thunk_BuildMapOrderBattleSideSnapshot((int)auStack_274,1,(int)local_298);
-                  thunk_RefreshMapOrderBattleSideSnapshot((int)auStack_274,0,(int)piVar22);
-                  thunk_RefreshMapOrderBattleSideSnapshot((int)auStack_274,1,(int)local_298);
+                  BuildMapOrderBattleSideSnapshot((int)auStack_274,0,(int)piVar22);
+                  BuildMapOrderBattleSideSnapshot((int)auStack_274,1,(int)local_298);
+                  RefreshMapOrderBattleSideSnapshot((int)auStack_274,0,(int)piVar22);
+                  RefreshMapOrderBattleSideSnapshot((int)auStack_274,1,(int)local_298);
                   DispatchMapInteractionPayloadAndResetWorkingFields(auStack_274,0);
                   uStack_4 = 0xffffffff;
                   FreeHeapBufferIfNotNull(uStack_24);
@@ -4392,13 +4392,13 @@ LAB_00558249:
                       sVar7 = sVar7 + 1;
                     }
                   }
-                  if (((sVar7 != 0) && (sVar7 = thunk_GetMapOrderEntryChildCount(), sVar7 != 0)) &&
+                  if (((sVar7 != 0) && (sVar7 = GetMapOrderEntryChildCount(), sVar7 != 0)) &&
                      ((*(short *)&g_pLocalizationTable->field_0x4a == 0 ||
                       ((iVar14 = piVar22[7], sVar7 = UiRuntimeContext::GetActiveNationId(),
                        sVar7 != (short)iVar14 &&
                        (iVar14 = local_298[7], sVar7 = UiRuntimeContext::GetActiveNationId(),
                        sVar7 != (short)iVar14)))))) {
-                    thunk_ResolveMapOrderPairConflictStep(piVar22,local_298);
+                    ResolveMapOrderPairConflictStep(piVar22,local_298);
                     piStack_284 = (int *)0x0;
                   }
                   piVar9 = piStack_284;
@@ -4633,7 +4633,7 @@ void __thiscall ProcessNationMapOrderInteractionsAndApplyOutcomes(undefined4 par
                 if (param_2 == 1) {
                   CVar24.m_pchData = pcVar16;
                 }
-                uVar6 = thunk_FindFirstPortZoneContextByNation(CVar24.m_pchData);
+                uVar6 = FindFirstPortZoneContextByNation(CVar24.m_pchData);
                 cVar4 = SelectEligibleMapOrderInteractionForNationAndContext
                                   (asStack_300,uVar6,pcVar16,uStack_31c);
                 if (cVar4 != '\0') {
@@ -5214,7 +5214,7 @@ LAB_00559b0a:
       else {
         pvVar2 = (void *)0x0;
       }
-      pvVar1 = thunk_GetMapActionContextByTileIndex(nTileIndex);
+      pvVar1 = GetMapActionContextByTileIndex(nTileIndex);
       return 10 - (uint)(pvVar1 != pvVar2);
     }
   }
@@ -5236,7 +5236,7 @@ ushort __cdecl GetMapContextActionLabelTokenByActionCode(short nTileIndex,int dw
 {
   int iVar1;
   
-  iVar1 = thunk_GetMapContextActionCode(nTileIndex,dwInputFlags);
+  iVar1 = GetMapContextActionCode(nTileIndex,dwInputFlags);
   return (&g_awMapContextActionLabelTokenByCommand)[(short)iVar1];
 }
 
@@ -5265,17 +5265,17 @@ ushort __cdecl GetMapContextActionLabelToken(short nTileIndex,int dwInputFlags)
   undefined2 uVar9;
   ushort uVar10;
   
-  iVar5 = thunk_GetMapContextActionCode(nTileIndex,dwInputFlags);
+  iVar5 = GetMapContextActionCode(nTileIndex,dwInputFlags);
   if (iVar5 == 0) {
-    pvVar6 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
+    pvVar6 = GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
     if (pvVar6 != (void *)0x0) {
       if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + nTileIndex * 0x24) == '\x05') {
-        pTVar7 = thunk_GetMapActionContextByTileIndex(nTileIndex);
+        pTVar7 = GetMapActionContextByTileIndex(nTileIndex);
         if (pTVar7 == (TScatteredShipsMission *)0x0) {
           bVar2 = false;
         }
         else {
-          cVar3 = thunk_HasNoMapOrderEntryChildrenQueued();
+          cVar3 = HasNoMapOrderEntryChildrenQueued();
           if ((cVar3 == '\0') && (iVar5 = *(int *)((int)pvVar6 + 0x10), iVar5 != 0)) {
 LAB_00559e7e:
             if (*(char *)(iVar5 + 0xc) == '\0') goto code_r0x00559e85;
@@ -5298,7 +5298,7 @@ LAB_00559e92:
         }
 LAB_00559ee6:
         if (bVar2) {
-          iVar5 = thunk_ResolveMapOrderCommandFromActionContext(pTVar7);
+          iVar5 = ResolveMapOrderCommandFromActionContext(pTVar7);
           return (&g_awMapContextActionLabelTokenByCommand)[iVar5];
         }
       }
@@ -5421,8 +5421,8 @@ void __cdecl ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRightOrd
   local_4 = 0;
   local_270 = 1;
   uStack_271 = 0;
-  thunk_BuildMapOrderBattleSideSnapshot((int)local_274,0,(int)pLeftOrderEntry);
-  thunk_BuildMapOrderBattleSideSnapshot((int)local_274,1,(int)pRightOrderEntry);
+  BuildMapOrderBattleSideSnapshot((int)local_274,0,(int)pLeftOrderEntry);
+  BuildMapOrderBattleSideSnapshot((int)local_274,1,(int)pRightOrderEntry);
   iVar13 = 0;
   local_28c[2] = 0;
   if ((pLeftOrderEntry != (int *)0x0) && (iVar18 = pLeftOrderEntry[4], iVar18 != 0)) {
@@ -5684,17 +5684,17 @@ void __cdecl ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRightOrd
       pTVar11 = (TShip *)0x0;
     }
     else if (*(short *)&pTVar11->vftable[3].DestructTShipAndFreeIfOwned < 1) {
-      TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+      TScatteredShipsMission::SetMapOrderActiveChildEntry
                 ((TScatteredShipsMission *)pTVar11->vftable,(int *)0x0);
       (**(code **)(pTVar11->vftable->GetTShipClassNamePointer + 0x1c))();
-      piVar12 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
-      pTVar11 = (TShip *)thunk_PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
+      piVar12 = TShip::DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
+      pTVar11 = (TShip *)PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
     }
     else {
-      thunk_PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
+      PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
     }
     pLeftOrderEntry[4] = (int)pTVar11;
-    thunk_RecomputeMapOrderChildAggregateMetric(pLeftOrderEntry,unaff_EDI);
+    RecomputeMapOrderChildAggregateMetric(pLeftOrderEntry,unaff_EDI);
     local_2b6 = pLeftOrderEntry[4] == 0;
     if (local_2b6) {
       *(undefined1 *)((int)pLeftOrderEntry + 0x26) = 1;
@@ -5704,17 +5704,17 @@ void __cdecl ResolveMapOrderPairConflictStep(int *pLeftOrderEntry,int *pRightOrd
       pTVar11 = (TShip *)0x0;
     }
     else if (*(short *)&pTVar11->vftable[3].DestructTShipAndFreeIfOwned < 1) {
-      TScatteredShipsMission::thunk_SetMapOrderActiveChildEntry
+      TScatteredShipsMission::SetMapOrderActiveChildEntry
                 ((TScatteredShipsMission *)pTVar11->vftable,(int *)0x0);
       (**(code **)(pTVar11->vftable->GetTShipClassNamePointer + 0x1c))();
-      piVar12 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
-      pTVar11 = (TShip *)thunk_PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
+      piVar12 = TShip::DeleteMapOrderChildLinkAndReturnNext(pTVar11,unaff_EDI);
+      pTVar11 = (TShip *)PruneDefeatedMapOrderChildrenAndReturnHead(piVar12,unaff_EDI);
     }
     else {
-      thunk_PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
+      PruneDefeatedMapOrderChildrenAndReturnHead(*(void **)&pTVar11->field_0x4,unaff_EDI);
     }
     pRightOrderEntry[4] = (int)pTVar11;
-    thunk_RecomputeMapOrderChildAggregateMetric(pRightOrderEntry,unaff_EDI);
+    RecomputeMapOrderChildAggregateMetric(pRightOrderEntry,unaff_EDI);
     local_2bd = pRightOrderEntry[4] == 0;
     if ((bool)local_2bd) {
       *(undefined1 *)((int)pRightOrderEntry + 0x26) = 1;
@@ -5803,15 +5803,15 @@ LAB_0055b160:
       }
       for (puVar2 = (undefined4 *)piVar12[4]; puVar2 != (undefined4 *)0x0;
           puVar2 = (undefined4 *)puVar2[1]) {
-        thunk_AdjustMapOrderNodeStatCapped499((void *)*puVar2,(short)((iVar13 * 3) / (int)sVar9));
+        AdjustMapOrderNodeStatCapped499((void *)*puVar2,(short)((iVar13 * 3) / (int)sVar9));
       }
     }
     if (piVar15 != (int *)0x0) {
       *(undefined1 *)((int)piVar15 + 0x26) = 1;
     }
   }
-  thunk_RefreshMapOrderBattleSideSnapshot((int)local_274,0,(int)pLeftOrderEntry);
-  thunk_RefreshMapOrderBattleSideSnapshot((int)local_274,1,(int)pRightOrderEntry);
+  RefreshMapOrderBattleSideSnapshot((int)local_274,0,(int)pLeftOrderEntry);
+  RefreshMapOrderBattleSideSnapshot((int)local_274,1,(int)pRightOrderEntry);
   DispatchMapInteractionPayloadAndResetWorkingFields(local_274,0);
   local_4 = 0xffffffff;
   FreeHeapBufferIfNotNull(local_24);
@@ -5863,7 +5863,7 @@ void __fastcall RebuildNationRankingDataAndUiCache(int param_1)
   CString CStack_14;
   
   CStack_14.m_pchData = (char *)0x55b8eb;
-  thunk_LoadAndByteSwapRankingTableResource();
+  LoadAndByteSwapRankingTableResource();
   piVar6 = (int *)(param_1 + 0xef4);
   if (*(int *)(param_1 + 0xef4) == 0) {
     iVar4 = 7;
@@ -5883,9 +5883,9 @@ void __fastcall RebuildNationRankingDataAndUiCache(int param_1)
     } while (iVar4 != 0);
   }
   CStack_14.m_pchData = (char *)0x55b93b;
-  src_ref = (CString *)thunk_GetRankingTableStringBaseAtOffset28();
+  src_ref = (CString *)GetRankingTableStringBaseAtOffset28();
   CString::StringSharedRef_AssignFromPtr(&CStack_14,src_ref);
-  uVar3 = thunk_LoadTableResourceStreamByName();
+  uVar3 = LoadTableResourceStreamByName();
   *(undefined4 *)(param_1 + 0xed0) = uVar3;
   puVar7 = (undefined4 *)(param_1 + 0xc);
   for (iVar4 = 0x3b1; iVar4 != 0; iVar4 = iVar4 + -1) {
@@ -5903,7 +5903,7 @@ void __fastcall RebuildNationRankingDataAndUiCache(int param_1)
     else {
 LAB_0055b98e:
       CStack_14.m_pchData = pcVar5;
-      thunk_BuildNationRankingRowsForNation();
+      BuildNationRankingRowsForNation();
     }
     ppTVar8 = ppTVar8 + 1;
     pcVar5 = pcVar5 + 1;
@@ -5911,7 +5911,7 @@ LAB_0055b98e:
       CStack_14.m_pchData = *(char **)(param_1 + 4);
       FreeHeapBufferIfNotNull();
       CStack_14.m_pchData = *(char **)(param_1 + 0xed0);
-      thunk_ReleaseResourceStreamIfNotNull();
+      ReleaseResourceStreamIfNotNull();
       CStack_14.m_pchData = (char *)0x55b9cb;
       (**(code **)(**(int **)(param_1 + 0xef0) + 0x20))();
       return;
@@ -5946,16 +5946,16 @@ undefined1 * __fastcall LoadAndByteSwapRankingTableResource(int param_1)
   
   src_ref = (CString *)GetNewsMgrEntryArrayBaseAtOffset2C();
   CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffe8,src_ref);
-  uVar2 = thunk_LoadTableResourceStreamByName();
-  uVar3 = thunk_GetResourceStreamSize();
+  uVar2 = LoadTableResourceStreamByName();
+  uVar3 = GetResourceStreamSize();
   iVar4 = AllocateWithFallbackHandler();
   *(int *)(param_1 + 4) = iVar4;
   if (iVar4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNewspaper_cpp_00698470);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UNewspaper_cpp_00698470);
   }
-  thunk_ReadResourceStreamIntoBufferAndAdvance(uVar2,*(undefined4 *)(param_1 + 4));
-  thunk_ReleaseResourceStreamIfNotNull();
+  ReadResourceStreamIntoBufferAndAdvance(uVar2,*(undefined4 *)(param_1 + 4));
+  ReleaseResourceStreamIfNotNull();
   iVar4 = 0;
   puVar5 = (undefined1 *)(uVar3 * -0x55555555);
   *(uint *)(param_1 + 8) = uVar3 / 0x18;
@@ -6461,7 +6461,7 @@ LAB_0055c435:
       iVar10 = (pbVar7[2] != 0) - 0x1a;
     }
     else {
-      sVar3 = thunk_GetShortAtOffset14OrInvalid();
+      sVar3 = GetShortAtOffset14OrInvalid();
       *piVar5 = (int)sVar3;
       piVar5[4] = 4;
       iVar10 = -0x1b - (uint)(*(int *)(pbVar7 + 4) != 1);
@@ -6702,10 +6702,10 @@ BuildInterNationEventSummaryRowsForAdvisorDialog(TTEView *param_1,undefined4 par
   CString::CString(&local_58);
   local_4 = CONCAT31(local_4._1_3_,3);
   CStack_6c.m_pchData = (char *)0x55d27d;
-  pCVar5 = (CString *)thunk_GetRankingTableStringBaseAtOffset28();
+  pCVar5 = (CString *)GetRankingTableStringBaseAtOffset28();
   local_44 = (undefined1 *)&CStack_6c;
   CString::StringSharedRef_AssignFromPtr(&CStack_6c,pCVar5);
-  uVar6 = thunk_LoadTableResourceStreamByName();
+  uVar6 = LoadTableResourceStreamByName();
   CStack_6c.m_pchData = (char *)0x2;
   *(undefined4 *)&param_1->field_0x94 = uVar6;
   local_3a = 0;
@@ -6719,13 +6719,13 @@ BuildInterNationEventSummaryRowsForAdvisorDialog(TTEView *param_1,undefined4 par
   local_2c = 0;
   local_2b = 0;
   CStack_80.m_pchData = (char *)0x55d2ec;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   CStack_6c.m_pchData = (char *)0x2;
   CStack_80.m_pchData = (char *)0x55d304;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   CStack_6c.m_pchData = (char *)0x2;
   CStack_80.m_pchData = (char *)0x55d31c;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   pTVar1 = param_1->vftable[0x12].slot_0x04;
   CStack_6c.m_pchData = (char *)0x64617465;
   uVar3 = (*pTVar1)();
@@ -6839,7 +6839,7 @@ switchD_0055d48c_default:
     } while (CVar12.m_pchData != (char *)0x0);
     iVar10 = iVar10 + 1;
   } while (iVar10 < 3);
-  thunk_ReleaseResourceStreamIfNotNull(*(undefined4 *)&param_1->field_0x94);
+  ReleaseResourceStreamIfNotNull(*(undefined4 *)&param_1->field_0x94);
   uStack_30._0_1_ = 2;
   CString::~CString(&CStack_84);
   uStack_30._0_1_ = 1;
@@ -6891,7 +6891,7 @@ void FormatInterNationEventRowTokensToSharedStrings(CString param_1,CString para
       uVar1 = *(undefined4 *)(iVar3 + (int)this_00.m_pchData);
       CString::CString(&param_2);
       uStack_4 = 0;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField(uVar1,&param_2);
+      AssignSharedStringFromIndexedA8EntryNameField(uVar1,&param_2);
       CString::AssignFromPtr((CString *)this_00.m_pchData,&param_2);
       this = &param_2;
       goto LAB_0055d9f4;
@@ -7119,7 +7119,7 @@ void AssignLocalizedIndexedNameFromA8Entry(CString *param_1,undefined4 param_2)
   *unaff_FS_OFFSET = &local_c;
   CString::CString(&local_10);
   local_4 = 0;
-  thunk_AssignSharedStringFromIndexedA8EntryNameField(param_2,&local_10);
+  AssignSharedStringFromIndexedA8EntryNameField(param_2,&local_10);
   CString::AssignFromPtr(param_1,&local_10);
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -7501,10 +7501,10 @@ void __fastcall AdvanceSpiralSearchStateAndStepHexCoordinates(int param_1)
     if (5 < iVar1) {
       *(int *)(param_1 + 8) = *(int *)(param_1 + 8) + 1;
       *(undefined4 *)(param_1 + 0xc) = 0;
-      thunk_StepHexRowColByDirectionWithWrapRules(param_1,param_1 + 4,4);
+      StepHexRowColByDirectionWithWrapRules(param_1,param_1 + 4,4);
     }
   }
-  thunk_StepHexRowColByDirectionWithWrapRules(param_1,param_1 + 4,*(undefined4 *)(param_1 + 0xc));
+  StepHexRowColByDirectionWithWrapRules(param_1,param_1 + 4,*(undefined4 *)(param_1 + 0xc));
   return;
 }
 
@@ -7534,7 +7534,7 @@ BuildMapOrderObjectiveDescriptionTextForNation(int param_1,void *param_2,CString
   puStack_8 = &LAB_00635798;
   *unaff_FS_OFFSET = &local_c;
   iVar3 = 0;
-  iVar2 = thunk_GetNavyPrimaryOrderListHead();
+  iVar2 = GetNavyPrimaryOrderListHead();
   if (iVar2 != 0) {
     sVar1 = (short)param_3.m_pchData;
     do {
@@ -7545,7 +7545,7 @@ BuildMapOrderObjectiveDescriptionTextForNation(int param_1,void *param_2,CString
     } while (iVar2 != 0);
   }
   if (iVar3 == 0) {
-    thunk_LoadUiStringResourceByGroupAndIndex(param_2,0x2762,0x10);
+    LoadUiStringResourceByGroupAndIndex(param_2,0x2762,0x10);
   }
   else {
     if (*(int *)(iVar3 + 0x20) == 0) {
@@ -7554,7 +7554,7 @@ BuildMapOrderObjectiveDescriptionTextForNation(int param_1,void *param_2,CString
       CString::CString(&param_3);
       local_4._0_1_ = 6;
       CString::AssignFromPtr(&local_18,(CString *)(iVar3 + 0x18));
-      thunk_LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0xf);
+      LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0xf);
       scanBracketExpressions(g_pLocalizationTable,param_2,param_3.m_pchData);
       local_4 = CONCAT31(local_4._1_3_,5);
       CString::~CString(&param_3);
@@ -7566,7 +7566,7 @@ BuildMapOrderObjectiveDescriptionTextForNation(int param_1,void *param_2,CString
       local_4._0_1_ = 1;
       CString::CString(&param_3);
       local_4._0_1_ = 2;
-      thunk_LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0xe);
+      LoadUiStringResourceByGroupAndIndex(&param_3,0x2762,0xe);
       src_ref = (CString *)
                 AssignSharedStringConcatCStrAndRef
                           (&local_10,s_Adm__0069578c,*(int *)(iVar3 + 0x20) + 0xc);
@@ -7603,7 +7603,7 @@ undefined4 __thiscall GetMapOrderContextPointerForNationAndTarget(int param_1,in
   int iVar2;
   
   iVar2 = 0;
-  for (iVar1 = thunk_GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
+  for (iVar1 = GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
     if ((*(int *)(iVar1 + 8) == param_1) && (*(short *)(iVar1 + 0x14) == param_2)) {
       iVar2 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(iVar1,0);
     }
@@ -7639,7 +7639,7 @@ undefined4 __thiscall CreateTaskForceFromNavyOrdersForNationIfEligible(int param
     sVar1 = UiRuntimeContext::GetActiveNationId();
   }
   if ((*(byte *)(param_1 + 0x10) & '\x01' << ((byte)sVar1 & 0x1f)) != 0) {
-    for (iVar2 = thunk_GetNavyPrimaryOrderListHead(); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x24)) {
+    for (iVar2 = GetNavyPrimaryOrderListHead(); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x24)) {
       if (((*(int *)(iVar2 + 8) == param_1) && (*(short *)(iVar2 + 0x14) == sVar1)) &&
          (*(int *)(iVar2 + 0xc) == 0)) {
         this = (TTaskForce *)AllocateWithFallbackHandler(0x34);
@@ -7906,7 +7906,7 @@ uint __thiscall BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(int par
   uint uVar4;
   
   uVar4 = 0;
-  for (iVar3 = thunk_GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
+  for (iVar3 = GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
     if (((*(int *)(iVar3 + 8) == param_1) && (iVar1 = *(int *)(iVar3 + 0xc), iVar1 != 0)) &&
        (*(char *)(iVar1 + 0x26) == '\0')) {
       if ((*(int *)(iVar1 + 8) == 3) || (*(int *)(iVar1 + 8) == 4)) {
@@ -7936,7 +7936,7 @@ uint __fastcall BuildNationBitmaskForActiveType3Or4Orders(int param_1)
   uint uVar4;
   
   uVar4 = 0;
-  for (iVar3 = thunk_GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
+  for (iVar3 = GetNavyPrimaryOrderListHead(); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
     if (((*(int *)(iVar3 + 8) == param_1) && (iVar1 = *(int *)(iVar3 + 0xc), iVar1 != 0)) &&
        (*(char *)(iVar1 + 0x26) == '\0')) {
       if ((*(int *)(iVar1 + 8) == 3) || (*(int *)(iVar1 + 8) == 4)) {
@@ -7968,7 +7968,7 @@ HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int param_1,undefined4 p
   uint uVar5;
   
   uVar5 = 0;
-  for (iVar4 = thunk_GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
+  for (iVar4 = GetNavyPrimaryOrderListHead(); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
     if (((*(int *)(iVar4 + 8) == param_1) && (iVar1 = *(int *)(iVar4 + 0xc), iVar1 != 0)) &&
        (*(char *)(iVar1 + 0x26) == '\0')) {
       if ((*(int *)(iVar1 + 8) == 3) || (*(int *)(iVar1 + 8) == 4)) {
@@ -8206,7 +8206,7 @@ short __fastcall FindNearestValidPortZoneOrCityContextTile(int param_1)
   local_c = 0;
   local_8 = 5;
   local_4 = 1;
-  thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(0);
+  AdvanceSpiralSearchStateAndStepHexCoordinates(0);
   if (9 < local_c) {
     return -1;
   }
@@ -8267,10 +8267,10 @@ LAB_00561f55:
       if (5 < local_8) {
         local_c = local_c + 1;
         local_8 = 0;
-        thunk_StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,4);
+        StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,4);
       }
     }
-    thunk_StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,local_8);
+    StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,local_8);
     if (9 < local_c) {
       return -1;
     }
@@ -8338,7 +8338,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(short *param_1)
     if (*psVar5 == 0) {
       iVar4 = 0;
       do {
-        sVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(local_4,iVar4);
+        sVar2 = StepHexTileIndexByDirectionWithWrapRules(local_4,iVar4);
         sVar1 = *psVar5;
         if ((sVar1 == 0) &&
            ((sVar2 == -1 ||
@@ -8409,7 +8409,7 @@ int SelectBestSeedTileForNationFromCostField(short *param_1,short param_2)
       iVar6 = *local_4 * 0xc;
       iVar8 = 0;
       do {
-        sVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(local_8,iVar8);
+        sVar2 = StepHexTileIndexByDirectionWithWrapRules(local_8,iVar8);
         if ((sVar2 != -1) &&
            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + sVar2 * 0x24) ==
             *(char *)(iVar4 + 4 + *(int *)&g_pGlobalMapState->field_0xc))) {
@@ -8483,7 +8483,7 @@ void RefreshMapActionContextNationOverlaysAndOrderRanks(void)
       pTVar2 = *(TZone **)&pTVar2->field_0x18) {
     *(undefined2 *)&pTVar2->field_0x10 = 0;
   }
-  iVar10 = thunk_GetNavyPrimaryOrderListHead();
+  iVar10 = GetNavyPrimaryOrderListHead();
   pTVar13 = g_pGlobalMapState;
   for (; g_pGlobalMapState = pTVar13, iVar10 != 0; iVar10 = *(int *)(iVar10 + 0x24)) {
     puVar1 = (ushort *)(*(int *)(iVar10 + 8) + 0x10);
@@ -8526,7 +8526,7 @@ LAB_00562fa2:
         this = (TCivToolbar *)g_pMapActionContextListHead;
         do {
           if (((byte)((byte)this->field10 & '\x01' << ((byte)uVar11 & 0x1f)) == 0) &&
-             (cVar5 = thunk_ContainsPointerArrayEntryMatchingByteKey(uVar11), cVar5 == '\0')) {
+             (cVar5 = ContainsPointerArrayEntryMatchingByteKey(uVar11), cVar5 == '\0')) {
             bVar4 = false;
           }
           else {
@@ -8561,7 +8561,7 @@ LAB_00562fa2:
         sVar7 = *(short *)(iVar10 + 0x1c);
         sVar8 = UiRuntimeContext::GetActiveNationId();
         if ((sVar7 != sVar8) && (*(int *)(iVar10 + 8) == 5)) {
-          iVar14 = TGreatPower::thunk_GetCityIndexFromCityStatePointer
+          iVar14 = TGreatPower::GetCityIndexFromCityStatePointer
                              (*(TGreatPower **)(iVar10 + 0xc),unaff_EDI);
           sVar7 = UiRuntimeContext::GetActiveNationId();
           if (*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar14 * 0xa8) == sVar7) {
@@ -8856,7 +8856,7 @@ LAB_00563673:
       local_4 = 0xffffffff;
       if (pTVar6 == (TZone *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UOcean_cpp_006984cc,0x96a);
       }
       TZone::SetMapActionContextTargetTileAndRefreshMarkers(pTVar6,local_1c,-1);
@@ -8866,13 +8866,13 @@ LAB_00563673:
       (*pTVar6->vftable[5].DispatchNationPendingActionEventCodes)(0,0);
       local_20 = 0;
       do {
-        uVar7 = thunk_StepHexTileIndexByDirectionWithWrapRules(_nTileIndex,iVar10 % 6);
+        uVar7 = StepHexTileIndexByDirectionWithWrapRules(_nTileIndex,iVar10 % 6);
         if (((short)uVar7 != -1) &&
            (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)uVar7 * 0x24) == '\x05')) {
           bVar2 = true;
           iVar5 = 0;
           do {
-            sVar3 = thunk_GetWrappedHexNeighborTileIndexByDirection(uVar7,iVar5);
+            sVar3 = GetWrappedHexNeighborTileIndexByDirection(uVar7,iVar5);
             if (((sVar3 != -1) &&
                 (cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + sVar3 * 0x24),
                 cVar1 < '\x17')) && (cVar1 != local_24)) {
@@ -8980,7 +8980,7 @@ undefined4 TraceTerrainFlowToNearestSeaTile(undefined4 param_1)
     sVar2 = *(short *)(&DAT_0065c668 + (local_8 + (short)uVar3 * 2) * 2);
     uVar4 = param_1;
     do {
-      uVar4 = thunk_StepHexTileIndexByDirectionWithWrapRules(uVar4,sVar2);
+      uVar4 = StepHexTileIndexByDirectionWithWrapRules(uVar4,sVar2);
       pcVar1 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)uVar4 * 0x24);
       if (*pcVar1 == '\x05') {
         return CONCAT22((short)((uint)pcVar1 >> 0x10),(short)uVar4);
@@ -9056,7 +9056,7 @@ undefined1 EvaluateTerrainFlowCrossNationBoundaryToSea(undefined4 param_1)
     sVar2 = *(short *)(&DAT_0065c668 + (local_c + sVar2 * 2) * 2);
     uVar3 = param_1;
     do {
-      uVar3 = thunk_StepHexTileIndexByDirectionWithWrapRules(uVar3,sVar2);
+      uVar3 = StepHexTileIndexByDirectionWithWrapRules(uVar3,sVar2);
       sVar6 = (short)uVar3;
       if (sVar6 == -1) {
         return local_d;
@@ -9144,7 +9144,7 @@ LAB_00563e22:
     if (this != (TZone *)0x0) {
       local_4 = 0;
       do {
-        sVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(local_c,local_4);
+        sVar2 = StepHexTileIndexByDirectionWithWrapRules(local_c,local_4);
         if (sVar2 != -1) {
           sVar2 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + sVar2 * 0x24);
           if (sVar2 == -1) {
@@ -9211,7 +9211,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void)
   do {
     cVar5 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + local_8);
     if ((cVar5 == '\x03') || (cVar5 == '\x0e')) {
-      pTVar9 = thunk_FindPortZoneByTile((short)local_c);
+      pTVar9 = FindPortZoneByTile((short)local_c);
     }
     else {
       sVar6 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_8 + 4);
@@ -9228,7 +9228,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void)
         if (pTVar9 != (TZone *)0x0) {
           iStack_4 = 0;
           do {
-            sVar6 = thunk_StepHexTileIndexByDirectionWithWrapRules(local_c,iStack_4);
+            sVar6 = StepHexTileIndexByDirectionWithWrapRules(local_c,iStack_4);
             if (sVar6 != -1) {
               sVar3 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + sVar6 * 0x24);
               iVar2 = *(int *)&g_pGlobalMapState->field_0xc + sVar6 * 0x24;
@@ -9408,7 +9408,7 @@ void FinalizeQueuedMapOrderEntry(int *pMapOrderEntry)
       sVar1 = UiRuntimeContext::GetActiveNationId();
     }
     if ((*(byte *)(pInputStateForEntry + 4) & '\x01' << ((byte)sVar1 & 0x1f)) != 0) {
-      for (pInputNodeListHead = (int *)thunk_GetNavyPrimaryOrderListHead();
+      for (pInputNodeListHead = (int *)GetNavyPrimaryOrderListHead();
           pInputNodeListHead != (int *)0x0; pInputNodeListHead = (int *)pInputNodeListHead[9]) {
         if ((((int *)pInputNodeListHead[2] == pInputStateForEntry) &&
             ((short)pInputNodeListHead[5] == sVar1)) && (pInputNodeListHead[3] == 0)) {
@@ -9459,7 +9459,7 @@ void __thiscall HandleNavyOrderNodeRemovalAndSelectionRefresh(int param_1,int pa
           sVar3 = UiRuntimeContext::GetActiveNationId();
         }
         if ((*(byte *)(piVar1 + 4) & '\x01' << ((byte)sVar3 & 0x1f)) != 0) {
-          for (iVar4 = thunk_GetNavyPrimaryOrderListHead(); iVar4 != 0;
+          for (iVar4 = GetNavyPrimaryOrderListHead(); iVar4 != 0;
               iVar4 = *(int *)(iVar4 + 0x24)) {
             if (((*(int **)(iVar4 + 8) == piVar1) && (*(short *)(iVar4 + 0x14) == sVar3)) &&
                (*(int *)(iVar4 + 0xc) == 0)) {
@@ -9674,7 +9674,7 @@ void RunEngineerOrderNameEditDialogAndApply(void)
   uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   CString::CString((CString *)&stack0xffffffd4);
   puStack_8 = (undefined1 *)0x0;
@@ -9684,7 +9684,7 @@ void RunEngineerOrderNameEditDialogAndApply(void)
   uStack_15 = 0;
   uStack_14 = 0;
   uStack_13 = 0;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar4);
   pcVar2 = *(code **)(iVar1 + 0x94);
   CVar7.m_pchData = (char *)0x7469746c;
@@ -9775,7 +9775,7 @@ void InvalidateMapRegionForOrderEntry(int param_1)
   if (param_1 != 0) {
     uVar2 = 1;
     uVar1 = ComputeTileClassBoundsInViewport(local_10,param_1);
-    thunk_InvalidateCityDialogRectRegion(uVar1,uVar2);
+    InvalidateCityDialogRectRegion(uVar1,uVar2);
   }
   return;
 }
@@ -9802,7 +9802,7 @@ void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At00565fc0(int param_1
     local_8 = local_10 + 0x10;
     local_c = (uVar1 - (int)*(short *)(param_1 + 0x7c)) * 0x10;
     local_4 = local_c + 0x10;
-    thunk_InvalidateCityDialogRectRegion(&local_10,1);
+    InvalidateCityDialogRectRegion(&local_10,1);
   }
   return;
 }
@@ -9907,60 +9907,60 @@ void Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0
   
   if (param_3 == param_4[4]) goto LAB_00566471;
   iVar2 = param_2 + 3;
-  thunk_SetQuickDrawTextOriginWithContextOffset(param_1,iVar2);
-  thunk_DrawCenteredGuideLineOnMapDc(param_1,param_2 + 0xc);
+  SetQuickDrawTextOriginWithContextOffset(param_1,iVar2);
+  DrawCenteredGuideLineOnMapDc(param_1,param_2 + 0xc);
   if (param_4[4] == param_4[5]) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1,iVar2);
+    SetQuickDrawTextOriginWithContextOffset(param_1,iVar2);
     iVar1 = param_1 + 3;
     iVar2 = param_2;
 LAB_00566427:
-    thunk_DrawCenteredGuideLineOnMapDc(iVar1,iVar2);
+    DrawCenteredGuideLineOnMapDc(iVar1,iVar2);
   }
   else if (param_3 != param_4[5]) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1,param_2);
+    SetQuickDrawTextOriginWithContextOffset(param_1,param_2);
     iVar1 = param_1;
     goto LAB_00566427;
   }
   if (param_4[4] == param_4[3]) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1,param_2 + 0xd);
+    SetQuickDrawTextOriginWithContextOffset(param_1,param_2 + 0xd);
     iVar2 = param_1 + 2;
   }
   else {
     if (param_3 == param_4[3]) goto LAB_00566471;
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1,param_2 + 0xd);
+    SetQuickDrawTextOriginWithContextOffset(param_1,param_2 + 0xd);
     iVar2 = param_1;
   }
-  thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0xf);
+  DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0xf);
 LAB_00566471:
   if (param_3 != param_4[5]) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 4,param_2);
-    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 4,param_2);
+    SetQuickDrawTextOriginWithContextOffset(param_1 + 4,param_2);
+    DrawCenteredGuideLineOnMapDc(param_1 + 4,param_2);
     if (param_3 != *param_4) {
-      thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 5,param_2);
-      thunk_DrawCenteredGuideLineOnMapDc(param_1 + 10,param_2);
+      SetQuickDrawTextOriginWithContextOffset(param_1 + 5,param_2);
+      DrawCenteredGuideLineOnMapDc(param_1 + 10,param_2);
     }
     if (param_4[4] != param_4[5]) {
-      thunk_SetQuickDrawTextOriginWithContextOffset(param_1,param_2);
-      thunk_DrawCenteredGuideLineOnMapDc(param_1 + 3,param_2);
+      SetQuickDrawTextOriginWithContextOffset(param_1,param_2);
+      DrawCenteredGuideLineOnMapDc(param_1 + 3,param_2);
     }
   }
   if (param_3 != *param_4) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0xb,param_2);
+    SetQuickDrawTextOriginWithContextOffset(param_1 + 0xb,param_2);
     iVar2 = param_1 + 0xd;
-    thunk_DrawCenteredGuideLineOnMapDc(iVar2,param_2);
+    DrawCenteredGuideLineOnMapDc(iVar2,param_2);
     if (*param_4 == param_4[1]) {
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,param_2);
+      SetQuickDrawTextOriginWithContextOffset(iVar2,param_2);
       iVar2 = param_2 + 2;
     }
     else {
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,param_2);
+      SetQuickDrawTextOriginWithContextOffset(iVar2,param_2);
       iVar2 = param_2;
     }
-    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0xf,iVar2);
+    DrawCenteredGuideLineOnMapDc(param_1 + 0xf,iVar2);
   }
   if ((param_3 != param_4[1]) && (param_4[1] == param_4[2])) {
-    thunk_SetQuickDrawTextOriginWithContextOffset(param_1 + 0xd,param_2 + 0xf);
-    thunk_DrawCenteredGuideLineOnMapDc(param_1 + 0xf,param_2 + 0xd);
+    SetQuickDrawTextOriginWithContextOffset(param_1 + 0xd,param_2 + 0xf);
+    DrawCenteredGuideLineOnMapDc(param_1 + 0xf,param_2 + 0xd);
   }
   return;
 }
@@ -10104,16 +10104,16 @@ HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC
   InitializeOrLoadEntryArray14AndClampLimits();
   if ((*(int *)&g_pLocalizationTable->field_0x8 == 1) ||
      (*(int *)&g_pLocalizationTable->field_0x8 == 3)) {
-    thunk_PostTurnEventCodeMessage2420();
+    PostTurnEventCodeMessage2420();
   }
   else {
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
   }
   piVar3 = (int *)(*unaff_ESI)();
   (**(code **)(*piVar3 + 0xc))();
-  iVar4 = thunk_ApplyAutoResolutionModeAndPersist(piVar3[0x22] == 0x79657373);
+  iVar4 = ApplyAutoResolutionModeAndPersist(piVar3[0x22] == 0x79657373);
   if (iVar4 == 0) {
-    thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2763,7,2,0);
+    ShowLocalizedUiPromptByGroupAndIndex(0x2763,7,2,0);
   }
   if (((in_stack_00000028 == 4) && (0x6f707460 < *(uint *)(in_stack_0000002c.m_pchData + 0x1c))) &&
      (*(uint *)(in_stack_0000002c.m_pchData + 0x1c) < 0x6f70747b)) {
@@ -10165,7 +10165,7 @@ void HandleOptionsTagAudioRefreshFragmentAndMaybePostTurnEvent5DC(undefined4 par
   WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
             (*(undefined2 *)&g_pLocalizationTable->field_0x4e);
   if (*(int *)&g_pLocalizationTable->field_0x8 == 1) {
-    thunk_PostTurnEventCodeMessage2420(0x5dc);
+    PostTurnEventCodeMessage2420(0x5dc);
   }
   else {
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
@@ -10426,7 +10426,7 @@ void LoadAndFormatMappedFlavorTextRecordsFromStream(int *param_1,int param_2)
     CString::AssignFromCStr(&local_5c,PTR_DAT_0065ddd8);
     local_4 = (uint)local_4._1_3_ << 8;
     CString::~CString(&local_58);
-    cVar1 = thunk_TryGetFileMetadataForPath(&local_5c);
+    cVar1 = TryGetFileMetadataForPath(&local_5c);
     if (cVar1 != '\0') {
       uVar2 = OpenBufferedStreamWithMode40(local_5c.m_pchData,&DAT_00698720);
       iVar3 = ReadBufferedStreamLocked(local_4c,1,0xc,uVar2);
@@ -10497,10 +10497,10 @@ void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
     local_4._1_1_ = 0;
     local_4._2_2_ = 0;
     do {
-      thunk_BuildSavePathStringForMode(&local_50,pcVar7,0);
-      cVar1 = thunk_TryGetFileMetadataForPath(&local_50);
+      BuildSavePathStringForMode(&local_50,pcVar7,0);
+      cVar1 = TryGetFileMetadataForPath(&local_50);
       if ((cVar1 != '\0') &&
-         (iVar2 = thunk_ReadScenarioIndexFromSaveHeader(local_50.m_pchData), iVar2 == iVar9)) {
+         (iVar2 = ReadScenarioIndexFromSaveHeader(local_50.m_pchData), iVar2 == iVar9)) {
         CVar6.m_pchData = pcVar7;
       }
       pcVar7 = pcVar7 + 1;
@@ -10515,7 +10515,7 @@ void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
     local_4._0_1_ = 1;
     local_4._1_1_ = 0;
     local_4._2_2_ = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex(&local_50,0x2758,9);
+    LoadUiStringResourceByGroupAndIndex(&local_50,0x2758,9);
     uVar4 = 0xffffffff;
     local_4._0_1_ = 0xff;
     local_4._1_1_ = 0xff;
@@ -10576,7 +10576,7 @@ void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
   CString::AssignFromCStr(&param_1,PTR_DAT_0065ddd8);
   local_4._0_1_ = 2;
   CString::~CString(&param_2);
-  cVar1 = thunk_ShowSavedStatusDialogAndReturnAccepted(&param_1);
+  cVar1 = ShowSavedStatusDialogAndReturnAccepted(&param_1);
   if (cVar1 == '\0') {
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       g_pGameFlowState->field_0xf4 = 0;
@@ -10585,7 +10585,7 @@ void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
   else {
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       g_pGameFlowState->field_0xf4 = local_51;
-      thunk_DispatchTaggedGameStateEvent1F20(0x73617665,local_51,0xfffffffe);
+      DispatchTaggedGameStateEvent1F20(0x73617665,local_51,0xfffffffe);
     }
     text = PTR_DAT_0065ddd4;
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) && (CVar6.m_pchData != (char *)0xa1)) {
@@ -10608,7 +10608,7 @@ void SaveGameWithModeAndOptionalLabel(CString param_1,CString param_2)
       CString::AssignFromCStr(&param_1,PTR_DAT_0065ddd8);
       local_4._0_1_ = 2;
       CString::~CString(&param_2);
-      cVar1 = thunk_TryGetFileMetadataForPath(&param_1);
+      cVar1 = TryGetFileMetadataForPath(&param_1);
       if (cVar1 != '\0') {
         uVar3 = OpenBufferedStreamWithMode40(param_1.m_pchData,&DAT_00698720);
         iVar2 = ReadBufferedStreamLocked(local_4c,1,0xc,uVar3);
@@ -10680,7 +10680,7 @@ undefined1 BuildSaveSlotPathAndProbeMetadata(CString param_1,CString param_2)
   CString::AssignFromCStr(&local_10,PTR_DAT_0065ddd8);
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&param_2);
-  cVar1 = thunk_TryGetFileMetadataForPath(&local_10);
+  cVar1 = TryGetFileMetadataForPath(&local_10);
   if (cVar1 == '\0') {
     local_4 = 0xffffffff;
     CString::~CString(&local_10);
@@ -10791,7 +10791,7 @@ WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
   if ((short)param_5 != -1) {
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(param_5,param_6 + -1,param_1 + 0x10);
   }
-  thunk_BuildUiTextStyleDescriptor(param_1 + 0x14,0,0xc,0x2b67);
+  BuildUiTextStyleDescriptor(param_1 + 0x14,0,0xc,0x2b67);
   *(undefined2 *)(param_1 + 0x1e) = 0xfffe;
   return;
 }
@@ -10886,7 +10886,7 @@ WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
 {
   undefined4 uVar1;
   
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4,4,4,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4,4,4,0);
   uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_5);
   *(undefined4 *)(param_1 + 0x88) = uVar1;
   return;
@@ -10946,7 +10946,7 @@ void __fastcall DestructTTextPictureButtonAndMaybeFree_Impl(TView *param_1)
   local_4 = 0;
   CString::~CString((CString *)&param_1[1].field34);
   local_4 = 0xffffffff;
-  TView::thunk_DestructCityDialogSharedBaseState(param_1);
+  TView::DestructCityDialogSharedBaseState(param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -11179,7 +11179,7 @@ void __fastcall RefreshCityDialogScrollableViewportWithQuickDrawContext(int *par
   uStack_34 = 0;
   (**(code **)(iVar1 + 0x110))(&uStack_34);
   puStack_8 = (undefined1 *)0xffffffff;
-  thunk_DestroyScopedMapQuickDrawContext();
+  DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_10;
   return;
 }
@@ -11264,7 +11264,7 @@ TCommand * CreateTurnEventPacket_Vtbl00661b10(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TSpaceCommandVtbl_00661b10;
     pTVar1 = this;
   }
@@ -11294,7 +11294,7 @@ TNoHilitePicture * AllocateTNetSelectPictureInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TNetSelectPictureVtbl_006440d8;
     pTVar1 = this;
   }
@@ -11324,7 +11324,7 @@ TNoHilitePicture * AllocateTNetGameSelectPictureInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TNetGameSelectPictureVtbl_00661fb0;
     pTVar1 = this;
   }
@@ -11352,7 +11352,7 @@ TNoHilitePicture * AllocateTSetupRandomMapPictureInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     CString::CString((CString *)(this + 1));
     *(undefined1 *)&this[1].field04 = 0;
@@ -11445,7 +11445,7 @@ TView * CreateUiPlanetListResourceEntry(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TMapPreviewViewVtbl_006419d8;
     this[1].field04 = -1;
     pTVar1 = this;
@@ -11490,9 +11490,9 @@ void __fastcall ApplyPaletteMaskToTileBufferByEventCode(int param_1)
   else {
     local_16 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(*(undefined2 *)(param_1 + 0x68));
   }
-  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
+  uVar3 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
   iVar4 = GetSurfaceHeaderFromSurfaceObject(uVar3);
-  piVar5 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
+  piVar5 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
   local_10 = 0xb2;
   uVar7 = *(ushort *)(*piVar5 + 4) & 0x3fff;
   pcVar8 = (char *)(iVar4 + 1 + uVar7);
@@ -11565,7 +11565,7 @@ TDropShadowText * CreateSelectableTextOptionEntry(void)
   local_4 = 0;
   pTVar1 = (TDropShadowText *)0x0;
   if (this != (TDropShadowText *)0x0) {
-    TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(this);
+    TDropShadowText::ConstructSelectableTextOptionEntryBase(this);
     this->vftable = (TDropShadowTextVtbl *)&TRadioTextVtbl_00642b18;
     pTVar1 = this;
   }
@@ -11681,7 +11681,7 @@ CreateSelectableTextOptionChildEntry
     pTVar5 = (TDropShadowText *)0x0;
   }
   else {
-    TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase(pTVar5);
+    TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar5);
     pTVar5->vftable = (TDropShadowTextVtbl *)&TRadioTextVtbl_00642b18;
   }
   iStack_28 = (int)*(short *)(param_1 + 0x92);
@@ -11746,7 +11746,7 @@ void __thiscall LoadScenarioMetadataByIndexIntoUiControlCore(int *param_1,undefi
   CString::CString(local_24);
   *(undefined2 *)((int)param_1 + 0x142) = param_2;
   local_4 = 0;
-  thunk_BuildScenarioPathForModeAndIndex();
+  BuildScenarioPathForModeAndIndex();
   pcVar6 = (code *)AllocateWithFallbackHandler();
   iVar7 = OpenBufferedStreamWithMode40();
   local_18 = iVar7;
@@ -11809,7 +11809,7 @@ LAB_0057a7a7:
           iVar7 = AllocateWithFallbackHandler();
           piStack_6c = (int *)local_24[0].m_pchData;
           pcStack_70 = (char *)0x57a926;
-          thunk_BuildScenarioPathForModeAndIndex();
+          BuildScenarioPathForModeAndIndex();
           piStack_6c = (int *)0x57a935;
           OpenBufferedStreamWithMode40();
           piStack_6c = (int *)0x24;
@@ -11894,7 +11894,7 @@ TStaticText * Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At0057b670(void
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     this->vftable = (TStaticTextVtbl *)&TSelectoTextVtbl_00662640;
     pTVar1 = this;
   }
@@ -12088,10 +12088,10 @@ void __thiscall RebuildGlobalOrderManagersAndCapabilityState(int param_1,char pa
     }
     else {
       pTVar6 = (TDiplomacyMgr *)
-               TDiplomacyMgr::thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90(pTVar6);
+               TDiplomacyMgr::ConstructDiplomacyTurnStateManager_Vtbl00654d90(pTVar6);
     }
     uStack_4 = 0xffffffff;
-    TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults
+    TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
               ((TSortedByRelationshipList *)pTVar6);
     g_pDiplomacyTurnStateManager = pTVar6;
     if (g_pNationInteractionStateManager != (TTradeMgr *)0x0) {
@@ -12132,11 +12132,11 @@ void __thiscall RebuildGlobalOrderManagersAndCapabilityState(int param_1,char pa
       pTVar9 = (TArmyMgr *)0x0;
     }
     else {
-      TArmyMgr::thunk_ConstructMapContextActionManager(pTVar9);
+      TArmyMgr::ConstructMapContextActionManager(pTVar9);
       pTVar9 = extraout_EAX;
     }
     uStack_4 = 0xffffffff;
-    TArmyStackList::thunk_InitializeMapContextActionManager((TArmyStackList *)pTVar9);
+    TArmyStackList::InitializeMapContextActionManager((TArmyStackList *)pTVar9);
     g_pMapContextActionManager = pTVar9;
     if (g_pSelectedCivilianOrderState != (CivilianMapInteractionManager *)0x0) {
       (**(code **)(g_pSelectedCivilianOrderState->vftable + 0x1c))();
@@ -12409,7 +12409,7 @@ void __thiscall RebuildNationStateSlotsAndAvailability(int *param_1,CString para
       CString::CString(&param_2);
       uStack_4 = 0;
       FormatStringWithVarArgsToSharedRef(&param_2,s_Data_PictWv_d_gob_00698bf4,pcVar1[1] + -0x30);
-      cVar3 = thunk_TryGetFileMetadataForPath(&param_2);
+      cVar3 = TryGetFileMetadataForPath(&param_2);
       if (cVar3 != '\0') {
         EnsurePictWvDataGobLoadedBySlot(pcVar1[1] + -0x30);
       }
@@ -12505,7 +12505,7 @@ void __fastcall WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570(int 
 
 {
   if (*(int *)(param_1 + 0x44) != 0) {
-    thunk_ConfigureTurnResumeStateAndNationMask
+    ConfigureTurnResumeStateAndNationMask
               (*(undefined4 *)(param_1 + 8),*(undefined4 *)(param_1 + 4));
     *(undefined4 *)(param_1 + 4) = 0x13;
   }

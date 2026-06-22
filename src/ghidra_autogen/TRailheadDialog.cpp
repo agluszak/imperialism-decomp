@@ -11,7 +11,7 @@ TRailheadDialog * __thiscall
 TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD020
 // GHIDRA_NAME TRailheadDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TRailheadDialog::GetTEventHandlerClassNamePointer(TRailheadDialog *this)
 
@@ -48,7 +48,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
   uVar3 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x732);
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -58,7 +58,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
     piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[3]);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73a);
     }
     iVar1 = *piVar4;
@@ -67,7 +67,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
     piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[4]);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73f);
     }
     iVar1 = *piVar4;
@@ -76,7 +76,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
     piVar4 = (int *)(*pcVar2)(_DAT_00696160);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x744);
     }
     iVar1 = *piVar4;
@@ -85,7 +85,7 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int par
     piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.primaryControlTag);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x749);
     }
     iVar1 = *piVar4;
@@ -112,7 +112,7 @@ TRailheadDialog::DestructTRailheadDialogAndMaybeFree(TRailheadDialog *this,int p
     uVar1 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
     if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x75e);
     }
     dVar2 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c4))();

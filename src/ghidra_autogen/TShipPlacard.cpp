@@ -25,7 +25,7 @@ TNoHilitePicture * TShipPlacard::CreateTShipPlacardInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TShipPlacardVtbl_0065d4b0;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TNoHilitePicture * TShipPlacard::CreateTShipPlacardInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569250
 // GHIDRA_NAME TShipPlacard::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipPlacard::GetTEventHandlerClassNamePointer(TShipPlacard *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TShipPlacard::GetTEventHandlerClassNamePointer(TShipP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569270
 // GHIDRA_NAME TShipPlacard::ConstructTShipPlacardBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipPlacardBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipPlacard::ConstructTShipPlacardBaseState(void)
 
 TShipPlacard * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlacard *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TShipPlacardVtbl_0065d4b0;
   return this;
 }
@@ -63,7 +63,7 @@ TShipPlacard * __thiscall
 TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TShipPlacard::_scalar_deleting_destructor_(TShipPlacard *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005692F0
 // GHIDRA_NAME TShipPlacard::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TShipPlacard::OrphanTiny_ReturnZero_0048a730(TShipPlacard *this)
 
@@ -87,19 +87,19 @@ void __thiscall TShipPlacard::OrphanTiny_ReturnZero_0048a730(TShipPlacard *this)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635b78;
   *unaff_FS_OFFSET = &local_c;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   sVar1 = (short)this->ownerContext[1].ownerOffsetY;
   if (0 < sVar1) {
     CString::CString((CString *)&stack0x00000004);
     local_4 = 0;
     FormatStringWithVarArgsToSharedRef(&stack0x00000004,&g_szDecimalFormat,(int)sVar1);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0x00000004);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x51 - (int)sVar1 / 2,0x2f);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0x00000004);
+    SetQuickDrawTextOriginWithContextOffset(0x51 - (int)sVar1 / 2,0x2f);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6c);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x50 - (int)sVar1 / 2,0x2e);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
+    SetQuickDrawTextOriginWithContextOffset(0x50 - (int)sVar1 / 2,0x2e);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0x00000004);
     local_4 = 0xffffffff;
     CString::~CString((CString *)&stack0x00000004);
   }

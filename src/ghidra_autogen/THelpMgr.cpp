@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall THelpMgr::GetTHelpMgrClassNamePointer(THelpMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005005E0
 // GHIDRA_NAME THelpMgr::ConstructTHelpMgrBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTHelpMgrBaseState(void)
+// GHIDRA_PROTO undefined __thiscall THelpMgr::ConstructTHelpMgrBaseState(void)
 
 void __thiscall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *this)
 
@@ -369,7 +369,7 @@ THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this,int *p
   undefined1 *puVar2;
   int iVar3;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   (**(code **)(**(int **)&this->field_0x4 + 0x20))();
   (**(code **)(**(int **)&this->field_0x4 + 0x18))(param_1);
   if (0x2a < DAT_00695278) {
@@ -402,7 +402,7 @@ THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this,int *p
   int unaff_EBX;
   int iVar2;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (**(code **)(**(int **)&this->field_0x4 + 0x14))(param_1);
   iVar2 = 5;
   pcVar1 = *(code **)(*param_1 + 0x78);

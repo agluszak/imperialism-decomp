@@ -27,8 +27,8 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
     *puVar1 = &TAdornerVtbl_0064bdd0;
-    uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
+    uVar2 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
     puVar3 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -66,11 +66,11 @@ TView * TAdorner::ConstructTAdornerBaseState(void)
   this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+    uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+    SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -88,8 +88,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -103,8 +103,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -118,8 +118,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -133,8 +133,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -148,8 +148,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -163,8 +163,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -178,8 +178,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -193,8 +193,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
 {
   undefined4 uVar1;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
@@ -209,8 +209,8 @@ TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da
   undefined4 uVar1;
   uint uVar2;
   
-  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  uVar1 = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  uVar2 = SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return uVar2 & 0xffffff00;
 }
 

@@ -717,7 +717,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
   puStack_8 = &LAB_0063739a;
   *unaff_FS_OFFSET = &uStack_c;
   if (iVar1 != 0) {
-    thunk_HandlePendingEventActivationByCode(0x5dc);
+    HandlePendingEventActivationByCode(0x5dc);
   }
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
     (**(code **)(g_pGameFlowState->vftable + 0x1c))();
@@ -786,7 +786,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int param_1)
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
     if (param_1 == 0) goto LAB_00581a3e;
   }
-  thunk_PostTurnEventCodeMessage2420(param_1);
+  PostTurnEventCodeMessage2420(param_1);
 LAB_00581a3e:
   DAT_006a43c0 = 1;
   *unaff_FS_OFFSET = uStack_c;
@@ -976,12 +976,12 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   DAT_006a4398 = '\0';
   DAT_006a43b8 = 0;
   local_4 = 0;
-  thunk_BuildScenarioPathForModeAndIndex(*(short *)(param_1 + 0x114) + -1,2);
+  BuildScenarioPathForModeAndIndex(*(short *)(param_1 + 0x114) + -1,2);
   for (pTVar1 = g_pMapActionContextListHead; pTVar1 != (TZone *)0x0;
       pTVar1 = *(TZone **)&pTVar1->field_0x18) {
     CString::CString(&local_1c);
     local_4._0_1_ = 1;
-    thunk_GetShortAtOffset14OrInvalid();
+    GetShortAtOffset14OrInvalid();
     FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
     CString::AssignFromPtr((CString *)&pTVar1->field_0x8,&local_1c);
     local_4 = (uint)local_4._1_3_ << 8;
@@ -989,11 +989,11 @@ void __fastcall ProcessTurnInstructionStreamAndFinalizePhase(int param_1)
   }
   local_1c.m_pchData = &stack0xffffffd0;
   CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,&local_10);
-  uVar4 = thunk_LoadTableResourceStreamByName();
-  local_14 = thunk_GetResourceStreamSize();
+  uVar4 = LoadTableResourceStreamByName();
+  local_14 = GetResourceStreamSize();
   puVar5 = (undefined4 *)AllocateWithFallbackHandler();
-  thunk_ReadResourceStreamIntoBufferAndAdvance(uVar4,puVar5);
-  thunk_ReleaseResourceStreamIfNotNull();
+  ReadResourceStreamIntoBufferAndAdvance(uVar4,puVar5);
+  ReleaseResourceStreamIfNotNull();
   CVar8.m_pchData = (char *)0x0;
   local_18 = puVar5;
   if (puVar5 < (undefined4 *)(local_14 + (int)puVar5)) {
@@ -1342,10 +1342,10 @@ void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(int *param_1)
     pTVar6 = (TCivWorkOrderState *)0x0;
   }
   else {
-    pTVar6 = (TCivWorkOrderState *)TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar6);
+    pTVar6 = (TCivWorkOrderState *)TCivWorkOrderState::TCivWorkOrderState(pTVar6);
   }
   local_4 = 0xffffffff;
-  TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar6,local_14,(int)param_1,(int)cVar1);
+  InitializeCivWorkOrderState(pTVar6,local_14,(int)param_1,(int)cVar1);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -1415,7 +1415,7 @@ word * HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(int *param_1
   ;
   pwVar8 = pTVar7->fieldB6 + (short)local_8 + -0x2d;
   for (; param_1 != (int *)0x0; param_1 = (int *)((int)param_1 + -1)) {
-    pwVar8 = (word *)thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(local_8,uVar6,local_c,0);
+    pwVar8 = (word *)CreateNavyPrimaryOrderNodeAndAssignDisplayName(local_8,uVar6,local_c,0);
   }
   return pwVar8;
 }
@@ -2235,10 +2235,10 @@ void WrapperFor_ftol_At00583880(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DB0
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2263,10 +2263,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F90
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2291,10 +2291,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584140
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2319,10 +2319,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584300
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2347,10 +2347,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D10
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2375,10 +2375,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584E80
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2403,10 +2403,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586070
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2431,10 +2431,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005863E0
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2459,10 +2459,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586690
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2487,10 +2487,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869A0
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2515,10 +2515,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D40
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2543,10 +2543,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587110
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2571,10 +2571,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005885F0
-// GHIDRA_NAME thunk_DestructTViewBaseState_005885F0
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState_005885F0(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState_005885F0(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2599,10 +2599,10 @@ void __thiscall TView::thunk_DestructTViewBaseState_005885F0(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588B50
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2627,10 +2627,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589240
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2655,10 +2655,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589790
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2683,10 +2683,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A000
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2711,10 +2711,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A5F0
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2739,10 +2739,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABD0
-// GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2767,10 +2767,10 @@ void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AF60
-// GHIDRA_NAME thunk_DestructTViewBaseState_0058AF60
-// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState_0058AF60(void)
+// GHIDRA_NAME TView::DestructTViewBaseState
+// GHIDRA_PROTO void __thiscall TView::DestructTViewBaseState(void)
 
-void __thiscall TView::thunk_DestructTViewBaseState_0058AF60(TView *this)
+void __thiscall TView::DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2848,7 +2848,7 @@ undefined1 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void)
   }
   uVar3 = 1;
   if (*(int *)&g_pSfxPlaybackSystem->field_0x7c != 0) {
-    uVar2 = thunk_GetTickCountDiv16();
+    uVar2 = GetTickCountDiv16();
     iVar4 = ((int)*(short *)&g_pLocalizationTable->field_0x4e - uVar2) +
             *(uint *)&pTVar1->field_0x7c;
     if ((iVar4 < 1) || (uVar2 < *(uint *)&pTVar1->field_0x7c)) {
@@ -2893,9 +2893,9 @@ void __fastcall UpdateTurnAudioPlaybackStateAndScheduleCue(int param_1)
   sVar1 = *(short *)(param_1 + 0x76);
   if ((sVar1 != 0) && (*(int *)(param_1 + 0x7c) == 0)) {
     if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
-      cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag();
+      cVar2 = IsTurnCooldownCounterActiveOrResetFlag();
       if (cVar2 == '\0') {
-        cVar2 = thunk_ReturnTrueStub();
+        cVar2 = ReturnTrueStub();
         if (cVar2 == '\0') {
           *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
           *(undefined2 *)(param_1 + 0x76) = 0;
@@ -2917,7 +2917,7 @@ void __fastcall UpdateTurnAudioPlaybackStateAndScheduleCue(int param_1)
     DAT_006a4520 = 0;
     cVar2 = ForwardMciStatusCommand814IgnoreFailure();
     if (cVar2 == '\0') {
-      thunk_SelectAndScheduleRandomAudioCue();
+      SelectAndScheduleRandomAudioCue();
     }
   }
   return;
@@ -2962,7 +2962,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
   int iVar6;
   
   if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
-     (cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
+     (cVar2 = IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x28))();
     if (iVar3 == 0) {
       iVar3 = (**(code **)(**(int **)(param_1 + 0x6c) + 0x28))();
@@ -2986,8 +2986,8 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
     iVar3 = (**(code **)(**(int **)(param_1 + 0x70) + 0x24))(iVar6);
     (**(code **)(**(int **)(param_1 + 0x70) + 0x2c))(iVar6);
     if ((*(short *)&g_pLocalizationTable->field_0x4e != 0) &&
-       (cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
-      cVar2 = thunk_ReturnTrueStub();
+       (cVar2 = IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
+      cVar2 = ReturnTrueStub();
       if (cVar2 == '\0') {
         *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
         return;
@@ -3003,7 +3003,7 @@ void __fastcall SelectAndScheduleRandomAudioCue(int param_1)
         else {
           *(short *)(param_1 + 0x76) = sVar5;
           if (*(int *)(param_1 + 0x7c) == 0) {
-            uVar4 = thunk_GetTickCountDiv16();
+            uVar4 = GetTickCountDiv16();
             *(undefined4 *)(param_1 + 0x7c) = uVar4;
             ScheduleTimerSlotCallbackWithInterval(&LAB_00406dd4,6,0);
             return;
@@ -3036,7 +3036,7 @@ void __fastcall Helper_Uses_thunk_GetTickCountDiv16_At00593ce0(int param_1)
   undefined4 uVar1;
   
   if (*(int *)(param_1 + 0x7c) == 0) {
-    uVar1 = thunk_GetTickCountDiv16();
+    uVar1 = GetTickCountDiv16();
     *(undefined4 *)(param_1 + 0x7c) = uVar1;
     ScheduleTimerSlotCallbackWithInterval(&LAB_00406dd4,6,0);
   }
@@ -3070,10 +3070,10 @@ void Helper_Uses_SetQuickDrawFillColor_At00594790(short param_1,short param_2)
   local_10.left = 0x98;
   local_10.right = param_2 + 0x98;
   SetQuickDrawFillColor();
-  thunk_FillRectWithQuickDrawBrushAndContextOffset();
+  FillRectWithQuickDrawBrushAndContextOffset();
   OffsetRect(&local_10,-1,-1);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-  thunk_FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffec);
+  FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffec);
   return;
 }
 
@@ -3102,7 +3102,7 @@ void __fastcall RecomputeNationComparisonValuesAndNormalizeScale(TStatusPicture 
   puVar5 = (undefined2 *)&param_1->field_0xb0;
   piVar4 = (int *)puVar1;
   do {
-    cVar2 = thunk_IsNationSlotEligibleForEventProcessing(local_c);
+    cVar2 = IsNationSlotEligibleForEventProcessing(local_c);
     if (cVar2 == '\0') {
       *puVar5 = 0xffff;
     }
@@ -3279,8 +3279,8 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage(void)
   iVar1 = CompareAnsiStringsWithMbcsAwareness();
   if (iVar1 != 0) {
     puStack_10 = &stack0xffffffc8;
-    thunk_AssignStringSharedRefAndReturnThis(&local_24);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&local_24);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
   }
   local_4 = local_4 & 0xffffff00;
   CString::~CString(&local_20);
@@ -3307,8 +3307,8 @@ void Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4
   uStack_4 = 0;
   puStack_8 = &DAT_006a45c0;
   puStack00000020 = auStack_c;
-  thunk_AssignStringSharedRefAndReturnThis(&stack0x00000024);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&stack0x00000024);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   CString::~CString((CString *)&stack0x00000024);
   *unaff_FS_OFFSET = param_3;
   return;
@@ -3329,7 +3329,7 @@ void ReinitializeGameFlowAndPostTurnEvent5DD(undefined4 param_1,undefined4 param
 {
   undefined4 *unaff_FS_OFFSET;
   
-  thunk_ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
+  ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
   *unaff_FS_OFFSET = param_2;
   return;
 }
@@ -3384,7 +3384,7 @@ void PromptAndQueueMilitaryProvincePurgeOrders(short param_1)
     uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
     if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar1 = *(int *)CONCAT31(extraout_var,uVar4);
     (**(code **)(iVar1 + 0x1a0))();
@@ -3431,7 +3431,7 @@ void PromptAndQueueMilitaryProvincePurgeOrders(short param_1)
     if (bVar3) {
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                 ((TToolBarCluster *)&stack0xffffffa4,s_Kill_all_armies_in_the_province__00699460);
-      cVar5 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      cVar5 = DispatchLocalizedUiMessageWithTemplateA13A0();
       if (cVar5 != '\0') {
         while( true ) {
           if ((sVar11 < 0) || (0x17f < sVar11)) {
@@ -3478,10 +3478,10 @@ void __thiscall CreateCivilianWorkOrderAndRegisterSelection(int *param_1,int par
     this_00 = (TCivWorkOrderState *)0x0;
   }
   else {
-    this_00 = (TCivWorkOrderState *)TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(this);
+    this_00 = (TCivWorkOrderState *)TCivWorkOrderState::TCivWorkOrderState(this);
   }
   local_4 = 0xffffffff;
-  TCivWorkOrderState::thunk_InitializeCivWorkOrderState(this_00,1,param_2,0);
+  InitializeCivWorkOrderState(this_00,1,param_2,0);
   (**(code **)(*param_1 + 0x1d8))(param_2);
   *unaff_FS_OFFSET = this;
   return;
@@ -3515,7 +3515,7 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
   
   if (param_1 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0x8bf);
   }
   local_10 = 0xff;
@@ -3527,7 +3527,7 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0x8cc);
   }
   iVar6 = *piVar3;
@@ -3558,7 +3558,7 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
         iVar7 = (int)sVar2;
         if (0 < iVar7) {
           do {
-            thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(iVar8,iStack_c,uVar5,0);
+            CreateNavyPrimaryOrderNodeAndAssignDisplayName(iVar8,iStack_c,uVar5,0);
             iVar7 = iVar7 + -1;
           } while (iVar7 != 0);
         }
@@ -3574,20 +3574,20 @@ void RunNavyPrimaryOrderCreationDialogAndApplyResults(int param_1)
   if ((char)((uint)unaff_EDI >> 0x18) != '\0') {
     RefreshMapActionContextNationOverlaysAndOrderRanks();
   }
-  TCivToolbar::thunk_SetMapInteractionMode(this,2);
+  TToolBarCluster::SetMapInteractionMode(this,2);
   if (*(char *)&this[1].padding_08_to_0b == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(this[1].field0c);
+    InvalidateMapRegionForOrderEntry(this[1].field0c);
   }
   this[1].field0c = iStack_c;
   if (*(char *)&this[1].padding_08_to_0b == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(iStack_c);
+    InvalidateMapRegionForOrderEntry(iStack_c);
   }
   if (iStack_c == 0) {
-    TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
+    TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
     return;
   }
-  pMapOrderEntry = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(iStack_c);
-  TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,pMapOrderEntry);
+  pMapOrderEntry = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(iStack_c);
+  TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this,pMapOrderEntry);
   return;
 }
 
@@ -3735,24 +3735,24 @@ void OpenMapContextActionDialogByType(void)
   local_1d = 0;
   local_1c = (int *)((uint)local_1c & 0xffff0000);
   uStack_70 = 0x599111;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   acStack_5c[0] = 'g';
   acStack_5c[1] = '+';
   acStack_5c[2] = '\0';
   acStack_5c[3] = '\0';
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   acStack_5c[0] = '\x03';
   acStack_5c[1] = '\0';
   acStack_5c[2] = '\0';
   acStack_5c[3] = '\0';
   uStack_70 = 0x59913f;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   acStack_5c[0] = '\x03';
   acStack_5c[1] = '\0';
   acStack_5c[2] = '\0';
   acStack_5c[3] = '\0';
   uStack_70 = 0x599157;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   acStack_5c[0] = '\x03';
   acStack_5c[1] = '%';
   acStack_5c[2] = '\0';
@@ -3762,7 +3762,7 @@ void OpenMapContextActionDialogByType(void)
   if (piVar6 == (int *)0x0) {
     uStack_70 = 0x599183;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *piVar6;
   (**(code **)(iVar1 + 0x1a0))();
@@ -3808,7 +3808,7 @@ void OpenMapContextActionDialogByType(void)
     BuildMapOrderObjectiveDescriptionTextForNation();
   }
   else {
-    thunk_LoadUiStringResourceByGroupAndIndex();
+    LoadUiStringResourceByGroupAndIndex();
     uStack_a4 = 0x59929f;
     scanBracketExpressions(g_pLocalizationTable,&uStack_78,pcStack_7c);
   }
@@ -3980,7 +3980,7 @@ void __thiscall ResetMapInteractionToCivilianMode(void *this,void *pMapInteracti
 
 {
   TacticalBattleView::EnterMapInteractionOverlayMode(this,(int *)0x0);
-  TCivToolbar::thunk_SetMapInteractionMode(this,0);
+  TToolBarCluster::SetMapInteractionMode(this,0);
   return;
 }
 
@@ -4121,7 +4121,7 @@ void __fastcall HandleTacticalCommandTag_skip(int param_1)
                 (int)(*(TNextMoveCommand **)(param_1 + 0x14))[1].vftable[1].
                      OrphanCallChain_C1_I17_00487470 * 2) != 8) {
     *(undefined1 *)(param_1 + 0x20) = 1;
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)(param_1 + 0x14));
+    TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)(param_1 + 0x14));
     return;
   }
   return;
@@ -4648,7 +4648,7 @@ int __fastcall SelectTacticalTileIndexByColumnPriorityVariantA(int param_1)
           uVar4 = 0xf - uVar4;
         }
         iVar7 = 0;
-        thunk_ComputeHexNeighborTileIndices(iVar6,local_18);
+        ComputeHexNeighborTileIndices_005A0420(iVar6,local_18);
         piVar3 = local_18;
         local_24 = 6;
         do {
@@ -4707,7 +4707,7 @@ int __fastcall SelectTacticalTileByActionClassAdjacencyPriority(int param_1)
           uVar4 = 0xf - uVar4;
         }
         iVar7 = 0;
-        thunk_ComputeHexNeighborTileIndices(iVar8,local_18);
+        ComputeHexNeighborTileIndices_005A0420(iVar8,local_18);
         piVar5 = local_18;
         local_24 = 6;
         do {
@@ -4767,7 +4767,7 @@ int __fastcall SelectTacticalTileIndexByColumnPriorityVariantB(int param_1)
           iVar3 = 0xf - iVar3;
         }
         iVar6 = 0;
-        thunk_ComputeHexNeighborTileIndices(iVar7,local_18);
+        ComputeHexNeighborTileIndices_005A0420(iVar7,local_18);
         iVar5 = 0;
         piVar4 = local_18;
         do {
@@ -5588,7 +5588,7 @@ SelectBestTacticalTileByWeightedHeuristics(int param_1,undefined4 param_2,int *p
   local_4 = -1;
   local_8 = -99999;
   if (0 < iVar1) {
-    thunk_BuildTacticalDistanceFieldForSide
+    BuildTacticalDistanceFieldForSide
               (CONCAT31((int3)((uint)iVar1 >> 8),*(undefined1 *)(param_1 + 0xc)));
   }
   iVar3 = *(int *)(param_1 + 0x14);
@@ -5671,7 +5671,7 @@ EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity
        ((*(int *)(iVar2 + 0x1c) == 0 || (*(int *)(param_1 + 0x48) == 1)))) {
       uVar5 = (*pcVar1)();
       uVar6 = ftol(uVar5);
-      cVar4 = thunk_IsTacticalTargetTileReachableForAction(param_3,iVar7,uVar6,uVar5);
+      cVar4 = IsTacticalTargetTileReachableForAction(param_3,iVar7,uVar6,uVar5);
       if (cVar4 != '\0') {
         iStack_8 = 0x32;
       }
@@ -5731,7 +5731,7 @@ EvaluateTacticalTileScore_AnyAdjacentEnemyCandidateBonus(int param_1,int param_2
   int iVar3;
   int local_18 [6];
   
-  thunk_ComputeHexNeighborTileIndices(param_3,local_18);
+  ComputeHexNeighborTileIndices_005A0420(param_3,local_18);
   iVar3 = 0;
   piVar2 = local_18;
   while ((((*piVar2 == -1 ||
@@ -5769,7 +5769,7 @@ int EvaluateTacticalTileScore_ReachableCursorEntryCount(undefined4 param_1,undef
     if (-1 < iVar3) {
       uVar4 = (**(code **)(*piVar2 + 0x2c))();
       uVar5 = ftol(uVar4);
-      cVar1 = thunk_IsTacticalTargetTileReachableForAction(param_2,iVar3,uVar5,uVar4);
+      cVar1 = IsTacticalTargetTileReachableForAction(param_2,iVar3,uVar5,uVar4);
       if (cVar1 != '\0') {
         local_10 = local_10 + 1;
       }
@@ -5831,7 +5831,7 @@ EvaluateTacticalTileScore_AnyAdjacentAlliedUnitAboveThresholdBonus
   int iVar3;
   int local_18 [6];
   
-  thunk_ComputeHexNeighborTileIndices(param_3,local_18);
+  ComputeHexNeighborTileIndices_005A0420(param_3,local_18);
   iVar3 = 0;
   piVar2 = local_18;
   while ((((*piVar2 == -1 ||
@@ -5954,7 +5954,7 @@ int EvaluateTacticalTileScore_ReachableArtilleryClassCursorEntryCount
     if ((-1 < iVar3) && (*(short *)(&DAT_006693b8 + piVar2[3] * 2) == 2)) {
       uVar4 = (**(code **)(*piVar2 + 0x2c))();
       uVar5 = ftol(uVar4);
-      cVar1 = thunk_IsTacticalTargetTileReachableForAction(param_2,iVar3,uVar5,uVar4);
+      cVar1 = IsTacticalTargetTileReachableForAction(param_2,iVar3,uVar5,uVar4);
       if (cVar1 != '\0') {
         local_10 = local_10 + 1;
       }
@@ -5996,7 +5996,7 @@ EvaluateTacticalTileScore_ClosestReachableEnemyDistance(int param_1,int *param_2
       {
         uVar6 = uVar2;
         uVar4 = ftol(uVar2);
-        cVar1 = thunk_IsTacticalTargetTileReachableForAction(param_3,iVar8,uVar4,uVar6);
+        cVar1 = IsTacticalTargetTileReachableForAction(param_3,iVar8,uVar4,uVar6);
         if (cVar1 != '\0') {
           iVar5 = ComputeHexTileDistanceFromIndices(param_3,iVar8);
           if ((iVar7 == 0) || (iVar5 + 0x32 < iVar7)) {
@@ -6011,7 +6011,7 @@ EvaluateTacticalTileScore_ClosestReachableEnemyDistance(int param_1,int *param_2
   }
   if (0 < iVar7) {
     uVar6 = ftol(uVar2);
-    cVar1 = thunk_IsTacticalTargetTileReachableForAction(param_3,iVar3,uVar6,uVar2);
+    cVar1 = IsTacticalTargetTileReachableForAction(param_3,iVar3,uVar6,uVar2);
     if (cVar1 != '\0') {
       iVar7 = iVar7 + 5;
     }
@@ -6056,7 +6056,7 @@ EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus
        && (*(short *)(&DAT_006693b8 + *(int *)(iVar5 + 0xc) * 2) == 2)) {
       uVar7 = uVar2;
       uVar3 = ftol(uVar2);
-      cVar1 = thunk_IsTacticalTargetTileReachableForAction(param_3,iVar6,uVar3,uVar7);
+      cVar1 = IsTacticalTargetTileReachableForAction(param_3,iVar6,uVar3,uVar7);
       if (cVar1 != '\0') {
         return 100;
       }
@@ -6104,7 +6104,7 @@ int __thiscall SelectBestTacticalTargetTileByActionHeuristics(int param_1,int *p
   
   local_58 = -1;
   local_50 = 0;
-  thunk_ComputeHexNeighborTileIndices(param_2[2],local_40);
+  ComputeHexNeighborTileIndices_005A0420(param_2[2],local_40);
   iVar5 = InitializeLinkedListCursorFromOwnerHead();
   iVar6 = LinkedListCursorHasCurrent();
   do {
@@ -6133,7 +6133,7 @@ int __thiscall SelectBestTacticalTargetTileByActionHeuristics(int param_1,int *p
         iVar6 = param_2[2];
         uVar7 = (**(code **)(*param_2 + 0x2c))();
         uVar8 = ftol(uVar7);
-        cVar4 = thunk_IsTacticalTargetTileReachableForAction(iVar6,uVar1,uVar8,uVar7);
+        cVar4 = IsTacticalTargetTileReachableForAction(iVar6,uVar1,uVar8,uVar7);
         if (cVar4 == '\0') goto LAB_0059e2a3;
       }
       aiStack_28[0] = 500;
@@ -6210,7 +6210,7 @@ BuildTacticalActionClassAndPositionFlags(int param_1,undefined4 param_2,uint par
   case 4:
     uVar4 = 4;
   }
-  cVar3 = thunk_IsHexNeighborTileIndex(iVar1,param_2);
+  cVar3 = IsHexNeighborTileIndex(iVar1,param_2);
   if (cVar3 != '\0') {
     uVar4 = uVar4 | 0x10;
   }
@@ -6371,7 +6371,7 @@ void __thiscall BuildTacticalBattleStateFromBothSides(int param_1,int param_2,in
   *(undefined4 *)(param_1 + 0x10) = 0;
   *(undefined4 *)(param_1 + 0xc) = 1;
   *(undefined4 *)(param_1 + 0x44) = 0;
-  uVar5 = thunk_SelectNextTacticalUnitForDoneCommand();
+  uVar5 = SelectNextTacticalUnitForDoneCommand();
   *(undefined4 *)(param_1 + 0x1c) = uVar5;
   iVar3 = 0;
   piVar6 = (int *)InitializeLinkedListCursorFromOwnerHead();
@@ -6513,7 +6513,7 @@ void __fastcall HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
   int *piVar3;
   
   *(uint *)(param_1 + 0xc) = (uint)(*(int *)(param_1 + 0xc) == 0);
-  uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
+  uVar2 = SelectNextTacticalUnitForDoneCommand();
   *(undefined4 *)(param_1 + 0x1c) = uVar2;
   if (*(int *)(param_1 + 8) != 0) {
     piVar3 = (int *)(**(code **)(**(int **)(*(int *)(param_1 + 8) + 0x20) + 0x94))(0x746f6f6c);
@@ -6523,7 +6523,7 @@ void __fastcall HandleTacticalCommandTag_retr(TacticalBattleView *param_1)
     (**(code **)(iVar1 + 0x13c))();
   }
   if ((char)(*(int **)(param_1 + *(int *)(param_1 + 0xc) * 4 + 0x14))[4] != '\0') {
-    TacticalBattleView::thunk_FinalizeTacticalTurnStateAndQueueEvent232A(param_1);
+    TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A(param_1);
     return;
   }
   (**(code **)(**(int **)(param_1 + *(int *)(param_1 + 0xc) * 4 + 0x14) + 0x28))();
@@ -6557,7 +6557,7 @@ void __thiscall ApplyTacticalDoneSelectionAndRefreshUi(int *param_1,int param_2)
       CenterViewportAroundGridIndexAndSnap(iVar1);
     }
     (**(code **)(*(int *)param_1[2] + 0xe4))();
-    TAnimation::thunk_SpawnTacticalUiMarkerAtUnitTile((TAnimation *)param_1[2]);
+    TAnimation::SpawnTacticalUiMarkerAtUnitTile((TAnimation *)param_1[2]);
   }
   return;
 }
@@ -6624,7 +6624,7 @@ uint IsHexNeighborTileIndex(undefined4 param_1,int param_2)
   int *piVar2;
   int local_18 [6];
   
-  thunk_ComputeHexNeighborTileIndices(param_1,local_18);
+  ComputeHexNeighborTileIndices_005A0420(param_1,local_18);
   piVar2 = local_18;
   uVar1 = 0;
   do {
@@ -6656,7 +6656,7 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
   int local_18 [6];
   
   local_1c = 0;
-  cVar1 = thunk_IsTacticalControllerOwnedByActiveNation();
+  cVar1 = IsTacticalControllerOwnedByActiveNation();
   if (cVar1 == '\0') {
     return 1;
   }
@@ -6683,7 +6683,7 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
   iVar4 = *(int *)(param_1 + 0x1c);
   if (*(short *)(&DAT_00695528 + *(int *)(iVar4 + 0xc) * 2) == 8) {
     iVar4 = *(int *)(iVar4 + 8);
-    thunk_ComputeHexNeighborTileIndices(iVar4,local_18);
+    ComputeHexNeighborTileIndices_005A0420(iVar4,local_18);
     iVar6 = 0;
     piVar5 = local_18;
     do {
@@ -6710,7 +6710,7 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
     } while (iVar6 < 6);
   }
   else if (*(short *)(&DAT_00695528 + *(int *)(iVar4 + 0xc) * 2) == 9) {
-    thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(iVar4 + 8),local_18);
+    ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(iVar4 + 8),local_18);
     iVar4 = 0;
     piVar5 = local_18;
     do {
@@ -6746,10 +6746,10 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
         else {
           uVar2 = (**(code **)(*piVar5 + 0x2c))();
           uVar3 = ftol(uVar2);
-          cVar1 = thunk_IsTacticalTargetTileReachableForAction(iVar4,param_2,uVar3,uVar2);
+          cVar1 = IsTacticalTargetTileReachableForAction(iVar4,param_2,uVar3,uVar2);
         }
         if (cVar1 != '\0') {
-          thunk_ComputeHexNeighborTileIndices
+          ComputeHexNeighborTileIndices_005A0420
                     (*(undefined4 *)(*(int *)(param_1 + 0x1c) + 8),local_18);
           iVar4 = 0;
           piVar5 = local_18;
@@ -6775,7 +6775,7 @@ int __thiscall ComputeTacticalHoverCursorStateIndex(int param_1,int param_2)
         else {
           uVar2 = (**(code **)(*piVar5 + 0x2c))();
           uVar3 = ftol(uVar2);
-          cVar1 = thunk_IsTacticalTargetTileReachableForAction(iVar4,param_2,uVar3,uVar2);
+          cVar1 = IsTacticalTargetTileReachableForAction(iVar4,param_2,uVar3,uVar2);
         }
         if (cVar1 != '\0') {
           return 5;
@@ -6836,7 +6836,7 @@ LAB_005a0b9d:
       iVar5 = piVar2[2];
       uVar7 = (**(code **)(*piVar2 + 0x2c))();
       uVar8 = ftol(uVar7);
-      cVar4 = thunk_IsTacticalTargetTileReachableForAction(iVar5,param_2,uVar8,uVar7);
+      cVar4 = IsTacticalTargetTileReachableForAction(iVar5,param_2,uVar8,uVar7);
       return (-(uint)(cVar4 != '\0') & 3) + 0x400;
     }
     uVar6 = (uint)(ushort)(*(short *)(&DAT_00695528 + piVar2[3] * 2) >> 0xf) << 0x10;
@@ -6891,7 +6891,7 @@ void __fastcall AdvanceToNextTacticalUnitTurnStep(TNextMoveCommand *param_1)
       *(int *)&param_1[4].field_0x4 = iVar4;
       if (0x22 < iVar4) {
         EvaluateTacticalSideStateAndShowBattleSummaryDialog();
-        TNextMoveCommand::thunk_QueueTacticalEventPacket232A(param_1);
+        TNextMoveCommand::QueueTacticalEventPacket232A(param_1);
         return;
       }
       iVar4 = 1;
@@ -6903,7 +6903,7 @@ void __fastcall AdvanceToNextTacticalUnitTurnStep(TNextMoveCommand *param_1)
     (**(code **)(*piVar3 + 0xc))();
   } while ((piVar3[7] != 0) && (piVar3[7] != 1));
   (**(code **)(*piVar3 + 0xc))();
-  thunk_SetCurrentTacticalUnitSelection(piVar3,0);
+  SetCurrentTacticalUnitSelection(piVar3,0);
   if (piVar3[7] != 1) {
     if ((*(short *)(&DAT_00695528 + piVar3[3] * 2) == 8) && (piVar3[0x10] != -1)) {
       (*param_1->vftable[10].GetTEventClassNamePointer)(piVar3);
@@ -6912,7 +6912,7 @@ void __fastcall AdvanceToNextTacticalUnitTurnStep(TNextMoveCommand *param_1)
     (**(code **)(**(int **)(&param_1->field_0x14 + *(int *)&param_1->field_0xc * 4) + 0x2c))();
     return;
   }
-  thunk_ProcessTacticalUnitState1TurnStep(piVar3);
+  ProcessTacticalUnitState1TurnStep(piVar3);
   return;
 }
 
@@ -6933,7 +6933,7 @@ void __thiscall SetCurrentTacticalUnitSelection(int param_1,int *param_2,char pa
     *(uint *)(param_1 + 0xc) = (uint)(iVar1 == 0);
   }
   if (*(int *)(param_1 + 8) != 0) {
-    thunk_UpdateTacticalActionControlBitmapForCurrentUnit
+    UpdateTacticalActionControlBitmapForCurrentUnit
               (CONCAT31((int3)((uint)iVar1 >> 8),(char)param_2[8]));
   }
   if (*(int **)(param_1 + 8) != (int *)0x0) {
@@ -6945,7 +6945,7 @@ void __thiscall SetCurrentTacticalUnitSelection(int param_1,int *param_2,char pa
   iVar1 = (**(code **)(*param_2 + 0x28))();
   param_2[10] = iVar1;
   *(undefined1 *)(param_2 + 6) = 1;
-  thunk_ApplyTacticalDoneSelectionAndRefreshUi(param_2);
+  ApplyTacticalDoneSelectionAndRefreshUi(param_2);
   return;
 }
 
@@ -6969,7 +6969,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
   
   iVar7 = 999;
   iVar1 = param_2[2];
-  thunk_BuildTacticalDistanceFieldForSide(param_2[8] == 0);
+  BuildTacticalDistanceFieldForSide(param_2[8] == 0);
   iVar8 = 0;
   local_1c = iVar1;
   if (0 < *(int *)&param_1[2].field_0x4) {
@@ -6985,7 +6985,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
     } while (iVar8 < *(int *)&param_1[2].field_0x4);
   }
   if (local_1c != param_2[2]) {
-    thunk_MoveTacticalUnitTowardTile(param_2,local_1c);
+    MoveTacticalUnitTowardTile(param_2,local_1c);
   }
   if (param_2[7] != 1) goto LAB_005a1345;
   local_1c = 0;
@@ -7041,7 +7041,7 @@ void __thiscall ProcessTacticalUnitState1TurnStep(TNextMoveCommand *param_1,int 
   }
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 LAB_005a1345:
-  TNextMoveCommand::thunk_QueueTacticalEventPacket232A(param_1);
+  TNextMoveCommand::QueueTacticalEventPacket232A(param_1);
   return;
 }
 
@@ -7061,7 +7061,7 @@ void __thiscall MoveTacticalUnitTowardTile(int *param_1,int *param_2,int param_3
   int local_30 [12];
   
   local_30[0] = param_3;
-  iVar4 = thunk_BuildPathToTargetByDistanceField(param_3,0,param_2[2],local_30);
+  iVar4 = BuildPathToTargetByDistanceField(param_3,0,param_2[2],local_30);
   if (iVar4 != -1) {
     cVar3 = '\0';
     if (iVar4 != 0) {
@@ -7069,11 +7069,11 @@ void __thiscall MoveTacticalUnitTowardTile(int *param_1,int *param_2,int param_3
       do {
         if (cVar3 != '\0') break;
         (**(code **)(*param_2 + 0xc))();
-        thunk_MoveTacticalUnitBetweenTiles(param_2,*piVar6,piVar6[-1],0);
+        MoveTacticalUnitBetweenTiles(param_2,*piVar6,piVar6[-1],0);
         piVar1 = piVar6 + -1;
         piVar6 = piVar6 + -1;
         iVar4 = iVar4 + -1;
-        cVar3 = thunk_ResolveTacticalReactionChecksForTile(*piVar1);
+        cVar3 = ResolveTacticalReactionChecksForTile(*piVar1);
       } while (iVar4 != 0);
     }
     param_2[10] = param_2[10] - (int)*(short *)(param_1[9] + local_30[iVar4] * 2);
@@ -7144,7 +7144,7 @@ BuildPathToTargetByDistanceField(int param_1,int param_2,int param_3,int param_4
   }
   iVar12 = 0;
   sVar3 = *(short *)(*(int *)(param_1 + 0x24) + param_2 * 2);
-  thunk_ComputeHexNeighborTileIndices(param_2,local_18);
+  ComputeHexNeighborTileIndices_005A0420(param_2,local_18);
   iVar9 = *(int *)(param_1 + 0x24);
   piVar11 = local_30;
   piVar10 = local_18;
@@ -7214,7 +7214,7 @@ LAB_005a17eb:
     if (0 < iVar12) {
       piVar11 = local_30;
       do {
-        iVar9 = thunk_BuildPathToTargetByDistanceField(*piVar11,param_3 + 1,param_4,param_5);
+        iVar9 = BuildPathToTargetByDistanceField(*piVar11,param_3 + 1,param_4,param_5);
         if (iVar9 != -1) {
           *(int *)(param_5 + param_3 * 4) = param_2;
           return iVar9;
@@ -7244,7 +7244,7 @@ MoveTacticalUnitBetweenTiles(int param_1,int param_2,int param_3,int param_4,cha
   }
   *(undefined4 *)(*(int *)(param_1 + 4) + 4 + param_3 * 0x14) = 0;
   if (*(int *)(param_1 + 8) != 0) {
-    thunk_TriggerTacticalUiUpdate2711();
+    TriggerTacticalUiUpdate2711();
   }
   if ((*(int *)(param_1 + 0x4c) != 7) && (*(int **)(param_1 + 8) != (int *)0x0)) {
     (**(code **)(**(int **)(param_1 + 8) + 0x1bc))(param_2,param_3,param_4);
@@ -7255,10 +7255,10 @@ MoveTacticalUnitBetweenTiles(int param_1,int param_2,int param_3,int param_4,cha
     (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
   }
   if (*(int *)(param_1 + 8) != 0) {
-    thunk_InvalidateTacticalHexTileRect(param_4);
+    InvalidateTacticalHexTileRect(param_4);
   }
   if (*(TAnimation **)(param_1 + 8) != (TAnimation *)0x0) {
-    TAnimation::thunk_SpawnTacticalUiMarkerAtUnitTile(*(TAnimation **)(param_1 + 8));
+    TAnimation::SpawnTacticalUiMarkerAtUnitTile(*(TAnimation **)(param_1 + 8));
   }
   return;
 }
@@ -7288,7 +7288,7 @@ undefined4 __thiscall ResolveTacticalReactionChecksForTile(int *param_1,int para
       iVar6 = piVar3[2];
       uVar4 = (**(code **)(*piVar3 + 0x2c))();
       uVar5 = ftol(uVar4);
-      cVar2 = thunk_IsTacticalTargetTileReachableForAction(iVar6,param_2,uVar5,uVar4);
+      cVar2 = IsTacticalTargetTileReachableForAction(iVar6,param_2,uVar5,uVar4);
       if (cVar2 != '\0') {
         (**(code **)(*param_1 + 0x40))(piVar3,param_2);
         if ((int *)param_1[2] != (int *)0x0) {
@@ -7322,7 +7322,7 @@ uint __fastcall WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50(int pa
   int iVar4;
   uint local_18 [6];
   
-  thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(*(int *)(param_1 + 0x1c) + 8),local_18);
+  ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(*(int *)(param_1 + 0x1c) + 8),local_18);
   iVar4 = 0;
   puVar3 = local_18;
   do {
@@ -7361,7 +7361,7 @@ undefined4 __fastcall HasValidTacticalFollowupTargetForCurrentAction(int param_1
   
   iVar7 = *(int *)(param_1 + 0x1c);
   if (*(short *)(&DAT_00695528 + *(int *)(iVar7 + 0xc) * 2) == 9) {
-    thunk_ComputeHexNeighborTileIndices(*(undefined4 *)(iVar7 + 8),local_18);
+    ComputeHexNeighborTileIndices_005A0420(*(undefined4 *)(iVar7 + 8),local_18);
     iVar7 = 0;
     puVar6 = local_18;
     while (((*puVar6 == 0xffffffff ||
@@ -7391,7 +7391,7 @@ undefined4 __fastcall HasValidTacticalFollowupTargetForCurrentAction(int param_1
           else {
             uVar4 = (**(code **)(*piVar1 + 0x2c))();
             uVar5 = ftol(uVar4);
-            cVar2 = thunk_IsTacticalTargetTileReachableForAction(iVar3,iVar7,uVar5,uVar4);
+            cVar2 = IsTacticalTargetTileReachableForAction(iVar3,iVar7,uVar5,uVar4);
           }
           if (cVar2 != '\0') {
             return 1;
@@ -7440,12 +7440,12 @@ ApplyTacticalActionEffectsAndMaybeRemoveUnit
       (**(code **)(**(int **)(param_1 + 8) + 0x1b8))(param_2,0xf78,3);
     }
     if (*(int *)(param_1 + 8) != 0) {
-      thunk_InvalidateTacticalHexTileRect(param_2);
+      InvalidateTacticalHexTileRect(param_2);
     }
   }
   if (param_3[7] == 3) {
     if (*(int *)(param_1 + 8) != 0) {
-      thunk_InvalidateTacticalHexTileRect(param_3[2]);
+      InvalidateTacticalHexTileRect(param_3[2]);
     }
     if (*(int **)(param_1 + 8) != (int *)0x0) {
       (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_3);
@@ -7581,11 +7581,11 @@ LAB_005a280a:
     *(undefined4 *)(param_1 + 0x44) = 1;
   }
   if (*(int *)(param_1 + 8) != 0) {
-    local_78[0] = thunk_IsTacticalControllerOwnedByActiveNation();
+    local_78[0] = IsTacticalControllerOwnedByActiveNation();
     if (((*(int *)(param_1 + 0x44) == 1) &&
-        (cVar4 = thunk_IsTacticalControllerOwnedByActiveNation(), cVar4 != '\0')) ||
+        (cVar4 = IsTacticalControllerOwnedByActiveNation(), cVar4 != '\0')) ||
        ((*(int *)(param_1 + 0x44) == 2 &&
-        (cVar4 = thunk_IsTacticalControllerOwnedByActiveNation(), cVar4 != '\0')))) {
+        (cVar4 = IsTacticalControllerOwnedByActiveNation(), cVar4 != '\0')))) {
       bVar2 = 1;
       CStack_7c.m_pchData._3_1_ = 1;
     }
@@ -7640,7 +7640,7 @@ LAB_005a280a:
     CStack_bc.m_pchData = acStack_50;
     CStack_b8.m_pchData = (char *)0x0;
     CStack_c0.m_pchData = (char *)0x5a2962;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     CStack_b4.m_pchData = acStack_50;
     CStack_b0.m_pchData = (char *)0x0;
     CStack_b8.m_pchData = (char *)0x5a2974;
@@ -7668,7 +7668,7 @@ LAB_005a280a:
                     /* WARNING: Load size is inaccurate */
     CStack_c8.m_pchData = aCStack_9c[1].m_pchData[0x38];
     CStack_cc.m_pchData = (char *)0x5a29e6;
-    thunk_AssignSharedStringFromIndexedA8EntryNameField();
+    AssignSharedStringFromIndexedA8EntryNameField();
     CStack_c4.m_pchData = (char *)&CStack_a4;
     CStack_c8.m_pchData = (char *)0x5a2a14;
     FormatOverlayTerrainLabelText();
@@ -7688,7 +7688,7 @@ LAB_005a280a:
     scanBracketExpressions(g_pLocalizationTable,&CStack_a8,CStack_ac.m_pchData);
     CStack_d0.m_pchData = (char *)0x2b67;
     pcStack_d4 = (char *)0xa;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     pcStack_d4 = acStack_70;
     CStack_d0.m_pchData = (char *)0x0;
     (**(code **)(iVar8 + 0x1b4))();
@@ -7723,7 +7723,7 @@ LAB_005a280a:
     CStack_e8.m_pchData = (char *)0xa;
     CStack_f0.m_pchData = &stack0xffffff7c;
     CStack_ec.m_pchData = (char *)0x0;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     aCStack_9c[1].m_pchData = (char *)0x0;
     aCStack_9c[0].m_pchData = (char *)0x0;
     uStack_68 = *(undefined4 *)(CStack_b8.m_pchData + 0x20);
@@ -7859,7 +7859,7 @@ void __thiscall DispatchTacticalActionByHoverStateIndex(TNextMoveCommand *param_
     (*param_1->vftable[7].OrphanCallChain_C1_I17_00487470)(param_1[1].vftable,param_2);
     return;
   case 6:
-    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(param_1);
+    TNextMoveCommand::QueueTacticalEventPacket232A(param_1);
     return;
   case 7:
     (*param_1->vftable[0xc].GetTEventClassNamePointer)(param_1[1].vftable,param_2);
@@ -7894,7 +7894,7 @@ HandleTacticalCommandTag_mine(TTacticalBattle *param_1,int param_2,int param_3,c
   if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     NoOpCallbackRet10(0x6d696e65,0,param_2,param_3);
   }
-  TTacticalBattle::thunk_ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty
+  TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty
             (param_1,param_2,param_3);
   if (*(int *)&param_1->field_0x8 != 0) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3a9d,0,1);
@@ -7922,7 +7922,7 @@ void __thiscall HandleTacticalCommandTag_digg(int param_1,int param_2,int param_
     NoOpCallbackRet10(0x64696767,param_2,param_3,0);
   }
   iVar4 = *(int *)(param_2 + 8);
-  thunk_ComputeHexNeighborTileIndices(iVar4,local_18);
+  ComputeHexNeighborTileIndices_005A0420(iVar4,local_18);
   iVar5 = 0;
   piVar3 = local_18;
   do {
@@ -8071,7 +8071,7 @@ LAB_005a3ea3:
   if (((*(int *)(uVar6 + 4) != 0) &&
       (*(short *)(&DAT_00695528 + *(int *)(*(int *)(uVar6 + 4) + 0xc) * 2) == 8)) &&
      (*(char *)(uVar6 + 0x10) != '\0')) {
-    thunk_ComputeHexNeighborTileIndices(param_2,local_18);
+    ComputeHexNeighborTileIndices_005A0420(param_2,local_18);
     uVar6 = 0;
     piVar4 = local_18;
     while (*piVar4 != param_3) {
@@ -8194,12 +8194,12 @@ void __thiscall HandleTacticalCommandTag_depl(int param_1,int param_2,int param_
   if (((*(char *)(param_2 + 0x3c) != '\0') && (*(char *)(param_1 + 0x49) == '\0')) &&
      (*(undefined4 *)(*(int *)(param_1 + 4) + 8 + param_3 * 0x14) = 1, *(int *)(param_1 + 8) != 0))
   {
-    thunk_ComputeHexNeighborTileIndices(param_3,local_18);
+    ComputeHexNeighborTileIndices_005A0420(param_3,local_18);
     piVar2 = local_18;
     iVar1 = 6;
     do {
       if (*piVar2 != -1) {
-        thunk_InvalidateTacticalHexTileRect(*piVar2);
+        InvalidateTacticalHexTileRect(*piVar2);
       }
       piVar2 = piVar2 + 1;
       iVar1 = iVar1 + -1;
@@ -8264,7 +8264,7 @@ void __thiscall BuildTacticalDistanceFieldForSide(int param_1,char param_2)
     if (0 < *(int *)(param_1 + 0x3c)) {
       do {
         if (*(int *)(*(int *)(param_1 + 0x30) + local_20 * 4) == local_2c) {
-          thunk_ComputeHexNeighborTileIndices(local_20,local_18);
+          ComputeHexNeighborTileIndices_005A0420(local_20,local_18);
           local_28 = local_18;
           local_24 = 6;
           do {
@@ -8333,9 +8333,9 @@ void __thiscall LoadBattleSetupTabDataByIndex(int param_1,CString param_2,int pa
   local_54 = &stack0xffffff90;
   local_50 = pcVar2;
   CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffff90,&local_5c);
-  uVar3 = thunk_LoadTableResourceStreamByName();
-  thunk_ReadResourceStreamIntoBufferAndAdvance(uVar3,pcVar2);
-  thunk_ReleaseResourceStreamIfNotNull();
+  uVar3 = LoadTableResourceStreamByName();
+  ReadResourceStreamIntoBufferAndAdvance(uVar3,pcVar2);
+  ReleaseResourceStreamIfNotNull();
   iVar1 = param_3;
   piVar4 = *(int **)(param_1 + 4);
   local_54 = (undefined1 *)0xf;
@@ -9451,7 +9451,7 @@ void __thiscall InvalidateTacticalHexTileRect(int param_1,int param_2)
   local_c = uVar1 * *(int *)(param_1 + 0x8c);
   local_8 = local_10 + local_8;
   local_4 = local_c + *(int *)(param_1 + 0x8c);
-  thunk_InvalidateCityDialogRectRegion(&local_10,1);
+  InvalidateCityDialogRectRegion(&local_10,1);
   return;
 }
 
@@ -9517,26 +9517,26 @@ void DrawHexSelectionOutlineSegments(short *param_1)
   iVar2 = *(int *)(param_1 + 6);
   *(int *)(param_1 + 6) = iVar2 + -1;
   *(int *)(param_1 + 4) = iVar1 + -1;
-  thunk_SetQuickDrawTextOriginWithContextOffset
+  SetQuickDrawTextOriginWithContextOffset
             (CONCAT22((short)((uint)(iVar1 + -1) >> 0x10),*param_1),
              CONCAT22((short)((uint)(iVar2 + -1) >> 0x10),param_1[2] + 6));
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var,*param_1),CONCAT22(extraout_var_08,param_1[2]));
-  thunk_DrawCenteredGuideLineOnMapDc(*param_1 + 6,CONCAT22(extraout_var_05,param_1[2]));
-  thunk_SetQuickDrawTextOriginWithContextOffset
+  DrawCenteredGuideLineOnMapDc(*param_1 + 6,CONCAT22(extraout_var_05,param_1[2]));
+  SetQuickDrawTextOriginWithContextOffset
             (param_1[4] + -6,CONCAT22(extraout_var_00,param_1[2]));
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var_01,param_1[4]),CONCAT22(extraout_var_09,param_1[2]));
-  thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_10,param_1[4]),param_1[2] + 6);
-  thunk_SetQuickDrawTextOriginWithContextOffset
+  DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_10,param_1[4]),param_1[2] + 6);
+  SetQuickDrawTextOriginWithContextOffset
             (CONCAT22(extraout_var_06,param_1[4]),param_1[6] + -6);
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var_02,param_1[4]),CONCAT22(extraout_var_11,param_1[6]));
-  thunk_DrawCenteredGuideLineOnMapDc(param_1[4] + -6,CONCAT22(extraout_var_07,param_1[6]));
-  thunk_SetQuickDrawTextOriginWithContextOffset(*param_1 + 6,CONCAT22(extraout_var_03,param_1[6]));
-  thunk_DrawCenteredGuideLineOnMapDc
+  DrawCenteredGuideLineOnMapDc(param_1[4] + -6,CONCAT22(extraout_var_07,param_1[6]));
+  SetQuickDrawTextOriginWithContextOffset(*param_1 + 6,CONCAT22(extraout_var_03,param_1[6]));
+  DrawCenteredGuideLineOnMapDc
             (CONCAT22(extraout_var_04,*param_1),CONCAT22(extraout_var_12,param_1[6]));
-  thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_13,*param_1),param_1[6] + -6);
+  DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_13,*param_1),param_1[6] + -6);
   return;
 }
 
@@ -9621,7 +9621,7 @@ TCluster * Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030(void)
   this = (TCluster *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this[1].vftable = (TClusterVtbl *)0x0;
     this[1].field04 = 0;
     this[1].field0c = 0;
@@ -10141,7 +10141,7 @@ void __fastcall UpdateCityOrderCapabilityUnlockProgress(void *param_1)
       pcVar7 = pcVar5 + 0xe8;
       puVar4 = puVar3;
       do {
-        cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iStack_1c);
+        cVar2 = IsNationSlotEligibleForEventProcessing(iStack_1c);
         if (((cVar2 != '\0') && ((*ppTVar6)->field_0xa0 == '\0')) && (*pcVar7 != '\x02')) {
           (*(*ppTVar6)->vftable[7].GetTCountryClassNamePointer)(-*piStack_18);
           *pcVar7 = '\x01';
@@ -10495,12 +10495,12 @@ void __thiscall ActivateSlotAndUpdateUI(void *this,int base_ptr,int slot_idx)
   *(undefined1 *)((int)this + slot_idx * 0x1e + base_ptr + 0x395) = 1;
   *(short *)((int)this + ((int)slot_group + slot_idx * 10) * 2 + 0x1d6) = (short)base_ptr;
   if ((slot_group < 1) || (8 < slot_group)) {
-    iter_ok = thunk_IsNationSlotEligibleForEventProcessing(slot_idx);
+    iter_ok = IsNationSlotEligibleForEventProcessing(slot_idx);
     if (iter_ok != '\0') {
       InitializeLinkedListCursorFromOwnerHead();
       player_ptr = (astruct_26 *)LinkedListCursorHasCurrent();
       while (player_ptr != (astruct_26 *)0x0) {
-        iter_group = thunk_GetUnitMovementClassId();
+        iter_group = GetUnitMovementClassId();
         if (iter_group == slot_group) {
           ApplyEraCapabilityCostAndSetSelection();
         }
@@ -10648,7 +10648,7 @@ void UpdateSelectionAndRecalculateScores(int slot_idx,int player_idx)
       }
       *(short *)((int)pvVar3 + 0x48) = (short)slot_idx_copy;
       player_slot_base = player_slot_stride;
-      mapped_slot = thunk_GetNavyPrimaryOrderListHead();
+      mapped_slot = GetNavyPrimaryOrderListHead();
       if (mapped_slot != 0) {
 LAB_005b06f1:
         do {
@@ -10663,7 +10663,7 @@ LAB_005b06f1:
                                (short)((longlong)(int)slot_group_id * 0x51eb851f >> 0x3f));
             slot_idx = slot_idx + 1;
             if (slot_idx_copy != 0) {
-              thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks();
+              SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks();
             }
             PruneOrPromoteOrderNodeWhenChildCostDepleted();
             if (slot_idx_copy != 0) {
@@ -10701,8 +10701,8 @@ LAB_005b06f1:
           scanBracketExpressions(g_pLocalizationTable,&player_idx,(char *)slot_idx);
         }
         player_slot_base = &stack0xffffff8c;
-        thunk_AssignStringSharedRefAndReturnThis(&player_idx);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&player_idx);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4._0_1_ = 1;
         CString::~CString((CString *)&player_idx);
         local_4 = (uint)local_4._1_3_ << 8;
@@ -10710,10 +10710,10 @@ LAB_005b06f1:
         local_4 = 0xffffffff;
         CString::~CString(&board_base);
       }
-      for (pvVar3 = (void *)thunk_GetNavyPrimaryOrderListHead(); pvVar3 != (void *)0x0;
+      for (pvVar3 = (void *)GetNavyPrimaryOrderListHead(); pvVar3 != (void *)0x0;
           pvVar3 = *(void **)((int)pvVar3 + 0x24)) {
         if (*(short *)((int)pvVar3 + 0x14) == mapped_slot) {
-          thunk_AdjustMapOrderNodeStatCapped499(pvVar3,(short)(score_sum / slot_idx_copy));
+          AdjustMapOrderNodeStatCapped499(pvVar3,(short)(score_sum / slot_idx_copy));
         }
       }
       RecomputeGlobalCapabilityAverages();
@@ -10883,10 +10883,10 @@ TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TMinorRelationshipDialogVtbl_0066bb90;
     pTVar1 = this;
   }
@@ -10916,10 +10916,10 @@ TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TGPTreatyDialogVtbl_0066bd88;
     pTVar1 = this;
   }
@@ -10995,7 +10995,7 @@ TStaticText * CreateSelectableTextOptionEntryBase(void)
   this = (TStaticText *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     *(undefined1 *)&this[1].vftable = 0;
     *(undefined1 *)((int)&this[1].vftable + 1) = 0;
     *(undefined1 *)((int)&this[1].vftable + 2) = 0;
@@ -11240,7 +11240,7 @@ void __fastcall RefreshNationStateAndEmitTurnEvent3Mode18(int param_1)
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-    thunk_EmitTurnEvent3Mode18WithActiveNation();
+    EmitTurnEvent3Mode18WithActiveNation();
     return;
   }
   (*g_pLocalizationTable->vftable[8].slot_0x04)();
@@ -11274,10 +11274,10 @@ int __fastcall BuildInterNationEventSummaryRowsForAdvisorDialog_Impl(int param_1
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA220
-// GHIDRA_NAME thunk_DestructCObArray
-// GHIDRA_PROTO undefined thunk_DestructCObArray()
+// GHIDRA_NAME CObArray::DestructCObArray
+// GHIDRA_PROTO undefined CObArray::DestructCObArray()
 
-void CObArray::thunk_DestructCObArray(void)
+void CObArray::DestructCObArray(void)
 
 {
   undefined4 uVar1;
@@ -11363,7 +11363,7 @@ void __fastcall RefreshHudNationTitleControlsAndTheme(int *param_1)
   if (piVar3 == (int *)0x0) {
     LStack_70 = 0x5bad0b;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   pcVar2 = *(code **)(*piVar3 + 0xa8);
   (*pcVar2)();
@@ -11409,7 +11409,7 @@ void __fastcall RefreshHudNationTitleControlsAndTheme(int *param_1)
   auStack_80._4_4_ = RStack_90.top;
   LStack_70 = auStack_80._0_4_;
   CopyRect((LPRECT)&stack0xffffff94,(RECT *)(auStack_80 + 4));
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffff94,1);
+  InvalidateCityDialogRectRegion(&stack0xffffff94,1);
   LVar5 = 0x7274696c;
   piVar3 = (int *)(*pcVar1)(0x7274696c);
   iVar4 = *piVar3;
@@ -11421,7 +11421,7 @@ void __fastcall RefreshHudNationTitleControlsAndTheme(int *param_1)
   RStack_90.bottom = LStack_94;
   RStack_90.left = LVar5;
   CopyRect((LPRECT)auStack_80,&RStack_90);
-  thunk_InvalidateCityDialogRectRegion(auStack_80,1);
+  InvalidateCityDialogRectRegion(auStack_80,1);
   (**(code **)(iVar4 + 0xa4))(1,1);
   ApplyUiTextStyleAndThemeFlags(piVar3,0,0x12,0x2b6b,0x2b6c);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730,0xc,0x6c636f72);
@@ -11514,7 +11514,7 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     auStack_5c._0_4_ = local_4c;
     local_50.m_pchData = pcStack_40;
     CopyRect((LPRECT)auStack_3c,(RECT *)auStack_5c);
-    thunk_InvalidateCityDialogRectRegion(auStack_3c,1);
+    InvalidateCityDialogRectRegion(auStack_3c,1);
     uVar3 = (*pcVar1)(0x74616273);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740,4,uVar3);
     uStack_28 = uStack_28 & 0xffffff00;
@@ -11536,7 +11536,7 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     iVar5 = (*pcVar1)();
     if (iVar5 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     piVar9 = (int *)0x7469744c;
     *(undefined2 *)(iVar5 + 0x84) = 0xffff;
@@ -11554,7 +11554,7 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     local_48._4_4_ = local_54.m_pchData;
     auStack_3c._4_4_ = local_48._0_4_;
     CopyRect((LPRECT)(auStack_3c + 8),(RECT *)(local_48 + 4));
-    thunk_InvalidateCityDialogRectRegion(auStack_3c + 8,1);
+    InvalidateCityDialogRectRegion(auStack_3c + 8,1);
     piVar2 = (int *)(*pcVar1)(0x7274696c);
     iVar5 = *piVar2;
     (**(code **)(iVar5 + 0xc))();
@@ -11565,7 +11565,7 @@ void __fastcall RefreshTradeSelectionHeaderAndNationOfferBidLines(int *param_1)
     auStack_5c._4_4_ = unaff_EBP;
     local_54.m_pchData = (char *)unaff_EBX;
     CopyRect((LPRECT)local_48,(RECT *)(auStack_5c + 4));
-    thunk_InvalidateCityDialogRectRegion(local_48,1);
+    InvalidateCityDialogRectRegion(local_48,1);
     piVar2 = (int *)(*pcVar1)(0x6d61726b);
     iVar5 = *piVar2;
     (**(code **)(iVar5 + 0xc))();
@@ -11756,7 +11756,7 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   input_str.m_pchData =
        (char *)CONCAT22((short)((uint)pCVar8 >> 0x10),*(undefined2 *)((int)param_1 + 0x96));
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-  sVar5 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+  sVar5 = TControl::LookupOrderCompatibilityMatrixValue
                     ((TControl *)g_pDiplomacyTurnStateManager,(short)param_1[0x24],
                      *(short *)((int)param_1 + 0x92),(short)input_str.m_pchData,(short)pCVar8);
   LVar9 = CONCAT22(extraout_var_05,sVar5);
@@ -11940,7 +11940,7 @@ void __fastcall RefreshSelectedNationOrderCompatibilityInfo(int *param_1)
   local_58.left = (LONG)local_68.m_pchData;
   local_58.top = (LONG)local_64.m_pchData;
   CopyRect(&local_48,&local_58);
-  thunk_InvalidateCityDialogRectRegion(&local_48,1);
+  InvalidateCityDialogRectRegion(&local_48,1);
   (**(code **)(iVar11 + 0x1c8))(&stack0xffffff70,1);
   iStack_38._0_1_ = 10;
   CString::~CString((CString *)&stack0xffffff4c);

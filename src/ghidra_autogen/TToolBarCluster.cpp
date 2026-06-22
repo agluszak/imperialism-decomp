@@ -4,11 +4,11 @@
 // Bucket: TToolBarCluster.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00408995
-// GHIDRA_NAME TToolBarCluster::thunk_RefreshMapOrderEntryPanel
-// GHIDRA_PROTO void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
+// GHIDRA_NAME TToolBarCluster::RefreshMapOrderEntryPanel
+// GHIDRA_PROTO void __thiscall TToolBarCluster::RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 
 void __thiscall
-TToolBarCluster::thunk_RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrderEntry)
+TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrderEntry)
 
 {
   short sVar1;
@@ -23,7 +23,7 @@ TToolBarCluster::thunk_RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMa
   int iVar6;
   undefined4 uVar7;
   
-  TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this,2);
+  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this,2);
   ResetMapActionContextActivityAndNationFlags();
   if (pMapOrderEntry == (void *)0x0) {
     iVar6 = 0;
@@ -31,14 +31,14 @@ TToolBarCluster::thunk_RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMa
     do {
       uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
       (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable[1].slot_0x04)();
-      UpdateIndustryCapabilityControlStateAndValue
+      TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
                 ((TToolBarCluster *)CONCAT31(extraout_var,uVar4),0);
       iVar6 = iVar6 + 1;
     } while (iVar6 < 4);
     return;
   }
   uVar7 = 1;
-  uVar5 = thunk_GetMinActionThresholdFromEntryChildren(1);
+  uVar5 = GetMinActionThresholdFromEntryChildren(1);
   ExpandTaskForceTraversalDepthAndMarkDeferredNodes(uVar5,uVar7);
   pTVar3 = this->vftable;
   (*pTVar3[0x3c].GetTEventHandlerClassNamePointer)
@@ -50,7 +50,7 @@ TToolBarCluster::thunk_RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMa
     (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable[1].slot_0x04)();
     sVar1 = *(short *)((int)pMapOrderEntry + (short)iVar6 * 2 + 0x1e);
     CountTaskForceSelectedOrdersByNationClass(iVar6);
-    UpdateIndustryCapabilityControlStateAndValue
+    TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
               ((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4),(int)sVar1);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 4);
@@ -63,7 +63,7 @@ TToolBarCluster::thunk_RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415540
 // GHIDRA_NAME TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
-// GHIDRA_PROTO undefined WrapperFor_GetProfileStringA_At00415540()
+// GHIDRA_PROTO undefined TToolBarCluster::WrapperFor_GetProfileStringA_At00415540()
 
 undefined4
 TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
@@ -76,21 +76,21 @@ TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A6F0
 // GHIDRA_NAME TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0(void)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0(void)
 
 TToolBarCluster * __thiscall
 TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
           (TToolBarCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = (TToolBarClusterVtbl *)&TShipFractionClusterVtbl_00642f88;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004900A0
 // GHIDRA_NAME TToolBarCluster::RenderControlStateTextBySelectionCode
-// GHIDRA_PROTO undefined __thiscall RenderControlStateTextBySelectionCode(LONG * param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::RenderControlStateTextBySelectionCode(LONG * param_1)
 
 void __thiscall
 TToolBarCluster::RenderControlStateTextBySelectionCode(TToolBarCluster *this,LONG *param_1)
@@ -147,7 +147,7 @@ TToolBarCluster::RenderControlStateTextBySelectionCode(TToolBarCluster *this,LON
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490CF0
 // GHIDRA_NAME TToolBarCluster::InitDialogWindowAndSyncTitleIfChanged
-// GHIDRA_PROTO undefined __thiscall InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char param_2)
 
 void __thiscall
 TToolBarCluster::InitDialogWindowAndSyncTitleIfChanged
@@ -254,7 +254,7 @@ TToolBarCluster::LoadStringOrThrow
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC370
 // GHIDRA_NAME TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(char * param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(char * param_1)
 
 TToolBarCluster * __thiscall
 TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
@@ -346,7 +346,7 @@ TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int param_
   if (iStack_1c == 0) {
     iStack_60 = 0x4bb8d9;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   input_str = &stack0xffffffc4;
@@ -365,98 +365,98 @@ TToolBarCluster::InitializeCityProductionDialog(TToolBarCluster *this,int param_
   (*pTVar4)();
   FormatStringWithVarArgsToSharedRef();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,(char *)0x6d656174);
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iVar9 = (*pcVar3)();
   if (iVar9 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatStringWithVarArgsToSharedRef();
   (*pTVar4)();
   FormatStringWithVarArgsToSharedRef();
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&pcStack_6c,input_str);
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iVar9 = (*pcVar3)();
   if (iVar9 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatStringWithVarArgsToSharedRef();
   (*pTVar4)();
   FormatStringWithVarArgsToSharedRef();
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff84,pcStack_6c);
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0xec))();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   pcStack_6c = &stack0xffffff5c;
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0xec))();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0xec))();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0xec))();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   uVar10 = 0x7369636b;
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0x1cc))();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piVar8 = (int *)(*pcVar3)();
   if (piVar8 == (int *)0x0) {
     CStack_fc.m_pchData = (char *)0x4bbdb6;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar8 + 0x1cc))();
   CStack_fc.m_pchData = (char *)0x2734;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis();
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iVar9 = (*pcVar3)();
   if (iVar9 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_fc);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&CStack_fc);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   CString::~CString((CString *)&stack0xffffff08);
   CString::~CString((CString *)&stack0xffffff0c);
   CString::~CString((CString *)&stack0xffffff10);
@@ -496,7 +496,7 @@ TToolBarCluster::SetUniversityDialogTextAndRefresh
   CString::~CString((CString *)&stack0x00000000);
   (**(code **)(iVar1 + 300))(&stack0xffffffbc);
   CopyRect(&tStack_28,&RStack_38);
-  thunk_InvalidateCityDialogRectRegion(&tStack_28,1);
+  InvalidateCityDialogRectRegion(&tStack_28,1);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }
@@ -578,7 +578,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     uVar3 = (*pTVar6)();
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar7 = *(int *)CONCAT31(extraout_var,uVar3);
     iVar8 = 0x2718;
@@ -590,7 +590,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     LStack_7c = 0x4cb451;
     CopyRect(atStack_30,&rcWorkBuffer);
     LStack_7c = 0x4cb45f;
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     uVar3 = (*pTVar6)();
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar7 + 0xc))();
@@ -599,11 +599,11 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     (**(code **)(iVar7 + 300))();
     nMaxLevelPips.m_pchData = unaff_EBX;
     CopyRect(&rcWorkBuffer,(RECT *)&stack0xffffffb0);
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     uVar3 = (*pTVar6)();
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar5 = (int)*(short *)(iVar8 + 0x54);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
@@ -611,11 +611,11 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     (**(code **)(iVar7 + 0x1c8))();
     (**(code **)(iVar7 + 300))();
     CopyRect((LPRECT)&stack0xffffffa8,(RECT *)&stack0xffffff98);
-    thunk_InvalidateCityDialogRectRegion(&stack0xffffffa8);
+    InvalidateCityDialogRectRegion(&stack0xffffffa8);
     uVar3 = (*pTVar6)();
     if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x615);
     }
     iVar7 = *(int *)CONCAT31(extraout_var_02,uVar3);
@@ -624,13 +624,13 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     (**(code **)(iVar7 + 300))(&stack0xffffff78);
     LStack_7c = iVar5;
     CopyRect((LPRECT)&stack0xffffff94,(RECT *)&LStack_7c);
-    thunk_InvalidateCityDialogRectRegion(&stack0xffffff94,1);
+    InvalidateCityDialogRectRegion(&stack0xffffff94,1);
     (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
     LStack_7c = 0x7c;
-    thunk_InvalidateCityDialogRectRegion(&LStack_7c,1);
+    InvalidateCityDialogRectRegion(&LStack_7c,1);
     iVar7 = 0;
     LStack_7c = 0;
-    thunk_InvalidateCityDialogRectRegion(&LStack_7c,1);
+    InvalidateCityDialogRectRegion(&LStack_7c,1);
     if (-1 < (short)this[1].controlTag) {
       nMaxLevelPips.m_pchData = (char *)0x0;
       do {
@@ -699,13 +699,13 @@ TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls(TToolBarClu
   undefined3 extraout_var_01;
   undefined1 *puStack00000004;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this);
-  InitializeDiplomacyMinisterActionControlsAndLabels();
+  TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels();
   puStack00000004 = &stack0xfffffff4;
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xfffffff4,PTR_g_szEmptyString_00654ec8);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   if (*(short *)&g_pLocalizationTable->field_0x8 == 6) {
     pTVar1 = this->vftable;
     pTVar2 = pTVar1[0x12].slot_0x04;
@@ -728,7 +728,7 @@ TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls(TToolBarClu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F4620
 // GHIDRA_NAME TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels
-// GHIDRA_PROTO undefined InitializeDiplomacyMinisterActionControlsAndLabels()
+// GHIDRA_PROTO undefined TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels()
 
 void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels(int *param_1)
 
@@ -764,7 +764,7 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     *piVar2 = iVar1;
     if (iVar1 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     piVar2 = piVar2 + 1;
     local_10 = local_10 + -1;
@@ -777,8 +777,8 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     iStack_40 = 0x4f4707;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     local_14 = (code *)&stack0xffffffcc;
-    thunk_AssignStringSharedRefAndReturnThis();
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     CVar3.m_pchData = local_18.m_pchData;
     sVar4 = sVar4 + 1;
   } while (sVar4 < 6);
@@ -788,20 +788,20 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     pTStack_48 = (TToolBarClusterVtbl *)&stack0xffffffd4;
     iStack_40 = iVar1;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     pTStack_48 = (TToolBarClusterVtbl *)0x4f477d;
     EnableAndProcessFlagWithSharedStringCleanup();
     iStack_40 = DAT_00696980;
     iStack_44 = 0x4f478a;
     iStack_44 = (*(code *)CVar3.m_pchData)();
     unaff_EDI = (TView *)&pTStack_48;
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&pTStack_48,PTR_g_szEmptyString_00654ec8);
     EnableAndProcessFlagWithSharedStringCleanup();
     iStack_44 = DAT_00696984;
     pTStack_48 = (TToolBarClusterVtbl *)0x4f47b0;
     pTStack_48 = (TToolBarClusterVtbl *)(*(code *)CVar3.m_pchData)();
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&stack0xffffffb4,PTR_g_szEmptyString_00654ec8);
     EnableAndProcessFlagWithSharedStringCleanup();
   }
@@ -809,9 +809,9 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     piVar2 = (int *)(*(code *)local_18.m_pchData)();
     local_18.m_pchData = &stack0xffffffc8;
     iStack_40 = 0x4f47f0;
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&stack0xffffffc8,PTR_g_szEmptyString_00654ec8);
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     (**(code **)(*piVar2 + 0xf0))();
   }
   pTStack_48 = (TToolBarClusterVtbl *)0x4f481a;
@@ -822,7 +822,7 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F74F0
 // GHIDRA_NAME TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails
-// GHIDRA_PROTO undefined __thiscall ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
 
 undefined1 __thiscall
 TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(TToolBarCluster *this)
@@ -936,12 +936,12 @@ TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(TToolBarCl
     puStack_70 = &DAT_006a2fc0;
     CStack_34.m_pchData = acStack_74;
     pCStack_78 = &CStack_1c;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     CStack_30.m_pchData = (char *)&pCStack_78;
     iStack_24._0_1_ = 0xd;
-    thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffb4);
+    AssignStringSharedRefAndReturnThis(&stack0xffffffb4);
     iStack_24._0_1_ = 5;
-    uVar2 = thunk_DispatchLocalizedUiMessageWithTemplate(3);
+    uVar2 = DispatchLocalizedUiMessageWithTemplate(3);
     iStack_24._0_1_ = 4;
     CString::~CString((CString *)&stack0xffffffb4);
     iStack_24._0_1_ = 3;
@@ -963,7 +963,7 @@ TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails(TToolBarCl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9A60
 // GHIDRA_NAME TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
-// GHIDRA_PROTO undefined __thiscall RunDiplomacyWaitSheetPopupAndAwaitResponse(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse(int param_1, int param_2)
 
 bool __thiscall
 TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
@@ -1019,7 +1019,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   if (local_18 == (TToolBarCluster_slot_0x04_0x04 *)0x0) {
     CStack_54.m_pchData = (char *)0x4f9af8;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatOverlayTerrainLabelText();
   FormatOverlayTerrainLabelText();
@@ -1113,7 +1113,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   local_2c.m_pchData[0x66] = '\0';
   local_2c.m_pchData[0x67] = '\0';
   do {
-    thunk_PumpUiMessagesAndBackgroundTasks(1);
+    PumpUiMessagesAndBackgroundTasks(1);
     iVar6 = *(int *)(local_2c.m_pchData + 100);
   } while (iVar6 == 0);
   if (iVar6 != 0x61636365) {
@@ -1208,7 +1208,7 @@ TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarClust
                     (CONCAT22(extraout_var,*(undefined2 *)((int)&this->field0c + 2)),0);
   if (iVar4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0xb0);
   }
   this->field04 = iVar4;
@@ -1221,7 +1221,7 @@ TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize(TToolBarClust
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005083F0
 // GHIDRA_NAME TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-// GHIDRA_PROTO undefined __thiscall BuildMappedSharedStringFromByteStateTable(CString * param_1, byte * param_2)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::BuildMappedSharedStringFromByteStateTable(CString * param_1, byte * param_2)
 
 CString * __thiscall
 TToolBarCluster::BuildMappedSharedStringFromByteStateTable
@@ -1368,7 +1368,7 @@ TToolBarCluster::QueueDepotConstructionOrder
     local_10 = (TTown *)AllocateWithFallbackHandler(0x50);
     local_4._0_1_ = 1;
     if (local_10 != (TTown *)0x0) {
-      uVar5 = TTown::thunk_ConstructFrogCityMarker(local_10);
+      uVar5 = TTown::FUN_005b6c60(local_10);
     }
                     /* Existing order path: mark order as modified instead of reallocating. */
     local_4 = (uint)local_4._1_3_ << 8;
@@ -1377,7 +1377,7 @@ TToolBarCluster::QueueDepotConstructionOrder
     piVar3 = *(int **)&g_apNationStates[nTileIndex]->field_0x898;
     if (piVar3 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0xfa8);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0xfa8);
     }
     (**(code **)(*piVar3 + 0x30))(uVar5);
     (*this->vftable[0x26].GetTEventHandlerClassNamePointer)(unaff_retaddr,pMapContext);
@@ -1398,7 +1398,7 @@ TToolBarCluster::QueueDepotConstructionOrder
   *pbVar2 = *pbVar2 | 0x10;
   if ((DAT_00695278 != -3) && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
     DispatchTurnEvent31TaggedPayload(0x746f776e,local_14.m_pchData,0xfffffffe);
-    thunk_DispatchCityRedrawInvalidateEvent(*(short *)(iVar7 + 0x14 + this->field0c));
+    DispatchCityRedrawInvalidateEvent(*(short *)(iVar7 + 0x14 + this->field0c));
     DispatchTileRedrawInvalidateEvent((short)pMapContext);
   }
   puStack_8 = (undefined1 *)0xffffffff;
@@ -1469,7 +1469,7 @@ TToolBarCluster::SetNationSelectedRegionAndMapCellLabelAlt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054CC00
 // GHIDRA_NAME TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll
-// GHIDRA_PROTO undefined RefreshNationStatusLabelsAndCodesForSlotOrAll()
+// GHIDRA_PROTO undefined TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll()
 
 void __thiscall
 TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(char *param_1,CString param_2)
@@ -1496,7 +1496,7 @@ TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(char *param_1,CSt
   if (param_2.m_pchData == (char *)0xffffffff) {
     iVar5 = 0;
     do {
-      RefreshNationStatusLabelsAndCodesForSlotOrAll(iVar5);
+      TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(iVar5);
       iVar5 = iVar5 + 1;
     } while (iVar5 < 7);
   }
@@ -1510,7 +1510,7 @@ TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(char *param_1,CSt
   }
   else {
     if ((g_apNationStates[(int)param_2.m_pchData]->field_0xa0 == '\0') ||
-       (cVar3 = thunk_IsNationSlotEligibleForEventProcessing(param_2.m_pchData), cVar3 == '\0')) {
+       (cVar3 = IsNationSlotEligibleForEventProcessing(param_2.m_pchData), cVar3 == '\0')) {
       bVar1 = true;
     }
     else {
@@ -1536,7 +1536,7 @@ TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(char *param_1,CSt
     }
     CString::AssignFromCStr(this,pcVar4);
     CString::AssignFromPtr((CString *)(param_1 + (int)CVar2.m_pchData * 4 + 0x94),this);
-    cVar3 = thunk_IsNationSlotEligibleForEventProcessing(CVar2.m_pchData);
+    cVar3 = IsNationSlotEligibleForEventProcessing(CVar2.m_pchData);
     if (cVar3 == '\0') {
       builtin_strncpy(param_1 + (int)CVar2.m_pchData * 4 + 0xbc,"aced",4);
     }
@@ -1574,7 +1574,7 @@ TToolBarCluster::CancelMapOrderEntryAndRestoreActive(TToolBarCluster *this,int *
   
   bVar4 = this->padding_08_to_0b == 5;
   if (bVar4) {
-    iVar3 = TGreatPower::thunk_GetCityIndexFromCityStatePointer
+    iVar3 = TGreatPower::GetCityIndexFromCityStatePointer
                       ((TGreatPower *)this->field0c,unaff_EDI);
     sVar2 = (short)iVar3;
   }
@@ -1606,7 +1606,7 @@ TToolBarCluster::CancelMapOrderEntryAndRestoreActive(TToolBarCluster *this,int *
     sVar2 = UiRuntimeContext::GetActiveNationId(iVar3);
     ValidateOrderSupportDeltaAndMarkDirectionalOverlays((int)sVar2,iVar3);
   }
-  thunk_SetActiveMapOrderEntry
+  TToolBarCluster::SetActiveMapOrderEntry
             (*(TToolBarCluster **)&g_pUiRuntimeContext->field_0xf0,pMapOrderEntry_00);
   return;
 }
@@ -1750,7 +1750,7 @@ TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileInde
   void *pvVar4;
   undefined4 uVar5;
   
-  uVar2 = thunk_GetMapContextActionCode(nTileIndex,nInputFlags);
+  uVar2 = GetMapContextActionCode(nTileIndex,nInputFlags);
   if (uVar2 != 0) {
     this_00 = *(TToolBarCluster **)&g_pUiRuntimeContext->field_0xf0;
     switch(uVar2) {
@@ -1764,19 +1764,19 @@ TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileInde
                     /* g_pCachedMapActionContext is forwarded to preserve dialog continuity. */
       iVar3 = uVar2 - 2;
       uVar5 = g_pCachedMapActionContext;
-      pvVar4 = thunk_GetMapActionContextByTileIndex(nTileIndex);
-      uVar5 = thunk_OpenMapContextActionDialogByType(pvVar4,iVar3,uVar5);
+      pvVar4 = GetMapActionContextByTileIndex(nTileIndex);
+      uVar5 = OpenMapContextActionDialogByType(pvVar4,iVar3,uVar5);
       return CONCAT31((int3)((uint)uVar5 >> 8),1);
     case 9:
                     /* Action codes 2..8 open context dialogs with action type (code - 2). */
-      pvVar4 = thunk_GetMapActionContextByTileIndex(nTileIndex);
-      thunk_SetActiveMapOrderEntry(this_00,pvVar4);
+      pvVar4 = GetMapActionContextByTileIndex(nTileIndex);
+      TToolBarCluster::SetActiveMapOrderEntry(this_00,pvVar4);
       return CONCAT31((int3)((uint)extraout_EAX >> 8),1);
     case 10:
                     /* Action code 10 routes through UI runtime vfunc +0xF0 for active order
                        execution. */
       puVar1 = g_pUiRuntimeContext->vftable;
-      pvVar4 = thunk_GetActiveMapOrderEntry(this_00);
+      pvVar4 = GetActiveMapOrderEntry(this_00);
       uVar5 = (**(code **)(puVar1 + 0xf0))(pvVar4);
       return CONCAT31((int3)((uint)uVar5 >> 8),1);
     case 0xb:
@@ -1786,7 +1786,7 @@ TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileInde
           (pvVar4 != (void *)0x0 && (*(short *)((int)pvVar4 + 0x30) != nTileIndex));
           pvVar4 = *(void **)((int)pvVar4 + 0x2c)) {
       }
-      thunk_OpenMapEntryOrderDialog(this_00,pvVar4);
+      TToolBarCluster::OpenMapEntryOrderDialog(this_00,pvVar4);
       return CONCAT31((int3)((uint)extraout_EAX_00 >> 8),1);
     }
   }
@@ -1795,7 +1795,7 @@ TToolBarCluster::TryHandleMapContextAction(TToolBarCluster *this,short nTileInde
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568F90
 // GHIDRA_NAME TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
-// GHIDRA_PROTO undefined __thiscall UpdateIndustryCapabilityControlStateAndValue(int param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
 
 void __thiscall
 TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(TToolBarCluster *this,int param_1)
@@ -1836,7 +1836,7 @@ TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(TToolBarCluster *t
     (**(code **)(*(int *)this[1].padding_08_to_0b + 0xa4))(0,1);
     pTStack_1c = extraout_ECX;
     pTStack_18 = this;
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&pTStack_1c,PTR_g_szEmptyString_0065c830);
     EnableAndProcessFlagWithSharedStringCleanup();
   }
@@ -1966,7 +1966,7 @@ void __thiscall TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4(TT
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
   }
   else {
-    thunk_PostTurnEventCodeMessage2420(0x5e4);
+    PostTurnEventCodeMessage2420(0x5e4);
     CString::AssignFromPtr((CString *)&g_pGameFlowState->field_0xb4,(CString *)&DAT_006a4220);
     CString::AssignFromPtr((CString *)&g_pGameFlowState->field_0xb0,(CString *)&DAT_006a4220);
     g_pGameFlowState->field_0xdc = *(undefined1 *)((int)&this[1].field10 + 2);
@@ -2316,7 +2316,7 @@ TCluster * TToolBarCluster::CreateTToolBarClusterInstance(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&TToolBarClusterVtbl_00664b00;
     pTVar1 = this;
   }
@@ -2326,7 +2326,7 @@ TCluster * TToolBarCluster::CreateTToolBarClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584E00
 // GHIDRA_NAME TToolBarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TToolBarCluster::GetTEventHandlerClassNamePointer(TToolBarCluster *this)
 
@@ -2342,7 +2342,7 @@ TToolBarCluster * __thiscall
 TToolBarCluster::ConstructTToolBarClusterBaseState(TToolBarCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &TToolBarClusterVtbl_00664b00;
   return this;
 }
@@ -2355,7 +2355,7 @@ TToolBarCluster * __thiscall
 TToolBarCluster::_scalar_deleting_destructor_(TToolBarCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -2364,7 +2364,7 @@ TToolBarCluster::_scalar_deleting_destructor_(TToolBarCluster *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584EA0
 // GHIDRA_NAME TToolBarCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TToolBarCluster::OrphanRetStub_0059add0(TToolBarCluster *this,int param_1,void *param_2,int param_3)
@@ -2376,7 +2376,7 @@ TToolBarCluster::OrphanRetStub_0059add0(TToolBarCluster *this,int param_1,void *
   undefined4 uVar4;
   undefined3 extraout_var;
   
-  TMapEditCluster::thunk_DispatchPanelControlEvent((TMapEditCluster *)this,param_1,param_2,param_3);
+  TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
   if ((param_1 == 10) && (*(int *)&g_pApplicationUiRootController->field_0x24 < 2 && iVar3 == 0)) {
     uVar1 = *(uint *)((int)param_2 + 0x1c);
@@ -2392,11 +2392,11 @@ TToolBarCluster::OrphanRetStub_0059add0(TToolBarCluster *this,int param_1,void *
     }
     else if (uVar1 < 0x53636f73) {
       if (uVar1 == 0x53636f72) {
-        thunk_PostTurnEventCodeMessage2420(0x5eb);
+        PostTurnEventCodeMessage2420(0x5eb);
         return;
       }
       if (uVar1 == 0x52655374) {
-        thunk_ReinitializeGameFlowAndPostTurnEventCode(0);
+        ReinitializeGameFlowAndPostTurnEventCode(0);
         return;
       }
     }
@@ -2414,7 +2414,7 @@ TToolBarCluster::OrphanRetStub_0059add0(TToolBarCluster *this,int param_1,void *
           return;
         }
         uVar4 = UiRuntimeContext::GetActiveNationId();
-        uVar4 = thunk_ConsumeFirstPendingAbilityUnlock(uVar4);
+        uVar4 = ConsumeFirstPendingAbilityUnlock(uVar4);
         if ((short)uVar4 != -1) {
           (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar4);
           return;
@@ -2433,7 +2433,7 @@ LAB_00585059:
         uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x444c4f47);
         if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x3e6);
         }
         (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x3c))(10,param_2,param_2);
@@ -2488,11 +2488,11 @@ void TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch(void)
   
   if (in_EAX < 0x53636f73) {
     if (in_EAX == 0x53636f72) {
-      thunk_PostTurnEventCodeMessage2420(0x5eb);
+      PostTurnEventCodeMessage2420(0x5eb);
       return;
     }
     if (in_EAX == 0x52655374) {
-      thunk_ReinitializeGameFlowAndPostTurnEventCode(0);
+      ReinitializeGameFlowAndPostTurnEventCode(0);
       return;
     }
   }
@@ -2510,7 +2510,7 @@ void TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch(void)
         return;
       }
       uVar2 = UiRuntimeContext::GetActiveNationId();
-      uVar2 = thunk_ConsumeFirstPendingAbilityUnlock(uVar2);
+      uVar2 = ConsumeFirstPendingAbilityUnlock(uVar2);
       if ((short)uVar2 != -1) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar2);
         return;
@@ -2529,7 +2529,7 @@ LAB_00585059:
       piVar3 = (int *)(**(code **)(**(int **)(unaff_EDI + 0x20) + 0x94))(0x444c4f47);
       if (piVar3 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x3e6);
       }
       (**(code **)(*piVar3 + 0x3c))(10);
@@ -2564,7 +2564,7 @@ LAB_00585059:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005851C0
 // GHIDRA_NAME TToolBarCluster::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 void __thiscall
 TToolBarCluster::SetForeignMinisterReadyFlag14(TToolBarCluster *this,undefined4 param_1)
@@ -2594,14 +2594,14 @@ TToolBarCluster::SetForeignMinisterReadyFlag14(TToolBarCluster *this,undefined4 
     piVar4 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x6d61696e);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x406);
     }
     pcVar1 = *(code **)(*piVar4 + 0x94);
     iVar5 = (*pcVar1)(0x444c4f47);
     if (iVar5 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x409);
     }
     iVar5 = piStack_8[1];
@@ -2626,14 +2626,14 @@ TToolBarCluster::SetForeignMinisterReadyFlag14(TToolBarCluster *this,undefined4 
     piVar4 = (int *)(*pcVar1)(0x63757273);
     if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x448);
     }
     (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffe0,1);
     piStack_8 = (int *)0xffffffff;
     CString::~CString((CString *)&stack0xffffffec);
   }
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+  TMapDialog::SetForeignMinisterReadyFlag14
             ((TControl *)this,unaff_retaddr,param_1);
   *unaff_FS_OFFSET = this;
   return;
@@ -2731,9 +2731,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
   puStack_18 = (undefined1 *)&puStack_3c;
   puStack_40 = &stack0xffffffd8;
   ppuStack_44 = (undefined1 **)0x58547d;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   puStack_40 = (undefined1 *)0x585482;
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTVar2 = pTVar1[0x12].slot_0x04;
   puStack_3c = (undefined1 *)0x585494;
   uVar3 = (*pTVar2)();
@@ -2747,9 +2747,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
     ppuStack_44 = (undefined1 **)&stack0xffffffd4;
     CStack_48.m_pchData = (char *)0x5854c6;
     puStack_3c = (undefined1 *)CONCAT31(extraout_var_00,uVar3);
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     ppuStack_44 = (undefined1 **)0x5854cb;
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   }
   puStack_3c = (undefined1 *)0x71756572;
   puStack_40 = (undefined1 *)0x5854d7;
@@ -2764,9 +2764,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
     CStack_48.m_pchData = &stack0xffffffd0;
     ppuStack_4c = (undefined1 **)0x585509;
     puStack_40 = (undefined1 *)CONCAT31(extraout_var_01,uVar3);
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     CStack_48.m_pchData = (char *)0x58550e;
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   }
   puStack_40 = (undefined1 *)0x74726164;
   ppuStack_44 = (undefined1 **)0x58551a;
@@ -2785,9 +2785,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
       ppuStack_4c = &puStack_34;
       ppuStack_50 = (undefined1 **)0x585557;
       ppuStack_44 = ppuVar6;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       ppuStack_4c = (undefined1 **)0x58555c;
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     }
   }
   ppuStack_44 = (undefined1 **)0x63697479;
@@ -2806,9 +2806,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
       ppuStack_50 = (undefined1 **)&stack0xffffffc8;
       CStack_54.m_pchData = (char *)0x5855a5;
       CStack_48.m_pchData = (char *)piVar5;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       ppuStack_50 = (undefined1 **)0x5855aa;
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     }
   }
   CStack_48.m_pchData = (char *)0x7472616e;
@@ -2827,9 +2827,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
       CStack_54.m_pchData = (char *)&puStack_3c;
       CStack_58.m_pchData = (char *)0x5855f3;
       ppuStack_4c = (undefined1 **)piVar5;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       CStack_54.m_pchData = (char *)0x5855f8;
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     }
   }
   ppuStack_4c = (undefined1 **)0x6469706c;
@@ -2848,9 +2848,9 @@ void __thiscall TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls(TTo
       CStack_58.m_pchData = (char *)&puStack_40;
       CStack_5c.m_pchData = (char *)0x585641;
       ppuStack_50 = (undefined1 **)piVar5;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       CStack_58.m_pchData = (char *)0x585646;
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     }
   }
   ppuStack_50 = (undefined1 **)0x656e6420;
@@ -2920,9 +2920,9 @@ LAB_00585724:
   CStack_5c.m_pchData = (char *)&ppuStack_44;
   pCStack_60 = (CString *)0x585741;
   CStack_54.m_pchData = pcVar7;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   CStack_5c.m_pchData = (char *)0x585746;
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
 LAB_00585749:
   CStack_54.m_pchData = (char *)0x74726565;
   CStack_58.m_pchData = (char *)0x585752;
@@ -2934,9 +2934,9 @@ LAB_00585749:
     pCStack_60 = &CStack_48;
     CStack_64.m_pchData = (char *)0x58577a;
     CStack_58.m_pchData = (char *)CONCAT31(extraout_var_08,uVar3);
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     pCStack_60 = (CString *)0x58577f;
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   }
   CStack_58.m_pchData = (char *)0x73656173;
   CStack_5c.m_pchData = (char *)0x58578b;
@@ -2956,9 +2956,9 @@ LAB_00585749:
       CStack_64.m_pchData = (char *)&ppCStack_8c;
       CStack_90.m_pchData = (char *)&ppCStack_78;
       piStack_88 = piVar5;
-      thunk_AssignStringSharedRefAndReturnThis();
+      AssignStringSharedRefAndReturnThis();
       CStack_90.m_pchData = (char *)0x5858db;
-      InitializeAndRunMainRoutine();
+      RunEnableAndProcessFlagWithScopedSharedStringCleanup();
       piStack_88 = (int *)0x2b67;
       ppCStack_8c = (CString **)0x2b6c;
       CStack_90.m_pchData = (char *)0xe;
@@ -3004,9 +3004,9 @@ LAB_00585749:
     ppuStack_50 = (undefined1 **)&ppCStack_78;
     pCStack_7c = &CStack_64;
     puStack_80 = (undefined4 *)0x58585e;
-    thunk_AssignStringSharedRefAndReturnThis();
+    AssignStringSharedRefAndReturnThis();
     pCStack_7c = (CString *)0x585863;
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     ppCStack_78 = (CString **)0x2b6c;
     pCStack_7c = (CString *)0xc;
     puStack_80 = (undefined4 *)0x0;
@@ -3032,8 +3032,8 @@ LAB_00585749:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     CStack_68.m_pchData = (char *)&CStack_90;
     ppCStack_8c = ppCVar9;
-    thunk_AssignStringSharedRefAndReturnThis(&pCStack_7c);
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis(&pCStack_7c);
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     ppCStack_8c = (CString **)0x2b67;
     CStack_90.m_pchData = (char *)0x2b6c;
     ApplyUiTextStyleAndThemeFlags(ppCVar9,0,0xc);
@@ -3108,7 +3108,7 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
   CStack_2c.m_pchData = _param_1;
   local_4.m_pchData = (char *)0x0;
   CStack_30.m_pchData = (char *)0x585bde;
-  cVar2 = thunk_IsNationSlotEligibleForEventProcessing();
+  cVar2 = IsNationSlotEligibleForEventProcessing();
   if (cVar2 != '\0') {
     CStack_2c.m_pchData = (char *)&local_1c;
     CStack_30.m_pchData = *(char **)&g_apNationStates[param_1]->field_0x10;
@@ -3309,18 +3309,18 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   local_10 = 0;
   local_f = 0;
   puStack_94 = (undefined1 *)0x5916e6;
-  thunk_InitializeUiTextStyleDescriptor();
-  thunk_BuildUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x591712;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x59172a;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   local_68 = this->vftable[0x12].slot_0x04;
   uVar1 = (*local_68)();
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     puStack_94 = (undefined1 *)0x59175c;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   puVar11 = &stack0xffffff90;
   pcVar9 = (code *)0xb;
@@ -3338,7 +3338,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   if (piVar4 == (int *)0x0) {
     ppuStack_b4 = (undefined1 **)0x5917cb;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   CVar8.m_pchData = (char *)0xc;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -3353,7 +3353,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   if (piVar4 == (int *)0x0) {
     pppcStack_d4 = (code ***)0x59183a;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   pcVar9 = (code *)0xd;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -3413,7 +3413,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   piVar4 = (int *)(*pcVar9)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar6 = *piVar4;
   input_str = &stack0xffffff30;
@@ -3424,7 +3424,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   if (piVar4 == (int *)0x0) {
     CStack_108.m_pchData = "h \x19";
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   CString::CString((CString *)&stack0xffffff90,PTR_g_szEmptyString_00662b90);
   iVar6 = *piVar4;
@@ -3436,7 +3436,7 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   (**(code **)(iVar6 + 0x1b4))();
   CStack_10c.m_pchData = (char *)0x591aec;
   CStack_108.m_pchData = (char *)(int)sVar10;
-  sVar2 = thunk_GetTileNormalizedMovementClassId();
+  sVar2 = GetTileNormalizedMovementClassId();
   CStack_108.m_pchData = (char *)0x591afa;
   sVar3 = UiRuntimeContext::GetActiveNationId();
   CStack_108.m_pchData = (char *)&pcStack_dc;
@@ -3445,14 +3445,14 @@ void __thiscall TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors(TToo
   CStack_114.m_pchData = (char *)0x591b21;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_114.m_pchData = &stack0xffffff14;
-  thunk_AssignSharedStringFromIndexedA8EntryNameField((char *)(int)sVar10);
+  AssignSharedStringFromIndexedA8EntryNameField((char *)(int)sVar10);
   CStack_114.m_pchData = pcVar7;
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff00,input_str);
   CStack_114.m_pchData = (char *)0x6f726473;
   piVar4 = (int *)(*(code *)CVar8.m_pchData)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x192c);
   }
   iVar6 = *piVar4;
@@ -3537,7 +3537,7 @@ void __thiscall TToolBarCluster::SetMapInteractionMode(TToolBarCluster *this,sho
   nPreviousMode = *(short *)((int)&this[1].field0c + 2);
   if (nPreviousMode != nMode) {
     if (nPreviousMode == 0) {
-      TCivToolbar::thunk_SetActiveCivilianSelection
+      TCivToolbar::SetActiveCivilianSelection
                 ((TCivToolbar *)g_pSelectedCivilianOrderState,(void *)0x0,0);
     }
     else if (nPreviousMode == 1) {
@@ -3570,7 +3570,7 @@ void __thiscall TToolBarCluster::SetMapInteractionMode(TToolBarCluster *this,sho
         iStack_4._0_1_ = 1;
         CString::~CString(&CStack_10);
         CStack_10.m_pchData = &stack0xffffffc8;
-        thunk_AssignStringSharedRefAndReturnThis(&CStack_20);
+        AssignStringSharedRefAndReturnThis(&CStack_20);
         EnableAndProcessFlagWithSharedStringCleanup();
         iStack_4 = (uint)iStack_4._1_3_ << 8;
         CString::~CString(&CStack_20);
@@ -3586,7 +3586,7 @@ void __thiscall TToolBarCluster::SetMapInteractionMode(TToolBarCluster *this,sho
         pModeCaptionControl[7] = 0x666f7263;
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2732,0x11);
         CStack_10.m_pchData = &stack0xffffffc8;
-        thunk_AssignStringSharedRefAndReturnThis(&nMode);
+        AssignStringSharedRefAndReturnThis(&nMode);
         EnableAndProcessFlagWithSharedStringCleanup();
         iStack_4 = 0xffffffff;
         CString::~CString((CString *)&nMode);
@@ -3655,7 +3655,7 @@ TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrder
   int iVar6;
   undefined4 uVar7;
   
-  TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this,2);
+  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this,2);
   ResetMapActionContextActivityAndNationFlags();
   if (pMapOrderEntry == (void *)0x0) {
     iVar6 = 0;
@@ -3663,14 +3663,14 @@ TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrder
     do {
       uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
       (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable[1].slot_0x04)();
-      UpdateIndustryCapabilityControlStateAndValue
+      TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
                 ((TToolBarCluster *)CONCAT31(extraout_var,uVar4),0);
       iVar6 = iVar6 + 1;
     } while (iVar6 < 4);
     return;
   }
   uVar7 = 1;
-  uVar5 = thunk_GetMinActionThresholdFromEntryChildren(1);
+  uVar5 = GetMinActionThresholdFromEntryChildren(1);
   ExpandTaskForceTraversalDepthAndMarkDeferredNodes(uVar5,uVar7);
   pTVar3 = this->vftable;
   (*pTVar3[0x3c].GetTEventHandlerClassNamePointer)
@@ -3682,7 +3682,7 @@ TToolBarCluster::RefreshMapOrderEntryPanel(TToolBarCluster *this,void *pMapOrder
     (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable[1].slot_0x04)();
     sVar1 = *(short *)((int)pMapOrderEntry + (short)iVar6 * 2 + 0x1e);
     CountTaskForceSelectedOrdersByNationClass(iVar6);
-    UpdateIndustryCapabilityControlStateAndValue
+    TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
               ((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4),(int)sVar1);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 4);
@@ -3711,20 +3711,20 @@ void __thiscall TToolBarCluster::SetActiveMapOrderEntry(TToolBarCluster *this,vo
 {
   void *pMapOrderEntry_00;
   
-  TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this,2);
+  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this,2);
   if ((char)this[1].field0c == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(this[1].field10);
+    InvalidateMapRegionForOrderEntry(this[1].field10);
   }
   this[1].field10 = (int)pMapOrderEntry;
   if ((char)this[1].field0c == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(pMapOrderEntry);
+    InvalidateMapRegionForOrderEntry(pMapOrderEntry);
   }
   if (pMapOrderEntry == (void *)0x0) {
-    thunk_RefreshMapOrderEntryPanel(this,(void *)0x0);
+    TToolBarCluster::RefreshMapOrderEntryPanel(this,(void *)0x0);
     return;
   }
-  pMapOrderEntry_00 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pMapOrderEntry);
-  thunk_RefreshMapOrderEntryPanel(this,pMapOrderEntry_00);
+  pMapOrderEntry_00 = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(pMapOrderEntry);
+  TToolBarCluster::RefreshMapOrderEntryPanel(this,pMapOrderEntry_00);
   return;
 }
 
@@ -3847,18 +3847,18 @@ void __thiscall TToolBarCluster::OpenMapEntryOrderDialog(TToolBarCluster *this,v
   local_27 = 0;
   pCStack_8c = (CString *)0x598005;
   local_4c = this;
-  thunk_InitializeUiTextStyleDescriptor();
-  thunk_BuildUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x598033;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x59804b;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     pCStack_8c = (CString *)0x598077;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *piVar4;
   iVar7 = 1;
@@ -3967,7 +3967,7 @@ LAB_0059830f:
     puStack_d0 = (undefined4 *)&stack0xffffff50;
     puStack_d4 = (undefined4 *)0x5982b8;
     (**(code **)(*(int *)this_01->field0c + 0x2c))();
-    thunk_LoadUiStringResourceByGroupAndIndex();
+    LoadUiStringResourceByGroupAndIndex();
     scanBracketExpressions(g_pLocalizationTable,&uStack_c4,pcStack_c0);
   }
   (*(code *)ppuStack_c8[0x72])();
@@ -4086,23 +4086,23 @@ LAB_0059830f:
                        refresh map order panel. */
   if (iVar7 == 0x63616e63) {
     iVar1 = this_01->field18;
-    thunk_CancelMapOrderEntryAndRestoreActive(this_01,(int *)0x0);
+    TToolBarCluster::CancelMapOrderEntryAndRestoreActive(this_01,(int *)0x0);
     this_00 = pTStack_178;
-    TCivToolbar::thunk_SetMapInteractionMode(pTStack_178,2);
+    TToolBarCluster::SetMapInteractionMode(pTStack_178,2);
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(this_00[1].field0c);
+      InvalidateMapRegionForOrderEntry(this_00[1].field0c);
     }
     this_00[1].field0c = iVar1;
     if (*(char *)&this_00[1].padding_08_to_0b == '\0') {
-      thunk_InvalidateMapRegionForOrderEntry(iVar1);
+      InvalidateMapRegionForOrderEntry(iVar1);
     }
     if (iVar1 == 0) {
       pMapOrderEntry_00 = (void *)0x0;
     }
     else {
-      pMapOrderEntry_00 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(iVar1);
+      pMapOrderEntry_00 = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(iVar1);
     }
-    thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pMapOrderEntry_00);
+    TToolBarCluster::RefreshMapOrderEntryPanel((TToolBarCluster *)this_00,pMapOrderEntry_00);
   }
   aiStack_130[0]._0_1_ = 4;
   TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&iStack_144,4,3,&LAB_00405fa1);
@@ -4122,7 +4122,7 @@ LAB_0059830f:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00598840
 // GHIDRA_NAME TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive
-// GHIDRA_PROTO undefined __thiscall InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Invalidates order-entry map region only when interaction UI is in passive mode.
 // GHIDRA_COMMENT
@@ -4142,7 +4142,7 @@ TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(TToolBarCluster *this,un
 
 {
   if ((char)this[1].field0c == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(param_1);
+    InvalidateMapRegionForOrderEntry(param_1);
   }
   return;
 }
@@ -4171,7 +4171,7 @@ TToolBarCluster::TrySelectNextValidMapOrderEntry
   TCivToolbar *this_00;
   
   this_00 = (TCivToolbar *)this[1].field10;
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   if (this_00 != (TCivToolbar *)0x0) {
     if ((char)pMapInteractionState == '\0') {
       this_00 = (TCivToolbar *)this_00->field18;
@@ -4193,20 +4193,20 @@ LAB_005998d8:
       return 0;
     }
   }
-  TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this,2);
+  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this,2);
   if ((char)this[1].field0c == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(this[1].field10);
+    InvalidateMapRegionForOrderEntry(this[1].field10);
   }
   this[1].field10 = (int)this_00;
   if ((char)this[1].field0c == '\0') {
-    thunk_InvalidateMapRegionForOrderEntry(this_00);
+    InvalidateMapRegionForOrderEntry(this_00);
   }
   if (this_00 == (TCivToolbar *)0x0) {
-    thunk_RefreshMapOrderEntryPanel(this,(void *)0x0);
+    TToolBarCluster::RefreshMapOrderEntryPanel(this,(void *)0x0);
     return 1;
   }
-  pMapOrderEntry = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(this_00);
-  thunk_RefreshMapOrderEntryPanel(this,pMapOrderEntry);
+  pMapOrderEntry = (void *)EnsureSelectedTaskForceForOrderOwnerAndRefresh(this_00);
+  TToolBarCluster::RefreshMapOrderEntryPanel(this,pMapOrderEntry);
   return 1;
 }
 
@@ -4278,13 +4278,13 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
   uVar4 = (*pTVar3)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   uVar5 = (*pTVar3)();
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar5);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar4);
   if ((short)this[1].field0c == 0) {
@@ -4305,7 +4305,7 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
   }
   CStack_28.m_pchData = (char *)&uStack_58;
   CStack_5c.m_pchData = &stack0xffffffc0;
-  thunk_AssignStringSharedRefAndReturnThis();
+  AssignStringSharedRefAndReturnThis();
   CStack_5c.m_pchData = (char *)0x5bb146;
   EnableAndProcessFlagWithSharedStringCleanup();
   sVar7 = *(short *)((int)&this[1].padding_08_to_0b + 2);
@@ -4329,7 +4329,7 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
     (**(code **)(iVar1 + 0xa8))();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
-  thunk_AssignStringSharedRefAndReturnThis(&CStack_5c);
+  AssignStringSharedRefAndReturnThis(&CStack_5c);
   EnableAndProcessFlagWithSharedStringCleanup();
   CString::~CString(&CStack_5c);
   *unaff_FS_OFFSET = uStack_58;
@@ -4518,16 +4518,16 @@ LAB_005bea42:
   CStack_38.m_pchData = (char *)((uint)CStack_38.m_pchData._2_2_ << 0x10);
   iStack_64 = 0x7f7f7f;
   pTStack_8c = this;
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff70,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_8c = (TToolBarCluster *)0x63757273;
   uVar5 = (*pTVar1)();
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_01,uVar5);
   (*g_pCursorControlPanel->vftable[1].slot_0x04)();
   if (g_pCursorControlPanel == (TControl *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   pTVar13 = (TToolBarClusterVtbl *)0x2b67;
   cVar12 = '\0';
@@ -4562,7 +4562,7 @@ LAB_005bea42:
   FormatStringWithVarArgsToSharedRef();
   if (cVar12 == '\0') {
     CStack_ac.m_pchData = (char *)0x5beedf;
-    UpdateTradeSelectionStateAndRefreshUiIfChanged(this,'\0');
+    TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(this,'\0');
     CStack_ac.m_pchData = (char *)&DAT_006a5a00;
     pCStack_b0 = (CString *)0x5beef2;
     (**(code **)(*(int *)CStack_6c.m_pchData + 0xf0))();
@@ -4604,7 +4604,7 @@ LAB_005bea42:
     uVar5 = (*pTVar1)();
     iVar3 = *(int *)CONCAT31(extraout_var_07,uVar5);
     (**(code **)(iVar3 + 0xc))();
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     (**(code **)(iVar3 + 0x1b4))();
     (**(code **)(iVar3 + 0x1c4))();
     sVar6 = (short)&uStack_e4;
@@ -4686,7 +4686,7 @@ LAB_005bea42:
     puStack_17c = &uStack_124;
     uStack_178 = 0;
     uStack_180 = 0x5bf19a;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     puStack_174 = &uStack_124;
     puStack_170 = (undefined *)0x0;
     uStack_178 = 0x5bf1ac;
@@ -4727,7 +4727,7 @@ LAB_005bea42:
     uStack_198 = 0;
     piVar9[0x2a] = (int)sVar6;
     uStack_1a0 = 0x5bf24a;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     ppuStack_194 = &puStack_144;
     aiStack_190[0] = 0;
     uStack_198 = 0x5bf25c;
@@ -4745,7 +4745,7 @@ LAB_005bea42:
     piStack_1a8 = aiStack_190 + 1;
     (**(code **)(iVar3 + 0x1dc))();
     (**(code **)(iVar3 + 0x1d8))(0,*(undefined4 *)(aiStack_190[0] + -8),1);
-    thunk_SetGlobalBlitTransparentColorRaw(*(undefined4 *)piVar9[0x12]);
+    SetGlobalBlitTransparentColorRaw(*(undefined4 *)piVar9[0x12]);
     (**(code **)(*DAT_006a2158 + 0x54))(aiStack_190);
     uVar5 = (*pTVar1)(0x69636f6e);
     iVar3 = *(int *)CONCAT31(extraout_var_15,uVar5);
@@ -4774,8 +4774,8 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0xc))();
     uVar10 = UiRuntimeContext::GetActiveNationId();
     (**(code **)(iVar3 + 0x1d0))(uVar10);
-    thunk_InvalidateCityDialogRectRegion(&piStack_1a8,1);
-    thunk_InvalidateCityDialogRectRegion(&uStack_198,1);
+    InvalidateCityDialogRectRegion(&piStack_1a8,1);
+    InvalidateCityDialogRectRegion(&uStack_198,1);
     uVar5 = (*pTVar1)(0x696e666f);
     iVar3 = *(int *)CONCAT31(extraout_var_20,uVar5);
     (**(code **)(iVar3 + 0xc))();
@@ -4817,7 +4817,7 @@ LAB_005bea42:
       CStack_c0.m_pchData = (char *)0x0;
       (**(code **)(iStack_2c + 0xa4))();
       puStack_34 = &stack0xffffff38;
-      WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+      TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                 ((TToolBarCluster *)&stack0xffffff38,PTR_g_szEmptyString_0066db50);
       EnableAndProcessFlagWithSharedStringCleanup();
     }
@@ -4873,7 +4873,7 @@ LAB_005bea42:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C09D0
 // GHIDRA_NAME TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
-// GHIDRA_PROTO undefined __thiscall UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
 
 void __thiscall
 TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(TToolBarCluster *this,char param_1)
@@ -4908,7 +4908,7 @@ TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(TToolBarCluster 
     piVar5 = (int *)CONCAT31(extraout_var_00,uVar4);
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     uVar4 = (*pTVar1)();
     iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
@@ -4975,7 +4975,7 @@ TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(TToolBarCluster 
     piStack_6c = (int *)0x5c0c1c;
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
     piStack_6c = (int *)CONCAT31(extraout_var_05,uVar3);
-    WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+    TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&pTStack_70,(char *)&g_szEmptyString);
     EnableAndProcessFlagWithSharedStringCleanup();
     *(undefined1 *)((int)&this[1].field14 + 2) = 0;
@@ -5076,7 +5076,7 @@ TToolBarCluster::BuildAndShowTurnOverlayByMode
   case (char *)0x3:
   case (char *)0x4:
     local_4._0_1_ = uVar2;
-    thunk_AssignSharedStringFromIndexedA8EntryNameField();
+    AssignSharedStringFromIndexedA8EntryNameField();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iStack_48 = 0x5d6760;
     scanBracketExpressions(g_pLocalizationTable,&local_28,local_24.m_pchData);
@@ -5129,7 +5129,7 @@ TToolBarCluster::BuildAndShowTurnOverlayByMode
   NoOpUiRuntimeCallback_005db2f0();
   iStack_48 = 0x5d67fb;
   iStack_48 = NoOpRuntimeCallback_005d5d10();
-  WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_4c,PTR_g_szEmptyString_0066f050);
   TCivToolbar::RunNationInfoModalAndReturnNonCancel((int *)CVar1.m_pchData);
   local_4._0_1_ = 2;

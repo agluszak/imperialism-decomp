@@ -21,7 +21,7 @@ TMiniArmyView * __thiscall
 TMiniArmyView::_scalar_deleting_destructor_(TMiniArmyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ TControl * TMiniArmyView::CreateTMiniArmyViewInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TMiniArmyViewVtbl_0064d550;
     pTVar1 = this;
   }
@@ -60,7 +60,7 @@ TControl * TMiniArmyView::CreateTMiniArmyViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAE10
 // GHIDRA_NAME TMiniArmyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMiniArmyView::GetTEventHandlerClassNamePointer(TMiniArmyView *this)
 
@@ -70,7 +70,7 @@ CRuntimeClass * __thiscall TMiniArmyView::GetTEventHandlerClassNamePointer(TMini
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAEB0
 // GHIDRA_NAME TMiniArmyView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *this)
 
@@ -101,7 +101,7 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
   CString::AssignFromPtr(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
   CString::AssignFromPtr(&local_40,&local_38);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b6a);
-  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
   if (100 < sVar1) {
     CString::CString(&local_3c);
     local_4._0_1_ = 2;
@@ -113,14 +113,14 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
       CString::~CString(&local_34);
       CString::AssignFromPtr(&local_40,&local_3c);
       CString::AssignFromCStr(&local_3c,&DAT_0069587c);
-      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+      sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
     } while (100 < sVar1);
     CString::AssignFromPtr(&local_40,&local_3c);
     local_4._0_1_ = 1;
     CString::~CString(&local_3c);
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(10);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(10);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   sVar1 = *(short *)(*(int *)&this->field_0x84 + 0x34) / 0x19 + 1;
   if (0x14 < sVar1) {
     sVar1 = 0x14;
@@ -146,10 +146,10 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
              (astruct_19 *)0x0);
   local_30 = &stack0xffffffb4;
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x8a);
-  thunk_DrawCenteredGuideLineOnMapDc(0x8a);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdc);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdc);
+  SetQuickDrawTextOriginWithContextOffset(0x8a);
+  DrawCenteredGuideLineOnMapDc(0x8a);
+  DrawCenteredGuideLineOnMapDc(0xdc);
+  DrawCenteredGuideLineOnMapDc(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_38);
   local_4 = 0xffffffff;
@@ -160,7 +160,7 @@ void __thiscall TMiniArmyView::OrphanTiny_ReturnZero_0048a730(TMiniArmyView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB1D0
 // GHIDRA_NAME TMiniArmyView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, CString param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, CString param_2)
 
 void __thiscall
 TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this,int param_1,CString param_2)
@@ -189,8 +189,8 @@ TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this,int param_1,CString pa
       local_4 = 0;
       pTStack_30 = (TToolBarClusterVtbl *)0x4ab298;
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      thunk_AssignStringSharedRefAndReturnThis(&param_2);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&param_2);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = -1;
       CString::~CString(&param_2);
     }
@@ -215,7 +215,7 @@ TMiniArmyView::OrphanRetStub_0059add0(TMiniArmyView *this,int param_1,CString pa
     *(undefined2 *)&pTVar2[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
   pTStack_30 = (TToolBarClusterVtbl *)0x4ab301;
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   *unaff_FS_OFFSET = iStack_c;
   return;
 }

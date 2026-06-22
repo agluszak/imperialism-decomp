@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TShip::GetTShipClassNamePointer(TShip *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F500
 // GHIDRA_NAME TShip::ConstructAndLinkNavyPrimaryOrderNode
-// GHIDRA_PROTO undefined __thiscall ConstructAndLinkNavyPrimaryOrderNode(void)
+// GHIDRA_PROTO undefined __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(void)
 
 TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
 
@@ -59,7 +59,7 @@ TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
 TShip * __thiscall TShip::DestructTShipAndFreeIfOwned(TShip *this,byte param_1)
 
 {
-  DestructTShip(this);
+  TShip::DestructTShip(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -68,7 +68,7 @@ TShip * __thiscall TShip::DestructTShipAndFreeIfOwned(TShip *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F5F0
 // GHIDRA_NAME TShip::DestructTShip
-// GHIDRA_PROTO undefined __thiscall DestructTShip(void)
+// GHIDRA_PROTO undefined __thiscall TShip::DestructTShip(void)
 
 void __thiscall TShip::DestructTShip(TShip *this)
 
@@ -127,7 +127,7 @@ void __thiscall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(TShip *this)
         this_00 = (TShip *)0x0;
       }
       else if (this == (TShip *)this_00->vftable) {
-        this_00 = (TShip *)thunk_DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
+        this_00 = (TShip *)TShip::DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
       }
       else {
         RemoveLinkedOrderNodeByValueRecursive(this);
@@ -177,7 +177,7 @@ void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(TShip *this,int *pa
   
   piStack_14 = param_1;
   puStack_18 = (undefined1 *)0x54fac0;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   iVar1 = *param_1;
   puStack_18 = &this->field_0x4;
   piStack_14 = (int *)0x2;
@@ -199,7 +199,7 @@ void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(TShip *this,int *pa
   (*pcVar2)(&this->field_0x1c);
   (*pcVar2)(&this->field_0x34,4);
   (*pcVar2)(&this->field_0x30,2);
-  uStack_30 = thunk_GetShortAtOffset14OrInvalid();
+  uStack_30 = GetShortAtOffset14OrInvalid();
   (*pcVar2)(&uStack_30,2);
   return;
 }
@@ -226,7 +226,7 @@ void __thiscall TShip::DeserializeNavyPrimaryOrderNodeFromStream(TShip *this,int
   
   piStack_14 = param_1;
   puStack_18 = (undefined1 *)0x54fb60;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   iVar1 = *param_1;
   puStack_18 = &this->field_0x4;
   piStack_14 = (int *)0x2;
@@ -309,7 +309,7 @@ void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this,int *param_1
   
   piStack_18 = param_1;
   puStack_1c = (undefined1 *)0x552ba1;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puStack_1c = &this->field_0x4;
   piStack_18 = (int *)0x4;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -328,14 +328,14 @@ void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this,int *param_1
   }
   else {
     uStack_28 = 0x552bfc;
-    thunk_GetShortAtOffset14OrInvalid();
+    GetShortAtOffset14OrInvalid();
   }
   puStack_2c = &stack0xfffffff4;
   uStack_28 = 2;
   uStack_30 = 0x552c0b;
   (*pcVar1)();
   uStack_30 = 0x552c13;
-  thunk_GetShortAtOffset14OrInvalid();
+  GetShortAtOffset14OrInvalid();
   puStack_34 = &stack0xffffffec;
   uStack_30 = 2;
   uStack_38 = 0x552c22;
@@ -374,7 +374,7 @@ void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this,int *param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552D10
 // GHIDRA_NAME TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
-// GHIDRA_PROTO undefined __thiscall DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int * param_1)
 
 void __thiscall
 TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(TShip *this,int *param_1)
@@ -402,7 +402,7 @@ TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(TShip *this,int *pa
   
   piStack_28 = param_1;
   puStack_2c = (undefined1 *)0x552d27;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   puStack_2c = &this->field_0x4;
   piStack_28 = (int *)0x4;
   pcVar1 = *(code **)(*param_1 + 0x3c);

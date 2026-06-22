@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004032FB
 // GHIDRA_NAME TMapUberPicture::TMapUberPicture_VtblSlot127
-// GHIDRA_PROTO undefined __thiscall TMapUberPicture_VtblSlot127(void)
+// GHIDRA_PROTO undefined __thiscall TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(void)
 
 void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot127(TMapUberPicture *this)
 
@@ -19,7 +19,7 @@ void __thiscall TMapUberPicture::TMapUberPicture_VtblSlot127(TMapUberPicture *th
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0xac7);
   }
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94);
@@ -79,7 +79,7 @@ TOffLimitsPicture * TMapUberPicture::CreateTMapUberPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005969C0
 // GHIDRA_NAME TMapUberPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapUberPicture::GetTEventHandlerClassNamePointer(TMapUberPicture *this)
 
@@ -89,7 +89,7 @@ CRuntimeClass * __thiscall TMapUberPicture::GetTEventHandlerClassNamePointer(TMa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005969E0
 // GHIDRA_NAME TMapUberPicture::ConstructTMapUberPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTMapUberPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TMapUberPicture::ConstructTMapUberPictureBaseState(void)
 
 TMapUberPicture * __thiscall
 TMapUberPicture::ConstructTMapUberPictureBaseState(TMapUberPicture *this)
@@ -114,7 +114,7 @@ TMapUberPicture * __thiscall
 TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -123,7 +123,7 @@ TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596A80
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPicture *this)
 
@@ -173,7 +173,7 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPictur
   DestroyClipStateRegionWrapperObject(uVar6);
   *(TMapUberPicture **)&g_pUiRuntimeContext->field_0xf0 = this;
   *(TMapUberPicture **)&g_pUiAnimator->field_0x2c = this;
-  thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   RefreshMapActionContextNationOverlaysAndOrderRanks();
   if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
     uVar4 = (*pTVar2)(0x73656e64);
@@ -188,7 +188,7 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596C60
 // GHIDRA_NAME TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPicture *this)
 
@@ -207,7 +207,7 @@ void __thiscall TMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberPictur
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597340
 // GHIDRA_NAME TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -256,7 +256,7 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     else {
       if (uVar1 == 0x63616e63) {
         if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
-          thunk_ReinitializeGameFlowAndPostTurnEventCode();
+          ReinitializeGameFlowAndPostTurnEventCode();
           *unaff_FS_OFFSET = iStack_c;
           return;
         }
@@ -269,8 +269,8 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         uStack_28 = 0;
         puStack_2c = &DAT_006a45c0;
         puStack_4 = auStack_30;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x5974d8;
         CString::~CString((CString *)&stack0x00000000);
         *unaff_FS_OFFSET = (int)puVar3;
@@ -301,7 +301,7 @@ TMapUberPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     param_1 = 0xc;
   }
   uStack_24 = 0x597559;
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_00597559:
   *unaff_FS_OFFSET = iStack_c;
   return;
@@ -374,7 +374,7 @@ void __thiscall TMapUberPicture::_scalar_deleting_destructor_(TMapUberPicture *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00597770
 // GHIDRA_NAME TMapUberPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMapUberPicture::OrphanTiny_ReturnZero_0048a730(TMapUberPicture *this)
 
@@ -570,7 +570,7 @@ TMapUberPicture::CreateToolWindow_00599CF0(TMapUberPicture *this,astruct_20 *thi
   tool_iface = (astruct_22 *)(*(code *)vtable_or_iface->field127_0x94)(0x746f6f6c);
   if (tool_iface == (astruct_22 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0xa56);
   }
   rect_x = 4;
@@ -582,7 +582,7 @@ TMapUberPicture::CreateToolWindow_00599CF0(TMapUberPicture *this,astruct_20 *thi
   }
   else {
     vtable_or_iface = child_ctrl;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)child_ctrl);
+    TControl::TControl((TControl *)child_ctrl);
     child_ctrl->field0_0x0 = &TMiniMapViewVtbl_00669170.GetTEventHandlerClassNamePointer;
     child_ctrl->field126_0x90 = 0;
     child_ctrl->field127_0x94 = (undefined *)0x0;
@@ -594,7 +594,7 @@ TMapUberPicture::CreateToolWindow_00599CF0(TMapUberPicture *this,astruct_20 *thi
   puStack_8 = (undefined1 *)0xffffffff;
   vtable_or_iface = (astruct_21 *)0x71;
   offset_x = 0x41;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,tool_iface,&rect_x,&vtable_or_iface,4,4,0);
+  InitializeUiResourceEntryFrameAndParent(0,tool_iface,&rect_x,&vtable_or_iface,4,4,0);
   child_ctrl->field126_0x90 = child_ctrl->field49_0x34 / 2 - child_ctrl->field128_0x98;
   child_ctrl->field123_0x84 = (astruct_20 *)this;
   iVar1 = child_ctrl->field0_0x0;
@@ -644,7 +644,7 @@ void __thiscall TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion(TMapUbe
   uVar3 = (*pTVar1[0x12].slot_0x04)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0xa97);
   }
   (**(code **)(**(int **)&this->field_0xac + 300))(auStack_14);
@@ -652,7 +652,7 @@ void __thiscall TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion(TMapUbe
   ReplaceClipStateRegionHandleFromRect(uVar4,&stack0xffffffd8);
   (*pTVar1[0x39].slot_0x04)(uVar4);
   DestroyClipStateRegionWrapperObject(uVar4);
-  thunk_InvalidateCityDialogRectRegion(&stack0xffffffd4,1);
+  InvalidateCityDialogRectRegion(&stack0xffffffd4,1);
   if (*(int **)&this->field_0xc0 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0xc0 + 0x1c))();
   }
@@ -661,7 +661,7 @@ void __thiscall TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion(TMapUbe
   piVar5 = (int *)(**(code **)(iVar2 + 0x94))(0x696e666f);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0xab4);
   }
   (**(code **)(*piVar5 + 0x1c8))(0x41a,1);
@@ -686,7 +686,7 @@ void __thiscall TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(TMapUb
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x746f6f6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USuperMap_cpp_0069943c,0xac7);
   }
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94);

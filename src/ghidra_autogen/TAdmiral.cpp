@@ -4,13 +4,13 @@
 // Bucket: TAdmiral.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040231A
-// GHIDRA_NAME TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
-// GHIDRA_PROTO undefined __thiscall thunk_GenerateMappedFlavorTextByNationSlotField0C(void)
+// GHIDRA_NAME TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
+// GHIDRA_PROTO undefined __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(void)
 
-void __thiscall TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
+void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
 
 {
-  thunk_GenerateMappedFlavorTextByTableSlot();
+  GenerateMappedFlavorTextByTableSlot();
   return;
 }
 
@@ -21,13 +21,13 @@ void __thiscall TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C(TAdm
 void __thiscall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TAdmiral *this)
 
 {
-  thunk_GenerateMappedFlavorTextByTableSlot();
+  GenerateMappedFlavorTextByTableSlot();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00551430
 // GHIDRA_NAME TAdmiral::TAdmiral
-// GHIDRA_PROTO undefined __thiscall TAdmiral(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall TAdmiral::TAdmiral(undefined2 param_1)
 
 TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
 
@@ -57,7 +57,7 @@ TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
     *(TAdmiral **)(*(int *)&this->field_0x14 + 0x18) = this;
   }
   if (*(short *)&this->field_0x4 != -1) {
-    thunk_GenerateMappedFlavorTextByNationSlotField0C
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
               ((TAdmiral *)g_apTerrainTypeDescriptorTable[*(short *)&this->field_0x4]);
     for (pTVar1 = g_pNavySecondaryOrderListHead; pTVar1 != (TAdmiral *)0x0;
         pTVar1 = *(TAdmiral **)&pTVar1->field_0x14) {
@@ -65,7 +65,7 @@ TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
          (iVar2 = CompareAnsiStringsWithMbcsAwareness
                             (*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)&this->field_0xc),
          iVar2 == 0)) {
-        thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
+        RemoveDuplicateNavySecondaryOrdersByDisplayName();
       }
     }
   }
@@ -75,7 +75,7 @@ TAdmiral * __thiscall TAdmiral::TAdmiral(TAdmiral *this,undefined2 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00551580
 // GHIDRA_NAME TAdmiral::DestructTAdmiral
-// GHIDRA_PROTO undefined __thiscall DestructTAdmiral(void)
+// GHIDRA_PROTO undefined __thiscall TAdmiral::DestructTAdmiral(void)
 
 void __thiscall TAdmiral::DestructTAdmiral(TAdmiral *this)
 

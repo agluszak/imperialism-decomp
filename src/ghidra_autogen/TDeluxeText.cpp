@@ -31,7 +31,7 @@
 TDeluxeText * __thiscall TDeluxeText::ConstructUiColorTextResourceEntry(TDeluxeText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->field_0x98 = 0;
   this->field_0x99 = 0;
   this->field_0x9a = 0;
@@ -170,31 +170,31 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
   *(int *)puVar1 = iVar11;
   if (iVar11 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcef);
   }
   iVar11 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
   *(int *)&this->field_0x64 = iVar11;
   if (iVar11 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcf0);
   }
   iVar11 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
   *(int *)&this->field_0x68 = iVar11;
   if (iVar11 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xcf1);
   }
-  thunk_BuildUiTextStyleDescriptor(local_a4,0,10,0x2b6a);
+  BuildUiTextStyleDescriptor(local_a4,0,10,0x2b6a);
   tStack_c0.top = (LONG)this->vftable;
   uVar5 = (*((TDeluxeTextVtbl *)(tStack_c0.top + 0x90))->slot_0x04)(0x7469746c);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
   ConfigureUiControlStyleValueAndCaptionFromStringResource
             ((int *)CONCAT31(extraout_var,uVar5),0,0xe,0x2b6a,1,0x1c20,6);
   sVar8 = UiRuntimeContext::GetActiveNationId();
-  tStack_c0.top = (LONG)BuildCityInfluenceLevelMap((TDeluxeText *)g_apNationStates[sVar8]);
+  tStack_c0.top = (LONG)TDeluxeText::BuildCityInfluenceLevelMap((TDeluxeText *)g_apNationStates[sVar8]);
   sVar8 = (short)unaff_retaddr;
   ComputeHexNeighborTileIndices(sVar8,asStack_7c,g_pGlobalMapState->field_0x20);
   if ((auStack_d8[6] != '\0') && (auStack_d8[5] != '\0')) {
@@ -304,7 +304,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
                           *(short *)((int)&uStack_e0->field14 + *(int *)&pTVar18->field_0xc) * 0xa8)
   ;
   sVar10 = UiRuntimeContext::GetActiveNationId();
-  cVar7 = GetNationFortLevelCap((TDeluxeText *)g_pCityOrderCapabilityState,(int)sVar10);
+  cVar7 = TDeluxeText::GetNationFortLevelCap((TDeluxeText *)g_pCityOrderCapabilityState,(int)sVar10);
   if ((sVar9 < (short)CONCAT31(extraout_var_00,cVar7)) &&
      (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 +
                 *(short *)((int)&pTVar16->field14 + *(int *)&g_pGlobalMapState->field_0xc) * 0xa8)
@@ -315,7 +315,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       piVar13 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
+      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
                                  ((TUpDownPictureButton *)uStack_e0);
     }
     puStack_8 = (undefined1 *)0xffffffff;
@@ -331,7 +331,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       pTVar14 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar14);
+      TStaticText::TStaticText((TStaticText *)pTVar14);
       pTVar14->field_0x98 = 0;
       pTVar14->field_0x99 = 0;
       pTVar14->field_0x9a = 0;
@@ -354,7 +354,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
     unaff_EBX = 0;
-    ConstructTDeluxeTextBaseState
+    TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)
@@ -369,7 +369,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       piVar13 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
+      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
                                  ((TUpDownPictureButton *)uStack_e0);
     }
     unaff_EBX = (int)(short)iVar19;
@@ -386,7 +386,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       pTVar14 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar14);
+      TStaticText::TStaticText((TStaticText *)pTVar14);
       pTVar14->field_0x98 = 0;
       pTVar14->field_0x99 = 0;
       pTVar14->field_0x9a = 0;
@@ -408,7 +408,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     stack0xffffff30 = 0;
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    ConstructTDeluxeTextBaseState
+    TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,1);
@@ -447,7 +447,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
   }
   sVar8 = (short)iVar19;
   if (((auStack_d8[5] != '\0') &&
-      (cVar7 = CanBuildPortAtTile((TDeluxeText *)g_pGlobalMapState,unaff_retaddr), cVar7 != '\0'))
+      (cVar7 = TDeluxeText::CanBuildPortAtTile((TDeluxeText *)g_pGlobalMapState,unaff_retaddr), cVar7 != '\0'))
      && ((char)((uint)unaff_EBX >> 0x18) != '\0')) {
     uStack_e0 = (TIconBar *)AllocateWithFallbackHandler(0x94);
     puStack_8 = (undefined1 *)0x7;
@@ -455,7 +455,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       piVar13 = (int *)0x0;
     }
     else {
-      piVar13 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
+      piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
                                  ((TUpDownPictureButton *)uStack_e0);
     }
     local_dc = sVar8 + 1;
@@ -471,7 +471,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
       pTVar14 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar14);
+      TStaticText::TStaticText((TStaticText *)pTVar14);
       uStack_e0 = (TIconBar *)0x0;
       pTVar14->field_0x98 = 0;
       pTVar14->field_0x99 = 0;
@@ -491,7 +491,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     stack0xffffff30 = 0;
     local_cc = 0;
     CopyRect(&tStack_c0,(RECT *)auStack_d8);
-    ConstructTDeluxeTextBaseState
+    TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
     (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,2);
@@ -532,7 +532,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
     piVar13 = (int *)0x0;
   }
   else {
-    piVar13 = (int *)TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry
+    piVar13 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
                                ((TUpDownPictureButton *)uStack_e0);
   }
   local_cc = sVar8 + -2;
@@ -547,7 +547,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
   piVar13 = (int *)(**(code **)(iStack_c8 + 0x58))();
   if (piVar13 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xd88);
   }
   iVar19 = *piVar13;
@@ -568,7 +568,7 @@ TDeluxeText::BuildCityViewProductionControls(TDeluxeText *this,short nBuildingSl
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004DBBB0
 // GHIDRA_NAME TDeluxeText::BuildCityInfluenceLevelMap
-// GHIDRA_PROTO char * __thiscall BuildCityInfluenceLevelMap(void)
+// GHIDRA_PROTO char * __thiscall TDeluxeText::BuildCityInfluenceLevelMap(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Builds and returns a per-tile city influence level map (0x1950 bytes).
 // GHIDRA_COMMENT
@@ -657,7 +657,7 @@ char * __thiscall TDeluxeText::BuildCityInfluenceLevelMap(TDeluxeText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005137B0
 // GHIDRA_NAME TDeluxeText::CanBuildPortAtTile
-// GHIDRA_PROTO char __thiscall CanBuildPortAtTile(int nTileIndex)
+// GHIDRA_PROTO char __thiscall TDeluxeText::CanBuildPortAtTile(int nTileIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Checks whether a tile is eligible for port construction.
 // GHIDRA_COMMENT
@@ -767,7 +767,7 @@ char __thiscall TDeluxeText::CanBuildPortAtTile(TDeluxeText *this,int nTileIndex
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0CA0
 // GHIDRA_NAME TDeluxeText::GetNationFortLevelCap
-// GHIDRA_PROTO char __thiscall GetNationFortLevelCap(int nNationId)
+// GHIDRA_PROTO char __thiscall TDeluxeText::GetNationFortLevelCap(int nNationId)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Returns the maximum fortification level allowed for a nation.
 // GHIDRA_COMMENT
@@ -827,7 +827,7 @@ TStaticText * TDeluxeText::CreateTDeluxeTextInstance(void)
   this = (TStaticText *)AllocateWithFallbackHandler(0xa4);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     *(undefined1 *)&this[1].field04 = 0;
     *(undefined1 *)((int)&this[1].field04 + 1) = 0;
     *(undefined1 *)((int)&this[1].field04 + 2) = 0;
@@ -848,7 +848,7 @@ TStaticText * TDeluxeText::CreateTDeluxeTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FD0
 // GHIDRA_NAME TDeluxeText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDeluxeText::GetTEventHandlerClassNamePointer(TDeluxeText *this)
 
@@ -858,7 +858,7 @@ CRuntimeClass * __thiscall TDeluxeText::GetTEventHandlerClassNamePointer(TDeluxe
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5FF0
 // GHIDRA_NAME TDeluxeText::ConstructTDeluxeTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDeluxeTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 * param_4, int param_5)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::ConstructTDeluxeTextBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 * param_4, int param_5)
 
 void __thiscall
 TDeluxeText::ConstructTDeluxeTextBaseState
@@ -875,12 +875,12 @@ TDeluxeText::ConstructTDeluxeTextBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6060
 // GHIDRA_NAME TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920(TDeluxeText *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   this->field_0x95 = 0;
   (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(0);
   return;
@@ -900,7 +900,7 @@ void __thiscall TDeluxeText::OrphanCallChain_C1_I08_005b60a0(TDeluxeText *this,c
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B60D0
 // GHIDRA_NAME TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl
-// GHIDRA_PROTO undefined __thiscall InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short param_1)
 
 void __thiscall
 TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *this,short param_1)
@@ -934,7 +934,7 @@ TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(TDeluxeText *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6170
 // GHIDRA_NAME TDeluxeText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TDeluxeText::OrphanTiny_ReturnZero_0048a730(TDeluxeText *this)
 
@@ -974,7 +974,7 @@ void __thiscall TDeluxeText::OrphanTiny_ReturnZero_0048a730(TDeluxeText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B62A0
 // GHIDRA_NAME TDeluxeText::ConstructTMapKeyBaseState_Impl
-// GHIDRA_PROTO undefined __thiscall ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::ConstructTMapKeyBaseState_Impl(int param_1, undefined4 param_2)
 
 void __thiscall
 TDeluxeText::ConstructTMapKeyBaseState_Impl(TDeluxeText *this,int param_1,undefined4 param_2)
@@ -1006,7 +1006,7 @@ TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(TDeluxeText 
   undefined4 local_6;
   
   local_6 = 0;
-  thunk_BuildUiTextStyleDescriptor(local_c);
+  BuildUiTextStyleDescriptor(local_c);
   puVar3 = local_c;
   *(undefined4 *)&this->field_0x98 = local_6;
   uVar4 = 1;
@@ -1046,7 +1046,7 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B63E0
 // GHIDRA_NAME TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate
-// GHIDRA_PROTO undefined __thiscall RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)
 
 undefined4 __thiscall
 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this,char param_1)
@@ -1089,7 +1089,7 @@ TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(TDeluxeText *this,c
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6480
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480(undefined4 param_1)
 
 void __thiscall
 TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
@@ -1102,7 +1102,7 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64A0
 // GHIDRA_NAME TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0(undefined4 param_1, char param_2)
 
 void __thiscall
 TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
@@ -1118,7 +1118,7 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B64E0
 // GHIDRA_NAME TDeluxeText::BuildCityViewProductionControls_Impl
-// GHIDRA_PROTO undefined __thiscall BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int param_2)
 
 void __thiscall
 TDeluxeText::BuildCityViewProductionControls_Impl(TDeluxeText *this,undefined4 param_1,int param_2)

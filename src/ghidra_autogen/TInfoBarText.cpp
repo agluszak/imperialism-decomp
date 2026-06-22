@@ -16,7 +16,7 @@
 TInfoBarText * __thiscall TInfoBarText::ConstructUiCursorTextResourceEntry(TInfoBarText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->field_0x98 = 0;
   this->field_0x99 = 0;
   this->field_0x9a = 0;
@@ -66,7 +66,7 @@ TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
   this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     *(undefined1 *)&this[1].field04 = 0;
     *(undefined1 *)((int)&this[1].field04 + 1) = 0;
     *(undefined1 *)((int)&this[1].field04 + 2) = 0;
@@ -87,7 +87,7 @@ TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6690
 // GHIDRA_NAME TInfoBarText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TInfoBarText::GetTEventHandlerClassNamePointer(TInfoBarText *this)
 
@@ -174,7 +174,7 @@ void __thiscall TInfoBarText::OrphanCallChain_C1_I05_005b6810(TInfoBarText *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6930
 // GHIDRA_NAME TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920(TInfoBarText *this)
 
@@ -182,7 +182,7 @@ void __thiscall TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920(TInfoBarText *thi
   if ((TInfoBarText *)g_pCursorControlPanel == this) {
     g_pCursorControlPanel = (TControl *)0x0;
   }
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 

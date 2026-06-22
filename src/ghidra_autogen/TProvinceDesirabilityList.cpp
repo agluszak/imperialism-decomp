@@ -35,7 +35,7 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
 // GHIDRA_NAME TProvinceDesirabilityList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TProvinceDesirabilityList::GetTEventHandlerClassNamePointer(TProvinceDesirabilityList *this)
@@ -46,7 +46,7 @@ TProvinceDesirabilityList::GetTEventHandlerClassNamePointer(TProvinceDesirabilit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6590
 // GHIDRA_NAME TProvinceDesirabilityList::ConstructObArrayWithVtable653810
-// GHIDRA_PROTO undefined __thiscall ConstructObArrayWithVtable653810(void)
+// GHIDRA_PROTO undefined __thiscall TProvinceDesirabilityList::ConstructObArrayWithVtable653810(void)
 
 TProvinceDesirabilityList * __thiscall
 TProvinceDesirabilityList::ConstructObArrayWithVtable653810(TProvinceDesirabilityList *this)
@@ -66,7 +66,7 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_
           (TProvinceDesirabilityList *this,byte param_1)
 
 {
-  CObArray::thunk_DestructCObArray();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -75,7 +75,7 @@ TProvinceDesirabilityList::_scalar_deleting_destructor_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6630
 // GHIDRA_NAME TProvinceDesirabilityList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 int __thiscall
 TProvinceDesirabilityList::OrphanRetStub_0059add0

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415E70
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
-// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
+// GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
 
 void __thiscall
 CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(CObject *this)
@@ -45,7 +45,7 @@ CObject * __thiscall
 CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(CObject *this,byte param_1)
 
 {
-  DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
+  CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -60,7 +60,7 @@ CObject * __thiscall
 CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(CObject *this,byte param_1)
 
 {
-  DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(this);
+  CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -69,7 +69,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(CObject *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00479D80
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80
-// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(void)
+// GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(void)
 
 void __thiscall
 CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(CObject *this)
@@ -311,7 +311,7 @@ CObject * __thiscall
 CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this,byte param_1)
 
 {
-  DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(this);
+  CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -320,7 +320,7 @@ CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004929B0
 // GHIDRA_NAME CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
-// GHIDRA_PROTO undefined __thiscall DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
+// GHIDRA_PROTO undefined __thiscall CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
 
 void __thiscall
 CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(CObject *this)
@@ -354,7 +354,7 @@ CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049AE30
 // GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateBAndFree
-// GHIDRA_PROTO undefined __thiscall DestructModuleLibraryCacheTableStateBAndFree(void)
+// GHIDRA_PROTO undefined __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(void)
 
 void __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(CObject *this)
 
@@ -398,7 +398,7 @@ void __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(CObject *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049B270
 // GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateAAndFree
-// GHIDRA_PROTO undefined __thiscall DestructModuleLibraryCacheTableStateAAndFree(void)
+// GHIDRA_PROTO undefined __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(void)
 
 void __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(CObject *this)
 
@@ -448,7 +448,7 @@ CObject * __thiscall
 CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(CObject *this,byte param_1)
 
 {
-  DestructModuleLibraryCacheTableStateBAndFree(this);
+  CObject::DestructModuleLibraryCacheTableStateBAndFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -463,7 +463,7 @@ CObject * __thiscall
 CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(CObject *this,byte param_1)
 
 {
-  DestructModuleLibraryCacheTableStateAAndFree(this);
+  CObject::DestructModuleLibraryCacheTableStateAAndFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

@@ -179,7 +179,7 @@ void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this,int *param_1)
   pCStack_6c = &local_18;
   pCStack_68 = (CString *)0x0;
   ppTStack_70 = (TMyStaticText **)0x5c0f53;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iVar1 = *piVar3;
   pCStack_64 = &local_18;
   CStack_60.m_pchData = (char *)0x0;

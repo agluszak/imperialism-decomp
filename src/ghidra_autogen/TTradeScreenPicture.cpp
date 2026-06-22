@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA700
 // GHIDRA_NAME TTradeScreenPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradeScreenPicture::GetTEventHandlerClassNamePointer(TTradeScreenPicture *this)
@@ -22,7 +22,7 @@ TTradeScreenPicture * __thiscall
 TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -31,7 +31,7 @@ TTradeScreenPicture::_scalar_deleting_destructor_(TTradeScreenPicture *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA7A0
 // GHIDRA_NAME TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(CString param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(CString param_1)
 
 void __thiscall
 TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this,CString param_1)
@@ -73,7 +73,7 @@ TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this,CS
                (astruct_19 *)0x0);
   }
   else {
-    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+    TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
     InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xe,0x2b68,2);
     iVar6 = 0;
     pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
@@ -85,7 +85,7 @@ TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(TTradeScreenPicture *this,CS
       iVar4 = CONCAT31(extraout_var,uVar2);
       if (iVar4 == 0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTradeViews_cpp_0069aa94,0xbf);
       }
       if (((pcVar5 != " 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg") &&

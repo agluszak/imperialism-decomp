@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE680
 // GHIDRA_NAME TShipBuildingTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipBuildingTask::GetTTaskClassNamePointer(TShipBuildingTask *this)
 
@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TShipBuildingTask::GetTTaskClassNamePointer(TShipBuil
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6A0
 // GHIDRA_NAME TShipBuildingTask::ConstructTShipBuildingTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipBuildingTaskBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(void)
 
 void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuildingTask *this)
 
@@ -26,7 +26,7 @@ void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuil
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6C0
 // GHIDRA_NAME TShipBuildingTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
 TShipBuildingTask * __thiscall
 TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this,byte param_1)
@@ -41,7 +41,7 @@ TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE780
 // GHIDRA_NAME TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int * param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Advances one city order context through per-turn requirement resolution and command generation.
 // GHIDRA_COMMENT
@@ -186,7 +186,7 @@ TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE9E0
 // GHIDRA_NAME TShipBuildingTask::SerializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall SerializeCityProductionQueueCommand(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(int * param_1)
 
 void __thiscall
 TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this,int *param_1)
@@ -196,7 +196,7 @@ TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this,i
   
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,1);
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);
@@ -216,7 +216,7 @@ TShipBuildingTask::DeserializeCityProductionQueueCommand(TShipBuildingTask *this
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

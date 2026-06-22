@@ -11,7 +11,7 @@ CFrameWnd * __thiscall
 CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this,byte param_1)
 
 {
-  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
+  CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482A20
 // GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
-// GHIDRA_PROTO undefined __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
+// GHIDRA_PROTO undefined __thiscall CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
 
 void __thiscall
 CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(CFrameWnd *this)
@@ -144,7 +144,7 @@ CFrameWnd * __thiscall
 CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this,byte param_1)
 
 {
-  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
+  CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -153,7 +153,7 @@ CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004847D0
 // GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
-// GHIDRA_PROTO undefined __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)
+// GHIDRA_PROTO undefined __thiscall CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)
 
 void __thiscall
 CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(CFrameWnd *this)

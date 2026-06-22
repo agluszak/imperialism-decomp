@@ -36,7 +36,7 @@ thunk_TPictureButton * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DC0
 // GHIDRA_NAME TColorKeyPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TColorKeyPicture::GetTEventHandlerClassNamePointer(TColorKeyPicture *this)
@@ -47,7 +47,7 @@ TColorKeyPicture::GetTEventHandlerClassNamePointer(TColorKeyPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DE0
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
+// GHIDRA_PROTO undefined __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(void)
 
 TColorKeyPicture * __thiscall
 TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
@@ -68,7 +68,7 @@ TColorKeyPicture * __thiscall
 TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -77,7 +77,7 @@ TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572E60
 // GHIDRA_NAME TColorKeyPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TColorKeyPicture::OrphanTiny_ReturnZero_0048a730(TColorKeyPicture *this)
 
@@ -166,13 +166,13 @@ TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this,short pa
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
   }
   *(undefined4 *)&this->field_0x94 = 0;
-  TPicture::thunk_SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_DI);
+  TPicture::SetPictureResourceIdAndRefresh((TPicture *)this,param_1,param_2,unaff_DI);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573090
 // GHIDRA_NAME TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920(TColorKeyPicture *this)
 
@@ -181,7 +181,7 @@ void __thiscall TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920(TColorKeyPict
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
   }
   *(undefined4 *)&this->field_0x94 = 0;
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 

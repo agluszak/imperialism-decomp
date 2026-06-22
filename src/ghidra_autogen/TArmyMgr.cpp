@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1640
 // GHIDRA_NAME TArmyMgr::CreateTArmyMgrInstance
-// GHIDRA_PROTO undefined __thiscall CreateTArmyMgrInstance(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TArmyMgr::CreateTArmyMgrInstance(int * param_1)
 
 void __thiscall TArmyMgr::CreateTArmyMgrInstance(TArmyMgr *this,int *param_1)
 
@@ -31,7 +31,7 @@ void __thiscall TArmyMgr::CreateTArmyMgrInstance(TArmyMgr *this,int *param_1)
   (*pcVar2)(puVar1,4);
   iVar9 = *(int *)puVar1;
   if (((iVar9 != 0) && (iVar9 != 3)) && (iVar9 != 4)) {
-    thunk_GetShortAtOffset14OrInvalid();
+    GetShortAtOffset14OrInvalid();
   }
   (*pcVar2)(&stack0xffffffd8,2);
   iVar9 = 0;
@@ -187,7 +187,7 @@ void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *t
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062ff5b;
   *unaff_FS_OFFSET = &uStack_c;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   if (*(int *)&this->field_0x4 != 0) {
     for (iVar4 = *(int *)(*(int *)&g_pMapContextActionManager->field_0x4 + 8); 0 < iVar4;
         iVar4 = iVar4 + -1) {
@@ -252,7 +252,7 @@ void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,in
   TArmyMgr *this_00;
   int *piVar2;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (**(code **)(*param_1 + 0x88))(*(undefined4 *)(*(int *)&this->field_0x4 + 8));
   piVar2 = *(int **)&this->field_0x4;
   iVar1 = 0;
@@ -260,7 +260,7 @@ void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,in
     do {
       iVar1 = iVar1 + 1;
       this_00 = (TArmyMgr *)(**(code **)(*piVar2 + 0x2c))(iVar1);
-      CreateTArmyMgrInstance(this_00,param_1);
+      TArmyMgr::CreateTArmyMgrInstance(this_00,param_1);
       piVar2 = *(int **)&this->field_0x4;
     } while (iVar1 < piVar2[2]);
   }
@@ -387,7 +387,7 @@ void __thiscall TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F(TArmyMgr 
     if (*ppTVar3 != (TCountry *)0x0) {
       if (*(int *)&(*ppTVar3)->field_0x44 == 0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0x39b);
       }
       piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
@@ -483,7 +483,7 @@ TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyMgr *this,int param_1,sh
       piVar4 = (int *)AllocateWithFallbackHandler(8);
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
       }
       *piVar4 = iVar11;
@@ -536,7 +536,7 @@ LAB_004a330c:
       piVar4 = piVar6;
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        piVar4 = (int *)thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        piVar4 = (int *)TemporarilyClearAndRestoreUiInvalidationFlag
                                   (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
       }
       uVar9 = (undefined2)((uint)piVar4 >> 0x10);
@@ -936,7 +936,7 @@ TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0(TArmyMgr 
       if (cVar4 == '\0') {
         if (((*psVar8 < 7) && (6 < iVar9)) &&
            (*(short *)&g_apTerrainTypeDescriptorTable[iVar9]->field_0xe == -1)) {
-          cVar4 = thunk_IsNationSlotEligibleForEventProcessing(CONCAT22(extraout_var_01,*psVar8));
+          cVar4 = IsNationSlotEligibleForEventProcessing(CONCAT22(extraout_var_01,*psVar8));
           if ((cVar4 == '\0') ||
              (((g_apNationStates[*psVar8] != (TGreatPower *)0x0 &&
                (sVar2 = *(short *)&g_apNationStates[*psVar8]->field_0xe, 99 < sVar2)) &&
@@ -1033,7 +1033,7 @@ char __thiscall TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(TArmyMgr *thi
     piVar3 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar1 * 0xa8);
   }
   for (; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[5]) {
-    if ((piVar3[2] == 0) && (sVar1 = thunk_GetUnitMovementClassId(), sVar1 != 0)) {
+    if ((piVar3[2] == 0) && (sVar1 = GetUnitMovementClassId(), sVar1 != 0)) {
       (**(code **)(*piVar3 + 0x34))(1,_param_1);
       cVar2 = '\x01';
     }
@@ -1072,7 +1072,7 @@ uint __thiscall TArmyMgr::CommitCityActionGateCostIfAffordable(TArmyMgr *this)
   *unaff_FS_OFFSET = &uStack_c;
   iVar4 = 0;
   for (iVar2 = ValidateGridIndexRange0To17F(); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x14)) {
-    if ((*(int *)(iVar2 + 8) == 0) && (sVar1 = thunk_GetUnitMovementClassId(), sVar1 != 0)) {
+    if ((*(int *)(iVar2 + 8) == 0) && (sVar1 = GetUnitMovementClassId(), sVar1 != 0)) {
       sVar1 = GetCityActionGateValueFromOrderTemplate();
       iVar4 = iVar4 + sVar1;
     }
@@ -1099,8 +1099,8 @@ uint __thiscall TArmyMgr::CommitCityActionGateCostIfAffordable(TArmyMgr *this)
     FormatStringWithVarArgsToSharedRef();
     scanBracketExpressions(g_pLocalizationTable,&CStack_14,CStack_18.m_pchData);
     puStack_10 = &stack0xffffffc8;
-    thunk_AssignStringSharedRefAndReturnThis(&CStack_14);
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    AssignStringSharedRefAndReturnThis(&CStack_14);
+    DispatchLocalizedUiMessageWithTemplateA13A0();
     iStack_4._0_1_ = 2;
     CString::~CString((CString *)&stack0x00000004);
     iStack_4._0_1_ = 1;
@@ -1157,7 +1157,7 @@ TArmyMgr::HandleMapClickByComputedCursorState(TArmyMgr *this,undefined4 param_1,
   sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + (short)param_1 * 0x24);
   if (iVar2 == 2) {
     if (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0 != (TCivToolbar *)0x0) {
-      TCivToolbar::thunk_SetMapInteractionMode(*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0,1);
+      TToolBarCluster::SetMapInteractionMode(*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0,1);
       SetActiveProvinceSelection(sVar1);
       uVar3 = 1;
     }

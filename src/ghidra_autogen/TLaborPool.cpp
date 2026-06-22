@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1CB0
 // GHIDRA_NAME TLaborPool::CreateTLaborPoolInstance
-// GHIDRA_PROTO undefined CreateTLaborPoolInstance()
+// GHIDRA_PROTO undefined TLaborPool::CreateTLaborPoolInstance()
 
 void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_2)
 
@@ -31,26 +31,26 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatOverlayTerrainLabelText();
   (**(code **)(*piVar4 + 0x1c8))();
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar4 + 0x1e4))();
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(*piVar4 + 0x1e4))();
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf8)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf8)
     ;
   }
   if (pTVar1 == (TGreatPower *)0x0) {
@@ -63,7 +63,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
   piVar4 = (int *)(*pcVar2)(0x73616c65);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfb)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfb)
     ;
   }
   uVar5 = 1;
@@ -71,7 +71,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,CString param_
   piVar4 = (int *)(*pcVar2)(0x70757263);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfe)
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfe)
     ;
   }
   (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)&pTVar1->field_0x844,1);
@@ -97,7 +97,7 @@ CRuntimeClass * __thiscall TLaborPool::GetTLaborPoolClassNamePointer(TLaborPool 
 TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this,byte param_1)
 
 {
-  DestructTLaborPoolAndMaybeFree(this);
+  TLaborPool::DestructTLaborPoolAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -106,7 +106,7 @@ TLaborPool * __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2190
 // GHIDRA_NAME TLaborPool::DestructTLaborPoolAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTLaborPoolAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(void)
 
 void __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
 
@@ -125,7 +125,7 @@ TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,in
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -143,7 +143,7 @@ TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,in
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -193,7 +193,7 @@ TLaborPool::OrphanLeaf_NoCall_Ins44_004b2270(TLaborPool *this,int param_1,short 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5C00
 // GHIDRA_NAME TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00
-// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 param_1)
 
 void __thiscall
 TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(TLaborPool *this,undefined4 param_1)

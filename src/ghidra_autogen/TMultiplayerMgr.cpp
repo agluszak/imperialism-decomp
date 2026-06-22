@@ -4,10 +4,10 @@
 // Bucket: TMultiplayerMgr.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E1F
-// GHIDRA_NAME TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed
-// GHIDRA_PROTO undefined __thiscall thunk_ActivateCityProductionViewIfAllowed(void)
+// GHIDRA_NAME TSoundPlayer::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::'scalar_deleting_destructor'(void)
 
-void __thiscall TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed(TMultiplayerMgr *this)
+void __thiscall TSoundPlayer::'scalar_deleting_destructor'(TMultiplayerMgr *this)
 
 {
   TSoundPlayer::_scalar_deleting_destructor_((TSoundPlayer *)this);
@@ -42,7 +42,7 @@ TMultiplayerMgr::ConstructMultiplayerManager(TMultiplayerMgr *this,astruct_11 *t
   puStack_8 = &LAB_00634793;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   uStack_4 = 0;
   CallCallbackRepeatedly(&this->field_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
@@ -123,7 +123,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
   NoOpInitializeGlobalTurnEventQueueManager();
   CString::CString(&param_1);
   local_4 = 1;
-  thunk_LoadUiStringResourceByGroupAndIndex(&param_1,0x2759,1);
+  LoadUiStringResourceByGroupAndIndex(&param_1,0x2759,1);
   this_00 = (CString *)&this->field_0x94;
   iVar2 = 7;
   do {
@@ -236,7 +236,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   piStack_64 = param_1;
   piStack_68 = (int *)0x542c0c;
   local_44 = this;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   local_50.m_pchData = (char *)g_apNationStates;
   puVar11 = (undefined4 *)&this->field_0xbc;
   local_4c = *(code **)(*param_1 + 0x3c);
@@ -259,7 +259,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
     }
     else {
       CStack_6c.m_pchData = pcStack_4;
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing();
+      cVar4 = IsNationSlotEligibleForEventProcessing();
       if (cVar4 == '\0') {
         *puVar11 = 0x64656361;
       }
@@ -283,7 +283,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   (*unaff_ESI)(&pTVar3->field_0x64,4);
   (*unaff_ESI)(&pTVar3->field_0xe4,1);
   (**(code **)(*DAT_006a6014 + 0x18))(param_1);
-  uVar8 = FUN_00405a3d();
+  uVar8 = GetSessionActiveNationId();
   sVar7 = UiRuntimeContext::GetActiveNationId();
   *(undefined4 *)(&pTVar3->field_0x48 + sVar7 * 4) = uVar8;
   sVar7 = UiRuntimeContext::GetActiveNationId();
@@ -294,7 +294,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(0xffffffff);
   local_4c = (code *)0x7265706f;
   iStack_48 = (int)sVar7 + (short)CONCAT31(extraout_var,uVar5) * 8;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
+  EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     *(undefined4 *)&pTVar3->field_0xd8 = 0x696e6974;
     NoOpDialogModeTagChangedHook(1);
@@ -314,14 +314,14 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   }
   (&local_4c)[iVar10] = (code *)0x62757379;
   local_50.m_pchData._0_1_ = uVar6;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
+  EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
   *(undefined4 *)&pTVar3->field_0xd8 = 0x676f696e;
   sVar7 = UiRuntimeContext::GetActiveNationId();
   local_50.m_pchData._0_1_ = UiRuntimeContext::GetActiveNationId();
   piStack_64 = (int *)0x1f;
   local_4c = (code *)0x6e616d65;
   iStack_48 = 0xffffffff;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar7 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar7 == -3);
   uStack_28 = 0xffffffff;
   CString::~CString(&CStack_6c);
   *unaff_FS_OFFSET = uStack_30;
@@ -343,7 +343,7 @@ TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr
   undefined1 *puVar5;
   
   piVar4 = param_1;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   iVar1 = *param_1;
   puVar5 = &this->field_0x78;
   param_1 = (int *)0x7;
@@ -366,7 +366,7 @@ TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005430C0
 // GHIDRA_NAME TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-// GHIDRA_PROTO undefined __thiscall EnableDiplomacyQueueRoutingAndSetContextField44(undefined4 param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(undefined4 param_1, char param_2)
 
 void __thiscall
 TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
@@ -396,13 +396,13 @@ TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(TMultipl
   if (*(int **)&this->field_0x44 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x44 + 0x4c))();
   }
-  uVar1 = RouteAndProcessDiplomacyTurnStateEventQueue(this);
+  uVar1 = TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(this);
   return uVar1 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00545730
 // GHIDRA_NAME TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-// GHIDRA_PROTO undefined __thiscall RouteAndProcessDiplomacyTurnStateEventQueue(void)
+// GHIDRA_PROTO undefined __thiscall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(void)
 
 void __thiscall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(TMultiplayerMgr *this)
 

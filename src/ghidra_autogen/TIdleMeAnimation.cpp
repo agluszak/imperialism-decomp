@@ -28,7 +28,7 @@ TIdleMeAnimation * __thiscall
 TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation *this,byte param_1)
 
 {
-  CreateTIdleMeAnimationInstance(this);
+  TIdleMeAnimation::CreateTIdleMeAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -37,7 +37,7 @@ TIdleMeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At004ac950(TIdleMeAnimation
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC980
 // GHIDRA_NAME TIdleMeAnimation::CreateTIdleMeAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTIdleMeAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(void)
 
 void __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(TIdleMeAnimation *this)
 

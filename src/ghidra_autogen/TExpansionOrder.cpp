@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8F80
 // GHIDRA_NAME TExpansionOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
@@ -16,13 +16,13 @@ TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FC0
 // GHIDRA_NAME TExpansionOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::ConstructTItemOrderBaseState(byte param_1)
 
 TExpansionOrder * __thiscall
 TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this,byte param_1)
 
 {
-  DestructTExpansionOrderAndMaybeFree(this);
+  TExpansionOrder::DestructTExpansionOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -31,7 +31,7 @@ TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FF0
 // GHIDRA_NAME TExpansionOrder::DestructTExpansionOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTExpansionOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(void)
 
 void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionOrder *this)
 
@@ -43,7 +43,7 @@ void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionO
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9010
 // GHIDRA_NAME TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
-// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
@@ -211,7 +211,7 @@ TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this,short par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B9360
 // GHIDRA_NAME TExpansionOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
 void __thiscall TExpansionOrder::CreateTItemOrderInstance(TExpansionOrder *this)
 

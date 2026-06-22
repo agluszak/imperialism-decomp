@@ -23,7 +23,7 @@ TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
   this = (TEditText *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
   if (this != (TEditText *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    TEditText::ConstructUiNumericTextEntryBase(this);
     this[1].vftable = (TEditTextVtbl *)0x0;
     *(undefined1 *)&this[1].field0c = 0;
     *(undefined1 *)((int)&this[1].field0c + 1) = 0;
@@ -40,7 +40,7 @@ TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B58F0
 // GHIDRA_NAME TDropShadowNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TDropShadowNumberText::GetTEventHandlerClassNamePointer(TDropShadowNumberText *this)
@@ -51,13 +51,13 @@ TDropShadowNumberText::GetTEventHandlerClassNamePointer(TDropShadowNumberText *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5910
 // GHIDRA_NAME TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDropShadowNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(void)
 
 TDropShadowNumberText * __thiscall
 TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)&this->field_0xa0 = 0;
   this->field_0xac = 0;
   this->field_0xad = 0;
@@ -85,7 +85,7 @@ TDropShadowNumberText::_scalar_deleting_destructor_(TDropShadowNumberText *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B59B0
 // GHIDRA_NAME TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730(TDropShadowNumberText *this)
 

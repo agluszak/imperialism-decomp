@@ -39,7 +39,7 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
   *unaff_FS_OFFSET = &local_c;
   if ((*(int **)&this[0x108].field_0x14)[2] == 0) {
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-      thunk_EmitTurnEvent3Mode18WithActiveNation();
+      EmitTurnEvent3Mode18WithActiveNation();
       *unaff_FS_OFFSET = local_c;
       return;
     }
@@ -56,9 +56,9 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
       (**(code **)(unaff_ESI + 0x74))(iVar8,iVar6,6,0);
     }
     (*g_apTerrainTypeDescriptorTable[iVar6]->vftable[0x12].slot_0x04)(iVar8,0x131);
-    TCountry::thunk_QueueInterNationEventRecordDeduped
+    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,1,iVar6,iVar8,'\0');
-    TCountry::thunk_QueueInterNationEventRecordDeduped
+    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,0,iVar8,iVar6,'\0');
     if (iVar6 < 7) {
       (*g_apNationStates[iVar8]->vftable[0x12].slot_0x04)(iVar6,200);
@@ -112,7 +112,7 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
         pTVar7 = (TCommand *)0x0;
       }
       else {
-        TCommand::thunk_ConstructTurnEventPacketBase(this_00);
+        TCommand::ConstructTurnEventPacketBase(this_00);
         this_00->vftable = (TCommandVtbl *)&TNextTradeCommand::_vftable_;
         pTVar7 = this_00;
       }
@@ -133,7 +133,7 @@ void __thiscall TNextDiplomationCommand::ProcessQueuedWarTransitions(TNextDiplom
 void __thiscall TNextDiplomationCommand::OrphanRetStub_00487a00(TNextDiplomationCommand *this)
 
 {
-  thunk_ProcessQueuedWarTransitions((TNextDiplomationCommand *)g_pDiplomacyTurnStateManager);
+  TNextDiplomationCommand::ProcessQueuedWarTransitions((TNextDiplomationCommand *)g_pDiplomacyTurnStateManager);
   return;
 }
 
@@ -165,7 +165,7 @@ TNextDiplomationCommand::GetTEventClassNamePointer(TNextDiplomationCommand *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2970
 // GHIDRA_NAME TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNextDiplomationCommandAndMaybeFree()
+// GHIDRA_PROTO undefined TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree()
 
 void TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(undefined1 *param_1)
 
@@ -180,7 +180,7 @@ void TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(undefi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00543910
 // GHIDRA_NAME TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode
-// GHIDRA_PROTO undefined __thiscall HandleDiplomacyTurnEventPacketByCode(void)
+// GHIDRA_PROTO undefined __thiscall TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(void)
 
 void __thiscall
 TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCommand *this)
@@ -256,7 +256,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     iVar11 = BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     iVar8 = 0;
     *(undefined4 *)(iVar11 + 8) = 0;
-    thunk_EnqueueOrSendTurnEventPacketToNation(iVar11,0);
+    EnqueueOrSendTurnEventPacketToNation(iVar11,0);
     FreeHeapBufferIfNotNull(iVar11);
     TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll(0xffffffff);
     local_664 = 0x74696d65;
@@ -276,14 +276,14 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
       uStack_740 = CONCAT31(extraout_var,uVar3);
       CString::CString(&CStack_79c);
       local_4 = 0;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField(uStack_740,&CStack_79c);
+      AssignSharedStringFromIndexedA8EntryNameField(uStack_740,&CStack_79c);
       strncpy(_Dest + -0x2f7,CStack_79c.m_pchData,0x21);
       CString::CString(&CStack_798);
       local_4._0_1_ = 1;
       AssignSharedStringFromDescriptorNameOrDefault(&CStack_798);
       strncpy(_Dest,CStack_798.m_pchData,0x21);
-      thunk_FindFirstPortZoneContextByNation(iVar8);
-      uVar5 = thunk_GetShortAtOffset14OrInvalid();
+      FindFirstPortZoneContextByNation(iVar8);
+      uVar5 = GetShortAtOffset14OrInvalid();
       *puVar9 = uVar5;
       local_4 = (uint)local_4._1_3_ << 8;
       CString::~CString(&CStack_798);
@@ -294,7 +294,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
       _Dest = _Dest + 0x17;
       puVar9 = puVar9 + 1;
     } while ((int)ppTVar15 < 0x6a436c);
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_674,0);
+    EnqueueOrSendTurnEventPacketToNation(&local_674,0);
     ppTVar15 = g_apTerrainTypeDescriptorTable;
     do {
       sVar6 = (short)(*ppTVar15)->ownerNationSlot;
@@ -320,7 +320,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
             puVar14 = puVar14 + 1;
           }
           local_770 = sVar6;
-          thunk_EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
+          EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
         }
         psVar12 = psVar12 + 1;
         CStack_79c.m_pchData = CStack_79c.m_pchData + -1;
@@ -336,7 +336,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
       uStack_724 = *(undefined2 *)&g_pGameFlowState->field_0xf0;
       sStack_720 = (short)CONCAT31(extraout_var_00,uVar3);
       CopyA8RecordWithSharedStringAtA4(*(int *)&g_pGlobalMapState->field_0x10 + sStack_720 * 0xa8);
-      thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_73c,0);
+      EnqueueOrSendTurnEventPacketToNation(&uStack_73c,0);
       local_4 = 0xffffffff;
       CString::~CString(&CStack_678);
       ppTVar15 = ppTVar15 + 1;
@@ -354,7 +354,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x30,0xfffffffe,0xffffffff);
     iVar11 = 0;
     do {
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar11);
+      cVar4 = IsNationSlotEligibleForEventProcessing(iVar11);
       if (cVar4 != '\0') {
         EmitTurnEvent19NationStateArraysForSlot(iVar11,0xfffffffe);
         EmitTurnEvent2CNationStateCompositeForSlot(iVar11,0xfffffffe);
@@ -363,7 +363,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     } while (iVar11 < 7);
     iVar11 = 7;
     do {
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar11);
+      cVar4 = IsNationSlotEligibleForEventProcessing(iVar11);
       if (cVar4 != '\0') {
         InitializeEmitEventHeaderWithActiveNation();
         local_78c = 0x2d;
@@ -382,7 +382,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
           *puVar9 = *(undefined2 *)(&pTVar2->field_0x14 + sVar6 * 2);
           puVar9 = puVar9 + 1;
         } while (iVar8 < 0x17);
-        thunk_EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
+        EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
       }
       iVar11 = iVar11 + 1;
     } while (iVar11 < 0x17);
@@ -399,7 +399,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
   case (TNextDiplomationCommandVtbl *)0x5:
     iVar11 = ProbeNationReachabilityAndMarkAwolBitmask();
     if (iVar11 == 0) {
-      thunk_SaveGameWithModeAndOptionalLabel(0xa2,0);
+      SaveGameWithModeAndOptionalLabel(0xa2,0);
     }
     local_664 = 0x74696d65;
     local_660 = UiRuntimeContext::GetActiveNationId();
@@ -427,7 +427,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
       ppTVar16 = ppTVar16 + 1;
       puVar9 = puVar9 + 0x17;
     } while ((int)ppTVar16 < 0x6a438c);
-    thunk_EnqueueOrSendTurnEventPacketToNation(&local_674,0);
+    EnqueueOrSendTurnEventPacketToNation(&local_674,0);
     (*g_pDiplomacyTurnStateManager->vftable[6].GetTDiplomacyMgrClassNamePointer)();
     local_7b4[8] = 0x6d65;
     local_7b4[9] = 0x7469;
@@ -439,19 +439,19 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     local_794 = (TNextDiplomationCommand *)this_00;
     if (this_00 == (TCommand *)0x0) {
       local_4 = 0xffffffff;
-      thunk_DispatchUiPacketWithTagNEXT();
+      DispatchUiPacketWithTagNEXT();
     }
     else {
-      TCommand::thunk_ConstructTurnEventPacketBase(this_00);
+      TCommand::ConstructTurnEventPacketBase(this_00);
       this_00->vftable = (TCommandVtbl *)&TNextTradeCommand::_vftable_;
       local_4 = 0xffffffff;
-      thunk_DispatchUiPacketWithTagNEXT();
+      DispatchUiPacketWithTagNEXT();
     }
     goto LAB_00544285;
   case (TNextDiplomationCommandVtbl *)0x8:
     iVar11 = 0;
     do {
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar11);
+      cVar4 = IsNationSlotEligibleForEventProcessing(iVar11);
       if (cVar4 != '\0') {
         EmitTurnEvent19NationStateArraysForSlot(iVar11,0xfffffffe);
         EmitTurnEvent2CNationStateCompositeForSlot(iVar11,0xfffffffe);
@@ -460,7 +460,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     } while (iVar11 < 7);
     iVar11 = 7;
     do {
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar11);
+      cVar4 = IsNationSlotEligibleForEventProcessing(iVar11);
       if (cVar4 != '\0') {
         local_77c = 0x74696d65;
         local_778 = UiRuntimeContext::GetActiveNationId();
@@ -479,7 +479,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
           *puVar9 = *(undefined2 *)(&pTVar2->field_0x14 + sVar6 * 2);
           puVar9 = puVar9 + 1;
         } while (iVar8 < 0x17);
-        thunk_EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
+        EnqueueOrSendTurnEventPacketToNation(&local_78c,0);
       }
       iVar11 = iVar11 + 1;
     } while (iVar11 < 0x17);
@@ -506,7 +506,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x30,0xfffffffe,0xffffffff);
     iVar11 = BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
     *(undefined4 *)(iVar11 + 8) = 0;
-    thunk_EnqueueOrSendTurnEventPacketToNation(iVar11,0);
+    EnqueueOrSendTurnEventPacketToNation(iVar11,0);
     FreeHeapBufferIfNotNull(iVar11);
     local_794 = (TNextDiplomationCommand *)0x61726d79;
     local_790 = g_pMapContextActionManager;
@@ -533,7 +533,7 @@ TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode(TNextDiplomationCo
   local_7b4[3] = 0;
   local_7b4[0] = 3;
   local_7b4[1] = 0;
-  thunk_EnqueueOrSendTurnEventPacketToNation(local_7b4,1);
+  EnqueueOrSendTurnEventPacketToNation(local_7b4,1);
 LAB_00544285:
   *unaff_FS_OFFSET = local_c;
   return;

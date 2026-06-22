@@ -4,10 +4,10 @@
 // Bucket: CWnd.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFFFD
-// GHIDRA_NAME CWnd::thunk_Default
-// GHIDRA_PROTO undefined __thiscall thunk_Default(void)
+// GHIDRA_NAME CWnd::Default
+// GHIDRA_PROTO undefined __thiscall CWnd::Default(void)
 
-void __thiscall CWnd::thunk_Default(CWnd *this)
+void __thiscall CWnd::Default(CWnd *this)
 
 {
   Default(this);
@@ -70,7 +70,7 @@ void __thiscall CWnd::AttachControlSite_607673(CWnd *this,int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607706
 // GHIDRA_NAME CWnd::CWnd
-// GHIDRA_PROTO void __thiscall CWnd(void)
+// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
 void __thiscall CWnd::CWnd(CWnd *this)
 
@@ -81,7 +81,7 @@ void __thiscall CWnd::CWnd(CWnd *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607744
 // GHIDRA_NAME CWnd::CWnd_00607744
-// GHIDRA_PROTO void __thiscall CWnd_00607744(void)
+// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
 void __thiscall CWnd::CWnd_00607744(CWnd *this)
 
@@ -92,7 +92,7 @@ void __thiscall CWnd::CWnd_00607744(CWnd *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607782
 // GHIDRA_NAME CWnd::CWnd_00607782
-// GHIDRA_PROTO void __thiscall CWnd_00607782(void)
+// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
 void __thiscall CWnd::CWnd_00607782(CWnd *this)
 
@@ -103,7 +103,7 @@ void __thiscall CWnd::CWnd_00607782(CWnd *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006077C0
 // GHIDRA_NAME CWnd::CWnd_006077C0
-// GHIDRA_PROTO void __thiscall CWnd_006077C0(void)
+// GHIDRA_PROTO void __thiscall CWnd::~CWnd(void)
 
 void __thiscall CWnd::CWnd_006077C0(CWnd *this)
 

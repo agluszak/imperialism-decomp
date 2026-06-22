@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8330
 // GHIDRA_NAME TTacticalBattleView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTacticalBattleView::GetTEventHandlerClassNamePointer(TTacticalBattleView *this)
@@ -32,7 +32,7 @@ TTacticalBattleView * __thiscall
 TTacticalBattleView::_scalar_deleting_destructor_(TTacticalBattleView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -41,7 +41,7 @@ TTacticalBattleView::_scalar_deleting_destructor_(TTacticalBattleView *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8430
 // GHIDRA_NAME TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalBattleView *this)
 
@@ -53,13 +53,13 @@ void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalB
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x70);
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x74);
   CallObjectOffset24Vslot54IfPresent();
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A84D0
 // GHIDRA_NAME TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalBattleView *this)
 
@@ -70,7 +70,7 @@ void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalB
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   pTVar2 = pTVar1[0xb].GetTEventHandlerClassNamePointer;
   uVar3 = (*pTVar2)();
@@ -86,7 +86,7 @@ void __thiscall TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalB
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8550
 // GHIDRA_NAME TTacticalBattleView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall
 TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(TTacticalBattleView *this,int param_1)
@@ -94,12 +94,12 @@ TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(TTacticalBattleView *this,in
 {
   switch(*(undefined2 *)(param_1 + 0x1c)) {
   case 0x20:
-    TacticalBattleView::thunk_HandleTacticalCommandTag_targ
+    TacticalBattleView::HandleTacticalCommandTag_targ
               (*(TacticalBattleView **)&this->field_0x60);
     return;
   case 0x44:
   case 100:
-    TacticalBattleView::thunk_HandleTacticalBattleCommandTag
+    TacticalBattleView::HandleTacticalBattleCommandTag
               (*(TacticalBattleView **)&this->field_0x60,0x646f6e65);
     return;
   case 0x48:
@@ -108,7 +108,7 @@ TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(TTacticalBattleView *this,in
     break;
   case 0x53:
   case 0x73:
-    TacticalBattleView::thunk_HandleTacticalBattleCommandTag
+    TacticalBattleView::HandleTacticalBattleCommandTag
               (*(TacticalBattleView **)&this->field_0x60,0x736b6970);
     return;
   }
@@ -117,7 +117,7 @@ TTacticalBattleView::OrphanTiny_ReturnZero_0048a730(TTacticalBattleView *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8660
 // GHIDRA_NAME TTacticalBattleView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
 TTacticalBattleView::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -129,7 +129,7 @@ TTacticalBattleView::ReleaseRuntimeSelectionOwnerAndDestroyObject
   if (this->field_0x98 != '\0') {
     local_4 = this;
     ConvertScreenPointToHexGridCoordClamped(param_1,&param_1,&local_4);
-    thunk_DispatchTacticalActionByHoverStateIndex
+    DispatchTacticalActionByHoverStateIndex
               ((TTacticalBattleViewVtbl **)
                ((int)&local_4->vftable + *(int *)&this->field_0x80 * param_1));
   }
@@ -151,7 +151,7 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
   puStack_18 = local_10;
   if (*(int *)(param_1 + 8) != -1) {
     (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(param_1);
-    thunk_InvalidateCityDialogRectRegion(&puStack_18,1);
+    InvalidateCityDialogRectRegion(&puStack_18,1);
   }
   return;
 }
@@ -196,7 +196,7 @@ TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8CA0
 // GHIDRA_NAME TTacticalBattleView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Alternate path of SetMappedCursorOrDefaultArrow with identical mapped-cursor fallback behavior.
 // GHIDRA_COMMENT_END
@@ -235,7 +235,7 @@ TTacticalBattleView::OrphanCallChain_C11_I88_004874b0
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8D40
 // GHIDRA_NAME TTacticalBattleView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 param_1)
 
 void __thiscall
 TTacticalBattleView::SetForeignMinisterReadyFlag14(TTacticalBattleView *this,undefined4 param_1)
@@ -338,7 +338,7 @@ TTacticalBattleView::SetForeignMinisterReadyFlag14(TTacticalBattleView *this,und
     local_4 = local_4 & 0xffffff00;
     ReleaseOrCacheQuickDrawSurface();
     local_4 = 0xffffffff;
-    thunk_DestroyScopedMapQuickDrawContext();
+    DestroyScopedMapQuickDrawContext();
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -408,7 +408,7 @@ TTacticalBattleView::DrawUiTilesAndOverlay(TTacticalBattleView *this,astruct_13 
     SetQuickDrawFillColor(0);
     slot_index = 0;
     do {
-      frame_start_tick = thunk_GetTickCountDiv16();
+      frame_start_tick = GetTickCountDiv16();
       row_offset_px = slot_index * *(int *)&this->field_0xa0;
       src_rect.field0_0x0 = *(int *)&this->field_0xc0;
       col_offset_px = slot_index * *(int *)&this->field_0x9c;
@@ -509,12 +509,12 @@ TTacticalBattleView::DrawUiTilesAndOverlay(TTacticalBattleView *this,astruct_13 
                    ,(RECT *)&src_rect,0,(astruct_19 *)0x0);
       }
       do {
-        row_offset_px = thunk_GetTickCountDiv16();
+        row_offset_px = GetTickCountDiv16();
         if (frame_start_tick + 2 <= row_offset_px) break;
       } while (frame_start_tick <= row_offset_px);
       slot_index = slot_index + 1;
     } while (slot_index < 4);
-    thunk_InvalidateCityDialogRectRegion(&this->field_0xc0,1);
+    InvalidateCityDialogRectRegion(&this->field_0xc0,1);
     *(undefined4 *)&this->field_0xa4 = 0xffffffff;
   }
   return;

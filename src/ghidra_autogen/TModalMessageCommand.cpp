@@ -22,8 +22,8 @@ void __thiscall TModalMessageCommand::OrphanRetStub_00487a00(TModalMessageComman
   puStack_10 = &DAT_006a5be0;
   puStack_4 = (undefined1 *)&pTStack_14;
   pTStack_14 = this;
-  thunk_AssignStringSharedRefAndReturnThis(&this->field_0x18);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&this->field_0x18);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   return;
 }
 
@@ -35,7 +35,7 @@ TModalMessageCommand * __thiscall
 TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this,byte param_1)
 
 {
-  CreateTModalMessageCommandInstance(this);
+  TModalMessageCommand::CreateTModalMessageCommandInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -44,7 +44,7 @@ TModalMessageCommand::OrphanCallChain_C1_I17_00487470(TModalMessageCommand *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD80
 // GHIDRA_NAME TModalMessageCommand::CreateTModalMessageCommandInstance
-// GHIDRA_PROTO undefined __thiscall CreateTModalMessageCommandInstance(void)
+// GHIDRA_PROTO undefined __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(void)
 
 void __thiscall TModalMessageCommand::CreateTModalMessageCommandInstance(TModalMessageCommand *this)
 

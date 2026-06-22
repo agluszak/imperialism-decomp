@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF500
 // GHIDRA_NAME TFuzzySet::CreateTFuzzySetInstance
-// GHIDRA_PROTO undefined __thiscall CreateTFuzzySetInstance(void)
+// GHIDRA_PROTO undefined __thiscall TFuzzySet::CreateTFuzzySetInstance(void)
 
 void __thiscall TFuzzySet::CreateTFuzzySetInstance(TFuzzySet *this)
 
@@ -26,7 +26,7 @@ CRuntimeClass * __thiscall TFuzzySet::GetTFuzzySetClassNamePointer(TFuzzySet *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6E0
 // GHIDRA_NAME TFuzzySet::ConstructTFuzzySetBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTFuzzySetBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TFuzzySet::ConstructTFuzzySetBaseState(void)
 
 void __thiscall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *this)
 

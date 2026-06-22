@@ -23,7 +23,7 @@ TControl * TGameWindow::CreateTGameWindowInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryBase(this);
+    TControl::ConstructUiWindowResourceEntryBase(this);
     this->vftable = (TControlVtbl *)&TGameWindowVtbl_00656a98;
     this[1].field_0x1c = 0;
     *(undefined2 *)&this[1].field_0x1e = 0x14;
@@ -39,7 +39,7 @@ TControl * TGameWindow::CreateTGameWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFBF0
 // GHIDRA_NAME TGameWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGameWindow::GetTEventHandlerClassNamePointer(TGameWindow *this)
 
@@ -68,7 +68,7 @@ TGameWindow * __thiscall TGameWindow::_scalar_deleting_destructor_(TGameWindow *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFCB0
 // GHIDRA_NAME TGameWindow::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TGameWindow::OrphanCallChain_C11_I88_004874b0(TGameWindow *this)
 
@@ -87,7 +87,7 @@ void __thiscall TGameWindow::OrphanCallChain_C11_I88_004874b0(TGameWindow *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD10
 // GHIDRA_NAME TGameWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 void __thiscall
 TGameWindow::SetForeignMinisterReadyFlag14
@@ -95,7 +95,7 @@ TGameWindow::SetForeignMinisterReadyFlag14
           undefined4 param_4)
 
 {
-  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_2,param_3,param_4);
+  TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
   return;
 }
 
@@ -115,7 +115,7 @@ TGameWindow::InvalidateWindowRectFromHandleField1C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FFD70
 // GHIDRA_NAME TGameWindow::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handles commands for the viewport-adaptive turn-order navigation window. Maps command codes 0x31..0x35 to turn-state requests (0x69,0x6A,0x67,0x68,0x6D) while guarding against already-active target event states (0x7DE,0x7DB,0x7D9/0x7DA,0x7D8,0x8FC).
 // GHIDRA_COMMENT_END
@@ -168,7 +168,7 @@ void __thiscall TGameWindow::OrphanTiny_ReturnZero_0048a730(TGameWindow *this)
         return;
       }
       uVar5 = UiRuntimeContext::GetActiveNationId();
-      uVar5 = thunk_ConsumeFirstPendingAbilityUnlock(uVar5);
+      uVar5 = ConsumeFirstPendingAbilityUnlock(uVar5);
       if ((short)uVar5 != -1) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar5);
         return;

@@ -38,7 +38,7 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarnin
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005928E0
 // GHIDRA_NAME TWarningView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TWarningView::GetTEventHandlerClassNamePointer(TWarningView *this)
 
@@ -69,7 +69,7 @@ TWarningView * __thiscall
 TWarningView::_scalar_deleting_destructor_(TWarningView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -78,7 +78,7 @@ TWarningView::_scalar_deleting_destructor_(TWarningView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592980
 // GHIDRA_NAME TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -92,11 +92,11 @@ TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     switch(*(undefined4 *)(param_2 + 0x1c)) {
     case 0x70696331:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0x22);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0x22);
       return;
     case 0x70696332:
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0x22);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0x22);
       return;
     case 0x70696333:
       uVar2 = 0x6a;
@@ -116,13 +116,13 @@ TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     (*pTVar1[9].GetTSimMgrClassNamePointer)(uVar2);
   }
 switchD_0059299f_default:
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592A70
 // GHIDRA_NAME TWarningView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *this)
 
@@ -154,7 +154,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
   CStack_34.m_pchData = "hg+";
   uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
   CStack_34.m_pchData = (char *)0x2b67;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x94);
   CStack_34.m_pchData = (char *)0x7469746c;
   piVar5 = (int *)(*pcVar1)();
@@ -163,7 +163,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
   if (piVar5 == (int *)0x0) {
     uStack_48 = 0x592aee;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(iVar2 + 0x1b4))();
   CString::CString((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
@@ -186,7 +186,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
   if (piVar5 == (int *)0x0) {
     uStack_6c = 0x592b86;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   puVar6 = &stack0xffffffc0;
   (**(code **)(iVar2 + 0x1b4))();
@@ -204,7 +204,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
   (**(code **)(iVar2 + 0xc))();
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(iVar2 + 0xa8))();
   (**(code **)(iVar2 + 0xa4))();
@@ -215,7 +215,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1aee);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
@@ -229,7 +229,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1af4);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
@@ -241,7 +241,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1afc);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
@@ -255,7 +255,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b02);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
@@ -267,7 +267,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b0a);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
@@ -281,7 +281,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b10);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);
@@ -293,7 +293,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b18);
     }
     (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
@@ -307,7 +307,7 @@ void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *thi
     (**(code **)(iVar2 + 0xc))();
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b1e);
     }
     (**(code **)(iVar2 + 0xa8))(1,0);

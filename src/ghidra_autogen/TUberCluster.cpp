@@ -25,7 +25,7 @@ TCluster * TUberCluster::CreateTUberClusterInstance(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&_vftable_;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TCluster * TUberCluster::CreateTUberClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571440
 // GHIDRA_NAME TUberCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TUberCluster::GetTEventHandlerClassNamePointer(TUberCluster *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TUberCluster::GetTEventHandlerClassNamePointer(TUberC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571460
 // GHIDRA_NAME TUberCluster::ConstructTUberClusterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUberClusterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TUberCluster::ConstructTUberClusterBaseState(void)
 
 TUberCluster * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberCluster *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = &_vftable_;
   return this;
 }
@@ -63,7 +63,7 @@ TUberCluster * __thiscall
 TUberCluster::_scalar_deleting_destructor_(TUberCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

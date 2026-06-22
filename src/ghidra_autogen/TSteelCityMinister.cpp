@@ -49,7 +49,7 @@ TSteelCityMinister::GetTMinisterClassNamePointer(TSteelCityMinister *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C59E0
 // GHIDRA_NAME TSteelCityMinister::ConstructTSteelCityMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSteelCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TSteelCityMinister::ConstructTSteelCityMinisterBaseState(void)
 
 TSteelCityMinister * __thiscall
 TSteelCityMinister::ConstructTSteelCityMinisterBaseState(TSteelCityMinister *this)
@@ -81,7 +81,7 @@ TSteelCityMinister::DeletingDestructTMinister(TSteelCityMinister *this,byte para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5A90
 // GHIDRA_NAME TSteelCityMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TSteelCityMinister::GetTEventHandlerClassNamePointer(TSteelCityMinister *this)
 

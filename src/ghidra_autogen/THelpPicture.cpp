@@ -36,7 +36,7 @@ thunk_TPictureButton * THelpPicture::CreateTHelpPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503C70
 // GHIDRA_NAME THelpPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall THelpPicture::GetTEventHandlerClassNamePointer(THelpPicture *this)
 
@@ -72,7 +72,7 @@ THelpPicture * __thiscall
 THelpPicture::_scalar_deleting_destructor_(THelpPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -112,11 +112,11 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
   puStack_8 = &LAB_00633602;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   local_22 = 0;
   local_21 = 0;
   local_20 = (uint)local_20._2_2_ << 0x10;
-  thunk_InitializeUiTextStyleDescriptor(local_28,0,0xc,0x2b67,3);
+  InitializeUiTextStyleDescriptor(local_28,0,0xc,0x2b67,3);
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x7377696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar3 + 0xc))();
@@ -126,7 +126,7 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
     this_00 = (TDeluxeText *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
+    TStaticText::TStaticText((TStaticText *)this_00);
     this_00->field_0x98 = 0;
     this_00->field_0x99 = 0;
     this_00->field_0x9a = 0;
@@ -160,14 +160,14 @@ void __thiscall THelpPicture::OrphanCallChain_C6_I49_004875d0(THelpPicture *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503ED0
 // GHIDRA_NAME THelpPicture::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall THelpPicture::OrphanRetStub_0059add0(THelpPicture *this,int param_1,int param_2)
 
 {
   uint uVar1;
   
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if (param_1 == 0xd) {
     uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x6e616d32) {
@@ -391,21 +391,21 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
   uStack_64 = 4;
   local_4 = 0;
   uStack_6c = 0x50474c;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_68 = local_18;
   uStack_58 = 3;
   uStack_5c = 0x2b69;
   uStack_60 = 0xc;
   uStack_64 = 4;
   uStack_6c = 0x504764;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_68 = local_24;
   uStack_58 = 1;
   uStack_5c = 0x2b67;
   uStack_60 = 0xc;
   uStack_64 = 0;
   uStack_6c = 0x50477c;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   local_38 = this->vftable;
   pTVar1 = local_38[0x12].slot_0x04;
   uStack_58 = 0x7375626a;

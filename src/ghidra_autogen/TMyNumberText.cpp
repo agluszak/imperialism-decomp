@@ -77,7 +77,7 @@ TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
   this = (TEditText *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
   if (this != (TEditText *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    TEditText::ConstructUiNumericTextEntryBase(this);
     this[1].vftable = (TEditTextVtbl *)0x0;
     this->vftable = (TEditTextVtbl *)&TMyNumberTextVtbl_0066c4f0;
     *unaff_FS_OFFSET = local_c;
@@ -89,7 +89,7 @@ TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FB0
 // GHIDRA_NAME TMyNumberText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMyNumberText::GetTEventHandlerClassNamePointer(TMyNumberText *this)
 
@@ -99,12 +99,12 @@ CRuntimeClass * __thiscall TMyNumberText::GetTEventHandlerClassNamePointer(TMyNu
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FD0
 // GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTMyNumberTextBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(void)
 
 TMyNumberText * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  TEditText::ConstructUiNumericTextEntryBase((TEditText *)this);
   *(undefined4 *)&this->field_0xa0 = 0;
   this->vftable = &TMyNumberTextVtbl_0066c4f0;
   return this;
@@ -127,7 +127,7 @@ TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5050
 // GHIDRA_NAME TMyNumberText::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
 char * __thiscall TMyNumberText::UpdateControlCachedIntFromWindowText(TMyNumberText *this)
 
@@ -158,7 +158,7 @@ char * __thiscall TMyNumberText::UpdateControlCachedIntFromWindowText(TMyNumberT
   if (*(int *)(unaff_ESI + -8) != 0) {
     pCStack_24 = &local_18;
     local_14 = auStack_28;
-    thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffe4);
+    AssignStringSharedRefAndReturnThis(&stack0xffffffe4);
     TTown::CreateTTownInstance();
   }
   puStack_8 = (undefined1 *)0xffffffff;

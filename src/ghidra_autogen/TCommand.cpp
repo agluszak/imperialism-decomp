@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(uint param_1)
 
 TCommandVtbl * __thiscall
 TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,uint param_1)
@@ -107,7 +107,7 @@ void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004880F0
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
@@ -135,7 +135,7 @@ void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488140
 // GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
@@ -148,7 +148,7 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488160
 // GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(int param_1)
 
 undefined4 __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this,int param_1)
 
@@ -161,7 +161,7 @@ undefined4 __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488190
 // GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
@@ -177,7 +177,7 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004881D0
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
@@ -188,7 +188,7 @@ void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004881F0
 // GHIDRA_NAME TCommand::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TCommand::SetForeignMinisterReadyFlag14(TCommand *this)
 
@@ -245,7 +245,7 @@ void __thiscall TCommand::SetForeignMinisterReadyFlag14(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004882C0
 // GHIDRA_NAME TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 * param_1)
 
 void __thiscall
 TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCommand *this,undefined4 *param_1)
@@ -275,7 +275,7 @@ TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCommand *this,undefined4
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488310
 // GHIDRA_NAME TCommand::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(undefined4 * param_1)
 
 void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this,undefined4 *param_1)
 
@@ -304,7 +304,7 @@ void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this,un
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488360
 // GHIDRA_NAME TCommand::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(uint param_1, uint param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(uint param_1, uint param_2)
 
 int __thiscall TCommand::OrphanRetStub_0059add0(TCommand *this,uint param_1,uint param_2)
 
@@ -322,7 +322,7 @@ int __thiscall TCommand::OrphanRetStub_0059add0(TCommand *this,uint param_1,uint
 TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte param_1)
 
 {
-  CObArray::thunk_DestructCObArray();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -331,7 +331,7 @@ TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883E0
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
@@ -354,7 +354,7 @@ void __thiscall TCommand::InvalidateWindowRectFromHandleField1C(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004885F0
 // GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
 
@@ -367,7 +367,7 @@ void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488610
 // GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
@@ -380,7 +380,7 @@ void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488630
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
 
@@ -407,7 +407,7 @@ TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E1E50
 // GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
 void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this,int *param_1)
 

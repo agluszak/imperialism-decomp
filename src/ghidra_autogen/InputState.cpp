@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00515E00
 // GHIDRA_NAME InputState::SetMapTileStateByteAndNotifyObserver
-// GHIDRA_PROTO undefined SetMapTileStateByteAndNotifyObserver()
+// GHIDRA_PROTO undefined InputState::SetMapTileStateByteAndNotifyObserver()
 
 void __thiscall
 InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,undefined1 param_3)
@@ -20,7 +20,7 @@ InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FC40
 // GHIDRA_NAME InputState::HandleKeyDown
-// GHIDRA_PROTO void __thiscall HandleKeyDown(int key_id)
+// GHIDRA_PROTO void __thiscall InputState::HandleKeyDown(int key_id)
 
 void __thiscall InputState::HandleKeyDown(InputState *this,int key_id)
 
@@ -69,7 +69,7 @@ LAB_0055fcae:
         do {
           if (((byte)this[0x10] & '\x01' << ((byte)(key_id % 7) & 0x1f)) != 0) {
             slot_id = (**(code **)(iVar1 + 0x50))();
-            SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
+            InputState::SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
             *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + slot_id * 0x24) = 0xffff;
           }
           key_id = key_id + 1;
@@ -78,7 +78,7 @@ LAB_0055fcae:
       }
       else {
         slot_handle = (**(code **)(*(int *)this + 0x50))();
-        SetMapTileStateByteAndNotifyObserver(slot_handle,&controller_id->field_0x7);
+        InputState::SetMapTileStateByteAndNotifyObserver(slot_handle,&controller_id->field_0x7);
         *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + (short)slot_handle * 0x24) =
              0xffff;
       }
@@ -89,7 +89,7 @@ LAB_0055fcae:
     slot_id = UiRuntimeContext::GetActiveNationId();
   }
   if (((byte)this[0x10] & '\x01' << ((byte)slot_id & 0x1f)) != 0) {
-    for (iVar1 = thunk_GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
+    for (iVar1 = GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
       if (((*(InputState **)(iVar1 + 8) == this) && (*(short *)(iVar1 + 0x14) == slot_id)) &&
          (*(int *)(iVar1 + 0xc) == 0)) {
         key_id = CONCAT31(key_id._1_3_,1);
@@ -105,7 +105,7 @@ LAB_0055fcae:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562D90
 // GHIDRA_NAME InputState::InitializeMapActionContextsForNationCountUsingCostField
-// GHIDRA_PROTO undefined InitializeMapActionContextsForNationCountUsingCostField()
+// GHIDRA_PROTO undefined InputState::InitializeMapActionContextsForNationCountUsingCostField()
 
 void __thiscall
 InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,short param_2)
@@ -149,7 +149,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
   *(int **)(param_1 + 8) = piVar6;
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
   }
   puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
   puVar7 = puVar3;
@@ -157,15 +157,15 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
     *puVar7 = 0;
     puVar7 = puVar7 + 1;
   }
-  iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar3);
+  iVar4 = RelaxMapTileCostFieldByNeighborTerrain(puVar3);
   while (iVar4 != 0) {
-    iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar3);
+    iVar4 = RelaxMapTileCostFieldByNeighborTerrain(puVar3);
   }
   iVar4 = 0;
   if (0 < iteration_count) {
     iVar5 = 0;
     do {
-      sVar1 = thunk_SelectBestSeedTileForNationFromCostField(puVar3,iVar4 + 0x17);
+      sVar1 = SelectBestSeedTileForNationFromCostField(puVar3,iVar4 + 0x17);
       TZone::SetMapActionContextTargetTileAndRefreshMarkers
                 ((TZone *)(*(int *)(param_1 + 8) + iVar5),iVar4 + 0x17,sVar1);
       iVar4 = iVar4 + 1;

@@ -35,7 +35,7 @@ void __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot00(TTacticalPlayer *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059ADD0
 // GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 void __thiscall TTacticalPlayer::OrphanRetStub_0059add0(TTacticalPlayer *this)
 
@@ -71,7 +71,7 @@ TTacticalPlayer * __thiscall
 TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *this,byte param_1)
 
 {
-  CreateTTacticalPlayerInstance(this);
+  TTacticalPlayer::CreateTTacticalPlayerInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -80,7 +80,7 @@ TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
 // GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTacticalPlayerInstance(void)
+// GHIDRA_PROTO undefined __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(void)
 
 void __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(TTacticalPlayer *this)
 

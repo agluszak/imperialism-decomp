@@ -175,7 +175,7 @@ TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits(TInvadeMissi
   uVar3 = InitializeLinkedListCursorFromOwnerHead();
   iVar4 = LinkedListCursorHasCurrent();
   while (iVar4 != 0) {
-    sVar1 = thunk_GetUnitMovementClassId();
+    sVar1 = GetUnitMovementClassId();
     if (sVar1 != 0) {
       (**(code **)(*(int *)this + 0x88))(uVar3,1);
     }

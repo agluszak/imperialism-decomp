@@ -10,7 +10,7 @@
 TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte param_1)
 
 {
-  CreateTButtonInstance(this);
+  TButton::CreateTButtonInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -19,7 +19,7 @@ TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EC30
 // GHIDRA_NAME TButton::CreateTButtonInstance
-// GHIDRA_PROTO undefined __thiscall CreateTButtonInstance(void)
+// GHIDRA_PROTO undefined __thiscall TButton::CreateTButtonInstance(void)
 
 void __thiscall TButton::CreateTButtonInstance(TButton *this)
 
@@ -47,7 +47,7 @@ void __thiscall TButton::CreateTButtonInstance(TButton *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ECC0
 // GHIDRA_NAME TButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TButton::GetTEventHandlerClassNamePointer(TButton *this)
 
@@ -75,7 +75,7 @@ TView * TButton::ConstructTButtonBaseState(void)
   this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined1 *)&this[1].field04 = 0;
     this[1].vftable = (TViewVtbl *)0x1;
     this[1].padding_08_to_0b = 0;
@@ -87,7 +87,7 @@ TView * TButton::ConstructTButtonBaseState(void)
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&_vftable_;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     this->vftable = (TViewVtbl *)&TRadioVtbl_0064a708;
     *unaff_FS_OFFSET = local_c;
     return this;

@@ -71,13 +71,13 @@ TTradeBidNationLine::OrphanRetStub_0056f460
     this_00 = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState(this_00);
+    TView::ConstructTViewBaseState(this_00);
     this_00->vftable = (TViewVtbl *)&TTradeBidNationViewVtbl_0066e530;
   }
   uVar1 = *(undefined2 *)&this->field_0x10;
   uVar2 = *(undefined2 *)&this->field_0x12;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent
+  InitializeUiResourceEntryFrameAndParent
             (*(undefined4 *)(param_1 + 0x40),param_1,param_2,&this->field_0x8,5,5,0);
   *(undefined2 *)((int)&this_00[1].vftable + 2) = uVar2;
   *(undefined2 *)&this_00[1].vftable = uVar1;

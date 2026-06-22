@@ -49,7 +49,7 @@ CRuntimeClass * __thiscall TTextLine::GetTLineDataClassNamePointer(TTextLine *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570290
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTextLineBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTextLine::ConstructTTextLineBaseState(void)
 
 TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
 
@@ -116,7 +116,7 @@ TTextLine::OrphanRetStub_0056f460(TTextLine *this,undefined4 param_1,undefined4 
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
+    piVar2 = (int *)TStaticText::TStaticText(this_00);
   }
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource

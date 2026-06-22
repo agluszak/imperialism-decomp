@@ -100,7 +100,7 @@ void __thiscall TAmbitApplication::OrphanRetStub_00414770(TAmbitApplication *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DEB0
 // GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
@@ -111,7 +111,7 @@ TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E1A0
 // GHIDRA_NAME TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
 TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAmbitApplication *this)
@@ -152,13 +152,13 @@ TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAmbitApplicatio
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E280
 // GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
 void __thiscall
 TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this,int *param_1)
 
 {
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   if (DAT_00695278 < 0x2a) {
     (**(code **)(*param_1 + 0x3c))(&this->field_0x50,2);
     *(undefined **)&this->field_0x50 = &DAT_00657573;
@@ -176,14 +176,14 @@ void __thiscall
 TAmbitApplication::_scalar_deleting_destructor_(TAmbitApplication *this,int *param_1)
 
 {
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   (**(code **)(*param_1 + 0x78))(&this->field_0x50,4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E4B0
 // GHIDRA_NAME TAmbitApplication::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TAmbitApplication::OrphanTiny_ReturnZero_0048a730(TAmbitApplication *this)
 

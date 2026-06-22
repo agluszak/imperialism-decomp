@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D00
 // GHIDRA_NAME TRemoteMinor::DestructTRemoteMinor
-// GHIDRA_PROTO undefined __thiscall DestructTRemoteMinor(void)
+// GHIDRA_PROTO undefined __thiscall TRemoteMinor::DestructTRemoteMinor(void)
 
 void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
 

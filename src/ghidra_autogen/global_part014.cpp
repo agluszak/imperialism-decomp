@@ -1013,10 +1013,10 @@ void __fastcall SetFocus(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006076B8
-// GHIDRA_NAME thunk_RegisterCommctrlDragListMessage
-// GHIDRA_PROTO undefined thunk_RegisterCommctrlDragListMessage()
+// GHIDRA_NAME RegisterCommctrlDragListMessage
+// GHIDRA_PROTO undefined RegisterCommctrlDragListMessage()
 
-void thunk_RegisterCommctrlDragListMessage(void)
+void RegisterCommctrlDragListMessage(void)
 
 {
   DAT_006a7a4c = RegisterWindowMessageA("commctrl_DragListMsg");
@@ -1047,10 +1047,10 @@ void WrapperFor_E361_At006076ce(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006076D3
-// GHIDRA_NAME thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// GHIDRA_PROTO undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()
+// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
+// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()
 
-void thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+void WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 
 {
   WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5();
@@ -1081,10 +1081,10 @@ void WrapperFor_E367_At0060770c(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607711
-// GHIDRA_NAME thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
-// GHIDRA_PROTO undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
+// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
+// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
 
-void thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 
 {
   WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723();
@@ -1115,10 +1115,10 @@ void WrapperFor_E372_At0060774a(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060774F
-// GHIDRA_NAME thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
-// GHIDRA_PROTO undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
+// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
+// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
 
-void thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
+void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
 
 {
   WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761();
@@ -1149,10 +1149,10 @@ void WrapperFor_E377_At00607788(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060778D
-// GHIDRA_NAME thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
-// GHIDRA_PROTO undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
+// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
+// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
 
-void thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
+void WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 
 {
   WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f();
@@ -4629,7 +4629,7 @@ int AfxGetFileTitle(LPCSTR param_1,LPCSTR param_2,undefined4 param_3)
     Buf = local_108;
     param_3 = 0x104;
   }
-  sVar1 = GetFileTitleA(param_1,Buf,(WORD)param_3);
+  sVar1 = COMDLG32.DLL::GetFileTitleA(param_1,Buf,(WORD)param_3);
   if (sVar1 == 0) {
     if (param_2 == (LPCSTR)0x0) {
       iVar2 = lstrlenA(Buf);
@@ -6271,10 +6271,10 @@ int __fastcall SaveDcStateForWindowAndBackupHdc_00612860(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612878
-// GHIDRA_NAME thunk_CallDcCallbackIfPrimaryHdcDiffers
-// GHIDRA_PROTO undefined thunk_CallDcCallbackIfPrimaryHdcDiffers()
+// GHIDRA_NAME CallDcCallbackIfPrimaryHdcDiffers
+// GHIDRA_PROTO undefined CallDcCallbackIfPrimaryHdcDiffers()
 
-undefined4 thunk_CallDcCallbackIfPrimaryHdcDiffers(void)
+undefined4 CallDcCallbackIfPrimaryHdcDiffers(void)
 
 {
   int iVar1;
@@ -7140,10 +7140,10 @@ void AdjustWindowRectForClientAndScrollStyles(LPRECT param_1,int param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613E36
-// GHIDRA_NAME thunk_NoOpVirtualStub_00613e44
-// GHIDRA_PROTO undefined thunk_NoOpVirtualStub_00613e44()
+// GHIDRA_NAME NoOpVirtualStub_00613e44
+// GHIDRA_PROTO undefined NoOpVirtualStub_00613e44()
 
-void thunk_NoOpVirtualStub_00613e44(void)
+void NoOpVirtualStub_00613e44(void)
 
 {
   return;

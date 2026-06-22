@@ -11,7 +11,7 @@ TSuperArmyRoster * __thiscall
 TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TSuperArmyRoster::_scalar_deleting_destructor_(TSuperArmyRoster *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA520
 // GHIDRA_NAME TSuperArmyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TSuperArmyRoster::GetTEventHandlerClassNamePointer(TSuperArmyRoster *this)
@@ -31,7 +31,7 @@ TSuperArmyRoster::GetTEventHandlerClassNamePointer(TSuperArmyRoster *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA540
 // GHIDRA_NAME TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSuperArmyRosterBaseState(int param_1, CString param_2, CString param_3)
+// GHIDRA_PROTO undefined __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(int param_1, CString param_2, CString param_3)
 
 void __thiscall
 TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
@@ -60,14 +60,14 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
   puStack_8 = &LAB_006304e4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2.m_pchData,param_3.m_pchData,5,5,0)
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2.m_pchData,param_3.m_pchData,5,5,0)
   ;
   this->controlTag = 0x70616765;
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
   sVar3 = UiRuntimeContext::GetActiveNationId();
   param_1 = 0;
   do {
-    sVar4 = thunk_GetTileNormalizedMovementClassId(param_1);
+    sVar4 = GetTileNormalizedMovementClassId(param_1);
     if (sVar4 == sVar3) {
       sVar4 = (short)param_1;
       if ((sVar4 < 0) || (0x17f < sVar4)) {
@@ -93,7 +93,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
         local_1c = 0xec;
         local_18 = 0x12;
         WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
-        thunk_AssignSharedStringFromIndexedA8EntryNameField(param_1,&param_3);
+        AssignSharedStringFromIndexedA8EntryNameField(param_1,&param_3);
         CString::AssignFromPtr(&param_2,&param_3);
         WrapperFor_StringShared_AssignFromPtr_At00570420(&param_2);
         pTVar1 = this->vftable[0x34].GetTEventHandlerClassNamePointer;
@@ -195,14 +195,14 @@ TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmy
   piVar5 = (int *)CONCAT31(extraout_var,uVar4);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x202);
   }
   iVar2 = *piVar5;
   piVar6 = (int *)(**(code **)(iVar2 + 0x94))(0x70616765);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x203);
   }
   iVar3 = piVar6[8];
@@ -231,7 +231,7 @@ TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmy
     uVar7 = 0;
   }
   else {
-    uVar7 = TStaticText::thunk_ConstructUiTextResourceEntryBase(this_01);
+    uVar7 = TStaticText::TStaticText(this_01);
   }
   uStack_18 = 0xffffffff;
   pTStack_2c = (TPageView *)0x12;
@@ -246,7 +246,7 @@ TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection(TSuperArmy
   (**(code **)(iVar2 + 0xa0))();
   (**(code **)(iVar2 + 0x1c))();
   if (sVar1 != -1) {
-    TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)unaff_EDI[0x3c],1);
+    TToolBarCluster::SetMapInteractionMode((TCivToolbar *)unaff_EDI[0x3c],1);
     SetActiveProvinceSelection(sVar1);
     (**(code **)(*(int *)unaff_EDI[0x3c] + 0x1e8))
               (CONCAT22((short)((uint)(sVar1 * 0x15) >> 0x10),

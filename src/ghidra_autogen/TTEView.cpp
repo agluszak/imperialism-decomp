@@ -39,7 +39,7 @@ TStaticText * TTEView::CreateTTEViewInstance(void)
   local_4 = 0;
   pTVar1 = (TStaticText *)0x0;
   if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    TStaticText::TStaticText(this);
     this->vftable = (TStaticTextVtbl *)&TTEViewVtbl_00644308;
     pTVar1 = this;
   }
@@ -49,7 +49,7 @@ TStaticText * TTEView::CreateTTEViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486030
 // GHIDRA_NAME TTEView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTEView::GetTEventHandlerClassNamePointer(TTEView *this)
 
@@ -59,7 +59,7 @@ CRuntimeClass * __thiscall TTEView::GetTEventHandlerClassNamePointer(TTEView *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486050
 // GHIDRA_NAME TTEView::ConstructTTEViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTEViewBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 * param_6, undefined4 * param_7, undefined2 param_8)
+// GHIDRA_PROTO undefined __thiscall TTEView::ConstructTTEViewBaseState(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 * param_6, undefined4 * param_7, undefined2 param_8)
 
 void __thiscall
 TTEView::ConstructTTEViewBaseState
@@ -87,7 +87,7 @@ TTEView::ConstructTTEViewBaseState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004860E0
 // GHIDRA_NAME TTEView::DestructTTEViewAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTEViewAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TTEView::DestructTTEViewAndMaybeFree(void)
 
 int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
 
@@ -251,21 +251,21 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   uStack_80 = 4;
   local_4 = 0;
   uStack_88 = 0x5042af;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_84 = local_38;
   uStack_74 = 3;
   uStack_78 = 0x2b69;
   iStack_7c = 0xc;
   uStack_80 = 4;
   uStack_88 = 0x5042c7;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_84 = local_44;
   uStack_74 = 1;
   uStack_78 = 0x2b67;
   iStack_7c = 0xc;
   uStack_80 = 0;
   uStack_88 = 0x5042df;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   local_58 = this->vftable;
   pTVar1 = local_58[0x12].slot_0x04;
   uStack_74 = 0x7375626a;
@@ -406,7 +406,7 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   puStack_150 = (undefined4 *)0x5044de;
   (**(code **)(**(int **)&this->field_0x94 + 0x1dc))();
   puStack_150 = (undefined4 *)0x5044e9;
-  iVar4 = DestructTTEViewAndMaybeFree(*(TTEView **)&this->field_0x94);
+  iVar4 = TTEView::DestructTTEViewAndMaybeFree(*(TTEView **)&this->field_0x94);
   puStack_150 = &uStack_f8;
   pcStack_d8 = *(code **)(iVar5 + 300);
   CStack_154.m_pchData = (char *)0x504501;
@@ -436,7 +436,7 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055DF50
 // GHIDRA_NAME TTEView::AppendInterNationEventSummaryTextEntry
-// GHIDRA_PROTO undefined __thiscall AppendInterNationEventSummaryTextEntry(int param_1, undefined4 * param_2)
+// GHIDRA_PROTO undefined __thiscall TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 * param_2)
 
 int __thiscall
 TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefined4 *param_2)
@@ -480,7 +480,7 @@ TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefi
   }
   else {
     local_40 = this_00;
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
+    TStaticText::TStaticText((TStaticText *)this_00);
     this_00->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
     local_4 = CONCAT31(local_4._1_3_,1);
     ClearColorRgbaBytes();
@@ -504,7 +504,7 @@ TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefi
             (this_00,this,local_38,&local_40,local_38 + 3,in_stack_00000014);
   uVar5 = AllocateWithFallbackHandler();
   InvokeVtableSlot30OnTargetObject(*(undefined4 *)&this->field_0x94);
-  thunk_ReadResourceStreamIntoBufferAndAdvance(*(undefined4 *)&this->field_0x94,uVar5);
+  ReadResourceStreamIntoBufferAndAdvance(*(undefined4 *)&this->field_0x94,uVar5);
   text_or_resource_id =
        (char *)AppendInterNationEventSummaryTextEntry_Impl
                          (g_pLocalizationTable,uVar5,*in_stack_0000001c,in_stack_0000001c[1],
@@ -523,7 +523,7 @@ TTEView::AppendInterNationEventSummaryTextEntry(TTEView *this,int param_1,undefi
   local_4 = 2;
   (*pTVar3[0x3e].GetTEventHandlerClassNamePointer)();
   FreeHeapBlockWithAllocatorTracking(text_or_resource_id);
-  iVar6 = DestructTTEViewAndMaybeFree((TTEView *)this_00);
+  iVar6 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
   (*pTVar3[0x25].slot_0x04)(&local_20);
   local_18 = iVar6 + 8 + local_20;
   (*pTVar3[0x2d].GetTEventHandlerClassNamePointer)(local_38 + 5,0);

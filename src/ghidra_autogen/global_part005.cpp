@@ -184,7 +184,7 @@ void __thiscall RemoveUiListEntryByOwnerIdAndRecycleStorage(int param_1,int para
       if (g_McAppUiFlag_006A1AE0 != 0) {
         return;
       }
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x152);
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x152);
       return;
     }
     piVar3 = (int *)*piVar2;
@@ -260,12 +260,12 @@ void __thiscall WrapperFor_thunk_GetTickCountDiv16_At0048a410(int *param_1,int p
     iVar3 = *param_1;
     cVar1 = (**(code **)(iVar3 + 0x28))();
     if (cVar1 != '\0') {
-      if ((param_2 == 1) && (iVar2 = thunk_GetTickCountDiv16(), iVar2 - param_1[5] < param_1[4])) {
+      if ((param_2 == 1) && (iVar2 = GetTickCountDiv16(), iVar2 - param_1[5] < param_1[4])) {
         return;
       }
       cVar1 = (**(code **)(iVar3 + 0x4c))(param_2);
       if ((cVar1 == '\0') && (param_2 == 1)) {
-        iVar3 = thunk_GetTickCountDiv16();
+        iVar3 = GetTickCountDiv16();
         param_1[5] = iVar3;
       }
     }
@@ -463,7 +463,7 @@ void __thiscall PropagateUiResourceContextRecursive(int param_1,undefined4 param
     puVar2 = (undefined4 *)*puVar2;
   }
   while (iVar1 != 0) {
-    thunk_PropagateUiResourceContextRecursive(param_2);
+    PropagateUiResourceContextRecursive(param_2);
     if (puVar2 == (undefined4 *)0x0) {
       iVar1 = 0;
       puVar2 = (undefined4 *)0x0;
@@ -498,7 +498,7 @@ TView * Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&DAT_00649a68;
     pTVar1 = this;
   }
@@ -530,10 +530,10 @@ void DestroyViewModalStateNodeBlockChainAtExit(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D275
-// GHIDRA_NAME thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
+// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
+// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
 
-void thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
+void DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
 
 {
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
@@ -568,10 +568,10 @@ void DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D4E9
-// GHIDRA_NAME thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
+// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
+// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
 
-void thunk_DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
+void DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
 
 {
   DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
@@ -638,7 +638,7 @@ void __thiscall CopyExtendedCityDialogControllerState(TView *param_1,TView *para
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f07b;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_CopyCityDialogStateFromSource(param_1,param_2);
+  TView::CopyCityDialogStateFromSource(param_1,param_2);
   param_1[1].vftable = param_2[1].vftable;
   *(char *)&param_1[1].field04 = (char)param_2[1].field04;
   param_1[1].padding_08_to_0b = param_2[1].padding_08_to_0b;
@@ -707,7 +707,7 @@ InitializeTextEntryBaseAndOptionalStringResource
   if (param_5 != -1) {
     CString::CString((CString *)&param_5);
     uStack_c = 0;
-    thunk_LoadUiStringResourceByGroupAndIndex(&param_5,param_1[0x22],param_1[0x23]);
+    LoadUiStringResourceByGroupAndIndex(&param_5,param_1[0x22],param_1[0x23]);
     (**(code **)(iVar1 + 0x1c8))(&param_5,0);
     uStack_c = 0xffffffff;
     CString::~CString((CString *)&param_5);
@@ -1290,7 +1290,7 @@ InitializeMovieViewOwnedStateBlock_Impl(undefined4 *param_1,undefined4 param_2)
   undefined4 uVar2;
   
   iVar1 = AfxGetModuleState();
-  uVar2 = MCIWndCreateA(param_2,*(undefined4 *)(iVar1 + 8),0x5000410a,0);
+  uVar2 = MSVFW32.DLL::MCIWndCreateA(param_2,*(undefined4 *)(iVar1 + 8),0x5000410a,0);
   *param_1 = uVar2;
   return param_1;
 }
@@ -1596,7 +1596,7 @@ switchD_004934ce_default:
     if (DAT_006a1c70 != 0) goto switchD_004934ce_caseD_2;
     uVar5 = 0x4b;
   }
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McWindow_cpp_006950d8,uVar5);
+  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McWindow_cpp_006950d8,uVar5);
 switchD_004934ce_caseD_2:
   if (*(char *)(param_2 + 0x70) != '\0') {
     dwExStyle = dwExStyle | 8;
@@ -4051,7 +4051,7 @@ int * __fastcall AcquireReusableQuickDrawSurface(int *param_1)
   *param_1 = iVar1;
   if (iVar1 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x7f6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x7f6);
   }
   return param_1;
 }
@@ -4777,7 +4777,7 @@ void AssertQuickDrawFlag6A1DC8NonZero(void)
 
 {
   if (DAT_006a1dc8 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x984);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x984);
   }
   return;
 }
@@ -4790,7 +4790,7 @@ undefined4 AssertQuickDrawFlag6A1DCCNonZero(void)
 
 {
   if (DAT_006a1dcc == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x988);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x988);
   }
   return 0;
 }
@@ -4885,7 +4885,7 @@ void ShowDialogTemplateE0ModalAndReleaseCapture(void)
   puStack_8 = &LAB_0062f8d0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_InitializeDialogTemplateE0(0);
+  InitializeDialogTemplateE0(0);
   local_4 = 0;
   DoModal_6051b9();
   WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
@@ -5405,7 +5405,7 @@ BuildIndexedBmpResourceById
   piVar1 = g_pModuleLibraryCacheState;
   local_4 = 0xffffffff;
   if (*g_pModuleLibraryCacheState == 0) {
-    uVar3 = thunk_LoadBmpResourceByIdCached(0x3b6);
+    uVar3 = LoadBmpResourceByIdCached(0x3b6);
     param_3 = AllocateWithFallbackHandler(0xc);
     local_4 = 1;
     if (param_3 == 0) {
@@ -6518,19 +6518,19 @@ void ResetGlobalDword6A1E18(void)
 // GHIDRA_PROTO undefined InitializeStaticDialogTemplateD0AndRegisterAtExit()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes the static dialog-template D0 object at 0x006A1E78 and registers a cleanup callback.
-// GHIDRA_COMMENT - calls thunk_InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
+// GHIDRA_COMMENT - calls InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
 // GHIDRA_COMMENT - registers CleanupStaticDialogTemplateD0AtExit via FUN_005E7920 (atexit-style callback registration).
 // GHIDRA_COMMENT_END
 
 /* Initializes the static dialog-template D0 object at 0x006A1E78 and registers a cleanup callback.
-   - calls thunk_InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
+   - calls InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
    - registers CleanupStaticDialogTemplateD0AtExit via FUN_005E7920 (atexit-style callback
    registration). */
 
 void InitializeStaticDialogTemplateD0AndRegisterAtExit(void)
 
 {
-  thunk_InitializeDialogTemplateD0WithTextState(0);
+  InitializeDialogTemplateD0WithTextState(0);
   AppendPointerToGlobalVectorAsStatus(CleanupStaticDialogTemplateD0AtExit);
   return;
 }
@@ -6542,7 +6542,7 @@ void InitializeStaticDialogTemplateD0AndRegisterAtExit(void)
 void CleanupStaticDialogTemplateD0AtExit(void)
 
 {
-  thunk_DestructStaticDialogTemplateD0Object();
+  DestructStaticDialogTemplateD0Object();
   return;
 }
 
@@ -6725,13 +6725,13 @@ void __thiscall PopulateListBoxFromDelimitedText(char *param_1,CString param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049BF45
-// GHIDRA_NAME thunk_ReleaseSharedStringRefIfNotEmpty
-// GHIDRA_PROTO void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void)
+// GHIDRA_NAME CString::~CString
+// GHIDRA_PROTO void __thiscall CString::~CString(void)
 
-void __thiscall CString::thunk_ReleaseSharedStringRefIfNotEmpty(CString *this)
+void __thiscall CString::~CString(CString *this)
 
 {
-  ~CString(this);
+  CString::~CString(this);
   return;
 }
 
@@ -7248,13 +7248,13 @@ void __fastcall ClearDirectSoundInitPendingAndResetState_Impl(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049C950
-// GHIDRA_NAME thunk_InitializeDirectSoundDeviceAndChannels
-// GHIDRA_PROTO undefined thunk_InitializeDirectSoundDeviceAndChannels()
+// GHIDRA_NAME InitializeDirectSoundDeviceAndChannels
+// GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels()
 
-void thunk_InitializeDirectSoundDeviceAndChannels(void)
+void InitializeDirectSoundDeviceAndChannels(void)
 
 {
-  thunk_InitializeDirectSoundDeviceAndChannels_004061D1();
+  InitializeDirectSoundDeviceAndChannels();
   return;
 }
 
@@ -7289,7 +7289,7 @@ undefined4 __fastcall InitializeDirectSoundDeviceAndChannels(int *param_1)
     pHVar1 = LoadLibraryExA(*(LPCSTR *)(DAT_006a1348 + 0xdc),(HANDLE)0x0,2);
     param_1[0xc] = (int)pHVar1;
   }
-  iVar2 = DirectSoundCreate(0,param_1,0);
+  iVar2 = DSOUND.DLL::DirectSoundCreate(0,param_1,0);
   param_1[0xd] = iVar2;
   if (iVar2 == 0) {
     pCVar3 = AfxGetThread();

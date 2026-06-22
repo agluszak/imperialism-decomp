@@ -36,7 +36,7 @@ thunk_TPictureButton * TPictureRadioButton::CreateTPictureRadioButtonInstance(vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D40
 // GHIDRA_NAME TPictureRadioButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TPictureRadioButton::GetTEventHandlerClassNamePointer(TPictureRadioButton *this)
@@ -67,7 +67,7 @@ TPictureRadioButton * __thiscall
 TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -177,7 +177,7 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570FB0
 // GHIDRA_NAME TPictureRadioButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 int __thiscall TPictureRadioButton::SetForeignMinisterReadyFlag14(TPictureRadioButton *this)
 

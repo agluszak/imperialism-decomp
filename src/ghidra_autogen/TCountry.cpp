@@ -4,11 +4,11 @@
 // Bucket: TCountry.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406758
-// GHIDRA_NAME TCountry::thunk_QueueInterNationEventRecordDeduped
-// GHIDRA_PROTO undefined __thiscall thunk_QueueInterNationEventRecordDeduped(int param_1, int param_2, int param_3, char param_4)
+// GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
+// GHIDRA_PROTO undefined __thiscall TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int param_1, int param_2, int param_3, char param_4)
 
 void __thiscall
-TCountry::thunk_QueueInterNationEventRecordDeduped
+TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
           (TCountry *this,int param_1,int param_2,int param_3,char param_4)
 
 {
@@ -69,11 +69,11 @@ TCountry::thunk_QueueInterNationEventRecordDeduped
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409089
-// GHIDRA_NAME TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
-// GHIDRA_PROTO undefined __thiscall thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(int * param_1)
+// GHIDRA_NAME TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
+// GHIDRA_PROTO undefined __thiscall TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)
 
 void __thiscall
-TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
+TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
           (TCountry *this,int *param_1)
 
 {
@@ -112,7 +112,7 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631e2a;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   iVar5 = *param_1;
   (**(code **)(iVar5 + 0x70))();
   puStack_34 = (undefined1 *)0x4d6c3d;
@@ -250,7 +250,7 @@ undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlagA0(TCountry 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6790
 // GHIDRA_NAME TCountry::NoOpNationSelectedRegionAndMapCellLabelHook
-// GHIDRA_PROTO undefined __thiscall NoOpNationSelectedRegionAndMapCellLabelHook(void)
+// GHIDRA_PROTO undefined __thiscall TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(void)
 
 void __thiscall TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(TCountry *this)
 
@@ -260,7 +260,7 @@ void __thiscall TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(TCountry *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D67B0
 // GHIDRA_NAME TCountry::GetTCountryClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTCountryClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCountry::GetTCountryClassNamePointer(TCountry *this)
 
@@ -309,7 +309,7 @@ TCountry * __thiscall TCountry::DestructTCountryAndMaybeFree(TCountry *this,byte
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6E60
 // GHIDRA_NAME TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
-// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int * param_1)
 
 void __thiscall
 TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCountry *this,int *param_1)
@@ -346,7 +346,7 @@ TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCountry *this,int *p
   
   piStack_1c = param_1;
   uStack_20 = (undefined1 *)0x4d6e73;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   iVar6 = *param_1;
   piStack_1c = (int *)&this->field_0x4;
   pcVar1 = *(code **)(iVar6 + 0xac);
@@ -445,7 +445,7 @@ TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(TCountry *this,int *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7B00
 // GHIDRA_NAME TCountry::ReturnFalseNationStateActionStub
-// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateActionStub(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ReturnFalseNationStateActionStub(void)
 
 undefined1 __thiscall TCountry::ReturnFalseNationStateActionStub(TCountry *this)
 
@@ -455,7 +455,7 @@ undefined1 __thiscall TCountry::ReturnFalseNationStateActionStub(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7B20
 // GHIDRA_NAME TCountry::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_2)
 
 void __thiscall
 TCountry::ApplyJoinEmpireModeForTargetNation(TCountry *this,undefined4 param_1,int param_2)
@@ -468,7 +468,7 @@ TCountry::ApplyJoinEmpireModeForTargetNation(TCountry *this,undefined4 param_1,i
   
   uVar1 = (undefined2)((uint)in_EDX >> 0x10);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-    thunk_DispatchJoinEmpireModeEventPacket24_27((int)*(short *)&this->field_0xc,param_1,param_2);
+    DispatchJoinEmpireModeEventPacket24_27((int)*(short *)&this->field_0xc,param_1,param_2);
     uVar1 = extraout_var;
   }
   if (param_2 == 1) {
@@ -494,7 +494,7 @@ TCountry::ApplyJoinEmpireModeForTargetNation(TCountry *this,undefined4 param_1,i
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7C00
 // GHIDRA_NAME TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers
-// GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
 
 void __thiscall
 TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this,int param_1)
@@ -508,7 +508,7 @@ TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this,int p
   *(short *)&this->field_0xe = (short)param_1 + 100;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
   do {
-    cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar3);
+    cVar1 = IsNationSlotEligibleForEventProcessing(iVar3);
     if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
       (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,100);
     }
@@ -521,7 +521,7 @@ TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(TCountry *this,int p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7C90
 // GHIDRA_NAME TCountry::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(int param_1)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(int param_1)
 
 void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this,int param_1)
 
@@ -535,7 +535,7 @@ void __thiscall TCountry::ApplyJoinEmpireMode1TargetTransition(TCountry *this,in
   iVar3 = 0;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
   do {
-    cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar3);
+    cVar1 = IsNationSlotEligibleForEventProcessing(iVar3);
     if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
       (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,200);
     }
@@ -561,7 +561,7 @@ undefined4 __thiscall TCountry::IsDiplomacyTargetClassCode200Match(TCountry *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7D50
 // GHIDRA_NAME TCountry::ApplyJoinEmpireMode2FinalizeNationNameState
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(void)
 
 void __thiscall TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(TCountry *this)
 
@@ -572,7 +572,7 @@ void __thiscall TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(TCountry *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7D70
 // GHIDRA_NAME TCountry::RemoveRegionIdFromNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall RemoveRegionIdFromNationOwnedRegionList(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::RemoveRegionIdFromNationOwnedRegionList(void)
 
 void __thiscall TCountry::RemoveRegionIdFromNationOwnedRegionList(TCountry *this)
 
@@ -583,7 +583,7 @@ void __thiscall TCountry::RemoveRegionIdFromNationOwnedRegionList(TCountry *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7DA0
 // GHIDRA_NAME TCountry::AddRegionIdToNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
 void __thiscall TCountry::AddRegionIdToNationOwnedRegionList(TCountry *this)
 
@@ -689,7 +689,7 @@ undefined1 __thiscall TCountry::ReturnFalseNationStateCapabilityFlag90(TCountry 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7F80
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7f80
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7f80(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7f80(void)
 
 void __thiscall TCountry::OrphanRetStub_004d7f80(TCountry *this)
 
@@ -699,7 +699,7 @@ void __thiscall TCountry::OrphanRetStub_004d7f80(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7FA0
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7fa0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7fa0(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7fa0(void)
 
 void __thiscall TCountry::OrphanRetStub_004d7fa0(TCountry *this)
 
@@ -719,7 +719,7 @@ undefined1 __thiscall TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7FE0
 // GHIDRA_NAME TCountry::OrphanRetStub_004d7fe0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004d7fe0(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::OrphanRetStub_004d7fe0(void)
 
 void __thiscall TCountry::OrphanRetStub_004d7fe0(TCountry *this)
 
@@ -769,7 +769,7 @@ int __thiscall TCountry::OrphanLeaf_NoCall_Ins06_004d87b0(TCountry *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D87E0
 // GHIDRA_NAME TCountry::SelectCandidateTilesWithLowGroundUnitCount
-// GHIDRA_PROTO undefined __thiscall SelectCandidateTilesWithLowGroundUnitCount(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::SelectCandidateTilesWithLowGroundUnitCount(void)
 
 void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount(TCountry *this)
 
@@ -803,7 +803,7 @@ void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount(TCountry *t
           iVar6 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8);
         }
         for (; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x14)) {
-          sVar4 = thunk_GetUnitMovementClassId();
+          sVar4 = GetUnitMovementClassId();
           if (sVar4 == 0) {
             sVar7 = sVar7 + 1;
           }
@@ -821,7 +821,7 @@ void __thiscall TCountry::SelectCandidateTilesWithLowGroundUnitCount(TCountry *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D8920
 // GHIDRA_NAME TCountry::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_2)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(short param_1, undefined2 param_2)
 
 void __thiscall
 TCountry::OrphanLeaf_NoCall_Ins07_004d8920(TCountry *this,short param_1,undefined2 param_2)
@@ -835,7 +835,7 @@ TCountry::OrphanLeaf_NoCall_Ins07_004d8920(TCountry *this,short param_1,undefine
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D9C70
 // GHIDRA_NAME TCountry::HandleCityDialogHintClusterUpdate
-// GHIDRA_PROTO undefined __thiscall HandleCityDialogHintClusterUpdate(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::HandleCityDialogHintClusterUpdate(int * param_1)
 
 void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this,int *param_1)
 
@@ -901,7 +901,7 @@ void __thiscall TCountry::HandleCityDialogHintClusterUpdate(TCountry *this,int *
   undefined1 *puStack_20;
   
   puStack_20 = (undefined1 *)0x4d9c83;
-  WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(this,param_1);
+  TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(this,param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   puStack_20 = &this[1].field_0xc;
   uStack_24 = 0x4d9c95;
@@ -1434,13 +1434,13 @@ void __thiscall TCountry::HandleNetworkPortConstructionOrder(TCountry *this,int 
       iVar1 = 0;
     }
     else {
-      iVar1 = TTown::thunk_ConstructFrogCityMarker(this_00);
+      iVar1 = TTown::FUN_005b6c60(this_00);
     }
     local_4 = 0xffffffff;
     InitializeFrogCityMarkerFields
               (PTR_g_szEmptyString_00653300,(short)this->ownerNationSlot,1,nNationId);
     *(undefined1 *)(iVar1 + 0x4f) = 1;
-    thunk_SetTileTransportFlags((TCountry *)g_pGlobalMapState,(short)this->ownerNationSlot,0x15);
+    TCountry::SetTileTransportFlags((TCountry *)g_pGlobalMapState,(short)this->ownerNationSlot,0x15);
     (**(code **)(**(int **)&g_apNationStates[nNationId]->field_0x898 + 0x30))(iVar1);
   }
   *unaff_FS_OFFSET = local_c;
@@ -1449,7 +1449,7 @@ void __thiscall TCountry::HandleNetworkPortConstructionOrder(TCountry *this,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E5A40
 // GHIDRA_NAME TCountry::SetNationRowDisplayValueByDiplomacyPredicate
-// GHIDRA_PROTO undefined __thiscall SetNationRowDisplayValueByDiplomacyPredicate(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::SetNationRowDisplayValueByDiplomacyPredicate(int param_1)
 
 void __thiscall TCountry::SetNationRowDisplayValueByDiplomacyPredicate(TCountry *this,int param_1)
 
@@ -1475,7 +1475,7 @@ void __thiscall TCountry::SetNationRowDisplayValueByDiplomacyPredicate(TCountry 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E5BE0
 // GHIDRA_NAME TCountry::QueueInterNationEvent17ForState300AffectedNations
-// GHIDRA_PROTO undefined __thiscall QueueInterNationEvent17ForState300AffectedNations(void)
+// GHIDRA_PROTO undefined __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(void)
 
 void __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(TCountry *this)
 
@@ -1557,7 +1557,7 @@ void __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(TCou
     if ((*ppTVar10 != (TGreatPower *)0x0) && (local_10[iVar5] != '\0')) {
       (*(*ppTVar10)->vftable[0x12].slot_0x04)
                 (CONCAT22((short)((uint)uVar7 >> 0x10),*(undefined2 *)&this->field_0xc),0x137);
-      thunk_QueueInterNationEventRecordDeduped
+      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                 ((TCountry *)g_pInterNationEventQueueManager,0x17,iVar5,
                  (int)*(short *)&this->field_0xc,'\0');
       uVar7 = extraout_EDX_01;
@@ -1570,7 +1570,7 @@ void __thiscall TCountry::QueueInterNationEvent17ForState300AffectedNations(TCou
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E5D90
 // GHIDRA_NAME TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects
-// GHIDRA_PROTO undefined __thiscall ApplyDiplomacyRelationMaskToProvinceLinkedObjects(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(int param_1)
 
 void __thiscall
 TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCountry *this,int param_1)
@@ -1694,7 +1694,7 @@ TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(TCountry *this,int p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F5E00
 // GHIDRA_NAME TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget
-// GHIDRA_PROTO undefined __thiscall ResolveDiplomacyActionFromClickAndUpdateTarget(POINT * param_1)
+// GHIDRA_PROTO undefined __thiscall TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT * param_1)
 
 int __thiscall
 TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(TCountry *this,POINT *param_1)
@@ -1782,13 +1782,13 @@ TCountry::SetTileTransportFlags(TCountry *this,short nTileIndex,ushort wTileTran
   if (((*(byte *)(iVar2 + 0x1c + iVar3) & 4) != 0) && ((wTileTransportFlags & 4) == 0)) {
                     /* Transition old bit 0x04 -> cleared: remove existing TPortZone context for
                        this tile. */
-    thunk_RemovePortZoneByTile(nTileIndex);
+    RemovePortZoneByTile(nTileIndex);
     iVar2 = extraout_EAX;
   }
   *(ushort *)(*(int *)&this->field_0xc + 0x1c + iVar3) = wTileTransportFlags;
   if ((wTileTransportFlags & 4) != 0) {
                     /* New tile flags include bit 0x04: ensure/create matching TPortZone context. */
-    thunk_EnsurePortZoneForTile(nTileIndex,unaff_DI);
+    EnsurePortZoneForTile(nTileIndex,unaff_DI);
     iVar2 = extraout_EAX_00;
   }
   if ((wTileTransportFlags & 3) != 0) {

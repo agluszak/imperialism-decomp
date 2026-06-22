@@ -23,7 +23,7 @@ TControl * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&_vftable_;
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
@@ -36,7 +36,7 @@ TControl * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C280
 // GHIDRA_NAME TNumberedArrowButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TNumberedArrowButton::GetTEventHandlerClassNamePointer(TNumberedArrowButton *this)
@@ -47,13 +47,13 @@ TNumberedArrowButton::GetTEventHandlerClassNamePointer(TNumberedArrowButton *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C2A0
 // GHIDRA_NAME TNumberedArrowButton::TNumberedArrowButton
-// GHIDRA_PROTO undefined __thiscall TNumberedArrowButton(void)
+// GHIDRA_PROTO undefined __thiscall TNumberedArrowButton::TNumberedArrowButton(void)
 
 TNumberedArrowButton * __thiscall
 TNumberedArrowButton::TNumberedArrowButton(TNumberedArrowButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x84 = 0;
   *(undefined2 *)&this->field_0x86 = 0;
@@ -68,7 +68,7 @@ TNumberedArrowButton * __thiscall
 TNumberedArrowButton::_scalar_deleting_destructor_(TNumberedArrowButton *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -94,7 +94,7 @@ _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialism
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C3D0
 // GHIDRA_NAME TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730(TNumberedArrowButton *this)
 
@@ -145,12 +145,12 @@ void __thiscall TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730(TNumberedAr
   UpdatePaletteIndexWithDefaultFallback(0x13);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
   FormatStringWithVarArgsToSharedRef(&local_34,&g_szDecimalFormat);
-  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  thunk_SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+  SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  thunk_SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   local_4 = 0xffffffff;
   CString::~CString(&local_34);
   *unaff_FS_OFFSET = local_c;
@@ -159,7 +159,7 @@ void __thiscall TNumberedArrowButton::OrphanTiny_ReturnZero_0048a730(TNumberedAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C640
 // GHIDRA_NAME TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
 void __thiscall
 TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -219,7 +219,7 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C7C0
 // GHIDRA_NAME TNumberedArrowButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2)
 
 void __thiscall
 TNumberedArrowButton::SetForeignMinisterReadyFlag14
@@ -232,13 +232,13 @@ TNumberedArrowButton::SetForeignMinisterReadyFlag14
   if (cVar1 != '\0') {
     if ((int)param_1[1] < this->field38 / 2) {
       this->field4e = 0x100;
-      TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+      TMapDialog::SetForeignMinisterReadyFlag14
                 ((TControl *)this,param_1,param_2);
       return;
     }
     this->field4e = -1;
   }
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
+  TMapDialog::SetForeignMinisterReadyFlag14
             ((TControl *)this,param_1,param_2);
   return;
 }

@@ -15,7 +15,7 @@ void __thiscall TCancelGameOptionsCommand::OrphanRetStub_00487a00(TCancelGameOpt
   pCVar1 = g_pGameFlowState;
   *(undefined4 *)&g_pGameFlowState->field_0x40 = 0;
   ResetNationStatusArraysAndTurnEventContext();
-  thunk_PostTurnEventCodeMessage2420(0x5e5);
+  PostTurnEventCodeMessage2420(0x5e5);
   *(undefined4 *)&pCVar1->field_0x64 = 0;
   return;
 }

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2DF0
 // GHIDRA_NAME TMilitaryUnitOrderState::TMilitaryUnitOrderState
-// GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState(void)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState::TMilitaryUnitOrderState(void)
 
 TMilitaryUnitOrderState * __thiscall
 TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
@@ -49,7 +49,7 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
 // GHIDRA_NAME TMilitaryUnitOrderState::InitializeRecruitOrderState
-// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(short param_1, short param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState::InitializeRecruitOrderState(short param_1, short param_2, short param_3)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes military recruit order object state after allocation.
 // GHIDRA_COMMENT
@@ -77,10 +77,10 @@ TMilitaryUnitOrderState::InitializeRecruitOrderState
 {
   this[0x1c] = (TMilitaryUnitOrderState)0x1;
   *(undefined2 *)(this + 6) = 0xffff;
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this,param_1,param_2);
+  TUnitOrderState::RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this,param_1,param_2);
   *(short *)(this + 0x36) = (short)((int)((int)param_1 + ((int)param_1 >> 0x1f & 7U)) >> 3);
   if (0x1a < param_1) {
-    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
               ((TAdmiral *)g_apTerrainTypeDescriptorTable[param_3]);
   }
   (**(code **)(*(int *)this + 0x38))();
@@ -89,7 +89,7 @@ TMilitaryUnitOrderState::InitializeRecruitOrderState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3190
 // GHIDRA_NAME TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets
-// GHIDRA_PROTO undefined __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(void)
 
 void __thiscall
 TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(TMilitaryUnitOrderState *this)

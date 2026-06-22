@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CE500
 // GHIDRA_NAME TBuildingExpansionView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TBuildingExpansionView::GetTEventHandlerClassNamePointer(TBuildingExpansionView *this)
@@ -35,7 +35,7 @@ TBuildingExpansionView * __thiscall
 TBuildingExpansionView::_scalar_deleting_destructor_(TBuildingExpansionView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00495B70
 // GHIDRA_NAME TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize
-// GHIDRA_PROTO undefined __thiscall EnsureBitmapResourceLoadedAndCopyRectSize(void)
+// GHIDRA_PROTO undefined __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(void)
 
 void __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(TAnimation *this)
 
@@ -17,7 +17,7 @@ void __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(TAnimation
   undefined1 local_8 [8];
   
   if (*(int *)&this->field_0x18 == 0) {
-    iVar2 = thunk_LoadBmpResourceByIdCached(*(undefined2 *)&this->field_0x1c);
+    iVar2 = LoadBmpResourceByIdCached(*(undefined2 *)&this->field_0x1c);
     *(int *)&this->field_0x18 = iVar2;
     if (iVar2 == 0) {
       uVar3 = BuildIndexedBmpResourceById(*(undefined2 *)&this->field_0x1c,0x42,0x42,0);
@@ -36,7 +36,7 @@ void __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(TAnimation
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00495C00
 // GHIDRA_NAME TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(void)
+// GHIDRA_PROTO undefined __thiscall TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(void)
 
 void __thiscall
 TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
@@ -44,7 +44,7 @@ TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_
 
 {
   if (*(int *)&this->field_0x18 != 0) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+    DecrementDialogResourceRefCountByShortIdAndCleanup
               (CONCAT22((short)((uint)*(int *)&this->field_0x18 >> 0x10),
                         *(undefined2 *)&this->field_0x1c));
   }
@@ -60,7 +60,7 @@ TAnimation * __thiscall
 TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this,byte param_1)
 
 {
-  CreateTAnimationInstance(this);
+  TAnimation::CreateTAnimationInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -69,7 +69,7 @@ TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F080
 // GHIDRA_NAME TAnimation::CreateTAnimationInstance
-// GHIDRA_PROTO undefined __thiscall CreateTAnimationInstance(void)
+// GHIDRA_PROTO undefined __thiscall TAnimation::CreateTAnimationInstance(void)
 
 void __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
 
@@ -90,7 +90,7 @@ CRuntimeClass * __thiscall TAnimation::GetTAnimationClassNamePointer(TAnimation 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
+// GHIDRA_PROTO undefined __thiscall TAnimation::ConstructTAnimationBaseState(undefined4 param_1, undefined4 * param_2, undefined2 param_3, undefined2 param_4, undefined4 param_5, undefined4 param_6)
 
 void __thiscall
 TAnimation::ConstructTAnimationBaseState
@@ -124,7 +124,7 @@ void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
-    thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+    InvalidateCityDialogRectRegion(&this->field_0x1c,1);
     *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
     *(undefined4 *)&this->field_0x10 = 0;
     if (*(short *)&this->field_0x8 == *(short *)&this->field_0xa) {
@@ -136,7 +136,7 @@ void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F190
 // GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(int * param_1)
 
 void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this,int *param_1)
 
@@ -188,7 +188,7 @@ TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a
           (TAnimation *this)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_h_00695340,0x1a1);
+  TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_h_00695340,0x1a1);
   return 0;
 }
 
@@ -227,7 +227,7 @@ void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
     else {
       this_00->vftable = &TAnimationVtbl_0064c300;
     }
-    ConstructTAnimationBaseState(this_00,this,&local_10,2,0,10,0x2711);
+    TAnimation::ConstructTAnimationBaseState(this_00,this,&local_10,2,0,10,0x2711);
     TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
   }
   return;

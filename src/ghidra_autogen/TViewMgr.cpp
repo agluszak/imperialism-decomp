@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401064
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot022
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot022(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::AddToForeignMinisterCounterAtIndex(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot022(TViewMgr *this)
 
@@ -16,7 +16,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot022(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004011A9
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot055
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot055(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::ExecuteUiFactoryModalDialogAndReturnResultTag(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot055(TViewMgr *this)
 
@@ -27,7 +27,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot055(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401244
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot045
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot045(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::SetUiResourceOwner(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot045(TViewMgr *this)
 
@@ -38,7 +38,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot045(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004012B2
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot068
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot068(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::HandleTurnEventF3D_PopulateRecentTurnMessages(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot068(TViewMgr *this)
 
@@ -48,11 +48,11 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot068(TViewMgr *this)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401730
-// GHIDRA_NAME TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-// GHIDRA_PROTO undefined __thiscall thunk_RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
+// GHIDRA_NAME TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
+// GHIDRA_PROTO undefined __thiscall TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 * param_1)
 
 void __thiscall
-TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
+TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
           (TViewMgr *this,undefined4 *param_1)
 
 {
@@ -79,8 +79,8 @@ TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
   uStack_1c = in_stack_00000008;
   uStack_20 = in_stack_00000008;
   in_stack_00000008 = &uStack_20;
-  thunk_AssignStringSharedRefAndReturnThis(&param_1);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&param_1);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   uStack_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
   CString::~CString((CString *)&param_1);
@@ -90,7 +90,7 @@ TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004017B7
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot034
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot034(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::OrphanRetStub_0059add0(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot034(TViewMgr *this)
 
@@ -101,7 +101,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot034(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401CDF
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot035
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot035(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::GetCityDialogFlagByte4(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot035(TViewMgr *this)
 
@@ -112,7 +112,7 @@ void __thiscall TViewMgr::TViewMgr_VtblSlot035(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401ED8
 // GHIDRA_NAME TViewMgr::TViewMgr_VtblSlot043
-// GHIDRA_PROTO undefined __thiscall TViewMgr_VtblSlot043(void)
+// GHIDRA_PROTO undefined __thiscall TDiplomacyMapView::InvokeStrategicMapViewMethod5C(void)
 
 void __thiscall TViewMgr::TViewMgr_VtblSlot043(TViewMgr *this)
 
@@ -217,8 +217,8 @@ TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undef
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
         local_14 = (TViewMgr *)&stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 7;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
@@ -252,8 +252,8 @@ TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undef
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
         local_14 = (TViewMgr *)&stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 4;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
@@ -292,8 +292,8 @@ TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undef
         (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszFormattedText.m_pchData);
         pThisAlias = (int *)&stack0xffffffbc;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 1;
         CString::~CString((CString *)&stack0x00000000);
         puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
@@ -331,8 +331,8 @@ TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undef
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
       local_14 = (TViewMgr *)&stack0xffffffbc;
-      thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      AssignStringSharedRefAndReturnThis(&stack0x00000000);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
       puStack_8._0_1_ = 10;
       CString::~CString((CString *)&stack0x00000000);
       puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
@@ -345,7 +345,7 @@ TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undef
     sVar2 = UiRuntimeContext::GetActiveNationId();
     *(int *)&g_apNationStates[sVar2]->field_0x10 =
          *(int *)&g_apNationStates[sVar2]->field_0x10 - iVar4;
-    thunk_ApplyRailSectionEndpointDirectionFlags();
+    ApplyRailSectionEndpointDirectionFlags();
     (**(code **)(*pSelectedCivilianOrderEntry + 0x34))();
     dwSfxToken = 0x2329;
     pTVar5 = g_pSfxPlaybackSystem->vftable;
@@ -358,10 +358,10 @@ finalize_engineer_action_and_refresh:
                         */
   if ((char)wActionFinalizeFlags != '\0') {
     (*this->vftable[6].GetTViewMgrClassNamePointer)();
-    iVar4 = thunk_GetTickCountDiv16();
+    iVar4 = GetTickCountDiv16();
     do {
-      thunk_PumpUiMessagesAndBackgroundTasks(1);
-      nTickNowDiv16 = thunk_GetTickCountDiv16();
+      PumpUiMessagesAndBackgroundTasks(1);
+      nTickNowDiv16 = GetTickCountDiv16();
       if (nTickNowDiv16 < iVar4) break;
     } while (nTickNowDiv16 - iVar4 < 0x1e);
   }
@@ -374,7 +374,7 @@ finalize_engineer_action_and_refresh:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D4C60
 // GHIDRA_NAME TViewMgr::CreateTViewMgrInstance
-// GHIDRA_PROTO undefined CreateTViewMgrInstance()
+// GHIDRA_PROTO undefined TViewMgr::CreateTViewMgrInstance()
 
 void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
 
@@ -393,7 +393,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639f88;
   *unaff_FS_OFFSET = &local_c;
-  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(param_1.m_pchData);
+  sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(param_1.m_pchData);
   sVar1 = (short)param_2.m_pchData;
   if ((short)param_2.m_pchData < sVar2) {
     CString::CString(&param_2);
@@ -409,7 +409,7 @@ void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
       CString::~CString(&param_1);
       CString::AssignFromPtr((CString *)this.m_pchData,&param_2);
       CString::AssignFromCStr(&param_2,&DAT_0069587c);
-      sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&param_2);
+      sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&param_2);
       if (sVar2 <= sVar1) break;
     } while (4 < *(int *)(param_2.m_pchData + -8));
     if (*(int *)(param_2.m_pchData + -8) < 5) {
@@ -444,7 +444,7 @@ CRuntimeClass * __thiscall TViewMgr::GetTViewMgrClassNamePointer(TViewMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005D5060
 // GHIDRA_NAME TViewMgr::ConstructGlobalTurnEventState
-// GHIDRA_PROTO undefined __thiscall ConstructGlobalTurnEventState(void)
+// GHIDRA_PROTO undefined __thiscall TViewMgr::ConstructGlobalTurnEventState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructor for the DAT_006a21bc object used as event dispatch target in startup/turn-state flow. Sets vtable PTR_LAB_0066F120 and initializes current-event and status fields consumed by DispatchGlobalTurnEventCode (vtable +0x4C).
 // GHIDRA_COMMENT_END
@@ -548,7 +548,7 @@ void __thiscall TViewMgr::ReleaseTurnEventDialogIfPresent(TViewMgr *this)
 void __thiscall TViewMgr::DeserializeTurnEventDispatchState(TViewMgr *this)
 
 {
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   *(undefined2 *)&this->field_0xec = 0;
   *(undefined2 *)&this->field_0x4 = 0;
   *(undefined4 *)&this->field_0x8 = DAT_006a5b58;
@@ -570,7 +570,7 @@ void __thiscall TViewMgr::DeserializeTurnEventDispatchState(TViewMgr *this)
 void __thiscall TViewMgr::SerializeTurnEventDispatchState(TViewMgr *this)
 
 {
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   return;
 }
 
@@ -638,13 +638,13 @@ void __thiscall TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog(TViewMgr 
   undefined1 uVar7;
   int *unaff_EBP;
   
-  cVar3 = thunk_IsTurnCooldownCounterActiveOrResetFlag();
+  cVar3 = IsTurnCooldownCounterActiveOrResetFlag();
   if (cVar3 == '\0') {
     uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0x7e5);
     piVar6 = (int *)CONCAT31(extraout_var,uVar4);
     if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x223);
     }
     iVar1 = *piVar6;
@@ -653,7 +653,7 @@ void __thiscall TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog(TViewMgr 
     iVar5 = (*pcVar2)(0x444c4f47);
     if (iVar5 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UViewMgr_cpp_0069b6bc,0x227);
     }
     iVar5 = (**(code **)(iVar1 + 0x1b8))();
@@ -749,8 +749,8 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(TViewMgr *this,und
   uStack_1c = in_stack_00000008;
   uStack_20 = in_stack_00000008;
   in_stack_00000008 = &uStack_20;
-  thunk_AssignStringSharedRefAndReturnThis(&param_1);
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  AssignStringSharedRefAndReturnThis(&param_1);
+  DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
   CString::~CString((CString *)&param_1);
@@ -893,7 +893,7 @@ void __thiscall TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog(TVie
   puStack_8 = &LAB_0063a3ec;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeHotKeyDialogTemplateA1WithTripleTextState(0);
+  InitializeHotKeyDialogTemplateA1WithTripleTextState(0);
   local_4 = 0;
   iVar1 = AllocateWithFallbackHandler(0x3e);
   puVar5 = (undefined2 *)(iVar1 + 0x10);

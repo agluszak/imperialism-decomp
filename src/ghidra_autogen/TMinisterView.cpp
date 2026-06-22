@@ -23,7 +23,7 @@ TView * TMinisterView::CreateTMinisterViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TMinisterViewVtbl_00655100;
     this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TView * TMinisterView::CreateTMinisterViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C40
 // GHIDRA_NAME TMinisterView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMinisterView::GetTEventHandlerClassNamePointer(TMinisterView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TMinisterView::GetTEventHandlerClassNamePointer(TMini
 TMinisterView * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinisterView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TMinisterViewVtbl_00655100;
   *(undefined4 *)&this->field_0x60 = 0;
   return this;
@@ -64,7 +64,7 @@ TMinisterView * __thiscall
 TMinisterView::_scalar_deleting_destructor_(TMinisterView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -102,13 +102,13 @@ TMinisterView::InvalidateWindowRectFromHandleField1C
   uVar2 = (*this->vftable[0x12].slot_0x04)(0x6261636b);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDiplomacyViews_c_00696ae0,0xb7);
   }
   piVar4 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x6f6b6179);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDiplomacyViews_c_00696ae0,0xb9);
   }
   iVar1 = *piVar4;
@@ -123,7 +123,7 @@ TMinisterView::InvalidateWindowRectFromHandleField1C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2E00
 // GHIDRA_NAME TMinisterView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TMinisterView::OrphanRetStub_0059add0
@@ -135,12 +135,12 @@ TMinisterView::OrphanRetStub_0059add0
   undefined3 extraout_var;
   
   if (param_1 != 10) {
-    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+    TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
     return;
   }
   if (*(int *)(param_2 + 0x1c) != 0x6261636b) {
     if (*(int *)(param_2 + 0x1c) != 0x6f6b6179) {
-      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,10,param_2,param_3);
+      TView::OrphanRetStub_0059add0((TView *)this,10,param_2,param_3);
       return;
     }
     pTVar1 = this->vftable;

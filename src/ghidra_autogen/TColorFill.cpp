@@ -11,7 +11,7 @@ TColorFill * __thiscall
 TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this,byte param_1)
 
 {
-  CreateTColorFillInstance(this);
+  TColorFill::CreateTColorFillInstance(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this,byte 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF180
 // GHIDRA_NAME TColorFill::CreateTColorFillInstance
-// GHIDRA_PROTO undefined __thiscall CreateTColorFillInstance(void)
+// GHIDRA_PROTO undefined __thiscall TColorFill::CreateTColorFillInstance(void)
 
 void __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
 
@@ -47,7 +47,7 @@ void __thiscall TColorFill::AssertUDisplayMgrLine730(TColorFill *this)
 
 {
   if (DAT_006a30b4 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x2da);
   }
   return;
@@ -73,7 +73,7 @@ TView * TColorFill::DestructTColorFillAndMaybeFree(void)
   this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TGWorldPeekerVtbl_00656748;
     this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;

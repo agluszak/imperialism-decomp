@@ -35,7 +35,7 @@ TUberCluster * TCityBarCluster::CreateTCityBarClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586610
 // GHIDRA_NAME TCityBarCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCityBarCluster::GetTEventHandlerClassNamePointer(TCityBarCluster *this)
 
@@ -64,7 +64,7 @@ TCityBarCluster * __thiscall
 TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -102,7 +102,7 @@ TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *thi
   uVar3 = (*pTVar2)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x67d);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e4))
@@ -110,7 +110,7 @@ TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *thi
   uVar3 = (*pTVar2)(0x74726169);
   if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x682);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e4))
@@ -118,7 +118,7 @@ TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *thi
   uVar3 = (*pTVar2)(0x70726f66);
   if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x687);
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0x1e4))

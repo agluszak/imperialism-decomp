@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A90
 // GHIDRA_NAME TDealList::InitializeNationInteractionStateManagerDefaults
-// GHIDRA_PROTO undefined InitializeNationInteractionStateManagerDefaults()
+// GHIDRA_PROTO undefined TDealList::InitializeNationInteractionStateManagerDefaults()
 
 void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int param_1)
 
@@ -102,7 +102,7 @@ TIndexAndRankList * TDealList::CreateTDealListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1A0
 // GHIDRA_NAME TDealList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDealList::GetTEventHandlerClassNamePointer(TDealList *this)
 
@@ -129,7 +129,7 @@ TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
 TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,byte param_1)
 
 {
-  CObArray::thunk_DestructCObArray();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -138,7 +138,7 @@ TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA260
 // GHIDRA_NAME TDealList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(short * param_1, short * param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(short * param_1, short * param_2)
 
 int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this,short *param_1,short *param_2)
 

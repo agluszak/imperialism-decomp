@@ -4,11 +4,11 @@
 // Bucket: Family_BuildingExpansionViewCore_Root.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040154B
-// GHIDRA_NAME Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
-// GHIDRA_PROTO undefined __thiscall thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b(byte param_1)
+// GHIDRA_NAME TBuildingExpansionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall TBuildingExpansionView::'scalar_deleting_destructor'(byte param_1)
 
 void __thiscall
-Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
+TBuildingExpansionView::'scalar_deleting_destructor'
           (Family_BuildingExpansionViewCore_Root *this,byte param_1)
 
 {

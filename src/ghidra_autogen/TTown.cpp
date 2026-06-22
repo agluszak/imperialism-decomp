@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A80
 // GHIDRA_NAME TTown::CreateTTownInstance
-// GHIDRA_PROTO undefined CreateTTownInstance()
+// GHIDRA_PROTO undefined TTown::CreateTTownInstance()
 
 void TTown::CreateTTownInstance(CString param_1,undefined4 *param_2)
 
@@ -54,7 +54,7 @@ void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *t
   undefined1 *puVar3;
   int iVar4;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,0x10);
   (*pcVar1)(&this->field_0x14,2);
@@ -103,7 +103,7 @@ void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *t
   
   piStack_1c = param_1;
   puStack_20 = (undefined1 *)0x5b6e73;
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   piStack_1c = (int *)0x10;
   pcVar1 = *(code **)(*param_1 + 0x78);
   puStack_20 = &this->field_0x4;
@@ -174,7 +174,7 @@ void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
   do {
     if (local_c < 6) {
       puVar4 = (undefined2 *)
-               thunk_GetWrappedHexNeighborTileIndexByDirection
+               GetWrappedHexNeighborTileIndexByDirection
                          (*(undefined2 *)&this->field_0x14,local_c);
       pTVar7 = g_pGlobalMapState;
     }
@@ -269,7 +269,7 @@ void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this
   pTVar5 = g_pGlobalMapState;
   do {
     if (local_8 < 6) {
-      local_c = thunk_GetWrappedHexNeighborTileIndexByDirection
+      local_c = GetWrappedHexNeighborTileIndexByDirection
                           (*(undefined2 *)&this->field_0x14,local_8);
       pTVar5 = g_pGlobalMapState;
     }
@@ -339,7 +339,7 @@ void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTo
   if ((4 < (short)uVar4) && ((uVar4 & 1) == 0)) {
     sVar5 = *(short *)&this->field_0x20 + *(short *)&this->field_0x1e;
     if (sVar5 != 0) {
-      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,1);
+      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
       sVar1 = *(short *)&this->field_0x2e;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -347,7 +347,7 @@ void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTo
       }
     }
     if (*(short *)&this->field_0x22 != 0) {
-      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,5);
+      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
       sVar5 = *(short *)&this->field_0x30;
       if ((sVar5 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar5 < (int)*(short *)&this->field_0x22 / 2)) {
@@ -359,7 +359,7 @@ void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTo
       if (sVar1 <= sVar5) {
         sVar5 = sVar1;
       }
-      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,3);
+      iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
       sVar1 = *(short *)&this->field_0x34;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {

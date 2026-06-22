@@ -49,7 +49,7 @@ TShipBuilderCityMinister::GetTMinisterClassNamePointer(TShipBuilderCityMinister 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5CE0
 // GHIDRA_NAME TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTShipBuilderCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(void)
 
 TShipBuilderCityMinister * __thiscall
 TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
@@ -81,7 +81,7 @@ TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5D90
 // GHIDRA_NAME TShipBuilderCityMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall
 TShipBuilderCityMinister::GetTEventHandlerClassNamePointer(TShipBuilderCityMinister *this)

@@ -5,14 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D270
 // GHIDRA_NAME TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
-// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
+// GHIDRA_PROTO undefined __thiscall TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
 
 TOffLimitsPicture * __thiscall
 TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
           (TOffLimitsPicture *this)
 
 {
-  ConstructTOffLimitsPictureBaseState(this);
+  TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
   this->vftable = (TOffLimitsPictureVtbl *)&TMapUberUberPictureVtbl_00645650;
   return this;
 }
@@ -49,7 +49,7 @@ thunk_TPictureButton * TOffLimitsPicture::CreateTOffLimitsPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005737B0
 // GHIDRA_NAME TOffLimitsPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TOffLimitsPicture::GetTEventHandlerClassNamePointer(TOffLimitsPicture *this)
@@ -60,7 +60,7 @@ TOffLimitsPicture::GetTEventHandlerClassNamePointer(TOffLimitsPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005737D0
 // GHIDRA_NAME TOffLimitsPicture::ConstructTOffLimitsPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOffLimitsPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(void)
 
 TOffLimitsPicture * __thiscall
 TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(TOffLimitsPicture *this)
@@ -80,7 +80,7 @@ TOffLimitsPicture * __thiscall
 TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -89,14 +89,14 @@ TOffLimitsPicture::_scalar_deleting_destructor_(TOffLimitsPicture *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573850
 // GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPicture *this)
 
 {
   undefined4 uVar1;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uVar1 = CreateClipStateRegionWrapperObject();
   *(undefined4 *)&this->field_0x90 = uVar1;
   ResetClipRegionAndReadBoundingRect(uVar1);
@@ -105,7 +105,7 @@ void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573890
 // GHIDRA_NAME TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730(TOffLimitsPicture *this)
 
@@ -119,7 +119,7 @@ void __thiscall TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730(TOffLimitsPict
     iVar1 = **(int **)&this->field_0x90 + 0x14;
     NoOpQuickDrawContextSelectionHook(iVar1,4);
     FUN_006133fe(iVar1,uVar2);
-    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+    TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
     uVar3 = 5;
     uVar2 = 0;
     NoOpQuickDrawContextSelectionHook(0,5);
@@ -130,14 +130,14 @@ void __thiscall TOffLimitsPicture::OrphanTiny_ReturnZero_0048a730(TOffLimitsPict
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573900
 // GHIDRA_NAME TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TOffLimitsPicture *this)
 
 {
   DestroyClipStateRegionWrapperObject(*(undefined4 *)&this->field_0x90);
   *(undefined4 *)&this->field_0x90 = 0;
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 

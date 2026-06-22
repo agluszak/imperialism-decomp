@@ -11,7 +11,7 @@ TDealTabControl * __thiscall
 TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -38,7 +38,7 @@ TControl * TDealTabControl::CreateTDealTabControlInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TDealTabControlVtbl_00641168;
     *(undefined2 *)&this[1].vftable = 0xffff;
     *(undefined4 *)&this[1].field_0x8 = 0;
@@ -54,7 +54,7 @@ TControl * TDealTabControl::CreateTDealTabControlInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC760
 // GHIDRA_NAME TDealTabControl::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDealTabControl::GetTEventHandlerClassNamePointer(TDealTabControl *this)
 
@@ -88,7 +88,7 @@ TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this,int par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC7F0
 // GHIDRA_NAME TDealTabControl::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabControl *this)
 
@@ -150,7 +150,7 @@ void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabContro
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC9F0
 // GHIDRA_NAME TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
 void __thiscall
 TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *this,int param_1)
@@ -204,7 +204,7 @@ TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BCB20
 // GHIDRA_NAME TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920(TDealTabControl *this)
 
@@ -215,7 +215,7 @@ void __thiscall TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920(TDealTabContro
   if (*(int *)&this->field_0x90 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x90);
   }
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 

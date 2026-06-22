@@ -4,10 +4,10 @@
 // Bucket: CObArray.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883C0
-// GHIDRA_NAME CObArray::thunk_DestructCObArray
-// GHIDRA_PROTO undefined thunk_DestructCObArray()
+// GHIDRA_NAME CObArray::DestructCObArray
+// GHIDRA_PROTO undefined CObArray::DestructCObArray()
 
-void CObArray::thunk_DestructCObArray(void)
+void CObArray::DestructCObArray(void)
 
 {
   undefined4 uVar1;

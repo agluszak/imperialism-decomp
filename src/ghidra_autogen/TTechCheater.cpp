@@ -11,7 +11,7 @@ TTechCheater * __thiscall
 TTechCheater::_scalar_deleting_destructor_(TTechCheater *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TTechCheater::_scalar_deleting_destructor_(TTechCheater *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1940
 // GHIDRA_NAME TTechCheater::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTechCheater::GetTEventHandlerClassNamePointer(TTechCheater *this)
 
@@ -60,7 +60,7 @@ TView * TTechCheater::ConstructTTechCheaterBaseState(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TGPCheaterVtbl_0064f050;
     pTVar1 = this;
   }

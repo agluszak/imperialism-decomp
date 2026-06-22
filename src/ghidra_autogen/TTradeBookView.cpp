@@ -11,7 +11,7 @@ TTradeBookView * __thiscall
 TTradeBookView::_scalar_deleting_destructor_(TTradeBookView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -38,7 +38,7 @@ TView * TTradeBookView::CreateTTradeBookViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x78);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTradeBookViewVtbl_00640b50;
     this[1].vftable = (TViewVtbl *)0x0;
     this[1].field04 = 0;
@@ -51,7 +51,7 @@ TView * TTradeBookView::CreateTTradeBookViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDED0
 // GHIDRA_NAME TTradeBookView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTradeBookView::GetTEventHandlerClassNamePointer(TTradeBookView *this)
 
@@ -61,7 +61,7 @@ CRuntimeClass * __thiscall TTradeBookView::GetTEventHandlerClassNamePointer(TTra
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDEF0
 // GHIDRA_NAME TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO void __thiscall OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
+// GHIDRA_PROTO void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
 
 void __thiscall TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(TTradeBookView *this,uint this_obj)
 
@@ -97,7 +97,7 @@ void __thiscall TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(TTradeBookView 
   *seh_chain = &seh_prev;
   color_or_tag.m_pchData = (char *)this_obj;
   tag_or_handle.m_pchData = (char *)0x5bdf18;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   color_or_tag.m_pchData = (char *)0x6c636f72;
   getResourceByTag = this->vftable[0x12].slot_0x04;
   tag_or_handle.m_pchData = (char *)0x5bdf29;
@@ -164,7 +164,7 @@ void __thiscall TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(TTradeBookView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE370
 // GHIDRA_NAME TTradeBookView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TTradeBookView::OrphanRetStub_0059add0
@@ -184,7 +184,7 @@ TTradeBookView::OrphanRetStub_0059add0
     UpdatePagerButtonStatesAndRefreshPanels(iVar1);
   }
 LAB_005be3a6:
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 

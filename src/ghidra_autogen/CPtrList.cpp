@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
 // GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 
@@ -15,7 +15,7 @@ void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00412C10
 // GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
 // GHIDRA_COMMENT_END
@@ -98,7 +98,7 @@ undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this,int par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00623B3A
 // GHIDRA_NAME CPtrList::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 CRuntimeClass * __thiscall CPtrList::SetForeignMinisterReadyFlag14(CPtrList *this)
 

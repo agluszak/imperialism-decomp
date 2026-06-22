@@ -83,7 +83,7 @@ void __thiscall TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback(TDiploma
   undefined1 uStack00000004;
   undefined1 uStack00000005;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   puVar3 = (undefined2 *)&this->field_0x79c;
   iVar4 = 0x211;
   pcVar1 = *(code **)(*_uStack00000004 + 0x78);

@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00545940
 // GHIDRA_NAME TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine
-// GHIDRA_PROTO undefined ProcessDiplomacyTurnStateEventStateMachine()
+// GHIDRA_PROTO undefined TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine()
 
 undefined4 __thiscall
 TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TSimMgr *param_1,undefined4 *param_2)
@@ -124,7 +124,7 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TSimMgr *param_1,
     *(undefined4 *)&param_1->field_0xd8 = 0x676f696e;
     *(undefined4 *)&param_1->field_0xec = 0xffffffff;
     *(undefined4 *)&param_1->field_0xf0 = 0xffffffff;
-    iVar35 = FUN_00405a3d();
+    iVar35 = GetSessionActiveNationId();
     iVar34 = 0;
     piVar25 = (int *)&g_pGameFlowState->field_0x48;
     do {
@@ -139,7 +139,7 @@ LAB_00546c48:
       local_4 = 0x12;
       local_1c4.m_pchData = (char *)pTVar26;
       if (pTVar26 != (TCommand *)0x0) {
-        TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+        TCommand::ConstructTurnEventPacketBase(pTVar26);
         pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
       }
       local_4 = 0xffffffff;
@@ -166,7 +166,7 @@ LAB_00546c48:
       }
       local_1b8[2] = 0;
       (&local_1a0)[iVar35] = 0x62757379;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       (*g_pLocalizationTable->vftable[8].slot_0x04)();
       uVar17 = 1;
     }
@@ -236,7 +236,7 @@ LAB_00546c48:
           pcVar18 = pcVar18 + 1;
         }
         local_19c = iVar35;
-        thunk_EnqueueOrSendTurnEventPacketToNation();
+        EnqueueOrSendTurnEventPacketToNation();
         uVar17 = 1;
       }
       else {
@@ -252,7 +252,7 @@ LAB_00546c48:
         local_f = 0xff;
         CString::CString(&local_1d0);
         local_4 = 2;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         uVar37 = 0xffffffff;
         CVar46.m_pchData = local_1d0.m_pchData;
         do {
@@ -276,7 +276,7 @@ LAB_00546c48:
           pcVar38 = pcVar38 + 1;
           pcVar18 = pcVar18 + 1;
         }
-        thunk_EnqueueOrSendTurnEventPacketToNation();
+        EnqueueOrSendTurnEventPacketToNation();
         local_4 = 0xffffffff;
         CString::~CString(&local_1d0);
         uVar17 = 1;
@@ -343,7 +343,7 @@ LAB_00546c48:
           pcVar38 = pcVar38 + 1;
           pcVar18 = pcVar18 + 1;
         }
-        thunk_EnqueueOrSendTurnEventPacketToNation();
+        EnqueueOrSendTurnEventPacketToNation();
       }
       CVar46.m_pchData = local_1d4.m_pchData;
       piVar25 = piVar25 + 1;
@@ -404,7 +404,7 @@ LAB_00546c48:
         pcVar18 = pcVar18 + 1;
       }
       local_19c = uVar17;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       uVar17 = 1;
       break;
     }
@@ -430,7 +430,7 @@ LAB_00546c48:
                     /* WARNING: Load size is inaccurate */
       local_1bc.m_pchData = CVar46.m_pchData[iVar35 * 4 + 0x48];
       *(char **)(CVar46.m_pchData + iVar35 * 4 + 0x48) = pcVar38;
-      pcVar18 = (char *)FUN_00405a3d();
+      pcVar18 = (char *)GetSessionActiveNationId();
       if ((pcVar38 == pcVar18) && (pcVar38 != (char *)0x0)) {
         local_1c9 = 1;
         CVar46.m_pchData[0xdc] = (char)cVar2;
@@ -441,7 +441,7 @@ LAB_00546c48:
       CString::CString(&local_1c0);
       local_4 = 5;
       if (pcVar38 == (char *)0x0) {
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         *(undefined4 *)(CVar46.m_pchData + iVar35 * 4 + 0xbc) = 0x756e6173;
       }
       else {
@@ -473,13 +473,13 @@ LAB_00546c48:
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
         (**(code **)(iVar35 + 0x1c8))();
         ApplyUiTextStyleAndThemeFlags();
-        pcVar38 = (char *)FUN_00405a3d();
+        pcVar38 = (char *)GetSessionActiveNationId();
         if ((local_1bc.m_pchData == pcVar38) ||
-           (pcVar38 = (char *)FUN_00405a3d(), local_1d4.m_pchData == pcVar38)) {
+           (pcVar38 = (char *)GetSessionActiveNationId(), local_1d4.m_pchData == pcVar38)) {
           iVar35 = 6;
           pcVar40 = (code *)(CVar46.m_pchData + 0x60);
           do {
-            iVar34 = FUN_00405a3d();
+            iVar34 = GetSessionActiveNationId();
             if (*(int *)pcVar40 == iVar34) break;
             iVar35 = iVar35 + -1;
             pcVar40 = pcVar40 + -4;
@@ -501,7 +501,7 @@ LAB_00546c48:
           }
           (**(code **)(unaff_EDI + 0xa4))();
           local_4 = CONCAT31(local_4._1_3_,6);
-          thunk_DestroyScopedMapQuickDrawContext();
+          DestroyScopedMapQuickDrawContext();
         }
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
           bVar10 = false;
@@ -511,7 +511,7 @@ LAB_00546c48:
           do {
             if (*(int *)pcVar40 != 0) {
               local_1c8.m_pchData = local_1c8.m_pchData + 1;
-              iVar34 = FUN_00405a3d();
+              iVar34 = GetSessionActiveNationId();
               if (*(int *)pcVar40 == iVar34) {
                 bVar10 = true;
               }
@@ -530,7 +530,7 @@ LAB_00546c48:
           (**(code **)(iVar35 + 0xc))();
           CString::CString((CString *)&stack0xfffffe28);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,8);
-          thunk_LoadUiStringResourceByGroupAndIndex();
+          LoadUiStringResourceByGroupAndIndex();
           if (bVar10) {
             CString::AssignFromPtr((CString *)(piVar25 + 0x25),(CString *)&stack0xfffffe28);
             (**(code **)(iVar35 + 0xe4))();
@@ -562,7 +562,7 @@ LAB_00546c48:
     if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       pcVar38 = *(char **)&param_1->field_0xb4;
       pcVar18 = *(char **)&param_1->field_0xb0;
-      uVar17 = FUN_00405a3d();
+      uVar17 = GetSessionActiveNationId();
       local_1bc.m_pchData._0_2_ = (short)(char)param_1->field_0xdc;
       InitializeEmitEventHeaderWithActiveNation();
       uVar37 = 0xffffffff;
@@ -615,7 +615,7 @@ LAB_00546c48:
         pcVar18 = pcVar18 + 1;
       }
       local_19c = uVar17;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       uVar17 = 1;
       break;
     }
@@ -623,7 +623,7 @@ LAB_00546c48:
   case 10:
     if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
       (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
-      thunk_RefreshNationCivilianWorkOrdersForTurn();
+      RefreshNationCivilianWorkOrdersForTurn();
     }
     *(uint *)&param_1->field_0xe8 =
          *(uint *)&param_1->field_0xe8 & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
@@ -635,7 +635,7 @@ LAB_00545aa0:
       local_1b8[2] = 0;
       local_1b8[1] = 0;
       local_1b8[0] = 1;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       if ((*(int *)&param_1->field_0xe8 == 0) && (*(int *)&param_1->field_0xf0 != -1)) {
         TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode
                   ((TNextDiplomationCommand *)param_1);
@@ -668,7 +668,7 @@ LAB_00545aa0:
           (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
         }
       }
-      iVar34 = thunk_FindFirstPortZoneContextByNation();
+      iVar34 = FindFirstPortZoneContextByNation();
       puVar41 = puVar23 + 0x187;
       ppTVar39 = ppTVar39 + 1;
       iVar35 = iVar35 + 1;
@@ -683,7 +683,7 @@ LAB_00545aa0:
     sVar16 = UiRuntimeContext::GetActiveNationId();
     local_1d4.m_pchData = (char *)(int)sVar16;
     if ((TCommandVtbl *)local_1d4.m_pchData == (TCommandVtbl *)0xffffffff) {
-      iVar35 = FUN_00405a3d();
+      iVar35 = GetSessionActiveNationId();
       local_1d4.m_pchData = (char *)0x0;
       piVar25 = (int *)&g_pGameFlowState->field_0x48;
       do {
@@ -711,7 +711,7 @@ LAB_005464fd:
     CString::CString(&local_1d0);
     local_4 = CONCAT31(local_4._1_3_,0xb);
     if ((pTVar36 == (TCommandVtbl *)0xffffffff) || (pTVar36 == (TCommandVtbl *)CVar46.m_pchData)) {
-      thunk_BuildUiMessageTextFromBracketTemplate();
+      BuildUiMessageTextFromBracketTemplate();
     }
     else {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -721,12 +721,12 @@ LAB_005464fd:
     uStack_139 = 0;
     uStack_138 = 0;
     uStack_137 = 0;
-    thunk_BuildUiTextStyleDescriptor();
+    BuildUiTextStyleDescriptor();
     uVar12 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
     piVar25 = (int *)CONCAT31(extraout_var,uVar12);
     if (piVar25 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar35 = *piVar25;
     (**(code **)(iVar35 + 0x1a0))();
@@ -742,7 +742,7 @@ LAB_005464fd:
     (**(code **)(iVar35 + 0xc))();
     if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     (**(code **)(iVar35 + 0x1c8))();
     iVar34 = 0x636f6174;
@@ -751,7 +751,7 @@ LAB_005464fd:
     (**(code **)(iVar35 + 0xc))();
     if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     (**(code **)(iVar35 + 0x1c8))();
     piVar19 = (int *)(*pcVar40)(0x7469746c);
@@ -759,7 +759,7 @@ LAB_005464fd:
     (**(code **)(iVar35 + 0xc))();
     if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UMultiplayerMgr_c_00698040,0x807);
     }
     (**(code **)(iVar35 + 0x1b4))(local_177 + 3,0);
@@ -790,7 +790,7 @@ LAB_005464fd:
         pTVar26 = (TCommand *)0x0;
       }
       else {
-        TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+        TCommand::ConstructTurnEventPacketBase(pTVar26);
         pTVar26->vftable = (TCommandVtbl *)&TPoseMessageDialogVtbl_0065c0e8;
       }
       pTVar26[1].vftable = (TCommandVtbl *)local_1c8.m_pchData;
@@ -828,15 +828,15 @@ LAB_005464fd:
       if (cVar13 == '\0') {
         CString::CString(&local_1d4);
         local_4 = 0xe;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         local_1c4.m_pchData = &stack0xfffffe0c;
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis();
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0xf;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          TCommand::ConstructTurnEventPacketBase(pTVar26);
           pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0xe);
@@ -856,7 +856,7 @@ LAB_005464fd:
     }
     if (uVar37 == 0x72616e64) {
       RebuildGlobalOrderManagersAndCapabilityState();
-      thunk_RebuildMapContextAndGlobalMapState();
+      RebuildMapContextAndGlobalMapState();
     }
     else {
       if ((uVar37 < 0x73636e30) || (0x73637a39 < uVar37)) goto LAB_005485d8;
@@ -867,15 +867,15 @@ LAB_005464fd:
       if (cVar13 == '\0') {
         CString::CString(&local_1d4);
         local_4 = 0x10;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         local_1c4.m_pchData = &stack0xfffffe0c;
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        AssignStringSharedRefAndReturnThis();
+        DispatchLocalizedUiMessageWithTemplateA13A0();
         pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0x11;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          TCommand::ConstructTurnEventPacketBase(pTVar26);
           pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0x10);
@@ -959,7 +959,7 @@ LAB_005464fd:
       local_1b8[0] = 0x11;
       local_1b8[3] = 0x28;
       local_1b8[2] = 0;
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
       uVar17 = 1;
       break;
     }
@@ -1192,11 +1192,11 @@ LAB_005464fd:
     local_4 = 0x13;
     local_1c4.m_pchData = (char *)pTVar26;
     if (pTVar26 != (TCommand *)0x0) {
-      TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+      TCommand::ConstructTurnEventPacketBase(pTVar26);
       pTVar26->vftable = (TCommandVtbl *)&TNextTradeCommand::_vftable_;
     }
     local_4 = 0xffffffff;
-    thunk_DispatchUiPacketWithTagNEXT();
+    DispatchUiPacketWithTagNEXT();
     uVar17 = 1;
     break;
   case 0x1f:
@@ -1211,7 +1211,7 @@ LAB_005464fd:
         local_4._0_1_ = 0x20;
         CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x21);
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
         scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
@@ -1234,7 +1234,7 @@ LAB_005464fd:
         local_4._0_1_ = 0x1d;
         CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1e);
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
         scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
@@ -1262,7 +1262,7 @@ LAB_005464fd:
         local_4 = 0x25;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          TCommand::ConstructTurnEventPacketBase(pTVar26);
           pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = 0xffffffff;
@@ -1270,7 +1270,7 @@ LAB_005464fd:
         (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
         CString::CString(&local_1d4);
         local_4 = 0x26;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
         local_4 = 0xffffffff;
         CString::~CString(&local_1d4);
@@ -1287,13 +1287,13 @@ LAB_005464fd:
       if (uVar37 == 0x666f6666) {
         CString::CString(&local_1d4);
         local_4 = 0x1a;
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
         pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0x1b;
         local_1c4.m_pchData = (char *)pTVar26;
         if (pTVar26 != (TCommand *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          TCommand::ConstructTurnEventPacketBase(pTVar26);
           pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0x1a);
@@ -1321,7 +1321,7 @@ LAB_005464fd:
         local_4._0_1_ = 0x23;
         CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x24);
-        thunk_LoadUiStringResourceByGroupAndIndex();
+        LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
         scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
@@ -1343,7 +1343,7 @@ LAB_005464fd:
         if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
           CString::CString(&local_1d0);
           local_4 = 0x16;
-          thunk_LoadUiStringResourceByGroupAndIndex();
+          LoadUiStringResourceByGroupAndIndex();
           CreateModalMessageCommandAndQueue();
           local_4 = 0xffffffff;
           CString::~CString(&local_1d0);
@@ -1363,7 +1363,7 @@ LAB_005464fd:
       if (uVar37 == 0x7265706f) {
         uVar37 = param_2[7] & 7;
         if (((g_apNationStates[uVar37] == (TGreatPower *)0x0) &&
-            (iVar35 = FUN_00405a3d(), param_2[1] == iVar35)) &&
+            (iVar35 = GetSessionActiveNationId(), param_2[1] == iVar35)) &&
            (*(int *)&g_pLocalizationTable->field_0x44 == 1)) {
           bVar10 = true;
         }
@@ -1373,7 +1373,7 @@ LAB_005464fd:
         if ((uVar37 < 7) &&
            ((bVar10 ||
             ((g_apNationStates[uVar37] != (TGreatPower *)0x0 &&
-             ((iVar35 = FUN_00405a3d(), param_2[1] == iVar35 ||
+             ((iVar35 = GetSessionActiveNationId(), param_2[1] == iVar35 ||
               (cVar13 = (*g_apNationStates[uVar37]->vftable[0x14].GetTCountryClassNamePointer)(),
               cVar13 != '\0')))))))) {
           uVar17 = param_2[1];
@@ -1434,12 +1434,12 @@ LAB_005464fd:
             pcVar18 = pcVar18 + 1;
           }
           local_19c = uVar17;
-          thunk_EnqueueOrSendTurnEventPacketToNation();
+          EnqueueOrSendTurnEventPacketToNation();
           CString::CString(&local_1c8);
           local_4 = 0x17;
           CString::CString(&local_1d4);
           local_4._0_1_ = 0x18;
-          thunk_LoadUiStringResourceByGroupAndIndex();
+          LoadUiStringResourceByGroupAndIndex();
           CString::StringSharedRef_AssignFromPtr(&local_1bc,(CString *)local_1d0.m_pchData);
           local_4 = CONCAT31(local_4._1_3_,0x19);
           scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d4.m_pchData);
@@ -1477,7 +1477,7 @@ LAB_005464fd:
           local_f = 0xff;
           local_120 = 0;
           local_10 = -1 - ('\x01' << (sbyte)uVar37);
-          thunk_EnqueueOrSendTurnEventPacketToNation();
+          EnqueueOrSendTurnEventPacketToNation();
           local_4._0_1_ = 0x18;
           CString::~CString(&local_1bc);
           local_4 = CONCAT31(local_4._1_3_,0x17);
@@ -1495,7 +1495,7 @@ LAB_005464fd:
           local_1b8[3] = 0x20;
           local_1a0 = 0x666f6666;
           local_19c = 0x29;
-          thunk_EnqueueOrSendTurnEventPacketToNation();
+          EnqueueOrSendTurnEventPacketToNation();
           uVar17 = 1;
         }
         break;
@@ -1509,7 +1509,7 @@ LAB_005464fd:
     else {
       if (uVar37 == 0x73617665) {
         param_1->field_0xf4 = *(undefined1 *)(param_2 + 7);
-        thunk_SaveGameWithModeAndOptionalLabel();
+        SaveGameWithModeAndOptionalLabel();
         uVar17 = 1;
         break;
       }
@@ -1528,13 +1528,13 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x20:
-    TCountry::thunk_QueueInterNationEventRecordDeduped
+    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,(int)*(short *)(param_2 + 6),
                (int)*(char *)((int)param_2 + 0x1a),(int)*(char *)((int)param_2 + 0x1b),'\x01');
     uVar17 = 1;
     break;
   case 0x21:
-    TInterNationEventQueueManager::thunk_QueueInterNationEventType0FWithBitmaskMerge
+    TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
               (g_pInterNationEventQueueManager,(int)*(char *)(param_2 + 6),
                (int)*(char *)((int)param_2 + 0x19),(int)*(char *)((int)param_2 + 0x1a),'\x01');
     uVar17 = 1;
@@ -1602,7 +1602,7 @@ LAB_005464fd:
       sVar16 = UiRuntimeContext::GetActiveNationId();
       iVar35 = (int)sVar16;
       if (iVar35 == -1) {
-        iVar34 = FUN_00405a3d();
+        iVar34 = GetSessionActiveNationId();
         iVar35 = 0;
         piVar25 = (int *)&g_pGameFlowState->field_0x48;
         do {
@@ -1693,37 +1693,37 @@ LAB_0054833b:
     uVar37 = param_2[6];
     if (uVar37 < 0x64696768) {
       if (uVar37 == 0x64696767) {
-        thunk_HandleTacticalCommandTag_digg();
+        HandleTacticalCommandTag_digg();
         uVar17 = 1;
         break;
       }
       if (uVar37 == 0x6465706c) {
-        thunk_HandleTacticalCommandTag_depl();
+        HandleTacticalCommandTag_depl();
         uVar17 = 1;
         break;
       }
     }
     else if (uVar37 < 0x6d6f7666) {
       if (uVar37 == 0x6d6f7665) {
-        thunk_MoveTacticalUnitBetweenTiles();
+        MoveTacticalUnitBetweenTiles();
         uVar17 = 1;
         break;
       }
       if (uVar37 == 0x6d696e65) {
-        thunk_HandleTacticalCommandTag_mine();
+        HandleTacticalCommandTag_mine();
         uVar17 = 1;
         break;
       }
     }
     else {
       if (uVar37 == 0x72616c79) {
-        TArmyStack::thunk_HandleTacticalCommandTag_raly(this_01,iVar35,param_2[8],param_2[9],'\x01')
+        TArmyStack::HandleTacticalCommandTag_raly(this_01,iVar35,param_2[8],param_2[9],'\x01')
         ;
         uVar17 = 1;
         break;
       }
       if (uVar37 == 0x73656c65) {
-        thunk_SetCurrentTacticalUnitSelection();
+        SetCurrentTacticalUnitSelection();
         uVar17 = 1;
         break;
       }
@@ -1752,7 +1752,7 @@ LAB_0054833b:
       uVar14 = UiRuntimeContext::GetActiveNationId();
       local_1b8[2] = param_2[1];
       local_1a0._0_2_ = CONCAT11(uVar14,(undefined1)local_1a0);
-      thunk_EnqueueOrSendTurnEventPacketToNation();
+      EnqueueOrSendTurnEventPacketToNation();
     }
     goto LAB_005485d8;
   case 0x2c:

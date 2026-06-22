@@ -25,7 +25,7 @@ TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
   local_4 = 0;
   pTVar1 = (TNoHilitePicture *)0x0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this->vftable = (TNoHilitePictureVtbl *)&TTerrainInfoDialogVtbl_00658d70;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B120
 // GHIDRA_NAME TTerrainInfoDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTerrainInfoDialog::GetTEventHandlerClassNamePointer(TTerrainInfoDialog *this)
@@ -52,7 +52,7 @@ TTerrainInfoDialog * __thiscall
 TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TTerrainInfoDialogVtbl_00658d70;
   return this;
 }
@@ -65,7 +65,7 @@ TTerrainInfoDialog * __thiscall
 TTerrainInfoDialog::_scalar_deleting_destructor_(TTerrainInfoDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

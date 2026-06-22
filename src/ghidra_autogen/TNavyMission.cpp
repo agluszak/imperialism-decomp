@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TNavyMission::ConstructTNavyMission(undefined4 param_1)
 
 void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this,undefined4 param_1)
 

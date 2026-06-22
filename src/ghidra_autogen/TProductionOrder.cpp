@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4EE0
 // GHIDRA_NAME TProductionOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TProductionOrder::GetTProductionOrderClassNamePointer(TProductionOrder *this)
@@ -16,7 +16,7 @@ TProductionOrder::GetTProductionOrderClassNamePointer(TProductionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F00
 // GHIDRA_NAME TProductionOrder::ConstructTProductionOrderBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTProductionOrderBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::ConstructTProductionOrderBaseState(void)
 
 void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProductionOrder *this)
 
@@ -51,7 +51,7 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -73,7 +73,7 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -115,7 +115,7 @@ TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this,short p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5140
 // GHIDRA_NAME TProductionOrder::ResetCityOrderItemDerivedStateNoop
-// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(void)
 
 void __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(TProductionOrder *this)
 
@@ -135,7 +135,7 @@ void __thiscall TProductionOrder::OrphanRetStub_004b5160(TProductionOrder *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5180
 // GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
-// GHIDRA_PROTO undefined __thiscall InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
+// GHIDRA_PROTO undefined __thiscall TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)
 
 void __thiscall
 TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this,undefined4 *param_1)

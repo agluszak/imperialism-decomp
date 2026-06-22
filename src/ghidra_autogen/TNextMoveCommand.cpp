@@ -28,7 +28,7 @@ void __thiscall TNextMoveCommand::QueueTacticalEventPacket232A(TNextMoveCommand 
     pTVar1 = (TCommand *)0x0;
   }
   else {
-    TCommand::thunk_ConstructTurnEventPacketBase(this_00);
+    TCommand::ConstructTurnEventPacketBase(this_00);
     this_00->vftable = (TCommandVtbl *)&TNextMoveCommandVtbl_0066a100;
     pTVar1 = this_00;
   }
@@ -62,7 +62,7 @@ TCommand * TNextMoveCommand::CreateTNextMoveCommandInstance(void)
   local_4 = 0;
   pTVar1 = (TCommand *)0x0;
   if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    TCommand::ConstructTurnEventPacketBase(this);
     this->vftable = (TCommandVtbl *)&TNextMoveCommandVtbl_0066a100;
     pTVar1 = this;
   }
@@ -88,7 +88,7 @@ TNextMoveCommand * __thiscall
 TNextMoveCommand::ConstructTNextMoveCommandBaseState(TNextMoveCommand *this)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
+  TCommand::ConstructTurnEventPacketBase((TCommand *)this);
   this->vftable = &TNextMoveCommandVtbl_0066a100;
   return this;
 }
@@ -128,7 +128,7 @@ void __thiscall TNextMoveCommand::OrphanRetStub_00487a00(TNextMoveCommand *this)
       return;
     }
     *(undefined1 *)(piVar1 + 0x12) = 1;
-    thunk_AdvanceToNextTacticalUnitTurnStep();
+    AdvanceToNextTacticalUnitTurnStep();
   }
   return;
 }

@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TEvenCityMinister::GetTMinisterClassNamePointer(TEven
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5FE0
 // GHIDRA_NAME TEvenCityMinister::ConstructTEvenCityMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTEvenCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TEvenCityMinister::ConstructTEvenCityMinisterBaseState(void)
 
 TEvenCityMinister * __thiscall
 TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
@@ -80,7 +80,7 @@ TEvenCityMinister::DeletingDestructTMinister(TEvenCityMinister *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6090
 // GHIDRA_NAME TEvenCityMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TEvenCityMinister::GetTEventHandlerClassNamePointer(TEvenCityMinister *this)
 

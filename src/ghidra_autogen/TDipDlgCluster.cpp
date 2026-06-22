@@ -35,7 +35,7 @@ TUberCluster * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840C0
 // GHIDRA_NAME TDipDlgCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TDipDlgCluster::GetTEventHandlerClassNamePointer(TDipDlgCluster *this)
 
@@ -63,7 +63,7 @@ TDipDlgCluster * __thiscall
 TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -86,7 +86,7 @@ bool __thiscall TDipDlgCluster::OrphanVtableAssignStub_005714e0(TDipDlgCluster *
   uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73756273);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
   }
   uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73616e63);

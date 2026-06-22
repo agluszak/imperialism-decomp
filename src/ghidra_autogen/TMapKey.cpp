@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004308D0
 // GHIDRA_NAME TMapKey::ConstructPictureResourceEntry_Vtbl006404b0
-// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl006404b0(void)
+// GHIDRA_PROTO undefined __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(void)
 
 TMapKey * __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(TMapKey *this)
 
@@ -23,7 +23,7 @@ TMapKey * __thiscall TMapKey::ConstructPictureResourceEntry_Vtbl006404b0(TMapKey
 TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -32,13 +32,13 @@ TMapKey * __thiscall TMapKey::_scalar_deleting_destructor_(TMapKey *this,byte pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AD20
 // GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
+// GHIDRA_PROTO undefined __thiscall TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
 
 TMapKey * __thiscall
 TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(TMapKey *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  TStaticText::TStaticText((TStaticText *)this);
   this->vftable = (TMapKeyVtbl *)&TTEViewVtbl_00644308;
   return this;
 }
@@ -75,7 +75,7 @@ thunk_TPictureButton * TMapKey::CreateTMapKeyInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCA70
 // GHIDRA_NAME TMapKey::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapKey::GetTEventHandlerClassNamePointer(TMapKey *this)
 
@@ -129,7 +129,7 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_7c = this;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   local_4c[0] = 0x171;
   local_4c[1] = 0x171;
   local_4c[2] = 0x171;
@@ -162,8 +162,8 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
   local_87 = 0;
   local_86 = 0;
   local_85 = 0;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_88);
-  thunk_InitializeUiTextStyleDescriptor(local_58,0,10,0x2b6b,3);
+  MapUiThemeCodeToStyleFlags(0x2b68,&local_88);
+  InitializeUiTextStyleDescriptor(local_58,0,10,0x2b6b,3);
   local_74 = (int)(short)local_80;
   local_78 = (int)(short)((short)iVar5 + (short)iVar2);
   iVar5 = 0;
@@ -182,7 +182,7 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
       pTVar3 = (TDeluxeText *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar3);
+      TStaticText::TStaticText((TStaticText *)pTVar3);
       pTVar3->vftable = (TDeluxeTextVtbl *)&TTEViewVtbl_00644308;
       local_4._0_1_ = 2;
       pTVar3->field_0x98 = 0;
@@ -227,12 +227,12 @@ void __thiscall TMapKey::OrphanCallChain_C6_I49_004875d0(TMapKey *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCF80
 // GHIDRA_NAME TMapKey::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TMapKey::OrphanTiny_ReturnZero_0048a730(TMapKey *this)
 
 {
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   switch(*(undefined2 *)&this->field_0x90) {
   case 0:
     RenderMapHintOverlayMode0();

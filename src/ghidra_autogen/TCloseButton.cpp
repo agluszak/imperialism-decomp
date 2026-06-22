@@ -25,7 +25,7 @@ TPictureButton * TCloseButton::CreateTCloseButtonInstance(void)
   local_4 = 0;
   pTVar1 = (TPictureButton *)0x0;
   if (this != (TPictureButton *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    TPictureButton::ConstructUiTabCursorPictureEntry(this);
     this->vftable = (TPictureButtonVtbl *)&TCloseButtonVtbl_006646a8;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TPictureButton * TCloseButton::CreateTCloseButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584AD0
 // GHIDRA_NAME TCloseButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCloseButton::GetTEventHandlerClassNamePointer(TCloseButton *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TCloseButton::GetTEventHandlerClassNamePointer(TClose
 TCloseButton * __thiscall TCloseButton::ConstructTCloseButtonBaseState(TCloseButton *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)this);
   this->vftable = &TCloseButtonVtbl_006646a8;
   return this;
 }
@@ -63,7 +63,7 @@ TCloseButton * __thiscall
 TCloseButton::_scalar_deleting_destructor_(TCloseButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TCloseButton::_scalar_deleting_destructor_(TCloseButton *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584B70
 // GHIDRA_NAME TCloseButton::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 undefined4 __thiscall
 TCloseButton::SetForeignMinisterReadyFlag14
@@ -80,7 +80,7 @@ TCloseButton::SetForeignMinisterReadyFlag14
           undefined4 param_4)
 
 {
-  TView::thunk_DispatchUiMouseMoveToChildren((TView *)this,param_1,param_2,param_3,param_4);
+  TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0,0);
   return 1;
 }

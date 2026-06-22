@@ -4,11 +4,11 @@
 // Bucket: TSortedByRelationshipList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004020B8
-// GHIDRA_NAME TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn
-// GHIDRA_PROTO undefined __thiscall thunk_ApplyDiplomacyInterNationStatesForTurn(void)
+// GHIDRA_NAME TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
+// GHIDRA_PROTO undefined __thiscall TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn(void)
 
 void __thiscall
-TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn
+TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn
           (TSortedByRelationshipList *this)
 
 {
@@ -17,11 +17,11 @@ TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00403837
-// GHIDRA_NAME TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults
-// GHIDRA_PROTO undefined __thiscall thunk_InitializeDiplomacyTurnStateManagerDefaults(void)
+// GHIDRA_NAME TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
+// GHIDRA_PROTO undefined __thiscall TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults(void)
 
 void __thiscall
-TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults
+TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults
           (TSortedByRelationshipList *this)
 
 {
@@ -115,7 +115,7 @@ TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At0
   iVar7 = 0;
   ppTStack_8 = g_apNationStates;
   do {
-    cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iVar7);
+    cVar2 = IsNationSlotEligibleForEventProcessing(iVar7);
     if (cVar2 != '\0') {
       iVar6 = (200 - *(short *)(&(*ppTStack_8)->field_0x14 + (short)uVar1 * 2)) *
               (int)*(short *)((int)this + (uVar1 * 0x17 + iVar7) * 2 + 0x79c);
@@ -177,7 +177,7 @@ TIndexAndRankList * TSortedByRelationshipList::CreateTSortedByRelationshipListIn
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE520
 // GHIDRA_NAME TSortedByRelationshipList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TSortedByRelationshipList::GetTEventHandlerClassNamePointer(TSortedByRelationshipList *this)
@@ -188,7 +188,7 @@ TSortedByRelationshipList::GetTEventHandlerClassNamePointer(TSortedByRelationshi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE540
 // GHIDRA_NAME TSortedByRelationshipList::ConstructObArrayWithVtable654D38
-// GHIDRA_PROTO undefined __thiscall ConstructObArrayWithVtable654D38(void)
+// GHIDRA_PROTO undefined __thiscall TSortedByRelationshipList::ConstructObArrayWithVtable654D38(void)
 
 TSortedByRelationshipList * __thiscall
 TSortedByRelationshipList::ConstructObArrayWithVtable654D38(TSortedByRelationshipList *this)
@@ -208,7 +208,7 @@ TSortedByRelationshipList::_scalar_deleting_destructor_
           (TSortedByRelationshipList *this,byte param_1)
 
 {
-  CObArray::thunk_DestructCObArray();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -217,7 +217,7 @@ TSortedByRelationshipList::_scalar_deleting_destructor_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE5E0
 // GHIDRA_NAME TSortedByRelationshipList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 int __thiscall
 TSortedByRelationshipList::OrphanRetStub_0059add0
@@ -324,7 +324,7 @@ TSortedByRelationshipList::DeserializeRelationshipSortedListBuffersFromStreamSwa
   undefined1 *puVar3;
   int iVar4;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   puVar3 = &this[0x51].field_0x4;
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(puVar3,0x422);
@@ -797,7 +797,7 @@ TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation
   }
   if (g_apTerrainTypeDescriptorTable[in_stack_00000008] != (TCountry *)0x0) {
     (*g_apTerrainTypeDescriptorTable[in_stack_00000008]->vftable[0x12].slot_0x04)(_param_1,0x139);
-    TCountry::thunk_QueueInterNationEventRecordDeduped
+    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,0x18,(int)in_stack_00000008,(int)param_1,
                '\0');
   }
@@ -852,7 +852,7 @@ TSortedByRelationshipList::AdjustNationPairDiplomacyStandingAndPropagate
   iStack_c = 0;
   ppTStack_10 = g_apTerrainTypeDescriptorTable;
   do {
-    cVar3 = thunk_IsNationSlotEligibleForEventProcessing(iVar7);
+    cVar3 = IsNationSlotEligibleForEventProcessing(iVar7);
     if ((((cVar3 != '\0') && ((short)iVar7 != (short)param_1)) && ((short)iVar7 != sVar6)) &&
        (*(short *)&(*ppTStack_10)->field_0xe == -1)) {
       pTVar2 = this->vftable[0x10].slot_0x04;
@@ -1005,14 +1005,14 @@ TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn(TSortedByRelat
                 *(undefined2 *)
                  (&g_pDiplomacyTurnStateManager->field_0x1402 + (iStack_24 + iVar7) * 2) = 1;
                 *(undefined2 *)(&pTVar3->field_0x1402 + (iVar9 + iVar5) * 2) = 1;
-                TCountry::thunk_QueueInterNationEventRecordDeduped
+                TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                           ((TCountry *)g_pInterNationEventQueueManager,0x12,iVar9,iVar7,'\0');
               }
               else if (sVar1 == 0x134) {
                 *(undefined2 *)
                  (&g_pDiplomacyTurnStateManager->field_0x1402 + (iStack_24 + iVar7) * 2) = 2;
                 *(undefined2 *)(&pTVar3->field_0x1402 + (iVar9 + iVar5) * 2) = 2;
-                TCountry::thunk_QueueInterNationEventRecordDeduped
+                TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                           ((TCountry *)g_pInterNationEventQueueManager,0x14,iVar9,iVar7,'\0');
               }
               else if (sVar1 == 0x131) {
@@ -1121,7 +1121,7 @@ TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
     iStack_14 = 0;
     ppTStack_10 = g_apNationStates;
     do {
-      cVar7 = thunk_IsNationSlotEligibleForEventProcessing(iVar12);
+      cVar7 = IsNationSlotEligibleForEventProcessing(iVar12);
       if (cVar7 != '\0') {
         if (*(short *)(&this[0xd5].field_0xa + (iStack_30 + iStack_14) * 2) != 0) {
           sVar1 = *(short *)(&this[0x51].field_0x4 + (iStack_2c + iVar13) * 2);
@@ -1196,7 +1196,7 @@ LAB_004f081d:
       iVar12 = (int)psStack_3c[-0x10];
       if ((((!bVar3) && (iVar12 != (short)iStack_40)) && (iVar12 != -1)) &&
          ((0 < *(short *)((int)this + (iVar12 * 0x17 + iStack_30) * 2 + 0x1402) &&
-          (cVar7 = thunk_IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0')))) {
+          (cVar7 = IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0')))) {
         (*g_apTerrainTypeDescriptorTable[iVar12]->vftable[0x12].slot_0x04)(iStack_20,0x13a);
       }
       psStack_3c[-0x10] = (short)iStack_40;
@@ -1205,7 +1205,7 @@ LAB_004f081d:
       iVar12 = (int)*psStack_3c;
       if (((!bVar4) && (iVar12 != (short)iStack_34)) &&
          ((iVar12 != -1 &&
-          (((cVar7 = thunk_IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0' &&
+          (((cVar7 = IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0' &&
             (0 < *(short *)((int)this + (iVar12 * 0x17 + iStack_30) * 2 + 0x1402))) &&
            (g_apTerrainTypeDescriptorTable[iVar12] != (TCountry *)0x0)))))) {
         (*g_apTerrainTypeDescriptorTable[iVar12]->vftable[0x12].slot_0x04)(iStack_20,0x13b);
@@ -1433,7 +1433,7 @@ LAB_004f10cf:
   pTVar7 = pTVar12;
   if (iStack_dc < iStack_e0) {
     if ((cVar3 == '\0') && (iStack_e0 < (local_cc * 2) / 3)) {
-      cVar3 = thunk_IsNationSlotEligibleForEventProcessing(unaff_EBX);
+      cVar3 = IsNationSlotEligibleForEventProcessing(unaff_EBX);
       if ((cVar3 != '\0') && ((char)g_apNationStates[(int)unaff_EBX]->field_0x8d3 < '3')) {
         (*g_apNationStates[(int)unaff_EBX]->vftable[0x17].GetTCountryClassNamePointer)
                   (0xb,0xffffffff);
@@ -1445,7 +1445,7 @@ LAB_004f10cf:
     if (iStack_e0 < iStack_dc) {
       pTVar7 = pTVar2;
       if ((((cVar3 == '\0') && (iStack_dc < (local_cc * 2) / 3)) &&
-          (cVar3 = thunk_IsNationSlotEligibleForEventProcessing(pTVar2), pTVar7 = pTVar12,
+          (cVar3 = IsNationSlotEligibleForEventProcessing(pTVar2), pTVar7 = pTVar12,
           cVar3 != '\0')) && ((char)g_apNationStates[(int)pTVar2]->field_0x8d3 < '3')) {
         (*g_apNationStates[(int)pTVar2]->vftable[0x17].GetTCountryClassNamePointer)(0xb,0xffffffff);
       }
@@ -1751,7 +1751,7 @@ TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects
   param_1 = (short)pTVar3;
   switch(param_1) {
   case 2:
-    TCountry::thunk_QueueInterNationEventRecordDeduped
+    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,0x1a,iVar9,iVar10,'\0');
     return;
   case 3:
@@ -1787,7 +1787,7 @@ LAB_004f1e25:
   case 6:
     if ((*(short *)&g_apTerrainTypeDescriptorTable[iVar9]->field_0xe == -1) &&
        (*(short *)&g_apTerrainTypeDescriptorTable[iVar10]->field_0xe < 200)) {
-      TCountry::thunk_QueueInterNationEventRecordDeduped
+      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                 ((TCountry *)g_pInterNationEventQueueManager,0x19,iVar9,iVar10,'\0');
     }
     iVar11 = 300;

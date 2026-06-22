@@ -17,50 +17,36 @@ int * TNavyRoster::BuildNavyRosterDialogUiResourceTree(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
   
-  thunk_RegisterUiResourceEntry(0x70696374,0x444c4f47);
-  thunk_SetUiResourceStateFlags();
-  thunk_SetUiResourceLayoutValues(10);
-  thunk_ApplyUiResourceLayoutFromContext();
-  thunk_ClearUiResourceContext();
-  pTVar2 = (TNavyRoster *)thunk_AllocateUiResourceNode();
+  RegisterUiResourceEntry(0x70696374,0x444c4f47);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(10);
+  ApplyUiResourceLayoutFromContext();
+  ClearUiResourceContext();
+  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
   else {
-    uVar3 = TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar2);
+    uVar3 = TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar2);
   }
-  thunk_RegisterUiResourceEntry(0x70696374,0x6f6b6179,uVar3,0x1a,0xb,0x1d,0x1d);
-  thunk_SetUiResourceStateFlags();
-  thunk_SetUiResourceLayoutValues(0x22);
-  thunk_ApplyUiResourceLayoutFromContext();
-  thunk_ClearUiResourceContext();
-  thunk_PopUiResourcePoolNode();
-  pTVar2 = (TNavyRoster *)thunk_AllocateUiResourceNode();
+  RegisterUiResourceEntry(0x70696374,0x6f6b6179,uVar3,0x1a,0xb,0x1d,0x1d);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(0x22);
+  ApplyUiResourceLayoutFromContext();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
   else {
-    uVar3 = ConstructTNavyRosterBaseState(pTVar2);
+    uVar3 = TNavyRoster::ConstructTNavyRosterBaseState(pTVar2);
   }
-  thunk_RegisterUiResourceEntry(0x76696577,0x70616765,uVar3,0xd,0x2e,0x1ca,0x136);
-  thunk_SetUiResourceStateFlags();
-  thunk_ClearUiResourceContext();
-  thunk_PopUiResourcePoolNode();
-  pTVar2 = (TNavyRoster *)thunk_AllocateUiResourceNode();
-  if (pTVar2 == unaff_EBX) {
-    uVar3 = 0;
-  }
-  else {
-    uVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)pTVar2)
-    ;
-  }
-  thunk_RegisterUiResourceEntry(0x70696374,0x6c636f72,uVar3,0xc,0x164,0x29,0x24);
-  thunk_SetUiResourceStateFlags();
-  thunk_SetUiResourceLayoutValues(10);
-  thunk_ApplyUiResourceLayoutFromContext();
-  thunk_ClearUiResourceContext();
-  thunk_PopUiResourcePoolNode();
-  pTVar2 = (TNavyRoster *)thunk_AllocateUiResourceNode();
+  RegisterUiResourceEntry(0x76696577,0x70616765,uVar3,0xd,0x2e,0x1ca,0x136);
+  SetUiResourceStateFlags();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
@@ -68,16 +54,30 @@ int * TNavyRoster::BuildNavyRosterDialogUiResourceTree(void)
     uVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)pTVar2)
     ;
   }
-  thunk_RegisterUiResourceEntry(0x70696374,0x72636f72,uVar3,0x1b0,0x164,0x29,0x24);
-  thunk_SetUiResourceStateFlags();
-  thunk_SetUiResourceLayoutValues(10);
-  thunk_ApplyUiResourceLayoutFromContext();
-  thunk_ClearUiResourceContext();
-  thunk_PopUiResourcePoolNode();
-  thunk_PopUiResourcePoolNode();
-  thunk_PopUiResourcePoolNode();
+  RegisterUiResourceEntry(0x70696374,0x6c636f72,uVar3,0xc,0x164,0x29,0x24);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(10);
+  ApplyUiResourceLayoutFromContext();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar2 = (TNavyRoster *)AllocateUiResourceNode();
+  if (pTVar2 == unaff_EBX) {
+    uVar3 = 0;
+  }
+  else {
+    uVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)pTVar2)
+    ;
+  }
+  RegisterUiResourceEntry(0x70696374,0x72636f72,uVar3,0x1b0,0x164,0x29,0x24);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(10);
+  ApplyUiResourceLayoutFromContext();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  PopUiResourcePoolNode_00479A80();
+  PopUiResourcePoolNode_00479A80();
   if ((TNavyRoster *)g_pUiResourceHead != unaff_EBX) {
-    thunk_PropagateUiResourceContextRecursive();
+    PropagateUiResourceContextRecursive();
   }
   piVar1 = g_pUiResourceHead;
   *unaff_FS_OFFSET = in_stack_00000094;
@@ -122,7 +122,7 @@ TPageView * TNavyRoster::CreateTNavyRosterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564D00
 // GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRoster *this)
 
@@ -132,7 +132,7 @@ CRuntimeClass * __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564D20
 // GHIDRA_NAME TNavyRoster::ConstructTNavyRosterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTNavyRosterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TNavyRoster::ConstructTNavyRosterBaseState(void)
 
 TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster *this)
 
@@ -156,7 +156,7 @@ TNavyRoster * __thiscall TNavyRoster::ConstructTNavyRosterBaseState(TNavyRoster 
 TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -165,14 +165,14 @@ TNavyRoster * __thiscall TNavyRoster::_scalar_deleting_destructor_(TNavyRoster *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564FE0
 // GHIDRA_NAME TNavyRoster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TNavyRoster::GetTEventHandlerClassNamePointer(TNavyRoster *this)
 
 {
   int *piVar1;
   
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
   *(undefined1 *)(piVar1 + 0xd3) = 0;
   (**(code **)(*piVar1 + 0x1f8))();

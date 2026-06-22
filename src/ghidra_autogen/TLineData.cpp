@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8890
 // GHIDRA_NAME TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection
-// GHIDRA_PROTO undefined PopulateTurnEventDialogArmyUnitLinesForTileSelection()
+// GHIDRA_PROTO undefined TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection()
 
 void __thiscall
 TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param_1,short param_2)
@@ -27,7 +27,7 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   puStack_8 = &LAB_0063031a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  RenderUiBitmapOnRuntimeSurfaceContext(param_1,0xdb8);
+  TLineData::RenderUiBitmapOnRuntimeSurfaceContext(param_1,0xdb8);
   CString::CString(&local_18);
   local_4 = 0;
   CString::CString(&local_1c);
@@ -47,13 +47,13 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
         this = (TLineData *)0x0;
       }
       else {
-        ConstructTLineDataBaseState(this);
+        TLineData::ConstructTLineDataBaseState(this);
         this->vftable = (TLineDataVtbl *)&TArmyUnitLineVtbl_0064ce80;
       }
       local_4._0_1_ = 1;
       local_14 = 0xec;
       local_10 = 0x31;
-      SetLineDataRowAndBounds(this,0,0,&local_14);
+      TLineData::SetLineDataRowAndBounds(this,0,0,&local_14);
       pTVar1 = param_1->vftable;
       this[1].vftable = pTVar2;
       (*pTVar1[0x34].GetTLineDataClassNamePointer)(this);
@@ -96,7 +96,7 @@ TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564A60
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_PROTO undefined __thiscall RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 
 void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this,undefined4 param_1)
 
@@ -122,10 +122,10 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
   piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
   uStack_10 = 0;
   uStack_c = 0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
-  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[8].field_0x4,uStack_18);
-  uVar7 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[8].field_0x4);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar7);
+  GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
+  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[8].field_0x4,uStack_18);
+  uVar7 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[8].field_0x4);
+  ReturnConstantTrueQuickDrawFlag(uVar7);
   NoOpRuntimeCallback_00497c00(piVar6);
   if (*piVar6 != 0) {
     uVar5 = RenderUiBitmapOnRuntimeSurfaceContext_Impl(piVar6);
@@ -148,7 +148,7 @@ void __thiscall TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this
     FreeHeapBufferIfNotNull(this_00);
   }
   FreeHeapBufferIfNotNull(piVar6);
-  thunk_SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
+  SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
   return;
 }
 
@@ -177,7 +177,7 @@ TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,un
   puStack_8 = &LAB_0063591a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  RenderUiBitmapOnRuntimeSurfaceContext(this,0xdba);
+  TLineData::RenderUiBitmapOnRuntimeSurfaceContext(this,0xdba);
   iVar4 = 0x636c7330;
   *(undefined4 *)&this[8].field_0x8 = param_1;
   pTVar3 = this + 9;
@@ -186,7 +186,7 @@ TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,un
     pTVar2 = (TLineDataVtbl *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(iVar4);
     if (pTVar2 == (TLineDataVtbl *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UOceanViews_cpp_00698650,0x114);
     }
     pTVar3->vftable = pTVar2;
@@ -204,13 +204,13 @@ TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,un
         pTVar3 = (TLineData *)0x0;
       }
       else {
-        ConstructTLineDataBaseState(pTVar3);
+        TLineData::ConstructTLineDataBaseState(pTVar3);
         pTVar3->vftable = (TLineDataVtbl *)&TShipLineVtbl_0065cde8;
       }
       uStack_4 = 0xffffffff;
       uStack_14 = 0xec;
       uStack_10 = 0x31;
-      SetLineDataRowAndBounds(pTVar3,0,0,&uStack_14);
+      TLineData::SetLineDataRowAndBounds(pTVar3,0,0,&uStack_14);
       *(undefined4 **)&pTVar3[1].field_0x4 = puVar5;
       pTVar2 = (TLineDataVtbl *)*puVar5;
       *(undefined4 *)&pTVar3[1].field_0x8 = param_1;
@@ -241,7 +241,7 @@ CRuntimeClass * __thiscall TLineData::GetTLineDataClassNamePointer(TLineData *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3B0
 // GHIDRA_NAME TLineData::ConstructTLineDataBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTLineDataBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TLineData::ConstructTLineDataBaseState(void)
 
 void __thiscall TLineData::ConstructTLineDataBaseState(TLineData *this)
 
@@ -266,7 +266,7 @@ TLineData * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F420
 // GHIDRA_NAME TLineData::SetLineDataRowAndBounds
-// GHIDRA_PROTO undefined __thiscall SetLineDataRowAndBounds(undefined2 param_1, undefined2 param_2, undefined4 * param_3)
+// GHIDRA_PROTO undefined __thiscall TLineData::SetLineDataRowAndBounds(undefined2 param_1, undefined2 param_2, undefined4 * param_3)
 
 void __thiscall
 TLineData::SetLineDataRowAndBounds
@@ -342,7 +342,7 @@ TLineData * __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *
 TLineData * __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
+  TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
   this->vftable = (TLineDataVtbl *)&TRadioTextClusterVtbl_00662418;
   *(undefined2 *)&this[8].field_0xc = 0x4b;
   *(undefined2 *)&this[8].field_0xe = 0x49;
@@ -445,13 +445,13 @@ LAB_005bb355:
           pTVar4 = (TLineData *)0x0;
         }
         else {
-          ConstructTLineDataBaseState(pTVar4);
+          TLineData::ConstructTLineDataBaseState(pTVar4);
           pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
         }
         iStack_1c = 0xffffffff;
         CStack_48.m_pchData = (char *)0xc8;
         iStack_44 = 0x1e;
-        SetLineDataRowAndBounds(pTVar4,0,0x1e,&CStack_48);
+        TLineData::SetLineDataRowAndBounds(pTVar4,0,0x1e,&CStack_48);
         *(undefined2 *)&pTVar4[1].vftable = uVar8;
         (**(code **)(**(int **)&this[9].field_0x8 + 0x1a4))(pTVar4);
         CStack_48.m_pchData = (char *)(int)sVar11;
@@ -464,14 +464,14 @@ LAB_005bb355:
             pTVar5 = (TTextLine *)0x0;
           }
           else {
-            ConstructTLineDataBaseState((TLineData *)pTVar5);
+            TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
             pTVar5->vftable = (TTextLineVtbl *)&TDealLineVtbl_0066e238;
           }
           iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)&this[9].vftable);
           uStack_4 = 0xffffffff;
           CStack_40.m_pchData = (char *)0xc8;
           uStack_3c = 0x1e;
-          SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_64.m_pchData,0,&CStack_40);
+          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_64.m_pchData,0,&CStack_40);
           *(undefined2 *)&pTVar5->field_0x10 = uVar8;
           *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
           *(short *)&pTVar5->field_0x14 = sVar11;
@@ -490,13 +490,13 @@ LAB_005bb355:
           pTVar4 = (TLineData *)0x0;
         }
         else {
-          ConstructTLineDataBaseState(pTVar4);
+          TLineData::ConstructTLineDataBaseState(pTVar4);
           pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
         }
         iStack_1c = 0xffffffff;
         local_68 = 200;
         local_64.m_pchData = (char *)0x1e;
-        SetLineDataRowAndBounds(pTVar4,0,0x1e,&local_68);
+        TLineData::SetLineDataRowAndBounds(pTVar4,0,0x1e,&local_68);
         *(undefined2 *)&pTVar4[1].vftable = uVar8;
         (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(pTVar4);
         CStack_48.m_pchData = (char *)(int)sVar11;
@@ -509,14 +509,14 @@ LAB_005bb355:
             pTVar5 = (TTextLine *)0x0;
           }
           else {
-            ConstructTLineDataBaseState((TLineData *)pTVar5);
+            TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
             pTVar5->vftable = (TTextLineVtbl *)&TDealLineVtbl_0066e238;
           }
           iStack_44 = CONCAT22(iStack_44._2_2_,*(undefined2 *)&this[9].vftable);
           uStack_4 = 0xffffffff;
           pTStack_58 = (TLineData *)0xc8;
           uStack_54 = 0x1e;
-          SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_68,0,&pTStack_58);
+          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,(short)local_68,0,&pTStack_58);
           *(undefined2 *)&pTVar5->field_0x10 = uVar8;
           *(undefined2 *)&pTVar5->field_0x12 = (undefined2)iStack_44;
           *(short *)&pTVar5->field_0x14 = sVar11;
@@ -547,7 +547,7 @@ LAB_005bb355:
     WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0x3c,&pTStack_30,0xffffffff,0);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741,7,&CStack_48);
     WrapperFor_StringShared_AssignFromPtr_At00570420(&uStack_54);
-    thunk_BuildUiTextStyleDescriptor(&uStack_24,0,0xe,0x2b67);
+    BuildUiTextStyleDescriptor(&uStack_24,0,0xe,0x2b67);
     CopyTwoDwordsAndWordToObjectOffset14(&uStack_24);
     SetObjectField1EWord(1);
     (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(uVar6);
@@ -568,14 +568,14 @@ LAB_005bb355:
         }
         else {
           pTStack_58 = pTVar4;
-          ConstructTLineDataBaseState(pTVar4);
+          TLineData::ConstructTLineDataBaseState(pTVar4);
           pTVar4->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
           this_00 = pTVar4;
         }
         uStack_4 = CONCAT31(uStack_4._1_3_,4);
         uStack_28 = 200;
         uStack_24 = 0x1e;
-        SetLineDataRowAndBounds(this_00,0,0x1e,&uStack_28);
+        TLineData::SetLineDataRowAndBounds(this_00,0,0x1e,&uStack_28);
         *(short *)&this_00[1].vftable = (short)iVar9;
         (**(code **)(**(int **)&this[9].field_0xc + 0x1a4))(this_00);
         iVar10 = 7;
@@ -640,14 +640,14 @@ LAB_005bb355:
     pTVar5 = (TTextLine *)0x0;
   }
   else {
-    ConstructTLineDataBaseState((TLineData *)pTVar5);
+    TLineData::ConstructTLineDataBaseState((TLineData *)pTVar5);
     pTVar5->vftable = (TTextLineVtbl *)&TTradeTotalsLineVtbl_0066e1f8;
   }
   sVar11 = *(short *)&this[9].vftable;
   uStack_4 = 0xffffffff;
   uStack_20 = 200;
   iStack_1c = (('\0' < (char)g_apNationStates[sVar11]->field_0x8fc) + 4) * 0x1e;
-  SetLineDataRowAndBounds((TLineData *)pTVar5,0,0,&uStack_20);
+  TLineData::SetLineDataRowAndBounds((TLineData *)pTVar5,0,0,&uStack_20);
   *(short *)&pTVar5->field_0x10 = sVar11;
   (**(code **)(**(int **)&this[9].field_0xc + 0x1a0))(pTVar5);
   (**(code **)(**(int **)&this[9].field_0x8 + 0x1ac))();

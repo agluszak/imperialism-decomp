@@ -5,12 +5,12 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004303A0
 // GHIDRA_NAME TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70
-// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntry_Vtbl0063fa70(void)
+// GHIDRA_PROTO undefined __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(void)
 
 TGrantsView * __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(TGrantsView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)&this->field_0x60 = 0;
   this->vftable = &TGrantsViewVtbl_0063fa70;
   return this;
@@ -23,7 +23,7 @@ TGrantsView * __thiscall TGrantsView::ConstructUiResourceEntry_Vtbl0063fa70(TGra
 TGrantsView * __thiscall TGrantsView::_scalar_deleting_destructor_(TGrantsView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ TView * TGrantsView::CreateTGrantsViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this[1].vftable = (TViewVtbl *)0x0;
     this->vftable = (TViewVtbl *)&TGrantsViewVtbl_0063fa70;
     *unaff_FS_OFFSET = local_c;
@@ -62,7 +62,7 @@ TView * TGrantsView::CreateTGrantsViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8060
 // GHIDRA_NAME TGrantsView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGrantsView::GetTEventHandlerClassNamePointer(TGrantsView *this)
 
@@ -95,7 +95,7 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,C
   iVar2 = 0;
   local_4 = 0;
   puStack_2c = (undefined1 *)0x4f80b9;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
   pTVar1 = this->vftable[0x12].slot_0x04;
   do {
@@ -104,8 +104,8 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,C
     puStack_2c = &stack0xffffffe8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 0x3e);
     param_1.m_pchData = (char *)&puStack_2c;
-    thunk_AssignStringSharedRefAndReturnThis(&local_14);
-    InitializeAndRunMainRoutine();
+    AssignStringSharedRefAndReturnThis(&local_14);
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     iVar2 = iVar2 + 1;
   } while (iVar2 < 8);
   puStack_2c = (undefined1 *)0x4f811f;
@@ -116,8 +116,8 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,C
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&param_1);
   puStack_10 = (undefined1 *)&puStack_2c;
-  thunk_AssignStringSharedRefAndReturnThis(&local_14);
-  InitializeAndRunMainRoutine();
+  AssignStringSharedRefAndReturnThis(&local_14);
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   local_4 = 0xffffffff;
   CString::~CString(&local_14);
   *unaff_FS_OFFSET = uStack_c;
@@ -126,7 +126,7 @@ void __thiscall TGrantsView::OrphanCallChain_C6_I49_004875d0(TGrantsView *this,C
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F81C0
 // GHIDRA_NAME TGrantsView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
 
@@ -206,11 +206,11 @@ void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
   CStack_58.m_pchData = (char *)&local_3c;
   uStack_5c = 0x2b6b;
   uStack_60 = 0x4f82c5;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   CStack_58.m_pchData = local_40;
   uStack_5c = 0x2b68;
   uStack_60 = 0x4f82d7;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   CStack_58.m_pchData = (char *)&local_44;
   uStack_5c = 0x21;
   uStack_60 = 0x2733;
@@ -222,14 +222,14 @@ void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
   local_3c = iVar5;
   SetQuickDrawColorAndSyncGlobals();
   CStack_64.m_pchData = (char *)(iVar3 + 0x170);
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   CStack_64.m_pchData = &stack0xffffffb0;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
   CStack_64.m_pchData = pcVar4;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   CStack_64.m_pchData = &stack0xffffffb0;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   CStack_64.m_pchData = (char *)0x2b68;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   iVar3 = 0;
@@ -241,14 +241,14 @@ void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
                                 *(short *)((int)&local_38.m_pchData + iVar3 * 2) - sVar1);
       SetQuickDrawColorAndSyncGlobals();
       CStack_64.m_pchData = pcVar4 + 1;
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawTextOriginWithContextOffset();
       CStack_64.m_pchData = &stack0xffffffb0;
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       SetQuickDrawColorAndSyncGlobals();
       CStack_64.m_pchData = pcVar4;
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawTextOriginWithContextOffset();
       CStack_64.m_pchData = &stack0xffffffb0;
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       iVar5 = local_3c;
     }
     iVar3 = iVar3 + 1;
@@ -265,11 +265,11 @@ void __thiscall TGrantsView::OrphanTiny_ReturnZero_0048a730(TGrantsView *this)
   local_24._0_1_ = 1;
   CString::~CString((CString *)&stack0xffffffb0);
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar5 + 1);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(iVar5 + 1);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar5);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(iVar5);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_24 = (uint)local_24._1_3_ << 8;
   CString::~CString(&CStack_58);
@@ -298,7 +298,7 @@ void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   piStack_14 = (int *)0x646f6330;
   pTStack_18 = (TToolBarClusterVtbl *)0x4f860f;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c8))();
@@ -309,7 +309,7 @@ void __thiscall TGrantsView::OrphanRetStub_00430550(TGrantsView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8650
 // GHIDRA_NAME TGrantsView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)
 
 void __thiscall
 TGrantsView::OrphanRetStub_0059add0(TGrantsView *this,int param_1,int param_2,undefined4 param_3)
@@ -327,7 +327,7 @@ TGrantsView::OrphanRetStub_0059add0(TGrantsView *this,int param_1,int param_2,un
     }
     *(short *)(*(int *)&this->field_0x60 + 0xc0) = (short)uVar1 / 2;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 

@@ -64,7 +64,7 @@ TTradeTotalsLine * __thiscall
 TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,byte param_1)
 
 {
-  DestructTTradeTotalsLineAndMaybeFree_Impl(this);
+  TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1960
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(void)
 
 void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
 
@@ -109,12 +109,12 @@ TTradeTotalsLine::OrphanRetStub_0056f460
     this_00 = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState(this_00);
+    TView::ConstructTViewBaseState(this_00);
     this_00->vftable = (TViewVtbl *)&TTradeTotalsViewVtbl_0066e958;
   }
   uVar1 = *(undefined2 *)&this->field_0x10;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
+  InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5,5,0);
   *(undefined2 *)&this_00[1].vftable = uVar1;
   *unaff_FS_OFFSET = local_c;
   return;

@@ -11,7 +11,7 @@ TFrameRadioView * __thiscall
 TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TFrameRadioView::_scalar_deleting_destructor_(TFrameRadioView *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FDFA0
 // GHIDRA_NAME TFrameRadioView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TFrameRadioView::GetTEventHandlerClassNamePointer(TFrameRadioView *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TFrameRadioView::GetTEventHandlerClassNamePointer(TFr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FDFC0
 // GHIDRA_NAME TFrameRadioView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TFrameRadioView::OrphanTiny_ReturnZero_0048a730(TFrameRadioView *this)
 
@@ -53,7 +53,7 @@ void __thiscall TFrameRadioView::OrphanTiny_ReturnZero_0048a730(TFrameRadioView 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE060
 // GHIDRA_NAME TFrameRadioView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,int param_1)
 
@@ -66,7 +66,7 @@ void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,in
     (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1f,this,0);
     return;
   default:
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
     break;
   case 0xc:
     if (this->field_0x64 == '\0') {
@@ -76,7 +76,7 @@ void __thiscall TFrameRadioView::OrphanRetStub_0059add0(TFrameRadioView *this,in
         (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(1,0);
       }
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
     return;
   case 0x1f:
     pTVar1 = this->vftable;

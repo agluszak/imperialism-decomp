@@ -35,7 +35,7 @@ thunk_TPictureButton * TNoHilitePicture::CreateTNoHilitePictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572B10
 // GHIDRA_NAME TNoHilitePicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TNoHilitePicture::GetTEventHandlerClassNamePointer(TNoHilitePicture *this)
@@ -74,7 +74,7 @@ TNoHilitePicture * __thiscall
 TNoHilitePicture::_scalar_deleting_destructor_(TNoHilitePicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

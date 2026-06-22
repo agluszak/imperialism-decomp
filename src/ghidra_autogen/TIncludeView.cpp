@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CD50
 // GHIDRA_NAME TIncludeView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TIncludeView::GetTEventHandlerClassNamePointer(TIncludeView *this)
 
@@ -58,7 +58,7 @@ void __thiscall TIncludeView::OrphanCallChain_C6_I49_004875d0(TIncludeView *this
                       (0,this,CONCAT22(uVar3,*(undefined2 *)&this->field_0x60),&DAT_006a1ab0);
     if (iVar2 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x846);
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x846);
     }
   }
   SendMessageA(*(HWND *)(this->field50 + 0x1c),0x4ef,1,0);

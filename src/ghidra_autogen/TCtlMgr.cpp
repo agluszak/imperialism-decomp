@@ -23,7 +23,7 @@ TView * TCtlMgr::CreateTCtlMgrInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined1 *)&this[1].field04 = 0;
     this[1].vftable = (TViewVtbl *)0x1;
     this[1].padding_08_to_0b = 0;
@@ -35,7 +35,7 @@ TView * TCtlMgr::CreateTCtlMgrInstance(void)
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TButton::_vftable_;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -45,7 +45,7 @@ TView * TCtlMgr::CreateTCtlMgrInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EAF0
 // GHIDRA_NAME TCtlMgr::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCtlMgr::GetTEventHandlerClassNamePointer(TCtlMgr *this)
 
@@ -73,7 +73,7 @@ TView * TCtlMgr::ConstructTCtlMgrBaseState(void)
   this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *(undefined1 *)&this[1].field04 = 0;
     this[1].vftable = (TViewVtbl *)0x1;
     this[1].padding_08_to_0b = 0;
@@ -85,7 +85,7 @@ TView * TCtlMgr::ConstructTCtlMgrBaseState(void)
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TButton::_vftable_;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     this->vftable = (TViewVtbl *)&TButtonVtbl_0064a4e0;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -103,7 +103,7 @@ TCtlMgr::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db
 
 {
   if (DAT_006a1b5c == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a7);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a7);
   }
   return;
 }

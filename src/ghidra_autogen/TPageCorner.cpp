@@ -10,7 +10,7 @@
 TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -19,7 +19,7 @@ TPageCorner * __thiscall TPageCorner::_scalar_deleting_destructor_(TPageCorner *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A6C0
 // GHIDRA_NAME TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0(void)
+// GHIDRA_PROTO undefined __thiscall TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0(void)
 
 TPageCorner * __thiscall
 TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
@@ -63,7 +63,7 @@ TColorKeyPicture * TPageCorner::CreateTPageCornerInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F830
 // GHIDRA_NAME TPageCorner::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPageCorner::GetTEventHandlerClassNamePointer(TPageCorner *this)
 
@@ -73,7 +73,7 @@ CRuntimeClass * __thiscall TPageCorner::GetTEventHandlerClassNamePointer(TPageCo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F850
 // GHIDRA_NAME TPageCorner::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(int * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 
 uint __thiscall
 TPageCorner::SetForeignMinisterReadyFlag14
@@ -84,13 +84,13 @@ TPageCorner::SetForeignMinisterReadyFlag14
   
   if (this->controlTag == 0x6c636f72) {
     if (*param_1 < param_1[1]) {
-      uVar1 = TView::thunk_DispatchUiMouseMoveToChildren
+      uVar1 = TView::SetForeignMinisterReadyFlag14
                         ((TView *)this,param_1,param_2,param_3,param_4);
       return uVar1;
     }
   }
   else if (this->field38 - param_1[1] < *param_1) {
-    uVar1 = TView::thunk_DispatchUiMouseMoveToChildren
+    uVar1 = TView::SetForeignMinisterReadyFlag14
                       ((TView *)this,param_1,param_2,param_3,param_4);
     return uVar1;
   }

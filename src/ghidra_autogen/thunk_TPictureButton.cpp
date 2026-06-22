@@ -5,14 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401122
 // GHIDRA_NAME thunk_TPictureButton::TPictureButton
-// GHIDRA_PROTO undefined __thiscall TPictureButton(void)
+// GHIDRA_PROTO undefined __thiscall TPictureButton::TPictureButton(void)
 
 thunk_TPictureButton * __thiscall thunk_TPictureButton::TPictureButton(thunk_TPictureButton *this)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   *(undefined4 *)(this + 0x60) = 1;
   this[100] = (thunk_TPictureButton)0x0;
   *(undefined4 *)(this + 0x68) = 0;

@@ -11,7 +11,7 @@ TShipFractionCluster * __thiscall
 TShipFractionCluster::_scalar_deleting_destructor_(TShipFractionCluster *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TCluster * TShipFractionCluster::CreateTShipFractionClusterInstance(void)
   local_4 = 0;
   pTVar1 = (TCluster *)0x0;
   if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    TCluster::ConstructUiResourceEntryType4B0C0(this);
     this->vftable = (TClusterVtbl *)&TShipFractionClusterVtbl_00642f88;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TCluster * TShipFractionCluster::CreateTShipFractionClusterInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568D50
 // GHIDRA_NAME TShipFractionCluster::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TShipFractionCluster::GetTEventHandlerClassNamePointer(TShipFractionCluster *this)
@@ -61,7 +61,7 @@ TShipFractionCluster::GetTEventHandlerClassNamePointer(TShipFractionCluster *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568D70
 // GHIDRA_NAME TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFractionCluster *this)
 
@@ -85,7 +85,7 @@ void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFrac
   int iStack_18;
   
   pcStack_1c = (code *)0x568d81;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   iStack_18 = 0x568d88;
   uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
@@ -113,7 +113,7 @@ void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFrac
     pTStack_30 = this;
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&pTStack_34,PTR_g_szEmptyString_0065c830);
-    InitializeAndRunMainRoutine();
+    RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   }
   else {
     iStack_24 = iVar5 + 0x5e6;
@@ -140,7 +140,7 @@ void __thiscall TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920(TShipFrac
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568EB0
 // GHIDRA_NAME TShipFractionCluster::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)
 
 void __thiscall
 TShipFractionCluster::OrphanRetStub_0059add0
@@ -181,7 +181,7 @@ LAB_00568f19:
     }
   }
   else {
-    TMapEditCluster::thunk_DispatchPanelControlEvent
+    TCluster::OrphanRetStub_0059add0
               ((TMapEditCluster *)this,param_1,param_2,param_3);
   }
   return;

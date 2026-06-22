@@ -111,7 +111,7 @@ TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAverage(TE
   if (local_4 == 0) {
     local_4 = 1;
   }
-  iVar4 = thunk_FindFirstPortZoneContextByNation(*(short *)(this + 4));
+  iVar4 = FindFirstPortZoneContextByNation(*(short *)(this + 4));
   if (*(int *)(iVar4 + 0x2c) == 0) {
     iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),8);
     if (iVar5 == 0) {
@@ -230,7 +230,7 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
         }
       }
       if (bVar18) {
-        iVar9 = thunk_FindFirstPortZoneContextByNation(iVar17);
+        iVar9 = FindFirstPortZoneContextByNation(iVar17);
         if (*(int *)(iVar9 + 0x2c) == 0) {
           iVar10 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar9 + 0x28),8);
           if (iVar10 == 0) {
@@ -251,7 +251,7 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
         local_10[1] = 0.0;
         local_10[2] = 0.0;
         local_10[3] = 0.0;
-        uVar19 = thunk_GetNavyPrimaryOrderListHead();
+        uVar19 = GetNavyPrimaryOrderListHead();
         while( true ) {
           iVar15 = (int)((ulonglong)uVar19 >> 0x20);
           iVar10 = (int)uVar19;

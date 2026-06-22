@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F90
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
-// GHIDRA_PROTO undefined __thiscall CreateTBehaviorInstance(void)
+// GHIDRA_PROTO undefined __thiscall TBehavior::CreateTBehaviorInstance(void)
 
 void __thiscall TBehavior::CreateTBehaviorInstance(TBehavior *this)
 
@@ -47,7 +47,7 @@ CRuntimeClass * __thiscall TBehavior::GetTBehaviorClassNamePointer(TBehavior *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871E0
 // GHIDRA_NAME TBehavior::ConstructTBehaviorBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTBehaviorBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TBehavior::ConstructTBehaviorBaseState(void)
 
 void __thiscall TBehavior::ConstructTBehaviorBaseState(TBehavior *this)
 

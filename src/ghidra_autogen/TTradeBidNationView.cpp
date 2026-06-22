@@ -11,7 +11,7 @@ TTradeBidNationView * __thiscall
 TTradeBidNationView::_scalar_deleting_destructor_(TTradeBidNationView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -40,7 +40,7 @@ TView * TTradeBidNationView::CreateTTradeBidNationViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTradeBidNationViewVtbl_0066e530;
     pTVar1 = this;
   }
@@ -50,7 +50,7 @@ TView * TTradeBidNationView::CreateTTradeBidNationViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDBB0
 // GHIDRA_NAME TTradeBidNationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradeBidNationView::GetTEventHandlerClassNamePointer(TTradeBidNationView *this)
@@ -61,7 +61,7 @@ TTradeBidNationView::GetTEventHandlerClassNamePointer(TTradeBidNationView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDC20
 // GHIDRA_NAME TTradeBidNationView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TTradeBidNationView::OrphanCallChain_C11_I88_004874b0(TTradeBidNationView *this)
 
@@ -105,15 +105,15 @@ void __thiscall TTradeBidNationView::OrphanCallChain_C11_I88_004874b0(TTradeBidN
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x28);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset(0x28);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   if ((*(short *)&this->field_0x62 < 7) && (*(int *)&g_pLocalizationTable->field_0x8 == 7)) {
     (*g_apNationStates[*(short *)&this->field_0x62]->vftable[0xe].slot_0x04)();
     FormatStringWithVarArgsToSharedRef(&local_34,&g_szDecimalFormat);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_34);
-    thunk_SetQuickDrawTextOriginWithContextOffset
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_34);
+    SetQuickDrawTextOriginWithContextOffset
               (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -4);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
   }
   local_4 = 0xffffffff;
   CString::~CString(&local_34);

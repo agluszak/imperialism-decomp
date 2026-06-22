@@ -36,7 +36,7 @@ thunk_TPictureButton * TDealBookPicture::CreateTDealBookPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BABA0
 // GHIDRA_NAME TDealBookPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TDealBookPicture::GetTEventHandlerClassNamePointer(TDealBookPicture *this)
@@ -47,7 +47,7 @@ TDealBookPicture::GetTEventHandlerClassNamePointer(TDealBookPicture *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BABC0
 // GHIDRA_NAME TDealBookPicture::ConstructTDealBookPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTDealBookPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TDealBookPicture::ConstructTDealBookPictureBaseState(void)
 
 TDealBookPicture * __thiscall
 TDealBookPicture::ConstructTDealBookPictureBaseState(TDealBookPicture *this)
@@ -68,7 +68,7 @@ TDealBookPicture * __thiscall
 TDealBookPicture::_scalar_deleting_destructor_(TDealBookPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -77,7 +77,7 @@ TDealBookPicture::_scalar_deleting_destructor_(TDealBookPicture *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BBC30
 // GHIDRA_NAME TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -184,7 +184,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     (**(code **)(iVar7 + 300))(&stack0xffffffa0);
     RStack_54.bottom = (LONG)CStack_58.m_pchData;
     CopyRect(&tStack_44,&RStack_54);
-    thunk_InvalidateCityDialogRectRegion(&tStack_44,1);
+    InvalidateCityDialogRectRegion(&tStack_44,1);
     uVar3 = (*pTVar2)(0x7274696c);
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar7 + 0xc))();
@@ -232,7 +232,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   CStack_74.m_pchData = (char *)param_2;
   uStack_7c = 0x5bbfc1;
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
 LAB_005bbfc1:
   *unaff_FS_OFFSET = uStack_c;
   return;

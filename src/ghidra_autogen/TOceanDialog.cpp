@@ -40,7 +40,7 @@ TWorldView * TOceanDialog::CreateTOceanDialogInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565E70
 // GHIDRA_NAME TOceanDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TOceanDialog::GetTEventHandlerClassNamePointer(TOceanDialog *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TOceanDialog::GetTEventHandlerClassNamePointer(TOcean
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565E90
 // GHIDRA_NAME TOceanDialog::ConstructTOceanDialogBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTOceanDialogBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TOceanDialog::ConstructTOceanDialogBaseState(void)
 
 TOceanDialog * __thiscall TOceanDialog::ConstructTOceanDialogBaseState(TOceanDialog *this)
 
@@ -74,7 +74,7 @@ TOceanDialog * __thiscall
 TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -83,7 +83,7 @@ TOceanDialog::_scalar_deleting_destructor_(TOceanDialog *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565F50
 // GHIDRA_NAME TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TOceanDialog::OrphanLeaf_NoCall_Ins07_004d8920(TOceanDialog *this)
 
@@ -119,7 +119,7 @@ TOceanDialog::OrphanRetStub_005960c0
   }
   *param_2 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 0xfU)) >> 4);
   *param_2 = *param_2 + *(short *)&this->field_0x7e;
-  thunk_NormalizeWrappedMapCoord108x60(param_2,param_3);
+  NormalizeWrappedMapCoord108x60(param_2,param_3);
   *param_4 = 2;
   if (*(short *)((int)&this->ownerContext[1].field34 + 2) == 0) {
     sVar3 = ComputeStridedRecordAddress6C
@@ -209,14 +209,14 @@ void __thiscall TOceanDialog::OrphanRetStub_005966c0(TOceanDialog *this,short pa
     iStack_8 = iStack_10 + 0x10;
     iStack_c = (uVar1 - (int)*(short *)&this->field_0x7c) * 0x10;
     iStack_4 = iStack_c + 0x10;
-    thunk_InvalidateCityDialogRectRegion(&iStack_10,1);
+    InvalidateCityDialogRectRegion(&iStack_10,1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005667F0
 // GHIDRA_NAME TOceanDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Renders the strategic-map viewport tile grid and optional overlay layers.
 // GHIDRA_COMMENT
@@ -369,15 +369,15 @@ LAB_005668ba:
   local_20.top = 0;
   local_20.bottom = RStack_30.bottom;
   local_10 = local_20.left;
-  thunk_SetGlobalQuickDrawOrigin
+  SetGlobalQuickDrawOrigin
             (CONCAT22((short)((uint)RStack_30.bottom >> 0x10),(short)this->field2c),
              (short)this->field30);
   ApplyHitRegionToClipState(local_90.left);
   local_7c = g_pPrimaryRenderSurfaceContext;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_5c,&local_74);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_74);
-  uVar10 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar10);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_5c,&local_74);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_74);
+  uVar10 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+  ReturnConstantTrueQuickDrawFlag(uVar10);
   iVar19 = *(int *)(**(int **)(g_pPrimaryRenderSurfaceContext + 0x24) + 0x1c);
   iVar23 = *(int *)(iVar19 + 0x10);
   iVar11 = *(int *)(iVar23 + 8);
@@ -393,7 +393,7 @@ LAB_005668ba:
   local_90.top = unaff_retaddr[1];
   local_90.right = unaff_retaddr[2];
   local_90.bottom = unaff_retaddr[3];
-  thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+  FillRectWithQuickDrawBrushAndContextOffset(&local_90);
   local_7c = 0;
   do {
     iStack_e8 = 0;
@@ -414,7 +414,7 @@ LAB_005668ba:
       if (iVar11 < 0x6c) {
         if ((cStack_10d == '\0') || (iVar11 < 0x3d)) goto LAB_00566ad9;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+        FillRectWithQuickDrawBrushAndContextOffset(&local_90);
       }
       else {
         CStack_118.m_pchData = CStack_118.m_pchData + -0x6c;
@@ -433,7 +433,7 @@ LAB_00566ad9:
           if (!bVar25) {
             SetQuickDrawFillColorFromPaletteIndex
                       (CONCAT22((short)((uint)pcVar12 >> 0x10),(ushort)local_100[0x6985b8]));
-            thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+            FillRectWithQuickDrawBrushAndContextOffset(&local_90);
           }
           if (-1 < iVar19) {
             sVar9 = (short)CStack_118.m_pchData;
@@ -814,7 +814,7 @@ LAB_00566ad9:
         }
         else {
           (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
-          thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+          FillRectWithQuickDrawBrushAndContextOffset(&local_90);
         }
       }
       iStack_e8 = iStack_e8 + 1;
@@ -847,10 +847,10 @@ LAB_00566ad9:
             sVar16 = sVar16 + -0xd8;
           }
         }
-        thunk_SetQuickDrawTextOriginWithContextOffset
+        SetQuickDrawTextOriginWithContextOffset
                   ((sVar16 * 0x10) / 2,(uint)(ushort)((short)piVar1[1] - sVar9) << 4);
         iVar23 = CONCAT22((short)((uint)iVar23 >> 0x10),(short)iVar11 - sVar9) << 4;
-        thunk_DrawCenteredGuideLineOnMapDc((sVar18 * 0x10) / 2,iVar23);
+        DrawCenteredGuideLineOnMapDc((sVar18 * 0x10) / 2,iVar23);
         iStack_e8 = iStack_e8 + 1;
         iVar19 = iVar19 + 0x10;
       } while (iStack_e8 < (short)g_pActiveMapOrderContext->field0c);
@@ -879,8 +879,8 @@ LAB_00566ad9:
           sVar9 = WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
                             (CStack_118.m_pchData,0,*(undefined4 *)(CStack_118.m_pchData + -8),
                              iVar23 + 0x18);
-          thunk_SetQuickDrawTextOriginWithContextOffset(iVar19 - (int)sVar9 / 2);
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_118);
+          SetQuickDrawTextOriginWithContextOffset(iVar19 - (int)sVar9 / 2);
+          THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
           CString::~CString(&CStack_118);
         }
@@ -905,14 +905,14 @@ LAB_00566ad9:
           CString::CString(&CStack_118);
           puStack_8._0_1_ = 4;
           FormatOverlayTerrainLabelText(&CStack_118);
-          sVar9 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_118);
+          sVar9 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_118);
           iVar19 = iVar19 - (int)sVar9 / 2;
           SetQuickDrawFillColorFromPaletteIndex(0x13);
-          thunk_SetQuickDrawTextOriginWithContextOffset(iVar19 + 1,iVar23 + 9);
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_118);
+          SetQuickDrawTextOriginWithContextOffset(iVar19 + 1,iVar23 + 9);
+          THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_118);
           SetQuickDrawFillColorFromPaletteIndex(0);
-          thunk_SetQuickDrawTextOriginWithContextOffset(iVar19,iVar11);
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_118);
+          SetQuickDrawTextOriginWithContextOffset(iVar19,iVar11);
+          THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
           CString::~CString(&CStack_118);
         }
@@ -921,13 +921,13 @@ LAB_00566ad9:
     } while ((int)uStack_104 < 0x6a436c);
   }
   if (DAT_006985ac != '\0') {
-    thunk_SetActiveQuickDrawSurfaceContext(local_60,uStack_78);
+    SetActiveQuickDrawSurfaceContext(local_60,uStack_78);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
                (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_20,&RStack_30,0,
                (astruct_19 *)0x0);
-    uVar10 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    thunk_NoOpQuickDrawLifecycleHookB(uVar10);
+    uVar10 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    NoOpQuickDrawLifecycleHookB(uVar10);
   }
   puStack_8._0_1_ = 1;
   ReleaseOrCacheQuickDrawSurface();
@@ -941,7 +941,7 @@ LAB_00566ad9:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00567FA0
 // GHIDRA_NAME TOceanDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1, short param_2, short param_3)
 
 void __thiscall
 TOceanDialog::OrphanTiny_ReturnZero_0048a730
@@ -976,7 +976,7 @@ TOceanDialog::OrphanTiny_ReturnZero_0048a730
     WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
     local_4 = 0;
     SetQuickDrawFillColorFromPaletteIndex((&DAT_006985b8)[iVar1]);
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_2c);
+    FillRectWithQuickDrawBrushAndContextOffset(&local_2c);
     local_4 = 0xffffffff;
     thunk_DispatchHandleMapLookupWithReadPtrProbe(local_30,0);
   }
@@ -1040,7 +1040,7 @@ TOceanDialog::DispatchReflectedControlMessageOrFallback
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
       uStack_4 = 0;
       SetQuickDrawFillColorFromPaletteIndex((&DAT_006985b8)[iVar2]);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(param_2);
+      FillRectWithQuickDrawBrushAndContextOffset(param_2);
       uStack_4 = 0xffffffff;
       thunk_DispatchHandleMapLookupWithReadPtrProbe(uStack_20,0);
     }
@@ -1093,7 +1093,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short pa
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
       local_4 = 0;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(param_2);
+      FillRectWithQuickDrawBrushAndContextOffset(param_2);
       puStack_8 = (undefined1 *)0xffffffff;
       thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
     }
@@ -1115,12 +1115,12 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short pa
       RStack_1c.top = RStack_1c.bottom + -0x10;
       RStack_1c.left = param_2->left + -8;
       RStack_1c.right = param_2->left + 8;
-      thunk_ApplyRectClipRegionToGlobalClipState(&RStack_1c);
+      ApplyRectClipRegionToGlobalClipState(&RStack_1c);
       if (this->field_0x74 == '\0') {
         WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
         local_4 = 1;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_2c.bottom);
+        FillRectWithQuickDrawBrushAndContextOffset(&local_2c.bottom);
         puStack_8 = (undefined1 *)0xffffffff;
         thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
       }
@@ -1137,12 +1137,12 @@ void __thiscall TOceanDialog::OrphanRetStub_00596060(TOceanDialog *this,short pa
       RStack_1c.top = RStack_1c.bottom + -0x10;
       RStack_1c.left = param_2->left + 8;
       RStack_1c.right = param_2->left + 0x18;
-      thunk_ApplyRectClipRegionToGlobalClipState(&RStack_1c);
+      ApplyRectClipRegionToGlobalClipState(&RStack_1c);
       if (this->field_0x74 == '\0') {
         WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00();
         local_4 = 2;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_2c.bottom);
+        FillRectWithQuickDrawBrushAndContextOffset(&local_2c.bottom);
         puStack_8 = (undefined1 *)0xffffffff;
         thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
       }
@@ -1212,7 +1212,7 @@ TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(TOceanDialog *this,short param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005688D0
 // GHIDRA_NAME TOceanDialog::OrphanRetStub_00596680
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00596680(short param_1, short param_2)
+// GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanRetStub_00596680(short param_1, short param_2)
 
 void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this,short param_1,short param_2)
 
@@ -1258,7 +1258,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00596680(TOceanDialog *this,short pa
   uStack_4 = 0x1bf;
   *(short *)&g_pGlobalMapState->field_0x6 =
        *(short *)&this->field_0x7e + *(short *)&this->field_0x7c * 0x6c;
-  thunk_InvalidateCityDialogRectRegion(&uStack_10,1);
+  InvalidateCityDialogRectRegion(&uStack_10,1);
   InvokeViewSlotE4IfContextPresent();
   return;
 }
@@ -1276,7 +1276,7 @@ void __thiscall TOceanDialog::OrphanRetStub_00594fc0(TOceanDialog *this,short pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568A40
 // GHIDRA_NAME TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
-// GHIDRA_PROTO undefined __thiscall ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
 
 void __thiscall
 TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(TOceanDialog *this,byte param_1)
@@ -1323,13 +1323,13 @@ int __thiscall TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E(TOceanD
   
   local_8 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x7c + 0xe);
   local_4 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x7e + 0x10);
-  thunk_NormalizeWrappedMapCoord108x60(&local_4,&local_8);
+  NormalizeWrappedMapCoord108x60(&local_4,&local_8);
   return local_4 + local_8 * 0x6c;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593920
 // GHIDRA_NAME TOceanDialog::RequestAudioPresetChangeWithDeferredApply
-// GHIDRA_PROTO undefined __thiscall RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
+// GHIDRA_PROTO undefined __thiscall TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char param_2)
 
 void __thiscall
 TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this,int param_1,char param_2)
@@ -1340,9 +1340,9 @@ TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this,int p
   undefined4 uVar3;
   
   if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
-    cVar1 = thunk_IsTurnCooldownCounterActiveOrResetFlag();
+    cVar1 = IsTurnCooldownCounterActiveOrResetFlag();
     if (cVar1 == '\0') {
-      cVar1 = thunk_ReturnTrueStub();
+      cVar1 = ReturnTrueStub();
       if (cVar1 == '\0') {
         *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
         return;
@@ -1358,7 +1358,7 @@ TOceanDialog::RequestAudioPresetChangeWithDeferredApply(TOceanDialog *this,int p
         else {
           *(short *)&this->field_0x76 = sVar2;
           if (*(int *)&this->field_0x7c == 0) {
-            uVar3 = thunk_GetTickCountDiv16();
+            uVar3 = GetTickCountDiv16();
             *(undefined4 *)&this->field_0x7c = uVar3;
             ScheduleTimerSlotCallbackWithInterval(&LAB_00406dd4,6,0);
             return;

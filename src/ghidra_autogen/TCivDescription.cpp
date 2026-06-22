@@ -16,13 +16,13 @@ void __thiscall TCivDescription::_scalar_deleting_destructor_(TCivDescription *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A770
 // GHIDRA_NAME TCivDescription::ConstructTCivDescriptionBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCivDescriptionBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TCivDescription::ConstructTCivDescriptionBaseState(void)
 
 TCivDescription * __thiscall
 TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x60 = 0xffff;
   this->field_0x6c = 0;
@@ -37,7 +37,7 @@ TCivDescription * __thiscall
 TCivDescription::_scalar_deleting_destructor_(TCivDescription *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -88,17 +88,17 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
   local_8 = 0xd7;
   local_4 = 0x78;
   local_18 = this;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_14,&local_24);
-  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[4].field_0xb0,local_24);
-  piVar4 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xb0);
+  GetActiveQuickDrawSurfaceContextAndFlags(local_14,&local_24);
+  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[4].field_0xb0,local_24);
+  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xb0);
   local_1c = piVar4;
-  thunk_ReturnConstantTrueQuickDrawFlag(piVar4);
+  ReturnConstantTrueQuickDrawFlag(piVar4);
   ResetQuickDrawStrokeState();
   iVar5 = GetSurfaceHeaderFromSurfaceObject(piVar4);
   uVar13 = *(ushort *)(*piVar4 + 4) & 0x3fff;
   SetQuickDrawStrokeColor(0xffffff);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-  thunk_FillRectWithQuickDrawBrushAndContextOffset(local_14);
+  FillRectWithQuickDrawBrushAndContextOffset(local_14);
   iVar14 = 0;
   local_24 = 0;
   do {
@@ -126,7 +126,7 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
   puVar6 = (undefined1 *)AllocateWithFallbackHandler(0x6540);
   if (puVar6 == (undefined1 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x7e3);
   }
   GetSurfaceHeaderFromSurfaceObject(piVar4);
@@ -190,9 +190,9 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
   } while (iVar5 != 0);
   FreeHeapBufferIfNotNull(puVar6);
   SetQuickDrawFillColor(0);
-  uVar11 = thunk_GetSurfaceObjectAtContextOffset24(local_1c[0x19c]);
-  thunk_NoOpQuickDrawLifecycleHookB(uVar11);
-  thunk_SetActiveQuickDrawSurfaceContext(local_18,uStack_28);
+  uVar11 = GetSurfaceObjectAtContextOffset24(local_1c[0x19c]);
+  NoOpQuickDrawLifecycleHookB(uVar11);
+  SetActiveQuickDrawSurfaceContext(local_18,uStack_28);
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
@@ -265,9 +265,9 @@ TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
   ushort wSrcStrideFlags;
   
   pOverlayAtlasSurface =
-       (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xbc);
+       (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[4].field_0xbc);
   wDstStrideFlags = *(ushort *)(*pDstSurface + 4);
-  thunk_ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
+  ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
   nRemainingRows = GetSurfaceHeaderFromSurfaceObject(pOverlayAtlasSurface);
   wSrcStrideFlags = *(ushort *)(*pOverlayAtlasSurface + 4);
   nDstBaseOffset = GetSurfaceHeaderFromSurfaceObject(pDstSurface);
@@ -292,7 +292,7 @@ TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
     pbDstRow = pbDstPixel + nDstStrideBytes + -0x25;
     pbSrcRow = pbSrcPixel + (short)(wSrcStrideFlags & 0x3fff) + -0x25;
   } while (nRemainingRows != 0);
-  thunk_NoOpQuickDrawLifecycleHookB(pOverlayAtlasSurface);
+  NoOpQuickDrawLifecycleHookB(pOverlayAtlasSurface);
   return;
 }
 
@@ -427,13 +427,13 @@ void __thiscall TCivDescription::RenderStrategicMapTileCell(TCivDescription *thi
     AppendPointerToGlobalVectorAsStatus();
   }
   iVar2 = *(int *)&this[2].field_0x70;
-  iVar9 = thunk_GetSurfaceObjectAtContextOffset24();
+  iVar9 = GetSurfaceObjectAtContextOffset24();
   GetSurfaceHeaderFromSurfaceObject();
   local_4c.left = (LONG)_cStack0000000c;
   local_4c.top = (LONG)_bStack00000008;
   local_4c.right = local_4c.left + 0x40;
   local_4c.bottom = local_4c.top + 0x40;
-  thunk_GetSurfaceObjectAtContextOffset24();
+  GetSurfaceObjectAtContextOffset24();
   iVar10 = GetSurfaceHeaderFromSurfaceObject();
   iVar17 = param_1 * 0x24;
   bVar22 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar17) == '\x05';
@@ -593,17 +593,17 @@ LAB_0051eddf:
       cStack0000000c = cVar7;
       SetQuickDrawFillColor();
       if (bVar22) {
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
         if (bVar6 != 0) {
-          thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+          SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
           (*this->vftable[0x48].GetTEventHandlerClassNamePointer)();
         }
       }
       else {
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+        SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
         (*this->vftable[0x41].GetTEventHandlerClassNamePointer)();
       }
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+      SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
       SetQuickDrawFillColor();
     }
     cStack0000000c = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 8 + iVar17);
@@ -809,20 +809,20 @@ LAB_0051eddf:
       cVar7 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)();
       if ((cVar7 == '\0') &&
          (cVar7 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x18 + iVar17), cVar7 != -1)) {
-        thunk_BlitStrategicMapUnitActivityOverlayFrame
+        TCivDescription::BlitStrategicMapUnitActivityOverlayFrame
                   (g_pStrategicMapViewSystem,local_6c,(short)cVar7,(short)local_4c.left + 0x1e,
                    (short)local_4c.top + 0x14);
       }
     }
   }
   if (*(short *)((int)&this->ownerContext[1].field34 + 2) != 4) {
-    sVar16 = thunk_GetWrappedHexNeighborTileIndexByDirection();
+    sVar16 = GetWrappedHexNeighborTileIndexByDirection();
     if (((sVar16 != -1) &&
         (iVar9 = *(int *)&g_pGlobalMapState->field_0xc + sVar16 * 0x24,
         (*(byte *)(iVar9 + 0x1c) & 3) != 0)) && (*(char *)(iVar9 + 0x13) != '\0')) {
       CString::CString((CString *)&stack0x0000000c);
       local_4._0_1_ = 1;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      AssignSharedStringFromIndexedA8EntryNameField();
       uStack_54 = 0;
       ppuStack_58 = &CBrush::_vftable_;
       local_4._0_1_ = 2;
@@ -839,26 +839,26 @@ LAB_0051eddf:
       SetQuickDrawStyleWord_1D4C_AndMarkDirty();
       SetQuickDrawStyleWord_1D50_AndMarkDirty();
       SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      MeasureTextExtentWithCachedQuickDrawStyle();
+      SetQuickDrawTextOriginWithContextOffset();
       SetQuickDrawFillColorFromPaletteIndex();
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawTextOriginWithContextOffset();
       SetQuickDrawFillColorFromPaletteIndex();
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       SetQuickDrawFillColorFromPaletteIndex();
       local_4._0_1_ = 1;
       TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar11,0);
       local_4 = (uint)local_4._1_3_ << 8;
       CString::~CString((CString *)&stack0x0000000c);
     }
-    sVar16 = thunk_GetWrappedHexNeighborTileIndexByDirection();
+    sVar16 = GetWrappedHexNeighborTileIndexByDirection();
     if (((sVar16 != -1) &&
         (iVar9 = *(int *)&g_pGlobalMapState->field_0xc + sVar16 * 0x24,
         (*(byte *)(iVar9 + 0x1c) & 3) != 0)) && (*(char *)(iVar9 + 0x13) != '\0')) {
       CString::CString((CString *)&stack0x0000000c);
       local_4._0_1_ = 5;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      AssignSharedStringFromIndexedA8EntryNameField();
       uStack_54 = 0;
       ppuStack_58 = &CBrush::_vftable_;
       local_4._0_1_ = 6;
@@ -875,13 +875,13 @@ LAB_0051eddf:
       SetQuickDrawStyleWord_1D4C_AndMarkDirty();
       SetQuickDrawStyleWord_1D50_AndMarkDirty();
       SetQuickDrawStyleWord_1D4E_AndMarkDirty();
-      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      MeasureTextExtentWithCachedQuickDrawStyle();
+      SetQuickDrawTextOriginWithContextOffset();
       SetQuickDrawFillColorFromPaletteIndex();
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-      thunk_SetQuickDrawTextOriginWithContextOffset();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawTextOriginWithContextOffset();
       SetQuickDrawFillColorFromPaletteIndex();
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       SetQuickDrawFillColorFromPaletteIndex();
       local_4._0_1_ = 5;
       TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(pTVar11,0);
@@ -898,7 +898,7 @@ LAB_0051eddf:
       iStack_14 = local_4c.left + 0x21;
       iStack_18 = local_4c.top + 0x20;
       iStack_10 = local_4c.top + 0x21;
-      thunk_FillRectWithQuickDrawBrushAndContextOffset();
+      FillRectWithQuickDrawBrushAndContextOffset();
       goto LAB_0051fe9c;
     }
   }
@@ -932,7 +932,7 @@ LAB_0051fe9c:
     }
   }
   sVar16 = UiRuntimeContext::GetActiveNationId();
-  piVar13 = TCivToolbar::thunk_GetTileUnitEntryByOwner
+  piVar13 = TCivToolbar::GetTileUnitEntryByOwner
                       ((TCivToolbar *)g_pGlobalMapState,param_1,sVar16);
   if (piVar13 == (int *)0x0) {
     piVar13 = *(int **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar17);
@@ -949,9 +949,9 @@ LAB_0051fe9c:
     CString::CString((CString *)&stack0x0000000c);
     local_4._0_1_ = 9;
     SetQuickDrawFillColor();
-    thunk_SetQuickDrawTextOriginWithContextOffset();
+    SetQuickDrawTextOriginWithContextOffset();
     FormatStringWithVarArgsToSharedRef();
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     local_4 = (uint)local_4._1_3_ << 8;
     CString::~CString((CString *)&stack0x0000000c);
   }
@@ -982,7 +982,7 @@ TView * TCivDescription::CreateTCivDescriptionInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x170);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&_vftable_;
     *(undefined2 *)&this[1].vftable = 0xffff;
     *(undefined1 *)&this[1].field0c = 0;
@@ -995,7 +995,7 @@ TView * TCivDescription::CreateTCivDescriptionInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F0F0
 // GHIDRA_NAME TCivDescription::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TCivDescription::GetTEventHandlerClassNamePointer(TCivDescription *this)
 
@@ -1029,7 +1029,7 @@ TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivDescription 
     case 7:
     case 8:
       this->field_0x6c = 0;
-      thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(this,param_1);
+      TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(this,param_1);
     }
     (*this->vftable[0x1c].slot_0x04)();
   }
@@ -1231,7 +1231,7 @@ TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F550
 // GHIDRA_NAME TCivDescription::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
 
 void __thiscall
 TCivDescription::OrphanTiny_ReturnZero_0048a730(TCivDescription *this,undefined4 param_1)
@@ -1287,19 +1287,19 @@ TCivDescription::OrphanTiny_ReturnZero_0048a730(TCivDescription *this,undefined4
     local_14 = (TCivDescription *)0x0;
     param_1 = 0;
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc,0x2b68);
-    thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_14);
-    thunk_MapUiThemeCodeToStyleFlags(0x2b67,&param_1);
+    MapUiThemeCodeToStyleFlags(0x2b6c,&local_14);
+    MapUiThemeCodeToStyleFlags(0x2b67,&param_1);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)
               (0x2718,CONCAT22((short)((uint)&local_10 >> 0x10),*(undefined2 *)&this->field_0x60),
                &local_10);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
     iVar5 = this->field34 / 2 - (int)sVar1 / 2;
     SetQuickDrawColorAndSyncGlobals(param_1);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,0x47);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
+    SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,0x47);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
     SetQuickDrawColorAndSyncGlobals(local_14);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5,0x46);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
+    SetQuickDrawTextOriginWithContextOffset(iVar5,0x46);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
   }
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -1384,10 +1384,10 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
   puStack_70 = (undefined1 *)0x60;
   RStack_80.bottom = 0xc;
   RStack_80.right = 0x58f8f9;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   puStack_70 = &stack0xffffffa4;
   RStack_80.bottom = 0x58f906;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   puStack_70 = &stack0xffffffa4;
   RStack_80.bottom = 7;
   RStack_80.right = 0x272d;
@@ -1396,10 +1396,10 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
   RStack_80.top = 0x78;
   RStack_80.left = 0x28;
   RStack_90.bottom = 0x58f92c;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   RStack_80.top = (LONG)&uStack_68;
   RStack_80.left = 0x58f939;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   RStack_80.top = (LONG)&pCStack_64;
   RStack_80.left = 2000;
   RStack_90.bottom = 0x58f951;
@@ -1407,10 +1407,10 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
   RStack_90.bottom = 0x78;
   RStack_90.right = 0x54;
   RStack_90.top = 0x58f95a;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   RStack_90.bottom = (LONG)&uStack_6c;
   RStack_90.right = 0x58f967;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   RStack_90.bottom = (LONG)&puStack_70;
   RStack_90.right = 8;
   RStack_90.top = 0x272d;
@@ -1426,26 +1426,26 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9a5;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   pRStack_98 = (RECT *)&RStack_90.bottom;
   acStack_9c[0] = -0x4e;
   acStack_9c[1] = -7;
   acStack_9c[2] = 'X';
   acStack_9c[3] = '\0';
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   pRStack_98 = (RECT *)0x90;
   acStack_9c[0] = 'T';
   acStack_9c[1] = '\0';
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9c1;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   pRStack_98 = &RStack_80;
   acStack_9c[0] = -0x32;
   acStack_9c[1] = -7;
   acStack_9c[2] = 'X';
   acStack_9c[3] = '\0';
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   pRStack_98 = (RECT *)&RStack_90.bottom;
   acStack_9c[0] = '\t';
   acStack_9c[1] = '\0';
@@ -1456,14 +1456,14 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CStack_a4.m_pchData = (char *)&RStack_90.top;
   (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&CStack_a4);
-  thunk_SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar1 / 2);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_a4);
+  SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar1 / 2);
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   RStack_80.top = 0;
   RStack_80.left = 0x15b;
@@ -1617,11 +1617,11 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
   local_18 = 0xffffffff;
   local_12 = 0xffff;
   local_10 = 0xffffffff;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  thunk_SetQuickDrawTextOriginWithContextOffset();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawTextOriginWithContextOffset();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   iVar4 = (-(uint)(cVar1 == '\x02') & 3) + 2;
   iStack_64 = iVar4;
   ResetQuickDrawStrokeState();
@@ -1661,9 +1661,9 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
         local_68.m_pchData[7] = '\0';
       }
       SetQuickDrawColorAndSyncGlobals();
-      thunk_SetQuickDrawTextOriginWithContextOffset(RStack_60.right + 2);
+      SetQuickDrawTextOriginWithContextOffset(RStack_60.right + 2);
       FormatStringWithVarArgsToSharedRef(&stack0xffffff8c,&g_szDecimalFormat);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor();
       local_70 = asStack_40 + iStack_6c * 4;
@@ -1817,9 +1817,9 @@ TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPa
   if (-1 < *(short *)(&DAT_00698fe0 + *(short *)&this->field_0x60 * 2)) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffff70);
-    thunk_SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar2 / 2);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffff70);
+    SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar2 / 2);
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     sVar4 = 0;
     sVar2 = *(short *)(&DAT_00698fe0 + *(short *)&this->field_0x60 * 2);
     iVar5 = (int)*(short *)&this->field_0x60 << 2;
@@ -1853,9 +1853,9 @@ TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPa
     SetQuickDrawStrokeColor();
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x272d,2);
-    thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    thunk_SetQuickDrawTextOriginWithContextOffset();
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    MeasureTextExtentWithCachedQuickDrawStyle();
+    SetQuickDrawTextOriginWithContextOffset();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
     iStack_80 = 0;
     psVar8 = &DAT_00698fca;
@@ -1881,10 +1881,10 @@ TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPa
                    (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
                    (RECT *)(auStack_58 + 0xc),(RECT *)(local_68 + 0xc),0x24,(astruct_19 *)0x0);
         SetQuickDrawStrokeColor();
-        thunk_SetQuickDrawTextOriginWithContextOffset();
+        SetQuickDrawTextOriginWithContextOffset();
         UiRuntimeContext::GetActiveNationId();
         FormatStringWithVarArgsToSharedRef();
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+        THQButton::DrawTextWithCachedQuickDrawStyleState();
       }
       psVar8 = psVar8 + 2;
       iStack_80 = iStack_80 + 1;
@@ -1927,9 +1927,9 @@ TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPa
             pTStack_74->field04 = 1;
           }
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-          thunk_SetQuickDrawTextOriginWithContextOffset();
+          SetQuickDrawTextOriginWithContextOffset();
           FormatStringWithVarArgsToSharedRef();
-          THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+          THQButton::DrawTextWithCachedQuickDrawStyleState();
           this = pTStack_74;
         }
         iStack_80 = iStack_80 + 1;
@@ -1944,7 +1944,7 @@ TCivDescription::RenderCivilianTargetProfilePanel(TCivDescription *this,int *pPa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA670
 // GHIDRA_NAME TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-// GHIDRA_PROTO undefined __thiscall ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int param_1)
 
 undefined2 __thiscall
 TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
@@ -1966,7 +1966,7 @@ TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupan
   local_20[5] = 0;
   local_20[6] = 2;
   local_20[7] = 4;
-  thunk_ComputeHexNeighborTileIndices(param_1,local_38);
+  ComputeHexNeighborTileIndices_005A0420(param_1,local_38);
   if ((((char)(param_1 / 0x1d) + (char)(param_1 >> 0x1f)) -
        (char)((longlong)param_1 * 0x8d3dcb09 >> 0x3f) & 1U) == 0) {
     iVar1 = 4;

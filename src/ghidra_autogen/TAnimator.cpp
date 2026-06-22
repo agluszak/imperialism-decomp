@@ -23,7 +23,7 @@ TEventHandler * TAnimator::CreateTAnimatorInstance(void)
   this = (TEventHandler *)AllocateWithFallbackHandler(0x30);
   local_4 = 0;
   if (this != (TEventHandler *)0x0) {
-    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults(this);
+    TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(this);
     this->vftable = (TEventHandlerVtbl *)&TAnimatorVtbl_0064c4e8;
     this[2].field0c = 0;
     this[2].vftable = (TEventHandlerVtbl *)0x0;
@@ -37,7 +37,7 @@ TEventHandler * TAnimator::CreateTAnimatorInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0A80
 // GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
 
@@ -47,12 +47,12 @@ CRuntimeClass * __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AA0
 // GHIDRA_NAME TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8
-// GHIDRA_PROTO undefined __thiscall ConstructUiTransientObjectRegistry_Vtbl0064c4e8(void)
+// GHIDRA_PROTO undefined __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(void)
 
 TAnimator * __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(TAnimator *this)
 
 {
-  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   this->vftable = &TAnimatorVtbl_0064c4e8;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x20 = 0;
@@ -123,7 +123,7 @@ uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int para
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0DC0
 // GHIDRA_NAME TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimator *this)
 
@@ -139,7 +139,7 @@ void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimato
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0E10
 // GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(int * param_1)
 
 void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this,int *param_1)
 
@@ -152,7 +152,7 @@ void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this,int 
   *(undefined4 *)&this->field_0x10 = 0x7fffffff;
   uVar2 = (**(code **)(iVar1 + 0x50))();
   *(undefined4 *)&this->field_0x10 = uVar2;
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   return;
 }
 
@@ -164,7 +164,7 @@ void __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this,int *par
 
 {
   (**(code **)(*param_1 + 0x8c))(*(undefined4 *)&this->field_0x10);
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   return;
 }
 

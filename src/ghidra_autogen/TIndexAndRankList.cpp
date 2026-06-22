@@ -39,7 +39,7 @@ TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this,und
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534850
 // GHIDRA_NAME TIndexAndRankList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TIndexAndRankList::GetTEventHandlerClassNamePointer(TIndexAndRankList *this)
@@ -69,7 +69,7 @@ TIndexAndRankList * __thiscall
 TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte param_1)
 
 {
-  DestructTIndexAndRankList();
+  CObArray::DestructCObArray();
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -78,7 +78,7 @@ TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005348D0
 // GHIDRA_NAME TIndexAndRankList::DestructTIndexAndRankList
-// GHIDRA_PROTO undefined DestructTIndexAndRankList()
+// GHIDRA_PROTO undefined CObArray::DestructCObArray()
 
 void TIndexAndRankList::DestructTIndexAndRankList(void)
 
@@ -101,7 +101,7 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534910
 // GHIDRA_NAME TIndexAndRankList::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 int __thiscall
 TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this,int param_1,int param_2)
@@ -115,7 +115,7 @@ TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this,int param_1,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B710
 // GHIDRA_NAME TIndexAndRankList::InitializeInterNationEventQueueManager
-// GHIDRA_PROTO undefined InitializeInterNationEventQueueManager()
+// GHIDRA_PROTO undefined TIndexAndRankList::InitializeInterNationEventQueueManager()
 
 void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int param_1)
 

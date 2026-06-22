@@ -35,7 +35,7 @@ TColorKeyPicture * TColorKeyButton::CreateTColorKeyButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F50
 // GHIDRA_NAME TColorKeyButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TColorKeyButton::GetTEventHandlerClassNamePointer(TColorKeyButton *this)
 
@@ -64,7 +64,7 @@ TColorKeyButton * __thiscall
 TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

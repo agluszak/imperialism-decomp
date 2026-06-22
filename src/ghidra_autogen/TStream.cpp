@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488920
 // GHIDRA_NAME TStream::CreateTStreamInstance
-// GHIDRA_PROTO undefined __thiscall CreateTStreamInstance(void)
+// GHIDRA_PROTO undefined __thiscall TStream::CreateTStreamInstance(void)
 
 void __thiscall TStream::CreateTStreamInstance(TStream *this)
 
@@ -42,7 +42,7 @@ CRuntimeClass * __thiscall TStream::GetTStreamClassNamePointer(TStream *this)
 TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this,byte param_1)
 
 {
-  DestructTStreamAndMaybeFree(this);
+  TStream::DestructTStreamAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -51,7 +51,7 @@ TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A40
 // GHIDRA_NAME TStream::DestructTStreamAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTStreamAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TStream::DestructTStreamAndMaybeFree(void)
 
 void __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
 
@@ -120,7 +120,7 @@ undefined4 __thiscall TStream::AssertMcAppStreamLine304(TStream *this)
 
 {
   if (DAT_006a1a10 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x130);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x130);
   }
   return 0;
 }
@@ -358,7 +358,7 @@ void __thiscall TStream::AssertMcAppStreamLine596(TStream *this)
 
 {
   if (DAT_006a1a14 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x254);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x254);
   }
   return;
 }

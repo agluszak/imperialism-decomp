@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045D480
 // GHIDRA_NAME TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
+// GHIDRA_PROTO undefined __thiscall TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
 
 TTacticalHolaPicture * __thiscall
 TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
@@ -25,7 +25,7 @@ TTacticalHolaPicture * __thiscall
 TTacticalHolaPicture::_scalar_deleting_destructor_(TTacticalHolaPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ thunk_TPictureButton * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD740
 // GHIDRA_NAME TTacticalHolaPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTacticalHolaPicture::GetTEventHandlerClassNamePointer(TTacticalHolaPicture *this)

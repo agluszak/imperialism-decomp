@@ -21,7 +21,7 @@ TPictureLine * __thiscall
 TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this,byte param_1)
 
 {
-  DestructTPictureLineAndMaybeFree(this);
+  TPictureLine::DestructTPictureLineAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700D0
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTPictureLineAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(void)
 
 void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *this)
 

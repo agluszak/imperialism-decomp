@@ -4,10 +4,10 @@
 // Bucket: TradeControl.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E2E
-// GHIDRA_NAME TradeControl::thunk_AssertCityProductionGlobalStateInitialized
-// GHIDRA_PROTO undefined __thiscall thunk_AssertCityProductionGlobalStateInitialized(void)
+// GHIDRA_NAME TCouncilView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall TCouncilView::OrphanRetStub_0059add0(void)
 
-void __thiscall TradeControl::thunk_AssertCityProductionGlobalStateInitialized(TradeControl *this)
+void __thiscall TCouncilView::OrphanRetStub_0059add0(TradeControl *this)
 
 {
   TCouncilView::OrphanRetStub_0059add0((TCouncilView *)this);
@@ -26,7 +26,7 @@ void __thiscall TradeControl::thunk_AssertCityProductionGlobalStateInitialized(T
 bool __thiscall TradeControl::LogUnhandledDialogMethodAndReturnFalse(TradeControl *this)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x58f);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x58f);
   return false;
 }
 

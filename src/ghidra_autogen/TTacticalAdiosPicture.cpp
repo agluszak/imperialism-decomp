@@ -11,7 +11,7 @@ TTacticalAdiosPicture * __thiscall
 TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -50,7 +50,7 @@ thunk_TPictureButton * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstanc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4B0
 // GHIDRA_NAME TTacticalAdiosPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTacticalAdiosPicture::GetTEventHandlerClassNamePointer(TTacticalAdiosPicture *this)
@@ -61,7 +61,7 @@ TTacticalAdiosPicture::GetTEventHandlerClassNamePointer(TTacticalAdiosPicture *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4D0
 // GHIDRA_NAME TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalAdiosPicture *this)
 
@@ -96,7 +96,7 @@ void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTactica
   undefined1 local_3;
   
   uStack_2c = 0x5ad4e3;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_28 = 0x7469746c;
   local_6 = 0;
   pTVar1 = this->vftable[0x12].slot_0x04;
@@ -114,7 +114,7 @@ void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTactica
   puStack_3c = auStack_10;
   uStack_38 = 0;
   uStack_40 = 0x5ad526;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_30 = auStack_10;
   uStack_2c = 0;
   uStack_34 = 0x5ad538;
@@ -135,7 +135,7 @@ void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTactica
   puStack_50 = &stack0xffffffdc;
   uStack_4c = 2;
   uStack_54 = 0x5ad56b;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   puStack_44 = &stack0xffffffdc;
   uStack_40 = 0;
   uStack_48 = 0x5ad57d;
@@ -166,7 +166,7 @@ void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTactica
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD650
 // GHIDRA_NAME TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)
 
 void __thiscall
 TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
@@ -180,7 +180,7 @@ TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

@@ -25,10 +25,10 @@ TControl * TCloseParentButton::CreateTCloseParentButtonInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TControlVtbl *)&TButton::_vftable_;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     this->vftable = (TControlVtbl *)&TCloseParentButtonVtbl_006648d8;
     pTVar1 = this;
   }
@@ -38,7 +38,7 @@ TControl * TCloseParentButton::CreateTCloseParentButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C40
 // GHIDRA_NAME TCloseParentButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TCloseParentButton::GetTEventHandlerClassNamePointer(TCloseParentButton *this)
@@ -64,10 +64,10 @@ TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *thi
   puStack_8 = &LAB_00637698;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   local_4 = 0;
   this->vftable = (TCloseParentButtonVtbl *)&TButton::_vftable_;
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
   this->vftable = &TCloseParentButtonVtbl_006648d8;
   *unaff_FS_OFFSET = local_c;
   return this;
@@ -81,7 +81,7 @@ TCloseParentButton * __thiscall
 TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -90,7 +90,7 @@ TCloseParentButton::_scalar_deleting_destructor_(TCloseParentButton *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D30
 // GHIDRA_NAME TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
 TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject

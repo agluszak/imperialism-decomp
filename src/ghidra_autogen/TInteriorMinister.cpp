@@ -16,7 +16,7 @@ TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,undefine
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE170
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(undefined2 param_1)
 
 undefined2 __thiscall
 TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this,undefined2 param_1)
@@ -77,7 +77,7 @@ TInteriorMinister::DeletingDestructTMinister(TInteriorMinister *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE290
 // GHIDRA_NAME TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
@@ -109,7 +109,7 @@ TInteriorMinister::DeserializeTMinisterBaseOrderArrayHeader(TInteriorMinister *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE320
 // GHIDRA_NAME TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(int * param_1)
 
 void __thiscall
 TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader(TInteriorMinister *this,int *param_1)
@@ -166,7 +166,7 @@ TInteriorMinister::DispatchNationStateEventCode10(TInteriorMinister *this,short 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE3F0
 // GHIDRA_NAME TInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
 
 void __thiscall TInteriorMinister::SetForeignMinisterReadyFlag14(TInteriorMinister *this)
 
@@ -186,7 +186,7 @@ void __thiscall TInteriorMinister::_scalar_deleting_destructor_(TInteriorMiniste
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE430
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this)
 
@@ -261,7 +261,7 @@ void __thiscall TInteriorMinister::OrphanRetStub_004be6d0(TInteriorMinister *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BED60
 // GHIDRA_NAME TInteriorMinister::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TInteriorMinister::GetTEventHandlerClassNamePointer(TInteriorMinister *this)
 
@@ -377,7 +377,7 @@ LAB_004c0456:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C18A0
 // GHIDRA_NAME TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
-// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined2 param_1)
+// GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(undefined2 param_1)
 
 void __thiscall
 TInteriorMinister::SerializeTMinisterBaseOrderArrayHeader
@@ -425,7 +425,7 @@ TInteriorMinister * __thiscall
 TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,byte param_1)
 
 {
-  DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(this);
+  TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -434,7 +434,7 @@ TInteriorMinister::_scalar_deleting_destructor_(TInteriorMinister *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6AD0
 // GHIDRA_NAME TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0
-// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(void)
+// GHIDRA_PROTO undefined __thiscall TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0(void)
 
 void __thiscall
 TInteriorMinister::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0

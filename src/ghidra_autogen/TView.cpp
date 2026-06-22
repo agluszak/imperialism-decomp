@@ -4,10 +4,10 @@
 // Bucket: TView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406BA9
-// GHIDRA_NAME TView::thunk_NoOpUiLifecycleHook
-// GHIDRA_PROTO undefined __thiscall thunk_NoOpUiLifecycleHook(void)
+// GHIDRA_NAME TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TView::thunk_NoOpUiLifecycleHook(TView *this)
+void __thiscall TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920(TView *this)
 
 {
   return;
@@ -15,7 +15,7 @@ void __thiscall TView::thunk_NoOpUiLifecycleHook(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00479BE0
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(CArchive * param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(CArchive * param_1)
 
 void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this,CArchive *param_1)
 
@@ -90,7 +90,7 @@ void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this,CArchive *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A280
 // GHIDRA_NAME TView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
 TView::OrphanRetStub_0059add0(TView *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
@@ -127,7 +127,7 @@ undefined4 __fastcall TView::CreateTViewInstance(undefined4 param_1)
   this = (TView *)AllocateWithFallbackHandler(0x60,param_1);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     *unaff_FS_OFFSET = local_c;
     return extraout_EAX;
   }
@@ -137,7 +137,7 @@ undefined4 __fastcall TView::CreateTViewInstance(undefined4 param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A8C0
 // GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
 
@@ -191,7 +191,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
 TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
-  thunk_DestructEngineerDialogBaseState(this);
+  TView::DestructTViewBaseState(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -233,7 +233,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
 TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 {
-  DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
+  TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -242,7 +242,7 @@ TView * __thiscall TView::_scalar_deleting_destructor_(TView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ADD0
 // GHIDRA_NAME TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
-// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
 
 void __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(TView *this)
 
@@ -323,7 +323,7 @@ void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BFD0
 // GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 TView * __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
 
@@ -332,13 +332,13 @@ TView * __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
   undefined3 extraout_var;
   
   uVar1 = (*this->vftable[4].slot_0x04)();
-  thunk_CopyCityDialogStateFromSource((TView *)CONCAT31(extraout_var,uVar1),this);
+  TView::CopyCityDialogStateFromSource((TView *)CONCAT31(extraout_var,uVar1),this);
   return (TView *)CONCAT31(extraout_var,uVar1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C220
 // GHIDRA_NAME TView::EnableAndProcessFlag
-// GHIDRA_PROTO void __thiscall EnableAndProcessFlag(CString * sharedString)
+// GHIDRA_PROTO void __thiscall TView::EnableAndProcessFlag(CString * sharedString)
 
 void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
 
@@ -350,7 +350,7 @@ void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C450
 // GHIDRA_NAME TView::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches mouse-move style input to child UI elements first, then to the current widget.
 // GHIDRA_COMMENT Returns 1 when a child/current widget consumes the event, otherwise 0.
@@ -420,7 +420,7 @@ TView::SetForeignMinisterReadyFlag14
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CE70
 // GHIDRA_NAME TView::DestructTIncludeViewAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTIncludeViewAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(void)
 
 void __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(TView *this)
 
@@ -450,7 +450,7 @@ void __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D670
 // GHIDRA_NAME TView::DestructTWindowViewAndUnlinkGlobalLists
-// GHIDRA_PROTO undefined __thiscall DestructTWindowViewAndUnlinkGlobalLists(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructTWindowViewAndUnlinkGlobalLists(void)
 
 void __thiscall TView::DestructTWindowViewAndUnlinkGlobalLists(TView *this)
 
@@ -543,7 +543,7 @@ void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
   sVar1 = (short)this[1].ownerOffsetX;
   local_4 = 0;
   if (sVar1 != -1) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+    DecrementDialogResourceRefCountByShortIdAndCleanup
               (CONCAT22((short)((uint)uStack_c >> 0x10),sVar1));
   }
   *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
@@ -564,7 +564,7 @@ void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004904D0
 // GHIDRA_NAME TView::DestructTEditTextAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTEditTextAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructTEditTextAndMaybeFree(void)
 
 void __thiscall TView::DestructTEditTextAndMaybeFree(TView *this)
 
@@ -608,7 +608,7 @@ void __thiscall TView::DestructTEditTextAndMaybeFree(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004914B0
 // GHIDRA_NAME TView::DestructTClusterAndMaybeFree_Impl
-// GHIDRA_PROTO undefined __thiscall DestructTClusterAndMaybeFree_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructTClusterAndMaybeFree_Impl(void)
 
 void __thiscall TView::DestructTClusterAndMaybeFree_Impl(TView *this)
 
@@ -636,7 +636,7 @@ void __thiscall TView::DestructTClusterAndMaybeFree_Impl(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492140
 // GHIDRA_NAME TView::DestructTWindowAndUnlinkGlobalWindowNode
-// GHIDRA_PROTO undefined __thiscall DestructTWindowAndUnlinkGlobalWindowNode(void)
+// GHIDRA_PROTO undefined __thiscall TView::DestructTWindowAndUnlinkGlobalWindowNode(void)
 
 void __thiscall TView::DestructTWindowAndUnlinkGlobalWindowNode(TView *this)
 
@@ -704,7 +704,7 @@ LAB_004921ef:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492EA0
 // GHIDRA_NAME TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl
-// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
+// GHIDRA_PROTO undefined __thiscall TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
 
 void __thiscall TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(TView *this)
 

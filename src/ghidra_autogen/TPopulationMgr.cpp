@@ -21,7 +21,7 @@ TPopulationMgr * __thiscall
 TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this,byte param_1)
 
 {
-  DestructTPopulationMgrAndMaybeFree(this);
+  TPopulationMgr::DestructTPopulationMgrAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BE0
 // GHIDRA_NAME TPopulationMgr::DestructTPopulationMgrAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTPopulationMgrAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(void)
 
 void __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMgr *this)
 
@@ -670,7 +670,7 @@ TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr 
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
@@ -694,7 +694,7 @@ TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr 
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);

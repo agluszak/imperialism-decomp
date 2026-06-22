@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004356E0
 // GHIDRA_NAME TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
+// GHIDRA_PROTO undefined __thiscall TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
 
 TNewspaperView * __thiscall
 TNewspaperView::WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(TNewspaperView *this)
@@ -24,7 +24,7 @@ TNewspaperView * __thiscall
 TNewspaperView::_scalar_deleting_destructor_(TNewspaperView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -63,7 +63,7 @@ thunk_TPictureButton * TNewspaperView::CreateTNewspaperView(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D1E0
 // GHIDRA_NAME TNewspaperView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNewspaperView::GetTEventHandlerClassNamePointer(TNewspaperView *this)
 

@@ -11,7 +11,7 @@ TAutomatedPlayDialog * __thiscall
 TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this,by
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46A0
 // GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
@@ -31,7 +31,7 @@ TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46C0
 // GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
 
@@ -42,7 +42,7 @@ void __thiscall TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomate
   uVar1 = (*this->vftable[0x12].slot_0x04)(0x6e756d20);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x34e);
   }
   g_nTurnCooldownDeferCounter006A43C4 =
@@ -51,7 +51,7 @@ void __thiscall TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomate
   if (0 < g_nTurnCooldownDeferCounter006A43C4) {
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
   }
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   return;
 }
 

@@ -78,10 +78,10 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
       g_pModuleLibraryCacheState = (CMainFrame *)0x0;
     }
     else {
-      g_pModuleLibraryCacheState = (CMainFrame *)thunk_ConstructDataLibraryLoadState(local_54);
+      g_pModuleLibraryCacheState = (CMainFrame *)CMainFrame::ConstructModuleLibraryCacheDualTableState(local_54);
     }
     local_4._0_1_ = 2;
-    iVar2 = thunk_LoadLanguageResourcesFromIrgFiles();
+    iVar2 = LoadLanguageResourcesFromIrgFiles();
     if (iVar2 == 0) {
       local_4._0_1_ = 6;
     }
@@ -92,20 +92,20 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
       }
       else {
         _DAT_006a1350 = ShowAutoResolutionDialogIfNeeded();
-        thunk_ApplyAutoResolutionModeAndPersist(_DAT_006a1350);
-        iVar2 = LoadModuleLibrarySlotWithErrorDialog
+        ApplyAutoResolutionModeAndPersist(_DAT_006a1350);
+        iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
                           (g_pModuleLibraryCacheState,(LPCSTR)this[1].vftable,(CString)0x0);
         if (iVar2 == 0) {
           local_4._0_1_ = 8;
         }
         else {
-          iVar2 = LoadModuleLibrarySlotWithErrorDialog
+          iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
                             (g_pModuleLibraryCacheState,s_Data_PictPaid_gob_00694238,(CString)0x1);
           if (iVar2 == 0) {
             local_4._0_1_ = 9;
           }
           else {
-            iVar2 = LoadModuleLibrarySlotWithErrorDialog
+            iVar2 = CMainFrame::LoadModuleLibrarySlotWithErrorDialog
                               (g_pModuleLibraryCacheState,s_Data_PictUniv_gob_00694220,(CString)0x3)
             ;
             if (iVar2 == 0) {
@@ -122,7 +122,7 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
                 } while (pCVar3 != (LPCSTR)0x0);
               }
               PostMessageA((HWND)0xffff,0x1d,0,0);
-              thunk_SetGlobalDword6A2018(local_4c);
+              SetGlobalDword6A2018(local_4c);
               local_54 = (CMainFrame *)AllocateWithFallbackHandler(0x68);
               local_4._0_1_ = 0xb;
               if (local_54 == (CMainFrame *)0x0) {
@@ -150,12 +150,12 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
                     g_pGlobalUiRootController = (TApplication *)0x0;
                   }
                   else {
-                    TApplication::thunk_ConstructGlobalUiRootControllerState(this_00);
+                    TApplication::ConstructGlobalUiRootControllerState(this_00);
                     this_00->vftable = (TApplicationVtbl *)&TAmbitApplicationVtbl_0063e398;
                     g_pGlobalUiRootController = this_00;
                   }
                   local_4._0_1_ = 2;
-                  thunk_InitializeGlobalRuntimeSystemsFromConfig();
+                  InitializeGlobalRuntimeSystemsFromConfig();
                   local_54 = (CMainFrame *)AllocateWithFallbackHandler(0x84);
                   local_4._0_1_ = 0xf;
                   if (local_54 == (CMainFrame *)0x0) {
@@ -164,7 +164,7 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
                   else {
                     g_pSfxPlaybackSystem =
                          (TSoundPlayer *)
-                         TSoundPlayer::thunk_ConstructSfxPlaybackSystemState
+                         TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z
                                    ((TSoundPlayer *)local_54);
                   }
                   local_4 = CONCAT31(local_4._1_3_,2);
@@ -175,7 +175,7 @@ undefined4 __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this)
                     (**(code **)(*(int *)pCVar5 + 0x7c))();
                   }
                   GetObjectValueAtOffset98();
-                  thunk_SetUiRuntimeContextAndActivateMain(*(undefined4 *)(DAT_006a2158 + 4));
+                  SetUiRuntimeContextAndActivateMain(*(undefined4 *)(DAT_006a2158 + 4));
                   iVar2 = CompareAnsiStringsWithMbcsAwareness(local_1c.m_pchData,&g_szEmptyString);
                   if (iVar2 != 0) {
                     pCVar5 = AfxGetThread();
@@ -264,7 +264,7 @@ CMainFrame::AdjustWindowRectForClientAndScrollStyles(CMainFrame *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486990
 // GHIDRA_NAME CMainFrame::DispatchVirtualSlotF8_WithArg
-// GHIDRA_PROTO undefined __thiscall DispatchVirtualSlotF8_WithArg(void)
+// GHIDRA_PROTO undefined __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(void)
 
 void __thiscall CMainFrame::DispatchVirtualSlotF8_WithArg(CMainFrame *this)
 
@@ -291,7 +291,7 @@ void __thiscall CMainFrame::OnEndPrintPreview(CMainFrame *this,undefined4 param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A7C0
 // GHIDRA_NAME CMainFrame::UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+// GHIDRA_PROTO undefined __thiscall TNumberText::UpdateControlCachedIntFromWindowText(void)
 
 undefined4 * __thiscall CMainFrame::UpdateControlCachedIntFromWindowText(CMainFrame *this)
 
@@ -299,7 +299,7 @@ undefined4 * __thiscall CMainFrame::UpdateControlCachedIntFromWindowText(CMainFr
   undefined4 *puVar1;
   
   if (DAT_006a1ae4 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
   }
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 != (undefined4 *)0x0) {
@@ -346,7 +346,7 @@ void __thiscall CMainFrame::ConstructModuleLibraryCacheDualTableState(CMainFrame
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004992A0
 // GHIDRA_NAME CMainFrame::LoadModuleLibrarySlotWithErrorDialog
-// GHIDRA_PROTO undefined __thiscall LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
+// GHIDRA_PROTO undefined __thiscall CMainFrame::LoadModuleLibrarySlotWithErrorDialog(LPCSTR param_1, CString param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
 // GHIDRA_COMMENT - Frees previous module in the slot if present.

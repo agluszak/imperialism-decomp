@@ -21,7 +21,7 @@ TNominationView * __thiscall
 TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -30,7 +30,7 @@ TNominationView::_scalar_deleting_destructor_(TNominationView *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB760
 // GHIDRA_NAME TNominationView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TNominationView::GetTEventHandlerClassNamePointer(TNominationView *this)
 
@@ -108,7 +108,7 @@ void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView
   puStack_4c = &stack0xffffffd8;
   uStack_48 = 0;
   uStack_50 = 0x4fb802;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_44 = &stack0xffffffd8;
   uStack_40 = 1;
   uStack_48 = 0x4fb814;
@@ -129,7 +129,7 @@ void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView
   puStack_64 = &uStack_40;
   uStack_60 = 0;
   puStack_68 = (undefined4 *)0x4fb84b;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   puStack_5c = &uStack_40;
   uStack_58 = 1;
   uStack_60 = 0x4fb85d;
@@ -166,16 +166,16 @@ void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB990
 // GHIDRA_NAME TNominationView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1)
 
 void __thiscall TNominationView::OrphanRetStub_0059add0(TNominationView *this,int param_1)
 
 {
   if (param_1 == 10) {
-    thunk_PostTurnEventCodeMessage2420(0x7e0);
+    PostTurnEventCodeMessage2420(0x7e0);
     return;
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 

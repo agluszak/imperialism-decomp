@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550670
 // GHIDRA_NAME ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
-// GHIDRA_PROTO undefined SelectPreferredMapOrderEntryByPriorityRules()
+// GHIDRA_PROTO undefined ObjectPool::SelectPreferredMapOrderEntryByPriorityRules()
 
 int __thiscall
 ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,char param_3)
@@ -82,7 +82,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550FF0
 // GHIDRA_NAME ObjectPool::RemoveNode
-// GHIDRA_PROTO void __thiscall RemoveNode(int self)
+// GHIDRA_PROTO void __thiscall ObjectPool::RemoveNode(int self)
 
 void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
 
@@ -96,7 +96,7 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
   if (owner_ctx != (astruct_8 *)0x0) {
     list_head = owner_ctx->field16_0x10;
     if ((list_head != (int *)0x0) && ((ObjectPool *)*list_head != this)) {
-      list_head = FindMissionOrderNodeById((ObjectPool *)list_head[1],(int)this);
+      list_head = ObjectPool::FindMissionOrderNodeById((ObjectPool *)list_head[1],(int)this);
     }
     if (list_head != (int *)0x0) {
       list_head = owner_ctx->field16_0x10;
@@ -126,7 +126,7 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
       list_head = owner_ctx->field16_0x10;
       owner_ctx->field17_0x14 = 0;
       for (; list_head != (int *)0x0; list_head = (int *)list_head[1]) {
-        new_head = SelectPreferredMapOrderEntryByPriorityRules(owner_ctx->field17_0x14,0);
+        new_head = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(owner_ctx->field17_0x14,0);
         owner_ctx->field17_0x14 = new_head;
       }
     }
@@ -165,7 +165,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       pTVar1 = *(TShip **)&pTVar1->field_0x24) {
     if ((*(int *)&pTVar1->field_0x8 == in_stack_00000010) &&
        (*(short *)&pTVar1->field_0x14 == *(short *)(unaff_EBP + 4))) {
-      iVar5 = SelectPreferredMapOrderEntryByPriorityRules(iVar5,1);
+      iVar5 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(iVar5,1);
     }
   }
   if (*(int *)(unaff_EBP + 8) != 0) {
@@ -175,7 +175,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       iVar3 = *(int *)(iVar2 + 0x10);
       *(undefined4 *)(iVar2 + 0x14) = 0;
       for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
-        uVar4 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar2 + 0x14),0);
+        uVar4 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar2 + 0x14),0);
         *(undefined4 *)(iVar2 + 0x14) = uVar4;
       }
     }
@@ -188,7 +188,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
       iVar2 = *(int *)(iVar5 + 0x10);
       *(undefined4 *)(iVar5 + 0x14) = 0;
       for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
-        uVar4 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar5 + 0x14),0);
+        uVar4 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar5 + 0x14),0);
         *(undefined4 *)(iVar5 + 0x14) = uVar4;
       }
     }
@@ -198,7 +198,7 @@ void ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552510
 // GHIDRA_NAME ObjectPool::FindMissionOrderNodeById
-// GHIDRA_PROTO void * __thiscall FindMissionOrderNodeById(int nChildNodeId)
+// GHIDRA_PROTO void * __thiscall ObjectPool::FindMissionOrderNodeById(int nChildNodeId)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void* FindMapOrderChildNodeById(int nChildNodeId)
 // GHIDRA_COMMENT_END
@@ -237,7 +237,7 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
     piVar5 = (int *)0x0;
   }
   else if (*piVar5 != param_2) {
-    piVar5 = FindMissionOrderNodeById((ObjectPool *)piVar5[1],param_2);
+    piVar5 = ObjectPool::FindMissionOrderNodeById((ObjectPool *)piVar5[1],param_2);
   }
   iVar6 = 0;
   if (piVar5 != (int *)0x0) {
@@ -268,7 +268,7 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
     iVar4 = *(int *)(param_1 + 0x10);
     *(undefined4 *)(param_1 + 0x14) = 0;
     for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
-      iVar6 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(param_1 + 0x14),0);
+      iVar6 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(param_1 + 0x14),0);
       *(int *)(param_1 + 0x14) = iVar6;
     }
   }

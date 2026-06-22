@@ -11,7 +11,7 @@ TBattleDetailBook * __thiscall
 TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -51,7 +51,7 @@ thunk_TPictureButton * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA70
 // GHIDRA_NAME TBattleDetailBook::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TBattleDetailBook::GetTEventHandlerClassNamePointer(TBattleDetailBook *this)
@@ -102,7 +102,7 @@ TView * TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TArmyBoyViewVtbl_0064dff8;
     pTVar1 = this;
   }

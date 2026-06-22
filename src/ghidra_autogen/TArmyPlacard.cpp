@@ -36,7 +36,7 @@ thunk_TPictureButton * TArmyPlacard::CreateTArmyPlacardInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BEB0
 // GHIDRA_NAME TArmyPlacard::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyPlacard::GetTEventHandlerClassNamePointer(TArmyPlacard *this)
 
@@ -46,7 +46,7 @@ CRuntimeClass * __thiscall TArmyPlacard::GetTEventHandlerClassNamePointer(TArmyP
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BED0
 // GHIDRA_NAME TArmyPlacard::TArmyPlacard
-// GHIDRA_PROTO undefined __thiscall TArmyPlacard(void)
+// GHIDRA_PROTO undefined __thiscall TArmyPlacard::TArmyPlacard(void)
 
 TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
 
@@ -65,7 +65,7 @@ TArmyPlacard * __thiscall
 TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -105,7 +105,7 @@ TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this,short p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BFE0
 // GHIDRA_NAME TArmyPlacard::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
 
@@ -125,19 +125,19 @@ void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
   local_10.m_pchData = (char *)this;
   CString::CString(&local_10);
   local_4 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   if (*(short *)&this->field_0x90 != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
     FormatStringWithVarArgsToSharedRef
               (&local_10,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
-    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
-    thunk_SetQuickDrawTextOriginWithContextOffset
+    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
+    SetQuickDrawTextOriginWithContextOffset
               ((short)this->field34 - sVar1,(short)this->field38 + -2);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6c);
-    thunk_SetQuickDrawTextOriginWithContextOffset
+    SetQuickDrawTextOriginWithContextOffset
               (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,(short)this->field38 + -3);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&local_10);
   }
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
@@ -147,7 +147,7 @@ void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C140
 // GHIDRA_NAME TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall
 TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmyPlacard *this,int param_1)

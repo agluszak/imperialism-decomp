@@ -23,7 +23,7 @@ TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this[1].vftable = (TNoHilitePictureVtbl *)0x0;
     this->vftable = (TNoHilitePictureVtbl *)&TUnitsViewVtbl_006518e8;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FB0
 // GHIDRA_NAME TUnitsView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TUnitsView::GetTEventHandlerClassNamePointer(TUnitsView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TUnitsView::GetTEventHandlerClassNamePointer(TUnitsVi
 TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   *(undefined4 *)&this->field_0x94 = 0;
   this->vftable = &TUnitsViewVtbl_006518e8;
   return this;
@@ -63,7 +63,7 @@ TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *thi
 TUnitsView * __thiscall TUnitsView::_scalar_deleting_destructor_(TUnitsView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

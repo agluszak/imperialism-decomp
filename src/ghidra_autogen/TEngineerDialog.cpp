@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0540
 // GHIDRA_NAME TEngineerDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEngineerDialog *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEn
 TEngineerDialog * __thiscall TEngineerDialog::ConstructEngineerDialog(TEngineerDialog *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &_vftable_;
   *(undefined4 *)&this->field_0x60 = 0;
   *(undefined4 *)&this->field_0x64 = 0;
@@ -36,7 +36,7 @@ TEngineerDialog * __thiscall
 TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -59,13 +59,13 @@ void __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *t
   if (*(int *)&this->field_0x68 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x68);
   }
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0650
 // GHIDRA_NAME TEngineerDialog::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Renders Engineer dialog background into DAT_006A1D60 using a header/body/footer tiling scheme.
 // GHIDRA_COMMENT - blits header strip from surface +0x60.

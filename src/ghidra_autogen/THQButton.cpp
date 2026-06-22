@@ -4,10 +4,10 @@
 // Bucket: THQButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004029AA
-// GHIDRA_NAME THQButton::thunk_DrawTextWithCachedQuickDrawStyleState
-// GHIDRA_PROTO undefined thunk_DrawTextWithCachedQuickDrawStyleState()
+// GHIDRA_NAME THQButton::DrawTextWithCachedQuickDrawStyleState
+// GHIDRA_PROTO undefined THQButton::DrawTextWithCachedQuickDrawStyleState()
 
-void __fastcall THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(int *param_1)
+void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
 
 {
   undefined4 uVar1;
@@ -49,10 +49,10 @@ void __fastcall THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(int *para
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404FE8
-// GHIDRA_NAME THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay
-// GHIDRA_PROTO undefined __thiscall thunk_RenderHintHelperWithCtrlModifierOverlay(void)
+// GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(THQButton *this)
+void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(THQButton *this)
 
 {
   THQButton_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
@@ -194,7 +194,7 @@ thunk_TPictureButton * THQButton::CreateTHQButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B640
 // GHIDRA_NAME THQButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall THQButton::GetTEventHandlerClassNamePointer(THQButton *this)
 
@@ -221,7 +221,7 @@ THQButton * __thiscall THQButton::THQButton(THQButton *this)
 THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -230,14 +230,14 @@ THQButton * __thiscall THQButton::_scalar_deleting_destructor_(THQButton *this,b
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B6E0
 // GHIDRA_NAME THQButton::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_PROTO undefined __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void)
 
 void __thiscall THQButton::OrphanLeaf_NoCall_Ins07_004d8920(THQButton *this)
 
 {
   short sVar1;
   
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   sVar1 = *(short *)&this->field_0x84;
   *(undefined2 *)&this->field_0x98 = 0;
   *(short *)&this->field_0x90 = sVar1;
@@ -298,7 +298,7 @@ LAB_0058b7a7:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B7F0
 // GHIDRA_NAME THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButton *this,int param_1)
 
@@ -307,12 +307,12 @@ void __thiscall THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(THQButto
     if (this->field_0x64 == '\0') {
       (*this->vftable[0x39].slot_0x04)(1,1);
     }
-    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,0xc);
+    TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
   }
   if (param_1 != 0x1f) {
     if (param_1 != 0x20) {
-      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+      TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
     (*this->vftable[0x39].slot_0x04)(0,1);

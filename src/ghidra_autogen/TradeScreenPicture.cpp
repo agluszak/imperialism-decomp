@@ -35,7 +35,7 @@ thunk_TPictureButton * TradeScreenPicture::CreateTradeScreenPictureInstance(void
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA720
 // GHIDRA_NAME TradeScreenPicture::ConstructTradeScreenPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTradeScreenPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TradeScreenPicture::ConstructTradeScreenPictureBaseState(void)
 
 TradeScreenPicture * __thiscall
 TradeScreenPicture::ConstructTradeScreenPictureBaseState(TradeScreenPicture *this)

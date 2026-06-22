@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D770
 // GHIDRA_NAME TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
-// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770(void)
+// GHIDRA_PROTO undefined __thiscall TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770(void)
 
 TTerrainHelpPicture * __thiscall
 TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
@@ -25,7 +25,7 @@ TTerrainHelpPicture * __thiscall
 TTerrainHelpPicture::_scalar_deleting_destructor_(TTerrainHelpPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -64,7 +64,7 @@ thunk_TPictureButton * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504E70
 // GHIDRA_NAME TTerrainHelpPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTerrainHelpPicture::GetTEventHandlerClassNamePointer(TTerrainHelpPicture *this)
@@ -290,7 +290,7 @@ LAB_00505041:
   puStack_74 = local_2c;
   CStack_70.m_pchData = (char *)0x4;
   uStack_78 = 0x505198;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   pTStack_30 = this->vftable;
   sVar10 = 0;
   pTVar1 = pTStack_30[0x12].slot_0x04;
@@ -363,7 +363,7 @@ LAB_00505041:
   puStack_7c = auStack_34;
   uStack_78 = 0;
   CStack_80.m_pchData = (char *)0x5052bc;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   ppTStack_6c = (TTerrainHelpPictureVtbl **)0x696e666f;
   CStack_70.m_pchData = (char *)0x5052c8;
   uVar4 = (*pTVar1)();
@@ -394,7 +394,7 @@ LAB_00505041:
   CStack_84.m_pchData = (char *)0x0;
   uStack_20 = CONCAT31(uStack_20._1_3_,3);
   pcStack_8c = (char *)0x505343;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   uStack_78 = 0x7469746c;
   puStack_7c = (undefined1 *)0x50534f;
   uVar4 = (*pTVar1)();
@@ -416,12 +416,12 @@ LAB_00505041:
   (**(code **)(iVar8 + 0x1b4))();
   pcVar12 = (char *)((int)ppTStack_6c + *(int *)&g_pGlobalMapState->field_0xc);
   if (*pcVar12 == '\x05') {
-    piVar7 = thunk_GetMapActionContextByTileIndex((short)pcStack_3c);
+    piVar7 = GetMapActionContextByTileIndex((short)pcStack_3c);
     (**(code **)(*piVar7 + 0x2c))(&CStack_84);
   }
   else {
     sVar10 = *(short *)(pcVar12 + 0x14);
-    thunk_AssignSharedStringFromIndexedA8EntryNameField((int)sVar10,&CStack_70);
+    AssignSharedStringFromIndexedA8EntryNameField((int)sVar10,&CStack_70);
     pcStack_3c = (char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + sVar10 * 0xa8);
     FormatOverlayTerrainLabelText(&CStack_80);
     if ((int)pcStack_3c < 7) {
@@ -541,7 +541,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_28 = 0;
   uStack_27 = 0;
   uStack_60 = 0x50580a;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   psStack_5c = (short *)auStack_24;
   acStack_4c[0] = '\x03';
   acStack_4c[1] = '\0';
@@ -551,7 +551,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_54 = 0xc;
   uStack_58 = 4;
   uStack_60 = 0x505822;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   psStack_5c = asStack_30;
   acStack_4c[0] = '\x01';
   acStack_4c[1] = '\0';
@@ -561,7 +561,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
   uStack_54 = 0xc;
   uStack_58 = 0;
   uStack_60 = 0x505839;
-  thunk_InitializeUiTextStyleDescriptor();
+  InitializeUiTextStyleDescriptor();
   builtin_strncpy(acStack_4c,"meti",4);
   uStack_50 = 0x50584f;
   uVar2 = (*pTVar1[0x12].slot_0x04)();
@@ -618,7 +618,7 @@ TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005059D0
 // GHIDRA_NAME TTerrainHelpPicture::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall
 TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this,int param_1,int param_2)
@@ -626,7 +626,7 @@ TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this,int param_
 {
   undefined2 extraout_var;
   
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if (((param_1 == 0xd) && (0x69303060 < *(uint *)(param_2 + 0x1c))) &&
      (*(uint *)(param_2 + 0x1c) < 0x6930306d)) {
     (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);

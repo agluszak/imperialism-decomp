@@ -11,7 +11,7 @@ TMinorTreatyDialog * __thiscall
 TMinorTreatyDialog::_scalar_deleting_destructor_(TMinorTreatyDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TMinorTreatyDialog::_scalar_deleting_destructor_(TMinorTreatyDialog *this,byte p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4070
 // GHIDRA_NAME TMinorTreatyDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TMinorTreatyDialog::GetTEventHandlerClassNamePointer(TMinorTreatyDialog *this)
@@ -94,7 +94,7 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
       piStack_34 = piVar7;
       if (piVar7 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       iVar8 = 0;
       iVar9 = 0;
@@ -103,7 +103,7 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
           piVar6 = (int *)(**(code **)(*piVar7 + 0x94))();
           if (piVar6 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
           }
           uVar5 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer)
@@ -128,12 +128,12 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
   local_38 = (TMinorTreatyDialog *)CONCAT31(extraout_var_01,uVar5);
   if (local_38 == (TMinorTreatyDialog *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
   uVar5 = (*pTVar2)();
   if (CONCAT31(extraout_var_02,uVar5) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x30e);
   }
   iVar8 = 0;
@@ -145,14 +145,14 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
       piVar6 = (int *)(**(code **)(*local_3c + 0x94))(uVar3);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x316);
       }
       (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffb0,0);
       piVar6 = (int *)(**(code **)(*unaff_EDI + 0x94))(uVar3);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x319);
       }
       (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa4,0);
@@ -164,13 +164,13 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
   local_3c = (int *)(*(code *)local_38)(0x636f6c31);
   if (local_3c == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x31e);
   }
   piVar6 = (int *)(*(code *)pTVar4)(0x636f6c32);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,800);
   }
   iVar9 = 0x1c;
@@ -181,7 +181,7 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
       piVar7 = (int *)(**(code **)(*local_40 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar9));
       if (piVar7 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x329);
       }
       (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
@@ -191,7 +191,7 @@ void __thiscall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(TMinorT
       piVar7 = (int *)(**(code **)(*piVar6 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar9));
       if (piVar7 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x331);
       }
       (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
@@ -227,10 +227,10 @@ TView * TMinorTreatyDialog::DestructTMinorTreatyDialogAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TAutomatedPlayDialogVtbl_0066c178;
     pTVar1 = this;
   }

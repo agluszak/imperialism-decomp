@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD760
 // GHIDRA_NAME TTask::CreateTTaskInstance
-// GHIDRA_PROTO undefined __thiscall CreateTTaskInstance(void)
+// GHIDRA_PROTO undefined __thiscall TTask::CreateTTaskInstance(void)
 
 void __thiscall TTask::CreateTTaskInstance(TTask *this)
 
@@ -87,7 +87,7 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
   CStack_58.m_pchData = (char *)0x5ad86a;
   FormatOverlayTerrainLabelText();
   CStack_54.m_pchData = (char *)&pcStack_38;
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  AssignSharedStringFromIndexedA8EntryNameField();
   CStack_54.m_pchData = pcStack_40;
   CStack_58.m_pchData = pcStack_38;
   scanBracketExpressions(g_pLocalizationTable,&CStack_34,pcStack_3c);
@@ -122,7 +122,7 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADB70
 // GHIDRA_NAME TTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTask::GetTTaskClassNamePointer(TTask *this)
 
@@ -132,12 +132,12 @@ CRuntimeClass * __thiscall TTask::GetTTaskClassNamePointer(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBB0
 // GHIDRA_NAME TTask::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(byte param_1)
+// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(byte param_1)
 
 TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this,byte param_1)
 
 {
-  DestructTTaskAndMaybeFree(this);
+  TTask::DestructTTaskAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -146,7 +146,7 @@ TTask * __thiscall TTask::ConstructTTaskBaseState(TTask *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBE0
 // GHIDRA_NAME TTask::DestructTTaskAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTTaskAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TTask::DestructTTaskAndMaybeFree(void)
 
 void __thiscall TTask::DestructTTaskAndMaybeFree(TTask *this)
 
@@ -157,7 +157,7 @@ void __thiscall TTask::DestructTTaskAndMaybeFree(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC30
 // GHIDRA_NAME TTask::OrphanLeaf_NoCall_Ins04_005adc30
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_PROTO undefined __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(void)
 
 bool __thiscall TTask::OrphanLeaf_NoCall_Ins04_005adc30(TTask *this)
 
@@ -175,7 +175,7 @@ void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *t
 {
   code *pcVar1;
   
-  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  TObject::WriteTo((TArmyPlayer *)this);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -191,7 +191,7 @@ void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *t
 {
   code *pcVar1;
   
-  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  TObject::ReadFrom((TMapDialog *)this);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

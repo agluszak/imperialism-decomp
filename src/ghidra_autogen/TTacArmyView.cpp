@@ -11,7 +11,7 @@ TTacArmyView * __thiscall
 TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TTacArmyView::_scalar_deleting_destructor_(TTacArmyView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9D70
 // GHIDRA_NAME TTacArmyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTacArmyView::GetTEventHandlerClassNamePointer(TTacArmyView *this)
 
@@ -30,7 +30,7 @@ CRuntimeClass * __thiscall TTacArmyView::GetTEventHandlerClassNamePointer(TTacAr
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9D90
 // GHIDRA_NAME TTacArmyView::ConstructTTacArmyViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTacArmyViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(void)
 
 void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
 
@@ -84,16 +84,16 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
   if (*(int *)&this->field_0x74 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x74);
   }
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_38);
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_38);
   local_2c.left = 0;
   local_2c.top = DAT_006a5448;
   local_30 = 0;
   local_2c.right = DAT_006a544c;
   (**(code **)(*DAT_006a2158 + 0x2c))(puVar1,8,&local_30);
   piVar7 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iStack_8 + 0xf0a);
-  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
-  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
+  SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
+  uVar8 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+  ReturnConstantTrueQuickDrawFlag(uVar8);
   NoOpRuntimeCallback_00497c00(piVar7);
   puVar2 = (undefined4 *)*piVar7;
   if (puVar2 != (undefined4 *)0x0) {
@@ -112,9 +112,9 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
       FreeHeapBufferIfNotNull(this_00);
     }
     FreeHeapBufferIfNotNull(piVar7);
-    uVar8 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-    thunk_NoOpQuickDrawLifecycleHookB(uVar8);
-    thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+    uVar8 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+    NoOpQuickDrawLifecycleHookB(uVar8);
+    SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
     if (*(char *)(iStack_4 + 0x49) != '\0') {
       iStack_8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
       local_2c.left = DAT_006a5448 + -0x11e;
@@ -162,13 +162,13 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
     this_01 = (TTacArmyView *)CONCAT31(extraout_var,uVar6);
     if (this_01 == (TTacArmyView *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UTacViews_cpp_00699ff4,0x497);
     }
     *(int *)&this_01->field_0x88 = iStack_4;
     *(undefined4 *)&this_01->field_0x94 = *(undefined4 *)&this->field_0x68;
     (*this_01->vftable[0x39].slot_0x04)(*(undefined4 *)(*(int *)&this->field_0x60 + 0x1c));
-    ConfigureTacticalTargetDoneRetreatAutoControls(this_01,0);
+    TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(this_01,0);
     *(TTacArmyView **)&this->field_0xd0 = this_01;
     uVar6 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x636f6174);
     iVar9 = *(int *)CONCAT31(extraout_var_00,uVar6);
@@ -190,7 +190,7 @@ void __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA2E0
 // GHIDRA_NAME TTacArmyView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(int * param_1)
 
 void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *this,int *param_1)
 
@@ -217,12 +217,12 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
   local_4c.top = param_1[1];
   local_4c.right = param_1[2];
   local_4c.bottom = param_1[3];
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
-  thunk_GetSurfaceObjectAtContextOffset24();
-  thunk_ReturnConstantTrueQuickDrawFlag();
-  thunk_GetSurfaceObjectAtContextOffset24();
-  thunk_ReturnConstantTrueQuickDrawFlag();
+  GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
+  GetSurfaceObjectAtContextOffset24();
+  ReturnConstantTrueQuickDrawFlag();
+  GetSurfaceObjectAtContextOffset24();
+  ReturnConstantTrueQuickDrawFlag();
   sVar2 = (0x1d - (short)*(undefined4 *)(*(int *)&this->field_0x60 + 0x34)) *
           *(short *)&this->field_0x88;
   *(short *)&this->field_0xd4 = sVar2;
@@ -275,7 +275,7 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
     local_4 = 0xffffffff;
     ReleaseOrCacheQuickDrawSurface();
   }
-  thunk_SetActiveQuickDrawSurfaceContext(local_54);
+  SetActiveQuickDrawSurfaceContext(local_54);
   ResetQuickDrawStrokeState();
   puStack_50 = &stack0xffffff94;
   SetQuickDrawStrokeColor();
@@ -284,10 +284,10 @@ void __thiscall TTacArmyView::OrphanCallChain_C11_I88_004874b0(TTacArmyView *thi
              (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,&local_2c,0,
              (astruct_19 *)0x0);
   (*this->vftable[0x38].GetTEventHandlerClassNamePointer)();
-  thunk_GetSurfaceObjectAtContextOffset24();
-  thunk_NoOpQuickDrawLifecycleHookB();
-  thunk_GetSurfaceObjectAtContextOffset24();
-  thunk_NoOpQuickDrawLifecycleHookB();
+  GetSurfaceObjectAtContextOffset24();
+  NoOpQuickDrawLifecycleHookB();
+  GetSurfaceObjectAtContextOffset24();
+  NoOpQuickDrawLifecycleHookB();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -443,19 +443,19 @@ LAB_005aaa96:
       iVar18 = *(int *)&this->field_0x8c / 2 + local_11c.top;
       iVar15 = *(int *)&this->field_0x88 / 2 + local_11c.left;
       SetQuickDrawFillColor();
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar15 + -2);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar15 + 2);
+      SetQuickDrawTextOriginWithContextOffset(iVar15 + -2);
+      DrawCenteredGuideLineOnMapDc(iVar15 + 2);
       local_108 = (undefined1 *)(iVar18 + 1);
       iVar10 = iVar15 + -1;
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar10);
+      SetQuickDrawTextOriginWithContextOffset(iVar10);
       iVar15 = iVar15 + 1;
-      thunk_DrawCenteredGuideLineOnMapDc(iVar15);
+      DrawCenteredGuideLineOnMapDc(iVar15);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
       local_108 = (undefined1 *)(iVar18 + -1);
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar10);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar15);
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar10);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar15);
+      SetQuickDrawTextOriginWithContextOffset(iVar10);
+      DrawCenteredGuideLineOnMapDc(iVar15);
+      SetQuickDrawTextOriginWithContextOffset(iVar10);
+      DrawCenteredGuideLineOnMapDc(iVar15);
       sVar7 = (short)local_124;
     }
   }
@@ -603,7 +603,7 @@ LAB_005aaa96:
     pcVar12 = (char *)(uint)uVar6;
   }
   sVar5 = (short)pcVar12;
-  thunk_ComputeHexNeighborTileIndices(param_1);
+  ComputeHexNeighborTileIndices_005A0420(param_1);
   if (*(int *)(*(int *)(*(int *)&this->field_0x60 + 4) + 8 + (int)local_108) == 1) {
     sVar5 = TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
                       ((TCivDescription *)this,param_1);
@@ -967,19 +967,19 @@ LAB_005abc46:
     iStack_ec = local_11c.bottom + -1;
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawFillColor();
-    thunk_FillRectWithQuickDrawBrushAndContextOffset();
+    FillRectWithQuickDrawBrushAndContextOffset();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     iStack_f4 = iStack_f4 + -1;
     local_fc = local_fc + -1;
     iStack_f8 = iStack_f8 + -1;
     iStack_f0 = iStack_f0 + -1;
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_fc);
+    FillRectWithQuickDrawBrushAndContextOffset(&local_fc);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(6);
     iStack_f8 = (*(int *)(iVar10 + 4) + 0x18) / 0x19 + iStack_100;
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_100);
+    FillRectWithQuickDrawBrushAndContextOffset(&iStack_100);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x34);
     local_fc = puStack_104 + (*(int *)(iVar10 + 0x34) + 0x18) / 0x19;
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&puStack_104);
+    FillRectWithQuickDrawBrushAndContextOffset(&puStack_104);
     uVar4 = (*g_pGlobalMapState->vftable[0x22].GetTMapMgrClassNamePointer)
                       (*(undefined4 *)(iVar10 + 0x14));
     aStack_134.field0_0x0 = (int)(short)CONCAT31(extraout_var,uVar4);
@@ -1028,7 +1028,7 @@ LAB_005abc46:
     if (DAT_006a4758 != '\0') {
       puStack_104 = &stack0xfffffea0;
       SetQuickDrawFillColor();
-      thunk_SetQuickDrawTextOriginWithContextOffset
+      SetQuickDrawTextOriginWithContextOffset
                 (CONCAT22(extraout_var_00,(short)local_11c.left + *(short *)&this->field_0x88) + -8)
       ;
       RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
@@ -1156,12 +1156,12 @@ LAB_005abc78:
     puStack_104 = &stack0xfffffea0;
     iVar10 = *(int *)&this->field_0x88 / 2 + local_11c.left;
     SetQuickDrawFillColor();
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar10 + -2);
-    thunk_DrawCenteredGuideLineOnMapDc(iVar10 + 2);
+    SetQuickDrawTextOriginWithContextOffset(iVar10 + -2);
+    DrawCenteredGuideLineOnMapDc(iVar10 + 2);
     local_e8 = iVar10 + -1;
-    thunk_SetQuickDrawTextOriginWithContextOffset(local_e8);
+    SetQuickDrawTextOriginWithContextOffset(local_e8);
     iVar10 = iVar10 + 1;
-    thunk_DrawCenteredGuideLineOnMapDc(iVar10);
+    DrawCenteredGuideLineOnMapDc(iVar10);
     if ((((int)local_e4 < 2) && (*(int *)(*(int *)&this->field_0x60 + 0xc) == 0)) ||
        ((iVar15 = *(int *)&this->field_0x60, (int)local_e4 / 2 == *(int *)(iVar15 + 0x34) + -1 &&
         (*(int *)(iVar15 + 0xc) == 1)))) {
@@ -1174,17 +1174,17 @@ LAB_005abc78:
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
     iVar15 = local_e8;
-    thunk_SetQuickDrawTextOriginWithContextOffset(local_e8);
-    thunk_DrawCenteredGuideLineOnMapDc(iVar10);
-    thunk_SetQuickDrawTextOriginWithContextOffset(iVar15);
-    thunk_DrawCenteredGuideLineOnMapDc(iVar10);
+    SetQuickDrawTextOriginWithContextOffset(local_e8);
+    DrawCenteredGuideLineOnMapDc(iVar10);
+    SetQuickDrawTextOriginWithContextOffset(iVar15);
+    DrawCenteredGuideLineOnMapDc(iVar10);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACD60
 // GHIDRA_NAME TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
-// GHIDRA_PROTO undefined __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
+// GHIDRA_PROTO undefined __thiscall TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
 
 void __thiscall
 TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,int param_1)

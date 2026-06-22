@@ -11,7 +11,7 @@ TSelectoText * __thiscall
 TSelectoText::_scalar_deleting_destructor_(TSelectoText *this,byte param_1)
 
 {
-  CreateTSelectoTextInstance(this);
+  TStaticText::~TStaticText(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TSelectoText::_scalar_deleting_destructor_(TSelectoText *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B720
 // GHIDRA_NAME TSelectoText::CreateTSelectoTextInstance
-// GHIDRA_PROTO undefined __thiscall CreateTSelectoTextInstance(void)
+// GHIDRA_PROTO undefined __thiscall TStaticText::~TStaticText(void)
 
 void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
 
@@ -56,7 +56,7 @@ void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B740
 // GHIDRA_NAME TSelectoText::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TSelectoText::GetTEventHandlerClassNamePointer(TSelectoText *this)
 

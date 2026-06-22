@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F660
 // GHIDRA_NAME TCivAnimation2::CreateTCivAnimation2Instance
-// GHIDRA_PROTO undefined __thiscall CreateTCivAnimation2Instance(void)
+// GHIDRA_PROTO undefined __thiscall TCivAnimation2::CreateTCivAnimation2Instance(void)
 
 void __thiscall TCivAnimation2::CreateTCivAnimation2Instance(TCivAnimation2 *this)
 
@@ -26,7 +26,7 @@ CRuntimeClass * __thiscall TCivAnimation2::GetTAnimationClassNamePointer(TCivAni
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F6A0
 // GHIDRA_NAME TCivAnimation2::ConstructTCivAnimation2BaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimation2BaseState(undefined4 param_1, undefined4 * param_2, int param_3, undefined4 param_4)
+// GHIDRA_PROTO undefined __thiscall TCivAnimation2::ConstructTCivAnimation2BaseState(undefined4 param_1, undefined4 * param_2, int param_3, undefined4 param_4)
 
 void __thiscall
 TCivAnimation2::ConstructTCivAnimation2BaseState
@@ -89,7 +89,7 @@ uint __thiscall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(TCivAnimation
   if (uVar3 != *(uint *)&this->field_0x14) {
     return uVar3;
   }
-  thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+  InvalidateCityDialogRectRegion(&this->field_0x1c,1);
   *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
   uVar1 = *(ushort *)&this->field_0x8;
   uVar3 = (uint)uVar1;
@@ -152,7 +152,7 @@ LAB_0049f86f:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F8E0
 // GHIDRA_NAME TCivAnimation2::RenderBattleReportInsetWithPaletteShift
-// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(int * param_1)
+// GHIDRA_PROTO undefined __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(int * param_1)
 
 void __thiscall
 TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int *param_1)
@@ -279,7 +279,7 @@ TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this,int
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0D10
 // GHIDRA_NAME TCivAnimation2::AddObjectToUiTransientRegistry
-// GHIDRA_PROTO undefined __thiscall AddObjectToUiTransientRegistry(void)
+// GHIDRA_PROTO undefined __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(void)
 
 void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *this)
 
@@ -290,7 +290,7 @@ void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0D30
 // GHIDRA_NAME TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-// GHIDRA_PROTO undefined __thiscall FindLinkedListNodeByIdFieldAt18(int param_1)
+// GHIDRA_PROTO undefined __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1)
 
 int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 *this,int param_1)
 

@@ -10,7 +10,7 @@
 TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -19,7 +19,7 @@ TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE290
 // GHIDRA_NAME TScoreGraph::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TScoreGraph::GetTEventHandlerClassNamePointer(TScoreGraph *this)
 
@@ -43,7 +43,7 @@ void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
   TView *pTStack_10;
   
   pTStack_14 = (TView *)0x4fe2bf;
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTStack_10 = (TView *)0x4fe2ca;
   RecomputeNationComparativePowerMetrics();
   iVar2 = 0;
@@ -63,7 +63,7 @@ void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
   pTStack_10 = pTStack_14;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_14,(char *)&g_szEmptyString);
-  InitializeAndRunMainRoutine();
+  RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_10 = (TView *)0x4fe323;
   uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
   pTStack_10 = (TView *)0x63757273;
@@ -79,7 +79,7 @@ void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE390
 // GHIDRA_NAME TScoreGraph::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
 
@@ -136,7 +136,7 @@ void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
       local_14 = (char *)((short)iVar5 + 2);
       local_10 = iVar3 + 0x26;
       local_1c.m_pchData = (char *)0x2;
-      thunk_FillRectWithQuickDrawBrushAndContextOffset();
+      FillRectWithQuickDrawBrushAndContextOffset();
       iVar5 = 0;
       iVar4 = iVar4 + 0x1824;
       do {
@@ -148,7 +148,7 @@ void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
         local_18 = iVar3;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         local_48 = &local_1c;
-        thunk_FillRectWithQuickDrawBrushAndContextOffset();
+        FillRectWithQuickDrawBrushAndContextOffset();
         local_30 = local_30 + iVar1;
         iVar5 = iVar5 + 1;
         iVar4 = iVar4 + 4;
@@ -162,9 +162,9 @@ void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
       local_48 = (CString *)0x0;
       SetQuickDrawFillColor();
       local_48 = (CString *)(local_2c + 0x30);
-      thunk_SetQuickDrawTextOriginWithContextOffset(0);
+      SetQuickDrawTextOriginWithContextOffset(0);
       local_48 = &CStack_28;
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      THQButton::DrawTextWithCachedQuickDrawStyleState();
       local_2c = local_2c + 0x34;
       uStack_4 = 0xffffffff;
       local_48 = (CString *)0x4fe50e;

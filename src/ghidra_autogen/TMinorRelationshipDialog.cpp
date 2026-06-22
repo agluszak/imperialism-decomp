@@ -11,7 +11,7 @@ TMinorRelationshipDialog * __thiscall
 TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TMinorRelationshipDialog::_scalar_deleting_destructor_(TMinorRelationshipDialog 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B33E0
 // GHIDRA_NAME TMinorRelationshipDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDialog *this)
@@ -31,7 +31,7 @@ TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDia
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3400
 // GHIDRA_NAME TMinorRelationshipDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 void __thiscall
 TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDialog *this)
@@ -54,7 +54,7 @@ TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDia
       uVar1 = (*this->vftable[0x12].slot_0x04)(*(undefined4 *)((int)&DAT_0066b13c + (int)local_c));
       if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x229);
       }
       iVar5 = 0;
@@ -65,7 +65,7 @@ TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDia
                                     (*(undefined4 *)((int)&DAT_0066b180 + iVar6));
           if (piVar2 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x22f);
           }
           local_c = g_pDiplomacyTurnStateManager->vftable;
@@ -79,7 +79,7 @@ TMinorRelationshipDialog::GetTEventHandlerClassNamePointer(TMinorRelationshipDia
     local_c = (TDiplomacyMgrVtbl *)&local_c->slot_0x04;
     sVar4 = sVar4 + 1;
   } while (sVar4 < 0x17);
-  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  TSoundPlayer::GetTEventHandlerClassNamePointer((TSoundPlayer *)this);
   return;
 }
 
@@ -147,7 +147,7 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
       piStack_30 = piVar4;
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       iVar6 = 0;
       piStack_44 = (int *)0x7;
@@ -156,7 +156,7 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
           piVar4 = (int *)(**(code **)(*piVar4 + 0x94))();
           if (piVar4 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
           }
           iVar1 = *piVar4;
@@ -183,13 +183,13 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
   local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)piVar4;
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
   uVar3 = (*pTVar7)();
   local_3c[1] = CONCAT31(extraout_var_01,uVar3);
   if (local_3c[1] == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x263);
   }
   iVar6 = 0;
@@ -201,14 +201,14 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(uVar2);
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x26c);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffac,0);
       piVar4 = (int *)(**(code **)(*piStack_44 + 0x94))(uVar2);
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x26f);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffa0,0);
@@ -221,13 +221,13 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
   local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)piVar4;
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x274);
   }
   piVar5 = (int *)(*(code *)local_48.m_pchData)(0x636f6c32);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x276);
   }
   iVar6 = 0x1c;
@@ -238,7 +238,7 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(*(undefined4 *)((int)local_3c + iVar6 + -0x1c));
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x27f);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffa4,0);
@@ -249,7 +249,7 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
       piVar4 = (int *)(**(code **)(*piVar5 + 0x94))(*(undefined4 *)((int)local_3c + iVar6 + -0x1c));
       if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x287);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffa4,0);

@@ -35,7 +35,7 @@ thunk_TPictureButton * TSliderPicture::CreateTSliderPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A00
 // GHIDRA_NAME TSliderPicture::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TSliderPicture::GetTEventHandlerClassNamePointer(TSliderPicture *this)
 
@@ -45,7 +45,7 @@ CRuntimeClass * __thiscall TSliderPicture::GetTEventHandlerClassNamePointer(TSli
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A20
 // GHIDRA_NAME TSliderPicture::ConstructTSliderPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSliderPictureBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TSliderPicture::ConstructTSliderPictureBaseState(void)
 
 TSliderPicture * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSliderPicture *this)
 
@@ -64,7 +64,7 @@ TSliderPicture * __thiscall
 TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,12 +73,12 @@ TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573AA0
 // GHIDRA_NAME TSliderPicture::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TSliderPicture::OrphanTiny_ReturnZero_0048a730(TSliderPicture *this)
 
 {
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   return;
 }
 

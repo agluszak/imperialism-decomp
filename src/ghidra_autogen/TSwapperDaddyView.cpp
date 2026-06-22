@@ -11,7 +11,7 @@ TSwapperDaddyView * __thiscall
 TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6A0
 // GHIDRA_NAME TSwapperDaddyView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TSwapperDaddyView::GetTEventHandlerClassNamePointer(TSwapperDaddyView *this)

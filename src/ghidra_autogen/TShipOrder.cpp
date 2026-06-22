@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84A0
 // GHIDRA_NAME TShipOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(void)
 
 CRuntimeClass * __thiscall TShipOrder::GetTProductionOrderClassNamePointer(TShipOrder *this)
 
@@ -20,7 +20,7 @@ CRuntimeClass * __thiscall TShipOrder::GetTProductionOrderClassNamePointer(TShip
 TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this,byte param_1)
 
 {
-  DestructTShipOrderAndMaybeFree(this);
+  TShipOrder::DestructTShipOrderAndMaybeFree(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -29,7 +29,7 @@ TShipOrder * __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8510
 // GHIDRA_NAME TShipOrder::DestructTShipOrderAndMaybeFree
-// GHIDRA_PROTO undefined __thiscall DestructTShipOrderAndMaybeFree(void)
+// GHIDRA_PROTO undefined __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(void)
 
 void __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
 
@@ -255,7 +255,7 @@ void __thiscall TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability(TShi
     uVar9 = 0;
     uVar7 = (uint)*(ushort *)(*(int *)((int)*(void **)&this->field_0x8 + 0xac) + 0xc);
     pvVar4 = FindPortZoneBySelectedTile(*(void **)&this->field_0x8);
-    thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
+    CreateNavyPrimaryOrderNodeAndAssignDisplayName
               (*(undefined2 *)&this->field_0x48,pvVar4,uVar7,uVar9);
     sVar3 = *(short *)&this->field_0x4;
     *(short *)&this->field_0x4 = sVar3 + -1;
@@ -339,7 +339,7 @@ LAB_004b8b05:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8B80
 // GHIDRA_NAME TShipOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_PROTO undefined __thiscall TUnitOrder::CreateTItemOrderInstance(void)
 
 void __thiscall TShipOrder::CreateTItemOrderInstance(TShipOrder *this)
 

@@ -25,7 +25,7 @@ TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
   local_4 = 0;
   pTVar1 = (TControl *)0x0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    TControl::ConstructUiWindowResourceEntryType4B340(this);
     this->vftable = (TControlVtbl *)&TRearFloatWindowVtbl_00655928;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38C0
 // GHIDRA_NAME TRearFloatWindow::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TRearFloatWindow::GetTEventHandlerClassNamePointer(TRearFloatWindow *this)
@@ -52,7 +52,7 @@ TRearFloatWindow * __thiscall
 TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  TControl::ConstructUiWindowResourceEntryType4B340((TControl *)this);
   this->vftable = &TRearFloatWindowVtbl_00655928;
   return this;
 }
@@ -74,7 +74,7 @@ TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3960
 // GHIDRA_NAME TRearFloatWindow::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3)
 
 undefined4 __thiscall
 TRearFloatWindow::SetForeignMinisterReadyFlag14
@@ -96,7 +96,7 @@ TRearFloatWindow::SetForeignMinisterReadyFlag14
   iVar3 = CONCAT31(extraout_var,uVar2);
   switch((short)iVar3) {
   case 3:
-    uVar4 = TView::thunk_DispatchUiMouseMoveToChildren
+    uVar4 = TView::SetForeignMinisterReadyFlag14
                       ((TView *)this,param_1,param_1,param_2,param_3);
     return uVar4;
   case 4:

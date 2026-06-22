@@ -23,7 +23,7 @@ TView * TOrderView::CreateTOrderViewInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TOrderViewVtbl_00657eb0;
     this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TView * TOrderView::CreateTOrderViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A60
 // GHIDRA_NAME TOrderView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TOrderView::GetTEventHandlerClassNamePointer(TOrderView *this)
 
@@ -50,7 +50,7 @@ CRuntimeClass * __thiscall TOrderView::GetTEventHandlerClassNamePointer(TOrderVi
 TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TOrderViewVtbl_00657eb0;
   *(undefined4 *)&this->field_0x60 = 0;
   return this;
@@ -63,7 +63,7 @@ TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *thi
 TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507240
 // GHIDRA_NAME TOrderView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, undefined4 param_2, undefined4 param_3)
 
 void __thiscall
 TOrderView::OrphanRetStub_0059add0
@@ -92,7 +92,7 @@ TOrderView::OrphanRetStub_0059add0
     uVar3 = extraout_var_00;
     if (CONCAT31(extraout_var,uVar2) == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x285);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x285);
       uVar3 = extraout_var_01;
     }
     (**(code **)(**(int **)&this->field_0x64 + 0x2c))
@@ -100,7 +100,7 @@ TOrderView::OrphanRetStub_0059add0
     (*pTVar1[0x34].slot_0x04)();
     return;
   }
-  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this,param_1,param_2,param_3);
+  TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
   return;
 }
 

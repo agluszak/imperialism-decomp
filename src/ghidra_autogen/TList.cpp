@@ -60,7 +60,7 @@ TList * __thiscall TList::_scalar_deleting_destructor_(TList *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6C20
 // GHIDRA_NAME TList::InitializeNationMinisterSubsystemsByPolicyIds
-// GHIDRA_PROTO undefined __thiscall InitializeNationMinisterSubsystemsByPolicyIds(undefined4 param_1, undefined4 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
+// GHIDRA_PROTO undefined __thiscall TList::InitializeNationMinisterSubsystemsByPolicyIds(undefined4 param_1, undefined4 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)
 
 void __thiscall
 TList::InitializeNationMinisterSubsystemsByPolicyIds
@@ -222,7 +222,7 @@ LAB_004e6ef0:
     goto switchD_004e6de7_default;
   }
   local_4 = 0xffffffff;
-  thunk_InitializeTForeignMinisterStateAndCounters(this);
+  InitializeTForeignMinisterStateAndCounters(this);
   *(undefined4 *)&this[4].field_0x14 = uVar1;
 switchD_004e6de7_default:
   switch(param_3) {

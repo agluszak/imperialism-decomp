@@ -4,15 +4,15 @@
 // Bucket: TCivWorkOrderState.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404B33
-// GHIDRA_NAME TCivWorkOrderState::thunk_InitializeCivWorkOrderState
-// GHIDRA_PROTO void __thiscall thunk_InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
+// GHIDRA_NAME InitializeCivWorkOrderState
+// GHIDRA_PROTO void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
 
 void __thiscall
-TCivWorkOrderState::thunk_InitializeCivWorkOrderState
+InitializeCivWorkOrderState
           (TCivWorkOrderState *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
+  TUnitOrderState::RegisterUnitOrderWithOwnerManager
             ((TUnitOrderState *)this,(short)nOrderType,(short)pOwnerContext);
   *(undefined2 *)(this + 0x24) = 0;
   *(undefined2 *)(this + 0x26) = 0xffff;

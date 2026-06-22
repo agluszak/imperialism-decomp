@@ -23,7 +23,7 @@ TNoHilitePicture * TUniversityView::CreateTUniversityViewInstance(void)
   this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
   if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    TNoHilitePicture::ConstructPictureResourceEntryType606E8(this);
     this[1].vftable = (TNoHilitePictureVtbl *)0x0;
     this->vftable = (TNoHilitePictureVtbl *)&TUniversityViewVtbl_00651fc0;
     this[1].field04 = 0;
@@ -36,7 +36,7 @@ TNoHilitePicture * TUniversityView::CreateTUniversityViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC40
 // GHIDRA_NAME TUniversityView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TUniversityView::GetTEventHandlerClassNamePointer(TUniversityView *this)
 
@@ -46,13 +46,13 @@ CRuntimeClass * __thiscall TUniversityView::GetTEventHandlerClassNamePointer(TUn
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC60
 // GHIDRA_NAME TUniversityView::ConstructTUniversityViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTUniversityViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TUniversityView::ConstructTUniversityViewBaseState(void)
 
 TUniversityView * __thiscall
 TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
   this->vftable = &TUniversityViewVtbl_00651fc0;
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
@@ -67,7 +67,7 @@ TUniversityView * __thiscall
 TUniversityView::_scalar_deleting_destructor_(TUniversityView *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -144,7 +144,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
   int pRecruitOrderEntry;
   
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   nRecruitRowIndex = 0;
   nRecruitControlTag = 0x636c7530;
   do {
@@ -157,7 +157,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
       uVar2 = (*this->vftable[0x12].slot_0x04)();
       if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       pControlResource = *(int *)CONCAT31(extraout_var,uVar2);
       nMappedRecruitIndex = (short)nCapabilityRecruitIndex;
@@ -167,7 +167,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
       piVar3 = (int *)(*unaff_EBP)();
       if (piVar3 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       pControlResource = *piVar3;
       (**(code **)(pControlResource + 0xa4))();
@@ -192,7 +192,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
         if (piVar3 == (int *)0x0) {
           iStack_68 = 0x4cae99;
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+          TemporarilyClearAndRestoreUiInvalidationFlag();
         }
         pControlResource = *piVar3;
         (**(code **)(pControlResource + 0xa8))();
@@ -207,21 +207,21 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
     nRecruitRowIndex = nRecruitRowIndex + 1;
     nRecruitControlTag = nRecruitControlTag + 1;
   } while (nRecruitRowIndex < 9);
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pTVar1 = this->vftable[0x12].slot_0x04;
   uVar2 = (*pTVar1)();
   pControlResource = *(int *)CONCAT31(extraout_var_00,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
   (**(code **)(pControlResource + 0x1cc))();
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x756e6974;
   uVar2 = (*pTVar1)();
   pControlResource = *(int *)CONCAT31(extraout_var_01,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
   iStack_68 = 0x4caf91;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pControlResource = 0;
   do {
                     /* Populate two-line title text region for selected category. */
@@ -236,7 +236,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
     pControlResource = pControlResource + 1;
   } while ((short)pControlResource < 2);
   iStack_68 = 0x4cb007;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x64657363;
   uVar2 = (*pTVar1)();
   pControlResource = *(int *)CONCAT31(extraout_var_03,uVar2);
@@ -268,7 +268,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
   pcStack_70 = (code *)&stack0xffffffc4;
   puStack_6c = (undefined1 *)0x0;
   iStack_74 = 0x4cb0b6;
-  thunk_BuildUiTextStyleDescriptor();
+  BuildUiTextStyleDescriptor();
   iStack_68 = 0x4cb0c2;
   uVar2 = (*pTVar1)();
   pControlResource = *(int *)CONCAT31(extraout_var_05,uVar2);
@@ -318,7 +318,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB8A0
 // GHIDRA_NAME TUniversityView::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int param_2)
 
 void __thiscall
 TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int param_2)
@@ -370,13 +370,13 @@ TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int pa
         piVar8 = (int *)(*pcStack_38)(*(short *)&this->field_0xa4 + 0x6e756d30);
         if (piVar8 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66c);
         }
         piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6e756d62);
         if (piVar8 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+          TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
         }
         iVar3 = *piVar8;
@@ -385,12 +385,12 @@ TUniversityView::OrphanRetStub_0059add0(TUniversityView *this,int param_1,int pa
         RStack_34.top = (LONG)piVar4;
         RStack_34.right = (LONG)pTVar2;
         CopyRect(atStack_24,&RStack_34);
-        thunk_InvalidateCityDialogRectRegion(atStack_24,1);
+        InvalidateCityDialogRectRegion(atStack_24,1);
         (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
       }
     }
   }
-  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this,param_1);
+  TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
 }
 
@@ -462,8 +462,8 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
   local_4 = CONCAT31(local_4._1_3_,1);
   local_4c._4_4_ = 0;
   local_4c._0_4_ = 0;
-  thunk_MapUiThemeCodeToStyleFlags();
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   if (*(int *)&this->field_0xa8 != 0) {
     pTVar1 = this->vftable[0x12].slot_0x04;
     aiStack_68[2] = 0x61706170;
@@ -492,7 +492,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
     iStack_80 = 0x4cbc55;
     CopyRect(atStack_34,(RECT *)(local_4c + 8));
     iStack_80 = 0x4cbc63;
-    thunk_InvalidateCityDialogRectRegion();
+    InvalidateCityDialogRectRegion();
     uVar3 = (*pTVar1)();
     iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar2 + 0xc))();
@@ -528,13 +528,13 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
     pLStack_8c = aiStack_68;
     (**(code **)(iVar2 + 300))();
     CopyRect((LPRECT)local_4c,(RECT *)&stack0xffffffa4);
-    thunk_InvalidateCityDialogRectRegion(local_4c);
+    InvalidateCityDialogRectRegion(local_4c);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)
               (*(undefined4 *)(*(int *)(*(int *)&this->field_0x94 + 0xac) + 0x10));
     uVar3 = (*pTVar1)(0x74726561);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x6c4);
     }
     iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
@@ -550,7 +550,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
     (**(code **)(iVar2 + 300))(&ptStack_88);
     auStack_70._0_4_ = iStack_80;
     CopyRect((LPRECT)(auStack_70 + 4),(RECT *)&stack0xffffff84);
-    thunk_InvalidateCityDialogRectRegion(auStack_70 + 4,1);
+    InvalidateCityDialogRectRegion(auStack_70 + 4,1);
     (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
   }
   local_4 = local_4 & 0xffffff00;
@@ -568,7 +568,7 @@ void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,in
 void __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *this)
 
 {
-  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
     (*g_pUiViewManager->vftable[6].slot_0x04)(0x23fa);
   }
@@ -577,7 +577,7 @@ void __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CBF70
 // GHIDRA_NAME TUniversityView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(RECT * pClipRect)
+// GHIDRA_PROTO void __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(RECT * pClipRect)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void RenderUniversityRecruitmentRequirementGrid(RECT *pClipRect)
 // GHIDRA_COMMENT_END
@@ -617,7 +617,7 @@ TUniversityView::OrphanTiny_ReturnZero_0048a730(TUniversityView *this,RECT *pCli
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   RStack_58.right = (LONG)this;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
   local_2c = pClipRect->left;
   local_28 = pClipRect->top;
   local_24 = pClipRect->right;
@@ -688,9 +688,9 @@ TUniversityView::OrphanTiny_ReturnZero_0048a730(TUniversityView *this,RECT *pCli
                       (&stack0xffffff9c,&g_szDecimalFormat,
                        (int)(char)(&g_abUniversityRequirementLevelById)[iVar3 + nRequirementId * 4])
             ;
-            thunk_SetQuickDrawTextOriginWithContextOffset
+            SetQuickDrawTextOriginWithContextOffset
                       (iVar3 * 0x28 + 0x27,nRequirementLevelColumn + 0x121);
-            THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff9c);
+            THQButton::DrawTextWithCachedQuickDrawStyleState(&stack0xffffff9c);
             iVar3 = iVar3 + 1;
           } while (iVar3 <= nHighestRequirementLevel);
         }

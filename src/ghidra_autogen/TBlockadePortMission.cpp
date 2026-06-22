@@ -80,7 +80,7 @@ TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePortMission *this,i
   
   SerializeTNavyMissionCommon(param_1);
   iVar1 = *param_1;
-  uVar2 = thunk_GetShortAtOffset14OrInvalid();
+  uVar2 = GetShortAtOffset14OrInvalid();
   (**(code **)(iVar1 + 0x88))(uVar2);
   return;
 }
@@ -176,7 +176,7 @@ TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild(TBlockad
   sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
   if ((&pTVar1->field_0x8a0)[sVar3] == '\0') {
     uVar4 = 0;
-    sVar3 = thunk_GetShortAtOffset14OrInvalid(0);
+    sVar3 = GetShortAtOffset14OrInvalid(0);
     SetByteFlagAtOffsetAF0ByIndex((int)sVar3,uVar4);
     return 0;
   }
@@ -244,7 +244,7 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
   iVar12 = *(int *)(this + 0x14);
   uVar1 = *(undefined2 *)(this + 4);
   local_20[3] = 0.0;
-  iVar8 = thunk_GetNavyPrimaryOrderListHead();
+  iVar8 = GetNavyPrimaryOrderListHead();
   iVar9 = iVar8;
   for (; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)) {
     if (*(int *)(iVar8 + 8) == iVar12) {
@@ -313,7 +313,7 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
     local_20[1] = 0.0;
     local_20[2] = 0.0;
     local_20[3] = 0.0;
-    for (iVar12 = thunk_GetNavyPrimaryOrderListHead(); iVar12 != 0; iVar12 = *(int *)(iVar12 + 0x24)
+    for (iVar12 = GetNavyPrimaryOrderListHead(); iVar12 != 0; iVar12 = *(int *)(iVar12 + 0x24)
         ) {
       if (((*(short *)(iVar12 + 0x14) == sVar6) &&
           (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&
@@ -339,7 +339,7 @@ TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
         local_20[5] = 0.0;
         local_20[6] = 0.0;
         local_20[7] = 0.0;
-        for (iVar8 = thunk_GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
+        for (iVar8 = GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
             ) {
           if (((*(short *)(iVar8 + 0x14) == sVar6) &&
               (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&

@@ -11,7 +11,7 @@ TGPTreatyDialog * __thiscall
 TGPTreatyDialog::_scalar_deleting_destructor_(TGPTreatyDialog *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -20,7 +20,7 @@ TGPTreatyDialog::_scalar_deleting_destructor_(TGPTreatyDialog *this,byte param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3BC0
 // GHIDRA_NAME TGPTreatyDialog::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TGPTreatyDialog::GetTEventHandlerClassNamePointer(TGPTreatyDialog *this)
 
@@ -89,7 +89,7 @@ void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDial
       piStack_38 = piVar5;
       if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       iVar7 = 0;
       iVar8 = 0;
@@ -98,7 +98,7 @@ void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDial
           piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
           if (piVar5 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+            TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
           }
           if ((short)iVar7 < (short)piVar6) {
@@ -128,13 +128,13 @@ void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDial
   local_30 = CONCAT31(extraout_var_01,uVar4);
   if (local_30 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
   uVar4 = (*pTVar2)();
   local_3c.m_pchData = (char *)CONCAT31(extraout_var_02,uVar4);
   if (local_3c.m_pchData == (char *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+    TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x2c8);
   }
   iVar7 = 0;
@@ -146,14 +146,14 @@ void __thiscall TGPTreatyDialog::ConstructTGPTreatyDialogBaseState(TGPTreatyDial
       piVar6 = (int *)(**(code **)(*local_34 + 0x94))(uVar3);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x2d0);
       }
       (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffb8,0);
       piVar6 = (int *)(**(code **)(*unaff_ESI + 0x94))(uVar3);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+        TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x2d3);
       }
       (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffac,0);
@@ -189,10 +189,10 @@ TView * TGPTreatyDialog::DestructTGPTreatyDialogAndMaybeFree(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
     this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
     this->vftable = (TViewVtbl *)&TMinorTreatyDialogVtbl_0066bf80;
     pTVar1 = this;
   }

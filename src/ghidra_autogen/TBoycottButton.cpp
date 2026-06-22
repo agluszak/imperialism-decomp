@@ -35,7 +35,7 @@ TToggleButton * TBoycottButton::CreateTBoycottButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584760
 // GHIDRA_NAME TBoycottButton::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TBoycottButton::GetTEventHandlerClassNamePointer(TBoycottButton *this)
 
@@ -63,7 +63,7 @@ TBoycottButton * __thiscall
 TBoycottButton::_scalar_deleting_destructor_(TBoycottButton *this,byte param_1)
 
 {
-  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  TView::DestructCityDialogSharedBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -88,7 +88,7 @@ TBoycottButton::HandleToggleButtonStateChangeAndRefresh
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x636c7573);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+      TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x2be);
     }
     (**(code **)(*piVar2 + 0x1c8))(0x20202020);

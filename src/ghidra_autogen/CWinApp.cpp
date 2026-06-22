@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415510
 // GHIDRA_NAME CWinApp::WrapperFor_WriteProfileInt_At00415510
-// GHIDRA_PROTO undefined WrapperFor_WriteProfileInt_At00415510()
+// GHIDRA_PROTO undefined CWinApp::WrapperFor_WriteProfileInt_At00415510()
 
 void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined4 param_2)
 

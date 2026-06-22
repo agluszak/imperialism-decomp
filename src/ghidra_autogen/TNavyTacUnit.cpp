@@ -15,7 +15,7 @@ CRuntimeClass * __thiscall TNavyTacUnit::GetTTacticalUnitClassNamePointer(TNavyT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6310
 // GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40(void)
 
 undefined4 __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40(TNavyTacUnit *this)
 

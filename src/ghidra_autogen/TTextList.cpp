@@ -10,7 +10,7 @@
 TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -37,7 +37,7 @@ TView * TTextList::CreateTTextListInstance(void)
   this = (TView *)AllocateWithFallbackHandler(0x1070);
   local_4 = 0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&g_vtblTTextList;
     this[0x2b].flag4c = 0x10;
     this[0x2b].flag4d = 0;
@@ -53,7 +53,7 @@ TView * TTextList::CreateTTextListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30
 // GHIDRA_NAME TTextList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TTextList::GetTEventHandlerClassNamePointer(TTextList *this)
 
@@ -63,7 +63,7 @@ CRuntimeClass * __thiscall TTextList::GetTEventHandlerClassNamePointer(TTextList
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057ACC0
 // GHIDRA_NAME TTextList::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
 
@@ -95,8 +95,8 @@ void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
   local_2c = 0;
   local_30 = 0;
   local_24 = iVar3;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
+  MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
+  MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
   if ((int)*(short *)&this->field_0x106c < this->field38) {
     local_20 = &this->field_0x60 + iVar3 * 0x40;
@@ -110,16 +110,16 @@ void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
         iStack_10 = *(short *)&this->field_0x106c + iStack_18;
         iStack_14 = this->field34;
         uStack_1c = 0;
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
+        FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
       }
-      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
+      sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
       iVar3 = this->field34 / 2 - (int)sVar1 / 2;
       SetQuickDrawColorAndSyncGlobals(local_30);
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_28);
+      SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_28);
       SetQuickDrawColorAndSyncGlobals(local_2c);
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_28);
+      SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
+      THQButton::DrawTextWithCachedQuickDrawStyleState(&local_28);
       iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)&this->field_0x106c);
       local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
@@ -158,7 +158,7 @@ void __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this,int para
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;
     CopyRect(&tStack_14,&RStack_24);
-    thunk_InvalidateCityDialogRectRegion(&tStack_14,1);
+    InvalidateCityDialogRectRegion(&tStack_14,1);
     (*pTVar1[0x27].slot_0x04)();
     (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(4,this,0);
   }

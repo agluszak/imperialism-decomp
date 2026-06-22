@@ -22,7 +22,7 @@ void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A0E0
 // GHIDRA_NAME TEventHandler::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TEventHandler::GetTEventHandlerClassNamePointer(TEventHandler *this)
 
@@ -62,7 +62,7 @@ TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte param_
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A1B0
 // GHIDRA_NAME TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_PROTO undefined __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(TEventHandler *this)
 
@@ -100,7 +100,7 @@ void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(TEve
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A730
 // GHIDRA_NAME TEventHandler::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(void)
 
 undefined4 __thiscall TEventHandler::OrphanTiny_ReturnZero_0048a730(TEventHandler *this)
 

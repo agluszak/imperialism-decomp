@@ -23,7 +23,7 @@ TControl * TRightLeftView::CreateTRightLeftViewInstance(void)
   this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
   if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    TControl::TControl(this);
     this->vftable = (TControlVtbl *)&TRightLeftViewVtbl_00663990;
     this[1].vftable = (TControlVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
@@ -35,7 +35,7 @@ TControl * TRightLeftView::CreateTRightLeftViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F10
 // GHIDRA_NAME TRightLeftView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TRightLeftView::GetTEventHandlerClassNamePointer(TRightLeftView *this)
 
@@ -45,12 +45,12 @@ CRuntimeClass * __thiscall TRightLeftView::GetTEventHandlerClassNamePointer(TRig
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F30
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTRightLeftViewBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(void)
 
 TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::TControl((TControl *)this);
   this->vftable = &TRightLeftViewVtbl_00663990;
   *(undefined4 *)&this->field_0x84 = 0;
   return this;
@@ -64,7 +64,7 @@ TRightLeftView * __thiscall
 TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this,byte param_1)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -73,7 +73,7 @@ TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583FB0
 // GHIDRA_NAME TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, undefined4 param_2)
+// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, undefined4 param_2)
 
 void __thiscall
 TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
@@ -87,9 +87,9 @@ TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
   undefined4 in_stack_00000010;
   
   if (param_1 != 2) {
-    uVar3 = thunk_GetTickCountDiv16();
+    uVar3 = GetTickCountDiv16();
     if (*(int *)&this->field_0x84 + 5U <= uVar3) {
-      iVar4 = thunk_GetTickCountDiv16();
+      iVar4 = GetTickCountDiv16();
       *(int *)&this->field_0x84 = iVar4;
       if (param_1 == 0) {
         *(int *)&this->field_0x84 = iVar4 + 10;

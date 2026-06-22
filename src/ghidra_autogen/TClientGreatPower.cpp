@@ -33,7 +33,7 @@ TClientGreatPower * __thiscall
 TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte param_1)
 
 {
-  DestructTClientGreatPower(this);
+  TClientGreatPower::DestructTClientGreatPower(this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -42,7 +42,7 @@ TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this,byte par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541320
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
-// GHIDRA_PROTO undefined __thiscall DestructTClientGreatPower(void)
+// GHIDRA_PROTO undefined __thiscall TClientGreatPower::DestructTClientGreatPower(void)
 
 void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
 
@@ -67,7 +67,7 @@ void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541390
 // GHIDRA_NAME TClientGreatPower::GetTCountryClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTCountryClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TMinor::GetTCountryClassNamePointer(void)
 
 CRuntimeClass * __thiscall TClientGreatPower::GetTCountryClassNamePointer(TClientGreatPower *this)
 
@@ -77,7 +77,7 @@ CRuntimeClass * __thiscall TClientGreatPower::GetTCountryClassNamePointer(TClien
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005413B0
 // GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireModeForTargetNation
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(void)
+// GHIDRA_PROTO undefined __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(void)
 
 void __thiscall TClientGreatPower::ApplyJoinEmpireModeForTargetNation(TClientGreatPower *this)
 
@@ -99,13 +99,13 @@ void __thiscall TClientGreatPower::ApplyJoinEmpireModeForTargetNation(TClientGre
   local_20 = 0x17;
   local_6 = 1;
   local_18 = 0xffffffff;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_20,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541450
 // GHIDRA_NAME TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
-// GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
 
 void __thiscall
 TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(TClientGreatPower *this)
@@ -128,13 +128,13 @@ TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(TClientGrea
   local_14 = 0x20;
   local_20 = 0x17;
   local_18 = 0xffffffff;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_20,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005414F0
 // GHIDRA_NAME TClientGreatPower::AddRegionIdToNationOwnedRegionList
-// GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::AddRegionIdToNationOwnedRegionList(void)
 
 void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGreatPower *this)
 
@@ -154,9 +154,9 @@ void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGre
   local_20 = 0xf;
   local_18 = 0xffffffff;
   local_14 = 0x20;
-  thunk_SetTimeEmitPacketGameFlowTurnId();
+  SetTimeEmitPacketGameFlowTurnId();
   local_4 = UiRuntimeContext::GetActiveNationId();
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_20,0);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x90))
             (*(undefined2 *)&this->field_0xc,*(undefined2 *)&this->field_0xc,0x29a);
   return;
@@ -164,7 +164,7 @@ void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGre
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005415C0
 // GHIDRA_NAME TClientGreatPower::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(char param_1)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
 
 int __thiscall
 TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this,char param_1)
@@ -189,19 +189,19 @@ TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this,char
   local_24 = 0x1e;
   local_1c = 0;
   local_18 = 0x24;
-  thunk_SetTimeEmitPacketGameFlowTurnId();
+  SetTimeEmitPacketGameFlowTurnId();
   local_1c = 0xffffffff;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_7 = param_1;
   local_3 = iVar1 == 1;
   local_5 = 0x61;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_24,0);
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005416B0
 // GHIDRA_NAME TClientGreatPower::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
 
 int __thiscall TClientGreatPower::OrphanRetStub_0059add0(TClientGreatPower *this)
 
@@ -224,23 +224,23 @@ int __thiscall TClientGreatPower::OrphanRetStub_0059add0(TClientGreatPower *this
   local_20 = 0;
   local_1c = 0;
   local_18 = 0x24;
-  thunk_SetTimeEmitPacketGameFlowTurnId();
+  SetTimeEmitPacketGameFlowTurnId();
   local_1c = 0xffffffff;
   local_8 = UiRuntimeContext::GetActiveNationId();
   local_3 = iVar1 == 1;
   local_5 = 0x69;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);
+  EnqueueOrSendTurnEventPacketToNation(&local_24,0);
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541790
 // GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireMode1TargetTransition
-// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(void)
+// GHIDRA_PROTO undefined __thiscall TGreatPower::ApplyJoinEmpireMode1TargetTransition(void)
 
 void __thiscall TClientGreatPower::ApplyJoinEmpireMode1TargetTransition(TClientGreatPower *this)
 
 {
-  thunk_DispatchTaggedGameStateEvent1F20(0x6c6f7365,(int)*(short *)&this->field_0xc,0xffffffff);
+  DispatchTaggedGameStateEvent1F20(0x6c6f7365,(int)*(short *)&this->field_0xc,0xffffffff);
   return;
 }
 

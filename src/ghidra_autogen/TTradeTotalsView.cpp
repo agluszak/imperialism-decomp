@@ -25,7 +25,7 @@ TView * TTradeTotalsView::CreateTTradeTotalsViewInstance(void)
   local_4 = 0;
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+    TView::ConstructTViewBaseState(this);
     this->vftable = (TViewVtbl *)&TTradeTotalsViewVtbl_0066e958;
     pTVar1 = this;
   }
@@ -35,7 +35,7 @@ TView * TTradeTotalsView::CreateTTradeTotalsViewInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1AF0
 // GHIDRA_NAME TTradeTotalsView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall
 TTradeTotalsView::GetTEventHandlerClassNamePointer(TTradeTotalsView *this)
@@ -52,7 +52,7 @@ TTradeTotalsView * __thiscall
 TTradeTotalsView::ConstructTTradeTotalsViewBaseState(TTradeTotalsView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState((TView *)this);
+  TView::ConstructTViewBaseState((TView *)this);
   this->vftable = &TTradeTotalsViewVtbl_0066e958;
   return this;
 }
@@ -65,7 +65,7 @@ TTradeTotalsView * __thiscall
 TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -74,7 +74,7 @@ TTradeTotalsView::_scalar_deleting_destructor_(TTradeTotalsView *this,byte param
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1BD0
 // GHIDRA_NAME TTradeTotalsView::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
 
 void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsView *this)
 
@@ -163,29 +163,29 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   puStack_40 = &stack0xffffffdc;
   uStack_44 = 0x2b6b;
   uStack_48 = 0x5c1c72;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   puStack_40 = &stack0xffffffd8;
   uStack_44 = 0x2b6c;
   uStack_48 = 0x5c1c84;
-  thunk_MapUiThemeCodeToStyleFlags();
+  MapUiThemeCodeToStyleFlags();
   uStack_44 = 0x5c1c91;
   SetQuickDrawColorAndSyncGlobals();
   puStack_40 = (undefined1 *)0x12;
   uStack_44 = 10;
   uStack_48 = 0x5c1c9d;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1caa;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   uStack_44 = 0x5c1cb7;
   SetQuickDrawColorAndSyncGlobals();
   puStack_40 = (undefined1 *)0x11;
   uStack_44 = 9;
   uStack_48 = 0x5c1cc3;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1cd0;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   puStack_40 = (undefined1 *)0x2b6a;
   uStack_44 = 0xc;
   uStack_48 = 0;
@@ -199,10 +199,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   puStack_4c = (undefined4 *)0x1e;
   uStack_50 = 8;
   ppuStack_54 = (undefined1 **)0x5c1d06;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   puStack_4c = &uStack_38;
   uStack_50 = 0x5c1d13;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   puStack_4c = &uStack_38;
   uStack_50 = *(undefined4 *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x840;
   ppuStack_54 = (undefined1 **)0x5c1d38;
@@ -210,10 +210,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   ppuStack_54 = (undefined1 **)0x1e;
   uStack_58 = 0x80;
   uStack_5c = 0x5c1d44;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   ppuStack_54 = &puStack_40;
   uStack_58 = 0x5c1d51;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   ppuStack_54 = &puStack_40;
   uStack_58 = 0x19;
   uStack_5c = 0x2740;
@@ -222,10 +222,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   ppuStack_60 = (undefined4 **)0x2a;
   uStack_64 = 8;
   pppuStack_68 = (undefined1 ***)0x5c1d77;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   ppuStack_60 = &puStack_4c;
   uStack_64 = 0x5c1d84;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   ppuStack_60 = &puStack_4c;
   uStack_64 = *(undefined4 *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x844;
   pppuStack_68 = (undefined1 ***)0x5c1da9;
@@ -238,10 +238,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
     uStack_6c = 0x80;
   }
   uStack_70 = 0x5c1dcc;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   pppuStack_68 = &ppuStack_54;
   uStack_6c = 0x5c1dd9;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   pppuStack_68 = &ppuStack_54;
   uStack_6c = 0x1d;
   uStack_70 = 0x2740;
@@ -250,10 +250,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   pppuStack_74 = (undefined4 ***)0x36;
   pcStack_78 = (char *)0x8;
   ppppuStack_7c = (undefined1 ****)0x5c1dff;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   pppuStack_74 = &ppuStack_60;
   pcStack_78 = (char *)0x5c1e0c;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   pppuStack_74 = &ppuStack_60;
   pcStack_78 = (char *)-*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x960;
   ppppuStack_7c = (undefined1 ****)0x5c1e33;
@@ -266,10 +266,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
     uStack_80 = 0x7c;
   }
   uStack_84 = 0x5c1e56;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   ppppuStack_7c = &pppuStack_68;
   uStack_80 = 0x5c1e63;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   ppppuStack_7c = &pppuStack_68;
   uStack_80 = 0x1a;
   uStack_84 = 0x2740;
@@ -279,10 +279,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   CStack_88.m_pchData = (char *)0x42;
   CStack_8c.m_pchData = &DAT_00000008;
   ppppuStack_90 = (undefined4 ****)0x5c1e8d;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   CStack_88.m_pchData = (char *)&pppuStack_74;
   CStack_8c.m_pchData = (char *)0x5c1e9a;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   CStack_88.m_pchData = (char *)&pppuStack_74;
   pTVar1 = g_pLocalizationTable->vftable;
   CStack_8c.m_pchData = (char *)0x5c1ebc;
@@ -293,10 +293,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   ppppuStack_90 = (undefined4 ****)0x42;
   uStack_94 = 0x80;
   CStack_98.m_pchData = (char *)0x5c1ed1;
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   ppppuStack_90 = &ppppuStack_7c;
   uStack_94 = 0x5c1ede;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   if ('\0' < (char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8fc) {
     ppppuStack_90 = (undefined4 ****)&uStack_6c;
     uStack_94 = 0x1c;
@@ -307,8 +307,8 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
                (int)(char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8f4);
     scanBracketExpressions(g_pLocalizationTable,&CStack_88,pcStack_78);
     iVar3 = 0x4e;
-    thunk_SetQuickDrawTextOriginWithContextOffset(8,0x4e);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_88);
+    SetQuickDrawTextOriginWithContextOffset(8,0x4e);
+    THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_88);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)
               (-*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f8,&CStack_88);
     ppppuStack_90 = (undefined4 ****)0x4e;
@@ -319,19 +319,19 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
       uStack_94 = 0x7c;
     }
     CStack_98.m_pchData = (char *)0x5c1fbf;
-    thunk_SetQuickDrawTextOriginWithContextOffset();
+    SetQuickDrawTextOriginWithContextOffset();
     ppppuStack_90 = &ppppuStack_7c;
     uStack_94 = 0x5c1fcc;
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    THQButton::DrawTextWithCachedQuickDrawStyleState();
   }
   uStack_94 = 8;
   CStack_98.m_pchData = (char *)0x5c1fda;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  thunk_SetQuickDrawTextOriginWithContextOffset();
+  SetQuickDrawTextOriginWithContextOffset();
   uStack_94 = CONCAT22(extraout_var_02,(short)this->field34 + -8);
   CStack_98.m_pchData = (char *)0x5c1fec;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  thunk_DrawCenteredGuideLineOnMapDc();
+  DrawCenteredGuideLineOnMapDc();
   ppppuStack_90 = &ppppuStack_7c;
   pTVar1 = g_pLocalizationTable->vftable;
   uStack_94 = 0x5c200e;
@@ -351,9 +351,9 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
     uVar4 = 0x80;
   }
   CStack_98.m_pchData = (char *)(iVar3 + 0xe);
-  thunk_SetQuickDrawTextOriginWithContextOffset(uVar4);
+  SetQuickDrawTextOriginWithContextOffset(uVar4);
   CStack_98.m_pchData = (char *)&uStack_84;
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  THQButton::DrawTextWithCachedQuickDrawStyleState();
   CStack_98.m_pchData = (char *)0x2b6a;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   CStack_98.m_pchData = (char *)&pppuStack_74;
@@ -361,10 +361,10 @@ void __thiscall TTradeTotalsView::OrphanCallChain_C11_I88_004874b0(TTradeTotalsV
   (*g_pLocalizationTable->vftable[0xe].slot_0x04)
             (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f0 / 100,&uStack_84);
   scanBracketExpressions(g_pLocalizationTable,&CStack_98,CStack_88.m_pchData);
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,iVar3 + 0x1a);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_98);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,iVar3 + 0x1a);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&CStack_8c);
+  SetQuickDrawTextOriginWithContextOffset(8,iVar3 + 0x1a);
+  THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_98);
+  SetQuickDrawTextOriginWithContextOffset(0x80,iVar3 + 0x1a);
+  THQButton::DrawTextWithCachedQuickDrawStyleState(&CStack_8c);
   SetQuickDrawFillColorFromPaletteIndex(0);
   ppppuStack_7c._0_1_ = 1;
   CString::~CString(&CStack_8c);

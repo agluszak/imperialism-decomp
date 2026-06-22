@@ -34,7 +34,7 @@ TWorldView * TMapEditView::CreateTMapEditViewInstance(void)
     this->vftable = (TWorldViewVtbl *)&TMapDialogVtbl_00658a58;
     *(undefined4 *)&this->field_0x64 = 0;
     local_4 = CONCAT31(local_4._1_3_,1);
-    TMapDialog::thunk_SplitTileIndexToRowAndColumn
+    TMapDialog::SplitTileIndexToRowAndColumn
               (CONCAT22((short)((uint)&local_14 >> 0x10),
                         *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
     (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
@@ -63,7 +63,7 @@ TMapEditView * __thiscall
 TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -72,7 +72,7 @@ TMapEditView::_scalar_deleting_destructor_(TMapEditView *this,byte param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CC40
 // GHIDRA_NAME TMapEditView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TMapEditView::GetTEventHandlerClassNamePointer(TMapEditView *this)
 
@@ -82,7 +82,7 @@ CRuntimeClass * __thiscall TMapEditView::GetTEventHandlerClassNamePointer(TMapEd
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CC60
 // GHIDRA_NAME TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO void __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void * pMapView, int nInitToken)
+// GHIDRA_PROTO void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(void * pMapView, int nInitToken)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes strategic-map tile icon cache bytes used by RenderStrategicMapTileCell.
 // GHIDRA_COMMENT Algorithm:
@@ -140,7 +140,7 @@ TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(TMapEditView *this,void *pMapView
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
-  TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this->ownerContext,5);
+  TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this->ownerContext,5);
   g_pGlobalMapState->field_0x24 = 1;
   (**(code **)(g_pUiRuntimeContext->vftable + 0xc4))();
   (*this->ownerContext->vftable[0x3e].slot_0x04)();
@@ -212,13 +212,13 @@ TMapEditView::HandleMapClickByInteractionMode
      (*(int *)&this->field_0x368 == 5)) {
     switch(*(undefined4 *)&this->field_0x368) {
     case 0:
-      ApplyTileIconProfileFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
+      TMapEditView::ApplyTileIconProfileFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
       return;
     case 1:
       ApplyTileCityIdAndInvalidateLocalOverlays(unaff_retaddr);
       return;
     case 2:
-      ApplyTileIconOverlayFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
+      TMapEditView::ApplyTileIconOverlayFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
       return;
     case 3:
       (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(4000,0,1);
@@ -238,7 +238,7 @@ TMapEditView::HandleMapClickByInteractionMode
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CFA0
 // GHIDRA_NAME TMapEditView::InvokeDialogHooks1D8ThenE4
-// GHIDRA_PROTO undefined __thiscall InvokeDialogHooks1D8ThenE4(short param_1)
+// GHIDRA_PROTO undefined __thiscall TWorldView::InvokeDialogHooks1D8ThenE4(short param_1)
 
 void __thiscall TMapEditView::InvokeDialogHooks1D8ThenE4(TMapEditView *this,short param_1)
 
@@ -341,7 +341,7 @@ TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(TMapEditView *this,s
         (*pTVar2)(iVar7);
         iVar10 = 0;
         do {
-          uVar5 = thunk_GetWrappedHexNeighborTileIndexByDirection(iVar7,iVar10);
+          uVar5 = GetWrappedHexNeighborTileIndexByDirection(iVar7,iVar10);
           *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 7 + (short)uVar5 * 0x24) = 0;
           (*g_pGlobalMapState->vftable[7].slot_0x04)(uVar5,2);
           (*pTVar2)(uVar5);
@@ -456,7 +456,7 @@ TMapEditView::HandleMapTileClickSetOrderContextAndDispatchEvent79(TMapEditView *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051D4F0
 // GHIDRA_NAME TMapEditView::ApplyTileIconProfileFromEditorSelection
-// GHIDRA_PROTO void __thiscall ApplyTileIconProfileFromEditorSelection(void * pMapTileEditState, short nTileIndex)
+// GHIDRA_PROTO void __thiscall TMapEditView::ApplyTileIconProfileFromEditorSelection(void * pMapTileEditState, short nTileIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Editor action: applies selected icon profile to tile and resets icon overlay cache.
 // GHIDRA_COMMENT Writes:
@@ -503,7 +503,7 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
       (*pTVar1)(0x60004);
       iVar4 = 0;
       do {
-        uVar2 = thunk_GetWrappedHexNeighborTileIndexByDirection(0x3ffff,iVar4);
+        uVar2 = GetWrappedHexNeighborTileIndexByDirection(0x3ffff,iVar4);
         if ((short)uVar2 != -1) {
           iVar3 = (short)uVar2 * 0x24;
           *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 10 + iVar3) = 0;
@@ -523,7 +523,7 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051D970
 // GHIDRA_NAME TMapEditView::ApplyTileIconOverlayFromEditorSelection
-// GHIDRA_PROTO void __thiscall ApplyTileIconOverlayFromEditorSelection(void * pMapTileEditState, short nTileIndex)
+// GHIDRA_PROTO void __thiscall TMapEditView::ApplyTileIconOverlayFromEditorSelection(void * pMapTileEditState, short nTileIndex)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Editor action: writes one overlay icon slot for current tile icon cache.
 // GHIDRA_COMMENT Behavior:
@@ -562,7 +562,7 @@ TMapEditView::ApplyTileIconOverlayFromEditorSelection
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051DEB0
 // GHIDRA_NAME TMapEditView::OrphanTiny_ReturnZero_0048a730
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(int param_1)
+// GHIDRA_PROTO undefined __thiscall TDropShadowText::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 void __thiscall TMapEditView::OrphanTiny_ReturnZero_0048a730(TMapEditView *this,int param_1)
 

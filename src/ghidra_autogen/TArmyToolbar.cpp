@@ -38,7 +38,7 @@ _CreateTArmyToolbarInstance__YAPAUArmyToolbarState___Z_imperialismsrcgameTArmyTo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DEC0
 // GHIDRA_NAME TArmyToolbar::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TArmyToolbar::GetTEventHandlerClassNamePointer(TArmyToolbar *this)
 
@@ -48,7 +48,7 @@ CRuntimeClass * __thiscall TArmyToolbar::GetTEventHandlerClassNamePointer(TArmyT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058DEE0
 // GHIDRA_NAME TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z
-// GHIDRA_PROTO undefined __thiscall ?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z(void)
+// GHIDRA_PROTO undefined __thiscall TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z(void)
 
 TArmyToolbar * __thiscall
 TArmyToolbar::
@@ -69,7 +69,7 @@ TArmyToolbar * __thiscall
 TArmyToolbar::_scalar_deleting_destructor_(TArmyToolbar *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -180,7 +180,7 @@ LAB_0058e021:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E1C0
 // GHIDRA_NAME TArmyToolbar::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(int param_1, int * param_2)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(int param_1, int * param_2)
 
 void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int param_1,int *param_2)
 
@@ -208,7 +208,7 @@ void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int para
   if (uVar1 == 0x67617272) {
     uVar2 = GetAsyncKeyState(0x11);
     if ((uVar2 & 0x8000) != 0) {
-      TSuperArmyRoster::thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection
+      TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection
                 ((TSuperArmyRoster *)g_pUiRuntimeContext);
       return;
     }
@@ -221,7 +221,7 @@ void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int para
   else {
     if (uVar1 == 0x64666e64) {
       (*g_pMapContextActionManager->vftable[0xb].GetTArmyMgrClassNamePointer)(2);
-      TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick
+      TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
                 (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
       return;
     }
@@ -237,7 +237,7 @@ void __thiscall TArmyToolbar::OrphanRetStub_0059add0(TArmyToolbar *this,int para
       pTVar4 = g_pMapContextActionManager->vftable;
     }
     (*pTVar4[0xb].GetTArmyMgrClassNamePointer)(uVar3);
-    TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick
+    TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
               (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
   }
   return;

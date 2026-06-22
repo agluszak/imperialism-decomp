@@ -67,7 +67,7 @@ void __thiscall TTechItemLine::OrphanRetStub_0056f460(TTechItemLine *this)
   local_4 = 0;
   this_01 = (TTechItemView *)0x0;
   if (this_00 != (TTechItemView *)0x0) {
-    TView::thunk_ConstructTViewBaseState((TView *)this_00);
+    TView::ConstructTViewBaseState((TView *)this_00);
     this_00->vftable = &TTechItemViewVtbl_0066af08;
     this_01 = this_00;
   }

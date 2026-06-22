@@ -5,7 +5,7 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE080
 // GHIDRA_NAME TBullyMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
+// GHIDRA_PROTO undefined __thiscall CAmbitDocument::SerializeNodeMapEntries_Key32Value32_WithArchive(char param_1)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
@@ -31,7 +31,7 @@ CRuntimeClass * __thiscall TBullyMinister::GetTMinisterClassNamePointer(TBullyMi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE0D0
 // GHIDRA_NAME TBullyMinister::ConstructTBullyMinisterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTBullyMinisterBaseState(void)
+// GHIDRA_PROTO undefined __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(void)
 
 TBullyMinister * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMinister *this)
 

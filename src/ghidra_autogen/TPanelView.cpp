@@ -20,7 +20,7 @@ void __thiscall TPanelView::OrphanRetStub_00430550(TPanelView *this)
 TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *this,byte param_1)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  TView::DestructTViewBaseState((TView *)this);
   if ((param_1 & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }
@@ -29,7 +29,7 @@ TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F79C0
 // GHIDRA_NAME TPanelView::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
 
 CRuntimeClass * __thiscall TPanelView::GetTEventHandlerClassNamePointer(TPanelView *this)
 
@@ -44,7 +44,7 @@ CRuntimeClass * __thiscall TPanelView::GetTEventHandlerClassNamePointer(TPanelVi
 void __thiscall TPanelView::OrphanCallChain_C6_I49_004875d0(TPanelView *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
   return;
 }
