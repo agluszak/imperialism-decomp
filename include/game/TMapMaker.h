@@ -6,16 +6,13 @@
 #include "game/TView.h"
 
 // VTABLE: IMPERIALISM 0x006598f8
-class TMapMaker : public TControl {
+class TMapMaker : public TObject {
 public:
   // Orig vtable (0x006598f8) has 43 slots; slots 0x22..0x28 are literal NULL and
   // SetEnabled/SetState (orig 0x29/0x2a) follow after the gap. MSVC500 cannot emit
   // mid-table NULL entries, so the C++ vtable ends at slot 0x21; SetEnabled/SetState
   // are non-virtual bodies paired by address marker (TZone pattern).
-  // Slots 0x07/0x08 reuse TObject::Free/ShallowClone (not TView/TControl bodies).
-  void Free() override;
-  TObject* ShallowClone() override;
-
+  // Slots 0x07/0x08 reuse TObject::Free/ShallowClone (not TControl bodies).
   CRuntimeClass* GetRuntimeClass() const override;
   ~TMapMaker();
 

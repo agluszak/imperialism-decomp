@@ -35,19 +35,19 @@ public:
   char ReturnFalseNationStateCapabilityFlag90(int arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
-  virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
-  virtual void SeedRandomDiplomacyPolicyThresholds(void);
-  virtual char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
-  virtual void HandleNetworkPortConstructionOrder(int nationId);
-  virtual void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
+  void RebuildDiplomacyEconomicPressureFromMapState(void);
+  void SeedRandomDiplomacyPolicyThresholds(void);
+  char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
+  void HandleNetworkPortConstructionOrder(int nationId);
+  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
                                                             short predicateCode);
-  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);
-  virtual void QueueInterNationEvent17ForState300AffectedNations(void);
-  virtual void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
+  void ClearTileActivityOverlayByProvinceId(int provinceId);
+  void QueueInterNationEvent17ForState300AffectedNations(void);
+  void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
 
-  virtual void ReassignUnitOrdersForCountryTargetChange(void);
-  virtual void ReassignTileObjectOwnerAndNotifyForSelectedCells(void);
-  virtual void RelinkTileUnitsToCountryOrderManager(void);
+  void ReassignUnitOrdersForCountryTargetChange(void);
+  void ReassignTileObjectOwnerAndNotifyForSelectedCells(void);
+  void RelinkTileUnitsToCountryOrderManager(void);
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);

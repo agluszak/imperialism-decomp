@@ -10,14 +10,6 @@ CRuntimeClass* TMapMaker::GetRuntimeClass() const {
 // TMapMaker::`scalar deleting destructor'
 TMapMaker::~TMapMaker() {}
 
-void TMapMaker::Free() {
-  TObject::Free();
-}
-
-TObject* TMapMaker::ShallowClone() {
-  return TObject::ShallowClone();
-}
-
 // FUNCTION: IMPERIALISM 0x00526ba0
 char TMapMaker::GetBoolSlot28() {
   return 0;

@@ -375,7 +375,7 @@ address|name|size|type|prototype
 4797a0|WrapperFor_OnNewDocument_At004797a0|19|function|undefined WrapperFor_OnNewDocument_At004797a0()
 4797d0|TTechStorePage::Serialize|165|function|undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()
 4798b0|TObject::Free|12|function|void __thiscall Free()
-4798d0|InvokeObjectVtableMethod24|5|function|undefined InvokeObjectVtableMethod24()
+4798d0|TObject::ShallowClone|5|function|undefined __thiscall ShallowClone()
 4798f0|ArchiveStreamAdapter::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 479920|WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl|7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl()
 479960|WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960|26|function|undefined WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960()
