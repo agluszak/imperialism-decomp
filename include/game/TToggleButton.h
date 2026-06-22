@@ -77,6 +77,8 @@ public:
   // slot 0x43 PaintVisibleChildrenIntersectingClipRect inherited unchanged (0x48b8d0)
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x48f3c0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
+  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
+                                             int arg4) override; // slot 0x46 0x5712a0
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
@@ -121,17 +123,13 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
+  virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x571330
+  virtual undefined HandleToggleButtonStateChangeAndRefresh() override; // slot 0x74 0x571350
 // === END GENERATED DECLS (TToggleButton) ===
   TToggleButton();
   CRuntimeClass* GetRuntimeClass() const override;
-  // ~TToggleButton is compiler-generated (implicit virtual dtor).
 
-  // New virtuals in slot order: IsSelected=0x73 (0x1cc), Select=0x74 (0x1d0).
-  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x571330
-  virtual void Select(bool isPressed, bool notifyParent);            // slot 0x74 0x1d0
-  undefined HandleToggleButtonStateChangeAndRefresh();               // non-virtual 0x571350
-  char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
-                                     int arg4) override; // slot 0x46 0x118 0x5712a0
+  void Select(bool isPressed, bool notifyParent);
 };
 
 ASSERT_SIZE(TToggleButton, 0x90);

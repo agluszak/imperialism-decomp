@@ -78,7 +78,8 @@ public:
   // slot 0x43 PaintVisibleChildrenIntersectingClipRect inherited unchanged (0x48b8d0)
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x48f3c0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
-  virtual char DispatchUiMouseMoveToChildren() override; // slot 0x46 0x584b70
+  virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
+                                             int arg4) override; // slot 0x46 0x584b70
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x570900)
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)

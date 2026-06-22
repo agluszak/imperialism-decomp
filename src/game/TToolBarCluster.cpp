@@ -13,7 +13,10 @@ TToolBarCluster::~TToolBarCluster() {}
 void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
 
 // FUNCTION: IMPERIALISM 0x005851c0
-void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback() {
+void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                                          int hitArg) {
+  (void)point;
+  (void)hitArg;
 }
 
 // FUNCTION: IMPERIALISM 0x005853f0

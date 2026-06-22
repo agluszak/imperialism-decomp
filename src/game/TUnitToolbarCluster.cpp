@@ -91,6 +91,4 @@ void TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int nResourceIndex
 }
 
 
-undefined TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(void) { return 0;}
-
 TUnitToolbarCluster::~TUnitToolbarCluster() {}

@@ -79,7 +79,8 @@ public:
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x48f3c0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint * point) override; // slot 0x47 0x5716b0
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                    int arg4) override; // slot 0x47 0x5716b0
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -125,10 +126,13 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x571690
 // === END GENERATED DECLS (TUpDownPictureButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TUpDownPictureButton 0xCTOR`).
+  short glyph90;
+  short timingWord92;
 
   TUpDownPictureButton();
 };
+
+ASSERT_SIZE(TUpDownPictureButton, 0x94);
 
 // === BEGIN GENERATED (TUpDownPictureButton) — refreshed by `just gen-class TUpDownPictureButton`; do not hand-edit ===
 // clang-format off

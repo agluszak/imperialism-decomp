@@ -25,6 +25,11 @@ undefined TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh() {
 }
 
 // FUNCTION: IMPERIALISM 0x00570fb0
-char TPictureRadioButton::DispatchUiMouseMoveToChildren() {
+char TPictureRadioButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
+                                                        int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   return 0;
 }

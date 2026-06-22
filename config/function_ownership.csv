@@ -2287,13 +2287,13 @@ address|target_cpp|ownership|note
 5714e0|src/game/TUberCluster.cpp|manual|marker_sync
 571580|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 5715d0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
-571620|src/game/TCivilianButton.cpp|manual|marker_sync
-571690|src/game/TCivilianButton.cpp|manual|marker_sync
-5716b0|src/game/TCivilianButton.cpp|manual|marker_sync
+571620|src/game/TUpDownPictureButton.cpp|manual|marker_sync
+571690|src/game/TUpDownPictureButton.cpp|manual|marker_sync
+5716b0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 5717a0|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5717c0|src/game/TRadioPictureButton.cpp|manual|marker_sync
 571800|src/game/TRadioPictureButton.cpp|manual|marker_sync
-571850|src/game/TCivilianButton.cpp|manual|marker_sync
+571850|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5718f0|src/game/TRadioPictureButton.cpp|manual|marker_sync
 5719d0|src/game/TOnOffRadioButton.cpp|manual|marker_sync
 571a30|src/game/TOnOffRadioButton.cpp|manual|marker_sync

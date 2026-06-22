@@ -10,6 +10,8 @@ extern "C" CRuntimeClass g_pClassDescTHQButton;
 class THQButton : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (THQButton) — refreshed by recover-class; do not hand-edit ===
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x58b640
+  virtual ~THQButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -63,6 +65,7 @@ public:
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
   // slot 0x35 HandleCursorHoverSelectionByChildHitTestAndFallback inherited unchanged (0x48c080)
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
+  virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x58b6e0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
   // slot 0x39 RefreshControl inherited unchanged (0x48b6d0)
   // slot 0x3a QueryOwnerContextPanel inherited unchanged (0x48b1a0)
@@ -119,9 +122,11 @@ public:
   // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
+  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override; // slot 0x70 0x58b750
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined SetSelectionStateAndRefreshBitmap(); // slot 0x74 0x58b8d0
+  virtual bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x58b890
+  virtual void SetSelectionStateAndRefreshBitmap(short selectionState) override; // slot 0x74 0x58b8d0
 // === END GENERATED DECLS (THQButton) ===
   short glyph90;
   short timingWord92;
@@ -131,11 +136,6 @@ public:
   char pad_9a[2];
 
   THQButton();
-  virtual ~THQButton() override;
-  CRuntimeClass* GetRuntimeClass() const override;
-  void NoOpUiLifecycleHook(int arg) override;
-  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
-  bool IsSelected(short value = -1, bool refreshNow = true) override;
 };
 
 // === BEGIN GENERATED (THQButton) — refreshed by `just gen-class THQButton`; do not hand-edit ===

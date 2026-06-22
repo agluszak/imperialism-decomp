@@ -121,15 +121,13 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
+  virtual int IsTradeControlAtMinimum(); // slot 0x73 0x5714e0
 // === END GENERATED DECLS (TUberCluster) ===
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   TUberCluster();
   CRuntimeClass* GetRuntimeClass() const override;
 
-  // Slot 0x1CC (0x73) — concrete; default returns true. Subclasses (TTradeCluster) override.
-  virtual int IsTradeControlAtMinimum();
-
-  // Slots 0x1D0 - 0x1EC (0x74 - 0x7B). NOTE: the original's TUberCluster vtable has these 8
+  // Slots 0x74 - 0x7B are NULL in the original TUberCluster vtable (filled only by concrete
   // slots NULL (abstract: filled only by concrete cluster subclasses, hand-constructed via
   // manual-vptr factories). We cannot model that cleanly: pure virtuals emit _purecall (not
   // NULL) under MSVC500, and the base IsTradeControl* / HandleTradeMoveControlAdjustment code

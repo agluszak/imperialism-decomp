@@ -40,9 +40,7 @@ THQButton::THQButton() : TPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0058b690
 // THQButton::`scalar deleting destructor'
-
-
-
+THQButton::~THQButton() {}
 // FUNCTION: IMPERIALISM 0x0058b6e0
 void THQButton::NoOpUiLifecycleHook(int arg) {
   short glyph = glyphBase84;
@@ -121,11 +119,18 @@ bool THQButton::IsSelected(short value, bool refreshNow) {
   return commandTagResourceByte != 0;
 }
 
-#if defined(_MSC_VER)
-#pragma auto_inline(on)
-#endif
-
-undefined THQButton::SetSelectionStateAndRefreshBitmap() { return 0; }
-
-
-THQButton::~THQButton() {}
+// FUNCTION: IMPERIALISM 0x0058b8d0
+void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
+  glyph98 = selectionState;
+  commandTagResourceByte = 0;
+  short bitmapId;
+  if (selectionState == 0) {
+    bitmapId = glyph90;
+  } else if (selectionState == 1) {
+    bitmapId = glyph94;
+  } else {
+    bitmapId = glyph96;
+  }
+  SetPictureResourceIdAndRefresh(bitmapId, true);
+  SetState(selectionState != 2 ? 1 : 0, false);
+}

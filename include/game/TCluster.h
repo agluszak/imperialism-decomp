@@ -8,6 +8,7 @@ struct CRuntimeClass;
 class TCluster : public TControl {
 public:
 // === BEGIN GENERATED DECLS (TCluster) — refreshed by recover-class; do not hand-edit ===
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4913e0
   virtual ~TCluster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -122,155 +123,10 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual int GetField84() override; // slot 0x71 0x491770
   virtual void SetControlClassAndRefresh(int classState, int refreshFlag) override; // slot 0x72 0x491790
-  // slot 0x8a GetRuntimeClass inherited unchanged (0x485e20)
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At00491b10(); // slot 0x8b 0x491b10
-  virtual void Serialize_8c(CArchive& archive); // slot 0x8c 0x485e90
-  // slot 0x8d AssertValid inherited unchanged (0x412bf0)
-  // slot 0x8e Dump inherited unchanged (0x412c10)
-  // slot 0x8f WriteTo inherited unchanged (0x485f70)
-  // slot 0x90 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x91 Free inherited unchanged (0x4798b0)
-  // slot 0x92 InvokeObjectVtableMethod24 inherited unchanged (0x4798d0)
-  // slot 0x93 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanCallChain_C1_I17_00491c80(); // slot 0x94 0x491c80
-  virtual int * InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint); // slot 0x95 0x491d80
-  virtual int * RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint); // slot 0x96 0x491cc0
-  // slot 0x9a GetRuntimeClass inherited unchanged (0x606fba)
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At00492980(); // slot 0x9b 0x492980
-  virtual undefined SerializeRecordList_0x0C_WithBlockPool_D(); // slot 0x9c 0x4927e0
-  // slot 0x9d AssertValid inherited unchanged (0x412bf0)
-  // slot 0x9e Dump inherited unchanged (0x412c10)
-  virtual undefined GetTFloatWindowClassNamePointer(); // slot 0xa0 0x491f90
-  virtual undefined VTableSlotA1(); // slot 0xa1 0x492110
-  virtual void Serialize_a2(CArchive& archive); // slot 0xa2 0x485e90
-  // slot 0xa3 AssertValid inherited unchanged (0x412bf0)
-  // slot 0xa4 Dump inherited unchanged (0x412c10)
-  // slot 0xa5 WriteTo inherited unchanged (0x485f70)
-  // slot 0xa6 ReadFrom inherited unchanged (0x485f90)
-  virtual void Free(); // slot 0xa7 0x48e2a0
-  virtual TObject* ShallowClone_a8(); // slot 0xa8 0x492d80
-  // slot 0xa9 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0xaa GetCityDialogFlagByte4 inherited unchanged (0x48a240)
-  // slot 0xab SetCityDialogFlagByte4 inherited unchanged (0x48a260)
-  // slot 0xac GetCityDialogValueDwordC inherited unchanged (0x48a2c0)
-  // slot 0xad DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
-  // slot 0xae DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void OrphanRetStub_0059add0_af(); // slot 0xaf 0x48dd50
-  virtual void DispatchEvent(); // slot 0xb0 0x48dd10
-  // slot 0xb1 ForwardNotifyParamToPrimaryChildSlot44 inherited unchanged (0x48a310)
-  // slot 0xb2 ForwardCityDialogParamToChildSlot48 inherited unchanged (0x48a380)
-  // slot 0xb3 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
-  // slot 0xb4 GetCityDialogValueDword10 inherited unchanged (0x415d50)
-  // slot 0xb5 SetCityDialogValueDword10 inherited unchanged (0x415d70)
-  virtual class TView* OwnerPanel(); // slot 0xb6 0x492cc0
-  // slot 0xb7 CanStartCityProductionActionFalse inherited unchanged (0x48a530)
-  // slot 0xb8 GetCityDialogZeroValue inherited unchanged (0x48a550)
-  // slot 0xb9 VTableSlotB9 inherited unchanged (0x48a690)
-  // slot 0xba GetTEventHandlerClassNamePointer inherited unchanged (0x48a6b0)
-  // slot 0xbb VTableSlotBB inherited unchanged (0x48a650)
-  // slot 0xbc DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
-  // slot 0xbd DispatchCityProductionAction1A inherited unchanged (0x48a670)
-  // slot 0xbe DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
-  // slot 0xbf ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0xc0 CtrlSlot32_RootControllerGateDispatch_Impl inherited unchanged (0x48a5e0)
-  // slot 0xc1 VTableSlotC1 inherited unchanged (0x48a710)
-  // slot 0xc2 IsCurrentActiveCityProductionView inherited unchanged (0x48a500)
-  // slot 0xc3 DetachActiveCityProductionChildIfMatches inherited unchanged (0x48a4a0)
-  // slot 0xc4 SetUiResourceOwner inherited unchanged (0x48a4d0)
-  // slot 0xc5 FindUiChildControlByWindowHandleRecursive_a9 inherited unchanged (0x48afd0)
-  // slot 0xc6 CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa inherited unchanged (0x48af80)
-  virtual void DispatchSlot9CToLinkedChildren(); // slot 0xc7 0x48de00
-  virtual undefined ResetChildSelectionAndNotifyParent468Alt(); // slot 0xc8 0x492330
-  // slot 0xc9 SetControlActiveFlagAndRefreshIfChanged_ad inherited unchanged (0x48b1c0)
-  // slot 0xca SetUiControlVisibleFlagAndMaybeRefreshWindow_ae inherited unchanged (0x48b070)
-  // slot 0xcb CtrlSlot43_GetWordField4E_Impl_af inherited unchanged (0x427200)
-  // slot 0xcc HandleCursorHoverFallback_b0 inherited unchanged (0x48c250)
-  // slot 0xcd OrphanRetStub_0059add0 inherited unchanged (0x48c1c0)
-  // slot 0xce RefreshCityProductionViewStateFromContext_b2 inherited unchanged (0x48c1e0)
-  // slot 0xcf ReturnZeroStatus_b3 inherited unchanged (0x430bd0)
-  // slot 0xd0 InvalidateOffsetRegionUsingChildClipRect_b4 inherited unchanged (0x48b4b0)
-  // slot 0xd1 ForwardMapViewVirtualC4IfPresent_b5 inherited unchanged (0x48ab90)
-  // slot 0xd2 ValidateControlRectIfWindowActive_b6 inherited unchanged (0x48b690)
-  // slot 0xd3 EvaluateControlInputGate_b7 inherited unchanged (0x48c000)
-  // slot 0xd4 HasRenderableParentAndContent_b8 inherited unchanged (0x48c050)
-  // slot 0xd5 HandleCursorHoverSelectionByChildHitTestAndFallback_b9 inherited unchanged (0x48c080)
-  // slot 0xd6 DispatchControlEventToChildrenAndSelf_ba inherited unchanged (0x48aaf0)
-  // slot 0xd7 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x48ab70)
-  // slot 0xd8 GetTEventHandlerClassNamePointer_bc inherited unchanged (0x48abc0)
-  // slot 0xd9 VTableSlotD9 inherited unchanged (0x48b6d0)
-  virtual class TView* QueryOwnerContextPanel(); // slot 0xda 0x492ce0
-  virtual int IsActionable(); // slot 0xdb 0x48d980
-  // slot 0xdc GetTEventHandlerClassNamePointer_c0 inherited unchanged (0x48b250)
-  // slot 0xdd UpdateControlPositionAndInvalidateUnionRect_c1 inherited unchanged (0x48b3f0)
-  // slot 0xde SetGlobalUiSelectionIfChangedAndNotify_c2 inherited unchanged (0x48b770)
-  // slot 0xdf VTableSlotDF inherited unchanged (0x427220)
-  // slot 0xe0 GetTEventHandlerClassNamePointer_c4 inherited unchanged (0x48b7b0)
-  // slot 0xe1 CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl_c5 inherited unchanged (0x48b7e0)
-  // slot 0xe2 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x48b810)
-  // slot 0xe3 PaintVisibleChildrenIntersectingClipRect_c7 inherited unchanged (0x48b8d0)
-  // slot 0xe4 ApplyRectSlot110_c8 inherited unchanged (0x430bf0)
-  // slot 0xe5 GetTEventHandlerClassNamePointer_c9 inherited unchanged (0x48b860)
-  // slot 0xe6 DispatchUiMouseMoveToChildren_ca inherited unchanged (0x48c450)
-  // slot 0xe7 BeginMouseCaptureAndStartRepeatTimer_cb inherited unchanged (0x430c10)
-  // slot 0xe8 DispatchUiMouseEventToChildrenOrSelf_Impl_cc inherited unchanged (0x48c590)
-  // slot 0xe9 vmethod_0071_cd inherited unchanged (0x427240)
-  // slot 0xea BuildRectFromControlDimensions_Impl_ce inherited unchanged (0x427260)
-  // slot 0xeb BuildRectFromControlPositionAndSizeFields_cf inherited unchanged (0x427290)
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(); // slot 0xec 0x492d40
-  virtual void vmethod_0076(int* point = 0); // slot 0xed 0x492d20
-  virtual void vmethod_0078(int* point = 0); // slot 0xee 0x492d00
-  // slot 0xef ResetUiInputCaptureState_d3 inherited unchanged (0x48b700)
-  // slot 0xf0 OffsetRectByControlPosition_Impl_d4 inherited unchanged (0x48bb00)
-  // slot 0xf1 UpdateAfterBitmapChange_d5 inherited unchanged (0x427330)
-  // slot 0xf2 CtrlSlot82_TransformPointViaSlot138_Impl_d6 inherited unchanged (0x48bb60)
-  // slot 0xf3 CtrlSlot83_TransformRectViaSlot148_Impl_d7 inherited unchanged (0x48bbb0)
-  // slot 0xf4 CtrlSlot84_AddControlPosToPoint_Impl_d8 inherited unchanged (0x48bc30)
-  // slot 0xf5 CtrlSlot85_OffsetRectByCachedPos_Impl_d9 inherited unchanged (0x48bc60)
-  // slot 0xf6 CtrlSlot86_GetCachedPosPoint_Impl_da inherited unchanged (0x48bb30)
-  // slot 0xf7 CtrlSlot87_CopyRectFromSlot160_Impl_db inherited unchanged (0x429410)
-  // slot 0xf8 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl_dc inherited unchanged (0x48bce0)
-  // slot 0xf9 VTableSlotF9 inherited unchanged (0x48b2d0)
-  // slot 0xfa UpdateRectCacheIfChangedAndInvalidateCityDialog_de inherited unchanged (0x48c380)
-  // slot 0xfb VTableSlotFB inherited unchanged (0x48c6d0)
-  // slot 0xfc vmethod_0092_e0 inherited unchanged (0x48abe0)
-  // slot 0xfd DetachUiElementFromOwnerListAndClearBackref_e1 inherited unchanged (0x48ae60)
-  // slot 0xfe CtrlSlot94_GetWordField54_Impl_e2 inherited unchanged (0x48c970)
-  virtual undefined CtrlSlot95_TestPointInBoundsFromSlot128_Impl(); // slot 0xff 0x48e1c0
-  virtual undefined GetTEventHandlerClassNamePointer_100(); // slot 0x100 0x48e1e0
-  virtual undefined VTableSlot101(); // slot 0x101 0x48e210
-  virtual undefined GetTEventHandlerClassNamePointer_102(); // slot 0x102 0x48e240
-  virtual undefined GetTEventHandlerClassNamePointer_103(); // slot 0x103 0x48e270
-  // slot 0x104 DrawRectangleInCurrentUiContext_e8 inherited unchanged (0x48c750)
-  // slot 0x105 AssertMcAppUILine1914_e9 inherited unchanged (0x48c7a0)
-  // slot 0x106 AssertMcAppUILine1922_ea inherited unchanged (0x48c7d0)
-  virtual undefined CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl(); // slot 0x107 0x492d60
-  virtual undefined OrphanLeaf_NoCall_Ins03_0048da40(); // slot 0x108 0x48da40
-  virtual undefined OrphanLeaf_NoCall_Ins05_0048d8a0(); // slot 0x109 0x48d8a0
-  virtual undefined OrphanCallChain_C1_I08_0048da10(); // slot 0x10a 0x48da10
-  virtual undefined ExecuteViewModalStateWithPushPopChain(); // slot 0x10b 0x48da60
-  virtual undefined OrphanCallChain_C1_I08_0048dc60(); // slot 0x10c 0x48dc60
-  virtual undefined OrphanCallChain_C2_I12_0048dc90(); // slot 0x10d 0x48dc90
-  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0(); // slot 0x10e 0x48dcc0
-  virtual undefined AssertMcAppUILine2554(); // slot 0x10f 0x48dce0
-  virtual undefined OrphanCallChain_C2_I19_0048ddc0(); // slot 0x110 0x48ddc0
-  virtual undefined WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(); // slot 0x111 0x48e150
-  virtual undefined AssertMcAppUILine2358(); // slot 0x112 0x48d8d0
-  virtual undefined OrphanCallChain_C2_I39_0048d900(); // slot 0x113 0x48d900
-  virtual undefined OrphanCallChain_C2_I10_0048e120(); // slot 0x114 0x48e120
-  virtual undefined WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(); // slot 0x115 0x48d9c0
-  virtual undefined WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(); // slot 0x116 0x48d9f0
-  virtual undefined OrphanVtableAssignStub_00492310(); // slot 0x117 0x492310
-  // slot 0x130 GetRuntimeClass inherited unchanged (0x606fba)
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950(); // slot 0x131 0x492950
-  virtual undefined SerializeRecordList_0x0C_WithBlockPool_C(); // slot 0x132 0x492670
-  // slot 0x133 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x134 Dump inherited unchanged (0x412c10)
 // === END GENERATED DECLS (TCluster) ===
   int field84;
 
   TCluster();
-
-  CRuntimeClass* GetRuntimeClass() const override; // 0x00
 };
 
 // === BEGIN GENERATED (TCluster) — refreshed by `just gen-class TCluster`; do not hand-edit ===

@@ -7,6 +7,8 @@
 class TPictureButton : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TPictureButton) — refreshed by recover-class; do not hand-edit ===
+  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
+  virtual ~TPictureButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -76,6 +78,8 @@ public:
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x48f3c0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                    int arg4) override; // slot 0x47 0x570900
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -116,6 +120,7 @@ public:
   // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
+  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override; // slot 0x70 0x570870
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x5708c0
@@ -124,10 +129,6 @@ public:
   short timingWord92;
 
   TPictureButton();
-  virtual ~TPictureButton() override;
-  CRuntimeClass* GetRuntimeClass() const override;
-  void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override;
-  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
 };
 
 ASSERT_SIZE(TPictureButton, 0x94);

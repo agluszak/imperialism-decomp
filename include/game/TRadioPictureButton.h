@@ -1,12 +1,13 @@
 #pragma once
 
-#include "game/TPictureButton.h"
+#include "game/TUpDownPictureButton.h"
 
 // VTABLE: IMPERIALISM 0x0065f670
-class TRadioPictureButton : public TPictureButton {
+class TRadioPictureButton : public TUpDownPictureButton {
 public:
 // === BEGIN GENERATED DECLS (TRadioPictureButton) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5717a0
+  virtual ~TRadioPictureButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -121,10 +122,11 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571690)
-  virtual undefined OrphanCallChain_C2_I16_005718f0(); // slot 0x74 0x5718f0
+  virtual undefined OrphanCallChain_C2_I16_005718f0(int arg1, int arg2); // slot 0x74 0x5718f0
 // === END GENERATED DECLS (TRadioPictureButton) ===
+  short field94;
+
   TRadioPictureButton();
-  virtual ~TRadioPictureButton() override;
 };
 
 // === BEGIN GENERATED (TRadioPictureButton) — refreshed by `just gen-class TRadioPictureButton`; do not hand-edit ===
