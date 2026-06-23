@@ -27,6 +27,14 @@ extern int g_McAppUiFlag_006A1AE4;
 extern int g_McAppUiFlag_006A1AFC;
 extern int g_McAppUiFlag_006A1B00;
 
+// Per-line one-shot invalidation-flag assert gates used by TWindow's UI slot bodies.
+extern int g_McAppUiFlag_006A1B04;
+extern int g_McAppUiFlag_006A1B08;
+extern int g_McAppUiFlag_006A1B10;
+extern int g_McAppUiFlag_006A1B14;
+extern int g_McAppUiFlag_006A1B18;
+extern int g_McAppUiFlag_006A1B1C;
+
 // Reentrancy guard for the root UpdateWindow pass driven by TView slot 0x4f.
 extern int g_McAppUiUpdateWindowRecursionGuard_006A1AF0;
 

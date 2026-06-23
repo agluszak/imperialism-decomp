@@ -10,6 +10,4 @@ CRuntimeClass* TDlgWindow::GetRuntimeClass() const {
 TDlgWindow::~TDlgWindow() {}
 
 // FUNCTION: IMPERIALISM 0x005003a0
-undefined TDlgWindow::AssertMcAppUILine2358() {
-  return 0;
-}
+void TDlgWindow::AssertMcAppUILine2358() {}

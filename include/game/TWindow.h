@@ -118,21 +118,21 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point) override; // slot 0x67 0x492d60
-  virtual undefined OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1); // slot 0x68 0x48da40
-  virtual undefined OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1,
-                                                     undefined4 param_2); // slot 0x69 0x48d8a0
-  virtual undefined OrphanCallChain_C1_I08_0048da10();                    // slot 0x6a 0x48da10
-  virtual undefined ExecuteViewModalStateWithPushPopChain();              // slot 0x6b 0x48da60
-  virtual undefined OrphanCallChain_C1_I08_0048dc60();                    // slot 0x6c 0x48dc60
+  virtual void SetField84(unsigned char param_1);                         // slot 0x68 0x48da40
+  virtual void SetField88And8c(int param_1,
+                               int param_2);                 // slot 0x69 0x48d8a0
+  virtual undefined OrphanCallChain_C1_I08_0048da10();       // slot 0x6a 0x48da10
+  virtual undefined ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
+  virtual undefined OrphanCallChain_C1_I08_0048dc60();       // slot 0x6c 0x48dc60
   virtual undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
                                                     undefined4 param_2); // slot 0x6d 0x48dc90
-  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0();                  // slot 0x6e 0x48dcc0
-  virtual undefined AssertMcAppUILine2554();                             // slot 0x6f 0x48dce0
+  virtual unsigned char* GetEmbeddedDialogBehavior();                    // slot 0x6e 0x48dcc0
+  virtual void AssertMcAppUILine2554();                                  // slot 0x6f 0x48dce0
   virtual undefined OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1);   // slot 0x70 0x48ddc0
   virtual undefined
   WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
                                                           char param_2); // slot 0x71 0x48e150
-  virtual undefined AssertMcAppUILine2358();                             // slot 0x72 0x48d8d0
+  virtual void AssertMcAppUILine2358();                                  // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   virtual undefined OrphanCallChain_C2_I10_0048e120();             // slot 0x74 0x48e120
@@ -141,7 +141,21 @@ public:
   virtual undefined WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(
       undefined4 param_1); // slot 0x76 0x48d9f0
                            // === END GENERATED DECLS (TWindow) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TWindow 0xCTOR`).
+
+  // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
+  // The 0x74 region is an embedded TDialogBehavior subobject (its base state is built by
+  // ConstructTDialogBehaviorBaseState at &this[1].field14 == +0x74); modelled as raw
+  // storage until that class is recovered. Remaining named fields are accessed directly
+  // by TWindow's own methods. Offsets that are not yet attributed stay as padding.
+  unsigned char padding_60_to_73[0x14]; // 0x60
+  unsigned char field74[0x10];          // 0x74 — embedded TDialogBehavior region
+  unsigned char field84;                // 0x84
+  unsigned char padding_85_to_87[0x03];
+  int field88; // 0x88
+  int field8c; // 0x8c
+  unsigned char padding_90_to_97[0x08];
+  int field98; // 0x98
+  unsigned char padding_9c_to_9f[0x04];
 
   TWindow();
 };

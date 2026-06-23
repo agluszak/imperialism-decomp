@@ -23,3 +23,6 @@ address|name|prototype
 0x004ddd20|TGreatPower::ClearDiplomacyState1c6ForTarget|void __thiscall ClearDiplomacyState1c6ForTarget(short targetSlot)
 
 
+0x0048da40|TWindow::SetField84|void __thiscall SetField84(unsigned char param_1)
+0x0048d8a0|TWindow::SetField88And8c|void __thiscall SetField88And8c(int param_1, int param_2)
+0x0048dcc0|TWindow::GetEmbeddedDialogBehavior|unsigned char* __thiscall GetEmbeddedDialogBehavior(void)

@@ -3,13 +3,14 @@
 #include "game/TWindow.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDlgWindow and its role. Base edge (TWindow) recovered from RTTI CRuntimeClass chain: TDlgWindow -> TWindow -> TView -> TEventHandler -> TObject -> CObject.
+// TODO(manifest): describe TDlgWindow and its role. Base edge (TWindow) recovered from RTTI
+// CRuntimeClass chain: TDlgWindow -> TWindow -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00656ce8
 class TDlgWindow : public TWindow {
 public:
-// === BEGIN GENERATED DECLS (TDlgWindow) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDlgWindow) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x500300
-  virtual ~TDlgWindow(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TDlgWindow();                                   // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -121,14 +122,16 @@ public:
   // slot 0x6e OrphanLeaf_NoCall_Ins02_0048dcc0 inherited unchanged (0x48dcc0)
   // slot 0x6f AssertMcAppUILine2554 inherited unchanged (0x48dce0)
   // slot 0x70 OrphanCallChain_C2_I19_0048ddc0 inherited unchanged (0x48ddc0)
-  // slot 0x71 WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150 inherited unchanged (0x48e150)
-  virtual undefined AssertMcAppUILine2358() override; // slot 0x72 0x5003a0
+  // slot 0x71 WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150 inherited unchanged
+  // (0x48e150)
+  virtual void AssertMcAppUILine2358() override; // slot 0x72 0x5003a0
   // slot 0x73 OrphanCallChain_C2_I39_0048d900 inherited unchanged (0x48d900)
   // slot 0x74 OrphanCallChain_C2_I10_0048e120 inherited unchanged (0x48e120)
   // slot 0x75 WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0 inherited unchanged (0x48d9c0)
   // slot 0x76 WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0 inherited unchanged (0x48d9f0)
-// === END GENERATED DECLS (TDlgWindow) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDlgWindow 0xCTOR`).
+  // === END GENERATED DECLS (TDlgWindow) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TDlgWindow
+  // 0xCTOR`).
 
   TDlgWindow();
 };

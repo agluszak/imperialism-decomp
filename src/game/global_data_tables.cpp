@@ -37,11 +37,19 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 int g_McAppUiFlag_006A143C = 0;
+int g_McAppUiFlag_006A1B04 = 0;
+int g_McAppUiFlag_006A1B08 = 0;
+int g_McAppUiFlag_006A1B10 = 0;
+int g_McAppUiFlag_006A1B14 = 0;
+int g_McAppUiFlag_006A1B18 = 0;
+int g_McAppUiFlag_006A1B1C = 0;
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.
 CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006495a0
 CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x006495e8
+CRuntimeClass PTR_s_TWindow_006495e8 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TButton_00649618 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
