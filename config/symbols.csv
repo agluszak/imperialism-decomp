@@ -9013,7 +9013,7 @@ address|name|size|type|prototype
 64b8f4|g_Reset_Quick_Draw_Value_0064B8F4||global|
 64b8f8|g_Reset_Quick_Draw_WordState_0064B8F8||global|
 64bd90|TAdorner::classRuntimeClass||global|
-64bda8|TDialogView::classRuntimeClass||global|
+64bda8|g_pClassDescTDialogView||global|
 64c0a0|TNewGameCommand::classRuntimeClass||global|
 64c0b8|TAmbitApplication::classRuntimeClass||global|
 64c0d0|TAmbitFileBasedDocument::classRuntimeClass||global|

@@ -121,7 +121,13 @@ void TWindow::AssertMcAppUILine2554() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dd10
-void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  // Direct access to the embedded TDialogBehavior (the original reads its vptr straight from
+  // +0x74), then bubble to HandleEvent.
+  reinterpret_cast<TDialogBehavior*>(&field74[0])
+      ->OrphanCallChain_C1_I17_00487470(commandId, reinterpret_cast<int>(event));
+  HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x0048dd50
 void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
