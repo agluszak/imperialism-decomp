@@ -96,7 +96,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       ApplyRectClipRegion(&boundsRect);
       control->QueryBounds(&boundsRect);
-      control->vmethod_0078();
+      control->TranslatePointToParentChain4E();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {
@@ -137,7 +137,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
       int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
       int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
       int invalidRect[4] = {cachedX, cachedY, 0, 0};
-      control->vmethod_0078();
+      control->TranslatePointToParentChain4E();
       invalidRect[2] =
           cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
       invalidRect[3] =

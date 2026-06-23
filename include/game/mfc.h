@@ -22,6 +22,8 @@
 
 // MFC module-state heap bridges (MfcRuntime.cpp).
 int AllocateWithFallbackHandler(undefined4 size_bytes);
+int AllocateAndLinkBlockHead(int* blockHead, int blockSize, int elementSize);
+void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 GetOrCreateMfcModuleThreadState(void);
 undefined4 FreeHeapBlockWithAllocatorTracking(void);

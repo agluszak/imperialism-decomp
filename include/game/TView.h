@@ -5,7 +5,6 @@
 #include "game/TEventHandler.h"
 #include "game/CString.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
 
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
@@ -41,6 +40,7 @@ public:
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(const CString& sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
+  void SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48a8c0 (override)
@@ -60,7 +60,7 @@ public:
   virtual void SetState(int state, int refreshFlag);                              // 0x2a 0x48b070
   virtual unsigned short GetField4E();                                            // 0x2b 0x427200
   virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);              // 0x2c
-  virtual void vmethod_0073(int arg1, int arg2);                                  // 0x2d 0x48c1c0
+  virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                          // 0x2d 0x48c1c0
   virtual void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper); // 0x2e 0x48c1e0
   virtual int QuerySelectedIndexSlotBC();                                         // 0x2f
   virtual void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper);      // 0x30 0x48b4b0
@@ -86,19 +86,20 @@ public:
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         int bindArg); // 0x43 0x48b8d0
   virtual void ApplyRectSlot110(RECT* rectBuffer);                    // 0x44
-  virtual void vmethod_0048(int arg = 0);                             // 0x45
+  virtual void PaintOrInvalidateControl(int arg = 0);                 // 0x45
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
                                              int arg4); // 0x46 0x48c450
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4); // 0x47
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                          int arg4);       // 0x48 0x48c590
-  virtual char vmethod_0071(CPoint* point, int arg2, int arg3, int arg4); // 0x49
+  virtual char HandleMouseCommandToSelf(CPoint* point, int arg2, int arg3,
+                                        int arg4); // 0x49
   virtual void QueryContentBounds(RECT* boundsOut);                       // 0x4a 0x427260
   virtual void QueryBounds(RECT* boundsOut);                              // 0x4b 0x427290
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect);     // 0x4c 0x4272d0
-  virtual void vmethod_0076(int* point = 0);                              // 0x4d 0x48ba80
-  virtual void vmethod_0078(int* point = 0);                              // 0x4e 0x48ba40
+  virtual void TranslatePointToParentChain4D(int* point = 0);             // 0x4d 0x48ba80
+  virtual void TranslatePointToParentChain4E(int* point = 0);             // 0x4e 0x48ba40
   virtual void InvokeSlot13C();                                           // 0x4f 0x48b700
   virtual void OffsetRectByControlPosition(RECT* rect);                   // 0x50 0x48bb00
   virtual void UpdateAfterBitmapChange(int unknownFlag);                  // 0x51
@@ -108,18 +109,18 @@ public:
   virtual void OffsetRectByCachedPos(RECT* inRect, RECT* outRect);
   virtual int* GetCachedPosPoint(int* outPoint);
   virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
-  virtual RECT BuildRectFromSlot158();
-  virtual void vmethod_0089();
+  virtual RECT* BuildRectFromSlot158(RECT* rectOut);
+  virtual void RecomputeAbsolutePositionRecursive();
   virtual void ApplyBounds(RECT* newBounds, int modeFlag); // 0x5a 0x48c380
   virtual char PointInBoundsAndActionable(CPoint* point);  // 0x5b 0x48c6d0
-  virtual void vmethod_0092(class TView* child, int flag); // 0x5c 0x48abe0
-  virtual void vmethod_0093(class TView* child);
+  virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
+  virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetField54();
   virtual char TestPointInBounds(CPoint* point);
-  virtual void vmethod_0096(int arg);
-  virtual void vmethod_0097(int arg);
-  virtual void vmethod_0098(int arg);
-  virtual void vmethod_0099(int arg1, int arg2);
+  virtual void ReturnFromUiSlot60(int arg);
+  virtual void ReturnFromUiSlot61(int arg);
+  virtual void ReturnFromUiSlot62(int arg);
+  virtual void ReturnFromUiSlot63(int arg1, int arg2);
   virtual void DrawRectangleInCurrentUiContext(int* rect);
   virtual void AssertMcAppUiLine1914();
   virtual void AssertMcAppUiLine1922();

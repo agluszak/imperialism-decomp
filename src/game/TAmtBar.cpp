@@ -117,7 +117,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   this->QueryBounds(&frameBounds);
 
-  this->vmethod_0078();
+  this->TranslatePointToParentChain4E();
 
   controlWidth = (short)this->field34;
   controlHeight = (short)this->field38;

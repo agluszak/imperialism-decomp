@@ -77,7 +77,7 @@ undefined TEditText::InitDialogWindowAndSyncTitleIfChanged() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50
-void TEditText::vmethod_0089() {
+void TEditText::RecomputeAbsolutePositionRecursive() {
 }
 
 // SYNTHETIC: IMPERIALISM 0x00492f30

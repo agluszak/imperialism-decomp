@@ -19,10 +19,26 @@ undefined4 Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
   return 0;
 }
 
+// ghidra_name TView::VTableSlot85
+// ghidra_proto undefined 'scalar_deleting_destructor'(void)
+// FUNCTION: IMPERIALISM 0x0048cad0
+undefined4 TView_VTableSlot85(void)
+{
+  return 0;
+}
+
 // ghidra_name TScroller::CreateTScrollerInstance
 // ghidra_proto undefined CreateTScrollerInstance()
 // FUNCTION: IMPERIALISM 0x0048cb00
 undefined4 CreateTScrollerInstance(void)
+{
+  return 0;
+}
+
+// ghidra_name TView::GetTScrollerClassNamePointer
+// ghidra_proto undefined GetTScrollerClassNamePointer()
+// FUNCTION: IMPERIALISM 0x0048cb90
+undefined4 GetTScrollerClassNamePointer(void)
 {
   return 0;
 }

@@ -139,7 +139,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       control->ApplyBounds(&boundsRect, 1);
       control->QueryBounds(&boundsRect);
-      control->vmethod_0078();
+      control->TranslatePointToParentChain4E();
 
       short styleValueAt60 = rangeOrMaxValue;
       if (styleValueAt60 > 0) {

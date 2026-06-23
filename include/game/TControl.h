@@ -119,7 +119,7 @@ public:
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0
-  virtual undefined OrphanRetStub_00487a00();                        // slot 0x6c 0x48e9e0
+  virtual undefined ReturnZeroFromUiSlot6C();                        // slot 0x6c 0x48e9e0
   virtual void
   SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                     char refreshNow); // slot 0x6d 0x48e7d0
@@ -144,8 +144,7 @@ public:
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.
   TObject* ShallowClone() override;
-  void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
-  void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
+  void SetHasCommandTagResource(int value);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event) override; // 0x0f 0x48e710

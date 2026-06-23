@@ -111,8 +111,6 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
 
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)sourceHandler;
-  (void)event;
   if (commandId == 0x1f) {
     SetControlStateFlagAndMaybeRefresh(1, 1);
     return;
@@ -125,7 +123,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, 1);
     return;
   }
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  TEventHandler* child = reinterpret_cast<TEventHandler*>(QueryStepValue());
   if (child != 0) {
     child->DispatchEvent(commandId, sourceHandler, event);
   }
@@ -135,18 +133,16 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
   commandTagDefaultParam1 = *pictureEntryRef;
   if (refreshNow) {
-    vmethod_0048(0);
+    PaintOrInvalidateControl(0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
 void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                                  char refreshNow) {
-  commandTagDefaultParam0 = state->value0;
-  commandTagDefaultParam1 = state->value1;
-  commandTagDefaultParam2 = state->value2;
+  *reinterpret_cast<TControlPictureRectState*>(&commandTagDefaultParam0) = *state;
   if (refreshNow != 0) {
-    vmethod_0048(0);
+    PaintOrInvalidateControl(0);
   }
 }
 
@@ -164,6 +160,7 @@ void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refres
 void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                               void* eventDataB) {
   (void)eventSender;
+  (void)eventDataA;
   if (eventType == 0) {
     SetControlStateFlagAndMaybeRefresh(1, 1);
     return;
@@ -205,10 +202,6 @@ void TControl::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
   reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
 }
 
-void TControl::WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer) {
-  DeserializeCityProductionQueueCommand(boundsBuffer);
-}
-
 // FUNCTION: IMPERIALISM 0x0048e9c0
 void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
   (void)arg1;
@@ -216,14 +209,14 @@ void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
-undefined TControl::OrphanRetStub_00487a00() {
+undefined TControl::ReturnZeroFromUiSlot6C() {
   return 0;
 }
 
 // KNOWN LINKER ARTIFACT: 0x004087fb is `jmp TControl::TControl`.
 
 // FUNCTION: IMPERIALISM 0x0058e440
-void TControl::OrphanTiny_SetDwordEcxOffset_60_0058e440(int value) {
+void TControl::SetHasCommandTagResource(int value) {
   hasCommandTagResource = value;
 }
 

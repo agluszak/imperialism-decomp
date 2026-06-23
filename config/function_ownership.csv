@@ -16,7 +16,6 @@ address|target_cpp|ownership|note
 4064e2|src/game/TView.cpp|manual|marker_sync
 406758|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 406aaf|src/game/TDiplomacyMgr.cpp|manual|marker_sync
-406ba9|src/game/TView.cpp|manual|marker_sync
 406ee7|src/game/TMinor.cpp|manual|marker_sync
 407c1b|src/game/TSimMgr.cpp|manual|marker_sync
 407da6|src/game/TSortedPtrList.cpp|manual|marker_sync
@@ -398,8 +397,6 @@ address|target_cpp|ownership|note
 48ca00|src/game/TView.cpp|manual|marker_sync
 48ca20|src/game/TView.cpp|manual|marker_sync
 48ca40|src/game/TView.cpp|manual|marker_sync
-48cad0|src/game/TView.cpp|manual|marker_sync
-48cb90|src/game/TView.cpp|manual|marker_sync
 48cd50|src/game/TIncludeView.cpp|manual|marker_sync
 48ce40|src/game/TIncludeView.cpp|manual|marker_sync
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync

@@ -133,10 +133,10 @@ class TView* TWindow::QueryOwnerContextPanel() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492d00
-void TWindow::vmethod_0078(int* point) {}
+void TWindow::TranslatePointToParentChain4E(int* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d20
-void TWindow::vmethod_0076(int* point) {}
+void TWindow::TranslatePointToParentChain4D(int* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d40
 void TWindow::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {}

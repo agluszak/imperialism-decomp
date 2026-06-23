@@ -35,7 +35,8 @@ void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool 
 bool TPictureButton::IsSelected(short value, bool refreshNow) {
   (void)value;
   (void)refreshNow;
-  RECT rect = this->BuildRectFromSlot158();
+  RECT rect;
+  this->BuildRectFromSlot158(&rect);
   return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
                       RDW_INVALIDATE | RDW_UPDATENOW);
 }

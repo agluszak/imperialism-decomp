@@ -91,8 +91,8 @@ public:
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) override; // slot 0x4c 0x492d40
-  virtual void vmethod_0076(int* point = 0) override;                          // slot 0x4d 0x492d20
-  virtual void vmethod_0078(int* point = 0) override;                          // slot 0x4e 0x492d00
+  virtual void TranslatePointToParentChain4D(int* point = 0) override;          // slot 0x4d 0x492d20
+  virtual void TranslatePointToParentChain4E(int* point = 0) override;          // slot 0x4e 0x492d00
   // slot 0x4f InvokeSlot13C inherited unchanged (0x48b700)
   // slot 0x50 OffsetRectByControlPosition inherited unchanged (0x48bb00)
   // slot 0x51 UpdateAfterBitmapChange inherited unchanged (0x427330)

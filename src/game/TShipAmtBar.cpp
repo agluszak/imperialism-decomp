@@ -68,7 +68,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       control->QueryBounds(&boundsRect);
       ApplyRectClipRegion(&boundsRect);
       control->QueryBounds(&boundsRect);
-      control->vmethod_0078();
+      control->TranslatePointToParentChain4E();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
       if (styleValueAt60 > 0) {

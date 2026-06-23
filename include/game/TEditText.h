@@ -22,7 +22,7 @@ public:
   void SetEnabled(int enabledState, int refreshFlag) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
-  void vmethod_0089() override;
+  void RecomputeAbsolutePositionRecursive() override;
   undefined OrphanCallChain_C1_I09_0048ff70() override;
   virtual undefined SetEditSelectionAndScrollCaret();
   virtual undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1);

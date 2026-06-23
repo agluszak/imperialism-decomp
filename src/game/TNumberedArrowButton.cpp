@@ -142,7 +142,7 @@ void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* e
       RefreshControl();
       value86 = phase;
     }
-    vmethod_0048(0);
+    PaintOrInvalidateControl(0);
     return;
   }
   if (eventType == 2 && phase != 0) {
@@ -150,7 +150,7 @@ void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* e
       RefreshControl();
       value86 = 0;
     }
-    vmethod_0048(0);
+    PaintOrInvalidateControl(0);
   }
 }
 
