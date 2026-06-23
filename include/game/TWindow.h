@@ -147,7 +147,9 @@ public:
   // ConstructTDialogBehaviorBaseState at &this[1].field14 == +0x74); modelled as raw
   // storage until that class is recovered. Remaining named fields are accessed directly
   // by TWindow's own methods. Offsets that are not yet attributed stay as padding.
-  unsigned char padding_60_to_73[0x14]; // 0x60
+  unsigned char padding_60_to_63[0x04]; // 0x60
+  class TWindow* field64;               // 0x64 — linked sibling/owner window
+  unsigned char padding_68_to_73[0x0c]; // 0x68
   unsigned char field74[0x10];          // 0x74 — embedded TDialogBehavior region
   unsigned char field84;                // 0x84
   unsigned char padding_85_to_87[0x03];

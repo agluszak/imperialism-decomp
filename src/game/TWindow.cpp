@@ -37,6 +37,16 @@ void TWindow::AssertMcAppUILine2358() {
 
 // FUNCTION: IMPERIALISM 0x0048d900
 undefined TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2) {
+  if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
+    WPARAM wParam = (param_1 == '\0') ? 3 : 2;
+    SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, wParam, controlTag);
+  }
+  if ((int)param_1 != field08) {
+    field08 = (int)param_1;
+    if (param_2 != '\0') {
+      RefreshControl();
+    }
+  }
   return 0;
 }
 
@@ -111,6 +121,14 @@ void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 
 // FUNCTION: IMPERIALISM 0x0048ddc0
 undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) {
+  if (param_1 == 0) {
+    param_1 = this;
+  }
+  if (param_1 != field64) {
+    field64->DispatchUiCommand19ToParent();
+    field64 = param_1;
+    param_1->HandleCityProductionNoOp();
+  }
   return 0;
 }
 
