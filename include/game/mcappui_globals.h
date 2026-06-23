@@ -34,6 +34,7 @@ extern int g_McAppUiFlag_006A1B10;
 extern int g_McAppUiFlag_006A1B14;
 extern int g_McAppUiFlag_006A1B18;
 extern int g_McAppUiFlag_006A1B1C;
+extern int g_McAppUiFlag_006A1B0C;
 
 // Reentrancy guard for the root UpdateWindow pass driven by TView slot 0x4f.
 extern int g_McAppUiUpdateWindowRecursionGuard_006A1AF0;

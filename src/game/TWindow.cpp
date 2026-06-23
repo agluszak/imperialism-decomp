@@ -133,7 +133,18 @@ void TWindow::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 }
 
 // FUNCTION: IMPERIALISM 0x0048dd50
-void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x1a) {
+    if (g_McAppUiFlag_006A1B0C == 0) {
+      AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0xa1a);
+    }
+    return;
+  }
+  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  if (child != 0) {
+    child->DispatchEvent(commandId, sourceHandler, event);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0048ddc0
 undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) {
@@ -179,6 +190,16 @@ undefined TWindow::OrphanCallChain_C2_I10_0048e120() {
 // FUNCTION: IMPERIALISM 0x0048e150
 undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
                                                                            char param_2) {
+  if (nativeWindow50 != 0) {
+    nativeWindow50->CenterWindow(0);
+    return 0;
+  }
+  if (param_1 != 0) {
+    ownerOffsetX = (0x280 - field34) / 2;
+  }
+  if (param_2 != 0) {
+    ownerOffsetY = (0x1e0 - field38) / 2;
+  }
   return 0;
 }
 

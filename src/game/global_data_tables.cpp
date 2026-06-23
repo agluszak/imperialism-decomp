@@ -43,6 +43,7 @@ int g_McAppUiFlag_006A1B10 = 0;
 int g_McAppUiFlag_006A1B14 = 0;
 int g_McAppUiFlag_006A1B18 = 0;
 int g_McAppUiFlag_006A1B1C = 0;
+int g_McAppUiFlag_006A1B0C = 0;
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.
 CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
