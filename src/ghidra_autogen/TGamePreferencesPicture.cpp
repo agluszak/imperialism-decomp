@@ -101,8 +101,8 @@ void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var_08;
   int *piVar6;
   short sVar7;
-  TGamePreferencesPicture_slot_0x04_0x04 *pTVar8;
-  TGamePreferencesPicture_slot_0x04_0x04 *unaff_EDI;
+  _vslot_fn *p_Var8;
+  _vslot_fn *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   CString CStack_cc;
   undefined4 uStack_c8;
@@ -164,19 +164,19 @@ void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_58 = 0x56a602;
   g_pCursorControlPanel = (TControl *)(**(code **)(*piVar9 + 0x94))();
   uStack_58 = 0x56a60e;
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   uStack_58 = 0x2b67;
   iStack_5c = 0x2b6c;
   uStack_60 = 0x56a626;
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
   uStack_60 = 0x6d61696e;
   pcStack_64 = (code *)PTR_g_szEmptyString_0065ddc8;
   piStack_68 = (int *)0x56a637;
   InitializeMainRoutineContextAndRun();
-  pTVar8 = this->vftable[0x12].slot_0x04;
+  p_Var8 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_60 = 0x6f6b6179;
   pcStack_64 = (code *)0x56a64f;
-  uVar2 = (*pTVar8)();
+  uVar2 = (*p_Var8)();
   pcStack_64 = (code *)CONCAT31(extraout_var,uVar2);
   piStack_68 = (int *)0x25;
   piStack_6c = (int *)0x2743;
@@ -184,7 +184,7 @@ void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject();
   pcStack_64 = (code *)0x71756572;
   piStack_68 = (int *)0x56a668;
-  uVar2 = (*pTVar8)();
+  uVar2 = (*p_Var8)();
   piStack_68 = (int *)CONCAT31(extraout_var_00,uVar2);
   piStack_6c = (int *)0x3;
   puStack_70 = (undefined4 *)0x2730;
@@ -196,11 +196,11 @@ void TGamePreferencesPicture::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar5 = *piVar9;
     piStack_68 = piVar6 + -0x1420000;
     piStack_6c = (int *)0x56a6a0;
-    uVar2 = (*pTVar8)();
+    uVar2 = (*p_Var8)();
     piStack_6c = piVar6;
     if (CONCAT31(extraout_var_01,uVar2) == 0) {
       puStack_70 = (undefined4 *)0x56a6a9;
-      uVar2 = (*pTVar8)();
+      uVar2 = (*p_Var8)();
       iVar5 = *(int *)CONCAT31(extraout_var_02,uVar2);
       puStack_70 = (undefined4 *)0x56a6b2;
       (**(code **)(iVar5 + 0xc))();
@@ -237,7 +237,7 @@ LAB_0056a843:
         iStack_14 = (uint)iStack_14._1_3_ << 8;
       }
       puStack_70 = (undefined4 *)0x56a740;
-      uVar2 = (*pTVar8)();
+      uVar2 = (*p_Var8)();
       piVar9 = *(int **)CONCAT31(extraout_var_03,uVar2);
       puStack_70 = (undefined4 *)0x56a751;
       (*(code *)piVar9[3])();
@@ -247,7 +247,7 @@ LAB_0056a843:
       (*(code *)piVar9[0x29])();
       piStack_78 = piVar6 + -0x1420000;
       piStack_7c = (int *)0x56a774;
-      uVar2 = (*pTVar8)();
+      uVar2 = (*p_Var8)();
       iVar1 = *(int *)CONCAT31(extraout_var_04,uVar2);
       piStack_7c = (int *)0x56a77d;
       (**(code **)(iVar1 + 0xc))();
@@ -303,7 +303,7 @@ LAB_0056a843:
     }
     piVar9 = piVar9 + 1;
     piVar4 = piVar6 + -0x1d1e1d18;
-    pTVar8 = unaff_EDI;
+    p_Var8 = unaff_EDI;
     piVar6 = (int *)((int)piVar6 + 1);
     if (4 < (int)piVar4) {
       piStack_68 = (int *)0x6d757369;
@@ -526,7 +526,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TGamePreferencesPicture *this,int param_1,CString param_2,int *param_3)
 
 {
-  TGamePreferencesPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   int iVar3;
   char cVar4;
@@ -554,7 +554,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   *unaff_FS_OFFSET = &uStack_c;
   if (param_1 == 10) {
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x63616e63) {
-      (*g_pSfxPlaybackSystem->vftable[0x15].slot_0x04)
+      (*g_pSfxPlaybackSystem->vftable[1].~TEventHandler)
                 (CONCAT22(0x6361,*(undefined2 *)&this->field_0x90));
       *(undefined2 *)&g_pLocalizationTable->field_0x4e = *(undefined2 *)&this->field_0x90;
       WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
@@ -568,13 +568,13 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     }
     else if (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179) {
       param_3 = &DAT_0065dde0;
-      pTVar1 = this->vftable[0x12].slot_0x04;
+      p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       iVar8 = 0x6f707461;
       do {
         iVar3 = *param_3;
-        uVar5 = (*pTVar1)(iVar8);
+        uVar5 = (*p_Var1)(iVar8);
         if ((CONCAT31(extraout_var,uVar5) != 0) && (iVar3 != -1)) {
-          uVar5 = (*pTVar1)(iVar8);
+          uVar5 = (*p_Var1)(iVar8);
           iVar2 = *(int *)CONCAT31(extraout_var_00,uVar5);
           (**(code **)(iVar2 + 0xc))();
           cVar4 = (**(code **)(iVar2 + 0x1d0))();
@@ -585,7 +585,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
         iVar3 = iVar8 + -0x6f707460;
         iVar8 = iVar8 + 1;
       } while (iVar3 < 5);
-      uVar5 = (*pTVar1)(0x6d757369);
+      uVar5 = (*p_Var1)(0x6d757369);
       piVar7 = (int *)CONCAT31(extraout_var_01,uVar5);
       (**(code **)(*piVar7 + 0xc))();
       if ((short)piVar7[0x24] < 0xc) {
@@ -596,7 +596,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       }
       *(short *)&g_pLocalizationTable->field_0x4e =
            (short)((sVar6 * 0xff) / (int)(short)((short)piVar7[0xe] + -0xc));
-      uVar5 = (*pTVar1)(0x736f756e);
+      uVar5 = (*p_Var1)(0x736f756e);
       piVar7 = (int *)CONCAT31(extraout_var_02,uVar5);
       (**(code **)(*piVar7 + 0xc))();
       if ((short)piVar7[0x24] < 0xc) {
@@ -615,7 +615,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       else {
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
       }
-      uVar5 = (*pTVar1)(0x6f706361);
+      uVar5 = (*p_Var1)(0x6f706361);
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar5) + 0xc))();
       iVar8 = ApplyAutoResolutionModeAndPersist
                         (((int *)CONCAT31(extraout_var_03,uVar5))[0x22] == 0x79657373);
@@ -643,7 +643,7 @@ TGamePreferencesPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     cVar4 = (**(code **)(iVar3 + 0x1d0))();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)
               (0x2743,(0x11 - (uint)(cVar4 != '\0')) + (iVar8 + -0x6f707461) * 2,&param_2);
-    uVar5 = (*this->vftable[0x12].slot_0x04)(iVar8 + 0x5080000);
+    uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(iVar8 + 0x5080000);
     iVar8 = *(int *)CONCAT31(extraout_var_04,uVar5);
     (**(code **)(iVar8 + 0xc))();
     (**(code **)(iVar8 + 0x1ec))(&puStack_8,1);

@@ -38,42 +38,42 @@ void TScoreGraph::OrphanCallChain_C6_I49_004875d0()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int iVar2;
-  TView **ppTStack00000004;
-  TView *pTStack_14;
-  TView *pTStack_10;
+  TToolBarClusterVtbl **ppTStack00000004;
+  TToolBarClusterVtbl *pTStack_14;
+  TToolBarClusterVtbl *pTStack_10;
   
-  pTStack_14 = (TView *)0x4fe2bf;
+  pTStack_14 = (TToolBarClusterVtbl *)0x4fe2bf;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  pTStack_10 = (TView *)0x4fe2ca;
+  pTStack_10 = (TToolBarClusterVtbl *)0x4fe2ca;
   RecomputeNationComparativePowerMetrics();
   iVar2 = 0;
   do {
-    pTStack_10 = (TView *)(iVar2 + 0x74616230);
-    pTStack_14 = (TView *)0x4fe2de;
-    uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)();
-    pTStack_14 = (TView *)0x4fe2e7;
+    pTStack_10 = (TToolBarClusterVtbl *)(iVar2 + 0x74616230);
+    pTStack_14 = (TToolBarClusterVtbl *)0x4fe2de;
+    uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)();
+    pTStack_14 = (TToolBarClusterVtbl *)0x4fe2e7;
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
-    pTStack_14 = (TView *)(iVar2 + 9);
-    pTStack_10 = (TView *)CONCAT31(extraout_var,uVar1);
+    pTStack_14 = (TToolBarClusterVtbl *)(iVar2 + 9);
+    pTStack_10 = (TToolBarClusterVtbl *)CONCAT31(extraout_var,uVar1);
     LoadUiStringByGroupAndIndexToControlObject(0x2757);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
-  pTStack_14 = this->ownerContext;
+  pTStack_14 = (TToolBarClusterVtbl *)this->ownerContext;
   ppTStack00000004 = &pTStack_14;
   pTStack_10 = pTStack_14;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_14,(char *)&g_szEmptyString);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  pTStack_10 = (TView *)0x4fe323;
-  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-  pTStack_10 = (TView *)0x63757273;
-  pTStack_14 = (TView *)0x4fe332;
+  pTStack_10 = (TToolBarClusterVtbl *)0x4fe323;
+  uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+  pTStack_10 = (TToolBarClusterVtbl *)0x63757273;
+  pTStack_14 = (TToolBarClusterVtbl *)0x4fe332;
   g_pCursorControlPanel =
        (TControl *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar1) + 0x94))();
-  pTStack_14 = (TView *)0x4fe33e;
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-  pTStack_14 = (TView *)0x2b67;
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c);
+  pTStack_14 = (TToolBarClusterVtbl *)0x4fe33e;
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+  pTStack_14 = (TToolBarClusterVtbl *)0x2b67;
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c);
   return;
 }
 

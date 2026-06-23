@@ -82,35 +82,34 @@ TForeignMinisterView::OrphanRetStub_0059add0
   uint uVar1;
   TForeignMinisterViewVtbl *pTVar2;
   undefined uVar3;
-  undefined3 extraout_var;
   
   uVar1 = *(uint *)(param_2 + 0x1c);
   if (param_1 == 0x14) {
     if (uVar1 < 0x65787070) {
       if (uVar1 == 0x6578706f) {
-        (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x2300);
+        (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x2300);
         return;
       }
       if (uVar1 == 0x6465616c) {
-        (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x22f6);
+        (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x22f6);
         return;
       }
     }
     else if (uVar1 < 0x6d657264) {
       if (uVar1 == 0x6d657263) {
-        (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x22ec);
+        (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x22ec);
         return;
       }
       if (uVar1 == 0x676c6f62) {
-        (*this->vftable[0x36].GetTEventHandlerClassNamePointer)();
+        (*this->vftable->OrphanCallChain_C3_I22_004f31d0)();
         return;
       }
     }
     else if (uVar1 == 0x70726963) {
-      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x231e);
+      (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x231e);
     }
     else if (uVar1 == 0x72656363) {
-      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x22e2);
+      (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x22e2);
       return;
     }
     return;
@@ -125,12 +124,12 @@ TForeignMinisterView::OrphanRetStub_0059add0
       return;
     }
     pTVar2 = this->vftable;
-    (*pTVar2[0x35].slot_0x04)();
-    uVar3 = (*pTVar2[0xb].GetTEventHandlerClassNamePointer)();
-    (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var,uVar3));
+    (*pTVar2->OrphanLeaf_NoCall_Ins03_004f2ea0)();
+    uVar3 = (*pTVar2->SetForeignMinisterReadyFlag14)();
+    (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)(uVar3);
     return;
   }
-  (*this->vftable[0x35].slot_0x04)();
+  (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
   return;
 }
 
@@ -143,13 +142,12 @@ void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
 {
   TForeignMinisterViewVtbl *pTVar1;
   undefined uVar2;
-  undefined3 extraout_var;
   
   if (g_pLocalizationTable->field_0x14 == '\0') {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
-    (*pTVar1[0x35].slot_0x04)();
-    (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var,uVar2));
+    uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
+    (*pTVar1->OrphanLeaf_NoCall_Ins03_004f2ea0)();
+    (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)(uVar2);
   }
   return;
 }

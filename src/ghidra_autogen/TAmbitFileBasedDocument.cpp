@@ -81,7 +81,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_0049e680()
 void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
 
 {
-  TFileStream_ConstructTStreamBaseState_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   bool bVar2;
   char cVar3;
   TFileStream *this_00;
@@ -107,11 +107,11 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
   }
   local_8._0_1_ = 0;
   TFileStream::SetBackingArchive(this_01,pLoadContext);
-  pTVar1 = this_01->vftable[7].ConstructTStreamBaseState;
-  (*pTVar1)();
-  (*pTVar1)();
-  (*pTVar1)();
-  (*pTVar1)();
+  p_Var1 = this_01->vftable->OrphanRetStub_00488b40;
+  (*p_Var1)();
+  (*p_Var1)();
+  (*p_Var1)();
+  (*p_Var1)();
   bVar2 = false;
   if (local_18 == 0x414d4249) {
     if (0x22 < DAT_00695278) goto LAB_0049e7e4;
@@ -150,22 +150,23 @@ LAB_0049e7e4:
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag();
       }
-      (*pTVar1)();
-      (*pTVar1)();
+      (*p_Var1)();
+      (*p_Var1)();
       FreeHeapBufferIfNotNull(iVar4);
-      (*g_pGlobalUiRootController->vftable[3].GetTEventHandlerClassNamePointer)(this_01);
+      (*g_pGlobalUiRootController->vftable->ReadFrom)(this_01);
       (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)(this_01);
-      (*g_pUiAnimator->vftable[3].GetTEventHandlerClassNamePointer)(this_01);
+      (*g_pUiAnimator->vftable->GetTEventHandlerClassNamePointer_06)(this_01);
       (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(this_01);
       (*g_pDiplomacyTurnStateManager->vftable[3].GetTDiplomacyMgrClassNamePointer)(this_01);
       (*g_pCityOrderCapabilityState->vftable[3].GetTTechMgrClassNamePointer)(this_01);
-      (*g_pGlobalMapState->vftable[3].GetTMapMgrClassNamePointer)(this_01);
-      (*g_pActiveMapOrderContext->vftable[3].GetTOceanClassNamePointer)(this_01);
-      (*g_pNavyOrderManager->vftable[3].SelectCandidateTilesWithLowGroundUnitCount)(this_01);
-      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(this_01);
+      (*g_pGlobalMapState->vftable->ReadFrom)(this_01);
+      (*g_pActiveMapOrderContext->vftable->ReadFrom)(this_01);
+      (*g_pNavyOrderManager->vftable->ReadFrom)(this_01);
+      (*g_pMapContextActionManager->vftable->ReadFrom)(this_01);
       for (sVar5 = 0; sVar5 < 0x17; sVar5 = sVar5 + 1) {
         if (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0) {
-          (*g_apTerrainTypeDescriptorTable[sVar5]->vftable[3].GetTCountryClassNamePointer)(this_01);
+          (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->
+            DeserializeRecruitScenarioAndInstantiateOrders)(this_01);
         }
       }
       (**(code **)(g_pUiRuntimeContext->vftable + 0x18))(this_01);
@@ -174,13 +175,13 @@ LAB_0049e7e4:
       (**(code **)(*DAT_006a21b8 + 0x18))(this_01);
     }
   }
-  (*this_01->vftable[3].ConstructTStreamBaseState)();
+  (*this_01->vftable->OrphanCallChain_C1_I06_00488ab0)();
   for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
     cVar3 = IsNationSlotEligibleForEventProcessing();
     if (cVar3 != '\0') {
-      cVar3 = (*g_apNationStates[iVar4]->vftable[0x14].GetTCountryClassNamePointer)();
+      cVar3 = (*g_apNationStates[iVar4]->vftable->ReturnFalseNationStateCapabilityFlagA0)();
       if (cVar3 == '\0') {
-        (*g_apNationStates[iVar4]->vftable[0x1a].GetTCountryClassNamePointer)();
+        (*g_apNationStates[iVar4]->vftable->GetTCountryClassNamePointer_34)();
       }
     }
   }
@@ -211,7 +212,7 @@ LAB_0049e7e4:
 void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
 
 {
-  TFileStream_GetTStreamClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   TFileStream *pTVar2;
   undefined1 *puVar3;
   int iVar4;
@@ -247,11 +248,11 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   }
   local_4 = 0xffffffff;
   TFileStream::SetBackingArchive(pTVar2,pSaveContext);
-  pTVar1 = pTVar2->vftable[0xf].GetTStreamClassNamePointer;
-  (*pTVar1)();
-  (*pTVar1)();
-  (*pTVar1)();
-  (*pTVar1)();
+  p_Var1 = pTVar2->vftable->OrphanRetStub_00488e70;
+  (*p_Var1)();
+  (*p_Var1)();
+  (*p_Var1)();
+  (*p_Var1)();
   puVar3 = (undefined1 *)AllocateWithFallbackHandler();
   if (puVar3 == (undefined1 *)0x0) {
     CStack_64.m_pchData = (char *)0x49ebed;
@@ -265,29 +266,29 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
     *puVar3 = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + -0x20 + iVar5);
     puVar3 = puVar3 + 1;
   } while (iVar4 != 0);
-  (*pTVar1)();
+  (*p_Var1)();
   FreeHeapBufferIfNotNull();
   CStack_64.m_pchData = (char *)0x49ec51;
-  (*pTVar1)();
+  (*p_Var1)();
   CStack_64.m_pchData = (char *)0x1;
-  (*pTVar1)();
+  (*p_Var1)();
   UiRuntimeContext::GetActiveNationId();
-  (*pTVar1)();
+  (*p_Var1)();
   CString::CString((CString *)&stack0xffffffa4);
   FormatOverlayTerrainLabelText();
   CString::EnsureCapacityPreserveLength((CString *)&stack0xffffffa4,0x21);
-  (*pTVar1)();
+  (*p_Var1)();
   pTStack_80 = (TFileStream *)0x49ecc7;
   CString::SetLengthAndTerminator(&CStack_64,-1);
   pTStack_80 = (TFileStream *)0x49ecd3;
   pTVar7 = pTVar2;
-  (*g_pGlobalUiRootController->vftable[2].slot_0x04)();
+  (*g_pGlobalUiRootController->vftable->WriteTo)();
   pTStack_84 = (TFileStream *)0x49ecdf;
   pTStack_80 = pTVar2;
   (*g_pLocalizationTable->vftable[2].slot_0x04)();
   pTStack_88 = (TFileStream *)0x49eceb;
   pTStack_84 = pTVar2;
-  (*g_pUiAnimator->vftable[2].slot_0x04)();
+  (*g_pUiAnimator->vftable->VTableSlot05)();
   pTStack_8c = (TFileStream *)0x49ecf7;
   pTStack_88 = pTVar2;
   (*g_pNationInteractionStateManager->vftable[2].slot_0x04)();
@@ -299,18 +300,18 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   (*g_pCityOrderCapabilityState->vftable[2].slot_0x04)();
   pTStack_98 = (TFileStream *)0x49ed1b;
   pTStack_94 = pTVar2;
-  (*g_pGlobalMapState->vftable[2].slot_0x04)();
+  (*g_pGlobalMapState->vftable->WriteTo)();
   CStack_9c.m_pchData = (char *)0x49ed27;
   pTStack_98 = pTVar2;
-  (*g_pActiveMapOrderContext->vftable[2].DestroyTPortZoneManager)();
+  (*g_pActiveMapOrderContext->vftable->WriteTo)();
   CStack_9c.m_pchData = (char *)pTVar2;
-  (*g_pNavyOrderManager->vftable[2].OrphanLeaf_NoCall_Ins07_004d8920)();
-  (*g_pMapContextActionManager->vftable[2].slot_0x04)(pTVar2);
+  (*g_pNavyOrderManager->vftable->WriteTo)();
+  (*g_pMapContextActionManager->vftable->WriteTo)(pTVar2);
   ppTVar6 = g_apTerrainTypeDescriptorTable;
   iVar5 = 0x17;
   do {
     if (*ppTVar6 != (TCountry *)0x0) {
-      (*(*ppTVar6)->vftable[2].slot_0x04)(pTVar2);
+      (*(*ppTVar6)->vftable->WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60)(pTVar2);
     }
     ppTVar6 = ppTVar6 + 1;
     iVar5 = iVar5 + -1;

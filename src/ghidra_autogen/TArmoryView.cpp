@@ -73,7 +73,7 @@ TArmoryView * TArmoryView::_scalar_deleting_destructor_(byte param_1)
 void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
-  TArmoryView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
@@ -113,19 +113,19 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
   BuildUiTextStyleDescriptor();
   sVar3 = 0;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   dwCountControlTag = 0x6e756d30;
   do {
                     /* Iterate num0..num7 controls and write queued specialist counts. */
     iStack_34 = dwCountControlTag + -0xb0bf700;
-    uVar2 = (*pTVar1)();
+    uVar2 = (*p_Var1)();
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar8 = 1;
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
-    uVar2 = (*pTVar1)();
+    uVar2 = (*p_Var1)();
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -150,7 +150,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_34 = 0x2b6b;
   BuildUiTextStyleDescriptor();
   iStack_34 = 0x7469746c;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_01,uVar2);
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1b4))();
@@ -158,7 +158,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   puStack_58 = &stack0xffffffdc;
   iStack_5c = 0x4cf034;
   BuildUiTextStyleDescriptor();
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_02,uVar2);
   (**(code **)(iVar8 + 0xc))();
   puStack_58 = (undefined1 *)0x4cf058;
@@ -171,7 +171,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   BuildUiTextStyleDescriptor();
   puStack_58 = (undefined1 *)0x636f7374;
   iStack_5c = 0x4cf077;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_03,uVar2);
   iStack_5c = 0x4cf080;
   (**(code **)(iVar8 + 0xc))();
@@ -186,7 +186,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(iVar8 + 0x1cc))();
   uStack_70 = 0x61766169;
   uStack_74 = 0x4cf0a9;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_04,uVar2);
   uStack_74 = 0x4cf0b2;
   (**(code **)(iVar8 + 0xc))();
@@ -204,21 +204,21 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   do {
                     /* Iterate availability rows and update current/required/capacity triplets. */
     iStack_88 = iVar8 + 0x1f91200;
-    uVar2 = (*pTVar1)();
+    uVar2 = (*p_Var1)();
     iStack_6c = *(int *)CONCAT31(extraout_var_05,uVar2);
     (**(code **)(iStack_6c + 0xc))();
     (**(code **)(iStack_6c + 0x1b4))(&puStack_64,1);
-    uVar2 = (*pTVar1)(iVar8);
+    uVar2 = (*p_Var1)(iVar8);
     puStack_78 = *(undefined1 **)CONCAT31(extraout_var_06,uVar2);
     (**(code **)(puStack_78 + 0xc))();
     puVar6 = &uStack_70;
     (**(code **)(puStack_78 + 0x1b4))(puVar6,1);
-    uVar2 = (*pTVar1)(iVar8 + 0x11fe0000);
+    uVar2 = (*p_Var1)(iVar8 + 0x11fe0000);
     iStack_84 = *(int *)CONCAT31(extraout_var_07,uVar2);
     (**(code **)(iStack_84 + 0xc))();
     iVar5 = 1;
     (**(code **)(iStack_84 + 0x1b4))(&uStack_7c,1);
-    uVar2 = (*pTVar1)(iVar8 + 0xaeb0100);
+    uVar2 = (*p_Var1)(iVar8 + 0xaeb0100);
     iVar7 = *(int *)CONCAT31(extraout_var_08,uVar2);
     (**(code **)(iVar7 + 0xc))();
     (**(code **)(iVar7 + 0x1b4))(&iStack_88,1);
@@ -230,13 +230,13 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_88 = 0x2b6b;
   BuildUiTextStyleDescriptor(&piStack_60,0,10);
   iStack_88 = 0x64657363;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_09,uVar2);
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1b4))(&puStack_64,1);
   *(undefined2 *)&this->field_0xa4 = 0xffff;
   *(undefined4 *)&this->field_0xa8 = 0;
-  uVar2 = (*pTVar1)(0x73656c65);
+  uVar2 = (*p_Var1)(0x73656c65);
   iVar8 = *(int *)CONCAT31(extraout_var_10,uVar2);
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1c8))(0x63697630);
@@ -285,7 +285,7 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
     sVar5 = *(short *)(param_2 + 0x1c) + -0x7630;
     if ((-1 < sVar5) && (sVar5 < 9)) {
       *(short *)&this->field_0xa4 = sVar5;
-      (*this->vftable[0x3c].slot_0x04)(CONCAT22(uVar7,sVar5));
+      (*this->vftable->RefreshCityViewProductionDetails)(CONCAT22(uVar7,sVar5));
     }
   }
   else if (param_1 == 10) {
@@ -294,8 +294,9 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
       if (*(short *)&this->field_0xa4 != sVar5) {
         pTVar1 = this->vftable;
         *(short *)&this->field_0xa4 = sVar5;
-        (*pTVar1[0x3c].slot_0x04)(CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar5));
-        uVar3 = (*pTVar1[0x12].slot_0x04)(0x73656c65);
+        (*pTVar1->RefreshCityViewProductionDetails)
+                  (CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar5));
+        uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920)(0x73656c65);
         iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
         (**(code **)(iVar2 + 0xc))();
         (**(code **)(iVar2 + 0x1c8))(sVar5 + 0x63697630);
@@ -309,7 +310,8 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
       }
       cVar4 = (**(code **)(*(int *)local_34.left + 0x2c))(CONCAT22(uVar7,sVar5));
       if (cVar4 != '\0') {
-        uVar3 = (*this->vftable[0x12].slot_0x04)(*(short *)&this->field_0xa4 + 0x6e756d30);
+        uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)
+                          (*(short *)&this->field_0xa4 + 0x6e756d30);
         if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag
@@ -327,7 +329,7 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
         local_34.left = (LONG)unaff_EDI;
         CopyRect(atStack_24,&local_34);
         InvalidateCityDialogRectRegion(atStack_24,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+        (*this->vftable->OrphanRetStub_004c6fb0)();
       }
     }
   }
@@ -371,7 +373,7 @@ void TArmoryView::OrphanRetStub_0059add0(int param_1, int param_2)
 void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 
 {
-  TArmoryView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   short sVar4;
@@ -403,16 +405,16 @@ void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   local_4._0_1_ = 1;
   CString::CString((CString *)&tStack_50.bottom);
   local_4 = CONCAT31(local_4._1_3_,2);
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  tStack_50.top = (LONG)pTVar1;
-  uVar3 = (*pTVar1)();
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
+  tStack_50.top = (LONG)p_Var1;
+  uVar3 = (*p_Var1)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
   MapUiThemeCodeToStyleFlags();
   MapUiThemeCodeToStyleFlags();
                     /* No selected specialist entry: skip refresh and exit. */
   if (*(int *)&this->field_0xa8 == 0) goto LAB_004cfa43;
   sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x4c);
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   piVar5 = (int *)CONCAT31(extraout_var_00,uVar3);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -526,7 +528,7 @@ void TArmoryView::_scalar_deleting_destructor_()
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
-    (*g_pUiViewManager->vftable[6].slot_0x04)(0x23f8);
+    (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df410)(0x23f8);
   }
   return;
 }

@@ -89,7 +89,7 @@ TTerrainHelpPicture::BuildMapTileActionContextMenu
           (TTerrainHelpPicture *this,void *pMenuDialogState,short nTileIndex)
 
 {
-  TTerrainHelpPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   uint3 uVar2;
   char cVar3;
   undefined uVar4;
@@ -194,12 +194,12 @@ TTerrainHelpPicture::BuildMapTileActionContextMenu
   CStack_60.m_pchData = pMenuDialogState;
   CStack_64.m_pchData = (char *)0x504fe4;
   local_2c[0] = uVar9;
-  cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
+  cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
   if (cVar3 == '\0') {
     CStack_64.m_pchData = (char *)0x1;
     pvStack_68 = pMenuDialogState;
     ppTStack_6c = (TTerrainHelpPictureVtbl **)0x504ff9;
-    cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
+    cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
     if (cVar3 == '\0') goto LAB_00505041;
   }
   sVar6 = 0x17;
@@ -235,7 +235,7 @@ LAB_00505041:
     pvStack_68 = (void *)uStack_4;
     ppTStack_6c = (TTerrainHelpPictureVtbl **)0x50507a;
     CStack_64.m_pchData = pcVar12;
-    cVar3 = (*g_pGlobalMapState->vftable[0xd].slot_0x04)();
+    cVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins18_00514310)();
     if (cVar3 != '\0') {
       iVar8 = (int)sVar10;
       sVar10 = sVar10 + 1;
@@ -291,13 +291,13 @@ LAB_00505041:
   InitializeUiTextStyleDescriptor();
   pTStack_30 = this->vftable;
   sVar10 = 0;
-  pTVar1 = pTStack_30[0x12].slot_0x04;
+  p_Var1 = pTStack_30->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_40.m_pchData = &this->field_0x94;
   pcStack_3c = (char *)0x69303061;
   do {
     CStack_64.m_pchData = pcStack_3c;
     pvStack_68 = (void *)0x5051cb;
-    uVar4 = (*pTVar1)();
+    uVar4 = (*p_Var1)();
     ppTStack_6c = &pTStack_30;
     pvStack_68 = (void *)0x1;
     iVar8 = *(int *)CONCAT31(extraout_var,uVar4);
@@ -339,7 +339,7 @@ LAB_00505041:
   } while (sVar10 < 0xc);
   CStack_64.m_pchData = (char *)0x74696c65;
   pvStack_68 = (void *)0x50526a;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_00,uVar4);
   pvStack_68 = (void *)0x505273;
   (**(code **)(iVar8 + 0xc))();
@@ -348,7 +348,7 @@ LAB_00505041:
   (**(code **)(iVar8 + 0xe4))();
   pvStack_68 = (void *)0x74696c32;
   ppTStack_6c = (TTerrainHelpPictureVtbl **)0x50528d;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_01,uVar4);
   ppTStack_6c = (TTerrainHelpPictureVtbl **)0x505296;
   (**(code **)(iVar8 + 0xc))();
@@ -364,7 +364,7 @@ LAB_00505041:
   InitializeUiTextStyleDescriptor();
   ppTStack_6c = (TTerrainHelpPictureVtbl **)0x696e666f;
   CStack_70.m_pchData = (char *)0x5052c8;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_02,uVar4);
   puStack_74 = (uint *)auStack_38;
   CStack_70.m_pchData = (char *)0x0;
@@ -395,7 +395,7 @@ LAB_00505041:
   InitializeUiTextStyleDescriptor();
   uStack_78 = 0x7469746c;
   puStack_7c = (undefined1 *)0x50534f;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   puStack_7c = (undefined1 *)0x1;
   CStack_80.m_pchData = (char *)0x1;
   iVar8 = *(int *)CONCAT31(extraout_var_03,uVar4);
@@ -516,7 +516,7 @@ void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
   acStack_4c[1] = 'W';
   acStack_4c[2] = 'P';
   acStack_4c[3] = '\0';
-  (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->SetForeignMinisterReadyFlag14)();
   acStack_4c[0] = '\x03';
   acStack_4c[1] = '\0';
   acStack_4c[2] = '\0';
@@ -561,7 +561,7 @@ void TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree()
   InitializeUiTextStyleDescriptor();
   builtin_strncpy(acStack_4c,"meti",4);
   uStack_50 = 0x50584f;
-  uVar2 = (*pTVar1[0x12].slot_0x04)();
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   uStack_50 = 1;
   iVar5 = *(int *)CONCAT31(extraout_var,uVar2);
   uStack_54 = CONCAT22(unaff_retaddr >> 0xf,*(undefined2 *)(&this->field_0x94 + unaff_retaddr * 2));
@@ -625,8 +625,8 @@ void TTerrainHelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   if (((param_1 == 0xd) && (0x69303060 < *(uint *)(param_2 + 0x1c))) &&
      (*(uint *)(param_2 + 0x1c) < 0x6930306d)) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-    (*this->vftable[0x39].slot_0x04)(CONCAT22(extraout_var,*(short *)(param_2 + 0x1c) + -0x3061));
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+    (*this->vftable->VTableSlot73)(CONCAT22(extraout_var,*(short *)(param_2 + 0x1c) + -0x3061));
   }
   return;
 }

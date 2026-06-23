@@ -76,7 +76,7 @@ void TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()
   g_pPrimaryRenderSurfaceContext = 0;
   (**(code **)(**(int **)&this->field_0x20 + 0x28))();
   if (this != (TDisplayMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TDisplayMgr)(1);
   }
   return;
 }
@@ -115,7 +115,8 @@ void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated()
     local_c = 0xffffffc0;
     local_8 = 0x280;
     local_4 = 0x220;
-    (*this->vftable[5].slot_0x04)(&g_pPrimaryRenderSurfaceContext,8,&local_10);
+    (*this->vftable->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0)
+              (&g_pPrimaryRenderSurfaceContext,8,&local_10);
   }
   return;
 }
@@ -130,7 +131,7 @@ void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0()
   if ((*(short *)&this->field_0xa != 0) && (*(int **)&this->field_0x4 != (int *)0x0)) {
     (**(code **)(**(int **)&this->field_0x4 + 0x1e4))();
   }
-  (*this->vftable[7].slot_0x04)(1);
+  (*this->vftable->OrphanRetStub_004fed50)(1);
   NoOpCallback_00498ca0(&this->field_0x14);
   return;
 }
@@ -200,7 +201,7 @@ void TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00()
   if (*(short *)&this->field_0xa != 0) {
     (**(code **)(**(int **)&this->field_0x4 + 0x1e0))();
   }
-  (*this->vftable[7].slot_0x04)(0);
+  (*this->vftable->OrphanRetStub_004fed50)(0);
   (**(code **)(**(int **)&this->field_0x4 + 0x13c))();
   NoOpCallback_00498ca0(&this->field_0x10);
   return;

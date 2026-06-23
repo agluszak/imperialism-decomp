@@ -240,7 +240,7 @@ bool TUnitOrder::OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
   nOrderDelta = nTargetOrderAmount - *(short *)&this->field_0x4;
                     /* Pending order amount is stored at entry field +0x04; changes are applied as
                        deltas. */
-  nMaxOrderAmount._0_1_ = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  nMaxOrderAmount._0_1_ = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,(undefined)nMaxOrderAmount) < nTargetOrderAmount) ||
      (nTargetOrderAmount < 0)) {
     fIsValidOrder = false;
@@ -315,7 +315,7 @@ void TUnitOrder::CreateTItemOrderInstance()
 {
   short sStack00000004;
   
-  (*this->vftable[7].ConstructTUnitOrderBaseState)();
+  (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(short *)(_sStack00000004 + *(short *)&this->field_0x4c * 2) =
        *(short *)&this->field_0x50 * sStack00000004;
   if (-1 < *(short *)&this->field_0x4e) {
@@ -586,7 +586,7 @@ void TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int *param_1)
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -636,7 +636,7 @@ void TUnitOrder::SyncCityEntryOrderStateWithArchive(int *pArchive)
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)pArchive);
   pcVar1 = *(code **)(*pArchive + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);

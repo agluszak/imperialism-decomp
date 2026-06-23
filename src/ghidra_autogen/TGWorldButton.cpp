@@ -88,9 +88,9 @@ void TGWorldButton::OrphanCallChain_C2_I25_00572200(char param_1, char param_2)
       *(short *)&this->field_0x84 = *(short *)&this->field_0x84 + (short)this->field34;
     }
     pTVar1 = this->vftable;
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
     if (param_2 != '\0') {
-      (*pTVar1[0x27].slot_0x04)();
+      (*pTVar1->VTableSlot4F)();
     }
   }
   return;
@@ -115,7 +115,7 @@ void TGWorldButton::OrphanTiny_ReturnZero_0048a730()
     local_4 = this->field38;
     RStack_14.bottom = this->field34 + RStack_14.top;
     RStack_14.right = 0;
-    (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(&local_30);
+    (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_30);
     RStack_24.top = local_30;
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;

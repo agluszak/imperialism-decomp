@@ -9569,7 +9569,7 @@ int DoModal_6051b9(void)
         SetActiveWindow(hWnd);
       }
     }
-    (*this->vftable[0xc].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->SetForeignMinisterReadyFlag14_18)();
     PostModal();
     iVar1 = this->field2c;
   }

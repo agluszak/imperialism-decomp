@@ -158,7 +158,7 @@ void TIconSlider::OrphanCallChain_C2_I15_005065b0()
   RECT RStack_14;
   
   RStack_14.left = (LONG)&RStack_14.top;
-  (*this->vftable[0x3c].slot_0x04)();
+  (*this->vftable->OrphanCallChain_C1_I36_00506710)();
   PtInRect(&RStack_14,*unaff_retaddr);
   return;
 }
@@ -177,7 +177,7 @@ TIconSlider::SetForeignMinisterReadyFlag14
   int iVar3;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x3b].slot_0x04)(param_1);
+  cVar2 = (*pTVar1->OrphanCallChain_C2_I15_005065b0)(param_1);
   if (cVar2 != '\0') {
     TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_1,param_2,param_3);
     return 1;
@@ -187,8 +187,8 @@ TIconSlider::SetForeignMinisterReadyFlag14
     iVar3 = (int)*(short *)&this->field_0xb6;
   }
   *(short *)&this->field_0x9c = (short)iVar3 / *(short *)&this->field_0x98;
-  (*pTVar1[0x1c].slot_0x04)();
-  (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6c,this,0);
+  (*pTVar1->VTableSlot39)();
+  (*this->ownerContext->vftable->DispatchEvent)(0x6c,this,0);
   return 1;
 }
 
@@ -200,7 +200,8 @@ void TIconSlider::OrphanTiny_ReturnZero_0048a730()
 
 {
   TIconBar::OrphanTiny_ReturnZero_0048a730((TIconBar *)this);
-  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->
+    Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0)();
   return;
 }
 
@@ -215,7 +216,7 @@ TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6
 {
   undefined1 local_10 [16];
   
-  (*this->vftable[0x3c].slot_0x04)(local_10);
+  (*this->vftable->OrphanCallChain_C1_I36_00506710)(local_10);
   NoOpRuntimeCallback_00497c00(*(undefined4 *)&this->field_0xa0);
   WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
             (*(undefined4 *)&this->field_0xa0,&stack0xffffffec);
@@ -260,7 +261,7 @@ TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
   LONG LStack_18;
   undefined1 auStack_14 [20];
   
-  local_44.left = (LONG)this->vftable[0x3c].slot_0x04;
+  local_44.left = (LONG)this->vftable->OrphanCallChain_C1_I36_00506710;
   (*(code *)local_44.left)(&tStack_34.top);
   local_44.top = tStack_34.top;
   local_44.right = tStack_34.right;
@@ -301,7 +302,7 @@ TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
   uVar2 = CreateClipStateRegionWrapperObject();
   ApplyHitRegionToClipState(uVar2);
   ApplyRectClipRegionToGlobalClipState(&iStack_24);
-  (*this->vftable[0x2a].slot_0x04)(&iStack_24,auStack_14);
+  (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_55)(&iStack_24,auStack_14);
   TIconBar::OrphanTiny_ReturnZero_0048a730((TIconBar *)this);
   SnapshotHitRegionToClipCache(uVar2);
   DestroyClipStateRegionWrapperObject(uVar2);
@@ -309,7 +310,7 @@ TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
   WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
             (*(undefined4 *)&this->field_0xa0,&stack0xffffffb4);
   if (unaff_retaddr == 2) {
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6c,this,0);
+    (*this->ownerContext->vftable->DispatchEvent)(0x6c,this,0);
   }
   return;
 }

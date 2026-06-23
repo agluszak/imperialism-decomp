@@ -87,7 +87,7 @@ void TMinister::DestructTMinister()
 void TMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   (**(code **)(*param_1 + 0x3c))(&this->field_0xc,2);
   return;
 }
@@ -99,7 +99,7 @@ void TMinister::DeserializeTMinisterBaseOrderArrayHeader(int *param_1)
 void TMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
 
 {
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (**(code **)(*param_1 + 0x78))(&this->field_0xc,2);
   return;
 }
@@ -111,7 +111,7 @@ void TMinister::SerializeTMinisterBaseOrderArrayHeader(int *param_1)
 void TMinister::DispatchNationStateEventCode10(short param_1)
 
 {
-  (*g_apNationStates[param_1]->vftable[0xf].GetTCountryClassNamePointer)(0x10);
+  (*g_apNationStates[param_1]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(0x10);
   return;
 }
 

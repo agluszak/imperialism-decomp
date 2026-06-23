@@ -88,7 +88,7 @@ TOrderView::OrphanRetStub_0059add0
   
   if (param_1 == 0x6c) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0x12].slot_0x04)(0x736c6964);
+    uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x736c6964);
     uVar3 = extraout_var_00;
     if (CONCAT31(extraout_var,uVar2) == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -97,7 +97,7 @@ TOrderView::OrphanRetStub_0059add0
     }
     (**(code **)(**(int **)&this->field_0x64 + 0x2c))
               (CONCAT22(uVar3,*(undefined2 *)(CONCAT31(extraout_var,uVar2) + 0x9c)));
-    (*pTVar1[0x34].slot_0x04)();
+    (*pTVar1->RefreshOrderViewSupplyAndUseControlValues)();
     return;
   }
   TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);

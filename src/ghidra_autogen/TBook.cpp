@@ -79,17 +79,17 @@ CRuntimeClass * TBook::GetTEventHandlerClassNamePointer()
 void TBook::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TBook_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar2 = (*pTVar1)(0x6c636f72);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar2 = (*p_Var1)(0x6c636f72);
   *(uint *)&this->field_0x90 = CONCAT31(extraout_var,uVar2);
   LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,CONCAT31(extraout_var,uVar2));
-  uVar2 = (*pTVar1)(0x72636f72);
+  uVar2 = (*p_Var1)(0x72636f72);
   *(uint *)&this->field_0x94 = CONCAT31(extraout_var_00,uVar2);
   LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,CONCAT31(extraout_var_00,uVar2));
   return;
@@ -103,7 +103,7 @@ void TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_
 
 {
   short sVar1;
-  TBook_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -111,10 +111,10 @@ void TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_
   int *piVar5;
   
   if (param_1 == 10) {
-    pTVar2 = this->vftable[0x12].slot_0x04;
+    p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     uVar6 = 0x70616765;
     do {
-      uVar4 = (*pTVar2)(uVar6);
+      uVar4 = (*p_Var2)(uVar6);
       piVar5 = (int *)CONCAT31(extraout_var,uVar4);
       if (piVar5 != (int *)0x0) {
         iVar3 = *piVar5;

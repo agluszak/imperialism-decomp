@@ -40,15 +40,15 @@ void CAmbitDocument::SetForeignMinisterReadyFlag14()
     g_pStrategicMapViewSystem = (int *)0x0;
   }
   if (g_pUiViewManager != (TAssetMgr *)0x0) {
-    (*g_pUiViewManager->vftable[3].slot_0x04)();
+    (*g_pUiViewManager->vftable->Free)();
     g_pUiViewManager = (TAssetMgr *)0x0;
   }
   if (g_pSfxPlaybackSystem != (TSoundPlayer *)0x0) {
-    (*g_pSfxPlaybackSystem->vftable[3].slot_0x04)();
+    (**(code **)&g_pSfxPlaybackSystem->vftable->field_0x1c)();
     g_pSfxPlaybackSystem = (TSoundPlayer *)0x0;
   }
   if (g_pGlobalUiRootController != (TApplication *)0x0) {
-    (*g_pGlobalUiRootController->vftable[3].slot_0x04)();
+    (*g_pGlobalUiRootController->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject)();
     g_pGlobalUiRootController = (TApplication *)0x0;
   }
   ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
@@ -89,9 +89,9 @@ undefined4 CAmbitDocument::OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 {
   FUN_0060567e(param_1);
   if (param_1 == 0) {
-    (*g_pGlobalUiRootController->vftable[0x15].GetTEventHandlerClassNamePointer)(0);
+    (*g_pGlobalUiRootController->vftable->OnEndPrintPreview)(0);
   }
-  (*g_pGlobalUiRootController->vftable[0x15].GetTEventHandlerClassNamePointer)(1);
+  (*g_pGlobalUiRootController->vftable->OnEndPrintPreview)(1);
   return 1;
 }
 

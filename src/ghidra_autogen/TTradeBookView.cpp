@@ -87,7 +87,7 @@ void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
   undefined4 seh_prev;
   undefined1 *seh_handler;
   undefined4 seh_state;
-  TTradeBookView_slot_0x04_0x04 *getResourceByTag;
+  _vslot_fn *getResourceByTag;
   int iVar1;
   
   seh_state = 0xffffffff;
@@ -98,7 +98,7 @@ void TTradeBookView::OrphanLeaf_NoCall_Ins07_004d8920(uint this_obj)
   tag_or_handle.m_pchData = (char *)0x5bdf18;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   color_or_tag.m_pchData = (char *)0x6c636f72;
-  getResourceByTag = this->vftable[0x12].slot_0x04;
+  getResourceByTag = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   tag_or_handle.m_pchData = (char *)0x5bdf29;
   resource_obj._0_1_ = (*getResourceByTag)();
   resource_obj = (astruct_7 *)CONCAT31(resource_obj._1_3_,resource_obj._0_1_);

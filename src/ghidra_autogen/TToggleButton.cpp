@@ -13,12 +13,12 @@ void TToggleButton::TToggleButton_VtblSlot116(char param_1, char param_2)
   TToggleButtonVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
   if (param_1 != '\0') {
-    (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
+    (*this->ownerContext->vftable[1].SetCityDialogValueDword10)(this->controlTag);
   }
-  (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x22].slot_0x04)(0);
+  (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
   return;
 }
 
@@ -110,7 +110,7 @@ TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
     return;
   }
   pTVar1 = this->vftable;
-  cVar3 = (*pTVar1[0x39].slot_0x04)();
+  cVar3 = (*pTVar1->OrphanTiny_VcallForward_Slot_ec_00571330)();
   if (cVar3 != '\0') {
     uVar2 = this->controlTag;
     if (uVar2 < 0x656d706a) {
@@ -122,10 +122,10 @@ TToggleButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
     }
     else if (((uVar2 != 0x72656c61) && (uVar2 != 0x74706f6c)) && (uVar2 != 0x77617220))
     goto LAB_005711e0;
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x20,this,in_stack_0000000c);
+    (*this->ownerContext->vftable->DispatchEvent)(0x20,this,in_stack_0000000c);
   }
 LAB_005711e0:
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(0,1);
+  (*pTVar1->HandleToggleButtonStateChangeAndRefresh)(0,1);
   if (this->ownerContext->controlTag != 0x75436c75) {
     return;
   }
@@ -148,7 +148,7 @@ LAB_005711e0:
       return;
     }
   }
-  (*pTVar1[0x14].slot_0x04)(0,1);
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,1);
   return;
 }
 
@@ -164,21 +164,20 @@ undefined4 TToggleButton::SetForeignMinisterReadyFlag14()
   char cVar3;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 == '\0') {
     return 0;
   }
-  cVar2 = (*pTVar1[0x39].slot_0x04)();
-  if ((cVar2 == '\0') && (cVar3 = (*this->ownerContext->vftable[0x39].slot_0x04)(), cVar3 == '\0'))
-  {
+  cVar2 = (*pTVar1->OrphanTiny_VcallForward_Slot_ec_00571330)();
+  if ((cVar2 == '\0') && (cVar3 = (*this->ownerContext->vftable[1].OwnerPanel)(), cVar3 == '\0')) {
     return 1;
   }
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)((uint)(cVar2 == '\0'),1);
+  (*pTVar1->HandleToggleButtonStateChangeAndRefresh)((uint)(cVar2 == '\0'),1);
   if (cVar2 == '\0') {
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x68,this,0);
+    (*this->ownerContext->vftable->DispatchEvent)(0x68,this,0);
     return 1;
   }
-  (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
+  (*this->ownerContext->vftable->DispatchEvent)(0x67,this,0);
   return 1;
 }
 
@@ -191,7 +190,7 @@ void TToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330()
 {
                     /* WARNING: Could not recover jumptable at 0x00571332. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*this->vftable[0x1d].slot_0x04)();
+  (*this->vftable->VTableSlot3B)();
   return;
 }
 
@@ -207,12 +206,12 @@ TToggleButton::HandleToggleButtonStateChangeAndRefresh
   TToggleButtonVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
   if (param_1 != '\0') {
-    (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
+    (*this->ownerContext->vftable[1].SetCityDialogValueDword10)(this->controlTag);
   }
-  (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x22].slot_0x04)(0);
+  (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
   return;
 }
 

@@ -3,119 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TCityTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00415CE0
-// GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::OrphanRetStub_0059add0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Vtable slot +0x24 handler.
-// GHIDRA_COMMENT Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the source object.
-// GHIDRA_COMMENT_END
-
-/* Vtable slot +0x24 handler.
-   Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the
-   source object. */
-
-void TCityTask::OrphanRetStub_0059add0()
-
-{
-  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar1;
-  undefined uVar2;
-  undefined3 extraout_var;
-  undefined4 *puVar3;
-  uint uVar4;
-  uint uVar5;
-  
-  pTVar1 = this->vftable->GetTTaskClassNamePointer;
-  uVar2 = (*pTVar1)();
-  uVar5 = *(uint *)(CONCAT31(extraout_var,uVar2) + 4);
-  (*pTVar1)();
-  puVar3 = (undefined4 *)CreateObject_606ff2();
-  for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
-    *puVar3 = this->vftable;
-    this = (TCityTask *)&this->field_0x4;
-    puVar3 = puVar3 + 1;
-  }
-  for (uVar5 = uVar5 & 3; uVar5 != 0; uVar5 = uVar5 - 1) {
-    *(undefined1 *)puVar3 = *(undefined1 *)&this->vftable;
-    this = (TCityTask *)((int)&this->vftable + 1);
-    puVar3 = (undefined4 *)((int)puVar3 + 1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004798B0
-// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
-// GHIDRA_PROTO undefined __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(void)
-
-void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit()
-
-{
-  if (this != (TCityTask *)0x0) {
-    (*this->vftable->ConstructTTaskBaseState)(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004798D0
-// GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1.
-// GHIDRA_COMMENT_END
-
-/* Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1. */
-
-void TCityTask::DeserializeCityProductionQueueCommand()
-
-{
-                    /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (*this->vftable[4].ConstructTTaskBaseState)();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00485E90
-// GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TCityTask::GetTTaskClassNamePointer(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Vtable slot +0x08 handler.
-// GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
-// GHIDRA_COMMENT_END
-
-/* Vtable slot +0x08 handler.
-   Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
-   +0x14 (clear) or +0x18 (set). */
-
-void TCityTask::GetTTaskClassNamePointer(int param_1)
-
-{
-  int *unaff_FS_OFFSET;
-  TFileStream local_1c;
-  undefined **local_14;
-  int local_10;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062ea00;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  local_10 = param_1;
-  local_14 = &PTR_LAB_00645f98;
-  local_4 = 0;
-  TFileStream::ConstructTFileStreamBaseState(&local_1c);
-  local_4 = CONCAT31(local_4._1_3_,1);
-  TFileStream::SetBackingArchive(&local_1c,&local_14);
-  if ((~*(uint *)(param_1 + 0x14) & 1) != 0) {
-    (*this->vftable[2].ConstructTTaskBaseState)();
-    *unaff_FS_OFFSET = local_10;
-    return;
-  }
-  (*this->vftable[3].GetTTaskClassNamePointer)(&local_1c);
-  *unaff_FS_OFFSET = local_10;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B30
 // GHIDRA_NAME TCityTask::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(uint param_1, uint param_2)
@@ -139,7 +26,7 @@ TCityTask::ApplyProductionDistributionToCitySlots
 
 {
   TCityTaskVtbl *pTVar1;
-  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   int unaff_EBX;
@@ -149,10 +36,10 @@ TCityTask::ApplyProductionDistributionToCitySlots
   if (param_1 < param_2) {
     pTVar1 = this->vftable;
     uVar4 = param_3;
-    uVar3 = (*pTVar1[0xf].GetTTaskClassNamePointer)(param_1,param_2,param_3);
-    pTVar2 = pTVar1[0xe].GetTTaskClassNamePointer;
-    (*pTVar2)(unaff_EBP,CONCAT31(extraout_var,uVar3),param_3);
-    (*pTVar2)(unaff_EBX + 1,uVar4,param_3);
+    uVar3 = (*pTVar1[1].DeserializeCityProductionQueueCommand_0e)(param_1,param_2,param_3);
+    p_Var2 = pTVar1[1].ApplyProductionDistributionToCitySlots;
+    (*p_Var2)(unaff_EBP,CONCAT31(extraout_var,uVar3),param_3);
+    (*p_Var2)(unaff_EBX + 1,uVar4,param_3);
   }
   return;
 }
@@ -166,7 +53,7 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
           (TCityTask *this,undefined *param_1,int param_2)
 
 {
-  TCityTask_ConstructTTaskBaseState_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
@@ -180,30 +67,30 @@ TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
     return param_2;
   }
   pcStack_1c = (code *)param_1;
-  pTVar1 = this->vftable[9].ConstructTTaskBaseState;
+  p_Var1 = this->vftable[1].AssertValid;
   puStack_20 = (undefined *)0x487bfa;
-  (*pTVar1)();
+  (*p_Var1)();
   puVar5 = param_1 + -1;
   puVar4 = (undefined *)(param_2 + 1);
   while( true ) {
     do {
       puVar4 = puVar4 + -1;
       puStack_20 = puVar4;
-      uVar2 = (*pTVar1)();
+      uVar2 = (*p_Var1)();
       sVar3 = (*(code *)param_1)(uStack_4,uVar2,param_2);
     } while (sVar3 < 0);
     do {
       puVar5 = puVar5 + 1;
       puStack_20 = puVar5;
-      uVar2 = (*pTVar1)();
+      uVar2 = (*p_Var1)();
       sVar3 = (*(code *)param_1)(uStack_4,uVar2,param_2);
     } while (0 < sVar3);
     if ((int)puVar4 <= (int)puVar5) break;
     puStack_20 = puVar5;
-    (*pTVar1)();
-    uVar2 = (*pTVar1)(puVar4);
+    (*p_Var1)();
+    uVar2 = (*p_Var1)(puVar4);
     uStack_4 = CONCAT31(extraout_var,uVar2);
-    (*this->vftable[0xc].GetTTaskClassNamePointer)(puVar5,&uStack_4,1);
+    (*this->vftable[1].ShallowClone)(puVar5,&uStack_4,1);
     (*pcStack_1c)(puVar4,&puStack_20,1);
   }
   return (int)puVar4;
@@ -217,7 +104,7 @@ void TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
 
 {
   TCityTaskVtbl *pTVar1;
-  TCityTask_ConstructTTaskBaseState_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -234,14 +121,14 @@ void TCityTask::GetTTaskClassNamePointer(int param_1, int param_2)
     param_1 = iVar5 % (int)((param_2 - param_1 ^ uVar6) - uVar6) + param_1;
   }
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[9].ConstructTTaskBaseState;
-  (*pTVar2)(iVar3);
-  uVar4 = (*pTVar2)(unaff_retaddr);
+  p_Var2 = pTVar1[1].AssertValid;
+  (*p_Var2)(iVar3);
+  uVar4 = (*p_Var2)(unaff_retaddr);
   iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iVar3 + -1);
   *(uint *)(iVar5 + 8) = CONCAT31(extraout_var,uVar4);
   iVar5 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4,iStack_4 + -1);
   *(undefined4 *)(iVar5 + 8) = unaff_EBX;
-  (*pTVar1[0xe].ConstructTTaskBaseState)(iVar3,unaff_retaddr,param_1,param_2);
+  (*pTVar1[1].QueueCityRecruitmentSupportCommandsIfDeficit)(iVar3,unaff_retaddr,param_1,param_2);
   return;
 }
 
@@ -253,17 +140,17 @@ void TCityTask::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TCityTaskVtbl *pTVar1;
-  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   int3 extraout_var;
   undefined3 extraout_var_00;
   
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[9].GetTTaskClassNamePointer;
-  uVar3 = (*pTVar2)();
+  p_Var2 = pTVar1[1].Serialize;
+  uVar3 = (*p_Var2)();
   if (CONCAT31(extraout_var,uVar3) != 0 && -1 < extraout_var) {
-    uVar3 = (*pTVar2)(&LAB_00402ed2,this);
-    (*pTVar1[0xe].GetTTaskClassNamePointer)(1,CONCAT31(extraout_var_00,uVar3));
+    uVar3 = (*p_Var2)(&LAB_00402ed2,this);
+    (*pTVar1[1].ApplyProductionDistributionToCitySlots)(1,CONCAT31(extraout_var_00,uVar3));
   }
   return;
 }
@@ -276,17 +163,17 @@ void TCityTask::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4 
 
 {
   TCityTaskVtbl *pTVar1;
-  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   int3 extraout_var;
   undefined3 extraout_var_00;
   
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[9].GetTTaskClassNamePointer;
-  uVar3 = (*pTVar2)();
+  p_Var2 = pTVar1[1].Serialize;
+  uVar3 = (*p_Var2)();
   if (CONCAT31(extraout_var,uVar3) != 0 && -1 < extraout_var) {
-    uVar3 = (*pTVar2)(param_1,param_2);
-    (*pTVar1[0xe].GetTTaskClassNamePointer)(1,CONCAT31(extraout_var_00,uVar3));
+    uVar3 = (*p_Var2)(param_1,param_2);
+    (*pTVar1[1].ApplyProductionDistributionToCitySlots)(1,CONCAT31(extraout_var_00,uVar3));
   }
   return;
 }
@@ -421,8 +308,8 @@ void TCityTask::DeserializeCityProductionQueueCommand()
   TCityTaskVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[10].ConstructTTaskBaseState)();
-  (*pTVar1[3].ConstructTTaskBaseState)();
+  (*pTVar1[1].SerializeCityProductionQueueCommand)();
+  (*pTVar1->Free)();
   return;
 }
 
@@ -620,23 +507,23 @@ bool TCityTask::OrphanLeaf_NoCall_Ins04_005adc30()
           if (((sVar1 < 0x35) || (0x3b < sVar1)) && (sVar1 != 0x33)) {
             if (((sVar1 < 0x19) || (0x1c < sVar1)) && ((sVar1 < 0x22 || (0x26 < sVar1)))) {
               if ((0x16 < sVar1) && (sVar1 < 0x19)) {
-                (*this->vftable[5].ConstructTTaskBaseState)(unaff_retaddr);
+                (*this->vftable->QueueCityOrderType10CommandIfReady)(unaff_retaddr);
               }
             }
             else {
-              (*this->vftable[7].GetTTaskClassNamePointer)(unaff_retaddr);
+              (*this->vftable->DeserializeCityProductionQueueCommand_0e)(unaff_retaddr);
             }
           }
           else {
-            (*this->vftable[6].ConstructTTaskBaseState)(unaff_retaddr);
+            (*this->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)(unaff_retaddr);
           }
         }
         else {
-          (*this->vftable[7].ConstructTTaskBaseState)(unaff_retaddr);
+          (*this->vftable->OrphanRetStub_0059add0)(unaff_retaddr);
         }
       }
       else {
-        (*this->vftable[6].GetTTaskClassNamePointer)();
+        (*this->vftable->ApplyProductionDistributionToCitySlots)();
       }
     }
     else {
@@ -1046,7 +933,7 @@ void TCityTask::SerializeCityProductionQueueCommand(void *pArchive)
   
   pcVar1 = *(code **)(*(int *)pArchive + 0x78);
   (*pcVar1)(&this->field_0x10,1);
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,pArchive);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);
@@ -1068,7 +955,7 @@ void TCityTask::DeserializeCityProductionQueueCommand(void *pArchive)
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,pArchive);
   pcVar1 = *(code **)(*(int *)pArchive + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -1085,7 +972,7 @@ undefined4 TCityTask::ConstructTTaskBaseState()
 
 {
   TCityTaskVtbl *pTVar1;
-  TCityTask_ConstructTTaskBaseState_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -1097,14 +984,14 @@ undefined4 TCityTask::ConstructTTaskBaseState()
   
   sVar5 = 1;
   pTVar1 = this->vftable;
-  uVar3 = (*pTVar1[9].GetTTaskClassNamePointer)();
+  uVar3 = (*pTVar1[1].Serialize)();
   if (CONCAT31(extraout_var,uVar3) < 1) {
     return 0;
   }
-  pTVar2 = pTVar1[9].ConstructTTaskBaseState;
+  p_Var2 = pTVar1[1].AssertValid;
   iVar6 = 1;
   do {
-    uVar3 = (*pTVar2)(iVar6);
+    uVar3 = (*p_Var2)(iVar6);
     if (*(short *)(CONCAT31(extraout_var_00,uVar3) + 4) == unaff_retaddr) {
       return CONCAT31(extraout_var_00,1);
     }

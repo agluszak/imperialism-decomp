@@ -93,13 +93,13 @@ void T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(char param_1)
   sVar1 = *(short *)&this->field_0x84;
   if (((param_1 == '\0') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\x01' && ((int)sVar1 < this->field3c)))) {
-    (*this->vftable[0x39].GetTEventHandlerClassNamePointer)
+    (*this->vftable->SetPictureResourceIdAndRefresh)
               (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
     this->field3c = (int)sVar1;
   }
   pTVar2 = this->vftable;
-  (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
-  (*pTVar2[0x22].slot_0x04)(0);
+  (*pTVar2->GetTEventHandlerClassNamePointer_3e)();
+  (*pTVar2->GetTEventHandlerClassNamePointer_45)(0);
   return;
 }
 

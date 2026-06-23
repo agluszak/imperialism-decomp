@@ -181,14 +181,14 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   local_4 = 0;
   ApplyHitRegionToClipState();
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)();
       ApplyRectClipRegionToGlobalClipState();
-      (*pTVar1[0x25].slot_0x04)();
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanRetStub_0059add0_4b)();
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
         SetQuickDrawTextOriginWithContextOffset(0);
@@ -205,7 +205,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
       ;
       SnapshotHitRegionToClipCache();
-      uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }
@@ -245,13 +245,13 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegionVariantB(undefined2 param_1
   *(undefined2 *)&this->field_0x62 = param_1;
   ApplyHitRegionToClipState(local_28);
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       iStack_24 = DAT_006a4450;
       iStack_20 = DAT_006a4454;
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&iStack_24);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&iStack_24);
       iStack_14 = this->field34 + iStack_24;
       iStack_10 = this->field38 + iStack_20;
       iStack_1c = iStack_24;

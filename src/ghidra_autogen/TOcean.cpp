@@ -65,7 +65,7 @@ void TOcean::ReadFrom(int *param_1)
     g_pMapActionContextDistanceCache = (void *)0x0;
     g_nMapActionContextCount = -1;
   }
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
   pwVar1 = &this->nationCount;
   iVar8 = 0;
@@ -103,7 +103,7 @@ void TOcean::ReadFrom(int *param_1)
     {
       pTVar11 = *(TZone **)&pTVar11->field_0x18;
     }
-    (*pTVar11->vftable[3].SetNationPendingActionStateAndPayload)();
+    (*pTVar11->vftable->GetTCountryClassNamePointer)();
   }
   pcVar2 = *(code **)(*param_1 + 0x3c);
   pwVar13 = pwVar1;
@@ -150,7 +150,7 @@ void TOcean::ReadFrom(int *param_1)
       pTVar4->vftable = (TZoneVtbl *)&TPortZone::_vftable_;
     }
     psStack_14 = (short *)0xffffffff;
-    (*pTVar4->vftable[3].DispatchNationPendingActionEventCodes)(param_1);
+    (*pTVar4->vftable->HasQueuedCivWorkOrderType7)(param_1);
     sVar3 = (short)unaff_ESI;
   }
   pTVar4 = (TZone *)(unaff_EDI + 0xc);
@@ -223,7 +223,7 @@ void TOcean::WriteTo(int *param_1)
   word *pwVar8;
   code *pcVar9;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pwVar1 = &this->nationCount;
   pwVar8 = pwVar1;
   (**(code **)(*param_1 + 0x78))(pwVar1,2);
@@ -295,7 +295,7 @@ LAB_00562a16:
     }
     return;
   }
-  (*pTVar5->vftable[2].SetNationPendingActionStateAndPayload)(param_1);
+  (*pTVar5->vftable->ExecuteNationPendingActionStateMachine)(param_1);
   pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   if (pTVar5 == (TZone *)0x0) goto LAB_00562a16;
   do {
@@ -327,7 +327,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
   *unaff_FS_OFFSET = &uStack_c;
   this[0xb].field0c = param_1 + 1;
   if (g_pActiveMapOrderContext != (TOcean *)0x0) {
-    (*g_pActiveMapOrderContext->vftable[3].DestroyTPortZoneManager)();
+    (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
     g_pActiveMapOrderContext = (TOcean *)0x0;
   }
   g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler(0x18);
@@ -344,7 +344,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
   }
   ResetPortZoneGlobalContextCounters();
   if (g_pGlobalMapState != (TMapMgr *)0x0) {
-    (*g_pGlobalMapState->vftable[3].slot_0x04)();
+    (*g_pGlobalMapState->vftable->Free)();
     g_pGlobalMapState = (TMapMgr *)0x0;
   }
   this_00 = (TMapMgr *)AllocateWithFallbackHandler(0x28);
@@ -359,7 +359,7 @@ void TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(short param_1)
   InitializeGlobalMapState(g_pGlobalMapState,unaff_ESI);
   g_pGlobalMapState->field_0x20 = 1;
   puVar1 = PTR_g_szEmptyString_006628b8;
-  (*g_pGlobalMapState->vftable[5].slot_0x04)(PTR_g_szEmptyString_006628b8);
+  (*g_pGlobalMapState->vftable->BuildOrLoadGlobalMapStateForSession)(PTR_g_szEmptyString_006628b8);
   *unaff_FS_OFFSET = puVar1;
   return;
 }

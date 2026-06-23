@@ -139,9 +139,9 @@ void TPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
-    (*pTVar1[0x14].slot_0x04)((uint)(param_1 != '\0'),1);
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((uint)(param_1 != '\0'),1);
     if (unaff_retaddr != '\0') {
-      (*pTVar1[0x39].slot_0x04)();
+      (*pTVar1->OrphanCallChain_C2_I18_005708c0)();
     }
   }
   return;
@@ -158,7 +158,7 @@ void TPictureButton::OrphanCallChain_C2_I18_005708c0()
   undefined3 extraout_var;
   undefined1 local_10 [16];
   
-  uVar1 = (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
+  uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
   ;
   return;
@@ -171,10 +171,7 @@ void TPictureButton::OrphanCallChain_C2_I18_005708c0()
 void TPictureButton::_scalar_deleting_destructor_()
 
 {
-  undefined4 in_EDX;
-  
-  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0);
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x92,0);
   TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
   return;
 }

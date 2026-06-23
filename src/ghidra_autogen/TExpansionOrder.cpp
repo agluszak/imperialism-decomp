@@ -178,7 +178,7 @@ undefined4 TExpansionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   short sVar5;
   
   sVar5 = param_1 - *(short *)&this->field_0x4;
-  uVar3 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar3) < param_1) || (param_1 < 0)) {
     cVar4 = '\0';
   }
@@ -215,7 +215,7 @@ void TExpansionOrder::CreateTItemOrderInstance()
 {
   undefined2 uStack00000004;
   
-  (*this->vftable[7].ConstructTItemOrderBaseState)();
+  (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = uStack00000004;
   if (*(short *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) < 0) {
     *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = 0;

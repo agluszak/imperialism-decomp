@@ -77,7 +77,7 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
 
 {
   int iVar1;
-  TCityBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -88,15 +88,15 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   int iVar4;
   
   iVar1 = *(int *)(param_1 + 0xac);
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar2)(0x74726561);
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var2)(0x74726561);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
     iVar4 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar4 + 0x1e4))(*(undefined4 *)(unaff_EBX + 0x10),1);
     (**(code **)(iVar4 + 0xa4))(0,1);
   }
   iVar4 = 0x756e7472;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -104,7 +104,7 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e4))
             ((int)*(short *)(*(int *)(iVar1 + 0x10) + 4),1);
-  uVar3 = (*pTVar2)(0x74726169);
+  uVar3 = (*p_Var2)(0x74726169);
   if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -112,7 +112,7 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int param_1)
   }
   (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e4))
             ((int)*(short *)(*(int *)(unaff_ESI + 0x10) + 6),1);
-  uVar3 = (*pTVar2)(0x70726f66);
+  uVar3 = (*p_Var2)(0x70726f66);
   if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

@@ -63,22 +63,22 @@ void TTacticalBattleView::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalBattleViewVtbl *pTVar1;
-  TTacticalBattleView_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[0xb].GetTEventHandlerClassNamePointer;
-  uVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->SetForeignMinisterReadyFlag14;
+  uVar3 = (*p_Var2)();
   g_pCursorControlPanel =
        (TControl *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))(0x63757273);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
-  uVar3 = (*pTVar2)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
+  uVar3 = (*p_Var2)();
   *(int *)(CONCAT31(extraout_var_00,uVar3) + 0x68) = this->controlTag;
-  (*pTVar1[0xf].slot_0x04)();
+  (*pTVar1->VTableSlot1F)();
   return;
 }
 
@@ -147,7 +147,7 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a89a0
   
   puStack_18 = local_10;
   if (*(int *)(param_1 + 8) != -1) {
-    (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(param_1);
+    (*this->vftable->OrphanLeaf_NoCall_Ins59_005a89f0)(param_1);
     InvalidateCityDialogRectRegion(&puStack_18,1);
   }
   return;
@@ -215,10 +215,10 @@ TTacticalBattleView::OrphanCallChain_C11_I88_004874b0
   undefined1 auStack_8 [8];
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x15].slot_0x04)();
+  uVar2 = (*pTVar1->OrphanRetStub_0059add0_2b)();
   sVar4 = (short)CONCAT31(extraout_var,uVar2);
   if (sVar4 != -1) {
-    (*pTVar1[0x29].GetTEventHandlerClassNamePointer)(auStack_8,param_1);
+    (*pTVar1->SetForeignMinisterReadyFlag14_52)(auStack_8,param_1);
     iVar3 = IsPointInsideHitRegion(auStack_8,param_2);
     if (iVar3 != 0) {
       SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + sVar4 * 4 + -0xf8c));
@@ -324,7 +324,7 @@ void TTacticalBattleView::SetForeignMinisterReadyFlag14(undefined4 param_1)
       SetQuickDrawStrokeColor();
       SetQuickDrawFillColorFromPaletteIndex();
       DrawHexSelectionOutlineSegments();
-      (*this->vftable[0x36].GetTEventHandlerClassNamePointer)(iVar5);
+      (*this->vftable->OrphanRetStub_005a83c0)(iVar5);
     }
     SnapshotHitRegionToClipCache();
     if ((*(int **)&this->field_0xd0 != (int *)0x0) &&
@@ -369,9 +369,10 @@ TTacticalBattleView::OrphanCallChain_C2_I66_005a9090
     local_4 = local_c + *(int *)&this->field_0x8c;
   }
   else {
-    (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(iVar1,&local_10);
+    (*this->vftable->OrphanLeaf_NoCall_Ins59_005a89f0)(iVar1,&local_10);
   }
-  (*this->vftable[0x36].slot_0x04)(&local_10,param_2,param_3,param_1,2);
+  (*this->vftable->RunOneTimeAnimationModalWaitAndInvalidateCityDialog)
+            (&local_10,param_2,param_3,param_1,2);
   return;
 }
 

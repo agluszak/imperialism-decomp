@@ -500,7 +500,8 @@ void TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
     iVar6 = (((uVar2 ^ uVar3) - uVar3 & 0xf ^ uVar3) - uVar3) + 7;
     sVar5 = (short)iVar6;
     if ((((sVar5 != asStack_4[0]) && (sVar5 != asStack_4[1])) &&
-        (cVar1 = (*g_pGlobalMapState->vftable[10].slot_0x04)
+        (cVar1 = (*g_pGlobalMapState->vftable->
+                   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask)
                            (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                                      *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),iVar6),
         cVar1 == '\0')) && (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0)) {
@@ -571,8 +572,8 @@ TBillForeignMinister::UpdateDiplomatProgressFromProductionSlots2And4
   *(short *)&param_1->field_0x204 =
        *(short *)&param_1->field_0x204 + (sVar3 - *(short *)&param_1->field_0x1e4);
   *(short *)&param_1->field_0x1e4 = sVar3;
-  uVar2 = (*pTVar1[0xd].slot_0x04)();
-  (*pTVar1[0xe].GetTCityClassNamePointer)(CONCAT31(extraout_var,uVar2) + 2);
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004b4230)();
+  (*pTVar1->OrphanLeaf_NoCall_Ins04_004b4260)(CONCAT31(extraout_var,uVar2) + 2);
   return;
 }
 

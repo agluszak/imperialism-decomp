@@ -95,7 +95,7 @@ void TTacticalUnit::ConstructTTacticalUnitBaseState()
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
   this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x1c = 0;
-  uVar1 = (*this->vftable[5].GetTTacticalUnitClassNamePointer)();
+  uVar1 = (*this->vftable->OrphanTiny_ReturnZero_005a5d40)();
   *(uint *)&this->field_0x28 = CONCAT31(extraout_var,uVar1);
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x30 = 0;

@@ -139,18 +139,18 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   local_4 = 0;
   ApplyHitRegionToClipState(local_48);
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       puVar4 = &uStack_3c;
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(puVar4);
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)(puVar4);
       uStack_2c = uStack_3c;
       uStack_28 = uStack_38;
       uStack_24 = uStack_34;
       ApplyRectClipRegionToGlobalClipState(auStack_30);
-      (*pTVar1[0x25].slot_0x04)(auStack_20);
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&stack0xffffffb4);
+      (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_20);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&stack0xffffffb4);
       if (0 < *(short *)&this->field_0x60) {
         SetQuickDrawTextOriginWithContextOffset(0,1);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
@@ -161,7 +161,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         ResetQuickDrawStrokeState();
       }
       SnapshotHitRegionToClipCache(puVar4);
-      uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }

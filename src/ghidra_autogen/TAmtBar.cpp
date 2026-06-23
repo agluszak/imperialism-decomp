@@ -109,8 +109,8 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
   pTVar1 = this->vftable;
   this->stepOrCurrentValue = param_2;
   this->rangeOrMaxValue = param_1;
-  (*pTVar1[0x1c].slot_0x04)();
-  (*pTVar1[0x27].slot_0x04)();
+  (*pTVar1->VTableSlot39)();
+  (*pTVar1->VTableSlot4F)();
   return;
 }
 
@@ -121,7 +121,7 @@ void TAmtBar::UpdateBarValuesAndRefresh(short param_1, short param_2)
 void TAmtBar::OrphanTiny_ReturnZero_0048a730()
 
 {
-  (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->RenderPrimarySurfaceOverlayPanelWithClipCache)();
   return;
 }
 
@@ -166,24 +166,24 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   local_4 = 0;
   ApplyHitRegionToClipState();
   pTVar2 = this->vftable;
-  cVar3 = (*pTVar2[0x1d].slot_0x04)();
+  cVar3 = (*pTVar2->VTableSlot3B)();
   if (cVar3 != '\0') {
-    cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_3e)();
     if (cVar3 != '\0') {
-      (*pTVar2[0x25].GetTEventHandlerClassNamePointer)();
+      (*pTVar2->OrphanCallChain_C11_I88_004874b0_4a)();
       RStack_3c.left = LStack_2c;
       RStack_4c.bottom = RStack_3c.bottom;
       RStack_3c.top = LStack_28;
       RStack_3c.right = iStack_24;
       ApplyRectClipRegionToGlobalClipState(&RStack_4c.bottom);
-      (*pTVar2[0x25].slot_0x04)(&iStack_20);
+      (*pTVar2->OrphanRetStub_0059add0_4b)(&iStack_20);
       iStack_54 = iStack_24;
       RStack_4c.left = LStack_1c;
       RStack_4c.top = LStack_18;
       iStack_50 = iStack_20;
       puStack_58 = (undefined1 *)DAT_006a4454;
       local_5c = DAT_006a4450;
-      (*pTVar2[0x27].GetTEventHandlerClassNamePointer)(&local_5c);
+      (*pTVar2->OrphanTiny_ReturnZero_0048a730_4e)(&local_5c);
       RStack_4c.right = iStack_54 + *(int *)&this->field_0x34;
       RStack_4c.bottom = iStack_50 + *(int *)&this->field_0x38;
       RStack_4c.left = iStack_54;
@@ -255,8 +255,7 @@ void TAmtBar::_scalar_deleting_destructor_(int *param_1)
   else {
     uVar3 = 0;
   }
-  uVar1 = (*this->vftable[0x34].GetTEventHandlerClassNamePointer)
-                    (uVar3,CONCAT22(uVar5,(short)*param_1));
+  uVar1 = (*this->vftable->ApplyMoveClamp)(uVar3,CONCAT22(uVar5,(short)*param_1));
   uVar3 = CONCAT31(extraout_var,uVar1);
   if (((short)uVar3 == 0) && (*param_1 != 0)) {
     piVar4 = (int *)(**(code **)(**(int **)&this->field_0x20 + 0x94))(0x6d6f7665);
@@ -281,7 +280,7 @@ LAB_005889eb:
 void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
 
 {
-  TAmtBar_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int *piVar2;
   int iVar3;
   int iVar4;
@@ -312,8 +311,8 @@ void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
   if ((in_stack_00000008 != '\0') || (*(short *)(*(int *)&this[1].field_0x20 + 4) != (short)iVar4))
   {
     LStack_58 = 0x6d6f7665;
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar5 = (*pTVar1)();
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar5 = (*p_Var1)();
     piVar7 = (int *)CONCAT31(extraout_var,uVar5);
     if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -331,7 +330,7 @@ void TAmtBar::UpdateTradeMoveControlsFromDrag(char param_1)
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
     InvalidateCityDialogRectRegion(&tStack_20,1);
-    uVar5 = (*pTVar1)(0x62617220);
+    uVar5 = (*p_Var1)(0x62617220);
     piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
     if (piVar9 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -384,7 +383,7 @@ void TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B()
   undefined3 extraout_var;
   int *piVar4;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x62617220);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

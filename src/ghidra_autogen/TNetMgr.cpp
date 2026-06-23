@@ -17,11 +17,11 @@ void TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive *param_1
   int iVar5;
   TNetMgr_slot_0x04_0x04 *pTVar6;
   TNetMgrVtbl *pTVar7;
-  TNetMgr_slot_0x04_0x04 *local_18;
+  _vslot_fn *local_18;
   undefined4 local_14;
   int local_10;
   undefined4 local_c;
-  TNetMgr_slot_0x04_0x04 *local_8;
+  _vslot_fn *local_8;
   TNetMgr_slot_0x04_0x04 *local_4;
   
   if ((~param_1->m_nMode & 1U) == 0) {
@@ -44,10 +44,9 @@ void TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(CArchive *param_1
       pTVar6 = (TNetMgr_slot_0x04_0x04 *)(((uint)(int)(short)local_14 >> 4) % (uint)pTVar7);
       pTVar3 = this[1].vftable;
       if (pTVar3 != (TNetMgrVtbl *)0x0) {
-        for (pTVar2 = (TNetMgrVtbl *)(&pTVar3->GetTNetMgrClassNamePointer)[(int)pTVar6];
-            pTVar2 != (TNetMgrVtbl *)0x0; pTVar2 = (TNetMgrVtbl *)pTVar2->GetTNetMgrClassNamePointer
-            ) {
-          if (*(short *)&pTVar2[1].GetTNetMgrClassNamePointer == (short)local_14) goto LAB_0049b033;
+        for (pTVar2 = (TNetMgrVtbl *)(&pTVar3->GetRuntimeClass)[(int)pTVar6];
+            pTVar2 != (TNetMgrVtbl *)0x0; pTVar2 = (TNetMgrVtbl *)pTVar2->GetRuntimeClass) {
+          if (*(short *)&pTVar2->Serialize == (short)local_14) goto LAB_0049b033;
         }
       }
       pTVar2 = (TNetMgrVtbl *)0x0;
@@ -58,12 +57,12 @@ LAB_0049b033:
           pTVar3 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar7 * 4);
           this[1].vftable = pTVar3;
           for (uVar4 = (uint)pTVar7 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-            pTVar3->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-            pTVar3 = (TNetMgrVtbl *)&pTVar3->slot_0x04;
+            pTVar3->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar3 = (TNetMgrVtbl *)&pTVar3->~TNetMgr;
           }
           for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-            *(undefined1 *)&pTVar3->GetTNetMgrClassNamePointer = 0;
-            pTVar3 = (TNetMgrVtbl *)((int)&pTVar3->GetTNetMgrClassNamePointer + 1);
+            *(undefined1 *)&pTVar3->GetRuntimeClass = 0;
+            pTVar3 = (TNetMgrVtbl *)((int)&pTVar3->GetRuntimeClass + 1);
           }
           this[2].vftable = pTVar7;
         }
@@ -71,29 +70,27 @@ LAB_0049b033:
           iVar5 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0x10);
           pTVar3 = this[6].vftable;
           pTVar7 = (TNetMgrVtbl *)((int)pTVar3 * 0x10 + -0xc + iVar5);
-          if (-1 < (int)((int)&pTVar3[-1].slot_0x04 + 3)) {
+          if (-1 < (int)((int)&pTVar3[-1].Dump_16 + 3)) {
             do {
-              pTVar7->GetTNetMgrClassNamePointer =
-                   (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+              pTVar7->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
               this[4].vftable = pTVar7;
-              pTVar7 = pTVar7 + -2;
-              pTVar3 = (TNetMgrVtbl *)((int)&pTVar3[-1].slot_0x04 + 3);
+              pTVar7 = (TNetMgrVtbl *)&pTVar7[-1].WrapperFor_FreeHeapBufferIfNotNull_At005e4a60;
+              pTVar3 = (TNetMgrVtbl *)((int)&pTVar3[-1].Dump_16 + 3);
             } while (pTVar3 != (TNetMgrVtbl *)0x0);
           }
         }
         pTVar2 = this[4].vftable;
-        this[4].vftable = (TNetMgrVtbl *)pTVar2->GetTNetMgrClassNamePointer;
-        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
-        *(undefined2 *)&pTVar2[1].GetTNetMgrClassNamePointer = 0;
-        pTVar2[1].slot_0x04 = (TNetMgr_slot_0x04_0x04 *)0x0;
-        pTVar2->slot_0x04 = pTVar6;
-        *(undefined2 *)&pTVar2[1].GetTNetMgrClassNamePointer = (undefined2)local_c;
-        pTVar2->GetTNetMgrClassNamePointer =
-             (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar6];
-        (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar6] =
+        this[4].vftable = (TNetMgrVtbl *)pTVar2->GetRuntimeClass;
+        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetRuntimeClass + 1);
+        *(undefined2 *)&pTVar2->Serialize = 0;
+        pTVar2->AssertValid = (_vslot_fn *)0x0;
+        pTVar2->~TNetMgr = pTVar6;
+        *(undefined2 *)&pTVar2->Serialize = (undefined2)local_c;
+        pTVar2->GetRuntimeClass = (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar6];
+        (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar6] =
              (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar2;
       }
-      pTVar2[1].slot_0x04 = local_8;
+      pTVar2->AssertValid = local_8;
     }
   }
   else {
@@ -101,7 +98,7 @@ LAB_0049b033:
     if ((this[3].vftable != (TNetMgrVtbl *)0x0) &&
        (pTVar7 = (TNetMgrVtbl *)0x0, this[2].vftable != (TNetMgrVtbl *)0x0)) {
       do {
-        for (pTVar1 = (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7];
+        for (pTVar1 = (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar7];
             pTVar1 != (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
             pTVar1 = *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar1) {
           if ((~param_1->m_nMode & 1U) == 0) {
@@ -117,7 +114,7 @@ LAB_0049b033:
             WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)(pTVar1 + 0xc),4);
           }
         }
-        pTVar7 = (TNetMgrVtbl *)((int)&pTVar7->GetTNetMgrClassNamePointer + 1);
+        pTVar7 = (TNetMgrVtbl *)((int)&pTVar7->GetRuntimeClass + 1);
       } while (pTVar7 < this[2].vftable);
       return;
     }
@@ -139,11 +136,11 @@ void TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive *param_1
   int iVar5;
   TNetMgr_slot_0x04_0x04 *pTVar6;
   TNetMgrVtbl *pTVar7;
-  TNetMgr_slot_0x04_0x04 *local_18;
-  TNetMgr_GetTNetMgrClassNamePointer_0x00 *local_14;
+  _vslot_fn *local_18;
+  _vslot_fn *local_14;
   int local_10;
-  TNetMgr_GetTNetMgrClassNamePointer_0x00 *local_c;
-  TNetMgr_slot_0x04_0x04 *local_8;
+  _vslot_fn *local_c;
+  _vslot_fn *local_8;
   TNetMgr_slot_0x04_0x04 *local_4;
   
   if ((~param_1->m_nMode & 1U) == 0) {
@@ -166,10 +163,9 @@ void TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(CArchive *param_1
       local_c = local_14;
       pTVar3 = this[1].vftable;
       if (pTVar3 != (TNetMgrVtbl *)0x0) {
-        for (pTVar2 = (TNetMgrVtbl *)(&pTVar3->GetTNetMgrClassNamePointer)[(int)pTVar6];
-            pTVar2 != (TNetMgrVtbl *)0x0; pTVar2 = (TNetMgrVtbl *)pTVar2->GetTNetMgrClassNamePointer
-            ) {
-          if (pTVar2[1].GetTNetMgrClassNamePointer == local_14) goto LAB_0049b471;
+        for (pTVar2 = (TNetMgrVtbl *)(&pTVar3->GetRuntimeClass)[(int)pTVar6];
+            pTVar2 != (TNetMgrVtbl *)0x0; pTVar2 = (TNetMgrVtbl *)pTVar2->GetRuntimeClass) {
+          if (pTVar2->Serialize == local_14) goto LAB_0049b471;
         }
       }
       pTVar2 = (TNetMgrVtbl *)0x0;
@@ -180,12 +176,12 @@ LAB_0049b471:
           pTVar3 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar7 * 4);
           this[1].vftable = pTVar3;
           for (uVar4 = (uint)pTVar7 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-            pTVar3->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-            pTVar3 = (TNetMgrVtbl *)&pTVar3->slot_0x04;
+            pTVar3->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar3 = (TNetMgrVtbl *)&pTVar3->~TNetMgr;
           }
           for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-            *(undefined1 *)&pTVar3->GetTNetMgrClassNamePointer = 0;
-            pTVar3 = (TNetMgrVtbl *)((int)&pTVar3->GetTNetMgrClassNamePointer + 1);
+            *(undefined1 *)&pTVar3->GetRuntimeClass = 0;
+            pTVar3 = (TNetMgrVtbl *)((int)&pTVar3->GetRuntimeClass + 1);
           }
           this[2].vftable = pTVar7;
         }
@@ -193,29 +189,27 @@ LAB_0049b471:
           iVar5 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0x10);
           pTVar3 = this[6].vftable;
           pTVar7 = (TNetMgrVtbl *)((int)pTVar3 * 0x10 + -0xc + iVar5);
-          if (-1 < (int)((int)&pTVar3[-1].slot_0x04 + 3)) {
+          if (-1 < (int)((int)&pTVar3[-1].Dump_16 + 3)) {
             do {
-              pTVar7->GetTNetMgrClassNamePointer =
-                   (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+              pTVar7->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
               this[4].vftable = pTVar7;
-              pTVar7 = pTVar7 + -2;
-              pTVar3 = (TNetMgrVtbl *)((int)&pTVar3[-1].slot_0x04 + 3);
+              pTVar7 = (TNetMgrVtbl *)&pTVar7[-1].WrapperFor_FreeHeapBufferIfNotNull_At005e4a60;
+              pTVar3 = (TNetMgrVtbl *)((int)&pTVar3[-1].Dump_16 + 3);
             } while (pTVar3 != (TNetMgrVtbl *)0x0);
           }
         }
         pTVar2 = this[4].vftable;
-        this[4].vftable = (TNetMgrVtbl *)pTVar2->GetTNetMgrClassNamePointer;
-        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
-        pTVar2[1].GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-        pTVar2[1].slot_0x04 = (TNetMgr_slot_0x04_0x04 *)0x0;
-        pTVar2->slot_0x04 = pTVar6;
-        pTVar2[1].GetTNetMgrClassNamePointer = local_c;
-        pTVar2->GetTNetMgrClassNamePointer =
-             (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar6];
-        (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar6] =
+        this[4].vftable = (TNetMgrVtbl *)pTVar2->GetRuntimeClass;
+        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetRuntimeClass + 1);
+        pTVar2->Serialize = (_vslot_fn *)0x0;
+        pTVar2->AssertValid = (_vslot_fn *)0x0;
+        pTVar2->~TNetMgr = pTVar6;
+        pTVar2->Serialize = local_c;
+        pTVar2->GetRuntimeClass = (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar6];
+        (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar6] =
              (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar2;
       }
-      pTVar2[1].slot_0x04 = local_8;
+      pTVar2->AssertValid = local_8;
     }
   }
   else {
@@ -223,7 +217,7 @@ LAB_0049b471:
     if ((this[3].vftable != (TNetMgrVtbl *)0x0) &&
        (pTVar7 = (TNetMgrVtbl *)0x0, this[2].vftable != (TNetMgrVtbl *)0x0)) {
       do {
-        for (pTVar1 = (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7];
+        for (pTVar1 = (&(this[1].vftable)->GetRuntimeClass)[(int)pTVar7];
             pTVar1 != (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
             pTVar1 = *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar1) {
           if ((~param_1->m_nMode & 1U) == 0) {
@@ -239,7 +233,7 @@ LAB_0049b471:
             WriteBytesToSerializedBuffer((TNetMgr *)param_1,(int)(pTVar1 + 0xc),4);
           }
         }
-        pTVar7 = (TNetMgrVtbl *)((int)&pTVar7->GetTNetMgrClassNamePointer + 1);
+        pTVar7 = (TNetMgrVtbl *)((int)&pTVar7->GetRuntimeClass + 1);
       } while (pTVar7 < this[2].vftable);
       return;
     }
@@ -315,7 +309,7 @@ void TNetMgr::ReleaseObjectIfNonNullViaVslot04()
 
 {
   if (this != (TNetMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TNetMgr)(1);
   }
   return;
 }
@@ -339,7 +333,7 @@ void TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
   this->vftable = (TNetMgrVtbl *)&CObjectVtbl_0066fa50;
   pTVar1 = this[1].vftable;
   local_4 = 0;
-  for (; pTVar1 != (TNetMgrVtbl *)0x0; pTVar1 = (TNetMgrVtbl *)pTVar1->GetTNetMgrClassNamePointer) {
+  for (; pTVar1 != (TNetMgrVtbl *)0x0; pTVar1 = (TNetMgrVtbl *)pTVar1->GetRuntimeClass) {
   }
   this[3].vftable = (TNetMgrVtbl *)0x0;
   this[4].vftable = (TNetMgrVtbl *)0x0;
@@ -382,29 +376,27 @@ void TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive *param_1)
         iVar3 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0xc);
         pTVar5 = this[6].vftable;
         pTVar4 = (TNetMgrVtbl *)(iVar3 + -8 + (int)pTVar5 * 0xc);
-        if (-1 < (int)((int)&pTVar5[-1].slot_0x04 + 3)) {
+        if (-1 < (int)((int)&pTVar5[-1].Dump_16 + 3)) {
           do {
-            pTVar4->GetTNetMgrClassNamePointer =
-                 (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+            pTVar4->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
             this[4].vftable = pTVar4;
-            pTVar4 = (TNetMgrVtbl *)&pTVar4[-2].slot_0x04;
-            pTVar5 = (TNetMgrVtbl *)((int)&pTVar5[-1].slot_0x04 + 3);
+            pTVar4 = (TNetMgrVtbl *)&pTVar4[-1].SerializeDynamicDwordPointerArrayState;
+            pTVar5 = (TNetMgrVtbl *)((int)&pTVar5[-1].Dump_16 + 3);
           } while (pTVar5 != (TNetMgrVtbl *)0x0);
         }
       }
       pTVar4 = this[4].vftable;
-      this[4].vftable = (TNetMgrVtbl *)pTVar4->GetTNetMgrClassNamePointer;
-      pTVar4->slot_0x04 = (TNetMgr_slot_0x04_0x04 *)pTVar6;
-      pTVar4->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-      this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
-      pTVar4[1].GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-      pTVar4[1].GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pCVar1;
+      this[4].vftable = (TNetMgrVtbl *)pTVar4->GetRuntimeClass;
+      pTVar4->~TNetMgr = (TNetMgr_slot_0x04_0x04 *)pTVar6;
+      pTVar4->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+      this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetRuntimeClass + 1);
+      pTVar4->Serialize = (_vslot_fn *)0x0;
+      pTVar4->Serialize = (_vslot_fn *)pCVar1;
       if (this[2].vftable == (TNetMgrVtbl *)0x0) {
         this[1].vftable = pTVar4;
       }
       else {
-        (this[2].vftable)->GetTNetMgrClassNamePointer =
-             (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar4;
+        (this[2].vftable)->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar4;
       }
       this[2].vftable = pTVar4;
     }
@@ -415,12 +407,12 @@ void TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive *param_1)
     if (pTVar6 != (TNetMgrVtbl *)0x0) {
       do {
         if ((~this_00->m_nMode & 1U) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)(pTVar6 + 1),4);
+          CArchive::ReadBytesFromSerializedBuffer(this_00,(int)&pTVar6->Serialize,4);
         }
         else {
-          WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)(pTVar6 + 1),4);
+          WriteBytesToSerializedBuffer((TNetMgr *)this_00,(int)&pTVar6->Serialize,4);
         }
-        pTVar6 = (TNetMgrVtbl *)pTVar6->GetTNetMgrClassNamePointer;
+        pTVar6 = (TNetMgrVtbl *)pTVar6->GetRuntimeClass;
       } while (pTVar6 != (TNetMgrVtbl *)0x0);
       return;
     }
@@ -498,12 +490,12 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
       pTVar2 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar1 * 4);
       this[1].vftable = pTVar2;
       for (uVar4 = (uint)pTVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-        pTVar2->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
-        pTVar2 = (TNetMgrVtbl *)&pTVar2->slot_0x04;
+        pTVar2->GetRuntimeClass = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+        pTVar2 = (TNetMgrVtbl *)&pTVar2->~TNetMgr;
       }
       for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-        *(undefined1 *)&pTVar2->GetTNetMgrClassNamePointer = 0;
-        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetTNetMgrClassNamePointer + 1);
+        *(undefined1 *)&pTVar2->GetRuntimeClass = 0;
+        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetRuntimeClass + 1);
       }
       this[3].vftable = pTVar1;
       this[2].vftable = pTVar1;
@@ -512,7 +504,7 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
       pTVar2 = this[4].vftable;
       if (pTVar2 == (TNetMgrVtbl *)0x0) {
         pTVar2 = (TNetMgrVtbl *)
-                 ((int)((int)&(this[2].vftable)->GetTNetMgrClassNamePointer +
+                 ((int)((int)&(this[2].vftable)->GetRuntimeClass +
                        ((int)this[2].vftable >> 0x1f & 7U)) >> 3);
         if ((int)pTVar2 < 4) {
           pTVar2 = (TNetMgrVtbl *)0x4;
@@ -522,8 +514,7 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
         }
       }
       local_8 = (TNetMgrVtbl *)
-                ((int)&(this[3].vftable)->GetTNetMgrClassNamePointer +
-                (int)&pTVar2->GetTNetMgrClassNamePointer);
+                ((int)&(this[3].vftable)->GetRuntimeClass + (int)&pTVar2->GetRuntimeClass);
       if ((int)local_8 <= (int)pTVar1) {
         local_8 = pTVar1;
       }
@@ -531,17 +522,16 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
       pTVar2 = this[1].vftable;
       pTVar6 = pTVar3;
       for (uVar4 = (uint)this[2].vftable & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-        pTVar6->GetTNetMgrClassNamePointer = pTVar2->GetTNetMgrClassNamePointer;
-        pTVar2 = (TNetMgrVtbl *)&pTVar2->slot_0x04;
-        pTVar6 = (TNetMgrVtbl *)&pTVar6->slot_0x04;
+        pTVar6->GetRuntimeClass = pTVar2->GetRuntimeClass;
+        pTVar2 = (TNetMgrVtbl *)&pTVar2->~TNetMgr;
+        pTVar6 = (TNetMgrVtbl *)&pTVar6->~TNetMgr;
       }
       for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-        *(undefined1 *)&pTVar6->GetTNetMgrClassNamePointer =
-             *(undefined1 *)&pTVar2->GetTNetMgrClassNamePointer;
-        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetTNetMgrClassNamePointer + 1);
-        pTVar6 = (TNetMgrVtbl *)((int)&pTVar6->GetTNetMgrClassNamePointer + 1);
+        *(undefined1 *)&pTVar6->GetRuntimeClass = *(undefined1 *)&pTVar2->GetRuntimeClass;
+        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetRuntimeClass + 1);
+        pTVar6 = (TNetMgrVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
       }
-      ppTVar7 = &pTVar3->GetTNetMgrClassNamePointer + (int)this[2].vftable;
+      ppTVar7 = &pTVar3->GetRuntimeClass + (int)this[2].vftable;
       for (iVar5 = (int)pTVar1 - (int)this[2].vftable; iVar5 != 0; iVar5 = iVar5 + -1) {
         *ppTVar7 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
         ppTVar7 = ppTVar7 + 1;
@@ -554,7 +544,7 @@ void TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive *param_1)
     else {
       pTVar2 = this[2].vftable;
       if ((int)pTVar2 < (int)pTVar1) {
-        ppTVar7 = &(this[1].vftable)->GetTNetMgrClassNamePointer + (int)pTVar2;
+        ppTVar7 = &(this[1].vftable)->GetRuntimeClass + (int)pTVar2;
         for (iVar5 = (int)pTVar1 - (int)pTVar2; iVar5 != 0; iVar5 = iVar5 + -1) {
           *ppTVar7 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
           ppTVar7 = ppTVar7 + 1;
@@ -609,12 +599,11 @@ TNetMgr * TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 TNetMgr * TNetMgr::WriteWordToSerializedBuffer(undefined2 param_1)
 
 {
-  if (this[10].vftable < (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + 2U))
-  {
+  if (this[10].vftable < (TNetMgrVtbl *)((int)&(this[9].vftable)->GetRuntimeClass + 2U)) {
     Flush();
   }
-  *(undefined2 *)&(this[9].vftable)->GetTNetMgrClassNamePointer = param_1;
-  this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + 2);
+  *(undefined2 *)&(this[9].vftable)->GetRuntimeClass = param_1;
+  this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetRuntimeClass + 2);
   return this;
 }
 
@@ -627,11 +616,11 @@ TNetMgr::WriteDwordToSerializedBuffer
           (TNetMgr *this,TNetMgr_GetTNetMgrClassNamePointer_0x00 *param_1)
 
 {
-  if (this[10].vftable < &(this[9].vftable)->slot_0x04) {
+  if (this[10].vftable < &(this[9].vftable)->~TNetMgr) {
     Flush();
   }
-  (this[9].vftable)->GetTNetMgrClassNamePointer = param_1;
-  this[9].vftable = (TNetMgrVtbl *)&(this[9].vftable)->slot_0x04;
+  (this[9].vftable)->GetRuntimeClass = param_1;
+  this[9].vftable = (TNetMgrVtbl *)&(this[9].vftable)->~TNetMgr;
   return this;
 }
 
@@ -709,8 +698,8 @@ code * TNetMgr::GetOrCreateHandleMapEntryValueByKey(int param_1)
     pTVar2 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)NewAssoc();
     *(int *)(pTVar2 + 4) = iVar1;
     *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar2 =
-         (&(this[1].vftable)->GetTNetMgrClassNamePointer)[param_1];
-    (&(this[1].vftable)->GetTNetMgrClassNamePointer)[param_1] = pTVar2;
+         (&(this[1].vftable)->GetRuntimeClass)[param_1];
+    (&(this[1].vftable)->GetRuntimeClass)[param_1] = pTVar2;
   }
   return pTVar2 + 8;
 }
@@ -744,14 +733,14 @@ void TNetMgr::WriteBytesToSerializedBuffer(int param_1, uint param_2)
       uVar2 = param_2;
     }
     CopyMemoryPossiblyOverlapping(this[9].vftable,param_1,uVar2);
-    this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + uVar2);
+    this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetRuntimeClass + uVar2);
     uVar1 = param_2 - uVar2;
     if (uVar1 != 0) {
       Flush();
       iVar3 = uVar1 - uVar1 % (uint)this[7].vftable;
-      (**(code **)((this[8].vftable)->GetTNetMgrClassNamePointer + 0x40))(param_1 + uVar2,iVar3);
+      (**(code **)((this[8].vftable)->GetRuntimeClass + 0x40))(param_1 + uVar2,iVar3);
       if (this[2].vftable != (TNetMgrVtbl *)0x0) {
-        (**(code **)((this[8].vftable)->GetTNetMgrClassNamePointer + 0x58))
+        (**(code **)((this[8].vftable)->GetRuntimeClass + 0x58))
                   (1,this[7].vftable,this + 0xb,this + 10);
         this[9].vftable = this[0xb].vftable;
       }
@@ -807,8 +796,7 @@ void TNetMgr::WriteObject(int *param_1)
       puVar3 = (undefined4 *)
                GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable,(int)param_1);
       *puVar3 = this[0xc].vftable;
-      this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetTNetMgrClassNamePointer + 1)
-      ;
+      this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetRuntimeClass + 1);
       (*(code *)puVar1[2])(this);
       return;
     }
@@ -922,7 +910,7 @@ void TNetMgr::WriteClass(int param_1)
     puVar3 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable,param_1)
     ;
     *puVar3 = this[0xc].vftable;
-    this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetTNetMgrClassNamePointer + 1);
+    this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetRuntimeClass + 1);
   }
   else if (uVar1 < 0x7fff) {
     WriteWordToSerializedBuffer(this,(ushort)uVar1 | 0x8000);

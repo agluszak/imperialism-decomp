@@ -153,7 +153,7 @@ void TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2)
   }
   if (((int)param_1 != this->padding_08_to_0b) &&
      (this->padding_08_to_0b = (int)param_1, param_2 != '\0')) {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -204,7 +204,7 @@ int TWindow::OrphanCallChain_C1_I08_0048da10()
   undefined uVar1;
   uint3 extraout_var;
   
-  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if (CONCAT31(extraout_var,uVar1) != 0) {
     return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x10));
   }
@@ -240,11 +240,11 @@ int TWindow::ExecuteViewModalStateWithPushPopChain()
   int *piVar8;
   
   pTVar1 = this->vftable;
-  uVar5 = (*pTVar1[0x37].GetTEventHandlerClassNamePointer)();
+  uVar5 = (*pTVar1->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   piVar7 = (int *)CONCAT31(extraout_var,uVar5);
   iVar3 = piVar7[4];
   if ((char)iVar3 == '\0') {
-    (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(1);
+    (*pTVar1->OrphanLeaf_NoCall_Ins03_0048da40)(1);
   }
   if ((DAT_006a1ac4 != (int *)0x0) &&
      (piVar2 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar2 + 0xc))(), piVar2[0x14] != 0)) {
@@ -307,7 +307,7 @@ LAB_0048db5a:
     }
   }
   if ((char)iVar3 == '\0') {
-    (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(0);
+    (*pTVar1->OrphanLeaf_NoCall_Ins03_0048da40)(0);
   }
   WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
   return iVar6;
@@ -323,7 +323,7 @@ undefined4 TWindow::OrphanCallChain_C1_I08_0048dc60()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if (CONCAT31(extraout_var,uVar1) != 0) {
     return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x20));
   }
@@ -340,7 +340,7 @@ void TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 par
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_0048dcc0)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x38))(param_1,param_2);
   }
@@ -378,7 +378,7 @@ void TWindow::OrphanCallChain_C11_I88_004874b0()
 
 {
   (**(code **)(*(int *)&this->field_0x74 + 0x3c))();
-  (*this->vftable[7].slot_0x04)();
+  (*this->vftable->OrphanRetStub_0059add0_0f)();
   return;
 }
 
@@ -400,7 +400,7 @@ void TWindow::OrphanRetStub_0059add0(int param_1)
     }
   }
   else {
-    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
     if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
                 (param_1,in_stack_00000008,in_stack_0000000c);
@@ -423,10 +423,10 @@ void TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *param_1)
     param_1 = this;
   }
   if (param_1 != *(TWindow **)&this->field_0x64) {
-    (*(*(TWindow **)&this->field_0x64)->vftable[0xe].GetTEventHandlerClassNamePointer)();
+    (*(*(TWindow **)&this->field_0x64)->vftable->GetTEventHandlerClassNamePointer_1c)();
     pTVar1 = param_1->vftable;
     *(TWindow **)&this->field_0x64 = param_1;
-    (*pTVar1[0xd].slot_0x04)();
+    (*pTVar1->VTableSlot1B)();
   }
   return;
 }
@@ -496,13 +496,13 @@ void TWindow::OrphanCallChain_C11_I88_004874b0()
   }
   SendMessageA(*(HWND *)(this->field50 + 0x1c),0x468,0,this->controlTag);
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_3b)();
   if (cVar2 == '\0') {
     *(undefined4 *)&this->field_0x98 = 1;
     if (*(int **)&this->field_0x64 != (int *)0x0) {
       (**(code **)(**(int **)&this->field_0x64 + 0x84))(0);
     }
-    (*pTVar1[0x39].slot_0x04)(1,1);
+    (*pTVar1->OrphanCallChain_C2_I39_0048d900)(1,1);
   }
   local_18 = 1;
   local_14 = 0x20202020;
@@ -588,7 +588,7 @@ void TWindow::GetTEventHandlerClassNamePointer()
       puVar3 = (undefined4 *)*puVar3;
     }
   }
-  (*this->vftable[0x39].slot_0x04)(0,1);
+  (*this->vftable->OrphanCallChain_C2_I39_0048d900)(0,1);
   return;
 }
 
@@ -602,8 +602,8 @@ void TWindow::OrphanCallChain_C2_I10_0048e120()
   TWindowVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x14].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[3].slot_0x04)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_28)();
+  (*pTVar1->VTableSlot07)();
   return;
 }
 
@@ -741,14 +741,14 @@ void TWindow::_scalar_deleting_destructor_()
     iVar3 = this->field44;
   }
   if (this->ownerContext != (TView *)0x0) {
-    (*this->ownerContext->vftable[0x2e].slot_0x04)(this);
+    (*this->ownerContext->vftable[1].GetRuntimeClass)(this);
     this->ownerContext = (TView *)0x0;
   }
   if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
       ((TWindow *)g_pApplicationUiRootController != this)) &&
      (pTVar4 = (TWindow *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
      pTVar4 == this)) {
-    uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
     pAVar5 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
     if (pAVar5 == (ApplicationUiRootController *)0x0) {
       pAVar5 = g_pApplicationUiRootController;
@@ -761,7 +761,7 @@ void TWindow::_scalar_deleting_destructor_()
   }
   this->field18 = 0;
   if (this != (TWindow *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->VTableSlot01)(1);
   }
   return;
 }

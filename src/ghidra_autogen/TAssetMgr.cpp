@@ -192,7 +192,7 @@ TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
       goto LAB_005dfce3;
     }
   }
-  (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
+  (*g_pSfxPlaybackSystem->vftable->ClearDirectSoundInitPendingAndResetState)();
   HandleTurnStateExitAndPostFollowupEventCode(2);
   SendMessage806IfSelectionStateActive();
 LAB_005dfce3:

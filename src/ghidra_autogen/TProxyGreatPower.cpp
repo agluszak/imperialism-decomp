@@ -32,7 +32,7 @@ void TProxyGreatPower::AddRegionIdToNationOwnedRegionList()
 {
                     /* WARNING: Could not recover jumptable at 0x00540902. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*this->vftable[0x39].slot_0x04)();
+  (*this->vftable->SelectCandidateTilesWithLowGroundUnitCount_73)();
   return;
 }
 
@@ -190,13 +190,13 @@ TProxyGreatPower::ReturnFalseNationStateActionStub
   undefined4 in_stack_00000010;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x10].slot_0x04)();
+  cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_004d7fc0)();
   if (cVar2 != '\0') {
     DispatchTurnEvent1AWithNationActionPayload
               (*(undefined2 *)&this->field_0xc,unaff_retaddr,param_1,param_2,in_stack_00000010);
     return 1;
   }
-  (*pTVar1[0x36].GetTCountryClassNamePointer)(1,unaff_retaddr,0);
+  (*pTVar1->GetTEventHandlerClassNamePointer_6c)(1,unaff_retaddr,0);
   return 0;
 }
 

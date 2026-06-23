@@ -81,8 +81,8 @@ TAnimator * TAnimator::DestructTAnimatorAndMaybeFree(byte param_1)
 void TAnimator::OrphanCallChain_C2_I13_004a0c00()
 
 {
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,1);
-  (*this->vftable[10].slot_0x04)(2);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,1);
+  (*this->vftable->VTableSlot15)(2);
   return;
 }
 
@@ -128,7 +128,7 @@ uint TAnimator::_scalar_deleting_destructor_(int param_1)
 void TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,0);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,0);
   if (*(int **)&this->field_0x24 != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0x24 + 0x58))();
   }
@@ -152,7 +152,7 @@ void TAnimator::GetTEventHandlerClassNamePointer(int *param_1)
   *(undefined4 *)&this->field_0x10 = 0x7fffffff;
   uVar2 = (**(code **)(iVar1 + 0x50))();
   *(undefined4 *)&this->field_0x10 = uVar2;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   return;
 }
 
@@ -164,7 +164,7 @@ void TAnimator::_scalar_deleting_destructor_(int *param_1)
 
 {
   (**(code **)(*param_1 + 0x8c))(*(undefined4 *)&this->field_0x10);
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   return;
 }
 

@@ -192,7 +192,8 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   uVar6 = (undefined2)((uint)CStack_74.m_pchData >> 0x10);
   piStack_78 = (int *)CONCAT22(uVar6,*(undefined2 *)&this->field_0x14);
   CStack_7c.m_pchData = (char *)CONCAT22(uVar6,*(undefined2 *)&this->field_0x10);
-  (*g_apNationStates[*(short *)&this->field_0x12]->vftable[0x37].slot_0x04)();
+  (*g_apNationStates[*(short *)&this->field_0x12]->vftable->ApplyJoinEmpireModeForTargetNation_6f)()
+  ;
   CStack_84.m_pchData = (char *)&local_18;
   CStack_88.m_pchData = (char *)0x5c0fac;
   src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();

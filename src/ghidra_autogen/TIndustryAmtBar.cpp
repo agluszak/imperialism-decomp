@@ -147,14 +147,14 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   local_4 = 0;
   ApplyHitRegionToClipState();
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)();
       ApplyRectClipRegionToGlobalClipState();
-      (*pTVar1[0x25].slot_0x04)();
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanRetStub_0059add0_4b)();
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)();
       uVar4 = extraout_var_01;
       if (0 < *(short *)&this->field_0x60) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
@@ -171,7 +171,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x62))
       ;
       SnapshotHitRegionToClipCache();
-      uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }
@@ -213,13 +213,13 @@ TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegionVariantA
   *(undefined2 *)&this->field_0x62 = param_1;
   ApplyHitRegionToClipState(local_28);
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       iStack_24 = DAT_006a4450;
       iStack_20 = DAT_006a4454;
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&iStack_24);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&iStack_24);
       iStack_14 = this->field34 + iStack_24;
       iStack_10 = this->field38 + iStack_20;
       iStack_1c = iStack_24;
@@ -242,7 +242,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
           (TIndustryAmtBar *this,short param_1,char param_2)
 
 {
-  TIndustryAmtBar_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int *piVar2;
   int iVar3;
   int iVar4;
@@ -272,8 +272,8 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
   }
   if ((param_2 != '\0') || (*(short *)(this[1].controlTag + 4) != (short)iVar4)) {
     LStack_58 = 0x6d6f7665;
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar5 = (*pTVar1)();
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar5 = (*p_Var1)();
     piVar7 = (int *)CONCAT31(extraout_var,uVar5);
     if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -291,7 +291,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
     InvalidateCityDialogRectRegion(&tStack_20,1);
-    uVar5 = (*pTVar1)(0x62617220);
+    uVar5 = (*p_Var1)(0x62617220);
     piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
     if (piVar9 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -326,7 +326,7 @@ TIndustryAmtBar::UpdateTradeMoveControlsFromScaledDrag
     auStack_40._0_4_ = iVar3 + iVar4;
     CopyRect((LPRECT)(auStack_40 + 8),(RECT *)&stack0xffffffb8);
     InvalidateCityDialogRectRegion(auStack_40 + 8,1);
-    (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+    (*this->ownerContext->vftable[1].vmethod_0025)();
   }
   return;
 }
@@ -344,7 +344,7 @@ void TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A()
   undefined3 extraout_var;
   int *piVar4;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x62617220);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x62617220);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

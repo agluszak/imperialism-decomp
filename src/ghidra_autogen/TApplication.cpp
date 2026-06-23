@@ -23,7 +23,7 @@ TApplication * TApplication::ConstructGlobalUiRootControllerState()
   TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
   *(undefined4 *)&this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x24 = 0;
-  *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
+  *(undefined4 *)&this->field_0x2c = 0x648ca8;
   *(undefined4 *)&this->field_0x38 = 0;
   *(undefined4 *)&this->field_0x3c = 0;
   *(undefined4 *)&this->field_0x34 = 0;
@@ -69,7 +69,7 @@ TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At0
   *unaff_FS_OFFSET = &local_c;
   this->vftable = &ApplicationUiRootController::_vftable_;
   g_pApplicationUiRootController = (ApplicationUiRootController *)0x0;
-  *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
+  *(undefined4 *)&this->field_0x2c = 0x648ca8;
   puVar1 = *(undefined4 **)&this->field_0x30;
   local_4 = 1;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {

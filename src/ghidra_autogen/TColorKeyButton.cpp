@@ -90,9 +90,9 @@ void TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(char param_1)
     else {
       uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x84 + 1);
     }
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar2,1);
+    (*pTVar1->SetPictureResourceIdAndRefresh)(uVar2,1);
     if (unaff_retaddr != '\0') {
-      (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanCallChain_C1_I05_00572060)();
     }
   }
   return;
@@ -108,7 +108,7 @@ void TColorKeyButton::OrphanCallChain_C1_I05_00572060()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x00572069. Too many branches */
                     /* WARNING: Treating indirect jump as call */
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x13c))();

@@ -108,7 +108,7 @@ TUniversityView * TUniversityView::_scalar_deleting_destructor_(byte param_1)
 void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
-  TUniversityView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short nMappedRecruitIndex;
   short nRecruitRowIndex;
@@ -152,7 +152,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
       nCapabilityRecruitIndex =
            *(char *)((int)g_pCityOrderCapabilityState +
                     nRecruitControlTag + -0x636c70c9 + nMappedRecruitIndex * 9);
-      uVar2 = (*this->vftable[0x12].slot_0x04)();
+      uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)();
       if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -206,15 +206,15 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     nRecruitControlTag = nRecruitControlTag + 1;
   } while (nRecruitRowIndex < 9);
   BuildUiTextStyleDescriptor();
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar2 = (*pTVar1)();
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_00,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
   (**(code **)(pControlResource + 0x1cc))();
   BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x756e6974;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_01,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
@@ -223,7 +223,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   pControlResource = 0;
   do {
                     /* Populate two-line title text region for selected category. */
-    uVar2 = (*pTVar1)();
+    uVar2 = (*p_Var1)();
     pControlObject = *(int *)CONCAT31(extraout_var_02,uVar2);
     (**(code **)(pControlObject + 0xc))();
     (**(code **)(pControlObject + 0x1b4))();
@@ -236,7 +236,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_68 = 0x4cb007;
   BuildUiTextStyleDescriptor();
   pRecruitOrderEntry = 0x64657363;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_03,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))();
@@ -244,7 +244,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   do {
                     /* Populate three-line description/help text region. */
     iStack_68 = 0x4cb044;
-    uVar2 = (*pTVar1)();
+    uVar2 = (*p_Var1)();
     pControlObject = *(int *)CONCAT31(extraout_var_04,uVar2);
     iStack_68 = 0x4cb04d;
     (**(code **)(pControlObject + 0xc))();
@@ -268,7 +268,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_74 = 0x4cb0b6;
   BuildUiTextStyleDescriptor();
   iStack_68 = 0x4cb0c2;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_05,uVar2);
   iStack_68 = 0x4cb0cb;
   (**(code **)(pControlResource + 0xc))();
@@ -278,7 +278,7 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(pControlResource + 0x1b4))();
   pcStack_70 = (code *)0x74726561;
   iStack_74 = 0x4cb0e3;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_06,uVar2);
   iStack_74 = 0x4cb0ec;
   (**(code **)(pControlResource + 0xc))();
@@ -287,25 +287,25 @@ void TUniversityView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   uStack_7c = 0x4cb0fb;
   (**(code **)(pControlResource + 0x1b4))();
   uStack_7c = 0x61706170;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pControlResource = *(int *)CONCAT31(extraout_var_07,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1b4))(&stack0xffffffa8,1);
   pGetControlByTag = (code *)0x63706170;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   (**(code **)(*(int *)CONCAT31(extraout_var_08,uVar2) + 0xc))();
   puVar4 = &stack0xffffff9c;
   pcStack_70 = *(code **)(*(int *)CONCAT31(extraout_var_08,uVar2) + 0x1b4);
   (*pcStack_70)(puVar4,1);
-  uVar2 = (*pTVar1)(0x61657870);
+  uVar2 = (*p_Var1)(0x61657870);
   (**(code **)(*(int *)CONCAT31(extraout_var_09,uVar2) + 0xc))();
   (*pcStack_78)(&pcStack_70,1);
-  uVar2 = (*pTVar1)(0x63657870);
+  uVar2 = (*p_Var1)(0x63657870);
   (**(code **)(*(int *)CONCAT31(extraout_var_10,uVar2) + 0xc))();
   (*pGetControlByTag)(&uStack_7c,1);
   *(undefined2 *)&this->field_0xa4 = 0xffff;
   *(undefined4 *)&this->field_0xa8 = 0;
-  uVar2 = (*pTVar1)(0x73656c65);
+  uVar2 = (*p_Var1)(0x73656c65);
   pControlResource = *(int *)CONCAT31(extraout_var_11,uVar2);
   (**(code **)(pControlResource + 0xc))();
   (**(code **)(pControlResource + 0x1c8))(0x63697630);
@@ -322,7 +322,7 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TUniversityViewVtbl *pTVar1;
-  TUniversityView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   int *piVar4;
   undefined uVar5;
@@ -340,7 +340,8 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
     sVar7 = *(short *)(param_2 + 0x1c) + -0x7630;
     if ((-1 < sVar7) && (sVar7 < 9)) {
       *(short *)&this->field_0xa4 = sVar7;
-      (*this->vftable[0x3c].slot_0x04)(CONCAT22((short)((uint)param_2 >> 0x10),sVar7));
+      (*this->vftable->SelectUniversityRecruitmentEntry)
+                (CONCAT22((short)((uint)param_2 >> 0x10),sVar7));
     }
   }
   else if (param_1 == 10) {
@@ -348,9 +349,9 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
     if ((-1 < sVar7) && (sVar7 < 9)) {
       pTVar1 = this->vftable;
       *(short *)&this->field_0xa4 = sVar7;
-      (*pTVar1[0x3c].slot_0x04)(CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar7));
-      pTVar2 = pTVar1[0x12].slot_0x04;
-      uVar5 = (*pTVar2)(0x73656c65);
+      (*pTVar1->SelectUniversityRecruitmentEntry)(CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar7));
+      p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920;
+      uVar5 = (*p_Var2)(0x73656c65);
       iVar3 = *(int *)CONCAT31(extraout_var,uVar5);
       (**(code **)(iVar3 + 0xc))();
       (**(code **)(iVar3 + 0x1c8))(sVar7 + 0x63697630);
@@ -377,13 +378,13 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
         }
         iVar3 = *piVar8;
-        (**(code **)(iVar3 + 0x1e4))((int)*(short *)(pTVar2 + 4),0);
+        (**(code **)(iVar3 + 0x1e4))((int)*(short *)(p_Var2 + 4),0);
         (**(code **)(iVar3 + 300))(&stack0xffffffc0);
         RStack_34.top = (LONG)piVar4;
-        RStack_34.right = (LONG)pTVar2;
+        RStack_34.right = (LONG)p_Var2;
         CopyRect(atStack_24,&RStack_34);
         InvalidateCityDialogRectRegion(atStack_24,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+        (*this->vftable->OrphanRetStub_004c6fb0)();
       }
     }
   }
@@ -423,7 +424,7 @@ void TUniversityView::OrphanRetStub_0059add0(int param_1, int param_2)
 void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
 
 {
-  TUniversityView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -462,10 +463,10 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   MapUiThemeCodeToStyleFlags();
   MapUiThemeCodeToStyleFlags();
   if (*(int *)&this->field_0xa8 != 0) {
-    pTVar1 = this->vftable[0x12].slot_0x04;
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
     aiStack_68[2] = 0x61706170;
     aiStack_68[1] = 0x4cbbc8;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
                     /* Load city paper stock (papa) and render current amount. */
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     aiStack_68[1] = 0x4cbbd1;
@@ -490,7 +491,7 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
     CopyRect(atStack_34,(RECT *)(local_4c + 8));
     iStack_80 = 0x4cbc63;
     InvalidateCityDialogRectRegion();
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar2 + 0xc))();
     iVar5 = *(int *)(*(int *)&this->field_0x94 + 0x1d8);
@@ -528,7 +529,7 @@ void TUniversityView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
     InvalidateCityDialogRectRegion(local_4c);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)
               (*(undefined4 *)(*(int *)(*(int *)&this->field_0x94 + 0xac) + 0x10));
-    uVar3 = (*pTVar1)(0x74726561);
+    uVar3 = (*p_Var1)(0x74726561);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -567,7 +568,7 @@ void TUniversityView::_scalar_deleting_destructor_()
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
-    (*g_pUiViewManager->vftable[6].slot_0x04)(0x23fa);
+    (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df410)(0x23fa);
   }
   return;
 }
@@ -619,7 +620,7 @@ void TUniversityView::OrphanTiny_ReturnZero_0048a730(RECT *pClipRect)
   local_24 = pClipRect->right;
   local_20 = pClipRect->bottom;
   nHighestRequirementLevel = 0;
-  uVar1 = (*g_pGlobalMapState->vftable[0x22].slot_0x04)
+  uVar1 = (*g_pGlobalMapState->vftable->GetMapImprovementSpriteBaseOffset)
                     (CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->field_0xa4),0,1)
   ;
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -154,7 +154,7 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
 
 {
   TDealTabControlVtbl *pTVar1;
-  TDealTabControl_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   short sVar4;
   int unaff_retaddr;
@@ -163,10 +163,10 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
   
   pTVar1 = this->vftable;
   sVar4 = -1;
-  pTVar2 = pTVar1[0x2d].slot_0x04;
-  cVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->VTableSlot5B;
+  cVar3 = (*p_Var2)();
   if (cVar3 != '\0') {
-    (*pTVar1[0x34].slot_0x04)(&stack0xffffffec);
+    (*pTVar1->DeserializeCityProductionQueueCommand)(&stack0xffffffec);
     sVar4 = (short)(*(short *)(in_stack_0000000c + 4) - sStack_10) / *(short *)&this->field_0x86;
     if (sVar4 < *(short *)&this->field_0x88) {
       if (sVar4 != *(short *)&this->field_0x84) {
@@ -180,19 +180,18 @@ void TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)
   if (-1 < unaff_retaddr) {
     if (unaff_retaddr < 2) {
       if (sVar4 != -1) {
-        (*pTVar1[0x22].slot_0x04)(0);
+        (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
       }
     }
     else if (unaff_retaddr == 2) {
-      cVar3 = (*pTVar2)(in_stack_0000000c);
+      cVar3 = (*p_Var2)(in_stack_0000000c);
       if (cVar3 != '\0') {
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)
-                  (*(short *)&this->field_0x84 + 11000,this,0);
-        (*pTVar1[0x22].slot_0x04)(0);
+        (*this->ownerContext->vftable->DispatchEvent)(*(short *)&this->field_0x84 + 11000,this,0);
+        (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
         return;
       }
       *(undefined2 *)&this->field_0x84 = 0xffff;
-      (*pTVar1[0x22].slot_0x04)(0);
+      (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
       return;
     }
   }

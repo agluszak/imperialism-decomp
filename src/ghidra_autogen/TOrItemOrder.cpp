@@ -183,7 +183,7 @@ bool TOrItemOrder::OrphanCallChain_C1_I16_004b5100(short nNewOrderAmount)
   short sVar11;
   
   sVar10 = nNewOrderAmount - *(short *)&this->field_0x4;
-  uVar8 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar8 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar8) < nNewOrderAmount) || (nNewOrderAmount < 0)) {
     bVar7 = false;
   }

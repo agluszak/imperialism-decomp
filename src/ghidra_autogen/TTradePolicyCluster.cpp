@@ -89,8 +89,8 @@ TTradePolicyCluster::OrphanRetStub_0059add0
     return;
   }
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(0x20202020);
+  uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
+  (*pTVar1->OrphanCallChain_C2_I51_00491790)(0x20202020);
   piVar3 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x636c7573);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

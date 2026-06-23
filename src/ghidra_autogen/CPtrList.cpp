@@ -3,31 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: CPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
-// GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-
-void CPtrList::GetTEventHandlerClassNamePointer()
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
-// GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
-
-/* No-op virtual slot stub (returns immediately). */
-
-void CPtrList::GetTEventHandlerClassNamePointer()
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00601F40
 // GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)

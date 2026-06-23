@@ -83,7 +83,7 @@ CRuntimeClass * TCommand::OnActivateView()
 void TCommand::_scalar_deleting_destructor_()
 
 {
-  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -91,13 +91,13 @@ void TCommand::_scalar_deleting_destructor_()
   int iVar3;
   
   iVar4 = 1;
-  pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
-  uVar2 = (*pTVar1)(1);
+  p_Var1 = this->vftable->OrphanRetStub_00487a00;
+  uVar2 = (*p_Var1)(1);
   iVar3 = CONCAT31(extraout_var,uVar2);
   while (iVar3 != 0) {
     FreeHeapBufferIfNotNull(iVar3);
     iVar4 = iVar4 + 1;
-    uVar2 = (*pTVar1)(iVar4);
+    uVar2 = (*p_Var1)(iVar4);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
   }
   SetSize(0,0xffffffff);
@@ -113,7 +113,7 @@ void TCommand::GetTEventHandlerClassNamePointer()
 {
                     /* WARNING: Could not recover jumptable at 0x004880f2. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*this->vftable[3].OrphanCallChain_C1_I17_00487470)();
+  (*this->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
   return;
 }
 
@@ -127,8 +127,8 @@ void TCommand::_scalar_deleting_destructor_()
   TCommandVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[3].OrphanCallChain_C1_I17_00487470)();
-  (*pTVar1[5].GetTEventClassNamePointer)();
+  (*pTVar1->QueueCityRecruitmentSupportCommandsIfDeficit)();
+  (*pTVar1->NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
   return;
 }
 
@@ -168,7 +168,7 @@ void TCommand::OrphanCallChain_C11_I88_004874b0()
   undefined uVar1;
   int in_stack_00000004;
   
-  uVar1 = (*this->vftable[5].OrphanCallChain_C1_I17_00487470)();
+  uVar1 = (*this->vftable->OrphanRetStub_00487a00)();
   CPtrArray::RemoveAt((CPtrArray *)this,in_stack_00000004 + -1,1);
   FreeHeapBufferIfNotNull(uVar1);
   return;
@@ -181,7 +181,7 @@ void TCommand::OrphanCallChain_C11_I88_004874b0()
 void TCommand::GetTEventHandlerClassNamePointer()
 
 {
-  (*this->vftable[5].OrphanCallChain_C1_I17_00487470)(1);
+  (*this->vftable->OrphanRetStub_00487a00)(1);
   return;
 }
 
@@ -192,7 +192,7 @@ void TCommand::GetTEventHandlerClassNamePointer()
 void TCommand::SetForeignMinisterReadyFlag14()
 
 {
-  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   code *pcVar2;
   undefined uVar3;
   short sVar4;
@@ -207,8 +207,8 @@ void TCommand::SetForeignMinisterReadyFlag14()
   int iVar5;
   
   iVar8 = 1;
-  pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
-  uVar3 = (*pTVar1)(1);
+  p_Var1 = this->vftable->OrphanRetStub_00487a00;
+  uVar3 = (*p_Var1)(1);
   iVar5 = CONCAT31(extraout_var,uVar3);
   if (iVar5 == 0) {
     (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
@@ -235,7 +235,7 @@ void TCommand::SetForeignMinisterReadyFlag14()
       return;
     }
     iVar8 = iVar8 + 1;
-    uVar3 = (*pTVar1)(iVar8);
+    uVar3 = (*p_Var1)(iVar8);
     iVar5 = CONCAT31(extraout_var_00,uVar3);
   } while (iVar5 != 0);
   (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
@@ -441,7 +441,7 @@ void TCommand::GetTEventHandlerClassNamePointer(int *param_1)
 void TCommand::_scalar_deleting_destructor_(int *param_1)
 
 {
-  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   int iVar3;
   short sVar4;
@@ -453,9 +453,9 @@ void TCommand::_scalar_deleting_destructor_(int *param_1)
   sVar4 = 1;
   if (0 < *(int *)&this->field_0x8) {
     iVar3 = 1;
-    pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
+    p_Var1 = this->vftable->OrphanRetStub_00487a00;
     do {
-      uVar2 = (*pTVar1)(iVar3,(int)*(short *)&this->field_0x14);
+      uVar2 = (*p_Var1)(iVar3,(int)*(short *)&this->field_0x14);
       (*unaff_EDI)(uVar2);
       sVar4 = sVar4 + 1;
       iVar3 = (int)sVar4;

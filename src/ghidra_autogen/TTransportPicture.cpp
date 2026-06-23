@@ -90,7 +90,7 @@ void TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1
 
 {
   TGreatPower *pTVar1;
-  TGreatPower_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   bool bVar3;
   undefined2 uVar4;
   undefined uVar5;
@@ -140,7 +140,7 @@ LAB_00591fc3:
   }
   if (bVar3) {
     iVar11 = 7000;
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     sVar7 = *(short *)&this->field_0x92;
     if (sVar7 == 0) {
       uVar5 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0);
@@ -149,37 +149,37 @@ LAB_00591fc3:
       uVar9 = (uint)bVar3;
       wVar8 = pTVar1->needCurrentByType[(short)(ushort)bVar3];
       if ((short)wVar8 < (short)*(ushort *)&this->field_0x94) {
-        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
-        (*pTVar2)(uVar9,CONCAT22(uVar4,wVar8));
+        p_Var2 = pTVar1->vftable->SelectCandidateTilesWithLowGroundUnitCount_45;
+        (*p_Var2)(uVar9,CONCAT22(uVar4,wVar8));
         param_1 = iVar11;
-        (*pTVar2)(iVar11,CONCAT22(extraout_var_04,*(short *)&this->field_0x94 - wVar8));
+        (*p_Var2)(iVar11,CONCAT22(extraout_var_04,*(short *)&this->field_0x94 - wVar8));
       }
       else {
-        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
-        (*pTVar2)(uVar9,(uint)*(ushort *)&this->field_0x94);
-        (*pTVar2)(iVar11,0);
+        p_Var2 = pTVar1->vftable->SelectCandidateTilesWithLowGroundUnitCount_45;
+        (*p_Var2)(uVar9,(uint)*(ushort *)&this->field_0x94);
+        (*p_Var2)(iVar11,0);
       }
     }
     else if (sVar7 == 0x13) {
       wVar8 = pTVar1->needCurrentByType[0x13];
       if ((short)wVar8 < *(short *)&this->field_0x94) {
-        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
-        (*pTVar2)(0x13,CONCAT22(uVar4,wVar8));
+        p_Var2 = pTVar1->vftable->SelectCandidateTilesWithLowGroundUnitCount_45;
+        (*p_Var2)(0x13,CONCAT22(uVar4,wVar8));
         param_1 = iVar11;
-        (*pTVar2)(0x14,CONCAT22(extraout_var_02,*(short *)&this->field_0x94 - wVar8));
+        (*p_Var2)(0x14,CONCAT22(extraout_var_02,*(short *)&this->field_0x94 - wVar8));
       }
       else {
-        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
-        (*pTVar2)(0x13,CONCAT22(extraout_var_01,*(short *)&this->field_0x94));
-        (*pTVar2)(0x14,0);
+        p_Var2 = pTVar1->vftable->SelectCandidateTilesWithLowGroundUnitCount_45;
+        (*p_Var2)(0x13,CONCAT22(extraout_var_01,*(short *)&this->field_0x94));
+        (*p_Var2)(0x14,0);
       }
     }
     else {
-      (*pTVar1->vftable[0x22].slot_0x04)
+      (*pTVar1->vftable->SelectCandidateTilesWithLowGroundUnitCount_45)
                 (CONCAT22(extraout_var_01,sVar7),
                  CONCAT22(extraout_var_03,*(undefined2 *)&this->field_0x94));
     }
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
 LAB_00592108:
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
@@ -195,7 +195,7 @@ LAB_00592108:
 void TTransportPicture::RenderTransportPictureGaugeAndLabels()
 
 {
-  TTransportPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   TGreatPower *pTVar2;
   float fVar3;
   float fVar4;
@@ -343,8 +343,8 @@ LAB_00592373:
   }
   local_38 = this->vftable;
   piStack_64 = (int *)0x74657874;
-  pTVar1 = local_38[0x12].slot_0x04;
-  uVar6 = (*pTVar1)();
+  p_Var1 = local_38->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar6 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var,uVar6) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -366,7 +366,7 @@ LAB_00592373:
   CString::~CString(&local_40);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar6) + 0x1c8))();
   if (*(short *)&this->field_0x92 == 0x16) {
-    uVar6 = (*pTVar1)(0x76616c75);
+    uVar6 = (*p_Var1)(0x76616c75);
     piVar10 = (int *)CONCAT31(extraout_var_00,uVar6);
     if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -378,7 +378,7 @@ LAB_00592373:
   }
   else {
     if (*(short *)&this->field_0x92 != 0x15) goto LAB_005925fa;
-    uVar6 = (*pTVar1)(0x76616c75);
+    uVar6 = (*p_Var1)(0x76616c75);
     piVar10 = (int *)CONCAT31(extraout_var_01,uVar6);
     if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -394,7 +394,7 @@ LAB_005925fa:
   if (this->controlTag != 0x746f7461) {
     sVar7 = UiRuntimeContext::GetActiveNationId();
     pTVar2 = g_apNationStates[sVar7];
-    uVar6 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x746f7461);
+    uVar6 = (*this->ownerContext->vftable->ResolveControlByTag)(0x746f7461);
     piVar10 = (int *)CONCAT31(extraout_var_02,uVar6);
     if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -431,7 +431,7 @@ void TTransportPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TPicture::OrphanTiny_ReturnZero_0048a730((THQButton *)this);
-  (*this->vftable[0x39].slot_0x04)();
+  (*this->vftable[1].GetTEventHandlerClassNamePointer)();
   return;
 }
 

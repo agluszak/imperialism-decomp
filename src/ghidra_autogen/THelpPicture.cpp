@@ -116,7 +116,7 @@ void THelpPicture::OrphanCallChain_C6_I49_004875d0()
   local_21 = 0;
   local_20 = (uint)local_20._2_2_ << 0x10;
   InitializeUiTextStyleDescriptor(local_28,0,0xc,0x2b67,3);
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x7377696e);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7377696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar3 + 0xc))();
   this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
@@ -171,8 +171,8 @@ void THelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
     uVar1 = *(uint *)(param_2 + 0x1c);
     if (uVar1 < 0x6e616d32) {
       if (uVar1 == 0x6e616d31) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->BuildHelpSubjectListControlsWithPrevNext)(1);
         return;
       }
       if (uVar1 == 0x6d6f7265) {
@@ -182,36 +182,36 @@ void THelpPicture::OrphanRetStub_0059add0(int param_1, int param_2)
     }
     else if (uVar1 < 0x6e657875) {
       if (uVar1 == 0x6e657874) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x39].slot_0x04)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->OrphanCallChain_C2_I34_00504120)();
         return;
       }
       switch(uVar1) {
       case 0x6e616d32:
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(2);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->BuildHelpSubjectListControlsWithPrevNext)(2);
         return;
       case 0x6e616d33:
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(3);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->BuildHelpSubjectListControlsWithPrevNext)(3);
         return;
       case 0x6e616d34:
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(4);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->BuildHelpSubjectListControlsWithPrevNext)(4);
         return;
       case 0x6e616d35:
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(5);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+        (*this->vftable->BuildHelpSubjectListControlsWithPrevNext)(5);
         return;
       }
     }
     else if (uVar1 == 0x70726576) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+      (*this->vftable->OrphanCallChain_C2_I34_005041a0)();
     }
     else if (uVar1 == 0x746f676c) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-      (*this->vftable[0x3a].slot_0x04)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+      (*this->vftable->RefreshHelpSubjectListControlsWithPrevNext)();
       return;
     }
   }
@@ -245,7 +245,7 @@ void THelpPicture::OrphanCallChain_C2_I34_00504120()
     iVar5 = iVar5 + 1;
   } while (!bVar2);
   *(THelpPicture **)&this->field_0x90 = pTVar4;
-  (*this->vftable[0x3a].slot_0x04)();
+  (*this->vftable->RefreshHelpSubjectListControlsWithPrevNext)();
   return;
 }
 
@@ -276,7 +276,7 @@ void THelpPicture::OrphanCallChain_C2_I34_005041a0()
     iVar5 = iVar5 + 1;
   } while (!bVar2);
   *(THelpPicture **)&this->field_0x90 = pTVar4;
-  (*this->vftable[0x3a].slot_0x04)();
+  (*this->vftable->RefreshHelpSubjectListControlsWithPrevNext)();
   return;
 }
 
@@ -287,7 +287,7 @@ void THelpPicture::OrphanCallChain_C2_I34_005041a0()
 void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
 
 {
-  THelpPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -406,10 +406,10 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   uStack_6c = 0x50477c;
   InitializeUiTextStyleDescriptor();
   local_38 = this->vftable;
-  pTVar1 = local_38[0x12].slot_0x04;
+  p_Var1 = local_38->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_58 = 0x7375626a;
   uStack_5c = 0x504794;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   uStack_5c = 1;
   uStack_60 = 1;
   uStack_64 = CONCAT22((short)((uint3)extraout_var >> 8),**(undefined2 **)&this->field_0x90);
@@ -434,7 +434,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   (**(code **)(iVar3 + 0x1b4))();
   uStack_88 = 0x746f676c;
   iStack_8c = 0x5047ea;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iStack_8c = 1;
   iStack_90 = 0;
   iVar3 = *(int *)CONCAT31(extraout_var_00,uVar2);
@@ -454,7 +454,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
     do {
       aiStack_a8[0] = iStack_8c + 0x6e616d31;
       uStack_ac = (undefined4 *)0x50483a;
-      uVar2 = (*pTVar1)();
+      uVar2 = (*p_Var1)();
       iStack_b0 = iStack_90 + 2;
       uStack_b4 = CONCAT22((short)((uint3)extraout_var_01 >> 8),**(undefined2 **)&this->field_0x90);
       uStack_ac = (undefined4 *)0x1;
@@ -486,7 +486,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
     do {
       uStack_ac = (undefined4 *)0x5048be;
       aiStack_a8[0] = iVar3;
-      uVar2 = (*pTVar1)();
+      uVar2 = (*p_Var1)();
       uStack_ac = (undefined4 *)0x1;
       iStack_b0 = 0;
       iStack_90 = *(int *)CONCAT31(extraout_var_02,uVar2);
@@ -502,7 +502,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   aiStack_a8[0] = 0x70726576;
   uStack_94 = CONCAT13(*(short *)(*(int *)&this->field_0x90 + 2) != 0,(undefined3)uStack_94);
   uStack_ac = (undefined4 *)0x504904;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   uStack_ac = &uStack_94;
   iStack_b0 = 0xd;
   uStack_b4 = 0x2749;
@@ -532,7 +532,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   uStack_e0 = 0x6e657874;
   uStack_cc = CONCAT13(*(short *)(*(int *)&this->field_0x90 + 4) != 0,(undefined3)uStack_cc);
   uStack_e4 = (undefined4 *)0x504985;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   uStack_e4 = &uStack_cc;
   acStack_e8[0] = '\x0e';
   acStack_e8[1] = '\0';
@@ -562,7 +562,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   uStack_110 = 0;
   (**(code **)(iVar3 + 0x1b4))();
   (**(code **)(**(int **)&this->field_0x94 + 0xa4))(0,1);
-  uVar2 = (*pTVar1)(0x7377696e);
+  uVar2 = (*p_Var1)(0x7377696e);
   iVar3 = *(int *)CONCAT31(extraout_var_05,uVar2);
   (**(code **)(iVar3 + 0xc))();
   (**(code **)(iVar3 + 0xa4))(0,1);

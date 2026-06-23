@@ -445,7 +445,7 @@ void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw()
   (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
   uStack_2c = 0;
   uStack_28 = 0;
-  (*this->vftable[5].slot_0x04)(&uStack_2c);
+  (**(code **)&this->vftable->field_0x2c)(&uStack_2c);
   puStack_8 = (undefined1 *)0xffffffff;
   DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_10;
@@ -459,7 +459,7 @@ void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw()
 void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
 
 {
-  TTransFocusAnimation_GetTAnimationClassNamePointer_0x00 *pTVar1;
+  code *pcVar1;
   int iVar2;
   int iVar3;
   short sVar4;
@@ -505,12 +505,12 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
               ((astruct_17 *)(*(int *)&this->field_0x34 + 4),local_38,&local_10,&local_20,0x24,
                (astruct_19 *)0x0);
   }
-  pTVar1 = this->vftable[7].GetTAnimationClassNamePointer;
-  (*pTVar1)();
+  pcVar1 = *(code **)&this->vftable->field_0x38;
+  (*pcVar1)();
   uStack_3c = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&uStack_34,&uStack_3c);
   SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_3c);
-  (*pTVar1)();
+  (*pcVar1)();
   SetActiveQuickDrawSurfaceContext(uStack_34,uStack_3c);
   return;
 }

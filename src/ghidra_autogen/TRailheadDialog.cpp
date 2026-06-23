@@ -43,7 +43,7 @@ void TRailheadDialog::ConstructTRailheadDialogBaseState(int param_1)
   int *piVar4;
   
   *(int *)&this->field_0x60 = param_1;
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -106,7 +106,7 @@ void TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int param_1)
   int iVar3;
   
   if (param_1 == 0x6f6b6179) {
-    uVar1 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
+    uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63686f69);
     if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag

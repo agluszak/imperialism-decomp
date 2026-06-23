@@ -136,7 +136,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   int iVar6;
   int *piVar7;
   short sVar8;
-  TBuildingConstructionView_slot_0x04_0x04 *pTVar9;
+  _vslot_fn *p_Var9;
   short unaff_SI;
   undefined4 *unaff_FS_OFFSET;
   CString CStack_184;
@@ -216,7 +216,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   *(short *)&this->field_0x94 = nBuildingSlotId;
   *(int *)&this->field_0x98 = nDialogContextFlags;
   (**(code **)(iVar6 + 0x54))();
-  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->SetPictureResourceIdAndRefresh)();
   if (nBuildingSlotId == 0xb) {
     uVar15 = 0;
     (**(code **)(iVar6 + 0x60))();
@@ -244,8 +244,8 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     *(undefined2 *)&this->field_0x96 = 1;
   }
   BuildUiTextStyleDescriptor();
-  pTVar9 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar9)();
+  p_Var9 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var9)();
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -255,7 +255,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   (**(code **)(iVar6 + 0x1c4))();
   iStack_18 = local_20 + 0x2422;
   (**(code **)(iVar6 + 0x1cc))();
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     uStack_98 = 0x4ca06c;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -278,7 +278,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   puStack_a4 = (undefined1 *)0x2b67;
   BuildUiTextStyleDescriptor();
   puStack_a4 = (undefined1 *)0x6e616d65;
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     ppuStack_b8 = (undefined1 **)0x4ca121;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -298,7 +298,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   CStack_cc.m_pchData = (char *)0x4ca17c;
   (**(code **)(iVar6 + 0x1c8))();
   CStack_cc.m_pchData = (char *)0x636f7374;
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
     pCStack_e0 = (CString *)0x4ca19e;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -321,7 +321,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   (**(code **)(iVar6 + 0x1c8))();
   uStack_f4 = 0x63617054;
   CStack_f8.m_pchData = (char *)0x4ca1ff;
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   sVar11 = *(short *)&this->field_0x94;
                     /* Slot-dependent cost/description format mode selection. */
   if ((((sVar11 == 0) || (sVar11 == 2)) || (sVar11 == 4)) || (sVar11 == 6)) {
@@ -346,7 +346,7 @@ LAB_004ca263:
   pcVar10 = (code *)0x1;
   (**(code **)(iVar6 + 0x1c4))();
   (**(code **)(iVar6 + 0x1c8))();
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -378,7 +378,7 @@ LAB_004ca263:
       sVar8 = 0xd0;
     }
     pcVar10 = (code *)(int)sVar8;
-    pTVar9 = (TBuildingConstructionView_slot_0x04_0x04 *)(int)sVar11;
+    p_Var9 = (_vslot_fn *)(int)sVar11;
     puStack_148 = (undefined4 *)0x0;
     puStack_14c = &stack0xfffffef0;
     uStack_150 = 0x4ca3e5;
@@ -391,7 +391,7 @@ LAB_004ca263:
   else {
     (**(code **)(*piVar5 + 0xa4))();
   }
-  uVar3 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
   piVar5 = (int *)CONCAT31(extraout_var_05,uVar3);
   if (piVar5 == (int *)0x0) {
     pcStack_13c = (code *)0x4ca41b;
@@ -441,7 +441,7 @@ LAB_004ca263:
     CStack_cc.m_pchData = *(char **)(*piVar7 + 0x2c);
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
     pcVar10 = (code *)CONCAT22(uVar14,(short)iVar6);
-    (*this_00->vftable[10].slot_0x04)();
+    (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)();
     cVar4 = (*pcVar10)();
     (*(code *)ppuVar12)();
   }
@@ -555,7 +555,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
   if (*(short *)&this->field_0x94 == 0xb) {
                     /* University special case (slot 11): commit via city vfunc +0x60. */
     if (nDialogActionTag == 0x6f6b6179) {
-      (*this->pCity->vftable[0xc].GetTCityClassNamePointer)(1);
+      (*this->pCity->vftable->ToggleCityPowerPlantUpgradeOrder)(1);
     }
   }
   else {
@@ -576,7 +576,7 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
       iVar4 = *piVar1;
       iVar3 = TCity::GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94)
       ;
-      uVar2 = (*this_00->vftable[10].slot_0x04)
+      uVar2 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                         (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x94));
       (**(code **)(unaff_retaddr + 0x2c))
                 (CONCAT31(extraout_var,uVar2) - CONCAT22((short)((uint)iVar4 >> 0x10),(short)iVar3))

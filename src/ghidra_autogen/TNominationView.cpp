@@ -44,7 +44,7 @@ CRuntimeClass * TNominationView::GetTEventHandlerClassNamePointer()
 void TNominationView::OrphanCallChain_C6_I49_004875d0()
 
 {
-  TNominationView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -91,9 +91,9 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   CString::CString(local_1c);
   uStack_30 = 0x636f756e;
   local_4 = 0;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_34 = 0x4fb7d4;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   uStack_34 = 0x4fb7de;
   (**(code **)(iVar2 + 0xc))();
@@ -114,7 +114,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   (**(code **)(iVar2 + 0x1b4))();
   uStack_48 = 0x7469746c;
   puStack_4c = (undefined1 *)0x4fb81d;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
   puStack_4c = (undefined1 *)0x4fb827;
   (**(code **)(iVar2 + 0xc))();
@@ -135,7 +135,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   (**(code **)(iVar2 + 0x1b4))();
   uStack_60 = 0x63616e30;
   puStack_64 = (undefined4 *)0x4fb866;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
   puStack_64 = (undefined4 *)0x4fb86f;
   (**(code **)(iVar2 + 0xc))();
@@ -151,7 +151,7 @@ void TNominationView::OrphanCallChain_C6_I49_004875d0()
   CStack_74.m_pchData = (char *)0x4fb8aa;
   (**(code **)(iVar2 + 0x1b4))();
   CStack_74.m_pchData = (char *)0x63616e31;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
   (**(code **)(iVar2 + 0xc))();
   FormatOverlayTerrainLabelText(&puStack_64);

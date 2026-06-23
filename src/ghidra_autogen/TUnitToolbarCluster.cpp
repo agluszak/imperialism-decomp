@@ -85,7 +85,7 @@ TUnitToolbarCluster::OrphanRetStub_0059add0
   TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
   if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (param_1 == 0x68)) ||
       (param_1 == 0x67)) || ((param_1 == 10 || (param_1 == 0xc)))) {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x6d61696e);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -137,7 +137,7 @@ void TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
   }
   *(int *)&this->field_0x84 = param_1;
   if (piVar4 != (int *)0x0) {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444c4f47);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

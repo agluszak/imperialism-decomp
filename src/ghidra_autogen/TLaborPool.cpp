@@ -124,7 +124,7 @@ void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int *param_1)
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -141,7 +141,7 @@ void TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int *param_1)
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -233,15 +233,15 @@ void TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(undefined4 pa
     pTVar2 = (TLaborPoolVtbl *)0x0;
   }
   else {
-    pTVar2->GetTLaborPoolClassNamePointer =
+    pTVar2->GetRuntimeClass =
          (TLaborPool_GetTLaborPoolClassNamePointer_0x00 *)&TLaborPoolVtbl_0064f540;
-    *(undefined2 *)&pTVar2->ConstructTLaborPoolBaseState = 0;
-    *(undefined2 *)((int)&pTVar2->ConstructTLaborPoolBaseState + 2) = 0;
-    *(undefined2 *)&pTVar2[1].GetTLaborPoolClassNamePointer = 0;
+    *(undefined2 *)&pTVar2->~TLaborPool = 0;
+    *(undefined2 *)((int)&pTVar2->~TLaborPool + 2) = 0;
+    *(undefined2 *)&pTVar2->Serialize = 0;
   }
-  *(undefined2 *)((int)&pTVar2->ConstructTLaborPoolBaseState + 2) = 0;
-  *(undefined2 *)&pTVar2->ConstructTLaborPoolBaseState = 0;
-  *(undefined2 *)&pTVar2[1].GetTLaborPoolClassNamePointer = 0;
+  *(undefined2 *)((int)&pTVar2->~TLaborPool + 2) = 0;
+  *(undefined2 *)&pTVar2->~TLaborPool = 0;
+  *(undefined2 *)&pTVar2->Serialize = 0;
   this[2].vftable = pTVar2;
   *(undefined2 *)&this->field_0x8 = 0;
   this[1].vftable = (TLaborPoolVtbl *)0x0;

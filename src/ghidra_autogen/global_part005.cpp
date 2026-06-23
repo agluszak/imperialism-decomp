@@ -1817,7 +1817,7 @@ DispatchMessageFallbackAndUpdateCaptureState
   
   CWnd::Default(param_1);
   NotifyCaptureOwnerState1AndMaybeUpdateCoords(param_2,param_3,param_4);
-  (*g_pGlobalUiRootController->vftable[0x15].slot_0x04)(param_3,param_4,0);
+  (**(code **)&g_pGlobalUiRootController->vftable->field_0xac)(param_3,param_4,0);
   if (param_1[1].ccmdTarget.vftable != (CCmdTargetVtbl *)0x0) {
     iVar1 = NoOpRuntimeCallback_00489a70();
     if (iVar1 != 0) {

@@ -97,7 +97,7 @@ int TTEView::DestructTTEViewAndMaybeFree()
   int unaff_ESI;
   int *unaff_FS_OFFSET;
   TTEViewVtbl *pTStack_40;
-  undefined1 local_2c [20];
+  CDC local_2c;
   int iStack_18;
   TView *pTStack_c;
   undefined1 *puStack_8;
@@ -107,23 +107,23 @@ int TTEView::DestructTTEViewAndMaybeFree()
   puStack_8 = &LAB_0062ea38;
   pTStack_c = (TView *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&pTStack_c;
-  CDC::CDC((CDC *)local_2c);
+  CDC::CDC(&local_2c);
   local_4 = 0;
   pHVar1 = CreateCompatibleDC((HDC)0x0);
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)local_2c,(int)pHVar1);
+  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&local_2c,(int)pHVar1);
   pvVar2 = (HGDIOBJ)UpdateGlobalFontPresetAndRebuildCachedFontIfDirty();
-  pvVar2 = (HGDIOBJ)SelectObject_6129d7((TTEView *)local_2c,pvVar2);
-  (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)();
+  pvVar2 = (HGDIOBJ)SelectObject_6129d7((TTEView *)&local_2c,pvVar2);
+  (*this->vftable->GetTEventHandlerClassNamePointer_58)();
   pTStack_40 = (TTEViewVtbl *)0x486153;
-  DeflateRect((TTEView *)(local_2c + 0xc),(int *)&this->field_0x68);
-  pTStack_40 = (TTEViewVtbl *)(local_2c + 0xc);
+  DeflateRect((TTEView *)&local_2c.m_bPrinting,(int *)&this->field_0x68);
+  pTStack_40 = (TTEViewVtbl *)&local_2c.m_bPrinting;
   (**(code **)(unaff_ESI + 0x70))
             (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8));
   SelectObject_6129d7((TTEView *)&pTStack_40,pvVar2);
   iStack_18 = -1;
   DestroyCDCAndDeleteOwnedHdc();
-  *unaff_FS_OFFSET = local_2c._12_4_;
-  return local_2c._8_4_ - local_2c._0_4_;
+  *unaff_FS_OFFSET = local_2c.m_bPrinting;
+  return (int)local_2c.m_hAttribDC - (int)local_2c.cobject.vftable;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504220
@@ -133,7 +133,7 @@ int TTEView::DestructTTEViewAndMaybeFree()
 void TTEView::BuildHelpSubjectListControlsWithPrevNext()
 
 {
-  TTEView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   code *pcVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -267,10 +267,10 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   uStack_88 = 0x5042df;
   InitializeUiTextStyleDescriptor();
   local_58 = this->vftable;
-  pTVar1 = local_58[0x12].slot_0x04;
+  p_Var1 = local_58->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_74 = 0x7375626a;
   uStack_78 = 0x5042f7;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iStack_7c = unaff_retaddr + 1;
   iVar5 = *(int *)CONCAT31(extraout_var,uVar3);
   uStack_78 = 1;
@@ -295,7 +295,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   (**(code **)(iVar5 + 0x1b4))();
   uStack_a4 = 0x746f676c;
   uStack_a8 = 0x504351;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   uStack_a8 = 1;
   uStack_ac = 1;
   iVar5 = *(int *)CONCAT31(extraout_var_00,uVar3);
@@ -317,7 +317,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   do {
     iStack_c8 = iVar5 + 0x6e616d31;
     puStack_cc = (undefined4 *)0x504395;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     puStack_cc = (undefined4 *)0x1;
     uStack_d0 = 0;
     iStack_b4 = *(int *)CONCAT31(extraout_var_01,uVar3);
@@ -331,7 +331,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   } while (iVar5 < 5);
   iStack_c8 = 0x70726576;
   puStack_cc = (undefined4 *)0x5043c8;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   puStack_cc = &uStack_b8;
   uStack_d0 = 0xd;
   uStack_d4 = 0x2749;
@@ -360,7 +360,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   (**(code **)(iVar5 + 0x1b4))();
   uStack_100 = 0x6e657874;
   puStack_104 = (undefined4 *)0x504431;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   puStack_104 = &uStack_f0;
   aiStack_10c[1] = 0xe;
   aiStack_10c[0] = 0x2749;
@@ -393,7 +393,7 @@ void TTEView::BuildHelpSubjectListControlsWithPrevNext()
   (**(code **)(**(int **)&this->field_0x94 + 0xa4))();
   uStack_140 = 0x7377696e;
   uStack_144 = 0x5044ac;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar5 = *(int *)CONCAT31(extraout_var_04,uVar3);
   uStack_144 = 0x5044b5;
   (**(code **)(iVar5 + 0xc))();
@@ -520,12 +520,12 @@ int TTEView::AppendInterNationEventSummaryTextEntry(int param_1, undefined4 *par
   CString::CString(&local_44,text_or_resource_id);
   pTVar3 = this_00->vftable;
   local_4 = 2;
-  (*pTVar3[0x3e].GetTEventHandlerClassNamePointer)();
+  (*pTVar3->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
   FreeHeapBlockWithAllocatorTracking(text_or_resource_id);
   iVar6 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
-  (*pTVar3[0x25].slot_0x04)(&local_20);
+  (*pTVar3->OrphanRetStub_0059add0_4b)(&local_20);
   local_18 = iVar6 + 8 + local_20;
-  (*pTVar3[0x2d].GetTEventHandlerClassNamePointer)(local_38 + 5,0);
+  (*pTVar3->GetTEventHandlerClassNamePointer_5a)(local_38 + 5,0);
   uStack_14 = 0xffffffff;
   CString::~CString((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = local_1c;

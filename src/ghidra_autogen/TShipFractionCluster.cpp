@@ -86,7 +86,7 @@ void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
   iStack_18 = 0x568d88;
-  uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   iStack_18 = 0x6d61696e;
   pcStack_1c = (code *)0x568d97;
   piVar4 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
@@ -96,7 +96,7 @@ void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0xc))();
   pcStack_1c = (code *)0x73686970;
   iStack_20 = 0x568db7;
-  uVar3 = (*pTVar1[0x12].slot_0x04)();
+  uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
   iStack_20 = 0x568dc4;
   (**(code **)(iVar2 + 0xc))();
@@ -107,7 +107,7 @@ void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
     iStack_20 = 1;
     iStack_24 = 0;
     iStack_28 = 0x568e1e;
-    (*pTVar1[0x14].slot_0x04)();
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_30 = this;
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
               ((TToolBarCluster *)&pTStack_34,PTR_g_szEmptyString_0065c830);
@@ -121,7 +121,7 @@ void TShipFractionCluster::OrphanLeaf_NoCall_Ins07_004d8920()
     iStack_28 = 1;
     uStack_2c = 1;
     pTStack_30 = (TShipFractionCluster *)0x568dfd;
-    (*pTVar1[0x14].slot_0x04)();
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_30 = (TShipFractionCluster *)this->controlTag;
     pTStack_34 = (TToolBarClusterVtbl *)(iVar5 + 1);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716);

@@ -83,7 +83,7 @@ void TGWorldPartView::OrphanTiny_ReturnZero_0048a730()
   RECT RStack_14;
   
   if (*(int *)&this->field_0x60 != 0) {
-    (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(&local_20);
+    (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_20);
     RStack_14.top = local_20;
     RStack_14.right = LStack_1c;
     RStack_14.bottom = LStack_18;

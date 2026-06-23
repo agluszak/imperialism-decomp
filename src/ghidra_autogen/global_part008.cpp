@@ -186,19 +186,19 @@ void __fastcall ResetTDefendProvinceMissionToSentinelVtable(undefined4 *param_1)
 // GHIDRA_NAME SerializeTMission
 // GHIDRA_PROTO undefined SerializeTMission()
 
-void __thiscall SerializeTMission(TArmyPlayer *param_1,int *param_2)
+void __thiscall SerializeTMission(TObject *param_1,TStream *param_2)
 
 {
-  code *pcVar1;
+  TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
   
-  TObject::WriteTo(param_1);
-  pcVar1 = *(code **)(*param_2 + 0x78);
-  (*pcVar1)(&param_1->field_0x4,2);
-  (*pcVar1)(&param_1->field_0x8,1);
-  (*pcVar1)(&param_1->field_0xc,4);
-  (*pcVar1)(&param_1->field_0x10,1);
-  (*pcVar1)(&param_1->field_0x6,2);
-  (*pcVar1)(&param_1->field_0x11,1);
+  TObject::WriteTo(param_1,param_2);
+  pTVar1 = param_2->vftable[0xf].GetTStreamClassNamePointer;
+  (*pTVar1)(param_1 + 4,2);
+  (*pTVar1)(param_1 + 8,1);
+  (*pTVar1)(param_1 + 0xc,4);
+  (*pTVar1)(param_1 + 0x10,1);
+  (*pTVar1)(param_1 + 6,2);
+  (*pTVar1)(param_1 + 0x11,1);
   return;
 }
 
@@ -206,28 +206,28 @@ void __thiscall SerializeTMission(TArmyPlayer *param_1,int *param_2)
 // GHIDRA_NAME DeserializeTMission
 // GHIDRA_PROTO undefined DeserializeTMission()
 
-void __thiscall DeserializeTMission(TMapDialog *param_1,int *param_2)
+void __thiscall DeserializeTMission(TObject *param_1,TStream *param_2)
 
 {
-  code *pcVar1;
+  TStream_ConstructTStreamBaseState_0x04 *pTVar1;
   
-  TObject::ReadFrom(param_1);
-  pcVar1 = *(code **)(*param_2 + 0x3c);
-  (*pcVar1)(&param_1->field04,2);
-  (*pcVar1)(&param_1->padding_08_to_0b,1);
-  (*pcVar1)(&param_1->field0c,4);
-  (*pcVar1)(&param_1->field10,1);
+  TObject::ReadFrom(param_1,param_2);
+  pTVar1 = param_2->vftable[7].ConstructTStreamBaseState;
+  (*pTVar1)(param_1 + 4,2);
+  (*pTVar1)(param_1 + 8,1);
+  (*pTVar1)(param_1 + 0xc,4);
+  (*pTVar1)(param_1 + 0x10,1);
   if (DAT_00695278 < 0x10) {
-    *(undefined2 *)((int)&param_1->field04 + 2) = 0xffff;
+    *(undefined2 *)(param_1 + 6) = 0xffff;
   }
   else {
-    (*pcVar1)((undefined1 *)((int)&param_1->field04 + 2),2);
+    (*pTVar1)(param_1 + 6,2);
   }
   if (DAT_00695278 < 9) {
-    (*param_1->vftable[6].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)param_1 + 0x30))();
     return;
   }
-  (*pcVar1)((undefined1 *)((int)&param_1->field10 + 1),1);
+  (*pTVar1)(param_1 + 0x11,1);
   return;
 }
 
@@ -280,8 +280,8 @@ undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(undefined4 param
   
   iVar8 = (int)(short)param_1;
   bVar1 = *(byte *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar8 * 0xa8);
-  uVar3 = (*g_apTerrainTypeDescriptorTable[(short)(char)bVar1]->vftable[8].
-            GetTCountryClassNamePointer)();
+  uVar3 = (*g_apTerrainTypeDescriptorTable[(short)(char)bVar1]->vftable->
+            OrphanLeaf_NoCall_Ins06_004d87b0_10)();
   if (CONCAT31(extraout_var,uVar3) == iVar8) {
     return CONCAT31(extraout_var,1);
   }
@@ -2072,7 +2072,7 @@ uint __fastcall ValidateMissionTerrainCoverageAndRefreshTargetContext(int *param
     if (bVar1) goto LAB_0053894a;
     if (*ppTVar4 != (TCountry *)0x0) {
       if (iVar5 != (short)param_1[1]) {
-        cVar2 = (*(*ppTVar4)->vftable[0xb].slot_0x04)((int)(short)param_1[1]);
+        cVar2 = (*(*ppTVar4)->vftable->IsDiplomacyTargetClassCode200Match)((int)(short)param_1[1]);
         if (cVar2 == '\0') goto LAB_0053893a;
       }
       cVar2 = ContainsPointerArrayEntryMatchingByteKey(iVar5);
@@ -2085,7 +2085,7 @@ LAB_0053893a:
     iVar5 = iVar5 + 1;
   } while ((int)ppTVar4 < 0x6a436c);
   if (!bVar1) {
-    (*g_apNationStates[(short)param_1[1]]->vftable[1].slot_0x04)();
+    (*g_apNationStates[(short)param_1[1]]->vftable->ConstructTTaskBaseState)();
     uVar6 = 0;
     sVar3 = GetShortAtOffset14OrInvalid(0);
     SetByteFlagAtOffsetAF0ByIndex((int)sVar3,uVar6);
@@ -2851,7 +2851,7 @@ void __thiscall TryQueueProvinceOrderFromContextMessage(void *this,int msg_ctx)
                      *(short *)(*(int *)((int)this + 0x3c) + 0x30) * 0xa8);
     if (g_apNationStates[*(short *)((int)this + 4)]->needCurrentByType[(short)cVar2 + -0x2e] !=
         0x131) {
-      (*g_apNationStates[*(short *)((int)this + 4)]->vftable[0x3a].GetTCountryClassNamePointer)
+      (*g_apNationStates[*(short *)((int)this + 4)]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_74)
                 ((int)cVar2,0x131);
     }
   }
@@ -4205,7 +4205,7 @@ void __fastcall RefreshAttackProvinceMissionTargetAndMaybeQueueUnits(int *param_
       if (cVar4 == '\0') {
         cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (short)param_1[0xc] * 0xa8);
         if (g_apNationStates[(short)param_1[1]]->needCurrentByType[(short)cVar4 + -0x2e] != 0x131) {
-          (*g_apNationStates[(short)param_1[1]]->vftable[0x3a].GetTCountryClassNamePointer)
+          (*g_apNationStates[(short)param_1[1]]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_74)
                     ((int)cVar4,0x131);
         }
       }
@@ -5033,7 +5033,7 @@ void RecomputeNationOrderPriorityMetrics(void)
       }
       (&DAT_006a3b50)[iVar13] = fVar2;
       iVar7 = ComputeSelectedMilitaryPowerScore();
-      uVar5 = (*g_apNationStates[iVar13]->vftable[0x43].GetTCountryClassNamePointer)();
+      uVar5 = (*g_apNationStates[iVar13]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20_86)();
       if ((float)CONCAT31(extraout_var,uVar5) < (float)iVar7) {
         fVar1 = (float)CONCAT31(extraout_var,uVar5) / (float)iVar7;
       }
@@ -5050,7 +5050,7 @@ void RecomputeNationOrderPriorityMetrics(void)
   do {
     cVar4 = IsNationSlotEligibleForEventProcessing(iVar13);
     if (cVar4 != '\0') {
-      (*(*ppTVar12)->vftable[0x56].slot_0x04)();
+      (*(*ppTVar12)->vftable->SelectCandidateTilesWithLowGroundUnitCount_ad)();
     }
     ppTVar12 = ppTVar12 + 1;
     iVar13 = iVar13 + 1;
@@ -5092,7 +5092,7 @@ float ComputeBestNationTileDevelopmentScore(int param_1)
   
   pTVar1 = g_apNationStates[param_1];
   if ((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 == '\0')) {
-    (*pTVar1->vftable[1].slot_0x04)();
+    (*pTVar1->vftable->ConstructTTaskBaseState)();
     fStack_1c = -NAN;
     iStack_20 = 1;
     iVar7 = **(int **)&g_apNationStates[param_1]->field_0x90;
@@ -5664,7 +5664,8 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     ppTVar7 = g_apNationStates;
     do {
       if ((*ppTVar7 == (TGreatPower *)0x0) ||
-         (cVar1 = (*(*ppTVar7)->vftable[0x13].GetTCountryClassNamePointer)(), cVar1 == '\0')) {
+         (cVar1 = (*(*ppTVar7)->vftable->ReturnFalseNationStateCapabilityFlag98)(), cVar1 == '\0'))
+      {
         *(uint *)&param_1[9].field_0x10 = *(uint *)&param_1[9].field_0x10 & ~(1 << (bVar2 & 0x1f));
       }
       ppTVar7 = ppTVar7 + 1;
@@ -5705,7 +5706,8 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     cVar1 = UiRuntimeContext::GetActiveNationId();
     local_34 = CONCAT11(local_34._1_1_,cVar1);
     local_32 = (undefined2)g_apTerrainTypeDescriptorTable[cVar1]->ownerNationSlot;
-    uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable[8].GetTCountryClassNamePointer)();
+    uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)()
+    ;
     CString::CString(&CStack_54);
     uStack_4 = 0;
     AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
@@ -5725,12 +5727,12 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     ppTVar8 = g_apSecondaryNationStateSlots;
     do {
       if (*ppTVar8 != (TMinor *)0x0) {
-        (*(*ppTVar8)->vftable[0x15].GetTCountryClassNamePointer)();
+        (*(*ppTVar8)->vftable->RebuildDiplomacyEconomicPressureFromMapState)();
       }
       ppTVar8 = ppTVar8 + 1;
     } while ((int)ppTVar8 < 0x6a42dc);
     sVar4 = UiRuntimeContext::GetActiveNationId();
-    (*g_apNationStates[sVar4]->vftable[0x2d].GetTCountryClassNamePointer)();
+    (*g_apNationStates[sVar4]->vftable->ReturnFalseNationStateCapabilityFlag98_5a)();
     uVar10 = 0xffffffff;
     sVar4 = UiRuntimeContext::GetActiveNationId(0xffffffff);
     EmitTurnEvent19NationStateArraysForSlot((int)sVar4,uVar10);
@@ -5843,7 +5845,8 @@ void __fastcall EnsureGameFlowStateAndPostTurnEvent5E5(Config *param_1)
     if (g_pGameFlowState == (Config *)0x0) goto LAB_005445e2;
   }
   ReturnTrueRuntimeCredentialInitStub();
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(g_pGameFlowState,1);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)
+            (g_pGameFlowState,1);
   PostTurnEventCodeMessage2420(0x5e5);
   *(undefined4 *)&param_1->field_0xd8 = 0x70726570;
 LAB_005445e2:
@@ -5858,7 +5861,8 @@ LAB_005445e2:
 void __fastcall ResetDiplomacyRuntimeSelectionAndSetModeNada(int param_1)
 
 {
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(g_pGameFlowState,0);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)
+            (g_pGameFlowState,0);
   *(undefined4 *)&g_pLocalizationTable->field_0x44 = 0;
   if (DAT_006a6014 != 0) {
     ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -6128,7 +6132,8 @@ undefined4 __fastcall ResetGameFlowStateAndPostTurnEvent5DC(int param_1)
 
 {
   *(undefined4 *)(param_1 + 0x40) = 0;
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(g_pGameFlowState,0);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)
+            (g_pGameFlowState,0);
   *(undefined4 *)&g_pLocalizationTable->field_0x44 = 0;
   if (DAT_006a6014 != 0) {
     ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -6213,7 +6218,8 @@ undefined4 __fastcall ResetGameFlowStateAndPostTurnEvent5DCAlt(int param_1)
 
 {
   *(undefined4 *)(param_1 + 0x40) = 0;
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(g_pGameFlowState,0);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)
+            (g_pGameFlowState,0);
   *(undefined4 *)&g_pLocalizationTable->field_0x44 = 0;
   if (DAT_006a6014 != 0) {
     ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -6668,7 +6674,7 @@ void DispatchTurnEvent1AWithNationActionPayload
   local_10 = param_5;
   do {
     if (*ppTVar2 != (TGreatPower *)0x0) {
-      uVar1 = (*(*ppTVar2)->vftable[0xe].slot_0x04)();
+      uVar1 = (*(*ppTVar2)->vftable->OrphanLeaf_NoCall_Ins02_004d7f00)();
       *(short *)puVar3 = (short)CONCAT31(extraout_var,uVar1);
     }
     ppTVar2 = ppTVar2 + 1;
@@ -7642,7 +7648,7 @@ void DispatchSimpleTurnEventEsopWithParam(TCommandVtbl *param_1)
   pTVar1[1].vftable = param_1;
   local_4 = 0xffffffff;
   InitializeRangePairAndResetCursor(0x706f7365,g_pGlobalUiRootController,0,0,0);
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this;
   return;
 }
@@ -7709,7 +7715,7 @@ LAB_0054b217:
     CString::~CString((CString *)&stack0x00000004);
   }
   else {
-    uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+    uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -8151,7 +8157,7 @@ void __thiscall SetNationStatusAwolByNationIdAndDispatchNotices(Config *param_1,
           }
           local_4._0_1_ = 2;
           InitializeRangePairAndResetCursor(0x63676f70);
-          (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+          (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         }
         local_4._0_1_ = 1;
         CString::~CString(&local_ac);
@@ -8451,7 +8457,7 @@ ReplaceNationStateForSlotAndRefreshStatus(TNextDiplomationCommand *param_1,int p
       } while (iVar8 < 0x17);
       pTVar4 = pTVar1->vftable;
       *(undefined2 *)(&g_pLocalizationTable->field_0xda + param_2 * 2) = 2;
-      (*pTVar4[3].slot_0x04)();
+      (*pTVar4->ApplyJoinEmpireModeForTargetNation)();
     }
     if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) && (param_2 != sVar7)) {
       NotifyIfNationMatchesSessionActiveNation((&param_1[3].vftable)[param_2]);
@@ -8737,7 +8743,7 @@ void CreateAndQueueTurnEventPacketTagPOGC(void)
   }
   local_4 = 0xffffffff;
   InitializeRangePairAndResetCursor(0x63676f70,g_pGlobalUiRootController,0,0,0);
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this;
   return;
 }
@@ -8926,15 +8932,14 @@ void EmitTurnEvent19NationStateArraysForSlot(undefined4 param_1,int param_2)
 
 {
   TGreatPower *pTVar1;
-  TGreatPower_GetTCountryClassNamePointer_0x00 *pTVar2;
-  TGreatPower_slot_0x04_0x04 *pTVar3;
-  undefined uVar4;
-  undefined2 *puVar5;
+  _vslot_fn *p_Var2;
+  undefined uVar3;
+  undefined2 *puVar4;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  word *pwVar6;
+  word *pwVar5;
+  int iVar6;
   int iVar7;
-  int iVar8;
   undefined4 local_118;
   undefined4 local_114;
   undefined4 local_110;
@@ -8970,41 +8975,41 @@ void EmitTurnEvent19NationStateArraysForSlot(undefined4 param_1,int param_2)
   pTVar1 = g_apNationStates[local_fc];
   EmitNationDiplomacyNeedStateSnapshotEvent15(1,param_1);
   local_fa = pTVar1->needCapA6;
-  iVar8 = 0xe;
-  puVar5 = local_f8;
+  iVar7 = 0xe;
+  puVar4 = local_f8;
   do {
-    iVar8 = iVar8 + -1;
-    *puVar5 = *(undefined2 *)((int)puVar5 + (int)pTVar1->city + (0x5c - (int)local_f8));
-    puVar5 = puVar5 + 1;
-  } while (iVar8 != 0);
-  iVar8 = 0;
-  puVar5 = local_dc;
-  pTVar2 = pTVar1->vftable[0xf].GetTCountryClassNamePointer;
+    iVar7 = iVar7 + -1;
+    *puVar4 = *(undefined2 *)((int)puVar4 + (int)pTVar1->city + (0x5c - (int)local_f8));
+    puVar4 = puVar4 + 1;
+  } while (iVar7 != 0);
+  iVar7 = 0;
+  puVar4 = local_dc;
+  p_Var2 = pTVar1->vftable->OrphanLeaf_NoCall_Ins02_004d7f20;
   do {
-    uVar4 = (*pTVar2)(iVar8);
-    *puVar5 = (short)CONCAT31(extraout_var,uVar4);
-    iVar8 = iVar8 + 1;
-    puVar5 = puVar5 + 1;
-  } while (iVar8 < 0x17);
-  iVar8 = 0;
-  puVar5 = auStack_ae;
-  pTVar3 = pTVar1->vftable[0xf].slot_0x04;
+    uVar3 = (*p_Var2)(iVar7);
+    *puVar4 = (short)CONCAT31(extraout_var,uVar3);
+    iVar7 = iVar7 + 1;
+    puVar4 = puVar4 + 1;
+  } while (iVar7 < 0x17);
+  iVar7 = 0;
+  puVar4 = auStack_ae;
+  p_Var2 = pTVar1->vftable->OrphanLeaf_NoCall_Ins02_004d7f40;
   do {
-    uVar4 = (*pTVar3)(iVar8);
-    *puVar5 = (short)CONCAT31(extraout_var_00,uVar4);
-    iVar8 = iVar8 + 1;
-    puVar5 = puVar5 + 1;
-  } while (iVar8 < 0x11);
-  iVar8 = 0;
-  pwVar6 = awStack_5e;
+    uVar3 = (*p_Var2)(iVar7);
+    *puVar4 = (short)CONCAT31(extraout_var_00,uVar3);
+    iVar7 = iVar7 + 1;
+    puVar4 = puVar4 + 1;
+  } while (iVar7 < 0x11);
+  iVar7 = 0;
+  pwVar5 = awStack_5e;
   do {
-    iVar7 = (int)(short)iVar8;
-    iVar8 = iVar8 + 1;
-    pwVar6[-0x17] = pTVar1->needCurrentByType[iVar7 + -0x2e];
-    *pwVar6 = pTVar1->needCurrentByType[iVar7 + -0x17];
-    pwVar6[0x17] = *(word *)(&pTVar1->field_0x14 + iVar7 * 2);
-    pwVar6 = pwVar6 + 1;
-  } while (iVar8 < 0x17);
+    iVar6 = (int)(short)iVar7;
+    iVar7 = iVar7 + 1;
+    pwVar5[-0x17] = pTVar1->needCurrentByType[iVar6 + -0x2e];
+    *pwVar5 = pTVar1->needCurrentByType[iVar6 + -0x17];
+    pwVar5[0x17] = *(word *)(&pTVar1->field_0x14 + iVar6 * 2);
+    pwVar5 = pwVar5 + 1;
+  } while (iVar7 < 0x17);
   EnqueueOrSendTurnEventPacketToNation(&local_118,param_2 == -3);
   return;
 }
@@ -9170,7 +9175,7 @@ void TryInvokeNationStateReplacementForSlot(CString param_1)
   else {
     pTVar1 = g_apNationStates[(int)param_1.m_pchData];
     if ((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 != '\0')) {
-      cVar2 = (*pTVar1->vftable[0x14].GetTCountryClassNamePointer)();
+      cVar2 = (*pTVar1->vftable->ReturnFalseNationStateCapabilityFlagA0)();
       if (cVar2 != '\0') {
         uVar3 = GetAsyncKeyState(0x11);
         if ((uVar3 & 0x8000) == 0) {
@@ -9258,10 +9263,10 @@ void __fastcall RefreshMapAndMessageControlsForCurrentContext(int *param_1)
   CStack_48.m_pchData = (char *)0x6d617020;
   this = (TLoadSavePicture *)(*pcVar2)();
   pTVar3 = this->vftable;
-  (*pTVar3[1].slot_0x04)();
+  (*pTVar3->AssertValid)();
   TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this,0);
   ApplyPaletteMaskToTileBufferByEventCode();
-  (*pTVar3[0x25].slot_0x04)(&uStack_30);
+  (*pTVar3->OrphanRetStub_0059add0_4b)(&uStack_30);
   uStack_20 = uStack_30;
   uStack_1c = uStack_2c;
   uStack_18 = uStack_28;

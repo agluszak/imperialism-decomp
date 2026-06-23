@@ -35,7 +35,7 @@ void TNextMoveCommand::QueueTacticalEventPacket232A()
   local_4 = 0xffffffff;
   InitializeRangePairAndResetCursor(0x232a,g_pGlobalUiRootController,0,0,0);
   pTVar1[1].vftable = (TCommandVtbl *)this;
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this_00;
   return;
 }

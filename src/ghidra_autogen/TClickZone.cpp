@@ -94,10 +94,7 @@ TClickZone * TClickZone::_scalar_deleting_destructor_(byte param_1)
 void TClickZone::_scalar_deleting_destructor_()
 
 {
-  undefined4 in_EDX;
-  
-  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x84),0);
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)&this->field_0x84,0);
   TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this,(undefined4 *)0x1);
   return;
 }

@@ -731,7 +731,7 @@ void CreateAndQueueTurnEventPacketTagGWEN(void)
   }
   local_4 = 0xffffffff;
   InitializeRangePairAndResetCursor(0x6e657767,g_pGlobalUiRootController,0,0,0);
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this;
   return;
 }
@@ -864,7 +864,7 @@ undefined4 * WrapperFor_AllocateWithFallbackHandler_At004a1130(undefined2 param_
     this->field_0x4 = 0;
     *(undefined4 *)&this->field_0x18 = 0;
     *(undefined2 *)&this->field_0x1c = param_1;
-    this->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    this->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(this);
   }
   *puVar1 = this;
@@ -1905,7 +1905,8 @@ undefined4 __thiscall FindNextSelectableProvinceForNation(int param_1,short para
     pTVar3 = (TMapMgr *)CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),sVar2);
     if (-1 < sVar2) {
       if (sVar2 != param_2) {
-        cVar1 = (*g_apTerrainTypeDescriptorTable[sVar2]->vftable[0xb].slot_0x04)((int)param_2);
+        cVar1 = (*g_apTerrainTypeDescriptorTable[sVar2]->vftable->IsDiplomacyTargetClassCode200Match
+                )((int)param_2);
         pTVar3 = (TMapMgr *)CONCAT31(extraout_var,cVar1);
         if (cVar1 == '\0') goto LAB_004a47ff;
       }
@@ -1993,7 +1994,7 @@ undefined4 ComputeMapCursorStateIndex(short param_1,short param_2)
   if (sVar5 != sVar3) {
     pTVar1 = g_apTerrainTypeDescriptorTable[sVar5]->vftable;
     sVar5 = UiRuntimeContext::GetActiveNationId();
-    cVar2 = (*pTVar1[0xb].slot_0x04)((int)sVar5);
+    cVar2 = (*pTVar1->IsDiplomacyTargetClassCode200Match)((int)sVar5);
     if (cVar2 == '\0') {
       return 8;
     }
@@ -2076,8 +2077,8 @@ LAB_004a4d98:
            & 7;
   }
   if (((short)uVar7 == (short)uVar8) ||
-     (cVar3 = (*g_apTerrainTypeDescriptorTable[(short)uVar8]->vftable[0xb].slot_0x04)
-                        ((int)(short)uVar7), cVar3 != '\0')) {
+     (cVar3 = (*g_apTerrainTypeDescriptorTable[(short)uVar8]->vftable->
+                IsDiplomacyTargetClassCode200Match)((int)(short)uVar7), cVar3 != '\0')) {
     if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar10) >> 5 & 1) != 0) {
       return 2;
     }
@@ -2284,7 +2285,7 @@ uint ValidateOrderPlacementPrerequisitesForSelectedTile(short param_1)
     piVar10 = *(int **)&g_pUiRuntimeContext->field_0xf0;
     uVar8 = extraout_var;
     if (piVar10 != (int *)0x0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
       (**(code **)(*piVar10 + 0x1e8))();
       uVar8 = extraout_var_00;
     }
@@ -3002,7 +3003,7 @@ void BuildMapHintOverlayTextAndDispatchUiMessages(int param_1)
     *unaff_FS_OFFSET = local_18;
     return;
   }
-  uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar4 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     puStack_80 = (undefined1 *)0x4a6876;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -3987,7 +3988,7 @@ void HandleCrossUArmyViewsNameCommand(void)
   puStack_8 = &LAB_00630470;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar4 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     CStack_50.m_pchData = "h\x04\x02";
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -4649,7 +4650,7 @@ LAB_004b2693:
     *(undefined2 *)&this_00->field_0x4 = 0;
     this_00->vftable = (TProductionOrderVtbl *)&TOrItemOrderVtbl_0064f8f8;
   }
-  (*this_00->vftable[9].GetTProductionOrderClassNamePointer)(param_1,8,1,0,0);
+  (*this_00->vftable[1].~TProductionOrder)(param_1,8,1,0,0);
   puVar9 = (undefined4 *)(param_1 + 0x16c);
   *(TProductionOrder **)(param_1 + 0x104) = this_00;
   puVar10 = &DAT_00695c5a;
@@ -6409,7 +6410,7 @@ void UpdateUniversityCountControlAndRefreshView(int param_1,undefined4 param_2,L
   LStack00000028 = in_stack_00000018;
   CopyRect((LPRECT)&stack0x0000002c,(RECT *)&stack0x0000001c);
   InvalidateCityDialogRectRegion(&stack0x0000002c,1);
-  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  (*unaff_ESI->vftable[1].vmethod_0025)();
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(unaff_ESI,in_stack_00000040);
   return;
 }
@@ -6440,7 +6441,7 @@ void UpdateUniversityCountControlAndRefreshViewAlt
   param_11 = param_7;
   CopyRect((LPRECT)&stack0x00000030,(RECT *)&param_8);
   InvalidateCityDialogRectRegion(&stack0x00000030,1);
-  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  (*unaff_ESI->vftable[1].vmethod_0025)();
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(unaff_ESI,in_stack_00000044);
   return;
 }
@@ -7357,7 +7358,7 @@ void UpdateUniversitySpecialistCountControlAndRefreshView(int param_1,LONG param
   LStack00000024 = in_stack_00000014;
   CopyRect((LPRECT)&stack0x00000028,(RECT *)&stack0x00000018);
   InvalidateCityDialogRectRegion(&stack0x00000028,1);
-  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  (*unaff_ESI->vftable[1].vmethod_0025)();
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(unaff_ESI,in_stack_0000003c);
   return;
 }
@@ -7394,7 +7395,7 @@ void UpdateUniversitySpecialistCountControlAndRefreshViewAlt
   LStack00000028 = in_stack_00000018;
   CopyRect((LPRECT)&stack0x0000002c,(RECT *)&stack0x0000001c);
   InvalidateCityDialogRectRegion(&stack0x0000002c,1);
-  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  (*unaff_ESI->vftable[1].vmethod_0025)();
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(unaff_ESI,in_stack_00000040);
   return;
 }
@@ -7598,7 +7599,7 @@ undefined4 __fastcall QueueProspectingOrderAndPlayFeedback(int *param_1)
   
   (**(code **)(*(int *)param_1[1] + 0x34))(8,*(undefined2 *)(param_1[1] + 6));
   (**(code **)(*param_1 + 0x30))(unaff_ESI,param_1[1]);
-  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x232e,0,1);
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232e,0,1);
   iVar1 = GetTickCountDiv16();
   do {
     PumpUiMessagesAndBackgroundTasks(1);
@@ -7701,24 +7702,24 @@ void __cdecl ApplyCompletedCivWorkOrderToMapState(int *pCivUnitOrderState)
   case 0:
                     /* Order type 6 completion: build depot, refresh nation network links, report
                        0x232A. */
-    (*g_pGlobalMapState->vftable[0xd].GetTMapMgrClassNamePointer)
+    (*g_pGlobalMapState->vftable->SetHexAdjacencyDirectionFlagsForTilePair)
               (CONCAT22(uVar2,(short)pCivUnitOrderState[3]),uVar3,
                CONCAT22(uVar2,(short)pCivUnitOrderState[6]));
     *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x2329;
     break;
   case 1:
-    (*g_pGlobalMapState->vftable[0x24].slot_0x04)
+    (*g_pGlobalMapState->vftable->QueueDepotConstructionOrder)
               (uVar3,CONCAT22((short)((uint)(pCivUnitOrderState[2] + -5) >> 0x10),
                               (short)pCivUnitOrderState[6]));
                     /* Order type 5 completion: finalize rail section and set completion report
                        message 0x2329. */
-    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable[0x1a].GetTCountryClassNamePointer)(0);
+    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable->GetTCountryClassNamePointer_34)(0);
     *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x232a;
     break;
   case 2:
-    (*g_pGlobalMapState->vftable[0x25].GetTMapMgrClassNamePointer)
+    (*g_pGlobalMapState->vftable->QueuePortConstructionOrder)
               (uVar3,CONCAT22(uVar2,(short)pCivUnitOrderState[6]));
-    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable[0x1a].GetTCountryClassNamePointer)(0);
+    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable->GetTCountryClassNamePointer_34)(0);
     *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x232b;
     break;
   case 3:
@@ -7740,12 +7741,13 @@ void __cdecl ApplyCompletedCivWorkOrderToMapState(int *pCivUnitOrderState)
       pCivUnitOrderState = (int *)CONCAT31((int3)uVar1,1);
     }
     cTileResourceClass =
-         (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(uVar3,pCivUnitOrderState);
-    (*g_pGlobalMapState->vftable[0x19].slot_0x04)
+         (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)
+                   (uVar3,pCivUnitOrderState);
+    (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins35_005136a0)
               (uVar3,pCivUnitOrderState,CONCAT31(extraout_var,cTileResourceClass + '\x01'),1);
     break;
   case 7:
-    (*g_pGlobalMapState->vftable[0x25].slot_0x04)
+    (*g_pGlobalMapState->vftable->SetProvinceCapitalTileFlagBit08)
               (CONCAT22((short)((uint)(nTileIndex * 9) >> 0x10),
                         *(undefined2 *)
                          (*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nTileIndex * 0x24)));
@@ -7889,7 +7891,7 @@ void ResolveCompetingDeveloperTilePurchaseOrders(void)
                 }
                 InitializeLandSaleEventPayloadTileAndNation
                           (local_28,CONCAT22(extraout_var,(short)local_2c[6]));
-                (*g_apNationStates[sVar7]->vftable[0x17].slot_0x04)(puVar4);
+                (*g_apNationStates[sVar7]->vftable->QueueNationOrderManagerPayloadObject)(puVar4);
               }
             }
             ppiVar2 = ppiVar2 + 1;
@@ -7937,7 +7939,8 @@ void HandleMapHotkeyW_ResetSelectedActionableObjects(void)
     iVar3 = LinkedListCursorHasCurrent();
   }
   this = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
-  if ((this != (TCivToolbar *)0x0) && (cVar1 = (*this->vftable[0x3d].slot_0x04)(), cVar1 == '\0')) {
+  if ((this != (TCivToolbar *)0x0) &&
+     (cVar1 = (**(code **)&this->vftable->field_0x1ec)(), cVar1 == '\0')) {
     TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(this);
   }
   return;
@@ -9325,7 +9328,7 @@ undefined4 __fastcall ClassifyNationMilitaryPowerBandAgainstGlobalMean(int param
         iVar6 = AdvanceLinkedListCursor();
         iVar7 = LinkedListCursorHasCurrent();
       }
-      uVar5 = (*(*ppTVar8)->vftable[0x43].GetTCountryClassNamePointer)();
+      uVar5 = (*(*ppTVar8)->vftable->OrphanLeaf_NoCall_Ins02_004d7f20_86)();
       iVar10 = CONCAT31(extraout_var,uVar5) + 4 + iVar10;
       local_18 = (float)iVar10 + local_18;
       local_14 = (float)(iVar10 * iVar10) + local_14;
@@ -9349,8 +9352,8 @@ undefined4 __fastcall ClassifyNationMilitaryPowerBandAgainstGlobalMean(int param
     iVar10 = AdvanceLinkedListCursor();
     iVar6 = LinkedListCursorHasCurrent();
   }
-  uVar5 = (*g_apNationStates[*(short *)(param_1 + 0xc)]->vftable[0x43].GetTCountryClassNamePointer)
-                    ();
+  uVar5 = (*g_apNationStates[*(short *)(param_1 + 0xc)]->vftable->
+            OrphanLeaf_NoCall_Ins02_004d7f20_86)();
   fVar1 = (float)(CONCAT31(extraout_var_00,uVar5) + 4 + iVar9);
   if (fVar2 - fVar3 * g_Classify_Nation_Military_Value_00653710 < fVar1) {
     return 4;
@@ -9861,7 +9864,7 @@ void __fastcall RecomputeNationEconomyAndDiplomacySummaryMetrics(int *param_1)
   param_1[0x24f] = iVar5;
   ppTVar9 = g_apSecondaryNationStateSlots + 7;
   do {
-    cVar4 = (*(*ppTVar9)->vftable[0xb].ApplyJoinEmpireModeForTargetNation)((int)(short)param_1[3]);
+    cVar4 = (*(*ppTVar9)->vftable->IsDiplomacyTargetClassCode200Match)((int)(short)param_1[3]);
     if (cVar4 != '\0') {
       iVar5 = (**(code **)(**(int **)&(*ppTVar9)->field_0x90 + 0x28))();
       param_1[0x24f] = param_1[0x24f] + iVar5;
@@ -10507,7 +10510,7 @@ void __fastcall QueueMapActionMissionsForPortZoneCandidates(TGreatPower *param_1
   if (0 < iVar3) {
     do {
       iVar3 = (**(code **)(**(int **)&param_1->field_0x90 + 0x24))(iVar6);
-      cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+      cVar1 = (*g_pGlobalMapState->vftable->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                         (iVar3,CONCAT22(extraout_var_01,*(undefined2 *)&param_1->field_0xc));
       (&param_1[1].field_0xc)[iVar3] = cVar1 == '\0';
       TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1,3,iVar3,0,-1);
@@ -10734,7 +10737,8 @@ void __fastcall PopulateCase16AdvisoryMapNodeCandidateState(char *param_1)
         do {
           iVar9 = (**(code **)(**(int **)&(*ppTVar14)->field_0x90 + 0x24))(iVar17);
           if (pcVar13[iVar9] == '\0') {
-            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+            cVar3 = (*g_pGlobalMapState->vftable->
+                      IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                               (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
             param_1[iVar9] = cVar3 == '\0';
             pcVar13 = param_1;
@@ -10748,7 +10752,7 @@ void __fastcall PopulateCase16AdvisoryMapNodeCandidateState(char *param_1)
       if (cVar3 != '\0') {
         ppTVar18 = g_apTerrainTypeDescriptorTable + 7;
         do {
-          cVar3 = (*(*ppTVar18)->vftable[0xb].slot_0x04)(iVar9);
+          cVar3 = (*(*ppTVar18)->vftable->IsDiplomacyTargetClassCode200Match)(iVar9);
           if (cVar3 != '\0') {
             iVar8 = 1;
             uVar4 = (*(*ppTVar18)->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
@@ -10759,7 +10763,8 @@ void __fastcall PopulateCase16AdvisoryMapNodeCandidateState(char *param_1)
                 uVar4 = (*(*ppTVar18)->ownedRegionList->vftable[4].slot_0x04)(iVar8);
                 iVar9 = CONCAT31(extraout_var_00,uVar4);
                 if (pcVar13[iVar9] == '\0') {
-                  cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                  cVar3 = (*g_pGlobalMapState->vftable->
+                            IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                                     (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
                   param_1[iVar9] = cVar3 == '\0';
                   pcVar13 = param_1;
@@ -10789,7 +10794,8 @@ void __fastcall PopulateCase16AdvisoryMapNodeCandidateState(char *param_1)
         do {
           iVar9 = (**(code **)(**(int **)&(*ppTVar15)->field_0x90 + 0x24))(iVar8);
           if (pcVar13[iVar9] == '\0') {
-            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+            cVar3 = (*g_pGlobalMapState->vftable->
+                      IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                               (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
             param_1[iVar9] = cVar3 == '\0';
             pcVar13 = param_1;
@@ -10921,15 +10927,16 @@ LAB_004e97a3:
         psVar10 = (short *)(*pcVar2)(1);
         iVar9 = (int)*psVar10;
         if (param_1[iVar9] == '\0') {
-          cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
-                            (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+          cVar3 = (*g_pGlobalMapState->vftable->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
+                  )(iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
           param_1[iVar9] = cVar3 == '\0';
         }
         if (1 < local_74[2]) {
           psVar10 = (short *)(*pcVar2)(2);
           iVar9 = (int)*psVar10;
           if (param_1[iVar9] == '\0') {
-            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+            cVar3 = (*g_pGlobalMapState->vftable->
+                      IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                               (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
             param_1[iVar9] = cVar3 == '\0';
           }

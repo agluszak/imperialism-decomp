@@ -283,7 +283,8 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
   CStack_88.m_pchData = (char *)&pppuStack_74;
   pTVar1 = g_pLocalizationTable->vftable;
   CStack_8c.m_pchData = (char *)0x5c1ebc;
-  uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable[0x2f].slot_0x04)();
+  uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable->
+            PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
   CStack_8c.m_pchData = (char *)CONCAT31(extraout_var,uVar2);
   ppppuStack_90 = (undefined4 ****)0x5c1ec6;
   (*pTVar1[0xe].slot_0x04)();
@@ -332,13 +333,14 @@ void TTradeTotalsView::OrphanCallChain_C11_I88_004874b0()
   ppppuStack_90 = &ppppuStack_7c;
   pTVar1 = g_pLocalizationTable->vftable;
   uStack_94 = 0x5c200e;
-  uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable[0x30].GetTCountryClassNamePointer
-          )();
+  uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable->
+            AdvanceNationPendingActionStateMachine_60)();
   uStack_94 = CONCAT31(extraout_var_00,uVar2);
   CStack_98.m_pchData = (char *)0x5c2018;
   (*pTVar1[0xe].slot_0x04)();
   CStack_98.m_pchData = (char *)0x5c202b;
-  (*g_apNationStates[*(short *)&this->field_0x60]->vftable[0x30].GetTCountryClassNamePointer)();
+  (*g_apNationStates[*(short *)&this->field_0x60]->vftable->
+    AdvanceNationPendingActionStateMachine_60)();
   if (extraout_var_01 < 0) {
     CStack_98.m_pchData = (char *)0x33;
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();

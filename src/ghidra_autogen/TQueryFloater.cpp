@@ -69,9 +69,9 @@ void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   int iVar3;
-  TQueryFloater_slot_0x04_0x04 *unaff_EDI;
-  TQueryFloater_slot_0x04_0x04 *pTVar4;
-  TQueryFloater_slot_0x04_0x04 *pTStack00000004;
+  _vslot_fn *unaff_EDI;
+  _vslot_fn *p_Var4;
+  _vslot_fn *p_Stack00000004;
   undefined1 *puStack_3c;
   undefined4 uStack_38;
   undefined1 *puStack_34;
@@ -84,10 +84,10 @@ void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_24 = 0x56e8f3;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_20 = 0x7469746c;
-  pTVar4 = this->vftable[0x12].slot_0x04;
+  p_Var4 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_24 = 0x56e91c;
-  pTStack00000004 = pTVar4;
-  uVar2 = (*pTVar4)();
+  p_Stack00000004 = p_Var4;
+  uVar2 = (*p_Var4)();
   iVar3 = *(int *)CONCAT31(extraout_var,uVar2);
   uStack_24 = 0x56e925;
   (**(code **)(iVar3 + 0xc))();
@@ -111,7 +111,7 @@ void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
   BuildUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b6c);
   iVar3 = 0;
   do {
-    uVar2 = (*pTVar4)(iVar3 + 0x74657830);
+    uVar2 = (*p_Var4)(iVar3 + 0x74657830);
     iVar1 = *(int *)CONCAT31(extraout_var_00,uVar2);
     (**(code **)(iVar1 + 0xc))();
     (**(code **)(iVar1 + 0x1cc))(0x2757,iVar3 + 2,1);
@@ -120,7 +120,7 @@ void TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920()
       (**(code **)(iVar1 + 0x1c4))(1,0);
     }
     iVar3 = iVar3 + 1;
-    pTVar4 = unaff_EDI;
+    p_Var4 = unaff_EDI;
   } while (iVar3 < 7);
   return;
 }
@@ -165,7 +165,7 @@ TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
   if (uVar1 < 0x62617475) {
     if (uVar1 != 0x62617474) {
       if (uVar1 == 0x61647669) {
-        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))();
         SelectAndActivatePendingEventForCurrentView();
       }
@@ -186,25 +186,25 @@ LAB_0056ec87:
       DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056ecbe;
     }
-    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
     pTVar4 = g_pLocalizationTable->vftable;
   }
   else if (uVar1 < 0x636e636d) {
     if (uVar1 == 0x636e636c) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
       goto LAB_0056ecbe;
     }
     if (uVar1 != 0x63686172) goto LAB_0056ecbe;
-    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
     pTVar4 = g_pLocalizationTable->vftable;
   }
   else {
     if (uVar1 != 0x6465616c) {
       if (uVar1 == 0x6e657773) {
-        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar2) + 0x1b4))();
         if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
           ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
@@ -214,7 +214,7 @@ LAB_0056ec87:
         }
       }
       else if (uVar1 == 0x6f726566) {
-        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar2) + 0x1b4))();
         SelectAndActivatePendingEventType1A0A();
       }
@@ -225,7 +225,7 @@ LAB_0056ec87:
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       goto LAB_0056ec87;
     }
-    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var_07,uVar2) + 0x1b4))();
     pTVar4 = g_pLocalizationTable->vftable;
   }

@@ -77,7 +77,7 @@ CRuntimeClass * TGrantsView::GetTEventHandlerClassNamePointer()
 void TGrantsView::OrphanCallChain_C6_I49_004875d0(CString param_1)
 
 {
-  TGrantsView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined1 *puStack_2c;
@@ -97,10 +97,10 @@ void TGrantsView::OrphanCallChain_C6_I49_004875d0(CString param_1)
   puStack_2c = (undefined1 *)0x4f80b9;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
     puStack_2c = (undefined1 *)0x4f80d3;
-    (*pTVar1)();
+    (*p_Var1)();
     puStack_2c = &stack0xffffffe8;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 0x3e);
     param_1.m_pchData = (char *)&puStack_2c;
@@ -294,7 +294,7 @@ void TGrantsView::OrphanRetStub_00430550()
   
   uStack_10 = 0x646f6373;
   piStack_14 = (int *)0x4f85e2;
-  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);

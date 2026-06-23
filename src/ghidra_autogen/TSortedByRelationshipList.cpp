@@ -122,7 +122,8 @@ TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At0
       bVar8 = iVar6 - iVar5 != 0;
       if (!bVar8 || iVar6 < iVar5) {
         if (bVar8) goto LAB_00413313;
-        cVar2 = (*g_apTerrainTypeDescriptorTable[uVar1]->vftable[0xb].slot_0x04)(iVar7);
+        cVar2 = (*g_apTerrainTypeDescriptorTable[uVar1]->vftable->IsDiplomacyTargetClassCode200Match
+                )(iVar7);
         if (cVar2 == '\0') {
           uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
           uVar4 = uVar1 * 7 + iVar7 + (short)CONCAT31(extraout_var,uVar3) + iVar6;
@@ -322,7 +323,7 @@ TSortedByRelationshipList::DeserializeRelationshipSortedListBuffersFromStreamSwa
   undefined1 *puVar3;
   int iVar4;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   puVar3 = &this[0x51].field_0x4;
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(puVar3,0x422);
@@ -712,7 +713,7 @@ TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMi
       ppTVar8 = g_apTerrainTypeDescriptorTable + 7;
       do {
         if (*ppTVar8 != (TCountry *)0x0) {
-          cVar3 = (*(*ppTVar8)->vftable[0xb].slot_0x04)(iVar5);
+          cVar3 = (*(*ppTVar8)->vftable->IsDiplomacyTargetClassCode200Match)(iVar5);
           if (cVar3 != '\0') {
             (*pTVar2[5].slot_0x04)(iVar7,unaff_retaddr);
           }
@@ -727,7 +728,7 @@ TSortedByRelationshipList::SetNationPairDiplomacyStandingScoreClampedAndNotifyMi
       ppTVar8 = g_apTerrainTypeDescriptorTable + 7;
       do {
         if (*ppTVar8 != (TCountry *)0x0) {
-          cVar3 = (*(*ppTVar8)->vftable[0xb].slot_0x04)(unaff_EBP);
+          cVar3 = (*(*ppTVar8)->vftable->IsDiplomacyTargetClassCode200Match)(unaff_EBP);
           if (cVar3 != '\0') {
             (*pTVar2[5].slot_0x04)(iVar5,unaff_retaddr);
           }
@@ -794,7 +795,8 @@ TSortedByRelationshipList::ApplyRelationCode4AndQueueEvent18ForTargetNation
     (*pTVar1[0x10].GetTEventHandlerClassNamePointer)(_param_1);
   }
   if (g_apTerrainTypeDescriptorTable[in_stack_00000008] != (TCountry *)0x0) {
-    (*g_apTerrainTypeDescriptorTable[in_stack_00000008]->vftable[0x12].slot_0x04)(_param_1,0x139);
+    (*g_apTerrainTypeDescriptorTable[in_stack_00000008]->vftable->OrphanRetStub_004d7f80)
+              (_param_1,0x139);
     TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,0x18,(int)in_stack_00000008,(int)param_1,
                '\0');
@@ -939,7 +941,7 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
     do {
       pTVar2 = *ppTVar6;
       if ((pTVar2 != (TGreatPower *)0x0) && (pTVar2->field_0xa0 == '\0')) {
-        (*pTVar2->vftable[0x39].GetTCountryClassNamePointer)();
+        (*pTVar2->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_72)();
       }
       ppTVar6 = ppTVar6 + -1;
       iVar8 = iVar8 + -1;
@@ -959,7 +961,7 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
     iVar8 = 7;
     do {
       if (*ppTVar6 != (TGreatPower *)0x0) {
-        (*(*ppTVar6)->vftable[0x39].slot_0x04)();
+        (*(*ppTVar6)->vftable->SelectCandidateTilesWithLowGroundUnitCount_73)();
       }
       ppTVar6 = ppTVar6 + -1;
       iVar8 = iVar8 + -1;
@@ -970,7 +972,7 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
     iVar9 = 7;
     do {
       if (*ppTVar6 != (TGreatPower *)0x0) {
-        (*(*ppTVar6)->vftable[0x3c].GetTCountryClassNamePointer)();
+        (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_78)();
       }
       ppTVar6 = ppTVar6 + 1;
       iVar9 = iVar9 + -1;
@@ -990,10 +992,11 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
             if (sVar1 != -1) {
               cVar4 = (*this->vftable[0x10].slot_0x04)(iStack_2c);
               if (cVar4 != '\0') {
-                (*g_apNationStates[iVar7]->vftable[0x12].slot_0x04)
+                (*g_apNationStates[iVar7]->vftable->OrphanRetStub_004d7f80)
                           (unaff_EBX,CONCAT22((short)((uint)iVar8 >> 0x10),sVar1));
               }
-              (*g_apNationStates[iVar9]->vftable[0x3b].GetTCountryClassNamePointer)(iStack_30);
+              (*g_apNationStates[iVar9]->vftable->
+                SetNationTransferTargetCodeAndNotifyEligiblePeers_76)(iStack_30);
             }
             pTVar3 = g_pDiplomacyTurnStateManager;
             sVar1 = *(short *)((int)&g_apNationStates[iVar9]->vftable + iStack_28);
@@ -1015,11 +1018,12 @@ void TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTurn()
               else if (sVar1 == 0x131) {
                 cVar4 = (*this->vftable[8].slot_0x04)(iStack_30,iStack_2c);
                 if (cVar4 == '\0') {
-                  (*g_apNationStates[iVar9]->vftable[0x50].slot_0x04)(iVar7,4,0xffffffff);
+                  (*g_apNationStates[iVar9]->vftable->HandleCityDialogHintClusterUpdate_a1)
+                            (iVar7,4,0xffffffff);
                 }
               }
               else {
-                (*g_apTerrainTypeDescriptorTable[iVar7]->vftable[0x11].slot_0x04)
+                (*g_apTerrainTypeDescriptorTable[iVar7]->vftable->OrphanRetStub_004d7fe0)
                           (iStack_30,CONCAT22((short)((uint)g_apNationStates[iVar9] >> 0x10),sVar1))
                 ;
               }
@@ -1093,7 +1097,7 @@ TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
   iVar12 = 7;
   do {
     if (*ppTVar10 != (TGreatPower *)0x0) {
-      (*(*ppTVar10)->vftable[0x3f].GetTCountryClassNamePointer)();
+      (*(*ppTVar10)->vftable->ApplyJoinEmpireMode2FinalizeNationNameState_7e)();
     }
     ppTVar10 = ppTVar10 + 1;
     iVar12 = iVar12 + -1;
@@ -1129,7 +1133,7 @@ TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
           }
           else if (sVar1 == sVar2) {
             bVar3 = true;
-            cVar7 = (*(*ppTStack_1c)->vftable[0xb].slot_0x04)(iVar13);
+            cVar7 = (*(*ppTStack_1c)->vftable->IsDiplomacyTargetClassCode200Match)(iVar13);
             if (cVar7 == '\0') {
               sVar1 = *(short *)(&this[0x51].field_0x4 + (iStack_2c + iVar13) * 2);
               uVar8 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
@@ -1163,7 +1167,7 @@ TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
         }
         else if (iVar11 == iStack_24) {
           bVar4 = true;
-          cVar7 = (*(*ppTStack_1c)->vftable[0xb].slot_0x04)(iVar13);
+          cVar7 = (*(*ppTStack_1c)->vftable->IsDiplomacyTargetClassCode200Match)(iVar13);
           iVar5 = iStack_40;
           iVar6 = iVar12;
           if (cVar7 == '\0') {
@@ -1194,7 +1198,7 @@ LAB_004f081d:
       if ((((!bVar3) && (iVar12 != (short)iStack_40)) && (iVar12 != -1)) &&
          ((0 < *(short *)((int)this + (iVar12 * 0x17 + iStack_30) * 2 + 0x1402) &&
           (cVar7 = IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0')))) {
-        (*g_apTerrainTypeDescriptorTable[iVar12]->vftable[0x12].slot_0x04)(iStack_20,0x13a);
+        (*g_apTerrainTypeDescriptorTable[iVar12]->vftable->OrphanRetStub_004d7f80)(iStack_20,0x13a);
       }
       psStack_3c[-0x10] = (short)iStack_40;
     }
@@ -1205,7 +1209,7 @@ LAB_004f081d:
           (((cVar7 = IsNationSlotEligibleForEventProcessing(iVar12), cVar7 != '\0' &&
             (0 < *(short *)((int)this + (iVar12 * 0x17 + iStack_30) * 2 + 0x1402))) &&
            (g_apTerrainTypeDescriptorTable[iVar12] != (TCountry *)0x0)))))) {
-        (*g_apTerrainTypeDescriptorTable[iVar12]->vftable[0x12].slot_0x04)(iStack_20,0x13b);
+        (*g_apTerrainTypeDescriptorTable[iVar12]->vftable->OrphanRetStub_004d7f80)(iStack_20,0x13b);
       }
       *psStack_3c = (short)iStack_34;
     }
@@ -1361,16 +1365,16 @@ LAB_004f0ee1:
       local_cc = local_cc + 1;
       (&pTStack_ec[0x20].field_0x4)[iStack_e8] = 0xff;
       if ((local_d8 == unaff_EBX) ||
-         (cVar3 = (*g_apTerrainTypeDescriptorTable[(int)local_d8]->vftable[0xb].slot_0x04)
-                            (unaff_EBX), cVar3 != '\0')) {
+         (cVar3 = (*g_apTerrainTypeDescriptorTable[(int)local_d8]->vftable->
+                    IsDiplomacyTargetClassCode200Match)(unaff_EBX), cVar3 != '\0')) {
         iStack_e0 = iStack_e0 + 1;
         (&pTStack_ec[0x20].field_0x4)[iStack_e8] = (char)unaff_EBX;
         *psVar11 = 0;
         this = pTStack_ec;
       }
       else if ((local_d8 == pTVar2) ||
-              (cVar3 = (*g_apTerrainTypeDescriptorTable[(int)local_d8]->vftable[0xb].slot_0x04)
-                                 (pTVar2), cVar3 != '\0')) {
+              (cVar3 = (*g_apTerrainTypeDescriptorTable[(int)local_d8]->vftable->
+                         IsDiplomacyTargetClassCode200Match)(pTVar2), cVar3 != '\0')) {
         iStack_dc = iStack_dc + 1;
         (&pTStack_ec[0x20].field_0x4)[iStack_e8] = (undefined1)uStack_f0;
         *psVar11 = 0;
@@ -1432,7 +1436,7 @@ LAB_004f10cf:
     if ((cVar3 == '\0') && (iStack_e0 < (local_cc * 2) / 3)) {
       cVar3 = IsNationSlotEligibleForEventProcessing(unaff_EBX);
       if ((cVar3 != '\0') && ((char)g_apNationStates[(int)unaff_EBX]->field_0x8d3 < '3')) {
-        (*g_apNationStates[(int)unaff_EBX]->vftable[0x17].GetTCountryClassNamePointer)
+        (*g_apNationStates[(int)unaff_EBX]->vftable->SetNationPendingActionStateAndPayload)
                   (0xb,0xffffffff);
       }
       goto LAB_004f12bd;
@@ -1444,7 +1448,8 @@ LAB_004f10cf:
       if ((((cVar3 == '\0') && (iStack_dc < (local_cc * 2) / 3)) &&
           (cVar3 = IsNationSlotEligibleForEventProcessing(pTVar2), pTVar7 = pTVar12,
           cVar3 != '\0')) && ((char)g_apNationStates[(int)pTVar2]->field_0x8d3 < '3')) {
-        (*g_apNationStates[(int)pTVar2]->vftable[0x17].GetTCountryClassNamePointer)(0xb,0xffffffff);
+        (*g_apNationStates[(int)pTVar2]->vftable->SetNationPendingActionStateAndPayload)
+                  (0xb,0xffffffff);
       }
       goto LAB_004f12bd;
     }
@@ -1736,13 +1741,15 @@ TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects
   pTVar3 = pTVar2[0x10].slot_0x04;
   cVar6 = (*pTVar3)(_param_1);
   if (cVar6 != '\0') {
-    (*g_apNationStates[iVar9]->vftable[0x55].GetTCountryClassNamePointer)(iVar10,_param_2);
+    (*g_apNationStates[iVar9]->vftable->SetNationTransferTargetCodeAndNotifyEligiblePeers_aa)
+              (iVar10,_param_2);
   }
   pTVar13 = pTVar3;
   cVar6 = (*unaff_retaddr)();
   uVar8 = extraout_var_01;
   if (cVar6 != '\0') {
-    (*g_apNationStates[iVar10]->vftable[0x55].GetTCountryClassNamePointer)(iVar9,pTVar3);
+    (*g_apNationStates[iVar10]->vftable->SetNationTransferTargetCodeAndNotifyEligiblePeers_aa)
+              (iVar9,pTVar3);
     uVar8 = extraout_var_02;
   }
   param_1 = (short)pTVar3;
@@ -1760,19 +1767,20 @@ TSortedByRelationshipList::SetNationPairDiplomacyRelationAndApplySideEffects
     }
     cVar6 = (*pcVar7)(uVar4);
     if (cVar6 != '\0') {
-      (*g_apNationStates[iVar9]->vftable[0x42].slot_0x04)(iVar10);
+      (*g_apNationStates[iVar9]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00_85)(iVar10);
     }
     cVar6 = (*(code *)pTVar2)(pcVar7);
     if (cVar6 != '\0') {
-      (*g_apNationStates[iVar10]->vftable[0x42].slot_0x04)(iVar9);
+      (*g_apNationStates[iVar10]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00_85)(iVar9);
     }
     cVar6 = (*pcVar1)(uVar4);
     if ((cVar6 != '\0') && (cVar6 = (*unaff_EBX)(pcVar1), cVar6 != '\0')) {
       *(undefined2 *)(&this[0xd5].field_0xa + (int)pTVar13 * 2) = 2;
       *(undefined2 *)(&this[0xd5].field_0xa + unaff_EDI * 2) = 2;
-      (*g_apTerrainTypeDescriptorTable[iVar9]->vftable[9].GetTCountryClassNamePointer)
+      (*g_apTerrainTypeDescriptorTable[iVar9]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)
                 (unaff_EBX,100);
-      (*g_apTerrainTypeDescriptorTable[iVar10]->vftable[9].GetTCountryClassNamePointer)(uVar4,100);
+      (*g_apTerrainTypeDescriptorTable[iVar10]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)
+                (uVar4,100);
       return;
     }
     break;
@@ -1788,17 +1796,19 @@ LAB_004f1e25:
                 ((TCountry *)g_pInterNationEventQueueManager,0x19,iVar9,iVar10,'\0');
     }
     iVar11 = 300;
-    (*g_apTerrainTypeDescriptorTable[iVar9]->vftable[9].GetTCountryClassNamePointer)(unaff_retaddr);
-    (*g_apTerrainTypeDescriptorTable[iVar10]->vftable[9].GetTCountryClassNamePointer)(uVar4,300);
+    (*g_apTerrainTypeDescriptorTable[iVar9]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)
+              (unaff_retaddr);
+    (*g_apTerrainTypeDescriptorTable[iVar10]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)
+              (uVar4,300);
     *(undefined2 *)(&this[0xd5].field_0xa + (int)pTVar13 * 2) = 0;
     *(undefined2 *)(&this[0xd5].field_0xa + unaff_EDI * 2) = 0;
     cVar6 = (*unaff_EBP)(uVar4);
     if (cVar6 != '\0') {
-      (*g_apNationStates[iVar9]->vftable[0x52].GetTCountryClassNamePointer)();
+      (*g_apNationStates[iVar9]->vftable->GetTEventHandlerClassNamePointer_a4)();
     }
     cVar6 = (*unaff_ESI)(unaff_EBP);
     if (cVar6 != '\0') {
-      (*g_apNationStates[iVar10]->vftable[0x52].GetTCountryClassNamePointer)();
+      (*g_apNationStates[iVar10]->vftable->GetTEventHandlerClassNamePointer_a4)();
     }
     if ((char)unaff_EBX == '\x01') {
       (**(code **)(iVar11 + 0x80))(uVar4,unaff_EBP,1);

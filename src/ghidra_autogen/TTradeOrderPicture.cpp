@@ -76,7 +76,7 @@ TTradeOrderPicture * TTradeOrderPicture::_scalar_deleting_destructor_(byte param
 void TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  (*this->vftable[0x15].GetTEventHandlerClassNamePointer)(1,0);
+  (*this->vftable->UpdateControlCachedIntFromWindowText_2a)(1,0);
   return;
 }
 
@@ -89,36 +89,36 @@ void TTradeOrderPicture::_scalar_deleting_destructor_()
 {
   char cVar1;
   
-  cVar1 = (*this->vftable[0x1d].slot_0x04)();
+  cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if (this->controlTag == 0x63617264) {
       if ((*(short *)&this->field_0x84 != 0x83f) && (*(short *)&this->field_0x84 != 0x84d)) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x68,this,0);
-        (*this->ownerContext->vftable[0x3c].slot_0x04)();
-        (*this->ownerContext->vftable[0x3d].slot_0x04)();
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6a,this,0);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x4269,0,1);
+        (*this->ownerContext->vftable->DispatchEvent)(0x68,this,0);
+        (*this->ownerContext->vftable[1].DispatchUiCommand19ToParent)();
+        (*this->ownerContext->vftable[1].DispatchCityProductionAction1B)();
+        (*this->ownerContext->vftable->DispatchEvent)(0x6a,this,0);
         return;
       }
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
-      (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
-      (*this->ownerContext->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x4269,0,1);
+      (*this->ownerContext->vftable->DispatchEvent)(0x67,this,0);
+      (*this->ownerContext->vftable[1].HandleCityProductionNoOp)();
       return;
     }
     if (this->controlTag == 0x6f666672) {
       if ((*(short *)&this->field_0x84 == 0x841) || (*(short *)&this->field_0x84 == 0x84f)) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6a,this,0);
-        (*this->ownerContext->vftable[0x3d].slot_0x04)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x4269,0,1);
+        (*this->ownerContext->vftable->DispatchEvent)(0x6a,this,0);
+        (*this->ownerContext->vftable[1].DispatchCityProductionAction1B)();
       }
       else {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x69,this,0);
-        (*this->ownerContext->vftable[0x3d].GetTEventHandlerClassNamePointer)();
-        cVar1 = (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x4269,0,1);
+        (*this->ownerContext->vftable->DispatchEvent)(0x69,this,0);
+        (*this->ownerContext->vftable[1].DispatchCityProductionAction1A)();
+        cVar1 = (*this->ownerContext->vftable[1].vmethod_0025)();
         if (cVar1 != '\0') {
-          (*this->ownerContext->vftable[0x3c].GetTEventHandlerClassNamePointer)();
-          (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
+          (*this->ownerContext->vftable[1].HandleCityProductionNoOp)();
+          (*this->ownerContext->vftable->DispatchEvent)(0x67,this,0);
           return;
         }
       }

@@ -209,7 +209,7 @@ void TMiniArmyView::OrphanRetStub_0059add0(int param_1, CString param_2)
   }
   else if ((TMiniArmyView *)param_2.m_pchData == this) {
     pTVar2 = this->ownerContext;
-    (*pTVar2->vftable[1].slot_0x04)();
+    (**(code **)&pTVar2->vftable->field_0xc)();
     *(undefined2 *)&pTVar2[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
   pTStack_30 = (TToolBarClusterVtbl *)0x4ab301;

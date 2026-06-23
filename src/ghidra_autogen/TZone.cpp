@@ -53,11 +53,11 @@ TZone * TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList()
   *(undefined4 *)&this->field_0x28 = 0;
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x30 = 0;
-  *(undefined **)&this->field_0x24 = &DAT_0065c74c;
+  *(undefined4 *)&this->field_0x24 = 0x65c74c;
   *(undefined4 *)&this->field_0x38 = 0;
   *(undefined4 *)&this->field_0x3c = 0;
   *(undefined4 *)&this->field_0x40 = 0;
-  *(undefined **)&this->field_0x34 = &DAT_0065c748;
+  *(undefined4 *)&this->field_0x34 = 0x65c748;
   this->vftable = &_vftable_;
   *(undefined2 *)&this->field_0x12 = 0xffff;
   *(undefined2 *)&this->field_0x14 = (undefined2)g_nMapActionContextCount;
@@ -235,7 +235,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(undefined4 param_1, s
   }
   *(int *)&this->field_0xc = (int)param_2;
   *(undefined2 *)&this->field_0x20 = *(undefined2 *)&this->field_0xc;
-  cVar1 = (*this->vftable[7].DispatchNationPendingActionEventCodes)();
+  cVar1 = (*this->vftable->ApplyJoinEmpireModeForTargetNation)();
   if (cVar1 != '\0') {
     InputState::SetMapTileStateByteAndNotifyObserver
               (CONCAT22(extraout_var,*(undefined2 *)&this->field_0x20),0xfffffff2);
@@ -365,11 +365,11 @@ void TZone::ResetTPortZoneToSentinelVtableAndReleaseResources()
   }
   *(undefined4 *)&this->field_0x1c = 0;
   *(undefined4 *)&this->field_0x18 = 0;
-  *(undefined **)&this->field_0x34 = &DAT_0065c754;
+  *(undefined4 *)&this->field_0x34 = 0x65c754;
   if (*(int *)&this->field_0x38 != 0) {
     FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x38);
   }
-  *(undefined **)&this->field_0x24 = &DAT_0065c750;
+  *(undefined4 *)&this->field_0x24 = 0x65c750;
   if (*(int *)&this->field_0x28 != 0) {
     FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x28);
   }
@@ -401,7 +401,7 @@ void TZone::SerializeTPortZoneToBinaryStream(int *param_1)
   int iVar1;
   code *pcVar2;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   (**(code **)(iVar1 + 0xac))(&this->field_0x8);
   pcVar2 = *(code **)(iVar1 + 0x78);
@@ -506,11 +506,11 @@ void TZone::ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
   }
   *(undefined4 *)&this->field_0x1c = 0;
   *(undefined4 *)&this->field_0x18 = 0;
-  *(undefined **)&this->field_0x34 = &DAT_0065c754;
+  *(undefined4 *)&this->field_0x34 = 0x65c754;
   if (*(int *)&this->field_0x38 != 0) {
     FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x38);
   }
-  *(undefined **)&this->field_0x24 = &DAT_0065c750;
+  *(undefined4 *)&this->field_0x24 = 0x65c750;
   if (*(int *)&this->field_0x28 != 0) {
     FreeHeapBlockWithAllocatorTracking(*(int *)&this->field_0x28);
   }

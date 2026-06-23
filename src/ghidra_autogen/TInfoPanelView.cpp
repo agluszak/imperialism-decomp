@@ -105,7 +105,7 @@ void TInfoPanelView::OrphanCallChain_C6_I49_004875d0()
   puStack_34 = (undefined1 *)0x4fa063;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
-  CStack00000004.m_pchData = (char *)this->vftable[0x12].slot_0x04;
+  CStack00000004.m_pchData = (char *)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
     puStack_34 = (undefined1 *)0x4fa08a;
     (*(code *)CStack00000004.m_pchData)();
@@ -359,7 +359,8 @@ void TInfoPanelView::OrphanTiny_ReturnZero_0048a730()
           (sVar2 = *(short *)&g_apTerrainTypeDescriptorTable[iVar8]->field_0xe, sVar2 < 100)) ||
          (199 < sVar2)) {
         pTVar4 = g_pLocalizationTable->vftable;
-        uVar5 = (*g_apNationStates[iVar8]->vftable[0x41].GetTCountryClassNamePointer)(&CStack_50);
+        uVar5 = (*g_apNationStates[iVar8]->vftable->SetNationPercentFieldByModeAndDescriptorLinks_82
+                )(&CStack_50);
         (*pTVar4[0x10].slot_0x04)(0x2733,CONCAT31(extraout_var,uVar5) + 0x19);
         SetQuickDrawColorAndSyncGlobals(pCStack_4c);
         SetQuickDrawTextOriginWithContextOffset(iVar7 + 0xa8,-iVar10 + 0x1bb);
@@ -410,7 +411,7 @@ LAB_004faa26:
 void TInfoPanelView::OrphanRetStub_00430550()
 
 {
-  TInfoPanelView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -420,9 +421,9 @@ void TInfoPanelView::OrphanRetStub_00430550()
   undefined4 uStack_18;
   
   uStack_18 = 0x636c7573;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   piStack_1c = (int *)0x4facd6;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   piStack_1c = (int *)0x4facdf;
   (**(code **)(iVar2 + 0xc))();
@@ -436,8 +437,8 @@ void TInfoPanelView::OrphanRetStub_00430550()
   pTStack_20 = (TToolBarClusterVtbl *)0x6d6b6579;
   *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xd;
   *(undefined4 *)&this->field_0x6c = 0;
-  uVar3 = (*pTVar1)();
-  (*((TControl *)CONCAT31(extraout_var_00,uVar3))->vftable[1].slot_0x04)();
+  uVar3 = (*p_Var1)();
+  (*((TControl *)CONCAT31(extraout_var_00,uVar3))->vftable->ConstructTTaskBaseState)();
   TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
             ((TControl *)CONCAT31(extraout_var_00,uVar3),0);
   return;
@@ -463,8 +464,8 @@ TInfoPanelView::OrphanRetStub_0059add0
     *(int *)(iVar1 + 0x94) = (int)sVar3;
     InvalidateCityDialogRectRegion(iVar1 + 0x514,1);
     *(int *)&this->field_0x6c = (int)sVar3;
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x6d6b6579);
-    (*((TControl *)CONCAT31(extraout_var,uVar2))->vftable[1].slot_0x04)();
+    uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6b6579);
+    (*((TControl *)CONCAT31(extraout_var,uVar2))->vftable->ConstructTTaskBaseState)();
     TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
               ((TControl *)CONCAT31(extraout_var,uVar2),sVar3);
   }

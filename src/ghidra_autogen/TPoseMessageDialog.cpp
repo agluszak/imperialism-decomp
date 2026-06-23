@@ -144,7 +144,7 @@ LAB_00546c48:
       }
       local_4 = 0xffffffff;
       InitializeRangePairAndResetCursor();
-      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+      (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
       uVar17 = 1;
     }
     else {
@@ -622,7 +622,7 @@ LAB_00546c48:
     goto LAB_005485d8;
   case 10:
     if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
-      (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
+      (*g_pGlobalMapState->vftable->SetTileTransportFlagsTo0x37AndRefreshNeighbors)();
       RefreshNationCivilianWorkOrdersForTurn();
     }
     *(uint *)&param_1->field_0xe8 =
@@ -652,8 +652,9 @@ LAB_00545aa0:
     do {
       sVar16 = UiRuntimeContext::GetActiveNationId();
       if ((iVar35 != sVar16) &&
-         (cVar13 = (*(*ppTVar39)->vftable[0x14].GetTCountryClassNamePointer)(), cVar13 != '\0')) {
-        (*(*ppTVar39)->vftable[0x14].slot_0x04)();
+         (cVar13 = (*(*ppTVar39)->vftable->ReturnFalseNationStateCapabilityFlagA0)(), cVar13 != '\0'
+         )) {
+        (*(*ppTVar39)->vftable->NoOpNationSelectedRegionAndMapCellLabelHook)();
         CString::CString(&CStack_150,pcVar38);
         local_4 = 0;
         SetNationDisplayNameAndLocalizationSlotRef();
@@ -665,7 +666,7 @@ LAB_00545aa0:
         local_4 = 0xffffffff;
         CString::~CString(&CStack_148);
         if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
-          (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
+          (*g_pGlobalMapState->vftable->SetTileTransportFlagsTo0x37AndRefreshNeighbors)();
         }
       }
       iVar34 = FindFirstPortZoneContextByNation();
@@ -722,7 +723,7 @@ LAB_005464fd:
     uStack_138 = 0;
     uStack_137 = 0;
     BuildUiTextStyleDescriptor();
-    uVar12 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+    uVar12 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
     piVar25 = (int *)CONCAT31(extraout_var,uVar12);
     if (piVar25 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -796,7 +797,7 @@ LAB_005464fd:
       pTVar26[1].vftable = (TCommandVtbl *)local_1c8.m_pchData;
       local_4 = CONCAT31(local_4._1_3_,0xb);
       InitializeRangePairAndResetCursor();
-      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+      (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
     }
     local_4._0_1_ = 10;
     g_pGameFlowState->field_0x68 = local_1c9;
@@ -841,7 +842,7 @@ LAB_005464fd:
         }
         local_4 = CONCAT31(local_4._1_3_,0xe);
         InitializeRangePairAndResetCursor();
-        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
         CString::~CString(&local_1d4);
         uVar17 = 1;
@@ -880,7 +881,7 @@ LAB_005464fd:
         }
         local_4 = CONCAT31(local_4._1_3_,0x10);
         InitializeRangePairAndResetCursor();
-        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
         CString::~CString(&local_1d4);
         uVar17 = 1;
@@ -965,7 +966,7 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x12:
-    (*g_pGlobalMapState->vftable[0x17].GetTMapMgrClassNamePointer)();
+    (*g_pGlobalMapState->vftable->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12)();
     uVar17 = 1;
     break;
   case 0x13:
@@ -973,8 +974,8 @@ LAB_005464fd:
     uVar17 = 1;
     break;
   case 0x14:
-    (*g_apTerrainTypeDescriptorTable[*(short *)(param_2 + 6)]->vftable[7].
-      GetTCountryClassNamePointer)();
+    (*g_apTerrainTypeDescriptorTable[*(short *)(param_2 + 6)]->vftable->
+      SetNationTransferTargetCodeAndNotifyEligiblePeers)();
     uVar17 = 1;
     break;
   case 0x15:
@@ -1017,16 +1018,18 @@ LAB_005464fd:
     uVar17 = 1;
     break;
   case 0x16:
-    (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x11].slot_0x04)();
+    (*g_apNationStates[*(short *)(param_2 + 6)]->vftable->OrphanRetStub_004d7fe0)();
     uVar17 = 1;
     break;
   case 0x17:
     if (*(char *)((int)param_2 + 0x1a) == '\0') {
-      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x3e].GetTCountryClassNamePointer)();
+      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable->
+        SetNationTransferTargetCodeAndNotifyEligiblePeers_7c)();
       uVar17 = 1;
     }
     else {
-      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x3d].slot_0x04)();
+      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable->ApplyJoinEmpireModeForTargetNation_7b)()
+      ;
       uVar17 = 1;
     }
     break;
@@ -1065,22 +1068,22 @@ LAB_005464fd:
         iVar35 = iVar35 + 2;
       } while (iVar35 < 0x78);
       pTVar8 = pTVar7->vftable;
-      (*pTVar8[0x2c].slot_0x04)();
-      local_1c4.m_pchData = (char *)pTVar8[0x31].slot_0x04;
+      (*pTVar8->OrphanRetStub_004d7f80_59)();
+      local_1c4.m_pchData = (char *)pTVar8->QueueNationOrderManagerPayloadObject_63;
       iVar35 = 0;
       do {
         (*(code *)local_1c4.m_pchData)();
         iVar35 = iVar35 + 1;
       } while (iVar35 < 0x17);
       pTVar8 = pTVar7->vftable;
-      (*pTVar8[0x2d].GetTCountryClassNamePointer)();
-      local_1c4.m_pchData = (char *)pTVar8[0x34].slot_0x04;
+      (*pTVar8->ReturnFalseNationStateCapabilityFlag98_5a)();
+      local_1c4.m_pchData = (char *)pTVar8->VTableSlot69;
       iVar35 = 0;
       do {
         (*(code *)local_1c4.m_pchData)();
         iVar35 = iVar35 + 1;
       } while (iVar35 < 0x11);
-      (*pTVar7->vftable[0x35].GetTCountryClassNamePointer)();
+      (*pTVar7->vftable->DispatchNationStateEventCode10_6a)();
       puVar22 = (undefined2 *)&pTVar7->field_0xe0;
       iVar35 = 0x17;
       puVar28 = (undefined2 *)((int)param_2 + 0xba);
@@ -1122,7 +1125,7 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x1b:
-    (*g_apNationStates[*(short *)(param_2 + 7)]->vftable[0x36].GetTCountryClassNamePointer)();
+    (*g_apNationStates[*(short *)(param_2 + 7)]->vftable->GetTEventHandlerClassNamePointer_6c)();
     uVar17 = 1;
     break;
   case 0x1c:
@@ -1136,7 +1139,7 @@ LAB_005464fd:
       }
       local_4 = 0xffffffff;
       InitializeRangePairFromDiplomacyConstants();
-      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+      (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
       uVar17 = 1;
       break;
     }
@@ -1144,11 +1147,11 @@ LAB_005464fd:
   case 0x1d:
     sVar16 = UiRuntimeContext::GetActiveNationId();
     if (*(char *)(param_2 + 7) == 'i') {
-      (*g_apNationStates[sVar16]->vftable[0x4f].slot_0x04)();
+      (*g_apNationStates[sVar16]->vftable->OrphanRetStub_0059add0_9f)();
       uVar17 = 1;
     }
     else {
-      (*g_apNationStates[sVar16]->vftable[0x50].GetTCountryClassNamePointer)();
+      (*g_apNationStates[sVar16]->vftable->GetTEventHandlerClassNamePointer_a0)();
       uVar17 = 1;
     }
     break;
@@ -1158,16 +1161,19 @@ LAB_005464fd:
         (*g_pDiplomacyTurnStateManager->vftable[0xf].slot_0x04)();
       }
       else if (*(char *)(param_2 + 8) == '\0') {
-        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable->HandleCityDialogHintClusterUpdate_a1)()
+        ;
       }
       else {
-        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable->HandleCityDialogHintClusterUpdate_a1)()
+        ;
       }
     }
     else if ((*(char *)((int)param_2 + 0x1f) == 'i') && (*(char *)((int)param_2 + 0x21) != '\0')) {
       cVar13 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)();
       if (cVar13 == '\0') {
-        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable->HandleCityDialogHintClusterUpdate_a1)()
+        ;
       }
       else {
         pTVar6 = g_apSecondaryNationStateSlots[*(char *)((int)param_2 + 0x1d)];
@@ -1184,7 +1190,7 @@ LAB_005464fd:
           sVar16 = sVar16 + -200;
         }
         if (sVar16 != *(char *)(param_2 + 7)) {
-          (*pTVar6->vftable[9].ApplyJoinEmpireModeForTargetNation)();
+          (*pTVar6->vftable->ApplyJoinEmpireModeForTargetNation_13)();
         }
       }
     }
@@ -1267,7 +1273,7 @@ LAB_005464fd:
         }
         local_4 = 0xffffffff;
         InitializeRangePairAndResetCursor();
-        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         CString::CString(&local_1d4);
         local_4 = 0x26;
         LoadUiStringResourceByGroupAndIndex();
@@ -1280,7 +1286,7 @@ LAB_005464fd:
     }
     else if (uVar37 < 0x6c6f7366) {
       if (uVar37 == 0x6c6f7365) {
-        (*g_apNationStates[param_2[7]]->vftable[0x55].slot_0x04)();
+        (*g_apNationStates[param_2[7]]->vftable->ApplyJoinEmpireMode1TargetTransition_ab)();
         uVar17 = 1;
         break;
       }
@@ -1298,7 +1304,7 @@ LAB_005464fd:
         }
         local_4 = CONCAT31(local_4._1_3_,0x1a);
         InitializeRangePairAndResetCursor();
-        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
         CString::~CString(&local_1d4);
         uVar17 = 1;
@@ -1374,8 +1380,8 @@ LAB_005464fd:
            ((bVar10 ||
             ((g_apNationStates[uVar37] != (TGreatPower *)0x0 &&
              ((iVar35 = GetSessionActiveNationId(), param_2[1] == iVar35 ||
-              (cVar13 = (*g_apNationStates[uVar37]->vftable[0x14].GetTCountryClassNamePointer)(),
-              cVar13 != '\0')))))))) {
+              (cVar13 = (*g_apNationStates[uVar37]->vftable->ReturnFalseNationStateCapabilityFlagA0)
+                                  (), cVar13 != '\0')))))))) {
           uVar17 = param_2[1];
                     /* WARNING: Load size is inaccurate */
           local_1c4.m_pchData = local_1d0.m_pchData[uVar37 * 4 + 0x94];
@@ -1515,13 +1521,13 @@ LAB_005464fd:
       }
       if (uVar37 == 0x74726164) {
         sVar16 = UiRuntimeContext::GetActiveNationId();
-        (*g_apNationStates[sVar16]->vftable[9].GetTCountryClassNamePointer)();
+        (*g_apNationStates[sVar16]->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)();
         uVar17 = 1;
         break;
       }
       if (uVar37 == 0x74726173) {
         sVar16 = UiRuntimeContext::GetActiveNationId();
-        (*g_apNationStates[sVar16]->vftable[0x1a].GetTCountryClassNamePointer)();
+        (*g_apNationStates[sVar16]->vftable->GetTCountryClassNamePointer_34)();
         uVar17 = 1;
         break;
       }
@@ -1615,7 +1621,7 @@ LAB_005464fd:
 LAB_0054833b:
       if ((*(int *)(&param_1->field_0xbc + iVar35 * 4) == 0x62757379) &&
          (param_1->field_0xf4 != '\0')) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         uVar17 = 1;
         break;
       }
@@ -1657,7 +1663,7 @@ LAB_0054833b:
     }
     break;
   case 0x27:
-    (*g_apTerrainTypeDescriptorTable[param_2[6]]->vftable[9].slot_0x04)();
+    (*g_apTerrainTypeDescriptorTable[param_2[6]]->vftable->ApplyJoinEmpireModeForTargetNation_13)();
     uVar17 = 1;
     break;
   case 0x28:
@@ -1688,7 +1694,7 @@ LAB_0054833b:
     uVar17 = 1;
     break;
   case 0x29:
-    (*DAT_006a475c->vftable[1].slot_0x04)();
+    (*DAT_006a475c->vftable->AssertValid)();
     iVar35 = SeekLinkedListCursorByNestedId();
     uVar37 = param_2[6];
     if (uVar37 < 0x64696768) {
@@ -1730,7 +1736,7 @@ LAB_0054833b:
     }
     goto LAB_005485d8;
   case 0x2a:
-    (*DAT_006a475c->vftable[1].slot_0x04)();
+    (*DAT_006a475c->vftable->AssertValid)();
     SeekLinkedListCursorByNestedId();
     SeekLinkedListCursorByNestedId();
     if (param_2[6] == 0x66697265) {
@@ -1797,7 +1803,7 @@ LAB_0054833b:
         puVar28 = puVar28 + 1;
         iVar34 = iVar34 + -1;
       } while (iVar34 != 0);
-      (*g_apNationStates[iVar35]->vftable[0x2c].slot_0x04)();
+      (*g_apNationStates[iVar35]->vftable->OrphanRetStub_004d7f80_59)();
       pwVar21 = pTVar45->fieldB6;
       *(undefined4 *)&pTVar45->field_0x78 = param_2[0x26];
       *(undefined2 *)&pTVar45->field_0xb4 = *(undefined2 *)(param_2 + 0x27);

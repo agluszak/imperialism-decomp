@@ -163,7 +163,7 @@ void TUnit::DeserializeUnitOrderCoreState(int *pArchiveStream)
   undefined1 *pnSourceTileIndex;
   undefined2 wSavedOrderOwnerIndex;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)pArchiveStream);
   pReadBytesFn = *(code **)(*pArchiveStream + 0x3c);
   (*pReadBytesFn)(&this->field_0x4,2);
   pnSourceTileIndex = &this->field_0x6;
@@ -234,7 +234,7 @@ void TUnit::SerializeUnitOrderCoreState(int *pArchiveStream)
 {
   code *pWriteBytesFn;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)pArchiveStream);
   pWriteBytesFn = *(code **)(*pArchiveStream + 0x78);
   (*pWriteBytesFn)(&this->field_0x4,2);
   (*pWriteBytesFn)(&this->field_0x6,2);

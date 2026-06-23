@@ -34,7 +34,7 @@ TPicture * TPicture::_scalar_deleting_destructor_(byte param_1)
 void TPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
-  TPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   ushort uVar3;
   int iVar4;
@@ -57,13 +57,13 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   
   uVar3 = GetAsyncKeyState(0x11);
   if ((uVar3 & 0x8000) != 0) {
-    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&local_10);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
   }
   iVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
   if (((iVar4 != 0) &&
       (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
      (*(int *)(iVar4 + 0x10) == 0)) {
-    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&local_10);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&local_10);
     iVar7 = iStack_c - iStack_14;
     iVar4 = iStack_8 - local_10;
     uVar5 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
@@ -78,17 +78,17 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   if (iVar4 < 1) {
     iVar4 = -iVar4;
   }
-  pTVar1 = this->vftable[0x2b].GetTEventHandlerClassNamePointer;
+  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
   iVar7 = this->field38;
   iVar10 = this->field34;
   uVar12 = 0;
   uVar11 = 0;
   puVar9 = auStack_18;
-  uVar2 = (*pTVar1)(puVar9,iVar10,iVar7,0,0,
+  uVar2 = (*p_Var1)(puVar9,iVar10,iVar7,0,0,
                     *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
   uVar5 = *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4);
   piVar8 = &iStack_14;
-  uVar2 = (*pTVar1)(piVar8,uVar5);
+  uVar2 = (*p_Var1)(piVar8,uVar5);
   uVar13 = *(undefined4 *)CONCAT31(extraout_var_00,uVar2);
   uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
   RenderHintHelperWithCtrlModifierOverlay_Impl
@@ -115,7 +115,7 @@ TPicture::SetPictureResourceIdAndRefresh
   undefined2 in_stack_00000006;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x38].slot_0x04)();
+  (*pTVar1->ResetPictureResourceEntry)();
   *(short *)&this->field_0x84 = nPictureId;
   if (nPictureId != -1) {
     uVar2 = LoadBmpResourceByIdCached(_nPictureId);
@@ -127,7 +127,7 @@ TPicture::SetPictureResourceIdAndRefresh
     *(undefined4 *)&this->field_0x8c = uVar2;
   }
   if (fRefreshNow) {
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
   }
   return;
 }

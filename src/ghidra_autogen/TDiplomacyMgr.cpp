@@ -66,7 +66,7 @@ void TDiplomacyMgr::DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()
 void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
 
 {
-  code *pcVar1;
+  TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
   undefined4 extraout_ECX;
   undefined4 extraout_ECX_00;
   undefined4 extraout_ECX_01;
@@ -81,17 +81,17 @@ void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
   undefined1 uStack00000004;
   undefined1 uStack00000005;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar3 = (undefined2 *)&this->field_0x79c;
   iVar4 = 0x211;
-  pcVar1 = *(code **)(*_uStack00000004 + 0x78);
+  pTVar1 = _uStack00000004->vftable[0xf].GetTStreamClassNamePointer;
   uVar2 = extraout_ECX;
   do {
     uStack00000004 = (undefined1)*puVar3;
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     _uStack00000004 =
-         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
-    (*pcVar1)(&stack0x00000004,2);
+         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+    (*pTVar1)(&stack0x00000004,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_ECX_00;
@@ -103,8 +103,8 @@ void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     uStack00000004 = (undefined1)*puVar3;
     _uStack00000004 = CONCAT11(uStack00000004,uStack00000005);
-    _uStack00000004 = (int *)CONCAT22((short)((uint)uVar2 >> 0x10),_uStack00000004);
-    (*pcVar1)(&stack0x00000004,2);
+    _uStack00000004 = (TStream *)CONCAT22((short)((uint)uVar2 >> 0x10),_uStack00000004);
+    (*pTVar1)(&stack0x00000004,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_EDX_00;
@@ -116,8 +116,8 @@ void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
     uStack00000004 = (undefined1)*puVar3;
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     _uStack00000004 =
-         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
-    (*pcVar1)(&stack0x00000004,2);
+         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+    (*pTVar1)(&stack0x00000004,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_ECX_02;
@@ -129,33 +129,33 @@ void TDiplomacyMgr::SerializeThreeWordPlanesToOutputCallback()
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     uStack00000004 = (undefined1)*puVar3;
     _uStack00000004 = CONCAT11(uStack00000004,uStack00000005);
-    _uStack00000004 = (int *)CONCAT22((short)((uint)uVar2 >> 0x10),_uStack00000004);
-    (*pcVar1)(&stack0x00000004,2);
+    _uStack00000004 = (TStream *)CONCAT22((short)((uint)uVar2 >> 0x10),_uStack00000004);
+    (*pTVar1)(&stack0x00000004,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_EDX_02;
   } while (iVar4 != 0);
-  (*pcVar1)(&this->field_0x304,0x180);
-  (*pcVar1)(&this->field_0x790,2);
+  (*pTVar1)(&this->field_0x304,0x180);
+  (*pTVar1)(&this->field_0x790,2);
   iVar4 = 0x211;
   do {
-    (*pcVar1)(&stack0xfffffff4,2);
+    (*pTVar1)(&stack0xfffffff4,2);
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   iVar4 = 2;
   do {
-    (*pcVar1)(&stack0xfffffff4,2);
+    (*pTVar1)(&stack0xfffffff4,2);
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   iVar4 = 3;
   do {
-    (*pcVar1)(&stack0xfffffff4,2);
+    (*pTVar1)(&stack0xfffffff4,2);
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   iVar4 = 0x10;
   do {
     SwapFirstTwoBytesInBuffer(&stack0xfffffff4);
-    (*pcVar1)(&stack0xfffffff4,2);
+    (*pTVar1)(&stack0xfffffff4,2);
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   WriteWordArrayToOutputCallbackLE();

@@ -83,7 +83,7 @@ void TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1
 {
   if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
+      (*this->vftable->OrphanCallChain_C2_I16_00571b20)(1,1);
     }
     TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
@@ -93,10 +93,10 @@ void TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1
       TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
-    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,1);
+    (*this->vftable->OrphanCallChain_C2_I16_00571b20)(0,1);
     return;
   }
-  (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
+  (*this->vftable->OrphanCallChain_C2_I16_00571b20)(1,1);
   return;
 }
 
@@ -113,9 +113,9 @@ TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
+    (*pTVar1->OrphanCallChain_C2_I24_00570870)(param_1,param_2);
   }
   return;
 }

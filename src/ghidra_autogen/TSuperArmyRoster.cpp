@@ -36,7 +36,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           (TSuperArmyRoster *this,int param_1,CString param_2,CString param_3)
 
 {
-  TSuperArmyRoster_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   TSuperArmyRosterVtbl *pTVar2;
   short sVar3;
   short sVar4;
@@ -94,8 +94,8 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
         AssignSharedStringFromIndexedA8EntryNameField(param_1,&param_3);
         CString::AssignFromPtr(&param_2,&param_3);
         WrapperFor_StringShared_AssignFromPtr_At00570420(&param_2);
-        pTVar1 = this->vftable[0x34].GetTEventHandlerClassNamePointer;
-        (*pTVar1)(uVar6);
+        p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
+        (*p_Var1)(uVar6);
         if ((sVar4 < 0) || (0x17f < sVar4)) {
           pTVar7 = (TLineDataVtbl *)0x0;
         }
@@ -103,7 +103,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           pTVar7 = *(TLineDataVtbl **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8)
           ;
         }
-        for (; pTVar7 != (TLineDataVtbl *)0x0; pTVar7 = (TLineDataVtbl *)pTVar7[2].slot_0x04) {
+        for (; pTVar7 != (TLineDataVtbl *)0x0; pTVar7 = (TLineDataVtbl *)pTVar7->WriteTo) {
           this_01 = (TLineData *)AllocateWithFallbackHandler(0x14);
           local_4._0_1_ = 3;
           if (this_01 == (TLineData *)0x0) {
@@ -118,7 +118,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           uStack_10 = 0x12;
           TLineData::SetLineDataRowAndBounds(this_01,0,0,&uStack_14);
           this_01[1].vftable = pTVar7;
-          (*pTVar1)(this_01);
+          (*p_Var1)(this_01);
         }
         local_4 = local_4 & 0xffffff00;
         CString::~CString(&param_3);
@@ -130,9 +130,9 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
   } while (param_1 < 0x180);
   pTVar2 = this->vftable;
   *(undefined2 *)&this->field_0x64 = 2;
-  (*pTVar2[0x35].slot_0x04)();
-  (*pTVar2[0x36].GetTEventHandlerClassNamePointer)(1);
-  (*this->ownerContext->vftable[1].slot_0x04)();
+  (*pTVar2->OrphanCallChain_C8_I82_0056fc80)();
+  (*pTVar2->OrphanCallChain_C8_I118_0056fdb0)(1);
+  (**(code **)&this->ownerContext->vftable->field_0xc)();
   UpdatePagedListNavigationButtonState((int)*(short *)&this->field_0x62);
   *unaff_FS_OFFSET = uStack_10;
   return;
@@ -187,7 +187,7 @@ void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
   *unaff_FS_OFFSET = &uStack_c;
   uVar8 = 0xdac;
   local_28 = this;
-  uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0xdac);
+  uVar4 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xdac);
   piVar5 = (int *)CONCAT31(extraout_var,uVar4);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -219,7 +219,7 @@ void TSuperArmyRoster::OpenSuperArmyRosterPageAndActivateProvinceSelection()
   local_28 = (TSuperArmyRoster *)0x136;
   uStack_24 = 0xd;
   uStack_20 = 0x2e;
-  (*this_00->vftable[0x37].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
+  (*this_00->vftable[1].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
   this_00->controlTag = 0x70616765;
   this_01 = (TStaticText *)AllocateWithFallbackHandler(0x94);
   uStack_18 = 1;

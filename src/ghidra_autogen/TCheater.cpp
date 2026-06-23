@@ -118,7 +118,7 @@ void TCheater::DestructTCheaterAndMaybeFree()
   int iStack_c;
   int iStack_8;
   
-  uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 300))(&iStack_10);
   iStack_10 = 0xf0 - unaff_retaddr[1] / 2;

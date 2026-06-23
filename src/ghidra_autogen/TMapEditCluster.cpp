@@ -48,18 +48,18 @@ TCluster::OrphanRetStub_0059add0
     *(undefined4 *)&this->field_0x84 = *(undefined4 *)((int)pEventPayload + 0x1c);
   }
   if (nEventClass == 0x1f) {
-    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
+    (*this->vftable->SetControlStateFlagAndMaybeRefresh)(1,1);
   }
   else {
     if (nEventClass == 0x20) {
-      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(0,1);
+      (*this->vftable->SetControlStateFlagAndMaybeRefresh)(0,1);
       return;
     }
     if (nEventClass == 0x21) {
-      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)((uint)(this->field_0x64 == '\0'),1);
+      (*this->vftable->SetControlStateFlagAndMaybeRefresh)((uint)(this->field_0x64 == '\0'),1);
       return;
     }
-    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
     if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
                 (nEventClass,pEventPayload,nEventFlags);

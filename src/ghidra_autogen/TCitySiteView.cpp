@@ -37,7 +37,7 @@ TWorldView * TCitySiteView::CreateTCitySiteViewInstance(void)
     TMapDialog::SplitTileIndexToRowAndColumn
               (CONCAT22((short)((uint)&local_14 >> 0x10),
                         *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
-    (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
+    (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
     *(undefined2 *)&this[6].field_0x6c = 0;
     *(undefined2 *)&this[6].field_0x6e = 0xffff;
     this[6].field_0x70 = 0;
@@ -99,7 +99,7 @@ void TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920()
   local_c = 0;
   local_8[0] = 0x1680;
   (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x350,8,&local_10);
-  (*this->vftable[0x3f].GetTEventHandlerClassNamePointer)();
+  (**(code **)&this->vftable->field_0x1f8)();
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
@@ -133,8 +133,8 @@ void TCitySiteView::OrphanLeaf_NoCall_Ins07_004d8920()
   *(int *)&this->field_0x368 = *(int *)&this->field_0x368 + -1;
   *(int *)&this->field_0x370 = *(int *)&this->field_0x370 + -1;
   g_pCursorControlPanel = (TControl *)(**(code **)(*(int *)DAT_006a2158[1] + 0x94))(0x63757273);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x273f,9,0x63616e63);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730,3,0x71756572);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
@@ -153,7 +153,7 @@ void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
   
   pTStack_4 = this;
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&pTStack_4);
-  (*this->vftable[0x3c].slot_0x04)(pTStack_4,param_1);
+  (*this->vftable->OrphanRetStub_00596680)(pTStack_4,param_1);
   return;
 }
 
@@ -164,7 +164,7 @@ void TCitySiteView::OrphanRetStub_005966a0(undefined4 param_1)
 void TCitySiteView::OrphanRetStub_00596680()
 
 {
-  (*this->vftable[0x51].slot_0x04)();
+  (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject)();
   return;
 }
 
@@ -327,7 +327,7 @@ void TCitySiteView::OrphanRetStub_00596080()
       _DAT_00697328 = 0xffffffff;
       return;
     }
-    (*this->vftable[0x3e].slot_0x04)(&local_2c);
+    (**(code **)&this->vftable->field_0x1f4)(&local_2c);
   }
   if (!bVar3) {
     _DAT_00697320 = 0xffffffff;
@@ -384,7 +384,7 @@ void TCitySiteView::HandleMapClickByInteractionMode()
       else {
         pTVar1 = g_pGlobalMapState->vftable;
         uVar5 = UiRuntimeContext::GetActiveNationId();
-        (*pTVar1[0x26].slot_0x04)(_sStack00000004,uVar5);
+        (*pTVar1->SetTileTransportFlagsTo0x37AndRefreshNeighbors)(_sStack00000004,uVar5);
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
       }
     }

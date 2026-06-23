@@ -188,7 +188,7 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
   }
   BuildUiTextStyleDescriptor(local_a4,0,10,0x2b6a);
   tStack_c0.top = (LONG)this->vftable;
-  uVar5 = (*((TDeluxeTextVtbl *)(tStack_c0.top + 0x90))->slot_0x04)(0x7469746c);
+  uVar5 = (*((TDeluxeTextVtbl *)tStack_c0.top)->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7469746c);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
   ConfigureUiControlStyleValueAndCaptionFromStringResource
             ((int *)CONCAT31(extraout_var,uVar5),0,0xe,0x2b6a,1,0x1c20,6);
@@ -248,7 +248,7 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
               sVar9 = (short)*(char *)(*(int *)&pTVar18->field_0xc + (int)(short)psVar21 + 0x11 +
                                       iVar11);
               if (sVar9 != -1) {
-                cVar6 = (*pTVar18->vftable[0x18].slot_0x04)(iVar20,psVar21);
+                cVar6 = (*pTVar18->vftable->OrphanLeaf_NoCall_Ins14_00513610)(iVar20,psVar21);
                 asStack_70[sVar9] = asStack_70[sVar9] + (short)cVar6;
                 pTVar18 = g_pGlobalMapState;
               }
@@ -356,9 +356,9 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
     TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
-    (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)
+    (*pTVar3->BuildCityViewProductionControls_Impl)
               (0x1c20,CONCAT22((short)((uint)psVar21 >> 0x10),sVar9) + 3);
-    (*pTVar3[0x3f].GetTEventHandlerClassNamePointer)(0);
+    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
     iVar19 = 0x52;
   }
   if ((auStack_d8[6] != '\0') && ((char)((uint)unaff_EBX >> 0x18) != '\0')) {
@@ -410,8 +410,8 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
     TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
-    (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,1);
-    (*pTVar3[0x3f].GetTEventHandlerClassNamePointer)(0);
+    (*pTVar3->BuildCityViewProductionControls_Impl)(0x1c20,1);
+    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
     auStack_d8._0_4_ = asStack_70;
     iVar19 = iVar19 + 0x2a;
     iVar11 = 0;
@@ -493,8 +493,8 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
     TDeluxeText::ConstructTDeluxeTextBaseState
               (pTVar14,this,&stack0xffffff18,local_a4,&tStack_c0.left,(int)auStack_b0);
     pTVar3 = pTVar14->vftable;
-    (*pTVar3[0x3d].GetTEventHandlerClassNamePointer)(0x1c20,2);
-    (*pTVar3[0x3f].GetTEventHandlerClassNamePointer)(0);
+    (*pTVar3->BuildCityViewProductionControls_Impl)(0x1c20,2);
+    (*pTVar3->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
     auStack_d8._0_4_ = asStack_40;
     iVar19 = iVar19 + 0x2a;
     iVar11 = 0;
@@ -615,7 +615,7 @@ char * TDeluxeText::BuildCityInfluenceLevelMap()
   int iStack_20;
   short asStack_10 [8];
   
-  (*this->vftable[0x1a].GetTEventHandlerClassNamePointer)(0);
+  (*this->vftable->SetForeignMinisterReadyFlag14_34)(0);
   pcVar1 = (char *)AllocateWithFallbackHandler(0x1950);
   pcVar7 = pcVar1;
   for (iVar4 = 0x654; iVar4 != 0; iVar4 = iVar4 + -1) {
@@ -868,7 +868,7 @@ TDeluxeText::ConstructTDeluxeTextBaseState
   TTEView::ConstructTTEViewBaseState
             ((TTEView *)this,0,param_1,param_2,param_3,5,(undefined4 *)0x5,param_4,(short)param_5);
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(param_5 + 6);
-  (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(0);
+  (*this->vftable->OrphanCallChain_C1_I08_005b60a0)(0);
   return;
 }
 
@@ -881,7 +881,7 @@ void TDeluxeText::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   this->field_0x95 = 0;
-  (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(0);
+  (*this->vftable->OrphanCallChain_C1_I08_005b60a0)(0);
   return;
 }
 
@@ -893,7 +893,7 @@ void TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1)
 
 {
   this->field_0x94 = param_1;
-  (*this->vftable[0x15].GetTEventHandlerClassNamePointer)((int)param_1,0);
+  (*this->vftable->UpdateControlCachedIntFromWindowText_2a)((int)param_1,0);
   return;
 }
 
@@ -923,7 +923,7 @@ void TDeluxeText::InitializeTechHistoryViewTitleAndMapKeyControls_Impl(short par
   local_4 = 0;
   InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440(&local_10);
   CStack_18.m_pchData = (char *)0x1;
-  (*this->vftable[0x3d].slot_0x04)(&local_10);
+  (*this->vftable->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0)(&local_10);
   uStack_c = 0xffffffff;
   CString::~CString(&CStack_18);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -954,16 +954,16 @@ void TDeluxeText::OrphanTiny_ReturnZero_0048a730()
   CString::CString(local_30);
   pTVar1 = this->vftable;
   local_4 = 0;
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->AssignSharedStringFromField84)();
   if (this->field_0xa0 != '\0') {
     SetQuickDrawColorAndPropagateIfChanged();
-    (*pTVar1[0x34].slot_0x04)();
+    (*pTVar1->DeserializeCityProductionQueueCommand)();
     OffsetRect((LPRECT)&stack0xffffffcc,1,1);
-    (*pTVar1[0x3a].slot_0x04)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
+    (*pTVar1->RenderControlStateTextBySelectionCode)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
   }
-  (*pTVar1[0x34].slot_0x04)();
+  (*pTVar1->DeserializeCityProductionQueueCommand)();
   SetQuickDrawColorAndPropagateIfChanged();
-  (*pTVar1[0x3a].slot_0x04)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
+  (*pTVar1->RenderControlStateTextBySelectionCode)(unaff_EDI,*(undefined4 *)(unaff_EDI + -8));
   uStack_1c = 0xffffffff;
   CString::~CString((CString *)&stack0xffffffb8);
   *unaff_FS_OFFSET = uStack_24;
@@ -1033,7 +1033,7 @@ TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360
   *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&param_1,param_1.m_pchData);
   uStack_4 = 0;
-  (*this->vftable[0x3e].GetTEventHandlerClassNamePointer)(&param_1);
+  (*this->vftable->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&param_1);
   puStack_8 = (undefined1 *)0xffffffff;
   CString::~CString((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -1076,7 +1076,7 @@ undefined4 TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char par
   NoOpTextPostLayoutHook(&local_10);
   uVar3 = extraout_var;
   if (param_1 != '\0') {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
     uVar3 = extraout_var_00;
   }
   return CONCAT22(uVar3,(short)iVar2);
@@ -1106,7 +1106,7 @@ TDeluxeText::WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0
 {
   UpdateTextEntrySharedStringIfChanged(param_1);
   if (param_2 != '\0') {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -1138,7 +1138,7 @@ void TDeluxeText::BuildCityViewProductionControls_Impl(undefined4 param_1, int p
   local_4 = 0;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(param_1);
   UpdateTextEntrySharedStringIfChanged(&CStack_1c);
-  (*this->vftable[0x1c].slot_0x04)();
+  (*this->vftable->VTableSlot39)();
   local_10.m_pchData = (char *)0xffffffff;
   CString::~CString(&CStack_1c);
   *unaff_FS_OFFSET = (int)pCStack_18;

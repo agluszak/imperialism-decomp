@@ -166,7 +166,8 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     break;
   case 10:
     if ((*(short *)(CVar2.m_pchData + 4) == 0) &&
-       (cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(), cVar3 == '\0')) {
+       (cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(),
+       cVar3 == '\0')) {
       sVar6 = 0;
       param_5.m_pchData = (char *)0x0;
       do {
@@ -300,7 +301,7 @@ void TMiniCivView::OrphanTiny_ReturnZero_0048a730()
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawTextOriginWithContextOffset();
   THQButton::DrawTextWithCachedQuickDrawStyleState();
-  uVar1 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)();
+  uVar1 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)();
   RStack_2c.left = (LONG)(short)CONCAT31(extraout_var,uVar1);
   RStack_2c.right = RStack_2c.left + 0x40;
   RStack_3c.left = 0;
@@ -337,7 +338,7 @@ void TMiniCivView::OrphanRetStub_0059add0(int param_1, TMiniCivView *param_2)
   
   if (param_2 == this) {
     pTVar1 = this->ownerContext;
-    (*pTVar1->vftable[1].slot_0x04)();
+    (**(code **)&pTVar1->vftable->field_0xc)();
     *(undefined2 *)&pTVar1[1].ownerOffsetX = *(undefined2 *)(*(int *)&this->field_0x84 + 6);
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);

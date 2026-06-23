@@ -54,7 +54,7 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int *param_1)
   undefined1 *puVar3;
   int iVar4;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,0x10);
   (*pcVar1)(&this->field_0x14,2);
@@ -99,12 +99,9 @@ void TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int *param_1)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined1 *puStack_20;
-  int *piStack_1c;
   
-  piStack_1c = param_1;
   puStack_20 = (undefined1 *)0x5b6e73;
-  TObject::WriteTo((TArmyPlayer *)this);
-  piStack_1c = (int *)0x10;
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   puStack_20 = &this->field_0x4;
   uStack_24 = 0x5b6e86;
@@ -195,21 +192,21 @@ void TTown::RecomputeTownAdjacentResourceSupplyTotals()
           if (sVar9 != -1) {
             if ((((sVar9 == 3) || (sVar9 == 4)) || (sVar9 == 0x16)) ||
                ((sVar9 == 0x15 || (sVar9 == 6)))) {
-              cVar2 = (*pTVar7->vftable[0x19].GetTMapMgrClassNamePointer)(puVar4,1);
+              cVar2 = (*pTVar7->vftable->GetTileCivilianWorkOrderCostClassNibble)(puVar4,1);
               if (cVar2 == '\0') {
-                (*g_pGlobalMapState->vftable[0x19].slot_0x04)(puVar4,1,1,0);
+                (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins35_005136a0)(puVar4,1,1,0);
               }
               psVar5 = (short *)(unaff_EBP + 0x1e + sVar9 * 2);
-              cVar3 = (*g_pGlobalMapState->vftable[0x18].slot_0x04)(puVar4,iVar8);
+              cVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00513610)(puVar4,iVar8);
               *psVar5 = *psVar5 + (short)cVar3;
               pTVar7 = g_pGlobalMapState;
               if (cVar2 == '\0') {
-                (*g_pGlobalMapState->vftable[0x19].slot_0x04)(puVar4,1,0,0);
+                (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins35_005136a0)(puVar4,1,0,0);
                 pTVar7 = g_pGlobalMapState;
               }
             }
             else {
-              cVar2 = (*pTVar7->vftable[0x18].slot_0x04)(puVar4,iVar8);
+              cVar2 = (*pTVar7->vftable->OrphanLeaf_NoCall_Ins14_00513610)(puVar4,iVar8);
               *(short *)(&this->field_0x1e + sVar9 * 2) =
                    *(short *)(&this->field_0x1e + sVar9 * 2) + (short)cVar2;
               pTVar7 = g_pGlobalMapState;
@@ -284,11 +281,11 @@ void TTown::RecomputeTownAdjacentUniversityWeightedTotals()
         iVar6 = 0;
         psVar9 = (short *)&this->field_0x1e;
         do {
-          cVar1 = (*pTVar5->vftable[0x1a].slot_0x04)(local_c,iVar7);
+          cVar1 = (*pTVar5->vftable->OrphanCallChain_C1_I29_005135a0)(local_c,iVar7);
           sVar2 = (short)cVar1;
           if ((sVar2 != 0) &&
-             ((&DAT_0066d770)[*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4)] !=
-              '\0')) {
+             ((&TNoHiliteTextVtbl_0066d500.field_0x270)
+              [*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4)] != '\0')) {
             sVar2 = (short)(char)(&g_abUniversityRequirementLevelById)
                                  [iVar6 * 4 +
                                   (int)*(short *)(&g_pCityOrderCapabilityState->field_0x3e +
@@ -373,7 +370,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
     }
   }
   if ((9 < (short)uVar4 & (byte)uVar4) != 0) {
-    uVar2 = (*this_00->vftable[0xe].slot_0x04)();
+    uVar2 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     iVar3 = CONCAT31(extraout_var_00,uVar2);
     sVar5 = *(short *)(iVar3 + 0x1a) + *(short *)(iVar3 + 0x1c) + *(short *)(iVar3 + 0x1e);
     if (((*(short *)&this->field_0x2e != 0) && (sVar1 = *(short *)&this->field_0x38, sVar1 < sVar5))

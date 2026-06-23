@@ -133,7 +133,7 @@ void TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders()
   
   (**(code **)(**(int **)(this + 0x34) + 0x1c))();
   this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable[1].slot_0x04)();
+  (*this_00->vftable->ConstructTTaskBaseState)();
   TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
             ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();

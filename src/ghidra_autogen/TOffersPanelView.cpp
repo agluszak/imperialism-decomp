@@ -49,7 +49,7 @@ TOffersPanelView * TOffersPanelView::_scalar_deleting_destructor_(byte param_1)
 void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
 
 {
-  TOffersPanelView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -105,15 +105,15 @@ void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
   MapUiThemeCodeToStyleFlags();
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   puStack_38 = (undefined1 *)0x61636365;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   *(TView **)&this->field_0x60 = this->ownerContext;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   *(int *)&this->field_0x68 = CONCAT31(extraout_var,uVar3);
   if (CONCAT31(extraout_var,uVar3) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   *(int *)&this->field_0x6c = CONCAT31(extraout_var_00,uVar3);
   if (CONCAT31(extraout_var_00,uVar3) == 0) {
     uStack_50 = 0x4f90c3;
@@ -124,7 +124,7 @@ void TOffersPanelView::OrphanCallChain_C6_I49_004875d0()
   *(undefined2 *)(*(int *)&this->field_0x6c + 0x92) = 5000;
   uStack_50 = 0x4f9100;
   BuildUiTextStyleDescriptor();
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
   iVar2 = *piVar4;
   (**(code **)(iVar2 + 0xc))();
@@ -214,19 +214,18 @@ void TOffersPanelView::OrphanTiny_ReturnZero_0048a730(int param_1)
   
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x61636365);
+    uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x61636365);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
     if (iVar3 != 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-                (CONCAT22((short)((uint3)extraout_var_00 >> 8),*(undefined2 *)(iVar3 + 0x92)),0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)(iVar3 + 0x92),0,1);
       QueueDeferredUiEventPacket(this,10,iVar3);
     }
   }
   else if (sVar1 == 0x1b) {
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x72656a65);
+    uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x72656a65);
     iVar3 = CONCAT31(extraout_var,uVar2);
     if (iVar3 != 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar3 + 0x92)),0,1);
       QueueDeferredUiEventPacket(this,10,iVar3);
       return;
@@ -272,14 +271,14 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   int iVar7;
   undefined4 uVar8;
   char *unaff_EBX;
-  TOffersPanelView_slot_0x04_0x04 *pTVar9;
+  _vslot_fn *p_Var9;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short unaff_retaddr;
   CString CStack_54;
   CString CStack_28;
   CString CStack_24;
-  TOffersPanelView_slot_0x04_0x04 *pTStack_20;
+  _vslot_fn *p_Stack_20;
   CString local_1c [2];
   TOffersPanelView *local_14;
   TOffersPanelViewVtbl *local_10;
@@ -293,10 +292,10 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   *unaff_FS_OFFSET = &uStack_c;
   bVar1 = false;
   local_10 = this->vftable;
-  pTVar9 = local_10[0x12].slot_0x04;
-  local_1c[0].m_pchData = (char *)pTVar9;
+  p_Var9 = local_10->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  local_1c[0].m_pchData = (char *)p_Var9;
   local_14 = this;
-  (*pTVar9)();
+  (*p_Var9)();
   CString::CString((CString *)&stack0xffffffd4);
   puStack_8 = (undefined1 *)0x0;
   CString::CString(&CStack_28);
@@ -333,12 +332,12 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
         if (bVar1) {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
           scanBracketExpressions(g_pLocalizationTable,&CStack_28,unaff_EBX);
-          pTVar9 = pTStack_20;
+          p_Var9 = p_Stack_20;
         }
         else {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
           scanBracketExpressions(g_pLocalizationTable,&CStack_28,unaff_EBX);
-          pTVar9 = pTStack_20;
+          p_Var9 = p_Stack_20;
         }
         break;
       case 0x12f:
@@ -360,12 +359,12 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
         if (bVar1) {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
           scanBracketExpressions(g_pLocalizationTable,&CStack_28,unaff_EBX);
-          pTVar9 = pTStack_20;
+          p_Var9 = p_Stack_20;
         }
         else {
           (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
           scanBracketExpressions(g_pLocalizationTable,&CStack_28,unaff_EBX);
-          pTVar9 = pTStack_20;
+          p_Var9 = p_Stack_20;
         }
         break;
       case 0x132:
@@ -375,10 +374,10 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
       }
     }
   }
-  uVar3 = (*pTVar9)();
-  uVar4 = (*pTVar9)();
+  uVar3 = (*p_Var9)();
+  uVar4 = (*p_Var9)();
   if ((char)unaff_retaddr == '\0') {
-    uVar5 = (*pTVar9)();
+    uVar5 = (*p_Var9)();
     iVar6 = *(int *)CONCAT31(extraout_var_03,uVar5);
     (**(code **)(iVar6 + 0xc))();
     CStack_54.m_pchData = (char *)0x4f97fc;
@@ -386,7 +385,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar3);
   }
   else {
-    uVar5 = (*pTVar9)();
+    uVar5 = (*p_Var9)();
     iVar6 = *(int *)CONCAT31(extraout_var_02,uVar5);
     (**(code **)(iVar6 + 0xc))();
     CStack_54.m_pchData = (char *)0x4f97cc;
@@ -399,7 +398,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   (**(code **)(iVar6 + 0x1f8))(1);
   (*pcRam6f666756)();
   (*pcRam6f6667ae)();
-  if ((char)pTStack_20 == '\0') {
+  if ((char)p_Stack_20 == '\0') {
     iRam736865c9 = 0;
     do {
       PumpUiMessagesAndBackgroundTasks(1);

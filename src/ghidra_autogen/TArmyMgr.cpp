@@ -155,7 +155,7 @@ void TArmyMgr::WrapperFor_FreeHeapBufferIfNotNull_At004a1a00()
   }
   *(undefined4 *)&this->field_0x3a4 = 0;
   if (this != (TArmyMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TArmyMgr)(1);
   }
   return;
 }
@@ -187,7 +187,7 @@ void TArmyMgr::RebuildMapActionSelectionCachesAndContexts(int *param_1)
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062ff5b;
   *unaff_FS_OFFSET = &uStack_c;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (*(int *)&this->field_0x4 != 0) {
     for (iVar4 = *(int *)(*(int *)&g_pMapContextActionManager->field_0x4 + 8); 0 < iVar4;
         iVar4 = iVar4 + -1) {
@@ -252,7 +252,7 @@ void TArmyMgr::DeserializeArmyManagerListFromStream(int *param_1)
   TArmyMgr *this_00;
   int *piVar2;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (**(code **)(*param_1 + 0x88))(*(undefined4 *)(*(int *)&this->field_0x4 + 8));
   piVar2 = *(int **)&this->field_0x4;
   iVar1 = 0;
@@ -277,14 +277,14 @@ void TArmyMgr::OrphanCallChain_C4_I26_004a1e40()
   TArmyMgrVtbl *pTVar1;
   
   if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
-    (*this->vftable[6].slot_0x04)();
+    (*this->vftable->IterateLinkedListCursorAndClearPerTileByte0F)();
     (*g_pLocalizationTable->vftable[8].slot_0x04)();
     return;
   }
   pTVar1 = this->vftable;
-  (*pTVar1[5].slot_0x04)();
+  (*pTVar1->ProcessTileUnitListsAndApplyRandomStatusUpdates)();
   *(undefined4 *)&this->field_0x10 = 1;
-  (*pTVar1[6].GetTArmyMgrClassNamePointer)();
+  (*pTVar1->OrphanCallChain_C12_I108_004a2390)();
   return;
 }
 
@@ -353,7 +353,7 @@ LAB_004a2479:
         }
       }
       else {
-        local_1 = (*this->vftable[7].GetTArmyMgrClassNamePointer)
+        local_1 = (*this->vftable->TryCreateTacticalBattleViewForTileArmies)
                             (piVar3,CONCAT22(extraout_var,*(short *)((int)piVar3 + 0xe)));
       }
     } while (local_1 == '\0');
@@ -549,7 +549,7 @@ LAB_004a330c:
                        CONCAT22(uVar9,*(undefined2 *)(&this->field_0x1c + iVar10 * 2)));
     if (cVar2 == '\0') {
       BuildArmyContextActionRecordsAndDispatchLabel(piVar3,local_14,0,iVar10,0);
-      (*this->vftable[8].GetTArmyMgrClassNamePointer)(param_1);
+      (*this->vftable->OrphanCallChain_C2_I40_004a37b0)(param_1);
       piVar4 = (int *)((uint)extraout_var << 8);
     }
     else {
@@ -929,7 +929,8 @@ void TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0()
     bVar3 = true;
     iVar9 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + local_8);
     if ((iVar9 != -1) && (*psVar8 != iVar9)) {
-      cVar4 = (*g_apTerrainTypeDescriptorTable[iVar9]->vftable[0xb].slot_0x04)((int)*psVar8);
+      cVar4 = (*g_apTerrainTypeDescriptorTable[iVar9]->vftable->IsDiplomacyTargetClassCode200Match)
+                        ((int)*psVar8);
       if (cVar4 == '\0') {
         if (((*psVar8 < 7) && (6 < iVar9)) &&
            (*(short *)&g_apTerrainTypeDescriptorTable[iVar9]->field_0xe == -1)) {
@@ -944,26 +945,27 @@ void TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0()
         if (bVar3) {
           cVar4 = *(char *)(local_8 + *(int *)&g_pGlobalMapState->field_0x10);
           cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 1 + (short)iVar7 * 0xa8);
-          uVar5 = (*g_apTerrainTypeDescriptorTable[cVar4]->vftable[8].GetTCountryClassNamePointer)()
-          ;
+          uVar5 = (*g_apTerrainTypeDescriptorTable[cVar4]->vftable->
+                    OrphanLeaf_NoCall_Ins06_004d87b0_10)();
           if (CONCAT31(extraout_var,uVar5) == iVar7) {
-            (*g_apTerrainTypeDescriptorTable[cVar4]->vftable[9].slot_0x04)((int)*psVar8,0);
+            (*g_apTerrainTypeDescriptorTable[cVar4]->vftable->ApplyJoinEmpireModeForTargetNation_13)
+                      ((int)*psVar8,0);
             uVar6 = extraout_var_03;
           }
           else {
             uVar6 = extraout_var_02;
             if (g_apTerrainTypeDescriptorTable[cVar1] != (TCountry *)0x0) {
-              uVar5 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable[8].
-                        GetTCountryClassNamePointer)();
+              uVar5 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->
+                        OrphanLeaf_NoCall_Ins06_004d87b0_10)();
               uVar6 = extraout_var_04;
               if (CONCAT31(extraout_var_00,uVar5) == iVar7) {
-                (*g_apTerrainTypeDescriptorTable[cVar1]->vftable[10].GetTCountryClassNamePointer)
-                          ((int)*psVar8);
+                (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->
+                  SetNationTransferTargetCodeAndNotifyEligiblePeers_14)((int)*psVar8);
                 uVar6 = extraout_var_05;
               }
             }
           }
-          (*g_pGlobalMapState->vftable[0x17].GetTMapMgrClassNamePointer)
+          (*g_pGlobalMapState->vftable->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12)
                     (iVar7,CONCAT22(uVar6,*psVar8));
           this->field_0x39a = 1;
         }
@@ -989,10 +991,10 @@ void TArmyMgr::OrphanCallChain_C3_I52_004a3d90(short param_1)
   short in_stack_00000008;
   
   if ((in_stack_00000008 == 1) || (in_stack_00000008 == 4)) {
-    (*this->vftable[10].GetTArmyMgrClassNamePointer)(_param_1);
+    (*this->vftable->SelectMovableUnitOnCurrentTileAndPlaySfx)(_param_1);
   }
   else if (in_stack_00000008 == 7) {
-    (*this->vftable[10].slot_0x04)(_param_1);
+    (*this->vftable->CommitCityActionGateCostIfAffordable)(_param_1);
   }
   sVar1 = *(short *)&this->field_0x31c;
   if ((sVar1 < 0) || (0x17f < sVar1)) {
@@ -1036,7 +1038,7 @@ char TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(short param_1)
     }
   }
   if (cVar2 != '\0') {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3aa7,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3aa7,0,1);
     MarkAdjacentHexOrderDirectionAndSelectTile((int)*(short *)&this->field_0x31c,(int)param_1,0);
   }
   return cVar2;
@@ -1077,7 +1079,7 @@ uint TArmyMgr::CommitCityActionGateCostIfAffordable()
   uVar3 = UiRuntimeContext::GetActiveNationId();
   if (iVar4 != 0) {
     if (iVar4 <= *(int *)&g_apNationStates[(short)uVar3]->field_0x900) {
-      (*this->vftable[10].GetTArmyMgrClassNamePointer)();
+      (*this->vftable->SelectMovableUnitOnCurrentTileAndPlaySfx)();
       iVar4 = *(int *)&g_apNationStates[(short)uVar3]->field_0x900 - iVar4;
       *(int *)&g_apNationStates[(short)uVar3]->field_0x900 = iVar4;
       *unaff_FS_OFFSET = puStack_10;
@@ -1231,11 +1233,11 @@ undefined1 TArmyMgr::HandleMapClickByCivilianCursorState(undefined4 param_1, und
     } while (sVar8 < sVar6);
   }
   if (!bVar2) {
-    uVar4 = (*this->vftable[10].slot_0x04)(uVar9);
+    uVar4 = (*this->vftable->CommitCityActionGateCostIfAffordable)(uVar9);
     return uVar4;
   }
 LAB_004a4b81:
-  uVar4 = (*this->vftable[10].GetTArmyMgrClassNamePointer)(uVar9);
+  uVar4 = (*this->vftable->SelectMovableUnitOnCurrentTileAndPlaySfx)(uVar9);
   return uVar4;
 }
 
@@ -1266,11 +1268,11 @@ void TArmyMgr::OrphanCallChain_C2_I54_004a4fc0(short param_1)
     } while (sVar3 < sVar2);
   }
   if (!bVar1) {
-    (*this->vftable[10].slot_0x04)(_param_1);
+    (*this->vftable->CommitCityActionGateCostIfAffordable)(_param_1);
     return;
   }
 LAB_004a5028:
-  (*this->vftable[10].GetTArmyMgrClassNamePointer)(_param_1);
+  (*this->vftable->SelectMovableUnitOnCurrentTileAndPlaySfx)(_param_1);
   return;
 }
 

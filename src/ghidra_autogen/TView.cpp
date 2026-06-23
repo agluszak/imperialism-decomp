@@ -98,7 +98,7 @@ void TView::OrphanRetStub_0059add0(undefined4 param_1, undefined4 param_2, undef
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))(param_1,param_2,param_3);
   }
@@ -284,7 +284,7 @@ void TView::CopyCityDialogStateFromSource(TView *pSource)
 
 {
   int iVar1;
-  TView_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   int *piVar3;
   undefined4 uVar4;
   int *piVar5;
@@ -309,11 +309,11 @@ void TView::CopyCityDialogStateFromSource(TView *pSource)
   this->flag4c = pSource->flag4c;
   this->flag4d = pSource->flag4d;
   if ((pSource->field44 != 0) && (piVar5 = *(int **)(pSource->field44 + 4), piVar5 != (int *)0x0)) {
-    pTVar2 = this->vftable[0x2e].GetTEventHandlerClassNamePointer;
+    p_Var2 = this->vftable->vmethod_0092;
     do {
       piVar3 = (int *)*piVar5;
       uVar4 = (**(code **)(*(int *)piVar5[2] + 0x20))();
-      (*pTVar2)(uVar4,0);
+      (*p_Var2)(uVar4,0);
       piVar5 = piVar3;
     } while (piVar3 != (int *)0x0);
   }
@@ -327,12 +327,11 @@ void TView::CopyCityDialogStateFromSource(TView *pSource)
 TView * TView::OrphanCallChain_C11_I88_004874b0()
 
 {
-  undefined uVar1;
-  undefined3 extraout_var;
+  TView *this_00;
   
-  uVar1 = (*this->vftable[4].slot_0x04)();
-  TView::CopyCityDialogStateFromSource((TView *)CONCAT31(extraout_var,uVar1),this);
-  return (TView *)CONCAT31(extraout_var,uVar1);
+  this_00 = (TView *)(**(code **)&this->vftable->field_0x24)();
+  TView::CopyCityDialogStateFromSource(this_00,this);
+  return this_00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048C220
@@ -407,11 +406,11 @@ TView::SetForeignMinisterReadyFlag14
     }
   }
   pTVar2 = local_c->vftable;
-  cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
-  if ((cVar3 != '\0') && (cVar3 = (*pTVar2[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
+  cVar3 = (*pTVar2->Refresh)();
+  if ((cVar3 != '\0') && (cVar3 = (*pTVar2->GetBoolSlot28)(), cVar3 != '\0')) {
     local_8 = *param_1;
     local_4 = param_1[1];
-    (*pTVar2[0x23].slot_0x04)(&local_8,param_2,param_3,param_4);
+    (*pTVar2->BeginMouseCaptureAndStartRepeatTimer)(&local_8,param_2,param_3,param_4);
     return 1;
   }
   return 0;
@@ -577,7 +576,7 @@ void TView::DestructTEditTextAndMaybeFree()
   puStack_8 = &LAB_0062f1a3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->vftable = (TViewVtbl *)&TEditTextVtbl_0064ad90;
+  this->vftable = (TViewVtbl *)0x64ad90;
   local_4 = 0;
   if ((int *)this[1].field34 != (int *)0x0) {
     (**(code **)(*(int *)this[1].field34 + 4))(1);

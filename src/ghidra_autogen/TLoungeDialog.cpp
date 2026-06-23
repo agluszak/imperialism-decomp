@@ -63,14 +63,14 @@ void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
             ((TMultiplayerMgr *)g_pGameFlowState,this,'\x01');
   pTVar1 = this->vftable;
-  (*pTVar1[10].slot_0x04)(3);
-  uVar2 = (*pTVar1[0x12].slot_0x04)(0x6c61626c);
+  (*pTVar1->VTableSlot15)(3);
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6c61626c);
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var,uVar2);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   pcVar8 = (code *)0x0;
-  (*g_pCursorControlPanel->vftable[0x3c].GetTEventHandlerClassNamePointer)(0,0xe,0x2b6b);
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6b);
-  (*g_pCursorControlPanel->vftable[0x38].slot_0x04)(1,0);
+  (*g_pCursorControlPanel->vftable[1].OrphanLeaf_NoCall_Ins07_004d8920)(0,0xe,0x2b6b);
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b);
+  (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,0);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0065c160,0x6d61696e);
   iVar6 = 0x6e616d30;
   do {
@@ -119,12 +119,12 @@ void TLoungeDialog::OrphanLeaf_NoCall_Ins07_004d8920()
     (**(code **)(iVar6 + 0xa4))(1,0);
     iVar6 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
     if (iVar6 != 0x62757379) {
-      (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(0x11f9,0);
+      (*pTVar1->SetPictureResourceIdAndRefresh)(0x11f9,0);
     }
     RefreshMapAndMessageControlsForCurrentContext();
   }
   *(undefined4 *)&this->field_0x94 = 0xffffffff;
-  (*pTVar1[9].slot_0x04)(1);
+  (*pTVar1->VTableSlot13)(1);
   cVar3 = IsSpecialNationDialogModeActive();
   if (cVar3 == '\0') {
     iVar6 = (-(uint)(*(int *)&g_pLocalizationTable->field_0x44 == 1) & 0xfffffff8) + 0x18;
@@ -169,7 +169,7 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   int local_24;
   CString CStack_20;
   CString local_1c;
-  TLoungeDialog_slot_0x04_0x04 *local_18;
+  _vslot_fn *local_18;
   TLoungeDialogVtbl *local_14;
   CString CStack_10;
   undefined4 uStack_c;
@@ -182,7 +182,7 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = this->vftable;
   CStack_30.m_pchData._3_1_ = '\0';
-  local_18 = local_14[0x12].slot_0x04;
+  local_18 = local_14->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_1c.m_pchData = (char *)0x0;
   local_24 = 0x48;
   local_2c = this;
@@ -284,13 +284,13 @@ uint TLoungeDialog::_scalar_deleting_destructor_()
     if ((iVar8 == 0x62757379) && (g_pGameFlowState->field_0xf4 != '\0')) {
       cVar4 = '$';
       if (*(short *)&local_2c->field_0x84 != 0x11f8) {
-        (*local_14[0x39].GetTEventHandlerClassNamePointer)(0x11f8,1);
+        (*local_14->SetPictureResourceIdAndRefresh)(0x11f8,1);
       }
     }
     else {
       cVar4 = '\x10';
       if (*(short *)&local_2c->field_0x84 != 0x11f9) {
-        (*local_14[0x39].GetTEventHandlerClassNamePointer)(0x11f9,1);
+        (*local_14->SetPictureResourceIdAndRefresh)(0x11f9,1);
       }
     }
   }
@@ -326,7 +326,7 @@ TLoungeDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int iVar7;
   
   if (param_1 == 0x29a) {
-    uVar4 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
+    uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f6b6179);
     iVar6 = *(int *)CONCAT31(extraout_var,uVar4);
     (**(code **)(iVar6 + 0xc))();
     (**(code **)(iVar6 + 0xa8))(0,0);

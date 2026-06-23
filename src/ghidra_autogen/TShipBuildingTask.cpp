@@ -193,7 +193,7 @@ void TShipBuildingTask::SerializeCityProductionQueueCommand(int *param_1)
   
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x10,1);
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
   (*pcVar1)(&this->field_0xc,2);
@@ -212,7 +212,7 @@ void TShipBuildingTask::DeserializeCityProductionQueueCommand(int *param_1)
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

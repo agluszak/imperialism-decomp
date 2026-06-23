@@ -36,10 +36,10 @@ void TBehavior::CreateTBehaviorInstance()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871C0
-// GHIDRA_NAME TBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+// GHIDRA_NAME TBehavior::GetRuntimeClass
+// GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
 
-CRuntimeClass * TBehavior::GetTBehaviorClassNamePointer()
+CRuntimeClass * TBehavior::GetRuntimeClass()
 
 {
   return &g_pClassDescTBehavior;

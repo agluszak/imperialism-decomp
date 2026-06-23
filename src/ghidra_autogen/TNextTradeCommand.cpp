@@ -130,7 +130,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
   CStack_8.m_pchData = &LAB_006396f2;
   *unaff_FS_OFFSET = (int)&iStack_c;
   CStack_2c.m_pchData = (char *)0x636c7573;
-  pTVar1 = this->vftable[0x12].OrphanCallChain_C1_I17_00487470;
+  pTVar1 = this->vftable[3].OrphanCallChain_C1_I17_00487470;
   uVar3 = (*pTVar1)();
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -216,7 +216,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
       uVar7 = TNextTradeCommand::ConstructTNextTradeCommandBaseState(this_00);
     }
     InitializeRangePairFromDiplomacyConstants();
-    (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(uVar7);
+    (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(uVar7);
   }
 LAB_005c082f:
   *unaff_FS_OFFSET = (int)puVar9;

@@ -3,6 +3,80 @@
 // Program: Imperialism.exe
 // Bucket: TObject.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00415CE0
+// GHIDRA_NAME TObject::ShallowFree
+// GHIDRA_PROTO TObject * __thiscall ShallowFree(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Vtable slot +0x24 handler.
+// GHIDRA_COMMENT Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the source object.
+// GHIDRA_COMMENT_END
+
+/* Vtable slot +0x24 handler.
+   Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the
+   source object. */
+
+TObject * TObject::ShallowFree()
+
+{
+  code *pcVar1;
+  int iVar2;
+  TObject *pTVar3;
+  uint uVar4;
+  uint uVar5;
+  TObject *pTVar6;
+  
+  pcVar1 = (code *)**(undefined4 **)this;
+  iVar2 = (*pcVar1)();
+  uVar5 = *(uint *)(iVar2 + 4);
+  (*pcVar1)();
+  pTVar3 = (TObject *)CreateObject_606ff2();
+  pTVar6 = pTVar3;
+  for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
+    *(undefined4 *)pTVar6 = *(undefined4 *)this;
+    this = this + 4;
+    pTVar6 = pTVar6 + 4;
+  }
+  for (uVar5 = uVar5 & 3; uVar5 != 0; uVar5 = uVar5 - 1) {
+    *pTVar6 = *this;
+    this = this + 1;
+    pTVar6 = pTVar6 + 1;
+  }
+  return pTVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004798B0
+// GHIDRA_NAME TObject::Free
+// GHIDRA_PROTO void __thiscall TObject::Free(void)
+
+void TObject::Free()
+
+{
+  if (this != (TObject *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004798D0
+// GHIDRA_NAME TObject::ShallowClone
+// GHIDRA_PROTO TObject * __thiscall ShallowClone(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1.
+// GHIDRA_COMMENT_END
+
+/* Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1. */
+
+TObject * TObject::ShallowClone()
+
+{
+  TObject *pTVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pTVar1 = (TObject *)(**(code **)(*(int *)this + 0x24))();
+  return pTVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00479ED0
 // GHIDRA_NAME TObject::OrphanVtableAssignStub_00479ed0
 // GHIDRA_PROTO undefined OrphanVtableAssignStub_00479ed0()
@@ -41,12 +115,54 @@ void TObject::CreateTObjectInstance(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E20
 // GHIDRA_NAME TObject::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
 
-undefined ** TObject::GetRuntimeClass(void)
+CRuntimeClass * TObject::GetRuntimeClass()
 
 {
-  return &PTR_s_TObject_00694eb8;
+  return (CRuntimeClass *)&PTR_s_TObject_00694eb8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485E90
+// GHIDRA_NAME TObject::Serialize
+// GHIDRA_PROTO void __thiscall Serialize(CArchive * archive)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Vtable slot +0x08 handler.
+// GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
+// GHIDRA_COMMENT_END
+
+/* Vtable slot +0x08 handler.
+   Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
+   +0x14 (clear) or +0x18 (set). */
+
+void TObject::Serialize(CArchive *archive)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  TFileStream local_1c;
+  undefined **local_14;
+  CArchive *local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ea00;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_10 = archive;
+  local_14 = &PTR_LAB_00645f98;
+  local_4 = 0;
+  TFileStream::ConstructTFileStreamBaseState(&local_1c);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  TFileStream::SetBackingArchive(&local_1c,&local_14);
+  if ((~archive->m_nMode & 1U) != 0) {
+    (**(code **)(*(int *)this + 0x14))();
+    *unaff_FS_OFFSET = local_10;
+    return;
+  }
+  (**(code **)(*(int *)this + 0x18))(&local_1c);
+  *unaff_FS_OFFSET = local_10;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485F50
@@ -57,6 +173,26 @@ void TObject::DestructTObjectAndMaybeFree()
 
 {
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485F70
+// GHIDRA_NAME TObject::WriteTo
+// GHIDRA_PROTO void __thiscall WriteTo(TStream * stream)
+
+void TObject::WriteTo(TStream *stream)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485F90
+// GHIDRA_NAME TObject::ReadFrom
+// GHIDRA_PROTO void __thiscall ReadFrom(TStream * stream)
+
+void TObject::ReadFrom(TStream *stream)
+
+{
   return;
 }
 

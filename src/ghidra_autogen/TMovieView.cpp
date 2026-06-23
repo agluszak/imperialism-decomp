@@ -80,7 +80,7 @@ thunk_TPictureButton * TMovieView::CreateTMovieViewInstance(void)
   thunk_TPictureButton::TPictureButton(this);
   *(TMovieViewVtbl **)this = &TMovieViewVtbl_0066f708;
   local_4 = CONCAT31(local_4._1_3_,1);
-  (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
+  (*g_pSfxPlaybackSystem->vftable->ClearDirectSoundInitPendingAndResetState)();
   TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
   pCVar1 = AfxGetThread();
   if (pCVar1 != (CWinThread *)0x0) {
@@ -126,7 +126,7 @@ TMovieView * TMovieView::ConstructTMovieViewBaseState()
   thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
   this->vftable = &TMovieViewVtbl_0066f708;
   local_4 = 0;
-  (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
+  (*g_pSfxPlaybackSystem->vftable->ClearDirectSoundInitPendingAndResetState)();
   TMovieView::HandleBlinkStateAndScheduleTimerTick((TMovieView *)g_pSfxPlaybackSystem,'\x01');
   pCVar1 = AfxGetThread();
   if (pCVar1 == (CWinThread *)0x0) {
@@ -189,7 +189,7 @@ void TMovieView::DestructMovieViewAndCloseOwnedWindow()
     this_00 = (TMovieView *)(**(code **)(*(int *)pCVar2 + 0x7c))();
   }
   TMovieView::SetFieldC0AndInvalidateWindowIfChanged(this_00,0x100005f);
-  (*g_pSfxPlaybackSystem->vftable[0x14].GetTEventHandlerClassNamePointer)();
+  (*g_pSfxPlaybackSystem->vftable->RequestDirectSoundInitIfAllowed)();
   local_4 = 0xffffffff;
   TView::DestructCityDialogSharedBaseState((TView *)this);
   *unaff_FS_OFFSET = uStack_c;
@@ -218,7 +218,7 @@ void TMovieView::OrphanLeaf_NoCall_Ins07_004d8920()
   puStack_8 = &LAB_0063a94b;
   *unaff_FS_OFFSET = &uStack_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   iVar1 = *(int *)(CONCAT31(extraout_var,uVar2) + 0x50);
   if (iVar1 == 0) {
     uVar3 = 0;
@@ -322,7 +322,7 @@ LAB_0060a65c:
         UpdateWindow((HWND)this->controlTag);
         bVar2 = false;
       }
-      uVar3 = (*this->vftable[0xf].GetTEventHandlerClassNamePointer)();
+      uVar3 = (*this->vftable->GetTEventHandlerClassNamePointer_1e)();
       if (CONCAT31(extraout_var,uVar3) == 0) {
         this->ownerOffsetX = this->ownerOffsetX & 0xffffffe7;
         return this->field2c;

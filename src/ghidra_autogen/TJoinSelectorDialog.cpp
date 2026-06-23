@@ -34,7 +34,7 @@ CRuntimeClass * TJoinSelectorDialog::GetTEventHandlerClassNamePointer()
 void TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TJoinSelectorDialog_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined uVar3;
   undefined uVar4;
@@ -55,15 +55,15 @@ void TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &CStack_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar2 = (*pTVar1)(0x746e616d);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar2 = (*p_Var1)(0x746e616d);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
-  uVar3 = (*pTVar1)(0x6e616d65);
+  uVar3 = (*p_Var1)(0x6e616d65);
   piVar5 = (int *)CONCAT31(extraout_var_00,uVar3);
   (**(code **)(*piVar5 + 0xc))();
-  uVar3 = (*pTVar1)(0x7467616d);
+  uVar3 = (*p_Var1)(0x7467616d);
   (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0xc))();
-  uVar4 = (*pTVar1)(0x67616d65);
+  uVar4 = (*p_Var1)(0x67616d65);
   piVar6 = (int *)CONCAT31(extraout_var_02,uVar4);
   (**(code **)(*piVar6 + 0xc))();
   ConfigureUiControlStyleValueAndCaptionFromStringResource
@@ -99,7 +99,7 @@ TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
   if (((((param_1 == 0x14) || (param_1 == 10)) || (param_1 == 0x22)) || (param_1 == 0xd)) &&
      (((iVar1 = *(int *)(param_2 + 0x1c), iVar1 == 0x63616e63 || (iVar1 == 0x636e636c)) ||
       (iVar1 == 0x6f6b6179)))) {
-    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);

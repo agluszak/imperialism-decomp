@@ -116,20 +116,20 @@ void TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
   CString::CString(&local_14);
   pTVar1 = this->vftable;
   local_4 = CONCAT31(local_4._1_3_,1);
-  uVar2 = (*pTVar1[0x17].slot_0x04)();
+  uVar2 = (*pTVar1->VTableSlot2F)();
   if ((param_1 == CONCAT31(extraout_var,uVar2)) &&
-     (cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
-    cVar3 = (*pTVar1[0x37].slot_0x04)();
+     (cVar3 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)(), cVar3 != '\0')) {
+    cVar3 = (*pTVar1->LogUnhandledDialogMethodAndReturnFalse)();
     if (cVar3 != '\0') goto LAB_0058650a;
     if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
       (**(code **)(*(int *)g_pActiveCityDialogLegendSelectionOwner + 0xa0))();
       g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
       _g_bCityDialogLegendSelectionInitialized = 0;
     }
-    uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x6261636b);
+    uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x6261636b);
     if ((int *)CONCAT31(extraout_var_00,uVar2) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1c))();
-      (*this->ownerContext->vftable[0x1c].slot_0x04)();
+      (*this->ownerContext->vftable->RefreshControl)();
     }
     if ((this->controlTag != 0x41726d73) && (this->controlTag == 0x436c6f73)) {
       if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
@@ -137,7 +137,7 @@ void TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
         g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
       }
       _g_bCityDialogLegendSelectionInitialized = 0;
-      uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0xa0))();
     }
   }

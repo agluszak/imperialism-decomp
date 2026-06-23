@@ -284,7 +284,7 @@ void TDefenseMinister::SetForeignMinisterReadyFlag14()
     }
     iVar16 = iVar16 + 1;
   } while (iVar16 < 0x1950);
-  uVar3 = (*this->vftable[10].DeletingDestructTMinister)(piVar6);
+  uVar3 = (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject)(piVar6);
   piVar6 = *(int **)(*(int *)&this->field_0x4 + 0x44);
   piVar7 = (int *)AllocateWithFallbackHandler(0x20);
   if (piVar7 == (int *)0x0) {
@@ -959,7 +959,7 @@ void TDefenseMinister::_scalar_deleting_destructor_()
   do {
     if (*ppTVar4 != (TCountry *)0x0) {
       uStack_8 = (undefined2)iVar6;
-      uVar1 = (*this->vftable[5].GetTMinisterClassNamePointer)(iVar6);
+      uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_0a)(iVar6);
       uStack_c = CONCAT22((short)CONCAT31(extraout_var,uVar1),(undefined2)uStack_c);
       (**(code **)(**(int **)&this->field_0x8 + 0x38))(&uStack_c);
     }

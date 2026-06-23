@@ -44,7 +44,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
   char *pcVar5;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  TTradeScreenPicture_slot_0x04_0x04 *local_30;
+  _vslot_fn *local_30;
   int iStack_2c;
   int iStack_28;
   int iStack_24;
@@ -74,7 +74,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
     InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xe,0x2b68,2);
     iVar6 = 0;
     pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-    local_30 = this->vftable[0x12].slot_0x04;
+    local_30 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     do {
       CString::CString(&param_1);
       local_4 = 0;
@@ -93,7 +93,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
         iStack_2c = *(int *)(iVar4 + 0x24) + 0x11a;
         iStack_24 = *(int *)(iVar4 + 0x24) + 300;
         sVar3 = UiRuntimeContext::GetActiveNationId();
-        uVar2 = (*g_apNationStates[sVar3]->vftable[0xf].GetTCountryClassNamePointer)(iVar6);
+        uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
         if ((short)CONCAT31(extraout_var_00,uVar2) == 0) {
           CString::CString((CString *)&stack0xffffffc4,&DAT_0069aa90);
           puStack_8._0_1_ = 1;
@@ -103,7 +103,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
         }
         else {
           sVar3 = UiRuntimeContext::GetActiveNationId();
-          uVar2 = (*g_apNationStates[sVar3]->vftable[0xf].GetTCountryClassNamePointer)(iVar6);
+          uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
           FormatStringWithVarArgsToSharedRef
                     (&stack0x00000000,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_01,uVar2)
                     );
@@ -114,7 +114,7 @@ void TTradeScreenPicture::OrphanTiny_ReturnZero_0048a730(CString param_1)
         iStack_2c = *(int *)(iVar4 + 0x28) + 3;
         iStack_24 = *(int *)(iVar4 + 0x28) + 0x11;
         pTVar1 = g_pLocalizationTable->vftable;
-        local_30 = (TTradeScreenPicture_slot_0x04_0x04 *)(*(int *)(iVar4 + 0x24) + 200);
+        local_30 = (_vslot_fn *)(*(int *)(iVar4 + 0x24) + 200);
         iStack_28 = *(int *)(iVar4 + 0x24) + 0xee;
         uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar6,&stack0x00000000);
         (*pTVar1[0xe].slot_0x04)((int)(short)CONCAT31(extraout_var_02,uVar2));

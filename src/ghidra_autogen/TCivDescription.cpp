@@ -437,22 +437,22 @@ void TCivDescription::RenderStrategicMapTileCell(short param_1)
   _cStack0000000c = _cStack0000000c & 0xffffff00;
   if (g_pGlobalMapState->field_0x20 != '\0') {
     iVar19 = (int)param_1 % 0x6c;
-    uVar4 = (*this->vftable[0x51].GetTEventHandlerClassNamePointer)();
+    uVar4 = (*this->vftable[1].OrphanLeaf_NoCall_Ins07_004d8920_37)();
     iVar20 = (int)(short)CONCAT31(extraout_var,uVar4) % 0x6c;
     if (((iVar19 == 0) && (0x36 < iVar20)) || ((iVar19 == 0x6b && (iVar20 < 0x36)))) {
-      (*g_pGlobalMapState->vftable[0x1f].slot_0x04)();
-      (*this->vftable[0x50].slot_0x04)();
+      (*g_pGlobalMapState->vftable->OrphanVtableAssignStub_00517520)();
+      (*this->vftable[1].SetForeignMinisterReadyFlag14_36)();
       cStack0000000c = 1;
     }
   }
   if (cStack0000000c == '\0') {
     if (bVar22) {
-      (*g_pGlobalMapState->vftable[0x1c].slot_0x04)();
+      (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins12_005161a0)();
     }
     else {
-      (*g_pGlobalMapState->vftable[0x1c].GetTMapMgrClassNamePointer)();
+      (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)();
     }
-    (*this->vftable[0x50].slot_0x04)();
+    (*this->vftable[1].SetForeignMinisterReadyFlag14_36)();
     bVar6 = *(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0xb + iVar17);
     cStack0000000c = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar17 + 1);
     if (!bVar22) {
@@ -464,13 +464,13 @@ void TCivDescription::RenderStrategicMapTileCell(short param_1)
         pcVar18 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar17);
         if ((uVar21 & (int)pcVar18[10]) == 0) {
           if (((uVar21 & (int)pcVar18[0xb]) != 0) && (*pcVar18 != '\x06')) {
-            uVar4 = (*g_pGlobalMapState->vftable[0x1d].slot_0x04)();
+            uVar4 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins09_00516220)();
             sVar16 = (short)CONCAT31(extraout_var_01,uVar4);
             goto LAB_0051eddf;
           }
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1d].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins10_005161e0)();
           sVar16 = (short)CONCAT31(extraout_var_00,uVar4);
 LAB_0051eddf:
           iVar19 = sVar16 + iVar10;
@@ -478,22 +478,22 @@ LAB_0051eddf:
         if (iVar19 != 0) {
           switch(_bStack00000008) {
           case 0:
-            (*this->vftable[0x4b].slot_0x04)();
+            (*this->vftable[1].OrphanCallChain_C11_I88_004874b0_2c)();
             break;
           case 1:
-            (*this->vftable[0x4b].GetTEventHandlerClassNamePointer)();
+            (*this->vftable[1].OrphanRetStub_0059add0_2b)();
             break;
           case 2:
-            (*this->vftable[0x4a].slot_0x04)();
+            (*this->vftable[1].UpdateControlCachedIntFromWindowText_2a)();
             break;
           case 3:
-            (*this->vftable[0x4d].GetTEventHandlerClassNamePointer)();
+            (*this->vftable[1].VTableSlot2F)();
             break;
           case 4:
-            (*this->vftable[0x4c].slot_0x04)();
+            (*this->vftable[1].OrphanTiny_ReturnZero_0048a730_2e)();
             break;
           case 5:
-            (*this->vftable[0x4c].GetTEventHandlerClassNamePointer)();
+            (*this->vftable[1].OrphanRetStub_0059add0_2d)();
           }
         }
         _bStack00000008 = _bStack00000008 + 1;
@@ -513,75 +513,75 @@ LAB_0051eddf:
     }
     else {
       if ((((bVar6 & 0x20) != 0) || ((bVar6 & 1) != 0)) &&
-         (uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)(),
+         (uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)(),
          (short)CONCAT31(extraout_var_02,uVar4) != 0)) {
-        (*this->vftable[0x4f].GetTEventHandlerClassNamePointer)();
+        (*this->vftable[1].VTableSlot33)();
       }
       bStack00000008 = bVar6 & 2;
       if (((bVar6 & 2) != 0) || ((bVar6 & 1) != 0)) {
         if ((sVar16 == 0x33) || (sVar16 == 0x34)) {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1f].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
           sVar8 = (short)CONCAT31(extraout_var_04,uVar4);
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
           sVar8 = (short)CONCAT31(extraout_var_03,uVar4);
         }
         if (sVar8 != 0) {
-          (*this->vftable[0x4e].GetTEventHandlerClassNamePointer)();
+          (*this->vftable[1].VTableSlot31)();
         }
       }
       if ((bStack00000008 != 0) || ((bVar6 & 4) != 0)) {
         if ((sVar16 == 0x35) || (sVar16 == 0x36)) {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1f].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
           sVar8 = (short)CONCAT31(extraout_var_06,uVar4);
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
           sVar8 = (short)CONCAT31(extraout_var_05,uVar4);
         }
         if (sVar8 != 0) {
-          (*this->vftable[0x4d].slot_0x04)();
+          (*this->vftable[1].OrphanTiny_ReturnZero_0048a730_30)();
         }
       }
       bStack00000008 = bVar6 & 8;
       if (((bVar6 & 8) != 0) || ((bVar6 & 4) != 0)) {
         if ((sVar16 == 0x36) || (sVar16 == 0x37)) {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1f].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
           sVar8 = (short)CONCAT31(extraout_var_08,uVar4);
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
           sVar8 = (short)CONCAT31(extraout_var_07,uVar4);
         }
         if (sVar8 != 0) {
-          (*this->vftable[0x4e].slot_0x04)();
+          (*this->vftable[1].OrphanTiny_ReturnZero_0048a730_32)();
         }
       }
       if ((bStack00000008 != 0) || ((bVar6 & 0x10) != 0)) {
         if ((sVar16 == 0x37) || (sVar16 == 0x39)) {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1f].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
           sVar8 = (short)CONCAT31(extraout_var_10,uVar4);
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
           sVar8 = (short)CONCAT31(extraout_var_09,uVar4);
         }
         if (sVar8 != 0) {
-          (*this->vftable[0x50].GetTEventHandlerClassNamePointer)();
+          (*this->vftable[1].SetForeignMinisterReadyFlag14_35)();
         }
       }
       if (((bVar6 & 0x20) != 0) || ((bVar6 & 0x10) != 0)) {
         if ((sVar16 == 0x38) || (sVar16 == 0x3a)) {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1f].GetTMapMgrClassNamePointer)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I49_00517480)();
           sVar16 = (short)CONCAT31(extraout_var_12,uVar4);
         }
         else {
-          uVar4 = (*g_pGlobalMapState->vftable[0x1e].slot_0x04)();
+          uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I41_00517410)();
           sVar16 = (short)CONCAT31(extraout_var_11,uVar4);
         }
         if (sVar16 != 0) {
-          (*this->vftable[0x4f].slot_0x04)();
+          (*this->vftable[1].SetForeignMinisterReadyFlag14_34)();
         }
       }
     }
@@ -593,12 +593,12 @@ LAB_0051eddf:
         SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
         if (bVar6 != 0) {
           SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
-          (*this->vftable[0x48].GetTEventHandlerClassNamePointer)();
+          (*this->vftable[1].OrphanLeaf_NoCall_Ins07_004d8920_25)();
         }
       }
       else {
         SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
-        (*this->vftable[0x41].GetTEventHandlerClassNamePointer)();
+        (*this->vftable[1].VTableSlot17)();
       }
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
       SetQuickDrawFillColor();
@@ -606,7 +606,7 @@ LAB_0051eddf:
     cStack0000000c = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 8 + iVar17);
     if ((!bVar22) && (cStack0000000c != '\0')) {
       SetQuickDrawFillColor();
-      (*this->vftable[0x41].slot_0x04)();
+      (*this->vftable[1].SetForeignMinisterReadyFlag14_18)();
       _cStack0000000c = &stack0xffffff78;
       SetQuickDrawFillColor();
     }
@@ -631,7 +631,7 @@ LAB_0051eddf:
     iVar10 = *(int *)&g_pGlobalMapState->field_0xc + iVar17;
     if ((((*(byte *)(iVar10 + 0x1c) & 3) != 0) && (*(char *)(iVar10 + 0x13) != '\0')) &&
        (*(short *)((int)&this->ownerContext[1].field34 + 2) != 4)) {
-      uVar4 = (*g_pGlobalMapState->vftable[0x20].GetTMapMgrClassNamePointer)();
+      uVar4 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins55_00517540)();
       RStack_3c.left = (LONG)(short)CONCAT31(extraout_var_13,uVar4);
       RStack_3c.right = RStack_3c.left + 0x40;
       RStack_3c.top = 0;
@@ -644,7 +644,7 @@ LAB_0051eddf:
     }
     uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar17);
     if (((uVar1 & 0x14) != 0) && ((uVar1 & 1) == 0)) {
-      uVar4 = (*g_pGlobalMapState->vftable[0x20].slot_0x04)();
+      uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C1_I46_00517600)();
       sVar16 = (short)CONCAT31(extraout_var_14,uVar4);
       if (sVar16 != 0) {
         RStack_3c.left = (LONG)sVar16;
@@ -660,11 +660,11 @@ LAB_0051eddf:
     }
     iVar10 = *(int *)&g_pGlobalMapState->field_0xc + iVar17;
     if ((((*(byte *)(iVar10 + 0x1c) & 3) != 0) && (*(char *)(iVar10 + 0x13) != '\0')) &&
-       ((*this->vftable[0x35].slot_0x04)(),
+       ((*this->vftable[1].GetTEventHandlerClassNamePointer)(),
        *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 +
                 *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar17) * 0xa8) != '\0'))
     {
-      uVar4 = (*g_pGlobalMapState->vftable[0x21].GetTMapMgrClassNamePointer)();
+      uVar4 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176a0)();
       RStack_3c.left = (LONG)(short)CONCAT31(extraout_var_15,uVar4);
       RStack_3c.right = RStack_3c.left + 0x40;
       RStack_3c.top = 0;
@@ -677,8 +677,8 @@ LAB_0051eddf:
     }
     if (((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar17) & 3) == 0) ||
        (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar17 + 0x13) == '\0')) {
-      (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
-      cVar5 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
+      (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
+      cVar5 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)();
       local_4 = CONCAT31(local_4._1_3_,cVar5);
       puStack_8 = (undefined1 *)
                   CONCAT31(puStack_8._1_3_,
@@ -705,13 +705,13 @@ LAB_0051eddf:
             bVar3 = true;
           }
           if (bVar3) {
-            (*g_pStrategicMapViewSystem->vftable[0x10].GetTEventHandlerClassNamePointer)
+            (*g_pStrategicMapViewSystem->vftable->GetTEventHandlerClassNamePointer_20)
                       (local_6c,CONCAT22(uVar15,(short)cVar7),iVar9);
           }
         }
         else {
           uVar14 = (undefined2)((uint)(iVar9 + 2) >> 0x10);
-          (*g_pStrategicMapViewSystem->vftable[0x10].slot_0x04)
+          (*g_pStrategicMapViewSystem->vftable->VTableSlot21)
                     (local_6c,CONCAT22(uVar14,(short)cVar7),CONCAT22(uVar14,(short)cVar5),iVar9 + 2)
           ;
         }
@@ -719,7 +719,7 @@ LAB_0051eddf:
       default:
         if (cVar23 != '\0') {
           uVar14 = (undefined2)((uint)(iVar9 + 0x1b) >> 0x10);
-          (*g_pStrategicMapViewSystem->vftable[0x10].slot_0x04)
+          (*g_pStrategicMapViewSystem->vftable->VTableSlot21)
                     (local_6c,CONCAT22(uVar14,(short)cVar7),CONCAT22(uVar14,(short)cVar23),
                      iVar9 + 0x1b);
         }
@@ -785,20 +785,20 @@ LAB_0051eddf:
             bVar3 = true;
           }
           if (bVar3) {
-            (*g_pStrategicMapViewSystem->vftable[0x10].GetTEventHandlerClassNamePointer)
+            (*g_pStrategicMapViewSystem->vftable->GetTEventHandlerClassNamePointer_20)
                       (local_6c,CONCAT22(uVar15,(short)(char)puStack_8),iVar9);
           }
         }
         else {
           uVar15 = (undefined2)((uint)(iVar9 + 2) >> 0x10);
-          (*g_pStrategicMapViewSystem->vftable[0x10].slot_0x04)
+          (*g_pStrategicMapViewSystem->vftable->VTableSlot21)
                     (local_6c,CONCAT22(uVar15,(short)(char)puStack_8),
                      CONCAT22(uVar15,(short)(char)local_4),iVar9 + 2);
         }
       }
       if ((((char)puStack_8 != -1) && ((char)puStack_8 == '\x14')) &&
          (((cVar7 == '\x03' || (cVar7 == '\x04')) && (cVar23 != '\0')))) {
-        (*g_pStrategicMapViewSystem->vftable[0x10].slot_0x04)
+        (*g_pStrategicMapViewSystem->vftable->VTableSlot21)
                   (local_6c,0x14,
                    CONCAT22((short)((uint)(iVar9 + 0x1b) >> 0x10),(short)(char)local_4),iVar9 + 0x1b
                   );
@@ -939,7 +939,7 @@ LAB_0051fe9c:
     sVar16 = UiRuntimeContext::GetActiveNationId();
     if ((cStack0000000c == sVar16) ||
        ('\x06' < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar17))) {
-      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->RenderCivilianTargetProfilePanel)();
     }
   }
   if (this[2].field_0x80 != '\0') {
@@ -1027,7 +1027,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(int *param_
       this->field_0x6c = 0;
       TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(this,param_1);
     }
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -1269,13 +1269,13 @@ void TCivDescription::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
   }
   sVar1 = *(short *)&this->field_0x60;
   if (sVar1 == 1) {
-    (*this->vftable[0x34].GetTEventHandlerClassNamePointer)(param_1);
+    (*this->vftable->RenderCivilianTargetLegendVariantB)(param_1);
   }
   else if (sVar1 == 4) {
-    (*this->vftable[0x34].slot_0x04)(param_1);
+    (*this->vftable->RenderCivilianTargetLegendVariantA)(param_1);
   }
   else if (sVar1 != 7) {
-    (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(param_1);
+    (*this->vftable->RenderCivilianTargetProfilePanel)(param_1);
   }
   this->field_0x6c = 1;
   if (*(short *)&this->field_0x60 != -1) {
@@ -1782,7 +1782,7 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
   iVar6 = 0;
   local_68._0_4_ = 0;
   local_68._4_4_ = 0;
-  (*this->vftable[0x33].slot_0x04)();
+  (*this->vftable->OrphanRetStub_0059add0_67)();
   uVar1 = local_68._0_4_;
   asStack_28[3] = 0x237;
   asStack_28[10] = 0x237;
@@ -2002,7 +2002,7 @@ bool TCivDescription::AttachHdcToDcWrapper(int param_1)
     this->field04 = param_1;
     puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00,param_1);
     *puVar1 = this;
-    (*this->vftable[2].slot_0x04)(this->field04);
+    (*this->vftable->OrphanRetStub_0059ad90)(this->field04);
   }
   return param_1 != 0;
 }

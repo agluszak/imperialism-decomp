@@ -66,7 +66,7 @@ int * TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int param_1)
     *(int *)&this->field_0x60 = param_1;
     return piVar4;
   }
-  bVar1 = (*this->vftable[0x12].slot_0x04)(param_1);
+  bVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(param_1);
   return (int *)(uint)bVar1;
 }
 

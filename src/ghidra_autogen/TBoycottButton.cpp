@@ -83,7 +83,7 @@ TBoycottButton::HandleToggleButtonStateChangeAndRefresh
   int *piVar2;
   
   if (param_1 != '\0') {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x636c7573);
     if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

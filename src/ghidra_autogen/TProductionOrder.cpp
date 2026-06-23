@@ -49,7 +49,7 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -71,7 +71,7 @@ TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -102,7 +102,7 @@ undefined4 TProductionOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if ((param_1 <= (short)CONCAT31(extraout_var,uVar1)) && (-1 < param_1)) {
     *(short *)&this->field_0x4 = param_1;
     return CONCAT31(extraout_var,1);

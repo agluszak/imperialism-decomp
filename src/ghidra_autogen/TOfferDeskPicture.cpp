@@ -81,7 +81,7 @@ TOfferDeskPicture * TOfferDeskPicture::_scalar_deleting_destructor_(byte param_1
 void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TOfferDeskPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   TViewVtbl *pTVar2;
   int iVar3;
   uint3 uVar4;
@@ -126,9 +126,9 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   piStack_28 = (int *)0x5be613;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_24 = 0x74726561;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   piStack_28 = (int *)0x5be624;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   piStack_28 = (int *)0x5be62d;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
   piStack_28 = (int *)0x2b6b;
@@ -140,11 +140,11 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   ApplyUiTextStyleAndThemeFlags();
   piStack_28 = (int *)0x6d436170;
   pTStack_2c = (TView *)0x5be64d;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   pTVar7 = (TView *)CONCAT31(extraout_var_00,uVar5);
   pTVar2 = pTVar7->vftable;
   pTStack_2c = (TView *)0x5be657;
-  (*pTVar2[1].slot_0x04)();
+  (**(code **)&pTVar2->field_0xc)();
   pTStack_2c = (TView *)0x2b6b;
   puStack_30 = (undefined1 *)0x2b6c;
   iStack_34 = 0xc;
@@ -160,23 +160,23 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   pTStack_2c = (TView *)0x1;
   puStack_30 = (undefined1 *)0x0;
   iStack_34 = 0x5be68a;
-  (*pTVar2[0x3c].slot_0x04)();
+  (*pTVar2[1].DispatchUiCommand19ToParent)();
   iStack_34 = 0x74616273;
   piStack_38 = (int *)0x5be693;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   pTVar2 = ((TView *)CONCAT31(extraout_var_01,uVar5))->vftable;
   piStack_38 = (int *)0x5be69d;
-  (*pTVar2[1].slot_0x04)();
+  (**(code **)&pTVar2->field_0xc)();
   piStack_38 = (int *)CONCAT31((int3)((uint)extraout_ECX >> 8),
                                g_pCityOrderCapabilityState->field_0x193);
   pTStack_3c = (TView *)0x2264;
   puStack_40 = (undefined1 *)0x5be6b6;
-  (*pTVar2[0x38].slot_0x04)();
+  (*pTVar2[1].GetCityDialogValueDword10)();
   puStack_40 = (undefined1 *)0x5be6be;
-  (*pTVar2[0x1c].slot_0x04)();
+  (*pTVar2->RefreshControl)();
   puStack_40 = (undefined1 *)0x746f6f6c;
   puStack_44 = (undefined1 *)0x5be6c7;
-  uVar6 = (*pTVar1)();
+  uVar6 = (*p_Var1)();
   iVar3 = *(int *)CONCAT31(extraout_var_02,uVar6);
   puStack_44 = (undefined1 *)0x5be6d4;
   (**(code **)(iVar3 + 0xc))();
@@ -188,12 +188,12 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar3 + 0x1d0))();
   puStack_48 = (undefined1 *)0x6d506963;
   pTStack_4c = (TView *)0x5be701;
-  uVar6 = (*pTVar1)();
+  uVar6 = (*p_Var1)();
   pTStack_4c = (TView *)0x5be70a;
   (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar6) + 0xc))();
   pTStack_4c = (TView *)0x636c7573;
   pTStack_50 = (TView *)0x5be713;
-  uVar6 = (*pTVar1)();
+  uVar6 = (*p_Var1)();
   piStack_28 = (int *)CONCAT31(extraout_var_04,uVar6);
   pTStack_3c = (TView *)*piStack_28;
   pTStack_50 = (TView *)0x5be722;
@@ -214,26 +214,26 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject();
   pTStack_58 = (TOfferDeskPicture *)0x646f6e65;
   pTStack_5c = (TToolBarClusterVtbl *)0x5be767;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   pTStack_5c = (TToolBarClusterVtbl *)CONCAT31(extraout_var_05,uVar5);
   uStack_64 = 0x2740;
   iStack_68 = 0x5be774;
   LoadUiStringByGroupAndIndexToControlObject();
   pTStack_5c = (TToolBarClusterVtbl *)0x72656a65;
-  (*pTVar1)();
+  (*p_Var1)();
   uStack_64 = 6;
   iStack_68 = 0x2740;
   pTStack_6c = (TToolBarClusterVtbl *)0x5be78d;
   LoadUiStringByGroupAndIndexToControlObject();
   uStack_64 = 0x5be799;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   uStack_64 = CONCAT31(extraout_var_06,uVar5);
   iStack_68 = 7;
   pTStack_6c = (TToolBarClusterVtbl *)0x2740;
   LoadUiStringByGroupAndIndexToControlObject();
   uStack_64 = 0x73686565;
   iStack_68 = 0x5be7b2;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   iStack_68 = CONCAT31(extraout_var_07,uVar5);
   puStack_40 = (undefined1 *)&pTStack_6c;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
@@ -241,27 +241,27 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   iStack_68 = 0x77616974;
   pTStack_6c = (TToolBarClusterVtbl *)0x5be7d5;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   pTStack_6c = (TToolBarClusterVtbl *)CONCAT31(extraout_var_08,uVar5);
   puStack_44 = &stack0xffffff90;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff90,(char *)&g_szEmptyString);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_6c = (TToolBarClusterVtbl *)0x626f6f6b;
-  (*pTVar1)();
+  (*p_Var1)();
   puStack_48 = &stack0xffffff8c;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff8c,(char *)&g_szEmptyString);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   LoadUiStringByGroupAndIndexToControlObject();
-  (*pTVar1)();
+  (*p_Var1)();
   pTStack_4c = (TView *)&stack0xffffff88;
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&stack0xffffff88,(char *)&g_szEmptyString);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  (*pTVar1)();
+  (*p_Var1)();
   LoadUiStringByGroupAndIndexToControlObject(0x2730,3);
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   piVar8 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_09,uVar5) + 0x94))(0x74657874);
   iVar3 = *piVar8;
   (**(code **)(iVar3 + 0xc))();
@@ -270,13 +270,13 @@ void TOfferDeskPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   BuildUiTextStyleDescriptor(&iStack_68,0,0xe,0x2b67);
   (**(code **)(iVar3 + 0x1b4))(&iStack_68,0);
   (**(code **)(iVar3 + 0x1c4))(1,0);
-  uVar5 = (*pTVar1)(0x61636365);
+  uVar5 = (*p_Var1)(0x61636365);
   (**(code **)(*(int *)CONCAT31(extraout_var_10,uVar5) + 0xc))();
   *(undefined2 *)((int)CONCAT31(extraout_var_10,uVar5) + 0x92) = 5000;
-  uVar5 = (*pTVar1)(0x72656a65);
+  uVar5 = (*p_Var1)(0x72656a65);
   (**(code **)(*(int *)CONCAT31(extraout_var_11,uVar5) + 0xc))();
   *(undefined2 *)((int)CONCAT31(extraout_var_11,uVar5) + 0x92) = 5000;
-  uVar5 = (*pTVar1)(0x466f724d);
+  uVar5 = (*p_Var1)(0x466f724d);
   piVar8 = (int *)CONCAT31(extraout_var_12,uVar5);
   (**(code **)(*piVar8 + 0xc))();
   *(undefined2 *)((int)piVar8 + 0x92) = 7000;
@@ -323,9 +323,9 @@ TOfferDeskPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
                 ((TToolBarCluster *)this,'\x01');
     }
     else {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f0,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x13f0,0,1);
     }
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x626f6f6b);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x626f6f6b);
     TControl::UpdateSelectionRect
               ((TControl *)CONCAT31(extraout_var,uVar3),
                (astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
@@ -350,19 +350,18 @@ void TOfferDeskPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
   
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x61636365);
+    uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x61636365);
     iVar3 = CONCAT31(extraout_var_00,uVar2);
     if (iVar3 != 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
-                (CONCAT22((short)((uint3)extraout_var_00 >> 8),*(undefined2 *)(iVar3 + 0x92)),0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(*(undefined2 *)(iVar3 + 0x92),0,1);
       QueueDeferredUiEventPacket(this,10,iVar3);
     }
   }
   else if (sVar1 == 0x1b) {
-    uVar2 = (*this->vftable[0x12].slot_0x04)(0x72656a65);
+    uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x72656a65);
     iVar3 = CONCAT31(extraout_var,uVar2);
     if (iVar3 != 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar3 + 0x92)),0,1);
       QueueDeferredUiEventPacket(this,10,iVar3);
       return;

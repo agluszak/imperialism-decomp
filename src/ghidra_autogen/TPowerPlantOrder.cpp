@@ -97,7 +97,7 @@ undefined4 TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   short sVar7;
   
   sVar7 = param_1 - *(short *)&this->field_0x4;
-  uVar5 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar5) < param_1) || (param_1 < 0)) {
     cVar6 = '\0';
   }
@@ -153,15 +153,15 @@ void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
   undefined4 unaff_EBX;
   
   pTVar2 = this->vftable;
-  uVar3 = (*pTVar2[6].GetTProductionOrderClassNamePointer)();
+  uVar3 = (*pTVar2->OrphanLeaf_NoCall_Ins02_004b50e0)();
   sVar1 = *(short *)&this->field_0x4c;
   *(undefined2 *)&this->field_0x4 = 0;
   if ((short)CONCAT31(extraout_var,uVar3) < sVar1) {
-    (*pTVar2[5].ConstructTPowerPlantOrderBaseState)(CONCAT31(extraout_var,uVar3));
+    (*pTVar2->OrphanCallChain_C1_I16_004b5100)(CONCAT31(extraout_var,uVar3));
     *(short *)&this->field_0x4c = sVar1;
     return;
   }
-  (*pTVar2[5].ConstructTPowerPlantOrderBaseState)(CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1));
+  (*pTVar2->OrphanCallChain_C1_I16_004b5100)(CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1));
   return;
 }
 
@@ -172,7 +172,7 @@ void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop()
 void TPowerPlantOrder::CreateTItemOrderInstance(int param_1)
 
 {
-  (*this->vftable[7].ConstructTPowerPlantOrderBaseState)(param_1);
+  (*this->vftable->InitializeCityOrderItemWorkingBuffers)(param_1);
   *(short *)(param_1 + 0x18) = (short)param_1 * 6;
   return;
 }
@@ -188,7 +188,7 @@ TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);
@@ -211,7 +211,7 @@ TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x48,2);
   (*pcVar1)(&this->field_0x4,2);

@@ -110,12 +110,12 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   uVar1 = *(uint *)(param_2 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))();
       (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
@@ -126,7 +126,7 @@ TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 LAB_0056b474:
       cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted();
       if (cVar3 != '\0') {
-        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
         if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
           if (g_pGameFlowState->field_0xf4 != '\0') {
@@ -148,7 +148,7 @@ LAB_0056b474:
         ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
       pTVar4 = g_pLocalizationTable->vftable;
       goto LAB_0056b526;
@@ -156,7 +156,7 @@ LAB_0056b474:
   }
   else {
     if (uVar1 == 0x70726566) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar2) + 0x1b4))();
       pTVar4 = g_pLocalizationTable->vftable;
 LAB_0056b526:
@@ -165,7 +165,7 @@ LAB_0056b526:
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
       if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
         CString::CString((CString *)&stack0x0000000c);

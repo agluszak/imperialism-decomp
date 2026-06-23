@@ -231,7 +231,7 @@ void TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A()
   if (*(int *)(this + 8) != 0) {
     this_00 = (TTacArmyView *)
               (**(code **)(**(int **)(*(int *)(this + 8) + 0x20) + 0x94))(0x746f6f6c);
-    (*this_00->vftable[1].slot_0x04)();
+    (*this_00->vftable->AssertValid)();
     TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(this_00,1);
   }
   iVar1 = **(int **)(this + 0x20);
@@ -394,7 +394,7 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
     } while ((local_14 != 1) && (local_20 = local_14, local_10 == (int *)0x0));
     *(int **)(*(int *)(this + 0x1c) + 0x30) = local_10;
     if (local_10 == (int *)0x0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x1b5a,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1b5a,0,1);
     }
   }
   return;

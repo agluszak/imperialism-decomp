@@ -74,7 +74,6 @@ address|name|prototype|file|status
 60b910|CDocTemplate::GetStatus|undefined __thiscall GetStatus(int * param_1)|CDocTemplate.cpp|ok
 612828|CDocTemplate::StartDocAFromContextWithDocName|undefined __thiscall StartDocAFromContextWithDocName(void)|CDocTemplate.cpp|ok
 614603|CDocTemplate::OpenDocumentFile_614603|undefined __thiscall OpenDocumentFile_614603(LPCSTR param_1)|CDocTemplate.cpp|ok
-412bf0|CDocument::ConstructTTaskBaseState|undefined __thiscall ConstructTTaskBaseState(void)|CDocument.cpp|ok
 4796a0|CDocument::SerializeTMinisterBaseOrderArrayHeader|undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)|CDocument.cpp|ok
 4796c0|CDocument::SerializeTMinisterBaseOrderArrayHeader|undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)|CDocument.cpp|ok
 606c4e|CDocument::'scalar_deleting_destructor'|undefined __thiscall 'scalar_deleting_destructor'(void)|CDocument.cpp|ok
@@ -141,6 +140,9 @@ address|name|prototype|file|status
 623b46|CMemFile::GetCMemFileRuntimeClass|undefined __thiscall GetCMemFileRuntimeClass(void)|CMemFile.cpp|ok
 4883c0|CObArray::thunk_DestructCObArray|undefined thunk_DestructCObArray()|CObArray.cpp|ok
 601bdd|CObArray::DestructCObArray|undefined DestructCObArray()|CObArray.cpp|ok
+412bd0|CObject::Serialize|void __thiscall Serialize(CArchive * archive)|CObject.cpp|ok
+412bf0|CObject::AssertValid|void __thiscall AssertValid(void)|CObject.cpp|ok
+412c10|CObject::Dump|void __thiscall Dump(undefined4 dc)|CObject.cpp|ok
 415e70|CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70|undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)|CObject.cpp|ok
 415f90|CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90|undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00415f90(byte param_1)|CObject.cpp|ok
 479d50|CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50|undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00479d50(byte param_1)|CObject.cpp|ok
@@ -154,14 +156,13 @@ address|name|prototype|file|status
 49b270|CObject::DestructModuleLibraryCacheTableStateAAndFree|undefined __thiscall DestructModuleLibraryCacheTableStateAAndFree(void)|CObject.cpp|ok
 49b5d0|CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0|undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(byte param_1)|CObject.cpp|ok
 49b600|CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600|undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b600(byte param_1)|CObject.cpp|ok
+606fba|CObject::GetRuntimeClass|CRuntimeClass * __thiscall GetRuntimeClass(void)|CObject.cpp|ok
 606fc0|CObject::IsKindOf|undefined __thiscall IsKindOf(void)|CObject.cpp|ok
 622778|CObject::ParseParam|undefined __thiscall ParseParam(undefined4 param_1, int param_2, undefined4 param_3)|CObject.cpp|ok
 622aac|CProcessLocalObject::thunk_CProcessLocalObject|void __thiscall thunk_CProcessLocalObject(void)|CProcessLocalObject.cpp|ok
 6244ce|CProcessLocalObject::thunk_~CProcessLocalObject|void __thiscall thunk_~CProcessLocalObject(void)|CProcessLocalObject.cpp|ok
 601de3|CPtrArray::SetAtGrow|undefined __thiscall SetAtGrow(int param_1, undefined4 param_2)|CPtrArray.cpp|ok
 601e9f|CPtrArray::RemoveAt|undefined __thiscall RemoveAt(int param_1, int param_2)|CPtrArray.cpp|ok
-412bd0|CPtrList::GetTEventHandlerClassNamePointer|undefined __thiscall GetTEventHandlerClassNamePointer(void)|CPtrList.cpp|ok
-412c10|CPtrList::GetTEventHandlerClassNamePointer|undefined __thiscall GetTEventHandlerClassNamePointer(void)|CPtrList.cpp|ok
 601f40|CPtrList::'scalar_deleting_destructor'|undefined __thiscall 'scalar_deleting_destructor'(byte param_1)|CPtrList.cpp|ok
 601faf|CPtrList::NewNode|undefined __thiscall NewNode(undefined4 param_1, undefined4 param_2)|CPtrList.cpp|ok
 6021b4|CPtrList::GetNodeAtZeroBasedIndex|undefined __thiscall GetNodeAtZeroBasedIndex(int param_1)|CPtrList.cpp|ok
@@ -417,7 +418,6 @@ address|name|prototype|file|status
 58bf50|TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50|undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(short param_1)|TArmyPlacard.cpp|ok
 58bfe0|TArmyPlacard::OrphanTiny_ReturnZero_0048a730|undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)|TArmyPlacard.cpp|ok
 58c140|TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject|undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)|TArmyPlacard.cpp|ok
-485f70|TArmyPlayer::OrphanRetStub_0059ad90|undefined __thiscall OrphanRetStub_0059ad90(void)|TArmyPlayer.cpp|ok
 4a0b20|TArmyPlayer::InitializeUiTransientObjectRegistry|undefined InitializeUiTransientObjectRegistry()|TArmyPlayer.cpp|ok
 59b140|TArmyPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059b140|undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059b140(byte param_1)|TArmyPlayer.cpp|ok
 59b170|TArmyPlayer::CreateTArmyPlayerInstance|undefined __thiscall CreateTArmyPlayerInstance(void)|TArmyPlayer.cpp|ok
@@ -634,7 +634,7 @@ address|name|prototype|file|status
 53a7b0|TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget|undefined __thiscall HandleBlockadePortMissionActionType2ForBeachheadTarget(int param_1, int param_2, int param_3)|TBeachheadMission.cpp|ok
 53a940|TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady|undefined __thiscall ClearBlockadePortMissionChildOrderLinksIfReady(void)|TBeachheadMission.cpp|ok
 486f90|TBehavior::CreateTBehaviorInstance|undefined __thiscall CreateTBehaviorInstance(void)|TBehavior.cpp|ok
-4871c0|TBehavior::GetTBehaviorClassNamePointer|undefined __thiscall GetTBehaviorClassNamePointer(void)|TBehavior.cpp|ok
+4871c0|TBehavior::GetRuntimeClass|CRuntimeClass * __thiscall GetRuntimeClass(void)|TBehavior.cpp|ok
 4871e0|TBehavior::ConstructTBehaviorBaseState|undefined __thiscall ConstructTBehaviorBaseState(void)|TBehavior.cpp|ok
 487210|TBehavior::DestructTBehaviorAndMaybeFree|undefined __thiscall DestructTBehaviorAndMaybeFree(byte param_1)|TBehavior.cpp|ok
 487280|TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280|undefined __thiscall OrphanTiny_SetDwordEcxOffset_8_00487280(undefined4 param_1)|TBehavior.cpp|ok
@@ -826,7 +826,6 @@ address|name|prototype|file|status
 4c69e0|TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0|undefined __thiscall OrphanCallChain_C7_I57_004be5b0(int param_1)|TCityInteriorMinister.cpp|ok
 4c6b60|TCityInteriorMinister::GetTEventHandlerClassNamePointer|undefined __thiscall GetTEventHandlerClassNamePointer(void)|TCityInteriorMinister.cpp|ok
 4c6bf0|TCityInteriorMinister::SetForeignMinisterReadyFlag14|undefined __thiscall SetForeignMinisterReadyFlag14(void)|TCityInteriorMinister.cpp|ok
-606fba|TCityInteriorMinister::SetForeignMinisterReadyFlag14|undefined __thiscall SetForeignMinisterReadyFlag14(void)|TCityInteriorMinister.cpp|ok
 4ba2c0|TCityProductionView::GetTEventHandlerClassNamePointer|undefined __thiscall GetTEventHandlerClassNamePointer(void)|TCityProductionView.cpp|ok
 4ba2e0|TCityProductionView::InitializeCityProductionView|undefined __thiscall InitializeCityProductionView(void)|TCityProductionView.cpp|ok
 4ba360|TCityProductionView::'scalar_deleting_destructor'|undefined __thiscall 'scalar_deleting_destructor'(byte param_1)|TCityProductionView.cpp|ok
@@ -853,10 +852,6 @@ address|name|prototype|file|status
 51c320|TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject|undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, undefined4 param_2)|TCitySiteView.cpp|ok
 51c3b0|TCitySiteView::OrphanRetStub_00596080|undefined __thiscall OrphanRetStub_00596080(void)|TCitySiteView.cpp|ok
 51c760|TCitySiteView::HandleMapClickByInteractionMode|undefined __thiscall HandleMapClickByInteractionMode(void)|TCitySiteView.cpp|ok
-415ce0|TCityTask::OrphanRetStub_0059add0|undefined __thiscall OrphanRetStub_0059add0(void)|TCityTask.cpp|ok
-4798b0|TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit|undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)|TCityTask.cpp|ok
-4798d0|TCityTask::DeserializeCityProductionQueueCommand|undefined __thiscall DeserializeCityProductionQueueCommand(void)|TCityTask.cpp|ok
-485e90|TCityTask::GetTTaskClassNamePointer|undefined __thiscall GetTTaskClassNamePointer(int param_1)|TCityTask.cpp|ok
 487b30|TCityTask::GetTEventHandlerClassNamePointer|undefined __thiscall GetTEventHandlerClassNamePointer(uint param_1, uint param_2)|TCityTask.cpp|ok
 487b60|TCityTask::ApplyProductionDistributionToCitySlots|undefined __thiscall ApplyProductionDistributionToCitySlots(int param_1, int param_2, undefined4 param_3)|TCityTask.cpp|ok
 487bd0|TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit|undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(undefined * param_1, int param_2)|TCityTask.cpp|ok
@@ -2251,7 +2246,6 @@ address|name|prototype|file|status
 415d50|TMapDialog::OrphanTiny_ReturnZero_0048a730|int __thiscall OrphanTiny_ReturnZero_0048a730(CityDialogController * pDialog)|TMapDialog.cpp|ok
 415d70|TMapDialog::'scalar_deleting_destructor'|void __thiscall 'scalar_deleting_destructor'(int value)|TMapDialog.cpp|ok
 429450|TMapDialog::'scalar_deleting_destructor'|undefined __thiscall 'scalar_deleting_destructor'(void)|TMapDialog.cpp|ok
-485f90|TMapDialog::OrphanCallChain_C11_I88_004874b0|undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)|TMapDialog.cpp|ok
 48a240|TMapDialog::GetTEventHandlerClassNamePointer|byte __thiscall GetTEventHandlerClassNamePointer(CityDialogController * pDialog)|TMapDialog.cpp|ok
 48a260|TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject|void __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue)|TMapDialog.cpp|ok
 48a2c0|TMapDialog::UpdateControlCachedIntFromWindowText|int __thiscall UpdateControlCachedIntFromWindowText(CityDialogController * pDialog)|TMapDialog.cpp|ok
@@ -2838,10 +2832,16 @@ address|name|prototype|file|status
 572bb0|TNumberedItem::UniversityDialogMethod_00405623|undefined __thiscall UniversityDialogMethod_00405623(void)|TNumberedItem.cpp|ok
 573690|TNumberedItem::OrphanCallChain_C1_I08_00573690|undefined __thiscall OrphanCallChain_C1_I08_00573690(undefined2 param_1, char param_2)|TNumberedItem.cpp|ok
 5736c0|TNumberedItem::OrphanCallChain_C1_I14_005736c0|undefined __thiscall OrphanCallChain_C1_I14_005736c0(ushort param_1, char param_2, char param_3)|TNumberedItem.cpp|ok
+415ce0|TObject::ShallowFree|TObject * __thiscall ShallowFree(void)|TObject.cpp|ok
+4798b0|TObject::Free|void __thiscall Free(void)|TObject.cpp|ok
+4798d0|TObject::ShallowClone|TObject * __thiscall ShallowClone(void)|TObject.cpp|ok
 479ed0|TObject::OrphanVtableAssignStub_00479ed0|undefined OrphanVtableAssignStub_00479ed0()|TObject.cpp|ok
 485c90|TObject::CreateTObjectInstance|undefined __thiscall CreateTObjectInstance(int param_1)|TObject.cpp|ok
-485e20|TObject::GetRuntimeClass|undefined GetRuntimeClass()|TObject.cpp|ok
+485e20|TObject::GetRuntimeClass|CRuntimeClass * __thiscall GetRuntimeClass(void)|TObject.cpp|ok
+485e90|TObject::Serialize|void __thiscall Serialize(CArchive * archive)|TObject.cpp|ok
 485f50|TObject::DestructTObjectAndMaybeFree|undefined __thiscall DestructTObjectAndMaybeFree(void)|TObject.cpp|ok
+485f70|TObject::WriteTo|void __thiscall WriteTo(TStream * stream)|TObject.cpp|ok
+485f90|TObject::ReadFrom|void __thiscall ReadFrom(TStream * stream)|TObject.cpp|ok
 491cc0|TObject::RunRegisteredDialogFactoriesByEventCode|int * __thiscall RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)|TObject.cpp|ok
 491d80|TObject::InvokeDialogFactoryFromPacket|int * __thiscall InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)|TObject.cpp|ok
 562140|TOcean::DestroyTPortZoneManager|undefined __thiscall DestroyTPortZoneManager(byte param_1)|TOcean.cpp|ok
@@ -4306,7 +4306,7 @@ address|name|prototype|file|status
 401023|thunk_FinalizeTacticalTurnStateAndQueueEvent232A|void __thiscall thunk_FinalizeTacticalTurnStateAndQueueEvent232A(void)|global_part001.cpp|ok
 401073|thunk_HandleMapClickByInteractionMode|void __thiscall thunk_HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags, undefined2 param_3)|global_part001.cpp|ok
 40108c|thunk_RefreshNationCivilianWorkOrdersForTurn|undefined thunk_RefreshNationCivilianWorkOrdersForTurn()|global_part001.cpp|ok
-4010a0|thunk_NoOpTurnEventStateVtableSlot0C|undefined __thiscall thunk_NoOpTurnEventStateVtableSlot0C(void)|global_part001.cpp|ok
+4010a0|thunk_NoOpTurnEventStateVtableSlot0C|void __thiscall thunk_NoOpTurnEventStateVtableSlot0C(void)|global_part001.cpp|ok
 4010f0|thunk_BuildMapTileActionContextMenu|void __thiscall thunk_BuildMapTileActionContextMenu(void * pMenuDialogState, short nTileIndex)|global_part001.cpp|ok
 401113|thunk_GetBuildingExpansionViewClassName|undefined __thiscall thunk_GetBuildingExpansionViewClassName(void)|global_part001.cpp|ok
 401190|thunk_ConstructUiPlanetListResourceEntry|undefined __thiscall thunk_ConstructUiPlanetListResourceEntry(void)|global_part001.cpp|ok
@@ -4450,7 +4450,7 @@ address|name|prototype|file|status
 40346d|thunk_ResetLocalUiStateAndPostTurnEvent5E5|undefined thunk_ResetLocalUiStateAndPostTurnEvent5E5()|global_part001.cpp|ok
 4034a9|thunk_SerializeCityProductionQueueCommand|void __thiscall thunk_SerializeCityProductionQueueCommand(void * pArchive)|global_part001.cpp|ok
 403512|thunk_ConstructPictureScreenResourceEntry|undefined __thiscall thunk_ConstructPictureScreenResourceEntry(void)|global_part001.cpp|ok
-403517|thunk_HandleCityDialogNoOpSlot18|undefined __thiscall thunk_HandleCityDialogNoOpSlot18(void)|global_part001.cpp|ok
+403517|thunk_HandleCityDialogNoOpSlot18|void __thiscall thunk_HandleCityDialogNoOpSlot18(TStream * stream)|global_part001.cpp|ok
 403553|thunk_ReinitializeGameFlowAndPostTurnEventCode|undefined thunk_ReinitializeGameFlowAndPostTurnEventCode()|global_part001.cpp|ok
 403643|thunk_PushUiResourcePoolNode|undefined thunk_PushUiResourcePoolNode()|global_part001.cpp|ok
 403670|thunk_ReleaseResourceStreamIfNotNull|undefined thunk_ReleaseResourceStreamIfNotNull()|global_part001.cpp|ok
@@ -4589,7 +4589,7 @@ address|name|prototype|file|status
 4057cc|thunk_AddPendingTurnOverlayCode|undefined __thiscall thunk_AddPendingTurnOverlayCode(short param_1)|global_part002.cpp|ok
 4057f9|thunk_HandleTacticalCommandTag_retr|undefined thunk_HandleTacticalCommandTag_retr()|global_part002.cpp|ok
 405803|thunk_RecomputeMapOrderChildAggregateMetric|void __thiscall thunk_RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)|global_part002.cpp|ok
-40583a|thunk_HandleCityDialogNoOpSlot14|undefined __thiscall thunk_HandleCityDialogNoOpSlot14(void)|global_part002.cpp|ok
+40583a|thunk_HandleCityDialogNoOpSlot14|void __thiscall thunk_HandleCityDialogNoOpSlot14(TStream * stream)|global_part002.cpp|ok
 405853|thunk_GetArmoryViewClassName|undefined __thiscall thunk_GetArmoryViewClassName(void)|global_part002.cpp|ok
 405880|thunk_BlitStrategicMapUnitActivityOverlayFrame|void __thiscall thunk_BlitStrategicMapUnitActivityOverlayFrame(int * pDstSurface, short nOverlayRowIndex, short nDstXOffset, short nDstYOffsetFromBottom)|global_part002.cpp|ok
 4058a8|thunk_RefreshTradeMoveBarAndTurnControl|undefined __thiscall thunk_RefreshTradeMoveBarAndTurnControl(void)|global_part002.cpp|ok
@@ -4614,7 +4614,7 @@ address|name|prototype|file|status
 405ba0|thunk_InitializeGlobalRuntimeSystemsFromConfig|undefined thunk_InitializeGlobalRuntimeSystemsFromConfig()|global_part002.cpp|ok
 405bb4|thunk_InvokeStrategicMapViewMethod6C|undefined __thiscall thunk_InvokeStrategicMapViewMethod6C(void)|global_part002.cpp|ok
 405c40|thunk_ClearUiResourceContext|undefined thunk_ClearUiResourceContext()|global_part002.cpp|ok
-405c59|thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer|undefined __thiscall thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer(void)|global_part002.cpp|ok
+405c59|thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer|TObject * __thiscall thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer(void)|global_part002.cpp|ok
 405c72|thunk_DestructEngineerDialogBaseState|void __thiscall thunk_DestructEngineerDialogBaseState(void)|global_part002.cpp|ok
 405cef|thunk_ZeroUiResourceContextStyleBytes|undefined thunk_ZeroUiResourceContextStyleBytes()|global_part002.cpp|ok
 405d3a|thunk_GetBlockadePortMissionClassName|undefined thunk_GetBlockadePortMissionClassName()|global_part002.cpp|ok
@@ -4746,7 +4746,7 @@ address|name|prototype|file|status
 407c16|thunk_GetCityDialogValueViaChildSlot58|undefined __thiscall thunk_GetCityDialogValueViaChildSlot58(void)|global_part002.cpp|ok
 407c34|thunk_ResolveMapOrderPairConflictStep|void __cdecl thunk_ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)|global_part002.cpp|ok
 407c43|thunk_ConstructUiWindowResourceEntryBase|undefined __thiscall thunk_ConstructUiWindowResourceEntryBase(void)|global_part002.cpp|ok
-407c57|thunk_HandleTurnEventVtableSlot08ConditionalDispatch|undefined __thiscall thunk_HandleTurnEventVtableSlot08ConditionalDispatch(int param_1)|global_part002.cpp|ok
+407c57|thunk_HandleTurnEventVtableSlot08ConditionalDispatch|void __thiscall thunk_HandleTurnEventVtableSlot08ConditionalDispatch(CArchive * archive)|global_part002.cpp|ok
 407cca|thunk_NumericEntryMethod_00407cca|undefined __thiscall thunk_NumericEntryMethod_00407cca(void)|global_part002.cpp|ok
 407d1f|thunk_RequeueMapOrderEntry|void __thiscall thunk_RequeueMapOrderEntry(int * pMapOrderEntry)|global_part002.cpp|ok
 407d3d|thunk_ProcessTacticalUnitState1TurnStep|undefined thunk_ProcessTacticalUnitState1TurnStep()|global_part002.cpp|ok
@@ -4783,11 +4783,11 @@ address|name|prototype|file|status
 408594|thunk_ReturnTrueStub|undefined thunk_ReturnTrueStub()|global_part002.cpp|ok
 408611|thunk_HandleTurnEventDialogFactorySlot78|undefined __thiscall thunk_HandleTurnEventDialogFactorySlot78(void)|global_part002.cpp|ok
 408620|thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive|undefined __thiscall thunk_ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void)|global_part002.cpp|ok
-408625|thunk_NoOpTurnEventStateVtableSlot10|undefined __thiscall thunk_NoOpTurnEventStateVtableSlot10(void)|global_part002.cpp|ok
+408625|thunk_NoOpTurnEventStateVtableSlot10|void __thiscall thunk_NoOpTurnEventStateVtableSlot10(undefined4 dc)|global_part002.cpp|ok
 408639|thunk_InitializeCityViewActionButtons|void __thiscall thunk_InitializeCityViewActionButtons(void)|global_part002.cpp|ok
 408657|thunk_ForwardEngineerDialogCommandToChildSlot40|undefined __thiscall thunk_ForwardEngineerDialogCommandToChildSlot40(undefined4 param_1, undefined4 param_2, undefined4 param_3)|global_part002.cpp|ok
 408670|thunk_DispatchLocalizedUiMessageWithTemplate|undefined thunk_DispatchLocalizedUiMessageWithTemplate()|global_part002.cpp|ok
-408684|thunk_InvokeObjectVtableMethod24|undefined __thiscall thunk_InvokeObjectVtableMethod24(void)|global_part002.cpp|ok
+408684|thunk_InvokeObjectVtableMethod24|TObject * __thiscall thunk_InvokeObjectVtableMethod24(void)|global_part002.cpp|ok
 408710|thunk_ConstructDataLibraryLoadState|undefined __thiscall thunk_ConstructDataLibraryLoadState(void)|global_part002.cpp|ok
 408715|thunk_PostTurnEventCodeMessage2420|undefined thunk_PostTurnEventCodeMessage2420()|global_part002.cpp|ok
 408724|thunk_NoOpTurnEventStateVtableSlotFC|undefined __thiscall thunk_NoOpTurnEventStateVtableSlotFC(void)|global_part002.cpp|ok

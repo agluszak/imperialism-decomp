@@ -67,8 +67,8 @@ void THandleStream::OrphanCallChain_C1_I06_00488ab0()
   
   if (*(int *)&this->field_0x4 != 0) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
-    (*pTVar1[6].ConstructTStreamBaseState)(CONCAT31(extraout_var,uVar2));
+    uVar2 = (*pTVar1->OrphanTiny_ReturnZero_00488ad0)();
+    (*pTVar1->OrphanRetStub_00488e50)(CONCAT31(extraout_var,uVar2));
   }
   if (this != (THandleStream *)0x0) {
     (*this->vftable->ConstructTStreamBaseState)(1);
@@ -177,8 +177,8 @@ void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
   iVar3 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
   if (iVar3 < param_2) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0x18].ConstructTStreamBaseState)(param_2 - iVar3);
-    (*pTVar1[6].ConstructTStreamBaseState)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
+    uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins06_00489720)(param_2 - iVar3);
+    (*pTVar1->OrphanRetStub_00488e50)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
   }
   pvVar4 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
   MoveMemoryOverlapSafe((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);

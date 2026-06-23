@@ -73,7 +73,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
   *unaff_FS_OFFSET = &uStack_c;
   uStack_4 = 0;
   uStack_14 = 0x5d5a95;
-  uVar1 = (*this->vftable[7].GetTViewMgrClassNamePointer)();
+  uVar1 = (*this->vftable->ClassifyTurnStateForOverlayMode)();
   uStack_18 = CONCAT31(extraout_var,uVar1);
   uStack_14 = 0;
   uStack_1c = in_stack_00000008;
@@ -270,7 +270,7 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
       if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
         (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
       }
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x232b);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232b);
     }
     else {
       if (nActionTagOrStartTick != 0x7261696c) goto finalize_engineer_action_and_refresh;
@@ -309,7 +309,7 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
       if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
         (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
       }
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x232a);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232a);
     }
   }
   else {
@@ -349,14 +349,14 @@ bool TViewMgr::HandleEngineerConstructionAction(short nTileIndex, undefined2 par
     dwSfxToken = 0x2329;
     pTVar5 = g_pSfxPlaybackSystem->vftable;
 LAB_004d40cd:
-    (*pTVar5[0x17].GetTEventHandlerClassNamePointer)(dwSfxToken);
+    (**(code **)&pTVar5[1].field_0x10)(dwSfxToken);
   }
   wActionFinalizeFlags = 0x101;
 finalize_engineer_action_and_refresh:
                     /* Common finalize path: optional target-link, short UI pump, and panel refresh.
                         */
   if ((char)wActionFinalizeFlags != '\0') {
-    (*this->vftable[6].GetTViewMgrClassNamePointer)();
+    (*this->vftable->UpdatePaletteIndexFromTurnEventCode)();
     iVar4 = GetTickCountDiv16();
     do {
       PumpUiMessagesAndBackgroundTasks(1);
@@ -529,7 +529,7 @@ void TViewMgr::ReleaseTurnEventDialogIfPresent()
 
 {
   if (this != (TViewMgr *)0x0) {
-    (*this->vftable->DestroyTurnEventState)(1);
+    (*this->vftable->~TViewMgr)(1);
   }
   return;
 }
@@ -547,7 +547,9 @@ void TViewMgr::ReleaseTurnEventDialogIfPresent()
 void TViewMgr::DeserializeTurnEventDispatchState()
 
 {
-  TObject::ReadFrom((TMapDialog *)this);
+  TStream *in_stack_00000004;
+  
+  TObject::ReadFrom((TObject *)this,in_stack_00000004);
   *(undefined2 *)&this->field_0xec = 0;
   *(undefined2 *)&this->field_0x4 = 0;
   *(undefined4 *)&this->field_0x8 = DAT_006a5b58;
@@ -569,7 +571,9 @@ void TViewMgr::DeserializeTurnEventDispatchState()
 void TViewMgr::SerializeTurnEventDispatchState()
 
 {
-  TObject::WriteTo((TArmyPlayer *)this);
+  TStream *in_stack_00000004;
+  
+  TObject::WriteTo((TObject *)this,in_stack_00000004);
   return;
 }
 
@@ -639,7 +643,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog()
   
   cVar3 = IsTurnCooldownCounterActiveOrResetFlag();
   if (cVar3 == '\0') {
-    uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0x7e5);
+    uVar4 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x7e5);
     piVar6 = (int *)CONCAT31(extraout_var,uVar4);
     if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -741,7 +745,7 @@ void TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(undefined4 *p
   *unaff_FS_OFFSET = &uStack_c;
   local_4 = 0;
   uStack_14 = 0x5d5a95;
-  uVar1 = (*this->vftable[7].GetTViewMgrClassNamePointer)();
+  uVar1 = (*this->vftable->ClassifyTurnStateForOverlayMode)();
   uStack_18 = CONCAT31(extraout_var,uVar1);
   uStack_14 = 0;
   uStack_1c = in_stack_00000008;

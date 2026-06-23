@@ -120,9 +120,9 @@ void TPopulationMgr::OrphanCallChain_C2_I24_004b5e80()
   int iVar5;
   
   pTVar4 = this->vftable;
-  (*pTVar4[5].GetTPopulationMgrClassNamePointer)
+  (*pTVar4->OrphanLeaf_NoCall_Ins09_004b5d10)
             (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
-  (*pTVar4[7].GetTPopulationMgrClassNamePointer)();
+  (*pTVar4->Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0)();
   iVar5 = *(int *)&this->field_0x14;
   sVar1 = *(short *)(iVar5 + 8);
   sVar2 = *(short *)(iVar5 + 6);
@@ -296,7 +296,7 @@ void TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed
     uVar6 = ((short)uVar11 < 1) - 1 & uVar11;
     *(float *)&this->field_0xc = *(float *)&this->field_0xc - (float)(int)(short)uVar11;
   }
-  (*this->vftable[5].GetTPopulationMgrClassNamePointer)
+  (*this->vftable->OrphanLeaf_NoCall_Ins09_004b5d10)
             (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
   if ((short)local_10 != 0) {
     (**(code **)(**(int **)&this->field_0x14 + 0x28))(*(undefined4 *)&this->field_0x18,local_10);
@@ -664,7 +664,7 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int *param
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
@@ -687,7 +687,7 @@ void TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int *param
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x8,2);
   (*pcVar1)(&this->field_0x1c,2);
@@ -721,7 +721,7 @@ void TPopulationMgr::OrphanCallChain_C4_I28_004b6990()
   }
   *(undefined4 *)&this->field_0x18 = 0;
   if (this != (TPopulationMgr *)0x0) {
-    (*this->vftable->ConstructTPopulationMgrBaseState)(1);
+    (*this->vftable->~TPopulationMgr)(1);
   }
   return;
 }

@@ -84,7 +84,7 @@ _OrphanCallChain_C1_I08_0058c330__YIXPAUNumberedArrowButtonState___Z_imperialism
 {
   *(undefined2 *)&this->field_0x84 = param_1;
   if (param_2 != '\0') {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -173,9 +173,9 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
   
   sVar4 = 0;
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x2d].slot_0x04)();
+  cVar2 = (*pTVar1->PointInBoundsAndActionable)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x34].slot_0x04)(&stack0xffffffec);
+    (*pTVar1->DeserializeCityProductionQueueCommand)(&stack0xffffffec);
     sVar3 = *(short *)(in_stack_00000010 + 4) - sStack_10;
     if ((sVar3 < 1) || (this->field38 / 2 <= (int)sVar3)) {
       if ((this->field38 / 2 < (int)sVar3) && ((int)sVar3 < this->field38)) {
@@ -189,25 +189,25 @@ TNumberedArrowButton::QueueCityRecruitmentSupportCommandsIfDeficit
   if (-1 < unaff_retaddr) {
     if (unaff_retaddr < 2) {
       if (*(short *)&this->field_0x86 != sVar4) {
-        (*pTVar1[0x1c].slot_0x04)();
-        (*pTVar1[0x25].slot_0x04)(&stack0xffffffec);
+        (*pTVar1->VTableSlot39)();
+        (*pTVar1->OrphanRetStub_0059add0_4b)(&stack0xffffffec);
         *(short *)&this->field_0x86 = sVar4;
       }
-      (*pTVar1[0x22].slot_0x04)(0);
+      (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
     }
     else if ((unaff_retaddr == 2) && (sVar4 != 0)) {
       if (*(short *)&this->field_0x86 != 0) {
-        (*pTVar1[0x1c].slot_0x04)();
-        (*pTVar1[0x25].slot_0x04)(&stack0xffffffec);
+        (*pTVar1->VTableSlot39)();
+        (*pTVar1->OrphanRetStub_0059add0_4b)(&stack0xffffffec);
         *(undefined2 *)&this->field_0x86 = 0;
       }
       if (sVar4 == 2) {
-        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(100,this,0);
-        (*pTVar1[0x22].slot_0x04)(0);
+        (*this->ownerContext->vftable->DispatchEvent)(100,this,0);
+        (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
         return;
       }
-      (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x65,this,0);
-      (*pTVar1[0x22].slot_0x04)(0);
+      (*this->ownerContext->vftable->DispatchEvent)(0x65,this,0);
+      (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
       return;
     }
   }
@@ -225,7 +225,7 @@ TNumberedArrowButton::SetForeignMinisterReadyFlag14
 {
   char cVar1;
   
-  cVar1 = (*this->vftable[0x1d].slot_0x04)();
+  cVar1 = (*this->vftable->VTableSlot3B)();
   if (cVar1 != '\0') {
     if ((int)param_1[1] < this->field38 / 2) {
       this->field4e = 0x100;

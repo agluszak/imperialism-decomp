@@ -97,7 +97,7 @@ void TTradePageSellView::ConstructTTradePageSellViewBaseState(short param_1)
   local_1c = 0x30;
   if (param_1 == *(short *)&this->field_0x84) goto LAB_005bce9f;
   *(short *)&this->field_0x84 = param_1;
-  (*this->vftable[0x36].slot_0x04)();
+  (*this->vftable->OrphanCallChain_C4_I18_0056ff90)();
   if (param_1 == -1) {
 LAB_005bcdec:
     this_01 = (TTextLine *)AllocateWithFallbackHandler(0x20);
@@ -174,9 +174,9 @@ LAB_005bcdec:
     } while (-1 < iVar6);
   }
   pTVar2 = this->vftable;
-  (*pTVar2[0x35].slot_0x04)();
-  (*pTVar2[0x36].GetTEventHandlerClassNamePointer)(1);
-  (*pTVar2[0x1c].slot_0x04)();
+  (*pTVar2->OrphanCallChain_C8_I82_0056fc80)();
+  (*pTVar2->OrphanCallChain_C8_I118_0056fdb0)(1);
+  (*pTVar2->VTableSlot39)();
 LAB_005bce9f:
   *unaff_FS_OFFSET = local_c;
   return;

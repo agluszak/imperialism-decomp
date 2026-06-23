@@ -178,7 +178,7 @@ void TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName()
   SaveSettingValueFromPointerByKey(&local_10,s_PlayerName_0069801c);
   local_4 = 0xffffffff;
   CString::~CString(&local_10);
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,0);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,0);
   g_pGameFlowState = (Config *)0x0;
   (**(code **)(*DAT_006a6014 + 0x1c))();
   DAT_006a6014 = (int *)0x0;
@@ -215,7 +215,6 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   undefined4 *unaff_FS_OFFSET;
   CString CStack_6c;
   int *piStack_68;
-  int *piStack_64;
   CString local_50;
   code *local_4c;
   int iStack_48;
@@ -230,17 +229,15 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   puStack_8 = &LAB_006348b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  piStack_64 = param_1;
   piStack_68 = (int *)0x542c0c;
   local_44 = this;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   local_50.m_pchData = (char *)g_apNationStates;
   puVar11 = (undefined4 *)&this->field_0xbc;
   local_4c = *(code **)(*param_1 + 0x3c);
   pcVar2 = *(code **)(*param_1 + 0x70);
   do {
     piVar1 = puVar11 + -0x1d;
-    piStack_64 = (int *)0x4;
     CStack_6c.m_pchData = (char *)0x542c3a;
     piStack_68 = piVar1;
     (*local_4c)();
@@ -268,7 +265,6 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
     local_50.m_pchData = (char *)(unaff_EBP + 1);
     puVar11 = puVar11 + 1;
   } while ((int)local_50.m_pchData < 0x6a438c);
-  piStack_64 = (int *)0x20;
   piStack_68 = (int *)&local_44->field_0xb0;
   CStack_6c.m_pchData = (char *)0x542cbe;
   (*pcVar2)();
@@ -287,11 +283,10 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   uVar6 = UiRuntimeContext::GetActiveNationId();
   local_50.m_pchData._0_1_ = uVar6;
-  piStack_64 = (int *)0x1f;
   SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(0xffffffff);
   local_4c = (code *)0x7265706f;
   iStack_48 = (int)sVar7 + (short)CONCAT31(extraout_var,uVar5) * 8;
-  EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
+  EnqueueOrSendTurnEventPacketToNation(&stack0xffffff9c,0);
   if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
     *(undefined4 *)&pTVar3->field_0xd8 = 0x696e6974;
     NoOpDialogModeTagChangedHook(1);
@@ -303,7 +298,6 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   }
   *(undefined4 *)(&pTVar3->field_0xbc + iVar10 * 4) = 0x62757379;
   uVar6 = UiRuntimeContext::GetActiveNationId();
-  piStack_64 = (int *)0x25;
   ppcVar12 = &local_4c;
   for (iVar9 = 7; iVar9 != 0; iVar9 = iVar9 + -1) {
     *ppcVar12 = (code *)0x756e6b6e;
@@ -311,14 +305,13 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   }
   (&local_4c)[iVar10] = (code *)0x62757379;
   local_50.m_pchData._0_1_ = uVar6;
-  EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
+  EnqueueOrSendTurnEventPacketToNation(&stack0xffffff9c,0);
   *(undefined4 *)&pTVar3->field_0xd8 = 0x676f696e;
   sVar7 = UiRuntimeContext::GetActiveNationId();
   local_50.m_pchData._0_1_ = UiRuntimeContext::GetActiveNationId();
-  piStack_64 = (int *)0x1f;
   local_4c = (code *)0x6e616d65;
   iStack_48 = 0xffffffff;
-  EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar7 == -3);
+  EnqueueOrSendTurnEventPacketToNation(&stack0xffffff9c,sVar7 == -3);
   uStack_28 = 0xffffffff;
   CString::~CString(&CStack_6c);
   *unaff_FS_OFFSET = uStack_30;
@@ -339,7 +332,7 @@ void TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(int *param
   undefined1 *puVar5;
   
   piVar4 = param_1;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   puVar5 = &this->field_0x78;
   param_1 = (int *)0x7;

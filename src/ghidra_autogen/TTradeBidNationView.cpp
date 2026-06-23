@@ -106,7 +106,7 @@ void TTradeBidNationView::OrphanCallChain_C11_I88_004874b0()
   SetQuickDrawTextOriginWithContextOffset(0x28);
   THQButton::DrawTextWithCachedQuickDrawStyleState();
   if ((*(short *)&this->field_0x62 < 7) && (*(int *)&g_pLocalizationTable->field_0x8 == 7)) {
-    (*g_apNationStates[*(short *)&this->field_0x62]->vftable[0xe].slot_0x04)();
+    (*g_apNationStates[*(short *)&this->field_0x62]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00)();
     FormatStringWithVarArgsToSharedRef(&local_34,&g_szDecimalFormat);
     sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_34);
     SetQuickDrawTextOriginWithContextOffset

@@ -98,7 +98,7 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState
   puStack_8 = &LAB_00630bfa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  switch(param_2->slot_0x04) {
+  switch(param_2->~TLineData) {
   case (TLineData_slot_0x04_0x04 *)0x0:
   case (TLineData_slot_0x04_0x04 *)0x3:
   case (TLineData_slot_0x04_0x04 *)0x4:
@@ -125,7 +125,7 @@ switchD_004b071e_default:
   CString::CString(&local_20);
   iVar3 = 0;
   local_4._0_1_ = 1;
-  if (0 < *(short *)((int)&param_2[0x49].GetTLineDataClassNamePointer + param_3 * 2 + 2)) {
+  if (0 < *(short *)((int)&param_2[0xc].Serialize + param_3 * 2 + 2)) {
     pcVar1 = *(code **)(*param_1 + 0x1a0);
     do {
       pTVar2 = (TLineData *)AllocateWithFallbackHandler(0x18);
@@ -143,13 +143,11 @@ switchD_004b071e_default:
       local_10 = 0x31;
       TLineData::SetLineDataRowAndBounds(pTVar2,0,0,&local_14);
       pTVar2[1].vftable = param_2;
-      *(TLineData_GetTLineDataClassNamePointer_0x00 **)&pTVar2[1].field_0x4 =
-           (&param_2[0x4a].GetTLineDataClassNamePointer)[param_3] + iVar4;
+      *(_vslot_fn **)&pTVar2[1].field_0x4 = (&param_2[0xc].Dump)[param_3] + iVar4;
       (*pcVar1)(pTVar2);
       iVar3 = iVar3 + 1;
       iVar4 = iVar4 + 0x2c;
-    } while (iVar3 < *(short *)((int)&param_2[0x49].GetTLineDataClassNamePointer + param_3 * 2 + 2))
-    ;
+    } while (iVar3 < *(short *)((int)&param_2[0xc].Serialize + param_3 * 2 + 2));
   }
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_20);

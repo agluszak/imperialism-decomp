@@ -103,11 +103,11 @@ void TTraderAmtBar::OrphanLeaf_NoCall_Ins07_004d8920()
     *(undefined2 *)&this->field_0x62 = 0;
   }
   else {
-    uVar2 = (*pTVar1->vftable[0xf].GetTCountryClassNamePointer)(iVar4);
+    uVar2 = (*pTVar1->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar4);
     *(short *)&this->field_0x62 =
          (short)(((int)(short)CONCAT31(extraout_var,uVar2) * this->field34) / (int)sVar3);
   }
-  uVar2 = (*pTVar1->vftable[0xf].slot_0x04)(iVar4);
+  uVar2 = (*pTVar1->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)(iVar4);
   if (*(short *)&pTVar1->field_0xa4 == 0) {
     *(undefined2 *)&this->field_0x60 = 0;
   }
@@ -150,7 +150,7 @@ undefined2 TTraderAmtBar::ApplyMoveClamp(undefined2 param_1, short param_2)
   if (0 < param_2) {
     sVar2 = UiRuntimeContext::GetActiveNationId();
     if ((int)param_2 < this->field34 / (int)*(short *)&g_apNationStates[sVar2]->field_0xa4) {
-      uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x53656c6c);
+      uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)(0x53656c6c);
       if (CONCAT31(extraout_var,uVar1) != 0) {
         param_1 = 1;
       }
@@ -196,17 +196,17 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
   local_4 = 0;
   ApplyHitRegionToClipState(local_54);
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->VTableSlot3B)();
   if (cVar2 != '\0') {
-    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
     if (cVar2 != '\0') {
       pLVar5 = &LStack_2c;
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(pLVar5);
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)(pLVar5);
       RStack_44.right = LStack_2c;
       RStack_44.top = LStack_30;
       RStack_44.bottom = LStack_28;
       uStack_34 = auStack_24[0];
-      (*pTVar1[0x26].GetTEventHandlerClassNamePointer)(&RStack_44.top);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4c)(&RStack_44.top);
       InitializeBrushStateVtableAndClearHandle();
       local_54 = &CBrush::_vftable_;
       uStack_c._0_1_ = 1;
@@ -220,10 +220,10 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       DeleteObject();
       local_54 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       uStack_c = CONCAT31(uStack_c._1_3_,3);
-      (*pTVar1[0x25].slot_0x04)(auStack_24);
+      (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_24);
       uStack_50 = DAT_006a4450;
       uStack_4c = DAT_006a4454;
-      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&uStack_50);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&uStack_50);
       if (0 < *(short *)&this->field_0x60) {
         SetQuickDrawTextOriginWithContextOffset(0,0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
@@ -233,7 +233,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         ResetQuickDrawStrokeState();
       }
       SnapshotHitRegionToClipCache(pLVar5);
-      uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
       local_4 = local_4 & 0xffffff00;
       TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_00,0);

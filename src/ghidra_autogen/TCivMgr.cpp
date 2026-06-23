@@ -49,31 +49,35 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(int *pUnitOrderEntry)
     switch((short)pUnitOrderEntry[1]) {
     case 0:
     case 8:
-      (*g_pGlobalMapState->vftable[0x12].slot_0x04)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins83_005155c0)(pUnitOrderEntry);
       return;
     case 1:
-      (*g_pGlobalMapState->vftable[0x11].slot_0x04)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330)
+                (pUnitOrderEntry);
       return;
     case 2:
     case 3:
     case 5:
-      (*g_pGlobalMapState->vftable[0x13].slot_0x04)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins69_00515890)(pUnitOrderEntry);
       return;
     case 4:
-      (*g_pGlobalMapState->vftable[0x14].slot_0x04)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB)
+                (pUnitOrderEntry);
       return;
     case 6:
-      (*g_pGlobalMapState->vftable[0x13].GetTMapMgrClassNamePointer)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->MarkType5NeighborTilesUnavailableByNationCapability)
+                (pUnitOrderEntry);
       return;
     case 7:
-      (*g_pGlobalMapState->vftable[0x12].GetTMapMgrClassNamePointer)(pUnitOrderEntry);
+      (*g_pGlobalMapState->vftable->WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460)
+                (pUnitOrderEntry);
       return;
     default:
-      (*g_pGlobalMapState->vftable[0x10].GetTMapMgrClassNamePointer)();
+      (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins09_00514ef0)();
       return;
     }
   }
-  (*g_pGlobalMapState->vftable[0x10].GetTMapMgrClassNamePointer)();
+  (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins09_00514ef0)();
   return;
 }
 

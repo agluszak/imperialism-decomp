@@ -164,7 +164,7 @@ void TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920()
   
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x84 = this->ownerContext;
-  (*this->ownerContext->vftable[1].slot_0x04)();
+  (**(code **)&this->ownerContext->vftable->field_0xc)();
   iStack_8 = this->field34;
   *(undefined2 *)&this->field_0x88 = 0x12;
   *(undefined2 *)&this->field_0x8c = 0x12;
@@ -225,14 +225,14 @@ void TScrollBarView::_scalar_deleting_destructor_(POINT *param_1)
   }
   iVar1 = param_1->y;
   if ((*(short *)&this->field_0x88 <= iVar1) && (iVar1 < *(short *)&this->field_0x8c)) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     AdjustCityDialogScrollRangeByDeltaAndClamp
               (0,CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x84 + 0x38)));
     return;
   }
   if ((iVar1 <= *(short *)&this->field_0x8a + 0x12) && (*(short *)&this->field_0x8c + 0x12 < iVar1))
   {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     AdjustCityDialogScrollRangeByDeltaAndClamp(0,-*(short *)(*(int *)&this->field_0x84 + 0x38));
   }
   return;

@@ -3,21 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: CDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
-// GHIDRA_NAME CDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall TShipBuildingTask::ConstructTTaskBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
-
-/* No-op virtual slot stub (returns immediately). */
-
-void CDocument::ConstructTTaskBaseState()
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004796A0
 // GHIDRA_NAME CDocument::SerializeTMinisterBaseOrderArrayHeader
 // GHIDRA_PROTO undefined __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(void)

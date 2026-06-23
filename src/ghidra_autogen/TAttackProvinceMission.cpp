@@ -18,7 +18,7 @@ TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
   
   TVar2 = SUB41(param_2,0);
   if (param_2 == 1) {
-    cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+    cVar1 = (*g_pGlobalMapState->vftable->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext)
                       (param_1,CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)(this + 0xc)));
     if (cVar1 != '\0') {
       TVar2 = (TAttackProvinceMission)0x0;
@@ -146,7 +146,7 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
   int iVar2;
   
   this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable[1].slot_0x04)();
+  (*this_00->vftable->ConstructTTaskBaseState)();
   TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
             ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x30),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
@@ -340,8 +340,8 @@ undefined4 TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass()
     *(undefined2 *)(this + 0x14) = 0xffff;
     return 0;
   }
-  uVar2 = (*g_apTerrainTypeDescriptorTable[*(short *)(this + 4)]->vftable[8].
-            GetTCountryClassNamePointer)();
+  uVar2 = (*g_apTerrainTypeDescriptorTable[*(short *)(this + 4)]->vftable->
+            OrphanLeaf_NoCall_Ins06_004d87b0_10)();
   *(short *)(this + 0x14) = (short)CONCAT31(extraout_var,uVar2);
   return CONCAT31(extraout_var,1);
 }

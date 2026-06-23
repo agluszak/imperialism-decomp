@@ -120,7 +120,7 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   CString local_28;
   CString local_24;
   int local_20;
-  TCombatReportView_slot_0x04_0x04 *pTStack_1c;
+  _vslot_fn *p_Stack_1c;
   int local_18;
   int local_14;
   undefined4 uStack_c;
@@ -182,8 +182,8 @@ void TCombatReportView::BuildCombatReportLossesSummaryText(char *param_1)
   CStack_3c.m_pchData = (char *)&local_24;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   CString::AssignFromCStr((CString *)&stack0xffffffd0,s_Report_00699334);
-  pTStack_1c = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTStack_1c)();
+  p_Stack_1c = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Stack_1c)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     iStack_5c = 0x58cada;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -562,7 +562,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   short sVar1;
-  TCombatReportView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -597,16 +597,16 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
       *(undefined2 *)&this->field_0x94 = 0;
       pcVar6 = s_ltitoperssoledro_00698ed0;
       iVar5 = 4;
-      pTVar2 = this->vftable[0x12].slot_0x04;
+      p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       do {
-        uVar3 = (*pTVar2)(*(undefined4 *)pcVar6);
+        uVar3 = (*p_Var2)(*(undefined4 *)pcVar6);
         if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
           (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xa4))(1,1);
         }
         pcVar6 = pcVar6 + 4;
         iVar5 = iVar5 + -1;
       } while (iVar5 != 0);
-      uVar3 = (*pTVar2)(0x70677570);
+      uVar3 = (*p_Var2)(0x70677570);
       if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -617,7 +617,7 @@ TCombatReportView::ReleaseRuntimeSelectionOwnerAndDestroyObject
     else {
       *(short *)&this->field_0x94 = *(short *)&this->field_0x94 + -1;
     }
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x7067646e);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7067646e);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -638,16 +638,16 @@ LAB_0058dbdf:
       *(undefined2 *)&this->field_0x94 = 1;
       pcVar6 = s_ltitoperssoledro_00698ed0;
       iVar5 = 4;
-      pTVar2 = this->vftable[0x12].slot_0x04;
+      p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       do {
-        uVar3 = (*pTVar2)(*(undefined4 *)pcVar6);
+        uVar3 = (*p_Var2)(*(undefined4 *)pcVar6);
         if ((int *)CONCAT31(extraout_var_02,uVar3) != (int *)0x0) {
           (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0xa4))(0,1);
         }
         pcVar6 = pcVar6 + 4;
         iVar5 = iVar5 + -1;
       } while (iVar5 != 0);
-      uVar3 = (*pTVar2)(0x70677570);
+      uVar3 = (*p_Var2)(0x70677570);
       if ((int *)CONCAT31(extraout_var_03,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -659,7 +659,7 @@ LAB_0058dbdf:
       *(short *)&this->field_0x94 = sVar1 + 1;
     }
     if (*(short *)&this->field_0x94 == *(short *)&this->field_0x96) {
-      uVar3 = (*this->vftable[0x12].slot_0x04)(0x7067646e);
+      uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7067646e);
       if ((int *)CONCAT31(extraout_var_04,uVar3) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -674,7 +674,7 @@ LAB_0058dbdf:
     CopyRect(&tStack_1c,&RStack_2c);
     goto LAB_0058dbdf;
   }
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x70616765);
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x70616765);
   if ((int *)CONCAT31(extraout_var_05,uVar3) != (int *)0x0) {
     CString::CString(&CStack_3c);
     iStack_4 = 0;

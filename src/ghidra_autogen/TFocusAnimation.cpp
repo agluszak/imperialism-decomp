@@ -51,7 +51,7 @@ void TFocusAnimation::ConstructTFocusAnimationBaseState()
   iVar1 = *(int *)&this->field_0x10 + 1;
   *(int *)&this->field_0x10 = iVar1;
   if (iVar1 == *(int *)&this->field_0x14) {
-    (*this->vftable[6].slot_0x04)();
+    (**(code **)&this->vftable->field_0x34)();
     *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
     *(undefined4 *)&this->field_0x10 = 0;
     if (*(short *)&this->field_0x8 == *(short *)&this->field_0xa) {
@@ -85,7 +85,7 @@ void TFocusAnimation::DestructTFocusAnimationAndMaybeFree()
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
     uStack_2c = 0;
     uStack_28 = 0;
-    (*this->vftable[5].slot_0x04)(&uStack_2c);
+    (**(code **)&this->vftable->field_0x2c)(&uStack_2c);
     (**(code **)(**(int **)&this->field_0x4 + 0xfc))();
     uStack_4 = 0xffffffff;
     DestroyScopedMapQuickDrawContext();
@@ -104,8 +104,8 @@ void TFocusAnimation::RenderBattleReportInsetWithPaletteShift()
   TFocusAnimationVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[6].GetTAnimationClassNamePointer)();
-  (*pTVar1[7].GetTAnimationClassNamePointer)();
+  (**(code **)&pTVar1->field_0x30)();
+  (**(code **)&pTVar1->field_0x38)();
   return;
 }
 

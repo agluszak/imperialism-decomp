@@ -290,7 +290,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget()
   int *piVar2;
   int iVar3;
   
-  (*this->vftable[8].GetTTacticalBattleClassNamePointer)();
+  (*this->vftable->EvaluateAndResolveTacticalActionAgainstTileOccupant)();
   if (*(int *)&this->field_0x44 == 0) {
     ComputeHexNeighborTileIndices_005A0420
               (*(undefined4 *)(*(int *)&this->field_0x1c + 8),&stack0xffffffe0);

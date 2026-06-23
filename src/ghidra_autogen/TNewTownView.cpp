@@ -75,7 +75,7 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   } while (iVar3 < 0x17);
   pTVar1 = this->vftable;
   iVar6 = iVar6 * 0x20;
-  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     pcStack_60 = (code *)0x4bd8f2;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -87,12 +87,12 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
   piVar10 = aiStack_20;
   (**(code **)(local_3c.left + 0x168))();
   pcStack_60 = (code *)0x4bd942;
-  (*pTVar1[0x25].slot_0x04)();
+  (*pTVar1->OrphanRetStub_0059add0_4b)();
   puStack_64 = auStack_2c;
   pcStack_60 = (code *)0x1;
   aiStack_20[0] = aiStack_20[0] + iVar6;
-  (*pTVar1[0x2d].GetTEventHandlerClassNamePointer)();
-  uVar2 = (*pTVar1[0x12].slot_0x04)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_5a)();
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -134,7 +134,7 @@ void TNewTownView::BuildCityDialogMinisterControls(int *param_1)
       TIconBar::AddCityCommodityIconControl
                 (pTVar5,(int *)this,(int *)&stack0xffffffa4,(int *)&puStack_64,5,5,iVar3 + 700,
                  (int)*psVar9);
-      (*pTVar5->vftable[0x1c].slot_0x04)();
+      (*pTVar5->vftable->VTableSlot39)();
       piVar4 = piVar4 + 8;
     }
     iVar3 = iVar3 + 1;
@@ -180,7 +180,7 @@ void TNewTownView::GetTEventHandlerClassNamePointer()
   CString::CString(&local_10);
   CStack_1c.m_pchData = (char *)0x6e616d65;
   local_4 = 0;
-  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

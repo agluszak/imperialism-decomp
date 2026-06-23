@@ -84,7 +84,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   short sVar1;
-  TSetupRandomMapPicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   int iVar4;
   undefined3 extraout_var;
@@ -161,7 +161,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
       *(short *)&this->field_0x9a = (short)(iVar4 % 7);
     }
     uStack_34 = 0x5770fd;
-    uVar3 = (*this->vftable[0x12].slot_0x04)();
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
     uStack_34 = 0x577106;
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
     ((int *)CONCAT31(extraout_var,uVar3))[0x1b] = (int)*(short *)&this->field_0x9a;
@@ -173,9 +173,9 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_44 = 0x636f756e;
   uStack_48 = 0x57712a;
   RefreshActiveControlThenApplyThemeStyleAndCaption();
-  pTVar2 = this->vftable[0x12].slot_0x04;
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uStack_34 = 0x577142;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   uStack_34 = 0x57714b;
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
   *(undefined2 *)((int *)CONCAT31(extraout_var_00,uVar3) + 0x27) = 0xc;
@@ -185,23 +185,23 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   RebuildGlobalOrderManagersAndCapabilityState();
   uStack_34 = 0x686f7421;
   uStack_38 = 0x577171;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_01,uVar3);
   uStack_38 = 0x57717d;
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   uStack_38 = 0x2b6b;
   uStack_3c = 0xe;
   uStack_40 = 0;
   uStack_44 = 0x577194;
-  (*g_pCursorControlPanel->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+  (*g_pCursorControlPanel->vftable[1].OrphanLeaf_NoCall_Ins07_004d8920)();
   uStack_44 = 0x2b6c;
   uStack_48 = 0x2b6b;
   CStack_4c.m_pchData = (char *)0x5771ac;
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
   CStack_4c.m_pchData = (char *)0x0;
   uStack_50 = 1;
   uStack_54 = 0x5771be;
-  (*g_pCursorControlPanel->vftable[0x38].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)();
   uStack_54 = 0x6d61696e;
   puStack_58 = &g_szEmptyString;
   uStack_5c = 0x5771cd;
@@ -275,7 +275,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
   uStack_54 = 0x74636f75;
   puStack_58 = (undefined4 *)0x5772f1;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar4 = *(int *)CONCAT31(extraout_var_02,uVar3);
   puStack_58 = (undefined4 *)0x5772fa;
   (**(code **)(iVar4 + 0xc))();
@@ -293,7 +293,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar4 + 0x1cc))();
   CStack_64.m_pchData = (char *)0x6d617020;
   pTStack_68 = (TCommand *)0x57732b;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   pTStack_68 = (TCommand *)0x577334;
   (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0xc))();
   pTStack_68 = (TCommand *)0x20;
@@ -320,11 +320,11 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   pTVar5[1].field_0x4 = 1;
   aiStack_70[1] = 0x57739f;
   pTStack_68 = pTVar5;
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
   aiStack_70[1] = 0;
   aiStack_70[0] = 1;
-  (*g_pCursorControlPanel->vftable[0x38].slot_0x04)();
-  uVar3 = (*pTVar2)();
+  (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)();
+  uVar3 = (*p_Var2)();
   piVar8 = (int *)CONCAT31(extraout_var_04,uVar3);
   (**(code **)(*piVar8 + 0xc))();
   piVar8[0x18] = *(int *)(g_pStrategicMapViewSystem + 0x680);
@@ -370,7 +370,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   ppuStack_90 = (undefined4 **)0x5774ed;
   RefreshActiveControlThenApplyThemeStyleAndCaption();
   pCStack_7c = (CString *)0x5774f9;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar8 = (int *)CONCAT31(extraout_var_05,uVar3);
   pCStack_7c = (CString *)0x577502;
   (**(code **)(*piVar8 + 0xc))();
@@ -381,7 +381,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   pCStack_7c = (CString *)0x64696674;
   *(undefined2 *)(piVar8 + 0x24) = 0x2b6b;
   pCStack_80 = (CString *)0x57752d;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   CStack_64.m_pchData = *(char **)CONCAT31(extraout_var_06,uVar3);
   pCStack_80 = (CString *)0x57753b;
   (**(code **)(CStack_64.m_pchData + 0xc))();
@@ -406,7 +406,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(CStack_64.m_pchData + 0x1c8))();
   pCStack_88 = (CString *)0x746e616d;
   CStack_8c.m_pchData = (char *)0x577596;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   aiStack_70[0] = *(int *)CONCAT31(extraout_var_07,uVar3);
   CStack_8c.m_pchData = "hl+";
   (**(code **)(aiStack_70[0] + 0xc))();
@@ -426,7 +426,7 @@ void TSetupRandomMapPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(aiStack_70[0] + 0x1c8))();
   ppuStack_94 = (undefined4 **)0x6e616d65;
   uStack_98 = 0x5775ee;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar4 = *(int *)CONCAT31(extraout_var_08,uVar3);
   uStack_98 = 0x5775f7;
   (**(code **)(iVar4 + 0xc))();
@@ -512,11 +512,11 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     iVar6 = *(int *)param_2.m_pchData;
     (**(code **)(iVar6 + 0xc))();
     *(undefined4 *)(CVar2.m_pchData + 0x68) = *(undefined4 *)(CVar2.m_pchData + 0x6c);
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0);
     cVar1 = CVar2.m_pchData[0x69];
     this->field_0x9a = CVar2.m_pchData[0x68];
     this->field_0x9b = cVar1;
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x666c6167);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x666c6167);
     puStack_8 = *(undefined1 **)CONCAT31(extraout_var,uVar3);
     (**(code **)(puStack_8 + 0xc))();
     UpdateRectFromGridIndicesAndTileSize((int)*(short *)&this->field_0x9a,0);
@@ -545,7 +545,7 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   goto LAB_00577ce4;
   if (uVar7 < 0x636e636d) {
     if ((uVar7 == 0x636e636c) || (uVar7 == 0x63616e63)) {
-      (*this->vftable[0x3a].slot_0x04)();
+      (*this->vftable->PostTurnEvent5DCOrResetLocalUiState)();
     }
     goto LAB_00577ce4;
   }
@@ -560,7 +560,7 @@ TSetupRandomMapPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   else {
     if (uVar7 == 0x6f6b6179) {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->ApplyNationSelectionAndMaybePostTurnEvent5E4)();
       goto LAB_00577ce4;
     }
     if (uVar7 != 0x706c616e) goto LAB_00577ce4;
@@ -635,10 +635,10 @@ void TSetupRandomMapPicture::OrphanTiny_ReturnZero_0048a730(int param_1)
   
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->ApplyNationSelectionAndMaybePostTurnEvent5E4)();
   }
   else if (sVar1 == 0x1b) {
-    (*this->vftable[0x3a].slot_0x04)();
+    (*this->vftable->PostTurnEvent5DCOrResetLocalUiState)();
     return;
   }
   return;

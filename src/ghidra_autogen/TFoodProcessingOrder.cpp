@@ -118,7 +118,7 @@ undefined4 TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(ushort param_1)
     param_1 = param_1 + 1;
   }
   sVar2 = *(short *)&this->field_0x4;
-  uVar5 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar5) < (short)param_1) || ((short)param_1 < 0)) {
     cVar6 = '\0';
   }
@@ -197,7 +197,7 @@ TFoodProcessingOrder::CreateTItemOrderInstance
   if ((param_2 & 1) != 0) {
     param_2 = param_2 + 1;
   }
-  (*this->vftable[7].ConstructTFoodProcessingOrderBaseState)(param_1);
+  (*this->vftable->InitializeCityOrderItemWorkingBuffers)(param_1);
   *(ushort *)(param_1 + 0x22) = param_2;
   *(short *)(param_1 + 0x24) = (short)param_2 / 2;
   *(short *)(param_1 + 0x28) = (short)param_2 / 2;

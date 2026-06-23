@@ -82,11 +82,11 @@ void TSoundPlayer::OrphanRetStub_0059add0(int *param_1)
 void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
-  TSoundPlayer_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   
-  pTVar1 = this->vftable[0x26].slot_0x04;
-  (*pTVar1)(param_1);
-  (*pTVar1)(param_1 + 8);
+  p_Var1 = this->vftable[1].vmethod_0033;
+  (*p_Var1)(param_1);
+  (*p_Var1)(param_1 + 8);
   return;
 }
 
@@ -109,18 +109,15 @@ void TSoundPlayer::_scalar_deleting_destructor_(int *param_1)
 void TSoundPlayer::_scalar_deleting_destructor_()
 
 {
-  undefined uVar1;
-  undefined3 extraout_var;
+  undefined4 *puVar1;
   undefined4 *unaff_retaddr;
   undefined1 local_10 [16];
-  undefined4 *puVar2;
   
-  uVar1 = (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
-  puVar2 = (undefined4 *)CONCAT31(extraout_var,uVar1);
-  *unaff_retaddr = *puVar2;
-  unaff_retaddr[1] = puVar2[1];
-  unaff_retaddr[2] = puVar2[2];
-  unaff_retaddr[3] = puVar2[3];
+  puVar1 = (undefined4 *)(**(code **)&this->vftable[2].field_0x10)(local_10);
+  *unaff_retaddr = *puVar1;
+  unaff_retaddr[1] = puVar1[1];
+  unaff_retaddr[2] = puVar1[2];
+  unaff_retaddr[3] = puVar1[3];
   return;
 }
 
@@ -228,7 +225,7 @@ undefined4 TSoundPlayer::_scalar_deleting_destructor_()
     return 1;
   }
   if (pTVar2 != (TSoundPlayer *)0x0) {
-    cVar1 = (*pTVar2->vftable[0x10].GetTEventHandlerClassNamePointer)();
+    cVar1 = (*pTVar2->vftable->vmethod_0080)();
     if (cVar1 != '\0') {
       (**(code **)(g_pApplicationUiRootController->vftable + 0x98))(this);
       return 1;
@@ -304,7 +301,7 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer()
 void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
-  (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x19,this,0);
+  (*this->vftable->DispatchEvent)(0x19,this,0);
   return;
 }
 
@@ -322,7 +319,7 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer()
 void TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
-  (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1b,this,0);
+  (*this->vftable->DispatchEvent)(0x1b,this,0);
   return;
 }
 
@@ -371,7 +368,7 @@ void TSoundPlayer::SetForeignMinisterReadyFlag14()
       puVar2 = (undefined4 *)*puVar2;
     }
   }
-  (*this->vftable[0x1b].slot_0x04)();
+  (*this->vftable[1].vmethod_0013)();
   return;
 }
 
@@ -574,8 +571,8 @@ void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(int *param_1)
   if ((*(int *)&this->field_0x44 != 0) &&
      (*(int **)(*(int *)(*(int *)&this->field_0x44 + 8) + 8) != param_1)) {
     pTVar1 = this->vftable;
-    (*pTVar1[0x2e].slot_0x04)(param_1);
-    (*pTVar1[0x2e].GetTEventHandlerClassNamePointer)(param_1,1);
+    (**(code **)&pTVar1[2].field_0x24)(param_1);
+    (**(code **)&pTVar1[2].field_0x20)(param_1,1);
     (**(code **)(*param_1 + 0xe4))();
   }
   return;
@@ -654,9 +651,9 @@ void TSoundPlayer::UpdateControlCachedIntFromWindowText(int param_1)
   TSoundPlayerVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[5].slot_0x04)(param_1);
+  (*pTVar1->SetControlValue)(param_1);
   if (param_1 != 0) {
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1[1].HandleEvent)();
   }
   return;
 }
@@ -689,7 +686,7 @@ TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   if ((param_1 != this->padding_08_to_0b) && (this->padding_08_to_0b = param_1, param_2 != 0)) {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable[1].HandleEvent)();
   }
   return;
 }
@@ -724,7 +721,7 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 *param_1, char pa
   char cVar2;
   
   if (param_2 != '\0') {
-    cVar2 = (*this->vftable[0x1d].slot_0x04)();
+    cVar2 = (*this->vftable[1].vmethod_0017)();
     if (cVar2 != '\0') {
       InvalidateCityDialogRectRegion(0,1);
     }
@@ -732,9 +729,9 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer(undefined4 *param_1, char pa
   pTVar1 = this->vftable;
   *(undefined4 *)&this->field_0x24 = *param_1;
   *(undefined4 *)&this->field_0x28 = param_1[1];
-  (*pTVar1[0x2c].slot_0x04)();
+  (**(code **)&pTVar1[2].field_0x14)();
   if (param_2 != '\0') {
-    cVar2 = (*pTVar1[0x1d].slot_0x04)();
+    cVar2 = (*pTVar1[1].vmethod_0017)();
     if (cVar2 != '\0') {
       InvalidateCityDialogRectRegion(0,0);
     }
@@ -816,7 +813,7 @@ void TSoundPlayer::_scalar_deleting_destructor_()
 void TSoundPlayer::_scalar_deleting_destructor_(undefined4 *param_1, char param_2)
 
 {
-  TSoundPlayer_slot_0x04_0x04 *pTVar1;
+  code *pcVar1;
   undefined4 *unaff_retaddr;
   RECT RStack_18;
   
@@ -825,11 +822,11 @@ void TSoundPlayer::_scalar_deleting_destructor_(undefined4 *param_1, char param_
     *(undefined4 *)&this->field_0x38 = param_1[1];
   }
   else {
-    pTVar1 = this->vftable[0x2b].slot_0x04;
-    (*pTVar1)(&RStack_18.right);
+    pcVar1 = *(code **)&this->vftable[2].field_0xc;
+    (*pcVar1)(&RStack_18.right);
     *(undefined4 *)&this->field_0x34 = *unaff_retaddr;
     *(undefined4 *)&this->field_0x38 = unaff_retaddr[1];
-    (*pTVar1)(&stack0xffffffdc);
+    (*pcVar1)(&stack0xffffffdc);
     UnionRect((LPRECT)&stack0xffffffd8,(RECT *)&stack0xffffffd8,&RStack_18);
     if (g_McAppUiActiveFlag_006950AC != 0) {
       InvalidateRect(*(HWND *)(*(int *)&this->field_0x50 + 0x1c),(RECT *)&stack0xffffffd8,0);
@@ -846,9 +843,8 @@ void TSoundPlayer::_scalar_deleting_destructor_(undefined4 *param_1, char param_
 void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int *param_1)
 
 {
-  undefined uVar1;
-  HRGN pHVar2;
-  undefined3 extraout_var;
+  HRGN pHVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined **local_1c;
   HRGN local_18;
@@ -864,18 +860,17 @@ void TSoundPlayer::OrphanTiny_ReturnZero_0048a730(int *param_1)
     local_18 = (HRGN)0x0;
     local_1c = &CBrush::_vftable_;
     local_4 = 0;
-    pHVar2 = CreateRectRgn(0,0,0,0);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_1c,(int)pHVar2);
+    pHVar1 = CreateRectRgn(0,0,0,0);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_1c,(int)pHVar1);
     if (*param_1 == -0x14) {
-      pHVar2 = (HRGN)0x0;
+      pHVar1 = (HRGN)0x0;
     }
     else {
-      pHVar2 = *(HRGN *)(*param_1 + 0x18);
+      pHVar1 = *(HRGN *)(*param_1 + 0x18);
     }
-    CombineRgn(local_18,pHVar2,(HRGN)0x0,5);
-    uVar1 = (*this->vftable[0x2b].GetTEventHandlerClassNamePointer)(local_14);
-    OffsetRgn(local_18,-*(int *)CONCAT31(extraout_var,uVar1),
-              -((int *)CONCAT31(extraout_var,uVar1))[1]);
+    CombineRgn(local_18,pHVar1,(HRGN)0x0,5);
+    piVar2 = (int *)(**(code **)&this->vftable[2].field_0x8)(local_14);
+    OffsetRgn(local_18,-*piVar2,-piVar2[1]);
     if (g_McAppUiActiveFlag_006950AC != 0) {
       InvalidateRgn(*(HWND *)(*(int *)&this->field_0x50 + 0x1c),
                     (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x1c) & (uint)local_18),0);
@@ -1025,8 +1020,8 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer(int param_1)
   
   if (param_1 != 0) {
     pTVar1 = this->vftable;
-    (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(local_10);
-    (*pTVar1[0x21].slot_0x04)(&stack0xffffffec,param_1);
+    (*pTVar1[1].vmethod_0080)(local_10);
+    (*pTVar1[1].vmethod_0025)(&stack0xffffffec,param_1);
     return;
   }
   InvalidateCityDialogRectRegion(0,0);
@@ -1055,19 +1050,18 @@ void TSoundPlayer::OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1)
   
   if (g_McAppUiActiveFlag_006950AC != 0) {
     pTVar1 = this->vftable;
-    cVar5 = (*pTVar1[0x1d].slot_0x04)();
-    if ((cVar5 != '\0') &&
-       (cVar5 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)(), cVar5 != '\0')) {
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(aLStack_30);
+    cVar5 = (*pTVar1[1].vmethod_0017)();
+    if ((cVar5 != '\0') && (cVar5 = (*pTVar1[1].GetCityDialogValueDword10)(), cVar5 != '\0')) {
+      (*pTVar1[1].vmethod_0080)(aLStack_30);
       BVar7 = IntersectRect((LPRECT)&stack0xffffffcc,(RECT *)&stack0xffffffcc,unaff_retaddr);
       if (BVar7 != 0) {
-        uVar6 = (*pTVar1[0x20].GetTEventHandlerClassNamePointer)(param_1);
+        uVar6 = (*pTVar1[1].OwnerPanel)(param_1);
         if (CONCAT31(extraout_var,uVar6) != 0) {
-          (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&stack0xffffffc8);
+          (*pTVar1[1].vmethod_0026)(&stack0xffffffc8);
           if (*(int **)&this->field_0x18 != (int *)0x0) {
             (**(code **)(**(int **)&this->field_0x18 + 0x34))(&stack0xffffffc4);
           }
-          (*pTVar1[0x20].slot_0x04)(param_1);
+          (*pTVar1[1].vmethod_0023)(param_1);
         }
         if (*(int *)&this->field_0x44 != 0) {
           puVar4 = *(undefined4 **)(*(int *)&this->field_0x44 + 4);
@@ -1171,7 +1165,7 @@ void TSoundPlayer::SetForeignMinisterReadyFlag14(undefined4 *param_1)
   
   local_8 = *in_stack_00000008;
   local_4 = in_stack_00000008[1];
-  (*this->vftable[0x27].GetTEventHandlerClassNamePointer)();
+  (*this->vftable[1].SetUiResourceOwner)();
   *(undefined4 **)unaff_retaddr = &local_8;
   *(undefined4 *)(unaff_retaddr + 4) = local_8;
   return;
@@ -1201,7 +1195,7 @@ void TSoundPlayer::SetForeignMinisterReadyFlag14(int *param_1)
   iVar1 = param_1[1];
   iVar6 = param_1[2] - local_10;
   iVar2 = param_1[3];
-  uVar5 = (*this->vftable[0x29].GetTEventHandlerClassNamePointer)(local_8,&local_10);
+  uVar5 = (*this->vftable[1].RequestDirectSoundInitIfAllowed)(local_8,&local_10);
   iVar3 = *(int *)CONCAT31(extraout_var,uVar5);
   iVar4 = ((int *)CONCAT31(extraout_var,uVar5))[1];
   *unaff_retaddr = iVar3;
@@ -1258,16 +1252,15 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer()
   int iVar2;
   int iVar3;
   int iVar4;
-  undefined uVar5;
-  undefined3 extraout_var;
+  int *piVar5;
   int *unaff_retaddr;
   undefined1 local_8 [8];
   
   iVar1 = *(int *)&this->field_0x34;
   iVar2 = *(int *)&this->field_0x38;
-  uVar5 = (*this->vftable[0x2b].GetTEventHandlerClassNamePointer)(local_8);
-  iVar3 = *(int *)CONCAT31(extraout_var,uVar5);
-  iVar4 = ((int *)CONCAT31(extraout_var,uVar5))[1];
+  piVar5 = (int *)(**(code **)&this->vftable[2].field_0x8)(local_8);
+  iVar3 = *piVar5;
+  iVar4 = piVar5[1];
   unaff_retaddr[3] = iVar2 + iVar4;
   unaff_retaddr[2] = iVar1 + iVar3;
   *unaff_retaddr = iVar3;
@@ -1285,11 +1278,10 @@ undefined4 TSoundPlayer::_scalar_deleting_destructor_()
   char cVar1;
   
   if (*(int *)&this->field_0x5c == 0) {
-    if ((this->field_0x4c != '\0') &&
-       (cVar1 = (*this->vftable[5].GetTEventHandlerClassNamePointer)(), cVar1 != '\0')) {
+    if ((this->field_0x4c != '\0') && (cVar1 = (*this->vftable->GetBoolSlot28)(), cVar1 != '\0')) {
       return 1;
     }
-    cVar1 = (*this->vftable[0x1a].GetTEventHandlerClassNamePointer)();
+    cVar1 = (*this->vftable[1].GetBoolSlot28)();
     if (cVar1 == '\0') {
       return 0;
     }
@@ -1333,7 +1325,7 @@ void TSoundPlayer::OrphanTiny_ReturnZero_0048a730()
   undefined1 local_10 [16];
   
   puStack_14 = local_10;
-  (*this->vftable[0x2b].slot_0x04)();
+  (**(code **)&this->vftable[2].field_0xc)();
   ReplaceClipStateRegionHandleFromRect(unaff_retaddr,&puStack_14);
   return;
 }
@@ -1355,11 +1347,11 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
   undefined1 local_10 [16];
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x25].slot_0x04)(local_10);
+  (*pTVar1[1].vmethod_0081)(local_10);
   BVar6 = EqualRect(unaff_retaddr,(RECT *)&stack0xffffffec);
   if (BVar6 == 0) {
     if (param_1 != '\0') {
-      cVar5 = (*pTVar1[0x1d].slot_0x04)();
+      cVar5 = (*pTVar1[1].vmethod_0017)();
       if (cVar5 != '\0') {
         InvalidateCityDialogRectRegion(0,1);
       }
@@ -1371,9 +1363,9 @@ void TSoundPlayer::GetTEventHandlerClassNamePointer(char param_1)
     iVar4 = unaff_retaddr->bottom;
     *(LONG *)&this->field_0x34 = unaff_retaddr->right - unaff_retaddr->left;
     *(int *)&this->field_0x38 = iVar4 - iVar3;
-    (*pTVar1[0x2c].slot_0x04)();
+    (**(code **)&pTVar1[2].field_0x14)();
     if (param_1 != '\0') {
-      cVar5 = (*pTVar1[0x1d].slot_0x04)();
+      cVar5 = (*pTVar1[1].vmethod_0017)();
       if (cVar5 != '\0') {
         InvalidateCityDialogRectRegion(0,0);
       }
@@ -1419,13 +1411,13 @@ TSoundPlayer::UpdateControlCachedIntFromWindowText
   while( true ) {
     if (piVar5 == (int *)0x0) {
       pTVar2 = local_c->vftable;
-      cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+      cVar3 = (*pTVar2[1].GetCityDialogValueDword10)();
       if (cVar3 != '\0') {
         local_8 = *param_1;
         local_4 = param_1[1];
-        cVar3 = (*pTVar2[5].GetTEventHandlerClassNamePointer)();
+        cVar3 = (*pTVar2->GetBoolSlot28)();
         if (cVar3 != '\0') {
-          (*pTVar2[0x24].slot_0x04)(&local_8,param_2,param_3,param_4);
+          (*pTVar2[1].ActivateCityProductionViewIfAllowed)(&local_8,param_2,param_3,param_4);
           return 1;
         }
       }
@@ -1465,8 +1457,8 @@ undefined4 TSoundPlayer::_scalar_deleting_destructor_()
   undefined1 local_10 [16];
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(local_10);
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  (*pTVar1[1].vmethod_0080)(local_10);
+  cVar2 = (*pTVar1[1].vmethod_0017)();
   if (cVar2 != '\0') {
     BVar3 = PtInRect((RECT *)&stack0xffffffec,*unaff_retaddr);
     if (BVar3 != 0) {
@@ -1518,7 +1510,7 @@ void TSoundPlayer::UpdateControlCachedIntFromWindowText()
   if (g_McAppUiFlag_006A1B00 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x782);
   }
-  (*this->vftable[0x2b].slot_0x04)(auStack_10);
+  (**(code **)&this->vftable[2].field_0xc)(auStack_10);
   return;
 }
 
@@ -1628,7 +1620,7 @@ byte TSoundPlayer::_scalar_deleting_destructor_()
   RECT RStack_14;
   
   RStack_14.left = (LONG)&RStack_14.top;
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)();
+  (*this->vftable[1].vmethod_0080)();
   BVar1 = PtInRect(&RStack_14,*unaff_retaddr);
   return -(BVar1 != 0) & 3;
 }
@@ -1871,7 +1863,7 @@ void TSoundPlayer::OrphanCallChain_C11_I88_004874b0(undefined1 param_1)
 
 {
   this->field_0x74 = param_1;
-  (*this->vftable[0x34].slot_0x04)();
+  (*this->vftable[2].SetCityDialogValueDword10)();
   return;
 }
 
@@ -1961,8 +1953,7 @@ void TSoundPlayer::OrphanRetStub_0059add0()
   if ((short)uVar7 != -1) {
     uVar5 = CONCAT22(uVar6,*(undefined2 *)&this->field_0x76);
     pTVar1 = this->vftable;
-    (*pTVar1[0x37].GetTEventHandlerClassNamePointer)
-              (uVar7,&this->field_0x60,&local_88,&local_8c,uVar5);
+    (*pTVar1[2].vmethod_0026)(uVar7,&this->field_0x60,&local_88,&local_8c,uVar5);
     sVar3 = (short)uVar5;
     ApplyHitRegionToClipState(unaff_EBP);
     SetGlobalQuickDrawOrigin
@@ -1972,7 +1963,7 @@ void TSoundPlayer::OrphanRetStub_0059add0()
     local_84 = (int)unaff_DI;
     local_80 = local_88 + *(short *)&this->field_0x78;
     local_7c = *(short *)&this->field_0x78 + local_84;
-    (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(&tStack_54.bottom);
+    (*pTVar1[1].vmethod_0080)(&tStack_54.bottom);
     IntersectRectWrapper(&LStack_74,auStack_34,&LStack_74);
     tStack_54.left = LStack_74;
     tStack_54.top = LStack_70;
@@ -1991,21 +1982,21 @@ void TSoundPlayer::OrphanRetStub_0059add0()
     if (cVar2 == '\0') {
       sVar3 = (short)local_7c;
       if (sVar3 == 0) {
-        (*pTVar1[0x35].GetTEventHandlerClassNamePointer)(local_78,local_88,local_8c,1,uVar7);
+        (*pTVar1[2].OwnerPanel)(local_78,local_88,local_8c,1,uVar7);
       }
       else if (sVar3 == 1) {
         iStack_64 = (int)(short)local_8c;
         iStack_60 = (int)(short)local_88;
         iStack_5c = iStack_64 + *(short *)&this->field_0x78;
         iStack_58 = *(short *)&this->field_0x78 + iStack_60;
-        (*pTVar1[0x35].slot_0x04)(uVar7,&iStack_64,1);
+        (*pTVar1[2].vmethod_0023)(uVar7,&iStack_64,1);
       }
       else if (sVar3 == 2) {
         iStack_64 = (int)(short)local_8c;
         iStack_60 = (int)(short)local_88;
         iStack_5c = iStack_64 + *(short *)&this->field_0x78;
         iStack_58 = *(short *)&this->field_0x78 + iStack_60;
-        (*pTVar1[0x36].GetTEventHandlerClassNamePointer)(uVar7,&iStack_64,1);
+        (*pTVar1[2].vmethod_0024)(uVar7,&iStack_64,1);
       }
     }
     SnapshotHitRegionToClipCache(local_80);
@@ -2054,10 +2045,10 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
   cVar1 = InitializeDirectSoundDeviceAndChannels();
   this->field_0x20 = cVar1;
   if (cVar1 == '\0') {
-    (*this->vftable[0x14].slot_0x04)();
+    (*this->vftable->ClearDirectSoundInitPendingAndResetState)();
   }
   else {
-    (*this->vftable[0x14].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->RequestDirectSoundInitIfAllowed)();
   }
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
   if (puVar2 == (undefined4 *)0x0) {
@@ -2090,7 +2081,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(undefined4 pa
   *(undefined2 *)&this->field_0x74 = 0;
   EnsureCdAudioDeviceHandleInitialized();
   *(undefined4 *)&this->field_0x10 = param_1;
-  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,1);
+  (*g_pGlobalUiRootController->vftable->Helper_Uses_AllocateAndLinkBlockHead_At004869b0)(this,1);
   return;
 }
 
@@ -2230,7 +2221,7 @@ undefined4 TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sh
 undefined4 TSoundPlayer::GetTEventHandlerClassNamePointer()
 
 {
-  (*this->vftable[0x16].slot_0x04)();
+  (**(code **)&this->vftable[1].field_0xc)();
   return 0;
 }
 

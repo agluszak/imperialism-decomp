@@ -48,7 +48,8 @@ void TMinorRelationshipDialog::GetTEventHandlerClassNamePointer()
   local_c = (TDiplomacyMgrVtbl *)0x0;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + (int)&local_c[3].slot_0x04) != 0) {
-      uVar1 = (*this->vftable[0x12].slot_0x04)(*(undefined4 *)((int)&DAT_0066b13c + (int)local_c));
+      uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)
+                        (*(undefined4 *)((int)&DAT_0066b13c + (int)local_c));
       if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -98,11 +99,11 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
   undefined3 extraout_var_01;
   int *piVar5;
   int iVar6;
-  TMinorRelationshipDialog_slot_0x04_0x04 *pTVar7;
+  _vslot_fn *p_Var7;
   undefined4 *unaff_FS_OFFSET;
   CString local_48;
   int *piStack_44;
-  TMinorRelationshipDialog_slot_0x04_0x04 *local_40;
+  _vslot_fn *local_40;
   int local_3c [2];
   TMinorRelationshipDialog *local_34;
   int *piStack_30;
@@ -133,13 +134,13 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
   local_18 = 0x6e616d35;
   local_14 = 0x6e616d36;
   local_10 = 0x6e616d37;
-  local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)0x7aa;
+  local_40 = (_vslot_fn *)0x7aa;
   local_3c[0] = 0;
   local_3c[1] = 0x10;
   do {
-    pTVar7 = local_40;
+    p_Var7 = local_40;
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_3c[0] + 0x1c) != 0) {
-      uVar3 = (*this->vftable[0x12].slot_0x04)();
+      uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       piVar4 = (int *)CONCAT31(extraout_var,uVar3);
       piStack_30 = piVar4;
       if (piVar4 == (int *)0x0) {
@@ -158,31 +159,31 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
           }
           iVar1 = *piVar4;
           (**(code **)(iVar1 + 0x1e4))
-                    ((int)*(short *)((int)&g_pDiplomacyTurnStateManager->vftable + (int)pTVar7));
+                    ((int)*(short *)((int)&g_pDiplomacyTurnStateManager->vftable + (int)p_Var7));
           (**(code **)(iVar1 + 0xa8))((int)(char)g_apSecondaryNationStateSlots[0x17],0);
           piVar4 = piStack_30;
           this = local_34;
         }
         iVar6 = iVar6 + 4;
-        pTVar7 = (TMinorRelationshipDialog_slot_0x04_0x04 *)((int)pTVar7 + 0x2e);
+        p_Var7 = (_vslot_fn *)((int)p_Var7 + 0x2e);
         piStack_44 = (int *)((int)piStack_44 + -1);
       } while (piStack_44 != (int *)0x0);
       piStack_44 = (int *)0x0;
     }
-    local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)((int)local_40 + 2);
+    local_40 = (_vslot_fn *)((int)local_40 + 2);
     local_3c[0] = local_3c[0] + 4;
     local_3c[1] = local_3c[1] + -1;
   } while (local_3c[1] != 0);
-  pTVar7 = this->vftable[0x12].slot_0x04;
-  local_40 = pTVar7;
-  uVar3 = (*pTVar7)();
+  p_Var7 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  local_40 = p_Var7;
+  uVar3 = (*p_Var7)();
   piVar4 = (int *)CONCAT31(extraout_var_00,uVar3);
-  local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)piVar4;
+  local_40 = (_vslot_fn *)piVar4;
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  uVar3 = (*pTVar7)();
+  uVar3 = (*p_Var7)();
   local_3c[1] = CONCAT31(extraout_var_01,uVar3);
   if (local_3c[1] == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -190,7 +191,7 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x263);
   }
   iVar6 = 0;
-  local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)0x7;
+  local_40 = (_vslot_fn *)0x7;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar6) != 0) {
       FormatOverlayTerrainLabelText(&stack0xffffffb0);
@@ -212,10 +213,10 @@ TMinorRelationshipDialog::DestructTMinorRelationshipDialogAndMaybeFree
       piVar4 = piStack_44;
     }
     iVar6 = iVar6 + 4;
-    local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)((int)local_40 + -1);
-  } while (local_40 != (TMinorRelationshipDialog_slot_0x04_0x04 *)0x0);
+    local_40 = (_vslot_fn *)((int)local_40 + -1);
+  } while (local_40 != (_vslot_fn *)0x0);
   piVar4 = (int *)(*(code *)local_48.m_pchData)(0x636f6c31);
-  local_40 = (TMinorRelationshipDialog_slot_0x04_0x04 *)piVar4;
+  local_40 = (_vslot_fn *)piVar4;
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

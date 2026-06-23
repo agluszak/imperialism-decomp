@@ -168,7 +168,7 @@ uint TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild()
   undefined4 uVar4;
   
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
-  (*pTVar1->vftable[1].slot_0x04)();
+  (*pTVar1->vftable->ConstructTTaskBaseState)();
   sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
   if ((&pTVar1->field_0x8a0)[sVar3] == '\0') {
     uVar4 = 0;

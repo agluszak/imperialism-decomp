@@ -141,11 +141,11 @@ void TPortZone::DispatchNationPendingActionEventCodes()
     {
       this_00 = *(TZone **)&this_00->field_0x18;
     }
-    (*this_00->vftable[3].SetNationPendingActionStateAndPayload)();
+    (*this_00->vftable->GetTCountryClassNamePointer)();
   }
   FreeHeapBufferIfNotNull(*(undefined4 *)&this->field_0x10);
   if (this != (TPortZone *)0x0) {
-    (*this->vftable->DeserializeCityProductionQueueCommand)(1);
+    (*this->vftable->ShallowClone)(1);
   }
   return;
 }

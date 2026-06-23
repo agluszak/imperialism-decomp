@@ -152,15 +152,15 @@ void TTextList::_scalar_deleting_destructor_(int param_1)
   if (iVar2 < *(int *)&this->field_0x1060) {
     pTVar1 = this->vftable;
     *(int *)&this->field_0x1068 = iVar2;
-    (*pTVar1[0x1c].slot_0x04)();
-    (*pTVar1[0x25].slot_0x04)(&LStack_30);
+    (*pTVar1->RefreshControl)();
+    (*pTVar1->QueryBounds)(&LStack_30);
     RStack_24.top = LStack_30;
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;
     CopyRect(&tStack_14,&RStack_24);
     InvalidateCityDialogRectRegion(&tStack_14,1);
-    (*pTVar1[0x27].slot_0x04)();
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(4,this,0);
+    (*pTVar1->InvokeSlot13C)();
+    (*this->ownerContext->vftable->DispatchEvent)(4,this,0);
   }
   return;
 }

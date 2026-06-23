@@ -77,9 +77,9 @@ void TGameWindow::OrphanCallChain_C11_I88_004874b0()
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  cVar2 = (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_3b)();
   if (cVar2 == '\0') {
-    (*pTVar1[0x3b].slot_0x04)();
+    (*pTVar1->UpdateTurnOrderNavigationWindowLayout)();
   }
   TWindow::OrphanCallChain_C11_I88_004874b0((TWindow *)this);
   return;
@@ -135,7 +135,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   int unaff_retaddr;
   int *piVar3;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x6d61696e);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)(0x6d61696e);
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     return;
@@ -150,7 +150,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   *(undefined2 *)(unaff_retaddr + 0x20) = 0x29a;
   if ((((*(short *)(unaff_retaddr + 0x1c) == 0x68) || (*(short *)(unaff_retaddr + 0x1c) == 0x48)) &&
       (iVar4 = (**(code **)(*piVar3 + 0x94))(0x71756572), iVar4 != 0)) && (DAT_006a21b8 != 0)) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     if (*(short *)&g_pUiRuntimeContext->field_0x4 == 0x7dd) {
       DispatchUiRuntimeMessage101AAndRefreshActiveView();
       return;
@@ -162,7 +162,7 @@ void TGameWindow::OrphanTiny_ReturnZero_0048a730()
   if (((sVar1 == 3) || (sVar1 == 0xd)) || ((sVar1 == 0x1b || (sVar1 == 0x20)))) {
     if ((*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7dd) &&
        (iVar4 = (**(code **)(*piVar3 + 0x94))(0x656e6420), iVar4 != 0)) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
       if (*(int *)&g_pLocalizationTable->field_0x8 != 0x11) {
         (*g_pLocalizationTable->vftable[8].slot_0x04)();
         return;
@@ -198,14 +198,14 @@ switchD_004ffe93_default:
     switch(sVar1) {
     case 0x31:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7de) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x69);
         return;
       }
       break;
     case 0x32:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7db) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
         return;
       }
@@ -213,21 +213,21 @@ switchD_004ffe93_default:
     case 0x33:
       if ((*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7d9) &&
          (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7da)) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
         return;
       }
       break;
     case 0x34:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7d8) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
         return;
       }
       break;
     case 0x35:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x8fc) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
         return;
       }
@@ -261,15 +261,15 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout()
   
   if (*(short *)(DAT_006a2158 + 0xe) == 0x7d1) {
     pTVar1 = this->vftable;
-    (*pTVar1[0x25].slot_0x04)(&local_20);
+    (*pTVar1->OrphanRetStub_0059add0_4b)(&local_20);
     piVar2 = (int *)InitializeGlobalRectDefaultsIfUninitialized();
     CopyRect(&tStack_14,(RECT *)(*piVar2 + 4));
     local_20 = tStack_14.top;
     LStack_18 = tStack_14.bottom;
     LStack_1c = tStack_14.right;
-    (*pTVar1[0x2d].GetTEventHandlerClassNamePointer)(&stack0xffffffdc,1);
+    (*pTVar1->GetTEventHandlerClassNamePointer_5a)(&stack0xffffffdc,1);
   }
-  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->NoOpTurnOrderNavigationVtableSlotA)();
   return;
 }
 
@@ -318,7 +318,7 @@ void TGameWindow::NoOpTurnOrderNavigationVtableSlotB()
 void TGameWindow::_scalar_deleting_destructor_()
 
 {
-  (*this->vftable[0x3c].slot_0x04)();
+  (*this->vftable->NoOpTurnOrderNavigationVtableSlotB)();
   TWindow::_scalar_deleting_destructor_((TWindow *)this);
   *(undefined4 *)(DAT_006a2158 + 4) = 0;
   return;

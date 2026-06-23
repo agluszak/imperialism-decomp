@@ -219,7 +219,7 @@ void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
   }
   else {
     if (uVar1 == 0x64666e64) {
-      (*g_pMapContextActionManager->vftable[0xb].GetTArmyMgrClassNamePointer)(2);
+      (*g_pMapContextActionManager->vftable->OrphanCallChain_C1_I34_004a4260)(2);
       TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
                 (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
       return;
@@ -235,7 +235,7 @@ void TArmyToolbar::OrphanRetStub_0059add0(int param_1, int *param_2)
       uVar3 = 4;
       pTVar4 = g_pMapContextActionManager->vftable;
     }
-    (*pTVar4[0xb].GetTArmyMgrClassNamePointer)(uVar3);
+    (*pTVar4->OrphanCallChain_C1_I34_004a4260)(uVar3);
     TCivToolbar::CycleMapInteractionSelectionAfterHandledClick
               (*(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0);
   }

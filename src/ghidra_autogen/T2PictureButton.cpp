@@ -92,11 +92,12 @@ void T2PictureButton::OrphanCallChain_C3_I43_00570c30(char param_1)
   if (((param_1 == '\x01') && (this->field3c < (int)sVar1)) ||
      ((param_1 == '\0' && ((int)sVar1 < this->field3c)))) {
     pTVar2 = this->vftable;
-    (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+    (*pTVar2->SetPictureResourceIdAndRefresh)
               (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
     this->field3c = (int)sVar1;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)param_1,0);
-    (*pTVar2[0x14].slot_0x04)((uint)(param_1 == '\0'),(int)unaff_BP);
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)((int)param_1,0);
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)
+              ((uint)(param_1 == '\0'),(int)unaff_BP);
   }
   return;
 }

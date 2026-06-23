@@ -82,13 +82,13 @@ bool TDipDlgCluster::OrphanVtableAssignStub_005714e0()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
-  uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73756273);
+  uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)(0x73756273);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
   }
-  uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73616e63);
+  uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x73616e63);
   cVar3 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1cc))();
   if (cVar3 != '\0') {
     return true;

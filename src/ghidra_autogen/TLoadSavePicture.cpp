@@ -60,7 +60,7 @@ CRuntimeClass * TLoadSavePicture::GetTEventHandlerClassNamePointer()
 void TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TLoadSavePicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   char cVar4;
@@ -128,27 +128,27 @@ void TLoadSavePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   CStack_84.m_pchData = (char *)0x0;
   CStack_8c.m_pchData = (char *)0x56bd35;
   BuildUiTextStyleDescriptor();
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_7c.m_pchData = (char *)0x63757273;
   CStack_80.m_pchData = (char *)0x56bd49;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var,uVar3);
   CStack_80.m_pchData = (char *)0x56bd55;
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   CStack_80.m_pchData = (char *)0x2b6c;
   CStack_84.m_pchData = (char *)0x2b6b;
   CStack_88.m_pchData = (char *)0x56bd6d;
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
   CStack_88.m_pchData = (char *)0x1;
   CStack_8c.m_pchData = (char *)0x1;
-  (*g_pCursorControlPanel->vftable[0x38].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)();
   CString::CString(&CStack_10);
   CStack_18.m_pchData = (char *)0x0;
   CString::CString((CString *)&stack0xffffff88);
   CStack_18.m_pchData._0_1_ = 1;
   CStack_7c.m_pchData = (char *)0x0;
   do {
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar9 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar9 + 0xc))();
     pcVar10 = PTR_DAT_0065ddd0;
@@ -214,19 +214,19 @@ LAB_0056bf9f:
   } while ((int)CStack_7c.m_pchData < 8);
   if (this->field_0x90 == '\0') {
 LAB_0056c0cb:
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar9 = *(int *)CONCAT31(extraout_var_01,uVar3);
     (**(code **)(iVar9 + 0xc))();
     (**(code **)(iVar9 + 0xa4))();
     this_00 = (TLoadSavePicture *)(**(code **)(iVar9 + 0x94))();
-    (*this_00->vftable[1].slot_0x04)();
+    (*this_00->vftable->AssertValid)();
     CStack_a4.m_pchData = (char *)0x56c108;
     TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,0);
     sVar5 = UiRuntimeContext::GetActiveNationId();
     *(int *)&this_00->field_0x68 = (int)sVar5;
     ApplyPaletteMaskToTileBufferByEventCode();
     CStack_a4.m_pchData = (char *)0x56c129;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar9 = *(int *)CONCAT31(extraout_var_02,uVar3);
     CStack_a4.m_pchData = (char *)0x56c132;
     (**(code **)(iVar9 + 0xc))();
@@ -309,11 +309,11 @@ LAB_0056c0cb:
     CString::~CString((CString *)&stack0xffffff8c);
     cVar4 = TryGetFileMetadataForPath();
     if (cVar4 != '\0') {
-      (*pTVar1)();
+      (*p_Var1)();
       QueueDeferredUiEventPacket();
     }
     if (this->field_0x90 == '\0') goto LAB_0056c0cb;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar9 = *(int *)CONCAT31(extraout_var_03,uVar3);
     (**(code **)(iVar9 + 0xc))();
     (**(code **)(iVar9 + 0x1c8))();
@@ -321,17 +321,17 @@ LAB_0056c0cb:
   RefreshActiveControlThenApplyThemeStyleAndCaption(0x696e666f,0,0xc,0x2b6a,0,0);
   if (this->field_0x90 == '\0') {
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0xb,this);
-    uVar3 = (*pTVar1)(0x6f74746f);
+    uVar3 = (*p_Var1)(0x6f74746f);
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0xb,uVar3);
-    uVar3 = (*pTVar1)(0x636e636c);
+    uVar3 = (*p_Var1)(0x636e636c);
     LoadUiStringByGroupAndIndexToControlObject(0x2758,0x15,uVar3);
-    uVar3 = (*pTVar1)(0x6d617020);
+    uVar3 = (*p_Var1)(0x6d617020);
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0x16,uVar3);
-    uVar3 = (*pTVar1)(0x6f6b6179);
+    uVar3 = (*p_Var1)(0x6f6b6179);
     LoadUiStringByGroupAndIndexToControlObject(0x2743,2,uVar3);
     iVar9 = 0;
     do {
-      uVar3 = (*pTVar1)(iVar9 + 0x736c7430);
+      uVar3 = (*p_Var1)(iVar9 + 0x736c7430);
       (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
       LoadUiStringByGroupAndIndexToControlObject(0x2758,0x16,(int *)CONCAT31(extraout_var_05,uVar3))
       ;
@@ -340,17 +340,17 @@ LAB_0056c0cb:
   }
   else {
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0xc,this);
-    uVar3 = (*pTVar1)(0x6f74746f);
+    uVar3 = (*p_Var1)(0x6f74746f);
     LoadUiStringByGroupAndIndexToControlObject(0x2758,0x11,uVar3);
-    uVar3 = (*pTVar1)(0x636e636c);
+    uVar3 = (*p_Var1)(0x636e636c);
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0x14,uVar3);
-    uVar3 = (*pTVar1)(0x6d617020);
+    uVar3 = (*p_Var1)(0x6d617020);
     LoadUiStringByGroupAndIndexToControlObject(0x2737,0x16,uVar3);
-    uVar3 = (*pTVar1)(0x6f6b6179);
+    uVar3 = (*p_Var1)(0x6f6b6179);
     LoadUiStringByGroupAndIndexToControlObject(0x2758,0x14,uVar3);
     iVar9 = 0;
     do {
-      uVar3 = (*pTVar1)(iVar9 + 0x736c7430);
+      uVar3 = (*p_Var1)(iVar9 + 0x736c7430);
       (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar3) + 0xc))();
       LoadUiStringByGroupAndIndexToControlObject(0x2758,0x12,(int *)CONCAT31(extraout_var_04,uVar3))
       ;
@@ -413,7 +413,7 @@ code_r0x0056c450:
 void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
 
 {
-  TLoadSavePicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   char cVar2;
   undefined uVar3;
   int iVar4;
@@ -488,21 +488,21 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
     ReadBufferedStreamLocked();
     ReadBufferedStreamLocked();
     CloseBufferedStreamAndReleaseResources();
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar3 = (*pTVar1)();
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)();
     this_00 = (TLoadSavePicture *)CONCAT31(extraout_var,uVar3);
     local_9c._8_4_ = this_00->vftable;
-    (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 8))->slot_0x04)();
+    (*((TLoadSavePictureVtbl *)local_9c._8_4_)->AssertValid)();
     TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,iVar4);
     *(int *)&this_00->field_0x68 = (int)local_9c[7];
     ApplyPaletteMaskToTileBufferByEventCode();
-    (*((TLoadSavePictureVtbl *)(local_9c._8_4_ + 0xe0))->slot_0x04)();
+    (**(_vslot_fn **)(local_9c._8_4_ + 0xe4))();
     FreeHeapBufferIfNotNull();
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     iVar4 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar4 + 0xc))();
     (**(code **)(iVar4 + 0xa4))();
-    uVar3 = (*pTVar1)(0x696e666f);
+    uVar3 = (*p_Var1)(0x696e666f);
     iVar4 = *(int *)CONCAT31(extraout_var_01,uVar3);
     (**(code **)(iVar4 + 0xc))();
     CString::CString((CString *)&stack0xffffff4c);
@@ -625,7 +625,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       }
       else {
         if ((sVar1 != -1) && (sVar1 != 0xa1)) {
-          uVar4 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
+          uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(sVar1 + 0x736c7430);
           iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
           (**(code **)(iVar2 + 0xc))();
           (**(code **)(iVar2 + 0x1b4))(&this->field_0x9e,0);
@@ -651,7 +651,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       }
     }
     if (1 < *(int *)&g_pApplicationUiRootController->field_0x24) {
-      uVar4 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f6b6179);
       if (CONCAT31(extraout_var_00,uVar4) != 0) {
         QueueDeferredUiEventPacket(this,10,CONCAT31(extraout_var_00,uVar4));
       }
@@ -659,12 +659,12 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   else if (param_1 == 0x14) {
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x636e636c) {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->HandleTurnFlowStateTickOrPostTurnEvent5DC)();
     }
     if ((this->field_0x90 != '\0') && (*(int *)(CVar3.m_pchData + 0x1c) == 0x6f74746f)) {
       sVar1 = *(short *)&this->field_0x92;
       if ((sVar1 != -1) && (sVar1 != 0xa1)) {
-        uVar4 = (*this->vftable[0x12].slot_0x04)(sVar1 + 0x736c7430);
+        uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(sVar1 + 0x736c7430);
         iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
         (**(code **)(iVar2 + 0xc))();
         (**(code **)(iVar2 + 0x1b4))(&this->field_0x9e,0);
@@ -681,7 +681,7 @@ TLoadSavePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     }
   }
   else if ((param_1 == 10) && (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179)) {
-    (*this->vftable[0x39].slot_0x04)();
+    (*this->vftable->HandleSaveGameSlotSelectionAndPromptFlow)();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -716,7 +716,7 @@ void TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(int param_1)
 
 {
   short sVar1;
-  TLoadSavePicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   int iVar4;
@@ -725,19 +725,19 @@ void TLoadSavePicture::OrphanTiny_ReturnZero_0048a730(int param_1)
   
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x6f6b6179);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f6b6179);
     iVar4 = CONCAT31(extraout_var_00,uVar3);
     if (iVar4 != 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
                 (CONCAT22(extraout_var_01,*(undefined2 *)(iVar4 + 0x92)),0,1);
       QueueDeferredUiEventPacket(this,10,iVar4);
     }
   }
   else if (sVar1 == 0x1b) {
-    pTVar2 = this->vftable[0x12].slot_0x04;
-    uVar3 = (*pTVar2)(0x636e636c);
+    p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var2)(0x636e636c);
     if (CONCAT31(extraout_var,uVar3) != 0) {
-      uVar3 = (*pTVar2)(0x636e636c);
+      uVar3 = (*p_Var2)(0x636e636c);
       QueueDeferredUiEventPacket(this,0x14,uVar3);
       return;
     }
@@ -787,7 +787,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow()
   if (this->field_0x90 == '\0') {
     CString::CString(aCStack_14);
     uStack_4 = 1;
-    uVar4 = (*this->vftable[0x12].slot_0x04)(0x736c6f74);
+    uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x736c6f74);
     iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0x1dc))(&stack0xffffffe8);
@@ -837,7 +837,7 @@ LAB_0056d4d7:
   }
   else if ((*(int *)&g_pLocalizationTable->field_0x8 == 1) ||
           (cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted(0x6c6f6164), cVar3 != '\0')) {
-    uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x13c))();
     puVar9 = PTR_DAT_0065ddd4;
     if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {

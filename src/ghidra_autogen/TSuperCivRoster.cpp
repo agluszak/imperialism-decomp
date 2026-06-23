@@ -53,18 +53,17 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
           (TSuperCivRoster *this,undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  TSuperCivRoster_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   TSuperCivRosterVtbl *pTVar2;
   short sVar3;
   TLineDataVtbl *pTVar4;
   int iVar5;
   TLineData *this_00;
-  undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  byte bFreeMemory;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_14;
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -80,9 +79,8 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
   local_14 = *(undefined4 *)&g_apNationStates[sVar3]->field_0x89c;
   pTVar4 = (TLineDataVtbl *)InitializeLinkedListCursorFromOwnerHead();
   iVar5 = LinkedListCursorHasCurrent();
-  bFreeMemory = (byte)unaff_EDI;
   if (iVar5 != 0) {
-    pTVar1 = this->vftable[0x34].GetTEventHandlerClassNamePointer;
+    p_Var1 = this->vftable->OrphanCallChain_C1_I06_0056fbb0;
     do {
       this_00 = (TLineData *)AllocateWithFallbackHandler(0x14);
       local_4 = 0;
@@ -98,19 +96,18 @@ TSuperCivRoster::ConstructTSuperCivRosterBaseState
       local_1c = 0x40;
       TLineData::SetLineDataRowAndBounds(this_00,0,0,&local_20);
       this_00[1].vftable = pTVar4;
-      (*pTVar1)(this_00);
+      (*p_Var1)(this_00);
       pTVar4 = (TLineDataVtbl *)AdvanceLinkedListCursor();
       iVar5 = LinkedListCursorHasCurrent();
-      bFreeMemory = (byte)unaff_EDI;
     } while (iVar5 != 0);
   }
   pTVar2 = this->vftable;
   *(undefined2 *)&this->field_0x64 = 2;
-  (*pTVar2[0x35].slot_0x04)(bFreeMemory);
-  (*pTVar2[0x36].GetTEventHandlerClassNamePointer)(1);
-  (*this->ownerContext->vftable[1].slot_0x04)();
+  (*pTVar2->OrphanCallChain_C8_I82_0056fc80)();
+  (*pTVar2->OrphanCallChain_C8_I118_0056fdb0)(1);
+  (**(code **)&this->ownerContext->vftable->field_0xc)();
   UpdatePagedListNavigationButtonState((int)*(short *)&this->field_0x62);
-  *unaff_FS_OFFSET = uStack_c;
+  *unaff_FS_OFFSET = uStack_10;
   return;
 }
 
@@ -201,7 +198,8 @@ void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
   *unaff_FS_OFFSET = &uStack_c;
   dwViewTypeId = 0xdac;
   local_28 = (int)this;
-  pViewManagerContext._0_1_ = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0xdac);
+  pViewManagerContext._0_1_ =
+       (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xdac);
   pViewManagerContext = (int *)CONCAT31(pViewManagerContext._1_3_,pViewManagerContext._0_1_);
   if (pViewManagerContext == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -233,7 +231,7 @@ void TSuperCivRoster::ShowCivilianLedgerDialogAndSelectUnit()
   local_28 = 0x136;
   uStack_24 = 0xd;
   uStack_20 = 0x2e;
-  (*this_00->vftable[0x37].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
+  (*this_00->vftable[1].GetTEventHandlerClassNamePointer)(iVar3,&uStack_24,&pTStack_2c);
   this_00->controlTag = 0x70616765;
   nLedgerPageHandle = AllocateWithFallbackHandler(0x94);
   uStack_18 = 1;

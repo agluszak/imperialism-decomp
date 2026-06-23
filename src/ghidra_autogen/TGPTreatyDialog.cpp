@@ -35,7 +35,7 @@ void TGPTreatyDialog::ConstructTGPTreatyDialogBaseState()
 
 {
   int iVar1;
-  TGPTreatyDialog_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined4 uVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -83,7 +83,7 @@ void TGPTreatyDialog::ConstructTGPTreatyDialogBaseState()
   do {
     piVar6 = local_34;
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_30) != 0) {
-      uVar4 = (*this->vftable[0x12].slot_0x04)();
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       piVar5 = (int *)CONCAT31(extraout_var,uVar4);
       piStack_38 = piVar5;
       if (piVar5 == (int *)0x0) {
@@ -122,14 +122,14 @@ void TGPTreatyDialog::ConstructTGPTreatyDialogBaseState()
     local_34 = (int *)((int)piVar6 + 1);
     local_30 = local_30 + 4;
   } while ((short)local_34 < 7);
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar2)();
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)();
   local_30 = CONCAT31(extraout_var_01,uVar4);
   if (local_30 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   local_3c.m_pchData = (char *)CONCAT31(extraout_var_02,uVar4);
   if (local_3c.m_pchData == (char *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

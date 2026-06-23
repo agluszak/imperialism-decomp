@@ -253,12 +253,12 @@ TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit
       ConstructScopedMapQuickDrawContext(this);
       pTVar1 = this->vftable;
       uStack_4 = 0;
-      (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
       iStack_2c = this->field34;
       iStack_28 = this->field38;
       uStack_34 = 0;
       uStack_30 = 0;
-      (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&uStack_34);
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_44)(&uStack_34);
       if (*(int *)&this->field_0x94 == 1) {
         if (*(short *)&this->field_0x90 < 0xc) {
           sVar2 = 0;
@@ -281,9 +281,9 @@ TTwoPicSlider::QueueCityRecruitmentSupportCommandsIfDeficit
     else {
       sVar2 = *(short *)&this->field_0x90 + -0xc;
     }
-    (*g_pSfxPlaybackSystem->vftable[0x15].slot_0x04)
+    (*g_pSfxPlaybackSystem->vftable[1].~TEventHandler)
               ((sVar2 * 100) / (int)(short)((short)this->field38 + -0xc));
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
   }
 LAB_0056e7b7:
   *unaff_FS_OFFSET = uStack_c;

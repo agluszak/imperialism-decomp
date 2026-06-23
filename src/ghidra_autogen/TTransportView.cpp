@@ -56,7 +56,7 @@ void TTransportView::ApplyCityDialogMinisterValues(undefined4 param_1)
   *(undefined4 *)&this->field_0x60 = param_1;
   sVar5 = 0;
   local_4 = 0;
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x73757070);
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x73757070);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -128,7 +128,7 @@ void TTransportView::GetTEventHandlerClassNamePointer()
   dword *pdVar5;
   code *pcStack_c;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x7472616e);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7472616e);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

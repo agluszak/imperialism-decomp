@@ -101,13 +101,13 @@ void TCivilianButton::SetSelectionAndEnableByMappedValue(int param_1)
   *(int *)&this->field_0x9c = param_1;
   if (param_1 != 0) {
     pTVar1 = this->vftable;
-    (*pTVar1[0x14].slot_0x04)(1,0);
-    (*pTVar1[0x15].GetTEventHandlerClassNamePointer)(1,0);
-    uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)(param_1);
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(1,0);
+    (*pTVar1->UpdateControlCachedIntFromWindowText_2a)(1,0);
+    uVar2 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(param_1);
     *(short *)&this->field_0x98 = (short)CONCAT31(extraout_var,uVar2);
     return;
   }
-  (*this->vftable[0x14].slot_0x04)(0,1);
+  (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,1);
   return;
 }
 

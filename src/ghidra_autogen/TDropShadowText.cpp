@@ -86,7 +86,7 @@ void TDropShadowText::OrphanTiny_ReturnZero_0048a730()
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pTVar1 = this->vftable;
-  (*pTVar1[0x2b].slot_0x04)(&RStack_20.top);
+  (*pTVar1->VTableSlot57)(&RStack_20.top);
   iStack_30 = 1;
   iStack_2c = 1;
   uStack_28 = 0;
@@ -108,13 +108,13 @@ void TDropShadowText::OrphanTiny_ReturnZero_0048a730()
   SetQuickDrawColorAndPropagateIfChanged(*(undefined4 *)&this->field_0x94);
   CString::CString((CString *)&stack0x00000000);
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(&stack0x00000000);
-  (*pTVar1[0x34].slot_0x04)(&iStack_34);
+  (*pTVar1->AssignSharedStringFromField84)(&stack0x00000000);
+  (*pTVar1->DeserializeCityProductionQueueCommand)(&iStack_34);
   iStack_34 = iStack_34 + -1;
   iStack_2c = iStack_2c + -1;
   ppuStack_38 = (undefined **)((int)ppuStack_38 + -1);
   iStack_30 = iStack_30 + -1;
-  (*pTVar1[0x3a].slot_0x04)
+  (*pTVar1->RenderControlStateTextBySelectionCode)
             (puStack_8,*(undefined4 *)((int)puStack_8 + -8),&ppuStack_38,
              CONCAT22((short)((uint)ppuStack_38 >> 0x10),*(undefined2 *)&this->field_0x90));
   RStack_20.left = CONCAT31(RStack_20.left._1_3_,1);

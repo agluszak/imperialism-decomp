@@ -115,18 +115,18 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     dwCommandTag = *(uint *)(pMenuCommandEvent + 0x1c);
     if (dwCommandTag < 0x68696769) {
       if (dwCommandTag == 0x68696768) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
       }
       else if (dwCommandTag != 0x636e636c) goto LAB_00575d3b;
       goto LAB_00575d30;
     }
     if (dwCommandTag < 0x6d756c75) {
       if (dwCommandTag == 0x6d756c74) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         EnsureGameFlowStateAndPostTurnEvent5E5();
       }
       else if (dwCommandTag == 0x6c6f6164) {
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         fModalAccepted = ReturnTrueStub();
         while (fModalAccepted == '\0') {
           CString::CString((CString *)&nDialogEventCode);
@@ -153,7 +153,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       if (dwCommandTag == 0x72616e64) {
         wShiftState = GetAsyncKeyState(0x10);
         if (((wShiftState & 0x8000) == 0) || ((char)g_apSecondaryNationStateSlots[0x17] == '\0')) {
-          (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+          (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
           fModalAccepted = ReturnTrueStub();
           while (fModalAccepted == '\0') {
             CString::CString((CString *)&nDialogEventCode);
@@ -167,14 +167,14 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
             fModalAccepted = ReturnTrueStub();
           }
           SetSelectedIndex6AAndTriggerRefresh();
-          (*g_pUiViewManager->vftable[6].GetTAssetMgrClassNamePointer)();
+          (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df3f0)();
         }
         else {
           pGlobalMapState = (int *)0x232c;
-          (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+          (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
           if (g_pGlobalMapState == (TMapMgr *)0x0) {
             if (g_pActiveMapOrderContext != (TOcean *)0x0) {
-              (*g_pActiveMapOrderContext->vftable[3].DestroyTPortZoneManager)();
+              (*g_pActiveMapOrderContext->vftable[1].GetRuntimeClass)();
               g_pActiveMapOrderContext = (TOcean *)0x0;
             }
             g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler();
@@ -191,7 +191,7 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
             }
             ResetPortZoneGlobalContextCounters();
             if (g_pGlobalMapState != (TMapMgr *)0x0) {
-              (*g_pGlobalMapState->vftable[3].slot_0x04)();
+              (*g_pGlobalMapState->vftable->Free)();
               g_pGlobalMapState = (TMapMgr *)0x0;
             }
             pTStack_8 = (TMapMgr *)AllocateWithFallbackHandler();
@@ -204,19 +204,19 @@ TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
             InitializeGlobalMapState(g_pGlobalMapState,pGlobalMapState);
           }
           RebuildGlobalOrderManagersAndCapabilityState();
-          (*g_pGlobalMapState->vftable[5].GetTMapMgrClassNamePointer)();
-          (*g_pGlobalMapState->vftable[6].GetTMapMgrClassNamePointer)();
+          (*g_pGlobalMapState->vftable->WrapperFor_AllocateWithFallbackHandler_At0050e8b0)();
+          (*g_pGlobalMapState->vftable->LoadPoliticalMapRegionSubtypeTableFromResourceStream)();
           nMapTileIndex = 0;
           do {
-            (*g_pGlobalMapState->vftable[6].slot_0x04)();
-            (*g_pGlobalMapState->vftable[7].slot_0x04)();
+            (*g_pGlobalMapState->vftable->UpdateMapTileAdjacencyMasksAndVariantForTile)();
+            (*g_pGlobalMapState->vftable->UpdateTileNeighborBorderInfluenceCounters)();
             nMapTileIndex = nMapTileIndex + 1;
           } while (nMapTileIndex < 0x1950);
         }
       }
       else {
         if (dwCommandTag != 0x7363656e) goto LAB_00575d3b;
-        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
         fModalAccepted = ReturnTrueStub();
         while (fModalAccepted == '\0') {
           CString::CString((CString *)&nDialogEventCode);

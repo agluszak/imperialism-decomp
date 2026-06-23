@@ -80,7 +80,7 @@ TGameSetupMultiplayerPicture::_scalar_deleting_destructor_
 void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TGameSetupMultiplayerPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   char cVar3;
   undefined3 extraout_var;
@@ -90,8 +90,8 @@ void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var_01;
   
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar2 = (*pTVar1)(0x70726f74);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar2 = (*p_Var1)(0x70726f74);
   piVar4 = (int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(*piVar4 + 0xc))();
   *(undefined2 *)(piVar4 + 0x23) = 0x4c;
@@ -110,13 +110,13 @@ void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
       piVar4 = (int *)AdvanceSelectableTextOptionEntryIterator();
       iVar5 = IsSelectableTextOptionEntryIteratorValid();
     }
-    uVar2 = (*pTVar1)(0x63757273);
+    uVar2 = (*p_Var1)(0x63757273);
     g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_00,uVar2);
-    (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+    (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
     BuildUiTextStyleDescriptor(&stack0xffffffd8,0,0xe,0x2b6c);
-    (*g_pCursorControlPanel->vftable[0x3c].slot_0x04)(&stack0xffffffd8,1);
-    (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6b,0x2b6c);
-    (*g_pCursorControlPanel->vftable[0x38].slot_0x04)(1,0);
+    (*g_pCursorControlPanel->vftable[1].OrphanCallChain_C11_I88_004874b0_08)(&stack0xffffffd8,1);
+    (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b,0x2b6c);
+    (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,0);
     InitializeMainRoutineContextAndRun(&g_szEmptyString,0x6d61696e);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1f,0x72616e64);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x20,0x7363656e);
@@ -127,7 +127,7 @@ void TGameSetupMultiplayerPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   cVar3 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0();
   if (cVar3 != '\0') {
-    uVar2 = (*pTVar1)(0x73706974);
+    uVar2 = (*p_Var1)(0x73706974);
     iVar5 = *(int *)CONCAT31(extraout_var_01,uVar2);
     (**(code **)(iVar5 + 0xc))();
     (**(code **)(iVar5 + 0xa8))(1,0);
@@ -152,7 +152,7 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   uint uVar1;
-  TGameSetupMultiplayerPicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   undefined uVar4;
   int iVar5;
@@ -179,10 +179,10 @@ TGameSetupMultiplayerPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       if (uVar1 == 0x6c6f6164) goto LAB_005762a1;
       if (uVar1 != 0x6a6f696e) goto LAB_005764ac;
 LAB_005763d6:
-      pTVar2 = this->vftable[0x12].slot_0x04;
-      uVar4 = (*pTVar2)();
+      p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+      uVar4 = (*p_Var2)();
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0xc))();
-      uVar4 = (*pTVar2)();
+      uVar4 = (*p_Var2)();
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0xc))();
       cVar3 = ValidateGameFlowNameAndSelectionContext();
       if (cVar3 == '\0') {
@@ -299,7 +299,7 @@ LAB_0057670d:
       local_10 = &stack0xffffffc4;
       AssignStringSharedRefAndReturnThis(&local_14);
       DispatchLocalizedUiMessageWithTemplateA13A0();
-      uVar4 = (*this->vftable[0x12].slot_0x04)();
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       iVar5 = *(int *)CONCAT31(extraout_var_01,uVar4);
       (**(code **)(iVar5 + 0xc))();
       (**(code **)(iVar5 + 0xa8))();

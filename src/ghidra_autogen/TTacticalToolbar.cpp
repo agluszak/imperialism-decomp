@@ -67,7 +67,7 @@ CRuntimeClass * TTacticalToolbar::GetTEventHandlerClassNamePointer()
 void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TTacticalToolbar_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -85,9 +85,9 @@ void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
   puStack_10 = (undefined1 *)0x5ac84e;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   iStack_c = 0x68656c70;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   puStack_10 = (undefined1 *)0x5ac85f;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   puStack_10 = (undefined1 *)CONCAT31(extraout_var,uVar2);
   iStack_14 = 0x20;
   iStack_18 = 0x273d;
@@ -95,7 +95,7 @@ void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject();
   puStack_10 = (undefined1 *)0x74617267;
   iStack_14 = 0x5ac878;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iStack_14 = CONCAT31(extraout_var_00,uVar2);
   iStack_18 = 0x21;
   uStack_1c = 0x273d;
@@ -103,7 +103,7 @@ void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject();
   iStack_14 = 0x646f6e65;
   iStack_18 = 0x5ac891;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iStack_18 = CONCAT31(extraout_var_01,uVar2);
   uStack_1c = 0x22;
   pTStack_20 = (TTacticalToolbar *)0x273d;
@@ -111,14 +111,14 @@ void TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
   LoadUiStringByGroupAndIndexToControlObject();
   iStack_18 = 0x72657472;
   uStack_1c = 0x5ac8aa;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   uStack_1c = CONCAT31(extraout_var_02,uVar2);
   pTStack_20 = (TTacticalToolbar *)0x23;
   pTStack_24 = (TToolBarClusterVtbl *)0x273d;
   LoadUiStringByGroupAndIndexToControlObject();
   uStack_1c = 0x6175746f;
   pTStack_20 = (TTacticalToolbar *)0x5ac8c3;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   pTStack_20 = (TTacticalToolbar *)CONCAT31(extraout_var_03,uVar2);
   pTStack_24 = (TToolBarClusterVtbl *)0x24;
   LoadUiStringByGroupAndIndexToControlObject(0x273d);
@@ -227,7 +227,7 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
   CStack_8.m_pchData = &LAB_006387f8;
   *unaff_FS_OFFSET = &uStack_c;
   *(int **)&this->field_0x8c = param_1;
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x63757272);
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63757272);
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar2 + 0xc))();
   if (param_1 != (int *)0x0) {
@@ -263,7 +263,7 @@ TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
   undefined3 extraout_var;
   
   *(int *)&this->field_0x90 = param_1;
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x74706963);
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x74706963);
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar2 + 0xc))();
   if (param_1 != 0) {
@@ -303,7 +303,8 @@ TTacticalToolbar::OrphanRetStub_0059add0
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005acfe5:
   TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
-  (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
+  (*g_pGlobalUiRootController->vftable->OrphanTiny_SetDwordEcxOffset_20_00486880)
+            (this->ownerContext);
   return;
 }
 

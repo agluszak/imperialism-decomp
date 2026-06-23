@@ -94,13 +94,13 @@ TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
         *(int *)&this->field_0x84 = iVar4 + 10;
       }
       pTVar1 = this->vftable;
-      cVar2 = (*pTVar1[0x2d].slot_0x04)(in_stack_00000010);
+      cVar2 = (*pTVar1->VTableSlot5B)(in_stack_00000010);
       if (cVar2 != '\0') {
         if (this->controlTag == 0x72676874) {
-          (*pTVar1[8].GetTEventHandlerClassNamePointer)(100);
+          (*pTVar1->OrphanTiny_ReturnZero_0048a730)(100);
           return;
         }
-        (*pTVar1[8].GetTEventHandlerClassNamePointer)(0x65,this,0);
+        (*pTVar1->OrphanTiny_ReturnZero_0048a730)(0x65,this,0);
       }
     }
   }

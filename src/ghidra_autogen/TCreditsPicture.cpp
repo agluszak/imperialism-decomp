@@ -100,7 +100,7 @@ void TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   code *unaff_EDI;
   undefined4 uStack00000004;
   undefined4 uStack_24;
-  TCreditsPicture_slot_0x04_0x04 *local_10;
+  _vslot_fn *local_10;
   int iStack_c;
   undefined1 local_6;
   undefined1 local_5;
@@ -120,7 +120,7 @@ void TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_24 = 0x56eea8;
   SelectAndScheduleRandomAudioCue();
   uStack_24 = 0x63726564;
-  local_10 = this->vftable[0x12].slot_0x04;
+  local_10 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar2 = (*local_10)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   iVar1 = *piVar3;
@@ -150,7 +150,7 @@ TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TCreditsPicture *this,int param_1,TCreditsPicture *param_2)
 
 {
-  TCreditsPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -177,9 +177,9 @@ TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       MapUiThemeCodeToStyleFlags(0x2b6b);
       piStack_24 = (int *)0x3;
       InitializeUiTextStyleDescriptor(auStack_c,0,0xc,0x2b68);
-      pTVar1 = this->vftable[0x12].slot_0x04;
+      p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       piStack_24 = (int *)0x63726564;
-      uVar3 = (*pTVar1)();
+      uVar3 = (*p_Var1)();
       piVar4 = (int *)CONCAT31(extraout_var,uVar3);
       iVar2 = *piVar4;
       (**(code **)(iVar2 + 0xc))();
@@ -187,7 +187,7 @@ TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       (**(code **)(iVar2 + 0x1e4))(&stack0xffffffec,1);
       piVar4[0x27] = unaff_EDI;
       *(undefined1 *)(piVar4 + 0x28) = 1;
-      uVar3 = (*pTVar1)(0x63726532);
+      uVar3 = (*p_Var1)(0x63726532);
       piVar4 = (int *)CONCAT31(extraout_var_00,uVar3);
       iVar2 = *piVar4;
       (**(code **)(iVar2 + 0xc))();

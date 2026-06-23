@@ -368,7 +368,7 @@ void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int *param_1)
   undefined1 *puVar2;
   int iVar3;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   (**(code **)(**(int **)&this->field_0x4 + 0x20))();
   (**(code **)(**(int **)&this->field_0x4 + 0x18))(param_1);
   if (0x2a < DAT_00695278) {
@@ -400,7 +400,7 @@ void THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int *param_1)
   int unaff_EBX;
   int iVar2;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (**(code **)(**(int **)&this->field_0x4 + 0x14))(param_1);
   iVar2 = 5;
   pcVar1 = *(code **)(*param_1 + 0x78);
@@ -424,7 +424,7 @@ void THelpMgr::OrphanCallChain_C2_I16_00501070()
   }
   *(undefined4 *)&this->field_0x4 = 0;
   if (this != (THelpMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~THelpMgr)(1);
   }
   return;
 }

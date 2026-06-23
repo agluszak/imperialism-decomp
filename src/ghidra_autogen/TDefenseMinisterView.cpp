@@ -120,13 +120,13 @@ TDefenseMinisterView::OrphanRetStub_0059add0
         return;
       }
       if (g_pLocalizationTable->field_0x14 == '\0') {
-        (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-        (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)();
+        (*this->vftable->SetForeignMinisterReadyFlag14)();
+        (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)();
         (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       }
     }
     else if (iVar1 == 0x72656363) {
-      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)();
       *unaff_FS_OFFSET = unaff_ESI;
       return;
     }
@@ -141,7 +141,7 @@ TDefenseMinisterView::OrphanRetStub_0059add0
     return;
   }
   if (iVar1 == 0x6261636b) {
-    (*this->vftable[0x35].slot_0x04)();
+    (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
     *unaff_FS_OFFSET = local_c;
     return;
   }
@@ -153,9 +153,9 @@ TDefenseMinisterView::OrphanRetStub_0059add0
     return;
   }
   pTVar2 = this->vftable;
-  (*pTVar2[0x35].slot_0x04)();
-  (*pTVar2[0xb].GetTEventHandlerClassNamePointer)();
-  (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)();
+  (*pTVar2->OrphanLeaf_NoCall_Ins03_004f2ea0)();
+  (*pTVar2->SetForeignMinisterReadyFlag14)();
+  (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)();
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }

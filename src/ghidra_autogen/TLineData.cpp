@@ -39,8 +39,8 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
   else {
     pTVar2 = *(TLineDataVtbl **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
   }
-  for (; pTVar2 != (TLineDataVtbl *)0x0; pTVar2 = (TLineDataVtbl *)pTVar2[2].slot_0x04) {
-    if (*(short *)&pTVar2[1].GetTLineDataClassNamePointer != 1) {
+  for (; pTVar2 != (TLineDataVtbl *)0x0; pTVar2 = (TLineDataVtbl *)pTVar2->WriteTo) {
+    if (*(short *)&pTVar2->Serialize != 1) {
       this = (TLineData *)AllocateWithFallbackHandler(0x14);
       local_4._0_1_ = 2;
       if (this == (TLineData *)0x0) {
@@ -56,7 +56,7 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *param
       TLineData::SetLineDataRowAndBounds(this,0,0,&local_14);
       pTVar1 = param_1->vftable;
       this[1].vftable = pTVar2;
-      (*pTVar1[0x34].GetTLineDataClassNamePointer)(this);
+      (*pTVar1[8].ShallowClone)(this);
     }
   }
   WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10();
@@ -87,10 +87,10 @@ TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
   this[9].field_0xc = param_2;
   *(undefined4 *)&this[9].field_0x8 = param_3;
   *(undefined2 *)&this[9].field_0xe = param_4;
-  uVar2 = (*pTVar1[0xb].GetTLineDataClassNamePointer)();
+  uVar2 = (*pTVar1[1].OrphanRetStub_0056f460)();
   *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 0x3c) = 0x65;
-  (*pTVar1[0x3a].slot_0x04)();
-  (*pTVar1[0x3b].GetTLineDataClassNamePointer)();
+  (*pTVar1[9].ShallowFree)();
+  (*pTVar1[9].OrphanRetStub_0056f460)();
   return;
 }
 
@@ -142,7 +142,7 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
   this_00 = (TAnimation *)*piVar6;
   if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
     FreeHeapBufferIfNotNull(this_00);
@@ -159,7 +159,7 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
 void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 param_1)
 
 {
-  TLineData_GetTLineDataClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   TLineDataVtbl *pTVar2;
   TLineData *pTVar3;
   int iVar4;
@@ -195,7 +195,7 @@ void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 pa
   } while (local_18 != 0);
   puVar5 = *(undefined4 **)(*(int *)&this[8].field_0x8 + 0x10);
   if (puVar5 != (undefined4 *)0x0) {
-    pTVar1 = this->vftable[0x34].GetTLineDataClassNamePointer;
+    p_Var1 = this->vftable[8].ShallowClone;
     do {
       pTVar3 = (TLineData *)AllocateWithFallbackHandler(0x1c);
       uStack_4 = 0;
@@ -214,15 +214,15 @@ void TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(undefined4 pa
       pTVar2 = (TLineDataVtbl *)*puVar5;
       *(undefined4 *)&pTVar3[1].field_0x8 = param_1;
       pTVar3[1].vftable = pTVar2;
-      (*pTVar1)(pTVar3);
+      (*p_Var1)(pTVar3);
       puVar5 = (undefined4 *)puVar5[1];
     } while (puVar5 != (undefined4 *)0x0);
   }
   pTVar2 = this->vftable;
   *(undefined2 *)&this[6].field_0x4 = 2;
-  (*pTVar2[0x35].slot_0x04)();
-  (*pTVar2[0x36].GetTLineDataClassNamePointer)(1);
-  (**(code **)((this[2].vftable)->GetTLineDataClassNamePointer + 0xc))();
+  (*pTVar2[8].OrphanRetStub_0056f480)();
+  (*pTVar2[9].GetRuntimeClass)(1);
+  (**(code **)((this[2].vftable)->GetRuntimeClass + 0xc))();
   UpdatePagedListNavigationButtonState((int)*(short *)((int)&this[6].vftable + 2));
   *unaff_FS_OFFSET = uStack_10;
   return;
@@ -420,20 +420,21 @@ void TLineData::BuildSelectedNationOrderCapabilityRows()
   local_64.m_pchData = (char *)0x0;
   local_68 = 0;
   if ((char)g_apNationStates[*(short *)&this[9].vftable]->field_0x8fc < '\x01') {
-    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable[0x30].
-              GetTCountryClassNamePointer)();
+    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
+              AdvanceNationPendingActionStateMachine_60)();
     if (CONCAT31(extraout_var,uVar3) == 0) goto LAB_005bb355;
   }
   *(undefined1 *)&this[0xb].vftable = 0;
 LAB_005bb355:
   do {
-    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable[0x36].slot_0x04)(iVar9);
+    uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
+              HandleCityDialogHintClusterUpdate_6d)(iVar9);
     sVar11 = (short)CONCAT31(extraout_var_00,uVar3);
     if (sVar11 != 0) {
       *(undefined1 *)&this[0xb].vftable = 0;
       puVar12 = auStack_6c;
-      (*g_apNationStates[*(short *)&this[9].vftable]->vftable[0x37].slot_0x04)
-                (iVar9,1,auStack_6a,auStack_6c,puVar12,auStack_34);
+      (*g_apNationStates[*(short *)&this[9].vftable]->vftable->ApplyJoinEmpireModeForTargetNation_6f
+      )(iVar9,1,auStack_6a,auStack_6c,puVar12,auStack_34);
       uVar8 = (undefined2)iVar9;
       if ((short)((uint)puVar12 >> 0x10) == 1) {
         *(undefined1 *)&this[0xb].vftable = 0;
@@ -527,7 +528,8 @@ LAB_005bb355:
     }
     iVar9 = iVar9 + 1;
   } while ((short)iVar9 < 0x11);
-  uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable[0x2f].slot_0x04)();
+  uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
+            PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
   if (CONCAT31(extraout_var_01,uVar3) != 0) {
     CString::CString(&CStack_48);
     uStack_4 = 4;
@@ -554,8 +556,8 @@ LAB_005bb355:
     pTStack_50 = (TLineData *)0x0;
     do {
       iVar9 = iStack_44;
-      uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable[0x2f].
-                GetTCountryClassNamePointer)(iStack_44);
+      uVar3 = (*g_apNationStates[*(short *)&this[9].vftable]->vftable->
+                SumAidAllocationMatrixColumnForTarget)(iStack_44);
       if (CONCAT31(extraout_var_02,uVar3) != 0) {
         local_68 = local_68 + 1;
         *(undefined1 *)&this[0xb].vftable = 0;
@@ -659,7 +661,7 @@ LAB_005bb355:
   else {
     *(short *)((int)&this[9].vftable + 2) = sVar1 + -1;
   }
-  uVar3 = (*this->vftable[0x12].slot_0x04)(0x74616273);
+  uVar3 = (*this->vftable[3].~TLineData)(0x74616273);
   iVar9 = *(int *)CONCAT31(extraout_var_03,uVar3);
   (**(code **)(iVar9 + 0xc))();
   (**(code **)(iVar9 + 0x1c4))(0x2266,g_pCityOrderCapabilityState->field_0x193);

@@ -79,10 +79,10 @@ void TPlacard::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   if (*(short *)&this->field_0x90 == 0) {
-    (*this->vftable[0x14].slot_0x04)(0,1);
+    (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,1);
     return;
   }
-  (*this->vftable[0x14].slot_0x04)(1,1);
+  (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(1,1);
   return;
 }
 
@@ -100,10 +100,10 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
   
   if (param_1 != *(short *)&this->field_0x90) {
     if (param_1 == 0) {
-      (*this->vftable[0x14].slot_0x04)(0,(int)param_2);
+      (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,(int)param_2);
     }
     else if (*(short *)&this->field_0x90 == 0) {
-      (*this->vftable[0x14].slot_0x04)(1,(int)param_2);
+      (*this->vftable->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(1,(int)param_2);
     }
     *(short *)&this->field_0x90 = param_1;
     if (param_2 != '\0') {

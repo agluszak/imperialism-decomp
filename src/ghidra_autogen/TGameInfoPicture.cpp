@@ -34,7 +34,7 @@ CRuntimeClass * TGameInfoPicture::GetTEventHandlerClassNamePointer()
 void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
 
 {
-  TGameInfoPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   undefined3 extraout_var;
   int iVar3;
@@ -58,9 +58,9 @@ void TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(CString param_1)
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
   iVar3 = 0;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
-    uVar2 = (*pTVar1)(iVar3 + 0x74787461);
+    uVar2 = (*p_Var1)(iVar3 + 0x74787461);
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&stack0x00000000);
     RefreshActiveControlThenApplyThemeStyleAndCaption

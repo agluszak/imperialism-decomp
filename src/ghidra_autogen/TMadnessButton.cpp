@@ -36,7 +36,7 @@ void TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920()
 {
   TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920((TCzechBox *)this);
   *(int *)&this->field_0x98 = (int)*(short *)&this->field_0x84;
-  (*this->vftable[0x3a].slot_0x04)(1,0);
+  (*this->vftable->OrphanCallChain_C1_I10_00571e00)(1,0);
   return;
 }
 
@@ -62,12 +62,12 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
   *unaff_FS_OFFSET = &uStack_c;
   pTVar1 = this->vftable;
   iVar3 = *(int *)&this->field_0x98;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 == '\0') {
     iVar3 = iVar3 + 4;
   }
   else {
-    cVar2 = (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_00571de0)();
     if (cVar2 == '\0') {
       iVar3 = iVar3 + 2;
     }
@@ -76,12 +76,12 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
     }
   }
   if (*(short *)&this->field_0x84 != iVar3) {
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(iVar3,0);
+    (*pTVar1->SetPictureResourceIdAndRefresh)(iVar3,0);
     if (param_1 != '\0') {
-      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(auStack_34);
+      (*pTVar1->OrphanCallChain_C11_I88_004874b0_4a)(auStack_34);
       ConstructScopedMapQuickDrawContext(this);
       puStack_8 = (undefined1 *)0x0;
-      (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&stack0xffffffc8);
+      (*pTVar1->OrphanTiny_ReturnZero_0048a730_44)(&stack0xffffffc8);
       uStack_4 = 0xffffffff;
       DestroyScopedMapQuickDrawContext();
     }

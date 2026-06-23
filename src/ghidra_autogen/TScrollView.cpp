@@ -90,7 +90,7 @@ void TScrollView::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x7363726f);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x7363726f);
   *(uint *)&this->field_0x60 = CONCAT31(extraout_var,uVar1);
   this_00 = (TControl *)AllocateWithFallbackHandler(0x94);
   puStack_8 = (undefined1 *)0x0;
@@ -139,11 +139,11 @@ TScrollView::_scalar_deleting_destructor_
   iVar3 = NoOpRuntimeCallback_00489a70();
   if (iVar3 != 0) {
     pTVar1 = this->vftable;
-    cVar2 = (*pTVar1[0x1d].slot_0x04)();
+    cVar2 = (*pTVar1->VTableSlot3B)();
     if (cVar2 != '\0') {
-      cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+      cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
       if (cVar2 != '\0') {
-        (*pTVar1[0x2b].slot_0x04)(&RStack_1c);
+        (*pTVar1->VTableSlot57)(&RStack_1c);
         uStack_20 = 0;
         ppuStack_24 = &CBrush::_vftable_;
         uStack_4 = 0;

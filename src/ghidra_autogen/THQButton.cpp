@@ -55,7 +55,7 @@ void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
 void TPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
-  THQButton_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   ushort uVar3;
   int iVar4;
@@ -78,13 +78,13 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   
   uVar3 = GetAsyncKeyState(0x11);
   if ((uVar3 & 0x8000) != 0) {
-    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&iStack_10);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&iStack_10);
   }
   iVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
   if (((iVar4 != 0) &&
       (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
      (*(int *)(iVar4 + 0x10) == 0)) {
-    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&iStack_10);
+    (*this->vftable->GetTEventHandlerClassNamePointer_58)(&iStack_10);
     iVar7 = iStack_c - iStack_14;
     iVar4 = iStack_8 - iStack_10;
     uVar5 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
@@ -99,17 +99,17 @@ void TPicture::OrphanTiny_ReturnZero_0048a730()
   if (iVar4 < 1) {
     iVar4 = -iVar4;
   }
-  pTVar1 = this->vftable[0x2b].GetTEventHandlerClassNamePointer;
+  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_56;
   iVar7 = this->field38;
   iVar10 = this->field34;
   uVar12 = 0;
   uVar11 = 0;
   puVar9 = auStack_18;
-  uVar2 = (*pTVar1)(puVar9,iVar10,iVar7,0,0,
+  uVar2 = (*p_Var1)(puVar9,iVar10,iVar7,0,0,
                     *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
   uVar5 = *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4);
   piVar8 = &iStack_14;
-  uVar2 = (*pTVar1)(piVar8,uVar5);
+  uVar2 = (*p_Var1)(piVar8,uVar5);
   uVar13 = *(undefined4 *)CONCAT31(extraout_var_00,uVar2);
   uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
   RenderHintHelperWithCtrlModifierOverlay_Impl
@@ -288,9 +288,9 @@ void THQButton::SetModeAndBitmapBySelectionState(char param_1)
   }
   uVar3 = CONCAT22((short)((uint)in_EAX >> 0x10),uVar1);
 LAB_0058b7a7:
-  (*pTVar4[0x39].GetTEventHandlerClassNamePointer)(uVar3,1);
+  (*pTVar4->SetPictureResourceIdAndRefresh)(uVar3,1);
   if (unaff_retaddr != '\0') {
-    uVar2 = (*pTVar4[0xb].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*pTVar4->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x13c))();
   }
   return;
@@ -305,7 +305,7 @@ void THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 {
   if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
-      (*this->vftable[0x39].slot_0x04)(1,1);
+      (*this->vftable->InvokeSlot1CCIfSlot28Enabled)(1,1);
     }
     TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
@@ -315,10 +315,10 @@ void THQButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
       TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
-    (*this->vftable[0x39].slot_0x04)(0,1);
+    (*this->vftable->InvokeSlot1CCIfSlot28Enabled)(0,1);
     return;
   }
-  (*this->vftable[0x39].slot_0x04)(1,1);
+  (*this->vftable->InvokeSlot1CCIfSlot28Enabled)(1,1);
   return;
 }
 
@@ -333,9 +333,9 @@ void THQButton::InvokeSlot1CCIfSlot28Enabled(undefined4 param_1, undefined4 para
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
+    (*pTVar1->SetModeAndBitmapBySelectionState)(param_1,param_2);
   }
   return;
 }
@@ -367,8 +367,8 @@ void THQButton::SetSelectionStateAndRefreshBitmap(short param_1)
       uVar1 = CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x96);
     }
   }
-  (*pTVar2[0x39].GetTEventHandlerClassNamePointer)(uVar1,1);
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)(param_1 != 2),0);
+  (*pTVar2->SetPictureResourceIdAndRefresh)(uVar1,1);
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)((int)(param_1 != 2),0);
   return;
 }
 

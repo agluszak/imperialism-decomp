@@ -102,7 +102,7 @@ undefined4 TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(short param_1)
   short sVar6;
   
   sVar6 = param_1 - *(short *)&this->field_0x4;
-  uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins02_004b50e0)();
   if (((short)CONCAT31(extraout_var,uVar4) < param_1) || (param_1 < 0)) {
     cVar5 = '\0';
   }
@@ -197,7 +197,7 @@ void TPopGrowthOrder::CreateTItemOrderInstance()
 {
   undefined2 uStack00000004;
   
-  (*this->vftable[7].slot_0x04)();
+  (*this->vftable->InitializeCityOrderItemWorkingBuffers)();
   *(undefined2 *)(_uStack00000004 + 0x1a) = uStack00000004;
   *(undefined2 *)(_uStack00000004 + 0x1c) = uStack00000004;
   *(undefined2 *)(_uStack00000004 + 0xe) = uStack00000004;

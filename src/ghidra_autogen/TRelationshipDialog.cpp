@@ -48,7 +48,8 @@ void TRelationshipDialog::GetTEventHandlerClassNamePointer()
   local_c = (TDiplomacyMgrVtbl *)0x0;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + (int)local_c) != 0) {
-      uVar1 = (*this->vftable[0x12].slot_0x04)(*(undefined4 *)((int)&DAT_0066b100 + (int)local_c));
+      uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)
+                        (*(undefined4 *)((int)&DAT_0066b100 + (int)local_c));
       if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -89,7 +90,7 @@ void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
 
 {
   int iVar1;
-  TRelationshipDialog_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined4 uVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -137,7 +138,7 @@ void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
   local_34 = 0;
   do {
     if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_34) != 0) {
-      uVar4 = (*this->vftable[0x12].slot_0x04)();
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       piVar6 = (int *)CONCAT31(extraout_var,uVar4);
       piStack_2c = piVar6;
       if (piVar6 == (int *)0x0) {
@@ -177,15 +178,15 @@ void TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree()
     local_38 = (int *)((int)local_38 + 2);
     local_34 = local_34 + 4;
   } while ((short)local_3c < 7);
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar2)();
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)();
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar4);
   local_38 = piVar6;
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   local_34 = CONCAT31(extraout_var_01,uVar4);
   if (local_34 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

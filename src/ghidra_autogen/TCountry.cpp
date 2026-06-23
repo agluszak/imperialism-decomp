@@ -112,7 +112,7 @@ TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631e2a;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar5 = *param_1;
   (**(code **)(iVar5 + 0x70))();
   puStack_34 = (undefined1 *)0x4d6c3d;
@@ -325,7 +325,6 @@ void TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int *param_1)
   undefined4 extraout_EDX;
   undefined4 extraout_EDX_00;
   undefined2 *puVar5;
-  int iVar6;
   undefined4 *puStack_58;
   int *piStack_54;
   undefined1 *puStack_50;
@@ -341,13 +340,11 @@ void TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int *param_1)
   undefined1 *puStack_28;
   undefined4 uStack_24;
   undefined4 uStack_20;
-  int *piStack_1c;
+  int iVar6;
   
-  piStack_1c = param_1;
   uStack_20 = (undefined1 *)0x4d6e73;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar6 = *param_1;
-  piStack_1c = (int *)&this->field_0x4;
   pcVar1 = *(code **)(iVar6 + 0xac);
   uStack_20 = (undefined1 *)0x4d6e83;
   (*pcVar1)();
@@ -364,7 +361,7 @@ void TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int *param_1)
   uStack_34 = 0x4d6ea2;
   (*pcVar1)();
   puVar5 = (undefined2 *)&this->field_0x48;
-  piStack_1c = (int *)0x1e;
+  iVar6 = 0x1e;
   uVar4 = extraout_ECX;
   do {
     uStack_34 = 2;
@@ -377,9 +374,9 @@ void TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(int *param_1)
     iStack_3c = 0x4d6ed0;
     (*pcVar1)();
     puVar5 = puVar5 + 1;
-    piStack_1c = (int *)((int)piStack_1c + -1);
+    iVar6 = iVar6 + -1;
     uVar4 = extraout_ECX_00;
-  } while (piStack_1c != (int *)0x0);
+  } while (iVar6 != 0);
   puStack_38 = (undefined4 *)&this->field_0x84;
   uStack_34 = 2;
   iStack_3c = 0x4d6eeb;
@@ -479,14 +476,14 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_
     DecrementField30Value();
   }
   if (param_2 == 0) {
-    (*this->vftable[10].GetTCountryClassNamePointer)(param_1);
+    (*this->vftable->SetNationTransferTargetCodeAndNotifyEligiblePeers_14)(param_1);
     return;
   }
   if (param_2 == 1) {
-    (*this->vftable[10].slot_0x04)(param_1);
+    (*this->vftable->ApplyJoinEmpireMode1TargetTransition_15)(param_1);
     return;
   }
-  (*this->vftable[0xb].GetTCountryClassNamePointer)();
+  (*this->vftable->ApplyJoinEmpireMode2FinalizeNationNameState)();
   return;
 }
 
@@ -507,7 +504,8 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
   do {
     cVar1 = IsNationSlotEligibleForEventProcessing(iVar3);
     if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
-      (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,100);
+      (*(*ppTVar2)->vftable->SetNationPercentFieldByModeAndDescriptorLinks)
+                ((int)*(short *)&this->field_0xc,100);
     }
     ppTVar2 = ppTVar2 + 1;
     iVar3 = iVar3 + 1;
@@ -528,13 +526,14 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int param_1)
   int iVar3;
   
   *(short *)&this->field_0xe = (short)param_1 + 200;
-  (*this->vftable[9].GetTCountryClassNamePointer)(param_1,100);
+  (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)(param_1,100);
   iVar3 = 0;
   ppTVar2 = g_apTerrainTypeDescriptorTable;
   do {
     cVar1 = IsNationSlotEligibleForEventProcessing(iVar3);
     if (((cVar1 != '\0') && (iVar3 != *(short *)&this->field_0xc)) && (iVar3 != param_1)) {
-      (*(*ppTVar2)->vftable[0xd].GetTCountryClassNamePointer)((int)*(short *)&this->field_0xc,200);
+      (*(*ppTVar2)->vftable->SetNationPercentFieldByModeAndDescriptorLinks)
+                ((int)*(short *)&this->field_0xc,200);
     }
     ppTVar2 = ppTVar2 + 1;
     iVar3 = iVar3 + 1;
@@ -805,7 +804,7 @@ void TCountry::SelectCandidateTilesWithLowGroundUnitCount()
           }
         }
         if (sVar7 < iStack_8) {
-          (*this->vftable[6].slot_0x04)(CONCAT31(extraout_var_00,uVar3));
+          (*this->vftable->ApplyJoinEmpireModeForTargetNation_0d)(CONCAT31(extraout_var_00,uVar3));
         }
         iVar5 = iVar5 + 1;
         uVar3 = (*this->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
@@ -1340,7 +1339,7 @@ void TCountry::RebuildDiplomacyEconomicPressureFromMapState()
           cVar2 = *(char *)(*(int *)&pTVar10->field_0xc + local_c + 0x11 + iVar13);
           local_4 = CONCAT31(local_4._1_3_,cVar2);
           if (cVar2 != -1) {
-            cVar3 = (*pTVar10->vftable[0x1a].slot_0x04)(local_10,local_4);
+            cVar3 = (*pTVar10->vftable->OrphanCallChain_C1_I29_005135a0)(local_10,local_4);
             iVar11 = (int)cVar2;
             sVar4 = (short)cVar3;
             *(short *)(&this[2].field_0x42 + iVar11 * 2) =
@@ -1367,14 +1366,14 @@ void TCountry::RebuildDiplomacyEconomicPressureFromMapState()
     uVar8 = (undefined2)((uint)puVar7 >> 0x10);
     if (g_apTerrainTypeDescriptorTable[iVar11] != (TCountry *)0x0) {
       if (local_10[7] != 0) {
-        (*g_apNationStates[iVar11]->vftable[0x2e].slot_0x04)
+        (*g_apNationStates[iVar11]->vftable->AddAmountToAidAllocationMatrixCellAndTotal)
                   (((int)*(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
                                    (*(short *)&this->field_0xc * 0x17 + iVar11) * 2) *
                     (int)local_10[7] * 200) / 0xff,0x16,CONCAT22(uVar8,*(short *)&this->field_0xc));
         uVar8 = extraout_var;
       }
       if (*local_10 != 0) {
-        (*g_apNationStates[iVar11]->vftable[0x2e].slot_0x04)
+        (*g_apNationStates[iVar11]->vftable->AddAmountToAidAllocationMatrixCellAndTotal)
                   (((int)*(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
                                    (*(short *)&this->field_0xc * 0x17 + iVar11) * 2) *
                     (int)*local_10 * 500) / 0xff,0x15,CONCAT22(uVar8,*(short *)&this->field_0xc));
@@ -1458,10 +1457,10 @@ void TCountry::SetNationRowDisplayValueByDiplomacyPredicate(int param_1)
     if ((cVar1 == '\0') &&
        ((iVar2 == *(short *)&this->field_0xc ||
         ((&g_apNationStates[param_1]->field_0x918)[iVar2] == '\0')))) {
-      (*this->vftable[9].GetTCountryClassNamePointer)(iVar2,100);
+      (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)(iVar2,100);
     }
     else {
-      (*this->vftable[9].GetTCountryClassNamePointer)(iVar2,300);
+      (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_12)(iVar2,300);
     }
     iVar2 = iVar2 + 1;
   } while (iVar2 < 0x17);
@@ -1550,7 +1549,7 @@ void TCountry::QueueInterNationEvent17ForState300AffectedNations()
   ppTVar10 = g_apNationStates;
   do {
     if ((*ppTVar10 != (TGreatPower *)0x0) && (local_10[iVar5] != '\0')) {
-      (*(*ppTVar10)->vftable[0x12].slot_0x04)
+      (*(*ppTVar10)->vftable->OrphanRetStub_004d7f80)
                 (CONCAT22((short)((uint)uVar7 >> 0x10),*(undefined2 *)&this->field_0xc),0x137);
       TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
                 ((TCountry *)g_pInterNationEventQueueManager,0x17,iVar5,
@@ -1718,7 +1717,7 @@ int TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT *param_1)
   if (this[1].vftable == (TCountryVtbl *)0x5) {
     return 0;
   }
-  (*this->vftable[0x29].GetTCountryClassNamePointer)(local_18,param_1);
+  (*this->vftable[1].ReturnFalseNationStateCapabilityFlagA0)(local_18,param_1);
   iVar5 = 0;
   ppTVar4 = g_apTerrainTypeDescriptorTable;
   do {

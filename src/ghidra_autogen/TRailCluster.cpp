@@ -137,7 +137,7 @@ void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
   }
   *(void **)&this->field_0x88 = this_00->orderSlotsE4[param_1];
   TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920((TAmtBarCluster *)this);
-  (*this->vftable[0x3a].slot_0x04)
+  (*this->vftable->UpdateTradeMoveControlsFromScaledDrag)
             (CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   return;
 }
@@ -149,7 +149,7 @@ void TRailCluster::OrphanLeaf_NoCall_Ins07_004d8920(short param_1)
 void TRailCluster::OrphanRetStub_00586ff0()
 
 {
-  (*this->vftable[0x3a].slot_0x04)();
+  (*this->vftable->UpdateTradeMoveControlsFromScaledDrag)();
   return;
 }
 
@@ -170,15 +170,15 @@ void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_
   
   if (param_1 == 100) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
+    uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd34);
     }
     sVar3 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1e8))();
-    (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)
-              (CONCAT22(extraout_var_01,*(short *)&this->field_0x8e + sVar3));
+    (*pTVar1->OrphanRetStub_00586ff0)(CONCAT22(extraout_var_01,*(short *)&this->field_0x8e + sVar3))
+    ;
     return;
   }
   if (param_1 != 0x65) {
@@ -186,14 +186,14 @@ void TRailCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param_
     return;
   }
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xd3c);
   }
   uVar4 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1e8))();
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)
+  (*pTVar1->OrphanRetStub_00586ff0)
             (CONCAT22((short)((uint)uVar4 >> 0x10),(short)uVar4 - *(short *)&this->field_0x8e));
   return;
 }

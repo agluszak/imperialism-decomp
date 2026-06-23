@@ -93,7 +93,7 @@ void TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
 
 {
   if (param_1 == 0x21) {
-    (*this->vftable[0x3b].slot_0x04)(1);
+    (*this->vftable->OrphanCallChain_C2_I16_00571e40)(1);
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
@@ -119,7 +119,7 @@ void TCzechBox::SetPressedStateAdjustPictureBitmapByOne(char param_1)
 {
   if (param_1 != this->field_0x64) {
     this->field_0x64 = param_1;
-    (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->OrphanCallChain_C4_I45_00571d40)();
   }
   return;
 }
@@ -142,10 +142,10 @@ void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
     uVar1 = *(ushort *)&this->field_0x84;
     if ((uVar1 & 1) != 0) {
       pTVar2 = this->vftable;
-      (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+      (*pTVar2->SetPictureResourceIdAndRefresh)
                 (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) & 0xfffffffe,_param_1);
       if (param_1 != '\0') {
-        (*pTVar2[0x39].slot_0x04)();
+        (*pTVar2->OrphanCallChain_C1_I05_00571690)();
         return;
       }
     }
@@ -154,10 +154,10 @@ void TCzechBox::OrphanCallChain_C4_I45_00571d40(char param_1)
     uVar1 = *(ushort *)&this->field_0x84;
     if ((uVar1 & 1) == 0) {
       pTVar2 = this->vftable;
-      (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+      (*pTVar2->SetPictureResourceIdAndRefresh)
                 (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) | 1,_param_1);
       if (param_1 != '\0') {
-        (*pTVar2[0x39].slot_0x04)();
+        (*pTVar2->OrphanCallChain_C1_I05_00571690)();
       }
     }
   }
@@ -183,7 +183,7 @@ void TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)
 {
   if (this->field_0x94 != param_1) {
     this->field_0x94 = param_1;
-    (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->OrphanCallChain_C4_I45_00571d40)();
   }
   return;
 }
@@ -199,8 +199,8 @@ void TCzechBox::OrphanCallChain_C2_I16_00571e40()
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x3a].slot_0x04)((uint)(cVar2 == '\0'));
+  cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_00571de0)();
+  (*pTVar1->OrphanCallChain_C1_I10_00571e00)((uint)(cVar2 == '\0'));
   return;
 }
 
@@ -212,15 +212,15 @@ void TCzechBox::OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2
 
 {
   TCzechBoxVtbl *pTVar1;
-  TCzechBox_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[0x3a].GetTEventHandlerClassNamePointer;
-  cVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins02_00571de0;
+  cVar3 = (*p_Var2)();
   if (cVar3 == param_1) {
-    cVar3 = (*pTVar2)(param_2);
-    (*pTVar1[0x3a].slot_0x04)((uint)(cVar3 == '\0'));
+    cVar3 = (*p_Var2)(param_2);
+    (*pTVar1->OrphanCallChain_C1_I10_00571e00)((uint)(cVar3 == '\0'));
   }
   return;
 }

@@ -49,7 +49,7 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   int iVar1;
-  TNetGameSelectPicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined4 uVar4;
@@ -64,12 +64,12 @@ TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       AssignStringAtB4FromB0AndResetState40();
     }
     else if (iVar1 == 0x6a6f696e) {
-      pTVar2 = this->vftable[0x12].slot_0x04;
-      uVar3 = (*pTVar2)(0x67616d65);
+      p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+      uVar3 = (*p_Var2)(0x67616d65);
       iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
       (**(code **)(iVar1 + 0xc))();
       uVar4 = (**(code **)(iVar1 + 0x1c4))();
-      uVar3 = (*pTVar2)(uVar4);
+      uVar3 = (*p_Var2)(uVar4);
       ApplyJoinGameSelectionAndPostTurnEvent5E4
                 (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c));
     }

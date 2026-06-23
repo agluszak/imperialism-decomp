@@ -66,7 +66,7 @@ CRuntimeClass * TGameScorePicture::GetTEventHandlerClassNamePointer()
 void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TGameScorePicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
@@ -88,7 +88,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   char local_38 [4];
   CString local_34;
   CString local_30;
-  TGameScorePicture_slot_0x04_0x04 *local_2c;
+  _vslot_fn *local_2c;
   CString aCStack_28 [3];
   TGameScorePicture *local_1c [2];
   CString CStack_14;
@@ -142,7 +142,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   UiRuntimeContext::GetActiveNationId();
   CStack_4c.m_pchData = (char *)0x57b183;
   RecomputeNationEconomyAndDiplomacySummaryMetrics();
-  local_2c = this->vftable[0x12].slot_0x04;
+  local_2c = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
     CStack_4c.m_pchData = (char *)(iVar5 + 0x73637261);
     pCStack_50 = (CString *)0x57b19c;
@@ -201,7 +201,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
                  *(undefined4 *)(&g_apNationStates[sVar3]->field_0x930 + iVar5 * 4));
     }
     (**(code **)(iVar6 + 0x1c8))(aCStack_28,1);
-    pTVar1 = local_2c;
+    p_Var1 = local_2c;
     iVar5 = iVar5 + 1;
   } while (iVar5 < 0xc);
   CStack_4c.m_pchData = (char *)0x76696374;
@@ -221,7 +221,7 @@ void TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920()
   InitializeUiTextStyleDescriptor();
   (**(code **)(iVar5 + 0x1b4))();
   ((int *)CONCAT31(extraout_var_00,uVar2))[0x25] = 0x2761;
-  uVar2 = (*pTVar1)();
+  uVar2 = (*p_Var1)();
   iVar5 = *(int *)CONCAT31(extraout_var_01,uVar2);
   (**(code **)(iVar5 + 0xc))();
   CStack_74.m_pchData = (char *)0x1;

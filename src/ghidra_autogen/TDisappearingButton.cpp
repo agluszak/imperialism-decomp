@@ -82,9 +82,9 @@ void TDisappearingButton::OrphanCallChain_C2_I24_00568c40(char param_1)
   if (param_1 != this->field_0x64) {
     pTVar1 = this->vftable;
     this->field_0x64 = param_1;
-    (*pTVar1[0x14].slot_0x04)((uint)(param_1 == '\0'),1);
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((uint)(param_1 == '\0'),1);
     if (unaff_retaddr != '\0') {
-      (*pTVar1[0x39].slot_0x04)();
+      (*pTVar1->OrphanCallChain_C2_I18_00568c90)();
     }
   }
   return;
@@ -101,7 +101,7 @@ void TDisappearingButton::OrphanCallChain_C2_I18_00568c90()
   undefined3 extraout_var;
   undefined1 local_10 [16];
   
-  uVar1 = (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
+  uVar1 = (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
   ;
   return;

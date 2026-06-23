@@ -29,7 +29,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x48))(param_1);
   }
@@ -73,13 +73,13 @@ TControl::DispatchUiMouseEventToChildrenOrSelf
   while( true ) {
     if (piVar5 == (int *)0x0) {
       pTVar2 = pTStack_c->vftable;
-      cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+      cVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_3e)();
       if (cVar3 != '\0') {
         uStack_8 = *param_1;
         uStack_4 = param_1[1];
-        cVar3 = (*pTVar2[5].GetTEventHandlerClassNamePointer)();
+        cVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_0a)();
         if (cVar3 != '\0') {
-          (*pTVar2[0x24].slot_0x04)(&uStack_8,param_2,param_3,param_4);
+          (*pTVar2->OrphanRetStub_0059add0_49)(&uStack_8,param_2,param_3,param_4);
           return 1;
         }
       }
@@ -129,39 +129,39 @@ TCouncilView::QueueCityRecruitmentSupportCommandsIfDeficit
 
 {
   TControlVtbl *pTVar1;
-  TControl_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   undefined uVar4;
   undefined3 extraout_var;
   
   if (nEventType == 0) {
-    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
+    (*this->vftable->SetControlStateFlagAndMaybeRefresh)(1,1);
   }
   else {
     if (nEventType == 1) {
       pTVar1 = this->vftable;
-      uVar4 = (*pTVar1[0x2d].slot_0x04)(pEventDataB,1);
-      (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var,uVar4));
+      uVar4 = (*pTVar1->PointInBoundsAndActionable)(pEventDataB,1);
+      (*pTVar1->SetControlStateFlagAndMaybeRefresh)(CONCAT31(extraout_var,uVar4));
       return;
     }
     if (nEventType == 2) {
       pTVar1 = this->vftable;
-      cVar3 = (*pTVar1[0x2d].slot_0x04)(pEventDataB);
+      cVar3 = (*pTVar1->PointInBoundsAndActionable)(pEventDataB);
       if (cVar3 != '\0') {
         if (this->hasCommandTagResource == 4) {
-          pTVar2 = pTVar1[8].GetTEventHandlerClassNamePointer;
-          (*pTVar2)(0x21,this,0);
-          (*pTVar2)(this->hasCommandTagResource,this,0);
+          p_Var2 = pTVar1->OrphanTiny_ReturnZero_0048a730;
+          (*p_Var2)(0x21,this,0);
+          (*p_Var2)(this->hasCommandTagResource,this,0);
           return;
         }
-        pTVar2 = pTVar1[8].GetTEventHandlerClassNamePointer;
+        p_Var2 = pTVar1->OrphanTiny_ReturnZero_0048a730;
         if (this->hasCommandTagResource != 0xc) {
-          (*pTVar2)(0x20,this,0);
-          (*pTVar2)(this->hasCommandTagResource,this,0);
+          (*p_Var2)(0x20,this,0);
+          (*p_Var2)(this->hasCommandTagResource,this,0);
           return;
         }
-        (*pTVar2)(0x1f,this,0);
-        (*pTVar2)(this->hasCommandTagResource,this,0);
+        (*p_Var2)(0x1f,this,0);
+        (*p_Var2)(this->hasCommandTagResource,this,0);
         return;
       }
     }
@@ -213,7 +213,7 @@ TMapDialog::SetForeignMinisterReadyFlag14
   
   pTVar1 = this->vftable;
   pTStack_c = this;
-  cVar3 = (*pTVar1[0x1a].GetTEventHandlerClassNamePointer)();
+  cVar3 = (*pTVar1->SetForeignMinisterReadyFlag14_34)();
   if (cVar3 != '\0') {
     if (*(int *)&this->field_0x44 == 0) {
       iVar5 = 0;
@@ -250,9 +250,9 @@ TMapDialog::SetForeignMinisterReadyFlag14
     }
   }
   cVar3 = GetRegionBoxToRectIfPresent(param_2);
-  if ((cVar3 != '\0') && (cVar3 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')
-     ) {
-    (*pTVar1[0x16].GetTEventHandlerClassNamePointer)(param_1,param_2);
+  if ((cVar3 != '\0') && (cVar3 = (*pTVar1->GetTEventHandlerClassNamePointer_3e)(), cVar3 != '\0'))
+  {
+    (*pTVar1->OrphanCallChain_C11_I88_004874b0_2c)(param_1,param_2);
   }
   return;
 }
@@ -742,7 +742,7 @@ TControl::SetControlPictureEntryAndMaybeRefresh
 {
   *(int *)((int)&this->commandTagDefaultParam1 + 2) = *pPictureEntryRef;
   if (fRefreshNow) {
-    (*this->vftable[0x22].slot_0x04)(0);
+    (*this->vftable->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }
@@ -766,7 +766,7 @@ TControl::SetCityProductionDialogPictureRectAndMaybeRefresh
   this->commandTagDefaultParam1 = param_1[1];
   this->commandTagDefaultParam2 = (short)param_1[2];
   if (param_2 != '\0') {
-    (*this->vftable[0x22].slot_0x04)(0);
+    (*this->vftable->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }
@@ -786,7 +786,7 @@ void TControl::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefr
 {
   if ((fEnabledState != (bool)this->commandTagResourceByte) &&
      (this->commandTagResourceByte = fEnabledState, fRefreshNow)) {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -913,7 +913,7 @@ undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
   byte bVar4;
   
   if (*(int *)&this->field_0x5c == 0) {
-    (*this->vftable[0x1b].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->SetForeignMinisterReadyFlag14_36)();
   }
   if (this->hasCommandTagResource != 0) {
     if ((this->field_0x24 & 0x10) != 0) {
@@ -1095,11 +1095,11 @@ TControl::OpenCityViewProductionDialog
   wBuildingNameToken = (**(code **)(**(int **)&this[1].field_0x10 + 0x58))();
   iStack_4c = CONCAT22(extraout_var,wBuildingNameToken) + (nBuildingSlotId + 0x73a) * 5;
   dwNameControlTag = 0x4ce64f;
-  (*pTVar2[0x39].GetTEventHandlerClassNamePointer)();
+  (*pTVar2[1].VTableSlot01)();
                     /* Load localized title text for selected slot (base id 0x2719 + slot). */
   dwNameControlTag = 0x2b67;
   BuildUiTextStyleDescriptor();
-  pfnGetControlByTag = pTVar2[0x12].slot_0x04;
+  pfnGetControlByTag = pTVar2->OrphanLeaf_NoCall_Ins07_004d8920_25;
   dwNameControlTag = 0x6e616d65;
   pNameTextControl = (int *)(*pfnGetControlByTag)();
   if (pNameTextControl == (int *)0x0) {
@@ -1333,7 +1333,7 @@ void TControl::ApplyCityProductionDialogChanges(int nDialogActionTag)
     nEntryVtableOrUpdatedValue = *pSelectedCityEntry;
     nSelectedEntryBaseValue =
          TCity::GetCityBuildingProductionValueBySlot(this_00,*(short *)&this[1].field_0xc);
-    uVar1 = (*this_00->vftable[10].slot_0x04)
+    uVar1 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                       (CONCAT22((short)((uint)nSelectedEntryBaseValue >> 0x10),
                                 *(undefined2 *)&this[1].field_0xc));
                     /* Delta passed to entry handler: currentSlotProduction -
@@ -1383,7 +1383,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
 {
   short sVar1;
   int iVar2;
-  TControl_slot_0x04_0x04 *pTVar3;
+  _vslot_fn *p_Var3;
   int iVar4;
   undefined uVar5;
   undefined3 extraout_var;
@@ -1467,10 +1467,10 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   }
   *(int *)&this[1].field_0x24 = iVar2;
   local_4c.left = (LONG)this->vftable;
-  pTVar3 = ((TControlVtbl *)(local_4c.left + 0x90))->slot_0x04;
+  p_Var3 = ((TControlVtbl *)local_4c.left)->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_80.m_pchData = (char *)0x706c6171;
   CStack_84.m_pchData = (char *)0x4cfcb4;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   CStack_84.m_pchData = (char *)0x4cfcbd;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
   CStack_88.m_pchData = (char *)CONCAT22(extraout_var_11,*(short *)(iVar2 + 0x48) + 0x1d9c);
@@ -1480,7 +1480,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   CStack_8c.m_pchData = (char *)0x2b6b;
   BuildUiTextStyleDescriptor();
   CStack_8c.m_pchData = (char *)0x756e6974;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar5);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1528,7 +1528,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   uStack_2c = 2;
   CString::~CString(&CStack_8c);
   puStack_ac = (undefined *)0x4cfe66;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   CStack_80.m_pchData = (char *)CONCAT31(extraout_var_01,uVar5);
   CStack_84.m_pchData = *(char **)CStack_80.m_pchData;
   puStack_ac = (undefined *)0x4cfe75;
@@ -1539,7 +1539,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   (**(code **)(CStack_84.m_pchData + 0x1e4))();
   RStack_c0.bottom = 0x636f7331;
   RStack_c0.right = 0x4cfe90;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   CStack_8c.m_pchData = (char *)CONCAT31(extraout_var_02,uVar5);
   iVar7 = *(int *)CStack_8c.m_pchData;
   RStack_c0.right = 0x4cfe9f;
@@ -1550,14 +1550,14 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   (**(code **)(iVar7 + 0x1e4))();
   RStack_c0.left = 0x636f7332;
   LStack_c4 = 0x4cfebd;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   piVar6 = (int *)CONCAT31(extraout_var_03,uVar5);
   iVar7 = *piVar6;
   LStack_c4 = 0x4cfecc;
   (**(code **)(iVar7 + 0xc))();
   LStack_c4 = 0x61766132;
   LStack_c8 = 0x4cfed5;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   LStack_c8 = 0x4cfee4;
   (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar5) + 0xc))();
   LStack_c8 = 1;
@@ -1585,7 +1585,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   }
   pLStack_e0 = (LONG *)0x636f7333;
   auStack_e8._4_4_ = 0x4cff51;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   RStack_c0.right = *(int *)CONCAT31(extraout_var_05,uVar5);
   auStack_e8._4_4_ = 0x4cff5f;
   (**(code **)(RStack_c0.right + 0xc))();
@@ -1599,7 +1599,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   (**(code **)(RStack_c0.left + 0x1c8))();
   RStack_f8.top = 0x73746130;
   RStack_f8.left = 0x4cff96;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   LStack_cc = *(int *)CONCAT31(extraout_var_06,uVar5);
   RStack_f8.left = 0x4cffa4;
   (**(code **)(LStack_cc + 0xc))();
@@ -1614,7 +1614,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   sVar10 = (short)LVar9;
   InvalidateCityDialogRectRegion();
   LVar9 = 0x73746131;
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   iStack_dc = *(int *)CONCAT31(extraout_var_07,uVar5);
   (**(code **)(iStack_dc + 0xc))();
   iVar8 = 1;
@@ -1627,7 +1627,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   RStack_c0.bottom = LStack_c4;
   CopyRect((LPRECT)&pCStack_b0,&RStack_c0);
   InvalidateCityDialogRectRegion();
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   RStack_f8.bottom = *(int *)CONCAT31(extraout_var_08,uVar5);
   (**(code **)(RStack_f8.bottom + 0xc))();
   iVar7 = 1;
@@ -1641,7 +1641,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   CopyRect(&RStack_c0,(RECT *)(auStack_d4 + 4));
   iStack_12c = 0x4d0136;
   InvalidateCityDialogRectRegion();
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   iVar2 = *(int *)CONCAT31(extraout_var_09,uVar5);
   (**(code **)(iVar2 + 0xc))();
   iStack_12c = CONCAT22(extraout_var_12,(short)(char)(&DAT_00695448)[sVar10]) + 0x21;
@@ -1656,7 +1656,7 @@ void TControl::RefreshCityViewProductionDetails(short nBuildingSlotId)
   LStack_d8 = auStack_e8._0_4_;
   CopyRect((LPRECT)auStack_d4,(RECT *)(auStack_e8 + 4));
   InvalidateCityDialogRectRegion(auStack_d4);
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   if ((int *)CONCAT31(extraout_var_10,uVar5) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -1765,7 +1765,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
   int iVar4;
   undefined4 uVar5;
   short local_c [4];
-  TControl_slot_0x04_0x04 *local_4;
+  _vslot_fn *local_4;
   
   iVar4 = 0;
   local_c[1] = 2;
@@ -1773,7 +1773,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
   local_c[0] = 0;
   local_c[2] = 3;
   local_c[3] = 0;
-  local_4 = (TControl_slot_0x04_0x04 *)CONCAT22(local_4._2_2_,1);
+  local_4 = (_vslot_fn *)CONCAT22(local_4._2_2_,1);
   *(short *)&this[1].field_0xc = param_1;
   if (param_1 < 1) {
     uVar5 = 0x1393;
@@ -1781,8 +1781,8 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short param_1)
   else {
     uVar5 = CONCAT22((short)((uint)this >> 0x10),local_c[param_1] + 0x1394);
   }
-  (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar5,1);
-  local_4 = pTVar1[0x12].slot_0x04;
+  (*pTVar1[1].VTableSlot01)(uVar5,1);
+  local_4 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
     uVar3 = (*local_4)(iVar4 + 0x6e616d30);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -1803,7 +1803,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
 
 {
   short sVar1;
-  TControl_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   int iVar4;
   undefined3 extraout_var;
@@ -1841,8 +1841,8 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x210);
   }
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar2)(0x736c6964);
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var2)(0x736c6964);
   piVar8 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar8 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -1857,7 +1857,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
   *(undefined2 *)(piVar8 + 0x27) = *(undefined2 *)(*(int *)&this->commandTagResourceByte + 4);
   uVar6 = (**(code **)(**(int **)&this->commandTagResourceByte + 0x30))();
   (**(code **)(iVar4 + 0x1d8))(uVar6);
-  uVar3 = (*pTVar2)(0x73757031);
+  uVar3 = (*p_Var2)(0x73757031);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x21c);
@@ -1871,7 +1871,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
   (**(code **)(iVar4 + 0x1c8))
             (CONCAT22(extraout_var_09,*(undefined2 *)(*(int *)&this->commandTagResourceByte + 0x4e))
              + 700,1);
-  uVar3 = (*pTVar2)(0x73757032);
+  uVar3 = (*p_Var2)(0x73757032);
   if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x221);
@@ -1886,7 +1886,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
               (CONCAT22(extraout_var_10,
                         *(undefined2 *)(*(int *)&this->commandTagResourceByte + 0x50)) + 700,1);
   }
-  uVar3 = (*pTVar2)(0x7375706c);
+  uVar3 = (*p_Var2)(0x7375706c);
   if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x229);
@@ -1896,7 +1896,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
             (CONCAT22((short)((uint)this->hasCommandTagResource >> 0x10),
                       *(undefined2 *)(*(int *)(this->hasCommandTagResource + 0x1d8) + 0x1c)));
   (**(code **)(iVar4 + 0x1c8))(0x148,1);
-  uVar3 = (*pTVar2)(0x75736531);
+  uVar3 = (*p_Var2)(0x75736531);
   piVar7 = (int *)CONCAT31(extraout_var_03,uVar3);
   piVar8 = piVar7;
   if (piVar7 == (int *)0x0) {
@@ -1912,7 +1912,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
   (**(code **)(iVar4 + 0x1d4))
             (CONCAT22((short)((uint)iVar5 >> 0x10),
                       *(undefined2 *)(iVar5 + 0x10 + *(short *)(iVar5 + 0x4e) * 2)));
-  uVar3 = (*pTVar2)(0x75736532);
+  uVar3 = (*p_Var2)(0x75736532);
   if ((int *)CONCAT31(extraout_var_04,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x233);
@@ -1927,7 +1927,7 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
               (CONCAT22((short)((uint)*(int *)&this->commandTagResourceByte >> 0x10),
                         *(undefined2 *)(*(int *)&this->commandTagResourceByte + 0x50)) + 700,1);
   }
-  uVar3 = (*pTVar2)(0x7573656c);
+  uVar3 = (*p_Var2)(0x7573656c);
   if ((int *)CONCAT31(extraout_var_05,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x23b);
@@ -1937,15 +1937,15 @@ TControl::PopulateDialogControlsFromSelectedProductionEntry
   (**(code **)(iVar4 + 0x1d4))
             (CONCAT22(extraout_var_11,*(undefined2 *)(*(int *)&this->commandTagResourceByte + 4)) *
              2);
-  uVar3 = (*pTVar2)(0x69636f31);
+  uVar3 = (*p_Var2)(0x69636f31);
   (**(code **)(*(int *)CONCAT31(extraout_var_06,uVar3) + 0x1c8))
             (CONCAT22((short)((uint)*(int *)&this->commandTagResourceByte >> 0x10),
                       *(undefined2 *)(*(int *)&this->commandTagResourceByte + 0x4e)) + 700,1);
-  uVar3 = (*pTVar2)(0x69636f32);
+  uVar3 = (*p_Var2)(0x69636f32);
   (**(code **)(*(int *)CONCAT31(extraout_var_07,uVar3) + 0x1c8))
             (CONCAT22((short)((uint)*(int *)&this->commandTagResourceByte >> 0x10),
                       *(undefined2 *)(*(int *)&this->commandTagResourceByte + 0x50)) + 700,1);
-  uVar3 = (*pTVar2)(0x69636f33);
+  uVar3 = (*p_Var2)(0x69636f33);
   (**(code **)(*(int *)CONCAT31(extraout_var_08,uVar3) + 0x1c8))(0x148,1);
   return;
 }
@@ -1958,7 +1958,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
 
 {
   short sVar1;
-  TControl_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -1977,8 +1977,8 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
   undefined2 extraout_var_11;
   undefined2 extraout_var_12;
   
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar2)(0x73757031);
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)(0x73757031);
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x255);
@@ -1990,7 +1990,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
                        (this->hasCommandTagResource + 0xb6 +
                        *(short *)(*(int *)&this->commandTagResourceByte + 0x4e) * 2)));
   (**(code **)(iVar3 + 0xe4))();
-  uVar4 = (*pTVar2)(0x73757032);
+  uVar4 = (*p_Var2)(0x73757032);
   if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x25a);
@@ -2003,7 +2003,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
                         *(undefined2 *)(this->hasCommandTagResource + 0xb6 + sVar1 * 2)));
     (**(code **)(iVar3 + 0xe4))();
   }
-  uVar4 = (*pTVar2)(0x7375706c);
+  uVar4 = (*p_Var2)(0x7375706c);
   uVar5 = extraout_var_07;
   if ((int *)CONCAT31(extraout_var_01,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2014,7 +2014,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
   (**(code **)(iVar3 + 0x1d4))
             (CONCAT22(uVar5,*(undefined2 *)(*(int *)(this->hasCommandTagResource + 0x1d8) + 0x1c)));
   (**(code **)(iVar3 + 0xe4))();
-  uVar4 = (*pTVar2)(0x75736531);
+  uVar4 = (*p_Var2)(0x75736531);
   uVar5 = extraout_var_09;
   if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2027,7 +2027,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
                              (*(int *)&this->commandTagResourceByte + 0x10 +
                              *(short *)(*(int *)&this->commandTagResourceByte + 0x4e) * 2)));
   (**(code **)(iVar3 + 0xe4))();
-  uVar4 = (*pTVar2)(0x75736532);
+  uVar4 = (*p_Var2)(0x75736532);
   uVar5 = extraout_var_11;
   if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2042,7 +2042,7 @@ void TControl::RefreshOrderViewSupplyAndUseControlValues()
                                (*(int *)&this->commandTagResourceByte + 0x10 + sVar1 * 2)));
     (**(code **)(iVar3 + 0xe4))();
   }
-  uVar4 = (*pTVar2)(0x7573656c);
+  uVar4 = (*p_Var2)(0x7573656c);
   uVar5 = extraout_var_05;
   if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -2107,7 +2107,7 @@ void TControl::RecomputeTownAdjacentTileYieldTotals()
           && (pcVar1[5] == cVar2)) || (*pcVar1 == '\x05')) {
         iVar9 = 0;
         do {
-          cVar4 = (*pTVar8->vftable[0x1a].slot_0x04)(puVar5,iVar9);
+          cVar4 = (*pTVar8->vftable->OrphanCallChain_C1_I29_005135a0)(puVar5,iVar9);
           if (((short)iVar9 != 0x13) || (this->field_0x4d != '\0')) {
             *(short *)(this->padding_65_to_67 + (short)iVar9 * 2 + -0x47) =
                  *(short *)(this->padding_65_to_67 + (short)iVar9 * 2 + -0x47) + (short)cVar4;
@@ -2189,7 +2189,7 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
       max_short_val = sVar1;
     }
     this->field70 = (int)max_short_val;
-    gfx_iface._0_1_ = (*this->vftable[0x12].slot_0x04)();
+    gfx_iface._0_1_ = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
     gfx_iface = (astruct_2 *)CONCAT31(gfx_iface._1_3_,gfx_iface._0_1_);
     gfx_ifc_vtbl = gfx_iface->field0_0x0;
     (*(code *)gfx_ifc_vtbl->field12_0xc)();
@@ -2329,7 +2329,7 @@ void TControl::GetDeviceScrollPosition(int *param_1)
 void TControl::ResizeParentToFit(int param_1)
 
 {
-  TControl_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   tagRECT local_44;
   int local_34;
@@ -2344,8 +2344,8 @@ void TControl::ResizeParentToFit(int param_1)
   local_30 = local_14.top;
   local_2c = local_14.right;
   local_28 = local_14.bottom;
-  pTVar1 = this->vftable[0xd].GetTEventHandlerClassNamePointer;
-  (*pTVar1)(&local_34,0);
+  p_Var1 = this->vftable->GetTEventHandlerClassNamePointer_1a;
+  (*p_Var1)(&local_34,0);
   local_14.top = local_14.top * 2 - local_30;
   local_14.right = local_14.right * 2 - local_2c;
   local_14.left = local_14.left * 2 - local_34;
@@ -2363,7 +2363,7 @@ void TControl::ResizeParentToFit(int param_1)
       local_24.bottom = local_14.bottom;
     }
   }
-  (*pTVar1)(&local_24,1);
+  (*p_Var1)(&local_24,1);
   OffsetRect(&local_24,-local_24.left,-local_24.top);
   if (param_1 != 0) {
     if (local_14.right <= *(int *)&this->field_0x4c) {

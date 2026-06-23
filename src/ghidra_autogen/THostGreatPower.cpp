@@ -128,7 +128,7 @@ void THostGreatPower::AddRegionIdToNationOwnedRegionList()
   ppTVar2 = g_apNationStates;
   do {
     if (*ppTVar2 != (TGreatPower *)0x0) {
-      cVar1 = (*(*ppTVar2)->vftable[0x14].GetTCountryClassNamePointer)();
+      cVar1 = (*(*ppTVar2)->vftable->ReturnFalseNationStateCapabilityFlagA0)();
       if (cVar1 == '\0') {
         ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(iVar3);
       }

@@ -175,7 +175,7 @@ undefined1 TStaticText::OrphanCallChain_C11_I88_004874b0()
 {
   undefined uVar1;
   
-  uVar1 = (*this->vftable[4].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanRetStub_0059add0)();
   CopyExtendedCityDialogControllerState(this);
   return uVar1;
 }
@@ -232,7 +232,7 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
   if (iVar1 != 0) {
     CString::AssignFromPtr(*(CString **)&this->field_0x84,param_1);
     if (param_2 != '\0') {
-      (*this->vftable[0x1c].slot_0x04)();
+      (*this->vftable->VTableSlot39)();
     }
   }
   return;
@@ -263,7 +263,7 @@ void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short param_1, short param_
   CStack_18.m_pchData = (char *)(int)param_2;
   local_4 = 0;
   LoadUiStringResourceByGroupAndIndex(&local_10,(int)param_1);
-  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)(&local_10);
+  (**(code **)&this->vftable->field_0x1c8)(&local_10);
   uStack_c = 0xffffffff;
   CString::~CString(&CStack_18);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -279,7 +279,7 @@ void TStaticText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param
 {
   *(undefined2 *)&this->field_0x90 = param_1;
   if (param_2 != '\0') {
-    (*this->vftable[0x22].slot_0x04)(0);
+    (*this->vftable->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }
@@ -302,7 +302,7 @@ void TStaticText::OrphanTiny_ReturnZero_0048a730()
   
   piVar4 = (int *)NoOpQuickDrawContextSelectionHook();
   SetBkModeOnPrimaryAndSecondaryDc(1);
-  (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
+  (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
   TTEView::DeflateRect((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
   uVar5 = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&this->field_0x78);
   iVar2 = *piVar4;

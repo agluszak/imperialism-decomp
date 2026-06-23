@@ -194,8 +194,8 @@ void TInteriorMinister::GetTEventHandlerClassNamePointer()
 void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
 
 {
-  TInteriorMinister_DeletingDestructTMinister_0x04 *pTVar1;
-  TInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var1;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   char cVar4;
   short sVar5;
@@ -206,20 +206,20 @@ void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
   int iVar7;
   
   sVar6 = 0;
-  pTVar1 = this->vftable[0xb].DeletingDestructTMinister;
-  uVar3 = (*pTVar1)();
+  p_Var1 = this->vftable->InteriorSlot17;
+  uVar3 = (*p_Var1)();
   if (0 < (short)CONCAT31(extraout_var,uVar3)) {
-    pTVar2 = this->vftable[0xc].GetTMinisterClassNamePointer;
+    p_Var2 = this->vftable->InteriorSlot18;
     do {
-      (*pTVar2)();
+      (*p_Var2)();
       sVar6 = sVar6 + 1;
-      uVar3 = (*pTVar1)();
+      uVar3 = (*p_Var1)();
     } while (sVar6 < (short)CONCAT31(extraout_var_00,uVar3));
   }
   sVar6 = 0;
   cVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x124))();
   if (cVar4 != '\0') {
-    uVar3 = (*this->vftable[0xb].GetTMinisterClassNamePointer)();
+    uVar3 = (*this->vftable->InteriorSlot16)();
     sVar5 = (short)CONCAT31(extraout_var_01,uVar3);
     if (0 < sVar5) {
       iVar7 = (int)sVar5;
@@ -232,9 +232,9 @@ void TInteriorMinister::OrphanCallChain_C7_I57_004be5b0()
     }
     if (0 < sVar6) {
       iVar7 = (int)sVar6;
-      pTVar1 = this->vftable[0xc].DeletingDestructTMinister;
+      p_Var1 = this->vftable->InteriorSlot19;
       do {
-        (*pTVar1)();
+        (*p_Var1)();
         iVar7 = iVar7 + -1;
       } while (iVar7 != 0);
     }

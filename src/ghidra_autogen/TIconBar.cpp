@@ -119,7 +119,7 @@ TIconBar::AddCityCommodityIconControl
 
 {
   InitializePictureEntryBaseAndRefresh(pCityView,pRect,pLayoutData,nXPad,nYPad,nIconId);
-  (*this->vftable[0x3a].slot_0x04)(nAmount);
+  (*this->vftable->OrphanTiny_SetWordEcxOffset_96_005060f0)(nAmount);
   return;
 }
 
@@ -159,9 +159,9 @@ void TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)
   undefined3 in_stack_00000005;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x3a].slot_0x04)(_param_1);
+  (*pTVar1->OrphanTiny_SetWordEcxOffset_96_005060f0)(_param_1);
   if (param_1 != '\0') {
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
   }
   return;
 }
@@ -179,7 +179,7 @@ void TIconBar::OrphanTiny_ReturnZero_0048a730()
   short sStack_1c;
   RECT RStack_14;
   
-  (*this->vftable[0x34].slot_0x04)(local_20);
+  (*this->vftable->DeserializeCityProductionQueueCommand)(local_20);
   sVar1 = (short)((int)(short)(sStack_1c - sStack_24) / (*(short *)&this->field_0x96 + 1));
   if (0x20 < sVar1) {
     sVar1 = 0x20;

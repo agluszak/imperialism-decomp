@@ -89,7 +89,7 @@ void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
   int iStack_30;
   CString CStack_2c;
   CString local_18;
-  TTradePanelView_slot_0x04_0x04 *local_14;
+  _vslot_fn *local_14;
   CString CStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -107,7 +107,7 @@ void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   *(TView **)&this->field_0x60 = this->ownerContext;
   CStack_2c.m_pchData = (char *)0x636c7573;
-  local_14 = this->vftable[0x12].slot_0x04;
+  local_14 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iStack_30 = 0x4f87d4;
   uVar2 = (*local_14)();
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94);
@@ -117,7 +117,7 @@ void TTradePanelView::OrphanCallChain_C6_I49_004875d0()
     uVar3 = (*pcVar1)();
     puStack_34 = &stack0xffffffe0;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    local_14 = (TTradePanelView_slot_0x04_0x04 *)&puStack_34;
+    local_14 = (_vslot_fn *)&puStack_34;
     iStack_30 = uVar3;
     AssignStringSharedRefAndReturnThis();
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
@@ -330,7 +330,7 @@ void TTradePanelView::OrphanRetStub_00430550()
   
   uStack_10 = 0x636c7573;
   piStack_14 = (int *)0x4f8d62;
-  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
   TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
             ((TToolBarCluster *)&pTStack_18,PTR_g_szEmptyString_00654ec8);

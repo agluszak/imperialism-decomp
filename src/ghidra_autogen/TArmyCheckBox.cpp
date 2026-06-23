@@ -93,9 +93,9 @@ void TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(char param_1)
       pTVar1 = this->vftable;
       *(int *)&this->field_0x88 = *(int *)&this->field_0x88 - this->field34;
       *(undefined4 *)&this->field_0x8c = 0;
-      (*pTVar1[0x1c].slot_0x04)();
+      (*pTVar1->VTableSlot39)();
       if (param_1 != '\0') {
-        (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
+        (*pTVar1->OrphanCallChain_C1_I05_004aa430)();
         return;
       }
     }
@@ -104,9 +104,9 @@ void TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(char param_1)
     pTVar1 = this->vftable;
     *(undefined4 *)&this->field_0x8c = 1;
     *(int *)&this->field_0x88 = *(int *)&this->field_0x88 + this->field34;
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
     if (param_1 != '\0') {
-      (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->OrphanCallChain_C1_I05_004aa430)();
     }
   }
   return;
@@ -178,7 +178,7 @@ void TArmyCheckBox::OrphanRetStub_0059add0(int param_1)
   if (param_1 == 0x21) {
     uVar1 = GetAsyncKeyState(0x11);
     if (((uVar1 & 0x8000) == 0) || (this->field_0x84 != '\0')) {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1);
+      (*this->vftable->OrphanCallChain_C2_I16_004aa3a0)(1);
     }
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
@@ -205,7 +205,7 @@ void TArmyCheckBox::OrphanCallChain_C1_I10_004aa310(char param_1)
 {
   if (param_1 != this->field_0x64) {
     this->field_0x64 = param_1;
-    (*this->vftable[0x39].slot_0x04)();
+    (*this->vftable->VTableSlot73)();
   }
   return;
 }
@@ -231,8 +231,8 @@ void TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0()
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x38].slot_0x04)();
-  (*pTVar1[0x39].GetTEventHandlerClassNamePointer)((uint)(cVar2 == '\0'));
+  cVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins02_004aa340)();
+  (*pTVar1->SetArmyUnitLineActiveFlagAndNotify)((uint)(cVar2 == '\0'));
   return;
 }
 
@@ -244,15 +244,15 @@ void TArmyCheckBox::OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 par
 
 {
   TArmyCheckBoxVtbl *pTVar1;
-  TArmyCheckBox_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[0x38].slot_0x04;
-  cVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins02_004aa340;
+  cVar3 = (*p_Var2)();
   if (cVar3 == param_1) {
-    cVar3 = (*pTVar2)(param_2);
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)((uint)(cVar3 == '\0'));
+    cVar3 = (*p_Var2)(param_2);
+    (*pTVar1->SetArmyUnitLineActiveFlagAndNotify)((uint)(cVar3 == '\0'));
   }
   return;
 }
@@ -267,7 +267,7 @@ void TArmyCheckBox::OrphanCallChain_C1_I05_004aa430()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
                     /* WARNING: Could not recover jumptable at 0x004aa439. Too many branches */
                     /* WARNING: Treating indirect jump as call */
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x13c))();

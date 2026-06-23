@@ -120,8 +120,8 @@ void TInfoBarText::ConstructTInfoBarTextBaseState(RECT *param_1)
     *(LONG *)&this->field_0xac = in_stack_00000008->right;
     *(LONG *)&this->field_0xb0 = in_stack_00000008->bottom;
     pTVar1 = this->vftable;
-    (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&param_1);
-    (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(1);
+    (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&param_1);
+    (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   }
   uStack_4 = 0xffffffff;
   CString::~CString((CString *)&param_1);
@@ -152,8 +152,8 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
   *(undefined4 *)&this->field_0xac = 0;
   *(undefined4 *)&this->field_0xb0 = 0;
   pTVar1 = this->vftable;
-  (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&stack0x00000004);
-  (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(1);
+  (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&stack0x00000004);
+  (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(1);
   uStack_c = 0xffffffff;
   CString::~CString(&CStack_4);
   *unaff_FS_OFFSET = unaff_ESI;
@@ -167,7 +167,7 @@ void TInfoBarText::DestructTInfoBarTextAndMaybeFree()
 void TInfoBarText::OrphanCallChain_C1_I05_005b6810()
 
 {
-  (*this->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
+  (*this->vftable->InitializeMapHintTextStyleAndThemeFlags)(0x2b6c,0x2b67);
   return;
 }
 

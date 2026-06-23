@@ -143,7 +143,7 @@ TOceanDialog::OrphanRetStub_005960c0
 void TOceanDialog::OrphanRetStub_00596080()
 
 {
-  TOceanDialog_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined4 uVar2;
@@ -163,17 +163,17 @@ void TOceanDialog::OrphanRetStub_00596080()
     SetQuickDrawStrokeColor();
     local_2c = CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x76);
     puStack_30 = local_14;
-    pTVar1 = this->vftable[0x37].GetTEventHandlerClassNamePointer;
+    p_Var1 = this->vftable[1].vmethod_0017;
     puStack_34 = local_12;
     uVar2 = CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x6e);
     puStack_38 = &this->field_0x60;
-    (*pTVar1)(uVar2);
+    (*p_Var1)(uVar2);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
                (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,(RECT *)&stack0xffffffdc,
                (RECT *)&stack0xffffffdc,0,(astruct_19 *)0x0);
     if (local_2c._3_1_ != '\0') {
-      (*pTVar1)(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x6c),&this->field_0x60,
+      (*p_Var1)(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x6c),&this->field_0x60,
                 &stack0xffffffda,&stack0xffffffd8,
                 CONCAT22(extraout_var,*(undefined2 *)&this->field_0x76));
       puStack_38 = (undefined1 *)(int)(short)uVar2;
@@ -779,7 +779,7 @@ LAB_00566ad9:
             if ((char)bVar2 < '\x02') {
               if (cVar8 < '\x01') {
                 iVar19 = *(int *)(g_pStrategicMapViewSystem + 0x688);
-                uVar7 = (*g_pGlobalMapState->vftable[0x24].GetTMapMgrClassNamePointer)
+                uVar7 = (*g_pGlobalMapState->vftable->GetMapImprovementTileSpriteOffset)
                                   (CStack_118.m_pchData);
                 sVar9 = (short)CONCAT31(extraout_var,uVar7);
               }
@@ -870,11 +870,11 @@ LAB_00566ad9:
         if ((((*unaff_retaddr <= iVar19) && (iVar19 <= unaff_retaddr[2])) &&
             (unaff_retaddr[1] <= iVar11)) && (iVar11 <= unaff_retaddr[3])) {
           pTVar5 = pTVar6->vftable;
-          cVar8 = (*pTVar5[7].DispatchNationPendingActionEventCodes)();
+          cVar8 = (*pTVar5->ApplyJoinEmpireModeForTargetNation)();
           SetQuickDrawFillColorFromPaletteIndex((-(uint)(cVar8 != '\0') & 0xffffffed) + 0x13);
           CString::CString(&CStack_118);
           puStack_8._0_1_ = 3;
-          (*pTVar5[5].SetNationPendingActionStateAndPayload)(&CStack_118);
+          (*pTVar5->GetTEventHandlerClassNamePointer_0b)(&CStack_118);
           sVar9 = WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
                             (CStack_118.m_pchData,0,*(undefined4 *)(CStack_118.m_pchData + -8),
                              iVar23 + 0x18);
@@ -1029,7 +1029,7 @@ TOceanDialog::DispatchReflectedControlMessageOrFallback
     iVar2 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar3 * 0xa8);
   }
   if (iVar2 != 0) {
-    uVar1 = (*g_pGlobalMapState->vftable[0x24].GetTMapMgrClassNamePointer)(_param_1);
+    uVar1 = (*g_pGlobalMapState->vftable->GetMapImprovementTileSpriteOffset)(_param_1);
     sVar3 = (short)CONCAT31(extraout_var,uVar1);
     if (this->field_0x74 == '\0') {
       iVar2 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + param_1 * 0x24);
@@ -1267,7 +1267,8 @@ void TOceanDialog::OrphanRetStub_00596680(short param_1, short param_2)
 void TOceanDialog::OrphanRetStub_00594fc0(short param_1)
 
 {
-  (*this->vftable[0x3c].slot_0x04)((int)param_1 % 0x6c + -0x10,(int)param_1 / 0x6c + -0xe);
+  (*this->vftable[1].DispatchUiCommand19ToParent)
+            ((int)param_1 % 0x6c + -0x10,(int)param_1 / 0x6c + -0xe);
   return;
 }
 
@@ -1301,7 +1302,7 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(byte param_1)
   else {
     iVar1 = iVar1 + 4;
   }
-  (*this->vftable[0x3c].slot_0x04)(iVar1,iVar2);
+  (*this->vftable[1].DispatchUiCommand19ToParent)(iVar1,iVar2);
   (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x13c))();
   return;
 }

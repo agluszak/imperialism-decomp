@@ -146,7 +146,7 @@ void TAnimation::RenderBattleReportInsetWithPaletteShift(int *param_1)
   tagRECT tStack_10;
   
   iVar1 = *(int *)&g_pUiAnimator->field_0x20;
-  (*this->vftable[6].GetTAnimationClassNamePointer)();
+  (*this->vftable->RenderBattleReportViewSurfaceSpriteWithResourceHandle)();
   tStack_20.top = *(int *)&this->field_0x20 + param_1[1];
   tStack_20.bottom = *(int *)&this->field_0x28 + param_1[1];
   tStack_20.right = *(int *)&this->field_0x24 + *param_1;

@@ -68,9 +68,8 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
       pTVar2 = *(TZone **)&pTVar2->field_0x18) {
     bVar3 = false;
     for (pTVar5 = (TLineDataVtbl *)GetNavyPrimaryOrderListHead();
-        pTVar5 != (TLineDataVtbl *)0x0; pTVar5 = (TLineDataVtbl *)pTVar5[4].slot_0x04) {
-      if (((TZone *)pTVar5[1].GetTLineDataClassNamePointer == pTVar2) &&
-         (*(short *)&pTVar5[2].slot_0x04 == param_1)) {
+        pTVar5 != (TLineDataVtbl *)0x0; pTVar5 = (TLineDataVtbl *)pTVar5->ShallowFree) {
+      if (((TZone *)pTVar5->Serialize == pTVar2) && (*(short *)&pTVar5->WriteTo == param_1)) {
         if (!bVar3) {
           CString::CString(&param_2);
           local_4 = 0;
@@ -86,9 +85,9 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
           local_1c = 0xec;
           local_18 = 0x12;
           WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
-          (*pTVar2->vftable[5].SetNationPendingActionStateAndPayload)(&param_2);
+          (*pTVar2->vftable->GetTEventHandlerClassNamePointer_0b)(&param_2);
           WrapperFor_StringShared_AssignFromPtr_At00570420(&param_1);
-          (*this->vftable[0x34].GetTEventHandlerClassNamePointer)(uVar6);
+          (*this->vftable->OrphanCallChain_C1_I06_0056fbb0)(uVar6);
           bVar3 = true;
           local_4 = 0xffffffff;
           CString::~CString(&param_2);
@@ -108,15 +107,15 @@ TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext
         TLineData::SetLineDataRowAndBounds(this_01,0,0,&uStack_14);
         pTVar1 = this->vftable;
         this_01[1].vftable = pTVar5;
-        (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(this_01);
+        (*pTVar1->OrphanCallChain_C1_I06_0056fbb0)(this_01);
       }
     }
   }
   pTVar1 = this->vftable;
   *(undefined2 *)&this->field_0x64 = 2;
-  (*pTVar1[0x35].slot_0x04)();
-  (*pTVar1[0x36].GetTEventHandlerClassNamePointer)(1);
-  (*this->ownerContext->vftable[1].slot_0x04)();
+  (*pTVar1->OrphanCallChain_C8_I82_0056fc80)();
+  (*pTVar1->OrphanCallChain_C8_I118_0056fdb0)(1);
+  (**(code **)&this->ownerContext->vftable->field_0xc)();
   UpdatePagedListNavigationButtonState((int)*(short *)&this->field_0x62);
   *unaff_FS_OFFSET = uStack_10;
   return;
@@ -168,7 +167,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063a474;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0x2506);
+  uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x2506);
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -198,7 +197,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   iStack_c = -1;
   aiStack_30[1] = 0xd;
   aiStack_30[2] = 0x2e;
-  (*this_00->vftable[0x37].GetTEventHandlerClassNamePointer)
+  (*this_00->vftable[1].GetTEventHandlerClassNamePointer)
             (aiStack_30[0],aiStack_30 + 1,&stack0xffffffc8);
   this_00->controlTag = 0x70616765;
   this_01 = (TStaticText *)AllocateWithFallbackHandler(0x94);
@@ -215,7 +214,7 @@ void TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult()
   InitializeTextEntryBaseAndOptionalStringResource
             (unaff_ESI,aiStack_30,&stack0xffffffc8,5,5,0x2746,0xc);
   ApplyControlThemeStyleAndOptionalCaption(uVar6,0,0xe,0x2b6a,0xfffffffe,0);
-  (*this->vftable[8].slot_0x04)(piVar4,aiStack_30 + 2);
+  (*this->vftable->VTableSlot11)(piVar4,aiStack_30 + 2);
   (**(code **)(iVar1 + 0xf0))(aiStack_30,0);
   (**(code **)(iVar1 + 0x1ac))();
   pMapOrderEntry = this_00[1].vftable;

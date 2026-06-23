@@ -100,7 +100,7 @@ void TTacticalBattle::WrapperFor_FreeHeapBufferIfNotNull_At0059fb50()
   }
   DAT_006a475c = 0;
   if (this != (TTacticalBattle *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TTacticalBattle)(1);
   }
   return;
 }
@@ -198,7 +198,7 @@ TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
   int *piVar2;
   int iVar3;
   
-  (*this->vftable[8].GetTTacticalBattleClassNamePointer)(param_1);
+  (*this->vftable->EvaluateAndResolveTacticalActionAgainstTileOccupant)(param_1);
   if ((*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 4) ||
      (*(short *)(&DAT_00695528 + *(int *)(param_1 + 0xc) * 2) == 5)) {
     ComputeHexNeighborTileIndices_005A0420
@@ -297,7 +297,7 @@ LAB_005a1f86:
     TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,iVar7,iVar13);
     if (*(int *)&this->field_0x8 != 0) {
       CenterViewportAroundGridIndexAndSnap(param_2);
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
                 (CONCAT22((short)((uint)param_1[3] >> 0x10),
                           *(undefined2 *)(&DAT_00669dc0 + param_1[3] * 2)),0,1);
       EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl(&iStack_24,param_2);
@@ -520,7 +520,7 @@ TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket
   }
   TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(this,param_2,iVar1);
   if (*(int *)&this->field_0x8 != 0) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3a9d,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3a9d,0,1);
     (**(code **)(**(int **)&this->field_0x8 + 0x1b8))(param_2,0xf98,6);
   }
   TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
@@ -545,7 +545,7 @@ TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
   MoveTacticalUnitTowardTile(param_1,param_2);
   pTVar1 = this->vftable;
   param_1[10] = (int)(short)iVar2 - (int)*(short *)(&DAT_00669898 + param_1[3] * 2) / 2;
-  (*pTVar1[5].GetTTacticalBattleClassNamePointer)(param_1);
+  (*pTVar1->ComputeTacticalReachableTileCostsByUnitCategory)(param_1);
   if (param_1[10] == 0) {
     TNextMoveCommand::QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   }

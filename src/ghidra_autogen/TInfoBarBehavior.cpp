@@ -149,7 +149,7 @@ uint TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip()
   uVar1 = 0;
   if (g_pCursorControlPanel != (TControl *)0x0) {
     AssignStringSharedRefAndReturnThis(&this->field_0x10);
-    (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+    (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
     (**(code **)(**(int **)&this->field_0x8 + 0xf8))();
     uVar1 = GetRegionBoxToRectIfPresent(unaff_retaddr);
     if ((char)uVar1 != '\0') {

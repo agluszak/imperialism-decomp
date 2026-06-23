@@ -5342,7 +5342,7 @@ void __thiscall SetValue(DWORD *param_1,int param_2,int param_3)
 
 {
   TMacViewMgrVtbl *lpTlsValue;
-  TMacViewMgr_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   
   lpTlsValue = TlsGetValue(*param_1);
   if (lpTlsValue == (TMacViewMgrVtbl *)0x0) {
@@ -5352,38 +5352,35 @@ LAB_00623e14:
       lpTlsValue = (TMacViewMgrVtbl *)0x0;
     }
     else {
-      lpTlsValue->GetTMacViewMgrClassNamePointer =
+      lpTlsValue->GetRuntimeClass =
            (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)
            &PTR_WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623eb2_0067303c;
     }
-    lpTlsValue[1].GetTMacViewMgrClassNamePointer =
-         (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)0x0;
-    lpTlsValue[1].slot_0x04 = (TMacViewMgr_slot_0x04_0x04 *)0x0;
+    lpTlsValue->Serialize = (_vslot_fn *)0x0;
+    lpTlsValue->AssertValid = (_vslot_fn *)0x0;
     TMacViewMgr::AddHead_623b4c((TMacViewMgr *)(param_1 + 5),lpTlsValue);
   }
   else {
-    if ((param_2 < (int)lpTlsValue[1].GetTMacViewMgrClassNamePointer) || (param_3 == 0))
-    goto LAB_00623e9e;
+    if ((param_2 < (int)lpTlsValue->Serialize) || (param_3 == 0)) goto LAB_00623e9e;
     if (lpTlsValue == (TMacViewMgrVtbl *)0x0) goto LAB_00623e14;
   }
-  if (lpTlsValue[1].slot_0x04 == (TMacViewMgr_slot_0x04_0x04 *)0x0) {
-    pTVar1 = LocalAlloc(0,param_1[3] << 2);
+  if (lpTlsValue->AssertValid == (_vslot_fn *)0x0) {
+    p_Var1 = LocalAlloc(0,param_1[3] << 2);
   }
   else {
-    pTVar1 = LocalReAlloc(lpTlsValue[1].slot_0x04,param_1[3] << 2,2);
+    p_Var1 = LocalReAlloc(lpTlsValue->AssertValid,param_1[3] << 2,2);
   }
-  lpTlsValue[1].slot_0x04 = pTVar1;
-  if (pTVar1 == (TMacViewMgr_slot_0x04_0x04 *)0x0) {
+  lpTlsValue->AssertValid = p_Var1;
+  if (p_Var1 == (_vslot_fn *)0x0) {
     AfxThrowMemoryException();
   }
   CDocTemplate::memset
-            (lpTlsValue[1].slot_0x04 + (int)lpTlsValue[1].GetTMacViewMgrClassNamePointer * 4,0,
-             ((int)lpTlsValue[1].GetTMacViewMgrClassNamePointer * 0x3fffffff + param_1[3]) * 4);
-  lpTlsValue[1].GetTMacViewMgrClassNamePointer =
-       (TMacViewMgr_GetTMacViewMgrClassNamePointer_0x00 *)param_1[3];
+            (lpTlsValue->AssertValid + (int)lpTlsValue->Serialize * 4,0,
+             ((int)lpTlsValue->Serialize * 0x3fffffff + param_1[3]) * 4);
+  lpTlsValue->Serialize = (_vslot_fn *)param_1[3];
   TlsSetValue(*param_1,lpTlsValue);
 LAB_00623e9e:
-  *(int *)(lpTlsValue[1].slot_0x04 + param_2 * 4) = param_3;
+  *(int *)(lpTlsValue->AssertValid + param_2 * 4) = param_3;
   return;
 }
 

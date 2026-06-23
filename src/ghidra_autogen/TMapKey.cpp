@@ -207,13 +207,13 @@ void TMapKey::OrphanCallChain_C6_I49_004875d0()
               (pTVar3,this,&iStack_60,&local_68,&tStack_1c.left,(int)local_58);
     pTVar1 = pTVar3->vftable;
     uVar6 = 0;
-    (*pTVar1[0x3d].slot_0x04)(&local_84);
-    (*pTVar1[0x14].slot_0x04)(0,0);
+    (*pTVar1->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b64a0)(&local_84);
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(0,0);
     pTVar3->controlTag = iVar5 + 0x6e616d30;
-    (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(0);
+    (*pTVar1->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
     *(undefined4 *)&pTVar3->field_0x9c = uVar6;
     pTVar3->field_0xa0 = 1;
-    (*pTVar1[0x3c].slot_0x04)(auStack_6c,1);
+    (*pTVar1->ConstructTMapKeyBaseState_Impl)(auStack_6c,1);
     iVar5 = iVar5 + 1;
     local_80 = local_80 + 1;
     this = local_7c;

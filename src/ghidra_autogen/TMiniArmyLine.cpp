@@ -55,8 +55,8 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
   TControl *pTVar3;
   int *piVar4;
   short unaff_SI;
-  int *unaff_FS_OFFSET;
-  TView *pTStack_48;
+  undefined4 *unaff_FS_OFFSET;
+  TToolBarClusterVtbl *pTStack_48;
   TControl *pTStack_44;
   CString CStack_34;
   CString CStack_30;
@@ -68,18 +68,18 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
   CString local_18;
   TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *local_14;
   TToolBarCluster_slot_0x04_0x04 *local_10;
-  int local_c;
-  undefined1 *puStack_8;
-  int local_4;
+  _vslot_fn *local_c;
+  _vslot_fn *p_Stack_8;
+  _vslot_fn *local_4;
   
-  local_4 = -1;
-  puStack_8 = &LAB_00630564;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
+  local_4 = (_vslot_fn *)0xffffffff;
+  p_Stack_8 = (_vslot_fn *)&LAB_00630564;
+  local_c = (_vslot_fn *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
   pTStack_44 = (TControl *)0x88;
-  pTStack_48 = (TView *)0x4aa987;
+  pTStack_48 = (TToolBarClusterVtbl *)0x4aa987;
   pTVar3 = (TControl *)AllocateWithFallbackHandler();
-  local_4 = 0;
+  local_4 = (_vslot_fn *)0x0;
   local_18.m_pchData = (char *)pTVar3;
   if (pTVar3 == (TControl *)0x0) {
     pTVar3 = (TControl *)0x0;
@@ -91,8 +91,8 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
   }
   pTVar1 = *(TControlVtbl **)&this->field_0x10;
   pTStack_44 = (TControl *)0x0;
-  pTStack_48 = (TView *)0x5;
-  local_4 = -1;
+  pTStack_48 = (TToolBarClusterVtbl *)0x5;
+  local_4 = (_vslot_fn *)0xffffffff;
   InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,&this->field_0x8,5);
   pTVar3[1].vftable = pTVar1;
   pTVar3->hasCommandTagResource = 0x22;
@@ -104,9 +104,9 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
   cVar2 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
   if (cVar2 != '\0') {
     pTStack_44 = (TControl *)0x8c;
-    pTStack_48 = (TView *)0x4aaa17;
+    pTStack_48 = (TToolBarClusterVtbl *)0x4aaa17;
     local_20.m_pchData = (char *)AllocateWithFallbackHandler();
-    local_4 = 1;
+    local_4 = (_vslot_fn *)0x1;
     if ((TGWorldButton *)local_20.m_pchData == (TGWorldButton *)0x0) {
       piVar4 = (int *)0x0;
     }
@@ -115,20 +115,20 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
       piVar4 = (int *)TGWorldButton::ConstructTGWorldButtonBaseState
                                 ((TGWorldButton *)local_20.m_pchData);
     }
-    pTStack_48 = (TView *)&local_14;
+    pTStack_48 = (TToolBarClusterVtbl *)&local_14;
     pTStack_44 = (TControl *)0xdae;
-    local_4 = -1;
+    local_4 = (_vslot_fn *)0xffffffff;
     local_14 = (TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *)0x13;
     local_10 = (TToolBarCluster_slot_0x04_0x04 *)0x12;
     local_20.m_pchData = (char *)0x73;
     local_1c = 0;
     WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(pTVar3,&local_20);
     pTStack_44 = (TControl *)0x0;
-    pTStack_48 = (TView *)0x1;
+    pTStack_48 = (TToolBarClusterVtbl *)0x1;
     (**(code **)(*piVar4 + 0xa8))();
     piVar4[7] = 0x75706772;
     CString::CString(&CStack_2c);
-    local_c = 2;
+    local_c = (_vslot_fn *)0x2;
     CString::CString((CString *)&stack0xffffffc8);
     local_c._0_1_ = 3;
     CString::CString(&CStack_30);
@@ -136,27 +136,27 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
     CString::CString(&CStack_34);
     local_c._0_1_ = 5;
     CString::CString(&local_20);
-    local_c = CONCAT31(local_c._1_3_,6);
+    local_c = (_vslot_fn *)CONCAT31(local_c._1_3_,6);
     WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840
               (&stack0xffffffc6,&local_4,&stack0xffffffc4,&stack0x00000000);
     FormatStringWithVarArgsToSharedRef(&CStack_30,&g_szDecimalFormat,(int)(short)local_4);
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)((int)unaff_SI,&CStack_34);
-    if ((short)puStack_8 == 0) {
+    if ((short)p_Stack_8 == 0) {
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,2,&stack0xffffffc0);
       pTStack_44 = (TControl *)CStack_2c.m_pchData;
-      pTStack_48 = (TView *)CStack_28.m_pchData;
+      pTStack_48 = (TToolBarClusterVtbl *)CStack_28.m_pchData;
       scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_30.m_pchData);
     }
     else {
       CString::CString(&CStack_30);
       local_14 = (TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *)CONCAT31(local_14._1_3_,7)
       ;
-      FormatStringWithVarArgsToSharedRef(&CStack_30,&g_szDecimalFormat,(int)(short)puStack_8);
+      FormatStringWithVarArgsToSharedRef(&CStack_30,&g_szDecimalFormat,(int)(short)p_Stack_8);
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,6,&stack0xffffffc0);
       pTStack_44 = (TControl *)CStack_2c.m_pchData;
-      pTStack_48 = (TView *)local_20.m_pchData;
+      pTStack_48 = (TToolBarClusterVtbl *)local_20.m_pchData;
       scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_30.m_pchData);
-      local_4 = CONCAT31(local_4._1_3_,6);
+      local_4 = (_vslot_fn *)CONCAT31(local_4._1_3_,6);
       pTStack_44 = (TControl *)0x4aabda;
       CString::~CString(&local_20);
     }
@@ -173,10 +173,10 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
     local_4._0_1_ = 3;
     pTStack_44 = (TControl *)0x4aac1e;
     CString::~CString(&CStack_28);
-    local_4 = CONCAT31(local_4._1_3_,2);
+    local_4 = (_vslot_fn *)CONCAT31(local_4._1_3_,2);
     pTStack_44 = (TControl *)0x4aac2c;
     CString::~CString(&CStack_30);
-    local_4 = -1;
+    local_4 = (_vslot_fn *)0xffffffff;
     pTStack_44 = (TControl *)0x4aac3d;
     CString::~CString(&CStack_24);
   }

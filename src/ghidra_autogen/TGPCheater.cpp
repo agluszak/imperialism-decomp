@@ -138,7 +138,7 @@ void __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *param_1,und
   local_1c = 2;
   local_18 = 0x9e;
   TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(param_1,&local_1c,6,0,0x70757263);
-  uVar1 = (*param_1->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*param_1->vftable->SetForeignMinisterReadyFlag14)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar1);
   (**(code **)(iVar2 + 300))(&local_1c);
   local_1c = 0x94;

@@ -304,7 +304,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
   sVar5 = 0;
   if ((0 < param_1) && (param_1 <= *(short *)&this->field_0x60)) {
     pTVar4 = this->vftable;
-    (*pTVar4[0x35].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->ResetSelectableOptionEntriesExceptColorAndOkay)();
     iVar12 = (int)param_1;
     if (iVar12 < *(short *)&this->field_0x64 + iVar12) {
       do {
@@ -344,7 +344,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
       } while (iVar12 < (int)*(short *)&this->field_0x64 + (int)param_1);
     }
     *(short *)&this->field_0x62 = param_1;
-    (*pTVar4[0x1c].slot_0x04)();
+    (*pTVar4->VTableSlot39)();
   }
   return;
 }
@@ -356,7 +356,7 @@ void TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1)
 void TPageView::OrphanCallChain_C4_I18_0056ff90()
 
 {
-  (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->ResetSelectableOptionEntriesExceptColorAndOkay)();
   (**(code **)(**(int **)&this->field_0x78 + 0x5c))();
   (**(code **)(**(int **)&this->field_0x7c + 0x5c))();
   (**(code **)(**(int **)&this->field_0x80 + 0x30))();

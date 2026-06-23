@@ -57,7 +57,7 @@ TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
   int iVar2;
   
   this_00 = g_apNationStates[*(short *)(this + 4)];
-  (*this_00->vftable[1].slot_0x04)();
+  (*this_00->vftable->ConstructTTaskBaseState)();
   TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
             ((TAttackProvinceMission *)this_00,(int)*(short *)(this + 0x14),0);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
@@ -90,7 +90,7 @@ TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*g_apNationStates[*(short *)(this + 4)]->vftable[8].GetTCountryClassNamePointer)();
+  uVar1 = (*g_apNationStates[*(short *)(this + 4)]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
   if (CONCAT31(extraout_var,uVar1) == (int)*(short *)(this + 0x14)) {
     this[8] = (TDefendProvinceMission)0x0;
     return;
@@ -172,7 +172,7 @@ TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyC
   float fStack_c;
   
   pTVar1 = g_apNationStates[*(short *)(this + 4)];
-  (*pTVar1->vftable[1].slot_0x04)();
+  (*pTVar1->vftable->ConstructTTaskBaseState)();
   fStack_c = *(float *)&pTVar1[1].field_0x204;
   if (fStack_c <= (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     fStack_c = DAT_0065a9b8;

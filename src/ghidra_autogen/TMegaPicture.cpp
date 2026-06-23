@@ -81,7 +81,7 @@ TMegaPicture * TMegaPicture::_scalar_deleting_destructor_(byte param_1)
 void TMegaPicture::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
 
 {
-  TMegaPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   LONG unaff_ESI;
   byte blitFlags;
   LONG unaff_EDI;
@@ -95,8 +95,8 @@ void TMegaPicture::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
   local_2c = param_1[1];
   local_28.left = param_1[2];
   local_28.top = param_1[3];
-  pTVar1 = this->vftable[0x29].slot_0x04;
-  (*pTVar1)(&local_30,&RStack_18.right);
+  p_Var1 = this->vftable->SetForeignMinisterReadyFlag14_53;
+  (*p_Var1)(&local_30,&RStack_18.right);
   if (*(int *)&this->field_0x94 != 0) {
     ResetQuickDrawStrokeState();
     if ((*(ushort *)&this->field_0x98 & 4) == 0) {
@@ -116,7 +116,7 @@ void TMegaPicture::OrphanTiny_ReturnZero_0048a730(LONG *param_1)
       local_28.bottom = *(LONG *)&this->field_0xa8;
       local_30 = *(LONG *)&this->field_0xa4;
       local_2c = *(LONG *)&this->field_0xa8;
-      (*pTVar1)(&stack0xffffffc8,&RStack_18);
+      (*p_Var1)(&stack0xffffffc8,&RStack_18);
     }
     blitFlags = 0;
     if ((this->field_0x98 & 1) == 0) {
@@ -168,7 +168,7 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(undefined4 param_1)
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(puVar1);
   }
   *(undefined4 *)puVar1 = 0;
-  (*this->vftable[0x38].slot_0x04)();
+  (*this->vftable->ResetPictureResourceEntry)();
   uVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1);
   *(undefined4 *)&this->field_0x88 = uVar5;
   NoOpRuntimeCallback_00497c00(uVar5);
@@ -203,7 +203,7 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(undefined4 param_1)
       *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
       this_00 = (TAnimation *)*piVar3;
       if (this_00 != (TAnimation *)0x0) {
-        this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+        this_00->vftable = (TAnimationVtbl *)0x64c340;
         TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                   (this_00);
         FreeHeapBufferIfNotNull(this_00);

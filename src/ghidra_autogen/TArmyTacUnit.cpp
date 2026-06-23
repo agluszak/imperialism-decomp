@@ -365,7 +365,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(int param_1)
   *(undefined4 *)&this->field_0x8 = 0xfffffffe;
   this->field_0x18 = 0;
   *(undefined4 *)&this->field_0x1c = 0;
-  uVar2 = (*this->vftable[5].GetTTacticalUnitClassNamePointer)();
+  uVar2 = (*this->vftable->OrphanTiny_ReturnZero_005a5d40)();
   *(uint *)&this->field_0x28 = CONCAT31(extraout_var,uVar2);
   *(undefined4 *)&this->field_0x2c = 0;
   *(undefined4 *)&this->field_0x30 = 0;
@@ -480,7 +480,7 @@ void TArmyTacUnit::SetScrollRange(int param_1, int param_2, int param_3, BOOL pa
   undefined3 extraout_var;
   HWND hWnd;
   
-  uVar1 = (*this->vftable[0xe].GetTTacticalUnitClassNamePointer)(param_1);
+  uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(param_1);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     hWnd = *(HWND *)&this->field_0x1c;
   }
@@ -508,7 +508,7 @@ void TArmyTacUnit::EnableScrollBarCtrl(int param_1)
     EnableScrollBarCtrl(this,0);
     wBar = 1;
   }
-  uVar1 = (*this->vftable[0xe].GetTTacticalUnitClassNamePointer)(wBar);
+  uVar1 = (*this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80)(wBar);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     ShowScrollBar(*(HWND *)&this->field_0x1c,wBar,param_1);
   }
@@ -726,7 +726,7 @@ void TArmyTacUnit::ScrollToDevicePosition(int param_1, int param_2)
 void TArmyTacUnit::GetScrollBarSizes(int *param_1)
 
 {
-  TArmyTacUnit_GetTTacticalUnitClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   uint uVar3;
   undefined3 extraout_var;
@@ -735,12 +735,12 @@ void TArmyTacUnit::GetScrollBarSizes(int *param_1)
   param_1[1] = 0;
   *param_1 = 0;
   uVar3 = GetStyle();
-  pTVar1 = this->vftable[0xe].GetTTacticalUnitClassNamePointer;
-  uVar2 = (*pTVar1)(1);
+  p_Var1 = this->vftable[1].OrphanLeaf_NoCall_Ins02_005a5d80;
+  uVar2 = (*p_Var1)(1);
   if ((CONCAT31(extraout_var,uVar2) == 0) && (*param_1 = DAT_006a7d00, (uVar3 & 0x800000) != 0)) {
     *param_1 = *param_1 + -1;
   }
-  uVar2 = (*pTVar1)(0);
+  uVar2 = (*p_Var1)(0);
   if ((CONCAT31(extraout_var_00,uVar2) == 0) && (param_1[1] = DAT_006a7d04, (uVar3 & 0x800000) != 0)
      ) {
     param_1[1] = param_1[1] + -1;

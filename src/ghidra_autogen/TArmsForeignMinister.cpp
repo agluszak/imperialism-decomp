@@ -17,7 +17,7 @@ TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
   undefined1 *puVar3;
   int iVar4;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar2 = *(code **)(*param_1 + 0x3c);
   (*pcVar2)(&this->field_0xc,2);
   (*pcVar2)(&this->field_0x10,2);
@@ -92,13 +92,10 @@ TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader
   undefined1 *puStack_24;
   undefined4 uStack_20;
   undefined1 *puStack_1c;
-  int *piStack_18;
   
-  piStack_18 = param_1;
   puStack_1c = (undefined1 *)0x52f2c1;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   puStack_1c = &this->field_0xc;
-  piStack_18 = (int *)0x2;
   pcVar1 = *(code **)(*param_1 + 0x78);
   uStack_20 = 0x52f2d0;
   (*pcVar1)();
@@ -268,7 +265,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
     iVar8 = *piVar4;
     psVar5 = (short *)(**(code **)(iVar8 + 0x2c))(piVar4[2]);
     uVar7 = (undefined2)((uint)*(int *)&this->field_0x4 >> 0x10);
-    (*g_apNationStates[*psVar5]->vftable[0x33].slot_0x04)
+    (*g_apNationStates[*psVar5]->vftable->HasQueuedCivWorkOrderType7_67)
               (CONCAT22(uVar7,*(undefined2 *)&this->field_0x10),
                CONCAT22(uVar7,*(undefined2 *)(*(int *)&this->field_0x4 + 0xc)));
     if (piVar4 != (int *)0x0) {
@@ -297,7 +294,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
     } while (bVar1);
     if (bVar2) {
 LAB_0052f8bf:
-      (*g_apNationStates[(int)local_10]->vftable[0x33].slot_0x04)
+      (*g_apNationStates[(int)local_10]->vftable->HasQueuedCivWorkOrderType7_67)
                 (5,CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                             *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)));
     }
@@ -471,7 +468,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
   sVar4 = 7;
   do {
     if (0x16 < sVar4) break;
-    cVar2 = (*g_apTerrainTypeDescriptorTable[sVar4]->vftable[0xb].slot_0x04)
+    cVar2 = (*g_apTerrainTypeDescriptorTable[sVar4]->vftable->IsDiplomacyTargetClassCode200Match)
                       ((int)*(short *)(*(int *)&this->field_0x4 + 0xc));
     if (cVar2 != '\0') {
       bVar1 = true;
@@ -686,7 +683,7 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
                           ((TControl *)g_pDiplomacyTurnStateManager,
                            *(short *)(*(int *)&this->field_0x4 + 0xc),(short)iVar13,(short)unaff_EDI
                            ,(short)unaff_ESI), sVar8 == 2)) {
-      cVar6 = (*(*ppTVar11)->vftable[0x16].GetTCountryClassNamePointer)
+      cVar6 = (*(*ppTVar11)->vftable->CanInitiateJoinEmpireProposalToTarget)
                         (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                                   *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),0x12d);
       if (cVar6 == '\0') {
@@ -735,9 +732,10 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
       do {
         uVar7 = (*g_pDiplomacyTurnStateManager->vftable[0x12].GetTDiplomacyMgrClassNamePointer)
                           (iVar13,(int)*(short *)(*(int *)&this->field_0x4 + 0xc));
-        (*g_apNationStates[CONCAT31(extraout_var_01,uVar7)]->vftable[0x47].slot_0x04)();
-        (*g_apNationStates[CONCAT31(extraout_var_01,uVar7)]->vftable[0x48].
-          GetTCountryClassNamePointer)();
+        (*g_apNationStates[CONCAT31(extraout_var_01,uVar7)]->vftable->
+          ReturnFalseNationStateCapabilityFlag9C_8f)();
+        (*g_apNationStates[CONCAT31(extraout_var_01,uVar7)]->vftable->
+          ReturnFalseNationStateCapabilityFlagA0_90)();
         uStack_40 = (float)(extraout_ST0 + (float10)uStack_40);
         iVar13 = iVar13 + 1;
         uVar7 = (*g_pDiplomacyTurnStateManager->vftable[0x11].slot_0x04)
@@ -754,11 +752,11 @@ void TArmsForeignMinister::GetTEventHandlerClassNamePointer()
         cVar6 = IsNationCodeLinkedInNationGraph
                           ((int)*(short *)(*(int *)&this->field_0x4 + 0xc),iVar13);
         if (cVar6 == '\0') {
-          (*g_apNationStates[iVar13]->vftable[0x48].GetTCountryClassNamePointer)();
+          (*g_apNationStates[iVar13]->vftable->ReturnFalseNationStateCapabilityFlagA0_90)();
           fVar4 = (float)extraout_ST0_01 / ((float)pTStack_2c - _DAT_00659b94 * 0.0);
         }
         else {
-          (*g_apNationStates[iVar13]->vftable[0x47].slot_0x04)();
+          (*g_apNationStates[iVar13]->vftable->ReturnFalseNationStateCapabilityFlag9C_8f)();
           fVar4 = (float)extraout_ST0_00 / (fVar3 - _DAT_00659b94 * 0.0);
         }
         piVar12 = *(int **)&this->field_0x4;

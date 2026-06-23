@@ -81,8 +81,8 @@ void TNumberedIcon::OrphanCallChain_C6_I49_004875d0()
   
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   pTVar1 = this->vftable;
-  (*pTVar1[0x3a].slot_0x04)(5,1);
-  (*pTVar1[0x3b].slot_0x04)();
+  (*pTVar1->OrphanCallChain_C1_I08_00573690)(5,1);
+  (*pTVar1->Helper_Uses_ConstructTMyNumberTextBaseState_At00507570)();
   if (*(int **)&this->field_0xac != (int *)0x0) {
     (**(code **)(**(int **)&this->field_0xac + 0x168))(&stack0xffffffe8,1);
   }

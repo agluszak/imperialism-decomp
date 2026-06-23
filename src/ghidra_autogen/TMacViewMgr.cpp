@@ -545,7 +545,7 @@ void TMacViewMgr::DestroyStrategicMapViewSystemResources()
   } while (iVar1 != 0);
   g_pStrategicMapViewSystem = 0;
   if (this != (TMacViewMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TMacViewMgr)(1);
   }
   return;
 }
@@ -558,12 +558,13 @@ void TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles()
 
 {
   TMacViewMgrVtbl *pTVar1;
+  TStream *in_stack_00000004;
   
   *(undefined4 *)&this->field_0x4 = 0;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,in_stack_00000004);
   pTVar1 = this->vftable;
-  (*pTVar1[0xe].slot_0x04)();
-  (*pTVar1[0xe].GetTMacViewMgrClassNamePointer)();
+  (*pTVar1->RebuildMapTileNeighborHighlightPolygonsForAllTiles)();
+  (*pTVar1->RenderTurnEventPalettePreviewSurfaceAndProgress)();
   RefreshCityCapabilityUiHandlesForActiveNation();
   return;
 }
@@ -575,7 +576,9 @@ void TMacViewMgr::ResetNationStateUiAndRefreshCityCapabilityHandles()
 void TMacViewMgr::WrapperFor_thunk_HandleCityDialogNoOpSlot14_At0050a180()
 
 {
-  TObject::WriteTo((TArmyPlayer *)this);
+  TStream *in_stack_00000004;
+  
+  TObject::WriteTo((TObject *)this,in_stack_00000004);
   return;
 }
 
@@ -661,14 +664,14 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
       pTVar3 = this->vftable;
       puVar7 = puVar7 + 8;
       *(byte *)(puVar10 + 1) = *(byte *)(puVar10 + 1) | 1;
-      (*pTVar3[0x11].GetTMacViewMgrClassNamePointer)(piVar6,puVar7,uVar2 & 0x3fff);
+      (*pTVar3->CopySpriteSurfaceToStrideBuffer)(piVar6,puVar7,uVar2 & 0x3fff);
     }
     piVar4 = (int *)*piVar6;
     (**(code **)(*piVar4 + 4))();
     *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
     this_00 = (TAnimation *)*piVar6;
     if (this_00 != (TAnimation *)0x0) {
-      this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+      this_00->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (this_00);
       FreeHeapBufferIfNotNull(this_00);
@@ -781,532 +784,534 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372()
 void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
 
 {
-  TAnimationVtbl *pTVar1;
-  TAnimation *pTVar2;
+  TAnimation_GetTAnimationClassNamePointer_0x00 *pTVar1;
+  TAnimationVtbl *pTVar2;
   undefined4 *puVar3;
-  int *piVar4;
-  TAnimation *pTVar5;
-  int iVar6;
-  TAnimation *pTVar7;
-  undefined4 uVar8;
-  int *piVar9;
-  undefined1 *puVar10;
-  int *piVar11;
+  TAnimation *pTVar4;
+  int *piVar5;
+  TAnimationVtbl *pTVar6;
+  int iVar7;
+  TAnimationVtbl *pTVar8;
+  undefined4 uVar9;
+  int *piVar10;
+  undefined1 *puVar11;
+  int *piVar12;
   int unaff_EBX;
-  undefined4 *puVar12;
-  short sVar13;
-  int iVar14;
+  undefined4 *puVar13;
+  short sVar14;
+  int iVar15;
   undefined4 uStack_68;
   undefined1 *puStack_64;
   int iStack_60;
-  TAnimation *pTStack_5c;
-  TAnimation *pTStack_58;
+  TAnimationVtbl *pTStack_5c;
+  TAnimationVtbl *pTStack_58;
   undefined4 *puStack_54;
-  TAnimation *pTStack_50;
-  TAnimation *pTStack_4c;
-  undefined1 *puStack_48;
-  TAnimation *pTStack_44;
-  TAnimation *pTStack_40;
-  undefined1 local_2c [8];
-  int local_24;
-  undefined4 uStack_20;
-  undefined4 uStack_1c;
-  undefined4 uStack_18;
-  undefined4 uStack_14;
-  int local_10;
-  undefined4 local_c;
-  undefined4 local_8;
-  undefined4 local_4;
+  TAnimationVtbl *pTStack_50;
+  TAnimationVtbl *pTStack_4c;
+  _vslot_fn **pp_Stack_48;
+  TAnimationVtbl *pTStack_44;
+  TAnimationVtbl *pTStack_40;
+  int local_2c;
+  TAnimation_GetTAnimationClassNamePointer_0x00 *pTStack_28;
+  TMacViewMgr *local_24;
+  _vslot_fn *p_Stack_20;
+  _vslot_fn *p_Stack_1c;
+  _vslot_fn *p_Stack_18;
+  _vslot_fn *p_Stack_14;
+  _vslot_fn *local_10;
+  _vslot_fn *local_c;
+  _vslot_fn *local_8;
+  _vslot_fn *local_4;
   
-  puVar10 = &this->field_0x668;
-  pTStack_40 = (TAnimation *)&local_10;
-  iVar14 = 0;
-  pTStack_44 = (TAnimation *)0x8;
-  local_2c._0_4_ = 0;
-  local_c = 0;
-  local_10 = 0;
-  local_8 = 0xcc0;
-  local_4 = 0x40;
-  pTStack_4c = (TAnimation *)0x50aa33;
-  puStack_48 = puVar10;
-  local_24 = (int)this;
+  puVar11 = &this->field_0x668;
+  pTStack_40 = (TAnimationVtbl *)&local_10;
+  iVar15 = 0;
+  pTStack_44 = (TAnimationVtbl *)0x8;
+  local_2c = 0;
+  local_c = (_vslot_fn *)0x0;
+  local_10 = (_vslot_fn *)0x0;
+  local_8 = (_vslot_fn *)0xcc0;
+  local_4 = (_vslot_fn *)0x40;
+  pTStack_4c = (TAnimationVtbl *)0x50aa33;
+  pp_Stack_48 = (_vslot_fn **)puVar11;
+  local_24 = this;
   (**(code **)(*DAT_006a2158 + 0x2c))();
-  pTStack_4c = (TAnimation *)&stack0xffffffc8;
-  pTStack_50 = (TAnimation *)&stack0xffffffcc;
+  pTStack_4c = (TAnimationVtbl *)&stack0xffffffc8;
+  pTStack_50 = (TAnimationVtbl *)&stack0xffffffcc;
   puStack_54 = (undefined4 *)0x50aa42;
   GetActiveQuickDrawSurfaceContextAndFlags();
-  pTStack_50 = *(TAnimation **)puVar10;
+  pTStack_50 = *(TAnimationVtbl **)puVar11;
   puStack_54 = (undefined4 *)0x50aa52;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_4c = *(TAnimation **)puVar10;
-  pTStack_50 = (TAnimation *)0x50aa5d;
-  pTStack_4c = (TAnimation *)GetSurfaceObjectAtContextOffset24();
-  pTStack_50 = (TAnimation *)0x50aa66;
+  pTStack_4c = *(TAnimationVtbl **)puVar11;
+  pTStack_50 = (TAnimationVtbl *)0x50aa5d;
+  pTStack_4c = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
+  pTStack_50 = (TAnimationVtbl *)0x50aa66;
   ReturnConstantTrueQuickDrawFlag();
-  pTStack_4c = (TAnimation *)0x50aa6e;
+  pTStack_4c = (TAnimationVtbl *)0x50aa6e;
   ResetQuickDrawStrokeState();
-  local_2c._0_4_ = 0;
-  local_2c._4_4_ = 0;
-  local_24 = 0x40;
-  uStack_20 = 0x40;
+  local_2c = 0;
+  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0;
+  local_24 = (TMacViewMgr *)0x40;
+  p_Stack_20 = (_vslot_fn *)0x40;
   do {
-    pTStack_4c = (TAnimation *)(iVar14 + 10000);
-    pTStack_50 = (TAnimation *)0x50aa90;
-    pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar5->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_4c = (TAnimation *)0x50aaa1;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      pTStack_4c = (TAnimation *)local_2c;
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
+    pTStack_4c = (TAnimationVtbl *)(iVar15 + 10000);
+    pTStack_50 = (TAnimationVtbl *)0x50aa90;
+    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar6->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_4c = (TAnimationVtbl *)0x50aaa1;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTStack_4c = (TAnimationVtbl *)&local_2c;
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
       puStack_54 = (undefined4 *)0x50aab4;
-      pTStack_50 = pTVar5;
+      pTStack_50 = pTVar6;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar5->vftable;
-    pTStack_4c = (TAnimation *)0x50aac0;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar7 = (TAnimation *)pTVar5->vftable;
-    if (pTVar7 != (TAnimation *)0x0) {
-      pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_4c = (TAnimation *)0x50aadc;
+    pTVar1 = pTVar6->GetRuntimeClass;
+    pTStack_4c = (TAnimationVtbl *)0x50aac0;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+    if (pTVar8 != (TAnimationVtbl *)0x0) {
+      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_4c = (TAnimationVtbl *)0x50aadc;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar7);
-      pTStack_50 = (TAnimation *)0x50aae2;
-      pTStack_4c = pTVar7;
+                ((TAnimation *)pTVar8);
+      pTStack_50 = (TAnimationVtbl *)0x50aae2;
+      pTStack_4c = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_50 = (TAnimation *)0x50aaeb;
-    pTStack_4c = pTVar5;
+    pTStack_50 = (TAnimationVtbl *)0x50aaeb;
+    pTStack_4c = pTVar6;
     FreeHeapBufferIfNotNull();
-    iVar6 = local_2c._0_4_ + 0x40;
-    local_24 = local_2c._0_4_ + 0x80;
-    iVar14 = iVar14 + 1;
-    local_2c._0_4_ = iVar6;
-  } while ((short)iVar14 < 0x2a);
-  iVar14 = 0;
+    iVar7 = local_2c + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c + 0x80);
+    iVar15 = iVar15 + 1;
+    local_2c = iVar7;
+  } while ((short)iVar15 < 0x2a);
+  iVar15 = 0;
   do {
-    pTStack_4c = (TAnimation *)(iVar14 + 0x276e);
-    pTStack_50 = (TAnimation *)0x50ab19;
-    pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar5->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_4c = (TAnimation *)0x50ab2a;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
-      pTStack_4c = (TAnimation *)local_2c;
+    pTStack_4c = (TAnimationVtbl *)(iVar15 + 0x276e);
+    pTStack_50 = (TAnimationVtbl *)0x50ab19;
+    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar6->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_4c = (TAnimationVtbl *)0x50ab2a;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+      pTStack_4c = (TAnimationVtbl *)&local_2c;
       puStack_54 = (undefined4 *)0x50ab3d;
-      pTStack_50 = pTVar5;
+      pTStack_50 = pTVar6;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar5->vftable;
-    pTStack_4c = (TAnimation *)0x50ab49;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar7 = (TAnimation *)pTVar5->vftable;
-    if (pTVar7 != (TAnimation *)0x0) {
-      pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_4c = (TAnimation *)0x50ab65;
+    pTVar1 = pTVar6->GetRuntimeClass;
+    pTStack_4c = (TAnimationVtbl *)0x50ab49;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+    if (pTVar8 != (TAnimationVtbl *)0x0) {
+      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_4c = (TAnimationVtbl *)0x50ab65;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar7);
-      pTStack_50 = (TAnimation *)0x50ab6b;
-      pTStack_4c = pTVar7;
+                ((TAnimation *)pTVar8);
+      pTStack_50 = (TAnimationVtbl *)0x50ab6b;
+      pTStack_4c = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_50 = (TAnimation *)0x50ab74;
-    pTStack_4c = pTVar5;
+    pTStack_50 = (TAnimationVtbl *)0x50ab74;
+    pTStack_4c = pTVar6;
     FreeHeapBufferIfNotNull();
-    iVar6 = local_2c._0_4_ + 0x40;
-    local_24 = local_2c._0_4_ + 0x80;
-    iVar14 = iVar14 + 1;
-    local_2c._0_4_ = iVar6;
-  } while ((short)iVar14 < 4);
-  iVar14 = 0;
+    iVar7 = local_2c + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c + 0x80);
+    iVar15 = iVar15 + 1;
+    local_2c = iVar7;
+  } while ((short)iVar15 < 4);
+  iVar15 = 0;
   do {
-    pTStack_4c = (TAnimation *)(iVar14 + 0x2774);
-    pTStack_50 = (TAnimation *)0x50aba2;
-    pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar5->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_4c = (TAnimation *)0x50abb3;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
-      pTStack_4c = (TAnimation *)local_2c;
+    pTStack_4c = (TAnimationVtbl *)(iVar15 + 0x2774);
+    pTStack_50 = (TAnimationVtbl *)0x50aba2;
+    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar6->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_4c = (TAnimationVtbl *)0x50abb3;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+      pTStack_4c = (TAnimationVtbl *)&local_2c;
       puStack_54 = (undefined4 *)0x50abc6;
-      pTStack_50 = pTVar5;
+      pTStack_50 = pTVar6;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar5->vftable;
-    pTStack_4c = (TAnimation *)0x50abd2;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar7 = (TAnimation *)pTVar5->vftable;
-    if (pTVar7 != (TAnimation *)0x0) {
-      pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_4c = (TAnimation *)0x50abee;
+    pTVar1 = pTVar6->GetRuntimeClass;
+    pTStack_4c = (TAnimationVtbl *)0x50abd2;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+    if (pTVar8 != (TAnimationVtbl *)0x0) {
+      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_4c = (TAnimationVtbl *)0x50abee;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar7);
-      pTStack_50 = (TAnimation *)0x50abf4;
-      pTStack_4c = pTVar7;
+                ((TAnimation *)pTVar8);
+      pTStack_50 = (TAnimationVtbl *)0x50abf4;
+      pTStack_4c = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_50 = (TAnimation *)0x50abfd;
-    pTStack_4c = pTVar5;
+    pTStack_50 = (TAnimationVtbl *)0x50abfd;
+    pTStack_4c = pTVar6;
     FreeHeapBufferIfNotNull();
-    iVar6 = local_2c._0_4_ + 0x40;
-    local_24 = local_2c._0_4_ + 0x80;
-    iVar14 = iVar14 + 1;
-    local_2c._0_4_ = iVar6;
-  } while ((short)iVar14 < 4);
-  pTStack_4c = (TAnimation *)0x277e;
-  pTStack_50 = (TAnimation *)0x50ac27;
-  pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  pTVar1 = pTVar5->vftable;
-  if (pTVar1 != (TAnimationVtbl *)0x0) {
-    pTStack_4c = (TAnimation *)0x50ac3a;
-    (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-    pTStack_4c = (TAnimation *)local_2c;
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
+    iVar7 = local_2c + 0x40;
+    local_24 = (TMacViewMgr *)(local_2c + 0x80);
+    iVar15 = iVar15 + 1;
+    local_2c = iVar7;
+  } while ((short)iVar15 < 4);
+  pTStack_4c = (TAnimationVtbl *)0x277e;
+  pTStack_50 = (TAnimationVtbl *)0x50ac27;
+  pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+  pTVar1 = pTVar6->GetRuntimeClass;
+  if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+    pTStack_4c = (TAnimationVtbl *)0x50ac3a;
+    (*(code *)**(undefined4 **)pTVar1)();
+    pTStack_4c = (TAnimationVtbl *)&local_2c;
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
     puStack_54 = (undefined4 *)0x50ac4d;
-    pTStack_50 = pTVar5;
+    pTStack_50 = pTVar6;
     WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
   }
-  pTVar1 = pTVar5->vftable;
-  pTStack_4c = (TAnimation *)0x50ac59;
-  (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-  *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-  pTVar7 = (TAnimation *)pTVar5->vftable;
-  if (pTVar7 != (TAnimation *)0x0) {
-    pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-    pTStack_4c = (TAnimation *)0x50ac75;
+  pTVar1 = pTVar6->GetRuntimeClass;
+  pTStack_4c = (TAnimationVtbl *)0x50ac59;
+  (**(code **)(*(int *)pTVar1 + 4))();
+  pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+  pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+  if (pTVar8 != (TAnimationVtbl *)0x0) {
+    pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+    pTStack_4c = (TAnimationVtbl *)0x50ac75;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              (pTVar7);
-    pTStack_50 = (TAnimation *)0x50ac7b;
-    pTStack_4c = pTVar7;
+              ((TAnimation *)pTVar8);
+    pTStack_50 = (TAnimationVtbl *)0x50ac7b;
+    pTStack_4c = pTVar8;
     FreeHeapBufferIfNotNull();
   }
-  pTStack_50 = (TAnimation *)0x50ac84;
-  pTStack_4c = pTVar5;
+  pTStack_50 = (TAnimationVtbl *)0x50ac84;
+  pTStack_4c = pTVar6;
   FreeHeapBufferIfNotNull();
-  local_24 = local_2c._0_4_ + 0x80;
-  pTStack_4c = *(TAnimation **)puVar10;
-  pTStack_50 = (TAnimation *)0x50aca1;
-  local_2c._0_4_ = local_2c._0_4_ + 0x40;
-  pTStack_4c = (TAnimation *)GetSurfaceObjectAtContextOffset24();
-  pTStack_50 = (TAnimation *)0x50acaa;
+  local_24 = (TMacViewMgr *)(local_2c + 0x80);
+  pTStack_4c = *(TAnimationVtbl **)puVar11;
+  pTStack_50 = (TAnimationVtbl *)0x50aca1;
+  local_2c = local_2c + 0x40;
+  pTStack_4c = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
+  pTStack_50 = (TAnimationVtbl *)0x50acaa;
   NoOpQuickDrawLifecycleHookB();
   puStack_54 = (undefined4 *)0x50acbc;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_4c = (TAnimation *)&uStack_1c;
-  puVar12 = (undefined4 *)(unaff_EBX + 0x66c);
-  pTStack_50 = (TAnimation *)0x8;
-  uStack_18 = 0;
-  uStack_1c = 0;
-  uStack_14 = 0xa80;
-  local_10 = 0x40;
-  pTStack_58 = (TAnimation *)0x50acf4;
-  puStack_54 = puVar12;
+  pTStack_4c = (TAnimationVtbl *)&p_Stack_1c;
+  puVar13 = (undefined4 *)(unaff_EBX + 0x66c);
+  pTStack_50 = (TAnimationVtbl *)0x8;
+  p_Stack_18 = (_vslot_fn *)0x0;
+  p_Stack_1c = (_vslot_fn *)0x0;
+  p_Stack_14 = (_vslot_fn *)0xa80;
+  local_10 = (_vslot_fn *)0x40;
+  pTStack_58 = (TAnimationVtbl *)0x50acf4;
+  puStack_54 = puVar13;
   (**(code **)(*DAT_006a2158 + 0x2c))();
-  pTStack_58 = (TAnimation *)&pTStack_44;
-  pTStack_5c = (TAnimation *)&pTStack_40;
+  pTStack_58 = (TAnimationVtbl *)&pTStack_44;
+  pTStack_5c = (TAnimationVtbl *)&pTStack_40;
   iStack_60 = 0x50ad03;
   GetActiveQuickDrawSurfaceContextAndFlags();
-  pTStack_5c = (TAnimation *)*puVar12;
+  pTStack_5c = (TAnimationVtbl *)*puVar13;
   pTStack_58 = pTStack_44;
   iStack_60 = 0x50ad13;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_58 = (TAnimation *)*puVar12;
-  pTStack_5c = (TAnimation *)0x50ad1e;
-  pTStack_58 = (TAnimation *)GetSurfaceObjectAtContextOffset24();
-  pTStack_5c = (TAnimation *)0x50ad27;
+  pTStack_58 = (TAnimationVtbl *)*puVar13;
+  pTStack_5c = (TAnimationVtbl *)0x50ad1e;
+  pTStack_58 = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
+  pTStack_5c = (TAnimationVtbl *)0x50ad27;
   ReturnConstantTrueQuickDrawFlag();
-  pTStack_58 = (TAnimation *)0x50ad2f;
+  pTStack_58 = (TAnimationVtbl *)0x50ad2f;
   ResetQuickDrawStrokeState();
-  local_2c._0_4_ = 0x40;
-  pTVar5 = (TAnimation *)0x190;
+  local_2c = 0x40;
+  pTVar6 = (TAnimationVtbl *)0x190;
   do {
-    sVar13 = (short)pTVar5;
-    if (((sVar13 != 0x195) && (sVar13 != 0x19e)) && (sVar13 != 0x1a7)) {
-      pTStack_5c = (TAnimation *)0x50ad6a;
-      pTStack_58 = pTVar5;
-      pTVar7 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-      pTVar1 = pTVar7->vftable;
-      if (pTVar1 != (TAnimationVtbl *)0x0) {
-        pTStack_58 = (TAnimation *)0x50ad7b;
-        (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-        *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
-        pTStack_58 = (TAnimation *)&stack0xffffffc8;
+    sVar14 = (short)pTVar6;
+    if (((sVar14 != 0x195) && (sVar14 != 0x19e)) && (sVar14 != 0x1a7)) {
+      pTStack_5c = (TAnimationVtbl *)0x50ad6a;
+      pTStack_58 = pTVar6;
+      pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+      pTVar1 = pTVar8->GetRuntimeClass;
+      if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+        pTStack_58 = (TAnimationVtbl *)0x50ad7b;
+        (*(code *)**(undefined4 **)pTVar1)();
+        pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+        pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
         iStack_60 = 0x50ad8e;
-        pTStack_5c = pTVar7;
+        pTStack_5c = pTVar8;
         WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
       }
-      pTVar1 = pTVar7->vftable;
-      pTStack_58 = (TAnimation *)0x50ad9a;
-      (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-      pTVar2 = (TAnimation *)pTVar7->vftable;
-      if (pTVar2 != (TAnimation *)0x0) {
-        pTVar2->vftable = (TAnimationVtbl *)&DAT_0064c340;
-        pTStack_58 = (TAnimation *)0x50adb6;
+      pTVar1 = pTVar8->GetRuntimeClass;
+      pTStack_58 = (TAnimationVtbl *)0x50ad9a;
+      (**(code **)(*(int *)pTVar1 + 4))();
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+      pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
+      if (pTVar2 != (TAnimationVtbl *)0x0) {
+        pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+        pTStack_58 = (TAnimationVtbl *)0x50adb6;
         TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                  (pTVar2);
-        pTStack_5c = (TAnimation *)0x50adbc;
+                  ((TAnimation *)pTVar2);
+        pTStack_5c = (TAnimationVtbl *)0x50adbc;
         pTStack_58 = pTVar2;
         FreeHeapBufferIfNotNull();
       }
-      pTStack_5c = (TAnimation *)0x50adc5;
-      pTStack_58 = pTVar7;
+      pTStack_5c = (TAnimationVtbl *)0x50adc5;
+      pTStack_58 = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTVar5 = (TAnimation *)((int)&pTVar5->vftable + 1);
-  } while ((short)pTVar5 < 0x1ab);
-  pTVar5 = (TAnimation *)0x226;
+    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
+  } while ((short)pTVar6 < 0x1ab);
+  pTVar6 = (TAnimationVtbl *)0x226;
   do {
-    pTStack_5c = (TAnimation *)0x50adf1;
-    pTStack_58 = pTVar5;
-    pTVar7 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar7->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_58 = (TAnimation *)0x50ae02;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      pTStack_58 = (TAnimation *)&stack0xffffffc8;
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
+    pTStack_5c = (TAnimationVtbl *)0x50adf1;
+    pTStack_58 = pTVar6;
+    pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar8->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_58 = (TAnimationVtbl *)0x50ae02;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
       iStack_60 = 0x50ae15;
-      pTStack_5c = pTVar7;
+      pTStack_5c = pTVar8;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar7->vftable;
-    pTStack_58 = (TAnimation *)0x50ae21;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar2 = (TAnimation *)pTVar7->vftable;
-    if (pTVar2 != (TAnimation *)0x0) {
-      pTVar2->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_58 = (TAnimation *)0x50ae3d;
+    pTVar1 = pTVar8->GetRuntimeClass;
+    pTStack_58 = (TAnimationVtbl *)0x50ae21;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
+    if (pTVar2 != (TAnimationVtbl *)0x0) {
+      pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_58 = (TAnimationVtbl *)0x50ae3d;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar2);
-      pTStack_5c = (TAnimation *)0x50ae43;
+                ((TAnimation *)pTVar2);
+      pTStack_5c = (TAnimationVtbl *)0x50ae43;
       pTStack_58 = pTVar2;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_5c = (TAnimation *)0x50ae4c;
-    pTStack_58 = pTVar7;
+    pTStack_5c = (TAnimationVtbl *)0x50ae4c;
+    pTStack_58 = pTVar8;
     FreeHeapBufferIfNotNull();
-    pTVar5 = (TAnimation *)((int)&pTVar5->vftable + 1);
-  } while ((short)pTVar5 < 0x22e);
-  pTVar5 = (TAnimation *)0x230;
+    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
+  } while ((short)pTVar6 < 0x22e);
+  pTVar6 = (TAnimationVtbl *)0x230;
   do {
-    pTStack_5c = (TAnimation *)0x50ae74;
-    pTStack_58 = pTVar5;
-    pTVar7 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar7->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_58 = (TAnimation *)0x50ae85;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      pTStack_58 = (TAnimation *)&stack0xffffffc8;
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
+    pTStack_5c = (TAnimationVtbl *)0x50ae74;
+    pTStack_58 = pTVar6;
+    pTVar8 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar8->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_58 = (TAnimationVtbl *)0x50ae85;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
       iStack_60 = 0x50ae98;
-      pTStack_5c = pTVar7;
+      pTStack_5c = pTVar8;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar7->vftable;
-    pTStack_58 = (TAnimation *)0x50aea4;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar2 = (TAnimation *)pTVar7->vftable;
-    if (pTVar2 != (TAnimation *)0x0) {
-      pTVar2->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_58 = (TAnimation *)0x50aec0;
+    pTVar1 = pTVar8->GetRuntimeClass;
+    pTStack_58 = (TAnimationVtbl *)0x50aea4;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar2 = (TAnimationVtbl *)pTVar8->GetRuntimeClass;
+    if (pTVar2 != (TAnimationVtbl *)0x0) {
+      pTVar2->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_58 = (TAnimationVtbl *)0x50aec0;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar2);
-      pTStack_5c = (TAnimation *)0x50aec6;
+                ((TAnimation *)pTVar2);
+      pTStack_5c = (TAnimationVtbl *)0x50aec6;
       pTStack_58 = pTVar2;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_5c = (TAnimation *)0x50aecf;
-    pTStack_58 = pTVar7;
+    pTStack_5c = (TAnimationVtbl *)0x50aecf;
+    pTStack_58 = pTVar8;
     FreeHeapBufferIfNotNull();
-    pTVar5 = (TAnimation *)((int)&pTVar5->vftable + 1);
-  } while ((short)pTVar5 < 0x233);
-  iVar14 = 0;
+    pTVar6 = (TAnimationVtbl *)((int)&pTVar6->GetRuntimeClass + 1);
+  } while ((short)pTVar6 < 0x233);
+  iVar15 = 0;
   do {
-    pTStack_58 = (TAnimation *)(iVar14 + 0x2778);
-    pTStack_5c = (TAnimation *)0x50aefa;
-    pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar5->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_58 = (TAnimation *)0x50af0b;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
-      pTStack_58 = (TAnimation *)&stack0xffffffc8;
+    pTStack_58 = (TAnimationVtbl *)(iVar15 + 0x2778);
+    pTStack_5c = (TAnimationVtbl *)0x50aefa;
+    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar6->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_58 = (TAnimationVtbl *)0x50af0b;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
       iStack_60 = 0x50af1e;
-      pTStack_5c = pTVar5;
+      pTStack_5c = pTVar6;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar5->vftable;
-    pTStack_58 = (TAnimation *)0x50af2a;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar7 = (TAnimation *)pTVar5->vftable;
-    if (pTVar7 != (TAnimation *)0x0) {
-      pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_58 = (TAnimation *)0x50af46;
+    pTVar1 = pTVar6->GetRuntimeClass;
+    pTStack_58 = (TAnimationVtbl *)0x50af2a;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+    if (pTVar8 != (TAnimationVtbl *)0x0) {
+      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_58 = (TAnimationVtbl *)0x50af46;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar7);
-      pTStack_5c = (TAnimation *)0x50af4c;
-      pTStack_58 = pTVar7;
+                ((TAnimation *)pTVar8);
+      pTStack_5c = (TAnimationVtbl *)0x50af4c;
+      pTStack_58 = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_5c = (TAnimation *)0x50af55;
-    pTStack_58 = pTVar5;
+    pTStack_5c = (TAnimationVtbl *)0x50af55;
+    pTStack_58 = pTVar6;
     FreeHeapBufferIfNotNull();
-    iVar14 = iVar14 + 1;
-  } while ((short)iVar14 < 2);
-  iVar14 = 0;
+    iVar15 = iVar15 + 1;
+  } while ((short)iVar15 < 2);
+  iVar15 = 0;
   do {
-    pTStack_58 = (TAnimation *)(iVar14 + 0x242);
-    pTStack_5c = (TAnimation *)0x50af83;
-    pTVar5 = (TAnimation *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
-    pTVar1 = pTVar5->vftable;
-    if (pTVar1 != (TAnimationVtbl *)0x0) {
-      pTStack_58 = (TAnimation *)0x50af94;
-      (**(code **)pTVar1->GetTAnimationClassNamePointer)();
-      *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 | 1;
-      pTStack_58 = (TAnimation *)&stack0xffffffc8;
+    pTStack_58 = (TAnimationVtbl *)(iVar15 + 0x242);
+    pTStack_5c = (TAnimationVtbl *)0x50af83;
+    pTVar6 = (TAnimationVtbl *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+    pTVar1 = pTVar6->GetRuntimeClass;
+    if (pTVar1 != (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0) {
+      pTStack_58 = (TAnimationVtbl *)0x50af94;
+      (*(code *)**(undefined4 **)pTVar1)();
+      pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] | 1);
+      pTStack_58 = (TAnimationVtbl *)&stack0xffffffc8;
       iStack_60 = 0x50afa7;
-      pTStack_5c = pTVar5;
+      pTStack_5c = pTVar6;
       WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
     }
-    pTVar1 = pTVar5->vftable;
-    pTStack_58 = (TAnimation *)0x50afb3;
-    (**(code **)(pTVar1->GetTAnimationClassNamePointer + 4))();
-    *(byte *)&pTVar1->slot_0x04 = *(byte *)&pTVar1->slot_0x04 & 0xfe;
-    pTVar7 = (TAnimation *)pTVar5->vftable;
-    if (pTVar7 != (TAnimation *)0x0) {
-      pTVar7->vftable = (TAnimationVtbl *)&DAT_0064c340;
-      pTStack_58 = (TAnimation *)0x50afcf;
+    pTVar1 = pTVar6->GetRuntimeClass;
+    pTStack_58 = (TAnimationVtbl *)0x50afb3;
+    (**(code **)(*(int *)pTVar1 + 4))();
+    pTVar1[4] = (TAnimation_GetTAnimationClassNamePointer_0x00)((byte)pTVar1[4] & 0xfe);
+    pTVar8 = (TAnimationVtbl *)pTVar6->GetRuntimeClass;
+    if (pTVar8 != (TAnimationVtbl *)0x0) {
+      pTVar8->GetRuntimeClass = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x64c340;
+      pTStack_58 = (TAnimationVtbl *)0x50afcf;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar7);
-      pTStack_5c = (TAnimation *)0x50afd5;
-      pTStack_58 = pTVar7;
+                ((TAnimation *)pTVar8);
+      pTStack_5c = (TAnimationVtbl *)0x50afd5;
+      pTStack_58 = pTVar8;
       FreeHeapBufferIfNotNull();
     }
-    pTStack_5c = (TAnimation *)0x50afde;
-    pTStack_58 = pTVar5;
+    pTStack_5c = (TAnimationVtbl *)0x50afde;
+    pTStack_58 = pTVar6;
     FreeHeapBufferIfNotNull();
-    iVar14 = iVar14 + 1;
-  } while ((short)iVar14 < 2);
-  pTStack_58 = *(TAnimation **)(unaff_EBX + 0x66c);
-  pTStack_5c = (TAnimation *)0x50b00a;
-  pTStack_58 = (TAnimation *)GetSurfaceObjectAtContextOffset24();
-  pTStack_5c = (TAnimation *)0x50b013;
+    iVar15 = iVar15 + 1;
+  } while ((short)iVar15 < 2);
+  pTStack_58 = *(TAnimationVtbl **)(unaff_EBX + 0x66c);
+  pTStack_5c = (TAnimationVtbl *)0x50b00a;
+  pTStack_58 = (TAnimationVtbl *)GetSurfaceObjectAtContextOffset24();
+  pTStack_5c = (TAnimationVtbl *)0x50b013;
   NoOpQuickDrawLifecycleHookB();
   pTStack_58 = pTStack_44;
   pTStack_5c = pTStack_40;
   iStack_60 = 0x50b025;
   SetActiveQuickDrawSurfaceContext();
-  pTStack_58 = (TAnimation *)(local_2c + 4);
+  pTStack_58 = (TAnimationVtbl *)&pTStack_28;
   iStack_60 = unaff_EBX + 0x670;
-  pTStack_5c = (TAnimation *)0x8;
-  local_24 = 0;
-  local_2c._4_4_ = 0;
-  uStack_20 = 0xd7;
-  uStack_1c = 0x78;
+  pTStack_5c = (TAnimationVtbl *)0x8;
+  local_24 = (TMacViewMgr *)0x0;
+  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x0;
+  p_Stack_20 = (_vslot_fn *)0xd7;
+  p_Stack_1c = (_vslot_fn *)0x78;
   puStack_64 = (undefined1 *)0x50b05b;
   (**(code **)(*DAT_006a2158 + 0x2c))();
   puStack_64 = &stack0xffffffcc;
-  puVar12 = (undefined4 *)(unaff_EBX + 0x6b4);
+  puVar13 = (undefined4 *)(unaff_EBX + 0x6b4);
   uStack_68 = 8;
-  local_2c._0_4_ = 0x90;
-  local_2c._4_4_ = 0x26;
-  (**(code **)(*DAT_006a2158 + 0x2c))(puVar12);
+  local_2c = 0x90;
+  pTStack_28 = (TAnimation_GetTAnimationClassNamePointer_0x00 *)0x26;
+  (**(code **)(*DAT_006a2158 + 0x2c))(puVar13);
   GetActiveQuickDrawSurfaceContextAndFlags(&pTStack_58,&pTStack_5c);
-  SetActiveQuickDrawSurfaceContext(*puVar12,pTStack_5c);
-  uVar8 = GetSurfaceObjectAtContextOffset24(*puVar12);
-  ReturnConstantTrueQuickDrawFlag(uVar8);
+  SetActiveQuickDrawSurfaceContext(*puVar13,pTStack_5c);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar13);
+  ReturnConstantTrueQuickDrawFlag(uVar9);
   ResetQuickDrawStrokeState();
-  pTStack_50 = (TAnimation *)0x0;
-  pTStack_4c = (TAnimation *)0x0;
-  puStack_48 = (undefined1 *)0x12;
-  pTStack_44 = (TAnimation *)0x26;
-  iVar14 = 0x23a;
+  pTStack_50 = (TAnimationVtbl *)0x0;
+  pTStack_4c = (TAnimationVtbl *)0x0;
+  pp_Stack_48 = (_vslot_fn **)0x12;
+  pTStack_44 = (TAnimationVtbl *)0x26;
+  iVar15 = 0x23a;
   do {
-    piVar9 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar14);
-    puVar3 = (undefined4 *)*piVar9;
+    piVar10 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iVar15);
+    puVar3 = (undefined4 *)*piVar10;
     if (puVar3 != (undefined4 *)0x0) {
       (**(code **)*puVar3)();
       *(byte *)(puVar3 + 1) = *(byte *)(puVar3 + 1) | 1;
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar9,&pTStack_50);
+      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar10,&pTStack_50);
     }
-    piVar11 = (int *)*piVar9;
-    (**(code **)(*piVar11 + 4))();
-    *(byte *)(piVar11 + 1) = *(byte *)(piVar11 + 1) & 0xfe;
-    pTVar5 = (TAnimation *)*piVar9;
-    if (pTVar5 != (TAnimation *)0x0) {
-      pTVar5->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    piVar12 = (int *)*piVar10;
+    (**(code **)(*piVar12 + 4))();
+    *(byte *)(piVar12 + 1) = *(byte *)(piVar12 + 1) & 0xfe;
+    pTVar4 = (TAnimation *)*piVar10;
+    if (pTVar4 != (TAnimation *)0x0) {
+      pTVar4->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-                (pTVar5);
-      FreeHeapBufferIfNotNull(pTVar5);
+                (pTVar4);
+      FreeHeapBufferIfNotNull(pTVar4);
     }
-    FreeHeapBufferIfNotNull(piVar9);
-    puVar10 = &pTStack_50->field_0x12;
-    puStack_48 = &pTStack_50->field_0x24;
-    iVar14 = iVar14 + 1;
-    pTStack_50 = (TAnimation *)puVar10;
-  } while ((short)iVar14 < 0x242);
-  uVar8 = GetSurfaceObjectAtContextOffset24(*puVar12);
-  NoOpQuickDrawLifecycleHookB(uVar8);
+    FreeHeapBufferIfNotNull(piVar10);
+    puVar11 = (undefined1 *)((int)&pTStack_50->Dump + 2);
+    pp_Stack_48 = &pTStack_50->ShallowFree;
+    iVar15 = iVar15 + 1;
+    pTStack_50 = (TAnimationVtbl *)puVar11;
+  } while ((short)iVar15 < 0x242);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar13);
+  NoOpQuickDrawLifecycleHookB(uVar9);
   SetActiveQuickDrawSurfaceContext(pTStack_58,pTStack_5c);
-  piVar9 = puStack_54 + 0x1ae;
-  pTStack_40 = (TAnimation *)0x0;
-  if (*piVar9 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(piVar9);
+  piVar10 = puStack_54 + 0x1ae;
+  pTStack_40 = (TAnimationVtbl *)0x0;
+  if (*piVar10 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(piVar10);
   }
-  (**(code **)(*DAT_006a2158 + 0x2c))(piVar9,8,&pTStack_40);
+  (**(code **)(*DAT_006a2158 + 0x2c))(piVar10,8,&pTStack_40);
   GetActiveQuickDrawSurfaceContextAndFlags(&puStack_64,&uStack_68);
-  SetActiveQuickDrawSurfaceContext(*piVar9,uStack_68);
-  uVar8 = GetSurfaceObjectAtContextOffset24(*piVar9);
-  ReturnConstantTrueQuickDrawFlag(uVar8);
+  SetActiveQuickDrawSurfaceContext(*piVar10,uStack_68);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar10);
+  ReturnConstantTrueQuickDrawFlag(uVar9);
   ResetQuickDrawStrokeState();
-  piVar11 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x244);
-  puVar12 = (undefined4 *)*piVar11;
-  if (puVar12 != (undefined4 *)0x0) {
-    (**(code **)*puVar12)();
-    *(byte *)(puVar12 + 1) = *(byte *)(puVar12 + 1) | 1;
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar11,&pTStack_4c);
+  piVar12 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x244);
+  puVar13 = (undefined4 *)*piVar12;
+  if (puVar13 != (undefined4 *)0x0) {
+    (**(code **)*puVar13)();
+    *(byte *)(puVar13 + 1) = *(byte *)(puVar13 + 1) | 1;
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar12,&pTStack_4c);
   }
-  piVar4 = (int *)*piVar11;
-  (**(code **)(*piVar4 + 4))();
-  *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-  pTVar5 = (TAnimation *)*piVar11;
-  if (pTVar5 != (TAnimation *)0x0) {
-    pTVar5->vftable = (TAnimationVtbl *)&DAT_0064c340;
+  piVar5 = (int *)*piVar12;
+  (**(code **)(*piVar5 + 4))();
+  *(byte *)(piVar5 + 1) = *(byte *)(piVar5 + 1) & 0xfe;
+  pTVar4 = (TAnimation *)*piVar12;
+  if (pTVar4 != (TAnimation *)0x0) {
+    pTVar4->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-              (pTVar5);
-    FreeHeapBufferIfNotNull(pTVar5);
+              (pTVar4);
+    FreeHeapBufferIfNotNull(pTVar4);
   }
-  FreeHeapBufferIfNotNull(piVar11);
-  uVar8 = GetSurfaceObjectAtContextOffset24(*piVar9);
-  NoOpQuickDrawLifecycleHookB(uVar8);
+  FreeHeapBufferIfNotNull(piVar12);
+  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar10);
+  NoOpQuickDrawLifecycleHookB(uVar9);
   SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
-  iVar14 = 0;
+  iVar15 = 0;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar14 + 0x2740,0x40,0x40,0x1680,0x10);
-    iVar14 = iVar14 + 1;
-  } while ((short)iVar14 < 0x10);
-  iVar14 = 0x2760;
+    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + 0x2740,0x40,0x40,0x1680,0x10);
+    iVar15 = iVar15 + 1;
+  } while ((short)iVar15 < 0x10);
+  iVar15 = 0x2760;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar14 + -0x26,0x40,0x40,0x1680,0x10);
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar14,0x40,0x40,0x1680,0x10);
-    sVar13 = (short)iVar14;
-    iVar14 = iVar14 + 1;
-  } while ((short)(sVar13 + -0x275f) < 6);
-  iVar14 = 0x10;
+    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + -0x26,0x40,0x40,0x1680,0x10);
+    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15,0x40,0x40,0x1680,0x10);
+    sVar14 = (short)iVar15;
+    iVar15 = iVar15 + 1;
+  } while ((short)(sVar14 + -0x275f) < 6);
+  iVar15 = 0x10;
   do {
-    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar14 + 0x2756,0x40,0x40,0x1680,0x10);
-    iVar14 = iVar14 + 1;
-  } while ((short)iVar14 < 0x18);
+    BuildBitmapMaskOpcodeBufferFromResourceRows(iVar15 + 0x2756,0x40,0x40,0x1680,0x10);
+    iVar15 = iVar15 + 1;
+  } while ((short)iVar15 < 0x18);
   return;
 }
 
@@ -1352,7 +1357,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles()
     iVar4 = iVar4 + 1;
     piVar2 = piVar2 + 1;
   } while (local_8 < 0xfc00);
-  (*this->vftable[0xf].GetTMacViewMgrClassNamePointer)();
+  (*this->vftable->RebuildNationClipRegionsAndDispatchMapEvent)();
   return;
 }
 
@@ -1389,7 +1394,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
       iVar2 = iVar2 + 1;
     } while (iVar2 < 0x17);
     DestroyClipStateRegionWrapperObject(uVar1);
-    (*this->vftable[0xe].GetTMacViewMgrClassNamePointer)();
+    (*this->vftable->RenderTurnEventPalettePreviewSurfaceAndProgress)();
   }
   return;
 }
@@ -1411,12 +1416,12 @@ TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
   iVar1 = *param_1;
   cVar3 = (**(code **)(iVar1 + 0x1d8))();
   if (cVar3 != '\0') {
-    (*g_apNationStates[param_3]->vftable[0x34].slot_0x04)(param_2,0xffffffff);
+    (*g_apNationStates[param_3]->vftable->VTableSlot69)(param_2,0xffffffff);
     return;
   }
   pTVar2 = g_apNationStates[param_3]->vftable;
   uVar4 = (**(code **)(iVar1 + 0x1d4))();
-  (*pTVar2[0x34].slot_0x04)(param_2,uVar4);
+  (*pTVar2->VTableSlot69)(param_2,uVar4);
   return;
 }
 
@@ -1444,11 +1449,11 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(int *param_1, short 
   if ((g_pCityOrderCapabilityState->field_0x193 == '\0') && ((sVar5 == 6 || (sVar5 == 0xc)))) {
     (**(code **)(iVar1 + 0xa4))(0,0);
   }
-  uVar3 = (*g_apNationStates[param_2]->vftable[0xf].slot_0x04)();
+  uVar3 = (*g_apNationStates[param_2]->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)();
   sVar6 = (short)param_1;
   sVar5 = (short)CONCAT31(extraout_var,uVar3);
   if ((0 < sVar5) && (*(short *)&g_apNationStates[param_2]->field_0xa4 == 0)) {
-    (*g_apNationStates[param_2]->vftable[0x34].slot_0x04)(unaff_retaddr,0);
+    (*g_apNationStates[param_2]->vftable->VTableSlot69)(unaff_retaddr,0);
     sVar5 = 0;
   }
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x53656c6c);
@@ -1516,41 +1521,45 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   undefined uVar5;
   int iVar6;
   int *piVar7;
-  undefined2 uVar8;
+  _vslot_fn *p_Var8;
+  undefined2 uVar9;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
-  word wVar9;
+  word wVar10;
   char *unaff_EBX;
-  int *piVar10;
-  word wVar11;
-  TCity *this_00;
+  _vslot_fn *p_Var11;
   word wVar12;
+  TCity *this_00;
+  word wVar13;
   undefined4 *unaff_FS_OFFSET;
   word wStack00000008;
   undefined2 uStack0000000a;
   undefined2 uStack0000000c;
-  TMyStaticTextVtbl local_48;
+  CString local_48;
+  CString local_44;
   CString local_40;
   CString local_3c;
   CString local_38;
   CString local_34;
-  int *local_30;
+  _vslot_fn *local_30;
   TMyStaticText *pTStack_2c;
-  int iStack_28;
-  int aiStack_24 [4];
+  _vslot_fn *p_Stack_28;
+  _vslot_fn *p_Stack_24;
+  undefined4 uStack_20;
+  int iStack_1c;
   byte abStack_14 [2];
   undefined1 local_12;
   undefined1 local_11;
   undefined1 local_10;
   undefined1 local_f;
-  undefined1 auStack_c [4];
+  _vslot_fn *p_Stack_c;
   CString CStack_8;
   int local_4;
   
   local_4 = -1;
   CStack_8.m_pchData = &LAB_00633baa;
-  auStack_c = (undefined1  [4])*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = auStack_c;
+  p_Stack_c = (_vslot_fn *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &p_Stack_c;
   CString::CString(&local_38);
   local_4 = 0;
   pTVar2 = g_apNationStates[(short)wStack00000008];
@@ -1579,11 +1588,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     }
     pTStack_2c = (TMyStaticText *)0xb;
     local_34.m_pchData = (char *)0x14;
-    local_30 = (int *)0x3c;
+    local_30 = (_vslot_fn *)0x3c;
     abStack_14[0] = 0;
     local_38.m_pchData = (char *)0xa2;
     InitializeTextEntryBaseAndOptionalStringResource(iVar6,&local_38,&local_30,5,5);
-    BuildUiTextStyleDescriptor(&iStack_28,0);
+    BuildUiTextStyleDescriptor(&p_Stack_28,0);
     iVar3 = *piVar7;
     (**(code **)(iVar3 + 0x1b4))();
     (**(code **)(iVar3 + 0x1c4))(0xffffffff,0);
@@ -1593,19 +1602,19 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     AssignStringSharedRefAndReturnThis();
     RunEnableAndProcessFlagWithScopedSharedStringCleanup();
     if (pTVar2 == (TGreatPower *)0x0) {
-      wVar12 = 0;
+      wVar13 = 0;
     }
     else {
-      wVar12 = pTVar2->needCapA6;
+      wVar13 = pTVar2->needCapA6;
     }
-    *(word *)(iVar6 + 0x94) = (pTVar2->needsOverCapFlag - pTVar2->needCapA6) + wVar12;
+    *(word *)(iVar6 + 0x94) = (pTVar2->needsOverCapFlag - pTVar2->needCapA6) + wVar13;
     if (pTVar2 == (TGreatPower *)0x0) {
-      wVar12 = 0;
+      wVar13 = 0;
     }
     else {
-      wVar12 = pTVar2->needCapA6;
+      wVar13 = pTVar2->needCapA6;
     }
-    *(word *)(iVar6 + 0x96) = wVar12;
+    *(word *)(iVar6 + 0x96) = wVar13;
     *(undefined2 *)(iVar6 + 0x98) = 0xffff;
     goto LAB_0050ce6a;
   }
@@ -1625,64 +1634,64 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   local_4._0_1_ = 4;
   CString::CString(&local_40);
   local_4._0_1_ = 5;
-  CString::CString((CString *)&local_48.slot_0x04);
+  CString::CString(&local_44);
   local_4._0_1_ = 6;
-  CString::CString((CString *)&local_48);
+  CString::CString(&local_48);
   local_4 = CONCAT31(local_4._1_3_,7);
-  piVar10 = (int *)(int)(short)param_1;
-  local_30 = piVar10;
-  piVar7 = (int *)(**(code **)(*_uStack0000000c + 0x94))();
-  local_30 = piVar7;
-  if (piVar7 == (int *)0x0) {
+  p_Var11 = (_vslot_fn *)(int)(short)param_1;
+  local_30 = p_Var11;
+  p_Var8 = (_vslot_fn *)(**(code **)(*_uStack0000000c + 0x94))();
+  local_30 = p_Var8;
+  if (p_Var8 == (_vslot_fn *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    piVar7 = (int *)TemporarilyClearAndRestoreUiInvalidationFlag();
+    p_Var8 = (_vslot_fn *)TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  uVar8 = (undefined2)((uint)piVar7 >> 0x10);
-  wVar12 = param_1;
-  switch(piVar10) {
-  case (int *)0x0:
+  uVar9 = (undefined2)((uint)p_Var8 >> 0x10);
+  wVar13 = param_1;
+  switch(p_Var11) {
+  case (_vslot_fn *)0x0:
     _wStack00000008 =
-         (char *)CONCAT22(uVar8,pTVar2->needTargetByType[0] + pTVar2->needTargetByType[1]);
-    wVar9 = pTVar2->needCurrentByType[1] + pTVar2->needCurrentByType[0];
+         (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0] + pTVar2->needTargetByType[1]);
+    wVar10 = pTVar2->needCurrentByType[1] + pTVar2->needCurrentByType[0];
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0);
-    wVar11 = (word)iVar6;
-    wVar12 = (wVar11 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
+    wVar12 = (word)iVar6;
+    wVar13 = (wVar12 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
     FormatStringWithVarArgsToSharedRef(&CStack_8);
     FormatStringWithVarArgsToSharedRef(&stack0xffffffb4);
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2719);
     goto LAB_0050c77d;
   default:
-    wVar11 = param_1;
-    wVar9 = param_1;
+    wVar12 = param_1;
+    wVar10 = param_1;
     goto LAB_0050ca3b;
-  case (int *)0x2:
-    wVar9 = pTVar2->needCurrentByType[2];
+  case (_vslot_fn *)0x2:
+    wVar10 = pTVar2->needCurrentByType[2];
     wStack00000008 = pTVar2->needTargetByType[2];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,4);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[2];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[2];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[2];
     break;
-  case (int *)0x3:
-  case (int *)0x4:
-    wVar9 = pTVar2->needCurrentByType[(int)piVar10];
-    wStack00000008 = pTVar2->needTargetByType[(int)piVar10];
+  case (_vslot_fn *)0x3:
+  case (_vslot_fn *)0x4:
+    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
+    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,2);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 - this_00->fieldB6[(int)local_3c.m_pchData];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 - this_00->fieldB6[(int)local_3c.m_pchData];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[(int)unaff_EBX];
     break;
-  case (int *)0x5:
-    wVar9 = pTVar2->needCurrentByType[5];
+  case (_vslot_fn *)0x5:
+    wVar10 = pTVar2->needCurrentByType[5];
     wStack00000008 = pTVar2->needTargetByType[5];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     FormatStringWithVarArgsToSharedRef();
@@ -1690,121 +1699,121 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
     goto LAB_0050ca20;
-  case (int *)0x6:
-    wVar9 = pTVar2->needCurrentByType[6];
+  case (_vslot_fn *)0x6:
+    wVar10 = pTVar2->needCurrentByType[6];
     wStack00000008 = pTVar2->needTargetByType[6];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,6);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[6];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[6];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[6];
     break;
-  case (int *)0x8:
-    wVar9 = pTVar2->needCurrentByType[8];
+  case (_vslot_fn *)0x8:
+    wVar10 = pTVar2->needCurrentByType[8];
     wStack00000008 = pTVar2->needTargetByType[8];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,1);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[8];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[8];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[8];
     break;
-  case (int *)0x9:
-    wVar9 = pTVar2->needCurrentByType[9];
+  case (_vslot_fn *)0x9:
+    wVar10 = pTVar2->needCurrentByType[9];
     wStack00000008 = pTVar2->needTargetByType[9];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,5);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[9];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[9];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[9];
     break;
-  case (int *)0xb:
-    wVar9 = pTVar2->needCurrentByType[0xb];
+  case (_vslot_fn *)0xb:
+    wVar10 = pTVar2->needCurrentByType[0xb];
     wStack00000008 = pTVar2->needTargetByType[0xb];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,3);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[0xb];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[0xb];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[0xb];
     break;
-  case (int *)0xc:
-    wVar9 = pTVar2->needCurrentByType[0xc];
+  case (_vslot_fn *)0xc:
+    wVar10 = pTVar2->needCurrentByType[0xc];
     wStack00000008 = pTVar2->needTargetByType[0xc];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     iVar6 = TCity::GetCityBuildingProductionValueBySlot(this_00,0xb);
-    wVar11 = (word)iVar6;
-    wVar12 = wVar11 * 2 - this_00->fieldB6[0xc];
+    wVar12 = (word)iVar6;
+    wVar13 = wVar12 * 2 - this_00->fieldB6[0xc];
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     iVar6 = (int)(short)this_00->fieldB6[0xc];
     break;
-  case (int *)0xd:
-  case (int *)0xe:
-  case (int *)0xf:
-    wVar9 = pTVar2->needCurrentByType[(int)piVar10];
-    wStack00000008 = pTVar2->needTargetByType[(int)piVar10];
+  case (_vslot_fn *)0xd:
+  case (_vslot_fn *)0xe:
+  case (_vslot_fn *)0xf:
+    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
+    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     FormatStringWithVarArgsToSharedRef();
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
     goto LAB_0050ca20;
-  case (int *)0x11:
-  case (int *)0x12:
-    wVar9 = pTVar2->needCurrentByType[(int)piVar10];
-    wStack00000008 = pTVar2->needTargetByType[(int)piVar10];
+  case (_vslot_fn *)0x11:
+  case (_vslot_fn *)0x12:
+    wVar10 = pTVar2->needCurrentByType[(int)p_Var11];
+    wStack00000008 = pTVar2->needTargetByType[(int)p_Var11];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    wVar11 = 1;
-    uVar5 = (*this_00->vftable[0xe].slot_0x04)();
+    wVar12 = 1;
+    uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var_00,uVar5) + (int)local_3c.m_pchData * 2);
     FormatStringWithVarArgsToSharedRef();
-    wVar12 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
+    wVar13 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
     FormatStringWithVarArgsToSharedRef();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-    CString::AssignFromPtr(&local_3c,(CString *)&local_48);
+    CString::AssignFromPtr(&local_3c,&local_48);
     goto LAB_0050ca3b;
-  case (int *)0x13:
+  case (_vslot_fn *)0x13:
     _wStack00000008 =
-         (char *)CONCAT22(uVar8,pTVar2->needTargetByType[0x13] + pTVar2->needTargetByType[0x14]);
-    wVar9 = pTVar2->needCurrentByType[0x13] + pTVar2->needCurrentByType[0x14];
+         (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0x13] + pTVar2->needTargetByType[0x14]);
+    wVar10 = pTVar2->needCurrentByType[0x13] + pTVar2->needCurrentByType[0x14];
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    wVar11 = 1;
-    uVar5 = (*this_00->vftable[0xe].slot_0x04)();
+    wVar12 = 1;
+    uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var,uVar5) + 0x28);
     FormatStringWithVarArgsToSharedRef(&stack0xffffffa8,&g_szDecimalFormat,(int)sVar1);
-    wVar12 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
+    wVar13 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
     iVar6 = (int)(short)this_00->fieldB6[0x13] + (int)(short)this_00->fieldB6[0x14];
     break;
-  case (int *)0x15:
-    wVar9 = pTVar2->needCurrentByType[0x15];
+  case (_vslot_fn *)0x15:
+    wVar10 = pTVar2->needCurrentByType[0x15];
     wStack00000008 = pTVar2->needTargetByType[0x15];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,9);
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
     goto LAB_0050ca20;
-  case (int *)0x16:
-    wVar9 = pTVar2->needCurrentByType[0x16];
+  case (_vslot_fn *)0x16:
+    wVar10 = pTVar2->needCurrentByType[0x16];
     wStack00000008 = pTVar2->needTargetByType[0x16];
     (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,9);
     scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
 LAB_0050ca20:
-    wVar11 = 0;
+    wVar12 = 0;
     CString::AssignFromPtr(&local_3c,(CString *)&local_48);
     goto LAB_0050ca3b;
   }
@@ -1812,23 +1821,23 @@ LAB_0050ca20:
 LAB_0050c77d:
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,7,&stack0xffffff9c);
   scanBracketExpressions(g_pLocalizationTable,&local_48,unaff_EBX);
-  CString::AssignFromPtr(&local_3c,(CString *)&local_48);
+  CString::AssignFromPtr(&local_3c,&local_48);
 LAB_0050ca3b:
-  piVar7 = local_30;
-  if (wVar11 == 0) {
-    *(undefined2 *)(local_30 + 0x26) = 0xffff;
+  p_Var8 = local_30;
+  if (wVar12 == 0) {
+    *(undefined2 *)(local_30 + 0x98) = 0xffff;
   }
-  else if ((short)wVar12 < 1) {
-    *(undefined2 *)(local_30 + 0x26) = 0;
+  else if ((short)wVar13 < 1) {
+    *(undefined2 *)(local_30 + 0x98) = 0;
   }
   else {
-    *(word *)(local_30 + 0x26) = wVar12;
+    *(word *)(local_30 + 0x98) = wVar13;
   }
-  local_30 = (int *)&stack0xffffff9c;
+  local_30 = (_vslot_fn *)&stack0xffffff9c;
   AssignStringSharedRefAndReturnThis();
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  if (wVar9 == 0) {
-    iVar6 = *piVar7;
+  if (wVar10 == 0) {
+    iVar6 = *(int *)p_Var8;
     (**(code **)(iVar6 + 0xa4))();
     pcVar4 = *(code **)(iVar6 + 0x94);
     piVar7 = (int *)(*pcVar4)();
@@ -1845,19 +1854,19 @@ LAB_0050ca3b:
     (**(code **)(*piVar7 + 0x1c))();
   }
   else {
-    pcVar4 = *(code **)(*piVar7 + 0x94);
-    piVar10 = (int *)(*pcVar4)();
-    if (piVar10 == (int *)0x0) {
+    pcVar4 = *(code **)(*(int *)p_Var8 + 0x94);
+    piVar7 = (int *)(*pcVar4)();
+    if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    iStack_28 = piVar10[0xd];
-    aiStack_24[0] = piVar10[0xe];
-    local_30 = (int *)piVar10[9];
-    pTStack_2c = (TMyStaticText *)piVar10[10];
-    (**(code **)(*piVar10 + 0x1c))();
+    p_Stack_28 = (_vslot_fn *)piVar7[0xd];
+    p_Stack_24 = (_vslot_fn *)piVar7[0xe];
+    local_30 = (_vslot_fn *)piVar7[9];
+    pTStack_2c = (TMyStaticText *)piVar7[10];
+    (**(code **)(*piVar7 + 0x1c))();
     local_34.m_pchData = (char *)AllocateWithFallbackHandler();
-    auStack_c[0] = 8;
+    p_Stack_c._0_1_ = 8;
     if ((TRightLeftView *)local_34.m_pchData == (TRightLeftView *)0x0) {
       iVar6 = 0;
     }
@@ -1865,19 +1874,19 @@ LAB_0050ca3b:
       iVar6 = TRightLeftView::ConstructTRightLeftViewBaseState((TRightLeftView *)local_34.m_pchData)
       ;
     }
-    auStack_c[0] = 7;
-    InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_30);
+    p_Stack_c = (_vslot_fn *)CONCAT31(p_Stack_c._1_3_,7);
+    InitializeUiResourceEntryFrameAndParent(0,p_Var8,&local_30);
     *(undefined4 *)(iVar6 + 0x1c) = 0x6c656674;
-    piVar10 = (int *)(*pcVar4)();
-    if (piVar10 == (int *)0x0) {
+    piVar7 = (int *)(*pcVar4)();
+    if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    pTStack_2c = (TMyStaticText *)piVar10[0xd];
-    iStack_28 = piVar10[0xe];
-    local_34.m_pchData = (char *)piVar10[9];
-    local_30 = (int *)piVar10[10];
-    (**(code **)(*piVar10 + 0x1c))();
+    pTStack_2c = (TMyStaticText *)piVar7[0xd];
+    p_Stack_28 = (_vslot_fn *)piVar7[0xe];
+    local_34.m_pchData = (char *)piVar7[9];
+    local_30 = (_vslot_fn *)piVar7[10];
+    (**(code **)(*piVar7 + 0x1c))();
     local_38.m_pchData = (char *)AllocateWithFallbackHandler();
     local_10 = 9;
     if ((TRightLeftView *)local_38.m_pchData == (TRightLeftView *)0x0) {
@@ -1888,28 +1897,28 @@ LAB_0050ca3b:
       ;
     }
     local_10 = 7;
-    InitializeUiResourceEntryFrameAndParent(0,piVar7,&local_34,&pTStack_2c);
+    InitializeUiResourceEntryFrameAndParent(0,p_Var8,&local_34,&pTStack_2c);
     *(undefined4 *)(iVar6 + 0x1c) = 0x72676874;
     local_38.m_pchData = (char *)AllocateWithFallbackHandler();
     local_10 = 10;
     if ((TMyStaticText *)local_38.m_pchData == (TMyStaticText *)0x0) {
-      piVar10 = (int *)0x0;
+      piVar7 = (int *)0x0;
     }
     else {
-      piVar10 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-                                 ((TMyStaticText *)local_38.m_pchData);
+      piVar7 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
+                                ((TMyStaticText *)local_38.m_pchData);
     }
     pTStack_2c = (TMyStaticText *)0x46;
-    iStack_28 = 0xb;
+    p_Stack_28 = (_vslot_fn *)0xb;
     local_34.m_pchData = (char *)0x98;
     local_10 = 7;
-    local_30 = (int *)0x12;
-    InitializeTextEntryBaseAndOptionalStringResource(piVar7,&local_34,&pTStack_2c,5);
-    BuildUiTextStyleDescriptor(aiStack_24);
-    iVar6 = *piVar10;
+    local_30 = (_vslot_fn *)0x12;
+    InitializeTextEntryBaseAndOptionalStringResource(p_Var8,&local_34,&pTStack_2c,5);
+    BuildUiTextStyleDescriptor(&p_Stack_24);
+    iVar6 = *piVar7;
     (**(code **)(iVar6 + 0x1b4))();
     (**(code **)(iVar6 + 0x1c4))(0xffffffff);
-    piVar10[7] = 0x74657874;
+    piVar7[7] = 0x74657874;
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2735,4,&stack0xffffffac);
     pTStack_2c = (TMyStaticText *)&stack0xffffffa0;
     AssignStringSharedRefAndReturnThis();
@@ -1918,30 +1927,30 @@ LAB_0050ca3b:
       pTStack_2c = (TMyStaticText *)AllocateWithFallbackHandler();
       local_4._0_1_ = 0xb;
       if (pTStack_2c == (TMyStaticText *)0x0) {
-        piVar10 = (int *)0x0;
+        piVar7 = (int *)0x0;
       }
       else {
-        piVar10 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTStack_2c);
+        piVar7 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTStack_2c);
       }
-      aiStack_24[2] = 0xb;
-      aiStack_24[0] = 0x14;
-      aiStack_24[1] = 0x3c;
+      iStack_1c = 0xb;
+      p_Stack_24 = (_vslot_fn *)0x14;
+      uStack_20 = 0x3c;
       local_4 = CONCAT31(local_4._1_3_,7);
-      iStack_28 = 0x32;
-      InitializeTextEntryBaseAndOptionalStringResource(piVar7);
-      iVar6 = *piVar10;
+      p_Stack_28 = (_vslot_fn *)0x32;
+      InitializeTextEntryBaseAndOptionalStringResource(p_Var8);
+      iVar6 = *piVar7;
       (**(code **)(iVar6 + 0x1b4))();
       (**(code **)(iVar6 + 0x1c4))();
-      piVar10[7] = 0x76616c75;
+      piVar7[7] = 0x76616c75;
     }
-    *(word *)((int)piVar7 + 0x92) = param_1;
-    *(undefined2 *)(piVar7 + 0x25) = uStack0000000c;
-    *(word *)((int)piVar7 + 0x96) = wVar9;
+    *(word *)(p_Var8 + 0x92) = param_1;
+    *(undefined2 *)(p_Var8 + 0x94) = uStack0000000c;
+    *(word *)(p_Var8 + 0x96) = wVar10;
   }
   local_4._0_1_ = 6;
-  CString::~CString((CString *)&local_48);
+  CString::~CString(&local_48);
   local_4._0_1_ = 5;
-  CString::~CString((CString *)&local_48.slot_0x04);
+  CString::~CString(&local_44);
   local_4._0_1_ = 4;
   CString::~CString(&local_40);
   local_4._0_1_ = 3;
@@ -1953,7 +1962,7 @@ LAB_0050ca3b:
 LAB_0050ce6a:
   local_4 = -1;
   CString::~CString(&local_38);
-  *unaff_FS_OFFSET = auStack_c;
+  *unaff_FS_OFFSET = p_Stack_c;
   return;
 }
 
@@ -1992,7 +2001,8 @@ TMacViewMgr::CreateCityBuildingDialogBySlot
   char unaff_SI;
   undefined4 unaff_retaddr;
   
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(param_1 + 0x23f0);
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(param_1 + 0x23f0)
+  ;
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar3 == (int *)0x0) {
@@ -2032,7 +2042,7 @@ int * TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 para
   
   iStack_1c = param_1 + 0x23f0;
   iStack_20 = 0x50d48d;
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   iStack_20 = 0x444c4f47;
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   piVar3 = (int *)(**(code **)(iVar1 + 0x94))();
@@ -2073,7 +2083,7 @@ void TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)
   undefined4 unaff_EBX;
   undefined4 unaff_retaddr;
   
-  uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0x2404);
+  uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0x2404);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
   piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
   if (piVar4 == (int *)0x0) {
@@ -2173,7 +2183,7 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
   *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
   this_00 = (TAnimation *)*piVar4;
   if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
     FreeHeapBufferIfNotNull(this_00);
@@ -2952,7 +2962,7 @@ int TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0()
   int iVar3;
   
   iVar3 = *(int *)&this->field_0x48;
-  uVar1 = (*this->vftable[0x18].slot_0x04)();
+  uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     iVar2 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xb0))();
     if (iVar2 != 0) {
@@ -2985,7 +2995,7 @@ undefined4 TMacViewMgr::TMacViewMgr_VtblSlot038(LPMSG param_1)
       if (iVar2 != 0) goto LAB_0061c822;
     }
     if ((0xff < param_1->message) && (param_1->message < 0x109)) {
-      uVar1 = (*this->vftable[0x1e].GetTMacViewMgrClassNamePointer)();
+      uVar1 = (*this->vftable[1].CreateCityBuildingDialogBySlot)();
       if ((HACCEL)CONCAT31(extraout_var,uVar1) != (HACCEL)0x0) {
         iVar2 = TranslateAcceleratorA
                           (*(HWND *)&this->field_0x1c,(HACCEL)CONCAT31(extraout_var,uVar1),param_1);
@@ -3009,7 +3019,7 @@ void TMacViewMgr::TMacViewMgr_VtblSlot043()
 
 {
   if (this != (TMacViewMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TMacViewMgr)(1);
   }
   return;
 }
@@ -3263,7 +3273,7 @@ void TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback(HMENU param_1)
   undefined3 extraout_var;
   
   if (param_1 == (HMENU)0x0) {
-    uVar1 = (*this->vftable[0x18].slot_0x04)();
+    uVar1 = (*this->vftable[1].BuildStrategicMapCommodityIconAtlasFrom700To722)();
     if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
       param_1 = (HMENU)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xac))();
     }
@@ -3374,7 +3384,7 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
   HWND unaff_retaddr;
   uint uStack_c;
   
-  uVar4 = (*this->vftable[0x19].GetTMacViewMgrClassNamePointer)();
+  uVar4 = (*this->vftable[1].LoadStrategicMapUnitIconAtlas750)();
   if ((param_1 != 0) &&
      (piVar1 = *(int **)(CONCAT31(extraout_var,uVar4) + 0x68), piVar1 != (int *)0x0)) {
     (**(code **)(*piVar1 + 100))(0);
@@ -3418,7 +3428,7 @@ void TMacViewMgr::OnSetPreviewMode(int param_1, int *param_2)
     if (piVar1 != (int *)0x0) {
       (**(code **)(*piVar1 + 100))(1);
     }
-    (*this->vftable[0x1a].GetTMacViewMgrClassNamePointer)(1);
+    (*this->vftable[1].LoadStrategicMapOverlayAtlas8699)(1);
     if (*param_2 != 0xe900) {
       unaff_retaddr = GetDlgItem(*(HWND *)&this->field_0x1c,*param_2);
     }
@@ -3497,8 +3507,7 @@ void TMacViewMgr::TMacViewMgr_VtblSlot053(int param_1)
 void TMacViewMgr::AddHead_623b4c(TMacViewMgrVtbl *param_1)
 
 {
-  *(TMacViewMgrVtbl **)((int)&param_1->GetTMacViewMgrClassNamePointer + *(int *)&this->field_0x4) =
-       this->vftable;
+  *(TMacViewMgrVtbl **)((int)&param_1->GetRuntimeClass + *(int *)&this->field_0x4) = this->vftable;
   this->vftable = param_1;
   return;
 }

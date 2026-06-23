@@ -129,7 +129,7 @@ void TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   }
   (*g_pLocalizationTable->vftable[3].slot_0x04)();
   if (g_pUiViewManager != (TAssetMgr *)0x0) {
-    (*g_pUiViewManager->vftable[3].slot_0x04)();
+    (*g_pUiViewManager->vftable->Free)();
     g_pUiViewManager = (TAssetMgr *)0x0;
   }
   if (g_pUiRuntimeContext != (UiRuntimeContext *)0x0) {
@@ -155,7 +155,7 @@ void TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 void TAmbitApplication::GetTEventHandlerClassNamePointer(int *param_1)
 
 {
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (DAT_00695278 < 0x2a) {
     (**(code **)(*param_1 + 0x3c))(&this->field_0x50,2);
     *(undefined **)&this->field_0x50 = &DAT_00657573;
@@ -172,7 +172,7 @@ void TAmbitApplication::GetTEventHandlerClassNamePointer(int *param_1)
 void TAmbitApplication::_scalar_deleting_destructor_(int *param_1)
 
 {
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   (**(code **)(*param_1 + 0x78))(&this->field_0x50,4);
   return;
 }

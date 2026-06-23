@@ -203,7 +203,8 @@ TTechItemView::ConstructTTechItemViewBaseState
   CString::~CString(&CStack_10);
   CStack_8.m_pchData = (char *)pTVar4->vftable;
   pCVar6 = &CStack_68;
-  (*((TDeluxeTextVtbl *)((int)CStack_8.m_pchData + 0x1f0))->GetTEventHandlerClassNamePointer)();
+  (*((TDeluxeTextVtbl *)CStack_8.m_pchData)->
+    WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
   CVar9.m_pchData = (char *)0x0;
   (**(code **)(CStack_c.m_pchData + 0x1f8))();
   pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
@@ -241,7 +242,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   input_str.m_pchData = (char *)0x274e;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   pTStack_1c = pTVar4->vftable;
-  (*pTStack_1c[0x3e].GetTEventHandlerClassNamePointer)();
+  (*pTStack_1c->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)();
   (*(code *)pTStack_20[3].field0c)();
   pTVar4 = pTStack_20;
   iStack_24 = (int)pTStack_20 * 0x1d;
@@ -361,8 +362,8 @@ TTechItemView::ConstructTTechItemViewBaseState
       pTVar8 = pTVar4->vftable;
     }
   }
-  (*pTVar8[0x3e].GetTEventHandlerClassNamePointer)(&stack0xffffff70);
-  (*pTVar8[0x3f].GetTEventHandlerClassNamePointer)(0);
+  (*pTVar8->WrapperFor_thunk_UpdateTextEntrySharedStringIfChanged_At005b6480)(&stack0xffffff70);
+  (*pTVar8->RecenterTextFromMeasuredWidthAndMaybeInvalidate)(0);
 LAB_005b1b70:
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0066ae08,this->controlTag);
   local_48.m_pchData._0_1_ = 3;
@@ -417,10 +418,10 @@ TTechItemView::OrphanRetStub_0059add0
   }
   if (*(int *)(param_2.m_pchData + 0x1c) != 0x70757263) {
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x64657363) {
-      uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+      uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
       iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
       this_00 = (TTechHistoryView *)(**(code **)(iVar1 + 0x94))();
-      (*this_00->vftable[1].slot_0x04)();
+      (*this_00->vftable->AssertValid)();
       TTechHistoryView::ConstructTTechHistoryViewBaseState(this_00);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x44))();
       (**(code **)(iVar1 + 0xf0))();
@@ -476,7 +477,7 @@ TTechItemView::OrphanRetStub_0059add0
 LAB_005b2043:
     LoadUiStringAndDispatchSharedMessageCommand();
   }
-  uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   piVar5 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
   iVar1 = *piVar5;
   (**(code **)(iVar1 + 0xc))();

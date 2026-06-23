@@ -134,14 +134,14 @@ void TInfoBarPictureText::ConstructTInfoBarTextBaseState(RECT *param_1)
     *(LONG *)&this->field_0xac = in_stack_00000008->right;
     *(LONG *)&this->field_0xb0 = in_stack_00000008->bottom;
     pTVar1 = this->vftable;
-    (*pTVar1[0x25].slot_0x04)(&local_3c);
+    (*pTVar1->OrphanRetStub_0059add0_4b)(&local_3c);
     RStack_30.top = local_3c;
     RStack_30.right = LStack_38;
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
     InvalidateCityDialogRectRegion(&tStack_20,1);
     UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
-    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
   }
   local_4 = 0xffffffff;
   CString::~CString((CString *)&param_1);
@@ -179,14 +179,14 @@ TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
   *(undefined4 *)&this->field_0xac = 0;
   *(undefined4 *)&this->field_0xb0 = 0;
   pTVar1 = this->vftable;
-  (*pTVar1[0x25].slot_0x04)(&local_3c);
+  (*pTVar1->OrphanRetStub_0059add0_4b)(&local_3c);
   RStack_30.top = local_3c;
   RStack_30.right = LStack_38;
   RStack_30.bottom = LStack_34;
   CopyRect(&tStack_20,&RStack_30);
   InvalidateCityDialogRectRegion(&tStack_20,1);
   UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
-  (*pTVar1[0x1c].slot_0x04)();
+  (*pTVar1->VTableSlot39)();
   puStack_8 = (undefined1 *)0xffffffff;
   CString::~CString((CString *)&stack0x00000000);
   *unaff_FS_OFFSET = uStack_10;

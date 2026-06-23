@@ -112,23 +112,23 @@ TAmtBarCluster * TAmtBarCluster::_scalar_deleting_destructor_(byte param_1)
 void TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TAmtBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   uint local_4;
   
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_4 = local_4 & 0xffff0000;
-  uVar3 = (*pTVar1)(0x6d6f7665);
+  uVar3 = (*p_Var1)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
     BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0x1b4))(&stack0xfffffff0,0);
     (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);
   }
-  uVar3 = (*pTVar1)(0x62617220);
+  uVar3 = (*p_Var1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -147,7 +147,7 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
 
 {
   TAmtBarClusterVtbl *pTVar1;
-  TAmtBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   short sVar4;
   undefined3 extraout_var;
@@ -157,15 +157,15 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
   
   if (param_1 == 100) {
     pTVar1 = this->vftable;
-    pTVar2 = pTVar1[0x12].slot_0x04;
-    uVar3 = (*pTVar2)(0x6d6f7665);
+    p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var2)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x749);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e8))();
-    uVar3 = (*pTVar2)(0x61766169);
+    uVar3 = (*p_Var2)(0x61766169);
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -173,12 +173,12 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
     }
     sVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e8))();
     if ((short)this < sVar4) {
-      (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)((undefined1 *)((int)&this->vftable + 1));
+      (*pTVar1->OrphanRetStub_00586ff0)((undefined1 *)((int)&this->vftable + 1));
     }
   }
   else if (param_1 == 0x65) {
     pTVar1 = this->vftable;
-    uVar3 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
+    uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -186,7 +186,7 @@ void TAmtBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int para
     }
     iVar5 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1e8))();
     if ((short)iVar5 != 0) {
-      (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar5 + -1);
+      (*pTVar1->OrphanRetStub_00586ff0)(iVar5 + -1);
     }
   }
   TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
@@ -213,7 +213,7 @@ void TAmtBarCluster::QueryTradeSellControlQuantity()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x53656c6c);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
                     /* WARNING: Could not recover jumptable at 0x00587961. Too many branches */
                     /* WARNING: Treating indirect jump as call */
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
@@ -240,7 +240,7 @@ undefined4 TAmtBarCluster::IsTradeBidControlActionable()
   undefined3 extraout_var;
   int *piVar3;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x63617264);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -276,7 +276,7 @@ undefined4 TAmtBarCluster::IsTradeOfferControlActionable()
   undefined3 extraout_var;
   int *piVar3;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x6f666672);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6f666672);
   piVar3 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -313,7 +313,7 @@ void TAmtBarCluster::SetTradeBidSecondaryBitmapState()
   undefined3 extraout_var;
   undefined4 uVar4;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x63617264);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x63617264);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -358,7 +358,7 @@ void TAmtBarCluster::SetTradeBidSecondaryBitmapState()
 void TAmtBarCluster::SetTradeBidControlBitmapState()
 
 {
-  TAmtBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined uVar4;
@@ -371,8 +371,8 @@ void TAmtBarCluster::SetTradeBidControlBitmapState()
   undefined4 uVar8;
   int *piVar5;
   
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar1)(0x63617264);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var1)(0x63617264);
   piVar5 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -389,19 +389,19 @@ void TAmtBarCluster::SetTradeBidControlBitmapState()
   }
   (**(code **)(iVar2 + 0x1c8))(uVar8,0);
   (**(code **)(iVar2 + 0xf4))(&stack0xffffffe4,1);
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x93f);
   }
-  uVar4 = (*pTVar1)(0x6c656674);
+  uVar4 = (*p_Var1)(0x6c656674);
   if (CONCAT31(extraout_var_01,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x941);
   }
-  uVar4 = (*pTVar1)(0x72676874);
+  uVar4 = (*p_Var1)(0x72676874);
   if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -441,7 +441,7 @@ void TAmtBarCluster::SetTradeBidControlBitmapState()
 void TAmtBarCluster::SetTradeOfferControlBitmapState()
 
 {
-  TAmtBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -452,8 +452,8 @@ void TAmtBarCluster::SetTradeOfferControlBitmapState()
   int *piVar7;
   undefined4 uVar8;
   
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar1)(0x6f666672);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var1)(0x6f666672);
   if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -471,7 +471,7 @@ void TAmtBarCluster::SetTradeOfferControlBitmapState()
   (**(code **)(iVar2 + 0xf4))();
   piVar7 = (int *)&stack0xffffffdc;
   (**(code **)(iVar2 + 0xf0))(piVar7,1);
-  uVar3 = (*pTVar1)(0x67726565);
+  uVar3 = (*p_Var1)(0x67726565);
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -517,7 +517,7 @@ void TAmtBarCluster::SetTradeOfferControlBitmapState()
 void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
 
 {
-  TAmtBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   int iVar3;
   undefined uVar4;
@@ -537,8 +537,8 @@ void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
   undefined4 uStack_8;
   
   iStack_30 = 0x6f666672;
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar1)();
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -549,7 +549,7 @@ void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
   uStack_8 = 0x14;
   (**(code **)(iVar2 + 0xf4))(&uStack_c,1);
   sVar5 = UiRuntimeContext::GetActiveNationId();
-  uVar4 = (*g_apNationStates[sVar5]->vftable[0xf].GetTCountryClassNamePointer)
+  uVar4 = (*g_apNationStates[sVar5]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
                     (CONCAT22(sVar5 >> 0xf,*(undefined2 *)&this[1].vftable));
   if ((short)CONCAT31(extraout_var_00,uVar4) != 0) {
     sVar5 = UiRuntimeContext::GetActiveNationId();
@@ -571,19 +571,19 @@ void TAmtBarCluster::SetTradeOfferSecondaryBitmapState()
   }
   (**(code **)(iVar2 + 0xa4))(0,1);
 LAB_00588133:
-  uVar4 = (*pTVar1)(0x67726565);
+  uVar4 = (*p_Var1)(0x67726565);
   if (CONCAT31(extraout_var_01,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9ad);
   }
-  uVar4 = (*pTVar1)(0x6c656674);
+  uVar4 = (*p_Var1)(0x6c656674);
   if (CONCAT31(extraout_var_02,uVar4) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9af);
   }
-  uVar4 = (*pTVar1)(0x72676874);
+  uVar4 = (*p_Var1)(0x72676874);
   if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

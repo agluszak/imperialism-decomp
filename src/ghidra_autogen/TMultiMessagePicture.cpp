@@ -51,7 +51,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           TMultiMessagePicture_slot_0x04_0x04 *param_3)
 
 {
-  TMultiMessagePicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   TApplicationVtbl *pTVar3;
   undefined uVar4;
@@ -59,7 +59,6 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined4 uVar6;
-  undefined3 extraout_var_01;
   int iVar7;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -79,8 +78,8 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
                   ((TMapDialog *)this,(int)param_1.m_pchData);
         goto LAB_0054edfd;
       }
-      pTVar1 = this->vftable[0x12].slot_0x04;
-      uVar4 = (*pTVar1)(0x6d657367);
+      p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+      uVar4 = (*p_Var1)(0x6d657367);
       iVar7 = *(int *)CONCAT31(extraout_var,uVar4);
       (**(code **)(iVar7 + 0xc))();
       CString::CString(&param_1);
@@ -89,7 +88,7 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       iVar7 = 0;
       param_1.m_pchData = (char *)0x0;
       do {
-        uVar4 = (*pTVar1)(iVar7 + 0x626f7830);
+        uVar4 = (*p_Var1)(iVar7 + 0x626f7830);
         iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
         (**(code **)(iVar2 + 0xc))();
         cVar5 = (**(code **)(iVar2 + 0x28))();
@@ -104,8 +103,8 @@ TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       CString::~CString(&param_2);
     }
     pTVar3 = g_pGlobalUiRootController->vftable;
-    uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
-    (*pTVar3[0x16].slot_0x04)(CONCAT31(extraout_var_01,uVar4));
+    uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+    (**(code **)&pTVar3->field_0xb4)(uVar4);
   }
 LAB_0054edfd:
   *unaff_FS_OFFSET = local_c;

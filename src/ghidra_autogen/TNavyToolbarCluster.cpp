@@ -90,7 +90,7 @@ TNavyToolbarCluster::OrphanRetStub_0059add0
   if (param_1 == 0xc) {
     uVar5 = *(int *)((int)param_2 + 0x1c) + 0x9e988dd0;
     if (uVar5 < 3) {
-      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
       this_00 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x6d61696e);
       (**(code **)(*this_00 + 0xc))();
       pvVar4 = GetActiveMapOrderEntry(this_00);
@@ -177,7 +177,7 @@ void TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(int param_1)
   }
   *(int *)&this->field_0x84 = param_1;
   if (piVar4 != (int *)0x0) {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444f4f47);
     iVar3 = *piVar2;
     (**(code **)(iVar3 + 0xc))();

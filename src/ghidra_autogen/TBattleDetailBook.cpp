@@ -69,7 +69,7 @@ void TBattleDetailBook::OrphanCallChain_C1_I05_00415050(int param_1, int param_2
   undefined3 extraout_var;
   
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
     return;
   }

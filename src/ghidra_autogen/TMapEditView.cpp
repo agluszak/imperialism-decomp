@@ -37,7 +37,7 @@ TWorldView * TMapEditView::CreateTMapEditViewInstance(void)
     TMapDialog::SplitTileIndexToRowAndColumn
               (CONCAT22((short)((uint)&local_14 >> 0x10),
                         *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
-    (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
+    (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
     *(undefined2 *)&this[6].field_0x6c = 0;
     *(undefined2 *)&this[6].field_0x6e = 0xffff;
     this[6].field_0x70 = 0;
@@ -134,14 +134,14 @@ void TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(void *pMapView, int nInitTok
   local_1c = 0;
   local_18 = 0x1680;
   (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x350,8,&local_20);
-  (*this->vftable[0x3f].GetTEventHandlerClassNamePointer)();
+  (**(code **)&this->vftable[1].field_0x20)();
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
   TToolBarCluster::SetMapInteractionMode((TCivToolbar *)this->ownerContext,5);
   g_pGlobalMapState->field_0x24 = 1;
   (**(code **)(g_pUiRuntimeContext->vftable + 0xc4))();
-  (*this->ownerContext->vftable[0x3e].slot_0x04)();
+  (*this->ownerContext->vftable[1].vmethod_0080)();
   iVar4 = 0;
   do {
     iVar1 = *(int *)&g_pGlobalMapState->field_0xc;
@@ -159,7 +159,7 @@ void TMapEditView::OrphanLeaf_NoCall_Ins07_004d8920(void *pMapView, int nInitTok
     iVar4 = iVar4 + 0x24;
     sVar5 = sVar5 + 1;
   } while (iVar4 < 0x38f40);
-  uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
+  uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
   ((int *)CONCAT31(extraout_var,uVar2))[0x2a] = 0x17f;
   return;
@@ -203,7 +203,7 @@ TMapEditView::HandleMapClickByInteractionMode
   short nTileIndex_00;
   
   nTileIndex_00 = 0x6f6e;
-  uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)();
+  uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
   iVar3 = (short)unaff_retaddr * 0x24;
   if ((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar3) != '\x05') ||
@@ -219,10 +219,10 @@ TMapEditView::HandleMapClickByInteractionMode
       TMapEditView::ApplyTileIconOverlayFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
       return;
     case 3:
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(4000,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(4000,0,1);
       pTVar1 = this->vftable;
       *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 6 + iVar3) = this->field_0x36c;
-      (*pTVar1[0x40].GetTEventHandlerClassNamePointer)(unaff_retaddr);
+      (*pTVar1[1].GetBoolSlot28)(unaff_retaddr);
       return;
     case 4:
       PromoteTileToCityAndRefreshNeighbors(unaff_retaddr);
@@ -249,8 +249,8 @@ void TMapEditView::InvokeDialogHooks1D8ThenE4(short param_1)
   if (*(int *)&this->field_0x368 == 1) {
     sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
     if (sVar1 != -1) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f2,0,1);
-      uVar3 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x13f2,0,1);
+      uVar3 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
       iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
       (**(code **)(iVar2 + 0xc))();
       (**(code **)(iVar2 + 0x1e4))((int)sVar1,1);
@@ -299,7 +299,7 @@ void TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
 
 {
   ushort uVar1;
-  TMapEditView_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   short sVar4;
   undefined3 extraout_var;
@@ -313,7 +313,7 @@ void TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
   
   uVar1 = *(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + param_1 * 0x24);
   pTVar8 = (TMapEditView *)(uint)uVar1;
-  uVar3 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
+  uVar3 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
   iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
   (**(code **)(iVar6 + 0xc))();
   sVar4 = (**(code **)(iVar6 + 0x1e8))();
@@ -333,15 +333,15 @@ void TMapEditView::ApplyCityInfluenceTierAndInvalidateTileCaches(short param_1)
     do {
       if (*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar6) == (short)pTVar8) {
         *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar6 + 7) = 0;
-        (*g_pGlobalMapState->vftable[7].slot_0x04)(iVar7,2);
-        pTVar2 = pTVar9->vftable[0x40].GetTEventHandlerClassNamePointer;
-        (*pTVar2)(iVar7);
+        (*g_pGlobalMapState->vftable->UpdateTileNeighborBorderInfluenceCounters)(iVar7,2);
+        p_Var2 = pTVar9->vftable[1].GetBoolSlot28;
+        (*p_Var2)(iVar7);
         iVar10 = 0;
         do {
           uVar5 = GetWrappedHexNeighborTileIndexByDirection(iVar7,iVar10);
           *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 7 + (short)uVar5 * 0x24) = 0;
-          (*g_pGlobalMapState->vftable[7].slot_0x04)(uVar5,2);
-          (*pTVar2)(uVar5);
+          (*g_pGlobalMapState->vftable->UpdateTileNeighborBorderInfluenceCounters)(uVar5,2);
+          (*p_Var2)(uVar5);
           iVar10 = iVar10 + 1;
           pTVar8 = this;
           pTVar9 = unaff_EBX;
@@ -474,7 +474,7 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
           (TMapEditView *this,void *pMapTileEditState,short nTileIndex)
 
 {
-  TMapEditView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined4 uVar2;
   int iVar3;
   int iVar4;
@@ -482,7 +482,7 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
   if (*(int *)&this->field_0x36c != 0) {
     iVar4 = (short)pMapTileEditState * 0x24;
     if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4) != '\0') {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(4000,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(4000,0,1);
       *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4) = this->field_0x36c;
       *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar4) =
            (&stack0xffffffd4)[*(int *)&this->field_0x36c * 2];
@@ -494,9 +494,10 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
       *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar4 + 0x11) =
            (&stack0xffffffd4)[*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar4) * 2];
       *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x12 + iVar4) = 0xff;
-      (*g_pGlobalMapState->vftable[6].slot_0x04)(pMapTileEditState);
-      pTVar1 = this->vftable[0x40].GetTEventHandlerClassNamePointer;
-      (*pTVar1)(0x60004);
+      (*g_pGlobalMapState->vftable->UpdateMapTileAdjacencyMasksAndVariantForTile)(pMapTileEditState)
+      ;
+      p_Var1 = this->vftable[1].GetBoolSlot28;
+      (*p_Var1)(0x60004);
       iVar4 = 0;
       do {
         uVar2 = GetWrappedHexNeighborTileIndexByDirection(0x3ffff,iVar4);
@@ -507,8 +508,8 @@ TMapEditView::ApplyTileIconProfileFromEditorSelection
           *(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar3) =
                *(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + iVar3) | 0x80;
           *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 1 + iVar3) = 0;
-          (*g_pGlobalMapState->vftable[6].slot_0x04)(uVar2);
-          (*pTVar1)(uVar2);
+          (*g_pGlobalMapState->vftable->UpdateMapTileAdjacencyMasksAndVariantForTile)(uVar2);
+          (*p_Var1)(uVar2);
         }
         iVar4 = iVar4 + 1;
       } while ((short)iVar4 < 6);
@@ -549,10 +550,10 @@ TMapEditView::ApplyTileIconOverlayFromEditorSelection
     PlayDefaultMessageBeep(1);
     return;
   }
-  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(4000,0,1);
+  (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(4000,0,1);
   *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + iVar1 + 0x11 + iVar2) =
        (&stack0xffffffe8)[*(int *)&this->field_0x36c * 2];
-  (*this->vftable[0x40].GetTEventHandlerClassNamePointer)(pMapTileEditState);
+  (*this->vftable[1].GetBoolSlot28)(pMapTileEditState);
   return;
 }
 
@@ -572,8 +573,8 @@ void TMapEditView::OrphanTiny_ReturnZero_0048a730(int param_1)
   switch(*(undefined2 *)(param_1 + 0x1c)) {
   case 0x2c:
   case 0x3c:
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-    uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+    uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
     iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
     (**(code **)(iVar1 + 0xc))();
     iVar3 = (**(code **)(iVar1 + 0x1e8))(1);
@@ -581,8 +582,8 @@ void TMapEditView::OrphanTiny_ReturnZero_0048a730(int param_1)
     return;
   case 0x2e:
   case 0x3e:
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-    uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x70726e75);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+    uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x70726e75);
     iVar1 = *(int *)CONCAT31(extraout_var_00,uVar2);
     (**(code **)(iVar1 + 0xc))();
     iVar3 = (**(code **)(iVar1 + 0x1e8))(1);

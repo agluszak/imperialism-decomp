@@ -64,11 +64,10 @@ CRuntimeClass * TTacticalAdiosPicture::GetTEventHandlerClassNamePointer()
 void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TTacticalAdiosPicture_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
-  TTacticalAdiosPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar3;
-  undefined *puVar4;
-  undefined uVar5;
+  undefined *puVar3;
+  undefined uVar4;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
@@ -97,13 +96,13 @@ void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   uStack_28 = 0x7469746c;
   local_6 = 0;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
   uStack_2c = 0x5ad508;
-  uVar5 = (*pTVar1)();
-  iVar2 = *(int *)CONCAT31(extraout_var,uVar5);
+  uVar4 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
   uStack_2c = 0x5ad511;
   (**(code **)(iVar2 + 0xc))();
   uStack_2c = 1;
@@ -123,8 +122,8 @@ void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0x1c4))();
   puStack_3c = (undefined1 *)0x6c6f6361;
   uStack_40 = 0x5ad54d;
-  uVar5 = (*pTVar1)();
-  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar5);
+  uVar4 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
   uStack_40 = 0x5ad556;
   (**(code **)(iVar2 + 0xc))();
   uStack_40 = 1;
@@ -144,8 +143,8 @@ void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   (**(code **)(iVar2 + 0x1c4))();
   puStack_50 = (undefined1 *)0x696e666f;
   uStack_54 = 0x5ad592;
-  uVar5 = (*pTVar1)();
-  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar5);
+  uVar4 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
   uStack_54 = 0x5ad59b;
   (**(code **)(iVar2 + 0xc))();
   uStack_54 = 0x2b6b;
@@ -153,12 +152,12 @@ void TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_5c = 0;
   (**(code **)(iVar2 + 0x1e0))();
   (**(code **)(iVar2 + 0x1c4))(1,0);
-  pTVar3 = this->vftable[0xb].GetTEventHandlerClassNamePointer;
-  puVar4 = g_pUiRuntimeContext->vftable;
-  uVar5 = (*pTVar3)(&uStack_54);
-  (**(code **)(puVar4 + 0x44))(uVar5);
-  uVar5 = (*pTVar3)();
-  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar5) + 0xf0))(&uStack_5c,0);
+  p_Var1 = this->vftable->SetForeignMinisterReadyFlag14;
+  puVar3 = g_pUiRuntimeContext->vftable;
+  uVar4 = (*p_Var1)(&uStack_54);
+  (**(code **)(puVar3 + 0x44))(uVar4);
+  uVar4 = (*p_Var1)();
+  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar4) + 0xf0))(&uStack_5c,0);
   return;
 }
 
@@ -175,7 +174,7 @@ TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var;
   
   if ((param_1 == 10) && (*(int *)(param_2 + 0x1c) == 0x6f6b6179)) {
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))(*(undefined4 *)(param_2 + 0x1c),1);
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);

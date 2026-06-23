@@ -215,7 +215,7 @@ TControl::SetControlPictureEntryAndMaybeRefresh
 {
   *(int *)((int)&this->commandTagDefaultParam1 + 2) = *pPictureEntryRef;
   if (fRefreshNow) {
-    (*this->vftable[0x22].slot_0x04)(0);
+    (*this->vftable->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }
@@ -348,14 +348,14 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar1 = this->field44;
   }
   if (this->ownerContext != (TView *)0x0) {
-    (*this->ownerContext->vftable[0x2e].slot_0x04)(this);
+    (*this->ownerContext->vftable[1].GetRuntimeClass)(this);
     this->ownerContext = (TView *)0x0;
   }
   if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
       ((TMapDialog *)g_pApplicationUiRootController != this)) &&
      (pTVar3 = (TMapDialog *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
      pTVar3 == this)) {
-    uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->QueryStepValue)();
     pAVar4 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
     if (pAVar4 == (ApplicationUiRootController *)0x0) {
       pAVar4 = g_pApplicationUiRootController;
@@ -368,7 +368,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   this->field18 = 0;
   if (this != (TMapDialog *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TEventHandler)(1);
   }
   return;
 }
@@ -897,7 +897,7 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
   *(undefined2 *)&this->field_0x9c = 0xff;
-  this->vftable = &TEditTextVtbl_0064ad90;
+  this->vftable = (TEditTextVtbl *)0x64ad90;
   *(undefined4 *)&this->field_0x60 = 6;
   this->flag4d = 0;
   *unaff_FS_OFFSET = uStack_c;
@@ -1491,14 +1491,14 @@ void __thiscall RemoveNationSlotAndNotifyPeers(int param_1,undefined4 param_2)
         if ((99 < *(short *)&pTVar1->field_0xe) && (*(short *)&pTVar1->field_0xe < 200))
         goto LAB_00581351;
       }
-      (*(*ppTVar5)->vftable[0xd].GetTCountryClassNamePointer)(iVar2,500);
+      (*(*ppTVar5)->vftable->SetNationPercentFieldByModeAndDescriptorLinks)(iVar2,500);
     }
 LAB_00581351:
     ppTVar5 = ppTVar5 + 1;
     iVar4 = iVar4 + 1;
     if (0x6a438b < (int)ppTVar5) {
       if (g_apNationStates[iVar2] != (TGreatPower *)0x0) {
-        (*g_apNationStates[iVar2]->vftable[3].slot_0x04)();
+        (*g_apNationStates[iVar2]->vftable->ApplyJoinEmpireModeForTargetNation)();
       }
       g_apNationStates[iVar2] = (TGreatPower *)0x0;
       g_apTerrainTypeDescriptorTable[iVar2] = (TCountry *)0x0;
@@ -1680,7 +1680,8 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     ppTVar7 = g_apNationStates;
     do {
       if ((*ppTVar7 == (TGreatPower *)0x0) ||
-         (cVar1 = (*(*ppTVar7)->vftable[0x13].GetTCountryClassNamePointer)(), cVar1 == '\0')) {
+         (cVar1 = (*(*ppTVar7)->vftable->ReturnFalseNationStateCapabilityFlag98)(), cVar1 == '\0'))
+      {
         *(uint *)&param_1[9].field_0x10 = *(uint *)&param_1[9].field_0x10 & ~(1 << (bVar2 & 0x1f));
       }
       ppTVar7 = ppTVar7 + 1;
@@ -1721,7 +1722,8 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     cVar1 = UiRuntimeContext::GetActiveNationId();
     uStack_34 = CONCAT11(uStack_34._1_1_,cVar1);
     uStack_32 = (undefined2)g_apTerrainTypeDescriptorTable[cVar1]->ownerNationSlot;
-    uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable[8].GetTCountryClassNamePointer)();
+    uVar3 = (*g_apTerrainTypeDescriptorTable[cVar1]->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)()
+    ;
     CString::CString(&CStack_54);
     uStack_4 = 0;
     AssignSharedStringFromIndexedA8EntryNameField(uVar3,&CStack_54);
@@ -1741,12 +1743,12 @@ void __fastcall HandleTurnResumeStateTelemetry(TNextDiplomationCommand *param_1)
     ppTVar8 = g_apSecondaryNationStateSlots;
     do {
       if (*ppTVar8 != (TMinor *)0x0) {
-        (*(*ppTVar8)->vftable[0x15].GetTCountryClassNamePointer)();
+        (*(*ppTVar8)->vftable->RebuildDiplomacyEconomicPressureFromMapState)();
       }
       ppTVar8 = ppTVar8 + 1;
     } while ((int)ppTVar8 < 0x6a42dc);
     sVar4 = UiRuntimeContext::GetActiveNationId();
-    (*g_apNationStates[sVar4]->vftable[0x2d].GetTCountryClassNamePointer)();
+    (*g_apNationStates[sVar4]->vftable->ReturnFalseNationStateCapabilityFlag98_5a)();
     uVar10 = 0xffffffff;
     sVar4 = UiRuntimeContext::GetActiveNationId(0xffffffff);
     EmitTurnEvent19NationStateArraysForSlot((int)sVar4,uVar10);
@@ -1911,7 +1913,7 @@ void __fastcall RefreshNationAdvisorLabelStrings(int *param_1)
       ppTStack_14 = ppTVar2;
     }
     else {
-      uVar3 = (*pTVar1->vftable[8].GetTCountryClassNamePointer)();
+      uVar3 = (*pTVar1->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
       (**(code **)(*param_1 + 0x84))(0x272a,0,&CStack_2c);
       src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&CStack_10,iVar4);
       iStack_4._0_1_ = 5;
@@ -2736,7 +2738,7 @@ void ShowNationSelectDialogAndRedispatchCurrentTurnEvent(void)
     WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0(LVar5);
     if (*(int *)&g_pLocalizationTable->field_0x8 == 0x11) {
       sVar3 = UiRuntimeContext::GetActiveNationId();
-      (*g_apNationStates[sVar3]->vftable[0x26].slot_0x04)();
+      (*g_apNationStates[sVar3]->vftable->AddRegionIdToNationOwnedRegionList_4d)();
     }
     uVar1 = *(undefined2 *)&g_pUiRuntimeContext->field_0x4;
     puVar2 = g_pUiRuntimeContext->vftable;
@@ -2903,7 +2905,7 @@ void ApplyDialogSelectionToNationState(void)
         pTVar4 = g_apNationStates[LVar3]->city;
       }
       pTVar4->fieldB6[(short)iVar2] = pTVar4->fieldB6[(short)iVar2] + local_10;
-      (*pTVar4->vftable[0x10].GetTCityClassNamePointer)();
+      (*pTVar4->vftable->Refresh80)();
       iVar2 = iVar2 + 1;
     } while (iVar2 < 0x17);
     if (g_apNationStates[LVar3] == (TGreatPower *)0x0) {
@@ -4340,10 +4342,10 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
     pTStack_b4 = (TCivilianButton *)0x416736;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_b4 = (TCivilianButton *)0x0;
     puStack_b8 = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -4602,10 +4604,10 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
     pTStack_13c = (TCivilianButton *)0x416e4c;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_13c = (TCivilianButton *)0x0;
     ppuStack_140 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -4854,10 +4856,10 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
     pTStack_1c4 = (TCivilianButton *)0x41751b;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_1c4 = (TCivilianButton *)0x0;
     ppuStack_1c8 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -5106,10 +5108,10 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
     pTStack_24c = (TCivilianButton *)0x417bea;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_24c = (TCivilianButton *)0x0;
     ppuStack_250 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -5358,10 +5360,10 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
     pTStack_2d4 = (TCivilianButton *)0x4182b9;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_2d4 = (TCivilianButton *)0x0;
     ppuStack_2d8 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -5598,8 +5600,8 @@ int * __cdecl BuildTradeSchoolDialogControls(dword dwPanelId,short nDialogTypeTa
     pTVar2 = pTVar7->vftable;
     pTVar7->controlTag = 0x6e756d62;
     pTVar7->field3c = 0;
-    (*pTVar2[0x14].slot_0x04)();
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->VTableSlot29)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -7386,8 +7388,8 @@ int * InitializeIndustryViewTradeMoveControlsAndCommodityRows(undefined4 param_1
     InitializeUiResourceEntryFrameAndParent(0);
     this->controlTag = 0x6d6f7665;
     this->field3c = 0;
-    (*this->vftable[0x14].slot_0x04)();
-    (*this->vftable[0x15].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->VTableSlot29)();
+    (*this->vftable->UpdateControlCachedIntFromWindowText_2a)();
     piVar2 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar2 + 0x4d) = 0;
@@ -12172,7 +12174,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
         TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState(pTVar18);
         pTVar18[1].vftable = (TDiplomacyMapViewVtbl *)0x1;
         pTVar18[1].field04 = 0;
-        pTVar18->vftable = (TDiplomacyMapViewVtbl *)&TBattleReportViewVtbl_0063efa8;
+        pTVar18->vftable = (TDiplomacyMapViewVtbl *)0x63efa8;
       }
       uStack_14 = 0xffffffff;
       pTVar9 = pTVar18;
@@ -12247,8 +12249,8 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
       pTVar5 = pTVar20->vftable;
       pTVar20->controlTag = 0x63757273;
       pTVar20->field3c = 0;
-      (*pTVar5[0x14].slot_0x04)();
-      (*pTVar5[0x15].GetTEventHandlerClassNamePointer)();
+      (*pTVar5->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+      (*pTVar5->UpdateControlCachedIntFromWindowText_2a)();
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
       g_pUiResourceContext = (int *)0x0;
@@ -12826,9 +12828,9 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     pTVar11->controlTag = 0x444c4f47;
     pTVar11->field3c = 0;
     pTStack_54 = (TPictureButton *)0x4297b6;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_54 = (TPictureButton *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar10 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 1;
@@ -12848,7 +12850,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     }
     else {
       TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(pTVar13);
-      pTVar13->vftable = (TColorKeyPictureVtbl *)&TPageCornerVtbl_0063f1f8;
+      pTVar13->vftable = (TColorKeyPictureVtbl *)0x63f1f8;
     }
     pTVar6 = pTVar13;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -12864,8 +12866,8 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     pTVar3 = pTVar13->vftable;
     pTVar13->controlTag = 0x6c636f72;
     pTVar13->field3c = 0;
-    (*pTVar3[0x14].slot_0x04)();
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar10 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 1;
@@ -12886,7 +12888,7 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     }
     else {
       TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(pTVar13);
-      pTVar13->vftable = (TColorKeyPictureVtbl *)&TPageCornerVtbl_0063f1f8;
+      pTVar13->vftable = (TColorKeyPictureVtbl *)0x63f1f8;
     }
     pTStack_48 = (TDiplomacyMapView *)0xffffffff;
     pTVar6 = pTVar13;
@@ -12900,8 +12902,8 @@ int * BuildTurnEventDialogResourcesForEvent547Or7D8(undefined4 param_1,short par
     pTVar3 = pTVar13->vftable;
     pTVar13->controlTag = 0x72636f72;
     pTVar13->field3c = 0;
-    (*pTVar3[0x14].slot_0x04)();
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar10 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 1;
@@ -13168,7 +13170,7 @@ LAB_0042d600:
       else {
         pTStack_48 = (TDiplomacyMapView *)0x42d6f4;
         thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)pTVar18);
-        pTVar18->vftable = (TDiplomacyMapViewVtbl *)&TNominationViewVtbl_0063ed78;
+        pTVar18->vftable = (TDiplomacyMapViewVtbl *)0x63ed78;
       }
       uStack_14 = 0xffffffff;
       pTVar9 = pTVar18;
@@ -15608,8 +15610,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       pTVar1 = pTVar16->vftable;
       *(undefined4 *)&pTVar16->field_0x1c = 0x74616273;
       *(undefined4 *)&pTVar16->field_0x3c = 0;
-      (*pTVar1[0x14].slot_0x04)();
-      (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+      (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+      (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
       piVar10 = g_pUiResourceContext;
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)piVar10 + 0x4d) = 1;
@@ -15647,9 +15649,9 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       pTVar2 = pTVar15->vftable;
       pTVar15->controlTag = 0x74736f6c;
       pTVar15->field3c = 0;
-      (*pTVar2[0x14].slot_0x04)();
+      (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
       pTStack_128 = (TMyStaticText *)0x4319d1;
-      (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+      (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
@@ -15685,8 +15687,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       puStack_12c = (undefined1 *)0x1;
       pTVar15->controlTag = 0x74626f75;
       pTVar15->field3c = 0;
-      (*pTVar2[0x14].slot_0x04)();
-      (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+      (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+      (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
       g_pUiResourceContext = (int *)0x0;
@@ -15854,9 +15856,9 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
       pTVar3 = this->vftable;
       this->controlTag = 0x63757273;
       this->field3c = 0;
-      (*pTVar3[0x14].slot_0x04)();
+      (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
       pTStack_198 = (TColorKeyPicture *)0x431ff2;
-      (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+      (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
       *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
       *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
       g_pUiResourceContext = (int *)0x0;
@@ -16104,8 +16106,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     pTVar1 = pTVar16->vftable;
     *(undefined4 *)&pTVar16->field_0x1c = 0x74616273;
     *(undefined4 *)&pTVar16->field_0x3c = 0;
-    (*pTVar1[0x14].slot_0x04)();
-    (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
     piVar10 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 1;
@@ -16213,8 +16215,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     pTVar4 = this_02->vftable;
     this_02->controlTag = 0x70757263;
     this_02->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar10 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar10 + 0x4d) = 0;
@@ -16802,8 +16804,8 @@ int * InitializeDealBookScreenControlsAndCommandTags(undefined4 param_1,short pa
     pTVar5 = pTVar9->vftable;
     pTVar9->controlTag = 0x626f6f6b;
     pTVar9->field3c = 0;
-    (*pTVar5[0x14].slot_0x04)(1,0);
-    (*pTVar5[0x15].GetTEventHandlerClassNamePointer)(0,0);
+    (*pTVar5->SetEnabled)(1,0);
+    (*pTVar5->SetState)(0,0);
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
@@ -17267,7 +17269,7 @@ int * __cdecl BuildTurnEventDialogUiByCode(int nContextSlot,int nEventCode)
 
 {
   code *pcVar1;
-  TViewVtbl *pTVar2;
+  TPictureButtonVtbl *pTVar2;
   THelpPictureVtbl *pTVar3;
   TPictureButton *pTVar4;
   THelpPicture *pTVar5;
@@ -18031,14 +18033,14 @@ LAB_0043b084:
           uStack_50 = 0x15;
           pTStack_4c = (THelpPicture *)0x92;
           InitializeUiResourceEntryFrameAndParent();
-          pTVar2 = (TViewVtbl *)pTVar20->vftable;
+          pTVar2 = pTVar20->vftable;
           pTVar20->controlTag = 0x7377696e;
           pTVar20->field3c = 0;
           pTStack_6c = (T2PictureButton *)0x437206;
-          (*pTVar2[0x14].slot_0x04)();
+          (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
           pTStack_6c = (T2PictureButton *)0x0;
           pppTStack_70 = (TPictureButton ***)0x0;
-          (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+          (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
           *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
           *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
           g_pUiResourceContext = (int *)0x0;
@@ -20450,10 +20452,10 @@ LAB_0043b084:
           pTVar22->controlTag = 0x444c4f47;
           pTVar22->field3c = 0;
           pTStack_54 = (TNoHiliteText *)0x438e10;
-          (*pTVar3[0x14].slot_0x04)();
+          (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
           pTStack_54 = (TNoHiliteText *)0x0;
           piStack_58 = (int *)0x0;
-          (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+          (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
           piVar28 = g_pUiResourceContext;
           *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
           *(undefined1 *)((int)piVar28 + 0x4d) = 1;
@@ -26022,10 +26024,9 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
 
 {
   int *piVar1;
-  TBook *pTVar2;
+  TPageCorner *pTVar2;
   undefined4 uVar3;
-  TPageCorner *pTVar4;
-  TBook *unaff_EBX;
+  TPageCorner *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 in_stack_00000094;
   undefined4 uStack0000009c;
@@ -26036,13 +26037,13 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   SetUiResourceContextFlagsAndMetrics(8,2);
   ApplyUiResourceColorTripletFromContext();
   ClearUiResourceContext();
-  pTVar2 = (TBook *)AllocateUiResourceNode();
+  pTVar2 = (TPageCorner *)AllocateUiResourceNode();
   uStack0000009c = 0xfa;
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
   else {
-    uVar3 = TBook::ConstructPictureResourceEntry_Vtbl0063f650(pTVar2);
+    uVar3 = TBook::ConstructPictureResourceEntry_Vtbl0063f650((TBook *)pTVar2);
   }
   uStack0000009c = 0xffffffff;
   RegisterUiResourceEntry(0x70696374,0x444c4f47,uVar3);
@@ -26050,7 +26051,7 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   SetUiResourceLayoutValues(10);
   ApplyUiResourceLayoutFromContext();
   ClearUiResourceContext();
-  pTVar2 = (TBook *)AllocateUiResourceNode();
+  pTVar2 = (TPageCorner *)AllocateUiResourceNode();
   uStack0000009c = 0xfb;
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
@@ -26063,14 +26064,14 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   SetUiResourceStateFlags();
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TPageCorner *)AllocateUiResourceNode();
+  pTVar2 = (TPageCorner *)AllocateUiResourceNode();
   uStack0000009c = 0xfc;
-  if (pTVar4 == (TPageCorner *)unaff_EBX) {
+  if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
   else {
     uVar3 = TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
-                      (pTVar4);
+                      (pTVar2);
   }
   uStack0000009c = 0xffffffff;
   RegisterUiResourceEntry(0x70696374,0x6c636f72,uVar3,0xc,0x164,0x29,0x24);
@@ -26079,14 +26080,14 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   ApplyUiResourceLayoutFromContext();
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TPageCorner *)AllocateUiResourceNode();
+  pTVar2 = (TPageCorner *)AllocateUiResourceNode();
   uStack0000009c = 0xfd;
-  if (pTVar4 == (TPageCorner *)unaff_EBX) {
+  if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
   }
   else {
     uVar3 = TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
-                      (pTVar4);
+                      (pTVar2);
   }
   uStack0000009c = 0xffffffff;
   RegisterUiResourceEntry(0x70696374,0x72636f72,uVar3,0x1af,0x164,0x29,0x24);
@@ -26095,7 +26096,7 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   ApplyUiResourceLayoutFromContext();
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
-  pTVar2 = (TBook *)AllocateUiResourceNode();
+  pTVar2 = (TPageCorner *)AllocateUiResourceNode();
   uStack0000009c = 0xfe;
   if (pTVar2 == unaff_EBX) {
     uVar3 = 0;
@@ -26112,7 +26113,7 @@ int * InitializeTGarrisonViewBitmapAndControlResources(void)
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  if ((TBook *)g_pUiResourceHead != unaff_EBX) {
+  if ((TPageCorner *)g_pUiResourceHead != unaff_EBX) {
     PropagateUiResourceContextRecursive();
   }
   piVar1 = g_pUiResourceHead;
@@ -26720,7 +26721,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
   undefined4 uStack_40;
   TUpDownPictureButton *pTStack_3c;
   TStaticText *pTStack_38;
-  TUpDownPictureButton *local_24;
+  TStaticText *local_24;
   TLineData *local_20;
   undefined4 local_1c;
   int local_18;
@@ -26767,7 +26768,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     uStack_50 = 0;
     local_1c = 0x133;
     local_18 = 0x144;
-    local_24 = (TUpDownPictureButton *)0xa0;
+    local_24 = (TStaticText *)0xa0;
     local_20 = (TLineData *)0x6e;
     pTStack_54 = (TEditText *)0x44be2b;
     pTStack_4c = (TNoHilitePicture *)uVar18;
@@ -26841,9 +26842,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar8->controlTag = 0x444c4f47;
     pTVar8->field3c = 0;
     pTStack_54 = (TEditText *)0x44bf61;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_54 = (TEditText *)0x0;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -26857,12 +26858,12 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     piVar17[0x1d] = piVar6[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
-    if (local_24 == (TUpDownPictureButton *)0x0) {
+    local_24 = (TStaticText *)AllocateWithFallbackHandler();
+    if (local_24 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
     }
     else {
-      piVar17 = (int *)TStaticText::TStaticText((TStaticText *)local_24);
+      piVar17 = (int *)TStaticText::TStaticText(local_24);
     }
     piVar6 = piVar17;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -27113,7 +27114,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     uStack_50 = 0;
     local_1c = 0x280;
     local_18 = 0x1e0;
-    local_24 = (TUpDownPictureButton *)0x0;
+    local_24 = (TStaticText *)0x0;
     local_20 = (TLineData *)0x0;
     pTStack_54 = (TEditText *)0x44c73b;
     pTStack_4c = (TNoHilitePicture *)uVar18;
@@ -27166,17 +27167,17 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar8->controlTag = 0x6d61696e;
     pTVar8->field3c = 0;
     uStack_50 = 0x44c815;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_50 = 0;
     pTStack_54 = (TEditText *)0x0;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
     piVar17 = g_pUiResourceContext;
     FreeHeapBufferIfNotNull();
     local_18 = AllocateWithFallbackHandler();
-    local_24 = (TUpDownPictureButton *)0x17;
+    local_24 = (TStaticText *)0x17;
     if (local_18 == 0) {
       iVar7 = 0;
     }
@@ -27187,7 +27188,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     *(undefined4 *)(iVar7 + 4) = 0;
     *(undefined4 *)piVar17[0x12] = 0xffffff;
     piVar17 = g_pUiResourceContext;
-    local_24 = (TUpDownPictureButton *)0xffffffff;
+    local_24 = (TStaticText *)0xffffffff;
     g_pUiResourceContext[0x18] = 10;
     piVar6 = (int *)CRect::CRect((CRect *)&pTStack_3c,0,0,0,0);
     piVar17[0x1a] = *piVar6;
@@ -28398,7 +28399,7 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     uStack_40 = 0;
     pTStack_48 = (TNoHilitePicture *)&local_1c;
     uStack_50 = 0;
-    local_24 = (TUpDownPictureButton *)0x150;
+    local_24 = (TStaticText *)0x150;
     local_20 = (TLineData *)0x7b;
     local_1c = 100;
     local_18 = 0x50;
@@ -28488,12 +28489,13 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     piVar17[0x1d] = piVar6[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_24 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
-    if (local_24 == (TUpDownPictureButton *)0x0) {
+    local_24 = (TStaticText *)AllocateWithFallbackHandler();
+    if (local_24 == (TStaticText *)0x0) {
       piVar17 = (int *)0x0;
     }
     else {
-      piVar17 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(local_24);
+      piVar17 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry
+                                 ((TUpDownPictureButton *)local_24);
     }
     piVar6 = piVar17;
     if (g_pUiResourceHead != (int *)0x0) {
@@ -28633,8 +28635,8 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar2 = pTVar16->vftable;
     pTVar16->controlTag = 0x626f7830;
     pTVar16->field3c = 0;
-    (*pTVar2[0x14].slot_0x04)();
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28671,9 +28673,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7831;
     pTVar16->field3c = 0;
     pTStack_c4 = (TCzechBox *)0x44b78c;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_c4 = (TCzechBox *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28710,9 +28712,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7832;
     pTVar16->field3c = 0;
     pTStack_dc = (TCzechBox *)0x44b8af;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_dc = (TCzechBox *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28749,9 +28751,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7833;
     pTVar16->field3c = 0;
     pTStack_f4 = (TCzechBox *)0x44b9d2;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_f4 = (TCzechBox *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28789,9 +28791,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7834;
     pTVar16->field3c = 0;
     puStack_10c = (undefined1 *)0x44baf5;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     puStack_10c = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28829,9 +28831,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7835;
     pTVar16->field3c = 0;
     puStack_124 = (undefined1 *)0x44bc18;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     puStack_124 = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -28869,9 +28871,9 @@ int * InitializeJoinSelectorDialogControlsAndNationSlots(undefined4 param_1,unde
     pTVar16->controlTag = 0x626f7836;
     pTVar16->field3c = 0;
     puStack_13c = (undefined1 *)0x44bd3b;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     puStack_13c = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar17 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar17 + 0x4d) = 1;
@@ -29672,8 +29674,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar3 = pTVar9->vftable;
     pTVar9->controlTag = 0x62757430;
     pTVar9->field3c = 0;
-    (*pTVar3[0x14].slot_0x04)();
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -29749,8 +29751,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -29884,10 +29886,10 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar9->controlTag = 0x62757431;
     pTVar9->field3c = 0;
     uStack_ec = 0x4505a5;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_ec = 0;
     puStack_f0 = (undefined1 *)0x1;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -29963,8 +29965,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -30099,10 +30101,10 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar9->controlTag = 0x62757432;
     pTVar9->field3c = 0;
     uStack_15c = 0x450b6e;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_15c = 0;
     puStack_160 = (undefined1 *)0x1;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -30178,8 +30180,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -30314,10 +30316,10 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar9->controlTag = 0x62757433;
     pTVar9->field3c = 0;
     uStack_1cc = 0x451137;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_1cc = 0;
     puStack_1d0 = (undefined1 *)0x1;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -30393,8 +30395,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -30529,10 +30531,10 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar9->controlTag = 0x62757434;
     pTVar9->field3c = 0;
     uStack_23c = 0x4516fc;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_23c = 0;
     puStack_240 = (undefined1 *)0x1;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -30608,8 +30610,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -30744,10 +30746,10 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar9->controlTag = 0x62757435;
     pTVar9->field3c = 0;
     uStack_2ac = 0x451cc5;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_2ac = 0;
     puStack_2b0 = (undefined1 *)0x1;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -30823,8 +30825,8 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     pTVar4 = pTVar10->vftable;
     pTVar10->controlTag = 0x6e756d62;
     pTVar10->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->VTableSlot29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     piVar7 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar7 + 0x4d) = 0;
@@ -31166,44 +31168,46 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
 {
   TDeluxeTextVtbl *pTVar1;
   TNoHilitePictureVtbl *pTVar2;
-  TMapKeyVtbl *pTVar3;
-  TMapKey *pTVar4;
-  TNoHilitePicture *pTVar5;
-  int iVar6;
-  TControl *pTVar7;
+  TStaticTextVtbl *pTVar3;
+  TMapKeyVtbl *pTVar4;
+  TMapKey *pTVar5;
+  TStaticText *pTVar6;
+  TNoHilitePicture *pTVar7;
+  int iVar8;
+  TControl *pTVar9;
   TPlaceCityDialog *this;
-  TStaticText *pTVar8;
-  TUpDownPictureButton *pTVar9;
-  TView *pTVar10;
+  TStaticText *pTVar10;
+  TUpDownPictureButton *pTVar11;
+  TView *pTVar12;
   TMapUberPicture *this_00;
   TToolBarCluster *this_01;
-  TPictureButton *pTVar11;
+  TPictureButton *pTVar13;
   TMapDialog *this_02;
-  TInfoBarText *pTVar12;
-  thunk_TPictureButton *ptVar13;
-  TLineData *pTVar14;
+  TInfoBarText *pTVar14;
+  thunk_TPictureButton *ptVar15;
+  TLineData *pTVar16;
   int *extraout_EAX;
-  TMyStaticText *pTVar15;
-  TCluster *pTVar16;
-  TCivilianButton *pTVar17;
-  TEditText *pTVar18;
+  TMyStaticText *pTVar17;
+  TCluster *pTVar18;
+  TCivilianButton *pTVar19;
+  TEditText *pTVar20;
   int *extraout_EAX_00;
   TGameSetupPicture *this_03;
   TGameSetupMultiplayerPicture *this_04;
   TSetupRandomMapPicture *this_05;
   TGWorldPartView *this_06;
-  TRadioText *pTVar19;
-  TMapPreviewView *pTVar20;
+  TRadioText *pTVar21;
+  TMapPreviewView *pTVar22;
   TClickZone *this_07;
-  TShipyardView *pTVar21;
-  TDropShadowText *pTVar22;
+  TShipyardView *pTVar23;
+  TDropShadowText *pTVar24;
   int *extraout_EAX_01;
-  TNoHilitePicture *pTVar23;
-  int *piVar24;
-  TMapKey *pTVar25;
+  TNoHilitePicture *pTVar25;
   int *piVar26;
-  TDeluxeText *pTVar27;
-  undefined4 uVar28;
+  int *piVar27;
+  TMapKey *this_08;
+  TDeluxeText *pTVar28;
+  undefined4 uVar29;
   undefined4 *unaff_FS_OFFSET;
   undefined1 *puStack_1ac;
   undefined4 uStack_1a8;
@@ -31226,9 +31230,9 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
   undefined1 *puStack_54;
   TMyStaticText *pTStack_50;
   char *pcStack_4c;
-  TNoHilitePicture *pTStack_48;
+  TPictureButton *pTStack_48;
   undefined4 local_24;
-  TPictureButton *local_20;
+  TStaticText *local_20;
   undefined4 local_1c;
   int local_18;
   undefined4 uStack_14;
@@ -31239,115 +31243,115 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   pTStack_8 = (TNoHilitePicture *)&LAB_0062c2e5;
-  iVar6 = (int)param_2;
+  iVar8 = (int)param_2;
   *unaff_FS_OFFSET = &local_c;
   g_pUiResourceHead = (int *)0x0;
-  if (iVar6 < 0x3c7) {
-    if (iVar6 == 0x3c6) {
-      pTVar7 = (TControl *)AllocateUiResourceNode();
+  if (iVar8 < 0x3c7) {
+    if (iVar8 == 0x3c6) {
+      pTVar9 = (TControl *)AllocateUiResourceNode();
       local_4 = 0x25;
-      if (pTVar7 != (TControl *)0x0) {
-        TControl::ConstructUiWindowResourceEntryBase(pTVar7);
+      if (pTVar9 != (TControl *)0x0) {
+        TControl::ConstructUiWindowResourceEntryBase(pTVar9);
       }
-      pTStack_48 = (TNoHilitePicture *)0xaf;
+      pTStack_48 = (TPictureButton *)0xaf;
       pcStack_4c = (char *)0x148;
       pTStack_50 = (TMyStaticText *)0x8a;
       puStack_54 = (undefined1 *)0xa0;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x1;
+      pTStack_48 = (TPictureButton *)0x1;
       pcStack_4c = (char *)0x0;
       pTStack_50 = (TMyStaticText *)0x2;
       puStack_54 = (undefined1 *)0x8;
       SetUiResourceContextFlagsAndMetrics();
-      pTStack_48 = (TNoHilitePicture *)0x45416e;
+      pTStack_48 = (TPictureButton *)0x45416e;
       ApplyUiResourceColorTripletFromContext();
       ClearUiResourceContext();
-      ptVar13 = (thunk_TPictureButton *)AllocateUiResourceNode();
+      ptVar15 = (thunk_TPictureButton *)AllocateUiResourceNode();
       local_4 = 0x26;
-      if (ptVar13 != (thunk_TPictureButton *)0x0) {
-        thunk_TPictureButton::TPictureButton(ptVar13);
+      if (ptVar15 != (thunk_TPictureButton *)0x0) {
+        thunk_TPictureButton::TPictureButton(ptVar15);
       }
-      pTStack_48 = (TNoHilitePicture *)0xaf;
+      pTStack_48 = (TPictureButton *)0xaf;
       pcStack_4c = (char *)0x14a;
       pTStack_50 = (TMyStaticText *)0x0;
       puStack_54 = (undefined1 *)0x0;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xa;
+      pTStack_48 = (TPictureButton *)0xa;
       pcStack_4c = (char *)0x4541de;
       SetUiResourceLayoutValues();
       ApplyUiResourceLayoutFromContext();
       ClearUiResourceContext();
-      pTVar8 = (TStaticText *)AllocateUiResourceNode();
+      pTVar10 = (TStaticText *)AllocateUiResourceNode();
       local_4 = 0x27;
-      if (pTVar8 != (TStaticText *)0x0) {
-        TStaticText::TStaticText(pTVar8);
+      if (pTVar10 != (TStaticText *)0x0) {
+        TStaticText::TStaticText(pTVar10);
       }
-      pTStack_48 = (TNoHilitePicture *)0x21;
+      pTStack_48 = (TPictureButton *)0x21;
       pcStack_4c = (char *)0x12d;
       pTStack_50 = (TMyStaticText *)0xe;
       puStack_54 = (undefined1 *)0xc;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xd;
+      pTStack_48 = (TPictureButton *)0xd;
       pcStack_4c = (char *)0x45425a;
       SetUiResourceLayoutValues();
       SetUiResourceContextTagWord();
-      pTStack_48 = (TNoHilitePicture *)0x3;
+      pTStack_48 = (TPictureButton *)0x3;
       pcStack_4c = (char *)&g_szEmptyString;
       pTStack_50 = (TMyStaticText *)0xffffffff;
       puStack_54 = (undefined1 *)0x514;
       BindUiResourceTextAndStyle();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar14 = (TLineData *)AllocateUiResourceNode();
+      pTVar16 = (TLineData *)AllocateUiResourceNode();
       local_4 = 0x28;
-      if (pTVar14 != (TLineData *)0x0) {
-        TLineData::ConstructUiGoldLabelResourceEntry(pTVar14);
+      if (pTVar16 != (TLineData *)0x0) {
+        TLineData::ConstructUiGoldLabelResourceEntry(pTVar16);
       }
-      pTStack_48 = (TNoHilitePicture *)0x55;
+      pTStack_48 = (TPictureButton *)0x55;
       pcStack_4c = (char *)0x122;
       pTStack_50 = (TMyStaticText *)0x34;
       puStack_54 = (undefined1 *)0x12;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x5;
+      pTStack_48 = (TPictureButton *)0x5;
       pcStack_4c = (char *)0x4542fe;
       SetUiResourceLayoutValues();
       SetUiResourceContextStringCode();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+      pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
       local_4 = 0x29;
-      if (pTVar9 != (TUpDownPictureButton *)0x0) {
-        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+      if (pTVar11 != (TUpDownPictureButton *)0x0) {
+        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
       }
-      pTStack_48 = (TNoHilitePicture *)0x18;
+      pTStack_48 = (TPictureButton *)0x18;
       pcStack_4c = (char *)0x3d;
       pTStack_50 = (TMyStaticText *)0x8b;
       puStack_54 = (undefined1 *)0xff;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x22;
+      pTStack_48 = (TPictureButton *)0x22;
       pcStack_4c = (char *)0x45438b;
       SetUiResourceLayoutValues();
       ApplyUiResourceLayoutFromContext();
       ClearUiResourceContext();
     }
     else {
-      if (iVar6 == 0x3b8) {
-        pTVar10 = (TView *)AllocateUiResourceNode();
+      if (iVar8 == 0x3b8) {
+        pTVar12 = (TView *)AllocateUiResourceNode();
         local_4 = 0x60;
-        if (pTVar10 != (TView *)0x0) {
-          TView::ConstructTViewBaseState(pTVar10);
+        if (pTVar12 != (TView *)0x0) {
+          TView::ConstructTViewBaseState(pTVar12);
         }
-        pTStack_48 = (TNoHilitePicture *)0x7d0;
+        pTStack_48 = (TPictureButton *)0x7d0;
         pcStack_4c = (char *)0x7d0;
         pTStack_50 = (TMyStaticText *)0x0;
         puStack_54 = (undefined1 *)0x0;
@@ -31360,7 +31364,7 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         if (this_00 != (TMapUberPicture *)0x0) {
           TMapUberPicture::ConstructTMapUberPictureBaseState(this_00);
         }
-        pTStack_48 = (TNoHilitePicture *)0x1e0;
+        pTStack_48 = (TPictureButton *)0x1e0;
         pcStack_4c = (char *)0x280;
         pTStack_50 = (TMyStaticText *)0x0;
         puStack_54 = (undefined1 *)0x0;
@@ -31368,7 +31372,7 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         RegisterUiResourceEntry();
         SetUiResourceStateFlags();
         ReplaceUiResourceContextPairBuffer();
-        pTStack_48 = (TNoHilitePicture *)0xa;
+        pTStack_48 = (TPictureButton *)0xa;
         pcStack_4c = (char *)0x453dce;
         SetUiResourceLayoutValues();
         ApplyUiResourceLayoutFromContext();
@@ -31378,49 +31382,49 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         if (this_01 != (TToolBarCluster *)0x0) {
           TToolBarCluster::ConstructTToolBarClusterBaseState(this_01);
         }
-        pTStack_48 = (TNoHilitePicture *)0x1e0;
+        pTStack_48 = (TPictureButton *)0x1e0;
         pcStack_4c = (char *)0x7b;
         pTStack_50 = (TMyStaticText *)0x0;
         puStack_54 = (undefined1 *)0x205;
         local_4 = 0xffffffff;
         RegisterUiResourceEntry();
         SetUiResourceStateFlags();
-        pTStack_48 = (TNoHilitePicture *)0x5;
+        pTStack_48 = (TPictureButton *)0x5;
         pcStack_4c = (char *)0x453e4c;
         SetUiResourceLayoutValues();
         SetUiResourceContextStringCode();
         ClearUiResourceContext();
-        pTVar11 = (TPictureButton *)AllocateUiResourceNode();
+        pTVar13 = (TPictureButton *)AllocateUiResourceNode();
         local_4 = 99;
-        if (pTVar11 != (TPictureButton *)0x0) {
-          TPictureButton::ConstructUiTabCursorPictureEntry(pTVar11);
+        if (pTVar13 != (TPictureButton *)0x0) {
+          TPictureButton::ConstructUiTabCursorPictureEntry(pTVar13);
         }
-        pTStack_48 = (TNoHilitePicture *)0x24;
+        pTStack_48 = (TPictureButton *)0x24;
         pcStack_4c = (char *)0x1a;
         pTStack_50 = (TMyStaticText *)0x8;
         puStack_54 = (undefined1 *)0x5b;
         local_4 = 0xffffffff;
         RegisterUiResourceEntry();
         SetUiResourceStateFlags();
-        pTStack_48 = (TNoHilitePicture *)0xa;
+        pTStack_48 = (TPictureButton *)0xa;
         pcStack_4c = (char *)0x453ec5;
         SetUiResourceLayoutValues();
         ApplyUiResourceLayoutFromContext();
         ClearUiResourceContext();
         PopUiResourcePoolNode_00479A80();
-        pTVar11 = (TPictureButton *)AllocateUiResourceNode();
+        pTVar13 = (TPictureButton *)AllocateUiResourceNode();
         local_4 = 100;
-        if (pTVar11 != (TPictureButton *)0x0) {
-          TPictureButton::ConstructUiTabCursorPictureEntry(pTVar11);
+        if (pTVar13 != (TPictureButton *)0x0) {
+          TPictureButton::ConstructUiTabCursorPictureEntry(pTVar13);
         }
-        pTStack_48 = (TNoHilitePicture *)0x24;
+        pTStack_48 = (TPictureButton *)0x24;
         pcStack_4c = (char *)0x53;
         pTStack_50 = (TMyStaticText *)0x8;
         puStack_54 = (undefined1 *)0x4;
         local_4 = 0xffffffff;
         RegisterUiResourceEntry();
         SetUiResourceStateFlags();
-        pTStack_48 = (TNoHilitePicture *)0xa;
+        pTStack_48 = (TPictureButton *)0xa;
         pcStack_4c = (char *)0x453f4b;
         SetUiResourceLayoutValues();
         ApplyUiResourceLayoutFromContext();
@@ -31432,7 +31436,7 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         if (this_02 != (TMapDialog *)0x0) {
           TMapDialog::InitializeCitySiteView(this_02);
         }
-        pTStack_48 = (TNoHilitePicture *)0x1c0;
+        pTStack_48 = (TPictureButton *)0x1c0;
         pcStack_4c = (char *)0x200;
         pTStack_50 = (TMyStaticText *)0x1b;
         puStack_54 = (undefined1 *)0x5;
@@ -31441,30 +31445,30 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         SetUiResourceStateFlags();
         ClearUiResourceContext();
         PopUiResourcePoolNode_00479A80();
-        pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+        pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
         local_4 = 0x66;
-        if (pTVar9 != (TUpDownPictureButton *)0x0) {
-          TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+        if (pTVar11 != (TUpDownPictureButton *)0x0) {
+          TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
         }
-        pTStack_48 = (TNoHilitePicture *)0xb;
+        pTStack_48 = (TPictureButton *)0xb;
         pcStack_4c = (char *)0x13;
         pTStack_50 = (TMyStaticText *)0xa;
         puStack_54 = (undefined1 *)0xdc;
         local_4 = 0xffffffff;
         RegisterUiResourceEntry();
         SetUiResourceStateFlags();
-        pTStack_48 = (TNoHilitePicture *)0xa;
+        pTStack_48 = (TPictureButton *)0xa;
         pcStack_4c = (char *)0x454052;
         SetUiResourceLayoutValues();
         ApplyUiResourceLayoutFromContext();
         ClearUiResourceContext();
         PopUiResourcePoolNode_00479A80();
-        pTVar12 = (TInfoBarText *)AllocateUiResourceNode();
+        pTVar14 = (TInfoBarText *)AllocateUiResourceNode();
         local_4 = 0x67;
-        if (pTVar12 != (TInfoBarText *)0x0) {
-          TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar12);
+        if (pTVar14 != (TInfoBarText *)0x0) {
+          TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar14);
         }
-        pTStack_48 = (TNoHilitePicture *)0x15;
+        pTStack_48 = (TPictureButton *)0x15;
         pcStack_4c = (char *)0x113;
         pTStack_50 = (TMyStaticText *)0x5;
         puStack_54 = (undefined1 *)0xf0;
@@ -31474,25 +31478,25 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
         ClearUiResourceContext();
         goto LAB_004594f7;
       }
-      if (iVar6 != 0x3b9) goto switchD_004543e3_caseD_5de;
-      pTVar7 = (TControl *)AllocateUiResourceNode();
+      if (iVar8 != 0x3b9) goto switchD_004543e3_caseD_5de;
+      pTVar9 = (TControl *)AllocateUiResourceNode();
       local_4 = 0x34;
-      if (pTVar7 != (TControl *)0x0) {
-        TControl::ConstructUiWindowResourceEntryBase(pTVar7);
+      if (pTVar9 != (TControl *)0x0) {
+        TControl::ConstructUiWindowResourceEntryBase(pTVar9);
       }
-      pTStack_48 = (TNoHilitePicture *)0xaf;
+      pTStack_48 = (TPictureButton *)0xaf;
       pcStack_4c = (char *)0x148;
       pTStack_50 = (TMyStaticText *)0x8a;
       puStack_54 = (undefined1 *)0xa0;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x1;
+      pTStack_48 = (TPictureButton *)0x1;
       pcStack_4c = (char *)0x0;
       pTStack_50 = (TMyStaticText *)0x2;
       puStack_54 = (undefined1 *)0x8;
       SetUiResourceContextFlagsAndMetrics();
-      pTStack_48 = (TNoHilitePicture *)0x453979;
+      pTStack_48 = (TPictureButton *)0x453979;
       ApplyUiResourceColorTripletFromContext();
       ClearUiResourceContext();
       this = (TPlaceCityDialog *)AllocateUiResourceNode();
@@ -31500,117 +31504,117 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
       if (this != (TPlaceCityDialog *)0x0) {
         TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(this);
       }
-      pTStack_48 = (TNoHilitePicture *)0xaf;
+      pTStack_48 = (TPictureButton *)0xaf;
       pcStack_4c = (char *)0x148;
       pTStack_50 = (TMyStaticText *)0x0;
       puStack_54 = (undefined1 *)0x0;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xa;
+      pTStack_48 = (TPictureButton *)0xa;
       pcStack_4c = (char *)0x4539e9;
       SetUiResourceLayoutValues();
       ApplyUiResourceLayoutFromContext();
       ClearUiResourceContext();
-      pTVar8 = (TStaticText *)AllocateUiResourceNode();
+      pTVar10 = (TStaticText *)AllocateUiResourceNode();
       local_4 = 0x36;
-      if (pTVar8 != (TStaticText *)0x0) {
-        TStaticText::TStaticText(pTVar8);
+      if (pTVar10 != (TStaticText *)0x0) {
+        TStaticText::TStaticText(pTVar10);
       }
-      pTStack_48 = (TNoHilitePicture *)0x1a;
+      pTStack_48 = (TPictureButton *)0x1a;
       pcStack_4c = (char *)0xee;
       pTStack_50 = (TMyStaticText *)0x11;
       puStack_54 = (undefined1 *)0x2e;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xd;
+      pTStack_48 = (TPictureButton *)0xd;
       pcStack_4c = (char *)0x453a65;
       SetUiResourceLayoutValues();
       SetUiResourceContextTagWord();
-      pTStack_48 = (TNoHilitePicture *)0x3;
+      pTStack_48 = (TPictureButton *)0x3;
       pcStack_4c = (char *)&g_szEmptyString;
       pTStack_50 = (TMyStaticText *)0xffffffff;
       puStack_54 = (undefined1 *)0x514;
       BindUiResourceTextAndStyle();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+      pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
       local_4 = 0x37;
-      if (pTVar9 != (TUpDownPictureButton *)0x0) {
-        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+      if (pTVar11 != (TUpDownPictureButton *)0x0) {
+        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
       }
-      pTStack_48 = (TNoHilitePicture *)0x18;
+      pTStack_48 = (TPictureButton *)0x18;
       pcStack_4c = (char *)0x3d;
       pTStack_50 = (TMyStaticText *)0x8e;
       puStack_54 = (undefined1 *)0xff;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x22;
+      pTStack_48 = (TPictureButton *)0x22;
       pcStack_4c = (char *)0x453b0d;
       SetUiResourceLayoutValues();
       ApplyUiResourceLayoutFromContext();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+      pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
       local_4 = 0x38;
-      if (pTVar9 != (TUpDownPictureButton *)0x0) {
-        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+      if (pTVar11 != (TUpDownPictureButton *)0x0) {
+        TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
       }
-      pTStack_48 = (TNoHilitePicture *)0x17;
+      pTStack_48 = (TPictureButton *)0x17;
       pcStack_4c = (char *)0x3d;
       pTStack_50 = (TMyStaticText *)0x8e;
       puStack_54 = (undefined1 *)0xd;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0x22;
+      pTStack_48 = (TPictureButton *)0x22;
       pcStack_4c = (char *)0x453b97;
       SetUiResourceLayoutValues();
       ApplyUiResourceLayoutFromContext();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar8 = (TStaticText *)AllocateUiResourceNode();
+      pTVar10 = (TStaticText *)AllocateUiResourceNode();
       local_4 = 0x39;
-      if (pTVar8 != (TStaticText *)0x0) {
-        TStaticText::TStaticText(pTVar8);
+      if (pTVar10 != (TStaticText *)0x0) {
+        TStaticText::TStaticText(pTVar10);
       }
-      pTStack_48 = (TNoHilitePicture *)0xe;
+      pTStack_48 = (TPictureButton *)0xe;
       pcStack_4c = (char *)0xa8;
       pTStack_50 = (TMyStaticText *)0x5c;
       puStack_54 = (undefined1 *)0x11;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xd;
+      pTStack_48 = (TPictureButton *)0xd;
       pcStack_4c = (char *)0x453c20;
       SetUiResourceLayoutValues();
       SetUiResourceContextTagWord();
-      pTStack_48 = (TNoHilitePicture *)0x3;
+      pTStack_48 = (TPictureButton *)0x3;
       pcStack_4c = (char *)&g_szEmptyString;
       pTStack_50 = (TMyStaticText *)0xffffffff;
       puStack_54 = (undefined1 *)0x514;
       BindUiResourceTextAndStyle();
       ClearUiResourceContext();
       PopUiResourcePoolNode_00479A80();
-      pTVar8 = (TStaticText *)AllocateUiResourceNode();
+      pTVar10 = (TStaticText *)AllocateUiResourceNode();
       local_4 = 0x3a;
-      if (pTVar8 != (TStaticText *)0x0) {
-        TStaticText::TStaticText(pTVar8);
+      if (pTVar10 != (TStaticText *)0x0) {
+        TStaticText::TStaticText(pTVar10);
       }
-      pTStack_48 = (TNoHilitePicture *)0x1d;
+      pTStack_48 = (TPictureButton *)0x1d;
       pcStack_4c = (char *)0x12b;
       pTStack_50 = (TMyStaticText *)0x3b;
       puStack_54 = (undefined1 *)0xe;
       local_4 = 0xffffffff;
       RegisterUiResourceEntry();
       SetUiResourceStateFlags();
-      pTStack_48 = (TNoHilitePicture *)0xd;
+      pTStack_48 = (TPictureButton *)0xd;
       pcStack_4c = (char *)0x453cc2;
       SetUiResourceLayoutValues();
       SetUiResourceContextTagWord();
-      pTStack_48 = (TNoHilitePicture *)0x3;
+      pTStack_48 = (TPictureButton *)0x3;
       pcStack_4c = (char *)&g_szEmptyString;
       pTStack_50 = (TMyStaticText *)0xffffffff;
       puStack_54 = (undefined1 *)0x514;
@@ -31621,317 +31625,316 @@ int * InitializeGameSetupScreenControlsAndModeTags(undefined4 param_1,short para
     PopUiResourcePoolNode_00479A80();
     goto LAB_00459511;
   }
-  if (0x5eb < iVar6) {
-    if (iVar6 != 20000) {
+  if (0x5eb < iVar8) {
+    if (iVar8 != 20000) {
 switchD_004543e3_caseD_5de:
       *unaff_FS_OFFSET = local_c;
       return (int *)0x0;
     }
-    pTVar10 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)AllocateWithFallbackHandler();
     local_4 = 0x19;
-    if (pTVar10 == (TView *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTVar12 == (TView *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar10);
-      piVar26 = extraout_EAX_01;
+      TView::ConstructTViewBaseState(pTVar12);
+      piVar27 = extraout_EAX_01;
     }
     local_4 = 0xffffffff;
     if (g_pUiResourceHead == (int *)0x0) {
-      uVar28 = 0;
-      g_pUiResourceHead = piVar26;
+      uVar29 = 0;
+      g_pUiResourceHead = piVar27;
     }
     else {
-      uVar28 = *(undefined4 *)(DAT_006a13e8 + 8);
+      uVar29 = *(undefined4 *)(DAT_006a13e8 + 8);
     }
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)&local_24;
+    pTStack_48 = (TPictureButton *)&local_24;
     pTStack_50 = (TMyStaticText *)0x0;
     local_1c = 2000;
     local_18 = 2000;
     local_24 = 0;
-    local_20 = (TPictureButton *)0x0;
+    local_20 = (TStaticText *)0x0;
     puStack_54 = (undefined1 *)0x458d76;
-    pcStack_4c = (char *)uVar28;
+    pcStack_4c = (char *)uVar29;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x62617365;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    pTStack_48 = (TNoHilitePicture *)0x458d97;
-    (**(code **)(iVar6 + 0xa8))();
-    pTStack_48 = (TNoHilitePicture *)0x94;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x62617365;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    pTStack_48 = (TPictureButton *)0x458d97;
+    (**(code **)(iVar8 + 0xa8))();
+    pTStack_48 = (TPictureButton *)0x94;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x458db4;
-    pTVar23 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
     uStack_14 = 0x1a;
-    pTStack_8 = pTVar23;
-    if (pTVar23 == (TNoHilitePicture *)0x0) {
-      pTVar23 = (TNoHilitePicture *)0x0;
+    pTStack_8 = pTVar25;
+    if (pTVar25 == (TNoHilitePicture *)0x0) {
+      pTVar25 = (TNoHilitePicture *)0x0;
     }
     else {
-      pTStack_48 = (TNoHilitePicture *)0x458dd0;
-      thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)pTVar23);
-      pTVar23->vftable = (TNoHilitePictureVtbl *)&TSpecialQuitPictureVtbl_00643c78;
-      *(undefined2 *)&pTVar23->field_0x90 = 0;
+      pTStack_48 = (TPictureButton *)0x458dd0;
+      thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)pTVar25);
+      pTVar25->vftable = (TNoHilitePictureVtbl *)&TSpecialQuitPictureVtbl_00643c78;
+      *(undefined2 *)&pTVar25->field_0x90 = 0;
     }
     uStack_14 = 0xffffffff;
-    pTVar5 = pTVar23;
+    pTVar7 = pTVar25;
     if (g_pUiResourceHead != (int *)0x0) {
-      pTVar5 = (TNoHilitePicture *)g_pUiResourceHead;
+      pTVar7 = (TNoHilitePicture *)g_pUiResourceHead;
     }
-    g_pUiResourceHead = (int *)pTVar5;
+    g_pUiResourceHead = (int *)pTVar7;
     pcStack_4c = (char *)0x458e11;
-    g_pUiResourceContext = (int *)pTVar23;
-    pTStack_48 = pTVar23;
+    g_pUiResourceContext = (int *)pTVar25;
+    pTStack_48 = (TPictureButton *)pTVar25;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)0x1;
+    pTStack_48 = (TPictureButton *)0x1;
     pcStack_4c = (char *)0x0;
     puStack_54 = &stack0xffffffd4;
     pTStack_50 = (TMyStaticText *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    pTVar2 = pTVar23->vftable;
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTVar2 = pTVar25->vftable;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)0x1;
-    pTVar23->controlTag = 0x6d61696e;
-    pTVar23->field3c = 0;
+    pTVar25->controlTag = 0x6d61696e;
+    pTVar25->field3c = 0;
     pTStack_50 = (TMyStaticText *)0x458e57;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x1;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
-    piVar26 = g_pUiResourceContext;
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     FreeHeapBufferIfNotNull();
     local_18 = AllocateWithFallbackHandler();
     local_24 = 0x1b;
     if (local_18 == 0) {
-      iVar6 = 0;
+      iVar8 = 0;
     }
     else {
-      iVar6 = ZeroUiResourceContextStyleBytes();
+      iVar8 = ZeroUiResourceContextStyleBytes();
     }
-    piVar26[0x12] = iVar6;
-    *(undefined4 *)(iVar6 + 4) = 0;
-    *(undefined4 *)piVar26[0x12] = 0xffffff;
-    piVar26 = g_pUiResourceContext;
+    piVar27[0x12] = iVar8;
+    *(undefined4 *)(iVar8 + 4) = 0;
+    *(undefined4 *)piVar27[0x12] = 0xffffff;
+    piVar27 = g_pUiResourceContext;
     local_24 = 0xffffffff;
     g_pUiResourceContext[0x18] = 10;
     uStack_68 = 0x458ed3;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    pTVar25 = (TMapKey *)AllocateWithFallbackHandler();
-    local_20 = (TPictureButton *)pTVar25;
-    if (pTVar25 == (TMapKey *)0x0) {
-      pTVar25 = (TMapKey *)0x0;
+    pTVar10 = (TStaticText *)AllocateWithFallbackHandler();
+    local_20 = pTVar10;
+    if (pTVar10 == (TStaticText *)0x0) {
+      pTVar10 = (TStaticText *)0x0;
     }
     else {
-      TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(pTVar25);
+      TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20((TMapKey *)pTVar10);
       ClearColorRgbaBytes();
       ClearColorRgbaBytes();
       uStack_68 = 0;
-      pTVar25->vftable = (TMapKeyVtbl *)&TDeluxeTextVtbl_006406d8;
+      pTVar10->vftable = (TStaticTextVtbl *)&TDeluxeTextVtbl_006406d8;
       puStack_6c = (undefined1 *)0x458f5b;
-      piVar26 = (int *)SetColorRgbAndClearAlphaByte();
-      iVar6 = *piVar26;
-      *(undefined1 *)&pTVar25[1].field0c = 0;
-      pTVar25[1].field04 = iVar6;
+      piVar27 = (int *)SetColorRgbAndClearAlphaByte();
+      iVar8 = *piVar27;
+      *(undefined1 *)&pTVar10[1].field0c = 0;
+      pTVar10[1].field04 = iVar8;
     }
-    pTVar4 = pTVar25;
+    pTVar6 = pTVar10;
     if (g_pUiResourceHead != (int *)0x0) {
-      pTVar4 = (TMapKey *)g_pUiResourceHead;
+      pTVar6 = (TStaticText *)g_pUiResourceHead;
     }
-    g_pUiResourceHead = (int *)pTVar4;
-    g_pUiResourceContext = (int *)pTVar25;
+    g_pUiResourceHead = (int *)pTVar6;
+    g_pUiResourceContext = (int *)pTVar10;
     PushUiResourcePoolNode();
     puStack_6c = &stack0xffffffbc;
     uStack_68 = 0;
     pcStack_4c = (char *)0x7;
-    pTStack_48 = (TNoHilitePicture *)0x6;
+    pTStack_48 = (TPictureButton *)0x6;
     InitializeUiResourceEntryFrameAndParent();
-    pTVar3 = pTVar25->vftable;
-    pTVar25->controlTag = 0x73616c65;
-    pTVar25->field3c = 0;
+    pTVar3 = pTVar10->vftable;
+    pTVar10->controlTag = 0x73616c65;
+    pTVar10->field3c = 0;
     uStack_68 = 0x458fe8;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     uStack_68 = 0;
     puStack_6c = (undefined1 *)0x0;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TPictureButton *)AllocateWithFallbackHandler();
-    if (pTVar11 == (TPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar13 = (TPictureButton *)AllocateWithFallbackHandler();
+    if (pTVar13 == (TPictureButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTVar11);
+      piVar27 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTVar13);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_54 = (undefined1 *)0x61;
     pTStack_50 = (TMyStaticText *)0x25;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x73686f77;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x73686f77;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 10;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff9c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff9c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTStack_48 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTStack_48 = (TPictureButton *)AllocateWithFallbackHandler();
     puStack_54 = (undefined1 *)0x1f;
-    if (pTStack_48 == (TNoHilitePicture *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTStack_48 == (TPictureButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry
-                                 ((TPictureButton *)pTStack_48);
+      piVar27 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTStack_48);
     }
     puStack_54 = (undefined1 *)0xffffffff;
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_6c = (undefined1 *)0x61;
     uStack_68 = 0x25;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x71756974;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x71756974;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 10;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff84,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff84,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar25 = (TMapKey *)AllocateWithFallbackHandler();
+    this_08 = (TMapKey *)AllocateWithFallbackHandler();
     puStack_6c = (undefined1 *)0x20;
-    if (pTVar25 == (TMapKey *)0x0) {
-      pTVar25 = (TMapKey *)0x0;
+    if (this_08 == (TMapKey *)0x0) {
+      this_08 = (TMapKey *)0x0;
     }
     else {
-      TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(pTVar25);
+      TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(this_08);
       puStack_6c = (undefined1 *)CONCAT31(puStack_6c._1_3_,0x21);
       ClearColorRgbaBytes();
       ClearColorRgbaBytes();
-      pTVar25->vftable = (TMapKeyVtbl *)&TDeluxeTextVtbl_006406d8;
-      piVar26 = (int *)SetColorRgbAndClearAlphaByte();
-      iVar6 = *piVar26;
-      *(undefined1 *)&pTVar25[1].field0c = 0;
-      pTVar25[1].field04 = iVar6;
+      this_08->vftable = (TMapKeyVtbl *)&TDeluxeTextVtbl_006406d8;
+      piVar27 = (int *)SetColorRgbAndClearAlphaByte();
+      iVar8 = *piVar27;
+      *(undefined1 *)&this_08[1].field0c = 0;
+      this_08[1].field04 = iVar8;
     }
     puStack_6c = (undefined1 *)0xffffffff;
-    pTVar4 = pTVar25;
-    g_pUiResourceContext = (int *)pTVar25;
+    pTVar5 = this_08;
+    g_pUiResourceContext = (int *)this_08;
     if (g_pUiResourceHead != (int *)0x0) {
       GetUiLinkedListNodePayload();
-      pTVar4 = (TMapKey *)g_pUiResourceHead;
+      pTVar5 = (TMapKey *)g_pUiResourceHead;
     }
-    g_pUiResourceHead = (int *)pTVar4;
+    g_pUiResourceHead = (int *)pTVar5;
     PushUiLinkedListNodeWithPayload();
     SetUiResourcePairValues();
     SetUiResourcePairValues();
     InitializeUiResourceEntryFrameAndParent();
-    pTVar3 = pTVar25->vftable;
-    pTVar25->controlTag = 0x72657175;
-    pTVar25->field3c = 0;
-    (*pTVar3[0x14].slot_0x04)();
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    pTVar4 = this_08->vftable;
+    this_08->controlTag = 0x72657175;
+    this_08->field3c = 0;
+    (*pTVar4->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TStaticText *)AllocateUiResourceNode();
+    pTVar10 = (TStaticText *)AllocateUiResourceNode();
     local_4 = 0x22;
-    if (pTVar8 != (TStaticText *)0x0) {
-      TStaticText::TStaticText(pTVar8);
+    if (pTVar10 != (TStaticText *)0x0) {
+      TStaticText::TStaticText(pTVar10);
     }
-    pTStack_48 = (TNoHilitePicture *)0x17;
+    pTStack_48 = (TPictureButton *)0x17;
     pcStack_4c = (char *)0x8a;
     pTStack_50 = (TMyStaticText *)0x1be;
     puStack_54 = (undefined1 *)0x33;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4593af;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TStaticText *)AllocateUiResourceNode();
+    pTVar10 = (TStaticText *)AllocateUiResourceNode();
     local_4 = 0x23;
-    if (pTVar8 != (TStaticText *)0x0) {
-      TStaticText::TStaticText(pTVar8);
+    if (pTVar10 != (TStaticText *)0x0) {
+      TStaticText::TStaticText(pTVar10);
     }
-    pTStack_48 = (TNoHilitePicture *)0x17;
+    pTStack_48 = (TPictureButton *)0x17;
     pcStack_4c = (char *)0x8a;
     pTStack_50 = (TMyStaticText *)0x1bd;
     puStack_54 = (undefined1 *)0x1cb;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x459456;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar27 = (TDeluxeText *)AllocateUiResourceNode();
+    pTVar28 = (TDeluxeText *)AllocateUiResourceNode();
     local_4 = 0x24;
-    if (pTVar27 != (TDeluxeText *)0x0) {
-      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar27);
+    if (pTVar28 != (TDeluxeText *)0x0) {
+      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar28);
     }
-    pTStack_48 = (TNoHilitePicture *)0x25;
+    pTStack_48 = (TPictureButton *)0x25;
     pcStack_4c = (char *)0x177;
     pTStack_50 = (TMyStaticText *)0x6;
     puStack_54 = (undefined1 *)0x84;
@@ -31941,13 +31944,13 @@ switchD_004543e3_caseD_5de:
     ClearUiResourceContext();
     goto LAB_004594f7;
   }
-  if (iVar6 == 0x5eb) {
-    pTVar10 = (TView *)AllocateUiResourceNode();
+  if (iVar8 == 0x5eb) {
+    pTVar12 = (TView *)AllocateUiResourceNode();
     local_4 = 0x72;
-    if (pTVar10 != (TView *)0x0) {
-      TView::ConstructTViewBaseState(pTVar10);
+    if (pTVar12 != (TView *)0x0) {
+      TView::ConstructTViewBaseState(pTVar12);
     }
-    pTStack_48 = (TNoHilitePicture *)0x7d0;
+    pTStack_48 = (TPictureButton *)0x7d0;
     pcStack_4c = (char *)0x7d0;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -31955,12 +31958,12 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ClearUiResourceContext();
-    pTVar21 = (TShipyardView *)AllocateUiResourceNode();
+    pTVar23 = (TShipyardView *)AllocateUiResourceNode();
     local_4 = 0x73;
-    if (pTVar21 != (TShipyardView *)0x0) {
-      TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(pTVar21);
+    if (pTVar23 != (TShipyardView *)0x0) {
+      TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(pTVar23);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e0;
+    pTStack_48 = (TPictureButton *)0x1e0;
     pcStack_4c = (char *)0x280;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -31968,636 +31971,636 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x457ba5;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x74;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0xa5;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457c21;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x75;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0xdb;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457cc2;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x76;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x111;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457d63;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x77;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x30;
+    pTStack_48 = (TPictureButton *)0x30;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x135;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457e04;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x78;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0xa5;
     puStack_54 = (undefined1 *)0x1a0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457ea8;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x79;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0xdb;
     puStack_54 = (undefined1 *)0x1a0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457f4c;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7a;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x20;
+    pTStack_48 = (TPictureButton *)0x20;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x109;
     puStack_54 = (undefined1 *)0x1a0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457ff0;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7b;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x20;
+    pTStack_48 = (TPictureButton *)0x20;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x149;
     puStack_54 = (undefined1 *)0x1a0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458094;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7c;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x17f;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458135;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7d;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x17d;
     puStack_54 = (undefined1 *)0x158;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4581d9;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7e;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x196;
     puStack_54 = (undefined1 *)0x158;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x45827d;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x7f;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x18;
+    pTStack_48 = (TPictureButton *)0x18;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x1b8;
     puStack_54 = (undefined1 *)0x15a;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458321;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x80;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0xa5;
     puStack_54 = (undefined1 *)0xe9;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4583c5;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x81;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0xdb;
     puStack_54 = (undefined1 *)0xe9;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458469;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x82;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x111;
     puStack_54 = (undefined1 *)0xe9;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x45850d;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x83;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x145;
     puStack_54 = (undefined1 *)0xea;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4585b1;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x84;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x17f;
     puStack_54 = (undefined1 *)0xe9;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458655;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x85;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0xa5;
     puStack_54 = (undefined1 *)0x213;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4586f9;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x86;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0xdb;
     puStack_54 = (undefined1 *)0x213;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x45879d;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x87;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x111;
     puStack_54 = (undefined1 *)0x213;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458841;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x88;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x151;
     puStack_54 = (undefined1 *)0x213;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4588e5;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x89;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x17d;
     puStack_54 = (undefined1 *)0x213;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458989;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x8a;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x195;
     puStack_54 = (undefined1 *)0x214;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458a2d;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x8b;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x18;
+    pTStack_48 = (TPictureButton *)0x18;
     pcStack_4c = (char *)0x49;
     pTStack_50 = (TMyStaticText *)0x1b8;
     puStack_54 = (undefined1 *)0x214;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458ad1;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x8c;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x48;
+    pTStack_48 = (TPictureButton *)0x48;
     pcStack_4c = (char *)0x18c;
     pTStack_50 = (TMyStaticText *)0x2c;
     puStack_54 = (undefined1 *)0x82;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458b75;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x8d;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x78;
     pTStack_50 = (TMyStaticText *)0x7f;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x458c14;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Static_Text_00694354;
     pTStack_50 = (TMyStaticText *)0x3;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TPictureButton *)AllocateUiResourceNode();
+    pTVar13 = (TPictureButton *)AllocateUiResourceNode();
     local_4 = 0x8e;
-    if (pTVar11 != (TPictureButton *)0x0) {
-      TPictureButton::ConstructUiTabCursorPictureEntry(pTVar11);
+    if (pTVar13 != (TPictureButton *)0x0) {
+      TPictureButton::ConstructUiTabCursorPictureEntry(pTVar13);
     }
-    pTStack_48 = (TNoHilitePicture *)0x34;
+    pTStack_48 = (TPictureButton *)0x34;
     pcStack_4c = (char *)0x1f;
     pTStack_50 = (TMyStaticText *)0x26;
     puStack_54 = (undefined1 *)0x7;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x458cb2;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
     goto LAB_004594f7;
   }
-  switch(iVar6) {
+  switch(iVar8) {
   case 0x5dc:
-    pTVar10 = (TView *)AllocateUiResourceNode();
+    pTVar12 = (TView *)AllocateUiResourceNode();
     local_4 = 0x2a;
-    if (pTVar10 != (TView *)0x0) {
-      TView::ConstructTViewBaseState(pTVar10);
+    if (pTVar12 != (TView *)0x0) {
+      TView::ConstructTViewBaseState(pTVar12);
     }
-    pTStack_48 = (TNoHilitePicture *)0x7d0;
+    pTStack_48 = (TPictureButton *)0x7d0;
     pcStack_4c = (char *)0x7d0;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -32610,7 +32613,7 @@ switchD_004543e3_caseD_5de:
     if (this_03 != (TGameSetupPicture *)0x0) {
       TGameSetupPicture::ConstructTGameSetupPictureBaseState(this_03);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e0;
+    pTStack_48 = (TPictureButton *)0x1e0;
     pcStack_4c = (char *)0x280;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -32618,102 +32621,102 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x455dd8;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x2c;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x54;
+    pTStack_48 = (TPictureButton *)0x54;
     pcStack_4c = (char *)0x89;
     pTStack_50 = (TMyStaticText *)0x6f;
     puStack_54 = (undefined1 *)0x3d;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x455e54;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x2d;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xab;
+    pTStack_48 = (TPictureButton *)0xab;
     pcStack_4c = (char *)0x8a;
     pTStack_50 = (TMyStaticText *)0xd1;
     puStack_54 = (undefined1 *)0xe;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x455ed6;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x2e;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x8c;
+    pTStack_48 = (TPictureButton *)0x8c;
     pcStack_4c = (char *)0x8f;
     pTStack_50 = (TMyStaticText *)0x102;
     puStack_54 = (undefined1 *)0x1ca;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x455f5b;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x2f;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x4e;
+    pTStack_48 = (TPictureButton *)0x4e;
     pcStack_4c = (char *)0xa4;
     pTStack_50 = (TMyStaticText *)0x71;
     puStack_54 = (undefined1 *)0x1c0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x455fda;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x30;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x48;
+    pTStack_48 = (TPictureButton *)0x48;
     pcStack_4c = (char *)0x9c;
     pTStack_50 = (TMyStaticText *)0x18d;
     puStack_54 = (undefined1 *)0x1;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x456059;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TInfoBarText *)AllocateUiResourceNode();
+    pTVar14 = (TInfoBarText *)AllocateUiResourceNode();
     local_4 = 0x31;
-    if (pTVar12 != (TInfoBarText *)0x0) {
-      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar12);
+    if (pTVar14 != (TInfoBarText *)0x0) {
+      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar14);
     }
-    pTStack_48 = (TNoHilitePicture *)0x34;
+    pTStack_48 = (TPictureButton *)0x34;
     pcStack_4c = (char *)0x112;
     pTStack_50 = (TMyStaticText *)0x1a8;
     puStack_54 = (undefined1 *)0xb4;
@@ -32722,47 +32725,47 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x32;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xc3;
+    pTStack_48 = (TPictureButton *)0xc3;
     pcStack_4c = (char *)0xc3;
     pTStack_50 = (TMyStaticText *)0x66;
     puStack_54 = (undefined1 *)0xdd;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x45614e;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x33;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x49;
+    pTStack_48 = (TPictureButton *)0x49;
     pcStack_4c = (char *)0x64;
     pTStack_50 = (TMyStaticText *)0x18f;
     puStack_54 = (undefined1 *)0x21c;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4561cd;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     break;
   case 0x5dd:
-    pTVar10 = (TView *)AllocateUiResourceNode();
+    pTVar12 = (TView *)AllocateUiResourceNode();
     local_4 = 0x46;
-    if (pTVar10 != (TView *)0x0) {
-      TView::ConstructTViewBaseState(pTVar10);
+    if (pTVar12 != (TView *)0x0) {
+      TView::ConstructTViewBaseState(pTVar12);
     }
-    pTStack_48 = (TNoHilitePicture *)0x7d0;
+    pTStack_48 = (TPictureButton *)0x7d0;
     pcStack_4c = (char *)0x7d0;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -32775,7 +32778,7 @@ switchD_004543e3_caseD_5de:
     if (this_05 != (TSetupRandomMapPicture *)0x0) {
       TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(this_05);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e0;
+    pTStack_48 = (TPictureButton *)0x1e0;
     pcStack_4c = (char *)0x280;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -32783,17 +32786,17 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x45683f;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
-    pTVar12 = (TInfoBarText *)AllocateUiResourceNode();
+    pTVar14 = (TInfoBarText *)AllocateUiResourceNode();
     local_4 = 0x48;
-    if (pTVar12 != (TInfoBarText *)0x0) {
-      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar12);
+    if (pTVar14 != (TInfoBarText *)0x0) {
+      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar14);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1b;
+    pTStack_48 = (TPictureButton *)0x1b;
     pcStack_4c = (char *)0xee;
     pTStack_50 = (TMyStaticText *)0x16;
     puStack_54 = (undefined1 *)0x24;
@@ -32802,29 +32805,29 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCluster *)AllocateUiResourceNode();
+    pTVar18 = (TCluster *)AllocateUiResourceNode();
     local_4 = 0x49;
-    if (pTVar16 != (TCluster *)0x0) {
-      TCluster::ConstructUiResourceEntryType4B0C0(pTVar16);
+    if (pTVar18 != (TCluster *)0x0) {
+      TCluster::ConstructUiResourceEntryType4B0C0(pTVar18);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1d2;
+    pTStack_48 = (TPictureButton *)0x1d2;
     pcStack_4c = (char *)0x159;
     pTStack_50 = (TMyStaticText *)0x4;
     puStack_54 = (undefined1 *)0x120;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x5;
+    pTStack_48 = (TPictureButton *)0x5;
     pcStack_4c = (char *)0x45692e;
     SetUiResourceLayoutValues();
     SetUiResourceContextStringCode();
     ClearUiResourceContext();
-    pTVar20 = (TMapPreviewView *)AllocateUiResourceNode();
+    pTVar22 = (TMapPreviewView *)AllocateUiResourceNode();
     local_4 = 0x4a;
-    if (pTVar20 != (TMapPreviewView *)0x0) {
-      TMapPreviewView::ConstructUiPlanetListResourceEntry(pTVar20);
+    if (pTVar22 != (TMapPreviewView *)0x0) {
+      TMapPreviewView::ConstructUiPlanetListResourceEntry(pTVar22);
     }
-    pTStack_48 = (TNoHilitePicture *)0xb4;
+    pTStack_48 = (TPictureButton *)0xb4;
     pcStack_4c = (char *)0x144;
     pTStack_50 = (TMyStaticText *)0xa;
     puStack_54 = (undefined1 *)0xe;
@@ -32833,23 +32836,23 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x4b;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x90;
     pTStack_50 = (TMyStaticText *)0xe6;
     puStack_54 = (undefined1 *)0x42;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456a1b;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)&g_szEmptyString;
     pTStack_50 = (TMyStaticText *)0xffffffff;
     puStack_54 = (undefined1 *)0x514;
@@ -32861,7 +32864,7 @@ switchD_004543e3_caseD_5de:
     if (this_06 != (TGWorldPartView *)0x0) {
       TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(this_06);
     }
-    pTStack_48 = (TNoHilitePicture *)0x18;
+    pTStack_48 = (TPictureButton *)0x18;
     pcStack_4c = (char *)0x20;
     pTStack_50 = (TMyStaticText *)0xe1;
     puStack_54 = (undefined1 *)0x19;
@@ -32870,23 +32873,23 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar18 = (TEditText *)AllocateUiResourceNode();
+    pTVar20 = (TEditText *)AllocateUiResourceNode();
     local_4 = 0x4d;
-    if (pTVar18 != (TEditText *)0x0) {
-      TEditText::ConstructUiNumericTextEntryBase(pTVar18);
+    if (pTVar20 != (TEditText *)0x0) {
+      TEditText::ConstructUiNumericTextEntryBase(pTVar20);
     }
-    pTStack_48 = (TNoHilitePicture *)0x16;
+    pTStack_48 = (TPictureButton *)0x16;
     pcStack_4c = (char *)0x132;
     pTStack_50 = (TMyStaticText *)0xf9;
     puStack_54 = (undefined1 *)0x17;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x6;
+    pTStack_48 = (TPictureButton *)0x6;
     pcStack_4c = (char *)0x456b2d;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)&g_szEmptyString;
     pTStack_50 = (TMyStaticText *)0xffffffff;
     puStack_54 = (undefined1 *)0x514;
@@ -32894,150 +32897,150 @@ switchD_004543e3_caseD_5de:
     UpdateUiResourceContextMetricWord27();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     local_4 = 0x4e;
-    if (pTVar9 != (TUpDownPictureButton *)0x0) {
-      TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+    if (pTVar11 != (TUpDownPictureButton *)0x0) {
+      TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e;
+    pTStack_48 = (TPictureButton *)0x1e;
     pcStack_4c = (char *)0x60;
     pTStack_50 = (TMyStaticText *)0x1a2;
     puStack_54 = (undefined1 *)0x80;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x456bdb;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TLineData *)AllocateUiResourceNode();
+    pTVar16 = (TLineData *)AllocateUiResourceNode();
     local_4 = 0x4f;
-    if (pTVar14 != (TLineData *)0x0) {
-      TLineData::ConstructUiGoldLabelResourceEntry(pTVar14);
+    if (pTVar16 != (TLineData *)0x0) {
+      TLineData::ConstructUiGoldLabelResourceEntry(pTVar16);
     }
-    pTStack_48 = (TNoHilitePicture *)0x54;
+    pTStack_48 = (TPictureButton *)0x54;
     pcStack_4c = (char *)0x12e;
     pTStack_50 = (TMyStaticText *)0x12a;
     puStack_54 = (undefined1 *)0x19;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x5;
+    pTStack_48 = (TPictureButton *)0x5;
     pcStack_4c = (char *)0x456c67;
     SetUiResourceLayoutValues();
     SetUiResourceContextStringCode();
     ClearUiResourceContext();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x50;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x12a;
     pTStack_50 = (TMyStaticText *)0x2;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456ce4;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Introductory_00694a58;
     pTStack_50 = (TMyStaticText *)0xc;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x51;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x12a;
     pTStack_50 = (TMyStaticText *)0x12;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456d87;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = &DAT_00694a50;
     pTStack_50 = (TMyStaticText *)0xd;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x52;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x12a;
     pTStack_50 = (TMyStaticText *)0x22;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456e2a;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Normal_00694a48;
     pTStack_50 = (TMyStaticText *)0xe;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x53;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x12a;
     pTStack_50 = (TMyStaticText *)0x32;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456ecd;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = &DAT_00694a40;
     pTStack_50 = (TMyStaticText *)0x11;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x54;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x12a;
     pTStack_50 = (TMyStaticText *)0x42;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x456f70;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Nigh_On_Impossible_00694a28;
     pTStack_50 = (TMyStaticText *)0x12;
     puStack_54 = (undefined1 *)0x514;
@@ -33045,109 +33048,109 @@ switchD_004543e3_caseD_5de:
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x55;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x12;
+    pTStack_48 = (TPictureButton *)0x12;
     pcStack_4c = (char *)0x9f;
     pTStack_50 = (TMyStaticText *)0x116;
     puStack_54 = (undefined1 *)0x1a;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457022;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Difficulty_Setting_00694a10;
     pTStack_50 = (TMyStaticText *)0x13;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x56;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x3f;
     pTStack_50 = (TMyStaticText *)0x188;
     puStack_54 = (undefined1 *)0x1a;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4570c3;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Names__00694a08;
     pTStack_50 = (TMyStaticText *)0x2;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TLineData *)AllocateUiResourceNode();
+    pTVar16 = (TLineData *)AllocateUiResourceNode();
     local_4 = 0x57;
-    if (pTVar14 != (TLineData *)0x0) {
-      TLineData::ConstructUiGoldLabelResourceEntry(pTVar14);
+    if (pTVar16 != (TLineData *)0x0) {
+      TLineData::ConstructUiGoldLabelResourceEntry(pTVar16);
     }
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0xeb;
     pTStack_50 = (TMyStaticText *)0x186;
     puStack_54 = (undefined1 *)0x5b;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x5;
+    pTStack_48 = (TPictureButton *)0x5;
     pcStack_4c = (char *)0x457167;
     SetUiResourceLayoutValues();
     SetUiResourceContextStringCode();
     ClearUiResourceContext();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x58;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x73;
     pTStack_50 = (TMyStaticText *)0x2;
     puStack_54 = (undefined1 *)0x2;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4571e1;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Historical_006949f8;
     pTStack_50 = (TMyStaticText *)0x7;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar19 = (TRadioText *)AllocateUiResourceNode();
+    pTVar21 = (TRadioText *)AllocateUiResourceNode();
     local_4 = 0x59;
-    if (pTVar19 != (TRadioText *)0x0) {
-      TRadioText::ConstructSelectableTextOptionEntry(pTVar19);
+    if (pTVar21 != (TRadioText *)0x0) {
+      TRadioText::ConstructSelectableTextOptionEntry(pTVar21);
     }
-    pTStack_48 = (TNoHilitePicture *)0x10;
+    pTStack_48 = (TPictureButton *)0x10;
     pcStack_4c = (char *)0x73;
     pTStack_50 = (TMyStaticText *)0x2;
     puStack_54 = (undefined1 *)0x76;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457281;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_Random_006949f0;
     pTStack_50 = (TMyStaticText *)0x8;
     puStack_54 = (undefined1 *)0x514;
@@ -33156,111 +33159,111 @@ switchD_004543e3_caseD_5de:
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x5a;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xe;
+    pTStack_48 = (TPictureButton *)0xe;
     pcStack_4c = (char *)0xe;
     pTStack_50 = (TMyStaticText *)0x119;
     puStack_54 = (undefined1 *)0x109;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x457340;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar8 = (TStaticText *)AllocateUiResourceNode();
+    pTVar10 = (TStaticText *)AllocateUiResourceNode();
     local_4 = 0x5b;
-    if (pTVar8 != (TStaticText *)0x0) {
-      TStaticText::TStaticText(pTVar8);
+    if (pTVar10 != (TStaticText *)0x0) {
+      TStaticText::TStaticText(pTVar10);
     }
-    pTStack_48 = (TNoHilitePicture *)0x29;
+    pTStack_48 = (TPictureButton *)0x29;
     pcStack_4c = (char *)0x41;
     pTStack_50 = (TMyStaticText *)0x42;
     puStack_54 = (undefined1 *)0xd9;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4573bb;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = s_All_AutoGP_s_006949e0;
     pTStack_50 = (TMyStaticText *)0x1;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x5c;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x4e;
+    pTStack_48 = (TPictureButton *)0x4e;
     pcStack_4c = (char *)0x92;
     pTStack_50 = (TMyStaticText *)0x37;
     puStack_54 = (undefined1 *)0x2a;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x45745c;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x5d;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xea;
+    pTStack_48 = (TPictureButton *)0xea;
     pcStack_4c = (char *)0x68;
     pTStack_50 = (TMyStaticText *)0x85;
     puStack_54 = (undefined1 *)0x2a;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4574db;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    ptVar13 = (thunk_TPictureButton *)AllocateUiResourceNode();
+    ptVar15 = (thunk_TPictureButton *)AllocateUiResourceNode();
     local_4 = 0x5e;
-    if (ptVar13 != (thunk_TPictureButton *)0x0) {
-      thunk_TPictureButton::TPictureButton(ptVar13);
+    if (ptVar15 != (thunk_TPictureButton *)0x0) {
+      thunk_TPictureButton::TPictureButton(ptVar15);
     }
-    pTStack_48 = (TNoHilitePicture *)0x5e;
+    pTStack_48 = (TPictureButton *)0x5e;
     pcStack_4c = (char *)0x46;
     pTStack_50 = (TMyStaticText *)0x14d;
     puStack_54 = (undefined1 *)0xad;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x45755a;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar23 = (TNoHilitePicture *)AllocateUiResourceNode();
+    pTVar25 = (TNoHilitePicture *)AllocateUiResourceNode();
     local_4 = 0x5f;
-    if (pTVar23 != (TNoHilitePicture *)0x0) {
-      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar23);
+    if (pTVar25 != (TNoHilitePicture *)0x0) {
+      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar25);
     }
-    pTStack_48 = (TNoHilitePicture *)0x80;
+    pTStack_48 = (TPictureButton *)0x80;
     pcStack_4c = (char *)0x80;
     pTStack_50 = (TMyStaticText *)0x86;
     puStack_54 = (undefined1 *)0x93;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x4575ed;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
@@ -33269,12 +33272,12 @@ switchD_004543e3_caseD_5de:
   default:
     goto switchD_004543e3_caseD_5de;
   case 0x5df:
-    pTVar10 = (TView *)AllocateUiResourceNode();
+    pTVar12 = (TView *)AllocateUiResourceNode();
     local_4 = 0x68;
-    if (pTVar10 != (TView *)0x0) {
-      TView::ConstructTViewBaseState(pTVar10);
+    if (pTVar12 != (TView *)0x0) {
+      TView::ConstructTViewBaseState(pTVar12);
     }
-    pTStack_48 = (TNoHilitePicture *)0x7d0;
+    pTStack_48 = (TPictureButton *)0x7d0;
     pcStack_4c = (char *)0x7d0;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -33282,12 +33285,12 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ClearUiResourceContext();
-    pTVar21 = (TShipyardView *)AllocateUiResourceNode();
+    pTVar23 = (TShipyardView *)AllocateUiResourceNode();
     local_4 = 0x69;
-    if (pTVar21 != (TShipyardView *)0x0) {
-      TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(pTVar21);
+    if (pTVar23 != (TShipyardView *)0x0) {
+      TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(pTVar23);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e0;
+    pTStack_48 = (TPictureButton *)0x1e0;
     pcStack_4c = (char *)0x280;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -33295,17 +33298,17 @@ switchD_004543e3_caseD_5de:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x4576e0;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
-    pTVar20 = (TMapPreviewView *)AllocateUiResourceNode();
+    pTVar22 = (TMapPreviewView *)AllocateUiResourceNode();
     local_4 = 0x6a;
-    if (pTVar20 != (TMapPreviewView *)0x0) {
-      TMapPreviewView::ConstructUiPlanetListResourceEntry(pTVar20);
+    if (pTVar22 != (TMapPreviewView *)0x0) {
+      TMapPreviewView::ConstructUiPlanetListResourceEntry(pTVar22);
     }
-    pTStack_48 = (TNoHilitePicture *)0xb4;
+    pTStack_48 = (TPictureButton *)0xb4;
     pcStack_4c = (char *)0x144;
     pTStack_50 = (TMyStaticText *)0xe;
     puStack_54 = (undefined1 *)0x12e;
@@ -33314,30 +33317,30 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar9 = (TUpDownPictureButton *)AllocateUiResourceNode();
+    pTVar11 = (TUpDownPictureButton *)AllocateUiResourceNode();
     local_4 = 0x6b;
-    if (pTVar9 != (TUpDownPictureButton *)0x0) {
-      TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar9);
+    if (pTVar11 != (TUpDownPictureButton *)0x0) {
+      TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTVar11);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e;
+    pTStack_48 = (TPictureButton *)0x1e;
     pcStack_4c = (char *)0x60;
     pTStack_50 = (TMyStaticText *)0x1a6;
     puStack_54 = (undefined1 *)0x1a0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x4577ce;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar27 = (TDeluxeText *)AllocateUiResourceNode();
+    pTVar28 = (TDeluxeText *)AllocateUiResourceNode();
     local_4 = 0x6c;
-    if (pTVar27 != (TDeluxeText *)0x0) {
-      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar27);
+    if (pTVar28 != (TDeluxeText *)0x0) {
+      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar28);
     }
-    pTStack_48 = (TNoHilitePicture *)0xb9;
+    pTStack_48 = (TPictureButton *)0xb9;
     pcStack_4c = (char *)0x136;
     pTStack_50 = (TMyStaticText *)0xe6;
     puStack_54 = (undefined1 *)0x135;
@@ -33346,12 +33349,12 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar27 = (TDeluxeText *)AllocateUiResourceNode();
+    pTVar28 = (TDeluxeText *)AllocateUiResourceNode();
     local_4 = 0x6d;
-    if (pTVar27 != (TDeluxeText *)0x0) {
-      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar27);
+    if (pTVar28 != (TDeluxeText *)0x0) {
+      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar28);
     }
-    pTStack_48 = (TNoHilitePicture *)0xde;
+    pTStack_48 = (TPictureButton *)0xde;
     pcStack_4c = (char *)0xe4;
     pTStack_50 = (TMyStaticText *)0xe6;
     puStack_54 = (undefined1 *)0x30;
@@ -33360,12 +33363,12 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    iVar6 = AllocateUiResourceNode();
+    iVar8 = AllocateUiResourceNode();
     local_4 = 0x6e;
-    if (iVar6 != 0) {
+    if (iVar8 != 0) {
       WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0();
     }
-    pTStack_48 = (TNoHilitePicture *)0x6e;
+    pTStack_48 = (TPictureButton *)0x6e;
     pcStack_4c = (char *)0xf4;
     pTStack_50 = (TMyStaticText *)0x3d;
     puStack_54 = (undefined1 *)0x27;
@@ -33379,24 +33382,24 @@ switchD_004543e3_caseD_5de:
     if (this_07 != (TClickZone *)0x0) {
       TClickZone::ConstructUiCommandTagResourceEntry(this_07);
     }
-    pTStack_48 = (TNoHilitePicture *)0xf0;
+    pTStack_48 = (TPictureButton *)0xf0;
     pcStack_4c = (char *)0x25;
     pTStack_50 = (TMyStaticText *)0x3e;
     puStack_54 = (undefined1 *)0x0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4579ad;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TInfoBarText *)AllocateUiResourceNode();
+    pTVar14 = (TInfoBarText *)AllocateUiResourceNode();
     local_4 = 0x70;
-    if (pTVar12 != (TInfoBarText *)0x0) {
-      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar12);
+    if (pTVar14 != (TInfoBarText *)0x0) {
+      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar14);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e;
+    pTStack_48 = (TPictureButton *)0x1e;
     pcStack_4c = (char *)0xd6;
     pTStack_50 = (TMyStaticText *)0x11;
     puStack_54 = (undefined1 *)0x32;
@@ -33405,23 +33408,23 @@ switchD_004543e3_caseD_5de:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x71;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0xf2;
     pTStack_50 = (TMyStaticText *)0xb0;
     puStack_54 = (undefined1 *)0x28;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x457a99;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)&g_szEmptyString;
     pTStack_50 = (TMyStaticText *)0xffffffff;
     puStack_54 = (undefined1 *)0x514;
@@ -33429,912 +33432,913 @@ switchD_004543e3_caseD_5de:
     ClearUiResourceContext();
     break;
   case 0x5e0:
-    pTVar10 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)AllocateWithFallbackHandler();
     local_4 = 0x15;
-    if (pTVar10 == (TView *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTVar12 == (TView *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar10);
-      piVar26 = extraout_EAX_00;
+      TView::ConstructTViewBaseState(pTVar12);
+      piVar27 = extraout_EAX_00;
     }
     local_4 = 0xffffffff;
     if (g_pUiResourceHead == (int *)0x0) {
-      uVar28 = 0;
-      g_pUiResourceHead = piVar26;
+      uVar29 = 0;
+      g_pUiResourceHead = piVar27;
     }
     else {
-      uVar28 = *(undefined4 *)(DAT_006a13e8 + 8);
+      uVar29 = *(undefined4 *)(DAT_006a13e8 + 8);
     }
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)&local_24;
+    pTStack_48 = (TPictureButton *)&local_24;
     pTStack_50 = (TMyStaticText *)0x0;
     local_1c = 2000;
     local_18 = 2000;
     local_24 = 0;
-    local_20 = (TPictureButton *)0x0;
+    local_20 = (TStaticText *)0x0;
     puStack_54 = (undefined1 *)0x455a3c;
-    pcStack_4c = (char *)uVar28;
+    pcStack_4c = (char *)uVar29;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x62617365;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    pTStack_48 = (TNoHilitePicture *)0x455a5d;
-    (**(code **)(iVar6 + 0xa8))();
-    pTStack_48 = (TNoHilitePicture *)0x1fc;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x62617365;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    pTStack_48 = (TPictureButton *)0x455a5d;
+    (**(code **)(iVar8 + 0xa8))();
+    pTStack_48 = (TPictureButton *)0x1fc;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x455a7a;
-    pTVar23 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
     uStack_14 = 0x16;
-    pTStack_8 = pTVar23;
-    if (pTVar23 == (TNoHilitePicture *)0x0) {
-      pTVar23 = (TNoHilitePicture *)0x0;
+    pTStack_8 = pTVar25;
+    if (pTVar25 == (TNoHilitePicture *)0x0) {
+      pTVar25 = (TNoHilitePicture *)0x0;
     }
     else {
-      pTStack_48 = (TNoHilitePicture *)0x455a96;
-      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar23);
-      pTVar23->vftable = (TNoHilitePictureVtbl *)&THighScoresPictureVtbl_00643ea8;
+      pTStack_48 = (TPictureButton *)0x455a96;
+      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar25);
+      pTVar25->vftable = (TNoHilitePictureVtbl *)&THighScoresPictureVtbl_00643ea8;
     }
     uStack_14 = 0xffffffff;
-    pTVar5 = pTVar23;
+    pTVar7 = pTVar25;
     if (g_pUiResourceHead != (int *)0x0) {
-      pTVar5 = (TNoHilitePicture *)g_pUiResourceHead;
+      pTVar7 = (TNoHilitePicture *)g_pUiResourceHead;
     }
-    g_pUiResourceHead = (int *)pTVar5;
+    g_pUiResourceHead = (int *)pTVar7;
     pcStack_4c = (char *)0x455ad0;
-    g_pUiResourceContext = (int *)pTVar23;
-    pTStack_48 = pTVar23;
+    g_pUiResourceContext = (int *)pTVar25;
+    pTStack_48 = (TPictureButton *)pTVar25;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)0x1;
+    pTStack_48 = (TPictureButton *)0x1;
     pcStack_4c = (char *)0x0;
     puStack_54 = &stack0xffffffd4;
     pTStack_50 = (TMyStaticText *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    pTVar2 = pTVar23->vftable;
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTVar2 = pTVar25->vftable;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)0x1;
-    pTVar23->controlTag = 0x6d61696e;
-    pTVar23->field3c = 0;
+    pTVar25->controlTag = 0x6d61696e;
+    pTVar25->field3c = 0;
     pTStack_50 = (TMyStaticText *)0x455b16;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x1;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
-    piVar26 = g_pUiResourceContext;
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     FreeHeapBufferIfNotNull();
     local_18 = AllocateWithFallbackHandler();
     local_24 = 0x17;
     if (local_18 == 0) {
-      iVar6 = 0;
+      iVar8 = 0;
     }
     else {
-      iVar6 = ZeroUiResourceContextStyleBytes();
+      iVar8 = ZeroUiResourceContextStyleBytes();
     }
-    piVar26[0x12] = iVar6;
-    *(undefined4 *)(iVar6 + 4) = 0;
-    *(undefined4 *)piVar26[0x12] = 0xffffff;
-    piVar26 = g_pUiResourceContext;
+    piVar27[0x12] = iVar8;
+    *(undefined4 *)(iVar8 + 4) = 0;
+    *(undefined4 *)piVar27[0x12] = 0xffffff;
+    piVar27 = g_pUiResourceContext;
     local_24 = 0xffffffff;
     g_pUiResourceContext[0x18] = 10;
     uStack_68 = 0x455b92;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TPictureButton *)AllocateWithFallbackHandler();
-    if (local_20 == (TPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+    local_20 = (TStaticText *)AllocateWithFallbackHandler();
+    if (local_20 == (TStaticText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TStaticText::TStaticText((TStaticText *)local_20);
+      piVar27 = (int *)TStaticText::TStaticText(local_20);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_6c = &stack0xffffffbc;
     uStack_68 = 0;
     pcStack_4c = (char *)0x1b;
-    pTStack_48 = (TNoHilitePicture *)0x44;
+    pTStack_48 = (TPictureButton *)0x44;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x6c61626c;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x6c61626c;
+    piVar27[0xf] = 0;
     uStack_68 = 0x455c6d;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     uStack_68 = 0;
     puStack_6c = (undefined1 *)0x0;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    pTStack_48 = (TNoHilitePicture *)0x455c9e;
-    piVar24 = (int *)CRect::CRect((CRect *)&local_1c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    pTStack_48 = (TPictureButton *)0x455c9e;
+    piVar26 = (int *)CRect::CRect((CRect *)&local_1c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)&g_szEmptyString;
     pTStack_50 = (TMyStaticText *)0xffffffff;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     goto LAB_00455cdb;
   case 0x5e2:
-    pTVar10 = (TView *)AllocateWithFallbackHandler();
+    pTVar12 = (TView *)AllocateWithFallbackHandler();
     local_4 = 0;
-    if (pTVar10 == (TView *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTVar12 == (TView *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      TView::ConstructTViewBaseState(pTVar10);
-      piVar26 = extraout_EAX;
+      TView::ConstructTViewBaseState(pTVar12);
+      piVar27 = extraout_EAX;
     }
     local_4 = 0xffffffff;
     if (g_pUiResourceHead == (int *)0x0) {
-      uVar28 = 0;
-      g_pUiResourceHead = piVar26;
+      uVar29 = 0;
+      g_pUiResourceHead = piVar27;
     }
     else {
-      uVar28 = *(undefined4 *)(DAT_006a13e8 + 8);
+      uVar29 = *(undefined4 *)(DAT_006a13e8 + 8);
     }
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)&local_1c;
+    pTStack_48 = (TPictureButton *)&local_1c;
     pTStack_50 = (TMyStaticText *)0x0;
     local_24 = 2000;
-    local_20 = (TPictureButton *)0x7d0;
+    local_20 = (TStaticText *)0x7d0;
     local_1c = 0;
     local_18 = 0;
     puStack_54 = (undefined1 *)0x45446f;
-    pcStack_4c = (char *)uVar28;
+    pcStack_4c = (char *)uVar29;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x62617365;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    pTStack_48 = (TNoHilitePicture *)0x454490;
-    (**(code **)(iVar6 + 0xa8))();
-    pTStack_48 = (TNoHilitePicture *)0x94;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x62617365;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    pTStack_48 = (TPictureButton *)0x454490;
+    (**(code **)(iVar8 + 0xa8))();
+    pTStack_48 = (TPictureButton *)0x94;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
     pcStack_4c = (char *)0x4544ad;
-    pTVar23 = (TNoHilitePicture *)AllocateWithFallbackHandler();
+    pTVar25 = (TNoHilitePicture *)AllocateWithFallbackHandler();
     uStack_14 = 1;
-    pTStack_8 = pTVar23;
-    if (pTVar23 == (TNoHilitePicture *)0x0) {
-      pTVar23 = (TNoHilitePicture *)0x0;
+    pTStack_8 = pTVar25;
+    if (pTVar25 == (TNoHilitePicture *)0x0) {
+      pTVar25 = (TNoHilitePicture *)0x0;
     }
     else {
-      pTStack_48 = (TNoHilitePicture *)0x4544c9;
-      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar23);
-      pTVar23->vftable = (TNoHilitePictureVtbl *)&TNetSelectPictureVtbl_006440d8;
+      pTStack_48 = (TPictureButton *)0x4544c9;
+      TNoHilitePicture::ConstructPictureResourceEntryType606E8(pTVar25);
+      pTVar25->vftable = (TNoHilitePictureVtbl *)&TNetSelectPictureVtbl_006440d8;
     }
     uStack_14 = 0xffffffff;
-    pTVar5 = pTVar23;
+    pTVar7 = pTVar25;
     if (g_pUiResourceHead != (int *)0x0) {
-      pTVar5 = (TNoHilitePicture *)g_pUiResourceHead;
+      pTVar7 = (TNoHilitePicture *)g_pUiResourceHead;
     }
-    g_pUiResourceHead = (int *)pTVar5;
+    g_pUiResourceHead = (int *)pTVar7;
     pcStack_4c = (char *)0x454503;
-    g_pUiResourceContext = (int *)pTVar23;
-    pTStack_48 = pTVar23;
+    g_pUiResourceContext = (int *)pTVar25;
+    pTStack_48 = (TPictureButton *)pTVar25;
     PushUiResourcePoolNode();
-    pTStack_48 = (TNoHilitePicture *)0x1;
+    pTStack_48 = (TPictureButton *)0x1;
     pcStack_4c = (char *)0x0;
     puStack_54 = &stack0xffffffd4;
     pTStack_50 = (TMyStaticText *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    pTVar2 = pTVar23->vftable;
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTVar2 = pTVar25->vftable;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)0x1;
-    pTVar23->controlTag = 0x6d61696e;
-    pTVar23->field3c = 0;
+    pTVar25->controlTag = 0x6d61696e;
+    pTVar25->field3c = 0;
     pTStack_50 = (TMyStaticText *)0x454549;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
-    piVar26 = g_pUiResourceContext;
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     FreeHeapBufferIfNotNull();
     local_18 = AllocateWithFallbackHandler();
     local_24 = 2;
     if (local_18 == 0) {
-      iVar6 = 0;
+      iVar8 = 0;
     }
     else {
-      iVar6 = ZeroUiResourceContextStyleBytes();
+      iVar8 = ZeroUiResourceContextStyleBytes();
     }
-    piVar26[0x12] = iVar6;
-    *(undefined4 *)(iVar6 + 4) = 0;
-    *(undefined4 *)piVar26[0x12] = 0xffffff;
-    piVar26 = g_pUiResourceContext;
+    piVar27[0x12] = iVar8;
+    *(undefined4 *)(iVar8 + 4) = 0;
+    *(undefined4 *)piVar27[0x12] = 0xffffff;
+    piVar27 = g_pUiResourceContext;
     local_24 = 0xffffffff;
     g_pUiResourceContext[0x18] = 10;
     uStack_68 = 0x4545c4;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffffc4,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
-    local_20 = (TPictureButton *)AllocateWithFallbackHandler();
-    if (local_20 == (TPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+    local_20 = (TStaticText *)AllocateWithFallbackHandler();
+    if (local_20 == (TStaticText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(local_20);
+      piVar27 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry
+                                 ((TPictureButton *)local_20);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_6c = &stack0xffffffbc;
     uStack_68 = 0;
     pcStack_4c = (char *)0x221;
-    pTStack_48 = (TNoHilitePicture *)0x1bc;
+    pTStack_48 = (TPictureButton *)0x1bc;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x6f6b6179;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x6f6b6179;
+    piVar27[0xf] = 0;
     uStack_68 = 0x45469e;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     uStack_68 = 0;
     puStack_6c = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_54,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_54,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar11 = (TPictureButton *)AllocateWithFallbackHandler();
-    if (pTVar11 == (TPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar13 = (TPictureButton *)AllocateWithFallbackHandler();
+    if (pTVar13 == (TPictureButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTVar11);
+      piVar27 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry(pTVar13);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x636e636c;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x636e636c;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_6c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_6c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     pTStack_50 = (TMyStaticText *)AllocateWithFallbackHandler();
     if (pTStack_50 == (TMyStaticText *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTStack_50);
+      piVar27 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTStack_50);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x74787430;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x74787430;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff7c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff7c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TMyStaticText *)AllocateWithFallbackHandler();
+    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
     puStack_6c = (undefined1 *)0x6;
-    if (pTVar15 == (TMyStaticText *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTVar17 == (TMyStaticText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar15);
+      piVar27 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar17);
     }
     puStack_6c = (undefined1 *)0xffffffff;
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x74787431;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x74787431;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff6c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff6c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TMyStaticText *)AllocateWithFallbackHandler();
-    if (pTVar15 == (TMyStaticText *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
+    if (pTVar17 == (TMyStaticText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar15);
+      piVar27 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar17);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x74787432;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x74787432;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff5c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff5c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar15 = (TMyStaticText *)AllocateWithFallbackHandler();
-    if (pTVar15 == (TMyStaticText *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar17 = (TMyStaticText *)AllocateWithFallbackHandler();
+    if (pTVar17 == (TMyStaticText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar15);
+      piVar27 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(pTVar17);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x74787433;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x74787433;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff4c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff4c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
     BindUiResourceTextAndStyle();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar16 = (TCluster *)AllocateWithFallbackHandler();
-    if (pTVar16 == (TCluster *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar18 = (TCluster *)AllocateWithFallbackHandler();
+    if (pTVar18 == (TCluster *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTVar16);
+      piVar27 = (int *)TCluster::ConstructUiResourceEntryType4B0C0(pTVar18);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x70726f74;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x70726f74;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 5;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff3c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff3c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     g_pUiResourceContext[0x21] = 0x20202020;
     g_pUiResourceContext = (int *)0x0;
-    pTVar17 = (TCivilianButton *)AllocateWithFallbackHandler();
-    if (pTVar17 == (TCivilianButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    if (pTVar19 == (TCivilianButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar17);
+      piVar27 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar19);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x72616430;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x72616430;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xc;
     pTStack_100 = (TUpDownPictureButton *)0x454ea0;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff2c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff2c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TCivilianButton *)AllocateWithFallbackHandler();
-    if (pTVar17 == (TCivilianButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    if (pTVar19 == (TCivilianButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar17);
+      piVar27 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar19);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_104 = &stack0xffffff24;
     pTStack_100 = (TUpDownPictureButton *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x72616431;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x72616431;
+    piVar27[0xf] = 0;
     pTStack_100 = (TUpDownPictureButton *)0x454f85;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     pTStack_100 = (TUpDownPictureButton *)0x0;
     puStack_104 = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xc;
     pTStack_118 = (TUpDownPictureButton *)0x454fb8;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xffffff14,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xffffff14,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TCivilianButton *)AllocateWithFallbackHandler();
-    if (pTVar17 == (TCivilianButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    if (pTVar19 == (TCivilianButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar17);
+      piVar27 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar19);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_11c = &stack0xffffff0c;
     pTStack_118 = (TUpDownPictureButton *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x72616432;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x72616432;
+    piVar27[0xf] = 0;
     pTStack_118 = (TUpDownPictureButton *)0x455099;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     pTStack_118 = (TUpDownPictureButton *)0x0;
     puStack_11c = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xc;
     pTStack_130 = (TUpDownPictureButton *)0x4550cb;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_104,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_104,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar17 = (TCivilianButton *)AllocateWithFallbackHandler();
-    if (pTVar17 == (TCivilianButton *)0x0) {
-      piVar26 = (int *)0x0;
+    pTVar19 = (TCivilianButton *)AllocateWithFallbackHandler();
+    if (pTVar19 == (TCivilianButton *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar17);
+      piVar27 = (int *)TRadioPictureButton::TRadioPictureButton(pTVar19);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_134 = &stack0xfffffef4;
     pTStack_130 = (TUpDownPictureButton *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x72616433;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x72616433;
+    piVar27[0xf] = 0;
     pTStack_130 = (TUpDownPictureButton *)0x4551b0;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     pTStack_130 = (TUpDownPictureButton *)0x0;
     puStack_134 = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xc;
     pTStack_148 = (TUpDownPictureButton *)0x4551e2;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_11c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_11c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     PopUiResourcePoolNode_00479A80();
     pTStack_100 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTStack_100 == (TUpDownPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_100);
+      piVar27 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_100);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_14c = &stack0xfffffedc;
     pTStack_148 = (TUpDownPictureButton *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x73657430;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x73657430;
+    piVar27[0xf] = 0;
     pTStack_148 = (TUpDownPictureButton *)0x4552d1;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     pTStack_148 = (TUpDownPictureButton *)0x0;
     puStack_14c = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
     pTStack_160 = (TStaticText *)0x455303;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_134,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_134,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     pTStack_118 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTStack_118 == (TUpDownPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_118);
+      piVar27 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_118);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_164 = &stack0xfffffec4;
     pTStack_160 = (TStaticText *)0x0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x73657431;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x73657431;
+    piVar27[0xf] = 0;
     pTStack_160 = (TStaticText *)0x4553e8;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     pTStack_160 = (TStaticText *)0x0;
     puStack_164 = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
     uStack_178 = 0x45541a;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_14c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_14c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     pTStack_130 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTStack_130 == (TUpDownPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_130);
+      piVar27 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_130);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_17c = &stack0xfffffeac;
     uStack_178 = 0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x73657432;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x73657432;
+    piVar27[0xf] = 0;
     uStack_178 = 0x4554ff;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     uStack_178 = 0;
     puStack_17c = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
     uStack_190 = 0x455531;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_164,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_164,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     pTStack_148 = (TUpDownPictureButton *)AllocateWithFallbackHandler();
     if (pTStack_148 == (TUpDownPictureButton *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_148);
+      piVar27 = (int *)TUpDownPictureButton::ConstructPictureScreenResourceEntry(pTStack_148);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_194 = &stack0xfffffe94;
     uStack_190 = 0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x73657433;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x73657433;
+    piVar27[0xf] = 0;
     uStack_190 = 0x455616;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     uStack_190 = 0;
     puStack_194 = (undefined1 *)0x1;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0x22;
     uStack_1a8 = 0x455648;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_17c,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_17c,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     (**(code **)(*g_pUiResourceContext + 0x1c8))();
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
     pTStack_160 = (TStaticText *)AllocateWithFallbackHandler();
     if (pTStack_160 == (TStaticText *)0x0) {
-      piVar26 = (int *)0x0;
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TStaticText::TStaticText(pTStack_160);
+      piVar27 = (int *)TStaticText::TStaticText(pTStack_160);
     }
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_1ac = &stack0xfffffe7c;
     uStack_1a8 = 0;
     InitializeUiResourceEntryFrameAndParent();
-    iVar6 = *piVar26;
-    piVar26[7] = 0x7467616d;
-    piVar26[0xf] = 0;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x7467616d;
+    piVar27[0xf] = 0;
     uStack_1a8 = 0x45572d;
-    (**(code **)(iVar6 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
     uStack_1a8 = 0;
     puStack_1ac = (undefined1 *)0x0;
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 1;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 1;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 0xd;
-    piVar24 = (int *)CRect::CRect((CRect *)&puStack_194,0,0,0,0);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&puStack_194,0,0,0,0);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord();
     BindUiResourceTextAndStyle(0x514,0xf);
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar18 = (TEditText *)AllocateWithFallbackHandler();
+    pTVar20 = (TEditText *)AllocateWithFallbackHandler();
     puStack_17c = (undefined1 *)0x13;
-    if (pTVar18 == (TEditText *)0x0) {
-      piVar26 = (int *)0x0;
+    if (pTVar20 == (TEditText *)0x0) {
+      piVar27 = (int *)0x0;
     }
     else {
-      piVar26 = (int *)TEditText::ConstructUiNumericTextEntryBase(pTVar18);
+      piVar27 = (int *)TEditText::ConstructUiNumericTextEntryBase(pTVar20);
     }
     puStack_17c = (undefined1 *)0xffffffff;
-    piVar24 = piVar26;
+    piVar26 = piVar27;
     if (g_pUiResourceHead != (int *)0x0) {
-      piVar24 = g_pUiResourceHead;
+      piVar26 = g_pUiResourceHead;
     }
-    g_pUiResourceHead = piVar24;
-    g_pUiResourceContext = piVar26;
+    g_pUiResourceHead = piVar26;
+    g_pUiResourceContext = piVar27;
     PushUiResourcePoolNode();
     puStack_194 = (undefined1 *)0x121;
     uStack_190 = 0x16;
     InitializeUiResourceEntryFrameAndParent(0);
-    iVar6 = *piVar26;
-    piVar26[7] = 0x67616d65;
-    piVar26[0xf] = 0;
-    (**(code **)(iVar6 + 0xa4))();
-    (**(code **)(iVar6 + 0xa8))();
-    piVar26 = g_pUiResourceContext;
+    iVar8 = *piVar27;
+    piVar27[7] = 0x67616d65;
+    piVar27[0xf] = 0;
+    (**(code **)(iVar8 + 0xa4))();
+    (**(code **)(iVar8 + 0xa8))();
+    piVar27 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-    *(undefined1 *)((int)piVar26 + 0x4d) = 0;
-    piVar26 = g_pUiResourceContext;
+    *(undefined1 *)((int)piVar27 + 0x4d) = 0;
+    piVar27 = g_pUiResourceContext;
     g_pUiResourceContext[0x18] = 6;
-    piVar24 = (int *)CRect::CRect((CRect *)&stack0xfffffe5c,3,3,3,3);
-    piVar26[0x1a] = *piVar24;
-    piVar26[0x1b] = piVar24[1];
-    piVar26[0x1c] = piVar24[2];
-    piVar26[0x1d] = piVar24[3];
+    piVar26 = (int *)CRect::CRect((CRect *)&stack0xfffffe5c,3,3,3,3);
+    piVar27[0x1a] = *piVar26;
+    piVar27[0x1b] = piVar26[1];
+    piVar27[0x1c] = piVar26[2];
+    piVar27[0x1d] = piVar26[3];
     SetUiResourceContextTagWord(0);
     BindUiResourceTextAndStyle(0x514,0x10,s_Revenge_of_the_Patagonians_00694a68,0,0,0);
-    piVar26 = g_pUiResourceContext;
+    piVar27 = g_pUiResourceContext;
     (**(code **)(*g_pUiResourceContext + 0xc))();
-    *(undefined2 *)(piVar26 + 0x27) = 0xff;
+    *(undefined2 *)(piVar27 + 0x27) = 0xff;
     g_pUiResourceContext = (int *)0x0;
     PopUiResourcePoolNode_00479A80();
-    pTVar27 = (TDeluxeText *)AllocateWithFallbackHandler();
-    if (pTVar27 == (TDeluxeText *)0x0) {
-      pTVar27 = (TDeluxeText *)0x0;
+    pTVar28 = (TDeluxeText *)AllocateWithFallbackHandler();
+    if (pTVar28 == (TDeluxeText *)0x0) {
+      pTVar28 = (TDeluxeText *)0x0;
     }
     else {
-      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar27);
-      pTVar27->vftable = (TDeluxeTextVtbl *)&TInfoBarTextVtbl_0063eb00;
+      TDeluxeText::ConstructUiColorTextResourceEntry(pTVar28);
+      pTVar28->vftable = (TDeluxeTextVtbl *)&TInfoBarTextVtbl_0063eb00;
     }
     if (g_pUiResourceHead == (int *)0x0) {
-      uVar28 = 0;
-      g_pUiResourceHead = (int *)pTVar27;
+      uVar29 = 0;
+      g_pUiResourceHead = (int *)pTVar28;
     }
     else {
-      uVar28 = *(undefined4 *)(DAT_006a13e8 + 8);
+      uVar29 = *(undefined4 *)(DAT_006a13e8 + 8);
     }
-    g_pUiResourceContext = (int *)pTVar27;
+    g_pUiResourceContext = (int *)pTVar28;
     PushUiResourcePoolNode();
     puStack_1ac = (undefined1 *)0x15;
     uStack_1a8 = 0x43;
-    InitializeUiResourceEntryFrameAndParent(0,uVar28,&puStack_1ac,&stack0xfffffe5c,0);
-    pTVar1 = pTVar27->vftable;
-    pTVar27->controlTag = 0x6c61626c;
-    pTVar27->field3c = 0;
-    (*pTVar1[0x14].slot_0x04)();
-    (*pTVar1[0x15].GetTEventHandlerClassNamePointer)(0,0);
+    InitializeUiResourceEntryFrameAndParent(0,uVar29,&puStack_1ac,&stack0xfffffe5c,0);
+    pTVar1 = pTVar28->vftable;
+    pTVar28->controlTag = 0x6c61626c;
+    pTVar28->field3c = 0;
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar1->UpdateControlCachedIntFromWindowText_2a)(0,0);
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
 LAB_00455cdb:
@@ -34344,12 +34348,12 @@ LAB_00455cdb:
     PopUiResourcePoolNode_00479A80();
     goto LAB_00459519;
   case 0x5e5:
-    pTVar10 = (TView *)AllocateUiResourceNode();
+    pTVar12 = (TView *)AllocateUiResourceNode();
     local_4 = 0x3b;
-    if (pTVar10 != (TView *)0x0) {
-      TView::ConstructTViewBaseState(pTVar10);
+    if (pTVar12 != (TView *)0x0) {
+      TView::ConstructTViewBaseState(pTVar12);
     }
-    pTStack_48 = (TNoHilitePicture *)0x7d0;
+    pTStack_48 = (TPictureButton *)0x7d0;
     pcStack_4c = (char *)0x7d0;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -34362,7 +34366,7 @@ LAB_00455cdb:
     if (this_04 != (TGameSetupMultiplayerPicture *)0x0) {
       TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState(this_04);
     }
-    pTStack_48 = (TNoHilitePicture *)0x1e0;
+    pTStack_48 = (TPictureButton *)0x1e0;
     pcStack_4c = (char *)0x280;
     pTStack_50 = (TMyStaticText *)0x0;
     puStack_54 = (undefined1 *)0x0;
@@ -34370,85 +34374,85 @@ LAB_00455cdb:
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
     ReplaceUiResourceContextPairBuffer();
-    pTStack_48 = (TNoHilitePicture *)0xa;
+    pTStack_48 = (TPictureButton *)0xa;
     pcStack_4c = (char *)0x4562b3;
     SetUiResourceLayoutValues();
     ApplyUiResourceLayoutFromContext();
     ClearUiResourceContext();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x3d;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x56;
+    pTStack_48 = (TPictureButton *)0x56;
     pcStack_4c = (char *)0x93;
     pTStack_50 = (TMyStaticText *)0x50;
     puStack_54 = (undefined1 *)0x1d0;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x456332;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x3e;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xab;
+    pTStack_48 = (TPictureButton *)0xab;
     pcStack_4c = (char *)0x8a;
     pTStack_50 = (TMyStaticText *)0xda;
     puStack_54 = (undefined1 *)0x1ba;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4563b7;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x3f;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0xba;
+    pTStack_48 = (TPictureButton *)0xba;
     pcStack_4c = (char *)0x82;
     pTStack_50 = (TMyStaticText *)0x4f;
     puStack_54 = (undefined1 *)0xc;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x456436;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x40;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x48;
+    pTStack_48 = (TPictureButton *)0x48;
     pcStack_4c = (char *)0x9c;
     pTStack_50 = (TMyStaticText *)0x196;
     puStack_54 = (undefined1 *)0x128;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4564b8;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar12 = (TInfoBarText *)AllocateUiResourceNode();
+    pTVar14 = (TInfoBarText *)AllocateUiResourceNode();
     local_4 = 0x41;
-    if (pTVar12 != (TInfoBarText *)0x0) {
-      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar12);
+    if (pTVar14 != (TInfoBarText *)0x0) {
+      TInfoBarText::ConstructUiCursorTextResourceEntry(pTVar14);
     }
-    pTStack_48 = (TNoHilitePicture *)0x21;
+    pTStack_48 = (TPictureButton *)0x21;
     pcStack_4c = (char *)0xe9;
     pTStack_50 = (TMyStaticText *)0x12;
     puStack_54 = (undefined1 *)0x22;
@@ -34457,77 +34461,77 @@ LAB_00455cdb:
     SetUiResourceStateFlags();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar22 = (TDropShadowText *)AllocateUiResourceNode();
+    pTVar24 = (TDropShadowText *)AllocateUiResourceNode();
     local_4 = 0x42;
-    if (pTVar22 != (TDropShadowText *)0x0) {
-      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar22);
+    if (pTVar24 != (TDropShadowText *)0x0) {
+      TDropShadowText::ConstructSelectableTextOptionEntryBase(pTVar24);
     }
-    pTStack_48 = (TNoHilitePicture *)0x13;
+    pTStack_48 = (TPictureButton *)0x13;
     pcStack_4c = (char *)0xa5;
     pTStack_50 = (TMyStaticText *)0x17d;
     puStack_54 = (undefined1 *)0xf5;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0xd;
+    pTStack_48 = (TPictureButton *)0xd;
     pcStack_4c = (char *)0x4565a6;
     SetUiResourceLayoutValues();
     SetUiResourceContextTagWord();
-    pTStack_48 = (TNoHilitePicture *)0x0;
+    pTStack_48 = (TPictureButton *)0x0;
     pcStack_4c = (char *)&g_szEmptyString;
     pTStack_50 = (TMyStaticText *)0xffffffff;
     puStack_54 = (undefined1 *)0x514;
     BindUiResourceTextAndStyle();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar14 = (TLineData *)AllocateUiResourceNode();
+    pTVar16 = (TLineData *)AllocateUiResourceNode();
     local_4 = 0x43;
-    if (pTVar14 != (TLineData *)0x0) {
-      TLineData::ConstructUiGoldLabelResourceEntry(pTVar14);
+    if (pTVar16 != (TLineData *)0x0) {
+      TLineData::ConstructUiGoldLabelResourceEntry(pTVar16);
     }
-    pTStack_48 = (TNoHilitePicture *)0xaf;
+    pTStack_48 = (TPictureButton *)0xaf;
     pcStack_4c = (char *)0x100;
     pTStack_50 = (TMyStaticText *)0x58;
     puStack_54 = (undefined1 *)0xa3;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x5;
+    pTStack_48 = (TPictureButton *)0x5;
     pcStack_4c = (char *)0x45664c;
     SetUiResourceLayoutValues();
     SetUiResourceContextStringCode();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x44;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x98;
+    pTStack_48 = (TPictureButton *)0x98;
     pcStack_4c = (char *)0xa0;
     pTStack_50 = (TMyStaticText *)0x11a;
     puStack_54 = (undefined1 *)0x1d;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x4566db;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
     PopUiResourcePoolNode_00479A80();
-    pTVar7 = (TControl *)AllocateUiResourceNode();
+    pTVar9 = (TControl *)AllocateUiResourceNode();
     local_4 = 0x45;
-    if (pTVar7 != (TControl *)0x0) {
-      TControl::TControl(pTVar7);
+    if (pTVar9 != (TControl *)0x0) {
+      TControl::TControl(pTVar9);
     }
-    pTStack_48 = (TNoHilitePicture *)0x35;
+    pTStack_48 = (TPictureButton *)0x35;
     pcStack_4c = (char *)0x21;
     pTStack_50 = (TMyStaticText *)0x100;
     puStack_54 = (undefined1 *)0x186;
     local_4 = 0xffffffff;
     RegisterUiResourceEntry();
     SetUiResourceStateFlags();
-    pTStack_48 = (TNoHilitePicture *)0x14;
+    pTStack_48 = (TPictureButton *)0x14;
     pcStack_4c = (char *)0x456759;
     SetUiResourceLayoutValues();
     ClearUiResourceContext();
@@ -34541,9 +34545,9 @@ LAB_00459519:
   if (g_pUiResourceHead != (int *)0x0) {
     PropagateUiResourceContextRecursive();
   }
-  piVar26 = g_pUiResourceHead;
+  piVar27 = g_pUiResourceHead;
   *unaff_FS_OFFSET = local_c;
-  return piVar26;
+  return piVar27;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00456BA3
@@ -35977,305 +35981,10 @@ int * AllocateAndConstructTViewDerivedState_00458ced
                 (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  TViewVtbl *pTVar1;
-  TMapKeyVtbl *pTVar2;
-  TDeluxeText *pTVar3;
-  TDeluxeText *pTVar4;
-  int *extraout_EAX;
-  int iVar5;
-  int *piVar6;
-  undefined4 *puVar7;
-  int *piVar8;
-  undefined4 uVar9;
-  undefined1 uVar10;
-  TDeluxeText *unaff_EBX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar11;
-  undefined4 **ppuStack_48;
-  undefined4 *puStack_20;
-  
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  if (pTVar4 == unaff_EBX) {
-    piVar8 = (int *)0x0;
-  }
-  else {
-    TView::ConstructTViewBaseState((TView *)pTVar4);
-    piVar8 = extraout_EAX;
-  }
-  piVar6 = piVar8;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    piVar6 = g_pUiResourceHead;
-  }
-  g_pUiResourceHead = piVar6;
-  g_pUiResourceContext = piVar8;
-  PushUiResourcePoolNode();
-  puStack_20 = (undefined4 *)0x458d76;
-  InitializeUiResourceEntryFrameAndParent();
-  iVar5 = *piVar8;
-  piVar8[7] = 0x62617365;
-  piVar8[0xf] = (int)unaff_EBX;
-  (**(code **)(iVar5 + 0xa4))();
-  (**(code **)(iVar5 + 0xa8))();
-  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  if (pTVar4 == unaff_EBX) {
-    pTVar4 = (TDeluxeText *)0x0;
-  }
-  else {
-    thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)pTVar4);
-    pTVar4->vftable = (TDeluxeTextVtbl *)&TSpecialQuitPictureVtbl_00643c78;
-    *(short *)&pTVar4->field_0x90 = (short)unaff_EBX;
-  }
-  pTVar3 = pTVar4;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    pTVar3 = (TDeluxeText *)g_pUiResourceHead;
-  }
-  g_pUiResourceHead = (int *)pTVar3;
-  g_pUiResourceContext = (int *)pTVar4;
-  PushUiResourcePoolNode();
-  puStack_20 = &param_2;
-  param_2 = 0x280;
-  param_3 = 0x1e0;
-  InitializeUiResourceEntryFrameAndParent();
-  pTVar1 = (TViewVtbl *)pTVar4->vftable;
-  pTVar4->controlTag = 0x6d61696e;
-  pTVar4->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  puStack_20 = (undefined4 *)0x1;
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
-  piVar8 = g_pUiResourceContext;
-  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar8 + 0x4d) = 1;
-  piVar8 = g_pUiResourceContext;
-  FreeHeapBufferIfNotNull();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  if (pTVar4 == unaff_EBX) {
-    iVar5 = 0;
-  }
-  else {
-    iVar5 = ZeroUiResourceContextStyleBytes();
-  }
-  piVar8[0x12] = iVar5;
-  *(TDeluxeText **)(iVar5 + 4) = unaff_EBX;
-  *(undefined4 *)piVar8[0x12] = 0xffffff;
-  piVar8 = g_pUiResourceContext;
-  g_pUiResourceContext[0x18] = 10;
-  piVar6 = (int *)CRect::CRect((CRect *)&stack0xfffffff8,(int)unaff_EBX,(int)unaff_EBX,
-                               (int)unaff_EBX,(int)unaff_EBX);
-  piVar8[0x1a] = *piVar6;
-  piVar8[0x1b] = piVar6[1];
-  piVar8[0x1c] = piVar6[2];
-  piVar8[0x1d] = piVar6[3];
-  (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  param_2 = 0x1c;
-  uVar10 = SUB41(unaff_EBX,0);
-  if (pTVar4 == unaff_EBX) {
-    pTVar4 = (TDeluxeText *)0x0;
-  }
-  else {
-    TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20((TMapKey *)pTVar4);
-    param_2 = CONCAT31(param_2._1_3_,0x1d);
-    ClearColorRgbaBytes();
-    ClearColorRgbaBytes();
-    pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar7 = (undefined4 *)SetColorRgbAndClearAlphaByte();
-    uVar11 = *puVar7;
-    pTVar4->field_0xa0 = uVar10;
-    *(undefined4 *)&pTVar4->field_0x98 = uVar11;
-  }
-  param_2 = 0xffffffff;
-  pTVar3 = pTVar4;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    pTVar3 = (TDeluxeText *)g_pUiResourceHead;
-  }
-  g_pUiResourceHead = (int *)pTVar3;
-  g_pUiResourceContext = (int *)pTVar4;
-  PushUiResourcePoolNode();
-  ppuStack_48 = (undefined4 **)0x458fd1;
-  InitializeUiResourceEntryFrameAndParent();
-  pTVar2 = (TMapKeyVtbl *)pTVar4->vftable;
-  pTVar4->controlTag = 0x73616c65;
-  pTVar4->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
-  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar10;
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  if (pTVar4 == unaff_EBX) {
-    piVar8 = (int *)0x0;
-  }
-  else {
-    piVar8 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar4)
-    ;
-  }
-  piVar6 = piVar8;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    piVar6 = g_pUiResourceHead;
-  }
-  g_pUiResourceHead = piVar6;
-  g_pUiResourceContext = piVar8;
-  PushUiResourcePoolNode();
-  ppuStack_48 = &puStack_20;
-  puStack_20 = (undefined4 *)0x61;
-  InitializeUiResourceEntryFrameAndParent();
-  iVar5 = *piVar8;
-  piVar8[7] = 0x73686f77;
-  piVar8[0xf] = (int)unaff_EBX;
-  (**(code **)(iVar5 + 0xa4))();
-  ppuStack_48 = (undefined4 **)0x1;
-  (**(code **)(iVar5 + 0xa8))();
-  piVar8 = g_pUiResourceContext;
-  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar8 + 0x4d) = 1;
-  piVar8 = g_pUiResourceContext;
-  g_pUiResourceContext[0x18] = 10;
-  piVar6 = (int *)CRect::CRect((CRect *)&stack0xffffffd0,(int)unaff_EBX,(int)unaff_EBX,
-                               (int)unaff_EBX,(int)unaff_EBX);
-  uVar11 = 0x4e21;
-  piVar8[0x1a] = *piVar6;
-  piVar8[0x1b] = piVar6[1];
-  piVar8[0x1c] = piVar6[2];
-  piVar8[0x1d] = piVar6[3];
-  (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  puStack_20 = (undefined4 *)0x1f;
-  if (pTVar4 == unaff_EBX) {
-    piVar8 = (int *)0x0;
-  }
-  else {
-    piVar8 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar4)
-    ;
-  }
-  puStack_20 = (undefined4 *)0xffffffff;
-  piVar6 = piVar8;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    piVar6 = g_pUiResourceHead;
-  }
-  g_pUiResourceHead = piVar6;
-  g_pUiResourceContext = piVar8;
-  PushUiResourcePoolNode();
-  InitializeUiResourceEntryFrameAndParent();
-  iVar5 = *piVar8;
-  piVar8[7] = 0x71756974;
-  piVar8[0xf] = (int)unaff_EBX;
-  (**(code **)(iVar5 + 0xa4))();
-  (**(code **)(iVar5 + 0xa8))();
-  piVar8 = g_pUiResourceContext;
-  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar8 + 0x4d) = 1;
-  piVar8 = g_pUiResourceContext;
-  g_pUiResourceContext[0x18] = 10;
-  piVar6 = (int *)CRect::CRect((CRect *)&ppuStack_48,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,
-                               (int)unaff_EBX);
-  piVar8[0x1a] = *piVar6;
-  piVar8[0x1b] = piVar6[1];
-  piVar8[0x1c] = piVar6[2];
-  piVar8[0x1d] = piVar6[3];
-  (**(code **)(*g_pUiResourceContext + 0x1c8))();
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateWithFallbackHandler();
-  if (pTVar4 == unaff_EBX) {
-    pTVar4 = (TDeluxeText *)0x0;
-  }
-  else {
-    TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20((TMapKey *)pTVar4);
-    ClearColorRgbaBytes();
-    ClearColorRgbaBytes();
-    pTVar4->vftable = &TDeluxeTextVtbl_006406d8;
-    puVar7 = (undefined4 *)SetColorRgbAndClearAlphaByte();
-    uVar9 = *puVar7;
-    pTVar4->field_0xa0 = uVar10;
-    *(undefined4 *)&pTVar4->field_0x98 = uVar9;
-  }
-  pTVar3 = pTVar4;
-  g_pUiResourceContext = (int *)pTVar4;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    GetUiLinkedListNodePayload();
-    pTVar3 = (TDeluxeText *)g_pUiResourceHead;
-  }
-  g_pUiResourceHead = (int *)pTVar3;
-  PushUiLinkedListNodeWithPayload();
-  SetUiResourcePairValues();
-  SetUiResourcePairValues();
-  InitializeUiResourceEntryFrameAndParent(unaff_EBX);
-  pTVar2 = (TMapKeyVtbl *)pTVar4->vftable;
-  pTVar4->controlTag = 0x72657175;
-  pTVar4->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
-  SetUiResourceStateFlags();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateUiResourceNode();
-  ppuStack_48 = (undefined4 **)0x22;
-  if (pTVar4 == unaff_EBX) {
-    uVar9 = 0;
-  }
-  else {
-    uVar9 = TStaticText::TStaticText((TStaticText *)pTVar4);
-  }
-  ppuStack_48 = (undefined4 **)0xffffffff;
-  RegisterUiResourceEntry(0x73746174,0x7473686f,uVar9,0x33,0x1be,0x8a,0x17);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(0xd);
-  SetUiResourceContextTagWord(unaff_EBX);
-  BindUiResourceTextAndStyle(0x514,3,s_Static_Text_00694354);
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateUiResourceNode();
-  ppuStack_48 = (undefined4 **)0x23;
-  if (pTVar4 == unaff_EBX) {
-    uVar9 = 0;
-  }
-  else {
-    uVar9 = TStaticText::TStaticText((TStaticText *)pTVar4);
-  }
-  ppuStack_48 = (undefined4 **)0xffffffff;
-  RegisterUiResourceEntry(0x73746174,0x74717569,uVar9,0x1cb,0x1bd,0x8a,0x17);
-  SetUiResourceStateFlags();
-  SetUiResourceLayoutValues(0xd);
-  SetUiResourceContextTagWord(unaff_EBX);
-  BindUiResourceTextAndStyle(0x514,3,s_Static_Text_00694354);
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  pTVar4 = (TDeluxeText *)AllocateUiResourceNode();
-  ppuStack_48 = (undefined4 **)0x24;
-  if (pTVar4 == unaff_EBX) {
-    uVar9 = 0;
-  }
-  else {
-    uVar9 = TDeluxeText::ConstructUiColorTextResourceEntry(pTVar4);
-  }
-  ppuStack_48 = (undefined4 **)0xffffffff;
-  RegisterUiResourceEntry(0x74657677,0x7469746c,uVar9,0x84,6,0x177,0x25);
-  SetUiResourceStateFlags();
-  ClearUiResourceContext();
-  PopUiResourcePoolNode_00479A80();
-  PopUiResourcePoolNode_00479A80();
-  PopUiResourcePoolNode_00479A80();
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    PropagateUiResourceContextRecursive();
-  }
-  piVar8 = g_pUiResourceHead;
-  *unaff_FS_OFFSET = uVar11;
-  return piVar8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00458D10
-// GHIDRA_NAME InitializeOrderStateUiResourceTreeAndControlEntries
-// GHIDRA_PROTO undefined InitializeOrderStateUiResourceTreeAndControlEntries()
-
-int * InitializeOrderStateUiResourceTreeAndControlEntries
-                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
-
-{
-  TMapKeyVtbl *pTVar1;
+  TDeluxeTextVtbl *pTVar1;
   TDeluxeText *pTVar2;
   TDeluxeText *pTVar3;
+  int *extraout_EAX;
   int iVar4;
   int *piVar5;
   undefined4 *puVar6;
@@ -36283,26 +35992,31 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   undefined4 uVar8;
   undefined1 uVar9;
   TDeluxeText *unaff_EBX;
-  int *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack00000030;
   undefined4 uVar10;
   undefined4 **ppuStack_48;
   undefined4 *puStack_20;
   
-  uStack00000030 = 0xffffffff;
-  piVar7 = unaff_EDI;
-  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
-    piVar7 = g_pUiResourceHead;
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  if (pTVar3 == unaff_EBX) {
+    piVar7 = (int *)0x0;
   }
-  g_pUiResourceHead = piVar7;
-  g_pUiResourceContext = unaff_EDI;
+  else {
+    TView::ConstructTViewBaseState((TView *)pTVar3);
+    piVar7 = extraout_EAX;
+  }
+  piVar5 = piVar7;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    piVar5 = g_pUiResourceHead;
+  }
+  g_pUiResourceHead = piVar5;
+  g_pUiResourceContext = piVar7;
   PushUiResourcePoolNode();
   puStack_20 = (undefined4 *)0x458d76;
   InitializeUiResourceEntryFrameAndParent();
-  iVar4 = *unaff_EDI;
-  unaff_EDI[7] = 0x62617365;
-  unaff_EDI[0xf] = (int)unaff_EBX;
+  iVar4 = *piVar7;
+  piVar7[7] = 0x62617365;
+  piVar7[0xf] = (int)unaff_EBX;
   (**(code **)(iVar4 + 0xa4))();
   (**(code **)(iVar4 + 0xa8))();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
@@ -36327,12 +36041,12 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   param_2 = 0x280;
   param_3 = 0x1e0;
   InitializeUiResourceEntryFrameAndParent();
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x6d61696e;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
   puStack_20 = (undefined4 *)0x1;
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar7 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -36384,11 +36098,11 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   PushUiResourcePoolNode();
   ppuStack_48 = (undefined4 **)0x458fd1;
   InitializeUiResourceEntryFrameAndParent();
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x73616c65;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
   PopUiResourcePoolNode_00479A80();
@@ -36491,11 +36205,300 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   SetUiResourcePairValues();
   SetUiResourcePairValues();
   InitializeUiResourceEntryFrameAndParent(unaff_EBX);
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x72657175;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
+  SetUiResourceStateFlags();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateUiResourceNode();
+  ppuStack_48 = (undefined4 **)0x22;
+  if (pTVar3 == unaff_EBX) {
+    uVar8 = 0;
+  }
+  else {
+    uVar8 = TStaticText::TStaticText((TStaticText *)pTVar3);
+  }
+  ppuStack_48 = (undefined4 **)0xffffffff;
+  RegisterUiResourceEntry(0x73746174,0x7473686f,uVar8,0x33,0x1be,0x8a,0x17);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(0xd);
+  SetUiResourceContextTagWord(unaff_EBX);
+  BindUiResourceTextAndStyle(0x514,3,s_Static_Text_00694354);
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateUiResourceNode();
+  ppuStack_48 = (undefined4 **)0x23;
+  if (pTVar3 == unaff_EBX) {
+    uVar8 = 0;
+  }
+  else {
+    uVar8 = TStaticText::TStaticText((TStaticText *)pTVar3);
+  }
+  ppuStack_48 = (undefined4 **)0xffffffff;
+  RegisterUiResourceEntry(0x73746174,0x74717569,uVar8,0x1cb,0x1bd,0x8a,0x17);
+  SetUiResourceStateFlags();
+  SetUiResourceLayoutValues(0xd);
+  SetUiResourceContextTagWord(unaff_EBX);
+  BindUiResourceTextAndStyle(0x514,3,s_Static_Text_00694354);
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateUiResourceNode();
+  ppuStack_48 = (undefined4 **)0x24;
+  if (pTVar3 == unaff_EBX) {
+    uVar8 = 0;
+  }
+  else {
+    uVar8 = TDeluxeText::ConstructUiColorTextResourceEntry(pTVar3);
+  }
+  ppuStack_48 = (undefined4 **)0xffffffff;
+  RegisterUiResourceEntry(0x74657677,0x7469746c,uVar8,0x84,6,0x177,0x25);
+  SetUiResourceStateFlags();
+  ClearUiResourceContext();
+  PopUiResourcePoolNode_00479A80();
+  PopUiResourcePoolNode_00479A80();
+  PopUiResourcePoolNode_00479A80();
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    PropagateUiResourceContextRecursive();
+  }
+  piVar7 = g_pUiResourceHead;
+  *unaff_FS_OFFSET = uVar10;
+  return piVar7;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00458D10
+// GHIDRA_NAME InitializeOrderStateUiResourceTreeAndControlEntries
+// GHIDRA_PROTO undefined InitializeOrderStateUiResourceTreeAndControlEntries()
+
+int * InitializeOrderStateUiResourceTreeAndControlEntries
+                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  TDeluxeTextVtbl *pTVar1;
+  TDeluxeText *pTVar2;
+  TDeluxeText *pTVar3;
+  int iVar4;
+  int *piVar5;
+  undefined4 *puVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  undefined1 uVar9;
+  TDeluxeText *unaff_EBX;
+  int *unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack00000030;
+  undefined4 uVar10;
+  undefined4 **ppuStack_48;
+  undefined4 *puStack_20;
+  
+  uStack00000030 = 0xffffffff;
+  piVar7 = unaff_EDI;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    piVar7 = g_pUiResourceHead;
+  }
+  g_pUiResourceHead = piVar7;
+  g_pUiResourceContext = unaff_EDI;
+  PushUiResourcePoolNode();
+  puStack_20 = (undefined4 *)0x458d76;
+  InitializeUiResourceEntryFrameAndParent();
+  iVar4 = *unaff_EDI;
+  unaff_EDI[7] = 0x62617365;
+  unaff_EDI[0xf] = (int)unaff_EBX;
+  (**(code **)(iVar4 + 0xa4))();
+  (**(code **)(iVar4 + 0xa8))();
+  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
+  *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  if (pTVar3 == unaff_EBX) {
+    pTVar3 = (TDeluxeText *)0x0;
+  }
+  else {
+    thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)pTVar3);
+    pTVar3->vftable = (TDeluxeTextVtbl *)&TSpecialQuitPictureVtbl_00643c78;
+    *(short *)&pTVar3->field_0x90 = (short)unaff_EBX;
+  }
+  pTVar2 = pTVar3;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    pTVar2 = (TDeluxeText *)g_pUiResourceHead;
+  }
+  g_pUiResourceHead = (int *)pTVar2;
+  g_pUiResourceContext = (int *)pTVar3;
+  PushUiResourcePoolNode();
+  puStack_20 = &param_2;
+  param_2 = 0x280;
+  param_3 = 0x1e0;
+  InitializeUiResourceEntryFrameAndParent();
+  pTVar1 = pTVar3->vftable;
+  pTVar3->controlTag = 0x6d61696e;
+  pTVar3->field3c = (int)unaff_EBX;
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  puStack_20 = (undefined4 *)0x1;
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
+  piVar7 = g_pUiResourceContext;
+  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
+  *(undefined1 *)((int)piVar7 + 0x4d) = 1;
+  piVar7 = g_pUiResourceContext;
+  FreeHeapBufferIfNotNull();
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  if (pTVar3 == unaff_EBX) {
+    iVar4 = 0;
+  }
+  else {
+    iVar4 = ZeroUiResourceContextStyleBytes();
+  }
+  piVar7[0x12] = iVar4;
+  *(TDeluxeText **)(iVar4 + 4) = unaff_EBX;
+  *(undefined4 *)piVar7[0x12] = 0xffffff;
+  piVar7 = g_pUiResourceContext;
+  g_pUiResourceContext[0x18] = 10;
+  piVar5 = (int *)CRect::CRect((CRect *)&stack0xfffffff8,(int)unaff_EBX,(int)unaff_EBX,
+                               (int)unaff_EBX,(int)unaff_EBX);
+  piVar7[0x1a] = *piVar5;
+  piVar7[0x1b] = piVar5[1];
+  piVar7[0x1c] = piVar5[2];
+  piVar7[0x1d] = piVar5[3];
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  param_2 = 0x1c;
+  uVar9 = SUB41(unaff_EBX,0);
+  if (pTVar3 == unaff_EBX) {
+    pTVar3 = (TDeluxeText *)0x0;
+  }
+  else {
+    TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20((TMapKey *)pTVar3);
+    param_2 = CONCAT31(param_2._1_3_,0x1d);
+    ClearColorRgbaBytes();
+    ClearColorRgbaBytes();
+    pTVar3->vftable = &TDeluxeTextVtbl_006406d8;
+    puVar6 = (undefined4 *)SetColorRgbAndClearAlphaByte();
+    uVar10 = *puVar6;
+    pTVar3->field_0xa0 = uVar9;
+    *(undefined4 *)&pTVar3->field_0x98 = uVar10;
+  }
+  param_2 = 0xffffffff;
+  pTVar2 = pTVar3;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    pTVar2 = (TDeluxeText *)g_pUiResourceHead;
+  }
+  g_pUiResourceHead = (int *)pTVar2;
+  g_pUiResourceContext = (int *)pTVar3;
+  PushUiResourcePoolNode();
+  ppuStack_48 = (undefined4 **)0x458fd1;
+  InitializeUiResourceEntryFrameAndParent();
+  pTVar1 = pTVar3->vftable;
+  pTVar3->controlTag = 0x73616c65;
+  pTVar3->field3c = (int)unaff_EBX;
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
+  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
+  *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  if (pTVar3 == unaff_EBX) {
+    piVar7 = (int *)0x0;
+  }
+  else {
+    piVar7 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar3)
+    ;
+  }
+  piVar5 = piVar7;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    piVar5 = g_pUiResourceHead;
+  }
+  g_pUiResourceHead = piVar5;
+  g_pUiResourceContext = piVar7;
+  PushUiResourcePoolNode();
+  ppuStack_48 = &puStack_20;
+  puStack_20 = (undefined4 *)0x61;
+  InitializeUiResourceEntryFrameAndParent();
+  iVar4 = *piVar7;
+  piVar7[7] = 0x73686f77;
+  piVar7[0xf] = (int)unaff_EBX;
+  (**(code **)(iVar4 + 0xa4))();
+  ppuStack_48 = (undefined4 **)0x1;
+  (**(code **)(iVar4 + 0xa8))();
+  piVar7 = g_pUiResourceContext;
+  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
+  *(undefined1 *)((int)piVar7 + 0x4d) = 1;
+  piVar7 = g_pUiResourceContext;
+  g_pUiResourceContext[0x18] = 10;
+  piVar5 = (int *)CRect::CRect((CRect *)&stack0xffffffd0,(int)unaff_EBX,(int)unaff_EBX,
+                               (int)unaff_EBX,(int)unaff_EBX);
+  uVar10 = 0x4e21;
+  piVar7[0x1a] = *piVar5;
+  piVar7[0x1b] = piVar5[1];
+  piVar7[0x1c] = piVar5[2];
+  piVar7[0x1d] = piVar5[3];
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  puStack_20 = (undefined4 *)0x1f;
+  if (pTVar3 == unaff_EBX) {
+    piVar7 = (int *)0x0;
+  }
+  else {
+    piVar7 = (int *)TPictureButton::ConstructUiTabCursorPictureEntry((TPictureButton *)pTVar3)
+    ;
+  }
+  puStack_20 = (undefined4 *)0xffffffff;
+  piVar5 = piVar7;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    piVar5 = g_pUiResourceHead;
+  }
+  g_pUiResourceHead = piVar5;
+  g_pUiResourceContext = piVar7;
+  PushUiResourcePoolNode();
+  InitializeUiResourceEntryFrameAndParent();
+  iVar4 = *piVar7;
+  piVar7[7] = 0x71756974;
+  piVar7[0xf] = (int)unaff_EBX;
+  (**(code **)(iVar4 + 0xa4))();
+  (**(code **)(iVar4 + 0xa8))();
+  piVar7 = g_pUiResourceContext;
+  *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
+  *(undefined1 *)((int)piVar7 + 0x4d) = 1;
+  piVar7 = g_pUiResourceContext;
+  g_pUiResourceContext[0x18] = 10;
+  piVar5 = (int *)CRect::CRect((CRect *)&ppuStack_48,(int)unaff_EBX,(int)unaff_EBX,(int)unaff_EBX,
+                               (int)unaff_EBX);
+  piVar7[0x1a] = *piVar5;
+  piVar7[0x1b] = piVar5[1];
+  piVar7[0x1c] = piVar5[2];
+  piVar7[0x1d] = piVar5[3];
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  PopUiResourcePoolNode_00479A80();
+  pTVar3 = (TDeluxeText *)AllocateWithFallbackHandler();
+  if (pTVar3 == unaff_EBX) {
+    pTVar3 = (TDeluxeText *)0x0;
+  }
+  else {
+    TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20((TMapKey *)pTVar3);
+    ClearColorRgbaBytes();
+    ClearColorRgbaBytes();
+    pTVar3->vftable = &TDeluxeTextVtbl_006406d8;
+    puVar6 = (undefined4 *)SetColorRgbAndClearAlphaByte();
+    uVar8 = *puVar6;
+    pTVar3->field_0xa0 = uVar9;
+    *(undefined4 *)&pTVar3->field_0x98 = uVar8;
+  }
+  pTVar2 = pTVar3;
+  g_pUiResourceContext = (int *)pTVar3;
+  if ((TDeluxeText *)g_pUiResourceHead != unaff_EBX) {
+    GetUiLinkedListNodePayload();
+    pTVar2 = (TDeluxeText *)g_pUiResourceHead;
+  }
+  g_pUiResourceHead = (int *)pTVar2;
+  PushUiLinkedListNodeWithPayload();
+  SetUiResourcePairValues();
+  SetUiResourcePairValues();
+  InitializeUiResourceEntryFrameAndParent(unaff_EBX);
+  pTVar1 = pTVar3->vftable;
+  pTVar3->controlTag = 0x72657175;
+  pTVar3->field3c = (int)unaff_EBX;
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   SetUiResourceStateFlags();
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
@@ -36562,7 +36565,7 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
                 (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  TMapKeyVtbl *pTVar1;
+  TDeluxeTextVtbl *pTVar1;
   TDeluxeText *pTVar2;
   TDeluxeText *pTVar3;
   int iVar4;
@@ -36616,12 +36619,12 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   param_2 = 0x280;
   param_3 = 0x1e0;
   InitializeUiResourceEntryFrameAndParent();
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x6d61696e;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
   puStack_20 = (undefined4 *)0x1;
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar7 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar7 + 0x4d) = 1;
@@ -36673,11 +36676,11 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   PushUiResourcePoolNode();
   ppuStack_48 = (undefined4 **)0x458fd1;
   InitializeUiResourceEntryFrameAndParent();
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x73616c65;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = uVar9;
   PopUiResourcePoolNode_00479A80();
@@ -36780,11 +36783,11 @@ int * InitializeOrderStateUiResourceTreeAndControlEntries
   SetUiResourcePairValues();
   SetUiResourcePairValues();
   InitializeUiResourceEntryFrameAndParent(unaff_EBX);
-  pTVar1 = (TMapKeyVtbl *)pTVar3->vftable;
+  pTVar1 = pTVar3->vftable;
   pTVar3->controlTag = 0x72657175;
   pTVar3->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   SetUiResourceStateFlags();
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
@@ -37024,7 +37027,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     else {
       pTStack_48 = (TOffLimitsPicture *)0x45bec6;
       TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(pTVar16);
-      pTVar16->vftable = (TOffLimitsPictureVtbl *)&TTacMapUberPictureVtbl_006451f0;
+      pTVar16->vftable = (TOffLimitsPictureVtbl *)0x6451f0;
       pTVar16[1].vftable = (TOffLimitsPictureVtbl *)0x0;
     }
     uStack_14 = 0xffffffff;
@@ -37048,10 +37051,10 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTVar16->controlTag = 0x6d61696e;
     pTVar16->field3c = 0;
     pTStack_50 = (TUpDownPictureButton *)0x45bf4c;
-    (*pTVar3[0x14].slot_0x04)();
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     pTStack_50 = (TUpDownPictureButton *)0x0;
     puStack_54 = (undefined1 *)0x0;
-    (*pTVar3[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->UpdateControlCachedIntFromWindowText_2a)();
     piVar12 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar12 + 0x4d) = 1;
@@ -37102,8 +37105,8 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTVar4 = pTVar18->vftable;
     pTVar18->controlTag = 0x63757273;
     pTVar18->field3c = 0;
-    (*pTVar4[0x14].slot_0x04)();
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
     g_pUiResourceContext = (int *)0x0;
@@ -37115,7 +37118,7 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     }
     else {
       TacticalBattleView::ConstructTacticalBattleViewBaseState(this_01);
-      *(TTacArmyViewVtbl **)this_01 = &TTacArmyViewVtbl_00644fd0;
+      *(undefined4 *)this_01 = 0x644fd0;
     }
     pTStack_3c = (TMapKey *)0xffffffff;
     if (g_pUiResourceHead == (int *)0x0) {
@@ -37175,10 +37178,10 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTVar19->controlTag = 0x746f6f6c;
     pTVar19->field3c = 0;
     puStack_88 = (undefined1 *)0x45c268;
-    (*pTVar5[0x14].slot_0x04)();
+    (*pTVar5->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     puStack_88 = (undefined1 *)0x0;
     piStack_8c = (int *)0x0;
-    (*pTVar5[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar5->UpdateControlCachedIntFromWindowText_2a)();
     piVar12 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar12 + 0x4d) = 1;
@@ -37694,11 +37697,11 @@ int * InitializeTacticalBattleViewToolbarAndDialogControls(undefined4 param_1,sh
     pTVar15->controlTag = 0x696e666f;
     pTVar15->field3c = 0;
     puStack_84 = (undefined4 *)0x45bb76;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
     puStack_84 = (undefined4 *)0x0;
     puStack_88 = (undefined1 *)0x0;
     piStack_8c = (int *)0x45bb80;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 0;
     g_pUiResourceContext = (int *)0x0;
@@ -39188,9 +39191,9 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     pTVar6->controlTag = 0x444c4f47;
     pTVar6->field3c = 0;
     puStack_54 = (undefined1 *)0x45e2c3;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->SetEnabled)();
     puStack_54 = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->SetState)();
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
@@ -39327,8 +39330,8 @@ int * BuildTurnEventDialogResourcesForEvent8FC(undefined4 param_1,short param_2)
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x73637677;
     pTVar6->field3c = 0;
-    (*pTVar2[0x14].slot_0x04)();
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->SetEnabled)();
+    (*pTVar2->SetState)();
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)g_pUiResourceContext + 0x4d) = 1;
     g_pUiResourceContext = (int *)0x0;
@@ -42935,10 +42938,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x61706170;
     pTVar6->field3c = 0;
     uStack_6c = 0x474cbf;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     uStack_6c = 0;
     ppuStack_70 = (undefined4 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -42991,10 +42994,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x63706170;
     pTVar6->field3c = 0;
     pTStack_84 = (TStaticText *)0x474e31;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_84 = (TStaticText *)0x0;
     puStack_88 = (undefined *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -43416,10 +43419,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
     pTStack_154 = (TCivilianButton *)0x475c1b;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_154 = (TCivilianButton *)0x0;
     puStack_158 = (undefined1 *)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -43717,10 +43720,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
     pTStack_1f4 = (TCivilianButton *)0x47644b;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_1f4 = (TCivilianButton *)0x0;
     ppuStack_1f8 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -43981,10 +43984,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
     pTStack_27c = (TCivilianButton *)0x476b54;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_27c = (TCivilianButton *)0x0;
     ppuStack_280 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -44245,10 +44248,10 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
     pTStack_304 = (TCluster *)0x47725d;
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->VTableSlot29)();
     pTStack_304 = (TCluster *)0x0;
     ppuStack_308 = (undefined1 **)0x0;
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -44458,8 +44461,8 @@ int * __cdecl BuildUniversityDialogShell(dword dwPanelId,short nDialogTypeTag)
     pTVar2 = pTVar6->vftable;
     pTVar6->controlTag = 0x6e756d62;
     pTVar6->field3c = 0;
-    (*pTVar2[0x14].slot_0x04)();
-    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar2->VTableSlot29)();
+    (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
     piVar4 = g_pUiResourceContext;
     *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
     *(undefined1 *)((int)piVar4 + 0x4d) = 0;
@@ -44810,11 +44813,10 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   int *piVar6;
   int iVar7;
   undefined4 uVar8;
-  TNumberText *pTVar9;
-  undefined1 uVar10;
+  undefined1 uVar9;
   TUniversityView *unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar11;
+  undefined4 uVar10;
   undefined1 *puStack_2f4;
   undefined *puStack_2dc;
   undefined1 *puStack_284;
@@ -44887,12 +44889,12 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x61706170;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  uVar10 = SUB41(unaff_EBX,0);
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  uVar9 = SUB41(unaff_EBX,0);
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   g_pUiResourceContext[0x18] = 6;
   piVar6 = (int *)CRect::CRect((CRect *)&stack0xffffffec,3,3,3,3);
@@ -44933,11 +44935,11 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x63706170;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   g_pUiResourceContext[0x18] = 6;
   piVar6 = (int *)CRect::CRect((CRect *)&stack0xffffffd4,3,3,3,3);
@@ -45345,11 +45347,11 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   FreeHeapBufferIfNotNull();
   pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
@@ -45618,11 +45620,11 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   FreeHeapBufferIfNotNull();
   pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
@@ -45854,11 +45856,11 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   FreeHeapBufferIfNotNull();
   pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
@@ -46090,11 +46092,11 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   FreeHeapBufferIfNotNull();
   pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
@@ -46286,16 +46288,16 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   g_pUiResourceHead = (int *)pTVar3;
   g_pUiResourceContext = (int *)pTVar5;
   PushUiResourcePoolNode();
-  uVar11 = 0x13;
+  uVar10 = 0x13;
   InitializeUiResourceEntryFrameAndParent(unaff_EBX);
   pTVar2 = pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar2[0x14].slot_0x04)();
-  (*pTVar2[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)();
+  (*pTVar2->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
-  *(undefined1 *)((int)piVar4 + 0x4d) = uVar10;
+  *(undefined1 *)((int)piVar4 + 0x4d) = uVar9;
   piVar4 = g_pUiResourceContext;
   FreeHeapBufferIfNotNull();
   pTVar5 = (TUniversityView *)AllocateWithFallbackHandler();
@@ -46399,12 +46401,12 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceLayoutValues(10);
   ApplyUiResourceLayoutFromContext();
   ClearUiResourceContext();
-  pTVar9 = (TNumberText *)AllocateUiResourceNode();
-  if (pTVar9 == (TNumberText *)unaff_EBX) {
+  pTVar5 = (TUniversityView *)AllocateUiResourceNode();
+  if (pTVar5 == unaff_EBX) {
     uVar8 = 0;
   }
   else {
-    uVar8 = TNumberText::ConstructUiNumericTextEntry(pTVar9);
+    uVar8 = TNumberText::ConstructUiNumericTextEntry((TNumberText *)pTVar5);
   }
   RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar8,0xffffffff);
   SetUiResourceStateFlags();
@@ -46470,12 +46472,12 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   SetUiResourceLayoutValues(10);
   ApplyUiResourceLayoutFromContext();
   ClearUiResourceContext();
-  pTVar9 = (TNumberText *)AllocateUiResourceNode();
-  if (pTVar9 == (TNumberText *)unaff_EBX) {
+  pTVar5 = (TUniversityView *)AllocateUiResourceNode();
+  if (pTVar5 == unaff_EBX) {
     uVar8 = 0;
   }
   else {
-    uVar8 = TNumberText::ConstructUiNumericTextEntry(pTVar9);
+    uVar8 = TNumberText::ConstructUiNumericTextEntry((TNumberText *)pTVar5);
   }
   RegisterUiResourceEntry(0x6e6d6272,0x6e756d62,uVar8,0xffffffff);
   SetUiResourceStateFlags();
@@ -46532,12 +46534,12 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
   PopUiResourcePoolNode_00479A80();
-  pTVar9 = (TNumberText *)AllocateUiResourceNode();
-  if (pTVar9 == (TNumberText *)unaff_EBX) {
+  pTVar5 = (TUniversityView *)AllocateUiResourceNode();
+  if (pTVar5 == unaff_EBX) {
     uVar8 = 0;
   }
   else {
-    uVar8 = TNumberText::ConstructUiNumericTextEntry(pTVar9);
+    uVar8 = TNumberText::ConstructUiNumericTextEntry((TNumberText *)pTVar5);
   }
   RegisterUiResourceEntry(0x6e6d6272,0x63657870,uVar8,0x25,0xba,0x17,0x15);
   SetUiResourceStateFlags();
@@ -46548,12 +46550,12 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
   DispatchUiResourceContextVslot1E4WithCoords(1);
   ClearUiResourceContext();
   PopUiResourcePoolNode_00479A80();
-  pTVar9 = (TNumberText *)AllocateUiResourceNode();
-  if (pTVar9 == (TNumberText *)unaff_EBX) {
+  pTVar5 = (TUniversityView *)AllocateUiResourceNode();
+  if (pTVar5 == unaff_EBX) {
     uVar8 = 0;
   }
   else {
-    uVar8 = TNumberText::ConstructUiNumericTextEntry(pTVar9);
+    uVar8 = TNumberText::ConstructUiNumericTextEntry((TNumberText *)pTVar5);
   }
   RegisterUiResourceEntry(0x6e6d6272,0x61657870,uVar8,0x25,0xe5,0x17,0x15);
   SetUiResourceStateFlags();
@@ -46598,7 +46600,7 @@ int * BuildUniversityDialogControls(undefined4 param_1,TUniversityView *param_2)
     PropagateUiResourceContextRecursive();
   }
   piVar4 = g_pUiResourceHead;
-  *unaff_FS_OFFSET = uVar11;
+  *unaff_FS_OFFSET = uVar10;
   return piVar4;
 }
 
@@ -46790,8 +46792,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   uVar8 = SUB41(unaff_EBX,0);
@@ -47027,8 +47029,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -47263,8 +47265,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -47464,8 +47466,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -47959,8 +47961,8 @@ int * BuildUniversityRecruitControls
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   uVar8 = SUB41(unaff_EBX,0);
@@ -48196,8 +48198,8 @@ int * BuildUniversityRecruitControls
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -48432,8 +48434,8 @@ int * BuildUniversityRecruitControls
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -48633,8 +48635,8 @@ int * BuildUniversityRecruitControls
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -49167,8 +49169,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   uVar8 = SUB41(unaff_EBX,0);
@@ -49405,8 +49407,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -49641,8 +49643,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -49842,8 +49844,8 @@ int * BuildUniversityRecruitmentRows
   pTVar1 = (TEditTextVtbl *)pTVar5->vftable;
   pTVar5->controlTag = 0x6e756d62;
   pTVar5->field3c = (int)unaff_EBX;
-  (*pTVar1[0x14].slot_0x04)();
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot29)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   piVar4 = g_pUiResourceContext;
   *(undefined1 *)(g_pUiResourceContext + 0x13) = 1;
   *(undefined1 *)((int)piVar4 + 0x4d) = uVar8;
@@ -50209,7 +50211,7 @@ int * __thiscall InitializeTurnEventDialogFactoryRegistry(void *this,int *pFacto
   *unaff_FS_OFFSET = &local_c;
   CDocument::CDocument();
   local_4 = 0;
-  *(undefined **)this = &DAT_00645eb8;
+  *(undefined4 *)this = 0x645eb8;
   this_00 = (TAmbitFileBasedDocument *)AllocateWithFallbackHandler(4);
   local_4._0_1_ = 1;
   if (this_00 == (TAmbitFileBasedDocument *)0x0) {
@@ -50265,7 +50267,7 @@ void __fastcall DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(und
   puStack_8 = &LAB_0062dfa8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &DAT_00645eb8;
+  *param_1 = 0x645eb8;
   local_4 = 0;
   if (DAT_006a1b24 != (int *)0x0) {
     (**(code **)(*DAT_006a1b24 + 4))(1);

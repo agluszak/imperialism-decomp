@@ -375,13 +375,13 @@ bool __fastcall ApplyEraCapabilityCostAndSetSelection(int param_1)
   sVar6 = ResolveEraCapabilityFallbackSlot();
   sVar5 = *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 + sVar6 * 0xe);
   sVar1 = *(short *)(&DAT_00695cda + sVar6 * 0xe);
-  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable[0xf].GetTCountryClassNamePointer)
+  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
                     (0x10);
   if ((short)CONCAT31(extraout_var,uVar4) < sVar5) {
     return false;
   }
   iVar8 = 0xc;
-  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable[0xf].GetTCountryClassNamePointer)
+  uVar4 = (*g_apNationStates[*(short *)(param_1 + 0x18)]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
                     (0xc);
   if ((short)CONCAT31(extraout_var_00,uVar4) < (short)unaff_EBP) {
     return false;
@@ -393,11 +393,12 @@ bool __fastcall ApplyEraCapabilityCostAndSetSelection(int param_1)
     return false;
   }
   pTVar3 = pTVar2->vftable;
-  uVar4 = (*pTVar3[0xf].GetTCountryClassNamePointer)(0x10);
-  (*pTVar3[0x31].slot_0x04)(0x10,CONCAT31(extraout_var_01,uVar4) - unaff_EBP);
+  uVar4 = (*pTVar3->OrphanLeaf_NoCall_Ins02_004d7f20)(0x10);
+  (*pTVar3->QueueNationOrderManagerPayloadObject_63)
+            (0x10,CONCAT31(extraout_var_01,uVar4) - unaff_EBP);
   pTVar3 = g_apNationStates[*(short *)(param_1 + 0x18)]->vftable;
-  uVar4 = (*pTVar3[0xf].GetTCountryClassNamePointer)(0xc);
-  (*pTVar3[0x31].slot_0x04)(0xc,CONCAT31(extraout_var_02,uVar4) - iVar8);
+  uVar4 = (*pTVar3->OrphanLeaf_NoCall_Ins02_004d7f20)(0xc);
+  (*pTVar3->QueueNationOrderManagerPayloadObject_63)(0xc,CONCAT31(extraout_var_02,uVar4) - iVar8);
   *(int *)&g_apNationStates[*(short *)(param_1 + 0x18)]->field_0x10 =
        *(int *)&g_apNationStates[*(short *)(param_1 + 0x18)]->field_0x10 - (int)sVar1;
   *(short *)(param_1 + 4) = sVar6;
@@ -557,7 +558,7 @@ LONG * LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(undefined4 param_1)
       *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
       this = (TAnimation *)*piVar3;
       if (this != (TAnimation *)0x0) {
-        this->vftable = (TAnimationVtbl *)&DAT_0064c340;
+        this->vftable = (TAnimationVtbl *)0x64c340;
         TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                   (this);
         FreeHeapBufferIfNotNull(this);
@@ -10427,8 +10428,8 @@ void HandleTurnEvent8FC_RebuildPageTabsAndTitles(void)
   (**(code **)(iVar5 + 0x1d0))();
   (**(code **)(iVar5 + 0x1cc))();
   g_pCursorControlPanel = (TControl *)(*pcVar4)(0x63757273);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
   piVar2 = (int *)(*pcVar4)(0x746f7042);
   iVar5 = *piVar2;
   (**(code **)(iVar5 + 0xc))();
@@ -10483,8 +10484,8 @@ void __thiscall HandleTurnStateExitAndPostFollowupEventCode(int param_1,short pa
   
   *(short *)(param_1 + 0xf8) = param_2;
   if (param_2 == 0) {
-    (*g_pSfxPlaybackSystem->vftable[0x14].GetTEventHandlerClassNamePointer)();
-    (*g_pSfxPlaybackSystem->vftable[0x15].slot_0x04)
+    (*g_pSfxPlaybackSystem->vftable->RequestDirectSoundInitIfAllowed)();
+    (*g_pSfxPlaybackSystem->vftable[1].~TEventHandler)
               (CONCAT22((short)((uint)g_pLocalizationTable >> 0x10),
                         *(undefined2 *)&g_pLocalizationTable->field_0x4c));
     WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0
@@ -10677,7 +10678,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView(void)
   int *piVar3;
   
   uStack_14 = 0x102c;
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -10788,7 +10789,7 @@ int * RunTaggedOptionDialogAndReturnSelectionTag(void)
   local_12 = 0;
   local_11 = 0;
   local_10.m_pchData = local_10.m_pchData & 0xffff0000;
-  uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -10922,7 +10923,7 @@ bool __fastcall RefreshCurrentUiViewAndActivePanelState(int *param_1)
   undefined4 uStack_8;
   int *piVar3;
   
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -10954,7 +10955,7 @@ void __fastcall DispatchUiRuntimeMessage101AAndRefreshActiveView(int *param_1)
   int *piVar3;
   
   uStack_14 = 0x101a;
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -11040,7 +11041,7 @@ void CreateModalMessageCommandAndQueue(CString *param_1,undefined4 param_2)
   CString::AssignFromPtr((CString *)(pTVar1 + 1),param_1);
   *(undefined4 *)&pTVar1[1].field_0x4 = param_2;
   InitializeRangePairAndResetCursor(0x48657921,g_pGlobalUiRootController,0,0,0);
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this;
   return;
 }
@@ -13261,7 +13262,7 @@ bool ShowJoinGameSelectionDialogAndCaptureChoice(void)
     return false;
   }
   puVar10 = (undefined4 *)0x5e3;
-  uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar3 = (int *)CONCAT31(extraout_var,uVar2);
   iVar7 = *piVar3;
   (**(code **)(iVar7 + 0x1a0))(1);
@@ -14059,7 +14060,7 @@ int ProbeNationReachabilityAndMarkAwolBitmask(void)
   do {
     pTVar1 = *ppTVar6;
     if ((pTVar1 != (TGreatPower *)0x0) && (pTVar1->field_0xa0 != '\0')) {
-      cVar2 = (*pTVar1->vftable[0x14].GetTCountryClassNamePointer)();
+      cVar2 = (*pTVar1->vftable->ReturnFalseNationStateCapabilityFlagA0)();
       if (cVar2 != '\0') {
         if (*(int *)(&g_pGameFlowState[-0x6db1].field_0x50 + (int)ppTVar6) == -2) {
           iVar4 = iVar4 + (1 << ((byte)iVar5 & 0x1f));

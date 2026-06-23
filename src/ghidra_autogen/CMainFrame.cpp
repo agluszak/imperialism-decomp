@@ -168,7 +168,8 @@ undefined4 CMainFrame::OnEndPrintPreview()
                                    ((TSoundPlayer *)local_54);
                   }
                   local_4 = CONCAT31(local_4._1_3_,2);
-                  (*g_pSfxPlaybackSystem->vftable[0x12].slot_0x04)(0xf);
+                  (*g_pSfxPlaybackSystem->vftable->InitializeSoundSubsystemAndAllocateChannelLists)
+                            (0xf);
                   pCVar5 = AfxGetThread();
                   if (pCVar5 != (CWinThread *)0x0) {
                     pCVar5 = AfxGetThread();

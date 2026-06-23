@@ -83,7 +83,7 @@ void TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920()
   DAT_006a1890 = DAT_006a1890 + 1;
   uStack00000004 = 1;
   local_4 = 0;
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)();
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   uStack_1c = local_2c;
@@ -145,7 +145,7 @@ void TMapPreviewView::_scalar_deleting_destructor_(int *param_1)
     if (uVar3 == bVar1) {
       pTVar2 = this->ownerContext->vftable;
       *(int *)&this->field_0x6c = iVar7;
-      (*pTVar2[7].slot_0x04)(0x7069636b,this,0);
+      (*pTVar2->HandleEvent)(0x7069636b,this,0);
     }
     iVar7 = iVar7 + 1;
   } while (iVar7 < 7);

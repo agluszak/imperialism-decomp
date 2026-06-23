@@ -55,13 +55,13 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
     if (cVar1 == '\0') {
       (**(code **)(unaff_ESI + 0x74))(iVar8,iVar6,6,0);
     }
-    (*g_apTerrainTypeDescriptorTable[iVar6]->vftable[0x12].slot_0x04)(iVar8,0x131);
+    (*g_apTerrainTypeDescriptorTable[iVar6]->vftable->OrphanRetStub_004d7f80)(iVar8,0x131);
     TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,1,iVar6,iVar8,'\0');
     TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
               ((TCountry *)g_pInterNationEventQueueManager,0,iVar8,iVar6,'\0');
     if (iVar6 < 7) {
-      (*g_apNationStates[iVar8]->vftable[0x12].slot_0x04)(iVar6,200);
+      (*g_apNationStates[iVar8]->vftable->OrphanRetStub_004d7f80)(iVar6,200);
     }
     cVar1 = (*pcRam00000085)(iVar6);
     if (cVar1 == '\0') {
@@ -70,7 +70,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
         iVar4 = (**(code **)(iVar6 + 0x94))(iVar6,1,2);
       }
       if (-1 < iVar4) {
-        uVar2 = (*g_apNationStates[iVar4]->vftable[0x4f].slot_0x04)(iVar6,iVar8);
+        uVar2 = (*g_apNationStates[iVar4]->vftable->OrphanRetStub_0059add0_9f)(iVar6,iVar8);
         bVar9 = CONCAT31(extraout_var,uVar2) == 2;
       }
     }
@@ -82,7 +82,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
         if (*psStack_30 == 2) {
           cVar1 = (*unaff_ESI)(iStack_34,iVar8);
           if (cVar1 == '\0') {
-            uVar2 = (*(*ppTVar5)->vftable[0x50].GetTCountryClassNamePointer)(iVar6,iVar8,0);
+            uVar2 = (*(*ppTVar5)->vftable->GetTEventHandlerClassNamePointer_a0)(iVar6,iVar8,0);
             bVar9 = CONCAT31(extraout_var_00,uVar2) == 2;
           }
         }
@@ -97,7 +97,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
         if (*psVar3 == 2) {
           cVar1 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(iStack_34,iVar6);
           if (cVar1 == '\0') {
-            uVar2 = (*(*ppTVar5)->vftable[0x50].GetTCountryClassNamePointer)(iVar6,iVar8,1);
+            uVar2 = (*(*ppTVar5)->vftable->GetTEventHandlerClassNamePointer_a0)(iVar6,iVar8,1);
             bVar9 = CONCAT31(extraout_var_01,uVar2) == 2;
           }
         }
@@ -117,7 +117,7 @@ void TNextDiplomationCommand::ProcessQueuedWarTransitions()
         pTVar7 = this_00;
       }
       InitializeRangePairAndResetCursor(0x4e655854,g_pGlobalUiRootController,0,0,0);
-      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar7);
+      (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar7);
       *unaff_FS_OFFSET = this_00;
       return;
     }
@@ -208,7 +208,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
   undefined1 local_7a0;
   CString CStack_79c;
   CString CStack_798;
-  TNextDiplomationCommand *local_794;
+  TCommand *local_794;
   TArmyMgr *local_790;
   undefined4 local_78c;
   undefined4 local_788;
@@ -247,7 +247,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
   puStack_8 = &LAB_0063491e;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_794 = this;
+  local_794 = (TCommand *)this;
   switch(this[10].vftable) {
   case (TNextDiplomationCommandVtbl *)0x2:
     iVar11 = BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
@@ -269,7 +269,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
     do {
       pTVar1 = (*ppTVar15)->vftable;
       puVar9[-0x30e] = (short)(*ppTVar15)->ownerNationSlot;
-      uVar3 = (*pTVar1[8].GetTCountryClassNamePointer)();
+      uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
       uStack_740 = CONCAT31(extraout_var,uVar3);
       CString::CString(&CStack_79c);
       local_4 = 0;
@@ -322,7 +322,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
         psVar12 = psVar12 + 1;
         CStack_79c.m_pchData = CStack_79c.m_pchData + -1;
       } while (CStack_79c.m_pchData != (char *)0x0);
-      uVar3 = (*(*ppTVar15)->vftable[8].GetTCountryClassNamePointer)();
+      uVar3 = (*(*ppTVar15)->vftable->OrphanLeaf_NoCall_Ins06_004d87b0_10)();
       InitializeEmitEventHeaderWithActiveNation();
       InitializeSharedStringRefAndReturnThis();
       uStack_73c = 0x24;
@@ -433,7 +433,7 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
   case (TNextDiplomationCommandVtbl *)0x6:
     this_00 = (TCommand *)AllocateWithFallbackHandler(0x18);
     local_4 = 4;
-    local_794 = (TNextDiplomationCommand *)this_00;
+    local_794 = this_00;
     if (this_00 == (TCommand *)0x0) {
       local_4 = 0xffffffff;
       DispatchUiPacketWithTagNEXT();
@@ -505,14 +505,15 @@ void TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode()
     *(undefined4 *)(iVar11 + 8) = 0;
     EnqueueOrSendTurnEventPacketToNation(iVar11,0);
     FreeHeapBufferIfNotNull(iVar11);
-    local_794 = (TNextDiplomationCommand *)0x61726d79;
+    local_794 = (TCommand *)0x61726d79;
     local_790 = g_pMapContextActionManager;
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31,0xfffffffe,&local_794);
     iVar11 = 0;
     ppTVar16 = g_apNationStates;
     do {
       if ((*ppTVar16 != (TGreatPower *)0x0) &&
-         (cVar4 = (*(*ppTVar16)->vftable[0x14].GetTCountryClassNamePointer)(), cVar4 != '\0')) {
+         (cVar4 = (*(*ppTVar16)->vftable->ReturnFalseNationStateCapabilityFlagA0)(), cVar4 != '\0'))
+      {
         EmitNationDiplomacyNeedStateSnapshotEvent15(0,iVar11);
       }
       ppTVar16 = ppTVar16 + 1;

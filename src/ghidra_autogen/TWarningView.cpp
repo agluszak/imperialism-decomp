@@ -151,7 +151,7 @@ void TWarningView::OrphanLeaf_NoCall_Ins07_004d8920()
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   CStack_34.m_pchData = "hg+";
-  uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   CStack_34.m_pchData = (char *)0x2b67;
   BuildUiTextStyleDescriptor();
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x94);

@@ -90,7 +90,7 @@ TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWind
   uVar1 = *(undefined2 *)&this->field_0x84;
   pTVar3 = this->vftable;
   sVar2 = (short)this->field3c;
-  cVar4 = (*pTVar3[5].GetTEventHandlerClassNamePointer)();
+  cVar4 = (*pTVar3->GetTEventHandlerClassNamePointer_0a)();
   if (param_1 == '\0') {
 LAB_00570e0c:
     if (cVar4 == '\0') goto LAB_00570e4e;
@@ -100,13 +100,13 @@ LAB_00570e0c:
     goto LAB_00570e0c;
   }
   if (sVar2 != 0) {
-    (*pTVar3[0x39].GetTEventHandlerClassNamePointer)
-              (CONCAT22((short)((uint)unaff_EBP >> 0x10),sVar2),0);
+    (*pTVar3->SetPictureResourceIdAndRefresh)(CONCAT22((short)((uint)unaff_EBP >> 0x10),sVar2),0);
     this->field3c = (int)(short)unaff_EBP;
-    (*pTVar3[0x3b].GetTEventHandlerClassNamePointer)(1);
+    (*pTVar3->WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0)(1);
     local_4 = (char)uVar1;
     this->padding_08_to_0b = (int)param_1;
-    (*pTVar3[0x14].slot_0x04)((uint)(param_1 == '\0'),(int)local_4);
+    (*pTVar3->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((uint)(param_1 == '\0'),(int)local_4)
+    ;
   }
 LAB_00570e4e:
   TSoundPlayer::UpdateControlCachedIntFromWindowText((TSoundPlayer *)this,(int)param_1);
@@ -140,10 +140,10 @@ TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
   pTVar3 = this->vftable;
   local_18 = iVar1 + *piVar4;
   local_14 = iVar2 + piVar4[1];
-  (*pTVar3[0x25].slot_0x04)(&local_10);
+  (*pTVar3->OrphanRetStub_0059add0_4b)(&local_10);
   iStack_c = (local_14 + iStack_1c) - iVar1;
   iStack_8 = (local_10 + local_18) - iVar2;
-  (*pTVar3[0x2d].GetTEventHandlerClassNamePointer)(&local_14,1);
+  (*pTVar3->GetTEventHandlerClassNamePointer_5a)(&local_14,1);
   return;
 }
 
@@ -160,14 +160,14 @@ TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x14].slot_0x04)((int)param_1,(int)param_2);
+    (*pTVar1->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)((int)param_1,(int)param_2);
     if (param_1 != '\0') {
-      (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
+      (*this->ownerContext->vftable[1].SetCityDialogValueDword10)(this->controlTag);
     }
-    (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
-    (*pTVar1[0x22].slot_0x04)(0);
+    (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
+    (*pTVar1->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }
@@ -180,7 +180,7 @@ int TPictureRadioButton::SetForeignMinisterReadyFlag14()
 
 {
   TPictureRadioButtonVtbl *pTVar1;
-  TPictureRadioButton_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   char cVar4;
   uint3 extraout_var;
@@ -192,28 +192,28 @@ int TPictureRadioButton::SetForeignMinisterReadyFlag14()
   uint3 uVar6;
   
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[0x39].slot_0x04;
-  cVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->OrphanTiny_VcallForward_Slot_ec_00571330;
+  cVar3 = (*p_Var2)();
   uVar6 = extraout_var;
   if (cVar3 != '\0') {
 LAB_00571025:
     return (uint)uVar6 << 8;
   }
-  cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar3 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   uVar6 = extraout_var_00;
   if (cVar3 == '\0') goto LAB_00571025;
-  cVar3 = (*pTVar2)();
+  cVar3 = (*p_Var2)();
   if (cVar3 == '\0') {
-    cVar4 = (*this->ownerContext->vftable[0x39].slot_0x04)();
+    cVar4 = (*this->ownerContext->vftable[1].OwnerPanel)();
     uVar5 = extraout_var_01;
     if (cVar4 == '\0') goto LAB_0057101c;
   }
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)((uint)(cVar3 == '\0'),1);
+  (*pTVar1->HandleToggleButtonStateChangeAndRefresh)((uint)(cVar3 == '\0'),1);
   if (cVar3 != '\0') {
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
+    (*this->ownerContext->vftable->DispatchEvent)(0x67,this,0);
     return CONCAT31(extraout_var_02,1);
   }
-  (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x68,this,0);
+  (*this->ownerContext->vftable->DispatchEvent)(0x68,this,0);
   uVar5 = extraout_var_03;
 LAB_0057101c:
   return CONCAT31(uVar5,1);

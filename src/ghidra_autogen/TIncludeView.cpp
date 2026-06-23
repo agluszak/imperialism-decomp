@@ -49,8 +49,8 @@ void TIncludeView::OrphanCallChain_C6_I49_004875d0(int *pEventPacket)
     uVar3 = 0;
     if (this->ownerContext != (TView *)0x0) {
       pTVar1 = this->vftable;
-      (*pTVar1[0x1e].GetTEventHandlerClassNamePointer)(&DAT_006a1ab0,0);
-      (*pTVar1[0x1e].slot_0x04)(&this->ownerContext->field34,0);
+      (*pTVar1->GetTEventHandlerClassNamePointer_3c)(&DAT_006a1ab0,0);
+      (*pTVar1->VTableSlot3D)(&this->ownerContext->field34,0);
       uVar3 = extraout_var;
     }
     iVar2 = (**(code **)(*DAT_006a1b24 + 0x2c))

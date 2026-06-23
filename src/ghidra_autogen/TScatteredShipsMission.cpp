@@ -211,7 +211,7 @@ TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNa
   TScatteredShipsMission *pTVar5;
   
   pTVar2 = g_apNationStates[*(short *)(this + 4)];
-  (*pTVar2->vftable[1].slot_0x04)();
+  (*pTVar2->vftable->ConstructTTaskBaseState)();
   fVar3 = *(float *)&pTVar2[1].field_0x208 + DAT_0065a9b8;
   psVar4 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
   pTVar5 = this + 0x2c;
@@ -260,7 +260,7 @@ TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
   pTVar10 = g_pMapActionContextListHead;
   if (g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      cVar4 = (*pTVar10->vftable[7].DispatchNationPendingActionEventCodes)();
+      cVar4 = (*pTVar10->vftable->ApplyJoinEmpireModeForTargetNation)();
       if ((cVar4 == '\0') &&
          (cVar4 = ContainsPointerArrayEntryMatchingByteKey
                             (CONCAT22(extraout_var_00,*(undefined2 *)(this + 4))), cVar4 != '\0'))
@@ -277,7 +277,7 @@ TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
         pMapOrderEntry = pTVar10;
       }
       do {
-        cVar4 = (*pMapOrderEntry->vftable[7].DispatchNationPendingActionEventCodes)();
+        cVar4 = (*pMapOrderEntry->vftable->ApplyJoinEmpireModeForTargetNation)();
         if ((cVar4 == '\0') &&
            (cVar4 = ContainsPointerArrayEntryMatchingByteKey
                               (CONCAT22(extraout_var_01,*(undefined2 *)(this + 4))), cVar4 != '\0'))

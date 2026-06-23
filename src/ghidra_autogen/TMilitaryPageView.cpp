@@ -87,7 +87,7 @@ void TMilitaryPageView::OrphanLeaf_NoCall_Ins07_004d8920()
   TPageView::OrphanLeaf_NoCall_Ins07_004d8920((TPageView *)this);
   uStack_8 = 0x6f6b6179;
   pTStack_c = (TMilitaryPageView *)0x5649bd;
-  uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->ownerContext->vftable->ResolveControlByTag)();
   pTStack_c = (TMilitaryPageView *)CONCAT31(extraout_var,uVar1);
   pTStack_10 = (TToolBarClusterVtbl *)0x22;
   LoadUiStringByGroupAndIndexToControlObject(0x2730);

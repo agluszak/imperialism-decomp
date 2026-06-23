@@ -35,7 +35,7 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
 
 {
   int iVar1;
-  TMinorTreatyDialog_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined4 uVar3;
   TMinorTreatyDialog *pTVar4;
   undefined uVar5;
@@ -54,7 +54,7 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
   int *local_3c;
   TMinorTreatyDialog *local_38;
   int *piStack_34;
-  TMinorTreatyDialog_slot_0x04_0x04 *pTStack_30;
+  _vslot_fn *p_Stack_30;
   undefined4 local_2c;
   undefined4 local_28;
   undefined4 local_24;
@@ -87,7 +87,7 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
   do {
     piVar6 = local_40;
     if (local_3c[0x1a90cb] != 0) {
-      uVar5 = (*this->vftable[0x12].slot_0x04)();
+      uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       piVar7 = (int *)CONCAT31(extraout_var,uVar5);
       piStack_34 = piVar7;
       if (piVar7 == (int *)0x0) {
@@ -120,15 +120,15 @@ void TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState()
     local_40 = (int *)((int)piVar6 + 1);
     local_3c = local_3c + 1;
   } while ((short)local_40 < 0x17);
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  pTStack_30 = pTVar2;
-  uVar5 = (*pTVar2)();
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  p_Stack_30 = p_Var2;
+  uVar5 = (*p_Var2)();
   local_38 = (TMinorTreatyDialog *)CONCAT31(extraout_var_01,uVar5);
   if (local_38 == (TMinorTreatyDialog *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  uVar5 = (*pTVar2)();
+  uVar5 = (*p_Var2)();
   if (CONCAT31(extraout_var_02,uVar5) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

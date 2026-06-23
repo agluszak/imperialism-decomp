@@ -113,7 +113,7 @@ TLanguageMgr::WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00
 {
   FreeNestedPointerTableRowsAndResetDimensions();
   if (this != (TLanguageMgr *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TLanguageMgr)(1);
   }
   return;
 }

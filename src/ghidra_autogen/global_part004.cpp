@@ -3506,7 +3506,7 @@ void InitializeChildWindowSurfaceAndTickTimer_Impl(HWND param_1)
     if (iVar3 == iVar5) {
       pTVar1 = g_pGlobalUiRootController->vftable;
       InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820(local_8.x,local_8.y);
-      (*pTVar1[0x15].slot_0x04)();
+      (**(code **)&pTVar1->field_0xac)();
     }
   }
   return;
@@ -4150,7 +4150,7 @@ HandleIncludeViewPointerUpdateAndNotifyChildren
                 (1,(int)this + 0x78,(undefined4 *)((int)this + 0x80),
                  (undefined4 *)((int)this + 0x88),1);
     }
-    (*g_pGlobalUiRootController->vftable[0x15].slot_0x04)(uVar1,uVar2,0);
+    (**(code **)&g_pGlobalUiRootController->vftable->field_0xac)(uVar1,uVar2,0);
     if (*(int *)((int)this + 0x40) != 0) {
       iVar3 = NoOpRuntimeCallback_00489a70();
       if (iVar3 != 0) {
@@ -5163,7 +5163,7 @@ ApplicationUiRootController * CreateTApplicationInstance(void)
     TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
     *(undefined4 *)&this->field_0x20 = 0;
     *(undefined4 *)&this->field_0x24 = 0;
-    *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
+    *(undefined4 *)&this->field_0x2c = 0x648ca8;
     *(undefined4 *)&this->field_0x38 = 0;
     *(undefined4 *)&this->field_0x3c = 0;
     *(undefined4 *)&this->field_0x34 = 0;

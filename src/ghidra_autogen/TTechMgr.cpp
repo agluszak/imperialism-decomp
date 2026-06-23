@@ -80,7 +80,7 @@ void TTechMgr::DeserializeCityOrderCapabilityState(int *param_1)
   code *pcVar4;
   undefined4 uVar5;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (DAT_00695278 < 0x27) {
     pcVar4 = *(code **)(*param_1 + 0x3c);
     (*pcVar4)(&this->field_0x4,0x3a);
@@ -209,7 +209,7 @@ LAB_005af590:
 void TTechMgr::SerializeCityOrderCapabilityState()
 
 {
-  code *pcVar1;
+  TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
   undefined4 extraout_ECX;
   undefined4 extraout_ECX_00;
   undefined4 extraout_ECX_01;
@@ -238,24 +238,22 @@ void TTechMgr::SerializeCityOrderCapabilityState()
   undefined1 *puStack_24;
   undefined4 uStack_20;
   undefined4 *puStack_1c;
-  undefined4 uStack_18;
   int local_4;
   
   puStack_1c = (undefined4 *)0x5af721;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar3 = (undefined2 *)&this->field_0x4;
   local_4 = 0x1d;
-  pcVar1 = *(code **)(*_uStack00000004 + 0x78);
+  pTVar1 = _uStack00000004->vftable[0xf].GetTStreamClassNamePointer;
   uVar2 = extraout_ECX;
   do {
-    uStack_18 = 2;
     uStack00000004 = (undefined1)*puVar3;
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     puStack_1c = (undefined4 *)&stack0x00000004;
     _uStack00000004 =
-         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
     uStack_20 = 0x5af753;
-    (*pcVar1)();
+    (*pTVar1)();
     puVar3 = puVar3 + 1;
     local_4 = local_4 + -1;
     uVar2 = extraout_ECX_00;
@@ -263,46 +261,44 @@ void TTechMgr::SerializeCityOrderCapabilityState()
   puVar3 = (undefined2 *)&this->field_0x3e;
   local_4 = 0xa1;
   do {
-    uStack_18 = 2;
     uStack00000004 = (undefined1)*puVar3;
     uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
     puStack_1c = (undefined4 *)&stack0x00000004;
     _uStack00000004 =
-         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+         (TStream *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
     uStack_20 = 0x5af78e;
-    (*pcVar1)();
+    (*pTVar1)();
     puVar3 = puVar3 + 1;
     local_4 = local_4 + -1;
     uVar2 = extraout_ECX_01;
   } while (local_4 != 0);
   puStack_1c = (undefined4 *)&this->field_0x1d2;
-  uStack_18 = 2;
   uStack_20 = 0x5af7a9;
-  (*pcVar1)();
+  (*pTVar1)();
   puStack_24 = &this->field_0x1d4;
   uStack_20 = 2;
   uStack_28 = 0x5af7b6;
-  (*pcVar1)();
+  (*pTVar1)();
   puStack_2c = &this->field_0x180;
   uStack_28 = 0x1d;
   uStack_30 = 0x5af7c3;
-  (*pcVar1)();
+  (*pTVar1)();
   uStack_34 = &this->field_0x19d;
   uStack_30 = 0xe;
   uStack_38 = 0x5af7d0;
-  (*pcVar1)();
+  (*pTVar1)();
   puStack_3c = &this->field_0x1ab;
   uStack_38 = 0x1e;
   uStack_40 = 0x5af7dd;
-  (*pcVar1)();
+  (*pTVar1)();
   puStack_44 = &this->field_0x1c9;
   uStack_40 = 9;
   uStack_48 = 0x5af7ea;
-  (*pcVar1)();
+  (*pTVar1)();
   puStack_4c = &this->field_0x264;
   uStack_48 = 4;
   uStack_50 = 0x5af7f7;
-  (*pcVar1)();
+  (*pTVar1)();
   puVar3 = (undefined2 *)&this->field_0x1d6;
   puStack_3c = (undefined1 *)0x46;
   uVar2 = extraout_EDX;
@@ -313,17 +309,17 @@ void TTechMgr::SerializeCityOrderCapabilityState()
     uStack_54 = &uStack_34;
     uStack_34._0_2_ = CONCAT11((undefined1)uStack_34,uStack_34._1_1_);
     uStack_34 = (undefined1 *)CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)uStack_34);
-    (*pcVar1)();
+    (*pTVar1)();
     puVar3 = puVar3 + 1;
     puStack_3c = (undefined1 *)((int)puStack_3c + -1);
     uVar2 = extraout_EDX_00;
   } while (puStack_3c != (undefined1 *)0x0);
   uStack_54 = (undefined4 *)&this->field_0x268;
   uStack_50 = 0xcb;
-  (*pcVar1)();
-  (*pcVar1)(&this->field_0x333,0x62);
-  (*pcVar1)(&this->field_0x395,0xd2);
-  (*pcVar1)(&this->field_0x467,0x3f);
+  (*pTVar1)();
+  (*pTVar1)(&this->field_0x333,0x62);
+  (*pTVar1)(&this->field_0x395,0xd2);
+  (*pTVar1)(&this->field_0x467,0x3f);
   puVar3 = (undefined2 *)&this->field_0x4a6;
   iVar4 = 0xcb;
   uVar2 = extraout_ECX_02;
@@ -333,7 +329,7 @@ void TTechMgr::SerializeCityOrderCapabilityState()
     uStack_54 = (undefined4 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
                          uStack_54._1_1_);
-    (*pcVar1)(&uStack_54,2);
+    (*pTVar1)(&uStack_54,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_ECX_03;
@@ -346,12 +342,12 @@ void TTechMgr::SerializeCityOrderCapabilityState()
     uStack_54 = (undefined4 *)
                 CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
                          uStack_54._1_1_);
-    (*pcVar1)(&uStack_54,2);
+    (*pTVar1)(&uStack_54,2);
     puVar3 = puVar3 + 1;
     iVar4 = iVar4 + -1;
     uVar2 = extraout_ECX_04;
   } while (iVar4 != 0);
-  (*pcVar1)(&this->field_0x262,2);
+  (*pTVar1)(&this->field_0x262,2);
   return;
 }
 

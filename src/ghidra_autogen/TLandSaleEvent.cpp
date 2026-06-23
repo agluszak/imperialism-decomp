@@ -168,7 +168,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
       pTVar11->vftable = (TTacticalBattleVtbl *)&TArmyBattleVtbl_0064ca68;
     }
     uStack_c = 0xffffffff;
-    (*pTVar11->vftable[3].GetTTacticalBattleClassNamePointer)(param_1);
+    (*pTVar11->vftable->ReadFrom)(param_1);
     CallObjectOffset18Vslot28();
     break;
   case 0x2e:
@@ -185,7 +185,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
     pcVar2 = *(code **)(iVar1 + 0x50);
     iVar6 = (*pcVar2)();
     if (iVar6 == 0x61726d79) {
-      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(param_1);
+      (*g_pMapContextActionManager->vftable->ReadFrom)(param_1);
     }
     else if (iVar6 == 0x73746172) {
       iVar6 = (*pcVar2)();
@@ -203,7 +203,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
         }
         InitializeLandSaleEventPayloadTileAndNation(uVar8,uVar9);
         sVar5 = UiRuntimeContext::GetActiveNationId();
-        (*g_apNationStates[sVar5]->vftable[0x17].slot_0x04)(puVar10);
+        (*g_apNationStates[sVar5]->vftable->QueueNationOrderManagerPayloadObject)(puVar10);
       }
     }
     else if (iVar6 == 0x746f776e) {
@@ -220,7 +220,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
       InitializeFrogCityMarkerFields(&g_szEmptyString,0,0,uVar8);
       iVar1 = *piVar7;
       (**(code **)(iVar1 + 0x18))(param_1);
-      uVar4 = (*g_pGlobalMapState->vftable[0x1b].GetTMapMgrClassNamePointer)
+      uVar4 = (*g_pGlobalMapState->vftable->OrphanCallChain_C3_I43_00513170)
                         (CONCAT22(extraout_var_00,(short)piVar7[5]));
       if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
         (**(code **)(**(int **)&g_apNationStates[(short)piVar7[7]]->field_0x898 + 0x30))(piVar7);
@@ -239,7 +239,7 @@ void TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(int *param_1)
   case 0x32:
     (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(param_1);
     sVar5 = UiRuntimeContext::GetActiveNationId();
-    (*g_apNationStates[sVar5]->vftable[0x2e].GetTCountryClassNamePointer)();
+    (*g_apNationStates[sVar5]->vftable->ReturnFalseNationStateCapabilityFlagA0_5c)();
   }
   *unaff_FS_OFFSET = local_14;
   return;

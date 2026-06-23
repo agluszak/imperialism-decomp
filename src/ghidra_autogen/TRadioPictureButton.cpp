@@ -91,7 +91,7 @@ TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
 {
   if (param_1 == 0xc) {
     if (this->field_0x64 == '\0') {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
+      (*this->vftable->OrphanCallChain_C2_I16_005718f0)(1,0);
     }
     TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,0xc);
     return;
@@ -101,10 +101,10 @@ TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
       TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
       return;
     }
-    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,0);
+    (*this->vftable->OrphanCallChain_C2_I16_005718f0)(0,0);
     return;
   }
-  (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
+  (*this->vftable->OrphanCallChain_C2_I16_005718f0)(1,0);
   return;
 }
 
@@ -121,9 +121,9 @@ TRadioPictureButton::OrphanCallChain_C2_I16_005718f0
   char cVar2;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
   if (cVar2 != '\0') {
-    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,param_2);
+    (*pTVar1->SetPressedStateAdjustPictureBitmapByOne)(param_1,param_2);
   }
   return;
 }

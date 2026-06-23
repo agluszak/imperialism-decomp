@@ -78,7 +78,7 @@ void TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1)
 
 {
   *(int *)&this->field_0x88 = param_1;
-  (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)
+  (*this->vftable->SetCityViewValueControlAmount)
             (CONCAT22((short)((uint)param_1 >> 0x10),*(undefined2 *)(param_1 + 4)),1);
   return;
 }
@@ -114,18 +114,18 @@ TPurchaseCluster::OrphanRetStub_0059add0
     if (*(int *)((int)param_2 + 0x1c) == 0x6c61726f) {
       pTVar4 = this->vftable;
       iVar3 = **(int **)&this->field_0x88;
-      uVar1 = (*pTVar4[0x3a].slot_0x04)();
+      uVar1 = (*pTVar4->UpdateCityViewValueControl)();
       iVar2 = CONCAT31(extraout_var,uVar1) + -1;
     }
     else {
       if (*(int *)((int)param_2 + 0x1c) != 0x7261726f) goto LAB_004cc4fb;
       pTVar4 = this->vftable;
       iVar3 = **(int **)&this->field_0x88;
-      uVar1 = (*pTVar4[0x3a].slot_0x04)();
+      uVar1 = (*pTVar4->UpdateCityViewValueControl)();
       iVar2 = CONCAT31(extraout_var_00,uVar1) + 1;
     }
     (**(code **)(iVar3 + 0x2c))(iVar2);
-    (*pTVar4[0x3a].GetTEventHandlerClassNamePointer)
+    (*pTVar4->SetCityViewValueControlAmount)
               (CONCAT22(extraout_var_01,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   }
 LAB_004cc4fb:
@@ -175,7 +175,7 @@ TPurchaseCluster::SetCityViewValueControlAmount
   int *piVar2;
   
   LStack_2c = 0x76616c75;
-  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   piVar2 = (int *)CONCAT31(extraout_var,uVar1);
   if (piVar2 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -187,7 +187,7 @@ TPurchaseCluster::SetCityViewValueControlAmount
     LStack_2c = piVar2[9] + this->ownerOffsetX;
     CopyRect(&tStack_1c,(RECT *)&LStack_2c);
     InvalidateCityDialogRectRegion(&tStack_1c,1);
-    (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+    (*this->ownerContext->vftable[1].vmethod_0025)();
   }
   return;
 }
@@ -202,7 +202,7 @@ void TPurchaseCluster::UpdateCityViewValueControl()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x76616c75);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

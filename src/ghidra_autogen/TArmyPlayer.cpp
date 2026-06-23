@@ -3,16 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TArmyPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00485F70
-// GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ad90
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
-
-void TArmyPlayer::OrphanRetStub_0059ad90()
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0B20
 // GHIDRA_NAME TArmyPlayer::InitializeUiTransientObjectRegistry
 // GHIDRA_PROTO undefined TArmyPlayer::InitializeUiTransientObjectRegistry()
@@ -164,11 +154,11 @@ void TArmyPlayer::OrphanRetStub_0059ad70()
   
   if (this->field_0xe != '\0') {
     SelectAndApplyTacticalCursorModeProfile(1);
-    (*this->vftable[9].GetTTacticalPlayerClassNamePointer)();
+    (*this->vftable->TArmyTacUnit_VtblSlot06)();
     return;
   }
   if (*(int *)&this->field_0x24 != 2) {
-    uVar2 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)(0xf19);
+    uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)(0xf19);
     if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -176,13 +166,13 @@ void TArmyPlayer::OrphanRetStub_0059ad70()
     }
     iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
     this_00 = (TTask *)(**(code **)(iVar1 + 0x94))(0x444c4f47);
-    (*this_00->vftable[1].ConstructTTaskBaseState)();
+    (*this_00->vftable->AssertValid)();
     TTask::CreateTTaskInstance(this_00);
     iVar3 = (**(code **)(iVar1 + 0x1ac))();
     (**(code **)(iVar1 + 0xa0))();
     (**(code **)(iVar1 + 0x1c))();
     if (iVar3 == 0x6f6b6179) {
-      (*this->vftable[8].slot_0x04)();
+      (*this->vftable->OrphanRetStub_0059ae10)();
     }
   }
   return;
@@ -205,7 +195,7 @@ void TArmyPlayer::OrphanRetStub_0059ad90()
         this->field_0xe = 0;
         return;
       }
-      (*this->vftable[10].GetTTacticalPlayerClassNamePointer)();
+      (*this->vftable->RunTacticalAutoTurnControllerForActiveUnit)();
     }
     return;
   }
@@ -222,8 +212,8 @@ void TArmyPlayer::OrphanRetStub_0059ad90()
       }
     }
     if (*(short *)(&DAT_00695528 +
-                  (int)(*(TNextMoveCommand **)&this->field_0x14)[1].vftable[1].
-                       OrphanCallChain_C1_I17_00487470 * 2) != 8) {
+                  (int)((*(TNextMoveCommand **)&this->field_0x14)[1].vftable)->AssertValid * 2) != 8
+       ) {
       TNextMoveCommand::QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
       return;
     }
@@ -240,13 +230,13 @@ void TArmyPlayer::OrphanRetStub_0059ae10()
 
 {
   if (this->field_0x10 == '\0') {
-    (*this->vftable[9].GetTTacticalPlayerClassNamePointer)();
+    (*this->vftable->TArmyTacUnit_VtblSlot06)();
     return;
   }
   if (this->field_0xe == '\0') {
     this->field_0xe = 1;
     SelectAndApplyTacticalCursorModeProfile(0);
-    (*this->vftable[5].slot_0x04)();
+    (*this->vftable->OrphanRetStub_0059ad90)();
   }
   return;
 }
@@ -311,7 +301,7 @@ TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8
               ((TOceanDialog *)g_pSfxPlaybackSystem,iVar4 % 3 + 6,cVar5);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0xed8,0);
     this_00 = (TTacArmyView *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(0x444c4f47);
-    (*this_00->vftable[1].slot_0x04)();
+    (*this_00->vftable->AssertValid)();
     *(TTacArmyView **)&this->field_0x8 = this_00;
     TTacArmyView::ConstructTTacArmyViewBaseState(this_00);
   }

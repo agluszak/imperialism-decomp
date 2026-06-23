@@ -110,7 +110,7 @@ void TShipyardView::_scalar_deleting_destructor_()
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0xb8);
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
-    (*g_pUiViewManager->vftable[6].slot_0x04)(0x23f7);
+    (*g_pUiViewManager->vftable->NoOpRuntimeUiCallback_005df410)(0x23f7);
   }
   return;
 }
@@ -155,7 +155,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   undefined3 extraout_var_07;
   undefined2 extraout_var_08;
   int unaff_EBX;
-  TShipyardView_slot_0x04_0x04 *pTVar8;
+  _vslot_fn *p_Var8;
   short *unaff_EBP;
   short *unaff_ESI;
   undefined2 *unaff_EDI;
@@ -166,7 +166,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   undefined1 *puStack_20;
   undefined *local_1c;
   int iStack_18;
-  TShipyardView_slot_0x04_0x04 *local_10;
+  _vslot_fn *local_10;
   undefined1 local_6;
   undefined1 local_5;
   undefined1 local_4;
@@ -181,12 +181,12 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   uVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
   *(undefined4 *)&this->field_0xb8 = uVar5;
   local_28 = 0x636c7530;
-  pTVar8 = this->vftable[0x12].slot_0x04;
+  p_Var8 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   local_24 = &this->field_0xa4;
   local_1c = (undefined *)0x8;
-  local_10 = pTVar8;
+  local_10 = p_Var8;
   do {
-    uVar4 = (*pTVar8)();
+    uVar4 = (*p_Var8)();
     if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -195,7 +195,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     (**(code **)(iVar7 + 0xa4))();
     (**(code **)(iVar7 + 0xa8))();
     *unaff_EDI = 0;
-    uVar4 = (*pTVar8)();
+    uVar4 = (*p_Var8)();
     if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -224,7 +224,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   do {
     iStack_18 = *(int *)(*(int *)&this->field_0x94 + 0xe4 + (short)((short)local_28 + 0x2b) * 4);
     if (*(short *)(iStack_18 + 0x48) != 0) {
-      uVar4 = (*pTVar8)();
+      uVar4 = (*p_Var8)();
       piVar6 = (int *)CONCAT31(extraout_var_01,uVar4);
       iVar7 = *piVar6;
       (**(code **)(iVar7 + 0xa4))();
@@ -241,7 +241,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
       piVar6[0x2c] = 0xc;
       piVar6[0x2d] = sVar1 + 0x50;
       piVar6[0x2e] = 0x39;
-      uVar4 = (*pTVar8)();
+      uVar4 = (*p_Var8)();
       if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -268,7 +268,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
       (**(code **)(iVar7 + 0xa8))(0,0);
       (**(code **)(iVar7 + 0x1e4))((int)*(short *)(iVar9 + 4),1);
       (**(code **)(iVar7 + 0x1b4))(&stack0xffffffa8,1);
-      pTVar8 = local_10;
+      p_Var8 = local_10;
     }
     local_28 = local_28 + 1;
     puStack_20 = puStack_20 + 2;
@@ -276,7 +276,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     local_24 = local_24 + 1;
   } while ((short)local_28 < 8);
   BuildUiTextStyleDescriptor();
-  uVar4 = (*pTVar8)();
+  uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_03,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))();
@@ -285,7 +285,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   BuildUiTextStyleDescriptor(&local_24,0);
   iVar7 = 0;
   do {
-    uVar4 = (*pTVar8)();
+    uVar4 = (*p_Var8)();
     iVar2 = *(int *)CONCAT31(extraout_var_04,uVar4);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0x1b4))(&local_28);
@@ -293,26 +293,26 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     iVar7 = iVar7 + 1;
   } while ((short)iVar7 < 2);
   BuildUiTextStyleDescriptor(&local_24,0);
-  uVar4 = (*pTVar8)();
+  uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))(&local_28);
   BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
-  uVar4 = (*pTVar8)(0x64657363);
+  uVar4 = (*p_Var8)(0x64657363);
   iVar7 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))(&stack0xffffffcc,1);
   pTVar3 = this->vftable;
   *(undefined2 *)&this->field_0xa2 = 0;
   *(undefined2 *)&this->field_0xa0 = 0;
-  (*pTVar3[0x3e].GetTEventHandlerClassNamePointer)
+  (*pTVar3->InitializeCityViewActionButtons)
             (CONCAT22(extraout_var_08,*(undefined2 *)&this->field_0xa4));
   BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
-  uVar4 = (*pTVar8)(0x73656c65);
+  uVar4 = (*p_Var8)(0x73656c65);
   iVar7 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1c8))(0x62757430);
-  (*pTVar3[0x3b].GetTEventHandlerClassNamePointer)();
+  (*pTVar3->OrphanRetStub_004c6fb0)();
   return;
 }
 
@@ -345,7 +345,7 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
 
 {
   TShipyardViewVtbl *pTVar1;
-  TShipyardView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   char cVar5;
@@ -358,7 +358,7 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
   undefined2 uVar10;
   code *unaff_ESI;
   code *apcStack_20 [3];
-  TShipyardView_GetTEventHandlerClassNamePointer_0x00 *pTStack_14;
+  _vslot_fn *p_Stack_14;
   int iStack_4;
   
   uVar10 = (undefined2)((uint)this >> 0x10);
@@ -366,7 +366,7 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
     sVar6 = *(short *)(param_2 + 0x1c) + -0x7430;
     if ((-1 < sVar6) && (sVar6 < 8)) {
       *(short *)&this->field_0xa0 = sVar6;
-      (*this->vftable[0x3e].GetTEventHandlerClassNamePointer)
+      (*this->vftable->InitializeCityViewActionButtons)
                 (CONCAT22(uVar10,*(undefined2 *)(&this->field_0xa4 + sVar6 * 2)));
     }
   }
@@ -375,10 +375,10 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
           (sVar6 < 8)) {
     pTVar1 = this->vftable;
     *(short *)&this->field_0xa0 = sVar6;
-    pTStack_14 = pTVar1[0x3e].GetTEventHandlerClassNamePointer;
-    (*pTStack_14)(CONCAT22(uVar10,*(undefined2 *)(&this->field_0xa4 + sVar6 * 2)));
-    pTVar2 = pTVar1[0x12].slot_0x04;
-    uVar4 = (*pTVar2)(0x73656c65);
+    p_Stack_14 = pTVar1->InitializeCityViewActionButtons;
+    (*p_Stack_14)(CONCAT22(uVar10,*(undefined2 *)(&this->field_0xa4 + sVar6 * 2)));
+    p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920;
+    uVar4 = (*p_Var2)(0x73656c65);
     iVar3 = *(int *)CONCAT31(extraout_var,uVar4);
     (**(code **)(iVar3 + 0xc))();
     apcStack_20[0] = (code *)(sVar6 + 0x62757430);
@@ -408,7 +408,7 @@ void TShipyardView::OrphanRetStub_0059add0(int param_1, int param_2)
                   (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x2ff);
       }
       iVar3 = *piVar9;
-      (**(code **)(iVar3 + 0x1e4))((int)*(short *)(pTVar2 + 4),0);
+      (**(code **)(iVar3 + 0x1e4))((int)*(short *)(p_Var2 + 4),0);
       (**(code **)(iVar3 + 300))(apcStack_20);
       OffsetRect((LPRECT)&stack0xffffffdc,piVar8[9],piVar8[10]);
       piVar8 = (int *)(*pcVar7)(unaff_ESI);
@@ -718,13 +718,13 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   int iVar4;
-  TShipyardView_slot_0x04_0x04 *pTVar5;
+  _vslot_fn *p_Var5;
   undefined4 *unaff_FS_OFFSET;
   int iStack_60;
-  TShipyardView_slot_0x04_0x04 *pTVar6;
+  _vslot_fn *p_Var6;
   undefined4 uStack_38;
   CString local_34;
-  TShipyardView_slot_0x04_0x04 *local_30;
+  _vslot_fn *local_30;
   undefined4 uStack_2c;
   undefined4 uStack_28;
   char *pcStack_24;
@@ -739,15 +739,15 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
   *unaff_FS_OFFSET = &uStack_c;
   CString::CString(&local_34);
   local_4 = 0;
-  pTVar5 = this->vftable[0x12].slot_0x04;
-  local_30 = pTVar5;
-  uVar2 = (*pTVar5)();
+  p_Var5 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
+  local_30 = p_Var5;
+  uVar2 = (*p_Var5)();
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     iStack_60 = 0x4c9abe;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  pTVar6 = (TShipyardView_slot_0x04_0x04 *)0x2716;
+  p_Var6 = (_vslot_fn *)0x2716;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   iStack_60 = 0x4c9afc;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 300))();
@@ -757,7 +757,7 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
   InvalidateCityDialogRectRegion(&local_30);
   iStack_60 = 0x68697374;
                     /* Loop over six status counters (sta0..sta5). */
-  uVar2 = (*pTVar5)();
+  uVar2 = (*p_Var5)();
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -770,13 +770,13 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
   iVar4 = 0;
   iStack_60 = 0x73746130;
   do {
-    uVar2 = (*pTVar5)(iStack_60);
-    pTVar5 = pTVar6;
+    uVar2 = (*p_Var5)(iStack_60);
+    p_Var5 = p_Var6;
     if ((int *)CONCAT31(extraout_var_01,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x418);
-      pTVar5 = pTVar6;
+      p_Var5 = p_Var6;
     }
     iVar1 = *(int *)CONCAT31(extraout_var_01,uVar2);
     sVar3 = GetResourceDescriptorWord08ByTypeOffset(uStack_28,iVar4,0);
@@ -785,7 +785,7 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
     InvalidateCityDialogRectRegion(&stack0xffffffbc,1);
     iVar4 = iVar4 + 1;
     iStack_60 = iStack_60 + 1;
-    pTVar6 = pTVar5;
+    p_Var6 = p_Var5;
   } while ((short)iVar4 < 6);
   uStack_2c = 0xffffffff;
   CString::~CString((CString *)&stack0xffffffa4);
@@ -806,7 +806,7 @@ void TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1)
   if ((uVar1 != *(ushort *)&this->field_0xa2) &&
      (*(short *)(&this->field_0xa4 + (short)uVar1 * 2) != 0)) {
     *(ushort *)&this->field_0xa2 = uVar1;
-    (*this->vftable[0x3d].GetTEventHandlerClassNamePointer)
+    (*this->vftable->RefreshCityViewStatusPanel)
               (CONCAT22((short)((uint)(&this->field_0xa4 + (short)uVar1 * 2) >> 0x10),
                         *(undefined2 *)(&this->field_0xa4 + (short)uVar1 * 2)));
   }

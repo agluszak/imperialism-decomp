@@ -106,7 +106,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
 
 {
   TTradeSchoolViewVtbl *pTVar1;
-  TTradeSchoolView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -162,13 +162,13 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
-  (*pTVar1[0x15].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText_2a)();
   CStack_4c.m_pchData = acStack_20;
   puStack_48 = (undefined1 *)0x0;
   puStack_50 = (undefined4 *)0x4cd942;
   BuildUiTextStyleDescriptor();
-  pTVar2 = pTVar1[0x12].slot_0x04;
-  uVar4 = (*pTVar2)();
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var,uVar4) != (int *)0x0) {
     puStack_48 = (undefined1 *)
                  CONCAT22((short)((uint)&stack0xffffffd0 >> 0x10),*(undefined2 *)&this->field_0x9e);
@@ -196,7 +196,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   CStack_4c.m_pchData = (char *)0x4cd9ed;
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   puStack_48 = (undefined1 *)0x4cd9f9;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if (CONCAT31(extraout_var_00,uVar4) != 0) {
     puStack_48 = &stack0xffffffcc;
     CStack_4c.m_pchData = (char *)0x18;
@@ -212,7 +212,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   puStack_48 = (undefined1 *)0x65717532;
   CStack_4c.m_pchData = (char *)0x4cda3c;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
                     /* Populate equ2/equ3/equ4/equ5 requirement labels. */
   if ((char *)CONCAT31(extraout_var_01,uVar4) != (char *)0x0) {
     CStack_4c.m_pchData = (char *)&puStack_38;
@@ -227,7 +227,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   CStack_4c.m_pchData = (char *)0x65717533;
   puStack_50 = (undefined4 *)0x4cda7f;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if (CONCAT31(extraout_var_02,uVar4) != 0) {
     puStack_50 = &uStack_3c;
     CStack_54.m_pchData = (char *)0x1a;
@@ -239,14 +239,14 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   }
   puStack_50 = (undefined4 *)0x65717534;
   CStack_54.m_pchData = "Pj\x1fh8\'";
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   CStack_54.m_pchData = (char *)CONCAT31(extraout_var_03,uVar4);
   LoadUiStringByGroupAndIndexToControlObject();
   CStack_54.m_pchData = (char *)0x65717535;
-  (*pTVar2)();
+  (*p_Var2)();
   LoadUiStringByGroupAndIndexToControlObject();
   BuildUiTextStyleDescriptor();
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -257,7 +257,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(iVar3 + 0x1c8))();
   puStack_38 = (undefined1 *)CONCAT31(puStack_38._1_3_,1);
   CString::~CString(&CStack_54);
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_05,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -268,7 +268,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(iVar3 + 0x1c8))();
   CStack_4c.m_pchData._0_1_ = 1;
   CString::~CString((CString *)&stack0xffffff98);
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_06,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -278,7 +278,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   CString::CString((CString *)&stack0xffffff8c,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
   CString::~CString((CString *)&stack0xffffff84);
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_07,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -288,7 +288,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   CString::CString((CString *)&stack0xffffff78,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
   CString::~CString((CString *)&stack0xffffff70);
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_08,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -298,7 +298,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   CString::CString((CString *)&stack0xffffff64,&DAT_00696674);
   (**(code **)(iVar3 + 0x1c8))();
   CString::~CString((CString *)&stack0xffffff5c);
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_09,uVar4) == (int *)0x0) {
     uStack_d0 = 0x4cdd71;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -314,7 +314,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   uStack_d0 = 0x2b67;
   BuildUiTextStyleDescriptor();
   uStack_d0 = 0x636f7331;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_10,uVar4) == (int *)0x0) {
     uStack_e4 = 0x4cddfd;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -330,7 +330,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   CStack_ec.m_pchData = (char *)0x4cde42;
   (**(code **)(iVar3 + 0x1c8))();
   CStack_ec.m_pchData = (char *)0x636f7332;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_11,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -353,7 +353,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fb0()
 
 {
   uint uVar1;
-  TTradeSchoolView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined uVar4;
   char cVar5;
@@ -371,8 +371,8 @@ void TTradeSchoolView::OrphanRetStub_004c6fb0()
   if (*(int *)&this->field_0x94 == 0) {
     return;
   }
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar2)();
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -395,7 +395,7 @@ LAB_004ce0fd:
     }
   }
   iVar9 = 0x70617032;
-  uVar4 = (*pTVar2)();
+  uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -417,7 +417,7 @@ LAB_004ce16b:
       goto LAB_004ce16b;
     }
   }
-  uVar4 = (*pTVar2)(0x6d6f6e31);
+  uVar4 = (*p_Var2)(0x6d6f6e31);
   if ((int *)CONCAT31(extraout_var_01,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -441,7 +441,7 @@ LAB_004ce201:
       goto LAB_004ce201;
     }
   }
-  uVar4 = (*pTVar2)(0x6d6f6e32);
+  uVar4 = (*p_Var2)(0x6d6f6e32);
   if ((int *)CONCAT31(extraout_var_02,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -465,7 +465,7 @@ LAB_004ce299:
       goto LAB_004ce299;
     }
   }
-  uVar4 = (*pTVar2)(0x756e7456);
+  uVar4 = (*p_Var2)(0x756e7456);
   if ((int *)CONCAT31(extraout_var_03,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -488,7 +488,7 @@ LAB_004ce299:
   }
   (**(code **)(iVar7 + 0xa4))(uVar8,1);
 LAB_004ce31a:
-  uVar4 = (*pTVar2)(0x74726156);
+  uVar4 = (*p_Var2)(0x74726156);
   if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

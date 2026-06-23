@@ -11,7 +11,7 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
 
 {
   short sVar1;
-  TToolBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   TToolBarClusterVtbl *pTVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -26,10 +26,10 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
   ResetMapActionContextActivityAndNationFlags();
   if (pMapOrderEntry == (void *)0x0) {
     iVar6 = 0;
-    pTVar2 = this->vftable[0x12].slot_0x04;
+    p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     do {
-      uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
-      (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable[1].slot_0x04)();
+      uVar4 = (*p_Var2)(iVar6 + 0x636c7330);
+      (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable->AssertValid)();
       TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
                 ((TToolBarCluster *)CONCAT31(extraout_var,uVar4),0);
       iVar6 = iVar6 + 1;
@@ -40,20 +40,20 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
   uVar5 = GetMinActionThresholdFromEntryChildren(1);
   ExpandTaskForceTraversalDepthAndMarkDeferredNodes(uVar5,uVar7);
   pTVar3 = this->vftable;
-  (*pTVar3[0x3c].GetTEventHandlerClassNamePointer)
+  (**(code **)&pTVar3->field_0x1e0)
             (CONCAT22(extraout_var_02,*(undefined2 *)(*(int *)((int)pMapOrderEntry + 0x18) + 0xc)));
-  pTVar2 = pTVar3[0x12].slot_0x04;
+  p_Var2 = pTVar3->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iVar6 = 0;
   do {
-    uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
-    (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable[1].slot_0x04)();
+    uVar4 = (*p_Var2)(iVar6 + 0x636c7330);
+    (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable->AssertValid)();
     sVar1 = *(short *)((int)pMapOrderEntry + (short)iVar6 * 2 + 0x1e);
     CountTaskForceSelectedOrdersByNationClass(iVar6);
     TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
               ((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4),(int)sVar1);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 4);
-  uVar4 = (*pTVar2)(0x756e6176);
+  uVar4 = (*p_Var2)(0x756e6176);
   iVar6 = *(int *)CONCAT31(extraout_var_01,uVar4);
   (**(code **)(iVar6 + 0xc))();
   (**(code **)(iVar6 + 0x1c8))(*(int *)((int)pMapOrderEntry + 4) + 0x61677230);
@@ -189,7 +189,7 @@ TToolBarCluster::InitDialogWindowAndSyncTitleIfChanged
     if (iVar2 != 0) {
       CString::AssignFromPtr(*(CString **)&this->field_0x84,&param_1);
       if (param_2 != '\0') {
-        (*this->vftable[0x1c].slot_0x04)();
+        (*this->vftable->VTableSlot39)();
       }
     }
   }
@@ -273,7 +273,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   TGreatPower *pTVar1;
   TToolBarClusterVtbl *pTVar2;
   code *pcVar3;
-  TGreatPower_slot_0x04_0x04 *pTVar4;
+  _vslot_fn *p_Var4;
   char cVar5;
   short sVar6;
   int iVar7;
@@ -323,7 +323,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   pTVar2 = this->vftable;
   this[1].field0c = param_1;
   this[1].field10 = (int)param_2;
-  (*pTVar2[0x3c].GetTEventHandlerClassNamePointer)();
+  (**(code **)&pTVar2->field_0x1e0)();
   piVar8 = &this[1].ownerOffsetX;
   do {
     cVar5 = (**(code **)(*(int *)this[1].field0c + 0x68))();
@@ -354,12 +354,12 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   iStack_68 = (int)*(short *)(iVar9 + 0x28);
   pcStack_6c = &g_szDecimalFormat;
   FormatStringWithVarArgsToSharedRef();
-  pTVar4 = pTVar1->vftable[0x23].slot_0x04;
+  p_Var4 = pTVar1->vftable->ApplyJoinEmpireModeForTargetNation_47;
   iStack_68 = 0x14;
   pcStack_6c = (char *)0x4bb944;
-  (*pTVar4)();
+  (*p_Var4)();
   pcStack_6c = (char *)0x13;
-  (*pTVar4)();
+  (*p_Var4)();
   FormatStringWithVarArgsToSharedRef();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,(char *)0x6d656174);
   AssignStringSharedRefAndReturnThis();
@@ -370,7 +370,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatStringWithVarArgsToSharedRef();
-  (*pTVar4)();
+  (*p_Var4)();
   FormatStringWithVarArgsToSharedRef();
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&pcStack_6c,input_str);
@@ -382,7 +382,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   FormatStringWithVarArgsToSharedRef();
-  (*pTVar4)();
+  (*p_Var4)();
   FormatStringWithVarArgsToSharedRef();
   (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&stack0xffffff84,pcStack_6c);
@@ -544,13 +544,13 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
   undefined3 extraout_var_03;
   undefined3 extraout_var_04;
   char *unaff_EBX;
-  TToolBarCluster_slot_0x04_0x04 *pTVar6;
+  _vslot_fn *p_Var6;
   int iVar7;
   int *unaff_FS_OFFSET;
   LONG LStack_7c;
   int iVar8;
   CString nMaxLevelPips;
-  TToolBarCluster_slot_0x04_0x04 *local_48;
+  _vslot_fn *local_48;
   TView *local_44;
   RECT rcWorkBuffer;
   tagRECT atStack_30 [2];
@@ -570,9 +570,9 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
   local_44 = *(TView **)(this[1].field0c + 0xe4 + (short)(nRecruitmentEntryIndex + 0x22) * 4);
   if (this[1].ownerContext != local_44) {
     this[1].ownerContext = local_44;
-    pTVar6 = this->vftable[0x12].slot_0x04;
-    local_48 = pTVar6;
-    uVar3 = (*pTVar6)();
+    p_Var6 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    local_48 = p_Var6;
+    uVar3 = (*p_Var6)();
     if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -588,7 +588,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     CopyRect(atStack_30,&rcWorkBuffer);
     LStack_7c = 0x4cb45f;
     InvalidateCityDialogRectRegion();
-    uVar3 = (*pTVar6)();
+    uVar3 = (*p_Var6)();
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar7 + 0xc))();
     LStack_7c = (LONG)*(short *)(unaff_EBX + 0x50);
@@ -597,7 +597,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     nMaxLevelPips.m_pchData = unaff_EBX;
     CopyRect(&rcWorkBuffer,(RECT *)&stack0xffffffb0);
     InvalidateCityDialogRectRegion();
-    uVar3 = (*pTVar6)();
+    uVar3 = (*p_Var6)();
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -609,7 +609,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     (**(code **)(iVar7 + 300))();
     CopyRect((LPRECT)&stack0xffffffa8,(RECT *)&stack0xffffff98);
     InvalidateCityDialogRectRegion(&stack0xffffffa8);
-    uVar3 = (*pTVar6)();
+    uVar3 = (*p_Var6)();
     if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -622,7 +622,7 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
     LStack_7c = iVar5;
     CopyRect((LPRECT)&stack0xffffff94,(RECT *)&LStack_7c);
     InvalidateCityDialogRectRegion(&stack0xffffff94,1);
-    (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+    (**(code **)&this->vftable->field_0x1d8)();
     LStack_7c = 0x7c;
     InvalidateCityDialogRectRegion(&LStack_7c,1);
     iVar7 = 0;
@@ -650,21 +650,21 @@ TToolBarCluster::SelectUniversityRecruitmentEntry
       CVar2.m_pchData = nMaxLevelPips.m_pchData;
       if (0 < (int)nMaxLevelPips.m_pchData) {
         do {
-          uVar3 = (*pTVar6)(iVar7 + 0x66697832);
+          uVar3 = (*p_Var6)(iVar7 + 0x66697832);
           iVar5 = *(int *)CONCAT31(extraout_var_03,uVar3);
           (**(code **)(iVar5 + 0xc))();
           (**(code **)(iVar5 + 0xa4))(1,1);
           iVar7 = iVar7 + 1;
-          pTVar6 = (TToolBarCluster_slot_0x04_0x04 *)&stack0xffffff8c;
+          p_Var6 = (_vslot_fn *)&stack0xffffff8c;
           CVar2.m_pchData = nMaxLevelPips.m_pchData;
         } while (iVar7 < (int)nMaxLevelPips.m_pchData);
       }
       for (; (int)CVar2.m_pchData < 3; CVar2.m_pchData = CVar2.m_pchData + 1) {
-        uVar3 = (*pTVar6)(CVar2.m_pchData + 0x66697832);
+        uVar3 = (*p_Var6)(CVar2.m_pchData + 0x66697832);
         iVar7 = *(int *)CONCAT31(extraout_var_04,uVar3);
         (**(code **)(iVar7 + 0xc))();
         (**(code **)(iVar7 + 0xa4))(0,1);
-        pTVar6 = (TToolBarCluster_slot_0x04_0x04 *)&stack0xffffff8c;
+        p_Var6 = (_vslot_fn *)&stack0xffffff8c;
       }
     }
     CString::~CString((CString *)&stack0xffffff64);
@@ -688,7 +688,7 @@ void TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls()
 
 {
   TToolBarClusterVtbl *pTVar1;
-  TToolBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -704,20 +704,20 @@ void TToolBarCluster::InitializeDiplomacyMapViewOverlaysAndActionControls()
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   if (*(short *)&g_pLocalizationTable->field_0x8 == 6) {
     pTVar1 = this->vftable;
-    pTVar2 = pTVar1[0x12].slot_0x04;
-    uVar3 = (*pTVar2)(0x656e6420);
+    p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var2)(0x656e6420);
     if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1c))();
     }
-    uVar3 = (*pTVar2)(0x71756572);
+    uVar3 = (*p_Var2)(0x71756572);
     if ((int *)CONCAT31(extraout_var_00,uVar3) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1c))();
     }
-    uVar3 = (*pTVar2)(0x746f7042);
+    uVar3 = (*p_Var2)(0x746f7042);
     if ((int *)CONCAT31(extraout_var_01,uVar3) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1c))();
     }
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(0x20d0,1);
+    (*pTVar1->OrphanCallChain_C2_I51_00491790)(0x20d0,1);
   }
   return;
 }
@@ -986,7 +986,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   CString local_24;
   CString local_20;
   TToolBarCluster *local_1c;
-  TToolBarCluster_slot_0x04_0x04 *local_18;
+  _vslot_fn *local_18;
   TToolBarClusterVtbl *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -1006,12 +1006,12 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   CString::CString(&local_28);
   local_10 = this->vftable;
   uVar8 = 0x70726f70;
-  local_18 = local_10[0x12].slot_0x04;
+  local_18 = local_10->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_4 = CONCAT31(local_4._1_3_,3);
   bVar1 = false;
   uVar2 = (*local_18)();
-  local_18 = (TToolBarCluster_slot_0x04_0x04 *)CONCAT31(extraout_var,uVar2);
-  if (local_18 == (TToolBarCluster_slot_0x04_0x04 *)0x0) {
+  local_18 = (_vslot_fn *)CONCAT31(extraout_var,uVar2);
+  if (local_18 == (_vslot_fn *)0x0) {
     CStack_54.m_pchData = (char *)0x4f9af8;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -1197,7 +1197,7 @@ void TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize()
     *(undefined2 *)((int)&this->field0c + 2) = 0x7d2;
   }
   pTVar1 = this->vftable;
-  (*pTVar1[7].slot_0x04)(0);
+  (*pTVar1->OrphanRetStub_0059add0_0f)(0);
   iVar4 = (**(code **)(*DAT_006a1b24 + 0x28))
                     (CONCAT22(extraout_var,*(undefined2 *)((int)&this->field0c + 2)),0);
   if (iVar4 == 0) {
@@ -1208,7 +1208,7 @@ void TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize()
   this->field04 = iVar4;
   iVar4 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
   this->field18 = iVar4;
-  (*pTVar1[6].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->UpdateControlCachedIntFromWindowText)();
   *unaff_FS_OFFSET = local_1c.top;
   return;
 }
@@ -1374,11 +1374,11 @@ TToolBarCluster::QueueDepotConstructionOrder
       TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UMap_cpp_006970ec,0xfa8);
     }
     (**(code **)(*piVar3 + 0x30))(uVar5);
-    (*this->vftable[0x26].GetTEventHandlerClassNamePointer)(unaff_retaddr,pMapContext);
+    (*this->vftable->OrphanTiny_ReturnZero_0048a730_4c)(unaff_retaddr,pMapContext);
     pMapContext = unaff_retaddr;
   }
   else {
-    uVar4 = (*this->vftable[0x1b].GetTEventHandlerClassNamePointer)(pMapContext);
+    uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14_36)(pMapContext);
     local_14.m_pchData = (char *)CONCAT31(extraout_var,uVar4);
     local_14.m_pchData[0x4f] = '\x01';
   }
@@ -1593,7 +1593,7 @@ void TToolBarCluster::CancelMapOrderEntryAndRestoreActive(int *pMapOrderEntry)
   }
   HandleNavyOrderNodeRemovalAndSelectionRefresh(this);
   pMapOrderEntry_00 = (void *)this->field18;
-  (*this->vftable[3].slot_0x04)();
+  (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920)();
   if (bVar4) {
     iVar3 = (int)sVar2;
     sVar2 = UiRuntimeContext::GetActiveNationId(iVar3);
@@ -1803,7 +1803,7 @@ void TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
   
   uStack_14 = 0x73686970;
   pTStack_18 = (TToolBarCluster *)0x568fa3;
-  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if (unaff_retaddr == 0) {
     if (*(short *)&this[1].vftable == 0) goto LAB_00569047;
   }
@@ -1833,7 +1833,7 @@ void TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(int param_1)
   }
 LAB_00569047:
   pTStack_18 = (TToolBarCluster *)0x569051;
-  (*this->vftable[0x1c].slot_0x04)();
+  (*this->vftable->VTableSlot39)();
   *(short *)&this[1].vftable = (short)unaff_retaddr;
   *(short *)&this[1].field0c = (short)unaff_retaddr;
   if (-1 < param_1) {
@@ -1862,7 +1862,7 @@ void TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4()
 
 {
   short sVar1;
-  TToolBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   bool bVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -1887,8 +1887,8 @@ void TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4()
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (uint)&uStack_c;
   CStack_28.m_pchData = (char *)0x636f756e;
-  pTVar2 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar2)();
+  p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var2)();
   iVar8 = *(int *)CONCAT31(extraout_var,uVar4);
   (**(code **)(iVar8 + 0xc))();
   CString::CString((CString *)&stack0xffffffe8);
@@ -1926,14 +1926,14 @@ void TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4()
   uVar6 = ShowCountrySelectionPromptAndReturnNationId(unaff_EBP);
   AppendSingleByteToSharedStringFromArg(uVar6);
   AssignStringSharedFromRef(&stack0xffffffe4);
-  uVar4 = (*pTVar2)(0x64696666);
+  uVar4 = (*p_Var2)(0x64696666);
   (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0xc))();
-  uVar4 = (*pTVar2)(((int *)CONCAT31(extraout_var_00,uVar4))[0x22]);
+  uVar4 = (*p_Var2)(((int *)CONCAT31(extraout_var_00,uVar4))[0x22]);
   piVar7 = (int *)CONCAT31(extraout_var_01,uVar4);
   (**(code **)(*piVar7 + 0xc))();
   SetStateCodeAndUpdateZeroOrOutOfRangeFlag(piVar7[0xf]);
   *(short *)&g_pLocalizationTable->field_0x5e = (short)piVar7[0xf];
-  uVar4 = (*pTVar2)(0x6e616d65);
+  uVar4 = (*p_Var2)(0x6e616d65);
   (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar4) + 0xc))();
   g_pLocalizationTable->field_0x68 = ((int *)CONCAT31(extraout_var_02,uVar4))[0x22] != 0x72616e64;
   *(short *)&g_pLocalizationTable->field_0x62 = (short)(char)g_pLocalizationTable->field_0x68;
@@ -2019,7 +2019,7 @@ TToolBarCluster::RebuildPrimaryNationStateForSlot
   sVar7 = (short)param_1.m_pchData;
   iVar8 = (int)sVar7;
   if (g_apNationStates[iVar8] != (TGreatPower *)0x0) {
-    (*g_apNationStates[iVar8]->vftable[3].slot_0x04)();
+    (*g_apNationStates[iVar8]->vftable->ApplyJoinEmpireModeForTargetNation)();
   }
   g_apNationStates[iVar8] = (TGreatPower *)0x0;
   g_apTerrainTypeDescriptorTable[iVar8] = (TCountry *)0x0;
@@ -2060,7 +2060,7 @@ TToolBarCluster::RebuildPrimaryNationStateForSlot
           (**(code **)(iRam00000000 + 0xe4))(0);
         }
         else {
-          (*pTVar5->vftable[0x1c].slot_0x04)(pTVar5->city);
+          (*pTVar5->vftable->HandleCityDialogHintClusterUpdate_39)(pTVar5->city);
         }
       }
     }
@@ -2088,7 +2088,7 @@ TToolBarCluster::RebuildPrimaryNationStateForSlot
           else {
             pTVar6 = pTVar5->city;
           }
-          (*((TCountryVtbl *)pTVar5->vftable)[0x1c].slot_0x04)(pTVar6);
+          (*pTVar5->vftable->HandleCityDialogHintClusterUpdate_39)(pTVar6);
         }
         (*g_pDiplomacyTurnStateManager->vftable[5].GetTDiplomacyMgrClassNamePointer)
                   (CVar4.m_pchData,CVar4.m_pchData,0x100);
@@ -2134,10 +2134,10 @@ TToolBarCluster::RebuildPrimaryNationStateForSlot
           else {
             pTVar6 = pTVar5->city;
           }
-          (*((TCountryVtbl *)pTVar5->vftable)[0x1c].slot_0x04)(pTVar6);
+          (*pTVar5->vftable->HandleCityDialogHintClusterUpdate_39)(pTVar6);
         }
         QueueMapActionMissionsForPortZoneCandidates();
-        (*g_apNationStates[iVar8]->vftable[7].slot_0x04)();
+        (*g_apNationStates[iVar8]->vftable->ApplyJoinEmpireMode1TargetTransition)();
       }
     }
     else {
@@ -2200,7 +2200,7 @@ LAB_0057ce9d:
       else {
         pTVar6 = pTVar5->city;
       }
-      (*pTVar5->vftable[0x1c].slot_0x04)(pTVar6);
+      (*pTVar5->vftable->HandleCityDialogHintClusterUpdate_39)(pTVar6);
     }
     if (this->field44 != 0) {
       g_pGameFlowState->field_0x68 = 1;
@@ -2418,7 +2418,7 @@ void TToolBarCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int par
     else if (uVar1 < 0x6d6f7666) {
       if (uVar1 == 0x6d6f7665) {
 LAB_00585059:
-        uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x444c4f47);
+        uVar2 = (*this->ownerContext->vftable->ResolveControlByTag)(0x444c4f47);
         if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag
@@ -2574,7 +2574,7 @@ void TToolBarCluster::SetForeignMinisterReadyFlag14(undefined4 param_1)
   piStack_8 = (int *)&LAB_006376d8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  uVar3 = (*this->vftable[0x12].slot_0x04)();
+  uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if (CONCAT31(extraout_var,uVar3) != 0) {
     CString::CString((CString *)&stack0xffffffec,PTR_g_szEmptyString_00662b90);
     piStack_8 = (int *)0x0;
@@ -2640,7 +2640,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
 
 {
   TToolBarClusterVtbl *pTVar1;
-  TToolBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   char cVar4;
   undefined3 extraout_var;
@@ -2704,7 +2704,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   pTVar1 = this->vftable;
   local_4 = 0;
   puStack_34 = (undefined1 *)0x585425;
-  uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar3 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   puStack_34 = (undefined1 *)0x6d61696e;
   piVar5 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
   (**(code **)(*piVar5 + 0xc))();
@@ -2721,9 +2721,9 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   AssignStringSharedRefAndReturnThis();
   puStack_40 = (undefined1 *)0x585482;
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
-  pTVar2 = pTVar1[0x12].slot_0x04;
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   puStack_3c = (undefined1 *)0x585494;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   if ((undefined1 *)CONCAT31(extraout_var_00,uVar3) != (undefined1 *)0x0) {
     puStack_3c = &stack0xffffffd4;
     puStack_40 = (undefined1 *)0x0;
@@ -2740,7 +2740,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   puStack_3c = (undefined1 *)0x71756572;
   puStack_40 = (undefined1 *)0x5854d7;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   if ((undefined1 *)CONCAT31(extraout_var_01,uVar3) != (undefined1 *)0x0) {
     puStack_40 = &stack0xffffffd0;
     ppuStack_44 = (undefined1 **)0x2;
@@ -2757,7 +2757,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   puStack_40 = (undefined1 *)0x74726164;
   ppuStack_44 = (undefined1 **)0x58551a;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   ppuVar6 = (undefined1 **)CONCAT31(extraout_var_02,uVar3);
   if (ppuVar6 != (undefined1 **)0x0) {
     ppuStack_44 = (undefined1 **)0x585527;
@@ -2779,7 +2779,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   ppuStack_44 = (undefined1 **)0x63697479;
   CStack_48.m_pchData = (char *)0x585568;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar5 = (int *)CONCAT31(extraout_var_03,uVar3);
   if (piVar5 != (int *)0x0) {
     CStack_48.m_pchData = (char *)0x585575;
@@ -2800,7 +2800,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   CStack_48.m_pchData = (char *)0x7472616e;
   ppuStack_4c = (undefined1 **)0x5855b6;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
   if (piVar5 != (int *)0x0) {
     ppuStack_4c = (undefined1 **)0x5855c3;
@@ -2821,7 +2821,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   ppuStack_4c = (undefined1 **)0x6469706c;
   ppuStack_50 = (undefined1 **)0x585604;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar5 = (int *)CONCAT31(extraout_var_05,uVar3);
   if (piVar5 != (int *)0x0) {
     ppuStack_50 = (undefined1 **)0x585611;
@@ -2842,12 +2842,12 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   }
   ppuStack_50 = (undefined1 **)0x656e6420;
   CStack_54.m_pchData = (char *)0x585652;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   pcVar7 = (char *)CONCAT31(extraout_var_06,uVar3);
   if (pcVar7 == (char *)0x0) {
     CStack_54.m_pchData = (char *)0x746f6f33;
     CStack_58.m_pchData = (char *)0x585668;
-    uVar3 = (*this->ownerContext->vftable[0x12].slot_0x04)();
+    uVar3 = (*this->ownerContext->vftable->ResolveControlByTag)();
     if ((int *)CONCAT31(extraout_var_07,uVar3) != (int *)0x0) {
       CStack_54.m_pchData = (char *)0x656e6420;
       CStack_58.m_pchData = (char *)0x58567b;
@@ -2913,7 +2913,7 @@ LAB_00585724:
 LAB_00585749:
   CStack_54.m_pchData = (char *)0x74726565;
   CStack_58.m_pchData = (char *)0x585752;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   if ((char *)CONCAT31(extraout_var_08,uVar3) != (char *)0x0) {
     CStack_58.m_pchData = (char *)&CStack_48;
     CStack_5c.m_pchData = (char *)0x585768;
@@ -2927,12 +2927,12 @@ LAB_00585749:
   }
   CStack_58.m_pchData = (char *)0x73656173;
   CStack_5c.m_pchData = (char *)0x58578b;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar5 = (int *)CONCAT31(extraout_var_09,uVar3);
   if (piVar5 == (int *)0x0) {
     CStack_5c.m_pchData = (char *)0x79656172;
     pCStack_60 = (CString *)0x5858a4;
-    uVar3 = (*pTVar2)();
+    uVar3 = (*p_Var2)();
     piVar5 = (int *)CONCAT31(extraout_var_10,uVar3);
     if (piVar5 != (int *)0x0) {
       pCStack_7c = &CStack_6c;
@@ -3009,7 +3009,7 @@ LAB_00585749:
   }
   pCStack_7c = (CString *)0x74726561;
   puStack_80 = (undefined4 *)0x58590c;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   ppCVar9 = (CString **)CONCAT31(extraout_var_11,uVar3);
   if (ppCVar9 != (CString **)0x0) {
     puStack_80 = &uStack_70;
@@ -3030,7 +3030,7 @@ LAB_00585749:
   }
   puStack_80 = (undefined4 *)0x776f7264;
   piStack_84 = (int *)0x585974;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   piVar5 = (int *)CONCAT31(extraout_var_12,uVar3);
   if (piVar5 != (int *)0x0) {
     piStack_84 = (int *)0x2b67;
@@ -3064,7 +3064,7 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
           (TToolBarCluster *this,short param_1)
 
 {
-  TToolBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   char cVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -3102,18 +3102,18 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
     (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
   }
   CStack_2c.m_pchData = (char *)0x74726561;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_30.m_pchData = (char *)0x585c11;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
     CStack_30.m_pchData = (char *)0x1;
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1c8))();
   }
   CStack_30.m_pchData = (char *)0x73656173;
-  uVar3 = (*pTVar1)();
+  uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     input_str = (char *)0x585d23;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) goto LAB_00585e06;
     CString::CString(&CStack_10);
     uStack_18._0_1_ = 5;
@@ -3225,7 +3225,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
   code *pcStack_dc;
   undefined4 uStack_d8;
   code ***pppcStack_d4;
-  TToolBarCluster_slot_0x04_0x04 **ppTStack_bc;
+  _vslot_fn **pp_Stack_bc;
   undefined4 uStack_b8;
   undefined1 **ppuStack_b4;
   CString CVar8;
@@ -3237,7 +3237,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
   short sVar10;
   undefined1 *puVar11;
   CString local_6c;
-  TToolBarCluster_slot_0x04_0x04 *local_68;
+  _vslot_fn *local_68;
   CString local_64;
   CString local_60;
   undefined4 local_5c;
@@ -3302,7 +3302,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
   InitializeUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x59172a;
   InitializeUiTextStyleDescriptor();
-  local_68 = this->vftable[0x12].slot_0x04;
+  local_68 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar1 = (*local_68)();
   if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     puStack_94 = (undefined1 *)0x59175c;
@@ -3333,7 +3333,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
   ppuStack_b4 = &puStack_9c;
   uStack_b8 = 0x591808;
   (**(code **)(iVar6 + 0x1c8))();
-  ppTStack_bc = &local_68;
+  pp_Stack_bc = &local_68;
   uStack_b8 = 0;
   (**(code **)(iVar6 + 0x1b4))();
   piVar4 = (int *)(*(code *)CVar8.m_pchData)();
@@ -3345,7 +3345,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
   pcVar9 = (code *)0xd;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   iVar6 = *piVar4;
-  pppcStack_d4 = &ppTStack_bc;
+  pppcStack_d4 = &pp_Stack_bc;
   uStack_d8 = 0x591877;
   (**(code **)(iVar6 + 0x1c8))();
   pcStack_dc = (code *)&stack0xffffff78;
@@ -3362,7 +3362,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
     if (*(int *)CVar8.m_pchData != 0) {
       FormatStringWithVarArgsToSharedRef();
       (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      if (ppTStack_bc == (TToolBarCluster_slot_0x04_0x04 **)0x0) {
+      if (pp_Stack_bc == (_vslot_fn **)0x0) {
         AssignSharedStringConcatRefAndCStr();
         local_64.m_pchData._0_1_ = 6;
         pCVar5 = (CString *)AssignSharedStringConcatRefAndRef();
@@ -3392,7 +3392,7 @@ void TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors()
       }
       local_64.m_pchData._0_1_ = 4;
       CString::~CString(pCVar5);
-      ppTStack_bc = (TToolBarCluster_slot_0x04_0x04 **)((int)ppTStack_bc + 1);
+      pp_Stack_bc = (_vslot_fn **)((int)pp_Stack_bc + 1);
     }
     iVar6 = iVar6 + 1;
     CVar8.m_pchData = CVar8.m_pchData + 4;
@@ -3530,7 +3530,7 @@ void TToolBarCluster::SetMapInteractionMode(short nMode)
     else if (nPreviousMode == 1) {
       SetActiveProvinceSelection();
     }
-    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))();
     if (piVar2 != (int *)0x0) {
       if (*(short *)((int)&this[1].field0c + 2) == 1) {
@@ -3630,7 +3630,7 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
 
 {
   short sVar1;
-  TToolBarCluster_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   TToolBarClusterVtbl *pTVar3;
   undefined uVar4;
   undefined3 extraout_var;
@@ -3645,10 +3645,10 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
   ResetMapActionContextActivityAndNationFlags();
   if (pMapOrderEntry == (void *)0x0) {
     iVar6 = 0;
-    pTVar2 = this->vftable[0x12].slot_0x04;
+    p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     do {
-      uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
-      (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable[1].slot_0x04)();
+      uVar4 = (*p_Var2)(iVar6 + 0x636c7330);
+      (*((TToolBarCluster *)CONCAT31(extraout_var,uVar4))->vftable->AssertValid)();
       TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
                 ((TToolBarCluster *)CONCAT31(extraout_var,uVar4),0);
       iVar6 = iVar6 + 1;
@@ -3659,20 +3659,20 @@ void TToolBarCluster::RefreshMapOrderEntryPanel(void *pMapOrderEntry)
   uVar5 = GetMinActionThresholdFromEntryChildren(1);
   ExpandTaskForceTraversalDepthAndMarkDeferredNodes(uVar5,uVar7);
   pTVar3 = this->vftable;
-  (*pTVar3[0x3c].GetTEventHandlerClassNamePointer)
+  (**(code **)&pTVar3->field_0x1e0)
             (CONCAT22(extraout_var_02,*(undefined2 *)(*(int *)((int)pMapOrderEntry + 0x18) + 0xc)));
-  pTVar2 = pTVar3[0x12].slot_0x04;
+  p_Var2 = pTVar3->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iVar6 = 0;
   do {
-    uVar4 = (*pTVar2)(iVar6 + 0x636c7330);
-    (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable[1].slot_0x04)();
+    uVar4 = (*p_Var2)(iVar6 + 0x636c7330);
+    (*((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4))->vftable->AssertValid)();
     sVar1 = *(short *)((int)pMapOrderEntry + (short)iVar6 * 2 + 0x1e);
     CountTaskForceSelectedOrdersByNationClass(iVar6);
     TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
               ((TToolBarCluster *)CONCAT31(extraout_var_00,uVar4),(int)sVar1);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 4);
-  uVar4 = (*pTVar2)(0x756e6176);
+  uVar4 = (*p_Var2)(0x756e6176);
   iVar6 = *(int *)CONCAT31(extraout_var_01,uVar4);
   (**(code **)(iVar6 + 0xc))();
   (**(code **)(iVar6 + 0x1c8))(*(int *)((int)pMapOrderEntry + 4) + 0x61677230);
@@ -3839,7 +3839,7 @@ void TToolBarCluster::OpenMapEntryOrderDialog(void *pMapOrderEntry)
   InitializeUiTextStyleDescriptor();
   pCStack_8c = (CString *)0x59804b;
   InitializeUiTextStyleDescriptor();
-  uVar3 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
   piVar4 = (int *)CONCAT31(extraout_var,uVar3);
   if (piVar4 == (int *)0x0) {
     pCStack_8c = (CString *)0x598077;
@@ -4206,7 +4206,7 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
 {
   int iVar1;
   TViewVtbl *pTVar2;
-  TToolBarCluster_slot_0x04_0x04 *pTVar3;
+  _vslot_fn *p_Var3;
   undefined uVar4;
   undefined uVar5;
   undefined3 extraout_var;
@@ -4234,7 +4234,7 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
   if (param_2 != *(short *)&this[1].padding_08_to_0b) {
     *(short *)&this[1].padding_08_to_0b = param_2;
     iStack_24 = 0x5bafbc;
-    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->UpdateControlTagTreaTextFromNationAndMapContext)();
   }
   *(short *)&this[1].field0c = (short)param_1;
   iStack_24 = param_1 + 1;
@@ -4253,19 +4253,19 @@ TToolBarCluster::UpdateDealBookResourceSelectionAndToggleControls
   }
   pTVar2 = (this[1].ownerContext)->vftable;
   if (*(short *)&this[1].ownerContext[1].vftable < sVar7) {
-    (*pTVar2[0x14].slot_0x04)();
+    (*pTVar2->SetEnabled)();
   }
   else {
-    (*pTVar2[0x36].GetTEventHandlerClassNamePointer)();
-    (*(this[1].ownerContext)->vftable[0x14].slot_0x04)();
+    (*pTVar2[1].HandleEvent)();
+    (*(this[1].ownerContext)->vftable->SetEnabled)();
   }
-  pTVar3 = this->vftable[0x12].slot_0x04;
-  uVar4 = (*pTVar3)();
+  p_Var3 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar4 = (*p_Var3)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  uVar5 = (*pTVar3)();
+  uVar5 = (*p_Var3)();
   piVar6 = (int *)CONCAT31(extraout_var_00,uVar5);
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -4330,7 +4330,7 @@ TToolBarCluster::InitializeTradeScreenControlsLabelsAndNationContext
           (TToolBarCluster *this,short param_1)
 
 {
-  TToolBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   code *pcVar2;
   int iVar3;
   uint3 uVar4;
@@ -4460,13 +4460,13 @@ LAB_005bea42:
   }
   local_3c = this->vftable;
   iStack_84 = 0x73686565;
-  pTVar1 = local_3c[0x12].slot_0x04;
+  p_Var1 = local_3c->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iStack_88 = 0x5bea78;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   iStack_4c = CONCAT31(extraout_var,uVar5);
   iStack_88 = 0x77616974;
   pTStack_8c = (TToolBarCluster *)0x5bea85;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
   pTStack_8c = (TToolBarCluster *)0x5bea90;
   CString::CString(&CStack_6c);
@@ -4507,16 +4507,16 @@ LAB_005bea42:
             ((TToolBarCluster *)&stack0xffffff70,(char *)&g_szEmptyString);
   RunEnableAndProcessFlagWithScopedSharedStringCleanup();
   pTStack_8c = (TToolBarCluster *)0x63757273;
-  uVar5 = (*pTVar1)();
+  uVar5 = (*p_Var1)();
   g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_01,uVar5);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   if (g_pCursorControlPanel == (TControl *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   pTVar13 = (TToolBarClusterVtbl *)0x2b67;
   cVar12 = '\0';
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
   *(short *)&this[1].padding_08_to_0b = param_1;
   sVar6 = (short)uStack_4;
   *(undefined2 *)&this[1].field10 = puStack_8._0_2_;
@@ -4557,27 +4557,27 @@ LAB_005bea42:
     (**(code **)(*piVar9 + 0xf0))();
     CStack_b8.m_pchData = (char *)0x61636365;
     CStack_bc.m_pchData = (char *)0x5bef0d;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     CStack_28.m_pchData = *(char **)CONCAT31(extraout_var_04,uVar5);
     CStack_bc.m_pchData = (char *)0x5bef1e;
     (**(code **)(CStack_28.m_pchData + 0xc))();
     CStack_bc.m_pchData = (char *)0x72656a65;
     CStack_c0.m_pchData = (char *)0x5bef27;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     CStack_38.m_pchData = *(char **)CONCAT31(extraout_var_05,uVar5);
     CStack_c0.m_pchData = (char *)0x5bef37;
     (**(code **)(CStack_38.m_pchData + 0xc))();
     CStack_c0.m_pchData = (char *)0x0;
     (**(code **)(iStack_2c + 0xa8))();
     (**(code **)(iStack_40 + 0xa8))();
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_06,uVar5);
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0xa8))();
     if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
       uStack_e0 = 0;
       uStack_e4 = 0x13f2;
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
     }
     CString::CString(&CStack_b8);
     uStack_e0 = 0xc;
@@ -4586,7 +4586,7 @@ LAB_005bea42:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     uStack_104 = 0x5beffa;
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffff30,(char *)0x1);
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_07,uVar5);
     (**(code **)(iVar3 + 0xc))();
     BuildUiTextStyleDescriptor();
@@ -4598,7 +4598,7 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0x1c8))();
     uStack_104 = 0x70757254;
     uStack_108 = 0x5bf058;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_08,uVar5);
     uStack_108 = 0x5bf061;
     (**(code **)(iVar3 + 0xc))();
@@ -4617,7 +4617,7 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0x1cc))();
     uStack_124 = 0x756e6974;
     iStack_128 = 0x5bf096;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_09,uVar5);
     iStack_128 = 0x5bf09f;
     (**(code **)(iVar3 + 0xc))();
@@ -4640,7 +4640,7 @@ LAB_005bea42:
     (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     uStack_160 = 0x5bf0ff;
     scanBracketExpressions(g_pLocalizationTable,&uStack_138,pcStack_12c);
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_10,uVar5);
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0x1b4))();
@@ -4654,7 +4654,7 @@ LAB_005bea42:
     iStack_16c = 0x5bf149;
     sVar7 = UiRuntimeContext::GetActiveNationId();
     iStack_16c = 0x5bf158;
-    uVar5 = (*g_apTerrainTypeDescriptorTable[sVar7]->vftable[0xe].slot_0x04)();
+    uVar5 = (*g_apTerrainTypeDescriptorTable[sVar7]->vftable->OrphanLeaf_NoCall_Ins02_004d7f00)();
     puStack_174 = &uStack_140;
     iStack_16c = (int)(short)CONCAT31(extraout_var_11,uVar5);
     puStack_170 = &g_szDecimalFormat;
@@ -4662,7 +4662,7 @@ LAB_005bea42:
     FormatStringWithVarArgsToSharedRef();
     iStack_16c = 0x6d436170;
     puStack_170 = (undefined *)0x5bf17e;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_12,uVar5);
     puStack_170 = (undefined *)0x5bf187;
     (**(code **)(iVar3 + 0xc))();
@@ -4688,7 +4688,7 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0xe4))();
     aiStack_190[2] = 0x73686565;
     aiStack_190[1] = 0x5bf1d8;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_13,uVar5);
     aiStack_190[1] = 0x5bf1e1;
     (**(code **)(iVar3 + 0xc))();
@@ -4696,7 +4696,7 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0xe4))();
     aiStack_190[1] = 0x70757263;
     aiStack_190[0] = 0x5bf1f2;
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     piVar9 = (int *)CONCAT31(extraout_var_14,uVar5);
     iVar3 = *piVar9;
     aiStack_190[0] = 0x5bf1fc;
@@ -4732,21 +4732,21 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0x1d8))(0,*(undefined4 *)(aiStack_190[0] + -8),1);
     SetGlobalBlitTransparentColorRaw(*(undefined4 *)piVar9[0x12]);
     (**(code **)(*DAT_006a2158 + 0x54))(aiStack_190);
-    uVar5 = (*pTVar1)(0x69636f6e);
+    uVar5 = (*p_Var1)(0x69636f6e);
     iVar3 = *(int *)CONCAT31(extraout_var_15,uVar5);
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0x1c8))(iStack_128 + 700,0);
-    uVar5 = (*pTVar1)(0x61636365);
+    uVar5 = (*p_Var1)(0x61636365);
     iVar3 = *(int *)CONCAT31(extraout_var_16,uVar5);
     (**(code **)(iVar3 + 0xc))();
     this[1].field18 = (int)CONCAT31(extraout_var_16,uVar5);
     (**(code **)(iVar3 + 0xa8))(1,0);
-    uVar5 = (*pTVar1)(0x72656a65);
+    uVar5 = (*p_Var1)(0x72656a65);
     iVar3 = *(int *)CONCAT31(extraout_var_17,uVar5);
     (**(code **)(iVar3 + 0xc))();
     this[1].controlTag = (int)CONCAT31(extraout_var_17,uVar5);
     (**(code **)(iVar3 + 0xa8))(1,0);
-    uVar5 = (*pTVar1)(0x636c7573);
+    uVar5 = (*p_Var1)(0x636c7573);
     iVar3 = *(int *)CONCAT31(extraout_var_18,uVar5);
     (**(code **)(iVar3 + 0xc))();
     piVar9 = (int *)(**(code **)(iVar3 + 0x94))(0x6e6f6d6f);
@@ -4754,14 +4754,14 @@ LAB_005bea42:
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0xa8))(1,0);
     (**(code **)(iVar3 + 0x1d0))(0,0);
-    uVar5 = (*pTVar1)(0x746f6f6c);
+    uVar5 = (*p_Var1)(0x746f6f6c);
     iVar3 = *(int *)CONCAT31(extraout_var_19,uVar5);
     (**(code **)(iVar3 + 0xc))();
     uVar10 = UiRuntimeContext::GetActiveNationId();
     (**(code **)(iVar3 + 0x1d0))(uVar10);
     InvalidateCityDialogRectRegion(&piStack_1a8,1);
     InvalidateCityDialogRectRegion(&uStack_198,1);
-    uVar5 = (*pTVar1)(0x696e666f);
+    uVar5 = (*p_Var1)(0x696e666f);
     iVar3 = *(int *)CONCAT31(extraout_var_20,uVar5);
     (**(code **)(iVar3 + 0xc))();
     ApplyUiTextStyleAndThemeFlags((int *)CONCAT31(extraout_var_20,uVar5),0,0xc,0x2b6c,0x2b6b);
@@ -4818,19 +4818,19 @@ LAB_005bea42:
     }
     scanBracketExpressions(g_pLocalizationTable,&local_3c,pcStack_30);
     (**(code **)(iStack_84 + 0x1c8))();
-    if ((pTVar13[4].slot_0x04 != DAT_006a5a28) ||
-       (pTVar13[5].GetTEventHandlerClassNamePointer != DAT_006a5a2c)) {
+    if ((pTVar13->ShallowFree != DAT_006a5a28) ||
+       (pTVar13->GetTEventHandlerClassNamePointer_0a != DAT_006a5a2c)) {
       (**(code **)(pTVar13->GetTEventHandlerClassNamePointer + 0xf0))();
     }
     if ((*(char *)((int)&this[1].field14 + 2) == '\0') &&
        ((piVar9[9] != DAT_006a5a00 || (piVar9[10] != DAT_006a5a04)))) {
       (**(code **)(iStack_88 + 0xf0))();
     }
-    uVar5 = (*pTVar1)();
+    uVar5 = (*p_Var1)();
     iVar3 = *(int *)CONCAT31(extraout_var_02,uVar5);
     (**(code **)(iVar3 + 0xc))();
     (**(code **)(iVar3 + 0xa8))();
-    uVar5 = (*pTVar13[0xb].GetTEventHandlerClassNamePointer)();
+    uVar5 = (*pTVar13->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar5) + 0x13c))();
     CStack_58.m_pchData._0_1_ = 9;
     CString::~CString(&CStack_50);
@@ -4863,7 +4863,7 @@ LAB_005bea42:
 void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_1)
 
 {
-  TToolBarCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined uVar4;
@@ -4885,26 +4885,26 @@ void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_
   int *piVar5;
   
   if (param_1 != *(char *)((int)&this[1].field14 + 2)) {
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar3 = (*pTVar1)();
-    (*((TControl *)CONCAT31(extraout_var,uVar3))->vftable[1].slot_0x04)();
-    uVar4 = (*pTVar1)();
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)();
+    (*((TControl *)CONCAT31(extraout_var,uVar3))->vftable->ConstructTTaskBaseState)();
+    uVar4 = (*p_Var1)();
     piVar5 = (int *)CONCAT31(extraout_var_00,uVar4);
     if (piVar5 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    uVar4 = (*pTVar1)();
+    uVar4 = (*p_Var1)();
     iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0xa4))();
     if (cStack_10 != '\0') {
       (*pcRam626f705b)();
       (**(code **)(*piVar5 + 0xf0))();
-      (*this->vftable[0x39].GetTEventHandlerClassNamePointer)();
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->OrphanCallChain_C2_I51_00491790)();
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
       iStack_60 = 0x5c0af8;
-      uVar3 = (*pTVar1)();
+      uVar3 = (*p_Var1)();
       iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
       iStack_60 = 0x5c0b01;
       (**(code **)(iVar2 + 0xc))();
@@ -4921,7 +4921,7 @@ void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_
       LoadUiStringAndDispatchSharedMessageCommand();
       piStack_68 = (int *)0x6c697374;
       piStack_6c = (int *)0x5c0b3b;
-      uVar3 = (*pTVar1)();
+      uVar3 = (*p_Var1)();
       piStack_6c = (int *)0x5c0b44;
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0xc))();
       pTStack_70 = (TToolBarClusterVtbl *)0x1;
@@ -4932,12 +4932,12 @@ void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_
     }
     (*pcRam626f705b)();
     (**(code **)(*piVar5 + 0xf0))();
-    (*this->vftable[0x39].GetTEventHandlerClassNamePointer)();
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->OrphanCallChain_C2_I51_00491790)();
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)();
     iStack_60 = 0x5c0bbd;
     TControl::UpdateSelectionRect((TControl *)CONCAT31(extraout_var,uVar3),(astruct_4 *)0xffffffff);
     iStack_60 = 0x5c0bc6;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
     iVar2 = *piVar5;
     iStack_60 = 0x5c0bcf;
@@ -4955,7 +4955,7 @@ void TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(char param_
     LoadUiStringAndDispatchSharedMessageCommand();
     piStack_68 = (int *)0x6c697374;
     piStack_6c = (int *)0x5c0c13;
-    uVar3 = (*pTVar1)();
+    uVar3 = (*p_Var1)();
     piStack_6c = (int *)0x5c0c1c;
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
     piStack_6c = (int *)CONCAT31(extraout_var_05,uVar3);

@@ -80,7 +80,7 @@ void TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)
 
 {
   if (param_1 == 0x22) {
-    (*this->vftable[7].GetTBehaviorClassNamePointer)
+    (*this->vftable->OrphanCallChain_C1_I13_00487430)
               (*(int *)(param_2 + 0x1c),
                (uint)(*(int *)(param_2 + 0x1c) != *(int *)&this->field_0x18));
   }

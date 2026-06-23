@@ -353,8 +353,8 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   int *piVar1;
   undefined1 *puVar2;
   TMapMakerVtbl *pTVar3;
-  TMapMaker_GetTEventHandlerClassNamePointer_0x00 *pTVar4;
-  TMapMaker_slot_0x04_0x04 *pTVar5;
+  _vslot_fn *p_Var4;
+  _vslot_fn *p_Var5;
   bool bVar6;
   undefined uVar7;
   undefined4 *puVar8;
@@ -431,14 +431,15 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
         DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
         uVar14 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0x195;
       } while (*(char *)((int)&this->field10 + (int)(short)uVar14) != -1);
-      uVar7 = (*this->vftable[6].GetTEventHandlerClassNamePointer)((int)(short)uVar14,8,local_28,5);
+      uVar7 = (*this->vftable->UpdateControlCachedIntFromWindowText)
+                        ((int)(short)uVar14,8,local_28,5);
     } while (CONCAT31(extraout_var,uVar7) != 8);
     puVar15 = puVar15 + 1;
     local_28 = local_28 + 1;
   } while (local_28 < 7);
   pTVar3 = this->vftable;
   local_28 = 7;
-  pTVar4 = pTVar3[6].GetTEventHandlerClassNamePointer;
+  p_Var4 = pTVar3->UpdateControlCachedIntFromWindowText;
   puStack_20 = (undefined4 *)&this->field_0x21c;
   do {
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
@@ -476,9 +477,9 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
         uVar14 = ((uVar14 >> 0xc & 0x7fff) % 0x1b) / 2 + (-(uint)((uVar10 & 1) != 0) & 0xd) +
                  (((DAT_006a38e8 >> 0xc & 0x7fff) % 0xf) / 2 + (((int)uVar10 < 2) - 1 & 7)) * 0x1b;
         iVar11 = 0;
-        pTVar5 = pTVar3[0xe].slot_0x04;
+        p_Var5 = pTVar3->VTableSlot1D;
         do {
-          uVar7 = (*pTVar5)((int)(short)uVar14,iVar11);
+          uVar7 = (*p_Var5)((int)(short)uVar14,iVar11);
           if (*(char *)((int)&this->field10 + CONCAT31(extraout_var_00,uVar7)) != -1) {
             bVar6 = true;
           }
@@ -486,7 +487,7 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
         } while (iVar11 < 6);
         iStack_14 = iStack_14 + 1;
       } while (iStack_14 < 4);
-      uVar7 = (*pTVar4)((int)(short)uVar14,4,local_28,5);
+      uVar7 = (*p_Var4)((int)(short)uVar14,4,local_28,5);
     } while (CONCAT31(extraout_var_01,uVar7) != 4);
     local_28 = local_28 + 1;
     puStack_20 = puStack_20 + 1;
@@ -504,7 +505,7 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 
 {
   TMapMakerVtbl *pTVar1;
-  TMapMaker_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   char cVar4;
   undefined uVar5;
@@ -533,13 +534,13 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
   if ((((param_2 != 0) && (0 < param_1 / 0x1b)) && (param_1 / 0x1b < 0xe)) &&
      (*(char *)((int)&this->field10 + param_1) == -1)) {
     if (in_stack_0000000c < 7) {
-      cVar4 = (*this->vftable[6].slot_0x04)();
+      cVar4 = (*this->vftable->OrphanRetStub_0059add0)();
       if (cVar4 == '\0') {
         return 0;
       }
     }
     else {
-      cVar4 = (*this->vftable[8].GetTEventHandlerClassNamePointer)(param_1);
+      cVar4 = (*this->vftable->OrphanTiny_ReturnZero_0048a730)(param_1);
       if (cVar4 == '\0') {
         return 0;
       }
@@ -547,11 +548,11 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
     pTVar1 = this->vftable;
     iVar10 = param_2 + -1;
     *(char *)((int)&this->field10 + param_1) = (char)in_stack_0000000c;
-    pTVar2 = pTVar1[0xe].slot_0x04;
+    p_Var2 = pTVar1->VTableSlot1D;
     iVar13 = 6;
     iVar9 = 0;
     do {
-      uVar5 = (*pTVar2)(param_1,iVar9);
+      uVar5 = (*p_Var2)(param_1,iVar9);
       if ((CONCAT31(extraout_var,uVar5) == -1) || (iVar9 == param_2)) {
         acStack_28[iVar9] = '\x01';
         iVar13 = iVar13 + -1;
@@ -568,11 +569,11 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
       piVar8 = aiStack_20;
       do {
         if (acStack_28[iVar9] == '\0') {
-          uVar5 = (*pTVar2)(iVar12,iVar9);
+          uVar5 = (*p_Var2)(iVar12,iVar9);
           iVar11 = 0;
           *piVar8 = (-(uint)(iVar9 != param_2) & 8) + 2;
           do {
-            uVar6 = (*pTVar2)((int)(short)CONCAT31(extraout_var_00,uVar5),iVar11);
+            uVar6 = (*p_Var2)((int)(short)CONCAT31(extraout_var_00,uVar5),iVar11);
             sVar7 = (short)CONCAT31(extraout_var_01,uVar6);
             if ((sVar7 != -1) && (*(char *)((int)&this->field10 + (int)sVar7) == (char)param_1)) {
               *piVar8 = *piVar8 + 10;
@@ -602,8 +603,9 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
           *piVar8 = iVar3 + iVar11;
         } while (iVar3 + iVar11 < iVar9);
       }
-      uVar5 = (*pTVar2)(iStack_4,iVar12,iVar10,param_1,iVar12);
-      uVar5 = (*this->vftable[6].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var_02,uVar5));
+      uVar5 = (*p_Var2)(iStack_4,iVar12,iVar10,param_1,iVar12);
+      uVar5 = (*this->vftable->UpdateControlCachedIntFromWindowText)
+                        (CONCAT31(extraout_var_02,uVar5));
       iVar10 = iVar10 - CONCAT31(extraout_var_03,uVar5);
       acStack_28[iVar12] = '\x01';
       iVar12 = iStack_4;
@@ -620,7 +622,7 @@ int TMapMaker::UpdateControlCachedIntFromWindowText(int param_1, int param_2)
 uint TMapMaker::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
 
 {
-  TMapMaker_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   uint uVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -631,9 +633,9 @@ uint TMapMaker::OrphanRetStub_0059add0(undefined4 param_1, int param_2)
   int local_8;
   
   local_8 = 0;
-  pTVar1 = this->vftable[0xe].slot_0x04;
+  p_Var1 = this->vftable->VTableSlot1D;
   do {
-    uVar3 = (*pTVar1)(param_1,local_8);
+    uVar3 = (*p_Var1)(param_1,local_8);
     if (CONCAT31(extraout_var,uVar3) == -1) {
       uVar4 = CONCAT31(extraout_var,0xff);
     }
@@ -709,7 +711,7 @@ LAB_0052745a:
 uint TMapMaker::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
 
 {
-  TMapMaker_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   uint uVar2;
   char cVar3;
   undefined3 extraout_var;
@@ -719,9 +721,9 @@ uint TMapMaker::OrphanTiny_ReturnZero_0048a730(undefined4 param_1, int param_2)
   int iVar7;
   
   iVar7 = 0;
-  pTVar1 = this->vftable[0xe].slot_0x04;
+  p_Var1 = this->vftable->VTableSlot1D;
   do {
-    cVar3 = (*pTVar1)(param_1,iVar7);
+    cVar3 = (*p_Var1)(param_1,iVar7);
     if (CONCAT31(extraout_var,cVar3) != -1) {
       cVar3 = *(char *)((int)&this->field10 + CONCAT31(extraout_var,cVar3));
     }
@@ -846,7 +848,7 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
 
 {
   TMapMakerVtbl *pTVar1;
-  TMapMaker_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   ulonglong uVar3;
   bool bVar4;
   undefined uVar5;
@@ -876,7 +878,7 @@ void TMapMaker::ReleaseRuntimeSelectionOwnerAndDestroyObject()
       uVar12 = (uVar9 >> 0xc & 0x7fff) % 0x1950;
     } while (*(char *)(this->padding_08_to_0b + uVar12 * 0x24) != '\0');
     DAT_006a38e8 = uVar9 * 0x15a4e35 + 1;
-    uVar5 = (*this->vftable[9].GetTEventHandlerClassNamePointer)
+    uVar5 = (*this->vftable->OrphanTiny_ReturnZero_0048a730_12)
                       (uVar12,(uVar6 & 0x7fff) % 0xc + 3,(DAT_006a38e8 >> 0xc & 0x7fff) % 6);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
@@ -944,16 +946,16 @@ LAB_00527893:
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   pTVar1 = this->vftable;
-  (*pTVar1[9].slot_0x04)();
+  (*pTVar1->VTableSlot13)();
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   local_c = local_c & 0xffffff00;
   if (0 < iVar14) {
-    pTVar2 = pTVar1[0xb].GetTEventHandlerClassNamePointer;
+    p_Var2 = pTVar1->SetForeignMinisterReadyFlag14;
     do {
       DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
-      uVar5 = (*pTVar2)((DAT_006a38e8 >> 0xc & 0x7fff) % 0x1950,7,local_c);
+      uVar5 = (*p_Var2)((DAT_006a38e8 >> 0xc & 0x7fff) % 0x1950,7,local_c);
       iVar14 = iVar14 - CONCAT31(extraout_var_00,uVar5);
       if (iVar14 < (DAT_006a38f8 * 2) / 3) {
         local_c = CONCAT31(local_c._1_3_,1);
@@ -985,7 +987,7 @@ LAB_00527893:
         if (DAT_006a4268 != (TSpaceCommand *)0x0) {
           TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
         }
-        (*pTVar1[0xb].slot_0x04)();
+        (*pTVar1->VTableSlot17)();
         return;
       }
       DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
@@ -1102,7 +1104,7 @@ LAB_00527dfc:
       }
     } while ((*(char *)(this->padding_08_to_0b + iVar5 * 0x24) == '\x03') && (uVar8 != uVar4));
     if ((uVar8 != uVar4) &&
-       (cVar3 = (*this->vftable[0xc].GetTEventHandlerClassNamePointer)(uVar7,uVar4,6,0,1),
+       (cVar3 = (*this->vftable->InvalidateWindowRectFromHandleField1C)(uVar7,uVar4,6,0,1),
        cVar3 != '\0')) {
       iVar1 = iVar1 + -1;
     }
@@ -1194,7 +1196,7 @@ LAB_0052809e:
 LAB_0052801a:
     iVar8 = -1;
   }
-  cVar2 = (*this->vftable[0xc].GetTEventHandlerClassNamePointer)
+  cVar2 = (*this->vftable->InvalidateWindowRectFromHandleField1C)
                     (iVar8,param_2,iVar9,_param_4 + 1,param_1);
   uVar5 = CONCAT31(extraout_var,cVar2);
   if (cVar2 != '\0') {
@@ -1302,7 +1304,7 @@ LAB_00528295:
     }
     DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
     if (((DAT_006a38e8 >> 0xc & 0x7fff) % 100 < 0x46) && (param_2 != 0)) {
-      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)(iVar8,1,_param_3);
+      uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)(iVar8,1,_param_3);
       param_2 = param_2 - CONCAT31(extraout_var,uVar3);
     }
     iVar7 = iVar7 + 4;
@@ -1426,7 +1428,7 @@ LAB_0052855d:
   iVar3 = -1;
 LAB_00528574:
   if ((param_2 != 1) && (-1 < iVar3)) {
-    uVar2 = (*this->vftable[9].GetTEventHandlerClassNamePointer)(iVar3,param_2 + -1,param_3);
+    uVar2 = (*this->vftable->OrphanTiny_ReturnZero_0048a730_12)(iVar3,param_2 + -1,param_3);
     iVar7 = CONCAT31(extraout_var,uVar2) + 1;
   }
   return iVar7;
@@ -1439,50 +1441,49 @@ LAB_00528574:
 void TMapMaker::_scalar_deleting_destructor_()
 
 {
-  TMapMaker_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
-  TMapMaker_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var1;
+  undefined uVar2;
   undefined uVar3;
-  undefined uVar4;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   undefined3 extraout_var_01;
   undefined3 extraout_var_02;
-  uint uVar5;
+  uint uVar4;
   undefined4 unaff_EBX;
+  int iVar5;
   int iVar6;
-  int iVar7;
   int local_c;
   int local_8;
   int local_4;
   
-  iVar7 = 0xfa;
+  iVar6 = 0xfa;
   local_4 = 5;
   local_c = 0;
-  iVar6 = 0x78;
+  iVar5 = 0x78;
   do {
-    if (iVar6 < 0x5b) break;
-    pTVar1 = this->vftable[10].GetTEventHandlerClassNamePointer;
-    uVar3 = (*pTVar1)(local_c,iVar6);
-    uVar4 = (*pTVar1)(unaff_EBX,iVar6);
-    iVar7 = (iVar7 - CONCAT31(extraout_var,uVar3)) - CONCAT31(extraout_var_00,uVar4);
+    if (iVar5 < 0x5b) break;
+    p_Var1 = this->vftable->OrphanTiny_ReturnZero_0048a730_14;
+    uVar2 = (*p_Var1)(local_c,iVar5);
+    uVar3 = (*p_Var1)(unaff_EBX,iVar5);
+    iVar6 = (iVar6 - CONCAT31(extraout_var,uVar2)) - CONCAT31(extraout_var_00,uVar3);
     local_c = local_c + 1;
-    iVar6 = iVar6 + -5;
-  } while (0 < iVar7);
-  if (0 < iVar7) {
+    iVar5 = iVar5 + -5;
+  } while (0 < iVar6);
+  if (0 < iVar6) {
     local_8 = 0x19;
     do {
       if (local_8 < 5) {
         return;
       }
-      uVar5 = (int)(local_4 - 7U) >> 0x1f;
-      pTVar2 = this->vftable[10].slot_0x04;
-      iVar6 = (((local_4 - 7U ^ uVar5) - uVar5) + 0xc) * 5;
-      uVar3 = (*pTVar2)(local_8,iVar6);
-      uVar4 = (*pTVar2)(local_c + 0x1e,iVar6);
-      iVar7 = (iVar7 - CONCAT31(extraout_var_01,uVar3)) - CONCAT31(extraout_var_02,uVar4);
+      uVar4 = (int)(local_4 - 7U) >> 0x1f;
+      p_Var1 = this->vftable->VTableSlot15;
+      iVar5 = (((local_4 - 7U ^ uVar4) - uVar4) + 0xc) * 5;
+      uVar2 = (*p_Var1)(local_8,iVar5);
+      uVar3 = (*p_Var1)(local_c + 0x1e,iVar5);
+      iVar6 = (iVar6 - CONCAT31(extraout_var_01,uVar2)) - CONCAT31(extraout_var_02,uVar3);
       local_4 = local_c + 2;
       local_8 = local_8 + -2;
-    } while (0 < iVar7);
+    } while (0 < iVar6);
   }
   return;
 }
@@ -1906,7 +1907,7 @@ void TMapMaker::OrphanCallChain_C11_I88_004874b0()
 {
   char cVar1;
   TMapMakerVtbl *pTVar2;
-  TMapMaker_slot_0x04_0x04 *pTVar3;
+  _vslot_fn *p_Var3;
   int iVar4;
   undefined4 uStack_10;
   undefined4 uStack_c;
@@ -1914,15 +1915,15 @@ void TMapMaker::OrphanCallChain_C11_I88_004874b0()
   
   iVar4 = 0;
   pTVar2 = this->vftable;
-  pTVar3 = pTVar2[0xe].slot_0x04;
+  p_Var3 = pTVar2->VTableSlot1D;
   do {
     cVar1 = *(char *)((int)&this->field10 + iVar4);
-    (*pTVar3)(iVar4,0);
-    (*pTVar3)(iVar4,5);
-    (*pTVar3)(iVar4,1);
-    (*pTVar3)(iVar4,2);
-    (*pTVar3)(iVar4,3);
-    (*pTVar3)(iVar4,4);
+    (*p_Var3)(iVar4,0);
+    (*p_Var3)(iVar4,5);
+    (*p_Var3)(iVar4,1);
+    (*p_Var3)(iVar4,2);
+    (*p_Var3)(iVar4,3);
+    (*p_Var3)(iVar4,4);
     RandomizeRegionTemplateBanksForMismatchedNeighborClasses
               (iVar4,(short)cVar1,uStack_8,uStack_c,uStack_10);
     iVar4 = iVar4 + 1;
@@ -1930,7 +1931,7 @@ void TMapMaker::OrphanCallChain_C11_I88_004874b0()
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
-  (*pTVar2[8].slot_0x04)();
+  (*pTVar2->VTableSlot11)();
   return;
 }
 
@@ -1950,7 +1951,7 @@ void TMapMaker::OrphanRetStub_0059add0(short param_1, short param_2, short param
   short in_stack_00000010;
   undefined4 *puVar2;
   
-  uVar1 = (*this->vftable[0x10].slot_0x04)(_param_1);
+  uVar1 = (*this->vftable->VTableSlot21)(_param_1);
   puVar2 = (undefined4 *)CONCAT31(extraout_var,uVar1);
   puVar4 = puVar2 + -0x3c3;
   if (param_3 == param_1) {
@@ -2033,8 +2034,8 @@ void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
   undefined3 extraout_var_00;
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0xe].slot_0x04)(_param_1,2);
-  uVar2 = (*pTVar1[0x10].slot_0x04)(CONCAT31(extraout_var,uVar2));
+  uVar2 = (*pTVar1->VTableSlot1D)(_param_1,2);
+  uVar2 = (*pTVar1->VTableSlot21)(CONCAT31(extraout_var,uVar2));
   puVar3 = (undefined4 *)CONCAT31(extraout_var_00,uVar2);
   puVar6 = puVar3 + -0x3cc;
   if (param_1 == unaff_SI) {
@@ -2240,7 +2241,7 @@ undefined4 TMapMaker::GetTEventHandlerClassNamePointer()
   undefined1 uVar3;
   
   uVar3 = 0;
-  (*this->vftable[0xe].GetTEventHandlerClassNamePointer)(0);
+  (*this->vftable->GetTEventHandlerClassNamePointer_1c)(0);
   piVar1 = &this->field10;
   iVar2 = 0x195;
   do {
@@ -2265,7 +2266,7 @@ void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
 
 {
   TMapMakerVtbl *pTVar1;
-  TMapMaker_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   short sVar4;
   undefined3 extraout_var;
@@ -2277,12 +2278,12 @@ void TMapMaker::GetTEventHandlerClassNamePointer(short param_1)
   pTVar1 = this->vftable;
   *(undefined1 *)((int)&this->field10 + iVar5) = 0xf7;
   _param_1 = 6;
-  pTVar2 = pTVar1[0xe].slot_0x04;
+  p_Var2 = pTVar1->VTableSlot1D;
   do {
-    uVar3 = (*pTVar2)(iVar5,iVar6);
+    uVar3 = (*p_Var2)(iVar5,iVar6);
     sVar4 = (short)CONCAT31(extraout_var,uVar3);
     if ((sVar4 != -1) && (*(char *)((int)&this->field10 + (int)sVar4) == -1)) {
-      (*this->vftable[0xe].GetTEventHandlerClassNamePointer)(CONCAT31(extraout_var,uVar3));
+      (*this->vftable->GetTEventHandlerClassNamePointer_1c)(CONCAT31(extraout_var,uVar3));
     }
     iVar6 = iVar6 + 1;
     _param_1 = _param_1 + -1;
@@ -2298,7 +2299,7 @@ void TMapMaker::_scalar_deleting_destructor_()
 
 {
   int *piVar1;
-  TMapMaker_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   int iVar5;
@@ -2313,10 +2314,10 @@ void TMapMaker::_scalar_deleting_destructor_()
   local_c = piVar1;
   do {
     if ((char)*local_c == 'd') {
-      pTVar2 = this->vftable[0xe].slot_0x04;
+      p_Var2 = this->vftable->VTableSlot1D;
       iVar5 = local_8;
       do {
-        uVar3 = (*pTVar2)(iVar5,4);
+        uVar3 = (*p_Var2)(iVar5,4);
         iVar4 = CONCAT31(extraout_var,uVar3);
         *(undefined1 *)(iVar5 + (int)piVar1) = *(undefined1 *)(iVar4 + (int)piVar1);
         iVar5 = iVar4;

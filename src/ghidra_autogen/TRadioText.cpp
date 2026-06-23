@@ -83,7 +83,7 @@ void TRadioText::OrphanTiny_ReturnZero_0048a730()
   
   if ((this->field_0x98 != '\0') || (this->field_0x64 != '\0')) {
     pTVar1 = this->ownerContext;
-    (*pTVar1->vftable[1].slot_0x04)();
+    (**(code **)&pTVar1->vftable->field_0xc)();
     uVar2 = *(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x28;
     if (this->field_0x64 == '\0') {
       uVar3 = CONCAT22(extraout_var,*(undefined2 *)((int)&pTVar1[1].field2c + 2));
@@ -115,8 +115,8 @@ void TRadioText::OrphanCallChain_C3_I13_00579580()
   undefined3 extraout_var;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x1c].slot_0x04)();
-  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  (*pTVar1->VTableSlot39)();
+  uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x13c))();
   return;
 }

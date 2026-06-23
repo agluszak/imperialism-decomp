@@ -74,7 +74,7 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   int *piVar7;
   int iVar8;
   undefined4 unaff_EBP;
-  TScenarioChooser_slot_0x04_0x04 *pTVar9;
+  _vslot_fn *p_Var9;
   undefined4 *puVar10;
   undefined4 *unaff_FS_OFFSET;
   CString CStack_d0;
@@ -93,11 +93,11 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined1 *puStack_9c;
   code *pcStack_98;
   undefined1 *puStack_94;
-  TScenarioChooser_slot_0x04_0x04 *pTStack_90;
-  TScenarioChooser_slot_0x04_0x04 **ppTStack_8c;
+  _vslot_fn *p_Stack_90;
+  _vslot_fn **pp_Stack_8c;
   undefined4 uStack_84;
   code *pcStack_70;
-  TScenarioChooser_slot_0x04_0x04 *local_6c;
+  _vslot_fn *local_6c;
   CString CStack_68;
   CString CStack_64;
   int iStack_60;
@@ -119,35 +119,35 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920((TView *)this);
   DAT_006a43f0 = 0;
   uStack_84 = 0x6c697374;
-  local_6c = this->vftable[0x12].slot_0x04;
+  local_6c = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   *(undefined2 *)&this->field_0x114 = 0;
   uVar2 = (*local_6c)();
   piVar5 = (int *)CONCAT31(extraout_var,uVar2);
   iStack_60 = *piVar5;
   (**(code **)(iStack_60 + 0xc))();
-  local_6c = (TScenarioChooser_slot_0x04_0x04 *)0x0;
+  local_6c = (_vslot_fn *)0x0;
   do {
-    pTVar9 = local_6c;
+    p_Var9 = local_6c;
     CString::CString(&CStack_64);
     puStack_8 = (undefined1 *)0x0;
     CString::CString((CString *)&stack0x00000000);
     puStack_8._0_1_ = 1;
-    if ((((int)pTVar9 < 9) || (0xf < (int)pTVar9)) ||
+    if ((((int)p_Var9 < 9) || (0xf < (int)p_Var9)) ||
        (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
-      ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x0;
+      pp_Stack_8c = (_vslot_fn **)0x0;
       puStack_94 = (undefined1 *)0x579c32;
-      pTStack_90 = pTVar9;
+      p_Stack_90 = p_Var9;
       BuildScenarioPathForModeAndIndex();
-      ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579c3f;
+      pp_Stack_8c = (_vslot_fn **)0x579c3f;
       cVar3 = TryGetFileMetadataForPath();
       if (cVar3 != '\0') {
-        pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x579c5c;
+        p_Stack_90 = (_vslot_fn *)0x579c5c;
         OpenBufferedStreamWithMode40();
-        pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)&uStack_50;
-        ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x40;
+        p_Stack_90 = (_vslot_fn *)&uStack_50;
+        pp_Stack_8c = (_vslot_fn **)0x40;
         puStack_94 = (undefined1 *)0x579c6e;
         ReadLineFromBufferedStreamUntilTerminator();
-        ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579c77;
+        pp_Stack_8c = (_vslot_fn **)0x579c77;
         CloseBufferedStreamAndReleaseResources();
         if (piVar5[0x418] < 0x40) {
           piVar7 = piVar5 + piVar5[0x418] * 0x10 + 0x18;
@@ -164,19 +164,19 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
         }
         *(undefined2 *)(&this->field_0x94 + *(short *)&this->field_0x114 * 2) = local_6c._0_2_;
         *(short *)&this->field_0x114 = *(short *)&this->field_0x114 + 1;
-        pTVar9 = local_6c;
+        p_Var9 = local_6c;
       }
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
     CString::~CString((CString *)&stack0x00000000);
     puStack_8 = (undefined1 *)0xffffffff;
     CString::~CString(&CStack_64);
-    local_6c = pTVar9 + 1;
+    local_6c = p_Var9 + 1;
   } while ((int)local_6c < 0x40);
   (**(code **)(iStack_60 + 0xe4))();
-  ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0xe;
+  pp_Stack_8c = (_vslot_fn **)0xe;
   puStack_94 = auStack_5c;
-  pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x0;
+  p_Stack_90 = (_vslot_fn *)0x0;
   uStack_56 = 0;
   uStack_55 = 0;
   uStack_54 = 0;
@@ -185,16 +185,16 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   BuildUiTextStyleDescriptor();
   CString::CString(&CStack_68);
   puStack_8 = (undefined1 *)0x2;
-  ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x2b6c;
-  pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x579d75;
+  pp_Stack_8c = (_vslot_fn **)0x2b6c;
+  p_Stack_90 = (_vslot_fn *)0x579d75;
   MapUiThemeCodeToStyleFlags();
-  ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579d83;
+  pp_Stack_8c = (_vslot_fn **)0x579d83;
   piVar5 = (int *)(*pcStack_70)();
   iVar8 = *piVar5;
-  ppTStack_8c = (TScenarioChooser_slot_0x04_0x04 **)0x579d8c;
+  pp_Stack_8c = (_vslot_fn **)0x579d8c;
   (**(code **)(iVar8 + 0xc))();
-  ppTStack_8c = &local_6c;
-  pTStack_90 = (TScenarioChooser_slot_0x04_0x04 *)0x20;
+  pp_Stack_8c = &local_6c;
+  p_Stack_90 = (_vslot_fn *)0x20;
   puStack_94 = (undefined1 *)0x2758;
   pcStack_98 = (code *)0x579da6;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
@@ -253,11 +253,11 @@ void TScenarioChooser::OrphanLeaf_NoCall_Ins07_004d8920()
   uStack_cc = 0x579e68;
   g_pCursorControlPanel = (TControl *)(*pcStack_b0)();
   uStack_cc = 0x579e74;
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
   uStack_cc = 0x2b6c;
   CStack_d0.m_pchData = (char *)0x2b6b;
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)();
-  (*g_pCursorControlPanel->vftable[0x38].slot_0x04)(1,1);
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)();
+  (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,1);
   LoadUiStringByGroupAndIndexToControlObject(0x2758,0x18,this);
   uVar6 = (*pcVar1)(0x65786974);
   LoadUiStringByGroupAndIndexToControlObject(0x2737,0x14,uVar6);
@@ -283,7 +283,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TScenarioChooser *this,int param_1,int param_2)
 
 {
-  TScenarioChooser_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   HCURSOR hCursor;
@@ -296,7 +296,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
   int *piVar4;
   
   if (param_1 == 4) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
     (**(code **)(*unaff_EBX + 0xc))();
     LoadScenarioMetadataByIndexIntoUiControlCore
@@ -305,17 +305,17 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
     SetCursor(hCursor);
   }
   else if (param_1 == 0x7069636b) {
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar3 = (*pTVar1)(0x706d6170);
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)(0x706d6170);
     piVar4 = (int *)CONCAT31(extraout_var,uVar3);
     iVar2 = *piVar4;
     (**(code **)(iVar2 + 0xc))();
     if ((*(int *)(&this->field_0x144 + piVar4[0x1b] * 4) != -1) && (piVar4[0x1b] != piVar4[0x1a])) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
       piVar4[0x1a] = piVar4[0x1b];
       ApplyPaletteMaskToTileBufferByEventCode();
       (**(code **)(iVar2 + 0xe4))();
-      uVar3 = (*pTVar1)(0x63646573);
+      uVar3 = (*p_Var1)(0x63646573);
       iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
       (**(code **)(iVar2 + 0xc))();
       (**(code **)(iVar2 + 500))
@@ -327,12 +327,12 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
   }
   else if (param_1 == 10) {
     if (*(int *)(param_2 + 0x1c) == 0x73746172) {
-      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+      (*this->vftable->ApplyScenarioSelectionAndPostTurnEvent5E4)();
     }
   }
   else if ((param_1 == 0xd) && (*(int *)(param_2 + 0x1c) == 0x6d6f7265)) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x6c697374);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6c697374);
     piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
     iVar2 = *piVar4;
     (**(code **)(iVar2 + 0xc))();
@@ -341,7 +341,7 @@ TScenarioChooser::ReleaseRuntimeSelectionOwnerAndDestroyObject
     (**(code **)(iVar2 + 0xe4))();
   }
   else if ((param_1 == 0x14) && (*(int *)(param_2 + 0x1c) == 0x65786974)) {
-    (*this->vftable[0x3a].slot_0x04)();
+    (*this->vftable->PostTurnEvent5DCOrResetScenarioSelectionState)();
   }
   TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
   return;
@@ -388,10 +388,10 @@ void TScenarioChooser::OrphanTiny_ReturnZero_0048a730(int param_1)
   
   sVar1 = *(short *)(param_1 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)();
+    (*this->vftable->ApplyScenarioSelectionAndPostTurnEvent5E4)();
   }
   else if (sVar1 == 0x1b) {
-    (*this->vftable[0x3a].slot_0x04)();
+    (*this->vftable->PostTurnEvent5DCOrResetScenarioSelectionState)();
     return;
   }
   return;
@@ -456,7 +456,7 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
       local_4c[0xf] = 0;
       EnsurePictWvDataGobLoadedBySlot(local_4c[sVar1]);
     }
-    uVar3 = (*this->vftable[0x12].slot_0x04)(0x706d6170);
+    uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x706d6170);
     piStack_58 = (int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(*piStack_58 + 0xc))();
     RebuildGlobalOrderManagersAndCapabilityState(1);

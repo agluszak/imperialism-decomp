@@ -62,7 +62,7 @@ void TFrameRadioView::OrphanRetStub_0059add0(int param_1)
   
   switch(param_1) {
   case 10:
-    (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1f,this,0);
+    (*this->vftable->OrphanTiny_ReturnZero_0048a730)(0x1f,this,0);
     return;
   default:
     TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
@@ -70,26 +70,26 @@ void TFrameRadioView::OrphanRetStub_0059add0(int param_1)
   case 0xc:
     if (this->field_0x64 == '\0') {
       pTVar1 = this->vftable;
-      cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+      cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
       if (cVar2 != '\0') {
-        (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(1,0);
+        (*pTVar1->OrphanCallChain_C2_I18_004fe190)(1,0);
       }
     }
     TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject((TMapDialog *)this,param_1);
     return;
   case 0x1f:
     pTVar1 = this->vftable;
-    cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
     if (cVar2 != '\0') {
-      (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(1,1);
+      (*pTVar1->OrphanCallChain_C2_I18_004fe190)(1,1);
       return;
     }
     break;
   case 0x20:
     pTVar1 = this->vftable;
-    cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+    cVar2 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
     if (cVar2 != '\0') {
-      (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(0,1);
+      (*pTVar1->OrphanCallChain_C2_I18_004fe190)(0,1);
       return;
     }
   }
@@ -107,8 +107,8 @@ void TFrameRadioView::OrphanCallChain_C2_I18_004fe190(char param_1, char param_2
   
   if ((param_1 != this->field_0x64) && (this->field_0x64 = param_1, param_2 != '\0')) {
     pTVar1 = this->vftable;
-    (*pTVar1[0x1c].slot_0x04)();
-    (*pTVar1[0x27].slot_0x04)();
+    (*pTVar1->VTableSlot39)();
+    (*pTVar1->VTableSlot4F)();
   }
   return;
 }

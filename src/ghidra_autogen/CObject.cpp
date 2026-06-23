@@ -3,6 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: CObject.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
+// GHIDRA_NAME CObject::Serialize
+// GHIDRA_PROTO void __thiscall Serialize(CArchive * archive)
+
+void CObject::Serialize(CArchive *archive)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
+// GHIDRA_NAME CObject::AssertValid
+// GHIDRA_PROTO void __thiscall AssertValid(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void CObject::AssertValid()
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
+// GHIDRA_NAME CObject::Dump
+// GHIDRA_PROTO void __thiscall Dump(undefined4 dc)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void CObject::Dump(undefined4 dc)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00415E70
 // GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
 // GHIDRA_PROTO undefined __thiscall CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
@@ -458,6 +498,16 @@ CObject * CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(byte param_1)
     FreeHeapBufferIfNotNull(this);
   }
   return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00606FBA
+// GHIDRA_NAME CObject::GetRuntimeClass
+// GHIDRA_PROTO CRuntimeClass * __thiscall GetRuntimeClass(void)
+
+CRuntimeClass * CObject::GetRuntimeClass()
+
+{
+  return &classCObject;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606FC0

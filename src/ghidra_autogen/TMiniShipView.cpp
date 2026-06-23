@@ -201,7 +201,7 @@ void TMiniShipView::_scalar_deleting_destructor_(undefined4 *param_1)
   int iVar2;
   
   pTVar1 = this->ownerContext;
-  (*pTVar1->vftable[1].slot_0x04)();
+  (**(code **)&pTVar1->vftable->field_0xc)();
   iVar2 = *(int *)(*(int *)&this->field_0x84 + 0xc);
   if (iVar2 == 0) {
     pTVar1[1].ownerOffsetY = 0;

@@ -56,7 +56,7 @@ TView * TEditText::CreateTEditTextInstance(void)
     this[1].field34 = 0;
     this[1].field38 = 0;
     *(undefined2 *)&this[1].field3c = 0xff;
-    this->vftable = (TViewVtbl *)&TEditTextVtbl_0064ad90;
+    this->vftable = (TViewVtbl *)0x64ad90;
     this[1].vftable = (TViewVtbl *)0x6;
     this->flag4d = 0;
     *unaff_FS_OFFSET = local_c;
@@ -131,7 +131,7 @@ TEditText * TEditText::ConstructUiNumericTextEntryBase()
   *(undefined4 *)&this->field_0x94 = 0;
   *(undefined4 *)&this->field_0x98 = 0;
   *(undefined2 *)&this->field_0x9c = 0xff;
-  this->vftable = &TEditTextVtbl_0064ad90;
+  this->vftable = (TEditTextVtbl *)0x64ad90;
   *(undefined4 *)&this->field_0x60 = 6;
   this->flag4d = 0;
   *unaff_FS_OFFSET = local_c;
@@ -213,7 +213,7 @@ void TEditText::_scalar_deleting_destructor_(int param_1, int param_2)
   if (param_1 != this->padding_08_to_0b) {
     this->padding_08_to_0b = param_1;
     if (param_2 != 0) {
-      (*this->vftable[0x1c].slot_0x04)();
+      (*this->vftable->VTableSlot39)();
     }
     if (*(CFrameWnd **)&this->field_0x94 != (CFrameWnd *)0x0) {
       CFrameWnd::ShowWindow
@@ -282,17 +282,17 @@ int TEditText::OrphanCallChain_C11_I88_004874b0(astruct_10 *ui_ctx)
     }
     pTVar2 = this->vftable;
     style_flags = style_base | 0x800000;
-    flag_ok = (*pTVar2[0x1d].slot_0x04)();
+    flag_ok = (*pTVar2->VTableSlot3B)();
     if (flag_ok != '\0') {
       style_flags = style_base | 0x10800000;
     }
-    flag_ok = (*pTVar2[5].GetTEventHandlerClassNamePointer)();
+    flag_ok = (*pTVar2->GetTBehaviorClassNamePointer)();
     if (flag_ok == '\0') {
       style_flags = style_flags | 0x8000000;
     }
     iface = this->controlTag;
     parent_hwnd = this->field50;
-    uVar3 = (*pTVar2[0x2c].GetTEventHandlerClassNamePointer)(dlg_template,parent_hwnd,iface);
+    uVar3 = (*pTVar2->GetTEventHandlerClassNamePointer_58)(dlg_template,parent_hwnd,iface);
     InvokeDialogCreateVslot5CWithTemplate45(style_flags,uVar3,parent_hwnd,iface);
     iface = CreateFontFromPresetAndAttachRegionHandle(&this->field_0x78);
     *(int *)&this->field_0x98 = iface;
@@ -383,14 +383,14 @@ void TEditText::_scalar_deleting_destructor_()
     iVar1 = this->field44;
   }
   if (this->ownerContext != (TView *)0x0) {
-    (*this->ownerContext->vftable[0x2e].slot_0x04)(this);
+    (*this->ownerContext->vftable[1].GetRuntimeClass)(this);
     this->ownerContext = (TView *)0x0;
   }
   if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
       ((TEditText *)g_pApplicationUiRootController != this)) &&
      (pTVar3 = (TEditText *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
      pTVar3 == this)) {
-    uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->UpdateControlCachedIntFromWindowText)();
     pAVar4 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
     if (pAVar4 == (ApplicationUiRootController *)0x0) {
       pAVar4 = g_pApplicationUiRootController;
@@ -403,7 +403,7 @@ void TEditText::_scalar_deleting_destructor_()
   }
   this->field18 = 0;
   if (this != (TEditText *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->VTableSlot01)(1);
   }
   return;
 }
@@ -423,7 +423,7 @@ TEditText::SetForeignMinisterReadyFlag14
   
   uVar1 = TView::SetForeignMinisterReadyFlag14((TView *)this,param_1,param_2,param_3,param_4);
   if ((char)uVar1 != '\0') {
-    (*this->vftable[8].GetTEventHandlerClassNamePointer)(*(undefined4 *)&this->field_0x60,this,0);
+    (*this->vftable->OrphanTiny_ReturnZero_0048a730)(*(undefined4 *)&this->field_0x60,this,0);
     return CONCAT31(extraout_var,1);
   }
   return uVar1 & 0xffffff00;
@@ -453,7 +453,7 @@ void TEditText::OrphanRetStub_0059add0(undefined4 param_1)
   if (*(int *)&this->field_0x94 != 0) {
     SetFocus();
   }
-  (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)(0,0x7fff,param_1);
+  (*this->vftable->SetEditSelectionAndScrollCaret)(0,0x7fff,param_1);
   return;
 }
 
@@ -481,7 +481,7 @@ void TEditText::OrphanCallChain_C1_I09_0048ff70(undefined2 param_1, char param_2
 {
   *(undefined2 *)&this->field_0x90 = param_1;
   if (param_2 != '\0') {
-    (*this->vftable[0x22].slot_0x04)(0);
+    (*this->vftable->GetTEventHandlerClassNamePointer_45)(0);
   }
   return;
 }

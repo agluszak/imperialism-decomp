@@ -64,11 +64,11 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   int *piVar5;
   int iVar6;
   int iVar7;
-  TNextMoveCommand_GetTEventClassNamePointer_0x00 *unaff_EBX;
+  _vslot_fn *unaff_EBX;
   int *piVar8;
-  TNextMoveCommand_GetTEventClassNamePointer_0x00 *pTVar9;
+  _vslot_fn *p_Var9;
   TNextMoveCommandVtbl *pTVar10;
-  TNextMoveCommand_GetTEventClassNamePointer_0x00 *pTVar11;
+  _vslot_fn *p_Var11;
   int iStack_20;
   TNextMoveCommandVtbl *pTStack_18;
   
@@ -113,24 +113,24 @@ void TNavyAutoPlayer::OrphanRetStub_0059ad90()
   uVar3 = *(undefined4 *)(iVar7 + 8);
   iVar4 = ComputeHexTileDistanceFromIndices(unaff_EBX,uVar3);
   iVar7 = *(int *)&this->field_0x14;
-  pTVar11 = (TNextMoveCommand_GetTEventClassNamePointer_0x00 *)0x0;
-  pTVar9 = unaff_EBX;
+  p_Var11 = (_vslot_fn *)0x0;
+  p_Var9 = unaff_EBX;
   if (0 < *(int *)(iVar7 + 0x3c)) {
     do {
-      if ((*(short *)(*(int *)(iVar7 + 0x24) + (int)pTVar11 * 2) != -1) &&
-         (iVar7 = ComputeHexTileDistanceFromIndices(pTVar11,uVar3), iVar7 < iVar4)) {
-        pTVar9 = pTVar11;
+      if ((*(short *)(*(int *)(iVar7 + 0x24) + (int)p_Var11 * 2) != -1) &&
+         (iVar7 = ComputeHexTileDistanceFromIndices(p_Var11,uVar3), iVar7 < iVar4)) {
+        p_Var9 = p_Var11;
         iVar4 = iVar7;
       }
       iVar7 = *(int *)&this->field_0x14;
-      pTVar11 = pTVar11 + 1;
-    } while ((int)pTVar11 < *(int *)(iVar7 + 0x3c));
+      p_Var11 = p_Var11 + 1;
+    } while ((int)p_Var11 < *(int *)(iVar7 + 0x3c));
   }
-  if (pTVar9 != unaff_EBX) {
+  if (p_Var9 != unaff_EBX) {
     piVar8 = *(int **)&this->field_0x14;
     pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
-    while ((pTVar10 == pTStack_18 && (pTStack_18[1].GetTEventClassNamePointer != pTVar9))) {
-      (**(code **)(*piVar8 + 0x34))(pTStack_18,pTVar9);
+    while ((pTVar10 == pTStack_18 && (pTStack_18->Serialize != p_Var9))) {
+      (**(code **)(*piVar8 + 0x34))(pTStack_18,p_Var9);
       piVar8 = *(int **)&this->field_0x14;
       pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
     }

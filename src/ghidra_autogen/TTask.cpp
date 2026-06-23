@@ -10,7 +10,7 @@
 void TTask::CreateTTaskInstance()
 
 {
-  TTask_ConstructTTaskBaseState_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   TLoadSavePictureVtbl *pTVar3;
   undefined uVar4;
@@ -41,9 +41,9 @@ void TTask::CreateTTaskInstance()
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   CStack_30.m_pchData = (char *)0x61636f61;
-  pTVar1 = this->vftable[0x12].ConstructTTaskBaseState;
+  p_Var1 = this->vftable[3].Dump;
   CStack_34.m_pchData = (char *)0x5ad78d;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
   CStack_34.m_pchData = (char *)0x5ad796;
   (**(code **)(iVar2 + 0xc))();
@@ -53,7 +53,7 @@ void TTask::CreateTTaskInstance()
   (**(code **)(iVar2 + 0x1c8))();
   pcStack_3c = (char *)0x64636f61;
   pcStack_40 = (char *)0x5ad7b4;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
   pcStack_40 = (char *)0x5ad7bd;
   (**(code **)(iVar2 + 0xc))();
@@ -93,7 +93,7 @@ void TTask::CreateTTaskInstance()
   scanBracketExpressions(g_pLocalizationTable,&CStack_34,pcStack_3c);
   CStack_54.m_pchData = (char *)0x696e666f;
   CStack_58.m_pchData = (char *)0x5ad8aa;
-  uVar4 = (*pTVar1)();
+  uVar4 = (*p_Var1)();
   iVar2 = *(int *)CONCAT31(extraout_var_01,uVar4);
   CStack_58.m_pchData = (char *)0x5ad8b3;
   (**(code **)(iVar2 + 0xc))();
@@ -101,13 +101,13 @@ void TTask::CreateTTaskInstance()
   (**(code **)(iVar2 + 0x1f0))();
   (**(code **)(iVar2 + 0x1e0))(0,0xc);
   (**(code **)(iVar2 + 0x1f8))(1);
-  uVar4 = (*pTVar1)(0x706d6170);
+  uVar4 = (*p_Var1)(0x706d6170);
   this_00 = (TLoadSavePicture *)CONCAT31(extraout_var_02,uVar4);
   pTVar3 = this_00->vftable;
-  (*pTVar3[1].slot_0x04)();
+  (*pTVar3->AssertValid)();
   TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(this_00,0);
   *(char **)&this_00->field_0x64 = CStack_30.m_pchData;
-  (*pTVar3[0x1c].slot_0x04)();
+  (*pTVar3->VTableSlot39)();
   puStack_44._0_1_ = 2;
   CString::~CString(&CStack_54);
   puStack_44._0_1_ = 1;
@@ -175,7 +175,7 @@ void TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int *param_1)
 {
   code *pcVar1;
   
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x78);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);
@@ -191,7 +191,7 @@ void TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int *param_1)
 {
   code *pcVar1;
   
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   pcVar1 = *(code **)(*param_1 + 0x3c);
   (*pcVar1)(&this->field_0x4,2);
   (*pcVar1)(&this->field_0x6,2);

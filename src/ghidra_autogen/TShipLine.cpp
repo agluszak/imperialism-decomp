@@ -12,7 +12,7 @@ void TShipLine::SetArmyUnitLineActiveFlagAndNotify(char param_1)
 {
   if (this[4].field_0x14 != param_1) {
     this[4].field_0x14 = param_1;
-    (*this->vftable[0x39].slot_0x04)();
+    (*this->vftable[9].Free)();
   }
   return;
 }
@@ -78,12 +78,13 @@ CRuntimeClass * TShipLine::GetTLineDataClassNamePointer()
 void TShipLine::OrphanRetStub_0056f460(int param_1)
 
 {
-  TView *this_00;
+  _vslot_fn *p_Var1;
+  TViewVtbl *this_00;
   TArmyCheckBox *this_01;
-  int iVar1;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
   CString CStack_3c;
-  TView *local_24;
+  TViewVtbl *local_24;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_18;
@@ -99,25 +100,26 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   *unaff_FS_OFFSET = &uStack_c;
   local_1c = *(undefined4 *)(param_1 + 0x84);
   CStack_3c.m_pchData = (char *)0x68;
-  this_00 = (TView *)AllocateWithFallbackHandler();
+  this_00 = (TViewVtbl *)AllocateWithFallbackHandler();
   local_4 = (TClickZone *)0x0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (this_00 == (TViewVtbl *)0x0) {
+    this_00 = (TViewVtbl *)0x0;
   }
   else {
     CStack_3c.m_pchData = (char *)0x56514d;
     local_24 = this_00;
-    TView::ConstructTViewBaseState(this_00);
-    this_00->vftable = (TViewVtbl *)&TShipViewVtbl_0065ce28;
+    TView::ConstructTViewBaseState((TView *)this_00);
+    this_00->GetRuntimeClass =
+         (TView_GetTEventHandlerClassNamePointer_0x00 *)&TShipViewVtbl_0065ce28;
   }
-  local_24 = *(TView **)&this->field_0x10;
-  iVar1 = *(int *)&this->field_0x18;
+  local_24 = *(TViewVtbl **)&this->field_0x10;
+  p_Var1 = *(_vslot_fn **)&this->field_0x18;
   CStack_3c.m_pchData = (char *)0x0;
   local_4 = (TClickZone *)0xffffffff;
   InitializeUiResourceEntryFrameAndParent();
   CStack_3c.m_pchData = (char *)0x94;
-  this_00[1].vftable = (TViewVtbl *)local_24;
-  this_00[1].field04 = iVar1;
+  this_00->vmethod_0024 = (_vslot_fn *)local_24;
+  this_00->vmethod_0025 = p_Var1;
   this_01 = (TArmyCheckBox *)AllocateWithFallbackHandler();
   local_4 = (TClickZone *)0x1;
   if (this_01 == (TArmyCheckBox *)0x0) {
@@ -133,7 +135,7 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
     this_01->field_0x84 = 0;
   }
   local_4 = (TClickZone *)0xffffffff;
-  local_24 = (TView *)0x50;
+  local_24 = (TViewVtbl *)0x50;
   local_20 = 0x2d;
   CStack_3c.m_pchData =
        (char *)(int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)&this->field_0x10 + 4) * 2);
@@ -143,24 +145,24 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   this_01->controlTag = 0x63686563;
   *(undefined4 *)&this_01->field_0x60 = 4;
   CStack_3c.m_pchData = (char *)0x0;
-  (*this_01->vftable[0x39].GetTEventHandlerClassNamePointer)();
+  (*this_01->vftable->SetArmyUnitLineActiveFlagAndNotify)();
   CString::CString((CString *)&stack0xffffffd0);
   uStack_c = 2;
   local_4 = (TClickZone *)AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
   if (local_4 == (TClickZone *)0x0) {
-    iVar1 = 0;
+    iVar2 = 0;
   }
   else {
-    iVar1 = TClickZone::ConstructUiCommandTagResourceEntry(local_4);
+    iVar2 = TClickZone::ConstructUiCommandTagResourceEntry(local_4);
   }
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
-  local_24 = (TView *)0x40;
+  local_24 = (TViewVtbl *)0x40;
   local_20 = 0;
   InitializeUiResourceEntryFrameAndParent(0,this_00);
-  *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
+  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
   (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   local_10 = &stack0xffffffac;
   AssignStringSharedRefAndReturnThis(&CStack_3c);

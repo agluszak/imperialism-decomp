@@ -227,13 +227,13 @@ TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
   if (-1 < param_1) {
     if (param_1 < 2) {
       pTVar1 = this->vftable;
-      cVar2 = (*pTVar1[0x2d].slot_0x04)();
+      cVar2 = (*pTVar1->VTableSlot5B)();
       if (cVar2 != '\0') {
         *(int *)&this->field_0x90 = *in_stack_00000010 - *(int *)&this->field_0x98;
         *(int *)&this->field_0x94 = in_stack_00000010[1] - *(int *)&this->field_0x9c;
         DAT_006993e8 = 0;
-        (*pTVar1[0x1c].slot_0x04)();
-        (*pTVar1[0x27].slot_0x04)();
+        (*pTVar1->VTableSlot39)();
+        (*pTVar1->VTableSlot4F)();
         DAT_006993e8 = 1;
       }
     }
@@ -260,7 +260,7 @@ TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
       (**(code **)(**(int **)&this->field_0x84 + 0x1e4))(iVar4,iVar3);
       *(int *)&this->field_0x90 = this->field34 / 2 - *(int *)&this->field_0x98;
       *(int *)&this->field_0x94 = this->field38 / 2 - *(int *)&this->field_0x9c;
-      (*this->vftable[0x1c].slot_0x04)();
+      (*this->vftable->VTableSlot39)();
       return;
     }
   }

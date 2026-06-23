@@ -138,7 +138,7 @@ LAB_004b0208:
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_50,&uStack_58,5,5);
     pTVar4 = pTVar3->vftable;
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)(0,0);
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
     uVar5 = 1;
   }
   else if (uVar1 == 0x6d657263) {
@@ -188,7 +188,7 @@ LAB_004b0208:
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_30,&uStack_38,5,5);
     pTVar4 = pTVar3->vftable;
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)(0,0);
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
     uVar5 = 0;
   }
   else {
@@ -247,10 +247,10 @@ LAB_004b0208:
     uStack_4 = 0xffffffff;
     TArmyCheckBox::ConstructTArmyCheckBoxBaseState(pTVar3,pTVar2,&uStack_40,&uStack_48,5,5);
     pTVar4 = pTVar3->vftable;
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)(0,0);
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)(0,0);
     uVar5 = 1;
   }
-  (*pTVar4[0x39].GetTEventHandlerClassNamePointer)(uVar5,0);
+  (*pTVar4->SetArmyUnitLineActiveFlagAndNotify)(uVar5,0);
 LAB_004b04e9:
   *unaff_FS_OFFSET = uStack_c;
   return;

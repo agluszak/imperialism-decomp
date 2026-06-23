@@ -143,8 +143,8 @@ LAB_004a8aa3:
               iVar6 = CompareAnsiStringsWithMbcsAwareness(local_18.m_pchData,&DAT_00695844);
               if (iVar6 == 0) {
                 sVar5 = UiRuntimeContext::GetActiveNationId();
-                uVar4 = (*g_apTerrainTypeDescriptorTable[sVar5]->vftable[8].
-                          GetTCountryClassNamePointer)();
+                uVar4 = (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->
+                          OrphanLeaf_NoCall_Ins06_004d87b0_10)();
                 if (CONCAT31(extraout_var,uVar4) == (int)*(short *)&this->field_0x8c) {
                   DAT_006a5bac = 0x24d0;
                 }

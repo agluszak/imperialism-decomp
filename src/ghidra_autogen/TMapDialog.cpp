@@ -80,16 +80,6 @@ undefined4 TMapDialog::_scalar_deleting_destructor_()
   return *(undefined4 *)&this->field_0x60;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00485F90
-// GHIDRA_NAME TMapDialog::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall TEditText::OrphanCallChain_C11_I88_004874b0(void)
-
-void TMapDialog::OrphanCallChain_C11_I88_004874b0()
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A240
 // GHIDRA_NAME TMapDialog::GetTEventHandlerClassNamePointer
 // GHIDRA_PROTO byte __thiscall TSoundPlayer::GetTEventHandlerClassNamePointer(CityDialogController * pDialog)
@@ -145,7 +135,7 @@ int TMapDialog::UpdateControlCachedIntFromWindowText(CityDialogController *pDial
 void TMapDialog::OrphanTiny_ReturnZero_0048a730()
 
 {
-  (*this->vftable[7].slot_0x04)();
+  (*this->vftable->HandleEvent)();
   return;
 }
 
@@ -159,7 +149,7 @@ void TMapDialog::_scalar_deleting_destructor_(undefined4 param_1)
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x44))(param_1);
   }
@@ -176,7 +166,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(undefined4 param_1)
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+  uVar1 = (*this->vftable->QueryStepValue)();
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x48))(param_1);
   }
@@ -204,7 +194,7 @@ void TMapDialog::OrphanRetStub_0059add0(int *param_1)
 void TMapDialog::OrphanCallChain_C11_I88_004874b0()
 
 {
-  (*this->vftable[6].slot_0x04)();
+  (*this->vftable->vmethod_0013)();
   return;
 }
 
@@ -242,7 +232,7 @@ undefined1 TMapDialog::_scalar_deleting_destructor_()
 void TMapDialog::_scalar_deleting_destructor_()
 
 {
-  (*this->vftable[8].GetTEventHandlerClassNamePointer)(0x1a,this,0);
+  (*this->vftable->DispatchEvent)(0x1a,this,0);
   return;
 }
 
@@ -290,14 +280,14 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
     iVar1 = this->field44;
   }
   if (this->ownerContext != (TView *)0x0) {
-    (*this->ownerContext->vftable[0x2e].slot_0x04)(this);
+    (*this->ownerContext->vftable[1].GetRuntimeClass)(this);
     this->ownerContext = (TView *)0x0;
   }
   if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
       ((TMapDialog *)g_pApplicationUiRootController != this)) &&
      (pTVar3 = (TMapDialog *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
      pTVar3 == this)) {
-    uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar2 = (*this->vftable->QueryStepValue)();
     pAVar4 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
     if (pAVar4 == (ApplicationUiRootController *)0x0) {
       pAVar4 = g_pApplicationUiRootController;
@@ -310,7 +300,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   }
   this->field18 = 0;
   if (this != (TMapDialog *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TEventHandler)(1);
   }
   return;
 }
@@ -327,7 +317,7 @@ undefined1 TMapDialog::SetForeignMinisterReadyFlag14()
   if (this->ownerContext != (TView *)0x0) {
                     /* WARNING: Could not recover jumptable at 0x0048b189. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-    uVar1 = (*this->ownerContext->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->ownerContext->vftable->OwnerPanel)();
     return uVar1;
   }
   return 0;
@@ -351,7 +341,7 @@ void TMapDialog::SetForeignMinisterReadyFlag14(undefined4 *param_1, undefined4 p
   
   pTVar1 = this->vftable;
   local_c = this;
-  cVar3 = (*pTVar1[0x1a].GetTEventHandlerClassNamePointer)();
+  cVar3 = (*pTVar1->HasRenderableParentAndContent)();
   if (cVar3 != '\0') {
     if (this->field44 == 0) {
       iVar5 = 0;
@@ -388,9 +378,8 @@ void TMapDialog::SetForeignMinisterReadyFlag14(undefined4 *param_1, undefined4 p
     }
   }
   cVar3 = GetRegionBoxToRectIfPresent(param_2);
-  if ((cVar3 != '\0') && (cVar3 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')
-     ) {
-    (*pTVar1[0x16].GetTEventHandlerClassNamePointer)(param_1,param_2);
+  if ((cVar3 != '\0') && (cVar3 = (*pTVar1->Refresh)(), cVar3 != '\0')) {
+    (*pTVar1->HandleCursorHoverFallback)(param_1,param_2);
   }
   return;
 }
@@ -404,17 +393,15 @@ void TMapDialog::OrphanCallChain_C11_I88_004874b0()
 {
   TMapDialogVtbl *pTVar1;
   undefined uVar2;
+  undefined4 *puVar3;
   undefined3 extraout_var;
-  undefined3 extraout_var_00;
   int iVar4;
   HCURSOR hCursor;
   RECT RStack_30;
   tagRECT atStack_20 [2];
-  undefined4 *puVar3;
   
   if (this->field5c != 0) {
-    uVar2 = (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)();
-    puVar3 = (undefined4 *)CONCAT31(extraout_var,uVar2);
+    puVar3 = (undefined4 *)(**(code **)&this->vftable->field_0x160)();
     RStack_30.left = *puVar3;
     RStack_30.top = puVar3[1];
     RStack_30.right = puVar3[2];
@@ -423,13 +410,13 @@ void TMapDialog::OrphanCallChain_C11_I88_004874b0()
     if (g_pCursorControlPanel != (TControl *)0x0) {
       RStack_30.left = (LONG)&stack0xffffffbc;
       WrapperFor_StringSharedRef_AssignFromPtr_At00492b70(&this->sharedStringRef);
-      (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+      (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
     }
   }
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x15].slot_0x04)();
-  if ((short)CONCAT31(extraout_var_00,uVar2) != -1) {
-    (*pTVar1[0x29].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*pTVar1->GetField4E)();
+  if ((short)CONCAT31(extraout_var,uVar2) != -1) {
+    (**(code **)&pTVar1->field_0x148)();
     iVar4 = IsPointInsideHitRegion();
     if (iVar4 != 0) {
       AssertQuickDrawFlag6A1DCCNonZero();
@@ -455,18 +442,18 @@ void TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
   undefined4 in_stack_0000000c;
   
   if (param_1 == 0x1f) {
-    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
+    (*this->vftable[1].CanHandleCityDialogActionFalse)(1,1);
   }
   else {
     if (param_1 == 0x20) {
-      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(0,1);
+      (*this->vftable[1].CanHandleCityDialogActionFalse)(0,1);
       return;
     }
     if (param_1 == 0x21) {
-      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)((uint)(this->field_0x64 == '\0'),1);
+      (*this->vftable[1].CanHandleCityDialogActionFalse)((uint)(this->field_0x64 == '\0'),1);
       return;
     }
-    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    uVar1 = (*this->vftable->QueryStepValue)();
     if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
                 (param_1,in_stack_00000008,in_stack_0000000c);
@@ -491,12 +478,9 @@ CityDialogController * TMapDialog::GetTBehaviorClassNamePointer(CityDialogContro
 {
   short sVar1;
   int iVar2;
-  undefined uVar3;
-  undefined3 extraout_var;
   CityDialogController *this_00;
   
-  uVar3 = (*this->vftable[4].slot_0x04)();
-  this_00 = (CityDialogController *)CONCAT31(extraout_var,uVar3);
+  this_00 = (CityDialogController *)(**(code **)&this->vftable->field_0x24)();
   TView::CopyCityDialogStateFromSource((TView *)this_00,(TView *)this);
   this_00->extendedField60 = *(int *)&this->field_0x60;
   this_00->extendedFlag64 = this->field_0x64;
@@ -594,7 +578,7 @@ TWorldView * TMapDialog::CreateTMapDialogInstance(void)
     TMapDialog::SplitTileIndexToRowAndColumn
               (CONCAT22((short)((uint)&local_14 >> 0x10),
                         *(undefined2 *)&g_pGlobalMapState->field_0x6),&local_18,&local_14);
-    (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
+    (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
     *(undefined2 *)&this[6].field_0x6c = 0;
     *(undefined2 *)&this[6].field_0x6e = 0xffff;
     this[6].field_0x70 = 0;
@@ -648,7 +632,7 @@ TMapDialog * TMapDialog::ConstructTMapDialogBaseState()
   TMapDialog::SplitTileIndexToRowAndColumn
             (CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)&g_pGlobalMapState->field_0x6)
              ,&local_18,&local_14);
-  (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
+  (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
   *(undefined2 *)&this->field_0x354 = 0;
   *(undefined2 *)&this->field_0x356 = 0xffff;
   this->field_0x358 = 0;
@@ -717,7 +701,7 @@ void TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920()
   local_4 = 0x40;
   local_8 = 0x1680;
   (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x350,8,&local_10);
-  (*this->vftable[0x3f].GetTEventHandlerClassNamePointer)();
+  (*this->vftable[1].vmethod_0081)();
   DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
@@ -894,7 +878,7 @@ void TMapDialog::OrphanRetStub_00596080()
         _DAT_00697318 = 0xffffffff;
         return;
       }
-      (*this->vftable[0x3e].slot_0x04)(&local_30);
+      (*this->vftable[1].vmethod_0080)(&local_30);
     }
     if (!bVar3) {
       _DAT_00697310 = 0xffffffff;
@@ -1042,7 +1026,7 @@ void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short param_1)
   local_c = (int)local_12;
   local_8 = local_10 + 0x40;
   local_4 = local_c + 0x40;
-  (*this->vftable[0x3f].slot_0x04)(uVar1);
+  (*this->vftable[1].vmethod_0032)(uVar1);
   InvalidateCityDialogRectRegion(auStack_14,1);
   return;
 }
@@ -1106,15 +1090,15 @@ void TMapDialog::OrphanRetStub_005966c0(undefined4 param_1)
   short sVar3;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x3f].slot_0x04)(param_1);
+  (*pTVar1->Refresh)();
+  (*pTVar1[1].vmethod_0032)(param_1);
   TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
             (param_1,&this->field_0x60,&stack0xfffffff8,&stack0xfffffffa,1);
   sVar2 = (short)unaff_EBX;
   if ((((sVar2 != -0x40 && -1 < sVar2 + 0x40) &&
        (sVar3 = (short)((uint)unaff_EBX >> 0x10), sVar3 != -0x40 && -1 < sVar3 + 0x40)) &&
       (sVar3 < 0x200)) && (sVar2 < 0x1c0)) {
-    (*pTVar1[0x40].GetTEventHandlerClassNamePointer)(param_1);
+    (*pTVar1[1].vmethod_0033)(param_1);
   }
   return;
 }
@@ -1142,8 +1126,8 @@ bool TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0()
              CONCAT22(extraout_var,(short)this->field30));
   local_24 = local_32 + 0x40;
   pTVar1 = this->vftable;
-  (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(local_20);
-  (*pTVar1[0x29].slot_0x04)(&local_24,auStack_14);
+  (*pTVar1->QueryContentBounds)(local_20);
+  (**(code **)&pTVar1->field_0x14c)(&local_24,auStack_14);
   IntersectRectWrapper(&stack0xffffffc4,auStack_1c,&stack0xffffffc4);
   cVar2 = ProbeRectEmptyAfterCopyToLocal(&stack0xffffffc4);
   return cVar2 == '\0';
@@ -1159,7 +1143,8 @@ void TMapDialog::OrphanRetStub_00594fc0(int param_1)
   int local_14 [5];
   
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,local_14);
-  (*this->vftable[0x3c].slot_0x04)(local_14[0] - (int)(short)DAT_006a33b0 / 2,param_1 + -3);
+  (*this->vftable[1].DispatchUiCommand19ToParent)
+            (local_14[0] - (int)(short)DAT_006a33b0 / 2,param_1 + -3);
   local_14[0] = 0;
   local_14[1] = 0x1ff;
   local_14[2] = 0x1bf;
@@ -1196,7 +1181,7 @@ void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
   
   local_4 = this;
   TMapDialog::SplitTileIndexToRowAndColumn(param_1,&param_1,&local_4);
-  (*this->vftable[0x3c].slot_0x04)(local_4,param_1);
+  (*this->vftable[1].DispatchUiCommand19ToParent)(local_4,param_1);
   return;
 }
 
@@ -1207,7 +1192,7 @@ void TMapDialog::OrphanRetStub_005966a0(undefined4 param_1)
 void TMapDialog::OrphanRetStub_00596680()
 
 {
-  (*this->vftable[0x51].slot_0x04)();
+  (*this->vftable[1].DispatchUiMouseMoveToChildren)();
   return;
 }
 
@@ -1287,7 +1272,7 @@ void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
   undefined1 local_4 [4];
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(&DAT_006a3370,local_8,local_4,local_a);
+  (*pTVar1[1].CanHandleCityDialogActionFalse)(&DAT_006a3370,local_8,local_4,local_a);
   if ((unaff_SI & 1) != 0) {
     unaff_DI = unaff_DI + 1;
     if (0x6b < unaff_DI) {
@@ -1329,7 +1314,7 @@ void TMapDialog::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
     uVar3 = (int)uVar3 >> 1;
     uVar2 = (int)uVar2 >> 1;
   }
-  (*pTVar1[0x51].slot_0x04)(uVar2,uVar3,1);
+  (*pTVar1[1].DispatchUiMouseMoveToChildren)(uVar2,uVar3,1);
   (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x13c))();
   return;
 }
@@ -1364,7 +1349,7 @@ TMapDialog * TMapDialog::InitializeCitySiteView()
   TMapDialog::SplitTileIndexToRowAndColumn
             (CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)&g_pGlobalMapState->field_0x6)
              ,&local_18,&local_14);
-  (*this->vftable[0x3c].slot_0x04)(local_14,local_18);
+  (*this->vftable[1].DispatchUiCommand19ToParent)(local_14,local_18);
   *(undefined2 *)&this->field_0x354 = 0;
   *(undefined2 *)&this->field_0x356 = 0xffff;
   this->field_0x358 = 0;
@@ -1386,7 +1371,7 @@ void TMapDialog::OrphanCallChain_C1_I20_0051e1a0()
   undefined2 *puVar1;
   int iVar2;
   
-  (*g_pGlobalMapState->vftable[10].GetTMapMgrClassNamePointer)();
+  (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins08_005178c0)();
   puVar1 = (undefined2 *)&this->field_0x7e;
   iVar2 = 0x5a;
   do {
@@ -1592,7 +1577,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
                   *(short *)(&this->field_0x82 + iVar7 * 8) = sVar3;
                   pTVar1 = this->vftable;
                   *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) = (char)local_90;
-                  (*pTVar1[0x40].slot_0x04)(uVar5,0,local_90 << 6);
+                  (*pTVar1[1].SetUiResourceOwner)(uVar5,0,local_90 << 6);
                 }
                 else {
                   sVar4 = UiRuntimeContext::GetActiveNationId();
@@ -1660,7 +1645,7 @@ void TMapDialog::OrphanTiny_ReturnZero_0048a730(int *param_1)
       tStack_3c.bottom = tStack_3c.bottom + 0x80;
       tStack_3c.right = tStack_3c.right + 0x80;
       ApplyRectClipRegionToGlobalClipState(&tStack_3c);
-      (*this->vftable[0x49].slot_0x04)();
+      (*this->vftable[1].DispatchControlEventToChildrenAndSelf)();
       ResetQuickDrawStrokeState();
       SetActiveQuickDrawSurfaceContext(local_54,local_9c);
       SnapshotHitRegionToClipCache(local_8c);
@@ -1706,34 +1691,34 @@ TMapDialog::RenderMapDialogBilateralRelationMarkers
   SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
   switch(unaff_BX) {
   case 0:
-    (*this->vftable[0x42].slot_0x04)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].CallVoidSlotA0)(unaff_retaddr,param_1,1);
     break;
   case 1:
-    (*this->vftable[0x43].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].SetEnabled)(unaff_retaddr,param_1,1);
     break;
   case 2:
-    (*this->vftable[0x43].slot_0x04)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].SetState)(unaff_retaddr,param_1,1);
     break;
   case 3:
-    (*this->vftable[0x44].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].GetField4E)(unaff_retaddr,param_1,1);
     break;
   case 4:
-    (*this->vftable[0x44].slot_0x04)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].HandleCursorHoverFallback)(unaff_retaddr,param_1,1);
     break;
   case 5:
-    (*this->vftable[0x45].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].vmethod_0073)(unaff_retaddr,param_1,1);
     break;
   case 6:
-    (*this->vftable[0x45].slot_0x04)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].RefreshCityProductionViewStateFromContext)(unaff_retaddr,param_1,1);
     break;
   case 7:
-    (*this->vftable[0x46].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].QuerySelectedIndexSlotBC)(unaff_retaddr,param_1,1);
     break;
   case 8:
-    (*this->vftable[0x46].slot_0x04)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].InvalidateOffsetRegionUsingChildClipRect)(unaff_retaddr,param_1,1);
     break;
   case 9:
-    (*this->vftable[0x47].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,1);
+    (*this->vftable[1].ForwardMapViewVirtualC4IfPresent)(unaff_retaddr,param_1,1);
   }
   cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(in_stack_0000000c);
   if (cVar1 == '\0') {
@@ -1744,34 +1729,34 @@ TMapDialog::RenderMapDialogBilateralRelationMarkers
   }
   switch(unaff_SI) {
   case 0:
-    (*this->vftable[0x42].slot_0x04)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].CallVoidSlotA0)(unaff_retaddr,param_1,2);
     return;
   case 1:
-    (*this->vftable[0x43].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].SetEnabled)(unaff_retaddr,param_1,2);
     return;
   case 2:
-    (*this->vftable[0x43].slot_0x04)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].SetState)(unaff_retaddr,param_1,2);
     return;
   case 3:
-    (*this->vftable[0x44].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].GetField4E)(unaff_retaddr,param_1,2);
     return;
   case 4:
-    (*this->vftable[0x44].slot_0x04)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].HandleCursorHoverFallback)(unaff_retaddr,param_1,2);
     return;
   case 5:
-    (*this->vftable[0x45].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].vmethod_0073)(unaff_retaddr,param_1,2);
     return;
   case 6:
-    (*this->vftable[0x45].slot_0x04)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].RefreshCityProductionViewStateFromContext)(unaff_retaddr,param_1,2);
     return;
   case 7:
-    (*this->vftable[0x46].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].QuerySelectedIndexSlotBC)(unaff_retaddr,param_1,2);
     return;
   case 8:
-    (*this->vftable[0x46].slot_0x04)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].InvalidateOffsetRegionUsingChildClipRect)(unaff_retaddr,param_1,2);
     return;
   case 9:
-    (*this->vftable[0x47].GetTEventHandlerClassNamePointer)(unaff_retaddr,param_1,2);
+    (*this->vftable[1].ForwardMapViewVirtualC4IfPresent)(unaff_retaddr,param_1,2);
   }
   return;
 }
@@ -2176,32 +2161,32 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
       SetQuickDrawFillColor(0xffffff);
       pTVar3 = this->vftable;
-      (*pTVar3[0x43].slot_0x04)(param_2);
+      (*pTVar3[1].SetState)(param_2);
     }
     else {
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
       SetQuickDrawFillColor(0xffffff);
       pTVar3 = this->vftable;
-      (*pTVar3[0x43].GetTEventHandlerClassNamePointer)(param_2);
+      (*pTVar3[1].SetEnabled)(param_2);
       if ((bStack_8 & 0x40) != 0) {
         SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
         SetQuickDrawFillColor(0xffffff);
-        (*pTVar3[0x44].GetTEventHandlerClassNamePointer)(param_2);
+        (*pTVar3[1].GetField4E)(param_2);
       }
     }
     if ((bStack_8 & 4) == 0) {
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
       SetQuickDrawFillColor(0xffffff);
-      (*pTVar3[0x45].slot_0x04)(param_2);
+      (*pTVar3[1].RefreshCityProductionViewStateFromContext)(param_2);
     }
     else {
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
       SetQuickDrawFillColor(0xffffff);
-      (*pTVar3[0x46].GetTEventHandlerClassNamePointer)(param_2);
+      (*pTVar3[1].QuerySelectedIndexSlotBC)(param_2);
       if ((param_1 & 0x80) != 0) {
         SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
         SetQuickDrawFillColor(0xffffff);
-        (*pTVar3[0x45].GetTEventHandlerClassNamePointer)(param_2);
+        (*pTVar3[1].vmethod_0073)(param_2);
       }
     }
   }
@@ -2209,21 +2194,21 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
     SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
     SetQuickDrawFillColor(0xffffff);
     pTVar3 = this->vftable;
-    (*pTVar3[0x42].slot_0x04)(param_2);
+    (*pTVar3[1].CallVoidSlotA0)(param_2);
     if (bVar1 == 0) {
       SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
       SetQuickDrawFillColor(0xffffff);
-      (*pTVar3[0x44].GetTEventHandlerClassNamePointer)(param_2);
+      (*pTVar3[1].GetField4E)(param_2);
     }
   }
   if ((param_1 & 4) != 0) {
     SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
     SetQuickDrawFillColor(0xffffff);
     pTVar3 = this->vftable;
-    (*pTVar3[0x47].GetTEventHandlerClassNamePointer)(param_2);
+    (*pTVar3[1].ForwardMapViewVirtualC4IfPresent)(param_2);
     if (bVar1 == 0) {
       WrapperFor_SetQuickDrawFillColor_At0051e160(0);
-      (*pTVar3[0x45].GetTEventHandlerClassNamePointer)(param_2);
+      (*pTVar3[1].vmethod_0073)(param_2);
     }
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (short)in_stack_00000010 * 0x24) != '\x05')
@@ -2236,8 +2221,8 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
         WrapperFor_SetQuickDrawFillColor_At0051e160(0);
         WrapperFor_SetQuickDrawFillColor_At0051e160(0);
         pTVar3 = this->vftable;
-        (*pTVar3[0x42].slot_0x04)(param_2);
-        (*pTVar3[0x44].GetTEventHandlerClassNamePointer)(param_2);
+        (*pTVar3[1].CallVoidSlotA0)(param_2);
+        (*pTVar3[1].GetField4E)(param_2);
       }
     }
     sVar2 = GetWrappedHexNeighborTileIndexByDirection(in_stack_00000010,2);
@@ -2247,8 +2232,8 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
           ((param_1 & 8) != 0)) && (bVar1 == 0)) {
         WrapperFor_SetQuickDrawFillColor_At0051e160(0);
         pTVar3 = this->vftable;
-        (*pTVar3[0x45].GetTEventHandlerClassNamePointer)(param_2);
-        (*pTVar3[0x47].GetTEventHandlerClassNamePointer)(param_2);
+        (*pTVar3[1].vmethod_0073)(param_2);
+        (*pTVar3[1].ForwardMapViewVirtualC4IfPresent)(param_2);
       }
     }
     SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
@@ -2263,7 +2248,7 @@ void TMapDialog::DrawHexEdgeConnectionGlyphsByMask(byte param_1, undefined4 para
 void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short param_2)
 
 {
-  TMapDialog_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   short sVar2;
   undefined2 in_stack_0000000a;
   short in_stack_00000010;
@@ -2276,14 +2261,14 @@ void TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(byte param_1, short p
   if ((param_1 & 2) == 0) goto LAB_00521bf5;
   if ((param_1 & 1) == 0) {
     GetWrappedHexNeighborTileIndexByDirection();
-    _in_stack_00000010 = this->vftable[0x42].GetTEventHandlerClassNamePointer;
+    _in_stack_00000010 = this->vftable[1].DispatchSlot9CToLinkedChildren;
     uVar3 = 2;
 LAB_00521b43:
     (*_in_stack_00000010)(uVar3,_param_2);
   }
   else {
     GetWrappedHexNeighborTileIndexByDirection();
-    _in_stack_00000010 = this->vftable[0x42].GetTEventHandlerClassNamePointer;
+    _in_stack_00000010 = this->vftable[1].DispatchSlot9CToLinkedChildren;
     (*_in_stack_00000010)(1,_param_2);
     if ((param_1 & 0x40) != 0) {
       GetWrappedHexNeighborTileIndexByDirection();
@@ -2306,20 +2291,20 @@ LAB_00521b43:
 LAB_00521bf5:
   if ((param_1 & 1) != 0) {
     GetWrappedHexNeighborTileIndexByDirection();
-    pTVar1 = this->vftable[0x42].GetTEventHandlerClassNamePointer;
-    (*pTVar1)(0,_param_2);
+    p_Var1 = this->vftable[1].DispatchSlot9CToLinkedChildren;
+    (*p_Var1)(0,_param_2);
     if (uStack_4._3_1_ == '\0') {
       GetWrappedHexNeighborTileIndexByDirection();
-      (*pTVar1)(3,_param_2);
+      (*p_Var1)(3,_param_2);
     }
   }
   if ((param_1 & 4) != 0) {
     GetWrappedHexNeighborTileIndexByDirection();
-    pTVar1 = this->vftable[0x42].GetTEventHandlerClassNamePointer;
-    (*pTVar1)(9,_param_2);
+    p_Var1 = this->vftable[1].DispatchSlot9CToLinkedChildren;
+    (*p_Var1)(9,_param_2);
     if (uStack_4._3_1_ == '\0') {
       GetWrappedHexNeighborTileIndexByDirection();
-      (*pTVar1)(5,_param_2);
+      (*p_Var1)(5,_param_2);
     }
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) != '\x05') {
@@ -2329,7 +2314,7 @@ LAB_00521bf5:
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 0x20) != 0)) && (uStack_4._3_1_ == '\0')) {
         GetWrappedHexNeighborTileIndexByDirection();
-        (*this->vftable[0x42].GetTEventHandlerClassNamePointer)(0,_param_2);
+        (*this->vftable[1].DispatchSlot9CToLinkedChildren)(0,_param_2);
         GetWrappedHexNeighborTileIndexByDirection();
         (*uStack_4)(3,_param_2);
       }
@@ -2340,7 +2325,7 @@ LAB_00521bf5:
       if (((*(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) == '\x05') &&
           ((param_1 & 8) != 0)) && (uStack_4._3_1_ == '\0')) {
         GetWrappedHexNeighborTileIndexByDirection();
-        (*this->vftable[0x42].GetTEventHandlerClassNamePointer)(5,_param_2);
+        (*this->vftable[1].DispatchSlot9CToLinkedChildren)(5,_param_2);
         GetWrappedHexNeighborTileIndexByDirection();
         (*uStack_4)(9,_param_2);
       }
@@ -2847,7 +2832,7 @@ void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
 
 {
   int iVar1;
-  TMapDialog_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   int *piVar4;
   TMapDialogVtbl *pTVar5;
@@ -2864,12 +2849,12 @@ void TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060()
     iVar8 = 0;
     iVar6 = (int)(short)((int)(*(int *)&this->field_0x60 +
                               (*(int *)&this->field_0x60 >> 0x1f & 0x1fU)) >> 5);
-    pTVar2 = pTVar5[0x48].slot_0x04;
+    p_Var2 = pTVar5[1].HasRenderableParentAndContent;
     do {
       piVar4 = (int *)(g_pActiveMapOrderContext->keyMask + iVar8);
       sVar7 = (short)((int)(iVar1 + (iVar1 >> 0x1f & 0x3fU)) >> 6);
       iVar3 = (piVar4[2] - iVar6) + 0xd8;
-      (*pTVar2)(((*piVar4 - iVar6) + 0xd8) % 0xd8,
+      (*p_Var2)(((*piVar4 - iVar6) + 0xd8) % 0xd8,
                 CONCAT22((short)((uint)(iVar3 / 0xd8) >> 0x10),(short)piVar4[1] - sVar7),
                 iVar3 % 0xd8,CONCAT22((short)((uint)pTVar5 >> 0x10),(short)piVar4[3] - sVar7));
       iVar9 = iVar9 + 1;
@@ -2997,8 +2982,8 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   iVar10 = sVar6 * 0x24;
   *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) = (char)iVar7;
   uVar4 = 0;
-  (*this->vftable[0x40].slot_0x04)(param_1,0,iVar7 << 6);
-  (*this->vftable[0x50].slot_0x04)
+  (*this->vftable[1].SetUiResourceOwner)(param_1,0,iVar7 << 6);
+  (*this->vftable[1].ApplyRectSlot110)
             (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x10 + iVar10) * 0x40 + local_50,
              (int)local_54 + (int)unaff_retaddr + iVar8 * sStack_4,local_58,local_5c);
   iVar7 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar10);
@@ -3093,7 +3078,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730
   if ((iVar4 < 5) || (bVar7)) {
     if ((char)param_4 == '\0') {
       iVar4 = *(int *)&this->field_0x350;
-      uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)(param_1);
+      uVar2 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(param_1);
       local_2c.top = (LONG)param_2;
       local_2c.left = (LONG)param_3;
       local_3c.left = (LONG)(short)CONCAT31(extraout_var,uVar2);
@@ -3108,7 +3093,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730
                 ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),dstSurface,
                  &local_3c,&local_2c,0x24,(astruct_19 *)0x0);
       if (bVar7) {
-        uVar2 = (*g_pGlobalMapState->vftable[0x22].GetTMapMgrClassNamePointer)
+        uVar2 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                           (CONCAT22(extraout_var_02,*(undefined2 *)(param_1 + 0x18)));
         local_3c.left = (LONG)(short)CONCAT31(extraout_var_00,uVar2);
         local_3c.right = local_3c.left + 9;
@@ -3172,7 +3157,7 @@ TMapDialog::OrphanTiny_ReturnZero_0048a730
         }
         goto LAB_00523a3f;
       }
-      uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)(param_1);
+      uVar2 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)(param_1);
       local_2c.left = (LONG)param_3;
       local_2c.top = (LONG)param_2;
       local_2c.right = local_2c.left + 0x40;
@@ -3274,7 +3259,7 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
         iVar5 = (10 < sVar7) + 2;
       }
     }
-    uVar3 = (*g_pGlobalMapState->vftable[0x21].slot_0x04)(iVar5);
+    uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176c0)(iVar5);
     auStack_18._4_4_ = SEXT24((short)CONCAT31(extraout_var,uVar3));
     local_10.top = auStack_18._4_4_ + 0x12;
     local_10.left = 0;
@@ -3290,7 +3275,7 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4),dstSurface,
                (RECT *)(auStack_18 + 4),(RECT *)&stack0xffffffdc,0x24,(astruct_19 *)0x0);
-    uVar3 = (*g_pGlobalMapState->vftable[0x22].GetTMapMgrClassNamePointer)
+    uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                       (CONCAT22((short)((uint)*(int *)&g_pGlobalMapState->field_0xc >> 0x10),
                                 (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6))
                       );
@@ -3329,7 +3314,7 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
         iVar5 = (10 < sVar7) + 2;
       }
     }
-    uVar3 = (*g_pGlobalMapState->vftable[0x21].slot_0x04)(iVar5);
+    uVar3 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins04_005176c0)(iVar5);
     auStack_18._4_4_ = SEXT24((short)((short)CONCAT31(extraout_var_01,uVar3) + 0x12));
     local_10.right = 0x26;
     local_10.top = auStack_18._4_4_ + 0x12;
@@ -3340,7 +3325,7 @@ void TMapDialog::DispatchReflectedControlMessageOrFallback(RECT *param_1, char p
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b4) + 4),dstSurface,
                (RECT *)(auStack_18 + 4),(RECT *)&stack0xffffffdc,0x24,(astruct_19 *)0x0);
-    uVar3 = (*g_pGlobalMapState->vftable[0x22].GetTMapMgrClassNamePointer)
+    uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                       (CONCAT22((short)((uint)*(int *)&g_pGlobalMapState->field_0xc >> 0x10),
                                 (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6))
                       );

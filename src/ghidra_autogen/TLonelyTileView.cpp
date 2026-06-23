@@ -86,7 +86,7 @@ void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
   LONG LStack_8;
   
   iVar1 = *(int *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xa8);
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(&local_10);
+  (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(&local_10);
   RStack_24.left = LStack_14;
   RStack_24.right = LStack_c;
   RStack_24.bottom = LStack_8;
@@ -100,7 +100,7 @@ void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
   }
   else if ((this->controlTag == 0x74696c32) &&
           (*(char *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x94) != '\0')) {
-    (*g_pGlobalMapState->vftable[0x1c].GetTMapMgrClassNamePointer)
+    (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)
               (CONCAT22((short)((uint)*(int *)&g_pUiRuntimeContext->field_0xf0 >> 0x10),
                         *(undefined2 *)&this->field_0x60));
     SetQuickDrawFillColor(0);
@@ -108,7 +108,7 @@ void TLonelyTileView::OrphanTiny_ReturnZero_0048a730()
     srcSurface = (astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x668) + 4);
   }
   else {
-    (*g_pGlobalMapState->vftable[0x1c].GetTMapMgrClassNamePointer)
+    (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins14_00516150)
               (CONCAT22((short)((uint)local_10 >> 0x10),*(undefined2 *)&this->field_0x60));
     SetQuickDrawFillColor(0);
     dstSurface = (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4;

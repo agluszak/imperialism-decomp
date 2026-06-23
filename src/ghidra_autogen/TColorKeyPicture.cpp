@@ -80,7 +80,7 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
 
 {
   TColorKeyPictureVtbl *pTVar1;
-  TColorKeyPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   int iVar4;
@@ -116,18 +116,18 @@ void TColorKeyPicture::OrphanTiny_ReturnZero_0048a730()
   }
   pTVar1 = this->vftable;
   uStack_4 = 0xffffffff;
-  pTVar2 = pTVar1[0xb].GetTEventHandlerClassNamePointer;
-  uVar3 = (*pTVar2)();
+  p_Var2 = pTVar1->SetForeignMinisterReadyFlag14;
+  uVar3 = (*p_Var2)();
   iVar4 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))(0x6d61696e);
   if (iVar4 == 0) {
-    uVar3 = (*pTVar2)();
+    uVar3 = (*p_Var2)();
     iVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x94))(0x6261636b);
     if (iVar4 == 0) {
-      uVar3 = (*pTVar2)();
+      uVar3 = (*p_Var2)();
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x94))(0x444c4f47);
     }
   }
-  (*pTVar1[0x2b].GetTEventHandlerClassNamePointer)(&iStack_18);
+  (*pTVar1->GetTEventHandlerClassNamePointer_56)(&iStack_18);
   BlitSurfaceRectSkippingTransparentColor
             (DAT_006a4194,unaff_EBX,iStack_18,this->field34,this->field38,0,0,0xffffffff);
   BlitSurfaceRectSkippingTransparentColor

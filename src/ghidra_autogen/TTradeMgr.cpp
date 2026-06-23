@@ -91,7 +91,7 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int *param_1)
   undefined4 *puVar7;
   
   piVar3 = param_1;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   if (DAT_00695278 < 0x27) {
     (**(code **)(*param_1 + 0x3c))(&this->field_0x8,0xaa0);
   }
@@ -159,8 +159,8 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot18_At005b7c10(int *param_1)
 void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
 
 {
-  code *pcVar1;
-  int *piVar2;
+  TStream_GetTStreamClassNamePointer_0x00 *pTVar1;
+  TStream *pTVar2;
   undefined4 extraout_ECX;
   undefined4 extraout_ECX_00;
   undefined4 extraout_ECX_01;
@@ -175,19 +175,19 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
   int iStack_c;
   int local_8;
   
-  piVar2 = _uStack00000004;
-  TObject::WriteTo((TArmyPlayer *)this);
+  pTVar2 = _uStack00000004;
+  TObject::WriteTo((TObject *)this,_uStack00000004);
   puVar4 = &this->field_0xa;
   local_8 = 0x11;
-  pcVar1 = *(code **)(*piVar2 + 0x78);
+  pTVar1 = pTVar2->vftable[0xf].GetTStreamClassNamePointer;
   do {
-    (*pcVar1)(puVar4 + -2,2);
-    (*pcVar1)(puVar4,2);
-    (*pcVar1)(puVar4 + 2,2);
-    (*pcVar1)(puVar4 + 4,2);
-    (*pcVar1)(puVar4 + 6,8);
-    (*pcVar1)(puVar4 + 0xe,2);
-    (*pcVar1)(puVar4 + 0x10,2);
+    (*pTVar1)(puVar4 + -2,2);
+    (*pTVar1)(puVar4,2);
+    (*pTVar1)(puVar4 + 2,2);
+    (*pTVar1)(puVar4 + 4,2);
+    (*pTVar1)(puVar4 + 6,8);
+    (*pTVar1)(puVar4 + 0xe,2);
+    (*pTVar1)(puVar4 + 0x10,2);
     puVar6 = (undefined2 *)(puVar4 + 0x12);
     iStack_c = 0x17;
     uVar3 = extraout_ECX;
@@ -195,8 +195,9 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
       uStack00000004 = (undefined1)*puVar6;
       uStack00000005 = (undefined1)((ushort)*puVar6 >> 8);
       _uStack00000004 =
-           (int *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005);
-      (*pcVar1)(&stack0x00000004,2);
+           (TStream *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005)
+      ;
+      (*pTVar1)(&stack0x00000004,2);
       puVar6 = puVar6 + 1;
       iStack_c = iStack_c + -1;
       uVar3 = extraout_ECX_00;
@@ -207,8 +208,9 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
       uStack00000004 = (undefined1)*puVar6;
       uStack00000005 = (undefined1)((ushort)*puVar6 >> 8);
       _uStack00000004 =
-           (int *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005);
-      (*pcVar1)(&stack0x00000004,2);
+           (TStream *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005)
+      ;
+      (*pTVar1)(&stack0x00000004,2);
       puVar6 = puVar6 + 1;
       iStack_c = iStack_c + -1;
       uVar3 = extraout_ECX_01;
@@ -219,8 +221,9 @@ void TTradeMgr::WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90()
       uStack00000004 = (undefined1)*puVar6;
       uStack00000005 = (undefined1)((ushort)*puVar6 >> 8);
       _uStack00000004 =
-           (int *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005);
-      (*pcVar1)(&stack0x00000004,2);
+           (TStream *)CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),uStack00000004),uStack00000005)
+      ;
+      (*pTVar1)(&stack0x00000004,2);
       puVar6 = puVar6 + 1;
       iStack_c = iStack_c + -1;
       uVar3 = extraout_ECX_02;
@@ -882,22 +885,24 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short para
     pcVar2 = *(code **)(*piVar1 + 0x2c);
     do {
       psVar7 = (short *)(*pcVar2)(iVar6);
-      uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable[0xe].GetTCountryClassNamePointer)
-                        (_param_1);
+      uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable->OrphanLeaf_NoCall_Ins02_004d7ee0
+              )(_param_1);
       uVar8 = CONCAT31(extraout_var,uVar3);
       cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                         (CONCAT22(extraout_var_02,psVar7[1]));
       if (((cVar4 != '\0') &&
           (cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                              (CONCAT22(extraout_var_03,*psVar7)), cVar4 == '\0')) &&
-         (uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable[0xe].slot_0x04)(),
+         (uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable->
+                    OrphanLeaf_NoCall_Ins02_004d7f00)(),
          (short)CONCAT31(extraout_var_00,uVar3) < (short)uVar8)) {
-        uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable[0xe].slot_0x04)();
+        uVar3 = (*g_apTerrainTypeDescriptorTable[psVar7[1]]->vftable->
+                  OrphanLeaf_NoCall_Ins02_004d7f00)();
         uVar8 = CONCAT31(extraout_var_01,uVar3);
       }
       if (0 < (short)uVar8) {
         sVar9 = *psVar7 >> 0xf;
-        (*g_apTerrainTypeDescriptorTable[*psVar7]->vftable[0x11].GetTCountryClassNamePointer)
+        (*g_apTerrainTypeDescriptorTable[*psVar7]->vftable->ReturnFalseNationStateActionStub)
                   (CONCAT22(sVar9,psVar7[1]),uVar8,CONCAT22(sVar9,psVar7[4]),_param_1);
       }
       sVar5 = sVar5 + 1;
@@ -962,7 +967,7 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline()
   iVar4 = 7;
   do {
     if (*ppTVar5 != (TGreatPower *)0x0) {
-      (*(*ppTVar5)->vftable[0x38].slot_0x04)();
+      (*(*ppTVar5)->vftable->VTableSlot71)();
     }
     ppTVar5 = ppTVar5 + 1;
     iVar4 = iVar4 + -1;
@@ -1021,23 +1026,23 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
   if (param_6 != '\0') {
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[sVar2]->vftable[0x35].slot_0x04)(param_5);
+      (*g_apNationStates[sVar2]->vftable->OrphanRetStub_0059add0_6b)(param_5);
     }
   }
   if ((short)param_3 < 1) {
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[sVar2]->vftable[0x36].GetTCountryClassNamePointer)
+      (*g_apNationStates[sVar2]->vftable->GetTEventHandlerClassNamePointer_6c)
                 (1,param_1,param_3,param_5,(int)(short)param_3);
     }
   }
   else {
     iVar4 = (int)sVar2;
     uVar8 = param_5;
-    (*g_apTerrainTypeDescriptorTable[iVar4]->vftable[0x10].GetTCountryClassNamePointer)
+    (*g_apTerrainTypeDescriptorTable[iVar4]->vftable->OrphanRetStub_004d7fa0)
               (param_5,param_3,param_4);
     uVar7 = param_5;
-    (*g_apTerrainTypeDescriptorTable[(short)unaff_EBX]->vftable[0x10].GetTCountryClassNamePointer)
+    (*g_apTerrainTypeDescriptorTable[(short)unaff_EBX]->vftable->OrphanRetStub_004d7fa0)
               (param_5,-param_3,param_1);
     uVar6 = (undefined2)uVar7;
     sVar5 = unaff_DI;
@@ -1045,7 +1050,7 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
     if (cVar1 != '\0') {
       cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
       if (cVar1 == '\0') {
-        (*g_apTerrainTypeDescriptorTable[unaff_EBX]->vftable[0xd].slot_0x04)(param_3);
+        (*g_apTerrainTypeDescriptorTable[unaff_EBX]->vftable->OrphanRetStub_004d7e90)(param_3);
       }
     }
     sVar2 = TControl::LookupOrderCompatibilityMatrixValue
@@ -1060,12 +1065,12 @@ TTradeMgr::ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_4);
     sVar2 = (short)param_4;
     if (cVar1 != '\0') {
-      (*g_apNationStates[unaff_EBP]->vftable[0x36].GetTCountryClassNamePointer)
+      (*g_apNationStates[unaff_EBP]->vftable->GetTEventHandlerClassNamePointer_6c)
                 (0,param_1,param_3,param_5,(int)unaff_DI);
     }
     cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_1);
     if (cVar1 != '\0') {
-      (*g_apNationStates[iVar4]->vftable[0x36].GetTCountryClassNamePointer)
+      (*g_apNationStates[iVar4]->vftable->GetTEventHandlerClassNamePointer_6c)
                 (1,uVar8,param_3,param_5,(int)sVar2);
       return;
     }
@@ -1101,7 +1106,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags()
   do {
     cVar1 = IsNationSlotEligibleForEventProcessing(iVar2);
     if ((cVar1 != '\0') && (*ppTVar4 != (TGreatPower *)0x0)) {
-      (*(*ppTVar4)->vftable[0x2d].GetTCountryClassNamePointer)();
+      (*(*ppTVar4)->vftable->ReturnFalseNationStateCapabilityFlag98_5a)();
     }
     iVar2 = iVar2 + 1;
     ppTVar4 = ppTVar4 + 1;
@@ -1110,7 +1115,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags()
   iVar2 = 0x10;
   do {
     if (*ppTVar3 != (TMinor *)0x0) {
-      (*(*ppTVar3)->vftable[0x15].GetTCountryClassNamePointer)();
+      (*(*ppTVar3)->vftable->RebuildDiplomacyEconomicPressureFromMapState)();
     }
     ppTVar3 = ppTVar3 + 1;
     iVar2 = iVar2 + -1;
@@ -1120,7 +1125,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags()
   do {
     cVar1 = IsNationSlotEligibleForEventProcessing(iVar2);
     if ((cVar1 != '\0') && (*ppTVar4 != (TGreatPower *)0x0)) {
-      (*(*ppTVar4)->vftable[0x30].slot_0x04)();
+      (*(*ppTVar4)->vftable->DispatchNationPendingActionEventCodes_61)();
     }
     iVar2 = iVar2 + 1;
     ppTVar4 = ppTVar4 + 1;
@@ -1144,7 +1149,7 @@ void TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations()
   iVar2 = 0x10;
   do {
     if (*ppTVar1 != (TMinor *)0x0) {
-      (*(*ppTVar1)->vftable[0x15].ApplyJoinEmpireModeForTargetNation)();
+      (*(*ppTVar1)->vftable->Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0)();
     }
     ppTVar1 = ppTVar1 + 1;
     iVar2 = iVar2 + -1;
@@ -1213,7 +1218,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores()
   do {
     cVar1 = IsNationSlotEligibleForEventProcessing(iVar6);
     if (cVar1 != '\0') {
-      (*(*ppTVar4)->vftable[0x31].GetTCountryClassNamePointer)();
+      (*(*ppTVar4)->vftable->SetNationPendingActionStateAndPayload_62)();
     }
     iVar6 = iVar6 + 1;
     ppTVar4 = ppTVar4 + 1;
@@ -1228,7 +1233,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores()
     do {
       cVar1 = IsNationSlotEligibleForEventProcessing(local_1c);
       if (cVar1 != '\0') {
-        uVar2 = (*(*ppTVar4)->vftable[0xf].slot_0x04)(local_18);
+        uVar2 = (*(*ppTVar4)->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)(local_18);
         sVar3 = (short)CONCAT31(extraout_var,uVar2);
         *(short *)(&this->field_0x1c + (local_14 + iVar6) * 2) = sVar3;
         if (sVar3 < 0) {
@@ -1350,14 +1355,14 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
     ppTVar6 = g_apSecondaryNationStateSlots + 7;
     local_14 = 0x10;
     do {
-      uVar2 = (*(*ppTVar6)->vftable[0xf].ApplyJoinEmpireModeForTargetNation)(local_20);
+      uVar2 = (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)(local_20);
       iVar5 = CONCAT31(extraout_var,uVar2);
       sVar3 = (short)iVar5;
       *local_1c = sVar3;
       if (0 < sVar3) {
-        uVar2 = (*(*ppTVar6)->vftable[0xf].GetTCountryClassNamePointer)(local_20);
+        uVar2 = (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(local_20);
         if ((short)CONCAT31(extraout_var_00,uVar2) < sVar3) {
-          uVar2 = (*(*ppTVar6)->vftable[0xf].GetTCountryClassNamePointer)(unaff_EBX);
+          uVar2 = (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(unaff_EBX);
           iVar5 = CONCAT31(extraout_var_01,uVar2);
         }
         *psVar4 = *psVar4 + 1;
@@ -1394,7 +1399,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
   psVar4 = (short *)&this->field_0x48a;
   iVar5 = 0x10;
   do {
-    uVar2 = (*(*ppTVar6)->vftable[0xf].ApplyJoinEmpireModeForTargetNation)(7);
+    uVar2 = (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)(7);
     sVar3 = (short)CONCAT31(extraout_var_03,uVar2);
     *psVar4 = sVar3;
     if (0 < sVar3) {
@@ -1427,7 +1432,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
     local_14 = 0x10;
     do {
       if (*ppTVar6 != (TMinor *)0x0) {
-        uVar2 = (*(*ppTVar6)->vftable[0xf].ApplyJoinEmpireModeForTargetNation)(iVar5);
+        uVar2 = (*(*ppTVar6)->vftable->OrphanLeaf_NoCall_Ins02_004d7f40)(iVar5);
         sVar3 = (short)CONCAT31(extraout_var_04,uVar2);
         *(short *)(&this->field_0x1c + (local_18 + iVar7) * 2) = sVar3;
         if (sVar3 < 0) {

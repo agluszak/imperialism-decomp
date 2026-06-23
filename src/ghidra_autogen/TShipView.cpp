@@ -101,7 +101,9 @@ void TShipView::OrphanTiny_ReturnZero_0048a730()
   } while (iVar3 < 8);
   CString::AssignFromPtr
             (&local_5c,
-             local_2c + *(int *)(&DAT_0065c7f8 + *(short *)(*(int *)&this->field_0x60 + 4) * 4));
+             local_2c +
+             (int)(&TPortZone::vftable.ExecuteNationPendingActionStateMachine)
+                  [*(short *)(*(int *)&this->field_0x60 + 4)]);
   AssignSharedStringConcatCStrAndRef(&CStack_58,g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 3;
   AssignStringSharedFromRef();

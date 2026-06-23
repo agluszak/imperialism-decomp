@@ -98,7 +98,7 @@ TMinisterView::InvalidateWindowRectFromHandleField1C
   undefined4 *unaff_EBX;
   undefined4 unaff_retaddr;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x6261636b);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6261636b);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -131,7 +131,6 @@ TMinisterView::OrphanRetStub_0059add0
 {
   TMinisterViewVtbl *pTVar1;
   undefined uVar2;
-  undefined3 extraout_var;
   
   if (param_1 != 10) {
     TView::OrphanRetStub_0059add0((TView *)this,param_1,param_2,param_3);
@@ -143,12 +142,12 @@ TMinisterView::OrphanRetStub_0059add0
       return;
     }
     pTVar1 = this->vftable;
-    (*pTVar1[0x35].slot_0x04)();
-    uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
-    (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var,uVar2));
+    (*pTVar1->OrphanLeaf_NoCall_Ins03_004f2ea0)();
+    uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
+    (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)(uVar2);
     return;
   }
-  (*this->vftable[0x35].slot_0x04)();
+  (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
   return;
 }
 
@@ -172,7 +171,7 @@ void TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0()
 void TMinisterView::OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1)
 
 {
-  (*this->vftable[0x35].slot_0x04)();
+  (*this->vftable->OrphanLeaf_NoCall_Ins03_004f2ea0)();
   (**(code **)(*g_pStrategicMapViewSystem + 0x48))(param_1);
   return;
 }
@@ -187,7 +186,7 @@ void TMinisterView::OrphanCallChain_C1_I09_004f2ef0()
   undefined uVar1;
   undefined3 extraout_var;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x64697370);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x64697370);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
                     /* WARNING: Could not recover jumptable at 0x004f2f05. Too many branches */
                     /* WARNING: Treating indirect jump as call */

@@ -297,7 +297,7 @@ void TCivUnit::OrphanRetStub_005c2610(short param_1)
 void TCivUnit::OrphanRetStub_005c2470()
 
 {
-  (*this->vftable[5].GetTUnitClassNamePointer)(0xffffffff);
+  (*this->vftable->OrphanRetStub_005c2610)(0xffffffff);
   return;
 }
 
@@ -339,7 +339,7 @@ void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
   TCity *pTVar2;
   
   pTVar1 = this->vftable;
-  (*pTVar1[6].GetTUnitClassNamePointer)();
+  (*pTVar1->OrphanRetStub_005c2470)();
   if (*(short *)&this->field_0x4 != 7) {
     if (g_apNationStates[*(short *)&this->field_0x18] == (TGreatPower *)0x0) {
       pTVar2 = (TCity *)0x0;
@@ -349,7 +349,7 @@ void TCivUnit::ResetCivWorkOrderAndRefreshCounters(int *pCivUnitOrderState)
     }
     TTrainingOrder::CreateTTrainingOrderInstance(*(TTrainingOrder **)&pTVar2->field_0x1d8,1);
   }
-  (*pTVar1[3].ConstructTUnitBaseState)();
+  (*pTVar1->UnlinkFromNationOrTerrainOwnerListAndDestroy)();
   return;
 }
 

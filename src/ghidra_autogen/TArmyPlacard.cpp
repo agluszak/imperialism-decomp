@@ -92,9 +92,9 @@ void TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(short param_1)
     if (param_1 < 1) {
       iVar3 = iVar3 + 0x1e;
     }
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(iVar3,1);
+    (*pTVar1->SetPictureResourceIdAndRefresh)(iVar3,1);
     if (unaff_retaddr != '\0') {
-      (*pTVar1[0x1c].slot_0x04)();
+      (*pTVar1->VTableSlot39)();
     }
   }
   *(short *)&this->field_0x90 = param_1;
@@ -157,14 +157,14 @@ void TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1)
     uVar1 = ActivateFirstActiveTacticalUnitByCategoryAtTile
                       (CONCAT22(0x706c,(short)this->controlTag + -0x6330),
                        *(undefined2 *)&g_pMapContextActionManager->field_0x31c);
-    (*this->vftable[0x39].slot_0x04)(uVar1,1);
+    (*this->vftable->WrapperFor_GetActiveNationId_At0058bf50)(uVar1,1);
     return;
   }
   if (*(int *)(in_stack_00000008 + 0x1c) == 0x6d696e75) {
     uVar1 = ActivateFirstIdleTacticalUnitByCategoryAtTile
                       ((short)this->controlTag + -0x6330,
                        CONCAT22(0x6d69,*(undefined2 *)&g_pMapContextActionManager->field_0x31c));
-    (*this->vftable[0x39].slot_0x04)(uVar1,1);
+    (*this->vftable->WrapperFor_GetActiveNationId_At0058bf50)(uVar1,1);
   }
   return;
 }

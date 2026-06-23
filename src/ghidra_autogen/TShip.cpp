@@ -173,14 +173,11 @@ void TShip::SerializeNavyPrimaryOrderNodeToStream(int *param_1)
   undefined1 *puStack_20;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  int *piStack_14;
   
-  piStack_14 = param_1;
   puStack_18 = (undefined1 *)0x54fac0;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   puStack_18 = &this->field_0x4;
-  piStack_14 = (int *)0x2;
   pcVar2 = *(code **)(iVar1 + 0x78);
   uStack_1c = 0x54facf;
   (*pcVar2)();
@@ -222,14 +219,11 @@ void TShip::DeserializeNavyPrimaryOrderNodeFromStream(int *param_1)
   undefined1 *puStack_20;
   undefined4 uStack_1c;
   undefined1 *puStack_18;
-  int *piStack_14;
   
-  piStack_14 = param_1;
   puStack_18 = (undefined1 *)0x54fb60;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   iVar1 = *param_1;
   puStack_18 = &this->field_0x4;
-  piStack_14 = (int *)0x2;
   pcVar2 = *(code **)(iVar1 + 0x3c);
   uStack_1c = 0x54fb6f;
   (*pcVar2)();
@@ -305,13 +299,10 @@ void TShip::SerializeTaskForceToBinaryStream(int *param_1)
   undefined1 *puStack_24;
   undefined4 uStack_20;
   undefined1 *puStack_1c;
-  int *piStack_18;
   
-  piStack_18 = param_1;
   puStack_1c = (undefined1 *)0x552ba1;
-  TObject::WriteTo((TArmyPlayer *)this);
+  TObject::WriteTo((TObject *)this,(TStream *)param_1);
   puStack_1c = &this->field_0x4;
-  piStack_18 = (int *)0x4;
   pcVar1 = *(code **)(*param_1 + 0x78);
   uStack_20 = 0x552bb0;
   (*pcVar1)();
@@ -397,13 +388,10 @@ void TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int *param_1)
   undefined1 *puStack_34;
   undefined4 uStack_30;
   undefined1 *puStack_2c;
-  int *piStack_28;
   
-  piStack_28 = param_1;
   puStack_2c = (undefined1 *)0x552d27;
-  TObject::ReadFrom((TMapDialog *)this);
+  TObject::ReadFrom((TObject *)this,(TStream *)param_1);
   puStack_2c = &this->field_0x4;
-  piStack_28 = (int *)0x4;
   pcVar1 = *(code **)(*param_1 + 0x3c);
   uStack_30 = 0x552d36;
   (*pcVar1)();
@@ -431,17 +419,16 @@ void TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int *param_1)
   psStack_48 = (short *)puStack_34;
   psStack_4c = (short *)0x552d92;
   uVar5 = FindMapActionContextByNodeId();
-  psVar6 = (short *)&this->field_0x1c;
   *(undefined4 *)&this->field_0x18 = uVar5;
   psStack_48 = (short *)0x2;
-  psStack_4c = psVar6;
-  piStack_28 = (int *)psVar6;
+  psStack_4c = (short *)&this->field_0x1c;
   (*pcVar1)();
   (*pcVar1)();
   puStack_34 = &this->field_0x30;
   (*pcVar1)(puStack_34,2);
   (*pcVar1)(&psStack_4c,2);
   puStack_54 = &this->field_0x25;
+  psVar6 = (short *)&this->field_0x1c;
   if ((short)this != -0x26) {
     do {
       (*pcVar1)(&psStack_4c,2);

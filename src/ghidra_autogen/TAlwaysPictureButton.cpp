@@ -92,9 +92,9 @@ void TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(char param_1)
     else {
       uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x84 + -100);
     }
-    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar2,1);
+    (*pTVar1->SetPictureResourceIdAndRefresh)(uVar2,1);
     if (unaff_retaddr != '\0') {
-      (*pTVar1[0x39].slot_0x04)();
+      (*pTVar1->OrphanCallChain_C2_I18_005708c0)();
     }
   }
   return;

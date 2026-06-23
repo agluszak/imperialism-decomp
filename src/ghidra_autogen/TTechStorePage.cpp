@@ -91,7 +91,7 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
     (**(code **)(*(int *)this->field50 + 0x2c))(piVar1);
   }
   (**(code **)(*piVar1 + 0x1c))();
-  (*this->vftable[0xc].slot_0x04)(1);
+  (*this->vftable->VTableSlot19)(1);
   AfxGetModuleState();
   EndWaitCursor();
   *unaff_FS_OFFSET = uVar2;

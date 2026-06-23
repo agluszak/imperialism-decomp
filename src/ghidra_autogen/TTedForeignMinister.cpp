@@ -412,7 +412,8 @@ void TTedForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive()
     sVar5 = (short)iVar6;
     if ((((sVar5 != local_8[0]) && (sVar5 != local_8[1])) && (sVar5 != local_8[2])) &&
        (((sVar5 != local_8[3] &&
-         (cVar1 = (*g_pGlobalMapState->vftable[10].slot_0x04)
+         (cVar1 = (*g_pGlobalMapState->vftable->
+                    TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask)
                             (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
                                       *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),iVar6),
          cVar1 == '\0')) && (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0)))) {

@@ -103,7 +103,7 @@ void TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   iVar4 = TCity::GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
   *(short *)&this->field_0x8c = (short)iVar4;
   TAmtBarCluster::OrphanLeaf_NoCall_Ins07_004d8920((TAmtBarCluster *)this);
-  (*this->vftable[0x3a].slot_0x04)
+  (*this->vftable->UpdateTradeMoveControlsFromDrag)
             (CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x88 + 4)),1);
   return;
 }
@@ -115,7 +115,7 @@ void TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 void TIndustryCluster::OrphanRetStub_00586ff0()
 
 {
-  (*this->vftable[0x3a].slot_0x04)();
+  (*this->vftable->UpdateTradeMoveControlsFromDrag)();
   return;
 }
 
@@ -136,14 +136,14 @@ TIndustryCluster::OrphanRetStub_0059add0
   
   if (param_1 == 100) {
     pTVar1 = this->vftable;
-    uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
+    uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
     if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb8b);
     }
     iVar3 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1e8))();
-    (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar3 + 1);
+    (*pTVar1->OrphanRetStub_00586ff0)(iVar3 + 1);
     return;
   }
   if (param_1 != 0x65) {
@@ -151,14 +151,14 @@ TIndustryCluster::OrphanRetStub_0059add0
     return;
   }
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x12].slot_0x04)(0x6d6f7665);
+  uVar2 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb94);
   }
   iVar3 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1e8))();
-  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar3 + -1);
+  (*pTVar1->OrphanRetStub_00586ff0)(iVar3 + -1);
   return;
 }
 

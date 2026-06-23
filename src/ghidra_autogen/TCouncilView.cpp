@@ -375,10 +375,10 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
     sVar1 = *(short *)&g_pDiplomacyTurnStateManager->field_0x78e;
     sVar5 = UiRuntimeContext::GetActiveNationId();
     if (sVar1 == sVar5) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x1f43,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1f43,0,1);
     }
     else {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x1f44,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x1f44,0,1);
     }
   }
   else {

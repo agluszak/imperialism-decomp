@@ -76,7 +76,7 @@ TTradeCluster * TTradeCluster::_scalar_deleting_destructor_(byte param_1)
 void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
-  TTradeCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
@@ -97,11 +97,11 @@ void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined1 local_13;
   
   local_16 = 0;
-  pTVar1 = this->vftable[0x12].slot_0x04;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   local_15 = 0;
   local_14 = 0;
   local_13 = 0;
-  uVar2 = (*pTVar1)(0x53656c6c);
+  uVar2 = (*p_Var1)(0x53656c6c);
   if ((int *)CONCAT31(extraout_var,uVar2) != (int *)0x0) {
     InitializeUiTextStyleDescriptor(auStack_20,0,0xe,0x2b68,2);
     iVar9 = *(int *)CONCAT31(extraout_var,uVar2);
@@ -111,7 +111,7 @@ void TTradeCluster::OrphanLeaf_NoCall_Ins07_004d8920()
     iStack_24 = iStack_24 + -2;
     (**(code **)(iVar9 + 0x168))(&iStack_28,1);
   }
-  uVar2 = (*pTVar1)(0x62617220);
+  uVar2 = (*p_Var1)(0x62617220);
   if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -163,7 +163,7 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
 {
   TTradeClusterVtbl *pTVar1;
   code *pcVar2;
-  TTradeCluster_slot_0x04_0x04 *pTVar3;
+  _vslot_fn *p_Var3;
   undefined uVar4;
   char cVar5;
   short sVar6;
@@ -183,13 +183,13 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
   int unaff_EBP;
   
   pTVar1 = this->vftable;
-  uVar4 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar4 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   piVar8 = (int *)CONCAT31(extraout_var,uVar4);
   switch(param_1) {
   case 100:
-    cVar5 = (*pTVar1[0x3b].slot_0x04)();
+    cVar5 = (**(code **)&pTVar1->field_0x1dc)();
     if (cVar5 != '\0') {
-      uVar4 = (*pTVar1[0x12].slot_0x04)(0x53656c6c);
+      uVar4 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
       if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag
@@ -197,7 +197,7 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
       }
       iVar10 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar4) + 0x1e8))();
       sVar6 = UiRuntimeContext::GetActiveNationId();
-      (*g_apNationStates[sVar6]->vftable[0xf].GetTCountryClassNamePointer)
+      (*g_apNationStates[sVar6]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
                 (CONCAT22(sVar6 >> 0xf,*(undefined2 *)&this->field_0x88));
       piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6d436170);
       if (piVar8 == (int *)0x0) {
@@ -207,13 +207,13 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
       }
       if ((unaff_EBP < iVar10) && (iVar10 = (**(code **)(*piVar8 + 0x1e8))(), unaff_EBP < iVar10)) {
         (**(code **)(unaff_EBX + 0xa4))(unaff_EBP + 1 != 0,1);
-        (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(unaff_EBP + 1);
+        (**(code **)&pTVar1->field_0x1d0)(unaff_EBP + 1);
         return;
       }
     }
     break;
   case 0x65:
-    uVar4 = (*pTVar1[0x12].slot_0x04)(0x53656c6c);
+    uVar4 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
     if ((int *)CONCAT31(extraout_var_01,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
@@ -221,7 +221,7 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
     }
     iVar10 = (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar4) + 0x1e8))();
     if (1 < iVar10) {
-      (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar10 + -1);
+      (**(code **)&pTVar1->field_0x1d0)(iVar10 + -1);
       return;
     }
     break;
@@ -274,7 +274,7 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
     break;
   case 0x69:
     uVar7 = UiRuntimeContext::GetActiveNationId();
-    uVar4 = (*g_apNationStates[(short)uVar7]->vftable[0xf].GetTCountryClassNamePointer)
+    uVar4 = (*g_apNationStates[(short)uVar7]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
                       (CONCAT22((short)((uint)uVar7 >> 0x10),*(undefined2 *)&this->field_0x88));
     iVar10 = (int)(short)CONCAT31(extraout_var_02,uVar4);
     piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6d436170);
@@ -284,33 +284,33 @@ void TTradeCluster::OrphanRetStub_0059add0(int param_1, void *param_2, int param
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x85a);
     }
     (**(code **)(*piVar8 + 0x1e8))();
-    pTVar3 = pTVar1[0x12].slot_0x04;
-    uVar4 = (*pTVar3)(0x53656c6c);
+    p_Var3 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar4 = (*p_Var3)(0x53656c6c);
     if ((short)unaff_EBP <= iVar10) {
       iVar10 = (int)(short)unaff_EBP;
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar4) + 0xa4))(1,1);
-    uVar4 = (*pTVar3)(0x62617220);
+    uVar4 = (*p_Var3)(0x62617220);
     if ((int *)CONCAT31(extraout_var_04,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x874);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar4) + 0xa8))(1,0);
-    (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(iVar10);
+    (**(code **)&pTVar1->field_0x1d0)(iVar10);
     return;
   case 0x6a:
-    pTVar3 = pTVar1[0x12].slot_0x04;
-    uVar4 = (*pTVar3)(0x53656c6c);
+    p_Var3 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar4 = (*p_Var3)(0x53656c6c);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar4) + 0xa4))(0,1);
-    uVar4 = (*pTVar3)(0x62617220);
+    uVar4 = (*p_Var3)(0x62617220);
     if ((int *)CONCAT31(extraout_var_06,uVar4) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x896);
     }
     (**(code **)(*(int *)CONCAT31(extraout_var_06,uVar4) + 0xa8))(0,1);
-    (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(0);
+    (**(code **)&pTVar1->field_0x1d0)(0);
     return;
   }
   return;
@@ -332,7 +332,7 @@ bool TTradeCluster::OrphanVtableAssignStub_005714e0()
   if (3 < sVar2) {
     return false;
   }
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x53656c6c);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x53656c6c);
   iVar3 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
   return iVar3 < 1;
 }
@@ -344,7 +344,7 @@ bool TTradeCluster::OrphanVtableAssignStub_005714e0()
 void TTradeCluster::OrphanRetStub_00586ff0()
 
 {
-  TTradeCluster_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   short sVar3;
   undefined3 extraout_var;
@@ -357,10 +357,10 @@ void TTradeCluster::OrphanRetStub_00586ff0()
   undefined3 extraout_var_00;
   
   sVar3 = UiRuntimeContext::GetActiveNationId();
-  (*g_apNationStates[sVar3]->vftable[0xf].GetTCountryClassNamePointer)
+  (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)
             (CONCAT22(sVar3 >> 0xf,*(undefined2 *)&this->field_0x88));
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar2 = (*pTVar1)(0x53656c6c);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar2 = (*p_Var1)(0x53656c6c);
   if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -368,14 +368,14 @@ void TTradeCluster::OrphanRetStub_00586ff0()
   }
   sStack_4 = (short)this;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1e4))((int)sStack_4,1);
-  uVar2 = (*pTVar1)(0x62617220);
+  uVar2 = (*p_Var1)(0x62617220);
   piVar4 = (int *)CONCAT31(extraout_var_00,uVar2);
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9e4);
   }
-  uVar2 = (*pTVar1)(0x67726565);
+  uVar2 = (*p_Var1)(0x67726565);
   if ((int *)CONCAT31(extraout_var_01,uVar2) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag

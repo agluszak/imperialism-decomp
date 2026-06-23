@@ -69,7 +69,7 @@ void TFuzzySet::OrphanCallChain_C2_I27_004ff780()
     } while (iVar1 < *(int *)&this->field_0x4);
   }
   if (this != (TFuzzySet *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TFuzzySet)(1);
   }
   return;
 }

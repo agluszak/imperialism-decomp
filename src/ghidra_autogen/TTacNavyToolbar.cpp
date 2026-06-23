@@ -55,7 +55,7 @@ void TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920((TTacticalToolbar *)this);
-  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)(0x68756c6c);
+  (*this->vftable->OrphanCallChain_C2_I51_00491790)(0x68756c6c);
   return;
 }
 
@@ -102,7 +102,8 @@ LAB_005ad1ef:
             (*(TacticalBattleView **)&this->field_0x88,commandTag);
 LAB_005ad237:
   TCluster::OrphanRetStub_0059add0((TMapEditCluster *)this,param_1,param_2,param_3);
-  (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
+  (*g_pGlobalUiRootController->vftable->OrphanTiny_SetDwordEcxOffset_20_00486880)
+            (this->ownerContext);
   return;
 }
 

@@ -105,7 +105,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
     *(byte *)(piVar3 + 1) = *(byte *)(piVar3 + 1) & 0xfe;
     this_00 = (TAnimation *)*piVar7;
     if (this_00 != (TAnimation *)0x0) {
-      this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+      this_00->vftable = (TAnimationVtbl *)0x64c340;
       TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
                 (this_00);
       FreeHeapBufferIfNotNull(this_00);
@@ -157,7 +157,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
     pTVar4 = this->ownerContext->vftable;
     *(short *)&this->field_0xd4 =
          (0x1d - (short)*(undefined4 *)(iStack_4 + 0x34)) * *(short *)&this->field_0x88;
-    uVar6 = (*pTVar4[0x12].slot_0x04)(0x746f6f6c);
+    uVar6 = (*pTVar4->ResolveControlByTag)(0x746f6f6c);
     this_01 = (TTacArmyView *)CONCAT31(extraout_var,uVar6);
     if (this_01 == (TTacArmyView *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -166,10 +166,10 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
     }
     *(int *)&this_01->field_0x88 = iStack_4;
     *(undefined4 *)&this_01->field_0x94 = *(undefined4 *)&this->field_0x68;
-    (*this_01->vftable[0x39].slot_0x04)(*(undefined4 *)(*(int *)&this->field_0x60 + 0x1c));
+    (*this_01->vftable[1].Serialize)(*(undefined4 *)(*(int *)&this->field_0x60 + 0x1c));
     TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(this_01,0);
     *(TTacArmyView **)&this->field_0xd0 = this_01;
-    uVar6 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x636f6174);
+    uVar6 = (*this->ownerContext->vftable->ResolveControlByTag)(0x636f6174);
     iVar9 = *(int *)CONCAT31(extraout_var_00,uVar6);
     (**(code **)(iVar9 + 0xc))();
     (**(code **)(iVar9 + 0x1c8))
@@ -180,8 +180,8 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
     local_30 = *(int *)&this->field_0x94 * 3;
     (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0xbc,8,&stack0xffffffc4);
     pTVar5 = this->vftable;
-    (*pTVar5[0x1c].slot_0x04)();
-    uVar6 = (*pTVar5[0xb].GetTEventHandlerClassNamePointer)();
+    (*pTVar5->VTableSlot39)();
+    uVar6 = (*pTVar5->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar6) + 0x13c))();
   }
   return;
@@ -194,7 +194,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
 void TTacArmyView::OrphanCallChain_C11_I88_004874b0(int *param_1)
 
 {
-  TTacArmyView_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   short sVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
@@ -265,9 +265,9 @@ void TTacArmyView::OrphanCallChain_C11_I88_004874b0(int *param_1)
     local_4 = 0;
     ApplyHitRegionToClipState();
     iVar3 = 0;
-    pTVar1 = this->vftable[0x36].GetTEventHandlerClassNamePointer;
+    p_Var1 = this->vftable->OrphanRetStub_005a83c0;
     do {
-      (*pTVar1)(iVar3);
+      (*p_Var1)(iVar3);
       iVar3 = iVar3 + 1;
     } while (iVar3 < 0x1b3);
     SnapshotHitRegionToClipCache();
@@ -282,7 +282,7 @@ void TTacArmyView::OrphanCallChain_C11_I88_004874b0(int *param_1)
             ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
              (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,&local_2c,0,
              (astruct_19 *)0x0);
-  (*this->vftable[0x38].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->DrawUiTilesAndOverlay)();
   GetSurfaceObjectAtContextOffset24();
   NoOpQuickDrawLifecycleHookB();
   GetSurfaceObjectAtContextOffset24();
@@ -979,7 +979,7 @@ LAB_005abc46:
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x34);
     local_fc = puStack_104 + (*(int *)(iVar10 + 0x34) + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&puStack_104);
-    uVar4 = (*g_pGlobalMapState->vftable[0x22].GetTMapMgrClassNamePointer)
+    uVar4 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)
                       (*(undefined4 *)(iVar10 + 0x14));
     aStack_134.field0_0x0 = (int)(short)CONCAT31(extraout_var,uVar4);
     aStack_134.field2_0x8 = aStack_134.field0_0x0 + 9;
@@ -1188,7 +1188,7 @@ LAB_005abc78:
 void TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
 
 {
-  TTacArmyView_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   int iVar2;
   undefined uVar3;
   undefined3 extraout_var;
@@ -1201,53 +1201,53 @@ void TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int param_1)
   undefined3 extraout_var_06;
   
   if (param_1 == 0) {
-    pTVar1 = this->vftable[0x12].slot_0x04;
-    uVar3 = (*pTVar1)(0x74617267);
+    p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+    uVar3 = (*p_Var1)(0x74617267);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0xa4))(0,1);
     (**(code **)(iVar2 + 0xa8))(0,1);
-    uVar3 = (*pTVar1)(0x646f6e65);
+    uVar3 = (*p_Var1)(0x646f6e65);
     iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0x1c8))(0xed4,1);
-    uVar3 = (*pTVar1)(0x72657472);
+    uVar3 = (*p_Var1)(0x72657472);
     iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0x1c8))(0xed2,1);
-    uVar3 = (*pTVar1)(0x6175746f);
+    uVar3 = (*p_Var1)(0x6175746f);
     iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0xa4))(0,1);
     (**(code **)(iVar2 + 0xa8))(0,1);
-    uVar3 = (*pTVar1)(0x646f6e65);
+    uVar3 = (*p_Var1)(0x646f6e65);
     LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x2e,uVar3);
-    uVar3 = (*pTVar1)(0x72657472);
+    uVar3 = (*p_Var1)(0x72657472);
     LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x2f,uVar3);
     return;
   }
-  pTVar1 = this->vftable[0x12].slot_0x04;
-  uVar3 = (*pTVar1)(0x74617267);
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  uVar3 = (*p_Var1)(0x74617267);
   iVar2 = *(int *)CONCAT31(extraout_var_03,uVar3);
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0xa4))(1,1);
   (**(code **)(iVar2 + 0xa8))(1,1);
-  uVar3 = (*pTVar1)(0x646f6e65);
+  uVar3 = (*p_Var1)(0x646f6e65);
   iVar2 = *(int *)CONCAT31(extraout_var_04,uVar3);
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0x1c8))(0xece,1);
-  uVar3 = (*pTVar1)(0x72657472);
+  uVar3 = (*p_Var1)(0x72657472);
   iVar2 = *(int *)CONCAT31(extraout_var_05,uVar3);
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0x1c8))(0xed0,1);
-  uVar3 = (*pTVar1)(0x6175746f);
+  uVar3 = (*p_Var1)(0x6175746f);
   iVar2 = *(int *)CONCAT31(extraout_var_06,uVar3);
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0xa4))(1,1);
   (**(code **)(iVar2 + 0xa8))(1,1);
-  uVar3 = (*pTVar1)(0x646f6e65);
+  uVar3 = (*p_Var1)(0x646f6e65);
   LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x22,uVar3);
-  uVar3 = (*pTVar1)(0x72657472);
+  uVar3 = (*p_Var1)(0x72657472);
   LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x23,uVar3);
   return;
 }

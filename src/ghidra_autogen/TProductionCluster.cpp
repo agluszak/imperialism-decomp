@@ -89,7 +89,7 @@ void TProductionCluster::OrphanRetStub_0059add0(void *param_1, int param_2)
   undefined3 extraout_var;
   int unaff_retaddr;
   
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x76616c75);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x76616c75);
   if (CONCAT31(extraout_var,uVar1) == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag
@@ -97,7 +97,7 @@ void TProductionCluster::OrphanRetStub_0059add0(void *param_1, int param_2)
   }
   if ((((*(int *)&this->field_0x90 != 0) && (*(int *)&this->field_0x88 != 0)) &&
       (99 < unaff_retaddr)) && (unaff_retaddr < 0x66)) {
-    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(unaff_retaddr,this,0);
+    (*this->ownerContext->vftable->DispatchEvent)(unaff_retaddr,this,0);
   }
   TCluster::OrphanRetStub_0059add0
             ((TMapEditCluster *)this,unaff_retaddr,param_1,param_2);

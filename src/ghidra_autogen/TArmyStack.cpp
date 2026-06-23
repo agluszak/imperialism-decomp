@@ -205,7 +205,8 @@ void TArmyStack::CreateTArmyStackInstance(void)
     iVar3 = ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0();
   }
   this = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
-  if ((this != (TCivToolbar *)0x0) && (cVar1 = (*this->vftable[0x3d].slot_0x04)(), cVar1 == '\0')) {
+  if ((this != (TCivToolbar *)0x0) &&
+     (cVar1 = (**(code **)&this->vftable->field_0x1ec)(), cVar1 == '\0')) {
     TCivToolbar::CycleMapInteractionSelectionAfterHandledClick(this);
   }
   return;
@@ -443,7 +444,7 @@ void TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20()
     iVar2 = iVar1;
   }
   if (this != (TArmyStack *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TArmyStack)(1);
   }
   return;
 }
@@ -565,7 +566,7 @@ LAB_005a0199:
         local_20 = local_20 + 10;
       } while (local_20 <= iVar3);
     }
-    (*this->vftable[5].slot_0x04)(param_1);
+    (*this->vftable[1].~TArmyStack)(param_1);
   }
   return;
 }
@@ -691,7 +692,7 @@ TArmyStack::HandleTacticalCommandTag_raly
     (**(code **)(**(int **)&this->field_0x8 + 0x1a4))(param_1);
   }
   if (*(int *)&this->field_0x8 != 0) {
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3aae,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x3aae,0,1);
   }
   return;
 }

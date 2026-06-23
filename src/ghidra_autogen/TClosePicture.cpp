@@ -85,7 +85,7 @@ TClosePicture::InvalidateWindowRectFromHandleField1C
   
   uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf
                     ((TControl *)this,param_1,param_2,param_3,param_4);
-  uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(this->controlTag,1);
   return uVar1;
 }

@@ -113,7 +113,7 @@ void TTacticalPlayer::ConstructTTacticalPlayerBaseState()
     (**(code **)(**(int **)&this->field_0x8 + 0x58))();
   }
   if (this != (TTacticalPlayer *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TTacticalPlayer)(1);
   }
   return;
 }

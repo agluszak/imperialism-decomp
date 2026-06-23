@@ -248,7 +248,7 @@ TArmyUnitView::OrphanRetStub_0059add0
     }
     else {
       (**(code **)(*(int *)CVar2.m_pchData + 0xa4))();
-      uVar4 = (*this->vftable[0x12].slot_0x04)();
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
       piVar6 = (int *)CONCAT31(extraout_var,uVar4);
       if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);

@@ -65,7 +65,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
 
 {
   TTechHistoryViewVtbl *pTVar1;
-  TTechHistoryView_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   int iVar3;
   undefined4 uVar4;
   TDeluxeTextVtbl *pTVar5;
@@ -126,7 +126,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   local_4e = 0;
   local_4d = 0;
   puStack_68 = (undefined1 *)0x5b2315;
-  uVar6 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar6 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   uStack_44 = CONCAT31(extraout_var,uVar6);
   puStack_68 = &local_54;
   pTStack_6c = (TDeluxeText *)0x2b6a;
@@ -140,10 +140,10 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   pTStack_6c = (TDeluxeText *)0xc;
   iStack_70 = 0;
   BuildUiTextStyleDescriptor(&iStack_38);
-  pTVar2 = pTVar1[0x12].slot_0x04;
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   puStack_68 = (undefined1 *)0x7469746c;
   pTStack_6c = (TDeluxeText *)0x5b2361;
-  uVar6 = (*pTVar2)();
+  uVar6 = (*p_Var2)();
   piVar8 = (int *)CONCAT31(extraout_var_00,uVar6);
   pTStack_6c = (TDeluxeText *)0x5b236a;
   (**(code **)(*piVar8 + 0xc))();
@@ -152,11 +152,11 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
   piVar10 = (int *)0x2712;
   (**(code **)(*piVar8 + 0x1cc))();
   ApplyUiTextStyleAndThemeFlags(piVar8,0,0x12,0x2b6a,0x2b68);
-  uVar6 = (*pTVar2)(0x70696374);
+  uVar6 = (*p_Var2)(0x70696374);
   iVar3 = *(int *)CONCAT31(extraout_var_01,uVar6);
   (**(code **)(iVar3 + 0xc))();
   (**(code **)(iVar3 + 0x1c8))(iStack_10 + 0x944,1);
-  uVar6 = (*pTVar2)(0x73637677);
+  uVar6 = (*p_Var2)(0x73637677);
   piVar8 = (int *)CONCAT31(extraout_var_02,uVar6);
   (**(code **)(*piVar8 + 0xc))();
   this_00 = (TDeluxeText *)AllocateWithFallbackHandler(0xa4);
@@ -191,11 +191,11 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState()
             (this_00,piVar8,&stack0xffffffa0,&pTStack_6c,&uStack_4c,(int)&stack0xffffffa8);
   pTVar5 = this_00->vftable;
   *(int **)&this_00->field_0x98 = piVar10;
-  (*pTVar5[0x3b].slot_0x04)(iStack_1c + 0x8fc);
+  (*pTVar5->InitializeTechHistoryViewTitleAndMapKeyControls_Impl)(iStack_1c + 0x8fc);
   sVar7 = TTEView::DestructTTEViewAndMaybeFree((TTEView *)this_00);
-  (*pTVar5[0x25].slot_0x04)(aiStack_40);
+  (*pTVar5->OrphanRetStub_0059add0_4b)(aiStack_40);
   iStack_38 = aiStack_40[0] + sVar7;
-  (*pTVar5[0x2d].GetTEventHandlerClassNamePointer)(&uStack_44,1);
+  (*pTVar5->GetTEventHandlerClassNamePointer_5a)(&uStack_44,1);
   piVar8[0x18] = (int)this_00;
   SyncBoundedValueAndToggleControlStates();
   iStack_70 = 0x8c;

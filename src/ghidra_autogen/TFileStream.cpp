@@ -24,8 +24,8 @@ void TFileStream::CreateTFileStreamInstance(char *param_1)
     cVar1 = *pcVar4;
     pcVar4 = pcVar4 + 1;
   } while (cVar1 != '\0');
-  (*pTVar2[0x11].GetTStreamClassNamePointer)(~uVar3 - 1);
-  (*pTVar2[0xf].GetTStreamClassNamePointer)(param_1,~uVar3 - 1);
+  (*pTVar2->OrphanCallChain_C1_I06_00488ef0)(~uVar3 - 1);
+  (*pTVar2->OrphanRetStub_00488e70)(param_1,~uVar3 - 1);
   return;
 }
 

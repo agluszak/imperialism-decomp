@@ -159,7 +159,7 @@ void TCityProductionView::OrphanCallChain_C6_I49_004875d0(void *pInitContext)
     else {
       pTVar11 = g_apNationStates[sVar3]->city;
     }
-    uVar2 = (*pTVar11->vftable[0xb].slot_0x04)(iVar12);
+    uVar2 = (*pTVar11->vftable->WrapperFor_GetActiveNationId_At004b4940)(iVar12);
     pTVar6 = (TTransFocusAnimation *)
              LoadBmpResourceByIdCached(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar12);
     piVar7 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels(pTVar6,0xffffffff);
@@ -383,7 +383,7 @@ void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
   *(byte *)(piVar11 + 1) = *(byte *)(piVar11 + 1) & 0xfe;
   this_00 = (TAnimation *)*piVar7;
   if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
     FreeHeapBufferIfNotNull(this_00);
@@ -405,7 +405,7 @@ void TCityProductionView::OrphanTiny_ReturnZero_0048a730(tagRECT *pTargetRect)
     pTVar1 = pTVar12->vftable;
     sVar6 = *psVar16;
     this_00 = (TAnimation *)CONCAT22((short)((uint)this_00 >> 0x10),sVar6);
-    uVar4 = (*pTVar1[0xb].slot_0x04)(this_00);
+    uVar4 = (*pTVar1->WrapperFor_GetActiveNationId_At004b4940)(this_00);
     iVar10 = CONCAT31(extraout_var,uVar4);
     if ((short)iVar10 < 1) {
       bVar3 = false;
@@ -425,7 +425,7 @@ LAB_004ba985:
       }
       else if (((((short)iVar10 == 0) || (sVar6 < 0)) || (5 < sVar6)) ||
               ((*(short *)((int)pTVar12->orderSlotsE4[(short)(sVar6 + 0x35)] + 4) < 1 ||
-               (cVar5 = (*pTVar1[0xf].GetTCityClassNamePointer)(this_00), cVar5 == '\0')))) {
+               (cVar5 = (*pTVar1->IsBasicResourceSlot78)(this_00), cVar5 == '\0')))) {
         puVar9 = &this_00[0x9f].field_0x4 + iVar10 * 0x10;
       }
       else {
@@ -509,7 +509,7 @@ TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
   *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
   this_00 = (TAnimation *)*piVar3;
   if (this_00 != (TAnimation *)0x0) {
-    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    this_00->vftable = (TAnimationVtbl *)0x64c340;
     TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
               (this_00);
     FreeHeapBufferIfNotNull(this_00);
@@ -561,7 +561,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
   else {
     pTVar7 = g_apNationStates[sVar3]->city;
   }
-  uVar2 = (*pTVar7->vftable[0xb].slot_0x04)(0xe);
+  uVar2 = (*pTVar7->vftable->WrapperFor_GetActiveNationId_At004b4940)(0xe);
   bVar9 = (short)CONCAT31(extraout_var,uVar2) == 2;
   iVar4 = (-(uint)bVar9 & 0xffffffe9) + 0x213;
   sVar3 = (-(ushort)bVar9 & 0x14) + 0x6b;
@@ -683,7 +683,7 @@ TCityProductionView::_scalar_deleting_destructor_
   undefined1 *puStack_3c;
   int local_38;
   TCityProductionView *local_34;
-  TCity_slot_0x04_0x04 *local_30;
+  _vslot_fn *local_30;
   int local_2c;
   int local_28;
   undefined1 auStack_10 [4];
@@ -737,10 +737,10 @@ TCityProductionView::_scalar_deleting_destructor_
           this_00 = g_apNationStates[sVar6]->city;
         }
         pTVar1 = this_00->vftable;
-        local_30 = pTVar1[0xb].slot_0x04;
+        local_30 = pTVar1->WrapperFor_GetActiveNationId_At004b4940;
         uVar5 = (*local_30)();
         local_40 = (TCityProductionView *)CONCAT31(extraout_var,uVar5);
-        pCursorPoint._0_1_ = (*pTVar1[0xf].GetTCityClassNamePointer)();
+        pCursorPoint._0_1_ = (*pTVar1->IsBasicResourceSlot78)();
         if ((nBuildingSlotId == 6) || (nBuildingSlotId == 0xb)) {
           sVar6 = UiRuntimeContext::GetActiveNationId();
           if ((&g_pCityOrderCapabilityState->field_0x27b)[sVar6 * 0x1d] == '\x02')
@@ -801,7 +801,7 @@ LAB_004bb114:
           }
           local_48.m_pchData = &stack0xffffff88;
           AssignStringSharedRefAndReturnThis(&stack0xffffffa0);
-          (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+          (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
         }
         if ((nBuildingSlotId == 6) || (nBuildingSlotId == 0xb)) {
           sVar6 = UiRuntimeContext::GetActiveNationId();
@@ -809,7 +809,7 @@ LAB_004bb114:
             puStack_3c = &stack0xffffff94;
             TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                       ((TToolBarCluster *)&stack0xffffff94,PTR_g_szEmptyString_0064faa8);
-            (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+            (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
           }
           else {
             pCursorPoint._0_1_ = '\0';
@@ -851,7 +851,7 @@ LAB_004bb114:
     if (!bVar3) {
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                 ((TToolBarCluster *)&stack0xffffff94,PTR_g_szEmptyString_0064faa8);
-      (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+      (*g_pCursorControlPanel->vftable[1].ReleaseRuntimeSelectionOwnerAndDestroyObject_0f)();
       if (*(short *)&this->field_0xa4 != -1) {
         (*this->vftable[0x18].GetTEventHandlerClassNamePointer)();
         *(undefined2 *)&this->field_0xa4 = 0xffff;
@@ -1141,7 +1141,7 @@ void TCityProductionView::_scalar_deleting_destructor_(undefined4 *param_1)
 LAB_004bc6b8:
   if (puVar8 == (undefined4 *)0xf) {
     if (*(int *)&this->field_0xe8 == 0) {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0xbdb,0,1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0xbdb,0,1);
       uVar5 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(0xf,this->pCity,0,0,0);
       *(undefined4 *)&this->field_0xe8 = uVar5;
       (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
@@ -1152,8 +1152,8 @@ LAB_004bc6b8:
     iVar7 = TCity::GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
     uVar6 = extraout_var;
     if (((short)iVar7 == 0) &&
-       (cVar2 = (*this->pCity->vftable[0xf].GetTCityClassNamePointer)(puVar8),
-       uVar6 = extraout_var_00, cVar2 != '\0')) {
+       (cVar2 = (*this->pCity->vftable->IsBasicResourceSlot78)(puVar8), uVar6 = extraout_var_00,
+       cVar2 != '\0')) {
       bVar1 = true;
       if (((puVar8 == (undefined4 *)0x6) || (puVar8 == (undefined4 *)0xb)) &&
          (sVar3 = UiRuntimeContext::GetActiveNationId(),
@@ -1167,7 +1167,7 @@ LAB_004bc6b8:
       }
     }
     else {
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)
                 (CONCAT22(uVar6,*(short *)(&UNK_0064fab0 + (int)puVar8 * 2) + 3000),0,1);
       uVar5 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(puVar8,this->pCity,0,0,0);
       *(undefined4 *)(&this->field_0xac + (int)puVar8 * 4) = uVar5;
@@ -1234,12 +1234,12 @@ void TCityProductionView::OrphanCallChain_C5_I49_004bc910()
   piVar5 = (int *)&this->field_0xac;
   do {
     if ((int *)*piVar5 == (int *)0x0) {
-      (*this->pCity->vftable[0xc].slot_0x04)(iVar4,0,0,0);
+      (*this->pCity->vftable->OrphanLeaf_NoCall_Ins08_004b4c80)(iVar4,0,0,0);
     }
     else {
       piVar2 = (int *)(**(code **)(*(int *)*piVar5 + 0x58))();
       uVar3 = (undefined2)((uint)piVar2 >> 0x10);
-      (*this->pCity->vftable[0xc].slot_0x04)
+      (*this->pCity->vftable->OrphanLeaf_NoCall_Ins08_004b4c80)
                 (iVar4,1,CONCAT22(uVar3,(short)piVar2[9]),CONCAT22(uVar3,(short)piVar2[10]));
       iVar1 = *piVar2;
       (**(code **)(iVar1 + 0xa0))();

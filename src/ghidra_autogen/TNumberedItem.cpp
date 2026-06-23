@@ -27,7 +27,7 @@ void TNumberedItem::_scalar_deleting_destructor_(undefined4 *param_1)
   _DAT_006a1a74 = uVar2;
   g_McAppUiMouseCaptureCurrentPoint_006A1A78 = uVar1;
   DAT_006a1a7c = uVar2;
-  (*this->vftable[0x34].GetTEventHandlerClassNamePointer)
+  (*this->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)
             (0,&g_McAppUiMouseCaptureStartPoint_006A1A68,&g_McAppUiMouseCaptureLastPoint_006A1A70,
              &g_McAppUiMouseCaptureCurrentPoint_006A1A78,1);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
@@ -48,7 +48,7 @@ void TNumberedItem::_scalar_deleting_destructor_()
   RECT RStack_14;
   
   RStack_14.left = (LONG)&RStack_14.top;
-  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)();
+  (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)();
   PtInRect(&RStack_14,*unaff_retaddr);
   return;
 }
@@ -119,7 +119,7 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
   } while (iVar8 != 0);
   pTVar1 = this->vftable;
   iVar8 = this->field34;
-  uVar4 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  uVar4 = (*pTVar1->SetForeignMinisterReadyFlag14)();
   if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
     pTStack_78 = (TNumberedItem *)0x4d1934;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -131,11 +131,11 @@ void TNumberedItem::BuildCityViewResourceRows(int *param_1)
   iStack_14 = iStack_14 + iVar8;
   (**(code **)(tStack_4c.bottom + 0x168))();
   pTStack_78 = (TNumberedItem *)0x4d1986;
-  (*pTVar1[0x25].slot_0x04)();
+  (*pTVar1->OrphanRetStub_0059add0_4b)();
   pTStack_78 = (TNumberedItem *)0x1;
   local_20 = local_20 + iVar8;
-  (*pTVar1[0x2d].GetTEventHandlerClassNamePointer)();
-  uVar4 = (*pTVar1[0x12].slot_0x04)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_5a)();
+  uVar4 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)();
   if ((int *)CONCAT31(extraout_var_00,uVar4) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -394,7 +394,7 @@ void TNumberedItem::OrphanCallChain_C1_I08_00573690(undefined2 param_1, char par
 {
   *(undefined2 *)&this->field_0x98 = param_1;
   if (param_2 != '\0') {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }
@@ -415,7 +415,7 @@ TNumberedItem::OrphanCallChain_C1_I14_005736c0
     *(ushort *)&this->field_0x98 = *(ushort *)&this->field_0x98 & param_1;
   }
   if (param_3 != '\0') {
-    (*this->vftable[0x1c].slot_0x04)();
+    (*this->vftable->VTableSlot39)();
   }
   return;
 }

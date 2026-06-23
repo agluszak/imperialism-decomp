@@ -206,7 +206,7 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
     break;
   case 0x43:
   case 99:
-    (*this->ownerContext->vftable[8].slot_0x04)();
+    (*this->ownerContext->vftable->vmethod_0017)();
     break;
   case 0x4e:
   case 0x6e:
@@ -228,10 +228,10 @@ void TWorldView::OrphanTiny_ReturnZero_0048a730(int *pKeyEvent)
         pTVar1 = *(TZone **)&pTVar1->field_0x18) {
       CString::CString(&local_18);
       local_4._0_1_ = 9;
-      (*pTVar1->vftable[5].SetNationPendingActionStateAndPayload)();
+      (*pTVar1->vftable->GetTEventHandlerClassNamePointer_0b)();
       nDialogResult = CompareAnsiStringsWithMbcsAwareness();
       if (nDialogResult == 0) {
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+        (*this->vftable[1].vmethod_0025)();
         this_00 = &local_18;
         goto LAB_00595484;
       }
@@ -277,7 +277,7 @@ LAB_00595484:
       AssignSharedStringFromIndexedA8EntryNameField();
       nLoopResult = CompareAnsiStringsWithMbcsAwareness();
       if (nLoopResult == 0) {
-        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+        (*this->vftable[1].vmethod_0025)();
         goto LAB_005952db;
       }
       local_4._0_1_ = 3;
@@ -314,8 +314,8 @@ LAB_005952db:
     pTVar2 = this->vftable;
     pTVar3 = g_pGlobalMapState->vftable;
     UiRuntimeContext::GetActiveNationId();
-    (*pTVar3[0xc].slot_0x04)();
-    (*pTVar2[0x3b].GetTEventHandlerClassNamePointer)();
+    (*pTVar3->ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias)();
+    (*pTVar2[1].vmethod_0025)();
     break;
   case 0x5a:
   case 0x7a:
@@ -355,10 +355,10 @@ void TWorldView::OrphanCallChain_C11_I88_004874b0(undefined4 param_1, undefined4
   undefined1 auStack_8 [8];
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x15].slot_0x04)();
+  uVar2 = (*pTVar1->GetField4E)();
   sVar4 = (short)CONCAT31(extraout_var,uVar2);
   if (sVar4 != -1) {
-    (*pTVar1[0x29].GetTEventHandlerClassNamePointer)(auStack_8,param_1);
+    (**(code **)&pTVar1->field_0x148)(auStack_8,param_1);
     iVar3 = IsPointInsideHitRegion(auStack_8,param_2);
     if (iVar3 != 0) {
       SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + sVar4 * 4 + -0xf8c));
@@ -407,7 +407,7 @@ void TWorldView::SetForeignMinisterReadyFlag14()
   uVar4 = 0xffff;
   pTVar2 = this->vftable;
   puVar1 = &this->field_0x70;
-  (*pTVar2[0x38].GetTEventHandlerClassNamePointer)();
+  (*pTVar2[1].CanHandleCityDialogActionFalse)();
   uVar5 = ComputeStridedRecordAddress6C(unaff_EDI,uStack_c);
   sVar3 = (short)uVar5;
   *(short *)&this->field_0x6c = sVar3;
@@ -480,7 +480,7 @@ void TWorldView::SetForeignMinisterReadyFlag14()
     SetCursor(hCursor);
     ConstructScopedMapQuickDrawContext(this);
     if (*(short *)&this->field_0x6c != *(short *)&this->field_0x6e) {
-      (*pTVar2[0x36].slot_0x04)();
+      (*pTVar2[1].DispatchEvent)();
     }
     DestroyScopedMapQuickDrawContext();
     *(undefined2 *)&this->field_0x6e = *(undefined2 *)&this->field_0x6c;
@@ -569,11 +569,11 @@ undefined4 TWorldView::SetForeignMinisterReadyFlag14(undefined4 param_1)
   AcquireReusableQuickDrawSurface();
   pTVar1 = this->vftable;
   local_4 = 0;
-  (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(param_1,local_14,local_18,&local_1c);
+  (*pTVar1[1].CanHandleCityDialogActionFalse)(param_1,local_14,local_18,&local_1c);
   NormalizeWrappedMapCoord108x60(&stack0xffffffdc,&stack0xffffffd8);
   uVar3 = ComputeStridedRecordAddress6C(unaff_EBP,unaff_ESI);
   if (*(int *)(puStack_8 + 0x24) == 1) {
-    (*pTVar1[0x39].slot_0x04)(uVar3,unaff_EDI);
+    (*pTVar1[1].OwnerPanel)(uVar3,unaff_EDI);
   }
   else {
     uVar2 = GetAsyncKeyState(0x11);
@@ -581,18 +581,18 @@ undefined4 TWorldView::SetForeignMinisterReadyFlag14(undefined4 param_1)
       uVar2 = GetAsyncKeyState(0x10);
       if ((uVar2 & 0x8000) == 0) {
         if (*(int *)&g_pGlobalUiRootController->field_0x24 < 2) {
-          (*pTVar1[0x3a].slot_0x04)(uVar3,unaff_EDI);
+          (*pTVar1[1].vmethod_0024)(uVar3,unaff_EDI);
         }
         else {
-          (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)(uVar3,unaff_EDI);
+          (*pTVar1[1].vmethod_0023)(uVar3,unaff_EDI);
         }
       }
       else {
-        (*pTVar1[0x39].slot_0x04)(uVar3,unaff_EDI);
+        (*pTVar1[1].OwnerPanel)(uVar3,unaff_EDI);
       }
     }
     else {
-      (*pTVar1[0x38].slot_0x04)(uVar3,unaff_EDI);
+      (*pTVar1[1].GetCityDialogValueDword10)(uVar3,unaff_EDI);
     }
   }
   local_1c = 0xffffffff;
@@ -611,8 +611,8 @@ void TWorldView::InvokeDialogHooks1D8ThenE4()
   TWorldViewVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
-  (*pTVar1[0x1c].slot_0x04)();
+  (*pTVar1[1].vmethod_0025)();
+  (*pTVar1->RefreshControl)();
   return;
 }
 
@@ -666,7 +666,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
   pTVar1 = this->vftable;
   puVar4[3] = this;
   puVar4[4] = this;
-  (*pTVar1[6].slot_0x04)(puVar4);
+  (*pTVar1->vmethod_0013)(puVar4);
   return;
 }
 
@@ -697,7 +697,7 @@ void TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0(undefined2 pa
   puVar2[3] = this;
   puVar2[4] = this;
   *(undefined2 *)&this->field_0x7a = param_1;
-  (*pTVar1[6].slot_0x04)(puVar2);
+  (*pTVar1->vmethod_0013)(puVar2);
   return;
 }
 
@@ -728,7 +728,7 @@ void TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440(undefined2 pa
   puVar2[3] = this;
   puVar2[4] = this;
   *(undefined2 *)&this->field_0x7a = param_1;
-  (*pTVar1[6].slot_0x04)(puVar2);
+  (*pTVar1->vmethod_0013)(puVar2);
   return;
 }
 
@@ -785,12 +785,12 @@ void TWorldView::OrphanCallChain_C6_I29_00596700()
   undefined3 extraout_var;
   
   pTVar1 = this->vftable;
-  cVar2 = (*pTVar1[0x3d].slot_0x04)();
+  cVar2 = (*pTVar1[1].DispatchCityProductionAction1B)();
   if (cVar2 == '\0') {
-    (*pTVar1[0x3b].GetTEventHandlerClassNamePointer)();
+    (*pTVar1[1].vmethod_0025)();
   }
-  (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
-  uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  (*this->ownerContext->vftable[1].vmethod_0025)();
+  uVar3 = (*pTVar1->OwnerPanel)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
   WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(0x1e);
   return;

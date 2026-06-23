@@ -82,7 +82,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
 
 {
   short sVar1;
-  TDealBookPicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   char cVar4;
   undefined3 extraout_var;
@@ -121,13 +121,13 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
          (iVar6 = CONCAT22((short)((uint)param_2 >> 0x10),*(short *)&this->field_0x94),
          0 < *(short *)&this->field_0x94)) {
         CStack_74.m_pchData = (char *)(iVar6 + -1);
-        (*this->vftable[0x39].slot_0x04)();
+        (*this->vftable->UpdateDealBookResourceSelectionAndToggleControls)();
       }
       else if ((iVar7 == 0x72636f72) && (*(short *)&this->field_0x94 < *(short *)&this->field_0x92))
       {
         CStack_74.m_pchData =
              (char *)(CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)&this->field_0x94) + 1);
-        (*this->vftable[0x39].slot_0x04)();
+        (*this->vftable->UpdateDealBookResourceSelectionAndToggleControls)();
       }
       else if ((iVar7 == 0x6d61726b) && (this->field_0xb1 != '\0')) {
         RefreshTradeSelectionHeaderAndNationOfferBidLines();
@@ -150,9 +150,9 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       RefreshTradeSelectionHeaderAndNationOfferBidLines();
     }
     CVar8.m_pchData = (char *)0x7469744c;
-    pTVar2 = this->vftable[0x12].slot_0x04;
+    p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
     CStack_74.m_pchData = (char *)0x5bbccb;
-    uVar3 = (*pTVar2)();
+    uVar3 = (*p_Var2)();
     iVar7 = *(int *)CONCAT31(extraout_var,uVar3);
     CStack_74.m_pchData = (char *)0x5bbcd4;
     (**(code **)(iVar7 + 0xc))();
@@ -182,7 +182,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     RStack_54.bottom = (LONG)CStack_58.m_pchData;
     CopyRect(&tStack_44,&RStack_54);
     InvalidateCityDialogRectRegion(&tStack_44,1);
-    uVar3 = (*pTVar2)(0x7274696c);
+    uVar3 = (*p_Var2)(0x7274696c);
     iVar7 = *(int *)CONCAT31(extraout_var_00,uVar3);
     (**(code **)(iVar7 + 0xc))();
     cVar4 = (**(code **)(iVar7 + 0xec))();
@@ -219,7 +219,7 @@ TDealBookPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
       uStack_30 = 2;
       CString::~CString(&CStack_88);
     }
-    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f0,0,1);
+    (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x13f0,0,1);
     iStack_4._0_1_ = 1;
     CString::~CString((CString *)&RStack_54);
     iStack_4 = (uint)iStack_4._1_3_ << 8;

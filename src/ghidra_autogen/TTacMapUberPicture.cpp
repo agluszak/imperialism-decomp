@@ -81,7 +81,7 @@ void TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   undefined3 extraout_var;
   
   TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920((TMapUberUberPicture *)this);
-  uVar1 = (*this->vftable[0x12].slot_0x04)(0x444c4f47);
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
   *(int **)&this->field_0x94 = (int *)CONCAT31(extraout_var,uVar1);
   return;
@@ -99,7 +99,7 @@ void TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730()
   undefined3 extraout_var;
   undefined4 unaff_retaddr;
   
-  uVar2 = (*this->vftable[0x12].slot_0x04)(0x444c4f47);
+  uVar2 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x444c4f47);
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0x48))(unaff_retaddr);

@@ -92,7 +92,7 @@ void TTradePageBuyView::ConstructTTradePageBuyViewBaseState(short param_1)
   if (param_1 == *(short *)&this->field_0x84) goto LAB_005bd863;
   pTVar7 = this->vftable;
   *(short *)&this->field_0x84 = param_1;
-  (*pTVar7[0x36].slot_0x04)();
+  (*pTVar7->OrphanCallChain_C4_I18_0056ff90)();
   if (param_1 != -1) {
     pTVar1 = g_pNationInteractionStateManager->vftable;
     sVar4 = UiRuntimeContext::GetActiveNationId();
@@ -148,10 +148,10 @@ LAB_005bd73a:
       } while (iVar8 < 0x17);
     }
     pTVar7 = this->vftable;
-    (*pTVar7[0x35].slot_0x04)();
-    (*pTVar7[0x36].GetTEventHandlerClassNamePointer)(1);
+    (*pTVar7->OrphanCallChain_C8_I82_0056fc80)();
+    (*pTVar7->OrphanCallChain_C8_I118_0056fdb0)(1);
   }
-  (*pTVar7[0x1c].slot_0x04)();
+  (*pTVar7->VTableSlot39)();
 LAB_005bd863:
   *unaff_FS_OFFSET = local_c;
   return;

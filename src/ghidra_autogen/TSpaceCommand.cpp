@@ -14,18 +14,17 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
 {
   TSpaceCommandVtbl *pTVar1;
   TSpaceCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar2;
-  TSpaceCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar3;
-  TSpaceCommand_GetTEventClassNamePointer_0x00 *pTVar4;
-  bool bVar5;
-  char cVar6;
+  _vslot_fn *p_Var3;
+  bool bVar4;
+  char cVar5;
   TMapMaker *this_00;
-  undefined4 uVar7;
+  undefined4 uVar6;
+  int iVar7;
   int iVar8;
   int iVar9;
   int iVar10;
   int iVar11;
   int iVar12;
-  int iVar13;
   undefined4 *unaff_FS_OFFSET;
   TSpaceCommand *pTStack_14;
   undefined4 uStack_c;
@@ -36,12 +35,12 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00633c92;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar11 = 0;
+  iVar10 = 0;
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   pTVar1 = this->vftable;
-  (*pTVar1[5].GetTEventClassNamePointer)();
+  (*pTVar1->NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
@@ -55,37 +54,37 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   }
   uStack_4 = 0xffffffff;
   if ((g_pLocalizationTable->field_0x112 != '\0') ||
-     (bVar5 = false, *(short *)&g_pLocalizationTable->field_0x114 != 0)) {
-    bVar5 = true;
+     (bVar4 = false, *(short *)&g_pLocalizationTable->field_0x114 != 0)) {
+    bVar4 = true;
   }
   *(undefined1 *)((int)&pTStack_14[0x15].vftable + 1) = *(undefined1 *)&this[1].vftable;
-  if (bVar5) {
+  if (bVar4) {
     if (g_pLocalizationTable->field_0x112 == '\0') {
-      cVar6 = LoadScenarioMapStateFromTableResource
+      cVar5 = LoadScenarioMapStateFromTableResource
                         (*(short *)&g_pLocalizationTable->field_0x114 + -1);
-      if (cVar6 == '\0') {
+      if (cVar5 == '\0') {
         if (pTStack_14 != (TSpaceCommand *)0x0) {
-          (*pTStack_14->vftable[3].OrphanCallChain_C1_I17_00487470)();
+          (*pTStack_14->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
         }
-        (*pTVar1[3].OrphanCallChain_C1_I17_00487470)();
+        (*pTVar1->QueueCityRecruitmentSupportCommandsIfDeficit)();
         g_pGlobalMapState = (TMapMgr *)0x0;
-        uVar7 = 0;
+        uVar6 = 0;
         goto LAB_0050efe5;
       }
     }
     else {
-      (*pTVar1[6].GetTEventClassNamePointer)();
-      pTVar2 = pTVar1[6].OrphanCallChain_C1_I17_00487470;
-      pTVar3 = pTVar1[7].OrphanCallChain_C1_I17_00487470;
+      (*pTVar1[1].GetTEventClassNamePointer)();
+      pTVar2 = pTVar1[1].OrphanCallChain_C1_I17_00487470;
+      p_Var3 = pTVar1[1].AssertValid;
       do {
-        (*pTVar2)(iVar11);
-        (*pTVar3)(iVar11,0);
-        iVar11 = iVar11 + 1;
-      } while ((short)iVar11 < 0x1950);
+        (*pTVar2)(iVar10);
+        (*p_Var3)(iVar10,0);
+        iVar10 = iVar10 + 1;
+      } while ((short)iVar10 < 0x1950);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x4c))(0x3c0,0);
     }
     *(undefined4 *)&pTStack_14->field_0x8 = *(undefined4 *)&this->field_0xc;
-    (*pTStack_14->vftable[0xc].OrphanCallChain_C1_I17_00487470)(1);
+    (*pTStack_14->vftable[2].OrphanCallChain_C1_I17_00487470)(1);
   }
   else if (param_1.m_pchData == (char *)0x0) {
     if (param_2 == (char *)0x0) {
@@ -105,53 +104,53 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
-  if (!bVar5) {
-    iVar12 = 0;
+  if (!bVar4) {
     iVar11 = 0;
-    pTVar4 = this->vftable[8].GetTEventClassNamePointer;
+    iVar10 = 0;
+    p_Var3 = this->vftable[1].Dump;
     do {
-      (*pTVar4)(iVar12);
-      iVar8 = *(int *)&this->field_0xc + iVar11;
-      iVar12 = iVar12 + 1;
-      iVar11 = iVar11 + 0x24;
-      *(undefined1 *)(iVar8 + 3) = *(undefined1 *)(iVar8 + 4);
-    } while ((short)iVar12 < 0x1950);
+      (*p_Var3)(iVar11);
+      iVar7 = *(int *)&this->field_0xc + iVar10;
+      iVar11 = iVar11 + 1;
+      iVar10 = iVar10 + 0x24;
+      *(undefined1 *)(iVar7 + 3) = *(undefined1 *)(iVar7 + 4);
+    } while ((short)iVar11 < 0x1950);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
   RebuildTileOwnerNeighborCachesAndFallbackAssignments();
-  if (bVar5) {
-    iVar12 = 0;
+  if (bVar4) {
     iVar11 = 0;
+    iVar10 = 0;
     do {
-      iVar9 = *(int *)&this->field_0x10 + iVar12;
-      iVar8 = iVar11;
-      if (((*(short *)(iVar9 + 0x42) != -1) && (*(char *)(iVar9 + 0xa3) == -1)) &&
-         (iVar8 = iVar11 + 1, *(char *)(iVar9 + 0xa3) != iVar11)) {
-        *(char *)(iVar9 + 0xa3) = (char)iVar11;
-        iVar9 = *(int *)&this->field_0x10;
-        iVar13 = 0;
-        if ('\0' < *(char *)(iVar12 + 8 + iVar9)) {
-          iVar10 = iVar12 + 10;
+      iVar8 = *(int *)&this->field_0x10 + iVar11;
+      iVar7 = iVar10;
+      if (((*(short *)(iVar8 + 0x42) != -1) && (*(char *)(iVar8 + 0xa3) == -1)) &&
+         (iVar7 = iVar10 + 1, *(char *)(iVar8 + 0xa3) != iVar10)) {
+        *(char *)(iVar8 + 0xa3) = (char)iVar10;
+        iVar8 = *(int *)&this->field_0x10;
+        iVar12 = 0;
+        if ('\0' < *(char *)(iVar11 + 8 + iVar8)) {
+          iVar9 = iVar11 + 10;
           do {
-            TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar10 + iVar9),iVar11);
-            iVar9 = *(int *)&this->field_0x10;
-            iVar13 = iVar13 + 1;
-            iVar10 = iVar10 + 2;
-          } while (iVar13 < *(char *)(iVar12 + 8 + iVar9));
+            TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren(this,(int)*(short *)(iVar9 + iVar8),iVar10);
+            iVar8 = *(int *)&this->field_0x10;
+            iVar12 = iVar12 + 1;
+            iVar9 = iVar9 + 2;
+          } while (iVar12 < *(char *)(iVar11 + 8 + iVar8));
         }
       }
-      iVar12 = iVar12 + 0xa8;
-      iVar11 = iVar8;
-    } while (iVar12 < 0xfc00);
+      iVar11 = iVar11 + 0xa8;
+      iVar10 = iVar7;
+    } while (iVar11 < 0xfc00);
   }
-  iVar11 = 0;
+  iVar10 = 0;
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
-  if (!bVar5) {
-    (*this->vftable[8].OrphanCallChain_C1_I17_00487470)();
+  if (!bVar4) {
+    (*this->vftable[1].WriteTo)();
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
@@ -163,14 +162,14 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
   }
-  if (!bVar5) {
-    pTVar2 = this->vftable[6].OrphanCallChain_C1_I17_00487470;
-    pTVar3 = this->vftable[7].OrphanCallChain_C1_I17_00487470;
+  if (!bVar4) {
+    pTVar2 = this->vftable[1].OrphanCallChain_C1_I17_00487470;
+    p_Var3 = this->vftable[1].AssertValid;
     do {
-      (*pTVar2)(iVar11);
-      (*pTVar3)(iVar11,0);
-      iVar11 = iVar11 + 1;
-    } while ((short)iVar11 < 0x1950);
+      (*pTVar2)(iVar10);
+      (*p_Var3)(iVar10,0);
+      iVar10 = iVar10 + 1;
+    } while ((short)iVar10 < 0x1950);
   }
   if (DAT_006a4268 != (TSpaceCommand *)0x0) {
     TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
@@ -181,12 +180,12 @@ TSpaceCommand::BuildOrLoadGlobalMapStateForSession
   }
   this->field_0x8 = 1;
   if (pTStack_14 != (TSpaceCommand *)0x0) {
-    (*pTStack_14->vftable[3].OrphanCallChain_C1_I17_00487470)();
+    (*pTStack_14->vftable->QueueCityRecruitmentSupportCommandsIfDeficit)();
   }
-  uVar7 = 1;
+  uVar6 = 1;
 LAB_0050efe5:
   *unaff_FS_OFFSET = uStack_c;
-  return uVar7;
+  return uVar6;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050F6B0
@@ -362,8 +361,8 @@ LAB_00525acd:
       if (DAT_006a4268 != (TSpaceCommand *)0x0) {
         TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
       }
-      (*pTVar1[5].OrphanCallChain_C1_I17_00487470)();
-      cVar2 = (*pTVar1[0xd].GetTEventClassNamePointer)();
+      (*pTVar1->OrphanRetStub_00487a00)();
+      cVar2 = (*pTVar1[2].Serialize)();
       if (cVar2 == '\0') {
         cVar2 = ValidateAllColumnsHaveAssignedRegionClass();
         if (cVar2 == '\0') {
@@ -395,17 +394,17 @@ LAB_00525acd:
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
-    (*pTVar1[7].GetTEventClassNamePointer)();
+    (*pTVar1[1].Serialize)();
     if ((DAT_006a4268 != (TSpaceCommand *)0x0) &&
        (TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268), DAT_006a4268 != (TSpaceCommand *)0x0)
        ) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
-    (*pTVar1[0xf].GetTEventClassNamePointer)();
+    (*pTVar1[2].ReadFrom)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
-    (*pTVar1[7].OrphanCallChain_C1_I17_00487470)();
+    (*pTVar1[1].AssertValid)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
@@ -413,7 +412,7 @@ LAB_00525acd:
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
-    (*pTVar1[0xc].OrphanCallChain_C1_I17_00487470)(0);
+    (*pTVar1[2].OrphanCallChain_C1_I17_00487470)(0);
     pcVar5 = (char *)*param_2;
     uVar9 = DAT_006a38e8;
     if (DAT_006976d8 != '\0') {
@@ -724,7 +723,7 @@ LAB_005262cf:
       }
       return;
     }
-    (*g_pGlobalMapState->vftable[5].GetTMapMgrClassNamePointer)();
+    (*g_pGlobalMapState->vftable->WrapperFor_AllocateWithFallbackHandler_At0050e8b0)();
     if (DAT_006a4268 != (TSpaceCommand *)0x0) {
       TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(DAT_006a4268);
     }
@@ -841,7 +840,7 @@ TSpaceCommand::CreateTurnEventPacket_Vtbl00661b10WithInitParam
   InitializeRangePairAndResetCursor(0x4e415341,g_pGlobalUiRootController,0,0,0);
   pTVar1[1].vftable = (TCommandVtbl *)this;
   pTVar1[1].field_0x4 = param_1;
-  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(pTVar1);
   *unaff_FS_OFFSET = this_00;
   return;
 }
@@ -888,7 +887,7 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_50 = 0x686f7421;
-  pTVar1 = this->vftable[0x12].OrphanCallChain_C1_I17_00487470;
+  pTVar1 = this->vftable[3].OrphanCallChain_C1_I17_00487470;
   iStack_54 = 0x57835d;
   uVar3 = (*pTVar1)();
   iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
@@ -920,13 +919,13 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   pTStack_3c = (TLoadSavePicture *)0x7d0;
   uStack_38 = 0x898;
   (**(code **)(iStack_54 + 0xf0))();
-  (*this->vftable[0x39].GetTEventClassNamePointer)();
+  (*this->vftable[9].ReadFrom)();
   uVar3 = (*pTVar1)();
   iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0x1c8))();
   if ((char)uStack_38 != '\0') {
-    uVar3 = (*this->vftable[0xb].GetTEventClassNamePointer)();
+    uVar3 = (*this->vftable[1].NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94)();
     (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
   }
   DAT_006a4268 = this;
@@ -941,7 +940,7 @@ void TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview()
   TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame(this);
   uVar3 = (*pTVar1)();
   pTStack_3c = (TLoadSavePicture *)CONCAT31(extraout_var_04,uVar3);
-  (*pTStack_3c->vftable[1].slot_0x04)();
+  (*pTStack_3c->vftable->AssertValid)();
   uStack_94 = 0x5784f7;
   TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(pTStack_3c,0);
   ApplyPaletteMaskToTileBufferByEventCode();
@@ -1010,7 +1009,7 @@ void TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame()
     this[5].vftable = (TSpaceCommandVtbl *)0x0;
   }
   uStack_44 = 0x676c6f62;
-  uVar2 = (*this->vftable[0x12].OrphanCallChain_C1_I17_00487470)();
+  uVar2 = (*this->vftable[3].OrphanCallChain_C1_I17_00487470)();
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0x1c8))(*(short *)&this[5].vftable + 0x11d0,0);

@@ -142,7 +142,7 @@ void TRemoteGreatPower::AddRegionIdToNationOwnedRegionList()
 {
                     /* WARNING: Could not recover jumptable at 0x005419e2. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*this->vftable[0x39].slot_0x04)();
+  (*this->vftable->SelectCandidateTilesWithLowGroundUnitCount_73)();
   return;
 }
 

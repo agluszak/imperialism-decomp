@@ -54,7 +54,7 @@ void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
 
 {
   TStatusPictureVtbl *pTVar1;
-  TStatusPicture_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   char cVar3;
   undefined uVar4;
   thunk_TPictureButton *this_00;
@@ -106,19 +106,19 @@ void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   } while (iVar7 < 7);
   iVar6 = 0;
   pTVar1 = this->vftable;
-  pTVar2 = pTVar1[0x12].slot_0x04;
+  p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   do {
-    uVar4 = (*pTVar2)(iVar6 + 0x74616230);
+    uVar4 = (*p_Var2)(iVar6 + 0x74616230);
     LoadUiStringByGroupAndIndexToControlObject(0x2757,iVar6 + 9,uVar4);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 10);
   InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00668b88,0x6d61696e);
-  uVar4 = (*pTVar2)(0x656e6420);
+  uVar4 = (*p_Var2)(0x656e6420);
   LoadUiStringByGroupAndIndexToControlObject(0x2730,0xd,uVar4);
-  uVar4 = (*pTVar2)(0x71756572);
+  uVar4 = (*p_Var2)(0x71756572);
   LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar4);
   *(undefined4 *)&this->field_0x90 = 0;
-  (*pTVar1[0x1c].slot_0x04)();
+  (*pTVar1->VTableSlot39)();
   RecomputeNationComparativePowerMetrics();
   local_4 = 0;
   iVar6 = 0;
@@ -148,9 +148,9 @@ void TStatusPicture::OrphanLeaf_NoCall_Ins07_004d8920()
   } while (local_4 < 0x70);
   TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(this);
   g_pCursorControlPanel = (TControl *)(*unaff_EBP)(0x63757273);
-  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
-  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
-  *unaff_FS_OFFSET = pTVar2;
+  (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
+  *unaff_FS_OFFSET = p_Var2;
   return;
 }
 
@@ -183,16 +183,17 @@ TStatusPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
     iVar11 = (int)(short)(*(short *)(param_2 + 0x1c) + -0x6230);
     if (iVar11 != *(int *)&this->field_0x90) {
       pTVar1 = this->vftable;
-      uVar3 = (*pTVar1[0x12].slot_0x04)(*(int *)&this->field_0x90 + 0x74616230);
+      uVar3 = (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25)(*(int *)&this->field_0x90 + 0x74616230)
+      ;
       iVar9 = *(int *)CONCAT31(extraout_var,uVar3);
       (**(code **)(iVar9 + 0xc))();
       (**(code **)(iVar9 + 0xa4))(0,1);
       pTVar2 = this->vftable;
-      (*pTVar2[1].slot_0x04)();
-      (*pTVar2[0x14].slot_0x04)(1);
-      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x13f0,0,1);
+      (*pTVar2->AssertValid)();
+      (*pTVar2->ReleaseRuntimeSelectionOwnerAndDestroyObject_29)(1);
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x13f0,0,1);
       iRam00000091 = iVar11;
-      (*pTVar1[0x1c].slot_0x04)();
+      (*pTVar1->VTableSlot39)();
       if (iVar11 == 0) {
         RecomputeNationComparativePowerMetrics();
         iVar11 = 0;
@@ -355,7 +356,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets()
   psVar9 = (short *)&this->field_0xb0;
   do {
     if (*psVar9 != -1) {
-      uVar4 = (*this->vftable[0x12].slot_0x04)(iVar8 + 0x70696330);
+      uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(iVar8 + 0x70696330);
       iVar2 = *(int *)CONCAT31(extraout_var,uVar4);
       (**(code **)(iVar2 + 0xc))();
       (**(code **)(iVar2 + 0x1c8))(*psVar9 + 0x10d7,1);

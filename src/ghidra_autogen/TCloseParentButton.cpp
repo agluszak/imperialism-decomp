@@ -101,13 +101,13 @@ TCloseParentButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
   undefined3 extraout_var_00;
   
   pTVar1 = this->vftable;
-  uVar2 = (*pTVar1[0x17].slot_0x04)();
+  uVar2 = (*pTVar1->VTableSlot2F)();
   if (param_1 == CONCAT31(extraout_var,uVar2)) {
-    cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+    cVar3 = (*pTVar1->GetTEventHandlerClassNamePointer_0a)();
     if (cVar3 != '\0') {
-      cVar3 = (*pTVar1[0x37].slot_0x04)();
+      cVar3 = (*pTVar1->LogUnhandledDialogMethodAndReturnFalse)();
       if (cVar3 == '\0') {
-        uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+        uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
         (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0xa0))();
       }
     }

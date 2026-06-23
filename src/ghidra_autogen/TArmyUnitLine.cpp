@@ -176,20 +176,20 @@ void TArmyUnitLine::OrphanRetStub_0056f460(int param_1)
   if (*(short *)(&DAT_00695528 + *(short *)(*(int *)&this->field_0x10 + 4) * 2) == 0) {
     CStack_54.m_pchData = (char *)0x0;
     uStack_58 = (CString *)0x4a8f5a;
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     pCStack_5c = (CString *)0x0;
   }
   else {
     CStack_54.m_pchData = (char *)0x1;
     uStack_58 = (CString *)0x4a8f39;
-    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    (*pTVar4->UpdateControlCachedIntFromWindowText_2a)();
     this_00->hasCommandTagResource = 4;
     if (*(int *)(*(int *)&this->field_0x10 + 8) != 0) goto LAB_004a8f66;
     pCStack_5c = (CString *)0x1;
   }
   uStack_58 = (CString *)0x0;
   piStack_60 = (int *)0x4a8f66;
-  (*pTVar4[0x39].GetTEventHandlerClassNamePointer)();
+  (*pTVar4[1].VTableSlot01)();
 LAB_004a8f66:
   uStack_58 = (CString *)0x4a8f6f;
   CString::CString(&CStack_3c);

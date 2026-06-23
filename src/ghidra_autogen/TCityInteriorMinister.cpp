@@ -936,7 +936,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
     iVar4 = iVar4 + 1;
   } while (iVar4 < 0x17);
   pTVar1 = this->vftable;
-  (*pTVar1[0x1e].DeletingDestructTMinister)(piVar3);
+  (*pTVar1->VTableSlot3D)(piVar3);
   (**(code **)(*piVar3 + 0x28))();
   iVar4 = 7;
   do {
@@ -945,12 +945,12 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
     }
     iVar4 = iVar4 + 1;
   } while (iVar4 < 0x3d);
-  (*pTVar1[0x1f].GetTMinisterClassNamePointer)();
-  (*pTVar1[0x1f].DeletingDestructTMinister)();
-  (*pTVar1[0x20].GetTMinisterClassNamePointer)();
-  (*pTVar1[0x20].DeletingDestructTMinister)();
-  (*pTVar1[0x21].GetTMinisterClassNamePointer)();
-  (*pTVar1[0x22].DeletingDestructTMinister)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_3e)();
+  (*pTVar1->OrphanRetStub_004be6d0)();
+  (*pTVar1->OrphanCallChain_C11_I88_004874b0_40)();
+  (*pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_41)();
+  (*pTVar1->OrphanCallChain_C11_I88_004874b0_42)();
+  (*pTVar1[1].GetTTaskClassNamePointer)();
   puVar5 = (undefined4 *)&this->field_0xba;
   for (iVar4 = 8; iVar4 != 0; iVar4 = iVar4 + -1) {
     *puVar5 = 0;
@@ -1021,25 +1021,25 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1)
 {
   if ((*(char *)(param_1 + 0x7c) == '\0') || (*(char *)(param_1 + 0x7d) != '\0')) {
     if ((*(char *)(param_1 + 0x7c) == '\0') && (*(char *)(param_1 + 0x7d) != '\0')) {
-      (*this->vftable[0x13].GetTMinisterClassNamePointer)(param_1);
+      (*this->vftable->SerializeTMinisterBaseOrderArrayHeader)(param_1);
     }
   }
   else {
-    (*this->vftable[0x12].DeletingDestructTMinister)(param_1);
+    (*this->vftable->UpdateDiplomatProgressFromProductionSlots2And4)(param_1);
   }
   if (*(short *)&this->field_0x3e != 0) {
-    (*this->vftable[0x15].DeletingDestructTMinister)(param_1);
+    (*this->vftable->OrphanRetStub_0059add0_2b)(param_1);
   }
   if (*(short *)&this->field_0x32 != 0) {
-    (*this->vftable[0x14].GetTMinisterClassNamePointer)(param_1);
+    (*this->vftable->GetTEventHandlerClassNamePointer_28)(param_1);
   }
   if (-1 < *(short *)&this->field_0x36) {
-    (*this->vftable[0x14].DeletingDestructTMinister)(param_1);
+    (*this->vftable->VTableSlot29)(param_1);
   }
   if (-1 < *(short *)&this->field_0x38) {
-    (*this->vftable[0x15].GetTMinisterClassNamePointer)(param_1);
+    (*this->vftable->DispatchNationStateEventCode10)(param_1);
   }
-  (*this->vftable[0x11].DeletingDestructTMinister)(param_1);
+  (*this->vftable->VTableSlot23)(param_1);
   return;
 }
 
@@ -1528,7 +1528,7 @@ TCityInteriorMinister::DispatchNationStateEventCode10
 void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
 
 {
-  TCity_slot_0x04_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   bool bVar2;
   undefined uVar3;
   short sVar4;
@@ -1580,7 +1580,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
     }
     pcStack_8c = *(code **)(iVar6 + 0x30);
     iVar6 = (*pcStack_8c)();
-    this = (TCityInteriorMinister *)param_1->vftable[9].slot_0x04;
+    this = (TCityInteriorMinister *)param_1->vftable->AllocateNeedFromOwnerSlot4C;
     unaff_EBX = (code *)CONCAT22((short)((uint)unaff_EBX >> 0x10),(short)piVar17[0x12]);
     iVar7 = TCity::GetCityBuildingProductionValueBySlot
                       (param_1,*(short *)((int)piVar17 + 0x52));
@@ -1599,7 +1599,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
         if ((short)iVar6 < (short)iVar16) {
           iVar7 = (*unaff_ESI)(iStack_a0,iVar16 - iVar6);
           if ((short)(iVar6 + iVar7) < (short)iVar16) {
-            (*param_1->vftable[9].GetTCityClassNamePointer)(uVar13,iVar16 - (iVar6 + iVar7));
+            (*param_1->vftable->WriteQueuePairSlot48)(uVar13,iVar16 - (iVar6 + iVar7));
             iVar6 = *(int *)(unaff_EDI + 4);
             iVar7 = (int)(short)(ushort)bVar2;
             sVar4 = ((*(short *)(iVar6 + 0x10e + iVar7 * 2) -
@@ -1645,7 +1645,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
             sVar4 = (short)*piVar9 - sVar4;
             piVar17 = unaff_EBP;
             if (0 < sVar4) {
-              (*param_1->vftable[9].GetTCityClassNamePointer)(iVar12,CONCAT22((short)uVar13,sVar4));
+              (*param_1->vftable->WriteQueuePairSlot48)(iVar12,CONCAT22((short)uVar13,sVar4));
               sVar11 = (short)iVar12;
               iVar16 = (int)sVar11;
               sVar5 = *(short *)(*(int *)(unaff_EDI + 4) + 0x10e + iVar16 * 2) -
@@ -1680,7 +1680,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
   iVar16 = *(int *)&this->field_0x4;
   uVar13 = (uint)(ushort)(*(short *)(iVar16 + 0xa6) - *(short *)(iVar16 + 0xa8));
   if ((short)param_1->fieldB6[5] < 5) {
-    uVar3 = (*param_1->vftable[9].slot_0x04)
+    uVar3 = (*param_1->vftable->AllocateNeedFromOwnerSlot4C)
                       (5,CONCAT22((short)((uint)iVar16 >> 0x10),*(undefined2 *)(iVar16 + 0x118)));
     iVar16 = CONCAT31(extraout_var,uVar3);
     uVar13 = uVar13 - iVar16;
@@ -1695,7 +1695,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
       iVar16 = 0x14 - iStack_94;
     }
     if (0 < (short)iVar16) {
-      uVar3 = (*param_1->vftable[9].slot_0x04)(iVar12,iVar16);
+      uVar3 = (*param_1->vftable->AllocateNeedFromOwnerSlot4C)(iVar12,iVar16);
       iVar16 = CONCAT31(extraout_var_00,uVar3);
       iStack_94 = iStack_94 + iVar16;
     }
@@ -1720,10 +1720,10 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer(TCity *param_1)
           (**(code **)(iVar16 + 0x40))(auStack_84,iVar12);
           iVar16 = 0;
           ppcVar14 = &pcStack_8c;
-          pTVar1 = param_1->vftable[9].slot_0x04;
+          p_Var1 = param_1->vftable->AllocateNeedFromOwnerSlot4C;
           uVar10 = extraout_EDX;
           do {
-            (*pTVar1)(iVar16,CONCAT22((short)((uint)uVar10 >> 0x10),*(undefined2 *)ppcVar14));
+            (*p_Var1)(iVar16,CONCAT22((short)((uint)uVar10 >> 0x10),*(undefined2 *)ppcVar14));
             ppcVar14 = (code **)((int)ppcVar14 + 2);
             iVar16 = iVar16 + 1;
             uVar10 = extraout_EDX_00;
@@ -1741,10 +1741,10 @@ LAB_004c0c1d:
   uVar8 = 0;
   while ((0 < sVar4 && ((short)uVar8 != (short)uVar13))) {
     iVar16 = 0;
-    pTVar1 = param_1->vftable[9].slot_0x04;
+    p_Var1 = param_1->vftable->AllocateNeedFromOwnerSlot4C;
     uVar15 = uVar13;
     do {
-      uVar3 = (*pTVar1)(iVar16,1);
+      uVar3 = (*p_Var1)(iVar16,1);
       uVar15 = uVar15 - CONCAT31(extraout_var_01,uVar3);
       iVar16 = iVar16 + 1;
     } while (iVar16 < 0x17);
@@ -1809,7 +1809,7 @@ TCityInteriorMinister::SetForeignMinisterReadyFlag14
 short TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
 
 {
-  TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *this_00;
+  _vslot_fn *this_00;
   undefined uVar1;
   short sVar2;
   int iVar3;
@@ -1860,7 +1860,7 @@ short TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
     (**(code **)(**(int **)&this->field_0x4 + 0x114))(iVar9,0);
     iVar9 = iVar9 + 1;
   } while ((short)iVar9 < 0x17);
-  this_00 = this->vftable[0x17].GetTMinisterClassNamePointer;
+  this_00 = this->vftable->SetForeignMinisterReadyFlag14_2e;
   pTVar15 = (TCityInteriorMinister *)0x11;
   pcVar16 = pcVar7;
   uVar1 = (*this_00)(0x11,CONCAT22(extraout_var_00,*(undefined2 *)(iVar3 + 0x22)));
@@ -2181,14 +2181,14 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
     iVar7 = iVar7 + 1;
   } while (iVar7 < 0x1950);
   pTVar1 = this->vftable;
-  uVar4 = (*pTVar1[0x1d].DeletingDestructTMinister)(&puStack_1c);
+  uVar4 = (*pTVar1->VTableSlot3B)(&puStack_1c);
   iVar9 = CONCAT31(extraout_var,uVar4);
   iStack_28 = iVar9;
-  uVar4 = (*pTVar1[0x1e].GetTMinisterClassNamePointer)(&local_20);
+  uVar4 = (*pTVar1->GetTEventHandlerClassNamePointer_3c)(&local_20);
   iVar7 = CONCAT31(extraout_var_00,uVar4);
-  (*pTVar1[0x23].DeletingDestructTMinister)(auStack_24,iVar9);
+  (*pTVar1[1].GetTEventHandlerClassNamePointer)(auStack_24,iVar9);
   if (*(short *)&this->field_0x3c == -1) {
-    (*pTVar1[0x1b].GetTMinisterClassNamePointer)(iVar9,unaff_ESI);
+    (*pTVar1->SetForeignMinisterReadyFlag14_36)(iVar9,unaff_ESI);
   }
   sVar5 = *(short *)&this->field_0x3c;
   iVar11 = 0;
@@ -2206,7 +2206,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
       psVar8 = psVar8 + 1;
     } while (iVar11 < 0x17);
     if (((short)iVar10 != -1) &&
-       ((*this->vftable[0x1c].GetTMinisterClassNamePointer)(iVar10,&puStack_2c,iVar9,unaff_ESI),
+       ((*this->vftable->GetTEventHandlerClassNamePointer_38)(iVar10,&puStack_2c,iVar9,unaff_ESI),
        *(short *)&this->field_0x3c == -1)) {
       *(undefined2 *)(&this->field_0xfc + (short)iVar10 * 2) = 0;
     }
@@ -2239,10 +2239,10 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
       } while (iVar10 <= sVar5);
     }
     if (!bVar2) {
-      (*this->vftable[0x16].DeletingDestructTMinister)(4);
+      (*this->vftable->VTableSlot2D)(4);
     }
     if (iVar11 != 0) {
-      (*this->vftable[0x1b].DeletingDestructTMinister)(iVar11,iVar7,unaff_ESI);
+      (*this->vftable->VTableSlot37)(iVar11,iVar7,unaff_ESI);
     }
   }
   else {
@@ -2250,8 +2250,8 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
     iVar7 = iVar9;
   }
   pTVar1 = this->vftable;
-  (*pTVar1[0x18].DeletingDestructTMinister)();
-  (*pTVar1[0x19].DeletingDestructTMinister)();
+  (*pTVar1->VTableSlot31)();
+  (*pTVar1->VTableSlot33)();
   FreeHeapBufferIfNotNull(unaff_ESI);
   FreeHeapBufferIfNotNull(iVar7);
   puStack_2c = &DAT_00650a68;
@@ -2306,7 +2306,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
   *unaff_FS_OFFSET = &uStack_c;
   piVar8 = *(int **)(*(int *)&this->field_0x4 + 0x89c);
   pcVar1 = *(code **)(*(int *)&this->field_0x4 + 0x898);
-  (*this->vftable[0x19].GetTMinisterClassNamePointer)();
+  (*this->vftable->GetTEventHandlerClassNamePointer_32)();
   WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0(0);
   uVar12 = *(uint *)pcVar1;
   uStack_4 = 0;
@@ -2385,7 +2385,7 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
             }
             sVar4 = *psVar9;
             puVar6 = (undefined4 *)CONCAT22((short)((uint)puVar6 >> 0x10),sVar4);
-            cVar3 = (*pTVar10->vftable[0xe].GetTMapMgrClassNamePointer)
+            cVar3 = (*pTVar10->vftable->OrphanLeaf_NoCall_Ins31_00514360)
                               (puVar6,CONCAT22((short)((uint)psVar9 >> 0x10),(short)piVar8[1]),10);
             pTVar10 = g_pGlobalMapState;
             if ((cVar3 == '\0') &&
@@ -2399,9 +2399,9 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
                 if (((sVar4 != -1) && ((&DAT_006963b8)[sVar4] == (short)piVar8[1])) &&
                    (((&DAT_00650638)[sVar4] != '\0' ||
                     ((short)*(char *)(iVar7 + 4) == *(short *)(iRam00000005 + 0xc))))) {
-                  (*pTVar10->vftable[0x1a].GetTMapMgrClassNamePointer)
+                  (*pTVar10->vftable->OrphanLeaf_NoCall_Ins37_00513720)
                             (puVar6,uStack_38,(int)*(short *)(iRam00000005 + 0xc));
-                  cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)
+                  cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)
                                     (puVar6,uStack_38);
                   cVar13 = (char)(unaff_EBX >> 0x18);
                   pTVar10 = g_pGlobalMapState;
@@ -2421,7 +2421,8 @@ void TCityInteriorMinister::_scalar_deleting_destructor_()
           (**(code **)(iVar5 + 0x28))(puVar6);
           (**(code **)(iVar5 + 0x34))(10,puVar6);
           iVar5 = **(int **)(unaff_EBP + 4);
-          cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(puVar6,iStack_44);
+          cVar3 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)
+                            (puVar6,iStack_44);
           (**(code **)(iVar5 + 0x38))(-*(int *)(&DAT_00650660 + cVar3 * 4));
         }
       }
@@ -2496,7 +2497,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
         psVar7 = psVar7 + 1;
       } while ((int)psVar6 < 0x6963e6);
       if (bVar4) {
-        (*this->vftable[0x16].DeletingDestructTMinister)(iVar5);
+        (*this->vftable->VTableSlot2D)(iVar5);
       }
     }
     iVar5 = iVar5 + -1;
@@ -2725,7 +2726,8 @@ LAB_004c237a:
     nTargetClass = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar18);
     if ((6 < nTargetClass) && (nTargetClass < 0x17)) {
       if (((*(short *)&g_apTerrainTypeDescriptorTable[nTargetClass]->field_0xe == -1) ||
-          (cVar6 = (*g_apTerrainTypeDescriptorTable[nTargetClass]->vftable[0xb].slot_0x04)
+          (cVar6 = (*g_apTerrainTypeDescriptorTable[nTargetClass]->vftable->
+                     IsDiplomacyTargetClassCode200Match)
                              ((int)*(short *)(*(int *)&this->field_0x4 + 0xc)), cVar6 != '\0')) &&
          ((((&DAT_00650650)[*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + iVar18)] !=
             '\0' && (sVar8 = TControl::LookupOrderCompatibilityMatrixValue
@@ -2897,14 +2899,15 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
            pTVar9 = (TCityInteriorMinister *)
                     CONCAT22((short)((uint)pTVar9 >> 0x10),(short)(char)*puVar1),
            (short)(char)*puVar1 == (short)cVar2)) {
-          cVar4 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(local_28,1);
+          cVar4 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(local_28,1)
+          ;
           bVar5 = CheckTileProspectingDiscoveryCandidate(g_pGlobalMapState,sVar12);
           pTVar9 = (TCityInteriorMinister *)CONCAT31(extraout_var,bVar5);
           if (bVar5 != 0) {
-            cVar6 = (*g_pGlobalMapState->vftable[0xd].slot_0x04)(local_28,0);
+            cVar6 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins18_00514310)(local_28,0);
             pTVar9 = (TCityInteriorMinister *)CONCAT31(extraout_var_00,cVar6);
             if (cVar6 == '\0') {
-              cVar6 = (*g_pGlobalMapState->vftable[0x1a].GetTMapMgrClassNamePointer)
+              cVar6 = (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins37_00513720)
                                 (local_28,1,(int)*(short *)(*(int *)&this->field_0x4 + 0xc));
               pTVar9 = (TCityInteriorMinister *)CONCAT31(extraout_var_01,cVar6);
               if (cVar4 < cVar6) {
@@ -2950,7 +2953,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
                   pTVar9 = (TCityInteriorMinister *)(*(uint *)(iVar7 + 0x16c) & 0xffffff00);
                 }
                 if ((char)pTVar9 != '\0') {
-                  (*pTStack_2c->vftable[0x16].DeletingDestructTMinister)(0);
+                  (*pTStack_2c->vftable->VTableSlot2D)(0);
                   pTVar9 = (TCityInteriorMinister *)((uint)extraout_var_02 << 8);
                 }
               }
@@ -3145,7 +3148,7 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
   short nTileIndex;
   int iVar1;
   code *pcVar2;
-  TCityInteriorMinister_DeletingDestructTMinister_0x04 *pTVar3;
+  _vslot_fn *p_Var3;
   bool bVar4;
   char cVar5;
   undefined uVar6;
@@ -3255,11 +3258,11 @@ TCityInteriorMinister::GetTEventHandlerClassNamePointer
     param_1 = -1;
     if (0 < iVar11) {
       pcVar2 = *(code **)(iVar1 + 0x24);
-      pTVar3 = this->vftable[0x1c].DeletingDestructTMinister;
+      p_Var3 = this->vftable->VTableSlot39;
       param_1 = -1;
       do {
         uVar8 = (*pcVar2)(iVar10);
-        uVar6 = (*pTVar3)(uVar8);
+        uVar6 = (*p_Var3)(uVar8);
         if ((short)uVar12 < (short)CONCAT31(extraout_var,uVar6)) {
           param_1 = (*pcVar2)(iVar10);
           uVar12 = CONCAT31(extraout_var,uVar6);
@@ -3623,7 +3626,7 @@ undefined4 * TCityInteriorMinister::GetTEventHandlerClassNamePointer(int param_1
 void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
 
 {
-  TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar1;
+  _vslot_fn *p_Var1;
   undefined uVar2;
   int iVar3;
   undefined3 extraout_var;
@@ -3648,24 +3651,24 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
   
   iVar6 = 0;
   iVar3 = (**(code **)(*param_1 + 0x74))();
-  pTVar1 = this->vftable[0x23].GetTMinisterClassNamePointer;
-  uVar2 = (*pTVar1)(0x11,CONCAT22(extraout_var_12,*(undefined2 *)(iVar3 + 0x22)),7);
+  p_Var1 = this->vftable[1].ConstructTTaskBaseState;
+  uVar2 = (*p_Var1)(0x11,CONCAT22(extraout_var_12,*(undefined2 *)(iVar3 + 0x22)),7);
   if ((short)CONCAT31(extraout_var,uVar2) < *(short *)(iVar3 + 0x22)) {
     iVar6 = CONCAT22(extraout_var_09,*(short *)(iVar3 + 0x22)) - CONCAT31(extraout_var,uVar2);
   }
   iVar7 = 0x12;
-  uVar2 = (*pTVar1)(0x12,CONCAT22((short)((uint3)extraout_var >> 8),*(undefined2 *)(iVar3 + 0x24)),7
+  uVar2 = (*p_Var1)(0x12,CONCAT22((short)((uint3)extraout_var >> 8),*(undefined2 *)(iVar3 + 0x24)),7
                    );
   iVar5 = CONCAT22(extraout_var_10,*(short *)(iVar3 + 0x24));
   if ((short)CONCAT31(extraout_var_00,uVar2) < *(short *)(iVar3 + 0x24)) {
     iVar5 = iVar5 - CONCAT31(extraout_var_00,uVar2);
     iVar6 = iVar6 + iVar5;
   }
-  uVar2 = (*pTVar1)(0x13,CONCAT22((short)((uint)iVar5 >> 0x10),*(undefined2 *)(iVar3 + 0x28)),1);
+  uVar2 = (*p_Var1)(0x13,CONCAT22((short)((uint)iVar5 >> 0x10),*(undefined2 *)(iVar3 + 0x28)),1);
   iVar5 = CONCAT31(extraout_var_01,uVar2);
   if ((short)iVar5 < *(short *)(iVar3 + 0x28)) {
     iVar8 = iVar5;
-    uVar2 = (*pTVar1)(0x14,CONCAT22(extraout_var_11,*(short *)(iVar3 + 0x28)),7);
+    uVar2 = (*p_Var1)(0x14,CONCAT22(extraout_var_11,*(short *)(iVar3 + 0x28)),7);
     iVar5 = CONCAT31(extraout_var_02,uVar2);
     if ((short)(iVar8 + iVar5) < *(short *)(iVar3 + 0x28)) {
       iVar6 = iVar6 + (CONCAT22((short)((uint)iVar3 >> 0x10),*(short *)(iVar3 + 0x28)) -
@@ -3673,30 +3676,30 @@ void TCityInteriorMinister::_scalar_deleting_destructor_(int *param_1)
     }
   }
   if ((short)iVar6 != 0) {
-    uVar2 = (*pTVar1)(0x11,iVar6,9);
+    uVar2 = (*p_Var1)(0x11,iVar6,9);
     iVar5 = CONCAT31(extraout_var_03,uVar2);
     iVar6 = iVar6 - iVar5;
     if ((short)iVar6 != 0) {
-      uVar2 = (*pTVar1)(0x12,iVar6,9);
+      uVar2 = (*p_Var1)(0x12,iVar6,9);
       iVar5 = CONCAT31(extraout_var_04,uVar2);
       iVar6 = iVar6 - iVar5;
       if ((short)iVar6 != 0) {
-        uVar2 = (*pTVar1)(0x14,iVar6,9);
+        uVar2 = (*p_Var1)(0x14,iVar6,9);
         iVar5 = CONCAT31(extraout_var_05,uVar2);
         if ((short)(iVar6 - iVar5) != 0) {
-          (*pTVar1)(0x13,iVar6 - iVar5,9);
+          (*p_Var1)(0x13,iVar6 - iVar5,9);
           iVar5 = (uint)extraout_var_06 << 8;
         }
       }
     }
   }
-  (*pTVar1)(0x16,CONCAT22((short)((uint)iVar5 >> 0x10),
+  (*p_Var1)(0x16,CONCAT22((short)((uint)iVar5 >> 0x10),
                           *(undefined2 *)(*(int *)&this->field_0x4 + 0x13a)),1);
   iVar6 = 7;
   iVar3 = 0x11c;
   uVar4 = extraout_var_07;
   do {
-    (*pTVar1)(iVar6,CONCAT22((short)((uint3)uVar4 >> 8),
+    (*p_Var1)(iVar6,CONCAT22((short)((uint3)uVar4 >> 8),
                              *(short *)(iVar7 + -0x58 + iVar3) +
                              *(short *)(iVar3 + *(int *)&this->field_0x4)),1);
     iVar6 = iVar6 + 1;
@@ -3763,7 +3766,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
     if ((sVar10 != -1) && (uStack_1c._3_1_ != '\0')) {
       pTVar1 = this->vftable;
       *(undefined2 *)(&this->field_0x84 + sVar10 * 2) = 1;
-      (*pTVar1[0x21].DeletingDestructTMinister)
+      (*pTVar1[1].GetTMinisterClassNamePointer)
                 (CONCAT22(sVar10 >> 0xf,*(short *)&this->field_0x36 + 0x22));
       *(undefined2 *)&this->field_0x36 = 0xffff;
     }
@@ -3830,7 +3833,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
           if (sVar10 != -1) {
             pTVar1 = this->vftable;
             *(undefined2 *)(&this->field_0x40 + sVar10 * 2) = 1;
-            (*pTVar1[0x21].DeletingDestructTMinister)(iVar5);
+            (*pTVar1[1].GetTMinisterClassNamePointer)(iVar5);
             *(undefined2 *)(&this->field_0x40 + sVar10 * 2) = 0;
           }
           uStack_1c = uStack_1c + 1;
@@ -3844,7 +3847,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
     psVar11 = (short *)&this->field_0x96;
     do {
       if (*psVar11 != 0) {
-        (*this->vftable[0x21].DeletingDestructTMinister)(iVar5);
+        (*this->vftable[1].GetTMinisterClassNamePointer)(iVar5);
       }
       iVar5 = iVar5 + 1;
       psVar11 = psVar11 + 1;
@@ -3853,7 +3856,7 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
     psVar11 = (short *)&this->field_0x72;
     do {
       if ((*psVar11 != 0) && (uStack_1c._3_1_ != '\0')) {
-        (*this->vftable[0x21].DeletingDestructTMinister)(iVar5);
+        (*this->vftable[1].GetTMinisterClassNamePointer)(iVar5);
       }
       iVar5 = iVar5 + 1;
       psVar11 = psVar11 + 1;
@@ -3870,7 +3873,7 @@ void TCityInteriorMinister::OrphanRetStub_004be6d0()
 
 {
   short sVar1;
-  TCityInteriorMinister_DeletingDestructTMinister_0x04 *pTVar2;
+  TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar2;
   code *pcVar3;
   short sVar4;
   short sVar5;
@@ -3965,7 +3968,7 @@ void TCityInteriorMinister::OrphanRetStub_004be6d0()
   else {
     piVar11 = *(int **)(*(int *)&this->field_0x4 + 0x894);
   }
-  pTVar2 = this->vftable[0x21].DeletingDestructTMinister;
+  pTVar2 = this->vftable[1].GetTMinisterClassNamePointer;
   (*pTVar2)(0x17);
   (*pTVar2)(0x18);
   (*pTVar2)(0x3c);
@@ -4032,12 +4035,12 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   }
   bVar12 = (&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(iVar4 + 0xc) * 0x1d] == '\x02';
   if (*(short *)&this->field_0xa6 != 0) {
-    (*this->vftable[0x21].DeletingDestructTMinister)(0x33);
+    (*this->vftable[1].GetTMinisterClassNamePointer)(0x33);
     *(undefined2 *)&this->field_0xa6 = 0;
   }
   if ((bVar12) &&
      (iVar4 = TCity::GetCityBuildingProductionValueBySlot(local_20,0xb), (short)iVar4 == 0)) {
-    (*local_20->vftable[0xc].GetTCityClassNamePointer)(1);
+    (*local_20->vftable->ToggleCityPowerPlantUpgradeOrder)(1);
   }
   sVar11 = 0;
   puVar9 = auStack_10;
@@ -4121,7 +4124,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   iVar4 = 0x35;
   psVar10 = (short *)&this->field_0xaa;
   do {
-    if ((*psVar10 != 0) && ((*this->vftable[0x21].DeletingDestructTMinister)(iVar4), *psVar10 < 2))
+    if ((*psVar10 != 0) && ((*this->vftable[1].GetTMinisterClassNamePointer)(iVar4), *psVar10 < 2))
     {
       psVar10[0x19] = 0;
     }
@@ -4222,7 +4225,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   undefined3 extraout_var;
   int iVar3;
   int *piVar4;
-  TCityInteriorMinister_DeletingDestructTMinister_0x04 *pTVar5;
+  TCityInteriorMinister_GetTMinisterClassNamePointer_0x00 *pTVar5;
   undefined4 uVar6;
   
   if (*(int *)&this->field_0x4 == 0) {
@@ -4236,14 +4239,14 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
   iVar3 = (int)(short)CONCAT31(extraout_var,uVar2) % 3;
   if (iVar3 == 0) {
-    pTVar5 = this->vftable[0x21].DeletingDestructTMinister;
+    pTVar5 = this->vftable[1].GetTMinisterClassNamePointer;
     (*pTVar5)(0x10);
     (*pTVar5)(0xf);
     (*pTVar5)(0xd);
     uVar6 = 0xe;
   }
   else if (iVar3 == 1) {
-    pTVar5 = this->vftable[0x21].DeletingDestructTMinister;
+    pTVar5 = this->vftable[1].GetTMinisterClassNamePointer;
     (*pTVar5)(0xd);
     (*pTVar5)(0xe);
     (*pTVar5)(0x10);
@@ -4251,7 +4254,7 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
   }
   else {
     if (iVar3 != 2) goto LAB_004c48ed;
-    pTVar5 = this->vftable[0x21].DeletingDestructTMinister;
+    pTVar5 = this->vftable[1].GetTMinisterClassNamePointer;
     (*pTVar5)(0xe);
     (*pTVar5)(0xd);
     (*pTVar5)(0x10);
@@ -4261,9 +4264,9 @@ void TCityInteriorMinister::OrphanCallChain_C11_I88_004874b0()
 LAB_004c48ed:
   if ((&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d]
       == '\x02') {
-    (*this->vftable[0x21].DeletingDestructTMinister)(0xc);
+    (*this->vftable[1].GetTMinisterClassNamePointer)(0xc);
   }
-  pTVar5 = this->vftable[0x21].DeletingDestructTMinister;
+  pTVar5 = this->vftable[1].GetTMinisterClassNamePointer;
   (*pTVar5)(7);
   if ((*(short *)&this->field_0xb8 < 1) || (*(short *)&this->field_0x5a < 1)) {
     bVar1 = false;
@@ -4627,11 +4630,11 @@ LAB_004c54ab:
       }
       else {
         iVar12 = (int)*(short *)(*(int *)(param_1 + 4) + 0xc);
-        cVar5 = (*this->vftable[0x1a].GetTEventHandlerClassNamePointer)(iVar10,1);
-        cVar6 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(iVar10,1);
-        (*g_pGlobalMapState->vftable[0x1a].GetTMapMgrClassNamePointer)
+        cVar5 = (*this->vftable->SetForeignMinisterReadyFlag14_34)(iVar10,1);
+        cVar6 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(iVar10,1);
+        (*g_pGlobalMapState->vftable->OrphanLeaf_NoCall_Ins37_00513720)
                   (iVar10,0,(int)*(short *)(*(int *)(iVar12 + 4) + 0xc));
-        cVar7 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(iVar10,0);
+        cVar7 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(iVar10,0);
         iStack_8c = 2;
         pcVar13 = (char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x11 + iVar15);
         do {
@@ -5020,7 +5023,7 @@ LAB_004c6a00:
 void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
 
 {
-  TCityInteriorMinister_DeletingDestructTMinister_0x04 *pTVar1;
+  _vslot_fn *p_Var1;
   byte bVar2;
   int iVar4;
   code *pcVar5;
@@ -5030,10 +5033,10 @@ void TCityInteriorMinister::GetTEventHandlerClassNamePointer()
   FUN_00621089(&DAT_00695880);
   iVar4 = 1;
   if (0 < *(int *)&this->field_0xc) {
-    pTVar1 = this->vftable[4].DeletingDestructTMinister;
+    p_Var1 = this->vftable->OrphanRetStub_0059add0;
     do {
       puVar6 = &DAT_00695880;
-      bVar2 = (*pTVar1)(iVar4,&DAT_00695880);
+      bVar2 = (*p_Var1)(iVar4,&DAT_00695880);
       uVar3 = (uint)bVar2;
       pcVar5 = g_Build_Map_Order_LookupTable_00695794;
       FUN_00621206(iVar4);
@@ -5056,20 +5059,10 @@ void TCityInteriorMinister::SetForeignMinisterReadyFlag14()
   TCityInteriorMinisterVtbl *pTVar1;
   
   pTVar1 = this->vftable;
-  (*pTVar1[6].GetTMinisterClassNamePointer)();
+  (*pTVar1->GetTEventHandlerClassNamePointer_0c)();
   if (this != (TCityInteriorMinister *)0x0) {
     (*pTVar1->DeletingDestructTMinister)(1);
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606FBA
-// GHIDRA_NAME TCityInteriorMinister::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall TCommand::SetForeignMinisterReadyFlag14(void)
-
-CRuntimeClass * TCityInteriorMinister::SetForeignMinisterReadyFlag14()
-
-{
-  return &classCObject;
 }
 

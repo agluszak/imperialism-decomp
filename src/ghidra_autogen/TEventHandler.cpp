@@ -75,7 +75,7 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject()
      (g_pApplicationUiRootController != (ApplicationUiRootController *)this)) {
     pTVar3 = (TEventHandler *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))();
     if (pTVar3 == this) {
-      uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+      uVar2 = (*this->vftable->QueryStepValue)();
       if (CONCAT31(extraout_var,uVar2) == 0) {
         (**(code **)(g_pApplicationUiRootController->vftable + 0x98))
                   (g_pApplicationUiRootController);
@@ -92,7 +92,7 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject()
   }
   this[1].padding_08_to_0b = 0;
   if (this != (TEventHandler *)0x0) {
-    (*this->vftable->slot_0x04)(1);
+    (*this->vftable->~TEventHandler)(1);
   }
   return;
 }

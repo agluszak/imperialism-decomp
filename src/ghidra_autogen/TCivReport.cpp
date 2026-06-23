@@ -195,7 +195,8 @@ _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialisms
     break;
   case 10:
     if ((*(short *)(param_1 + 4) == 0) &&
-       (cVar4 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(), cVar4 == '\0')) {
+       (cVar4 = (*g_pGlobalMapState->vftable->GetTileCivilianWorkOrderCostClassNibble)(),
+       cVar4 == '\0')) {
       sVar9 = 0;
       sVar11 = 0;
       do {

@@ -92,7 +92,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
 
 {
   short sVar1;
-  TCouncilTickerAnimation_slot_0x04_0x04 *pTVar2;
+  _vslot_fn *p_Var2;
   undefined uVar3;
   undefined3 extraout_var;
   undefined3 extraout_var_00;
@@ -149,10 +149,11 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   puStack_3c = local_18;
   puStack_40 = (undefined1 *)0x4fc336;
   BuildUiTextStyleDescriptor();
-  pTVar2 = this->vftable[0x12].slot_0x04;
+  p_Var2 = this->vftable[1].WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
+  ;
   uStack_30 = 0x63616e30;
   puStack_34 = (undefined1 *)0x4fc34a;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar5 = *(int *)CONCAT31(extraout_var,uVar3);
   puStack_34 = (undefined1 *)0x4fc353;
   (**(code **)(iVar5 + 0xc))();
@@ -169,7 +170,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   (**(code **)(iVar5 + 0x1b4))();
   uStack_44 = 0x63616e31;
   ppuStack_48 = (undefined1 **)0x4fc397;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar5 = *(int *)CONCAT31(extraout_var_00,uVar3);
   ppuStack_48 = (undefined1 **)0x4fc3a0;
   (**(code **)(iVar5 + 0xc))();
@@ -186,7 +187,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   (**(code **)(iVar5 + 0x1b4))();
   uStack_58 = 0x636f6130;
   uStack_5c = 0x4fc3e5;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar5 = *(int *)CONCAT31(extraout_var_01,uVar3);
   uStack_5c = 0x4fc3ee;
   (**(code **)(iVar5 + 0xc))();
@@ -197,7 +198,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   (**(code **)(iVar5 + 0x1c8))();
   uStack_64 = 0x636f6131;
   CStack_68.m_pchData = (char *)0x4fc413;
-  uVar3 = (*pTVar2)();
+  uVar3 = (*p_Var2)();
   iVar5 = *(int *)CONCAT31(extraout_var_02,uVar3);
   CStack_68.m_pchData = (char *)0x4fc41c;
   (**(code **)(iVar5 + 0xc))();
@@ -215,7 +216,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
       iVar6 = iVar6 + 1;
     } while (iVar5 < 0xfc00);
     *(undefined2 *)&this[0x1e].vftable = 10000;
-    uVar3 = (*pTVar2)(0x656e6420);
+    uVar3 = (*p_Var2)(0x656e6420);
     piVar4 = (int *)CONCAT31(extraout_var_04,uVar3);
     (**(code **)(*piVar4 + 0xc))();
     if (*(short *)&g_pLocalizationTable->field_0x8 == 0x17) {
@@ -245,7 +246,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
     TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(this_00,this,2);
     TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
     SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
-    uVar3 = (*pTVar2)(0x656e6420);
+    uVar3 = (*p_Var2)(0x656e6420);
     iVar5 = *(int *)CONCAT31(extraout_var_03,uVar3);
     (**(code **)(iVar5 + 0xc))();
     (**(code **)(iVar5 + 0xa8))(0,0);
