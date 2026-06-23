@@ -102,6 +102,35 @@ squeezing any single function to 100%.
 - Both rules above are enforced mechanically by `just marker-gate` (part of
   `just gates`). Run `just gates` before committing.
 
+## Thunks and stub signatures: never fake, always port
+
+A free function that is still a stub (`undefined4 Foo(void)`) or reached through an ILT
+jmp thunk is **not** a license to fake a signature at the callsite. Two banned shortcuts,
+both of which look like progress but block real recovery:
+
+- **Don't `reinterpret_cast` a `(void)` stub/thunk to a typed signature to call it.**
+  (`reinterpret_cast<int(__cdecl*)(T*,int)>(Foo)(this, x)`.) Adjusting arg/return *types*
+  of a genuinely same-convention `__cdecl(void)` thunk is technically legal (Hard Rule 9),
+  but if the real target is portable, **port it** instead.
+- **Don't whitelist a name in `tools/stubgen.py` to emit a typed stub.** That fakes a
+  signature without a real body and is an explicit anti-pattern — do not add entries.
+
+The correct fix when the original does `CALL <ilt-thunk>` → real target:
+
+1. **Port the real target into its owning file** (find it via `config/function_ownership.csv`
+   neighbors — sibling addresses reveal the right `<Class>.cpp`/module file), with a real
+   body, `// FUNCTION:` marker, and real signature; `just sync-ownership` → `regen-stubs`.
+2. **Retire the thunk completely.** reccmp auto-resolves `CALL <thunk>` → real target
+   **only if the thunk has no named `config/symbols.csv` row.** A named `thunk_Foo` row
+   makes reccmp compare `call thunk_Foo` vs your `call Foo` as a literal mismatch (caps the
+   caller ~93%). Delete the thunk's rows from **both** `config/symbols.csv` and
+   `config/thunk_map.csv`; the stub regenerates away and the caller hits 100%.
+3. **Call the real function directly** from a normal header-declared prototype. Watch the
+   convention: MFC `PASCAL`/`WINAPI` helpers (e.g. `CDC::FromHandle`) are `__stdcall`
+   (callee cleans) — a `__cdecl` cast adds a spurious `add esp,4`.
+
+See heuristic **12b** in `heuristics.md` for the worked example (the QuickDraw DC family).
+
 ## When a compare fails to pair
 
 See the `quality-control` skill ("Known reccmp failure modes"): usually a misplaced

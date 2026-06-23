@@ -267,11 +267,3 @@ undefined4 thunk_ConstructUiClickablePictureResourceEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_SetGlobalQuickDrawOrigin
-// ghidra_proto undefined thunk_SetGlobalQuickDrawOrigin()
-// FUNCTION: IMPERIALISM 0x00409a11
-undefined4 thunk_SetGlobalQuickDrawOrigin(void)
-{
-  return 0;
-}
-

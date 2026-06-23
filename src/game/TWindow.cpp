@@ -108,16 +108,16 @@ char TWindow::TestPointInBounds(CPoint* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e1e0
-void TWindow::vmethod_0096(int arg) {}
+void TWindow::ReturnFromUiSlot60(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0048e210
-void TWindow::vmethod_0097(int arg) {}
+void TWindow::ReturnFromUiSlot61(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0048e240
-void TWindow::vmethod_0098(int arg) {}
+void TWindow::ReturnFromUiSlot62(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0048e270
-void TWindow::vmethod_0099(int arg1, int arg2) {}
+void TWindow::ReturnFromUiSlot63(int arg1, int arg2) {}
 
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {}

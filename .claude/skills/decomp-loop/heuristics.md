@@ -247,6 +247,24 @@ Plus a non-vtable infra tell: a slot-4 scalar-dtor mismatch where two `symbols.c
 share the `Class::\`scalar deleting destructor'` name → reccmp mispairs our `~`. Make the
 sibling-class row's name unique (TSortedPtrList vs sibling 0x649010).
 
+## 12b. Retire ILT thunks by deleting the named `symbols.csv` row — don't cast them
+
+When the original calls a function through an ILT jmp thunk (`CALL 0x409a11` → real
+target), reccmp auto-resolves the thunk to the real function **only if the thunk
+address has no named `symbols.csv` entry**. A named thunk row (`thunk_Foo`) makes
+reccmp compare `call thunk_Foo` vs your `call Foo` as a literal symbol mismatch (caps
+the caller at ~93%). Contrast: a thunk with *no* row (e.g. 0x403729→BindScoped) resolves
+to 100% for free. So the fix is to **port the real target into its correct file** (real
+body, `// FUNCTION:` marker, `sync-ownership`), delete the thunk's rows from both
+`config/symbols.csv` and `config/thunk_map.csv`, then call the real function directly —
+never declare the thunk with a typed signature and `reinterpret_cast` it, and never
+whitelist a stub in `tools/stubgen.py` to fake a signature (both are banned hacks). This
+took TView::Refresh 93%→100% and ported SetGlobalQuickDrawOrigin / Bind+ReleaseScoped-
+MapQuickDrawDcHandle from stubs to real owned bodies. Note MFC `CDC::FromHandle` &c. are
+`PASCAL`/`__stdcall` (callee cleans stack) — a `__cdecl` cast adds a spurious `add esp,4`.
+See [[imported-thunks-block-vtable-resolution]], [[ilt-thunk-retirement]],
+[[banned-operator-new-cdecl-factory]].
+
 ## 13. Batch repeating templates
 
 When a vtable region is one repeating template (e.g. TGreatPower score-factor slots

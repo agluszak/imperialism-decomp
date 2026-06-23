@@ -13,15 +13,14 @@
 #include "game/TView.h"
 #include "game/TCursorControlPanel.h"
 #include "game/mcappui_globals.h"
+#include "game/ScopedMapQuickDrawContext.h"
+#include "game/quickdraw_globals.h"
 
-// Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
-// the callsite rather than changing the thunk declaration signature.
+// Shared thunks/hooks whose callers interpret the arguments differently are kept in
+// generic repo form (rule 9) with a typed cast at the callsite.
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 NoOpQuickDrawContextSelectionHook(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 BindScopedMapQuickDrawDcHandle(void);
-undefined4 ReleaseScopedMapQuickDrawDcHandle(void);
-undefined4 thunk_SetGlobalQuickDrawOrigin(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
@@ -111,6 +110,54 @@ void TView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int ar
   (void)arg2;
   (void)arg3;
   (void)arg4;
+}
+
+// Serialize the field04/field08 intrusive list hanging off TEventHandler (+0x04 head,
+// +0x08 tail, +0x0c count, +0x10 free-list, +0x14/+0x18 block pool).
+// FUNCTION: IMPERIALISM 0x00479be0
+void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
+  if (archive->IsLoading()) {
+    for (int count = archive->ReadCount(); count != 0; count = count - 1) {
+      CArchive* value = 0;
+      archive->Read(&value, sizeof(value));
+      int tail = field08;
+      if (field10 == 0) {
+        int blockBase = AllocateAndLinkBlockHead(&field14, field18, 0xc);
+        int blockCount = field18;
+        int* node = reinterpret_cast<int*>(blockBase + -8 + blockCount * 0xc);
+        if (-1 < blockCount - 1) {
+          do {
+            *node = field10;
+            field10 = reinterpret_cast<int>(node);
+            node = node - 3;
+            blockCount = blockCount - 1;
+          } while (blockCount != 0);
+        }
+      }
+      int* node = reinterpret_cast<int*>(field10);
+      field10 = *node;
+      node[1] = tail;
+      node[0] = 0;
+      field0c = field0c + 1;
+      node[2] = 0;
+      node[2] = reinterpret_cast<int>(value);
+      if (field08 == 0) {
+        field04 = reinterpret_cast<int>(node);
+      } else {
+        *reinterpret_cast<int**>(field08) = node;
+      }
+      field08 = reinterpret_cast<int>(node);
+    }
+  } else {
+    archive->WriteCount(field0c);
+    int* node = reinterpret_cast<int*>(field04);
+    if (node != 0) {
+      do {
+        archive->Write(node + 2, sizeof(CArchive*));
+        node = reinterpret_cast<int*>(*node);
+      } while (node != 0);
+    }
+  }
 }
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
@@ -410,8 +457,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     return;
   }
 
-  int* localRegion = reinterpret_cast<int*>(
-      reinterpret_cast<int(__cdecl*)()>(CreateClipStateRegionWrapperObject)());
+  int* localRegion = reinterpret_cast<int*>(CreateClipStateRegionWrapperObject());
   if (localRegion == 0 || *localRegion == 0) {
     return;
   }
@@ -432,7 +478,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
                   reinterpret_cast<HRGN>(destRegion), 0);
   }
 
-  reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);
+  DestroyClipStateRegionWrapperObject(localRegion);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b5f0
@@ -485,22 +531,19 @@ void TView::InvokeSlot13C() {
 // FUNCTION: IMPERIALISM 0x0048b770
 char TView::Refresh() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(reinterpret_cast<void (*)()>(
-        thunk_SetGlobalQuickDrawOrigin))(static_cast<short>(field2c), static_cast<short>(field30));
+    SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
     g_McAppUiActiveRenderContext_006A1AF4 = this;
   }
   return 1;
 }
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(int arg) {
-  return reinterpret_cast<int(__cdecl*)(TView*, int)>(
-      reinterpret_cast<void (*)()>(BindScopedMapQuickDrawDcHandle))(this, arg);
+  return BindScopedMapQuickDrawDcHandle(this, arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b7e0
 void TView::ReleaseMapQuickDrawDc(int arg) {
-  reinterpret_cast<void(__cdecl*)(TView*, int)>(
-      reinterpret_cast<void (*)()>(ReleaseScopedMapQuickDrawDcHandle))(this, arg);
+  ReleaseScopedMapQuickDrawDcHandle(this, arg);
 }
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -571,7 +614,8 @@ void TView::TranslatePointToParentChain4E(int* point) {
   ownerContext->TranslatePointToParentChain4E(point);
 }
 // Translate a point into the owner's space (add this view's owner offset) and forward up
-// the owner chain via slot 0x4d. Mirror of TranslatePointToParentChain4E (slot 0x4e) but on this slot.
+// the owner chain via slot 0x4d. Mirror of TranslatePointToParentChain4E (slot 0x4e) but
+// on this slot.
 // FUNCTION: IMPERIALISM 0x0048ba80
 void TView::TranslatePointToParentChain4D(int* point) {
   int offY = ownerOffsetY;
@@ -939,54 +983,6 @@ void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
       child->PropagateUiResourceContextRecursive(nativeWindow);
-    }
-  }
-}
-
-// Serialize the field04/field08 intrusive list hanging off TEventHandler (+0x04 head,
-// +0x08 tail, +0x0c count, +0x10 free-list, +0x14/+0x18 block pool).
-// FUNCTION: IMPERIALISM 0x00479be0
-void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
-  if (archive->IsLoading()) {
-    for (int count = archive->ReadCount(); count != 0; count = count - 1) {
-      CArchive* value = 0;
-      archive->Read(&value, sizeof(value));
-      int tail = field08;
-      if (field10 == 0) {
-        int blockBase = AllocateAndLinkBlockHead(&field14, field18, 0xc);
-        int blockCount = field18;
-        int* node = reinterpret_cast<int*>(blockBase + -8 + blockCount * 0xc);
-        if (-1 < blockCount - 1) {
-          do {
-            *node = field10;
-            field10 = reinterpret_cast<int>(node);
-            node = node - 3;
-            blockCount = blockCount - 1;
-          } while (blockCount != 0);
-        }
-      }
-      int* node = reinterpret_cast<int*>(field10);
-      field10 = *node;
-      node[1] = tail;
-      node[0] = 0;
-      field0c = field0c + 1;
-      node[2] = 0;
-      node[2] = reinterpret_cast<int>(value);
-      if (field08 == 0) {
-        field04 = reinterpret_cast<int>(node);
-      } else {
-        *reinterpret_cast<int**>(field08) = node;
-      }
-      field08 = reinterpret_cast<int>(node);
-    }
-  } else {
-    archive->WriteCount(field0c);
-    int* node = reinterpret_cast<int*>(field04);
-    if (node != 0) {
-      do {
-        archive->Write(node + 2, sizeof(CArchive*));
-        node = reinterpret_cast<int*>(*node);
-      } while (node != 0);
     }
   }
 }

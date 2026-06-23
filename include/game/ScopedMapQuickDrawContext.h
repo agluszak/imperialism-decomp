@@ -18,3 +18,6 @@ struct ScopedMapQuickDrawContext {
 ASSERT_SIZE(ScopedMapQuickDrawContext, 0x18);
 
 typedef ScopedMapQuickDrawContext ScopedMapQuickDrawContextGuard;
+
+int BindScopedMapQuickDrawDcHandle(void* view, int existingHandle);
+void ReleaseScopedMapQuickDrawDcHandle(void* view, int existingHandle);

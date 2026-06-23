@@ -38,6 +38,12 @@ undefined4 CreateClipStateRegionWrapperObject(void) {
   return reinterpret_cast<int>(outerWrapper);
 }
 
+// Reorder-wrapper over the Win32 IntersectRect: callers pass (src1, src2, dst).
+// FUNCTION: IMPERIALISM 0x00498bb0
+int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst) {
+  return IntersectRect(dst, src1, src2);
+}
+
 // Ghidra mislabels this as CBrush::; clip-state registration over retail MFC CBrush.
 // FUNCTION: IMPERIALISM 0x00613a4c
 static int RegisterClipRegionHandle(CBrush* brush, HRGN region) {

@@ -18,6 +18,40 @@ void* g_pScopedMapQuickDrawDcHandleObject = 0;
 // GLOBAL: IMPERIALISM 0x6a1dac
 void* g_pScopedMapQuickDrawViewContext = 0;
 
+// Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
+// object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).
+// FUNCTION: IMPERIALISM 0x004945f0
+int BindScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
+  TView* view = reinterpret_cast<TView*>(viewArg);
+  g_pScopedMapQuickDrawViewContext = view;
+  void* dcHandleObject = reinterpret_cast<void*>(existingHandle);
+  if (existingHandle == 0) {
+    if (view->nativeWindow50 != 0) {
+      HDC hdc = GetDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd));
+      void* cdc = reinterpret_cast<void*(__stdcall*)(HDC)>(FromHandle_612736)(hdc);
+      g_pScopedMapQuickDrawDcHandleObject = cdc;
+      return cdc != 0;
+    }
+    dcHandleObject = 0;
+  }
+  g_pScopedMapQuickDrawDcHandleObject = dcHandleObject;
+  return dcHandleObject != 0;
+}
+
+// Release the scoped map QuickDraw DC: when no caller-supplied handle was bound, return
+// the borrowed window DC, then clear the active handle/view globals.
+// FUNCTION: IMPERIALISM 0x004946b0
+void ReleaseScopedMapQuickDrawDcHandle(void* viewArg, int existingHandle) {
+  TView* view = reinterpret_cast<TView*>(viewArg);
+  if (existingHandle == 0) {
+    HDC boundDc =
+        *reinterpret_cast<HDC*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4);
+    ReleaseDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd), boundDc);
+  }
+  g_pScopedMapQuickDrawDcHandleObject = 0;
+  g_pScopedMapQuickDrawViewContext = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00494700
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     : clientDc(renderTargetArg != 0 ? reinterpret_cast<CWnd*>(

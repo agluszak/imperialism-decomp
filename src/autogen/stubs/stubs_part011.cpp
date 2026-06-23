@@ -923,14 +923,6 @@ undefined4 UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(void)
   return 0;
 }
 
-// ghidra_name BindScopedMapQuickDrawDcHandle
-// ghidra_proto undefined BindScopedMapQuickDrawDcHandle()
-// FUNCTION: IMPERIALISM 0x004945f0
-undefined4 BindScopedMapQuickDrawDcHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpQuickDrawContextSelectionHook
 // ghidra_proto undefined NoOpQuickDrawContextSelectionHook()
 // FUNCTION: IMPERIALISM 0x00494660
@@ -943,14 +935,6 @@ undefined4 NoOpQuickDrawContextSelectionHook(void)
 // ghidra_proto undefined RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680()
 // FUNCTION: IMPERIALISM 0x00494680
 undefined4 RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseScopedMapQuickDrawDcHandle
-// ghidra_proto undefined ReleaseScopedMapQuickDrawDcHandle()
-// FUNCTION: IMPERIALISM 0x004946b0
-undefined4 ReleaseScopedMapQuickDrawDcHandle(void)
 {
   return 0;
 }
@@ -1175,14 +1159,6 @@ undefined4 ApplyHitRegionToClipState(void)
 // ghidra_proto undefined ApplyRectClipRegionToGlobalClipState()
 // FUNCTION: IMPERIALISM 0x00495a80
 undefined4 ApplyRectClipRegionToGlobalClipState(void)
-{
-  return 0;
-}
-
-// ghidra_name SetGlobalQuickDrawOrigin
-// ghidra_proto undefined SetGlobalQuickDrawOrigin()
-// FUNCTION: IMPERIALISM 0x00495b40
-undefined4 SetGlobalQuickDrawOrigin(void)
 {
   return 0;
 }
@@ -1535,14 +1511,6 @@ void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr)
 // ghidra_proto void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)
 // FUNCTION: IMPERIALISM 0x00498b80
 void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)
-{
-  return 0;
-}
-
-// ghidra_name IntersectRectWrapper
-// ghidra_proto undefined IntersectRectWrapper()
-// FUNCTION: IMPERIALISM 0x00498bb0
-undefined4 IntersectRectWrapper(void)
 {
   return 0;
 }

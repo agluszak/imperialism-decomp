@@ -509,6 +509,8 @@ address|target_cpp|ownership|note
 492d80|src/game/TWindow.cpp|manual|marker_sync
 492de0|src/game/TButton.cpp|manual|marker_sync
 492f30|src/game/TEditText.cpp|manual|marker_sync
+4945f0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
+4946b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 495000|src/game/quickdraw_globals.cpp|manual|marker_sync
@@ -517,10 +519,12 @@ address|target_cpp|ownership|note
 495610|src/game/ClipStateRegion.cpp|manual|marker_sync
 495820|src/game/ClipStateRegion.cpp|manual|marker_sync
 495a30|src/game/quickdraw_globals.cpp|manual|marker_sync
+495b40|src/game/quickdraw_globals.cpp|manual|marker_sync
 495b70|src/game/TAnimation.cpp|manual|marker_sync
 495c00|src/game/TAnimation.cpp|manual|marker_sync
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
+498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d6d0|src/game/TAdorner.cpp|manual|marker_sync
 49d790|src/game/TDialogView.cpp|manual|marker_sync

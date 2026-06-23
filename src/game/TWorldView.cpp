@@ -11,8 +11,7 @@ undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
 undefined4 ApplyHitRegionToClipState(void);
-undefined4 thunk_SetGlobalQuickDrawOrigin(void);
-undefined4 IntersectRectWrapper(void);
+int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
@@ -159,8 +158,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       reinterpret_cast<int>(&outY), packedBand);
 
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetGlobalQuickDrawOrigin)(
-      static_cast<short>(field2c), static_cast<short>(field30));
+  SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
 
   short rectWidth = field76;
   short rectHeight = field78;
@@ -182,9 +180,9 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   char intersectScratch[16];
   char intersectPair[16];
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(IntersectRectWrapper)(
-      reinterpret_cast<int>(&clipRect.left), reinterpret_cast<int>(intersectScratch),
-      reinterpret_cast<int>(intersectPair));
+  IntersectRectWrapper(reinterpret_cast<RECT*>(&clipRect.left),
+                       reinterpret_cast<RECT*>(intersectScratch),
+                       reinterpret_cast<RECT*>(intersectPair));
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), field2c, field30);
 
   char scopedContextStorage[24];

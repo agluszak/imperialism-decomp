@@ -25,6 +25,10 @@ int g_pGlobalClipRegionHandleObject = 0;
 int g_Quick_Draw_Color_State_006950FC = 0;
 // GLOBAL: IMPERIALISM 0x6a1d52
 int g_uQuickDrawCurrentColor = 0;
+// GLOBAL: IMPERIALISM 0x6a1d80
+int g_nQuickDrawOriginX = 0;
+// GLOBAL: IMPERIALISM 0x6a1d84
+int g_nQuickDrawOriginY = 0;
 
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
@@ -59,4 +63,10 @@ void SnapshotHitRegionToClipCache(int* clipDescriptor) {
     return;
   }
   CombineRgn(*clipRegionHandle, *reinterpret_cast<HRGN*>(descriptorHead + 0x18), nullptr, 5);
+}
+
+// FUNCTION: IMPERIALISM 0x00495b40
+void SetGlobalQuickDrawOrigin(short originX, short originY) {
+  g_nQuickDrawOriginX = originX;
+  g_nQuickDrawOriginY = originY;
 }

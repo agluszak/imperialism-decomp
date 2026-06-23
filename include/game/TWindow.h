@@ -91,8 +91,8 @@ public:
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) override; // slot 0x4c 0x492d40
-  virtual void TranslatePointToParentChain4D(int* point = 0) override;          // slot 0x4d 0x492d20
-  virtual void TranslatePointToParentChain4E(int* point = 0) override;          // slot 0x4e 0x492d00
+  virtual void TranslatePointToParentChain4D(int* point = 0) override;         // slot 0x4d 0x492d20
+  virtual void TranslatePointToParentChain4E(int* point = 0) override;         // slot 0x4e 0x492d00
   // slot 0x4f InvokeSlot13C inherited unchanged (0x48b700)
   // slot 0x50 OffsetRectByControlPosition inherited unchanged (0x48bb00)
   // slot 0x51 UpdateAfterBitmapChange inherited unchanged (0x427330)
@@ -109,41 +109,38 @@ public:
   // slot 0x5c vmethod_0092 inherited unchanged (0x48abe0)
   // slot 0x5d DetachUiElementFromOwnerListAndClearBackref inherited unchanged (0x48ae60)
   // slot 0x5e CtrlSlot94_GetWordField54_Impl inherited unchanged (0x48c970)
-  virtual char TestPointInBounds(CPoint* point) override; // slot 0x5f 0x48e1c0
-  virtual void vmethod_0096(int arg) override;            // slot 0x60 0x48e1e0
-  virtual void vmethod_0097(int arg) override;            // slot 0x61 0x48e210
-  virtual void vmethod_0098(int arg) override;            // slot 0x62 0x48e240
-  virtual void vmethod_0099(int arg1, int arg2) override; // slot 0x63 0x48e270
+  virtual char TestPointInBounds(CPoint* point) override;       // slot 0x5f 0x48e1c0
+  virtual void ReturnFromUiSlot60(int arg) override;            // slot 0x60 0x48e1e0
+  virtual void ReturnFromUiSlot61(int arg) override;            // slot 0x61 0x48e210
+  virtual void ReturnFromUiSlot62(int arg) override;            // slot 0x62 0x48e240
+  virtual void ReturnFromUiSlot63(int arg1, int arg2) override; // slot 0x63 0x48e270
   // slot 0x64 DrawRectangleInCurrentUiContext inherited unchanged (0x48c750)
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point) override; // slot 0x67 0x492d60
+  virtual undefined OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1); // slot 0x68 0x48da40
+  virtual undefined OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1,
+                                                     undefined4 param_2); // slot 0x69 0x48d8a0
+  virtual undefined OrphanCallChain_C1_I08_0048da10();                    // slot 0x6a 0x48da10
+  virtual undefined ExecuteViewModalStateWithPushPopChain();              // slot 0x6b 0x48da60
+  virtual undefined OrphanCallChain_C1_I08_0048dc60();                    // slot 0x6c 0x48dc60
+  virtual undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
+                                                    undefined4 param_2); // slot 0x6d 0x48dc90
+  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0();                  // slot 0x6e 0x48dcc0
+  virtual undefined AssertMcAppUILine2554();                             // slot 0x6f 0x48dce0
+  virtual undefined OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1);   // slot 0x70 0x48ddc0
   virtual undefined
-  OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1); // slot 0x68 0x48da40
-  virtual undefined
-  OrphanLeaf_NoCall_Ins05_0048d8a0(undefined4 param_1,
-                                   undefined4 param_2);      // slot 0x69 0x48d8a0
-  virtual undefined OrphanCallChain_C1_I08_0048da10();       // slot 0x6a 0x48da10
-  virtual undefined ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
-  virtual undefined OrphanCallChain_C1_I08_0048dc60();       // slot 0x6c 0x48dc60
-  virtual undefined
-  OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
-                                  undefined4 param_2);  // slot 0x6d 0x48dc90
-  virtual undefined OrphanLeaf_NoCall_Ins02_0048dcc0(); // slot 0x6e 0x48dcc0
-  virtual undefined AssertMcAppUILine2554();            // slot 0x6f 0x48dce0
-  virtual undefined
-  OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1); // slot 0x70 0x48ddc0
-  virtual undefined WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(
-      char param_1, char param_2);           // slot 0x71 0x48e150
-  virtual undefined AssertMcAppUILine2358(); // slot 0x72 0x48d8d0
+  WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
+                                                          char param_2); // slot 0x71 0x48e150
+  virtual undefined AssertMcAppUILine2358();                             // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   virtual undefined OrphanCallChain_C2_I10_0048e120();             // slot 0x74 0x48e120
-  virtual undefined WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(
-      undefined4* param_1); // slot 0x75 0x48d9c0
+  virtual undefined
+  WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4* param_1); // slot 0x75 0x48d9c0
   virtual undefined WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(
       undefined4 param_1); // slot 0x76 0x48d9f0
-                                    // === END GENERATED DECLS (TWindow) ===
+                           // === END GENERATED DECLS (TWindow) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TWindow 0xCTOR`).
 
   TWindow();
