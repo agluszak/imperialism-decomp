@@ -2,13 +2,16 @@
 #include "game/TAssetMgr.h"
 #include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"  // g_pGameFlowState
+#include "game/TSimMgr.h"
+#include "game/TTechMgr.h"
+#include "game/TCivToolbar.h"
+#include "game/diplomacy_globals.h"  // g_pGameFlowState, g_pLocalizationTable
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 
+#include <new>
+
 // TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
-// manager). Forward-declared here to avoid pulling the full TSimMgr header.
-class TSimMgr;
-extern "C" TSimMgr* g_pLocalizationTable;
+// manager). Included via diplomacy_globals.h.
 
 // Application/document root pointer @ 0x6a2158; its +0x04 field holds the active main
 // TView used as the dispatch root for turn-event UI refreshes.
@@ -30,6 +33,16 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
+undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
+undefined4 FormatOverlayTerrainLabelText(void);
+undefined4 LoadNationDisplayNameSharedRefFromField8(void);
+undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
+undefined4 RunNationInfoModalAndReturnNonCancel(void);
+undefined4 NoOpUiRuntimeCallback_005db2f0(void);
+undefined4 NoOpRuntimeCallback_005d5d10(void);
+undefined4 DoModal_6051b9(void);
+undefined4 scanBracketExpressions(void);
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node (a
 // TView-family panel; the concrete class is registry-driven) and its 'GOLD' child
@@ -57,6 +70,10 @@ const unsigned int kAddrUiViewManagerPtr = 0x006a2148;
 const unsigned int kAddrStrNilPointer = 0x00694fc8;
 const unsigned int kAddrStrFailure = 0x00694fd8;
 const unsigned int kAddrStrSourceFile = 0x0069b6bc;
+const unsigned int kAddrHotKeyDialogTemplate = 0x00698b1a;
+const unsigned int kAddrHotKeyDialogTemplateEnd = 0x00698b52;
+const unsigned int kAddrEmptyString = 0x0066f050;
+const unsigned int kAddrLocalizedMessageTemplate = 0x006a13a0;
 } // namespace
 
 namespace {
@@ -65,10 +82,12 @@ const unsigned int kAddrTurnStateSeedLo = 0x006a5b58;
 const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x005d5040
 CRuntimeClass* TViewMgr::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTViewMgr);
 }
+
 
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
@@ -86,6 +105,7 @@ TViewMgr::TViewMgr() : TObject() {
 // TViewMgr::`scalar deleting destructor'
 TViewMgr::~TViewMgr() {}
 
+
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 0x36; i++) {
@@ -94,10 +114,12 @@ void TViewMgr::LoadTurnEventCursorTable() {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d51e0
 void TViewMgr::Free() {
   delete this;
 }
+
 
 // FUNCTION: IMPERIALISM 0x005d5200
 void TViewMgr::ReadFrom(TStream* stream) {
@@ -110,10 +132,12 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->fieldF0 = 0;
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d5250
 void TViewMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
 }
+
 
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
@@ -122,12 +146,14 @@ void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(paletteIndex);
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
   int paletteIndex =
       reinterpret_cast<int(__cdecl*)(int)>(MapTurnEventCodeToPaletteIndex)(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
 }
+
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
@@ -181,6 +207,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
   switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 8)) {
@@ -207,12 +234,149 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005d6480
-void TViewMgr::BuildAndShowTurnOverlayByMode(CString param_1, TToolBarClusterVtbl** param_2) {
-  // TODO(batch2): port turn-overlay builder (g_pLocalizationTable vtable + CString work).
-  (void)param_1;
-  (void)param_2;
+
+// FUNCTION: IMPERIALISM 0x005d5a70
+undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString) {
+  int overlayMode = this->ClassifyTurnStateForOverlayMode();
+  CString stackMessage;
+  ::new ((void*)&stackMessage) CString(*messageString);
+  return this->DispatchLocalizedUiMessageWithTemplateA13A0(overlayMode, &stackMessage);
 }
+
+// FUNCTION: IMPERIALISM 0x005d5b00
+undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode,
+                                                                  CString* messageCString) {
+  CString messageLocal;
+  ::new ((void*)&messageLocal) CString(*messageCString);
+  CString formatArg;
+  formatArg = reinterpret_cast<const char*>(kAddrLocalizedMessageTemplate);
+  (void)overlayMode;
+  (void)formatArg;
+  (void)messageLocal;
+  return this->DispatchLocalizedUiMessageWithTemplate(3);
+}
+
+// FUNCTION: IMPERIALISM 0x005d5c40
+undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind) {
+  (void)templateKind;
+  return 0;
+}
+
+static void CopyHotKeyDialogTemplateToBuffer(int buffer) {
+  const unsigned short* src = reinterpret_cast<const unsigned short*>(kAddrHotKeyDialogTemplate);
+  const unsigned short* srcEnd =
+      reinterpret_cast<const unsigned short*>(kAddrHotKeyDialogTemplateEnd);
+  unsigned short* dst = reinterpret_cast<unsigned short*>(buffer + 0x10);
+  while (src < srcEnd) {
+    dst[-7] = src[-1];
+    dst[0] = src[0];
+    dst[7] = src[1];
+    dst[0xe] = src[2];
+    ++dst;
+    src += 4;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005d6480
+void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
+  CString formattedText;
+  CString templateText;
+  CString scratchA;
+  CString scratchB;
+  short resourceId = static_cast<short>(overlayMode);
+
+  switch (overlayMode) {
+  case 0:
+    g_pLocalizationTable->GetString(0, 0, &scratchA);
+    g_pLocalizationTable->GetString(0x2716, 0, &templateText);
+    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
+        g_pLocalizationTable, &formattedText,
+        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    if (contextArg == 8) {
+      resourceId = 0x2515;
+    } else if (contextArg == 9) {
+      resourceId = 0x2516;
+    } else {
+      resourceId = static_cast<short>((-static_cast<int>(contextArg != 0xc) & 0xfff1) + 0x2517);
+    }
+    break;
+  case 1: {
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    short nationId =
+        reinterpret_cast<UiRuntimeContext*>(g_pLocalizationTable)->GetActiveNationId();
+    short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].cap;
+    if (cap == 0x1c) {
+      resourceId = 0x2518;
+    } else {
+      resourceId = static_cast<short>((-static_cast<int>(cap != 0x1d) & 0xfff0) + 0x2519);
+    }
+    break;
+  }
+  case 2:
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    resourceId = 0x250a;
+    break;
+  case 3:
+  case 4:
+    reinterpret_cast<void(__cdecl*)(void)>(thunk_AssignSharedStringFromIndexedA8EntryNameField)();
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
+        g_pLocalizationTable, &formattedText,
+        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    resourceId = static_cast<short>(overlayMode + 0x2508);
+    break;
+  case 5:
+  case 0xc:
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    resourceId = static_cast<short>(overlayMode + 0x2508);
+    break;
+  case 6:
+    reinterpret_cast<void(__cdecl*)(void)>(LoadNationDisplayNameSharedRefFromField8)();
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
+        g_pLocalizationTable, &formattedText,
+        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    resourceId = 0x250e;
+    break;
+  case 7:
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    resourceId = static_cast<short>((-static_cast<int>(contextArg != -1) & 0xfff5) + 0x251a);
+    break;
+  case 8:
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    resourceId = 0x2510;
+    break;
+  case 9:
+  case 0xb:
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    resourceId = static_cast<short>(overlayMode + 0x2508);
+    break;
+  case 0xa:
+    reinterpret_cast<void(__cdecl*)(void)>(FormatOverlayTerrainLabelText)();
+    g_pLocalizationTable->GetString(0, 0, &templateText);
+    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
+        g_pLocalizationTable, &formattedText,
+        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    resourceId = 0x2512;
+    break;
+  default:
+    resourceId = static_cast<short>(contextArg);
+    break;
+  }
+
+  int resourceIdSlot = resourceId;
+  int modalContext = -1000;
+  (void)modalContext;
+  reinterpret_cast<void(__cdecl*)(void)>(NoOpUiRuntimeCallback_005db2f0)();
+  reinterpret_cast<void(__cdecl*)(void)>(NoOpRuntimeCallback_005d5d10)();
+  CString emptyLabel;
+  emptyLabel = reinterpret_cast<const char*>(kAddrEmptyString);
+  (void)emptyLabel;
+  volatile int* resourcePtr = &resourceIdSlot;
+  (void)resourcePtr;
+  reinterpret_cast<void(__cdecl*)(void)>(RunNationInfoModalAndReturnNonCancel)();
+}
+
 
 // FUNCTION: IMPERIALISM 0x005d69b0
 void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
@@ -250,6 +414,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   outPlacement->y = (designHeight - dlgHeight) / 2 + clientRect.top + margin;
 }
 
+
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   MainViewHostContext* host = *reinterpret_cast<MainViewHostContext**>(kAddrMainViewHostPtr);
@@ -270,7 +435,22 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
-  // TODO(batch2): port hotkey-dialog init (CDialog + SEH + raw vtable).
+  CDialog dialog;
+  reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
+
+  int buffer = AllocateWithFallbackHandler(0x3e);
+  if (buffer != 0) {
+    CopyHotKeyDialogTemplateToBuffer(buffer);
+    *reinterpret_cast<void**>(reinterpret_cast<char*>(buffer) + 0x118) = &dialog;
+
+    int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
+    if (modalResult != 0) {
+      g_pLocalizationTable->RegisterHotKeyDialogState(reinterpret_cast<void*>(buffer));
+    }
+    FreeHeapBufferIfNotNull(static_cast<undefined4>(buffer));
+  }
 }
+

@@ -547,7 +547,6 @@ address|target_cpp|ownership|note
 49e660|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e680|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e6a0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
-49eb00|src/game/CString.cpp|manual|marker_sync
 49eb30|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49ee70|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49f050|src/game/TAnimation.cpp|manual|marker_sync
@@ -3135,6 +3134,9 @@ address|target_cpp|ownership|note
 5d5780|src/game/TViewMgr.cpp|manual|marker_sync
 5d57b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d5960|src/game/TViewMgr.cpp|manual|marker_sync
+5d5a70|src/game/TViewMgr.cpp|manual|marker_sync
+5d5b00|src/game/TViewMgr.cpp|manual|marker_sync
+5d5c40|src/game/TViewMgr.cpp|manual|marker_sync
 5d6480|src/game/TViewMgr.cpp|manual|marker_sync
 5d69b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6b70|src/game/TViewMgr.cpp|manual|marker_sync

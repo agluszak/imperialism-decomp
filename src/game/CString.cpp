@@ -70,9 +70,6 @@ int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) 
   }
 }
 
-// LIBRARY: IMPERIALISM 0x0049eb00
-// AssignStringSharedRefAndReturnThis
-
 // LIBRARY: IMPERIALISM 0x00605791
 // GetSharedEmptyStringRef
 
@@ -80,7 +77,7 @@ int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) 
 // CString::CString
 
 // LIBRARY: IMPERIALISM 0x006057a7
-// CString::StringSharedRef_AssignFromPtr
+// CString::CString
 
 // LIBRARY: IMPERIALISM 0x006057de
 // CString::AllocBuffer

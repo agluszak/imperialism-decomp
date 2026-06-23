@@ -28,6 +28,9 @@
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TTurnInstructionCiviCursor.h"
+#include "game/TViewMgr.h"
+
+#include <new>
 // Manual decompilation file.
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
@@ -120,8 +123,6 @@ undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void);
 undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(void);
 undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(void);
-undefined4 thunk_AssignStringSharedRefAndReturnThis(void);
-undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void);
 
 static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
@@ -422,19 +423,11 @@ static __inline bool IsQuarterlyLocalizationGateOpen(void) {
 }
 
 static __inline void DispatchQuarterlyGreatPowerPressureMessage(int statusLevel) {
-  // Keep this stack-local shape: the thunk pair expects transient locals
-  // prepared in this frame before it captures/dispatches the localized ref.
-  unsigned char stackState[4];
-  volatile unsigned char* localFrame = stackState;
-  volatile int* sharedRef = reinterpret_cast<int*>(kAddrShGreatPowerPressureMessageRef);
-  volatile int messageLevel = statusLevel;
-  volatile int messageFlags = 0;
-  (void)localFrame;
-  (void)sharedRef;
-  (void)messageLevel;
-  (void)messageFlags;
-  thunk_AssignStringSharedRefAndReturnThis();
-  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  CString& sharedRef = *reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef);
+  CString dispatchMessage;
+  ::new ((void*)&dispatchMessage) CString(sharedRef);
+  reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+      ->DispatchLocalizedUiMessageWithTemplateA13A0(statusLevel, &dispatchMessage);
 }
 
 static const int kMapNodeCount = 0x180;
@@ -517,8 +510,6 @@ extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 }
 
 undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void); // 0x00405312 -> 0x005d46b0
-// 0x00401730 -> 0x005d5a70 (g_pUiRuntimeContext localized-message dispatch).
-undefined4 thunk_RunControlStringProviderAndDispatchLocalizedMessage(void);
 
 // Each dispatch reloads the UI-context global, as the original does.
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
@@ -1389,8 +1380,10 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore),
                                      &localizedRefs.second);
     }
-    thunk_AssignStringSharedRefAndReturnThis();
-    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    CString dispatchMessage;
+    ::new ((void*)&dispatchMessage) CString(localizedRefs.second);
+    reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+        ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &dispatchMessage);
   }
 }
 
@@ -1457,8 +1450,10 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         if (localizationRuntime != 0) {
           localizationRuntime->GetString(0x274b, 4, &sharedMessageRef);
         }
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        CString dispatchMessage;
+        ::new ((void*)&dispatchMessage) CString(sharedMessageRef);
+        reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+            ->DispatchLocalizedUiMessageWithTemplateA13A0(4, &dispatchMessage);
         return;
       }
 
@@ -2973,9 +2968,13 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.first);
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.second);
         }
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_AssignStringSharedRefAndReturnThis();
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+        CString primaryMessage;
+        CString secondaryMessage;
+        ::new ((void*)&primaryMessage) CString(sharedRefs.first);
+        ::new ((void*)&secondaryMessage) CString(sharedRefs.second);
+        (void)primaryMessage;
+        reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+            ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &secondaryMessage);
       }
     }
   }
@@ -3698,8 +3697,8 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       }
       message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
       message += " is missing capitol site";
-      thunk_AssignStringSharedRefAndReturnThis();
-      thunk_RunControlStringProviderAndDispatchLocalizedMessage();
+      reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+          ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
     }
   }
   *GreatPower_HomeRegionIndex88(this) = static_cast<short>(homeRegionIndex);

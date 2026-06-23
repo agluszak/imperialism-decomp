@@ -675,30 +675,6 @@ undefined4 UpdateTurnEventPaletteByCode(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
-// ghidra_proto undefined RunControlStringProviderAndDispatchLocalizedMessage()
-// FUNCTION: IMPERIALISM 0x005d5a70
-undefined4 RunControlStringProviderAndDispatchLocalizedMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchLocalizedUiMessageWithTemplateA13A0
-// ghidra_proto undefined DispatchLocalizedUiMessageWithTemplateA13A0()
-// FUNCTION: IMPERIALISM 0x005d5b00
-undefined4 DispatchLocalizedUiMessageWithTemplateA13A0(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchLocalizedUiMessageWithTemplate
-// ghidra_proto undefined DispatchLocalizedUiMessageWithTemplate()
-// FUNCTION: IMPERIALISM 0x005d5c40
-undefined4 DispatchLocalizedUiMessageWithTemplate(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpRuntimeCallback_005d5d10
 // ghidra_proto undefined NoOpRuntimeCallback_005d5d10()
 // FUNCTION: IMPERIALISM 0x005d5d10

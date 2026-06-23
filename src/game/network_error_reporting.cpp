@@ -1,14 +1,13 @@
 #include "game/network_error_reporting.h"
 
-#include "game/CString.h"
+#include "game/TViewMgr.h"
+#include "game/UiRuntimeContext.h"
 #include "game/ui_invalidation_guard.h"
 
 extern "C" {
 extern int DAT_006a601c;
+extern UiRuntimeContext* g_pUiRuntimeContext;
 }
-
-undefined4 thunk_AssignStringSharedRefAndReturnThis(void);
-undefined4 thunk_RunControlStringProviderAndDispatchLocalizedMessage(void);
 
 static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
 static const char kNetworkErrorGeneric[] = "A network error has occurred.";
@@ -203,8 +202,8 @@ void ReportWNetManagerErrorCodeAndNotifyUi(int errorCode) {
     message += detailText;
   }
 
-  thunk_AssignStringSharedRefAndReturnThis();
-  thunk_RunControlStringProviderAndDispatchLocalizedMessage();
+  reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+      ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
   if (DAT_006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }

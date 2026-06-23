@@ -6804,7 +6804,7 @@ address|name|size|type|prototype
 605665|DispatchVirtualSlot18OnImplicitObject|15|function|undefined DispatchVirtualSlot18OnImplicitObject()
 605791|GetSharedEmptyStringRef|6|function|undefined GetSharedEmptyStringRef()
 605797|CString::CString|16|function|void __thiscall CString(void)
-6057a7|CString::StringSharedRef_AssignFromPtr|55|function|CString * __thiscall StringSharedRef_AssignFromPtr(CString * src_ref)
+6057a7|CString::CString|55|function|void __thiscall CString(CString * copy_src)
 6057de|CString::AllocBuffer|58|function|void __thiscall AllocBuffer(int text_length)
 60584a|DecrementSharedStringRefCountAndFree|35|function|undefined DecrementSharedStringRefCountAndFree()
 60586d|CString::Empty|30|function|undefined Empty()

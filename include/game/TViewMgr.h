@@ -28,13 +28,17 @@ public:
   virtual void UpdatePaletteIndexFromTurnEventCode(int eventCode);   // slot 0x0c 0x5d5780
   virtual void ApplyTurnEventPaletteColorByEventCode(int eventCode); // slot 0x0d 0x5d5750
   virtual int ClassifyTurnStateForOverlayMode();                     // slot 0x0e 0x5d5960
-  virtual void BuildAndShowTurnOverlayByMode(CString param_1,
-                                             TToolBarClusterVtbl** param_2); // slot 0x0f 0x5d6480
+  virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();               // slot 0x10 0x5d57b0
   virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,
                                                      POINT* outPlacement); // slot 0x11 0x5d69b0
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
   // === END GENERATED DECLS (TViewMgr) ===
+
+  // Non-virtual helpers (thiscall bodies at fixed addresses, not vtable slots).
+  undefined4 RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString);
+  undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode, CString* messageCString);
+  undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind);
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
