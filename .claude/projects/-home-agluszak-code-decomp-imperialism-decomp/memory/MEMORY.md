@@ -6,3 +6,5 @@
 - [TUberCluster vtable reconstruction](tubercluster-vtable-reconstruction.md) — NOT bloated; abstract NULL tail 0x1d0-0x22c + 3 entangled mismatches; open MSVC500 NULL-slot question
 - [Vtable campaign state](vtable-campaign-state.md) — 156→128 not-matching; method + remaining cluster/great-power/minister/zone/stream targets
 - [Mid-NULL vtable truncation](mid-null-vtable-truncation.md) — cap vtable before a middle literal-NULL region; demote post-null bodies to non-virtual (TZone family 100%)
+- [TViewMgr body porting](tviewmgr-body-porting.md) — receiver map (0x6a2158 main-view host, ResolveControlByTag, toolbar slot 0x74); 0x5d6b70/0x5d69b0/0x5d57b0 done; 3 SEH bodies remain
+- [5b715e03 symbols.csv regression (FIXED)](head-tooling-broken-5b715e03.md) — 5b715e03 broke just vtable (272 not matching) + alignment (-369) via symbols.csv scalar-dtor renames; fixed in 22efcd3c by restoring 90ae4d8a symbols.csv; also docker build-flags gotcha
