@@ -121,9 +121,9 @@ public:
   virtual void SetField84(unsigned char param_1);                         // slot 0x68 0x48da40
   virtual void SetField88And8c(int param_1,
                                int param_2);                 // slot 0x69 0x48d8a0
-  virtual undefined OrphanCallChain_C1_I08_0048da10();       // slot 0x6a 0x48da10
+  virtual undefined GetDialogBehaviorByte10();               // slot 0x6a 0x48da10
   virtual undefined ExecuteViewModalStateWithPushPopChain(); // slot 0x6b 0x48da60
-  virtual undefined OrphanCallChain_C1_I08_0048dc60();       // slot 0x6c 0x48dc60
+  virtual undefined GetDialogBehaviorByte20();               // slot 0x6c 0x48dc60
   virtual undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
                                                     undefined4 param_2); // slot 0x6d 0x48dc90
   virtual unsigned char* GetEmbeddedDialogBehavior();                    // slot 0x6e 0x48dcc0

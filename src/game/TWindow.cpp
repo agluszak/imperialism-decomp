@@ -59,7 +59,11 @@ undefined TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 
 }
 
 // FUNCTION: IMPERIALISM 0x0048da10
-undefined TWindow::OrphanCallChain_C1_I08_0048da10() {
+undefined TWindow::GetDialogBehaviorByte10() {
+  unsigned char* state = GetEmbeddedDialogBehavior();
+  if (state != 0) {
+    return state[0x10];
+  }
   return 0;
 }
 
@@ -74,8 +78,12 @@ undefined TWindow::ExecuteViewModalStateWithPushPopChain() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc60
-undefined TWindow::OrphanCallChain_C1_I08_0048dc60() {
-  return 0;
+undefined TWindow::GetDialogBehaviorByte20() {
+  unsigned char* state = GetEmbeddedDialogBehavior();
+  if (state != 0) {
+    return state[0x20];
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc90
@@ -114,6 +122,8 @@ void TWindow::CallVoidSlotA0() {}
 
 // FUNCTION: IMPERIALISM 0x0048e120
 undefined TWindow::OrphanCallChain_C2_I10_0048e120() {
+  CallVoidSlotA0();
+  Free();
   return 0;
 }
 
