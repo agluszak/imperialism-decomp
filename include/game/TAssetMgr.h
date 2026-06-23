@@ -3,6 +3,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class TView;
+
 // TODO(manifest): describe TAssetMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TAssetMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f508
 class TAssetMgr : public TObject {
@@ -18,7 +20,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined ResolveTurnEventDialogNodeByMessageContext(); // slot 0x0a 0x5df3c0
+  virtual TView* ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
   virtual undefined NoOpRuntimeUiCallback_005df780(); // slot 0x0b 0x5df780
   virtual undefined NoOpRuntimeUiCallback_005df3f0(); // slot 0x0c 0x5df3f0
   virtual undefined NoOpRuntimeUiCallback_005df410(); // slot 0x0d 0x5df410

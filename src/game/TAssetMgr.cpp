@@ -9,8 +9,10 @@ CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
 // TAssetMgr::`scalar deleting destructor'
 TAssetMgr::~TAssetMgr() {}
 
+// Forwards to the runtime view registry (slot 0x0a of g_dat_006a1b24); body still a stub.
 // FUNCTION: IMPERIALISM 0x005df3c0
-undefined TAssetMgr::ResolveTurnEventDialogNodeByMessageContext() {
+TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext) {
+  (void)messageContext;
   return 0;
 }
 

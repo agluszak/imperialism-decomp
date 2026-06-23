@@ -6,6 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TToolBarClusterVtbl;
+class TView;
 
 // TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TViewMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x0066f120
@@ -30,8 +31,9 @@ public:
   virtual void BuildAndShowTurnOverlayByMode(CString param_1,
                                              TToolBarClusterVtbl** param_2); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();               // slot 0x10 0x5d57b0
-  virtual void ComputeTurnEventDialogPlacementByCode();                      // slot 0x11 0x5d69b0
-  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();          // slot 0x12 0x5d6b70
+  virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,
+                                                     POINT* outPlacement); // slot 0x11 0x5d69b0
+  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
   // === END GENERATED DECLS (TViewMgr) ===
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
