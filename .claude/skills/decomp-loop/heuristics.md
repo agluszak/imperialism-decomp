@@ -299,6 +299,53 @@ recovery for TGreatPower's pending-action slots is the related lever — see
   (Found via a TWindow slot 0x60-0x63 `vmethod_009x` vs renamed `ReturnFromUiSlot6x`
   desync that broke the TGameWindow vtable.)
 
+## 15. Real MFC surface — call it directly, don't model it
+
+`include/game/mfc.h` includes the **real** `<afx.h>`/`<afxwin.h>`/`<afxcoll.h>`, and the
+binary links retail `nafxcw.lib` (see [[real-mfc-linking-viable]]). So `CObject`, `CWnd`,
+`CString`, `CPtrList`, `CRuntimeClass`, `POSITION` are the **actual MFC types with real
+virtuals/methods** — never re-model them, and don't write raw `(**(code**)(*field+off))()`
+against them.
+
+- **Call the MFC method by name** and let it pair via a `// LIBRARY:` annotation (e.g.
+  `CObject::IsKindOf` @0x606fc0 is annotated in `CObject.cpp`). A window dtor `[vtbl+4](1)`
+  is just `delete cwndptr`; `[vtbl+0xc]` (slot 3) is `AssertValid()`; `CenterWindow`,
+  `m_hWnd`, `SendMessageA` are all direct. Took `TWindow::Free` 0x48e2a0 from a stub to a
+  faithful 62% with every call site matching (commit 6c69fe86).
+- **A `RUNTIME_CLASS` arg is a data global**: `IsKindOf(0x64b5d0)` → add a `g_pClassDesc<Class>`
+  char + `// GLOBAL:` marker at that addr (rename the `symbols.csv` `Class::classRuntimeClass`
+  row to it), pass `reinterpret_cast<CRuntimeClass*>(&g_pClassDesc<Class>)`. Same recipe as
+  the slot-0 `GetRuntimeClass` descriptors.
+- **A "custom stack iterator" over a list field is usually MFC `POSITION` iteration.** A
+  local `{pos, parent, flag, code, element}` struct whose advance helper walks
+  `node{next@0, prev@4, data@8}` (reading `*(list+4)` = `m_pNodeHead`) is exactly
+  `GetHeadPosition()` + `GetNext(pos)`/`GetPrev(pos)` over a `CPtrList`. Recognize the raw
+  node walk and write the POSITION loop (TWindow `CallVoidSlotA0`/`DispatchSlot9C` child loops).
+- **Generic-named callees are real functions, not "missing".** `FUN_00xxxxxx` is a defined
+  function (just unnamed); a 5-byte `JMP` at `0x40xxxx` is an ILT thunk to a named target
+  (`just ghidra-listing` the addr to resolve it). Forward-declare + call — minding the
+  Hard-Rule-9 thunk-signature trap for free `__cdecl` helpers (§12b).
+- **Don't fake these two shapes — recover the class instead:** (1) a free callee invoked with
+  `ECX=this` is a `__thiscall` *method* on that receiver (model it on the receiver class, never
+  reinterpret_cast a fake thiscall); (2) `buf = operator new(sz); Ctor(buf /*ecx*/, args)` is a
+  real `new RealClass(args)` expression (the banned EH-new-factory) — recover `RealClass`
+  (e.g. `CMcWindow : CWnd`, ctor 0x493470) and write `new CMcWindow(this)`.
+
+## 16. Embedded subobject → expose via its real type
+
+When a class embeds another polymorphic class as a region (its vptr is written at
+`this+off` by a `Construct*BaseState` call, e.g. `TDialogBehavior` @+0x74 in TWindow/TControl),
+expose it through the real type so callers dispatch **real virtuals**:
+`reinterpret_cast<TDialogBehavior*>(&field74[0])`. Use this when the embedded object's
+construction isn't modeled yet (avoids restructuring the owner's ctor). Match the access
+form to the original: a straight `mov eax,[this+off]; call [eax+slot]` is **direct** access
+(`reinterpret_cast<T*>(&field)->Method()`), while a `call [this_vtbl+0x1b8]` first is the
+**virtual accessor** (`GetEmbeddedX()->Method()`) — using the wrong one adds/drops a call
+(TWindow `DispatchEvent` 0x48dd10 direct vs `0x48dc90` via accessor). Reminder: an
+explanatory comment must go **above** the `// FUNCTION:` marker, never between it and the
+decl — a comment there silently unpairs the address (shows as `no recomp` / oversize vtable),
+not just a marker-gate fail.
+
 - **Shape-only class batch (`just gen-classes`)**: porting all remaining classes at once
   works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
   DECLS + compilable **unmarked** cpp stubs (no `// FUNCTION:`/ownership/symbols), so
