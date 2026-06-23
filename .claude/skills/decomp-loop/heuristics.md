@@ -290,6 +290,14 @@ recovery for TGreatPower's pending-action slots is the related lever — see
 - After a vtable-dump correction, verify **every** declared virtual sits at the intended
   slot index — a skipped slot in the header shifts all later entries. Details belong in
   `docs/*_vtable_evidence.csv` / worklog, not here.
+- `override` is a **no-op macro** under MSVC500 (`compat.h`: `#define override`), so a
+  derived declaration whose name/signature drifts from the base virtual silently becomes
+  a *new* vtable slot (extra slots, shifted layout) instead of an override — the build
+  won't complain. **`just lint` (real clang) is the only check that enforces this**: it
+  sees the genuine `override` keyword and errors on a non-overriding declaration. Run it
+  after any base-virtual rename or derived-override edit, before trusting `just vtable`.
+  (Found via a TWindow slot 0x60-0x63 `vmethod_009x` vs renamed `ReturnFromUiSlot6x`
+  desync that broke the TGameWindow vtable.)
 
 - **Shape-only class batch (`just gen-classes`)**: porting all remaining classes at once
   works only if you *defer bodies*. `gen-class --no-bodies` emits header + GENERATED
