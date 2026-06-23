@@ -1,8 +1,11 @@
 #include "game/TWindow.h"
+#include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
 #include "game/mcappui_globals.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
+extern "C" char g_pClassDescCMcWindow;
+extern TApplication* g_pApplicationUiRootController;
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
@@ -217,8 +220,53 @@ void TWindow::ReturnFromUiSlot63(int arg1, int arg2) {
   }
 }
 
+// Object teardown: destroy/notify the host CMcWindow, free all child controls, detach from
+// the owner, hand off the active-view slot, release the linked field18 target, then delete
+// self. Uses the real MFC CWnd/CObject surface (IsKindOf/AssertValid/dtor) directly.
 // FUNCTION: IMPERIALISM 0x0048e2a0
-void TWindow::Free() {}
+void TWindow::Free() {
+  CWnd* window = nativeWindow50;
+  if (window != 0) {
+    if (window->m_hWnd != 0) {
+      ::SendMessageA(window->m_hWnd, 0x4ef, 0, controlTag);
+      ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 4, controlTag);
+    } else {
+      if (window->IsKindOf(reinterpret_cast<CRuntimeClass*>(&g_pClassDescCMcWindow))) {
+        nativeWindow50->AssertValid();
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(nativeWindow50) + 0x3c) = 0;
+        delete nativeWindow50;
+      } else {
+        delete nativeWindow50;
+      }
+      nativeWindow50 = 0;
+    }
+  }
+  while (childList44 != 0) {
+    static_cast<TView*>(childList44->GetHead())->Free();
+  }
+  if (ownerContext != 0) {
+    ownerContext->DetachChildFromOwnerList(this);
+    ownerContext = 0;
+  }
+  if (g_pApplicationUiRootController != 0 &&
+      g_pApplicationUiRootController != reinterpret_cast<TApplication*>(this)) {
+    if (g_pApplicationUiRootController->GetActiveView() == reinterpret_cast<TView*>(this)) {
+      TView* replacement = reinterpret_cast<TView*>(QueryStepValue());
+      if (replacement == 0) {
+        g_pApplicationUiRootController->SetActiveView(
+            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+      } else {
+        g_pApplicationUiRootController->SetActiveView(replacement);
+      }
+    }
+  }
+  field0c = 0;
+  if (field18 != 0) {
+    reinterpret_cast<TEventHandler*>(field18)->Free();
+  }
+  field18 = 0;
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x00492cc0
 class TView* TWindow::OwnerPanel() {

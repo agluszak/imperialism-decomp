@@ -9008,7 +9008,7 @@ address|name|size|type|prototype
 6496d8|TFloatWindow::classRuntimeClass||global|
 649e74|CMcWindow::vftable||global|
 64b35c|CMcWindow::vftable||global|
-64b5d0|CMcWindow::classRuntimeClass||global|
+64b5d0|g_pClassDescCMcWindow||global|
 64b8f0|g_Reset_Quick_Draw_Value_0064B8F0||global|
 64b8f4|g_Reset_Quick_Draw_Value_0064B8F4||global|
 64b8f8|g_Reset_Quick_Draw_WordState_0064B8F8||global|

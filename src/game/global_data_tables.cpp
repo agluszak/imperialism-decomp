@@ -230,6 +230,9 @@ extern "C" char g_pClassDescTDialogBehavior = 0;
 // GLOBAL: IMPERIALISM 0x0064bda8
 extern "C" char g_pClassDescTDialogView = 0;
 
+// GLOBAL: IMPERIALISM 0x0064b5d0
+extern "C" char g_pClassDescCMcWindow = 0;
+
 // GLOBAL: IMPERIALISM 0x00648af8
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, nullptr};
 
