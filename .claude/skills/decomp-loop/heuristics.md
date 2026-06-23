@@ -118,6 +118,16 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
   on the success/fallthrough path and a caller branches on it, model a `char`/flag
   return (`0x004ef700` reject=0/valid=1). `extraout_AL` after a call means that call
   returns the flag.
+- **`ret N` as a class discriminator for a vtable receiver.** When a callsite dispatches
+  `call [vtable + byteOff]` and pushes **A** args, the slot's true ABI is thiscall + A
+  stack args. If your candidate base class's body for that same slot is `ret M` with
+  M ≠ 4·A, the receiver is **not** that base — it's a sibling subclass with its own slot
+  at that offset (the base's `OrphanRetStub`/no-op there is a shared placeholder, not the
+  real signature). Don't cast to the base and fight signatures; model the receiver as its
+  own vtable-view/class (see §4). Example: a `push 1; call [n+0x1a0]` callsite against
+  TControl whose slot-0x68 body is `ret 0x14` (5 args) proved the node was a distinct
+  TView-family dialog, not a TControl — modeled as `struct Node : public TView` with its
+  own 0x68+ virtuals (`0x5d57b0`).
 
 ## 7. Data-symbol and vtable pairing infrastructure
 
