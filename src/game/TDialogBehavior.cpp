@@ -1,8 +1,10 @@
 #include "game/TDialogBehavior.h"
 
+extern "C" char g_pClassDescTDialogBehavior;
+
 // FUNCTION: IMPERIALISM 0x00487350
 CRuntimeClass* TDialogBehavior::GetRuntimeClass() const {
-  return 0;
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTDialogBehavior);
 }
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
@@ -10,7 +12,8 @@ CRuntimeClass* TDialogBehavior::GetRuntimeClass() const {
 TDialogBehavior::~TDialogBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487430
-undefined TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1) {
+undefined TDialogBehavior::OrphanCallChain_C1_I13_00487430(undefined4 param_1, undefined4 param_2) {
+  (void)param_2;
   return 0;
 }
 

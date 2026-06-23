@@ -1,4 +1,5 @@
 #include "game/TWindow.h"
+#include "game/TDialogBehavior.h"
 #include "game/mcappui_globals.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
@@ -70,9 +71,9 @@ undefined TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 
 
 // FUNCTION: IMPERIALISM 0x0048da10
 undefined TWindow::GetDialogBehaviorByte10() {
-  unsigned char* state = GetEmbeddedDialogBehavior();
-  if (state != 0) {
-    return state[0x10];
+  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+  if (behavior != 0) {
+    return behavior->field10;
   }
   return 0;
 }
@@ -89,21 +90,27 @@ undefined TWindow::ExecuteViewModalStateWithPushPopChain() {
 
 // FUNCTION: IMPERIALISM 0x0048dc60
 undefined TWindow::GetDialogBehaviorByte20() {
-  unsigned char* state = GetEmbeddedDialogBehavior();
-  if (state != 0) {
-    return state[0x20];
+  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+  if (behavior != 0) {
+    return behavior->field20;
   }
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc90
 undefined TWindow::OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2) {
+  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+  if (behavior != 0) {
+    behavior->OrphanCallChain_C1_I13_00487430(param_1, param_2);
+  }
   return 0;
 }
 
+// The 0x74 region is constructed as a real TDialogBehavior (ConstructTDialogBehaviorBaseState
+// writes its vptr at +0x74); expose it through its real type so callers dispatch real virtuals.
 // FUNCTION: IMPERIALISM 0x0048dcc0
-unsigned char* TWindow::GetEmbeddedDialogBehavior() {
-  return &field74[0];
+TDialogBehavior* TWindow::GetEmbeddedDialogBehavior() {
+  return reinterpret_cast<TDialogBehavior*>(&field74[0]);
 }
 
 // FUNCTION: IMPERIALISM 0x0048dce0

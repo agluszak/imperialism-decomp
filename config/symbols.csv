@@ -8980,7 +8980,7 @@ address|name|size|type|prototype
 648ae0|TCommandHandler::classRuntimeClass||global|
 648af8|TApplication::classRuntimeClass||global|
 648cf8|g_pClassDescTBehavior||global|
-648d10|TDialogBehavior::classRuntimeClass||global|
+648d10|g_pClassDescTDialogBehavior||global|
 648e08|TCommand::classRuntimeClass||global|
 648e68|g_pClassDescTSortedList||global|
 648e80|g_pClassDescTList||global|

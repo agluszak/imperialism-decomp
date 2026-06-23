@@ -224,6 +224,9 @@ TApplication* g_pApplicationUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x00648cf8
 extern "C" char g_pClassDescTBehavior = 0;
 
+// GLOBAL: IMPERIALISM 0x00648d10
+extern "C" char g_pClassDescTDialogBehavior = 0;
+
 // GLOBAL: IMPERIALISM 0x00648af8
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, nullptr};
 

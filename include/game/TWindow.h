@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
+class TDialogBehavior;
 
 // TODO(manifest): describe TWindow and its role. Base edge (TView) recovered from RTTI
 // CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject. VTABLE: IMPERIALISM
@@ -126,7 +127,7 @@ public:
   virtual undefined GetDialogBehaviorByte20();               // slot 0x6c 0x48dc60
   virtual undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1,
                                                     undefined4 param_2); // slot 0x6d 0x48dc90
-  virtual unsigned char* GetEmbeddedDialogBehavior();                    // slot 0x6e 0x48dcc0
+  virtual TDialogBehavior* GetEmbeddedDialogBehavior();                  // slot 0x6e 0x48dcc0
   virtual void AssertMcAppUILine2554();                                  // slot 0x6f 0x48dce0
   virtual undefined OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1);   // slot 0x70 0x48ddc0
   virtual undefined

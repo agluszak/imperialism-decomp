@@ -1,4 +1,5 @@
 - [just lint enforces override](just-lint-enforces-override.md) — MSVC500 #defines override to nothing; just lint (real clang) is the only compile-time override check — run it on vtable/override edits
+- [TWindow body port progress](twindow-body-port-progress.md) — 21/35 TWindow.cpp bodies ported; remaining blocked on TDialogBehavior (field74) recovery + a few helper promotions
 - [pyghidra version gate](pyghidra-version-gate.md) — sync-ghidra aborts on a hard-coded pyghidra version that drifts from pyproject
 - [knowledge DB / impk external](knowledge-db-impk-external.md) — RESOLVED: class-discovery now runs in-repo via impk_compat, no sibling repo
 - [repo layout: skills + vendor](repo-layout-skills-and-vendor.md) — docs consolidated into AGENTS.md + .claude/skills/; Ghidra/Mac assets vendored; imperialism_knowledge dropped
