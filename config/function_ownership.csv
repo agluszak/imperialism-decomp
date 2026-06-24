@@ -402,6 +402,7 @@ address|target_cpp|ownership|note
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync
 48d220|src/game/TWindow.cpp|manual|marker_sync
 48d640|src/game/TWindow.cpp|manual|marker_sync
+48d670|src/game/TWindow.cpp|manual|marker_sync
 48d8a0|src/game/TWindow.cpp|manual|marker_sync
 48d8d0|src/game/TWindow.cpp|manual|marker_sync
 48d900|src/game/TWindow.cpp|manual|marker_sync

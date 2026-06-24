@@ -2,6 +2,7 @@
 #include "game/CMcWindow.h"
 #include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
+#include "game/TUiWindowTraversal.h"
 #include "game/mcappui_globals.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
@@ -27,7 +28,27 @@ CRuntimeClass* TWindow::GetRuntimeClass() const {
 
 // SYNTHETIC: IMPERIALISM 0x0048d640
 // TWindow::`scalar deleting destructor'
-TWindow::~TWindow() {}
+//
+// The real (non-deleting) destructor unlinks this window from the global live-view
+// registry and from the modal stack; when a window is left on top of the modal stack it
+// re-asserts it and re-enables its host window. The TView base destructor then releases
+// the child list, the +0x48 buffer and the shared-string member.
+// FUNCTION: IMPERIALISM 0x0048d670
+TWindow::~TWindow() {
+  POSITION pos = g_LiveViewRegistry.Find(this);
+  g_LiveViewRegistry.RemoveAt(pos);
+  POSITION modalPos = g_ModalViewStack.Find(this);
+  if (modalPos != NULL) {
+    g_ModalViewStack.RemoveAt(modalPos);
+    if (!g_ModalViewStack.IsEmpty()) {
+      TWindow* modalTop = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+      modalTop->AssertValid();
+      if (modalTop->nativeWindow50 != 0) {
+        static_cast<CMcWindow*>(modalTop->nativeWindow50)->EnableWindowOrDelegateToOwner(1);
+      }
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0048d8a0
 void TWindow::SetField88And8c(int param_1, int param_2) {

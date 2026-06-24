@@ -147,14 +147,6 @@ undefined4 ConstructUiWindowResourceEntryBase(void)
   return 0;
 }
 
-// ghidra_name DestructTWindowViewAndUnlinkGlobalLists
-// ghidra_proto undefined DestructTWindowViewAndUnlinkGlobalLists()
-// FUNCTION: IMPERIALISM 0x0048d670
-undefined4 DestructTWindowViewAndUnlinkGlobalLists(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::CreateTControlInstance
 // ghidra_proto undefined CreateTControlInstance()
 // FUNCTION: IMPERIALISM 0x0048e430

@@ -16,7 +16,6 @@ undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
 undefined4 SendMessage808IfSelectionStateActive(void);
 undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
-undefined4 DestructTWindowViewAndUnlinkGlobalLists(void);
 
 namespace {
 
@@ -79,11 +78,6 @@ static int* InitializeGlobalRectDefaultsIfUninitializedGate() {
       reinterpret_cast<void (*)()>(::InitializeGlobalRectDefaultsIfUninitialized))();
 }
 
-static void DestructTWindowViewAndUnlinkGlobalListsGate(TView* view) {
-  reinterpret_cast<void(__cdecl*)(TView*)>(
-      reinterpret_cast<void (*)()>(::DestructTWindowViewAndUnlinkGlobalLists))(view);
-}
-
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
   void* uiRuntime = g_pUiRuntimeContext;
   if (uiRuntime == 0) {
@@ -113,9 +107,9 @@ CRuntimeClass* TGameWindow::GetRuntimeClass() const {
 
 // SYNTHETIC: IMPERIALISM 0x004ffc60
 // TGameWindow::`scalar deleting destructor'
-TGameWindow::~TGameWindow() {
-  GameWindowInvoke::DestructTWindowViewAndUnlinkGlobalListsGate(this);
-}
+// The teardown runs through the real TWindow base destructor (registry/modal unlink) via
+// inheritance; TGameWindow adds no destruction of its own.
+TGameWindow::~TGameWindow() {}
 
 // FUNCTION: IMPERIALISM 0x004ffcb0
 void TGameWindow::DispatchSlot9CToLinkedChildren() {
