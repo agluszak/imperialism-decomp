@@ -9514,6 +9514,7 @@ address|name|size|type|prototype
 6943cc|g_szMcAppUiHeaderPath_006943CC||global|
 6950ac|g_McAppUiActiveFlag_006950AC||global|
 6950b0|g_szMcAppUiSourcePath_006950B0||global|
+696bc0|g_szUGameWindowSourcePath_00696bc0||global|
 6950fc|g_Quick_Draw_Color_State_006950FC||global|
 695b50|g_industryActionCostWeightResCode09||global|
 695b70|g_industryActionCostWeightResCode08||global|

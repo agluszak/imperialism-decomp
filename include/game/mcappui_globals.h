@@ -62,6 +62,10 @@ extern char g_szMcAppUiSourcePath_006950B0[];
 // dialog assert/log helpers on the TControl branch.
 extern char g_szMcAppUiHeaderPath_006943CC[];
 
+// Source-file path string ("D:\\Ambit\\Cross\\UGameWindow.cpp") passed with a line number to
+// the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
+extern char g_szUGameWindowSourcePath_00696bc0[];
+
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;

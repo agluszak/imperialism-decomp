@@ -36,6 +36,7 @@ TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
 unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
+char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
 int g_McAppUiFlag_006A143C = 0;
 int g_McAppUiFlag_006A1B04 = 0;
 int g_McAppUiFlag_006A1B08 = 0;
@@ -57,6 +58,8 @@ CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TPictureButton_0065e538 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00656a30
 CRuntimeClass PTR_s_TGameWindow_00656a30 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x00656a48
+CRuntimeClass PTR_s_TDlgWindow_00656a48 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00697848
 CRuntimeClass PTR_s_TMission_00697848 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x0065c630
