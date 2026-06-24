@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/TDisplayMgr.h"
 #include "game/TWindow.h"
 #include "game/mfc.h"
 
@@ -20,7 +21,12 @@ public:
   virtual undefined NoOpTurnOrderNavigationVtableSlotA();
   virtual undefined NoOpTurnOrderNavigationVtableSlotB();
 
+  unsigned char turnNavTail[0x1e4 - 0xa0];
+
   TGameWindow();
+  void InitViewportAdaptiveTurnOrderNavTail();
+
+  static void InitViewportAdaptiveTurnOrderNavTailAt(void* objectBytes);
 };
 
 // === BEGIN GENERATED (TGameWindow) — refreshed by `just gen-class TGameWindow`; do not hand-edit ===

@@ -29,6 +29,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TTurnInstructionCiviCursor.h"
 #include "game/TViewMgr.h"
+#include "game/TGameWindow.h"
 
 #include <new>
 // Manual decompilation file.
@@ -5014,12 +5015,8 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
 
 // FUNCTION: IMPERIALISM 0x004ffc10
 void TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void) {
-  this->diplomacyEligibilityA0 = 0;
-  this->diplomacyCounterA2 = 0x14;
-  this->tradeCapacity = 0;
-  this->needCapA6 = 0;
-  this->needsOverCapFlag = 0;
-  this->grantTotalCost = 0;
+  // Ghidra attributes this TGameWindow tail-init entry to TGreatPower; receiver is TGameWindow storage.
+  TGameWindow::InitViewportAdaptiveTurnOrderNavTailAt(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00540ac0

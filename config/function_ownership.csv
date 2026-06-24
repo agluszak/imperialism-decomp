@@ -1493,10 +1493,13 @@ address|target_cpp|ownership|note
 4fe2b0|src/game/TScoreGraph.cpp|manual|marker_sync
 4fe390|src/game/TScoreGraph.cpp|manual|marker_sync
 4fe780|src/game/TDisplayMgr.cpp|manual|marker_sync
+4fe7a0|src/game/TDisplayMgr.cpp|manual|marker_sync
 4fe7f0|src/game/TDisplayMgr.cpp|manual|marker_sync
+4fe820|src/game/TDisplayMgr.cpp|manual|promoted_from_autogen
 4fe840|src/game/TDisplayMgr.cpp|manual|marker_sync
 4fea60|src/game/TDisplayMgr.cpp|manual|marker_sync
 4feab0|src/game/TDisplayMgr.cpp|manual|marker_sync
+4feb50|src/game/TDisplayMgr.cpp|manual|marker_sync
 4feb80|src/game/TDisplayMgr.cpp|manual|marker_sync
 4febd0|src/game/TDisplayMgr.cpp|manual|marker_sync
 4fec20|src/game/TDisplayMgr.cpp|manual|marker_sync
@@ -1588,8 +1591,11 @@ address|target_cpp|ownership|note
 507d80|src/game/TLanguageMgr.cpp|manual|marker_sync
 507e20|src/game/TLanguageMgr.cpp|manual|marker_sync
 509c80|src/game/TMacViewMgr.cpp|manual|marker_sync
+509ca0|src/game/TMacViewMgr.cpp|manual|marker_sync
 509e10|src/game/TMacViewMgr.cpp|manual|marker_sync
 509e30|src/game/TMacViewMgr.cpp|manual|marker_sync
+509e60|src/game/TMacViewMgr.cpp|manual|marker_sync
+509f20|src/game/TMacViewMgr.cpp|manual|marker_sync
 509f70|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a140|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a180|src/game/TMacViewMgr.cpp|manual|marker_sync
@@ -1598,7 +1604,11 @@ address|target_cpp|ownership|note
 50a3e0|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a410|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a440|src/game/TMacViewMgr.cpp|manual|marker_sync
+50a470|src/game/TMacViewMgr.cpp|manual|marker_sync
+50a6a0|src/game/TMacViewMgr.cpp|manual|marker_sync
+50a820|src/game/TMacViewMgr.cpp|manual|marker_sync
 50a9f0|src/game/TMacViewMgr.cpp|manual|marker_sync
+50b5b0|src/game/TMacViewMgr.cpp|manual|marker_sync
 50b640|src/game/TMacViewMgr.cpp|manual|marker_sync
 50b9e0|src/game/TMacViewMgr.cpp|manual|marker_sync
 50bad0|src/game/TMacViewMgr.cpp|manual|marker_sync
@@ -2479,6 +2489,7 @@ address|target_cpp|ownership|note
 583d80|src/game/TUpDownView.cpp|manual|marker_sync
 583dd0|src/game/TUpDownView.cpp|manual|marker_sync
 583f10|src/game/TRightLeftView.cpp|manual|marker_sync
+583f30|src/game/TRightLeftView.cpp|manual|marker_sync
 583f60|src/game/TRightLeftView.cpp|manual|marker_sync
 583fb0|src/game/TRightLeftView.cpp|manual|marker_sync
 5840c0|src/game/TDipDlgCluster.cpp|manual|marker_sync
@@ -2988,6 +2999,7 @@ address|target_cpp|ownership|note
 5b52e0|src/game/TPictureText.cpp|manual|marker_sync
 5b5330|src/game/TPictureText.cpp|manual|marker_sync
 5b5400|src/game/TMyStaticText.cpp|manual|marker_sync
+5b5420|src/game/TMyStaticText.cpp|manual|marker_sync
 5b5450|src/game/TMyStaticText.cpp|manual|marker_sync
 5b5570|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5600|src/game/TDropShadowText.cpp|manual|marker_sync

@@ -1,14 +1,18 @@
 #include "decomp_types.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TSimMgr.h"
-#include "game/TStrategicMapViewSystem.h"
+#include "game/TAssetMgr.h"
+#include "game/TMacViewMgr.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
-TStrategicMapViewSystem* g_pStrategicMapViewSystem = 0;
+TDisplayMgr* g_pDisplayMgr = 0;
+TMacViewMgr* g_pStrategicMapViewSystem = 0;
+TAssetMgr* g_pUiViewManager = 0;
 
 extern "C" {
 TMinor* g_apSecondaryNationStateSlots[36] = {0};

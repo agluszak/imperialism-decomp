@@ -8,6 +8,7 @@
 struct NationState;
 struct TDiplomacyMgr;
 class TSimMgr;
+class TAssetMgr;
 class TInterNationEventQueueManager;
 
 extern "C" {
@@ -22,6 +23,7 @@ extern TMinor* g_apMinorNationCapabilityObjects[16];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern TSimMgr* g_pLocalizationTable;
+extern TAssetMgr* g_pUiViewManager;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern void* g_pGlobalUiRootController;
 extern void* g_pGameFlowState;

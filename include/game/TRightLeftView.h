@@ -125,6 +125,8 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRightLeftView 0xCTOR`).
 
   TRightLeftView();
+
+  TRightLeftView* ConstructTRightLeftViewBaseState();
 };
 
 // === BEGIN GENERATED (TRightLeftView) — refreshed by `just gen-class TRightLeftView`; do not hand-edit ===

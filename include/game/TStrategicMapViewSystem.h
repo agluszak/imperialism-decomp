@@ -1,56 +1,7 @@
 #pragma once
 
-#include "decomp_types.h"
-#include "game/mfc.h"
+#include "game/TMacViewMgr.h"
 
-// Strategic-map view helper reached via g_pStrategicMapViewSystem (0x006a21a8).
-// VTABLE: IMPERIALISM (provisional — full layout unrecovered)
-class TStrategicMapViewSystem {
-public:
-  virtual ~TStrategicMapViewSystem() {}
-
-#define STRATEGIC_MAP_VIEW_DUMMY(n) virtual void StrategicMapViewDummy##n() = 0
-  STRATEGIC_MAP_VIEW_DUMMY(00);
-  STRATEGIC_MAP_VIEW_DUMMY(01);
-  STRATEGIC_MAP_VIEW_DUMMY(02);
-  STRATEGIC_MAP_VIEW_DUMMY(03);
-  STRATEGIC_MAP_VIEW_DUMMY(04);
-  STRATEGIC_MAP_VIEW_DUMMY(05);
-  STRATEGIC_MAP_VIEW_DUMMY(06);
-  STRATEGIC_MAP_VIEW_DUMMY(07);
-  STRATEGIC_MAP_VIEW_DUMMY(08);
-  STRATEGIC_MAP_VIEW_DUMMY(09);
-  STRATEGIC_MAP_VIEW_DUMMY(10);
-  STRATEGIC_MAP_VIEW_DUMMY(11);
-  STRATEGIC_MAP_VIEW_DUMMY(12);
-  STRATEGIC_MAP_VIEW_DUMMY(13);
-  STRATEGIC_MAP_VIEW_DUMMY(14);
-  STRATEGIC_MAP_VIEW_DUMMY(15);
-  STRATEGIC_MAP_VIEW_DUMMY(16);
-  STRATEGIC_MAP_VIEW_DUMMY(17);
-  STRATEGIC_MAP_VIEW_DUMMY(18);
-  STRATEGIC_MAP_VIEW_DUMMY(19);
-  STRATEGIC_MAP_VIEW_DUMMY(20);
-  STRATEGIC_MAP_VIEW_DUMMY(21);
-  STRATEGIC_MAP_VIEW_DUMMY(22);
-  STRATEGIC_MAP_VIEW_DUMMY(23);
-  STRATEGIC_MAP_VIEW_DUMMY(24);
-  STRATEGIC_MAP_VIEW_DUMMY(25);
-  STRATEGIC_MAP_VIEW_DUMMY(26);
-  STRATEGIC_MAP_VIEW_DUMMY(27);
-  STRATEGIC_MAP_VIEW_DUMMY(28);
-  STRATEGIC_MAP_VIEW_DUMMY(29);
-  STRATEGIC_MAP_VIEW_DUMMY(30);
-  STRATEGIC_MAP_VIEW_DUMMY(31);
-  STRATEGIC_MAP_VIEW_DUMMY(32);
-  STRATEGIC_MAP_VIEW_DUMMY(33);
-  STRATEGIC_MAP_VIEW_DUMMY(34);
-  STRATEGIC_MAP_VIEW_DUMMY(35);
-#undef STRATEGIC_MAP_VIEW_DUMMY
-
-  virtual char HitTestPointSlot90(CPoint* localPoint, int terrainIndex); // 0x90
-  virtual void StrategicMapViewDummy37() = 0;
-  virtual void* GetFrameRegionSlot98(int selector); // 0x98
-};
-
-extern TStrategicMapViewSystem* g_pStrategicMapViewSystem;
+// Legacy facade name for g_pStrategicMapViewSystem (0x006a21a8).
+typedef TMacViewMgr TStrategicMapViewSystem;
+extern TMacViewMgr* g_pStrategicMapViewSystem;

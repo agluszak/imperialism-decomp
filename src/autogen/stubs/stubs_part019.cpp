@@ -1227,14 +1227,6 @@ undefined4 CreateTMyStaticTextInstance(void)
   return 0;
 }
 
-// ghidra_name TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-// ghidra_proto undefined ConstructUiTextResourceEntry_Vtbl0066cbc8()
-// FUNCTION: IMPERIALISM 0x005b5420
-undefined4 ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateSelectableTextOptionEntryBase
 // ghidra_proto undefined CreateSelectableTextOptionEntryBase()
 // FUNCTION: IMPERIALISM 0x005b54a0

@@ -3,10 +3,9 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TMacViewMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TMacViewMgr -> TObject -> CObject.
+// Strategic map view / render system (singleton g_pStrategicMapViewSystem @ 0x006a21a8).
 // VTABLE: IMPERIALISM 0x00658660
 class TMacViewMgr : public TObject {
 public:
@@ -26,8 +25,8 @@ public:
   virtual undefined LoadStrategicMapUnitOverlayAtlas751(); // slot 0x0c 0x50a3e0
   virtual undefined LoadStrategicMapOverlayAtlas8699(); // slot 0x0d 0x50a410
   virtual undefined LoadStrategicMapMarkerAtlas1372(); // slot 0x0e 0x50a440
-  virtual undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3); // slot 0x0f 0x50bbc0
-  virtual undefined SyncSellTaggedChildControlWithNationState(int * param_1, short param_2); // slot 0x10 0x50bc50
+  virtual undefined OrphanCallChain_C4_I35_0050bbc0(int* param_1, undefined4 param_2, short param_3); // slot 0x0f 0x50bbc0
+  virtual undefined SyncSellTaggedChildControlWithNationState(int* param_1, short param_2); // slot 0x10 0x50bc50
   virtual undefined RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
   virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(); // slot 0x12 0x50be30
   virtual undefined DispatchTurnEvent3B8AndWaitForCompletionFlag(); // slot 0x13 0x50d310
@@ -42,19 +41,50 @@ public:
   virtual undefined RenderTurnEventPalettePreviewSurfaceAndProgress(); // slot 0x1c 0x50b640
   virtual undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles(); // slot 0x1d 0x50b9e0
   virtual undefined RebuildNationClipRegionsAndDispatchMapEvent(); // slot 0x1e 0x50bad0
-  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(int * param_1, short param_2, short param_3, short param_4); // slot 0x1f 0x50da80
-  virtual void DrawStrategicMapUnitIcon(int * pDstSurface, short nIconVariant, short nDstX, short nYShift); // slot 0x20 0x50dd40
-  virtual void DrawStrategicMapUnitIconOverlay(int * pDstSurface, ushort wOverlayIconId, short nVariantRow, short nDstX, short nYShift); // slot 0x21 0x50df40
-  virtual undefined CopySpriteSurfaceToStrideBuffer(int * param_1, undefined4 * param_2, short param_3); // slot 0x22 0x50d9e0
+  virtual undefined BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, short param_2, short param_3,
+                                                            short param_4); // slot 0x1f 0x50da80
+  virtual void DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant, short nDstX,
+                                        short nYShift); // slot 0x20 0x50dd40
+  virtual void DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOverlayIconId,
+                                               short nVariantRow, short nDstX,
+                                               short nYShift); // slot 0x21 0x50df40
+  virtual undefined CopySpriteSurfaceToStrideBuffer(int* param_1, undefined4* param_2,
+                                                    short param_3); // slot 0x22 0x50d9e0
   virtual undefined RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700
   virtual undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
-  virtual undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1, short param_2); // slot 0x25 0x50d680
+  virtual undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
+                                                                      short param_2); // slot 0x25 0x50d680
   virtual undefined VTableSlot26(short param_1); // slot 0x26 0x509e10
 // === END GENERATED DECLS (TMacViewMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMacViewMgr 0xCTOR`).
+
+  int field04;
+  int regionSlots[0x17];
+  int tileStateSlots[0x180];
+  int padding664;
+  int atlas668;
+  int atlas66c;
+  int atlas670;
+  int atlas674;
+  int unitIconAtlas;
+  int unitOverlayAtlas;
+  int atlas680;
+  int atlas684;
+  int atlas688;
+  int atlas68c;
+  int atlas690;
+  int atlas694[8];
+  int atlas6b4;
+  int atlas6b8;
+  unsigned char callback6bc[0x480];
+  unsigned char callbackB3c[0x120];
+  unsigned char callbackC5c[0x120];
+  int fieldD7c;
+  int fieldD80;
 
   TMacViewMgr();
 };
+
+extern TMacViewMgr* g_pStrategicMapViewSystem;
 
 // === BEGIN GENERATED (TMacViewMgr) — refreshed by `just gen-class TMacViewMgr`; do not hand-edit ===
 // clang-format off

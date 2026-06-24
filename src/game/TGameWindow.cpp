@@ -1,42 +1,267 @@
 #include "game/TGameWindow.h"
 
+#include "game/TSimMgr.h"
+#include "game/TControl.h"
+#include "game/TSimMgr.h"
+#include "game/TView.h"
+#include "game/UiRuntimeContext.h"
+#include "game/diplomacy_globals.h"
+#include "game/mfc.h"
+
+extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
+
+undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void);
+undefined4 ConsumeFirstPendingAbilityUnlock(void);
+undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
+undefined4 SelectAndActivatePendingEventForCurrentView(void);
+undefined4 SendMessage808IfSelectionStateActive(void);
+undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
+undefined4 DestructTWindowViewAndUnlinkGlobalLists(void);
+
+namespace {
+
+const unsigned int kTagMain = 0x6d61696e;
+const unsigned int kTagQuery = 0x71756572;
+const unsigned int kAddrSfxPlaybackSystem = 0x006a43ec;
+const unsigned int kAddrHelpRuntimeGate = 0x006a21b8;
+const short kUiCommandHandledMarker = 0x29a;
+
+struct TurnOrderNavCommandEvent {
+  unsigned char pad00[0x1c];
+  short commandCode;
+  unsigned char pad1e[2];
+  short handledMarker;
+};
+
+static short QueryUiRuntimeEventCode() {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x4);
+}
+
+static short QueryUiRuntimeFieldF8() {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf8);
+}
+
+static int QueryUiRuntimeFieldF4() {
+  return *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf4);
+}
+
+} // namespace
+
+namespace GameWindowInvoke {
+
+static int InvokeAfxThreadAndCallSecondaryRefreshGate() {
+  return reinterpret_cast<int(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(::InvokeAfxThreadAndCallSecondaryRefresh))();
+}
+
+static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
+  return static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(short)>(
+      reinterpret_cast<void (*)()>(::ConsumeFirstPendingAbilityUnlock))(nationId));
+}
+
+static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
+  reinterpret_cast<void(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(::DispatchUiRuntimeMessage101AAndRefreshActiveView))();
+}
+
+static void SelectAndActivatePendingEventForCurrentViewGate() {
+  reinterpret_cast<void(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(::SelectAndActivatePendingEventForCurrentView))();
+}
+
+static void SendMessage808IfSelectionStateActiveGate() {
+  reinterpret_cast<void(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(::SendMessage808IfSelectionStateActive))();
+}
+
+static int* InitializeGlobalRectDefaultsIfUninitializedGate() {
+  return reinterpret_cast<int*(__cdecl*)(void)>(
+      reinterpret_cast<void (*)()>(::InitializeGlobalRectDefaultsIfUninitialized))();
+}
+
+static void DestructTWindowViewAndUnlinkGlobalListsGate(TView* view) {
+  reinterpret_cast<void(__cdecl*)(TView*)>(
+      reinterpret_cast<void (*)()>(::DestructTWindowViewAndUnlinkGlobalLists))(view);
+}
+
+static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
+  void* uiRuntime = g_pUiRuntimeContext;
+  if (uiRuntime == 0) {
+    return;
+  }
+  reinterpret_cast<void(__cdecl*)(int)>(
+      *reinterpret_cast<void**>(reinterpret_cast<char*>(*reinterpret_cast<void**>(uiRuntime)) + 0x88))(
+      abilityIndex);
+}
+
+static void PlayClickSfx7000() {
+  void* sfxPlayer = *reinterpret_cast<void**>(kAddrSfxPlaybackSystem);
+  if (sfxPlayer == 0) {
+    return;
+  }
+  reinterpret_cast<void(__cdecl*)(int, int, int)>(
+      *reinterpret_cast<void**>(reinterpret_cast<char*>(*reinterpret_cast<void**>(sfxPlayer)) + 0xb8))(
+      7000, 0, 1);
+}
+
+} // namespace GameWindowInvoke
+
 // FUNCTION: IMPERIALISM 0x004ffbf0
 CRuntimeClass* TGameWindow::GetRuntimeClass() const {
-  return 0;
+  return &PTR_s_TGameWindow_00656a30;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004ffc60
 // TGameWindow::`scalar deleting destructor'
-TGameWindow::~TGameWindow() {}
+TGameWindow::~TGameWindow() {
+  GameWindowInvoke::DestructTWindowViewAndUnlinkGlobalListsGate(this);
+}
 
 // FUNCTION: IMPERIALISM 0x004ffcb0
 void TGameWindow::DispatchSlot9CToLinkedChildren() {
+  if (IsActionable() == 0) {
+    UpdateTurnOrderNavigationWindowLayout();
+  }
+  TWindow::DispatchSlot9CToLinkedChildren();
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd10
 char TGameWindow::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
+  return TView::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd40
-char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
+char TGameWindow::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
+                                                            int arg4) {
+  return TView::DispatchUiMouseEventToChildrenOrSelf_Impl(point, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::ForwardParam(int param) {
+  TurnOrderNavCommandEvent* commandEvent = reinterpret_cast<TurnOrderNavCommandEvent*>(param);
+  TControl* mainControl = ResolveControlByTag(kTagMain);
+  if (mainControl == 0) {
+    return;
+  }
+  if (commandEvent->handledMarker == kUiCommandHandledMarker) {
+    return;
+  }
+  if (GameWindowInvoke::InvokeAfxThreadAndCallSecondaryRefreshGate() != 0) {
+    return;
+  }
+  commandEvent->handledMarker = kUiCommandHandledMarker;
+
+  short commandCode = commandEvent->commandCode;
+  if (commandCode == 0x68 || commandCode == 0x48) {
+    if (mainControl->ResolveControlByTag(kTagQuery) != 0) {
+      if (*reinterpret_cast<int*>(kAddrHelpRuntimeGate) != 0) {
+        GameWindowInvoke::PlayClickSfx7000();
+        if (QueryUiRuntimeEventCode() == 0x7dd) {
+          GameWindowInvoke::DispatchUiRuntimeMessage101AAndRefreshActiveViewGate();
+          return;
+        }
+        GameWindowInvoke::SelectAndActivatePendingEventForCurrentViewGate();
+        return;
+      }
+    }
+  }
+
+  if (commandCode == 3 || commandCode == 0xd || commandCode == 0x1b || commandCode == 0x20) {
+    if (QueryUiRuntimeEventCode() != 0x7dd &&
+        mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
+      GameWindowInvoke::PlayClickSfx7000();
+      if (g_pLocalizationTable->mode != 0x11) {
+        g_pLocalizationTable->PostTurnFlowUiRefresh();
+        return;
+      }
+      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      short abilityIndex = GameWindowInvoke::ConsumeFirstPendingAbilityUnlockForNation(nationId);
+      if (abilityIndex != -1) {
+        GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);
+        return;
+      }
+      g_pLocalizationTable->PostTurnFlowUiRefresh();
+      return;
+    }
+    if (QueryUiRuntimeFieldF8() != 0) {
+      if (QueryUiRuntimeFieldF4() == 0) {
+        return;
+      }
+      GameWindowInvoke::SendMessage808IfSelectionStateActiveGate();
+      return;
+    }
+    mainControl->ForwardParam(param);
+    return;
+  }
+
+  if (g_pLocalizationTable == 0) {
+    mainControl->ForwardParam(param);
+    return;
+  }
+  if (g_pLocalizationTable->mode != 0x69 && g_pLocalizationTable->mode != 0x68 &&
+      g_pLocalizationTable->mode != 0x67 && g_pLocalizationTable->mode != 0x6a &&
+      g_pLocalizationTable->mode != 0x6d && QueryUiRuntimeEventCode() != 0x7dd) {
+    mainControl->ForwardParam(param);
+    return;
+  }
+
+  switch (commandCode) {
+  case 0x31:
+    if (QueryUiRuntimeEventCode() != 0x7de) {
+      GameWindowInvoke::PlayClickSfx7000();
+      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x69);
+      return;
+    }
+    break;
+  case 0x32:
+    if (QueryUiRuntimeEventCode() != 0x7db) {
+      GameWindowInvoke::PlayClickSfx7000();
+      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x6a);
+      return;
+    }
+    break;
+  case 0x33:
+    if (QueryUiRuntimeEventCode() != 0x7d9 && QueryUiRuntimeEventCode() != 0x7da) {
+      GameWindowInvoke::PlayClickSfx7000();
+      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x67);
+      return;
+    }
+    break;
+  case 0x34:
+    if (QueryUiRuntimeEventCode() != 0x7d8) {
+      GameWindowInvoke::PlayClickSfx7000();
+      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x68);
+      return;
+    }
+    break;
+  case 0x35:
+    if (QueryUiRuntimeEventCode() != 0x8fc) {
+      GameWindowInvoke::PlayClickSfx7000();
+      g_pLocalizationTable->SetGlobalTurnStateCodeIfAllowed(0x6d);
+      return;
+    }
+    break;
+  default:
+    mainControl->ForwardParam(param);
+    return;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00500160
 undefined TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
+  if (g_pDisplayMgr != 0 &&
+      *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0xe) == 0x7d1) {
+    RECT boundsRect;
+    CaptureLayoutF0(reinterpret_cast<int*>(&boundsRect), 0);
+    int* rectDefaults = GameWindowInvoke::InitializeGlobalRectDefaultsIfUninitializedGate();
+    RECT globalRect;
+    CopyRect(&globalRect, reinterpret_cast<RECT*>(rectDefaults + 1));
+    boundsRect.top = globalRect.top;
+    boundsRect.bottom = globalRect.bottom;
+    boundsRect.right = globalRect.right;
+    ApplyBounds(&boundsRect, 1);
+  }
+  NoOpTurnOrderNavigationVtableSlotA();
   return 0;
 }
 
@@ -52,4 +277,21 @@ undefined TGameWindow::NoOpTurnOrderNavigationVtableSlotB() {
 
 // FUNCTION: IMPERIALISM 0x00500240
 void TGameWindow::Free() {
+  NoOpTurnOrderNavigationVtableSlotB();
+  TWindow::Free();
+  if (g_pDisplayMgr != 0) {
+    g_pDisplayMgr->activeDialog = 0;
+  }
+}
+
+void TGameWindow::InitViewportAdaptiveTurnOrderNavTail() {
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa0) = 0;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xa2) = 0x14;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa4) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa8) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xac) = 0;
+}
+
+void TGameWindow::InitViewportAdaptiveTurnOrderNavTailAt(void* objectBytes) {
+  static_cast<TGameWindow*>(objectBytes)->InitViewportAdaptiveTurnOrderNavTail();
 }

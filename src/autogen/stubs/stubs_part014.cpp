@@ -1083,30 +1083,6 @@ undefined4 DestroySharedStringRefBatch_006A3060_AtExit(void)
   return 0;
 }
 
-// ghidra_name TDisplayMgr::InitializeMapTileRuntimeStateEntry
-// ghidra_proto undefined InitializeMapTileRuntimeStateEntry()
-// FUNCTION: IMPERIALISM 0x004fe7a0
-undefined4 InitializeMapTileRuntimeStateEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTDisplayMgrAndMaybeFree_Impl
-// ghidra_proto undefined DestructTDisplayMgrAndMaybeFree_Impl()
-// FUNCTION: IMPERIALISM 0x004fe820
-undefined4 DestructTDisplayMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004feb50
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004feb50()
-// FUNCTION: IMPERIALISM 0x004feb50
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004feb50(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004ff0c0
 // ghidra_proto undefined Helper_Uses_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004ff0c0()
 // FUNCTION: IMPERIALISM 0x004ff0c0
@@ -1703,62 +1679,6 @@ undefined4 BuildHexNeighborHighlightPolygonForTile(void)
 // ghidra_proto undefined CreateTMacViewMgrInstance()
 // FUNCTION: IMPERIALISM 0x00509c00
 undefined4 CreateTMacViewMgrInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructStrategicMapViewSystem
-// ghidra_proto undefined ConstructStrategicMapViewSystem()
-// FUNCTION: IMPERIALISM 0x00509ca0
-undefined4 ConstructStrategicMapViewSystem(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
-// ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60()
-// FUNCTION: IMPERIALISM 0x00509e60
-undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeStrategicMapViewSystem
-// ghidra_proto undefined InitializeStrategicMapViewSystem()
-// FUNCTION: IMPERIALISM 0x00509f20
-undefined4 InitializeStrategicMapViewSystem(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicMapGaugeAtlasFrom1422And1423
-// ghidra_proto undefined BuildStrategicMapGaugeAtlasFrom1422And1423()
-// FUNCTION: IMPERIALISM 0x0050a470
-undefined4 BuildStrategicMapGaugeAtlasFrom1422And1423(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityCapabilityUiHandlesForActiveNation
-// ghidra_proto undefined RefreshCityCapabilityUiHandlesForActiveNation()
-// FUNCTION: IMPERIALISM 0x0050a6a0
-undefined4 RefreshCityCapabilityUiHandlesForActiveNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicMapTileOverlayStripSurfaces800To807
-// ghidra_proto undefined BuildStrategicMapTileOverlayStripSurfaces800To807()
-// FUNCTION: IMPERIALISM 0x0050a820
-undefined4 BuildStrategicMapTileOverlayStripSurfaces800To807(void)
-{
-  return 0;
-}
-
-// ghidra_name ReloadBitmap244AndRefreshUiCaches
-// ghidra_proto undefined ReloadBitmap244AndRefreshUiCaches()
-// FUNCTION: IMPERIALISM 0x0050b5b0
-undefined4 ReloadBitmap244AndRefreshUiCaches(void)
 {
   return 0;
 }

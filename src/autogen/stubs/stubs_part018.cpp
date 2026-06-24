@@ -939,14 +939,6 @@ undefined4 CreateTRightLeftViewInstance(void)
   return 0;
 }
 
-// ghidra_name TRightLeftView::ConstructTRightLeftViewBaseState
-// ghidra_proto undefined ConstructTRightLeftViewBaseState()
-// FUNCTION: IMPERIALISM 0x00583f30
-undefined4 ConstructTRightLeftViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x00583f90

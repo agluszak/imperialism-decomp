@@ -27,7 +27,9 @@ public:
     unsigned char flag;
     unsigned char pad01[3];
     unsigned char recruitTierFlag27b;
-    unsigned char pad05[0x1d - 0x05];
+    unsigned char pad05[4];
+    unsigned char secondaryCapabilityFlag280;
+    unsigned char pad06[0x1d - 0x0a];
   };
   OrderCapRow orderCapRows277[7];
   unsigned char pad342[0x39d - 0x342];

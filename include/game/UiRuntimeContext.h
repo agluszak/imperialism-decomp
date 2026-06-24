@@ -25,7 +25,7 @@ struct UiRuntimeContext {
   virtual void dummy40() = 0;
   virtual void dummy44() = 0;
   virtual void dummy48() = 0;
-  virtual void dummy4c() = 0;
+  virtual void DispatchEventSlot4C(short eventCode, int payload) = 0; // 0x4c
   virtual void dummy50() = 0;
   virtual short QueryUiScreenModeSlot54() = 0; // 0x54
   virtual void dummy58() = 0;

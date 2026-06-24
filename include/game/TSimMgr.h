@@ -14,8 +14,8 @@ public:
   TLOCALIZATION_VTABLE_SLOT(05);
   TLOCALIZATION_VTABLE_SLOT(06);
   virtual void RegisterHotKeyDialogState(void* stateBuffer) = 0; // slot 07 byte 0x1c
-  TLOCALIZATION_VTABLE_SLOT(08);
-  TLOCALIZATION_VTABLE_SLOT(09);
+  virtual void PostTurnFlowUiRefresh();                              // slot 08
+  virtual void SetGlobalTurnStateCodeIfAllowed(int turnStateCode); // slot 09
   TLOCALIZATION_VTABLE_SLOT(10);
   TLOCALIZATION_VTABLE_SLOT(11);
   TLOCALIZATION_VTABLE_SLOT(12);

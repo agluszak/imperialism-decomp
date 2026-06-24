@@ -180,7 +180,8 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoi
   int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      char hit = g_pStrategicMapViewSystem->HitTestPointSlot90(&localPoint, terrainIndex);
+      char hit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
+          static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -233,7 +234,8 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(C
   bool hit = false;
   do {
     if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
-      char regionHit = g_pStrategicMapViewSystem->HitTestPointSlot90(&localPoint, hitIndex);
+      char regionHit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
+          static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
@@ -350,8 +352,8 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
   }
 
   SetQuickDrawFillColor(0xffffff);
-  void* frameRegion =
-      g_pStrategicMapViewSystem->GetFrameRegionSlot98(frameRegionSelectorAt98);
+  void* frameRegion = reinterpret_cast<void*>(
+      g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(frameRegionSelectorAt98)));
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
   SetQuickDrawFillColor(0);
@@ -365,7 +367,8 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      void* frameRegion = g_pStrategicMapViewSystem->GetFrameRegionSlot98(terrainIndex);
+      void* frameRegion =
+          reinterpret_cast<void*>(g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
       reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
           CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
     }
