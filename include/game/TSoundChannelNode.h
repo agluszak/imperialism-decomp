@@ -1,12 +1,12 @@
 #pragma once
 
-#include "decomp_types.h"
+#include "game/mfc.h"
 
-// DirectSound channel list node (vtable 0x00650a08). Allocated by TSoundPlayer at +0x6c/+0x70.
+// DirectSound channel list node (vtable 0x00650a08).
 // VTABLE: IMPERIALISM 0x00650a08
-class TSoundChannelNode {
+class TSoundChannelNode : public CObject {
 public:
-  virtual ~TSoundChannelNode() {}
+  ~TSoundChannelNode() override;
 
 #define SOUND_CHANNEL_NODE_DUMMY(n) virtual void SoundChannelNodeDummy##n() = 0
   SOUND_CHANNEL_NODE_DUMMY(00);

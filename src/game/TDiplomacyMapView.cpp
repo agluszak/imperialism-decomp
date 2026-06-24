@@ -13,6 +13,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
 #include "game/TControl.h"
+#include "game/TGlobalMapState.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -98,7 +99,6 @@ namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
-#include "game/TGlobalMapState.h"
 const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
 const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
@@ -142,11 +142,6 @@ void ModuleLibraryCacheState::ReleaseRecordByHandle(int handle) {
 void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColor) {
   reinterpret_cast<void(__cdecl*)(void*, int, int)>(thunk_AppendPackedColorDwordToMaskBuffers)(
       this, surface, packedColor);
-}
-
-// FUNCTION: IMPERIALISM 0x00409205
-int UiRuntimeContext::MapTurnEventCodeToPaletteIndex(int eventCode) {
-  return reinterpret_cast<int(__cdecl*)(int)>(::MapTurnEventCodeToPaletteIndex)(eventCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00

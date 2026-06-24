@@ -115,14 +115,6 @@ undefined4 InitializeImperialismApplicationInstance(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250
-// ghidra_proto undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()
-// FUNCTION: IMPERIALISM 0x00413250
-undefined4 WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I08_004133a0
 // ghidra_proto undefined OrphanCallChain_C1_I08_004133a0()
 // FUNCTION: IMPERIALISM 0x004133a0

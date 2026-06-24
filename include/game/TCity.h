@@ -2,46 +2,12 @@
 
 #include "decomp_types.h"
 #include "game/TObject.h"
+#include "game/TPopulationMgr.h"
 
 struct TPtrList;
 class TStream;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-
-// City production-summary object kept at TCity+0x1d8 (vtable + inline fields).
-// Slot 0x50 hands out the raw per-resource summary short array that TCity slot 0x1d
-// adjusts by the city's reserved amounts.
-class TCitySummaryObject {
-public:
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void Free() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void s0a() = 0;
-  // slot 0x2c — production preset notification (TGreatPower slot 0x39, 0x004df810).
-  virtual void NotifyProductionPresetSlot2C(int a, int b, int c) = 0;
-  virtual void s0c() = 0;
-  virtual void s0d() = 0;
-  virtual void s0e() = 0;
-  virtual void s0f() = 0;
-  virtual void s10() = 0;
-  virtual void s11() = 0;
-  virtual void s12() = 0;
-  virtual void s13() = 0;
-  // slot 0x50 — raw summary short array (indexed 0..0x16; 0x004b44d0).
-  virtual short* GetSummaryArraySlot50() = 0;
-
-  unsigned char pad04[0x1c - 0x04];
-  short stockLevel1c; // +0x1c — slot 0x0b derives lowSummaryFlag7d from it
-protected:
-  ~TCitySummaryObject() {}
-};
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
@@ -145,7 +111,7 @@ public:
   short fieldB6[0x17];
   // +0xe4..+0x1d8 — owned order objects, released through slot 0x1c on teardown.
   void* orderSlotsE4[0x3D];
-  TCitySummaryObject* productionSummary1d8; // 0x1D8
+  TPopulationMgr* productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).
   short productionOrderTable1dc[0x10];
   short productionAccum1fc[0x10];         // 0x1FC — ctor-cleared

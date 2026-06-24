@@ -10,6 +10,14 @@ undefined4 RecomputeGlobalCapabilityAverages(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 
+CRuntimeClass* TTechMgr::GetRuntimeClass() const {
+  return 0;
+}
+
+void TTechMgr::Free() {}
+
+TTechMgr::~TTechMgr() {}
+
 // FUNCTION: IMPERIALISM 0x005aef80
 void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 

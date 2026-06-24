@@ -65,6 +65,8 @@ CRuntimeClass PTR_s_TMission_00697848 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x0065c630
 CRuntimeClass PTR_s_TOcean_0065c630 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TTown_0066d780 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x00654cd0
+CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0 = {nullptr, 0, 0, nullptr, nullptr};
 char LAB_00409a9d = 0;
 
 // Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float
@@ -163,7 +165,7 @@ double DAT_0066fad0 = -0.092;
 
 #include "game/TZone.h"
 #include "game/TOcean.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TSelectedCivilianOrderState.h"
 #include "game/TSoundPlayer.h"
@@ -173,7 +175,7 @@ double DAT_0066fad0 = -0.092;
 // Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
 TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
-TGlobalMapState* g_pGlobalMapState = 0;
+TMapMgr* g_pGlobalMapState = 0;
 TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
 

@@ -29,7 +29,7 @@ public:
 
   short quantityField04;
   TCity* cityField08;
-  class TCitySummaryObject* summaryField0c;
+  class TPopulationMgr* summaryField0c;
   short trackingSlots10[0x17];
   short field3e;
   short field40;

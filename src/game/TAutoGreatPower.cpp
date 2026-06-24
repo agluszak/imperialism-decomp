@@ -10,12 +10,11 @@
 #include "game/TForeignMinister.h"
 #include "game/TCityInteriorMinister.h"
 #include "game/TDefenseMinister.h"
-#include "game/TMessageObject.h"
 #include "game/TStream.h"
+#include "game/TMission.h"
 #include "game/TMinor.h"
 #include "game/TPtrList.h"
 #include "game/TCity.h"
-#include "game/TTrackedObject.h"
 #include "game/diplomacy_globals.h"
 #include "game/TZone.h"
 #include <new>
@@ -146,8 +145,8 @@ void TAutoGreatPower::Free(void) {
   if (this->missionQueue != 0) {
     int ordinal = this->missionQueue->GetCountSlot48();
     for (; ordinal > 0; --ordinal) {
-      TTrackedObject* entry =
-          static_cast<TTrackedObject*>(this->missionQueue->GetEntryByOrdinalSlot4C(ordinal));
+      TMission* entry =
+          static_cast<TMission*>(this->missionQueue->GetEntryByOrdinalSlot4C(ordinal));
       entry->NotifyDetachSlot0C();
       this->missionQueue->RemoveAtOrdinalSlot50(ordinal);
       entry->Free();
@@ -199,7 +198,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
 void TAutoGreatPower::WriteTo(TStream* stream) {
   TGreatPower::WriteTo(stream);
 
-  TMessageObject* message = reinterpret_cast<TMessageObject*>(stream);
+  TStream* message = reinterpret_cast<TStream*>(stream);
   short* quarterMetric = this->actionMetricByQuarter;
   int remaining = 6;
   do {
@@ -208,25 +207,25 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = tmp;
-    message->AppendBytesSlot78(&value, 2);
+    message->WriteBytesSlot78(&value, 2);
     ++quarterMetric;
     --remaining;
   } while (remaining != 0);
 
-  message->AppendBytesSlot78(this->mapNodeStateFlags, 0x180);
-  message->AppendBytesSlot78(this->portZoneStateFlags, 0x70);
+  message->WriteBytesSlot78(this->mapNodeStateFlags, 0x180);
+  message->WriteBytesSlot78(this->portZoneStateFlags, 0x70);
 
   TPtrList* missionQueue = this->missionQueue;
   missionQueue->WriteTo(stream);
   int missionQueueCount = missionQueue->GetCountSlot48();
 
   int zeroWord = 0;
-  message->AppendBytesSlot78(&zeroWord, 4);
+  message->WriteBytesSlot78(&zeroWord, 4);
   int index = 1;
   if (index <= missionQueueCount) {
     do {
       int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinalSlot4C(index));
-      message->WriteEntrySlotB4(value, 0);
+      message->WriteObjectSlotB4(reinterpret_cast<void*>(value), 0);
       ++index;
     } while (index <= missionQueueCount);
   }
@@ -852,7 +851,7 @@ void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targ
 // FUNCTION: IMPERIALISM 0x004ea1c0
 void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
-  TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
+  TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
     if (mission->MatchesMissionKeySlot4C(3, regionId, 0) != 0) {
       CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
@@ -863,7 +862,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
       mission->Free();
       break;
     }
-    mission = static_cast<TTrackedObject*>(missionCursor.Advance());
+    mission = static_cast<TMission*>(missionCursor.Advance());
   }
   this->mapNodeStateFlags[regionId] = 0;
   TGreatPower::RemoveRegionIdFromNationOwnedRegionList(regionId);
@@ -958,8 +957,8 @@ void TAutoGreatPower::NoOpTailStateHookSlot2B8(int arg) {
 void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
   for (;;) {
     CIterator missionCursor(this->missionQueue);
-    TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
-    TTrackedObject* replacement;
+    TMission* mission = static_cast<TMission*>(missionCursor.Reset());
+    TMission* replacement;
     for (;;) {
       if (missionCursor.More() == 0) {
         return;
@@ -968,7 +967,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
       if (replacement != mission) {
         break;
       }
-      mission = static_cast<TTrackedObject*>(missionCursor.Advance());
+      mission = static_cast<TMission*>(missionCursor.Advance());
     }
     CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
     POSITION pos = listState->Find(mission, 0);

@@ -1,18 +1,20 @@
 #pragma once
 
-#include "decomp_types.h"
+#include "game/TObject.h"
+#include "game/mfc.h"
 
 struct CRuntimeClass;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Town/region marker record (0x50 bytes) kept on TGreatPower::townMarkerList.
-// Created by the slot 0x3a/0x3b bodies ("Frog City"/"FrogCity" markers); the
-// transport-link predicate 0x005b7830 reads regionId14/enabledFlag4d.
 // VTABLE: IMPERIALISM 0x0066d7c8
-class TTown {
+class TTown : public TObject {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const;
+  CRuntimeClass* GetRuntimeClass() const override;
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  // slot 0x1c Free inherited unchanged (TObject::Free @ 0x004798b0)
 
   char name[0x10];                      // 0x04 — strcpy'd marker name
   short regionId14;                     // 0x14
@@ -37,6 +39,5 @@ public:
     (void)ptr;
   }
 
-protected:
-  ~TTown() {}
+  ~TTown() override;
 };

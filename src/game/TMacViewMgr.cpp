@@ -1537,7 +1537,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 // FUNCTION: IMPERIALISM 0x0050d310
 undefined TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
   TView* dialog = reinterpret_cast<TView*>(field04);
-  g_pUiRuntimeContext->DispatchEventSlot4C(0x3b8, 0);
+  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, 0);
   short completionFlag = *reinterpret_cast<short*>(reinterpret_cast<char*>(dialog) + 0x14);
   while (completionFlag == 0) {
     MacViewInvoke::PumpUiMessagesAndBackgroundTasks(1);

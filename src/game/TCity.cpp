@@ -69,7 +69,7 @@ void TCity::Free() {
   int remaining = 0x3d;
   do {
     if (*orderSlot != 0) {
-      static_cast<TCitySummaryObject*>(*orderSlot)->Free();
+      static_cast<TPopulationMgr*>(*orderSlot)->Free();
     }
     *orderSlot = 0;
     ++orderSlot;

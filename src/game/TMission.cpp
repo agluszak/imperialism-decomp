@@ -27,7 +27,8 @@ int TMission::ReturnZeroSlot2C(int a, int b) {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534c40
-void TMission::NoOpSlot30() {}
+void TMission::Call30() {}
+
 // FUNCTION: IMPERIALISM 0x00534c60
 void TMission::SetStateByte8To2() {
   state08 = 2;
@@ -39,19 +40,19 @@ void TMission::ResetValue0CToZero() {
 // FUNCTION: IMPERIALISM 0x00534ca0
 void TMission::NoOpSlot3C() {}
 // FUNCTION: IMPERIALISM 0x00534cc0
-void TMission::InvokeSlots34_38_3C() {
+void TMission::RefreshSlot40() {
   SetStateByte8To2();
   ResetValue0CToZero();
   NoOpSlot3C();
 }
 // FUNCTION: IMPERIALISM 0x00534cf0
-void TMission::NoOpSlot44() {}
+void TMission::MissionSlot44() {}
 // FUNCTION: IMPERIALISM 0x00534d10
-void* TMission::ReturnArgSlot48(void* arg) {
-  return arg;
+TMission* TMission::GetReplacementSlot48() {
+  return this;
 }
 // FUNCTION: IMPERIALISM 0x00534d30
-char TMission::ReturnFalseSlot4C(int a, int b, int c) {
+char TMission::MatchesMissionKeySlot4C(int a, int b, int c) {
   (void)a;
   (void)b;
   (void)c;
@@ -138,6 +139,10 @@ char TMission::ReturnFalseSlot98() {
   return 0;
 }
 
+void TMission::AssertValid(CArchive* archive) const {
+  (void)archive;
+}
+
 // FUNCTION: IMPERIALISM 0x00534fb0
 CRuntimeClass* TMission::GetRuntimeClass() const {
   return &PTR_s_TMission_00697848;
@@ -191,7 +196,7 @@ void TMission::ReadFrom(TStream* stream) {
     stream->ReadBytes(&pathMarker06, 2);
   }
   if (*reinterpret_cast<int*>(kSaveFormatVersionAddr) < 9) {
-    InvokeSlots34_38_3C();
+    RefreshSlot40();
     return;
   }
   stream->ReadBytes(&marker11, 1);

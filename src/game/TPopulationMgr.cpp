@@ -31,3 +31,7 @@ void TPopulationMgr::WriteTo(TStream* stream) {}
 void TPopulationMgr::ReadFrom(TStream* stream) {}
 
 void TPopulationMgr::Free() {}
+
+short* TPopulationMgr::GetSummaryArraySlot50() {
+  return reinterpret_cast<short*>(OrphanLeaf_NoCall_Ins63_004b64c0());
+}

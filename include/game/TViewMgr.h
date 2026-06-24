@@ -35,7 +35,56 @@ public:
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
   // === END GENERATED DECLS (TViewMgr) ===
 
-  // Non-virtual helpers (thiscall bodies at fixed addresses, not vtable slots).
+  // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
+  virtual void DispatchTurnEventSlot4C(short eventCode, int payload);              // 0x4c
+  virtual void UiRuntimeSlot50();                                                  // 0x50
+  virtual short QueryUiScreenModeSlot54();                                         // 0x54
+  virtual void UiRuntimeSlot58();                                                  // 0x58
+  virtual void UiRuntimeSlot5C();                                                  // 0x5c
+  virtual void UiRuntimeSlot60();                                                  // 0x60
+  virtual void UiRuntimeSlot64();                                                  // 0x64
+  virtual void ApplyUiRuntimeSlot68(int modeValue);                                // 0x68
+  virtual void UiRuntimeSlot6C();                                                    // 0x6c
+  virtual void UiRuntimeSlot70();                                                    // 0x70
+  virtual void UiRuntimeSlot74();                                                    // 0x74
+  virtual void UiRuntimeSlot78();                                                    // 0x78
+  virtual void UiRuntimeSlot7C();                                                    // 0x7c
+  virtual void UiRuntimeSlot80();                                                    // 0x80
+  virtual void UiRuntimeSlot84();                                                    // 0x84
+  virtual void UiRuntimeSlot88();                                                    // 0x88
+  virtual void UiRuntimeSlot8C();                                                    // 0x8c
+  virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
+                                              int proposalCode);                   // 0x90
+  virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
+                                     int promptCode);                              // 0x94
+  virtual void DispatchDecisionSlot98(int sourceNation, int arg2, int arg3,
+                                      int targetNation);                           // 0x98
+  virtual void UiRuntimeSlot9C();                                                    // 0x9c
+  virtual void UiRuntimeSlotA0();                                                    // 0xa0
+  virtual void UiRuntimeSlotA4();                                                    // 0xa4
+  virtual void UiRuntimeSlotA8();                                                    // 0xa8
+  virtual void RefreshCityProductionUiSlotAc();                                    // 0xac
+  virtual void UiRuntimeSlotB0();                                                    // 0xb0
+  virtual void UiRuntimeSlotB4();                                                    // 0xb4
+  virtual void UiRuntimeSlotB8();                                                    // 0xb8
+  virtual void UiRuntimeSlotBC();                                                    // 0xbc
+  virtual void UiRuntimeSlotC0();                                                    // 0xc0
+  virtual void UiRuntimeSlotC4();                                                    // 0xc4
+  virtual void UiRuntimeSlotC8();                                                    // 0xc8
+  virtual void UiRuntimeSlotCC();                                                    // 0xcc
+  virtual void UiRuntimeSlotD0();                                                    // 0xd0
+  virtual void UiRuntimeSlotD4();                                                    // 0xd4
+  virtual void UiRuntimeSlotD8();                                                    // 0xd8
+  virtual int ShowConstructionOptionsDialog();                                       // 0xdc
+
+  void ApplyLegendSplitSlot34(int split) { ApplyTurnEventPaletteColorByEventCode(split); }
+  void QueueTurnStatusPromptSlot3C(int promptIndex, int payload) {
+    BuildAndShowTurnOverlayByMode(promptIndex, payload);
+  }
+  void RefreshViewSlot48() { RefreshMainViewNationIndicatorForCurrentTurnEvent(); }
+
+  short GetActiveNationId();
+  int MapTurnEventCodeToPaletteIndex(int eventCode);
   undefined4 RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString);
   undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode, CString* messageCString);
   undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind);
@@ -52,13 +101,15 @@ public:
   void* cursorTable[0x36];      // +0x14 .. 0xeb (54 turn-event cursor handles)
   short fieldEc;                // +0xec
   short padEe;                  // +0xee
-  unsigned int fieldF0;         // +0xf0
+  class TMapUberPicture* mapUberPictureF0; // +0xf0
   unsigned int fieldF4;         // +0xf4
   short fieldF8;                // +0xf8
   short padFa;                  // +0xfa
 
   TViewMgr();
 };
+
+extern TViewMgr* g_pUiRuntimeContext;
 
 ASSERT_SIZE(TViewMgr, 0xfc);
 

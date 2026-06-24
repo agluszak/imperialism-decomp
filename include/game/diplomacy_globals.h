@@ -6,7 +6,7 @@
 #include "game/TCountry.h"
 
 struct NationState;
-struct TDiplomacyMgr;
+class TDiplomacyMgr;
 class TSimMgr;
 class TAssetMgr;
 class TInterNationEventQueueManager;

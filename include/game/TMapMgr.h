@@ -4,7 +4,62 @@
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
+class TCivUnit;
 class TStream;
+class TStationedUnitNode;
+
+struct GlobalMapTileRecord {
+  char pad_00_to_1f[0x20];
+  TCivUnit* firstCivilianOrder; // 0x20
+};
+
+struct TTerrainStateRecordView {
+  unsigned char pad00[2];
+  unsigned char roadFlag;
+  unsigned char pad03;
+  signed char ownerNationTag04; // 0x04
+  unsigned char pad05;
+  signed char adjacencyBits06;  // 0x06
+  unsigned char pad07[0x0e - 0x07];
+  unsigned char recruitSearchVisited0e; // 0x0e
+  unsigned char pad0f[0x11 - 0x0f];
+  signed char resourceTypeByEdge[2];
+  unsigned char gateFlag;
+  short cityRecordIndex;
+  unsigned char pad16;
+  unsigned char railFlags17; // 0x17
+  unsigned char pad18[4];
+  unsigned char activeFlags1c; // 0x1c
+  unsigned char pad1d[0x20 - 0x1d];
+  TCivUnit* firstCivilianOrder20; // 0x20
+};
+
+struct TGlobalMapCityScoreRecord {
+  signed char ownerNationCode00;
+  unsigned char pad01;
+  unsigned char developmentStage;
+  unsigned char pad03;
+  short ownerNationSlot;
+  short lastTurnTick;
+  signed char adjacentRegionCount08;
+  unsigned char pad09;
+  short adjacentRegionIds0A[0x18];
+  signed char linkedRegionCount;
+  unsigned char pad3B[0x42 - 0x3B];
+  short linkedRegionIds[0x21];
+  short stage1CounterA;
+  short stage1CounterB;
+  short pad88;
+  short stage1CounterC;
+  short stage1CounterD;
+  short stage2CounterA;
+  short stage2CounterB;
+  short stage2CounterC;
+  unsigned char pad94[0x98 - 0x94];
+  TStationedUnitNode* stationedUnitChain98; // 0x98
+  int cityScoreValue;
+  unsigned char padA0[0xA8 - 0xA0];
+};
 
 // TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
@@ -90,10 +145,40 @@ public:
   virtual void FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId); // slot 0x4c 0x5143d0
   virtual void SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex); // slot 0x4d 0x514a20
 // === END GENERATED DECLS (TMapMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapMgr 0xCTOR`).
+
+  // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28
+  // covers the TObject head; tile/city tables are heap-backed pointers below.
+  TTerrainStateRecordView* terrainStateTable; // +0x08
+  TGlobalMapCityScoreRecord* cityScoreTable;  // +0x0c
+  unsigned char pad10[4];
+  int cityScoreTotal;                         // +0x14
+  char* scenarioTagText1c;                    // +0x1c
+  char hexNeighborWrapHorizontally20;         // +0x20
+
+  static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
+                                            char wrapHorizontally);
+  static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
+  static short StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction);
+
+  char AreNationsBorderLinked(int nationA, int nationB);
+  void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
+  int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
+  void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
+  short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+
+  TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
+    return terrainStateTable[tileIndex].firstCivilianOrder20;
+  }
+
+  char CallMetricSlotC4(int regionIndex, int edgeIndex);
+  short QueryIconStripXSlot110(int iconCode);
+  void NotifyCityRecordSlot12C(int cityRecordIndex);
+  void LinkRegionToNationSlot134(int regionId, int nationSlot);
 
   TMapMgr();
 };
+
+extern TMapMgr* g_pGlobalMapState;
 
 // === BEGIN GENERATED (TMapMgr) — refreshed by `just gen-class TMapMgr`; do not hand-edit ===
 // clang-format off

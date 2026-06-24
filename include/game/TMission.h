@@ -46,16 +46,16 @@ public:
   // --- TMission's own virtuals, exact vtable slot order ---
   virtual void WriteTo(TStream* stream) override;   // slot 0x05 0x535820
   virtual void ReadFrom(TStream* stream) override;  // slot 0x06 0x5358a0
-  virtual char ReturnFalseSlot28();                         // 0x0a 0x534c00
+  virtual char ReturnFalseSlot28(); // 0x0a 0x534c00 — mission-node queue dispatch (0x004daa80)
   virtual int ReturnZeroSlot2C(int a, int b);               // 0x0b 0x534c20 (ret 8)
-  virtual void NoOpSlot30();                                // 0x0c 0x534c40
+  virtual void Call30();                                    // 0x0c 0x534c40 (NoOpSlot30)
   virtual void SetStateByte8To2();                          // 0x0d 0x534c60
   virtual void ResetValue0CToZero();                        // 0x0e 0x534c80
   virtual void NoOpSlot3C();                                // 0x0f 0x534ca0
-  virtual void InvokeSlots34_38_3C();                       // 0x10 0x534cc0
-  virtual void NoOpSlot44();                                // 0x11 0x534cf0
-  virtual void* ReturnArgSlot48(void* arg);                 // 0x12 0x534d10
-  virtual char ReturnFalseSlot4C(int a, int b, int c);      // 0x13 0x534d30 (ret 12)
+  virtual void RefreshSlot40();                             // 0x10 0x534cc0
+  virtual void MissionSlot44();                             // 0x11 0x534cf0
+  virtual TMission* GetReplacementSlot48();               // 0x12 0x534d10
+  virtual char MatchesMissionKeySlot4C(int kind, int key, int mode); // 0x13 0x534d30
   virtual char ReturnFalseSlot50();                         // 0x14 0x534d50
   virtual char ReturnFalseSlot54();                         // 0x15 0x534d70
   virtual int ReturnZeroSlot58();                           // 0x16 0x534d90
@@ -68,13 +68,20 @@ public:
   virtual float ReturnZeroFloatSlot74();                    // 0x1d 0x534e50
   virtual float ReturnZeroFloatSlot78();                    // 0x1e 0x534eb0
   virtual float ReturnZeroFloatSlot7C();                    // 0x1f 0x534e90
-  virtual void NoOpSlot80(int a, int b);                    // 0x20 0x534ef0
+  virtual void NoOpSlot80(int a, int b);                    // 0x20 0x534ef0 — AdoptUnitSlot80
   virtual void NoOpSlot84(int a, int b);                    // 0x21 0x534ed0 (ret 8)
   virtual void NoOpSlot88(int a, int b);                    // 0x22 0x534f30
   virtual void NoOpSlot8C(int a, int b);                    // 0x23 0x534f10
   virtual void NoOpSlot90(int a);                           // 0x24 0x534f50
   virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
   virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
+
+  // Slot 0x0c — detach notification while draining mission queues (0x004e7230).
+  void NotifyDetachSlot0C() { AssertValid(0); }
+  void AssertValid(CArchive* archive) const override;
+
+  void DispatchMissionNodeSlot28() { (void)ReturnFalseSlot28(); }
+  void AdoptUnitSlot80(void* unit, int flag) { NoOpSlot80(reinterpret_cast<int>(unit), flag); }
 
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
@@ -83,22 +90,3 @@ public:
 };
 
 ASSERT_SIZE(TMission, 0x14);
-
-// Mission-node queue element: slot 0x28 dispatch hook (0x004daa80).
-class TMissionNodeCallback {
-public:
-  virtual void s00() = 0;
-  virtual void s01() = 0;
-  virtual void s02() = 0;
-  virtual void s03() = 0;
-  virtual void s04() = 0;
-  virtual void s05() = 0;
-  virtual void s06() = 0;
-  virtual void s07() = 0;
-  virtual void s08() = 0;
-  virtual void s09() = 0;
-  virtual void DispatchSlot28() = 0;
-
-protected:
-  ~TMissionNodeCallback() {}
-};

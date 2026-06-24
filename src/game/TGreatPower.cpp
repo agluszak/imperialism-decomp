@@ -1,7 +1,6 @@
 #include "game/TNavyMission.h"
 #include "game/TCountry.h"
 #include "game/TMinor.h"
-#include "game/TTrackedObject.h"
 #include "game/TNationInteractionStateManager.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TSimMgr.h"
@@ -181,7 +180,6 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TAdmiral.h"
 #include "game/TTrackedObjectListEntry.h"
 
-#include "game/TMessageObject.h"
 #include "game/TQueueObject.h"
 #include "game/TStream.h"
 #include "game/nation_stream_serialization.h"
@@ -246,11 +244,11 @@ enum {
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
 static __inline TGlobalMapCityScoreRecord*
-GlobalMapState_GetCityRecord(const TGlobalMapState* globalMapState, int cityIndex) {
+GlobalMapState_GetCityRecord(const TMapMgr* globalMapState, int cityIndex) {
   return globalMapState->cityScoreTable + cityIndex;
 }
 
-static __inline int GlobalMapState_ReadCityScoreValue(const TGlobalMapState* globalMapState,
+static __inline int GlobalMapState_ReadCityScoreValue(const TMapMgr* globalMapState,
                                                       int cityIndex) {
   const TGlobalMapCityScoreRecord* cityRecord =
       GlobalMapState_GetCityRecord(globalMapState, cityIndex);
@@ -326,7 +324,7 @@ static __inline TSortedByRelationshipList* AllocateSortedByRelationshipListWithM
 
 static __inline char UiRuntime_RequestDiplomacyDecision(void* uiRuntimeContext, int sourceNation,
                                                         int targetNation, int proposalCode) {
-  return static_cast<TUiRuntimeContext*>(uiRuntimeContext)
+  return static_cast<TViewMgr*>(uiRuntimeContext)
       ->RequestDiplomacyDecisionSlot90(sourceNation, targetNation, proposalCode);
 }
 
@@ -513,7 +511,7 @@ undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void); // 0x00405312 -> 0x0
 
 // Each dispatch reloads the UI-context global, as the original does.
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
-  reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext)
+  g_pUiRuntimeContext
       ->QueueTurnStatusPromptSlot3C(promptIndex, payload);
 }
 
@@ -1278,9 +1276,9 @@ void TGreatPower::AddNodeToMissionNodeQueue(void* node) {
 #pragma optimize("y", on)
 void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
   CIterator nodeIter(this->missionNodeQueue);
-  for (TMissionNodeCallback* node = static_cast<TMissionNodeCallback*>(nodeIter.Reset());
-       nodeIter.More(); node = static_cast<TMissionNodeCallback*>(nodeIter.Advance())) {
-    node->DispatchSlot28();
+  for (TMission* node = static_cast<TMission*>(nodeIter.Reset());
+       nodeIter.More(); node = static_cast<TMission*>(nodeIter.Advance())) {
+    node->DispatchMissionNodeSlot28();
   }
   static_cast<TPtrList*>(this->missionNodeQueue)->FreePayloadsSlot54();
 }
@@ -1579,7 +1577,7 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
         short neighbor =
-            TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
+            TMapMgr::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
         if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
@@ -1607,7 +1605,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   // TEMP: 0x004dbbb0 (BuildCityInfluenceLevelMap) is still an autogen stub; call it
   // through the generic thunk declaration until it is ported as a real member.
   char* influenceByRegion = reinterpret_cast<char*>(BuildCityInfluenceLevelMap());
-  TGlobalMapState* globalMapState = g_pGlobalMapState;
+  TMapMgr* globalMapState = g_pGlobalMapState;
   int regionIndex = 0;
 
   for (int i = 0; i < kNationSlotCount; ++i) {
@@ -1681,7 +1679,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     unsigned char pendingStage = 0;
     unsigned char needsRedraw = 0;
 
-    TGlobalMapState* globalMapState = g_pGlobalMapState;
+    TMapMgr* globalMapState = g_pGlobalMapState;
     TSimMgr* localizationRuntime = g_pLocalizationTable;
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
@@ -2325,7 +2323,7 @@ void TGreatPower::ReleaseDiplomacyTrackedObjectSlots850(void) {
   for (int listIndex = 0; listIndex < kDiplomacyTrackedSlotCount; ++listIndex) {
     void* trackedObject = this->diplomacyTrackedSlots[listIndex];
     if (trackedObject != 0) {
-      static_cast<TTrackedObject*>(trackedObject)->Free();
+      static_cast<TMission*>(trackedObject)->Free();
     }
   }
 }
@@ -2641,7 +2639,7 @@ void TGreatPower::SnapshotDiplomacyState1c6Into250(void) {
 char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                 int arg4) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
-    TUiRuntimeContext* uiRuntimeContext = reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext);
+    TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
     uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg2, arg3, arg4);
     return 1;
   }
@@ -3060,10 +3058,10 @@ void TGreatPower::NotifyWarResetSlotA5(void) {
     TTrackedObjectListEntry* entry =
         static_cast<TTrackedObjectListEntry*>(trackedList->GetEntryByOrdinalSlot4C(remaining));
     if (entry != 0) {
-      reinterpret_cast<TTrackedObject*>(entry)->Call30();
+      reinterpret_cast<TMission*>(entry)->Call30();
     }
     if (entry != 0) {
-      reinterpret_cast<TTrackedObject*>(entry)->Free();
+      reinterpret_cast<TMission*>(entry)->Free();
     }
     --remaining;
   }
@@ -3149,7 +3147,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 
   void* relationPanelManager = this->city;
   if (relationPanelManager != 0) {
-    static_cast<TTrackedObject*>(relationPanelManager)->Free();
+    static_cast<TMission*>(relationPanelManager)->Free();
   }
   this->city = 0;
 
@@ -3544,7 +3542,7 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
     return;
   }
 
-  static_cast<TUiRuntimeContext*>(uiRuntimeContext)->DispatchEventSlot4C(0x2103, this->nationSlot);
+  static_cast<TViewMgr*>(uiRuntimeContext)->DispatchTurnEventSlot4C(0x2103, this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004df5f0
@@ -3619,7 +3617,7 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
 // FUNCTION: IMPERIALISM 0x004df810
 #pragma optimize("y", on)
 void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
-  TCitySummaryObject* notifySink = mgr->productionSummary1d8;
+  TPopulationMgr* notifySink = mgr->productionSummary1d8;
   int presetLevel;
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
@@ -4277,7 +4275,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 // FUNCTION: IMPERIALISM 0x004e1d50
 int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
   char result = 0;
-  TUiRuntimeContext* uiRuntimeContext = reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext);
+  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
 
   result = g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, arg2);
 
@@ -4465,7 +4463,7 @@ void TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks(int targetNation
 
 // FUNCTION: IMPERIALISM 0x004e2500
 void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
-  TGlobalMapState* globalMapState = g_pGlobalMapState;
+  TMapMgr* globalMapState = g_pGlobalMapState;
   TPtrList* filteredList = this->trackedObjectList;
   for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
     TTrackedObjectListEntry* entry =
@@ -4478,10 +4476,10 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
     if (mapOwnerClass == ownerClass) {
       void* trackedObject = entry->object;
       if (trackedObject != 0) {
-        static_cast<TTrackedObject*>(trackedObject)->Call30();
+        static_cast<TMission*>(trackedObject)->Call30();
       }
       if (trackedObject != 0) {
-        static_cast<TTrackedObject*>(trackedObject)->Free();
+        static_cast<TMission*>(trackedObject)->Free();
       }
     }
   }
@@ -4493,7 +4491,7 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
         unassignedList->GetEntryByOrdinalSlot4C(unassignedIndex));
     if (entry != 0 && entry->regionIndex == -1) {
       if (entry->object != 0) {
-        static_cast<TTrackedObject*>(entry->object)->Free();
+        static_cast<TMission*>(entry->object)->Free();
       }
     }
   }
@@ -4895,7 +4893,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
            static_cast<float>(relationValue);
   }
   case 5: {
-    TGlobalMapState* globalMapState = g_pGlobalMapState;
+    TMapMgr* globalMapState = g_pGlobalMapState;
     if (globalMapState == 0) {
       return kOne;
     }
@@ -5050,7 +5048,7 @@ void TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent1
 
 // FUNCTION: IMPERIALISM 0x0055f140
 unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
-  TGlobalMapState* globalMapState = g_pGlobalMapState;
+  TMapMgr* globalMapState = g_pGlobalMapState;
   if (globalMapState == 0 || globalMapState->cityScoreTable == 0) {
     return 0;
   }

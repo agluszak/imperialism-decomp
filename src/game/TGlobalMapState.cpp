@@ -1,4 +1,4 @@
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 
 #include "game/TPtrList.h"
 #include "game/TMinor.h"
@@ -25,7 +25,7 @@ short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
 
 
 // FUNCTION: IMPERIALISM 0x00512b50
-void TGlobalMapState::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
+void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                                     char wrapHorizontally) {
   unsigned int row = static_cast<unsigned int>(static_cast<int>(tileIndex) / 0x6c);
   int col = static_cast<int>(tileIndex) % 0x6c;
@@ -85,7 +85,7 @@ void TGlobalMapState::ComputeHexNeighborTileIndices(short tileIndex, short* neig
 
 
 // FUNCTION: IMPERIALISM 0x00512cc0
-short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction) {
+short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction) {
   int tile = static_cast<int>(tileIndex);
   int row = tile / 0x6c;
   int col = tile % 0x6c;
@@ -134,7 +134,7 @@ short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex
 
 
 // FUNCTION: IMPERIALISM 0x00513200
-int TGlobalMapState::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
+int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
   char* terrainTileBytes =
       *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(this) + 0xc);
   int tileByteOffset = static_cast<int>(nTileIndex) * 0x24;
@@ -156,7 +156,7 @@ namespace {
 
 const int kGlobalMapTileCount = 0x1950;
 
-short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, short tileIndex,
+short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIndex,
                                                  short ownerNationTag, char allowActiveFlag2) {
   TTerrainStateRecordView* tile = &mapState->terrainStateTable[tileIndex];
   if (tile->recruitSearchVisited0e != 0) {
@@ -188,7 +188,7 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
   }
 
   short neighborTiles[6];
-  TGlobalMapState::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
+  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
                                                  mapState->hexNeighborWrapHorizontally20);
   for (short neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     if (neighborTiles[neighborIndex] == -1) {
@@ -204,14 +204,6 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
 }
 
 } // namespace
-
-
-// FUNCTION: IMPERIALISM 0x00513290
-void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-    short regionIndex, int newOwnerNationSlot) {
-  (void)regionIndex;
-  (void)newOwnerNationSlot;
-}
 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00513FF0
@@ -240,7 +232,7 @@ void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
    build). */
 
 // FUNCTION: IMPERIALISM 0x00513ff0
-void TGlobalMapState::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation) {
+void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation) {
   (void)ownerNation;
   short dir = GetHexDirectionBetweenTiles(sourceTile, destTile);
   char* pTable2 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x32;
@@ -251,7 +243,7 @@ void TGlobalMapState::ApplyRailSectionEndpointDirectionFlags(short sourceTile, s
 
 
 // FUNCTION: IMPERIALISM 0x00514c80
-short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
+short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
                                                                      char allowActiveFlag2) {
   signed char ownerNationTag = terrainStateTable[startTileIndex].ownerNationTag04;
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
@@ -263,7 +255,7 @@ short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short start
 
 
 // FUNCTION: IMPERIALISM 0x00517c30
-char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
+char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   TPtrList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
   if (regionList->GetCountSlot48() < 1) {
     return 0;
@@ -293,13 +285,13 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
 
 
 // FUNCTION: IMPERIALISM 0x00518960
-void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
+void TMapMgr::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
 }
 
 
 // FUNCTION: IMPERIALISM 0x0055e360
-short TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
+short TMapMgr::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
                                                                 short direction) {
   int col = static_cast<int>(tileIndex) % 0x6c;
   unsigned int row = static_cast<unsigned int>(static_cast<int>(tileIndex) / 0x6c);
@@ -356,7 +348,7 @@ short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed
   short seaTileIndex = -1;
   short tileWalkIndex = portTileIndex;
   for (int attempt = 0; attempt < 6; ++attempt) {
-    short candidateTile = TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(
+    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
         portTileIndex, static_cast<short>(tileWalkIndex % 6));
     ++tileWalkIndex;
     if (candidateTile == -1) {
@@ -471,7 +463,7 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
         kAddrTerrainFlowDirectionTable + (flowVariant + flowType * 2) * 2);
     short walkTile = tileIndex;
     for (int stepCount = 0; stepCount < 100; ++stepCount) {
-      walkTile = TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
+      walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
       TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
       if (walkRecord.pad00[0] == 5) {
         return walkTile;
@@ -516,5 +508,25 @@ void RemovePortZoneByTile(short nTileIndex) {
       return;
     }
   }
+}
+
+char TMapMgr::CallMetricSlotC4(int regionIndex, int edgeIndex) {
+  (void)regionIndex;
+  (void)edgeIndex;
+  return 0;
+}
+
+short TMapMgr::QueryIconStripXSlot110(int iconCode) {
+  (void)iconCode;
+  return 0;
+}
+
+void TMapMgr::NotifyCityRecordSlot12C(int cityRecordIndex) {
+  (void)cityRecordIndex;
+}
+
+void TMapMgr::LinkRegionToNationSlot134(int regionId, int nationSlot) {
+  (void)regionId;
+  (void)nationSlot;
 }
 

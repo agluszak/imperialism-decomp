@@ -1,7 +1,7 @@
 #include "game/TViewMgr.h"
 #include "game/TAssetMgr.h"
 #include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
@@ -96,7 +96,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->turnStateSeedLo = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedLo);
   this->turnStateSeedHi = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedHi);
   this->field10 = 0;
-  this->fieldF0 = 0;
+  this->mapUberPictureF0 = 0;
   this->fieldF4 = 0;
   this->fieldF8 = 0;
 }
@@ -129,7 +129,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->turnStateSeedLo = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedLo);
   this->turnStateSeedHi = *reinterpret_cast<unsigned int*>(kAddrTurnStateSeedHi);
   this->field10 = 0;
-  this->fieldF0 = 0;
+  this->mapUberPictureF0 = 0;
 }
 
 
@@ -141,16 +141,14 @@ void TViewMgr::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
-  int paletteIndex =
-      reinterpret_cast<int(__cdecl*)(int)>(MapTurnEventCodeToPaletteIndex)(eventCode);
+  int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(paletteIndex);
 }
 
 
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
-  int paletteIndex =
-      reinterpret_cast<int(__cdecl*)(int)>(MapTurnEventCodeToPaletteIndex)(eventCode);
+  int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
 }
 
@@ -302,8 +300,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   case 1: {
     g_pLocalizationTable->GetString(0, 0, &templateText);
-    short nationId =
-        reinterpret_cast<UiRuntimeContext*>(g_pLocalizationTable)->GetActiveNationId();
+    short nationId = g_pUiRuntimeContext->GetActiveNationId();
     short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].cap;
     if (cap == 0x1c) {
       resourceId = 0x2518;
@@ -431,7 +428,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
-        reinterpret_cast<UiRuntimeContext*>(g_pLocalizationTable)->GetActiveNationId());
+        g_pUiRuntimeContext->GetActiveNationId());
   }
 }
 
@@ -452,5 +449,104 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     }
     FreeHeapBufferIfNotNull(static_cast<undefined4>(buffer));
   }
+}
+
+void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
+  (void)eventCode;
+  (void)payload;
+}
+
+void TViewMgr::UiRuntimeSlot50() {}
+
+short TViewMgr::QueryUiScreenModeSlot54() {
+  return 0;
+}
+
+void TViewMgr::UiRuntimeSlot58() {}
+
+void TViewMgr::UiRuntimeSlot5C() {}
+
+void TViewMgr::UiRuntimeSlot60() {}
+
+void TViewMgr::UiRuntimeSlot64() {}
+
+void TViewMgr::ApplyUiRuntimeSlot68(int modeValue) {
+  (void)modeValue;
+}
+
+void TViewMgr::UiRuntimeSlot6C() {}
+
+void TViewMgr::UiRuntimeSlot70() {}
+
+void TViewMgr::UiRuntimeSlot74() {}
+
+void TViewMgr::UiRuntimeSlot78() {}
+
+void TViewMgr::UiRuntimeSlot7C() {}
+
+void TViewMgr::UiRuntimeSlot80() {}
+
+void TViewMgr::UiRuntimeSlot84() {}
+
+void TViewMgr::UiRuntimeSlot88() {}
+
+void TViewMgr::UiRuntimeSlot8C() {}
+
+char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation, int proposalCode) {
+  (void)sourceNation;
+  (void)targetNation;
+  (void)proposalCode;
+  return 0;
+}
+
+char TViewMgr::RequestDecisionSlot94(int sourceNation, int arg1, int arg2, int promptCode) {
+  (void)sourceNation;
+  (void)arg1;
+  (void)arg2;
+  (void)promptCode;
+  return 0;
+}
+
+void TViewMgr::DispatchDecisionSlot98(int sourceNation, int arg2, int arg3, int targetNation) {
+  (void)sourceNation;
+  (void)arg2;
+  (void)arg3;
+  (void)targetNation;
+}
+
+void TViewMgr::UiRuntimeSlot9C() {}
+
+void TViewMgr::UiRuntimeSlotA0() {}
+
+void TViewMgr::UiRuntimeSlotA4() {}
+
+void TViewMgr::UiRuntimeSlotA8() {}
+
+void TViewMgr::RefreshCityProductionUiSlotAc() {}
+
+void TViewMgr::UiRuntimeSlotB0() {}
+
+void TViewMgr::UiRuntimeSlotB4() {}
+
+void TViewMgr::UiRuntimeSlotB8() {}
+
+void TViewMgr::UiRuntimeSlotBC() {}
+
+void TViewMgr::UiRuntimeSlotC0() {}
+
+void TViewMgr::UiRuntimeSlotC4() {}
+
+void TViewMgr::UiRuntimeSlotC8() {}
+
+void TViewMgr::UiRuntimeSlotCC() {}
+
+void TViewMgr::UiRuntimeSlotD0() {}
+
+void TViewMgr::UiRuntimeSlotD4() {}
+
+void TViewMgr::UiRuntimeSlotD8() {}
+
+int TViewMgr::ShowConstructionOptionsDialog() {
+  return 0;
 }
 

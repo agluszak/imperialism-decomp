@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 #include "game/TControl.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/quickdraw_globals.h"
@@ -78,7 +78,7 @@ class TGreatPower;
 class TCity;
 extern TGreatPower* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(TGreatPower* state, short metricSlot);
-extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
+extern int QueryUiScreenModeRaw(TViewMgr* context);
 extern void FailNilPointerInUSmallViews(int line);
 
 // Underlying nil-pointer assert: report the (sourcePath, line) and bail. The

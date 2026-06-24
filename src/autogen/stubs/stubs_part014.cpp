@@ -339,22 +339,6 @@ undefined4 InitializeObArrayVtable654D38ModeField(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer
-// ghidra_proto undefined GetTDiplomacyMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ee6a0
-undefined4 GetTDiplomacyMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
-// ghidra_proto undefined DestructTDiplomacyMgrAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ee700
-undefined4 DestructTDiplomacyMgrAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004ee730
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()
 // FUNCTION: IMPERIALISM 0x004ee730
@@ -379,58 +363,10 @@ undefined4 RemoveNationSlotAndNotifyPeers_Impl(void)
   return 0;
 }
 
-// ghidra_name DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy
-// ghidra_proto undefined DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()
-// FUNCTION: IMPERIALISM 0x004ef040
-undefined4 DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::DeserializeRelationshipSortedListBuffersFromStreamSwapBytes
-// ghidra_proto undefined DeserializeRelationshipSortedListBuffersFromStreamSwapBytes()
-// FUNCTION: IMPERIALISM 0x004ef080
-undefined4 DeserializeRelationshipSortedListBuffersFromStreamSwapBytes(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeThreeWordPlanesToOutputCallback
-// ghidra_proto undefined SerializeThreeWordPlanesToOutputCallback()
-// FUNCTION: IMPERIALISM 0x004ef2a0
-undefined4 SerializeThreeWordPlanesToOutputCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name IsNationSlotInPrimaryGroupA
-// ghidra_proto undefined IsNationSlotInPrimaryGroupA()
-// FUNCTION: IMPERIALISM 0x004ef6a0
-undefined4 IsNationSlotInPrimaryGroupA(void)
-{
-  return 0;
-}
-
-// ghidra_name IsNationSlotInPrimaryGroupB
-// ghidra_proto undefined IsNationSlotInPrimaryGroupB()
-// FUNCTION: IMPERIALISM 0x004ef6d0
-undefined4 IsNationSlotInPrimaryGroupB(void)
-{
-  return 0;
-}
-
 // ghidra_name SyncNationField790FromLocalizationStateId
 // ghidra_proto undefined SyncNationField790FromLocalizationStateId()
 // FUNCTION: IMPERIALISM 0x004f0590
 undefined4 SyncNationField790FromLocalizationStateId(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::SelectPriorityNationIndicesForMinorCapabilityRows
-// ghidra_proto undefined SelectPriorityNationIndicesForMinorCapabilityRows()
-// FUNCTION: IMPERIALISM 0x004f05c0
-undefined4 SelectPriorityNationIndicesForMinorCapabilityRows(void)
 {
   return 0;
 }
@@ -451,50 +387,10 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004f0dd0_Impl(void)
   return 0;
 }
 
-// ghidra_name TSortedByRelationshipList::RebuildDiplomacyStandingAndInfluenceMatrices
-// ghidra_proto undefined RebuildDiplomacyStandingAndInfluenceMatrices()
-// FUNCTION: IMPERIALISM 0x004f0e20
-undefined4 RebuildDiplomacyStandingAndInfluenceMatrices(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::InitializeDiplomacyStandingBaselineRandom
-// ghidra_proto undefined InitializeDiplomacyStandingBaselineRandom()
-// FUNCTION: IMPERIALISM 0x004f1570
-undefined4 InitializeDiplomacyStandingBaselineRandom(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::BuildMajorNationDiplomacyStandingRanking
-// ghidra_proto undefined BuildMajorNationDiplomacyStandingRanking()
-// FUNCTION: IMPERIALISM 0x004f1630
-undefined4 BuildMajorNationDiplomacyStandingRanking(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationComparativePowerMetrics
 // ghidra_proto undefined RecomputeNationComparativePowerMetrics()
 // FUNCTION: IMPERIALISM 0x004f1760
 undefined4 RecomputeNationComparativePowerMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name HasState300LinkBetweenNationPair
-// ghidra_proto undefined HasState300LinkBetweenNationPair()
-// FUNCTION: IMPERIALISM 0x004f1970
-undefined4 HasState300LinkBetweenNationPair(void)
-{
-  return 0;
-}
-
-// ghidra_name TSortedByRelationshipList::ShowRelationCodeNoticeForNationPairIfRelevant
-// ghidra_proto undefined ShowRelationCodeNoticeForNationPairIfRelevant()
-// FUNCTION: IMPERIALISM 0x004f1a80
-undefined4 ShowRelationCodeNoticeForNationPairIfRelevant(void)
 {
   return 0;
 }

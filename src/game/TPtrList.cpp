@@ -1,5 +1,5 @@
 #include "game/TPtrList.h"
-#include "game/TTrackedObject.h"
+#include "game/TMission.h"
 #include <new>
 
 #if defined(_MSC_VER)
@@ -128,7 +128,7 @@ void TPtrList::FreePayloadsSlot54() {
   do {
     void* payload = this->listState.RemoveHead();
     if (payload != 0) {
-      static_cast<TTrackedObject*>(payload)->Free();
+      static_cast<TMission*>(payload)->Free();
     }
   } while (!this->listState.IsEmpty());
 }

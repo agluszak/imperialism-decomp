@@ -33,7 +33,14 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2); // slot 0x13 0x4b67e0
   virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0(); // slot 0x14 0x4b64c0
 // === END GENERATED DECLS (TPopulationMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPopulationMgr 0xCTOR`).
+
+  void NotifyProductionPresetSlot2C(int a, int b, int c) {
+    OrphanLeaf_NoCall_Ins47_004b5dc0(static_cast<short>(a), static_cast<short>(b),
+                                        static_cast<short>(c));
+  }
+  short* GetSummaryArraySlot50();
+
+  short stockLevel1c; // +0x1c — low-stock flag derivation in TCity slot 0x0b
 
   TPopulationMgr();
 };

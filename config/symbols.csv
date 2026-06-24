@@ -4,7 +4,6 @@ address|name|size|type|prototype
 4019ba|thunk_InvalidateMapRegionForOrderEntry|5|function|undefined thunk_InvalidateMapRegionForOrderEntry()
 401ba4|thunk_InitializeCityModel|5|function|undefined thunk_InitializeCityModel()
 401e65|thunk_DestructTViewBaseState_005885F0|5|function|void __thiscall thunk_DestructTViewBaseState_005885F0(void)
-4020b8|TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn|5|function|undefined thunk_ApplyDiplomacyInterNationStatesForTurn()
 4020fe|thunk_ReleaseHashIndexedRecordByHandle|5|function|undefined thunk_ReleaseHashIndexedRecordByHandle()
 4022c5|thunk_DispatchTurnEvent1AWithNationActionPayload|5|function|undefined thunk_DispatchTurnEvent1AWithNationActionPayload()
 40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C|5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
@@ -24,9 +23,7 @@ address|name|size|type|prototype
 403224|thunk_LoadBmpResourceByIdCached|5|function|undefined thunk_LoadBmpResourceByIdCached()
 4032a1|TCivToolbar::thunk_SetMapInteractionMode|5|function|void __thiscall thunk_SetMapInteractionMode(short nMode)
 403765|thunk_SelectBestSeedTileForNationFromCostField|5|function|undefined thunk_SelectBestSeedTileForNationFromCostField()
-403837|TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults|5|function|undefined thunk_InitializeDiplomacyTurnStateManagerDefaults()
 403968|thunk_StepHexTileIndexByDirectionWithWrapRules|5|function|undefined thunk_StepHexTileIndexByDirectionWithWrapRules()
-403b16|UiRuntimeContext::GetActiveNationId|5|function|short __thiscall GetActiveNationId(void)
 403b34|thunk_DispatchCityRedrawInvalidateEvent|5|function|void __cdecl thunk_DispatchCityRedrawInvalidateEvent(short nCityId)
 403b5c|thunk_EmitTurnEvent3Mode18WithActiveNation|5|function|undefined thunk_EmitTurnEvent3Mode18WithActiveNation()
 403bb6|thunk_DrawCenteredGuideLineOnMapDc|5|function|undefined thunk_DrawCenteredGuideLineOnMapDc()
@@ -59,7 +56,6 @@ address|name|size|type|prototype
 40678f|thunk_StepHexRowColByDirectionWithWrapRules|5|function|undefined thunk_StepHexRowColByDirectionWithWrapRules()
 4067c1|thunk_DestructCityDialogSharedBaseState|5|function|undefined thunk_DestructCityDialogSharedBaseState()
 4069e2|thunk_SetGlobalBlitTransparentColorRaw|5|function|undefined thunk_SetGlobalBlitTransparentColorRaw()
-406aaf|thunk_ProcessQueuedWarTransitions|5|function|undefined thunk_ProcessQueuedWarTransitions()
 406afa|thunk_BuildUiTextStyleDescriptor|5|function|undefined thunk_BuildUiTextStyleDescriptor()
 406c1c|TMapDialog::thunk_SplitTileIndexToRowAndColumn|5|function|undefined thunk_SplitTileIndexToRowAndColumn()
 406efb|thunk_DispatchTaggedGameStateEvent1F20|5|function|undefined thunk_DispatchTaggedGameStateEvent1F20()
@@ -90,7 +86,6 @@ address|name|size|type|prototype
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh|5|function|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()
 4093cc|thunk_MapUiThemeCodeToStyleFlags|5|function|undefined thunk_MapUiThemeCodeToStyleFlags()
 4096b0|thunk_DispatchLocalizedUiMessageWithTemplateA13A0|5|function|undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()
-409944|thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90|5|function|undefined thunk_ConstructDiplomacyTurnStateManager_Vtbl00654d90()
 409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry|5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()
 4125d0|WrapperFor_ftol_At004125d0|30|function|undefined WrapperFor_ftol_At004125d0()
 412600|InvokeCallbackForRecordRangeWithStride|42|function|undefined InvokeCallbackForRecordRangeWithStride()
@@ -2706,7 +2701,7 @@ address|name|size|type|prototype
 4ee5e0|TSortedByRelationshipList::CompareUnsignedIntsAscending|65|function|undefined CreateTDiplomacyMgrInstance()
 4ee6a0|TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer|6|function|undefined GetTDiplomacyMgrClassNamePointer()
 4ee6c0|ConstructDiplomacyTurnStateManager_Vtbl00654d90|39|function|undefined ConstructDiplomacyTurnStateManager_Vtbl00654d90()
-4ee700|TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree|30|function|undefined DestructTDiplomacyMgrAndMaybeFree()
+4ee700|TDiplomacyMgr::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4ee730|WrapperFor_FreeHeapBufferIfNotNull_At004ee730|73|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()
 4ee7a0|TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults|220|function|undefined InitializeDiplomacyTurnStateManagerDefaults()
 4ee8c0|RebuildCivilianOrderCompatibilityMatrices|1137|function|void __fastcall RebuildCivilianOrderCompatibilityMatrices(void * pNationSlotRuntime)
@@ -9203,7 +9198,6 @@ address|name|size|type|prototype
 659b40|g_pClassDescTSortByPriceList||global|
 659b58|TIndexAndRankList::classRuntimeClass||global|
 65a650|g_vtblMissionOrderPrioritizerDefendProvince||global|
-65a680|g_vtblTDefendProvinceMission||global|
 65a7e8|g_vtblMissionOrderPrioritizerNavy||global|
 65a9e8|g_Recompute_Nation_Order_LookupTable_0065A9E8||global|
 65a9f0|g_Recompute_Nation_Order_LookupTable_0065A9F0||global|

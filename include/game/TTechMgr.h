@@ -1,11 +1,13 @@
 #pragma once
 
-#include "decomp_types.h"
+#include "game/TObject.h"
 
 // Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
 // VTABLE: IMPERIALISM 0x0066ad28
-class TTechMgr {
+class TTechMgr : public TObject {
 public:
+  CRuntimeClass* GetRuntimeClass() const override;
+  void Free() override;
   unsigned char pad000[0x193];
   unsigned char hasProductionOrder193;
   unsigned char pad194[0x1a5 - 0x194];
@@ -43,6 +45,8 @@ public:
 
   void ConstructCityOrderCapabilityStateVtable();
   void InitializeCityOrderCapabilityStateDefaults();
+
+  ~TTechMgr() override;
 };
 
 extern TTechMgr* g_pCityOrderCapabilityState;

@@ -4,7 +4,7 @@
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
-#include "game/TTrackedObject.h"
+#include "game/TMission.h"
 
 extern "C" {
 CRuntimeClass g_pClassDescTDefenseMinister = {nullptr, 0, 0, nullptr, nullptr};
@@ -141,10 +141,10 @@ void TDefenseMinister::Call4C() {
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
   owner->AssertValid();
   CIterator missionCursor(owner->missionQueue);
-  TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
+  TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
     mission->MissionSlot44();
-    mission = static_cast<TTrackedObject*>(missionCursor.Advance());
+    mission = static_cast<TMission*>(missionCursor.Advance());
   }
 }
 
