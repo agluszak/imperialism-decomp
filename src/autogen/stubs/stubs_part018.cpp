@@ -411,22 +411,6 @@ undefined4 CreateTurnFlowStateManager(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::GetRuntimeClass
-// ghidra_proto undefined GetTSimMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0057b9c0
-undefined4 GetTSimMgrClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::ConstructTurnFlowStateManagerVtable00662a58
-// ghidra_proto undefined ConstructTurnFlowStateManagerVtable00662a58()
-// FUNCTION: IMPERIALISM 0x0057b9e0
-undefined4 ConstructTurnFlowStateManagerVtable00662a58(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80
 // ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80()
 // FUNCTION: IMPERIALISM 0x0057bb80
@@ -479,14 +463,6 @@ undefined4 RebuildNationStateSlotsAndAvailability(void)
 // ghidra_proto undefined SetStateCodeAndUpdateZeroOrOutOfRangeFlag()
 // FUNCTION: IMPERIALISM 0x0057d870
 undefined4 SetStateCodeAndUpdateZeroOrOutOfRangeFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::PostMainWindowCommand100ForTurnFlow
-// ghidra_proto undefined PostMainWindowCommand100ForTurnFlow()
-// FUNCTION: IMPERIALISM 0x0057d970
-undefined4 PostMainWindowCommand100ForTurnFlow(void)
 {
   return 0;
 }
@@ -551,14 +527,6 @@ undefined4 AppendInterNationEventSummaryTextEntry_Impl(void)
 // ghidra_proto undefined ExpandBracketMappedStringToSinkCallback()
 // FUNCTION: IMPERIALISM 0x005804f0
 undefined4 ExpandBracketMappedStringToSinkCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::LoadUiStringByCodeGroupAndOffset
-// ghidra_proto undefined LoadUiStringByCodeGroupAndOffset(short param_1, short param_2, undefined4 param_3)
-// FUNCTION: IMPERIALISM 0x00580760
-undefined4 LoadUiStringByCodeGroupAndOffset(void)
 {
   return 0;
 }

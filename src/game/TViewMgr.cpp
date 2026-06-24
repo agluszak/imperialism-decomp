@@ -448,7 +448,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
 
     int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
     if (modalResult != 0) {
-      g_pLocalizationTable->RegisterHotKeyDialogState(reinterpret_cast<void*>(buffer));
+      g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }
     FreeHeapBufferIfNotNull(static_cast<undefined4>(buffer));
   }

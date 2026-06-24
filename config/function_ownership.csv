@@ -2457,6 +2457,8 @@ address|target_cpp|ownership|note
 57b740|src/game/TSelectoText.cpp|manual|marker_sync
 57b760|src/game/TSelectoText.cpp|manual|marker_sync
 57b900|src/game/turn_flow_cooldown.cpp|manual|marker_sync
+57b9c0|src/game/TSimMgr.cpp|manual|marker_sync
+57b9e0|src/game/TSimMgr.cpp|manual|marker_sync
 57bb50|src/game/TSimMgr.cpp|manual|marker_sync
 57bd20|src/game/TSimMgr.cpp|manual|marker_sync
 57bea0|src/game/TSimMgr.cpp|manual|marker_sync
@@ -2468,6 +2470,7 @@ address|target_cpp|ownership|note
 57d8b0|src/game/TSimMgr.cpp|manual|marker_sync
 57d8d0|src/game/TSimMgr.cpp|manual|marker_sync
 57d950|src/game/TSimMgr.cpp|manual|marker_sync
+57d970|src/game/TSimMgr.cpp|manual|marker_sync
 57d990|src/game/TSimMgr.cpp|manual|marker_sync
 57da70|src/game/TSimMgr.cpp|manual|marker_sync
 57f110|src/game/TSimMgr.cpp|manual|marker_sync
@@ -2484,6 +2487,7 @@ address|target_cpp|ownership|note
 57fe90|src/game/TSimMgr.cpp|manual|marker_sync
 57fec0|src/game/TSimMgr.cpp|manual|marker_sync
 580460|src/game/TSimMgr.cpp|manual|marker_sync
+580760|src/game/TSimMgr.cpp|manual|marker_sync
 580790|src/game/TSimMgr.cpp|manual|marker_sync
 5811e0|src/game/TSimMgr.cpp|manual|marker_sync
 581200|src/game/TSimMgr.cpp|manual|marker_sync

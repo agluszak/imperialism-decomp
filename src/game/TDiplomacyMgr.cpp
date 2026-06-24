@@ -825,7 +825,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
     if (isLocalizationOne) {
       EmitTurnEvent3Mode18WithActiveNation(g_pGameFlowState);
     } else {
-      g_pLocalizationTable->CallSlot44();
+      g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
     }
   }
 }

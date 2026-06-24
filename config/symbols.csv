@@ -6,7 +6,6 @@ address|name|size|type|prototype
 401e65|thunk_DestructTViewBaseState_005885F0|5|function|void __thiscall thunk_DestructTViewBaseState_005885F0(void)
 4020b8|TSortedByRelationshipList::thunk_ApplyDiplomacyInterNationStatesForTurn|5|function|undefined thunk_ApplyDiplomacyInterNationStatesForTurn()
 4020fe|thunk_ReleaseHashIndexedRecordByHandle|5|function|undefined thunk_ReleaseHashIndexedRecordByHandle()
-4021ee|TSimMgr::thunk_GetTurnFlowStateCounter2C_At004021ee|5|function|undefined thunk_GetTurnFlowStateCounter2C_At004021ee()
 4022c5|thunk_DispatchTurnEvent1AWithNationActionPayload|5|function|undefined thunk_DispatchTurnEvent1AWithNationActionPayload()
 40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C|5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
 4023d3|thunk_InitializeCityProductionState|5|function|undefined thunk_InitializeCityProductionState()
@@ -17,7 +16,6 @@ address|name|size|type|prototype
 4029d2|thunk_RelaxMapTileCostFieldByNeighborTerrain|5|function|undefined thunk_RelaxMapTileCostFieldByNeighborTerrain()
 402a7c|thunk_InitializeUiTextStyleDescriptor|5|function|undefined thunk_InitializeUiTextStyleDescriptor()
 402aa4|thunk_SetUiResourceContextTagWord|5|function|undefined thunk_SetUiResourceContextTagWord()
-402d1a|TSimMgr::thunk_IncrementTurnFlowStateCounter2C_At00402d1a|5|function|undefined thunk_IncrementTurnFlowStateCounter2C_At00402d1a()
 402e73|thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty|5|function|undefined thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty()
 402eeb|TUnit::thunk_RegisterUnitOrderWithOwnerManager|5|function|undefined thunk_RegisterUnitOrderWithOwnerManager()
 403044|thunk_ConstructFrogCityMarker|5|function|undefined thunk_ConstructFrogCityMarker()
@@ -45,7 +43,6 @@ address|name|size|type|prototype
 40520e|thunk_GetSurfaceObjectAtContextOffset24|5|function|undefined thunk_GetSurfaceObjectAtContextOffset24()
 405312|thunk_GenerateMappedFlavorTextByTableSlot|5|function|undefined thunk_GenerateMappedFlavorTextByTableSlot()
 405344|thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias|5|function|undefined thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
-4053d5|TSimMgr::thunk_PostMainWindowCommand100ForTurnFlow_At004053d5|5|function|undefined thunk_PostMainWindowCommand100ForTurnFlow_At004053d5()
 405529|Config::InitDefaults|5|function|undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)
 4055ba|thunk_GetShortAtOffset14OrInvalid|5|function|undefined thunk_GetShortAtOffset14OrInvalid()
 4056a5|TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale|5|function|undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
@@ -72,7 +69,6 @@ address|name|size|type|prototype
 4076b7|thunk_AssignStringSharedRefAndReturnThis|5|function|undefined thunk_AssignStringSharedRefAndReturnThis()
 40793c|thunk_GetNavyPrimaryOrderListHead|5|function|undefined thunk_GetNavyPrimaryOrderListHead()
 4079aa|thunk_RebuildMinorNationDispositionLookupTables|5|function|undefined thunk_RebuildMinorNationDispositionLookupTables()
-407c1b|TSimMgr::thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b|5|function|undefined thunk_LoadUiStringByCodeGroupAndOffset_At00407c1b()
 407e64|thunk_GetUnitMovementClassId|5|function|undefined thunk_GetUnitMovementClassId()
 407f4a|TCivDescription::`scalar deleting destructor'|5|function|undefined ScalarDeletingDestructor()
 407f63|thunk_SetTimeEmitPacketGameFlowTurnId|5|function|undefined thunk_SetTimeEmitPacketGameFlowTurnId()
@@ -80,7 +76,6 @@ address|name|size|type|prototype
 40824c|thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation|5|function|undefined thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation()
 408251|thunk_FindReachableRecruitSpawnTileWithVisitedReset|5|function|undefined thunk_FindReachableRecruitSpawnTileWithVisitedReset()
 408328|thunk_NormalizeWrappedMapCoord108x60|5|function|undefined thunk_NormalizeWrappedMapCoord108x60()
-40853f|TSimMgr::CreateSimObjects|5|function|undefined CreateSimObjects()
 4087fb|TControl::thunk_ConstructUiCommandTagResourceEntryBase|5|function|undefined thunk_ConstructUiCommandTagResourceEntryBase()
 408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel|5|function|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 408a03|thunk_InvalidateCityDialogRectRegion|5|function|undefined thunk_InvalidateCityDialogRectRegion()
@@ -9306,7 +9301,7 @@ address|name|size|type|prototype
 661a58|g_pClassDescTTextList||global|
 661a70|TGameScorePicture::classRuntimeClass||global|
 661a88|TSelectoText::classRuntimeClass||global|
-662960|TSimMgr::classRuntimeClass||global|
+662960|g_pClassDescTSimMgr||global|
 662db8|TArrowsControl::classRuntimeClass||global|
 662dd0|g_pClassDescTSidewaysArrow||global|
 662de8|TUpDownView::classRuntimeClass||global|

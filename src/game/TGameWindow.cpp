@@ -165,7 +165,7 @@ void TGameWindow::ForwardParam(int param) {
         mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();
       if (g_pLocalizationTable->mode != 0x11) {
-        g_pLocalizationTable->PostTurnFlowUiRefresh();
+        g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
         return;
       }
       short nationId = g_pUiRuntimeContext->GetActiveNationId();
@@ -174,7 +174,7 @@ void TGameWindow::ForwardParam(int param) {
         GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);
         return;
       }
-      g_pLocalizationTable->PostTurnFlowUiRefresh();
+      g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
       return;
     }
     if (QueryUiRuntimeFieldF8() != 0) {

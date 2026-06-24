@@ -3866,8 +3866,8 @@ double TGreatPower::ComputeMinisterSkillFloatSlot8B(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0690
 double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
-  return g_DAT_Value_00653408[this->defenseMinister->skillIndexC] +
-         g_DAT_006533e8_Value_006533E8[this->foreignMinister->skillIndexC];
+  return g_DAT_006533e8_Value_006533E8[this->foreignMinister->skillIndexC] +
+         g_DAT_Value_00653408[this->defenseMinister->skillIndexC];
 }
 
 // FUNCTION: IMPERIALISM 0x004e06d0
