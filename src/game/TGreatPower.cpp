@@ -179,7 +179,6 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TZone.h"
 #include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
-#include "game/TMarkerReceiverView.h"
 #include "game/TTrackedObjectListEntry.h"
 
 #include "game/TMessageObject.h"
@@ -3667,7 +3666,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
   marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
-  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
+  static_cast<TCity*>(receiver)->AdoptSelectedOrderSlot44(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTailSlot30(marker);
 }
@@ -3705,7 +3704,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   *GreatPower_HomeRegionIndex88(this) = static_cast<short>(homeRegionIndex);
   TTown* marker = new TTown();
   marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
-  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
+  static_cast<TCity*>(receiver)->AdoptSelectedOrderSlot44(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTailSlot30(marker);
   g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
