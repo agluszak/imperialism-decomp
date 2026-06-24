@@ -2,6 +2,8 @@
 
 #include "game/mfc.h"
 
+class TWindow;
+
 // CMcWindow — the native host window backing a TView/TWindow. It is a real MFC CWnd
 // subclass: it carries its own CRuntimeClass (g_pClassDescCMcWindow), its HWND lives in
 // the inherited CWnd::m_hWnd (+0x1c), and CreateMcWindowFromDescriptorAndShow installs
@@ -17,4 +19,9 @@ public:
   void SetWindowTextOrDelegateToOwner(const char* text); // 0x006073b4
   void GetWindowTextOrDelegateToOwner(CString* out);     // 0x0060859f
   void EnableWindowOrDelegateToOwner(int enable);        // 0x0060753b
+
+  // +0x3c — backref to the owning TWindow, installed by
+  // CreateMcWindowFromDescriptorAndShow and cleared during TWindow::Free. Sits
+  // immediately after the CWnd subobject (CWnd ends at +0x3c in this build).
+  TWindow* m_pOwnerWindow;
 };

@@ -256,9 +256,10 @@ void TWindow::Free() {
       ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 4, controlTag);
     } else {
       if (window->IsKindOf(reinterpret_cast<CRuntimeClass*>(&g_pClassDescCMcWindow))) {
-        nativeWindow50->AssertValid();
-        *reinterpret_cast<int*>(reinterpret_cast<char*>(nativeWindow50) + 0x3c) = 0;
-        delete nativeWindow50;
+        CMcWindow* mcWindow = static_cast<CMcWindow*>(nativeWindow50);
+        mcWindow->AssertValid();
+        mcWindow->m_pOwnerWindow = 0;
+        delete mcWindow;
       } else {
         delete nativeWindow50;
       }
