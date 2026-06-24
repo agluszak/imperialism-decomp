@@ -3709,7 +3709,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   this->townMarkerList->AddTailSlot30(marker);
   g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
-    this->interiorMinister->NotifySlot44(receiver);
+    this->interiorMinister->NoOpForeignMinisterUtilityStub(receiver);
   }
 }
 #pragma optimize("", on)

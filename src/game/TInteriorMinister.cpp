@@ -47,7 +47,10 @@ void TInteriorMinister::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004be3c0
-void TInteriorMinister::MinisterSlot0A() {}
+short TInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
+  (void)nationSlot;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004be3f0
 void TInteriorMinister::InteriorSlot1A() {}
@@ -88,6 +91,6 @@ void TInteriorMinister::InteriorSlot19() {}
 #pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004be6d0
-void TInteriorMinister::NotifySlot44(void* receiver) {
+void TInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }

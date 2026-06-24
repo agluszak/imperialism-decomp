@@ -14,7 +14,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  void MinisterSlot0A() override;
+  short DispatchNationStateEventCode10(short nationSlot) override;
   virtual void MinisterSlot12();
   virtual void Call4C();
   virtual void MinisterSlot14();

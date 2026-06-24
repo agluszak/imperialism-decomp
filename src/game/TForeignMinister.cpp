@@ -82,7 +82,10 @@ void TForeignMinister::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052f430
-void TForeignMinister::MinisterSlot0A() {}
+short TForeignMinister::DispatchNationStateEventCode10(short nationSlot) {
+  (void)nationSlot;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
 void TForeignMinister::MinisterSlot12() {}

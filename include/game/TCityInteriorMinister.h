@@ -17,14 +17,14 @@ public:
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual void MinisterSlot0A() override; // slot 0x0a 0x4bee20
+  short DispatchNationStateEventCode10(short nationSlot) override; // slot 0x0a 0x4bee20
   // slot 0x0b RebuildTerrainPreferenceEntriesAndAssignRanks inherited unchanged (0x52ed50)
   // slot 0x0c MapTerrainTypeToPreferenceRank inherited unchanged (0x52ee20)
   // slot 0x0d MapPreferenceRankToTerrainType inherited unchanged (0x52eea0)
   // slot 0x0e GetPreferenceTerrainTypeByEntryIndex inherited unchanged (0x52ef80)
   // slot 0x0f GetPreferenceGroupRankByEntryIndex inherited unchanged (0x52ef20)
   // slot 0x10 GetPreferenceScoreByEntryIndex inherited unchanged (0x52ef50)
-  virtual void NotifySlot44(void* receiver) override; // slot 0x11 0x4c0d90
+  virtual void NoOpForeignMinisterUtilityStub(void* receiver) override; // slot 0x11 0x4c0d90
   // slot 0x12 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be450)
   // slot 0x13 VTableSlot13 inherited unchanged (0x4be4f0)
   // slot 0x14 SetForeignMinisterReadyFlag14 inherited unchanged (0x4be520)

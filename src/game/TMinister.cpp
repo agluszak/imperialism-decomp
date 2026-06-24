@@ -1,23 +1,27 @@
 #include "game/TMinister.h"
 
+#include "game/diplomacy_globals.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
+#include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/TMinisterBaseOrderArray.h"
+#include "game/TShip.h"
 #include "game/TStream.h"
 
 #include <new>
-
-void __stdcall NoOpForeignMinisterUtilityStub(int);
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 extern "C" {
 CRuntimeClass g_pClassDescTMinister = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
+namespace {
+
+struct MinisterTerrainPreferenceEntry {
+  short terrainType;
+  short score;
+};
+
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0052eb60
 CRuntimeClass* TMinister::GetRuntimeClass() const {
@@ -25,13 +29,13 @@ CRuntimeClass* TMinister::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0052eb80
-#pragma optimize("y", on)
 TMinister::TMinister() : ownerContextAt04(0), field_8(0), skillIndexC(0) {}
-#pragma optimize("", on)
 
-// Destructors are compiler-generated (implicit) from real CObject inheritance.
 // SYNTHETIC: IMPERIALISM 0x0052eba0
 // TMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0052ebd0
+TMinister::~TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
@@ -44,8 +48,6 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
   this->field_8 = new (storage) TMinisterBaseOrderArray();
 }
 
-// Slot 7 (0x1c): release the order array then delete self. This is the real base
-// virtual body at 0x52ec80 (was a __fastcall free wrapper); inherited by every minister.
 // FUNCTION: IMPERIALISM 0x0052ec80
 void TMinister::Free() {
   if (this->field_8 != 0) {
@@ -54,14 +56,6 @@ void TMinister::Free() {
   this->field_8 = 0;
   delete this;
 }
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
 
 // FUNCTION: IMPERIALISM 0x0052ecc0
 void TMinister::ReadFrom(TStream* stream) {
@@ -75,39 +69,103 @@ void TMinister::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&this->skillIndexC, 2);
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
-  WriteTo(archive);
+void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* stream) {
+  WriteTo(stream);
 }
 
-// Base-vtable slots 0x28-0x40. These were autogen stubs (slots left empty); the orig
-// TMinister vtable points at these addresses, so they belong to the base class' own
-// virtual methods. Bodies are honest placeholders pending full reconstruction.
 // FUNCTION: IMPERIALISM 0x0052ed20
-void TMinister::MinisterSlot0A() {}
+short TMinister::DispatchNationStateEventCode10(short nationSlot) {
+  return g_apNationStates[nationSlot]->GetDiplomacyExternalStateB6ByTarget(0x10);
+}
 
 // FUNCTION: IMPERIALISM 0x0052ed50
-void TMinister::MinisterSlot0B() {}
+void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
+  this->field_8->ResetPtrListRecordsSlot1C();
+
+  int terrainIndex = 0;
+  TCountry** tableCursor = g_apTerrainTypeDescriptorTable;
+  do {
+    if (*tableCursor != 0) {
+      MinisterTerrainPreferenceEntry entry;
+      entry.terrainType = static_cast<short>(terrainIndex);
+      entry.score = DispatchNationStateEventCode10(static_cast<short>(terrainIndex));
+      this->field_8->AddEntrySlot38(&entry);
+    }
+    terrainIndex = terrainIndex + 1;
+    tableCursor = tableCursor + 1;
+  } while (terrainIndex < 7);
+
+  int entryIndex = 1;
+  short rank = 1;
+  if (1 < this->field_8->GetSize()) {
+    do {
+      short* currentEntry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
+      short* nextEntry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex + 1));
+      currentEntry[2] = rank;
+      if (nextEntry[1] < currentEntry[1]) {
+        rank = static_cast<short>(rank + 1);
+      }
+      nextEntry[2] = rank;
+      entryIndex = entryIndex + 1;
+    } while (entryIndex < this->field_8->GetSize());
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0052ee20
-void TMinister::MinisterSlot0C() {}
+short TMinister::MapTerrainTypeToPreferenceRank(short terrainType) {
+  int entryIndex = 1;
+  short result = terrainType;
+  if (this->field_8 == 0 || this->field_8->GetSize() < 1) {
+    return result;
+  }
+  do {
+    short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
+    if (entry[0] == terrainType) {
+      result = entry[2];
+      break;
+    }
+    entryIndex = entryIndex + 1;
+  } while (entryIndex <= this->field_8->GetSize());
+  return result;
+}
 
 // FUNCTION: IMPERIALISM 0x0052eea0
-void TMinister::MinisterSlot0D() {}
+short TMinister::MapPreferenceRankToTerrainType(short rank) {
+  int entryIndex = 1;
+  short result = rank;
+  if (this->field_8 == 0 || this->field_8->GetSize() < 1) {
+    return result;
+  }
+  do {
+    short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
+    if (entry[2] == rank) {
+      result = entry[0];
+      break;
+    }
+    entryIndex = entryIndex + 1;
+  } while (entryIndex <= this->field_8->GetSize());
+  return result;
+}
 
 // FUNCTION: IMPERIALISM 0x0052ef20
-void TMinister::MinisterSlot0F() {}
+short TMinister::GetPreferenceGroupRankByEntryIndex(short index) {
+  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  return entry[2];
+}
 
 // FUNCTION: IMPERIALISM 0x0052ef50
-void TMinister::MinisterSlot10() {}
+short TMinister::GetPreferenceScoreByEntryIndex(short index) {
+  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  return entry[1];
+}
 
 // FUNCTION: IMPERIALISM 0x0052ef80
-void TMinister::MinisterSlot0E() {}
+short TMinister::GetPreferenceTerrainTypeByEntryIndex(short index) {
+  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  return entry[0];
+}
 
 // FUNCTION: IMPERIALISM 0x0052efb0
-void TMinister::NotifySlot44(void* receiver) {
+void TMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }

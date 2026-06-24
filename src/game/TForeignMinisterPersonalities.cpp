@@ -64,7 +64,7 @@ void TTedForeignMinister::MinisterSlot18() {
 void TTedForeignMinister::MinisterSlot19() {}
 
 // FUNCTION: IMPERIALISM 0x00531b10
-void TTedForeignMinister::NotifySlot44(void* receiver) {
+void TTedForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x60) = 3;
 }
 
@@ -123,7 +123,7 @@ void TBillForeignMinister::MinisterSlot19() {
 }
 
 // FUNCTION: IMPERIALISM 0x00532650
-void TBillForeignMinister::NotifySlot44(void* receiver) {
+void TBillForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   // Partial port (UpdateDiplomatProgressFromProductionSlots2And4).
   *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) = 3;
 }
@@ -170,7 +170,7 @@ void TDiplomatForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int ar
 }
 
 // FUNCTION: IMPERIALISM 0x00533050
-void TDiplomatForeignMinister::NotifySlot44(void* receiver) {
+void TDiplomatForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) += 5;
 }
 
@@ -208,7 +208,7 @@ void TTextileForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x00533780
-void TTextileForeignMinister::NotifySlot44(void* receiver) {
+void TTextileForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   // Partial port (UpdateTextileProgressFromProductionSlots1And2).
   char* city = reinterpret_cast<char*>(receiver);
   *reinterpret_cast<short*>(city + 0x60) += 2;
@@ -254,7 +254,7 @@ void TTraderForeignMinister::MinisterSlot18() {
 }
 
 // FUNCTION: IMPERIALISM 0x00533f50
-void TTraderForeignMinister::NotifySlot44(void* receiver) {
+void TTraderForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x60) += 3;
 }
 
@@ -296,6 +296,6 @@ void TArmsForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, 
 }
 
 // FUNCTION: IMPERIALISM 0x00534660
-void TArmsForeignMinister::NotifySlot44(void* receiver) {
+void TArmsForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   *reinterpret_cast<short*>(reinterpret_cast<char*>(receiver) + 0x5e) += 5;
 }

@@ -72,7 +72,10 @@ void TCityInteriorMinister::CityInteriorSlot20() {}
 
 
 // FUNCTION: IMPERIALISM 0x004bee20
-void TCityInteriorMinister::MinisterSlot0A() {}
+short TCityInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
+  (void)nationSlot;
+  return 0;
+}
 
 
 // FUNCTION: IMPERIALISM 0x004beeb0
@@ -159,7 +162,7 @@ undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAnd
 
 
 // FUNCTION: IMPERIALISM 0x004c0d90
-void TCityInteriorMinister::NotifySlot44(void* receiver) {
+void TCityInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 

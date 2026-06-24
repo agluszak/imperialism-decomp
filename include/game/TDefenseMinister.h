@@ -22,7 +22,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override; // slot 0 (0x4ec0c0)
   void WriteTo(TStream* stream) override;          // 5 (0x4ec1d0)
   void ReadFrom(TStream* stream) override;         // 6 (0x4ec2f0)
-  void MinisterSlot0A() override; // 0x0a byte 0x28 (0x4ec3d0)
+  short DispatchNationStateEventCode10(short nationSlot) override; // 0x0a (0x4ec3d0)
 
   // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
   virtual void MinisterSlot12();                                    // 0x48 (0x4ec450)

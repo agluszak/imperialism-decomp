@@ -128,7 +128,10 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 // Slot 10 override (0x4ec3d0).
 
 // FUNCTION: IMPERIALISM 0x004ec3d0
-void TDefenseMinister::MinisterSlot0A() {}
+short TDefenseMinister::DispatchNationStateEventCode10(short nationSlot) {
+  (void)nationSlot;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004ec450
 void TDefenseMinister::MinisterSlot12() {}

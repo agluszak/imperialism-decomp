@@ -14,7 +14,7 @@ CRuntimeClass g_pClassDescTDefenderMinister = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass g_pClassDescTBullyMinister = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-// NOTE: NotifySlot44 (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
+// NOTE: NoOpForeignMinisterUtilityStub (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
 // and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
 // real signature returns float) are promoted here as real virtual overrides owning their
 // original addresses (previously return-0 autogen stubs). Bodies are honest partial ports.
@@ -35,7 +35,7 @@ TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
 // TNapoleonMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ed620
-void TNapoleonMinister::NotifySlot44(void* receiver) {
+void TNapoleonMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 
@@ -57,7 +57,7 @@ TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 // TBismarckMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ed950
-void TBismarckMinister::NotifySlot44(void* receiver) {
+void TBismarckMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 
@@ -79,7 +79,7 @@ TPirateMinister::TPirateMinister() : TDefenseMinister() {}
 // TPirateMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004edc40
-void TPirateMinister::NotifySlot44(void* receiver) {
+void TPirateMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 
@@ -101,7 +101,7 @@ TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 // TDefenderMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004edf20
-void TDefenderMinister::NotifySlot44(void* receiver) {
+void TDefenderMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 
@@ -123,7 +123,7 @@ TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 // TBullyMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ee210
-void TBullyMinister::NotifySlot44(void* receiver) {
+void TBullyMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
 

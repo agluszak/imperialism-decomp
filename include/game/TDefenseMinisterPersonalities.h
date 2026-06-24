@@ -9,7 +9,7 @@ class TNapoleonMinister : public TDefenseMinister {
 public:
   TNapoleonMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
 
@@ -18,7 +18,7 @@ class TBismarckMinister : public TDefenseMinister {
 public:
   TBismarckMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
 
@@ -27,7 +27,7 @@ class TPirateMinister : public TDefenseMinister {
 public:
   TPirateMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
 
@@ -36,7 +36,7 @@ class TDefenderMinister : public TDefenseMinister {
 public:
   TDefenderMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
 
@@ -45,6 +45,6 @@ class TBullyMinister : public TDefenseMinister {
 public:
   TBullyMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };

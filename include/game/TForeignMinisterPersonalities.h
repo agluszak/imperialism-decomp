@@ -7,7 +7,7 @@ class TArmsForeignMinister : public TForeignMinister {
 public:
   TArmsForeignMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot21() override;
   void Call90() override;
   void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) override;
@@ -18,7 +18,7 @@ class TTedForeignMinister : public TForeignMinister {
 public:
   TTedForeignMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot18() override;
   void MinisterSlot19() override;
   void MinisterSlot21() override;
@@ -33,7 +33,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot18() override;
   void MinisterSlot19() override;
   void MinisterSlot21() override;
@@ -46,7 +46,7 @@ class TDiplomatForeignMinister : public TForeignMinister {
 public:
   TDiplomatForeignMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot18() override;
   void MinisterSlot19() override;
   void MinisterSlot21() override;
@@ -59,7 +59,7 @@ class TTextileForeignMinister : public TForeignMinister {
 public:
   TTextileForeignMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot21() override;
   void Call90() override;
   void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) override;
@@ -70,7 +70,7 @@ class TTraderForeignMinister : public TForeignMinister {
 public:
   TTraderForeignMinister();
   CRuntimeClass* GetRuntimeClass() const override;
-  void NotifySlot44(void* receiver) override;
+  void NoOpForeignMinisterUtilityStub(void* receiver) override;
   void MinisterSlot18() override;
   void MinisterSlot21() override;
   void Call90() override;
