@@ -1,16 +1,16 @@
-#include "game/TUiWindowTraversal.h"
+#include "game/CWMgrIterator.h"
 
 // FUNCTION: IMPERIALISM 0x004923f0
-void TUiWindowTraversal::Reset(char mode) {
+void CWMgrIterator::Reset(unsigned char fForwardArg) {
   nextPosition = NULL;
-  traversalMode = mode;
+  fForward = fForwardArg;
   current = 0;
 }
 
 // Arm the cursor on the head of the live-view registry: stash the head position, then read
 // the first entry (advancing the position to the next node) or clear out when empty.
 // FUNCTION: IMPERIALISM 0x00492440
-void* TUiWindowTraversal::LoadFirst() {
+void* CWMgrIterator::FirstWindow() {
   POSITION pos = g_LiveViewRegistry.GetHeadPosition();
   nextPosition = pos;
   if (pos == NULL) {
@@ -23,7 +23,7 @@ void* TUiWindowTraversal::LoadFirst() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492470
-void* TUiWindowTraversal::LoadNext() {
+void* CWMgrIterator::NextWindow() {
   POSITION pos = nextPosition;
   if (pos == NULL) {
     current = 0;
@@ -35,6 +35,6 @@ void* TUiWindowTraversal::LoadNext() {
 }
 
 // FUNCTION: IMPERIALISM 0x004924a0
-int TUiWindowTraversal::IsValid() {
+int CWMgrIterator::More() {
   return current != 0;
 }

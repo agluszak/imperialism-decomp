@@ -1,4 +1,8 @@
 address|name|prototype
+0x004923f0|CWMgrIterator::Reset|void __thiscall Reset(unsigned char param_1)
+0x00492440|CWMgrIterator::FirstWindow|void* __thiscall FirstWindow()
+0x00492470|CWMgrIterator::NextWindow|void* __thiscall NextWindow()
+0x004924a0|CWMgrIterator::More|int __thiscall More()
 0x0048d9c0|TWindow::SetWindowText|undefined __thiscall SetWindowText(CString* param_1)
 0x0048d9f0|TWindow::GetWindowText|undefined __thiscall GetWindowText(CString* param_1)
 0x00493470|CMcWindow::CMcWindow|void __thiscall CMcWindow(TWindow* param_1)

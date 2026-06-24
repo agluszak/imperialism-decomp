@@ -5,7 +5,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSortedPtrList.h"
 #include "game/TView.h"
-#include "game/TUiWindowTraversal.h"
+#include "game/CWMgrIterator.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/UiRuntimeContext.h"
@@ -36,8 +36,7 @@ namespace DisplayMgrInvoke {
 
 static void AssignStringSharedRefAndReturnThis(TView* view, CString* dest, CString* sharedSource) {
   reinterpret_cast<void(__cdecl*)(TView*, CString*, CString*)>(
-      reinterpret_cast<void (*)()>(::AssignStringSharedRefAndReturnThis))(view, dest,
-                                                                                        sharedSource);
+      reinterpret_cast<void (*)()>(::AssignStringSharedRefAndReturnThis))(view, dest, sharedSource);
 }
 
 static int* InitializeGlobalRectDefaultsIfUninitialized() {
@@ -46,8 +45,8 @@ static int* InitializeGlobalRectDefaultsIfUninitialized() {
 }
 
 static int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
-  return reinterpret_cast<int(__cdecl*)(int)>(reinterpret_cast<void (*)()>(
-      ::InitializeTurnOrderNavigationDialogByViewportSize_Impl))(arg);
+  return reinterpret_cast<int(__cdecl*)(int)>(
+      reinterpret_cast<void (*)()>(::InitializeTurnOrderNavigationDialogByViewportSize_Impl))(arg);
 }
 
 static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outContext,
@@ -60,18 +59,18 @@ static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outC
 }
 
 static void NoOpCallback_00498ca0(void* fieldPtr) {
-  reinterpret_cast<void(__cdecl*)(void*)>(
-      reinterpret_cast<void (*)()>(::NoOpCallback_00498ca0))(fieldPtr);
+  reinterpret_cast<void(__cdecl*)(void*)>(reinterpret_cast<void (*)()>(::NoOpCallback_00498ca0))(
+      fieldPtr);
 }
 
 static void ApplyHitRegionToClipState(int clipDescriptor) {
-  reinterpret_cast<void(__cdecl*)(int)>(
-      reinterpret_cast<void (*)()>(::ApplyHitRegionToClipState))(clipDescriptor);
+  reinterpret_cast<void(__cdecl*)(int)>(reinterpret_cast<void (*)()>(::ApplyHitRegionToClipState))(
+      clipDescriptor);
 }
 
 static void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* ctx, int* flags) {
-  reinterpret_cast<void(__cdecl*)(undefined4*, int*)>(reinterpret_cast<void (*)()>(
-      ::GetActiveQuickDrawSurfaceContextAndFlags))(ctx, flags);
+  reinterpret_cast<void(__cdecl*)(undefined4*, int*)>(
+      reinterpret_cast<void (*)()>(::GetActiveQuickDrawSurfaceContextAndFlags))(ctx, flags);
 }
 
 static void SetActiveQuickDrawSurfaceContext(undefined4 ctx, int flags) {
@@ -90,8 +89,8 @@ static void ReturnConstantTrueQuickDrawFlag(void* surface) {
 }
 
 static void ApplyRectClipRegionToGlobalClipState(RECT* rectBuffer) {
-  reinterpret_cast<void(__cdecl*)(RECT*)>(reinterpret_cast<void (*)()>(
-      ::ApplyRectClipRegionToGlobalClipState))(rectBuffer);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(
+      reinterpret_cast<void (*)()>(::ApplyRectClipRegionToGlobalClipState))(rectBuffer);
 }
 
 static void NoOpQuickDrawLifecycleHookB(void* surface) {
@@ -127,7 +126,8 @@ const unsigned int kControlTagMain = 0x6d61696eu;
 const unsigned int kTagOkOkOk = 0x6f6b6f6bu;
 const int kClass99WindowId = 99;
 
-static void AssignGlobalCStringFromLiteral(unsigned int globalAddress, unsigned int literalAddress) {
+static void AssignGlobalCStringFromLiteral(unsigned int globalAddress,
+                                           unsigned int literalAddress) {
   CString local;
   local = reinterpret_cast<const char*>(literalAddress);
   *reinterpret_cast<CString*>(globalAddress) = local;
@@ -142,23 +142,9 @@ CRuntimeClass* TDisplayMgr::GetRuntimeClass() const {
 
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()
-    : TObject(),
-      activeDialog(0),
-      viewportMetric(8),
-      dialogActiveFlag(0),
-      field0c(0),
-      eventCode0e(0),
-      tileIcon10(0),
-      tileIcon11(0),
-      tileIcon12(0),
-      tileIcon13(0),
-      tileIcon14(0),
-      tileIcon15(0),
-      tileIcon16(0),
-      tileIcon17(0),
-      field18(0),
-      clipSnapshotEvent(0),
-      field1e(0),
+    : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0),
+      eventCode0e(0), tileIcon10(0), tileIcon11(0), tileIcon12(0), tileIcon13(0), tileIcon14(0),
+      tileIcon15(0), tileIcon16(0), tileIcon17(0), field18(0), clipSnapshotEvent(0), field1e(0),
       ownerView(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004fe7f0
@@ -186,8 +172,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
   char* rectRecord = reinterpret_cast<char*>(*rectDefaults);
   RECT viewportRect;
   CopyRect(&viewportRect, reinterpret_cast<RECT*>(rectRecord + 4));
-  int width =
-      *reinterpret_cast<int*>(rectRecord + 0xc) - *reinterpret_cast<int*>(rectRecord + 0x4);
+  int width = *reinterpret_cast<int*>(rectRecord + 0xc) - *reinterpret_cast<int*>(rectRecord + 0x4);
   int height =
       *reinterpret_cast<int*>(rectRecord + 0x10) - *reinterpret_cast<int*>(rectRecord + 0x8);
   if (width < 0x281 && height < 0x1e1) {
@@ -329,8 +314,9 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   DisplayMgrInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   DisplayMgrInvoke::SetActiveQuickDrawSurfaceContext(
       reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext), savedFlags);
-  DisplayMgrInvoke::ReturnConstantTrueQuickDrawFlag(DisplayMgrInvoke::GetSurfaceObjectAtContextOffset24(
-      reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext)));
+  DisplayMgrInvoke::ReturnConstantTrueQuickDrawFlag(
+      DisplayMgrInvoke::GetSurfaceObjectAtContextOffset24(
+          reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext)));
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
@@ -374,10 +360,10 @@ undefined TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
 
 // FUNCTION: IMPERIALISM 0x004ff000
 undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
-  TUiWindowTraversal cursor;
+  CWMgrIterator cursor;
   cursor.Reset(1);
-  TWindow* window = static_cast<TWindow*>(cursor.LoadFirst());
-  while (cursor.IsValid() != 0) {
+  TWindow* window = static_cast<TWindow*>(cursor.FirstWindow());
+  while (cursor.More() != 0) {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->field3c == kClass99WindowId) {
         if (window->GetDialogBehaviorByte10() == 0) {
@@ -387,7 +373,7 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
         }
       }
     }
-    window = static_cast<TWindow*>(cursor.LoadNext());
+    window = static_cast<TWindow*>(cursor.NextWindow());
   }
   return 0;
 }

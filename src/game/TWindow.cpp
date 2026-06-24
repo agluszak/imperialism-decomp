@@ -2,7 +2,7 @@
 #include "game/CMcWindow.h"
 #include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
-#include "game/TUiWindowTraversal.h"
+#include "game/CWMgrIterator.h"
 #include "game/mcappui_globals.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;

@@ -257,6 +257,6 @@ extern "C" void* g_pCursorControlPanel = nullptr;
 CPtrList g_ModalViewStack;
 
 // McAppUI live-view registry: every TWindow/TView links itself in on construction and
-// unlinks on teardown; the UI-window traversal cursor (TUiWindowTraversal) sweeps it.
+// unlinks on teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
 CPtrList g_LiveViewRegistry;
