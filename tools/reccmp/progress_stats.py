@@ -206,6 +206,122 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
     return stats
 
 
+# Per-function similarity below/above this delta counts as a real change (not float noise).
+FUNCTION_CHANGE_EPS = 1e-4
+# Cap how many per-function lines we print before summarizing the rest.
+FUNCTION_CHANGE_CAP = 50
+
+
+def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
+    """Map each paired original function address -> {matching, name} from the reccmp report."""
+    if not path.exists():
+        raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
+
+    funcs: dict[str, dict[str, Any]] = {}
+    for row in json.loads(path.read_text(encoding="utf-8")).get("data", []):
+        address = row.get("address")
+        if not address:
+            continue
+        funcs[address] = {"m": float(row.get("matching", 0.0)), "n": row.get("name", "")}
+    return funcs
+
+
+# Report fields that churn on every rebuild without reflecting a real similarity change.
+REPORT_VOLATILE_TOP_KEYS = ("timestamp",)
+REPORT_VOLATILE_ROW_KEYS = ("recomp",)
+
+
+def normalize_report(path: Path) -> dict[str, Any]:
+    """Strip volatile fields and sort rows so the committed baseline diffs only on real changes."""
+    report = json.loads(path.read_text(encoding="utf-8"))
+    normalized = {k: v for k, v in report.items() if k not in REPORT_VOLATILE_TOP_KEYS}
+    rows = [
+        {k: v for k, v in row.items() if k not in REPORT_VOLATILE_ROW_KEYS}
+        for row in report.get("data", [])
+    ]
+    rows.sort(key=lambda row: parse_optional_int(row.get("address", "")) or 0)
+    normalized["data"] = rows
+    return normalized
+
+
+def function_baseline_path(baseline_file: Path) -> Path:
+    """Sibling holding the committed reccmp report used for per-function regression diffing.
+
+    This is the raw `reccmp-reccmp --json` output (same schema `parse_report_functions`
+    reads from the live build), not a bespoke derived format.
+    """
+    return baseline_file.with_name(f"{baseline_file.stem}.report.json")
+
+
+def load_function_baseline(path: Path) -> dict[str, dict[str, Any]] | None:
+    if not path.exists():
+        return None
+    return parse_report_functions(path)
+
+
+def function_changes(
+    curr: dict[str, dict[str, Any]], base: dict[str, dict[str, Any]]
+) -> tuple[list[tuple[str, str, float, float]], list[tuple[str, str, float]], int, int]:
+    """Return (regressed, unpaired_now, improved_count, newly_paired_count) vs the baseline."""
+    regressed: list[tuple[str, str, float, float]] = []
+    unpaired_now: list[tuple[str, str, float]] = []
+    improved = 0
+    newly_paired = 0
+
+    for address, cur in curr.items():
+        prev = base.get(address)
+        if prev is None:
+            newly_paired += 1
+            continue
+        delta = float(cur["m"]) - float(prev["m"])
+        if delta < -FUNCTION_CHANGE_EPS:
+            regressed.append((address, cur.get("n", ""), float(prev["m"]), float(cur["m"])))
+        elif delta > FUNCTION_CHANGE_EPS:
+            improved += 1
+
+    for address, prev in base.items():
+        if address not in curr:
+            unpaired_now.append((address, prev.get("n", ""), float(prev["m"])))
+
+    regressed.sort(key=lambda item: item[3] - item[2])  # biggest drop first
+    unpaired_now.sort(key=lambda item: item[0])
+    return regressed, unpaired_now, improved, newly_paired
+
+
+def print_function_changes(
+    curr: dict[str, dict[str, Any]], base: dict[str, dict[str, Any]] | None
+) -> None:
+    print("")
+    print("Function changes vs baseline")
+    if base is None:
+        print("  no function baseline; run `just stats-commit` to record one")
+        return
+
+    regressed, unpaired_now, improved, newly_paired = function_changes(curr, base)
+    if not regressed and not unpaired_now:
+        print(f"  no regressions ({improved} improved, {newly_paired} newly paired)")
+        return
+
+    if unpaired_now:
+        print(f"  unpaired now (were paired): {len(unpaired_now)}")
+        for address, name, was in unpaired_now[:FUNCTION_CHANGE_CAP]:
+            print(f"    - {address} {name} (was {was * 100:.2f}%)")
+        if len(unpaired_now) > FUNCTION_CHANGE_CAP:
+            print(f"    ... +{len(unpaired_now) - FUNCTION_CHANGE_CAP} more")
+
+    if regressed:
+        print(f"  lower similarity: {len(regressed)}")
+        for address, name, was, now in regressed[:FUNCTION_CHANGE_CAP]:
+            print(
+                f"    - {address} {name}: {was * 100:.2f}% -> {now * 100:.2f}% "
+                f"({(now - was) * 100:+.2f} pp)"
+            )
+        if len(regressed) > FUNCTION_CHANGE_CAP:
+            print(f"    ... +{len(regressed) - FUNCTION_CHANGE_CAP} more")
+
+    print(f"  ({improved} improved, {newly_paired} newly paired)")
+
+
 def parse_report_counts(path: Path) -> dict[str, float | int]:
     if not path.exists():
         raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
@@ -448,13 +564,22 @@ def main() -> int:
         baseline_file = resolve_repo_path(repo_root, args.baseline_file)
 
         baseline = load_baseline(baseline_file)
+        func_baseline_file = function_baseline_path(baseline_file)
+        func_baseline = load_function_baseline(func_baseline_file)
+
         entry = build_entry(args, build_dir)
+        report_json = resolve_build_path(build_dir, args.report_json)
+        curr_funcs = parse_report_functions(report_json)
+
         print_summary(entry, baseline, baseline_file)
+        print_function_changes(curr_funcs, func_baseline)
 
         if args.commit_baseline:
             write_json_atomic(baseline_file, entry)
+            write_json_atomic(func_baseline_file, normalize_report(report_json))
             print("")
             print(f"Committed stats baseline: {baseline_file}")
+            print(f"Committed report baseline: {func_baseline_file}")
         return 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)
