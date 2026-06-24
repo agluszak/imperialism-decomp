@@ -16,6 +16,11 @@ class TWindow;
 // class deliberately models no new vtable yet (vtable recovery is separate work).
 class CMcWindow : public CWnd {
 public:
+  // Construct the host window for a TWindow descriptor and realize/show it (0x00493470):
+  // derives the CreateEx window style from the descriptor's type code, then drives the
+  // MFC CreateEx/SetWindowPos/BringWindowToTop window-creation surface.
+  explicit CMcWindow(TWindow* descriptor);
+
   void SetWindowTextOrDelegateToOwner(const char* text); // 0x006073b4
   void GetWindowTextOrDelegateToOwner(CString* out);     // 0x0060859f
   void EnableWindowOrDelegateToOwner(int enable);        // 0x0060753b

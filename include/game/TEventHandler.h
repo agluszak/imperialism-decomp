@@ -65,7 +65,7 @@ public:
   virtual void DispatchCityProductionAction1B();           // 0x1e 0x48a6f0
   virtual char ActivateCityProductionViewIfAllowed();      // 0x1f 0x48a570
   virtual char vmethod_0080();                             // 0x20 0x48a5e0
-  virtual void vmethod_0081();                             // 0x21 0x48a710
+  virtual void vmethod_0081(int param);                    // 0x21 0x48a710
   virtual char vmethod_0032();                             // 0x22 0x48a500
   virtual void vmethod_0033(int arg);                      // 0x23 0x48a4a0
   virtual void SetUiResourceOwner(int owner);              // 0x24 0x48a4d0

@@ -146,11 +146,16 @@ public:
   // ConstructTDialogBehaviorBaseState at &this[1].field14 == +0x74); modelled as raw
   // storage until that class is recovered. Remaining named fields are accessed directly
   // by TWindow's own methods. Offsets that are not yet attributed stay as padding.
-  unsigned char padding_60_to_63[0x04]; // 0x60
+  short windowStyleType; // 0x60 — window-type code; selects the CreateEx style bits
+  unsigned char padding_62_to_63[0x02];
   class TWindow* field64;               // 0x64 — linked sibling/owner window
-  unsigned char padding_68_to_73[0x0c]; // 0x68
-  unsigned char field74[0x10];          // 0x74 — embedded TDialogBehavior region
-  unsigned char field84;                // 0x84
+  unsigned char padding_68_to_6c[0x05]; // 0x68
+  unsigned char field6d;                // 0x6d — dialog-style flag (CreateMcWindow)
+  unsigned char padding_6e_to_6f[0x02];
+  unsigned char field70; // 0x70 — when set, adds WS_EX_TOPMOST in CreateMcWindow
+  unsigned char padding_71_to_73[0x03];
+  unsigned char field74[0x10]; // 0x74 — embedded TDialogBehavior region
+  unsigned char field84;       // 0x84
   unsigned char padding_85_to_87[0x03];
   int field88; // 0x88
   int field8c; // 0x8c

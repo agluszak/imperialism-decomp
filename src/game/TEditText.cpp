@@ -58,7 +58,7 @@ void TEditText::HandleCityProductionNoOp() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490c30
-void TEditText::vmethod_0081() {
+void TEditText::vmethod_0081(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x00490c70

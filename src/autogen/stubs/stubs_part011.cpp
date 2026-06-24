@@ -691,14 +691,6 @@ undefined4 OrphanVtableAssignStub_00493450(void)
   return 0;
 }
 
-// ghidra_name CreateMcWindowFromDescriptorAndShow
-// ghidra_proto undefined CreateMcWindowFromDescriptorAndShow()
-// FUNCTION: IMPERIALISM 0x00493470
-undefined4 CreateMcWindowFromDescriptorAndShow(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00493730
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00493730()
 // FUNCTION: IMPERIALISM 0x00493730

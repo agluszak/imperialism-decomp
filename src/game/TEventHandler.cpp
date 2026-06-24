@@ -240,7 +240,7 @@ void TEventHandler::DispatchCityProductionAction1B() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a710
-void TEventHandler::vmethod_0081() {}
+void TEventHandler::vmethod_0081(int) {}
 
 // Slot 0x16: base implementation (TView overrides with the owner-chain walk).
 // FUNCTION: IMPERIALISM 0x0048a730

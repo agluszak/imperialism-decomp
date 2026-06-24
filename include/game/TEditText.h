@@ -16,7 +16,7 @@ public:
   void SetControlValue(int value) override;
   void HandleCityProductionNoOp() override;
   char ActivateCityProductionViewIfAllowed() override;
-  void vmethod_0081() override;
+  void vmethod_0081(int) override;
   void DispatchSlot9CToLinkedChildren() override;
   void CallVoidSlotA0() override;
   void SetEnabled(int enabledState, int refreshFlag) override;

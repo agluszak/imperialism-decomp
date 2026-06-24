@@ -1,6 +1,7 @@
 address|name|prototype
 0x0048d9c0|TWindow::SetWindowText|undefined __thiscall SetWindowText(CString* param_1)
 0x0048d9f0|TWindow::GetWindowText|undefined __thiscall GetWindowText(CString* param_1)
+0x00493470|CMcWindow::CMcWindow|void __thiscall CMcWindow(TWindow* param_1)
 0x006073b4|CMcWindow::SetWindowTextOrDelegateToOwner|void __thiscall SetWindowTextOrDelegateToOwner(char* param_1)
 0x0060859f|CMcWindow::GetWindowTextOrDelegateToOwner|void __thiscall GetWindowTextOrDelegateToOwner(CString* param_1)
 0x0060753b|CMcWindow::EnableWindowOrDelegateToOwner|void __thiscall EnableWindowOrDelegateToOwner(int param_1)

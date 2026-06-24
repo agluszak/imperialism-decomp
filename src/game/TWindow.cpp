@@ -198,8 +198,38 @@ undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) {
   return 0;
 }
 
+// Realize and show this window: on first call create the host CMcWindow and propagate the
+// UI resource context into every child control, then notify the window, run the
+// not-actionable fallback (mark busy, poke the linked window, fire the slot-0x73 chain),
+// and finally recurse the realize hook into each child.
 // FUNCTION: IMPERIALISM 0x0048de00
-void TWindow::DispatchSlot9CToLinkedChildren() {}
+void TWindow::DispatchSlot9CToLinkedChildren() {
+  if (nativeWindow50 == 0) {
+    nativeWindow50 = new CMcWindow(this);
+    if (childList44 != 0) {
+      POSITION pos = childList44->GetHeadPosition();
+      while (pos != NULL) {
+        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+        child->PropagateUiResourceContextRecursive(nativeWindow50);
+      }
+    }
+  }
+  ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 0, controlTag);
+  if (IsActionable() == 0) {
+    field98 = 1;
+    if (field64 != 0) {
+      field64->vmethod_0081(0);
+    }
+    OrphanCallChain_C2_I39_0048d900(1, 1);
+  }
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      child->DispatchSlot9CToLinkedChildren();
+    }
+  }
+}
 
 // Clear the busy flag, notify the host window, recurse the slot-0x28 hook into every child
 // control, then run the slot-0x73 state-notify chain.

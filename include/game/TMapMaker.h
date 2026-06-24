@@ -39,7 +39,7 @@ public:
   virtual void DispatchCityProductionAction1B();
   virtual char ActivateCityProductionViewIfAllowed();
   virtual char vmethod_0080();
-  virtual void vmethod_0081();
+  virtual void vmethod_0081(int);
   // --- vtable ends at slot 0x21 (orig 0x22..0x28 are NULL; see note above) ---
 
   // Original vtable slots 0x29/0x2a, kept as non-virtual (paired by address).

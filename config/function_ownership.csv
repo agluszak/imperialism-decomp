@@ -509,6 +509,7 @@ address|target_cpp|ownership|note
 492d80|src/game/TWindow.cpp|manual|marker_sync
 492de0|src/game/TButton.cpp|manual|marker_sync
 492f30|src/game/TEditText.cpp|manual|marker_sync
+493470|src/game/CMcWindow.cpp|manual|marker_sync
 4945f0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4946b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync

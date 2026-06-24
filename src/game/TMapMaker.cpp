@@ -98,7 +98,7 @@ char TMapMaker::vmethod_0080() {
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-void TMapMaker::vmethod_0081() {
+void TMapMaker::vmethod_0081(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60

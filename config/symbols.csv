@@ -1205,7 +1205,7 @@ address|name|size|type|prototype
 4933a0|WrapperFor_ftol_At004933a0|30|function|undefined WrapperFor_ftol_At004933a0()
 4933d0|Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0|89|function|undefined Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0()
 493450|OrphanVtableAssignStub_00493450|6|function|undefined OrphanVtableAssignStub_00493450()
-493470|CreateMcWindowFromDescriptorAndShow|521|function|undefined CreateMcWindowFromDescriptorAndShow()
+493470|CMcWindow::CMcWindow|521|function|void __thiscall CMcWindow(TWindow * param_1)
 493730|WrapperFor_FreeHeapBufferIfNotNull_At00493730|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00493730()
 493760|WrapperFor_CWnd_At00493760|89|function|undefined WrapperFor_CWnd_At00493760()
 4937e0|OrphanVtableAssignStub_004937e0|6|function|undefined OrphanVtableAssignStub_004937e0()
