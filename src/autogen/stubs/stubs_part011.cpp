@@ -459,38 +459,6 @@ undefined4 DestructTWindowAndUnlinkGlobalWindowNode(void)
   return 0;
 }
 
-// ghidra_name InitializeUiWindowTraversalState
-// ghidra_proto undefined InitializeUiWindowTraversalState()
-// FUNCTION: IMPERIALISM 0x004923f0
-undefined4 InitializeUiWindowTraversalState(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadFirstUiWindowTraversalEntry
-// ghidra_proto undefined LoadFirstUiWindowTraversalEntry()
-// FUNCTION: IMPERIALISM 0x00492440
-undefined4 LoadFirstUiWindowTraversalEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadNextUiWindowTraversalEntry
-// ghidra_proto undefined LoadNextUiWindowTraversalEntry()
-// FUNCTION: IMPERIALISM 0x00492470
-undefined4 LoadNextUiWindowTraversalEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name IsUiWindowTraversalEntryValid
-// ghidra_proto undefined IsUiWindowTraversalEntryValid()
-// FUNCTION: IMPERIALISM 0x004924a0
-undefined4 IsUiWindowTraversalEntryValid(void)
-{
-  return 0;
-}
-
 // ghidra_name PopSinglyLinkedListHeadPointer
 // ghidra_proto undefined PopSinglyLinkedListHeadPointer()
 // FUNCTION: IMPERIALISM 0x004924c0

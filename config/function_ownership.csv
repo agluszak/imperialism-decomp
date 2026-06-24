@@ -495,6 +495,10 @@ address|target_cpp|ownership|note
 492110|src/game/TCluster.cpp|manual|marker_sync
 492310|src/game/TCluster.cpp|manual|marker_sync
 492330|src/game/TCluster.cpp|manual|marker_sync
+4923f0|src/game/TUiWindowTraversal.cpp|manual|marker_sync
+492440|src/game/TUiWindowTraversal.cpp|manual|marker_sync
+492470|src/game/TUiWindowTraversal.cpp|manual|marker_sync
+4924a0|src/game/TUiWindowTraversal.cpp|manual|marker_sync
 492670|src/game/TCluster.cpp|manual|marker_sync
 4927e0|src/game/TCluster.cpp|manual|marker_sync
 492950|src/game/TCluster.cpp|manual|marker_sync

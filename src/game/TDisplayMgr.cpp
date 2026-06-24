@@ -5,6 +5,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSortedPtrList.h"
 #include "game/TView.h"
+#include "game/TUiWindowTraversal.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/UiRuntimeContext.h"
@@ -22,10 +23,6 @@ undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
 undefined4 InitializeTurnOrderNavigationDialogByViewportSize_Impl(void);
 undefined4 InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void);
 undefined4 NoOpCallback_00498ca0(void);
-undefined4 InitializeUiWindowTraversalState(void);
-undefined4 LoadFirstUiWindowTraversalEntry(void);
-undefined4 LoadNextUiWindowTraversalEntry(void);
-undefined4 IsUiWindowTraversalEntryValid(void);
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 SetActiveQuickDrawSurfaceContext(void);
@@ -65,26 +62,6 @@ static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outC
 static void NoOpCallback_00498ca0(void* fieldPtr) {
   reinterpret_cast<void(__cdecl*)(void*)>(
       reinterpret_cast<void (*)()>(::NoOpCallback_00498ca0))(fieldPtr);
-}
-
-static void InitializeUiWindowTraversalState(char mode) {
-  reinterpret_cast<void(__cdecl*)(char)>(
-      reinterpret_cast<void (*)()>(::InitializeUiWindowTraversalState))(mode);
-}
-
-static void* LoadFirstUiWindowTraversalEntry() {
-  return reinterpret_cast<void*(__cdecl*)()>(
-      reinterpret_cast<void (*)()>(::LoadFirstUiWindowTraversalEntry))();
-}
-
-static void* LoadNextUiWindowTraversalEntry() {
-  return reinterpret_cast<void*(__cdecl*)()>(
-      reinterpret_cast<void (*)()>(::LoadNextUiWindowTraversalEntry))();
-}
-
-static int IsUiWindowTraversalEntryValid() {
-  return reinterpret_cast<int(__cdecl*)()>(
-      reinterpret_cast<void (*)()>(::IsUiWindowTraversalEntryValid))();
 }
 
 static void ApplyHitRegionToClipState(int clipDescriptor) {
@@ -397,9 +374,10 @@ undefined TDisplayMgr::SetMapTileIconVariantTriplet(undefined1* param_1) {
 
 // FUNCTION: IMPERIALISM 0x004ff000
 undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
-  DisplayMgrInvoke::InitializeUiWindowTraversalState(1);
-  TWindow* window = reinterpret_cast<TWindow*>(DisplayMgrInvoke::LoadFirstUiWindowTraversalEntry());
-  while (DisplayMgrInvoke::IsUiWindowTraversalEntryValid() != 0) {
+  TUiWindowTraversal cursor;
+  cursor.Reset(1);
+  TWindow* window = static_cast<TWindow*>(cursor.LoadFirst());
+  while (cursor.IsValid() != 0) {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->field3c == kClass99WindowId) {
         if (window->GetDialogBehaviorByte10() == 0) {
@@ -409,7 +387,7 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
         }
       }
     }
-    window = reinterpret_cast<TWindow*>(DisplayMgrInvoke::LoadNextUiWindowTraversalEntry());
+    window = static_cast<TWindow*>(cursor.LoadNext());
   }
   return 0;
 }
