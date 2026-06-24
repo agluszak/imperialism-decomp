@@ -2263,7 +2263,7 @@ address|name|size|type|prototype
 4d3310|TMapMgr::QueueCivilianWorkOrderWithCostCheck|606|function|bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 4d3610|TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder|757|function|bool __thiscall PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
 4d39d0|QueueProspectingOrderAndPlayFeedback|99|function|undefined QueueProspectingOrderAndPlayFeedback()
-4d3a60|TCivToolbar::HandleEngineerConstructionAction|1761|function|bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
+4d3a60|TCivMgr::HandleEngineerConstructionAction|1761|function|bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
 4d4310|TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles|86|function|void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)
 4d4390|ApplyCompletedCivWorkOrderToMapState|680|function|void __cdecl ApplyCompletedCivWorkOrderToMapState(int * pCivUnitOrderState)
 4d4740|ResolveCompetingDeveloperTilePurchaseOrders|474|function|undefined ResolveCompetingDeveloperTilePurchaseOrders()

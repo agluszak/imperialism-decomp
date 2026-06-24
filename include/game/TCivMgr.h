@@ -3,13 +3,13 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCivMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TCivMgr -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x00653248
+// TODO(manifest): describe TCivMgr and its role. Base edge (TObject) recovered from RTTI
+// CRuntimeClass chain: TCivMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TCivMgr) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCivMgr) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4d2030
-  virtual ~TCivMgr(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TCivMgr();                                      // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -18,12 +18,23 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode); // slot 0x0a 0x4d2380
-  virtual bool HandleCivilianTileOrderAction(short nTileIndex, short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry); // slot 0x0c 0x4d4310
-  virtual void DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry); // slot 0x0d 0x4d2270
-// === END GENERATED DECLS (TCivMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCivMgr 0xCTOR`).
+  virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex,
+                                                        short nClickMode); // slot 0x0a 0x4d2380
+  virtual bool HandleCivilianTileOrderAction(short nTileIndex,
+                                             short nInputHint); // slot 0x0b 0x4d26d0
+  virtual void
+  RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
+                                               int* pCivOrderEntry); // slot 0x0c 0x4d4310
+  virtual void
+  DispatchSelectedUnitToGlobalMapStateHandler(int* pUnitOrderEntry); // slot 0x0d 0x4d2270
+  // === END GENERATED DECLS (TCivMgr) ===
+  // Non-virtual order-action helper (0x4d3a60); dispatched from the slot 0x0b virtual
+  // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
+  bool HandleEngineerConstructionAction(short nTileIndex);
+
+  // Data members (object size 0x0c, base TObject = vptr only).
+  class TCivUnit* field04; // 0x4 — selected civilian order entry
+  int field08;             // 0x8
 
   TCivMgr();
 };

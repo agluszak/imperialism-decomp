@@ -1044,7 +1044,7 @@ address|target_cpp|ownership|note
 4d2c60|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
 4d2cf0|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
 4d2d30|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
-4d3a60|src/game/TCivToolbar.cpp|manual|marker_sync
+4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d6500|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync

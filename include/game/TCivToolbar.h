@@ -7,7 +7,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667f00
 class TCivToolbar : public TCluster {
 public:
-// === BEGIN GENERATED DECLS (TCivToolbar) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCivToolbar) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCivToolbar(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -22,7 +22,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
   // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0058eed0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0058eed0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -122,20 +123,19 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-// === END GENERATED DECLS (TCivToolbar) ===
+  // === END GENERATED DECLS (TCivToolbar) ===
   short civilianClassId; // 0x88
   short pad_8a;
 
   TCivToolbar();
   CRuntimeClass* GetRuntimeClass() const override;
-  void
-  RefreshCivilianCommandPanelForSelection(class TCivUnit* selectedCivilianOrderEntry);
+  void RefreshCivilianCommandPanelForSelection(class TCivUnit* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
   void CycleMapInteractionSelectionAfterHandledClick();
-  bool HandleEngineerConstructionAction(short nTileIndex);
 };
 
-// === BEGIN GENERATED (TCivToolbar) — refreshed by `just gen-class TCivToolbar`; do not hand-edit ===
+// === BEGIN GENERATED (TCivToolbar) — refreshed by `just gen-class TCivToolbar`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x00667f00 (115 slots), object size 0x8c, base TCluster
 //   slot 0x00  byte 0x00  0x0058ea80  override  GetTEventHandlerClassNamePointer

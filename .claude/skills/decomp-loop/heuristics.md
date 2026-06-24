@@ -24,6 +24,18 @@ restate a Hard Rule or a memory; link to it instead.
   non-semantic linker artifacts — never hand-write them with placement-new bridges,
   pointer casts, or manual vptr writes. The durable fix is real inheritance so the
   base ctor is referenced symbolically. See [[ilt-thunk-retirement]].
+- **A self-`this` vtable-slot call whose arg count / `RET n` can't match the
+  attributed class's slot means the function is mis-attributed.** Verify slot N by
+  reading the real method body (`RET imm`/arg reads) against the disassembled
+  callsite (count the `push`es before `CALL [vtbl+off]`, check for stack cleanup
+  after). On mismatch, trace the caller: `xrefs_to` the function (and its ILT thunk),
+  then read who loads `ECX` at the call (`MOV ECX,ESI` where `ESI=this` of a known
+  class). `0x4d3a60` was filed as `TCivToolbar` (slot 0x0c = 0-arg `RET 0` stub) but
+  its `this` is a `TCivMgr` (slot 0x0c = `RelinkCivilianOrderTileAndInvalidateMapTiles`,
+  2-arg `RET 8`); re-attributing let the finalize call become a real virtual and
+  dropped a spurious dummy-`edx` write (18.9%→19.6%). reccmp pairs by address, so the
+  fix is moving the body to the right class file + `symbols.csv` rename, not a
+  score change per se — but it unblocks real-virtual modeling.
 
 ## 2. FPO and optimization pragmas (`#pragma optimize`)
 
