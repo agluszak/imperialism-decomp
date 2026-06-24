@@ -23,6 +23,7 @@
 #include "game/TMission.h"
 #include "game/TZone.h"
 #include "game/turn_event_packets.h"
+#include "game/map_action_context_helpers.h"
 #include "game/TTurnEventPacket.h"
 #include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
@@ -119,10 +120,6 @@ undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
 undefined4 InitializeCivWorkOrderState(void);
-undefined4 thunk_GetShortAtOffset14OrInvalid(void);
-undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void);
-undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(void);
-undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(void);
 undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void);
 
 static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
@@ -132,7 +129,6 @@ static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, in
 }
 undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
-undefined4 thunk_QueueNationPairWarTransition(void);
 void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
 void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
 void NoOpAdvisoryHandlerReturn(void);
@@ -152,21 +148,15 @@ undefined4 thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(void)
 undefined4 ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl(void);
 undefined4 thunk_DispatchTaggedGameStateEvent1F20(void);
 undefined4 thunk_InitializeNationStateIdentityAndOwnedRegionList(void);
-undefined4 thunk_InitializeCityModel(void);
 undefined4 thunk_InitializeCityProductionState(void);
 undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
 
-undefined4 thunk_ConstructFrogCityMarker(void);
 undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
 undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
-undefined4 thunk_DispatchCityRedrawInvalidateEvent(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
-
-undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
-undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
 
 // EH-body order/state globals (defined in global_data_tables.cpp). Direct absolute
 // loads in the original; declaring them as real symbols lets reccmp pair the loads.
@@ -454,8 +444,8 @@ struct SharedRefTripleScope {
   ~SharedRefTripleScope() {}
 };
 
-static __inline void DispatchCityRedrawInvalidateEvent(short regionId) {
-  reinterpret_cast<void(__cdecl*)(short)>(thunk_DispatchCityRedrawInvalidateEvent)(regionId);
+static __inline void DispatchCityRedrawInvalidateEventForRegion(short regionId) {
+  ::DispatchCityRedrawInvalidateEvent(regionId);
 }
 
 // TEMP: preamble bridge cluster — map-action score wrappers (retire to TGlobalMapState/TZone).
@@ -474,14 +464,13 @@ static __inline void ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(void* globalMa
       ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl)(globalMapState, 0, nationSlot);
 }
 
-static __inline void QueueNationPairWarTransition(void* queue, short sourceNation,
-                                                  short targetNation) {
-  reinterpret_cast<void(__cdecl*)(void*, short, short)>(thunk_QueueNationPairWarTransition)(
-      queue, sourceNation, targetNation);
+static __inline void QueueNationPairWarTransition(TDiplomacyMgr* diplomacyManager,
+                                                  short sourceNation, short targetNation) {
+  diplomacyManager->QueueNationPairWarTransition(sourceNation, targetNation);
 }
 
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid)();
+  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
 }
 
 static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* path, int line) {
@@ -506,8 +495,6 @@ extern float g_Classify_Nation_Military_Value_0065370C; // 1.0f
 extern float g_Classify_Nation_Military_Value_00653710; // -2.0f
 extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 }
-
-undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void); // 0x00405312 -> 0x005d46b0
 
 // Each dispatch reloads the UI-context global, as the original does.
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
@@ -663,7 +650,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   void* cityModel = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (cityModel != 0) {
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCityModel)(cityModel, 0);
+    reinterpret_cast<TCity*>(cityModel)->TCity::TCity();
     reinterpret_cast<void(__fastcall*)(int, int)>(thunk_InitializeCityProductionState)(
         reinterpret_cast<int>(cityModel), arg1);
   }
@@ -940,9 +927,8 @@ void TGreatPower::ReadFrom(TStream* stream) {
     while (townOrdinal <= townCount) {
       void* townMarker = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
       if (townMarker != 0) {
-        reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_ConstructFrogCityMarker)(townMarker,
-                                                                                       0);
-        static_cast<TPtrList*>(townMarker)->ReadFrom(stream);
+        reinterpret_cast<TTown*>(townMarker)->TTown::TTown();
+        static_cast<TTown*>(townMarker)->ReadFrom(stream);
         static_cast<TPtrList*>(townMarkerList)->AddTailSlot30(townMarker);
       }
       ++townOrdinal;
@@ -1810,7 +1796,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
         }
 
         if (localizationRuntime->redrawEnabled != 0 && needsRedraw != 0) {
-          DispatchCityRedrawInvalidateEvent(regionId);
+          DispatchCityRedrawInvalidateEventForRegion(regionId);
         }
       }
     }
@@ -1942,8 +1928,8 @@ void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
 
   TZone* contextEntry = static_cast<TZone*>(g_pMapActionContextListHead);
   while (contextEntry != 0) {
-    thunk_GetShortAtOffset14OrInvalid();
-    if (thunk_ContainsPointerArrayEntryMatchingByteKey() != 0) {
+    GetShortAtOffset14OrInvalid(contextEntry);
+    if (this->ContainsPointerArrayEntryMatchingByteKey(this->nationSlot) != 0) {
       bool emittedMessage = false;
       for (int nationSlotCandidate = 0; nationSlotCandidate < kMajorNationCount;
            ++nationSlotCandidate) {
@@ -4575,7 +4561,7 @@ void TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targe
                                                                        int policyCode,
                                                                        int sourceNationSlot) {
   void* diplomacyManager = g_pDiplomacyTurnStateManager;
-  QueueNationPairWarTransition(diplomacyManager, this->nationSlot,
+  QueueNationPairWarTransition(static_cast<TDiplomacyMgr*>(diplomacyManager), this->nationSlot,
                                static_cast<short>(targetNationSlot));
 
   short proposalCode = static_cast<short>(policyCode);
@@ -5071,6 +5057,23 @@ unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
   }
 
   return totalValue / selectedCount;
+}
+
+// FUNCTION: IMPERIALISM 0x0055f4d0
+char TGreatPower::ContainsPointerArrayEntryMatchingByteKey(short nationSlotKey) {
+  unsigned int entryCount =
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x40);
+  if (entryCount == 0) {
+    return 0;
+  }
+  for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+    void** entrySlot = reinterpret_cast<void**>(
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x38) + entryIndex * 4);
+    if (*reinterpret_cast<char*>(*entrySlot) == static_cast<char>(nationSlotKey)) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00582630

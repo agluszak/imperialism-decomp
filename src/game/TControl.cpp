@@ -10,6 +10,7 @@
 #include "game/TTEView.h"
 #include "game/mcappui_globals.h"
 #include "game/ui_widget_thunks.h"
+#include "game/ui_invalidation_guard.h"
 
 #include <new>
 
@@ -22,7 +23,6 @@ extern CRuntimeClass PTR_s_TControl_00649600;
 
 undefined4 FromHandle(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 extern "C" char LAB_00409a9d;
 
 // FUNCTION: IMPERIALISM 0x004087fb
@@ -40,15 +40,13 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
   if (g_McAppUiFlag_006A143C == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x56f);
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004294a0
 char TControl::LogUnhandledDialogMethodAndReturnFalse() {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x58f);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
 
@@ -57,8 +55,7 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x594);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
 

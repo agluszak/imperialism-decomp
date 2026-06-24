@@ -4,21 +4,20 @@
 #include "game/TDialogBehavior.h"
 #include "game/CWMgrIterator.h"
 #include "game/mcappui_globals.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
 extern "C" char g_pClassDescCMcWindow;
 extern TApplication* g_pApplicationUiRootController;
 extern CPtrList g_ModalViewStack;
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
 static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(path, line);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
 // FUNCTION: IMPERIALISM 0x0048d220

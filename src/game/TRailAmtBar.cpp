@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TView.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -138,7 +139,6 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   }
 }
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 // FUNCTION: IMPERIALISM 0x0058a3b0
 void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, int unusedEdx,
@@ -162,8 +162,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, i
           boundsRect.left + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
       invalidRect.bottom =
           boundsRect.top + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
-          &invalidRect, 1);
+      reinterpret_cast<TView*>(control)->InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }
 }

@@ -410,6 +410,7 @@ public:
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
+  char ContainsPointerArrayEntryMatchingByteKey(short nationSlotKey);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(int proposalCode,
                                                                        int targetNationId);

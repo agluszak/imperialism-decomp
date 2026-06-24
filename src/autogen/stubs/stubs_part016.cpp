@@ -2219,14 +2219,6 @@ undefined4 DispatchTileRedrawInvalidateEvent(void)
   return 0;
 }
 
-// ghidra_name DispatchCityRedrawInvalidateEvent
-// ghidra_proto void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)
-// FUNCTION: IMPERIALISM 0x0054abf0
-undefined4 DispatchCityRedrawInvalidateEvent(void)
-{
-  return 0;
-}
-
 // ghidra_name CopyA8RecordWithSharedStringAtA4
 // ghidra_proto undefined CopyA8RecordWithSharedStringAtA4()
 // FUNCTION: IMPERIALISM 0x0054ae90

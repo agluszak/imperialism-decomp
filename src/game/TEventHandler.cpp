@@ -10,13 +10,13 @@
 #include "game/TView.h"
 #include "game/TApplication.h"
 #include "game/mcappui_globals.h"
+#include "game/ui_invalidation_guard.h"
 #include <string.h>
 
 extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 extern TApplication* g_pApplicationUiRootController;
@@ -253,8 +253,7 @@ class TView* TEventHandler::OwnerPanel() {
 // FUNCTION: IMPERIALISM 0x0048a7c0
 TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x2ef);
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   TEventHandler* header = reinterpret_cast<TEventHandler*>(AllocateWithFallbackHandler(0x20));
   if (header == 0) {

@@ -30,7 +30,6 @@ undefined4 GetSurfaceObjectAtContextOffset24(void);
 undefined4 ReturnConstantTrueQuickDrawFlag(void);
 undefined4 ApplyRectClipRegionToGlobalClipState(void);
 undefined4 NoOpQuickDrawLifecycleHookB(void);
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 namespace DisplayMgrInvoke {
 
@@ -104,7 +103,7 @@ static void InvokeSnapshotHitRegionToClipCache(int clipDescriptor) {
 
 static void FailUiAssert(const char* sourceFile, int line) {
   reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
-      ::thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(sourceFile, line);
+      ::TemporarilyClearAndRestoreUiInvalidationFlag))(sourceFile, line);
 }
 
 } // namespace DisplayMgrInvoke

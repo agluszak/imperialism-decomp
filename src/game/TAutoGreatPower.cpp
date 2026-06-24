@@ -23,13 +23,14 @@
 #pragma optimize("y", on)
 #endif
 
+#include "game/map_action_context_helpers.h"
 #include "game/TShip.h"
+
 undefined4 thunk_DispatchTaggedGameStateEvent1F20(void); // 0x00406efb -> 0x0054a340
 undefined4 GenerateThreadLocalRandom15(void);
-undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
-  return reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid)();
+  return GetShortAtOffset14OrInvalid(g_pMapActionContextListHead);
 }
 
 extern "C" {

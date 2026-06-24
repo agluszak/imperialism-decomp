@@ -13,7 +13,6 @@
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
@@ -29,8 +28,7 @@ static __inline void DrawCenteredGuideLine(short x, short y) {
 }
 
 static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(reinterpret_cast<void (*)()>(
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty))(styleA, styleB);
+  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(styleA, styleB);
 }
 
 static __inline void ApplyRectClipRegion(RECT* rectBuffer) {

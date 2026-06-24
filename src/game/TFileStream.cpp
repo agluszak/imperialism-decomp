@@ -3,6 +3,7 @@
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 #include "game/CString.h"
+#include "game/ui_invalidation_guard.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -10,7 +11,6 @@
 
 typedef void* hwnd_t;
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 extern "C" {
 char g_pClassDescTFileStream = 0;
@@ -20,8 +20,7 @@ char g_pClassDescTFileStream = 0;
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
 // The backing pointer is an ArchiveStreamAdapter whose archive field holds the

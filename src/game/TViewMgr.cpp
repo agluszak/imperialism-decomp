@@ -7,6 +7,7 @@
 #include "game/TCivToolbar.h"
 #include "game/diplomacy_globals.h"  // g_pGameFlowState, g_pLocalizationTable
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
+#include "game/ui_invalidation_guard.h"
 
 #include <new>
 
@@ -34,7 +35,6 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // Returns the active AFX thread's main window object (its +0x1c field is the host HWND).
 undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
 undefined4 FormatOverlayTerrainLabelText(void);
@@ -330,7 +330,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     MessageBoxA(nullptr, reinterpret_cast<const char*>(kAddrStrNilPointer),
                 reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        TemporarilyClearAndRestoreUiInvalidationFlag)(
         reinterpret_cast<const char*>(kAddrStrSourceFile), 0x223);
   }
   node->ShowTurnEventDialog(1);
@@ -338,7 +338,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     MessageBoxA(nullptr, reinterpret_cast<const char*>(kAddrStrNilPointer),
                 reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        TemporarilyClearAndRestoreUiInvalidationFlag)(
         reinterpret_cast<const char*>(kAddrStrSourceFile), 0x227);
   }
   void* content = node->QueryTurnEventContentObject();

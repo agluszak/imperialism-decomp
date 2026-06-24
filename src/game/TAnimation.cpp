@@ -1,4 +1,5 @@
 #include "game/TAnimation.h"
+#include "game/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
 undefined TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {

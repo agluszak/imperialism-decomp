@@ -22,7 +22,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTRailCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 const int kAssertLineRatioA = 0xd1d;
 
@@ -191,8 +190,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, ctx->ownerOffsetX, ctx->ownerOffsetY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      (int)&moveInvalidRect, 1);
+  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
       reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));

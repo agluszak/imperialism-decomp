@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TView.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -26,7 +27,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTIndustryAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
@@ -142,8 +142,8 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
           cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
       invalidRect[3] =
           cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-          (int)invalidRect, 1);
+      reinterpret_cast<TView*>(control)->InvalidateCityDialogRectRegion(
+          reinterpret_cast<RECT*>(invalidRect), 1);
     }
   }
 }

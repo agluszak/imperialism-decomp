@@ -36,7 +36,6 @@ public:
   void AdvanceOneTimeAnimationFrameAndInvalidateTargetRect();
 };
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 // FUNCTION: IMPERIALISM 0x0049fde0
 void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {
@@ -44,8 +43,7 @@ void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {
     int nextTick = frameTick + 1;
     frameTick = nextTick;
     if (nextTick == frameTickLimit) {
-      reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
-          &targetRect, 1);
+      reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&targetRect, 1);
 
       ScopedMapQuickDrawContextGuard quickDrawContext(scopedRenderTarget);
       reinterpret_cast<TView*>(scopedRenderTarget)->Refresh();

@@ -22,7 +22,6 @@
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);

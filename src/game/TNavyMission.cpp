@@ -2,6 +2,7 @@
 
 #include "game/TDiplomacyMgr.h"
 #include "game/diplomacy_globals.h"
+#include "game/TShip.h"
 
 extern "C" {
 extern float g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -12,7 +13,7 @@ extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 }
 
-undefined4 thunk_GetNavyPrimaryOrderListHead(void);
+
 undefined4 GetNavyOrderNormalizationBaseByNationType(void);
 undefined4 ComputeNavyOrderPriorityContributionPercentByCategory(void);
 
@@ -75,7 +76,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
                                                                                int nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (NavyPrimaryOrderNode* orderNode =
-           reinterpret_cast<NavyPrimaryOrderNode*>(thunk_GetNavyPrimaryOrderListHead());
+           reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());
        orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
     if (orderNode->nodeContext08 == nodeContext &&
         g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(static_cast<short>(sourceNation),
@@ -95,7 +96,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
                                                                                 int nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (NavyPrimaryOrderNode* orderNode =
-           reinterpret_cast<NavyPrimaryOrderNode*>(thunk_GetNavyPrimaryOrderListHead());
+           reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());
        orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
     if (orderNode->nodeContext08 == nodeContext &&
         static_cast<short>(sourceNation) == orderNode->sourceNation14) {

@@ -603,14 +603,6 @@ undefined4 CreateTZone(void)
   return 0;
 }
 
-// ghidra_name GetShortAtOffset14OrInvalid
-// ghidra_proto undefined GetShortAtOffset14OrInvalid()
-// FUNCTION: IMPERIALISM 0x0055f0b0
-undefined4 GetShortAtOffset14OrInvalid(void)
-{
-  return 0;
-}
-
 // ghidra_name FindMapActionContextByNodeId
 // ghidra_proto undefined FindMapActionContextByNodeId()
 // FUNCTION: IMPERIALISM 0x0055f100
@@ -631,14 +623,6 @@ undefined4 DispatchMapActionContextCallbackViaField24(void)
 // ghidra_proto undefined ContainsCityStatePointerInZoneArrayByCityIndex()
 // FUNCTION: IMPERIALISM 0x0055f440
 undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name ContainsPointerArrayEntryMatchingByteKey
-// ghidra_proto undefined ContainsPointerArrayEntryMatchingByteKey()
-// FUNCTION: IMPERIALISM 0x0055f4d0
-undefined4 ContainsPointerArrayEntryMatchingByteKey(void)
 {
   return 0;
 }

@@ -6,12 +6,12 @@
 #include "game/TQueueObject.h"
 #include "game/diplomacy_globals.h"
 #include "game/mfc.h"
+#include "game/ui_invalidation_guard.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0064f338
@@ -280,8 +280,7 @@ void TCity::Refresh80() {
       char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
       if ((dispatchGate == 0 || g_pLocalizationTable->redrawEnabled != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
-        reinterpret_cast<void(__cdecl*)(const char*, int)>(
-            thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(kUCityCppPath, 0x47f);
+        TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       *needCursor = 0;
     }

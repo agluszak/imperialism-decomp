@@ -12,7 +12,6 @@ undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
 undefined4 ComputeStridedRecordAddress6C(void);
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
 
@@ -113,8 +112,8 @@ void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   ForwardMapDialogTileCoordUpdateToDerivedHandler(
       tileRowOutput[0] - static_cast<int>(g_wMapDialogTileRowMarker) / 2, arg1 - 3);
   int invalidateRect[3] = {0, 0x1ff, 0x1bf};
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      reinterpret_cast<int>(&invalidateRect[0]), 1);
+  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(
+      reinterpret_cast<RECT*>(&invalidateRect[0]), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051ace0

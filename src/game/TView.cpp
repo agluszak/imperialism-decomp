@@ -15,10 +15,10 @@
 #include "game/mcappui_globals.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_globals.h"
+#include "game/ui_invalidation_guard.h"
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 NoOpQuickDrawContextSelectionHook(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
@@ -257,7 +257,7 @@ void TView::DetachChildFromOwnerList(class TView* child) {
 
   if (found == 0 && g_McAppUiFlag_006A1AE0 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x152);
+        TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x152);
   }
 
   if (list->IsEmpty()) {
@@ -927,7 +927,7 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
     typedef void(__cdecl * UiInvalidationFlagThunk)(const char*, int);
     reinterpret_cast<UiInvalidationFlagThunk>(reinterpret_cast<void (*)()>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x772);
+        TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x772);
   }
   int context = NoOpQuickDrawContextSelectionHook();
   Rectangle(reinterpret_cast<HDC>(*reinterpret_cast<void**>(context + 4)), rect[0], rect[1],
@@ -937,7 +937,7 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
 void TView::AssertMcAppUiLine1914() {
   if (g_McAppUiFlag_006A1AFC == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x77a);
+        TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x77a);
   }
 }
 
@@ -945,7 +945,7 @@ void TView::AssertMcAppUiLine1914() {
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x782);
+        TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x782);
   }
   RECT rectStorage;
   CopyRectFromBuildRectFromSlot158(&rectStorage);

@@ -27,14 +27,6 @@ undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeCityModel
-// ghidra_proto undefined thunk_InitializeCityModel()
-// FUNCTION: IMPERIALISM 0x00401ba4
-undefined4 thunk_InitializeCityModel(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReleaseHashIndexedRecordByHandle
 // ghidra_proto undefined thunk_ReleaseHashIndexedRecordByHandle()
 // FUNCTION: IMPERIALISM 0x004020fe
@@ -123,22 +115,6 @@ undefined4 thunk_SetUiResourceContextTagWord(void)
   return 0;
 }
 
-// ghidra_name thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty
-// ghidra_proto undefined thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty()
-// FUNCTION: IMPERIALISM 0x00402e73
-undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ConstructFrogCityMarker
-// ghidra_proto undefined thunk_ConstructFrogCityMarker()
-// FUNCTION: IMPERIALISM 0x00403044
-undefined4 thunk_ConstructFrogCityMarker(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ApplyRectClipRegionToGlobalClipState
 // ghidra_proto undefined thunk_ApplyRectClipRegionToGlobalClipState()
 // FUNCTION: IMPERIALISM 0x004030e9
@@ -187,14 +163,6 @@ undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchCityRedrawInvalidateEvent
-// ghidra_proto void __cdecl thunk_DispatchCityRedrawInvalidateEvent(short nCityId)
-// FUNCTION: IMPERIALISM 0x00403b34
-undefined4 thunk_DispatchCityRedrawInvalidateEvent(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DrawCenteredGuideLineOnMapDc
 // ghidra_proto undefined thunk_DrawCenteredGuideLineOnMapDc()
 // FUNCTION: IMPERIALISM 0x00403bb6
@@ -215,14 +183,6 @@ undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void)
 // ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
 // FUNCTION: IMPERIALISM 0x00403f71
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ContainsPointerArrayEntryMatchingByteKey
-// ghidra_proto undefined thunk_ContainsPointerArrayEntryMatchingByteKey()
-// FUNCTION: IMPERIALISM 0x0040408e
-undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void)
 {
   return 0;
 }
@@ -291,14 +251,6 @@ undefined4 thunk_GetSurfaceObjectAtContextOffset24(void)
   return 0;
 }
 
-// ghidra_name thunk_GenerateMappedFlavorTextByTableSlot
-// ghidra_proto undefined thunk_GenerateMappedFlavorTextByTableSlot()
-// FUNCTION: IMPERIALISM 0x00405312
-undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
 // ghidra_proto undefined thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
 // FUNCTION: IMPERIALISM 0x00405344
@@ -307,26 +259,10 @@ undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
   return 0;
 }
 
-// ghidra_name thunk_GetShortAtOffset14OrInvalid
-// ghidra_proto undefined thunk_GetShortAtOffset14OrInvalid()
-// FUNCTION: IMPERIALISM 0x004055ba
-undefined4 thunk_GetShortAtOffset14OrInvalid(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
 // ghidra_proto undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
 // FUNCTION: IMPERIALISM 0x004056a5
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_TemporarilyClearAndRestoreUiInvalidationFlag
-// ghidra_proto undefined thunk_TemporarilyClearAndRestoreUiInvalidationFlag()
-// FUNCTION: IMPERIALISM 0x004057a4
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void)
 {
   return 0;
 }

@@ -21,6 +21,7 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/nation_stream_serialization.h"
 #include "game/turn_event_packets.h"
+#include "game/mapped_flavor_text.h"
 
 #include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
@@ -31,7 +32,6 @@ extern TGreatPower* g_apNationStates[];
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
-undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void);
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
@@ -536,8 +536,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString flavorName;
         g_pLocalizationTable->GetString(0x2744, 0, &flavorBase);
         do {
-          reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_GenerateMappedFlavorTextByTableSlot)(
-              &flavorName, this->nationSlot);
+          GenerateMappedFlavorTextByTableSlot(&flavorName, this->nationSlot);
         } while (flavorName.GetLength() > 0xf - flavorBase.GetLength());
         CString withSeparator = flavorBase + CString(" ");
         CString fullName = withSeparator + flavorName;

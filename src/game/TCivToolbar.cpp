@@ -22,19 +22,19 @@
 #include "game/TGreatPower.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663100
 CRuntimeClass g_pClassDescTCivToolbar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \
     GAME_FAIL_NIL_POINTER();                                                                       \
     reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
+        TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
                                                             line);                                 \
   }
 

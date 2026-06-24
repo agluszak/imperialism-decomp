@@ -2054,6 +2054,7 @@ address|target_cpp|ownership|note
 542ff0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/turn_event_packets.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54abf0|src/game/turn_event_packets.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b0d0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
@@ -2139,7 +2140,9 @@ address|target_cpp|ownership|note
 55eff0|src/game/TZone.cpp|manual|marker_sync
 55f070|src/game/TZone.cpp|manual|marker_sync
 55f090|src/game/TZone.cpp|manual|marker_sync
+55f0b0|src/game/map_action_context_helpers.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
+55f4d0|src/game/TGreatPower.cpp|manual|marker_sync
 55f5c0|src/game/TZone.cpp|manual|marker_sync
 55f780|src/game/TZone.cpp|manual|marker_sync
 55fb60|src/game/TZone.cpp|manual|marker_sync

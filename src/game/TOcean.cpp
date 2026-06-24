@@ -11,6 +11,7 @@
 #include "game/diplomacy_globals.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TStream.h"
+#include "game/TShip.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -25,7 +26,6 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 CallCallbackRepeatedly(void);
 undefined4 thunk_RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 thunk_SelectBestSeedTileForNationFromCostField(void);
-undefined4 thunk_GetNavyPrimaryOrderListHead(void);
 
 namespace {
 
@@ -136,7 +136,7 @@ void TZone::HandleKeyDown(int key_id) {
   }
 
   if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
-    for (pvNode = reinterpret_cast<void*>(thunk_GetNavyPrimaryOrderListHead()); pvNode != 0;
+    for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0;
          pvNode = *reinterpret_cast<void**>(reinterpret_cast<char*>(pvNode) + 0x24)) {
       if (((*reinterpret_cast<void**>(reinterpret_cast<char*>(pvNode) + 8) == this) &&
            (*reinterpret_cast<short*>(reinterpret_cast<char*>(pvNode) + 0x14) == sVarActiveSlot)) &&

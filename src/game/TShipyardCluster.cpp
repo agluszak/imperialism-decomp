@@ -20,7 +20,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTShipyardCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   TGreatPower* nationState = GetNationStateBySlot(slotId);
@@ -87,8 +86,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerOffsetX, this->ownerOffsetY);
   CopyRect(&invalidateRect, &moveRect);
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      (int)&invalidateRect, 1);
+  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
@@ -101,8 +99,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   moveControl->CaptureLayoutF0(reinterpret_cast<int*>(&moveRect), 1);
   OffsetRect(&moveRect, this->ownerOffsetX, this->ownerOffsetY);
   CopyRect(&invalidateRect, &moveRect);
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      (int)&invalidateRect, 1);
+  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
   TAmtBar* turnControl =
       reinterpret_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
@@ -110,8 +107,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
     turnControl->SetControlValueSlot1E4(0, 0);
     turnControl->QueryBounds(&moveRect);
     CopyRect(&invalidateRect, &moveRect);
-    reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-        (int)&invalidateRect, 1);
+    reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
   }
 
   reinterpret_cast<TIndustryCluster*>(this->ownerContext)->GetControlFlag(0, 0);

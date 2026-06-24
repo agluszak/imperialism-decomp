@@ -99,14 +99,6 @@ undefined4 thunk_AssignStringSharedRefAndReturnThis(void)
   return 0;
 }
 
-// ghidra_name thunk_GetNavyPrimaryOrderListHead
-// ghidra_proto undefined thunk_GetNavyPrimaryOrderListHead()
-// FUNCTION: IMPERIALISM 0x0040793c
-undefined4 thunk_GetNavyPrimaryOrderListHead(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_RebuildMinorNationDispositionLookupTables
 // ghidra_proto undefined thunk_RebuildMinorNationDispositionLookupTables()
 // FUNCTION: IMPERIALISM 0x004079aa
@@ -171,14 +163,6 @@ undefined4 thunk_RefreshMapOrderEntryPanel(void)
   return 0;
 }
 
-// ghidra_name thunk_InvalidateCityDialogRectRegion
-// ghidra_proto undefined thunk_InvalidateCityDialogRectRegion()
-// FUNCTION: IMPERIALISM 0x00408a03
-undefined4 thunk_InvalidateCityDialogRectRegion(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_GetActiveQuickDrawSurfaceContextAndFlags
 // ghidra_proto undefined thunk_GetActiveQuickDrawSurfaceContextAndFlags()
 // FUNCTION: IMPERIALISM 0x00408d64
@@ -215,14 +199,6 @@ undefined4 thunk_FindPortZoneByTile(void)
 // ghidra_proto undefined thunk_AdvanceSpiralSearchStateAndStepHexCoordinates()
 // FUNCTION: IMPERIALISM 0x004090a2
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_QueueNationPairWarTransition
-// ghidra_proto undefined thunk_QueueNationPairWarTransition()
-// FUNCTION: IMPERIALISM 0x00409165
-undefined4 thunk_QueueNationPairWarTransition(void)
 {
   return 0;
 }

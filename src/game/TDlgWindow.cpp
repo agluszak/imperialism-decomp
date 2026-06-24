@@ -1,9 +1,9 @@
 #include "game/TDlgWindow.h"
 #include "game/mcappui_globals.h"
+#include "game/ui_invalidation_guard.h"
 
 extern "C" CRuntimeClass PTR_s_TDlgWindow_00656a48;
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 // Application/document-root pointer @ 0x6a2158; its +0x0a field gates the line-0x27f assert.
 static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
@@ -11,8 +11,7 @@ static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 // The original reaches the shared UI invalidation-flag helper through the incremental-link
 // thunk; this only retypes the args of a genuine __cdecl(void) thunk (Hard Rule 9).
 static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(path, line);
+  TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
 // FUNCTION: IMPERIALISM 0x00500300

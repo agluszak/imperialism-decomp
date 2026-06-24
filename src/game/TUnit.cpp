@@ -5,8 +5,8 @@
 #include "game/diplomacy_globals.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
+#include "game/ui_invalidation_guard.h"
 
-undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 extern "C" char g_pClassDescTUnit = 0;
 
@@ -75,8 +75,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
 
   if (ownerManager == 0) {
     GAME_FAIL_NIL_POINTER();
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\UUnit.cpp", 287);
+    TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 
   ownerManager->VTableSlot12(this);
