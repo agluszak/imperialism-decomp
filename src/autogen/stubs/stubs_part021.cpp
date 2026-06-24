@@ -3691,14 +3691,6 @@ undefined4 ModifyStyleEx(void)
   return 0;
 }
 
-// ghidra_name SetWindowTextOrDelegateToOwner
-// ghidra_proto undefined SetWindowTextOrDelegateToOwner()
-// FUNCTION: IMPERIALISM 0x006073b4
-undefined4 SetWindowTextOrDelegateToOwner(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveWindow
 // ghidra_proto undefined MoveWindow()
 // FUNCTION: IMPERIALISM 0x00607469

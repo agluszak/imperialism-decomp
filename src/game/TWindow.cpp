@@ -1,4 +1,5 @@
 #include "game/TWindow.h"
+#include "game/CMcWindow.h"
 #include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
 #include "game/mcappui_globals.h"
@@ -63,12 +64,14 @@ int TWindow::IsActionable() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
-undefined TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4* param_1) {
+undefined TWindow::SetWindowText(CString* param_1) {
+  static_cast<CMcWindow*>(nativeWindow50)->SetWindowTextOrDelegateToOwner(*param_1);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9f0
-undefined TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(undefined4 param_1) {
+undefined TWindow::GetWindowText(CString* param_1) {
+  static_cast<CMcWindow*>(nativeWindow50)->GetWindowTextOrDelegateToOwner(param_1);
   return 0;
 }
 

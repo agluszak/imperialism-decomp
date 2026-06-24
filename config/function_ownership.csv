@@ -3269,6 +3269,8 @@ address|target_cpp|ownership|note
 606fc0|src/game/CObject.cpp|manual|marker_sync
 606fd2|src/game/CObject.cpp|manual|marker_sync
 607077|src/game/CRuntimeClass.cpp|manual|marker_sync
+6073b4|src/game/CMcWindow.cpp|manual|marker_sync
+60753b|src/game/CMcWindow.cpp|manual|marker_sync
 607673|src/game/MfcRuntime.cpp|manual|marker_sync
 607706|src/game/MfcRuntime.cpp|manual|marker_sync
 607744|src/game/MfcRuntime.cpp|manual|marker_sync
@@ -3276,6 +3278,7 @@ address|target_cpp|ownership|note
 6077c0|src/game/MfcRuntime.cpp|manual|marker_sync
 607a84|src/game/MfcRuntime.cpp|manual|marker_sync
 608115|src/game/MfcRuntime.cpp|manual|marker_sync
+60859f|src/game/CMcWindow.cpp|manual|marker_sync
 60a27d|src/game/MfcRuntime.cpp|manual|marker_sync
 60d3fc|src/game/MfcRuntime.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync

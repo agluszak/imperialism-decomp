@@ -137,11 +137,9 @@ public:
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   virtual undefined OrphanCallChain_C2_I10_0048e120();             // slot 0x74 0x48e120
-  virtual undefined
-  WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(undefined4* param_1); // slot 0x75 0x48d9c0
-  virtual undefined WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(
-      undefined4 param_1); // slot 0x76 0x48d9f0
-                           // === END GENERATED DECLS (TWindow) ===
+  virtual undefined SetWindowText(CString* param_1);               // slot 0x75 0x48d9c0
+  virtual undefined GetWindowText(CString* param_1);               // slot 0x76 0x48d9f0
+                                                     // === END GENERATED DECLS (TWindow) ===
 
   // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
   // The 0x74 region is an embedded TDialogBehavior subobject (its base state is built by
