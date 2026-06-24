@@ -651,14 +651,6 @@ undefined4 LoadTurnEventCursorByResourceIdOffset1000(void)
   return 0;
 }
 
-// ghidra_name MapTurnEventCodeToPaletteIndex
-// ghidra_proto undefined MapTurnEventCodeToPaletteIndex()
-// FUNCTION: IMPERIALISM 0x005d5270
-undefined4 MapTurnEventCodeToPaletteIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTurnEventPaletteByCode
 // ghidra_proto undefined UpdateTurnEventPaletteByCode()
 // FUNCTION: IMPERIALISM 0x005d5710

@@ -157,12 +157,6 @@
       "type": 1
     },
     {
-      "address": "0x403b5c",
-      "matching": 0.0,
-      "name": "thunk_EmitTurnEvent3Mode18WithActiveNation",
-      "type": 1
-    },
-    {
       "address": "0x403bb6",
       "matching": 0.0,
       "name": "thunk_DrawCenteredGuideLineOnMapDc",
@@ -484,12 +478,6 @@
       "address": "0x40918d",
       "matching": 0.0,
       "name": "thunk_AssignSharedStringFromIndexedA8EntryNameField",
-      "type": 1
-    },
-    {
-      "address": "0x409205",
-      "matching": 0.0,
-      "name": "UiRuntimeContext::MapTurnEventCodeToPaletteIndex",
       "type": 1
     },
     {
@@ -12015,7 +12003,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12447,13 +12435,13 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12465,7 +12453,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12507,7 +12495,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13875,7 +13863,7 @@
     },
     {
       "address": "0x4f0a10",
-      "matching": 0.8571428571428571,
+      "matching": 0.8565217391304348,
       "name": "ProcessQueuedWarTransitions",
       "type": 1
     },
@@ -15987,13 +15975,13 @@
     },
     {
       "address": "0x50e620",
-      "matching": 0.05263157894736842,
+      "matching": 0.018018018018018018,
       "name": "TMapMgr::ReadFrom",
       "type": 1
     },
     {
       "address": "0x50e7a0",
-      "matching": 0.07407407407407407,
+      "matching": 0.02564102564102564,
       "name": "TMapMgr::WriteTo",
       "type": 1
     },
@@ -16023,7 +16011,7 @@
     },
     {
       "address": "0x50ec90",
-      "matching": 0.02127659574468085,
+      "matching": 0.0,
       "name": "TMapMgr::BuildOrLoadGlobalMapStateForSession",
       "type": 1
     },
@@ -16065,25 +16053,25 @@
     },
     {
       "address": "0x50fca0",
-      "matching": 0.06,
+      "matching": 0.020618556701030927,
       "name": "TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority",
       "type": 1
     },
     {
       "address": "0x50fe10",
-      "matching": 0.02459016393442623,
+      "matching": 0.008298755186721992,
       "name": "TMapMgr::UpdateTileNeighborBorderInfluenceCounters",
       "type": 1
     },
     {
       "address": "0x510210",
-      "matching": 0.0158311345646438,
+      "matching": 0.005319148936170213,
       "name": "TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile",
       "type": 1
     },
     {
       "address": "0x5107e0",
-      "matching": 0.08571428571428572,
+      "matching": 0.029850746268656716,
       "name": "TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded",
       "type": 1
     },
@@ -16155,19 +16143,19 @@
     },
     {
       "address": "0x511f10",
-      "matching": 0.2,
+      "matching": 0.2857142857142857,
       "name": "TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
     {
       "address": "0x511f30",
-      "matching": 0.04790419161676647,
+      "matching": 0.024390243902439025,
       "name": "TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask",
       "type": 1
     },
     {
       "address": "0x5121d0",
-      "matching": 0.12121212121212122,
+      "matching": 0.06349206349206349,
       "name": "TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext",
       "type": 1
     },
@@ -16257,7 +16245,7 @@
     },
     {
       "address": "0x513170",
-      "matching": 0.125,
+      "matching": 0.044444444444444446,
       "name": "TMapMgr::OrphanCallChain_C3_I43_00513170",
       "type": 1
     },
@@ -16269,43 +16257,43 @@
     },
     {
       "address": "0x513290",
-      "matching": 0.06593406593406594,
+      "matching": 0.022727272727272728,
       "name": "TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12",
       "type": 1
     },
     {
       "address": "0x5133f0",
-      "matching": 0.05217391304347826,
+      "matching": 0.017857142857142856,
       "name": "TMapMgr::SetTileOwnerAndInvalidateNeighborState",
       "type": 1
     },
     {
       "address": "0x5135a0",
-      "matching": 0.11764705882352941,
+      "matching": 0.12903225806451613,
       "name": "TMapMgr::OrphanCallChain_C1_I29_005135a0",
       "type": 1
     },
     {
       "address": "0x513610",
-      "matching": 0.10526315789473684,
+      "matching": 0.125,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins14_00513610",
       "type": 1
     },
     {
       "address": "0x513660",
-      "matching": 0.10526315789473684,
+      "matching": 0.125,
       "name": "TMapMgr::GetTileCivilianWorkOrderCostClassNibble",
       "type": 1
     },
     {
       "address": "0x5136a0",
-      "matching": 0.05,
+      "matching": 0.05405405405405406,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
     {
       "address": "0x513720",
-      "matching": 0.14285714285714285,
+      "matching": 0.05128205128205128,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins37_00513720",
       "type": 1
     },
@@ -16371,43 +16359,43 @@
     },
     {
       "address": "0x514310",
-      "matching": 0.17391304347826086,
+      "matching": 0.2,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins18_00514310",
       "type": 1
     },
     {
       "address": "0x514360",
-      "matching": 0.1111111111111111,
+      "matching": 0.12121212121212122,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins31_00514360",
       "type": 1
     },
     {
       "address": "0x5143d0",
-      "matching": 0.05172413793103448,
+      "matching": 0.017699115044247787,
       "name": "TMapMgr::FloodFillTileRegionMarker",
       "type": 1
     },
     {
       "address": "0x5145b0",
-      "matching": 0.031496062992125984,
+      "matching": 0.0,
       "name": "TMapMgr::QueueDepotConstructionOrder",
       "type": 1
     },
     {
       "address": "0x5147d0",
-      "matching": 0.03278688524590164,
+      "matching": 0.0,
       "name": "TMapMgr::QueuePortConstructionOrder",
       "type": 1
     },
     {
       "address": "0x5149d0",
-      "matching": 0.08695652173913043,
+      "matching": 0.1,
       "name": "TMapMgr::SetProvinceCapitalTileFlagBit08",
       "type": 1
     },
     {
       "address": "0x514a20",
-      "matching": 0.024242424242424242,
+      "matching": 0.0,
       "name": "TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors",
       "type": 1
     },
@@ -16425,13 +16413,13 @@
     },
     {
       "address": "0x514dc0",
-      "matching": 0.14285714285714285,
+      "matching": 0.05128205128205128,
       "name": "TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0",
       "type": 1
     },
     {
       "address": "0x514e40",
-      "matching": 0.1,
+      "matching": 0.11764705882352941,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins15_00514e40",
       "type": 1
     },
@@ -16449,61 +16437,61 @@
     },
     {
       "address": "0x514f20",
-      "matching": 0.05,
+      "matching": 0.017094017094017096,
       "name": "TMapMgr::OrphanCallChain_C5_I115_00514f20",
       "type": 1
     },
     {
       "address": "0x5150e0",
-      "matching": 0.036585365853658534,
+      "matching": 0.012422360248447204,
       "name": "TMapMgr::OrphanCallChain_C1_I159_005150e0",
       "type": 1
     },
     {
       "address": "0x515330",
-      "matching": 0.07228915662650602,
+      "matching": 0.025,
       "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330",
       "type": 1
     },
     {
       "address": "0x515460",
-      "matching": 0.06315789473684211,
+      "matching": 0.021739130434782608,
       "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460",
       "type": 1
     },
     {
       "address": "0x5155c0",
-      "matching": 0.06818181818181818,
+      "matching": 0.023529411764705882,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins83_005155c0",
       "type": 1
     },
     {
       "address": "0x515720",
-      "matching": 0.0625,
+      "matching": 0.021505376344086023,
       "name": "TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability",
       "type": 1
     },
     {
       "address": "0x515890",
-      "matching": 0.08108108108108109,
+      "matching": 0.028169014084507043,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins69_00515890",
       "type": 1
     },
     {
       "address": "0x5159b0",
-      "matching": 0.06741573033707865,
+      "matching": 0.023255813953488372,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA",
       "type": 1
     },
     {
       "address": "0x515b10",
-      "matching": 0.05357142857142857,
+      "matching": 0.01834862385321101,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
     {
       "address": "0x515d60",
-      "matching": 0.16666666666666666,
+      "matching": 0.2222222222222222,
       "name": "TMapMgr::WrapperFor_thunk_GetUnitMovementClassId_At00515d60",
       "type": 1
     },
@@ -16545,13 +16533,13 @@
     },
     {
       "address": "0x515f80",
-      "matching": 0.07894736842105263,
+      "matching": 0.0273972602739726,
       "name": "TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80",
       "type": 1
     },
     {
       "address": "0x516090",
-      "matching": 0.0625,
+      "matching": 0.06896551724137931,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins27_00516090",
       "type": 1
     },
@@ -16563,37 +16551,37 @@
     },
     {
       "address": "0x516150",
-      "matching": 0.10526315789473684,
+      "matching": 0.125,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins14_00516150",
       "type": 1
     },
     {
       "address": "0x5161a0",
-      "matching": 0.11764705882352941,
+      "matching": 0.14285714285714285,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins12_005161a0",
       "type": 1
     },
     {
       "address": "0x5161e0",
-      "matching": 0.13333333333333333,
+      "matching": 0.16666666666666666,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins10_005161e0",
       "type": 1
     },
     {
       "address": "0x516220",
-      "matching": 0.14285714285714285,
+      "matching": 0.18181818181818182,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins09_00516220",
       "type": 1
     },
     {
       "address": "0x516260",
-      "matching": 0.0042643923240938165,
+      "matching": 0.004291845493562232,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins464_00516260",
       "type": 1
     },
     {
       "address": "0x517410",
-      "matching": 0.08695652173913043,
+      "matching": 0.0,
       "name": "TMapMgr::OrphanCallChain_C3_I41_00517410",
       "type": 1
     },
@@ -16611,7 +16599,7 @@
     },
     {
       "address": "0x517540",
-      "matching": 0.03333333333333333,
+      "matching": 0.03508771929824561,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins55_00517540",
       "type": 1
     },
@@ -16623,31 +16611,31 @@
     },
     {
       "address": "0x5176a0",
-      "matching": 0.2222222222222222,
+      "matching": 0.3333333333333333,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins04_005176a0",
       "type": 1
     },
     {
       "address": "0x5176c0",
-      "matching": 0.2222222222222222,
+      "matching": 0.3333333333333333,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins04_005176c0",
       "type": 1
     },
     {
       "address": "0x5176e0",
-      "matching": 0.16666666666666666,
+      "matching": 0.2222222222222222,
       "name": "TMapMgr::GetMapImprovementTierBucketOffset",
       "type": 1
     },
     {
       "address": "0x517710",
-      "matching": 0.058823529411764705,
+      "matching": 0.06451612903225806,
       "name": "TMapMgr::ApplyMapImprovementSelectionState",
       "type": 1
     },
     {
       "address": "0x517780",
-      "matching": 0.1111111111111111,
+      "matching": 0.13333333333333333,
       "name": "TMapMgr::GetMapImprovementSpriteBaseOffset",
       "type": 1
     },
@@ -16659,7 +16647,7 @@
     },
     {
       "address": "0x5177f0",
-      "matching": 0.034482758620689655,
+      "matching": 0.03636363636363636,
       "name": "TMapMgr::GetMapImprovementTileSpriteOffset",
       "type": 1
     },
@@ -20578,7 +20566,7 @@
     },
     {
       "address": "0x5446a0",
-      "matching": 0.18181818181818182,
+      "matching": 0.18604651162790697,
       "name": "EmitTurnEvent3Mode18WithActiveNation",
       "type": 1
     },
@@ -32058,8 +32046,8 @@
     },
     {
       "address": "0x5d5270",
-      "matching": 0.014492753623188406,
-      "name": "MapTurnEventCodeToPaletteIndex",
+      "matching": 0.11313131313131314,
+      "name": "TViewMgr::MapTurnEventCodeToPaletteIndex",
       "type": 1
     },
     {

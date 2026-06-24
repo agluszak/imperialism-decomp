@@ -17,7 +17,6 @@ address|target_cpp|ownership|note
 407f4a|src/game/TCivDescription.cpp|manual|marker_sync
 40853f|src/game/TSimMgr.cpp|manual|marker_sync
 4087fb|src/game/TControl.cpp|manual|marker_sync
-409205|src/game/UiRuntimeContext.cpp|manual|marker_sync
 409868|src/game/TSortedPtrList.cpp|manual|marker_sync
 412bd0|src/game/CObject.cpp|manual|marker_sync
 412bf0|src/game/CObject.cpp|manual|marker_sync
@@ -1669,11 +1668,11 @@ address|target_cpp|ownership|note
 5121d0|src/game/TMapMgr.cpp|manual|marker_sync
 5122b0|src/game/TMapMgr.cpp|manual|marker_sync
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
-512b50|src/game/TGlobalMapState.cpp|manual|marker_sync
-512cc0|src/game/TGlobalMapState.cpp|manual|marker_sync
+512b50|src/game/TMapMgr.cpp|manual|marker_sync
+512cc0|src/game/TMapMgr.cpp|manual|marker_sync
 513170|src/game/TMapMgr.cpp|manual|marker_sync
-513200|src/game/TGlobalMapState.cpp|manual|marker_sync
-513290|src/game/TGlobalMapState.cpp|manual|marker_sync
+513200|src/game/TMapMgr.cpp|manual|marker_sync
+513290|src/game/TMapMgr.cpp|manual|marker_sync
 5133f0|src/game/TMapMgr.cpp|manual|marker_sync
 5135a0|src/game/TMapMgr.cpp|manual|marker_sync
 513610|src/game/TMapMgr.cpp|manual|marker_sync
@@ -1681,7 +1680,7 @@ address|target_cpp|ownership|note
 5136a0|src/game/TMapMgr.cpp|manual|marker_sync
 513720|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
-513ff0|src/game/TGlobalMapState.cpp|manual|marker_sync
+513ff0|src/game/TMapMgr.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
 514360|src/game/TMapMgr.cpp|manual|marker_sync
 5143d0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -1689,7 +1688,7 @@ address|target_cpp|ownership|note
 5147d0|src/game/TMapMgr.cpp|manual|marker_sync
 5149d0|src/game/TMapMgr.cpp|manual|marker_sync
 514a20|src/game/TMapMgr.cpp|manual|marker_sync
-514c80|src/game/TGlobalMapState.cpp|manual|marker_sync
+514c80|src/game/TMapMgr.cpp|manual|marker_sync
 514dc0|src/game/TMapMgr.cpp|manual|marker_sync
 514e40|src/game/TMapMgr.cpp|manual|marker_sync
 514e80|src/game/TMapMgr.cpp|manual|marker_sync
@@ -1727,8 +1726,8 @@ address|target_cpp|ownership|note
 5177d0|src/game/TMapMgr.cpp|manual|marker_sync
 5177f0|src/game/TMapMgr.cpp|manual|marker_sync
 5178c0|src/game/TMapMgr.cpp|manual|marker_sync
-517c30|src/game/TGlobalMapState.cpp|manual|marker_sync
-518960|src/game/TGlobalMapState.cpp|manual|marker_sync
+517c30|src/game/TMapMgr.cpp|manual|marker_sync
+518960|src/game/TMapMgr.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync
 519b30|src/game/TMapDialog.cpp|manual|marker_sync
 519c40|src/game/TMapDialog.cpp|manual|marker_sync
@@ -2053,6 +2052,7 @@ address|target_cpp|ownership|note
 542b10|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542be0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542ff0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+5446a0|src/game/turn_event_packets.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync
@@ -2121,7 +2121,7 @@ address|target_cpp|ownership|note
 55c9f0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
-55e360|src/game/TGlobalMapState.cpp|manual|marker_sync
+55e360|src/game/TMapMgr.cpp|manual|marker_sync
 55e6e0|src/game/TZone.cpp|manual|marker_sync
 55e700|src/game/TZone.cpp|manual|marker_sync
 55e820|src/game/TZone.cpp|manual|marker_sync
@@ -2176,9 +2176,9 @@ address|target_cpp|ownership|note
 563300|src/game/TOcean.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TZone.cpp|manual|marker_sync
-5635e0|src/game/TGlobalMapState.cpp|manual|marker_sync
-563990|src/game/TGlobalMapState.cpp|manual|marker_sync
-564240|src/game/TGlobalMapState.cpp|manual|marker_sync
+5635e0|src/game/TMapMgr.cpp|manual|marker_sync
+563990|src/game/TMapMgr.cpp|manual|marker_sync
+564240|src/game/TMapMgr.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
 564900|src/game/TMilitaryPageView.cpp|manual|marker_sync
 564950|src/game/TMilitaryPageView.cpp|manual|marker_sync
@@ -3167,6 +3167,7 @@ address|target_cpp|ownership|note
 5d51e0|src/game/TViewMgr.cpp|manual|marker_sync
 5d5200|src/game/TViewMgr.cpp|manual|marker_sync
 5d5250|src/game/TViewMgr.cpp|manual|marker_sync
+5d5270|src/game/TViewMgr.cpp|manual|marker_sync
 5d5750|src/game/TViewMgr.cpp|manual|marker_sync
 5d5780|src/game/TViewMgr.cpp|manual|marker_sync
 5d57b0|src/game/TViewMgr.cpp|manual|marker_sync

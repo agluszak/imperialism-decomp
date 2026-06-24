@@ -195,14 +195,6 @@ undefined4 thunk_DispatchCityRedrawInvalidateEvent(void)
   return 0;
 }
 
-// ghidra_name thunk_EmitTurnEvent3Mode18WithActiveNation
-// ghidra_proto undefined thunk_EmitTurnEvent3Mode18WithActiveNation()
-// FUNCTION: IMPERIALISM 0x00403b5c
-undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DrawCenteredGuideLineOnMapDc
 // ghidra_proto undefined thunk_DrawCenteredGuideLineOnMapDc()
 // FUNCTION: IMPERIALISM 0x00403bb6

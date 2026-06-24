@@ -5,3 +5,4 @@
 #include "game/TTurnEventPacket.h"
 
 void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation, int mode);
+void EmitTurnEvent3Mode18WithActiveNation(void);

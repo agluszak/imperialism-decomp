@@ -3,8 +3,8 @@
 #include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/TTurnEventPacket.h"
+#include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
-#include "game/UiRuntimeContext.h"
 #include "game/diplomacy_globals.h"
 #include "game/network_error_reporting.h"
 
@@ -24,6 +24,33 @@ extern int g_NetworkManagerLastError006a5f6c;
 void TTurnEventPacketRoutingPrefix::SetPayloadNationIdFromSlotIndex(int nationSlot) {
   this->targetNationId =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGameFlowState) + nationSlot * 4 + 0x48);
+}
+
+struct TurnEvent3Mode18Packet {
+  TTurnEventPacketRoutingPrefix routing;
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad0b[3];
+  int field10;
+  int field14;
+};
+
+// FUNCTION: IMPERIALISM 0x005446a0
+void EmitTurnEvent3Mode18WithActiveNation(void) {
+  TurnEvent3Mode18Packet packet;
+  packet.routing.eventCode = 0;
+  packet.routing.defaultNationId = 0;
+  packet.routing.targetNationId = 0;
+  packet.routing.payloadSize = 0;
+  packet.packetTag = 0;
+  packet.activeNationId = 0;
+  packet.field10 = 0;
+  packet.field14 = 0;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packet.routing.eventCode = 3;
+  packet.routing.payloadSize = 0x18;
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(1);
 }
 
 // FUNCTION: IMPERIALISM 0x0054c5a0

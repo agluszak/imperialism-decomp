@@ -12,6 +12,7 @@
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
 #include "game/TStream.h"
+#include "game/turn_event_packets.h"
 #include <new>
 
 extern "C" CRuntimeClass TDiplomacyMgr_classRuntimeClass_00654cd0;
@@ -30,16 +31,9 @@ struct ScratchSharedString {
 };
 } // namespace
 
-undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
-
 static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int rangeStart,
                                                        int rangeEnd) {
   packet->InitializeRangePair(rangeStart, rangeEnd, 0, 0, 0);
-}
-
-static __inline void EmitTurnEvent3Mode18WithActiveNation(void* controller) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_EmitTurnEvent3Mode18WithActiveNation)(
-      controller, 0);
 }
 
 static __inline TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
@@ -788,7 +782,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
   } else {
     bool isLocalizationOne = (g_pLocalizationTable->redrawEnabled == 1);
     if (isLocalizationOne) {
-      EmitTurnEvent3Mode18WithActiveNation(g_pGameFlowState);
+      EmitTurnEvent3Mode18WithActiveNation();
     } else {
       g_pLocalizationTable->PostMainWindowCommand100ForTurnFlow();
     }
