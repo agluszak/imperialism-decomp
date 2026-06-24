@@ -7,8 +7,10 @@
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
 extern "C" char g_pClassDescCMcWindow;
 extern TApplication* g_pApplicationUiRootController;
+extern CPtrList g_ModalViewStack;
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
@@ -89,9 +91,43 @@ void TWindow::SetField84(unsigned char param_1) {
   field84 = param_1;
 }
 
+// Run this window as a modal: optionally arm the dialog-state flag, disable the window
+// currently on top of the global modal stack, push self, run the embedded dialog's modal
+// loop, then pop self and re-enable the window beneath. Returns the command the dialog
+// armed during the loop.
 // FUNCTION: IMPERIALISM 0x0048da60
-undefined TWindow::ExecuteViewModalStateWithPushPopChain() {
-  return 0;
+int TWindow::ExecuteViewModalStateWithPushPopChain() {
+  TDialogBehavior* behavior = GetEmbeddedDialogBehavior();
+  unsigned char wasArmed = behavior->field10;
+  if (wasArmed == 0) {
+    SetField84(1);
+  }
+  if (!g_ModalViewStack.IsEmpty()) {
+    TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+    top->AssertValid();
+    if (top->nativeWindow50 != 0) {
+      static_cast<CMcWindow*>(top->nativeWindow50)->EnableWindowOrDelegateToOwner(0);
+    }
+  }
+  g_ModalViewStack.AddHead(this);
+  behavior->CreateTCommandInstance(); // slot 0x12: run the modal message loop
+  int armedCommand = behavior->armedCommandCode;
+  POSITION pos = g_ModalViewStack.Find(this);
+  if (pos != NULL) {
+    g_ModalViewStack.RemoveAt(pos);
+    if (!g_ModalViewStack.IsEmpty()) {
+      TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+      top->AssertValid();
+      if (top->nativeWindow50 != 0) {
+        static_cast<CMcWindow*>(top->nativeWindow50)->EnableWindowOrDelegateToOwner(1);
+      }
+    }
+  }
+  if (wasArmed == 0) {
+    SetField84(0);
+  }
+  WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
+  return armedCommand;
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc60

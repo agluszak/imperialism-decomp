@@ -1039,7 +1039,7 @@ address|name|size|type|prototype
 48d9f0|TWindow::GetWindowText|16|function|undefined GetWindowText(CString * param_1)
 48da10|TWindow::OrphanCallChain_C1_I08_0048da10|19|function|undefined OrphanCallChain_C1_I08_0048da10(void)
 48da40|TWindow::OrphanLeaf_NoCall_Ins03_0048da40|13|function|undefined OrphanLeaf_NoCall_Ins03_0048da40(undefined1 param_1)
-48da60|TWindow::ExecuteViewModalStateWithPushPopChain|394|function|undefined ExecuteViewModalStateWithPushPopChain()
+48da60|TWindow::ExecuteViewModalStateWithPushPopChain|394|function|int ExecuteViewModalStateWithPushPopChain()
 48dc60|TWindow::OrphanCallChain_C1_I08_0048dc60|19|function|undefined OrphanCallChain_C1_I08_0048dc60(void)
 48dc90|TWindow::OrphanCallChain_C2_I12_0048dc90|32|function|undefined OrphanCallChain_C2_I12_0048dc90(undefined4 param_1, undefined4 param_2)
 48dcc0|TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0|4|function|undefined OrphanLeaf_NoCall_Ins02_0048dcc0(void)

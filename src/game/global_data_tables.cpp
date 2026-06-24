@@ -245,3 +245,8 @@ unsigned char g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
 extern "C" void* g_pCursorControlPanel = nullptr;
+
+// McAppUI-wide modal-window stack (an MFC CPtrList of TWindow*, base 0x006a1ac0).
+// TWindow::ExecuteViewModalStateWithPushPopChain pushes the active window on entry and
+// pops it on exit, disabling/re-enabling the window beneath it across the modal run.
+CPtrList g_ModalViewStack;
