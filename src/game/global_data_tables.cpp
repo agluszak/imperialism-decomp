@@ -156,6 +156,9 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 // the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
+// GLOBAL: IMPERIALISM 0x0066fad0
+double DAT_0066fad0 = -0.092;
+
 } // extern "C"
 
 #include "game/TZone.h"
@@ -163,6 +166,7 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 #include "game/TGlobalMapState.h"
 #include "game/TMinor.h"
 #include "game/TSelectedCivilianOrderState.h"
+#include "game/TSoundPlayer.h"
 
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
@@ -171,8 +175,12 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TGlobalMapState* g_pGlobalMapState = 0;
 TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
+TSoundPlayer* g_pSfxPlaybackSystem = 0;
 
 extern "C" {
+short g_awEngineerFortBuildCostByLevel[8] = {0};
+int g_adwEngineerRailBuildCostByTerrainType[16] = {0};
+
 int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;
 // g_pNationInteractionStateManager is defined in TDealList.cpp (0x6a43cc).

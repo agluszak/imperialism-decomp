@@ -6,6 +6,7 @@
 #include "game/TSoundChannelNode.h"
 
 #include <new>
+#include <math.h>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -14,6 +15,7 @@
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00668a18
 CRuntimeClass g_pClassDescTSoundPlayer = {nullptr, 0, 0, nullptr, nullptr};
+extern double DAT_0066fad0;
 }
 
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
@@ -36,6 +38,31 @@ undefined4 RequestAudioPresetChangeWithDeferredApply(void);
 undefined4 SelectAndScheduleRandomAudioCue(void);
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
+static int DAT_006a60f8 = 0;
+
+undefined4 LoadWaveResourceByNumericIdAndBuildBuffer(void);
+undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl(void);
+undefined4 WrapperFor_ftol_At005e5020_Impl(void);
+
+namespace {
+int CallLoadWaveResource(int sfxToken, int slot) {
+  typedef int (__fastcall *LoadWaveFunc)(void*, int, int, int);
+  return reinterpret_cast<LoadWaveFunc>(LoadWaveResourceByNumericIdAndBuildBuffer)(reinterpret_cast<void*>(0x6a60c0), 0, sfxToken, slot);
+}
+
+void CallUpdateLocalizationAudio(int slot) {
+  typedef void (__fastcall *UpdateLocFunc)(void*, int, int);
+  reinterpret_cast<UpdateLocFunc>(UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl)(reinterpret_cast<void*>(0x6a60c0), 0, slot);
+}
+
+void CallWrapperForFtolImpl(int volume) {
+  typedef void (__fastcall *FtolImplFunc)(void*, int, int);
+  reinterpret_cast<FtolImplFunc>(WrapperFor_ftol_At005e5020_Impl)(reinterpret_cast<void*>(0x6a60c0), 0, volume);
+}
+} // namespace
+
+
+
 // FUNCTION: IMPERIALISM 0x005932b0
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
   void* storage = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x84));
@@ -44,6 +71,8 @@ TSoundPlayer* CreateTSoundPlayerInstance(void) {
   }
   return new (storage) TSoundPlayer();
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00593350
 CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
@@ -65,6 +94,8 @@ TSoundPlayer::TSoundPlayer() {
   this->stateDword7c = 0;
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
   return new (storage) TSoundPlayer();
@@ -79,12 +110,16 @@ TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
 
 // Partial teardown writes the runtime-object base vptr, symmetric with header-only
 // construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
+
+
 // FUNCTION: IMPERIALISM 0x005933e0
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
   *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 }
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
+
+
 // FUNCTION: IMPERIALISM 0x00593400
 char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   (void)action;
@@ -133,6 +168,8 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
 }
 
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
+
+
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) {
   InitializePacketHeaderFields_Tag20202020();
@@ -176,12 +213,16 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
       ->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
 }
 
+
+
 // FUNCTION: IMPERIALISM 0x005e4f60
 unsigned char TSoundPlayer::ReturnConstantTrue_SoundPredicate() {
   return 1;
 }
 
 // Slot 0x28 — kick off DirectSound init if the device is available.
+
+
 // FUNCTION: IMPERIALISM 0x005e4f80
 void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
   if (this->directSoundInitOkAt20 != 0) {
@@ -189,6 +230,8 @@ void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
     thunk_InitializeDirectSoundDeviceAndChannels();
   }
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x005e4fb0
 unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
@@ -198,13 +241,67 @@ unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
 }
 
 // Slot 0x29 — clear the pending flag and tear down the partial init.
+
+
 // FUNCTION: IMPERIALISM 0x005e4fd0
 void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
   this->directSoundInitPendingAt21 = 0;
   ClearDirectSoundInitPendingAndResetState_Impl();
 }
 
+// FUNCTION: IMPERIALISM 0x005e4ff0
+void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48() {
+  for (int offset = 4; offset < 0x1c; offset += 4) {
+    void* obj = *reinterpret_cast<void**>(0x006a60c0 + offset);
+    typedef void (__stdcall *VirtualFunc)(void*);
+    VirtualFunc* vtable = *reinterpret_cast<VirtualFunc**>(obj);
+    vtable[18](obj);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005e5020
+void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1) {
+  if (this->directSoundInitPendingAt21 != 0) {
+    double val = -pow(2.0, (100 - param_1) * DAT_0066fad0);
+    int volume = static_cast<int>(val);
+    if (volume > 0) {
+      volume = 0;
+    }
+    if (volume < -9999) {
+      volume = -9999;
+    }
+    CallWrapperForFtolImpl(volume);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005e50a0
+void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {
+}
+
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
+
+
+// FUNCTION: IMPERIALISM 0x005e50c0
+int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2, int param_3, int param_4) {
+  if (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x4c) == 0) {
+    return 0;
+  }
+  int slot = DAT_006a60f8++;
+  if (DAT_006a60f8 > 5) {
+    DAT_006a60f8 = 0;
+  }
+  if (CallLoadWaveResource(sfxToken, slot) != 0) {
+    CallUpdateLocalizationAudio(slot);
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e5140
+void TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
+  this->UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, param_2, param_3, 1);
+}
+
+
 // FUNCTION: IMPERIALISM 0x005e51d0
 void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
@@ -220,3 +317,4 @@ void TSoundPlayer::Free() {
   ForwardMciCommand808ToDevice();
   TEventHandler::Free();
 }
+

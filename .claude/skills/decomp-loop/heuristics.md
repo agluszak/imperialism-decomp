@@ -128,6 +128,14 @@ who sets `ecx`/`edx`, who cleans the stack. See [[cdecl-thiscall-mislabel]],
   TControl whose slot-0x68 body is `ret 0x14` (5 args) proved the node was a distinct
   TView-family dialog, not a TControl — modeled as `struct Node : public TView` with its
   own 0x68+ virtuals (`0x5d57b0`).
+- **An empty `ret N` body still encodes its arg count — fix the arity everywhere.** A
+  no-op base virtual compiled as a 3-byte `RET 0x4` takes **one** stack arg; don't read
+  the empty body as "no params". When a callsite pushes an arg to a slot whose provisional
+  decl is arg-less (`field64->vmethod_0081(0)` vs declared `vmethod_0081()` ← `0x48a710`
+  is `RET 0x4`), correct the arity on the **base declaration and every real override**
+  (both headers and defs) plus the `symbols.csv` / `function_name_overrides.csv` rows, or
+  the `override` macro silently desyncs the slot (§14). (Fixed across TEventHandler +
+  TEditText/TMapMaker.)
 
 ## 7. Data-symbol and vtable pairing infrastructure
 

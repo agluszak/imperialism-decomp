@@ -1,13 +1,13 @@
 #pragma once
 
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 
 class TSelectedCivilianOrderState {
 public:
   char pad_00[0x04];
-  TCivilianOrderState* selectedEntry; // 0x04
+  TCivUnit* selectedEntry; // 0x04
 
-  void SetActiveCivilianSelection(TCivilianOrderState* entryContext, int refreshCommandPanel);
+  void SetActiveCivilianSelection(TCivUnit* entryContext, int refreshCommandPanel);
   void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
   void ShowDisbandCivilianConfirmationDialog();
 };

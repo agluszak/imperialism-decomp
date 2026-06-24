@@ -6,7 +6,7 @@
 #include "game/TUberCluster.h"
 #include "game/TTradeCluster.h"
 #include "game/TCivDescription.h"
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TSelectedCivilianOrderState.h"
 #include "game/TGlobalMapState.h"
 #include "game/TPanelEventPayload.h"
@@ -14,6 +14,22 @@
 #include "game/TControl.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
+#include "game/TUiRuntimeContext.h"
+#include "game/UiRuntimeContext.h"
+#include "game/diplomacy_globals.h"
+#include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
+#include "game/TGreatPower.h"
+#include "game/TMapUberPicture.h"
+#include "game/TViewMgr.h"
+
+extern "C" {
+extern short g_awEngineerFortBuildCostByLevel[8];
+extern int g_adwEngineerRailBuildCostByTerrainType[16];
+}
+undefined4 PumpUiMessagesAndBackgroundTasks(void);
+undefined4 GetTickCountDiv16(void);
+undefined4 scanBracketExpressions(void);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663100
@@ -45,6 +61,155 @@ const unsigned int kTagGarrison = 0x67617272;
 
 
 
+// FUNCTION: IMPERIALISM 0x004d3a60
+bool TCivToolbar::HandleEngineerConstructionAction(short nTileIndex) {
+  TCivUnit* pCiv = reinterpret_cast<TCivUnit*>(this->field04);
+  if (pCiv == nullptr) {
+    return false;
+  }
+
+  bool actionFinalized = false;
+  bool refreshPanel = false;
+
+  if (nTileIndex == pCiv->field_6) {
+    int choice = g_pUiRuntimeContext->ShowConstructionOptionsDialog();
+    if (choice == 0x666f7274) { // 'fort'
+      short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
+      int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].pad03;
+      short cost = g_awEngineerFortBuildCostByLevel[fortLevel];
+      
+      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 + g_apNationStates[nationId]->treasuryValue10;
+      int availableCash = (cash < 0) ? 0 : cash;
+      
+      if (availableCash < cost) {
+        CString pszFormattedText;
+        CString pszTemplateText;
+        CString costString;
+        
+        g_pLocalizationTable->FormatIntegerString(cost, &costString);
+        g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
+        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText), static_cast<LPCSTR>(costString));
+        
+        reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+            ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
+      } else {
+        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        g_apNationStates[nationId]->treasuryValue10 -= cost;
+        pCiv->SetOrderModeSlot34(6, pCiv->field_6);
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
+        actionFinalized = true;
+      }
+    } else if (choice == 0x706f7274) { // 'port'
+      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 + g_apNationStates[nationId]->treasuryValue10;
+      int availableCash = (cash < 0) ? 0 : cash;
+      
+      if (availableCash < 3000) {
+        CString pszFormattedText;
+        CString pszTemplateText;
+        CString costString;
+        
+        g_pLocalizationTable->FormatIntegerString(3000, &costString);
+        g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
+        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText), static_cast<LPCSTR>(costString));
+        
+        reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+            ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
+      } else {
+        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        g_apNationStates[nationId]->treasuryValue10 -= 3000;
+        pCiv->SetOrderModeSlot34(7, pCiv->field_6);
+        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+          g_pUiRuntimeContext->mapUberPictureF0->WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(nTileIndex);
+        }
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
+        actionFinalized = true;
+      }
+    } else if (choice == 0x7261696c) { // 'rail'
+      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 + g_apNationStates[nationId]->treasuryValue10;
+      int availableCash = (cash < 0) ? 0 : cash;
+      
+      if (availableCash < 2000) {
+        CString pszFormattedText;
+        CString pszTemplateText;
+        CString costString;
+        
+        g_pLocalizationTable->FormatIntegerString(2000, &costString);
+        g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
+        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText), static_cast<LPCSTR>(costString));
+        
+        reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+            ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
+      } else {
+        short nationId = g_pUiRuntimeContext->GetActiveNationId();
+        g_apNationStates[nationId]->treasuryValue10 -= 2000;
+        pCiv->SetOrderModeSlot34(12, pCiv->field_6);
+        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+          g_pUiRuntimeContext->mapUberPictureF0->WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(nTileIndex);
+        }
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
+        actionFinalized = true;
+      }
+    }
+  } else { // adjacent tile click
+    int terrainType = g_pGlobalMapState->terrainStateTable[nTileIndex].pad00[0];
+    int cost = g_adwEngineerRailBuildCostByTerrainType[terrainType];
+    
+    short nationId = g_pUiRuntimeContext->GetActiveNationId();
+    int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 + g_apNationStates[nationId]->treasuryValue10;
+    int availableCash = (cash < 0) ? 0 : cash;
+    
+    if (availableCash < cost) {
+      CString pszFormattedText;
+      CString pszTemplateText;
+      CString costString;
+      
+      g_pLocalizationTable->FormatIntegerString(cost, &costString);
+      g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
+      reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText), static_cast<LPCSTR>(costString));
+      
+      reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
+          ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
+    } else {
+      short nationId = g_pUiRuntimeContext->GetActiveNationId();
+      g_apNationStates[nationId]->treasuryValue10 -= cost;
+      g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(pCiv->field_6, nTileIndex, pCiv->field_18);
+      pCiv->SetOrderModeSlot34(5, pCiv->field_6);
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x2329, 0, 1);
+      actionFinalized = true;
+      refreshPanel = true;
+    }
+  }
+
+  if (actionFinalized) {
+    // call slot 0x0c
+    typedef void (__fastcall *UpdateCtrlFunc)(TCivToolbar*, int, int, TCivUnit*);
+    void** vtable = *reinterpret_cast<void***>(this);
+    reinterpret_cast<UpdateCtrlFunc>(vtable[12])(this, 0, nTileIndex, pCiv);
+    
+    int startTick = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
+    while (true) {
+      reinterpret_cast<void(__stdcall*)(int)>(PumpUiMessagesAndBackgroundTasks)(1);
+      int now = reinterpret_cast<int(__cdecl*)(void)>(GetTickCountDiv16)();
+      if (now < startTick) {
+        break;
+      }
+      if (now - startTick >= 0x1e) {
+        break;
+      }
+    }
+  }
+
+  if (refreshPanel) {
+    g_pUiRuntimeContext->RefreshViewSlot48();
+  }
+
+  return actionFinalized;
+}
+
+
 // FUNCTION: IMPERIALISM 0x0058ea00
 TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
   return new TCivToolbar();
@@ -69,8 +234,8 @@ TCivToolbar::TCivToolbar() {}
 
 
 // FUNCTION: IMPERIALISM 0x0058eb20
-void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivilianOrderState* selectedOrder) {
-  this->civilianClassId = selectedOrder ? selectedOrder->civilianClassId : -1;
+void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrder) {
+  this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
   TControl* unitControl = this->ResolveControlByTag(0x756e6974);
   if (unitControl == 0) {
@@ -127,7 +292,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   int selectedSlotTag;
   int slotIndex;
   TControl* selectedStackButton;
-  TCivilianOrderState* selectedTileEntry;
+  TCivUnit* selectedTileEntry;
   TControl* stackButton;
   TSelectedCivilianOrderState* selectedCivilianState;
   int mapState;
@@ -142,12 +307,12 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     GAME_ASSERT(stackButton != 0, 5585);
     reinterpret_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
     stackButton->SetEnabled(
-        reinterpret_cast<TCivilianOrderState*>(selectedTileEntry)->IsInIdleSelectionState(), 1);
+        selectedTileEntry->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
     }
-    selectedTileEntry = selectedTileEntry->nextOnTile;
+    selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextOnTile);
   }
   while (slotIndex < 6) {
     stackButton = this->ResolveControlByTag(0x73746b30 + slotIndex);
@@ -246,3 +411,4 @@ void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
 
 
 TCivToolbar::~TCivToolbar() {}
+

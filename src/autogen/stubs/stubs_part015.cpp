@@ -307,14 +307,6 @@ undefined4 CheckTileProspectingDiscoveryCandidate(void)
   return 0;
 }
 
-// ghidra_name ApplyRailSectionEndpointDirectionFlags
-// ghidra_proto undefined ApplyRailSectionEndpointDirectionFlags()
-// FUNCTION: IMPERIALISM 0x00513ff0
-undefined4 ApplyRailSectionEndpointDirectionFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyEngineerRailCostDeltaForConnectedTiles
 // ghidra_proto void __thiscall ApplyEngineerRailCostDeltaForConnectedTiles(short nSourceTileIndex, short nTargetTileIndex)
 // FUNCTION: IMPERIALISM 0x00514080

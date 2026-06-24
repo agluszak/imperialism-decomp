@@ -1,0 +1,241 @@
+========================================================================
+0x004d3a60  HandleEngineerConstructionAction  entry=004d3a60
+  signature: bool HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
+  size: 1761 bytes  calling-conv: __thiscall
+  params:
+    this: TViewMgr * auto [ghidra.program.model.data.PointerDataType /TViewMgr *]
+    nTileIndex: short [ghidra.program.model.data.ShortDataType /short]
+    param_2: undefined2 [ghidra.program.model.data.Undefined2DataType /undefined2]
+
+/* Handle engineer construction actions from map tile click context.
+   Algorithm:
+   1. If clicking current tile, resolve Construction Options choice (depot/port/fort/cancel).
+   2. Compute required cost for selected action.
+   3. Validate available nation cash and show localized error on failure.
+   4. On success set order type, deduct treasury, and refresh panel/selection state.
+   5. If clicking adjacent tile, queue rail-section order using terrain cost table.
+   6. Apply endpoint direction flags for rail, play sound, and queue redraw updates.
+   Parameters:
+   nTileIndex: Clicked tile index (current tile or adjacent rail target).
+   Returns:
+   true when action is handled/queued; false on cancel/failure.
+   Cost model:
+   Depot=2000, Port=3000, Fort uses g_awEngineerFortBuildCostByLevel, rail uses
+   g_adwEngineerRailBuildCostByTerrainType. */
+
+bool __thiscall
+TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short nTileIndex,undefined2 param_2)
+
+{
+  uint uVar1;
+  short nCostOrNationId;
+  short sVar2;
+  short nNationId;
+  int nActionTagOrStartTick;
+  short sVar3;
+  int iVar4;
+  int nTickNowDiv16;
+  TSoundPlayerVtbl *pTVar5;
+  undefined4 unaff_EBX;
+  uint *unaff_FS_OFFSET;
+  undefined2 in_stack_00000006;
+  CString pszFormattedText;
+  CString pszTemplateText;
+  int *pThisAlias;
+  TViewMgr *local_14;
+  uint dwSavedSehFrame;
+  uint dwPrevSehFrame;
+  undefined1 *puStack_8;
+  uint local_4;
+  uint dwAvailableNationCash;
+  int *pSelectedCivilianOrderEntry;
+  ushort wActionFinalizeFlags;
+  uint dwSfxToken;
+  
+  sVar2 = nTileIndex;
+  wActionFinalizeFlags = (ushort)((uint)unaff_EBX >> 0x10);
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631cf0;
+  dwPrevSehFrame = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (uint)&dwPrevSehFrame;
+  pSelectedCivilianOrderEntry = *(int **)&g_pSelectedCivilianOrderState->field_0x4;
+  pszFormattedText.m_pchData._0_3_ = (uint3)pszFormattedText.m_pchData & 0xffff;
+  pszFormattedText.m_pchData._3_1_ = 0;
+  local_14 = this;
+  if (sVar2 == *(short *)(*(int *)&this->field_0x4 + 6)) {
+    nActionTagOrStartTick = (**(code **)(g_pUiRuntimeContext->vftable + 0xdc))();
+    if (nActionTagOrStartTick == 0x666f7274) {
+      sVar2 = *(short *)(&g_awEngineerFortBuildCostByLevel +
+                        *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 +
+                                 *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                                           sVar2 * 0x24) * 0xa8) * 2);
+      nNationId = UiRuntimeContext::GetActiveNationId();
+      uVar1 = *(int *)&g_apNationStates[nNationId]->field_0x8f0 / 100 +
+              *(int *)&g_apNationStates[nNationId]->field_0x10;
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < (int)sVar2) {
+        CString::CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0x6;
+        CString::CString(&pszTemplateText);
+        puStack_8._0_1_ = 7;
+        CString::CString((CString *)&stack0x00000000);
+        puStack_8._0_1_ = 8;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
+        local_14 = (TViewMgr *)&stack0xffffffbc;
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 7;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
+        CString::~CString(&pszTemplateText);
+        puStack_8 = (undefined1 *)0xffffffff;
+        CString::~CString(&pszFormattedText);
+        this = (TViewMgr *)pThisAlias;
+                    /* Same-tile depot/port/fort handling branch after affordability checks. */
+        goto finalize_engineer_action_and_refresh;
+      }
+      sVar3 = UiRuntimeContext::GetActiveNationId();
+      *(int *)&g_apNationStates[sVar3]->field_0x10 =
+           *(int *)&g_apNationStates[sVar3]->field_0x10 - (int)sVar2;
+      (**(code **)(*pSelectedCivilianOrderEntry + 0x34))();
+      dwSfxToken = 0x232c;
+      pTVar5 = g_pSfxPlaybackSystem->vftable;
+      goto LAB_004d40cd;
+    }
+    if (nActionTagOrStartTick == 0x706f7274) {
+      sVar2 = UiRuntimeContext::GetActiveNationId();
+      uVar1 = *(int *)&g_apNationStates[sVar2]->field_0x8f0 / 100 +
+              *(int *)&g_apNationStates[sVar2]->field_0x10;
+      if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 3000) {
+        CString::CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0x3;
+        CString::CString(&pszTemplateText);
+        puStack_8._0_1_ = 4;
+        CString::CString((CString *)&stack0x00000000);
+        puStack_8._0_1_ = 5;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
+        local_14 = (TViewMgr *)&stack0xffffffbc;
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 4;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
+        CString::~CString(&pszTemplateText);
+                    /* Alternate same-tile option affordability/cancel branch. */
+        puStack_8 = (undefined1 *)0xffffffff;
+        CString::~CString(&pszFormattedText);
+        this = (TViewMgr *)pThisAlias;
+        goto finalize_engineer_action_and_refresh;
+      }
+      sVar2 = UiRuntimeContext::GetActiveNationId();
+      *(int *)&g_apNationStates[sVar2]->field_0x10 =
+           *(int *)&g_apNationStates[sVar2]->field_0x10 + -3000;
+      (**(code **)(*pSelectedCivilianOrderEntry + 0x34))();
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
+      }
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232b);
+    }
+    else {
+      if (nActionTagOrStartTick != 0x7261696c) goto finalize_engineer_action_and_refresh;
+      nCostOrNationId = UiRuntimeContext::GetActiveNationId();
+      dwAvailableNationCash =
+           *(int *)&g_apNationStates[nCostOrNationId]->field_0x8f0 / 100 +
+           *(int *)&g_apNationStates[nCostOrNationId]->field_0x10;
+      if ((int)(dwAvailableNationCash & ((int)dwAvailableNationCash < 1) - 1) < 2000) {
+        CString::CString(&pszTemplateText);
+        puStack_8 = (undefined1 *)0x0;
+                    /* Construction-option affordability failure path (selected same-tile action).
+                        */
+        CString::CString(&pszFormattedText);
+        puStack_8._0_1_ = 1;
+        CString::CString((CString *)&stack0x00000000);
+        puStack_8._0_1_ = 2;
+        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
+        scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszFormattedText.m_pchData);
+        pThisAlias = (int *)&stack0xffffffbc;
+        AssignStringSharedRefAndReturnThis(&stack0x00000000);
+        DispatchLocalizedUiMessageWithTemplateA13A0();
+        puStack_8._0_1_ = 1;
+        CString::~CString((CString *)&stack0x00000000);
+        puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+        CString::~CString(&pszFormattedText);
+        puStack_8 = (undefined1 *)0xffffffff;
+                    /* Abort branch for unaffordable or canceled same-tile construction option. */
+        CString::~CString(&pszTemplateText);
+        goto finalize_engineer_action_and_refresh;
+      }
+      sVar2 = UiRuntimeContext::GetActiveNationId();
+      *(int *)&g_apNationStates[sVar2]->field_0x10 =
+           *(int *)&g_apNationStates[sVar2]->field_0x10 + -2000;
+      (**(code **)(*pSelectedCivilianOrderEntry + 0x34))();
+      if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+        (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))();
+      }
+      (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(0x232a);
+    }
+  }
+  else {
+    iVar4 = *(int *)(&g_adwEngineerRailBuildCostByTerrainType +
+                    *(char *)(*(int *)&g_pGlobalMapState->field_0xc + sVar2 * 0x24) * 4);
+    sVar2 = UiRuntimeContext::GetActiveNationId();
+    uVar1 = *(int *)&g_apNationStates[sVar2]->field_0x8f0 / 100 +
+            *(int *)&g_apNationStates[sVar2]->field_0x10;
+    if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < iVar4) {
+                    /* Adjacent-tile rail branch affordability check and warning path. */
+      CString::CString(&pszTemplateText);
+      local_4 = 9;
+      CString::CString((CString *)&pThisAlias);
+      local_4 = CONCAT31(local_4._1_3_,10);
+      CString::CString((CString *)&nTileIndex);
+      local_4 = CONCAT31(local_4._1_3_,0xb);
+      (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText.m_pchData);
+      local_14 = (TViewMgr *)&stack0xffffffbc;
+      AssignStringSharedRefAndReturnThis(&stack0x00000000);
+      DispatchLocalizedUiMessageWithTemplateA13A0();
+      puStack_8._0_1_ = 10;
+      CString::~CString((CString *)&stack0x00000000);
+      puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
+      CString::~CString(&pszTemplateText);
+      puStack_8 = (undefined1 *)0xffffffff;
+      CString::~CString(&pszFormattedText);
+      this = (TViewMgr *)pThisAlias;
+      goto finalize_engineer_action_and_refresh;
+    }
+    sVar2 = UiRuntimeContext::GetActiveNationId();
+    *(int *)&g_apNationStates[sVar2]->field_0x10 =
+         *(int *)&g_apNationStates[sVar2]->field_0x10 - iVar4;
+    ApplyRailSectionEndpointDirectionFlags();
+    (**(code **)(*pSelectedCivilianOrderEntry + 0x34))();
+    dwSfxToken = 0x2329;
+    pTVar5 = g_pSfxPlaybackSystem->vftable;
+LAB_004d40cd:
+    (**(code **)&pTVar5[1].field_0x10)(dwSfxToken);
+  }
+  wActionFinalizeFlags = 0x101;
+finalize_engineer_action_and_refresh:
+                    /* Common finalize path: optional target-link, short UI pump, and panel refresh.
+                        */
+  if ((char)wActionFinalizeFlags != '\0') {
+    (*this->vftable->UpdatePaletteIndexFromTurnEventCode)();
+    iVar4 = GetTickCountDiv16();
+    do {
+      PumpUiMessagesAndBackgroundTasks(1);
+      nTickNowDiv16 = GetTickCountDiv16();
+      if (nTickNowDiv16 < iVar4) break;
+    } while (nTickNowDiv16 - iVar4 < 0x1e);
+  }
+  if ((char)(wActionFinalizeFlags >> 8) != '\0') {
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
+  }
+  *unaff_FS_OFFSET = dwSavedSehFrame;
+  return (bool)(char)wActionFinalizeFlags;
+}
+
+

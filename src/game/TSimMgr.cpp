@@ -24,7 +24,7 @@ void TSimMgr::CallSlot44() {
 }
 
 // FUNCTION: IMPERIALISM 0x00407c1b
-void TSimMgr::GetString(short codeGroup, short offset, void* destString) {
+void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {
   reinterpret_cast<void(__cdecl*)(short, short, void*)>(LoadUiStringByCodeGroupAndOffset)(
       codeGroup, offset, destString);
 }

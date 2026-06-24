@@ -707,30 +707,6 @@ undefined4 ResolveCivilianTileOrderActionCode(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::SetActiveCivilianSelection
-// ghidra_proto void __thiscall SetActiveCivilianSelection(void * pSelectedCivilianOrderEntry, int nRefreshCommandPanel)
-// FUNCTION: IMPERIALISM 0x004d2c60
-undefined4 SetActiveCivilianSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection
-// ghidra_proto void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
-// FUNCTION: IMPERIALISM 0x004d2cf0
-undefined4 QueueImmediateCivilianCommandAndCycleSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::ShowDisbandCivilianConfirmationDialog
-// ghidra_proto void __thiscall ShowDisbandCivilianConfirmationDialog(void)
-// FUNCTION: IMPERIALISM 0x004d2d30
-undefined4 ShowDisbandCivilianConfirmationDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::TryQueueCivilianMoveOrderToTile
 // ghidra_proto bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d2ef0
@@ -775,14 +751,6 @@ undefined4 PromptAndQueueDeveloperTilePurchaseOrder(void)
 // ghidra_proto undefined QueueProspectingOrderAndPlayFeedback()
 // FUNCTION: IMPERIALISM 0x004d39d0
 undefined4 QueueProspectingOrderAndPlayFeedback(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleEngineerConstructionAction
-// ghidra_proto bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x004d3a60
-undefined4 HandleEngineerConstructionAction(void)
 {
   return 0;
 }

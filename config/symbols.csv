@@ -2254,16 +2254,16 @@ address|name|size|type|prototype
 4d26d0|TCivMgr::HandleCivilianTileOrderAction|439|function|bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint)
 4d2930|TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex|26|function|undefined LookupCivilianTileOrderCursorTokenByActionIndex()
 4d2960|TCivToolbar::ResolveCivilianTileOrderActionCode|602|function|int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)
-4d2c60|TCivToolbar::SetActiveCivilianSelection|106|function|void __thiscall SetActiveCivilianSelection(void * pSelectedCivilianOrderEntry, int nRefreshCommandPanel)
-4d2cf0|TCivToolbar::QueueImmediateCivilianCommandAndCycleSelection|42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int nCommandType)
-4d2d30|TCivToolbar::ShowDisbandCivilianConfirmationDialog|350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)
+4d2c60|TSelectedCivilianOrderState::SetActiveCivilianSelection|106|function|void __thiscall SetActiveCivilianSelection(class TCivUnit * entryContext, int refreshCommandPanel)
+4d2cf0|TSelectedCivilianOrderState::QueueImmediateCivilianCommandAndCycleSelection|42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int commandType)
+4d2d30|TSelectedCivilianOrderState::ShowDisbandCivilianConfirmationDialog|350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)
 4d2ef0|TCivToolbar::TryQueueCivilianMoveOrderToTile|79|function|bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)
 4d2f60|TCivToolbar::CanAssignCivilianOrderToTile|193|function|undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)
 4d3070|TCivToolbar::HandleCivilianReportDecision|478|function|void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)
 4d3310|TMapMgr::QueueCivilianWorkOrderWithCostCheck|606|function|bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 4d3610|TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder|757|function|bool __thiscall PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
 4d39d0|QueueProspectingOrderAndPlayFeedback|99|function|undefined QueueProspectingOrderAndPlayFeedback()
-4d3a60|TViewMgr::HandleEngineerConstructionAction|1761|function|bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
+4d3a60|TCivToolbar::HandleEngineerConstructionAction|1761|function|bool __thiscall HandleEngineerConstructionAction(short nTileIndex)
 4d4310|TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles|86|function|void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)
 4d4390|ApplyCompletedCivWorkOrderToMapState|680|function|void __cdecl ApplyCompletedCivWorkOrderToMapState(int * pCivUnitOrderState)
 4d4740|ResolveCompetingDeveloperTilePurchaseOrders|474|function|undefined ResolveCompetingDeveloperTilePurchaseOrders()
@@ -5880,7 +5880,7 @@ address|name|size|type|prototype
 5c28f0|TCivUnit::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 5c2920|TCivUnit::~TCivUnit|7|function|void __thiscall ~TCivUnit()
 5c2940|TCivUnit::InitializeCivWorkOrderState|43|function|void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)
-5c2980|IsCivilianOrderInIdleSelectionState|23|function|bool __fastcall IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
+5c2980|TCivUnit::IsInIdleSelectionState|23|function|int __thiscall IsInIdleSelectionState()
 5c29b0|TickCivWorkOrderCountdownAndComplete|35|function|undefined TickCivWorkOrderCountdownAndComplete()
 5c29f0|TCivUnit::SetOrderModeSlot34|119|function|void __thiscall SetOrderModeSlot34(int mode, int payload)
 5c2a90|TCivUnit::DispatchSlot2C|61|function|void __thiscall DispatchSlot2C()
@@ -9435,6 +9435,7 @@ address|name|size|type|prototype
 66f4c0|TAssetMgr::classRuntimeClass||global|
 66f6e8|TMovieView::classRuntimeClass||global|
 66f978|g_pClassDescTNetMgr||global|
+66fad0|DAT_0066fad0|8|global|double DAT_0066fad0
 66fc00|CDialog::classRuntimeClass||global|
 66fdc8|CWinApp::classRuntimeClass||global|
 66fec4|PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4||global|

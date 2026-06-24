@@ -4,7 +4,7 @@
 #include "game/diplomacy_globals.h"
 #include "game/mfc.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TDealList.h"
 #include "game/TGlobalMapState.h"
@@ -762,10 +762,9 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
 
 void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
                                          const char* relationMaskByNation) {
-  TUnit* orderNode =
-      reinterpret_cast<TUnit*>(terrainTiles[tileId].firstCivilianOrder20);
+  TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
-    TUnit* nextNode = reinterpret_cast<TUnit*>(orderNode->field_14);
+    TUnit* nextNode = orderNode->nextOnTile;
     if (relationMaskByNation[orderNode->field_18] != 0) {
       DispatchCivilianOrderRelationMaskSlots(orderNode);
     }
@@ -1002,9 +1001,9 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
 
 void WalkTileUnitOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
                                        const char* relationMaskByNation, char resetOrderMode) {
-  TUnit* orderNode = reinterpret_cast<TUnit*>(terrainTiles[tileId].firstCivilianOrder20);
+  TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
-    TUnit* nextNode = reinterpret_cast<TUnit*>(orderNode->field_14);
+    TUnit* nextNode = orderNode->nextOnTile;
     if (relationMaskByNation[orderNode->field_18] != 0) {
       if (resetOrderMode != 0) {
         RetargetUnitOrderForAllowedNationWithModeReset(orderNode);

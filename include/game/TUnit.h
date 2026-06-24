@@ -36,7 +36,7 @@ public:
   short field_C;          // 0x0c
   short field_E;          // 0x0e
   int field_10;           // 0x10
-  int field_14;           // 0x14
+  TUnit* nextOnTile;      // 0x14
   short field_18;         // 0x18
   short field_1A;         // 0x1a
   unsigned char field_1C; // 0x1c
@@ -49,7 +49,7 @@ public:
   // originals emit.
   TUnit() {
     field_10 = 0;
-    field_14 = 0;
+    nextOnTile = 0;
     field_6 = static_cast<short>(0xffff);
     field_8 = 0;
     field_1C = 0;

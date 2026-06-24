@@ -24,7 +24,7 @@ struct UiRuntimeContext {
   virtual void dummy3c() = 0;
   virtual void dummy40() = 0;
   virtual void dummy44() = 0;
-  virtual void dummy48() = 0;
+  virtual void RefreshViewSlot48() = 0;
   virtual void DispatchEventSlot4C(short eventCode, int payload) = 0; // 0x4c
   virtual void dummy50() = 0;
   virtual short QueryUiScreenModeSlot54() = 0; // 0x54
@@ -51,11 +51,25 @@ struct UiRuntimeContext {
   virtual void dummya8() = 0;
   // slot 0xac — city production UI refresh after order quantity change.
   virtual void RefreshCityProductionUiSlotAc() = 0;
+  virtual void dummyB0() = 0;
+  virtual void dummyB4() = 0;
+  virtual void dummyB8() = 0;
+  virtual void dummyBC() = 0;
+  virtual void dummyC0() = 0;
+  virtual void dummyC4() = 0;
+  virtual void dummyC8() = 0;
+  virtual void dummyCC() = 0;
+  virtual void dummyD0() = 0;
+  virtual void dummyD4() = 0;
+  virtual void dummyD8() = 0;
+  virtual int ShowConstructionOptionsDialog() = 0; // slot 0x37 (0xdc)
 
   // Data layout. The C++ vptr occupies offset 0, matching the native object's
   // vtable pointer; explicit fields follow.
   char pad_04[0x2a];
   short activeNationIdAt2E;
+  char pad_30[0xc0];
+  class TMapUberPicture* mapUberPictureF0; // 0xf0
 
   short GetActiveNationId(void);
   int MapTurnEventCodeToPaletteIndex(int eventCode);

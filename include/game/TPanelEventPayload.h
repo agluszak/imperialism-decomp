@@ -1,9 +1,9 @@
 #pragma once
 
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 
 struct TPanelEventPayload {
   int controlTag;                            // 0x00
-  TCivilianOrderState* selectedEntryContext; // 0x04
+  TCivUnit* selectedEntryContext; // 0x04
   void* padding_08;
 };

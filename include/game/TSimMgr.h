@@ -35,13 +35,13 @@ public:
   TLOCALIZATION_VTABLE_SLOT(26);
   TLOCALIZATION_VTABLE_SLOT(27);
   TLOCALIZATION_VTABLE_SLOT(28);
-  TLOCALIZATION_VTABLE_SLOT(29);
+  virtual void FormatIntegerString(int value, class CString* destString) = 0; // slot 29 (0x74)
   // slot 0x78 — formats a number as an ordinal display string into destString
   // (TGreatPower slot 0x0f, body 0x004d8000).
-  virtual void FormatOrdinalString(int value, void* destString) = 0;
+  virtual void FormatOrdinalString(int value, class CString* destString) = 0;
   TLOCALIZATION_VTABLE_SLOT(31);
   TLOCALIZATION_VTABLE_SLOT(32);
-  virtual void GetString(short codeGroup, short offset, void* destString) = 0; // 33 (0x84)
+  virtual void GetString(short codeGroup, short offset, class CString* destString) = 0; // 33 (0x84)
 
   int GetField30(void);
   void DecrementField30Value();

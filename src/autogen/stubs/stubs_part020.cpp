@@ -35,14 +35,6 @@ undefined4 WrapperFor_ftol_At005c2400(void)
   return 0;
 }
 
-// ghidra_name IsCivilianOrderInIdleSelectionState
-// ghidra_proto bool __fastcall IsCivilianOrderInIdleSelectionState(void * pCivilianOrderEntry)
-// FUNCTION: IMPERIALISM 0x005c2980
-undefined4 IsCivilianOrderInIdleSelectionState(void)
-{
-  return 0;
-}
-
 // ghidra_name TickCivWorkOrderCountdownAndComplete
 // ghidra_proto undefined TickCivWorkOrderCountdownAndComplete()
 // FUNCTION: IMPERIALISM 0x005c29b0

@@ -7,7 +7,7 @@
 #include "game/TCivDescription.h"
 #include "game/TCountry.h"
 #include <string.h>
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TGlobalMapState.h"
 #include "game/TView.h"
 #include "game/CString.h"
@@ -101,7 +101,7 @@ CRuntimeClass* TCivDescription::GetRuntimeClass() const {
 // FUNCTION: IMPERIALISM 0x0058f110
 #pragma optimize("y", on)
 void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
-    TCivilianOrderState* orderState) {
+    TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short civilianClassId;
@@ -109,7 +109,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
     context->selectedCivilianClass = (short)-1;
     return;
   }
-  civilianClassId = orderState->civilianClassId;
+  civilianClassId = orderState->orderType;
   if (civilianClassId != context->selectedCivilianClass) {
     context->selectedCivilianClass = civilianClassId;
     switch ((ECivilianClassId)civilianClassId) {
@@ -233,7 +233,7 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
 
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
-    TCivilianOrderState* orderState) {
+    TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   short ownerNationId;
@@ -249,10 +249,10 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
   short tileProfileId;
   TPtrList* ownerNationProvinceCollection;
   int provinceCount;
-
+ 
   provinceOrdinal = 1;
   ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                                  4 + orderState->currentTileIndex * 0x24);
+                                  4 + orderState->field_6 * 0x24);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;

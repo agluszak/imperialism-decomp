@@ -129,9 +129,10 @@ public:
   TCivToolbar();
   CRuntimeClass* GetRuntimeClass() const override;
   void
-  RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);
+  RefreshCivilianCommandPanelForSelection(class TCivUnit* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
   void CycleMapInteractionSelectionAfterHandledClick();
+  bool HandleEngineerConstructionAction(short nTileIndex);
 };
 
 // === BEGIN GENERATED (TCivToolbar) — refreshed by `just gen-class TCivToolbar`; do not hand-edit ===

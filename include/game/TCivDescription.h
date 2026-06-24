@@ -42,8 +42,8 @@ public:
 
   TCivDescription();
 
-  void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivilianOrderState* orderState);
-  void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivilianOrderState* selectedOrder);
+  void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
+  void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivUnit* selectedOrder);
 };
 
 // === BEGIN GENERATED (TCivDescription) — refreshed by `just gen-class TCivDescription`; do not hand-edit ===

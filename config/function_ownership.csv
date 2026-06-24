@@ -1041,6 +1041,10 @@ address|target_cpp|ownership|note
 4d2270|src/game/TCivMgr.cpp|manual|marker_sync
 4d2380|src/game/TCivMgr.cpp|manual|marker_sync
 4d26d0|src/game/TCivMgr.cpp|manual|marker_sync
+4d2c60|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
+4d2cf0|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
+4d2d30|src/game/TSelectedCivilianOrderState.cpp|manual|marker_sync
+4d3a60|src/game/TCivToolbar.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d6500|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
@@ -1669,6 +1673,7 @@ address|target_cpp|ownership|note
 5136a0|src/game/TMapMgr.cpp|manual|marker_sync
 513720|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
+513ff0|src/game/TGlobalMapState.cpp|manual|marker_sync
 514310|src/game/TMapMgr.cpp|manual|marker_sync
 514360|src/game/TMapMgr.cpp|manual|marker_sync
 5143d0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3122,6 +3127,7 @@ address|target_cpp|ownership|note
 5c28f0|src/game/TCivUnit.cpp|manual|marker_sync
 5c2920|src/game/TCivUnit.cpp|manual|marker_sync
 5c2940|src/game/TCivUnit.cpp|manual|marker_sync
+5c2980|src/game/TCivUnit.cpp|manual|marker_sync
 5c29f0|src/game/TCivUnit.cpp|manual|marker_sync
 5c2a90|src/game/TCivUnit.cpp|manual|marker_sync
 5c2b10|src/game/TCivUnit.cpp|manual|marker_sync

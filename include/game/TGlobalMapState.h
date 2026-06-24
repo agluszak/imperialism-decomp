@@ -4,9 +4,11 @@ class TStationedUnitNode;
 
 #define TGLOBALMAPSTATE_VTABLE_SLOT(n) virtual void GlobalMapStateDummy##n(void) = 0
 
+class TCivUnit;
+
 struct GlobalMapTileRecord {
   char pad_00_to_1f[0x20];
-  class TCivilianOrderState* firstCivilianOrder; // 0x20
+  class TCivUnit* firstCivilianOrder; // 0x20
 };
 
 struct TTerrainStateRecordView {
@@ -22,10 +24,12 @@ struct TTerrainStateRecordView {
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;
-  unsigned char pad16[0x1c - 0x16];
+  unsigned char pad16;
+  unsigned char railFlags17; // 0x17 — rail endpoint direction flags
+  unsigned char pad18[4];
   unsigned char activeFlags1c; // bit 0 tested by 0x004d71b0 / 0x004dfae0 region scans
   unsigned char pad1d[0x20 - 0x1d];
-  class TCivilianOrderState* firstCivilianOrder20; // 0x20 — recruit-tile scan (0x00514cd0)
+  class TCivUnit* firstCivilianOrder20; // 0x20 — recruit-tile scan (0x00514cd0)
 };
 
 struct TGlobalMapCityScoreRecord {
@@ -161,9 +165,11 @@ public:
 
   int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
 
+  void ApplyRailSectionEndpointDirectionFlags(short param_1, short param_2, short param_3);
+
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
 
-  class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
+  class TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
 

@@ -2,7 +2,7 @@
 
 #include "game/TPtrList.h"
 #include "game/TMinor.h"
-#include "game/TCivilianOrderState.h"
+#include "game/TCivUnit.h"
 #include "game/TPortZone.h"
 #include "game/TOcean.h"
 #include "game/TZone.h"
@@ -17,7 +17,12 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 extern "C" {
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
+short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
+  typedef short (__cdecl *Func)(short, short);
+  return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
 }
+}
+
 
 // FUNCTION: IMPERIALISM 0x00512b50
 void TGlobalMapState::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
@@ -78,6 +83,7 @@ void TGlobalMapState::ComputeHexNeighborTileIndices(short tileIndex, short* neig
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x00512cc0
 short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction) {
   int tile = static_cast<int>(tileIndex);
@@ -126,6 +132,7 @@ short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex
   return static_cast<short>(result);
 }
 
+
 // FUNCTION: IMPERIALISM 0x00513200
 int TGlobalMapState::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
   char* terrainTileBytes =
@@ -160,10 +167,10 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
     return -1;
   }
 
-  TCivilianOrderState* civilianOrder = tile->firstCivilianOrder20;
+  TUnit* civilianOrder = tile->firstCivilianOrder20;
   bool noMatchingCivilian = civilianOrder == 0;
   if (!noMatchingCivilian) {
-    while (civilianOrder->ownerNationSlot18 != ownerNationTag) {
+    while (civilianOrder->field_18 != ownerNationTag) {
       civilianOrder = civilianOrder->nextOnTile;
       if (civilianOrder == 0) {
         noMatchingCivilian = true;
@@ -198,12 +205,50 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
 
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x00513290
 void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
     short regionIndex, int newOwnerNationSlot) {
   (void)regionIndex;
   (void)newOwnerNationSlot;
 }
+
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00513FF0
+// GHIDRA_NAME ApplyRailSectionEndpointDirectionFlags
+// GHIDRA_PROTO undefined ApplyRailSectionEndpointDirectionFlags()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates directional endpoint-connection flags for a newly queued rail section between two neighboring tiles.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Compute hex-direction index from source tile to destination tile.
+// GHIDRA_COMMENT 2. Add directional bit contribution to source tile endpoint byte (+0x17 in tile record).
+// GHIDRA_COMMENT 3. Add reciprocal directional bit contribution to destination endpoint byte.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Used by variable-cost adjacent rail-section construction path (separate from fixed-cost DEPOT build).
+// GHIDRA_COMMENT_END
+
+/* Updates directional endpoint-connection flags for a newly queued rail section between two
+   neighboring tiles.
+   
+   Algorithm:
+   1. Compute hex-direction index from source tile to destination tile.
+   2. Add directional bit contribution to source tile endpoint byte (+0x17 in tile record).
+   3. Add reciprocal directional bit contribution to destination endpoint byte.
+   
+   Used by variable-cost adjacent rail-section construction path (separate from fixed-cost DEPOT
+   build). */
+
+// FUNCTION: IMPERIALISM 0x00513ff0
+void TGlobalMapState::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation) {
+  (void)ownerNation;
+  short dir = GetHexDirectionBetweenTiles(sourceTile, destTile);
+  char* pTable2 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x32;
+  char* pTable8 = reinterpret_cast<char*>(g_Build_Hex_Area_LookupTable_00696E80) + 0x38;
+  terrainStateTable[sourceTile].railFlags17 += pTable2[(dir + 3) * 2];
+  terrainStateTable[destTile].railFlags17 += pTable8[((dir + 3) % 6) * 2];
+}
+
 
 // FUNCTION: IMPERIALISM 0x00514c80
 short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
@@ -215,6 +260,7 @@ short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short start
   return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
                                                     allowActiveFlag2);
 }
+
 
 // FUNCTION: IMPERIALISM 0x00517c30
 char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
@@ -245,10 +291,12 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
+
 // FUNCTION: IMPERIALISM 0x00518960
 void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
 }
+
 
 // FUNCTION: IMPERIALISM 0x0055e360
 short TGlobalMapState::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
@@ -362,6 +410,7 @@ void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
 
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x005635e0
 void EnsurePortZoneForTile(short nTileIndex) {
   if (g_pGlobalMapState == 0) {
@@ -395,6 +444,7 @@ void EnsurePortZoneForTile(short nTileIndex) {
   portZone->field0c = static_cast<int>(seaTileIndex);
   portZone->field20 = portZone->GetActiveNationSlotTile();
 }
+
 
 // FUNCTION: IMPERIALISM 0x00563990
 short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
@@ -456,6 +506,7 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
   return -1;
 }
 
+
 // FUNCTION: IMPERIALISM 0x00564240
 void RemovePortZoneByTile(short nTileIndex) {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
@@ -466,3 +517,4 @@ void RemovePortZoneByTile(short nTileIndex) {
     }
   }
 }
+

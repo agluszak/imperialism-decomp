@@ -41,6 +41,14 @@ void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
 #pragma optimize("", on)
 #endif
 
+// FUNCTION: IMPERIALISM 0x005c2980
+int TCivUnit::IsInIdleSelectionState() {
+  if (this->field_8 != 0 && (this->field_8 < 2 || this->field_8 > 3)) {
+    return 0;
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x005c29f0
 void TCivUnit::SetOrderModeSlot34(int mode, int payload) {
   (void)mode;

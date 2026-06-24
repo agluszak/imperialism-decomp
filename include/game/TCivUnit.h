@@ -42,6 +42,7 @@ public:
   }
 
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
+  int IsInIdleSelectionState();
 };
 
 // === BEGIN GENERATED (TCivUnit) — refreshed by `just gen-class TCivUnit`; do not hand-edit ===

@@ -1462,13 +1462,13 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
           int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
           localizationRuntime->GetString(
               0x274b, static_cast<short>(statusId),
-              reinterpret_cast<void*>(kAddrShGreatPowerPressureMessageRef));
+              reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef));
         }
         DispatchQuarterlyGreatPowerPressureMessage(1);
       } else {
         if (localizationRuntime != 0) {
           localizationRuntime->GetString(
-              0x274b, 1, reinterpret_cast<void*>(kAddrShGreatPowerPressureMessageRef));
+              0x274b, 1, reinterpret_cast<CString*>(kAddrShGreatPowerPressureMessageRef));
         }
         DispatchQuarterlyGreatPowerPressureMessage(2);
       }
