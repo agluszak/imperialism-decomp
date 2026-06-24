@@ -339,14 +339,6 @@ undefined4 CreateEx(void)
   return 0;
 }
 
-// ghidra_name CreateEx_608115
-// ghidra_proto undefined CreateEx_608115()
-// FUNCTION: IMPERIALISM 0x00608115
-undefined4 CreateEx_608115(void)
-{
-  return 0;
-}
-
 // ghidra_name TTooltipRelayWindowState::PreCreateWindow
 // ghidra_proto undefined PreCreateWindow()
 // FUNCTION: IMPERIALISM 0x006081d9
@@ -847,14 +839,6 @@ undefined4 UpdateData(void)
 // ghidra_proto undefined CDataExchange()
 // FUNCTION: IMPERIALISM 0x0060a267
 undefined4 CDataExchange(void)
-{
-  return 0;
-}
-
-// ghidra_name CenterWindow
-// ghidra_proto undefined CenterWindow()
-// FUNCTION: IMPERIALISM 0x0060a27d
-undefined4 CenterWindow(void)
 {
   return 0;
 }

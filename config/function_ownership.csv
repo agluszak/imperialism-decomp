@@ -3275,6 +3275,8 @@ address|target_cpp|ownership|note
 607782|src/game/MfcRuntime.cpp|manual|marker_sync
 6077c0|src/game/MfcRuntime.cpp|manual|marker_sync
 607a84|src/game/MfcRuntime.cpp|manual|marker_sync
+608115|src/game/MfcRuntime.cpp|manual|marker_sync
+60a27d|src/game/MfcRuntime.cpp|manual|marker_sync
 60d3fc|src/game/MfcRuntime.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 6109eb|src/game/CDocument.cpp|manual|marker_sync

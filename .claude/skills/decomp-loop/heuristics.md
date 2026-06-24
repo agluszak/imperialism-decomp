@@ -312,6 +312,19 @@ against them.
   is just `delete cwndptr`; `[vtbl+0xc]` (slot 3) is `AssertValid()`; `CenterWindow`,
   `m_hWnd`, `SendMessageA` are all direct. Took `TWindow::Free` 0x48e2a0 from a stub to a
   faithful 62% with every call site matching (commit 6c69fe86).
+- **Never C++-model an MFC class that's already in the header (`CWnd`, `CCmdTarget`,
+  `CFrameWnd`, `CDocument`, `CDC`, …) — annotate it.** Mirror `CObject.cpp`/`CDocument.cpp`/
+  `MfcRuntime.cpp`: a bodyless `// LIBRARY: IMPERIALISM 0xADDR` + `// Class::Method` comment
+  pair (ascending address order), and rename the `symbols.csv` row at that addr to the real
+  MFC name (`CenterWindow` → `CWnd::CenterWindow`). reccmp then pairs the orig addr to the
+  linked nafxcw function. **Caveat:** a LIBRARY function only pairs once our build actually
+  *links* it — i.e. some manual code calls it (just like `CObject::IsKindOf` only paired
+  after `Free` called it). Annotating `CWnd::CenterWindow` @0x60a27d lifted the calling
+  wrapper 0x48e150 71%→74%; annotate the rest of the CWnd surface (`CreateEx` @0x608115,
+  `WindowProc`, `OnWndMsg`, …) as the window code that uses them is ported. So to "recover"
+  an MFC-derived game class (e.g. `CMcWindow : CWnd`, vtable 0x64b7c8 = the MFC message-map
+  vtable) you do NOT model `CWnd` — you `class X : public CWnd`, LIBRARY-annotate the CWnd
+  surface it calls, and write the real `new X(...)`. See [[cmcwindow-recovery-plan]].
 - **A `RUNTIME_CLASS` arg is a data global**: `IsKindOf(0x64b5d0)` → add a `g_pClassDesc<Class>`
   char + `// GLOBAL:` marker at that addr (rename the `symbols.csv` `Class::classRuntimeClass`
   row to it), pass `reinterpret_cast<CRuntimeClass*>(&g_pClassDesc<Class>)`. Same recipe as

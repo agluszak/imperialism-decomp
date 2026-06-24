@@ -68,6 +68,12 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value) {
 // LIBRARY: IMPERIALISM 0x00607a84
 // CWnd::Default
 
+// LIBRARY: IMPERIALISM 0x00608115
+// CWnd::CreateEx
+
+// LIBRARY: IMPERIALISM 0x0060a27d
+// CWnd::CenterWindow
+
 // LIBRARY: IMPERIALISM 0x0060d3fc
 // AfxWinMain
 

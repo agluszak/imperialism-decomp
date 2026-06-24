@@ -42,14 +42,31 @@ TDialogBehavior*, byte-getters/0x48dc90/0x48dd10(DispatchEvent)/0x48e060(CallVoi
 wired with real dispatch; TDialogView fully ported (GetRuntimeClass + EnsureField48Buffer
 100%). g_pClassDescTDialogBehavior/TDialogView descriptors added.
 
-**BLOCKED big functions — need MFC modeling first (do NOT fake):** 0x48e2a0 Free,
-0x48de00 DispatchSlot9CToLinkedChildren, 0x48da60 ExecuteViewModalStateWithPushPopChain.
-They dispatch through field50's CWnd/CObject vtable (IsKindOf + scalar dtor; CWnd/CObject
-are placeholder structs only — see root_types.h, no real virtuals), use a custom
-stack-allocated child-iterator (AdvanceSelectableTextOptionEntryIterator @0x491a70 +
-PopSinglyLinkedListHeadPointer @0x4924c0 + EnsureChildResourceWindowAndNotify_Impl
-@0x4924e0 over childList44), and the global modal-state block-pool list (DAT_006a1ac4).
-Unblock path: (1) model CObject/CWnd with their real MFC vtable slots (real nafxcw linking
-is viable — see [[real-mfc-linking-viable]]); (2) recover the selectable-text child-iterator
-struct. Then Free's child loop + active-view mgmt (already real via GetActiveView/
-SetActiveView) port cleanly.
+**KEY: mfc.h includes real <afx.h>/<afxwin.h>** — CObject/CWnd/CString/CPtrList are the
+REAL MFC classes with real virtuals. Do NOT model them. Call them directly
+(nativeWindow50->IsKindOf/AssertValid/CenterWindow, delete window, childList44->GetHead())
+and rely on // LIBRARY annotations (CObject::IsKindOf @0x606fc0 already annotated in
+CObject.cpp) for pairing. The root_types.h CWnd/CObject are unused placeholders.
+
+**0x48e2a0 Free — DONE (62%, commit 6c69fe86)** via real MFC: IsKindOf(CMcWindow,
+g_pClassDescCMcWindow @0x64b5d0) + AssertValid + delete; child Free loop; ownerContext
+DetachChildFromOwnerList; GetActiveView/QueryStepValue/SetActiveView; field18 Free;
+delete this. Template for other teardown/window functions.
+Also done: HandleEvent (0x48dd50), CenterWindow wrapper (0x48e150, real CWnd::CenterWindow
+@0x60a27d), CallVoidSlotA0 (0x48e060), DispatchEvent (0x48dd10).
+
+**Still TODO — need custom data-structure modeling (not MFC, do carefully not fast):**
+- 0x48da60 ExecuteViewModalStateWithPushPopChain (394B): pushes `this` onto the global
+  modal block-pool chain (DAT_006a1ac4 head / ac8 tail / acc count / ad0 free / ad4/ad8
+  block pool — same intrusive-list+block-pool as TView::SerializeRecordList_0x0C), runs
+  dialogBehavior->CreateTCommandInstance() (slot 0x12, the modal loop), pops. Vtable
+  dispatch slot 3 (AssertValid) on chain TViews. Helpers: AllocateAndLinkBlockHead
+  @0x601b74, WrapperFor_FreeLinkedBlockChain @0x4061c7, 0x60753b, 0x4087e2.
+- 0x48de00 DispatchSlot9CToLinkedChildren (472B, EH-framed): creates the MC window
+  (CreateMcWindowFromDescriptorAndShow), iterates childList44 with a custom STACK-allocated
+  filtered iterator (ctor @0x404368, advance @0x407cb1/@0x408526; fields current/this/
+  flag/4charCode/head) — recover that iterator class first. Real virtuals otherwise
+  (IsActionable slot 0x3b, field64 slot 0x21, child->DispatchSlot9C slot 0x27).
+- Tiny: 0x48d9c0/0x48d9f0 are __thiscall on the CWnd receiver to game helpers
+  (SetWindowTextOrDelegateToOwner @0x6073b4, FUN_0060859f) — need the receiver's method
+  modeled (don't fake thiscall).
