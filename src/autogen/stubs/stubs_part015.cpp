@@ -363,14 +363,6 @@ undefined4 TileHasMovementClassId(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringFromIndexedA8EntryNameField
-// ghidra_proto undefined AssignSharedStringFromIndexedA8EntryNameField()
-// FUNCTION: IMPERIALISM 0x00515ec0
-undefined4 AssignSharedStringFromIndexedA8EntryNameField(void)
-{
-  return 0;
-}
-
 // ghidra_name SetGlobalMapCellSharedLabel
 // ghidra_proto undefined SetGlobalMapCellSharedLabel()
 // FUNCTION: IMPERIALISM 0x00515f40

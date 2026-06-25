@@ -1,5 +1,6 @@
 #include "game/TCountry.h"
 
+#include "game/CString.h"
 #include "game/diplomacy_globals.h"
 #include "game/TGreatPower.h"
 
@@ -29,6 +30,8 @@
 #include <new>
 
 extern TGreatPower* g_apNationStates[];
+
+extern char g_szEmptyString[];
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -103,6 +106,51 @@ CRuntimeClass* TCountry::GetRuntimeClass() const {
 // SYNTHETIC: IMPERIALISM 0x004d6850
 // TCountry::`scalar deleting destructor'
 TCountry::~TCountry() {}
+
+// FUNCTION: IMPERIALISM 0x004d68f0
+void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
+  this->nationSlot = nationSlot;
+  this->ownerNationSlot = -1;
+  this->serializedField8c = -1;
+  this->encodedNationSlot = -1;
+
+  int dwordIndex = 0;
+  do {
+    *reinterpret_cast<int*>(&this->needLevelByNation[dwordIndex * 2]) = 0x640064;
+    ++dwordIndex;
+  } while (dwordIndex < 0xb);
+  this->needLevelByNation[0x16] = 100;
+
+  this->identitySharedString0 = g_szEmptyString;
+  CString flavorName;
+  SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, nationSlot);
+  this->identitySharedString0 = flavorName;
+  if (g_pLocalizationTable != 0) {
+    CString* nationNameSlot = reinterpret_cast<CString*>(
+        reinterpret_cast<char*>(g_pLocalizationTable) + nationSlot * 4 + 0x7c);
+    *nationNameSlot = this->identitySharedString0;
+  }
+  this->identitySharedString1 = this->identitySharedString0;
+  this->treasuryValue10 = 5000;
+
+  this->militaryUnitList44 = new TPtrList();
+
+  int ordinalIndex = 0;
+  do {
+    *reinterpret_cast<int*>(&this->unitNameOrdinalByType[ordinalIndex * 2]) = 0x10001;
+    ++ordinalIndex;
+  } while (ordinalIndex < 0xf);
+  this->unitNameCounter84 = 1;
+
+  TPtrList* ownedRegions = new TPtrList();
+  for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) ==
+        nationSlot) {
+      ownedRegions->AddTailSlot34(reinterpret_cast<void*>(cityIndex));
+    }
+  }
+  this->ownedRegionList = ownedRegions;
+}
 
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {

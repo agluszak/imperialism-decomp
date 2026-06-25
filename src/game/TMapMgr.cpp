@@ -1,5 +1,6 @@
 #include "game/TMapMgr.h"
 
+#include "game/CString.h"
 #include "game/TPtrList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
@@ -372,6 +373,13 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
   }
   return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
                                                     allowActiveFlag2);
+}
+
+
+// FUNCTION: IMPERIALISM 0x00515ec0
+void TMapMgr::AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest) {
+  *dest = *reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
+                                       cityRecordIndex * 0xa8 + 0xa4);
 }
 
 

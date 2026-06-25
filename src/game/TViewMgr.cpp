@@ -6,8 +6,10 @@
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
 #include "game/diplomacy_globals.h"  // g_pGameFlowState, g_pLocalizationTable
+#include "game/TGlobalMapState.h"
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
+#include "game/turn_event_packets.h"
 
 #include <new>
 
@@ -36,7 +38,6 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
-undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
 undefined4 FormatOverlayTerrainLabelText(void);
 undefined4 LoadNationDisplayNameSharedRefFromField8(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
@@ -480,7 +481,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     break;
   case 3:
   case 4:
-    reinterpret_cast<void(__cdecl*)(void)>(thunk_AssignSharedStringFromIndexedA8EntryNameField)();
+    g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(contextArg, &formattedText);
     g_pLocalizationTable->GetString(0, 0, &templateText);
     reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
         g_pLocalizationTable, &formattedText,

@@ -547,14 +547,6 @@ undefined4 ShouldRetryMappedFlavorTextGeneration(void)
   return 0;
 }
 
-// ghidra_name SetSharedStringFromMappedFlavorTextWithLengthClamp
-// ghidra_proto undefined SetSharedStringFromMappedFlavorTextWithLengthClamp()
-// FUNCTION: IMPERIALISM 0x005d4410
-undefined4 SetSharedStringFromMappedFlavorTextWithLengthClamp(void)
-{
-  return 0;
-}
-
 // ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
 // ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
 // FUNCTION: IMPERIALISM 0x005d4550

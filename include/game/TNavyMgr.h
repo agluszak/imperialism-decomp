@@ -1,9 +1,7 @@
 #pragma once
 
-#include "game/TObject.h"
-#include "game/mfc.h"
+#include "game/diplomacy_globals.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 
 // TODO(manifest): describe TNavyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNavyMgr -> TObject -> CObject.
@@ -22,10 +20,15 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 // === END GENERATED DECLS (TNavyMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyMgr 0xCTOR`).
+  void* orderListHead04;
+
+  void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
 
   TNavyMgr();
 };
+
+// GLOBAL: IMPERIALISM 0x006a43e4
+extern TNavyMgr* g_pNavyOrderManager;
 
 // === BEGIN GENERATED (TNavyMgr) — refreshed by `just gen-class TNavyMgr`; do not hand-edit ===
 // clang-format off

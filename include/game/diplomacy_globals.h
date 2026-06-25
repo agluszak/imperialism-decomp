@@ -7,6 +7,7 @@
 
 struct NationState;
 class TDiplomacyMgr;
+class TNavyMgr;
 class TSimMgr;
 class TAssetMgr;
 class TInterNationEventQueueManager;
@@ -28,5 +29,6 @@ extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern void* g_pGlobalUiRootController;
 extern void* g_pGameFlowState;
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
+extern TNavyMgr* g_pNavyOrderManager;
 extern int* g_pMapContextActionManager;
 }

@@ -73,6 +73,8 @@ public:
   void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 
+  void InitializeNationStateIdentityAndOwnedRegionList(short nationSlot);
+
   CString identitySharedString0;
   CString identitySharedString1;
   short nationSlot;

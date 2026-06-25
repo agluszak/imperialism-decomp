@@ -19,6 +19,7 @@
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/turn_event_packets.h"
 #include "game/mfc.h"
 #include "game/turn_flow_cooldown.h"
 #include "decomp_types.h"
@@ -253,9 +254,7 @@ struct MacViewInvoke {
   }
 
   static void DispatchTaggedGameStateEvent1F20(unsigned int tag, int param2, int param3) {
-    extern undefined4 DispatchTaggedGameStateEvent1F20(void);
-    reinterpret_cast<void(__cdecl*)(unsigned int, int, int)>(reinterpret_cast<void (*)()>(
-        DispatchTaggedGameStateEvent1F20))(tag, param2, param3);
+    ::DispatchTaggedGameStateEvent1F20(static_cast<int>(tag), param2, param3);
   }
 
   static void ResetClipRegionAndReadBoundingRect(int region) {

@@ -22,7 +22,10 @@
 #include "game/TDefendProvinceMission.h"
 #include "game/TMission.h"
 #include "game/TZone.h"
+#include "game/diplomacy_globals.h"
+#include "game/TNavyMgr.h"
 #include "game/turn_event_packets.h"
+#include "game/diplomacy_policy_hooks.h"
 #include "game/map_action_context_helpers.h"
 #include "game/TTurnEventPacket.h"
 #include "game/turn_flow_cooldown.h"
@@ -120,14 +123,14 @@ undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
 undefined4 InitializeCivWorkOrderState(void);
-undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void);
 
 static __inline void InvokeDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
                                                            char acceptedFlag) {
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(thunk_NoOpDiplomacyPolicyStateChangedHook)(
-      policyOrGrant, targetNation, static_cast<int>(acceptedFlag));
+  (void)policyOrGrant;
+  (void)targetNation;
+  (void)acceptedFlag;
+  NoOpDiplomacyPolicyStateChangedHook();
 }
-undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
 void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
 void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
@@ -142,19 +145,11 @@ void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
 undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
-undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
-undefined4 thunk_DispatchTurnEvent1AWithNationActionPayload(void);
-undefined4 thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(void);
 undefined4 ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl(void);
-undefined4 thunk_DispatchTaggedGameStateEvent1F20(void);
-undefined4 thunk_InitializeNationStateIdentityAndOwnedRegionList(void);
 undefined4 thunk_InitializeCityProductionState(void);
 undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
-
+undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
 undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
-undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
-undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
-undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
@@ -635,8 +630,7 @@ TGreatPower::~TGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
-  reinterpret_cast<void(__fastcall*)(int, int)>(
-      thunk_InitializeNationStateIdentityAndOwnedRegionList)(reinterpret_cast<int>(this), arg1);
+  this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<short>(arg1));
 
   TSimMgr* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
@@ -1996,7 +1990,8 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     if (marker != 0 && marker->enabledFlag4d != 0 && marker->transportLinkedFlag4c == 0) {
       CString messageRef;
       CString scratchRef;
-      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(
+          g_pGlobalMapState->terrainStateTable[marker->regionId14].cityRecordIndex, &messageRef);
       scratchRef = CString("\n") + messageRef;
       scratchRef += messageRef;
     }
@@ -3181,13 +3176,15 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     }
   }
 
-  reinterpret_cast<void(__cdecl*)(void)>(
-      thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists)();
+  if (g_pNavyOrderManager != 0) {
+    g_pNavyOrderManager->RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(
+        this->nationSlot);
+  }
   ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(g_pGlobalMapState, this->nationSlot);
 
   TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
-    reinterpret_cast<void(__cdecl*)(void)>(thunk_DispatchTaggedGameStateEvent1F20)();
+    DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
   }
 }
 
@@ -3247,9 +3244,8 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
             static_cast<int>(this->nationSlot), reinterpret_cast<int>(&payload), '\0');
       }
     } else {
-      reinterpret_cast<void(__cdecl*)(int, void*)>(
-          thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(static_cast<int>(this->nationSlot),
-                                                              &payload);
+      CreateAndSendTurnEvent13_NationAndNineDwords(static_cast<int>(this->nationSlot),
+                                                     reinterpret_cast<int*>(&payload));
     }
   }
 

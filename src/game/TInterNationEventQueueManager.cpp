@@ -3,13 +3,11 @@
 #include "game/diplomacy_globals.h"
 #include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
+#include "game/turn_event_packets.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void);
-undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 
 struct TInterNationEventDedupPacket {
   short eventCode0;
@@ -49,8 +47,7 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
     return;
   }
 
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(
-      eventCode, payloadOrNation);
+  CreateAndSendTurnEvent13_NationAndNineDwords(eventCode, reinterpret_cast<int*>(payloadOrNation));
 }
 
 struct TInterNationEventType0FMergePayload {
@@ -177,7 +174,9 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
     return;
   }
 
-  reinterpret_cast<void(__cdecl*)(void)>(thunk_CreateAndSendTurnEvent21_ThreeBytes)();
+  CreateAndSendTurnEvent21_ThreeBytes(static_cast<unsigned char>(eventCode),
+                                        static_cast<unsigned char>(nationA),
+                                        static_cast<unsigned char>(nationB));
 }
 
 #if defined(_MSC_VER)

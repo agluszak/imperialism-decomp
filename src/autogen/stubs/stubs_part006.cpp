@@ -11,14 +11,6 @@ undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeNationStateIdentityAndOwnedRegionList
-// ghidra_proto undefined thunk_InitializeNationStateIdentityAndOwnedRegionList()
-// FUNCTION: IMPERIALISM 0x0040678a
-undefined4 thunk_InitializeNationStateIdentityAndOwnedRegionList(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_StepHexRowColByDirectionWithWrapRules
 // ghidra_proto undefined thunk_StepHexRowColByDirectionWithWrapRules()
 // FUNCTION: IMPERIALISM 0x0040678f
@@ -59,26 +51,10 @@ undefined4 thunk_SplitTileIndexToRowAndColumn(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchTaggedGameStateEvent1F20
-// ghidra_proto undefined thunk_DispatchTaggedGameStateEvent1F20()
-// FUNCTION: IMPERIALISM 0x00406efb
-undefined4 thunk_DispatchTaggedGameStateEvent1F20(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_SetActiveQuickDrawSurfaceContext
 // ghidra_proto undefined thunk_SetActiveQuickDrawSurfaceContext()
 // FUNCTION: IMPERIALISM 0x00406f5f
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CreateAndSendTurnEvent21_ThreeBytes
-// ghidra_proto undefined thunk_CreateAndSendTurnEvent21_ThreeBytes()
-// FUNCTION: IMPERIALISM 0x004072ac
-undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void)
 {
   return 0;
 }
@@ -111,14 +87,6 @@ undefined4 thunk_RebuildMinorNationDispositionLookupTables(void)
 // ghidra_proto undefined thunk_GetUnitMovementClassId()
 // FUNCTION: IMPERIALISM 0x00407e64
 undefined4 thunk_GetUnitMovementClassId(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetTimeEmitPacketGameFlowTurnId
-// ghidra_proto undefined thunk_SetTimeEmitPacketGameFlowTurnId()
-// FUNCTION: IMPERIALISM 0x00407f63
-undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void)
 {
   return 0;
 }
@@ -199,14 +167,6 @@ undefined4 thunk_FindPortZoneByTile(void)
 // ghidra_proto undefined thunk_AdvanceSpiralSearchStateAndStepHexCoordinates()
 // FUNCTION: IMPERIALISM 0x004090a2
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_AssignSharedStringFromIndexedA8EntryNameField
-// ghidra_proto undefined thunk_AssignSharedStringFromIndexedA8EntryNameField()
-// FUNCTION: IMPERIALISM 0x0040918d
-undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void)
 {
   return 0;
 }

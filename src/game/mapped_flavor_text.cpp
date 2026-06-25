@@ -1,6 +1,8 @@
 #include "game/mapped_flavor_text.h"
 
 #include "game/CString.h"
+#include "game/diplomacy_globals.h"
+#include "game/TSimMgr.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -12,6 +14,7 @@ struct MappedFlavorTextNationVariantEntry {
 };
 
 extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];
+extern "C" char DAT_006a43f0;
 
 undefined4 AppendRandomMapContextStatusSuffixWithProbability(void);
 undefined4 GenerateMappedFlavorTextVariantC_005cf1b0(void);
@@ -32,6 +35,36 @@ undefined4 BuildMapContextStatusStringVariantL(void);
 undefined4 BuildMapContextStatusStringVariantD(void);
 undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
+
+static int MappedFlavorCStringLength(const CString* value) {
+  LPCSTR text = static_cast<LPCSTR>(*value);
+  if (text == 0) {
+    return 0;
+  }
+  int length = 0;
+  while (text[length] != '\0') {
+    ++length;
+  }
+  return length;
+}
+
+// FUNCTION: IMPERIALISM 0x005d4410
+void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
+  if (reinterpret_cast<char*>(g_pLocalizationTable)[0x68] == '\0') {
+    short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
+    GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+    if (DAT_006a43f0 == '\0') {
+      while (MappedFlavorCStringLength(dest) > 0xc) {
+        GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+      }
+    }
+    return;
+  }
+
+  CString localizedName;
+  g_pLocalizationTable->GetString(0x2715, tableSlot, &localizedName);
+  *dest = localizedName;
+}
 
 // FUNCTION: IMPERIALISM 0x005d46b0
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {

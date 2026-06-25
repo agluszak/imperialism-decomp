@@ -35,14 +35,6 @@ undefined4 thunk_ReleaseHashIndexedRecordByHandle(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchTurnEvent1AWithNationActionPayload
-// ghidra_proto undefined thunk_DispatchTurnEvent1AWithNationActionPayload()
-// FUNCTION: IMPERIALISM 0x004022c5
-undefined4 thunk_DispatchTurnEvent1AWithNationActionPayload(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
 // ghidra_proto undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
 // FUNCTION: IMPERIALISM 0x0040231a
@@ -171,14 +163,6 @@ undefined4 thunk_DrawCenteredGuideLineOnMapDc(void)
   return 0;
 }
 
-// ghidra_name thunk_NoOpDiplomacyPolicyStateChangedHook
-// ghidra_proto undefined thunk_NoOpDiplomacyPolicyStateChangedHook()
-// FUNCTION: IMPERIALISM 0x00403e2c
-undefined4 thunk_NoOpDiplomacyPolicyStateChangedHook(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
 // FUNCTION: IMPERIALISM 0x00403f71
@@ -199,14 +183,6 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
 // ghidra_proto undefined thunk_DecrementDialogResourceRefCountByShortIdAndCleanup()
 // FUNCTION: IMPERIALISM 0x004046bf
 undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_CreateAndSendTurnEvent13_NationAndNineDwords
-// ghidra_proto undefined thunk_CreateAndSendTurnEvent13_NationAndNineDwords()
-// FUNCTION: IMPERIALISM 0x004048d6
-undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void)
 {
   return 0;
 }
@@ -263,14 +239,6 @@ undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
 // ghidra_proto undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
 // FUNCTION: IMPERIALISM 0x004056a5
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
-// ghidra_proto undefined thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()
-// FUNCTION: IMPERIALISM 0x004059f7
-undefined4 thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(void)
 {
   return 0;
 }

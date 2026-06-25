@@ -24,9 +24,9 @@
 #endif
 
 #include "game/map_action_context_helpers.h"
+#include "game/turn_event_packets.h"
 #include "game/TShip.h"
 
-undefined4 thunk_DispatchTaggedGameStateEvent1F20(void); // 0x00406efb -> 0x0054a340
 undefined4 GenerateThreadLocalRandom15(void);
 
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
@@ -240,10 +240,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
   if (g_pLocalizationTable->redrawEnabled != 0) {
-    // TEMP: 0x0054a340 is a thiscall on g_pGameFlowState (0x6a43c8); model it as a
-    // real method once the game-flow event sink class is recovered.
-    reinterpret_cast<void(__stdcall*)(int, int, int)>(thunk_DispatchTaggedGameStateEvent1F20)(
-        0x6c6f7374, this->nationSlot, -3);
+    DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
   }
 }
 

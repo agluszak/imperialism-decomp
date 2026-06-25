@@ -291,14 +291,6 @@ undefined4 ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(void)
   return 0;
 }
 
-// ghidra_name RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
-// ghidra_proto undefined RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()
-// FUNCTION: IMPERIALISM 0x00557210
-undefined4 RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(void)
-{
-  return 0;
-}
-
 // ghidra_name GetEnabledIndustryCapabilitySlotByClass
 // ghidra_proto undefined GetEnabledIndustryCapabilitySlotByClass()
 // FUNCTION: IMPERIALISM 0x005572d0

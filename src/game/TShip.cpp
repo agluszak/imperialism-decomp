@@ -86,6 +86,23 @@ void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
   }
 }
 
+void FreeHeapBufferIfNotNull(undefined4 ptr_value);
+
+// FUNCTION: IMPERIALISM 0x0054f640
+void TShip::DestroyAndUnlinkNavyPrimaryOrderNode() {
+  if (g_pNavyPrimaryOrderListHead == this) {
+    g_pNavyPrimaryOrderListHead = this->nextOlder24;
+  }
+  if (this->nextOlder24 != 0) {
+    this->nextOlder24->prevNewer28 = this->prevNewer28;
+  }
+  if (this->prevNewer28 != 0) {
+    this->prevNewer28->nextOlder24 = this->nextOlder24;
+  }
+  displayName18.~CString();
+  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
+}
+
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif

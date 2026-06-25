@@ -221,6 +221,8 @@ TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
+// GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
+char DAT_006a43f0 = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 0;
 

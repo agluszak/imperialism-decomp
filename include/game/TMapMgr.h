@@ -174,6 +174,7 @@ public:
   short QueryIconStripXSlot110(int iconCode);
   void NotifyCityRecordSlot12C(int cityRecordIndex);
   void LinkRegionToNationSlot134(int regionId, int nationSlot);
+  void AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest);
 
   TMapMgr();
 };

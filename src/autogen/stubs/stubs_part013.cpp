@@ -971,14 +971,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(void)
   return 0;
 }
 
-// ghidra_name InitializeNationStateIdentityAndOwnedRegionList
-// ghidra_proto undefined InitializeNationStateIdentityAndOwnedRegionList()
-// FUNCTION: IMPERIALISM 0x004d68f0
-undefined4 InitializeNationStateIdentityAndOwnedRegionList(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignStringSharedRefFromPointer
 // ghidra_proto undefined AssignStringSharedRefFromPointer()
 // FUNCTION: IMPERIALISM 0x004d6b70

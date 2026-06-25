@@ -3,8 +3,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/turn_event_packets.h"
 
-undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
-
 // FUNCTION: IMPERIALISM 0x005412b0
 char TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(void) {
   return 0;
@@ -50,6 +48,8 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
     TTurnEventPacketRoutingPrefix routing;
     int packetTag;
     unsigned char activeNationIdAfterTag;
+    unsigned char pad14[3];
+    short uiTurnToken18;
     unsigned char activeNationIdBeforePayload;
     unsigned char acceptedFlag;
     unsigned char commandCode;
@@ -64,7 +64,7 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
       static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
   packetPayload.routing.eventCode = 0x1E;
   packetPayload.routing.payloadSize = 0x24;
-  reinterpret_cast<void(__cdecl*)(void)>(thunk_SetTimeEmitPacketGameFlowTurnId)();
+  SetTimeEmitPacketGameFlowTurnId(&packetPayload.uiTurnToken18);
   packetPayload.routing.targetNationId = -1;
   packetPayload.activeNationIdBeforePayload =
       static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());

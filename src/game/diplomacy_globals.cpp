@@ -4,6 +4,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
+#include "game/TNavyMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TAssetMgr.h"
 #include "game/TMacViewMgr.h"
@@ -23,6 +24,7 @@ TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
+TNavyMgr* g_pNavyOrderManager = 0;
 int* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
 }

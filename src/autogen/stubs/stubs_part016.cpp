@@ -1763,14 +1763,6 @@ undefined4 SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(void)
   return 0;
 }
 
-// ghidra_name SetTimeEmitPacketGameFlowTurnId
-// ghidra_proto undefined SetTimeEmitPacketGameFlowTurnId()
-// FUNCTION: IMPERIALISM 0x00542120
-undefined4 SetTimeEmitPacketGameFlowTurnId(void)
-{
-  return 0;
-}
-
 // ghidra_name FindActiveNationSlotIndexInGameFlowList
 // ghidra_proto undefined FindActiveNationSlotIndexInGameFlowList()
 // FUNCTION: IMPERIALISM 0x005421a0
@@ -2059,14 +2051,6 @@ undefined4 CreateAndSendTurnEvent12_TwoShorts(void)
   return 0;
 }
 
-// ghidra_name CreateAndSendTurnEvent13_NationAndNineDwords
-// ghidra_proto undefined CreateAndSendTurnEvent13_NationAndNineDwords()
-// FUNCTION: IMPERIALISM 0x00549540
-undefined4 CreateAndSendTurnEvent13_NationAndNineDwords(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent20_ShortAndTwoBytes
 // ghidra_proto undefined CreateAndSendTurnEvent20_ShortAndTwoBytes()
 // FUNCTION: IMPERIALISM 0x005495e0
@@ -2075,26 +2059,10 @@ undefined4 CreateAndSendTurnEvent20_ShortAndTwoBytes(void)
   return 0;
 }
 
-// ghidra_name CreateAndSendTurnEvent21_ThreeBytes
-// ghidra_proto undefined CreateAndSendTurnEvent21_ThreeBytes()
-// FUNCTION: IMPERIALISM 0x00549680
-undefined4 CreateAndSendTurnEvent21_ThreeBytes(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent22_ByteAndShort
 // ghidra_proto undefined CreateAndSendTurnEvent22_ByteAndShort()
 // FUNCTION: IMPERIALISM 0x00549720
 undefined4 CreateAndSendTurnEvent22_ByteAndShort(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchTurnEvent1AWithNationActionPayload
-// ghidra_proto undefined DispatchTurnEvent1AWithNationActionPayload()
-// FUNCTION: IMPERIALISM 0x005497b0
-undefined4 DispatchTurnEvent1AWithNationActionPayload(void)
 {
   return 0;
 }
@@ -2143,14 +2111,6 @@ undefined4 SerializeOrderDataIntoTurnEventByTag(void)
 // ghidra_proto undefined HandleTurnEventCodes28_2E_2F_30_31_32()
 // FUNCTION: IMPERIALISM 0x00549ff0
 undefined4 HandleTurnEventCodes28_2E_2F_30_31_32(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchTaggedGameStateEvent1F20
-// ghidra_proto undefined DispatchTaggedGameStateEvent1F20()
-// FUNCTION: IMPERIALISM 0x0054a340
-undefined4 DispatchTaggedGameStateEvent1F20(void)
 {
   return 0;
 }

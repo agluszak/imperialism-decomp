@@ -8,6 +8,8 @@
 #include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
 #include "game/diplomacy_globals.h"
+#include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/network_error_reporting.h"
 
 extern "C" {
@@ -26,6 +28,11 @@ extern int g_NetworkManagerLastError006a5f6c;
 void TTurnEventPacketRoutingPrefix::SetPayloadNationIdFromSlotIndex(int nationSlot) {
   this->targetNationId =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGameFlowState) + nationSlot * 4 + 0x48);
+}
+
+// FUNCTION: IMPERIALISM 0x00542120
+void SetTimeEmitPacketGameFlowTurnId(short* turnTokenField) {
+  *turnTokenField = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pGameFlowState) + 0xf0);
 }
 
 struct TurnEvent3Mode18Packet {
@@ -53,6 +60,137 @@ void EmitTurnEvent3Mode18WithActiveNation(void) {
   packet.routing.eventCode = 3;
   packet.routing.payloadSize = 0x18;
   packet.routing.EnqueueOrSendTurnEventPacketToNation(1);
+}
+
+struct TurnEvent13Packet {
+  TTurnEventPacketRoutingPrefix routing;
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad0b;
+  short nationSlot;
+  int payloadDwords[9];
+};
+
+// FUNCTION: IMPERIALISM 0x00549540
+void CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot, int* payloadDwords) {
+  TurnEvent13Packet packet;
+  packet.routing.eventCode = 0x13;
+  packet.routing.defaultNationId = 0;
+  packet.routing.targetNationId =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGameFlowState) + nationSlot * 4 + 0x48);
+  packet.routing.payloadSize = 0x40;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packet.nationSlot = static_cast<short>(nationSlot);
+  for (int dwordIndex = 0; dwordIndex < 9; ++dwordIndex) {
+    packet.payloadDwords[dwordIndex] = payloadDwords[dwordIndex];
+  }
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(0);
+}
+
+struct TurnEvent21Packet {
+  TTurnEventPacketRoutingPrefix routing;
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char byte0;
+  unsigned char byte1;
+  unsigned char byte2;
+};
+
+// FUNCTION: IMPERIALISM 0x00549680
+void CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
+                                         unsigned char byte2) {
+  TurnEvent21Packet packet;
+  packet.routing.eventCode = 0x21;
+  packet.routing.defaultNationId = 0;
+  packet.routing.targetNationId = 0;
+  packet.routing.payloadSize = 0x1c;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId =
+      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packet.byte0 = byte0;
+  packet.byte1 = byte1;
+  packet.byte2 = byte2;
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(1);
+}
+
+struct TurnEvent1APacket {
+  TTurnEventPacketRoutingPrefix routing;
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad0b;
+  short uiTurnToken;
+  short field18;
+  short field1a;
+  short field1c;
+  short field1e;
+  short field20;
+  short field22;
+  short nationCapabilityFlags[7];
+};
+
+// FUNCTION: IMPERIALISM 0x005497b0
+void DispatchTurnEvent1AWithNationActionPayload(short param0, short param1, short param2,
+                                                short param3, short param4) {
+  TurnEvent1APacket packet;
+  packet.routing.eventCode = 0x1a;
+  packet.routing.defaultNationId = 0;
+  packet.routing.targetNationId = 0;
+  packet.routing.payloadSize = 0x34;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId =
+      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packet.uiTurnToken =
+      *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pGameFlowState) + 0xf0);
+  packet.field18 = param0;
+  packet.field1a = 0;
+  packet.field1c = param1;
+  packet.field1e = param2;
+  packet.field20 = param3;
+  packet.field22 = param4;
+  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+    TGreatPower* nationState = g_apNationStates[nationIndex];
+    if (nationState != 0) {
+      packet.nationCapabilityFlags[nationIndex] =
+          nationState->ReturnFalseNationStateCapabilityFlag90(0);
+    } else {
+      packet.nationCapabilityFlags[nationIndex] = 0;
+    }
+  }
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(1);
+}
+
+struct TaggedGameStateTurnEventPacket {
+  TTurnEventPacketRoutingPrefix routing;
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad0b[3];
+  int resolvedNationId;
+  int tagParam;
+  int valueParam;
+};
+
+// FUNCTION: IMPERIALISM 0x0054a340
+void DispatchTaggedGameStateEvent1F20(int packetTag, int param2, int nationSlotOrMode) {
+  TaggedGameStateTurnEventPacket packet;
+  packet.routing.eventCode = 0x1f;
+  packet.routing.defaultNationId = 0;
+  packet.routing.targetNationId = 0;
+  packet.routing.payloadSize = 0x20;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packet.tagParam = packetTag;
+  packet.valueParam = param2;
+  if ((nationSlotOrMode == -2) || (nationSlotOrMode == -3)) {
+    packet.resolvedNationId = 0;
+  } else if (nationSlotOrMode == -1) {
+    packet.resolvedNationId = -1;
+  } else {
+    packet.resolvedNationId =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGameFlowState) + nationSlotOrMode * 4 +
+                                 0x48);
+  }
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(nationSlotOrMode == -3 ? 1 : 0);
 }
 
 #pragma pack(push, 1)
