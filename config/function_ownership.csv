@@ -9,14 +9,12 @@ address|target_cpp|ownership|note
 4053d5|src/game/TSimMgr.cpp|manual|marker_sync
 405529|src/game/config.cpp|manual|marker_sync
 405ab5|src/game/TCapacityOrder.cpp|manual|marker_sync
-4064e2|src/game/TView.cpp|manual|marker_sync
 406758|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 406ee7|src/game/TMinor.cpp|manual|marker_sync
 407c1b|src/game/TSimMgr.cpp|manual|marker_sync
 407da6|src/game/TSortedPtrList.cpp|manual|marker_sync
 407f4a|src/game/TCivDescription.cpp|manual|marker_sync
 40853f|src/game/TSimMgr.cpp|manual|marker_sync
-4087fb|src/game/TControl.cpp|manual|marker_sync
 409868|src/game/TSortedPtrList.cpp|manual|marker_sync
 412bd0|src/game/CObject.cpp|manual|marker_sync
 412bf0|src/game/CObject.cpp|manual|marker_sync
@@ -327,6 +325,7 @@ address|target_cpp|ownership|note
 48a8e0|src/game/TView.cpp|manual|marker_sync
 48a9a0|src/game/TView.cpp|manual|marker_sync
 48a9d0|src/game/TView.cpp|manual|marker_sync
+48aa60|src/game/TView.cpp|manual|marker_sync
 48aaf0|src/game/TView.cpp|manual|marker_sync
 48ab70|src/game/TView.cpp|manual|marker_sync
 48ab90|src/game/TView.cpp|manual|marker_sync
@@ -453,6 +452,7 @@ address|target_cpp|ownership|note
 48f890|src/game/TStaticText.cpp|manual|marker_sync
 48f9a0|src/game/TStaticText.cpp|manual|marker_sync
 48fc00|src/game/TStaticText.cpp|manual|marker_sync
+48fd00|src/game/TMyStaticText.cpp|manual|marker_sync
 48fe60|src/game/TStaticText.cpp|manual|marker_sync
 48fed0|src/game/TStaticText.cpp|manual|marker_sync
 48ff70|src/game/TStaticText.cpp|manual|marker_sync

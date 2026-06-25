@@ -130,6 +130,11 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMyStaticText 0xCTOR`).
 
   TMyStaticText();
+
+  void InitializeTextEntryBaseAndOptionalStringResource(TControl* panel, int* offsetLayout,
+                                                        int* sizeLayout, int layoutParam6,
+                                                        int layoutParam7, short stringResourceGroup,
+                                                        short stringResourceIndex);
 };
 
 // === BEGIN GENERATED (TMyStaticText) — refreshed by `just gen-class TMyStaticText`; do not hand-edit ===

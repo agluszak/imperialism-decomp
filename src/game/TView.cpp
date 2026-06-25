@@ -11,6 +11,7 @@
 #include "game/TApplication.h"
 #include "game/TEventHandler.h"
 #include "game/TView.h"
+#include "game/TControl.h"
 #include "game/TCursorControlPanel.h"
 #include "game/mcappui_globals.h"
 #include "game/ScopedMapQuickDrawContext.h"
@@ -27,10 +28,6 @@ undefined4 GetRegionBoxToRectIfPresent(void);
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
-// FUNCTION: IMPERIALISM 0x004064e2
-void __fastcall ConstructTViewBaseStateThunk(TView* self) {
-  new (self) TView();
-}
 
 // FUNCTION: IMPERIALISM 0x00427200
 unsigned short TView::GetField4E() {
@@ -183,6 +180,30 @@ TView::TView()
 TView::~TView() {
   delete childList44;
   delete[] field48;
+}
+
+// FUNCTION: IMPERIALISM 0x0048aa60
+void TView::InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* panel,
+                                                    int* offsetLayout, int* sizeLayout,
+                                                    int layoutParam6, int layoutParam7,
+                                                    int attachFlag) {
+  (void)layoutParam6;
+  (void)layoutParam7;
+  if (panel != 0) {
+    nativeWindow50 = panel->nativeWindow50;
+  }
+  controlTag = 0x20202020;
+  field04 = 1;
+  field08 = 1;
+  field0c = reinterpret_cast<int>(panel);
+  ownerOffsetX = offsetLayout[0];
+  ownerOffsetY = offsetLayout[1];
+  field34 = sizeLayout[0];
+  field38 = sizeLayout[1];
+  if (panel != 0) {
+    panel->AttachChildControl(this, attachFlag);
+  }
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x40) = ownerContext;
 }
 // Recursively dispatch a control event: walk the field44 child list, forward to each
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.
@@ -636,7 +657,8 @@ void TView::SubtractPosAndDispatchToOwnerSlot19C(int* point) {
   ownerContext->SubtractPosAndDispatchToOwnerSlot19C(point);
 }
 
-// KNOWN LINKER ARTIFACT: 0x004064e2 is `jmp TView::TView`.
+// KNOWN ILT (retired): 0x004064e2 is a 5-byte `jmp TView::TView` linker stub — not ported.
+// Real ctor: TView::TView @ 0x0048a8e0.
 // Offset a rect by this control's owner offset (its position within the owner).
 // FUNCTION: IMPERIALISM 0x0048bb00
 void TView::OffsetRectByControlPosition(RECT* rect) {

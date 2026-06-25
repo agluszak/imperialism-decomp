@@ -43,9 +43,7 @@ undefined4 scanBracketExpressions(void);
 undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 AssignStringSharedRefAndReturnThis(void);
 undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void);
-undefined4 InitializeTextEntryBaseAndOptionalStringResource(void);
 undefined4 BuildUiTextStyleDescriptor(void);
-undefined4 InitializeUiResourceEntryFrameAndParent(void);
 
 namespace MacViewUiInvoke {
 
@@ -64,32 +62,10 @@ static void InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup(void) {
       reinterpret_cast<void (*)()>(RunEnableAndProcessFlagWithScopedSharedStringCleanup))();
 }
 
-static void InitializeTextEntryBaseAndOptionalStringResource(TMyStaticText* textEntry,
-                                                             TControl* panel, int* layout0,
-                                                             int* layout1, int arg3, int arg4,
-                                                             int arg5) {
-  reinterpret_cast<void(__cdecl*)(TMyStaticText*, TControl*, int*, int*, int, int, int)>(
-      reinterpret_cast<void (*)()>(InitializeTextEntryBaseAndOptionalStringResource))(
-      textEntry, panel, layout0, layout1, arg3, arg4, arg5);
-}
-
 static void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int arg3) {
   reinterpret_cast<void(__cdecl*)(void*, int, int, int)>(
       reinterpret_cast<void (*)()>(BuildUiTextStyleDescriptor))(styleDescriptor, unused, arg2,
                                                                  arg3);
-}
-
-static void InitializeUiResourceEntryFrameAndParent(TRightLeftView* view, int unused, TControl* panel,
-                                                    int* layout0, int* layout1, int arg4,
-                                                    int arg5) {
-  reinterpret_cast<void(__cdecl*)(TRightLeftView*, int, TControl*, int*, int*, int, int)>(
-      reinterpret_cast<void (*)()>(InitializeUiResourceEntryFrameAndParent))(
-      view, unused, panel, layout0, layout1, arg4, arg5);
-}
-
-static void InitializeUiResourceEntryFrameAndParent(TRightLeftView* view, int unused, TControl* panel,
-                                                    int* layout0, int* layout1) {
-  InitializeUiResourceEntryFrameAndParent(view, unused, panel, layout0, layout1, 5, 5);
 }
 
 } // namespace MacViewUiInvoke
@@ -1144,8 +1120,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int layoutPos = 0x3c;
     int layoutAnchor = 0xa2;
     int layoutOuter = 0x12;
-    MacViewUiInvoke::InitializeTextEntryBaseAndOptionalStringResource(
-        textEntry, panel, &layoutAnchor, &layoutHeight, 5, 5, -1);
+    textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &layoutAnchor, &layoutHeight,
+                                                                5, 5, -1, 0);
 
     TControlPictureRectState styleDescriptor;
     MacViewUiInvoke::BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1456,8 +1432,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   leftSource->DispatchUiCommand19ToParent();
 
   TRightLeftView* leftView = new TRightLeftView();
-  MacViewUiInvoke::InitializeUiResourceEntryFrameAndParent(leftView, 0, panel, leftLayout1,
-                                                           leftLayout0);
+  leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
   SetControlCommandTagAt1c(leftView, kTagArrowLeft);
 
   TControl* rightSource = ResolveTaggedChildOrFail(panel, kTagArrowRight);
@@ -1467,8 +1442,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   rightSource->DispatchUiCommand19ToParent();
 
   TRightLeftView* rightView = new TRightLeftView();
-  MacViewUiInvoke::InitializeUiResourceEntryFrameAndParent(rightView, 0, panel, rightLayout1,
-                                                           rightLayout0);
+  rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);
   SetControlCommandTagAt1c(rightView, kTagArrowRight);
 
   TMyStaticText* textEntry = new TMyStaticText();
@@ -1478,8 +1452,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   int textPos = 0x98;
   int textAnchor = 0x46;
   int textOuter = 0x12;
-  MacViewUiInvoke::InitializeTextEntryBaseAndOptionalStringResource(
-      textEntry, panel, &textPos, &textHeight, 5, 5, -1);
+  textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5, -1,
+                                                              0);
 
   TControlPictureRectState styleDescriptor;
   MacViewUiInvoke::BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1498,8 +1472,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int valueWidth = 0x14;
     int valuePos = 0x3c;
     int valueAnchor = 0x32;
-    MacViewUiInvoke::InitializeTextEntryBaseAndOptionalStringResource(
-        valueEntry, panel, &valuePos, &valueHeight, 5, 5, -1);
+    valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5, 5,
+                                                               -1, 0);
     valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
     valueEntry->OrphanCallChain_C1_I09_0048ff70();
     SetControlCommandTagAt1c(valueEntry, kTagDetailValue);

@@ -36,6 +36,9 @@ public:
   int field5c;
 
   TView();
+  void InitializeUiResourceEntryFrameAndParent(int ownerContext, TControl* panel, int* offsetLayout,
+                                               int* sizeLayout, int layoutParam6, int layoutParam7,
+                                               int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(const CString& sharedString);

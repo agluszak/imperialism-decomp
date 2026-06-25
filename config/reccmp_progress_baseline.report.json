@@ -9,7 +9,7 @@
     {
       "address": "0x401730",
       "matching": 0.0,
-      "name": "TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage",
+      "name": "thunk_RunControlStringProviderAndDispatchLocalizedMessage",
       "type": 1
     },
     {
@@ -212,7 +212,7 @@
     },
     {
       "address": "0x4064e2",
-      "matching": 0.4,
+      "matching": 0.0,
       "name": "thunk_ConstructTViewBaseState",
       "type": 1
     },
@@ -320,8 +320,8 @@
     },
     {
       "address": "0x4087fb",
-      "matching": 0.4,
-      "name": "TControl::thunk_ConstructUiCommandTagResourceEntryBase",
+      "matching": 0.0,
+      "name": "thunk_ConstructUiCommandTagResourceEntryBase",
       "type": 1
     },
     {
@@ -4313,7 +4313,7 @@
     },
     {
       "address": "0x48aa60",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InitializeUiResourceEntryFrameAndParent",
       "type": 1
     },
@@ -5226,13 +5226,13 @@
     },
     {
       "address": "0x48fd00",
-      "matching": 0.0,
+      "matching": 0.6538461538461539,
       "name": "InitializeTextEntryBaseAndOptionalStringResource",
       "type": 1
     },
     {
       "address": "0x48fe60",
-      "matching": 0.0,
+      "matching": 0.06060606060606061,
       "name": "TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate",
       "type": 1
     },
@@ -15717,7 +15717,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.16666666666666666,
+      "matching": 0.18761061946902655,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -26687,7 +26687,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45320197044334976,
+      "matching": 0.4729064039408867,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },

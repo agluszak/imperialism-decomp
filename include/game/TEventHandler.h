@@ -7,6 +7,7 @@
 
 class CArchive;
 class TView;
+class TControl;
 class TEvent;
 
 //

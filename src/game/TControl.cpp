@@ -25,11 +25,6 @@ undefined4 FromHandle(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
 extern "C" char LAB_00409a9d;
 
-// FUNCTION: IMPERIALISM 0x004087fb
-void __fastcall ConstructTControlBaseStateThunk(TControl* self) {
-  new (self) TControl();
-}
-
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::QuerySelectedIndexSlotBC() {
   return hasCommandTagResource;
@@ -71,7 +66,7 @@ CRuntimeClass* TControl::GetRuntimeClass() const {
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : hasCommandTagResource(1), commandTagResourceByte(0), contentMargins68(),
+    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), contentMargins68(),
       commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
       commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
       commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
@@ -210,7 +205,8 @@ undefined TControl::ReturnZeroFromUiSlot6C() {
   return 0;
 }
 
-// KNOWN LINKER ARTIFACT: 0x004087fb is `jmp TControl::TControl`.
+// KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
+// Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetHasCommandTagResource(int value) {

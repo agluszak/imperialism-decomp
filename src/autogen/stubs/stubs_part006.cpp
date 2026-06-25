@@ -123,6 +123,14 @@ undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
   return 0;
 }
 
+// ghidra_name TControl::thunk_ConstructUiCommandTagResourceEntryBase
+// ghidra_proto undefined thunk_ConstructUiCommandTagResourceEntryBase()
+// FUNCTION: IMPERIALISM 0x004087fb
+undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void)
+{
+  return 0;
+}
+
 // ghidra_name TToolBarCluster::thunk_RefreshMapOrderEntryPanel
 // ghidra_proto void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00408995

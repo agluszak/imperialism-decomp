@@ -2243,14 +2243,6 @@ undefined4 CreateTViewInstance(void)
   return 0;
 }
 
-// ghidra_name InitializeUiResourceEntryFrameAndParent
-// ghidra_proto undefined InitializeUiResourceEntryFrameAndParent()
-// FUNCTION: IMPERIALISM 0x0048aa60
-undefined4 InitializeUiResourceEntryFrameAndParent(void)
-{
-  return 0;
-}
-
 // ghidra_name TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
 // ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
 // FUNCTION: IMPERIALISM 0x0048add0

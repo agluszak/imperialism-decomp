@@ -47,7 +47,10 @@ TObject* TStaticText::ShallowClone() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048fe60
-undefined TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate() {
+undefined TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
+                                                                      char refreshNow) {
+  (void)sharedString;
+  (void)refreshNow;
   return 0;
 }
 

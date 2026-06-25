@@ -22,7 +22,8 @@ public:
 
   // TStaticText's five new virtuals beyond TControl (which ends at byte 0x1c0).
   virtual undefined OrphanCallChain_C1_I09_0048ff70();           // 0x1c4 0x48ff70
-  virtual undefined AssignTextSharedRefIfChangedAndMaybeInvalidate(); // 0x1c8 0x48fe60
+  virtual undefined AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
+                                                                 char refreshNow); // 0x1c8 0x48fe60
   virtual undefined LoadUiStringAndDispatchViaVslot1C8();        // 0x1cc 0x48fed0
   virtual undefined AssignSharedStringFromField84();             // 0x1d0 0x4294d0
   virtual undefined RenderControlStateTextBySelectionCode();     // 0x1d4 0x4900a0

@@ -275,3 +275,11 @@ undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(
   return 0;
 }
 
+// ghidra_name thunk_ConstructTViewBaseState
+// ghidra_proto void __thiscall thunk_ConstructTViewBaseState(void)
+// FUNCTION: IMPERIALISM 0x004064e2
+undefined4 thunk_ConstructTViewBaseState(void)
+{
+  return 0;
+}
+

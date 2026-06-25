@@ -259,14 +259,6 @@ undefined4 TStaticText(void)
   return 0;
 }
 
-// ghidra_name InitializeTextEntryBaseAndOptionalStringResource
-// ghidra_proto undefined InitializeTextEntryBaseAndOptionalStringResource()
-// FUNCTION: IMPERIALISM 0x0048fd00
-undefined4 InitializeTextEntryBaseAndOptionalStringResource(void)
-{
-  return 0;
-}
-
 // ghidra_name TEditText::CreateTEditTextInstance
 // ghidra_proto undefined CreateTEditTextInstance()
 // FUNCTION: IMPERIALISM 0x00490210
