@@ -25,3 +25,16 @@ CRuntimeClass* TSortedList::GetRuntimeClass() const {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// Real default constructor: the TObject/TPtrList bases set their vptrs and construct the
+// embedded CPtrList (default block size 10); TSortedList then stamps its own vptr. Replaces
+// the inline no-op ctor and the fake __fastcall sentinel-init bridge in TGreatPower.cpp.
+// This out-of-line copy is FPO (no ebp frame) like the original.
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+// FUNCTION: IMPERIALISM 0x004a8640
+TSortedList::TSortedList() {}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

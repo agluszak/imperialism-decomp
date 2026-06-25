@@ -49,6 +49,14 @@ TCity::TCity() {
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}
 
+// Body not yet ported (2210B production/building-table init); declared real so the
+// TGreatPower ctor dispatches it as a real __thiscall member instead of a fake
+// __fastcall bridge over the ILT thunk.
+// FUNCTION: IMPERIALISM 0x004b2570
+void TCity::InitializeCityProductionState(int initialProductionMode) {
+  (void)initialProductionMode;
+}
+
 // FUNCTION: IMPERIALISM 0x004b30a0
 void TCity::ReadFrom(TStream* stream) {
   (void)stream;

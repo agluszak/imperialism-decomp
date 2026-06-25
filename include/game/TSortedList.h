@@ -11,7 +11,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // VTABLE: IMPERIALISM 0x00648ee0
 struct TSortedList : public TPtrList {
   CRuntimeClass* GetRuntimeClass() const override;
-  TSortedList() {}
+  TSortedList(); // 0x004a8640: sets vptr + constructs the embedded CPtrList (block size 10)
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }

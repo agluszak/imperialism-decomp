@@ -144,10 +144,7 @@ void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
 void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
-undefined4 thunk_InitializeCityProductionState(void);
-undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
 undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
-undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
@@ -168,6 +165,7 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/nation_stream_serialization.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
+#include "game/TSortedList.h"
 #include "game/TPtrList.h"
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
@@ -329,14 +327,6 @@ static __inline short DecodeSecondaryNationOwnerSlot(const TMinor* secondaryNati
   return ownerNationSlot;
 }
 
-static __inline void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void* gameFlowState,
-                                                                           int nationSlot) {
-  void(__fastcall * clearPendingBit)(void*, int, int) =
-      reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-          thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry);
-  clearPendingBit(gameFlowState, 0, nationSlot);
-}
-
 static __inline int ClampNonNegative(int value) {
   return (value < 0) ? 0 : value;
 }
@@ -382,13 +372,9 @@ static __inline TPtrList* AllocateBattleListOwnerWithPtrListSentinel(void) {
 }
 
 static __inline TPtrList* AllocateBattleListOwnerWithLinkedSentinel(void) {
-  TPtrList* owner = new TPtrList();
-  if (owner != 0) {
-    reinterpret_cast<void(__fastcall*)(void*, int)>(
-        WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640)(
-        static_cast<void*>(&owner->listState), 0);
-  }
-  return owner;
+  // The original allocates a TSortedList and runs its real ctor (0x004a8640). Construct
+  // one directly instead of faking the ctor via an __fastcall dummy-edx bridge.
+  return new TSortedList();
 }
 
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
@@ -637,8 +623,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   void* cityModel = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
   if (cityModel != 0) {
     reinterpret_cast<TCity*>(cityModel)->TCity::TCity();
-    reinterpret_cast<void(__fastcall*)(int, int)>(thunk_InitializeCityProductionState)(
-        reinterpret_cast<int>(cityModel), arg1);
+    reinterpret_cast<TCity*>(cityModel)->InitializeCityProductionState(arg1);
   }
   this->city = static_cast<TCity*>(cityModel);
 

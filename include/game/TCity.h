@@ -127,6 +127,9 @@ public:
 
   int GetBuildingProductionValueBySlot(short buildingSlot);
 
+  // 0x004b2570: initialize production arrays and build the city entry-object tables.
+  void InitializeCityProductionState(int initialProductionMode);
+
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }

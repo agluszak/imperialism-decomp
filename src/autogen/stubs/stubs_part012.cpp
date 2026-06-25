@@ -635,14 +635,6 @@ undefined4 WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
-// ghidra_proto undefined WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640()
-// FUNCTION: IMPERIALISM 0x004a8640
-undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004a8740
 // ghidra_proto undefined WrapperFor_ftol_At004a8740()
 // FUNCTION: IMPERIALISM 0x004a8740
@@ -1255,14 +1247,6 @@ undefined4 WrapperFor_ftol_At004b20a0(void)
 // ghidra_proto undefined DestructTLaborPoolAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b2190
 undefined4 DestructTLaborPoolAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityProductionState
-// ghidra_proto undefined InitializeCityProductionState()
-// FUNCTION: IMPERIALISM 0x004b2570
-undefined4 InitializeCityProductionState(void)
 {
   return 0;
 }

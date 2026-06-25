@@ -616,6 +616,7 @@ address|target_cpp|ownership|note
 4a8430|src/game/TArmyStackList.cpp|manual|marker_sync
 4a84c0|src/game/TArmyStackList.cpp|manual|marker_sync
 4a8560|src/game/TArmyStackList.cpp|manual|marker_sync
+4a8640|src/game/TSortedList.cpp|manual|marker_sync
 4a87f0|src/game/TGarrisonView.cpp|manual|marker_sync
 4a8840|src/game/TGarrisonView.cpp|manual|marker_sync
 4a8a20|src/game/TGarrisonView.cpp|manual|marker_sync
@@ -717,6 +718,7 @@ address|target_cpp|ownership|note
 4b24b0|src/game/TCity.cpp|manual|marker_sync
 4b2520|src/game/TCity.cpp|manual|marker_sync
 4b2550|src/game/TCity.cpp|manual|marker_sync
+4b2570|src/game/TCity.cpp|manual|marker_sync
 4b3050|src/game/TPopGrowthOrder.cpp|manual|marker_sync
 4b30a0|src/game/TCity.cpp|manual|marker_sync
 4b35d0|src/game/TCity.cpp|manual|marker_sync
