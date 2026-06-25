@@ -4,6 +4,9 @@
 #include "game/TObject.h"
 
 class TGreatPower;
+class TStream;
+class TZone;
+struct CRuntimeClass;
 
 // Navy primary-order list node (global head g_pNavyPrimaryOrderListHead @ 0x6A3EDC).
 // TShip() prepends to the intrusive doubly-linked list; SumNavyOrderPriorityForNation
@@ -30,7 +33,12 @@ public:
   int field34;
 
   TShip();
-  void DestroyAndUnlinkNavyPrimaryOrderNode();
+  ~TShip() override;
+
+  CRuntimeClass* GetRuntimeClass() const override;
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
 };
 
 ASSERT_SIZE(TShip, 0x38);
@@ -44,7 +52,6 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);
 
-class TZone;
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride);
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

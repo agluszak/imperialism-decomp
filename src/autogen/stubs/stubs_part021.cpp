@@ -11,14 +11,6 @@ undefined4 CallCallbackNTimes(void)
   return 0;
 }
 
-// ghidra_name FreeHeapBlockWithAllocatorTracking
-// ghidra_proto undefined FreeHeapBlockWithAllocatorTracking()
-// FUNCTION: IMPERIALISM 0x005e7f50
-undefined4 FreeHeapBlockWithAllocatorTracking(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocateHeapBlockWithAllocatorTracking
 // ghidra_proto undefined ReallocateHeapBlockWithAllocatorTracking()
 // FUNCTION: IMPERIALISM 0x005e7fc0
@@ -31,14 +23,6 @@ undefined4 ReallocateHeapBlockWithAllocatorTracking(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e81a0()
 // FUNCTION: IMPERIALISM 0x005e81a0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e81a0(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateWithGlobalNewMode
-// ghidra_proto undefined AllocateWithGlobalNewMode()
-// FUNCTION: IMPERIALISM 0x005e8310
-undefined4 AllocateWithGlobalNewMode(void)
 {
   return 0;
 }
@@ -3599,22 +3583,6 @@ undefined4 WrapperFor_ThrowMfcResourceException_At00606f4e(void)
 // ghidra_proto undefined AfxSetNewHandler()
 // FUNCTION: IMPERIALISM 0x00606f5f
 undefined4 AfxSetNewHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateWithFallbackHandler
-// ghidra_proto undefined AllocateWithFallbackHandler()
-// FUNCTION: IMPERIALISM 0x00606f73
-undefined4 AllocateWithFallbackHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeHeapBufferIfNotNull
-// ghidra_proto undefined FreeHeapBufferIfNotNull()
-// FUNCTION: IMPERIALISM 0x00606faf
-undefined4 FreeHeapBufferIfNotNull(void)
 {
   return 0;
 }

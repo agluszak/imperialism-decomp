@@ -3,8 +3,10 @@
 #include "game/TAdmiral.h"
 #include "game/TGreatPower.h"
 #include "game/TZone.h"
+#include "game/TStream.h"
 #include "game/GameAssert.h"
 #include "game/diplomacy_globals.h"
+#include "game/map_action_context_helpers.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
 
@@ -16,6 +18,7 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 extern char g_industryActionCostWeightResCode10;
+CRuntimeClass g_pClassDescTShip = {nullptr, 0, 0, nullptr, nullptr};
 char g_ResourceDescriptorWeightWord0Base0069811c[0x24 * 64] = {0};
 
 extern "C" {
@@ -24,6 +27,8 @@ extern short g_Calculate_Mission_Order_LookupTable_0069810C[];
 extern short g_Navy_Order_Priority_LookupTable_00698118[];
 extern short g_Task_Force_Order_LookupTable_00698110[];
 }
+
+extern undefined4 FindMapActionContextByNodeId(void);
 
 static short SignedMod100(short value) {
   return (short)((value / 100 + (value >> 15)) -
@@ -62,6 +67,11 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   return sum;
 }
 
+// FUNCTION: IMPERIALISM 0x0054f4e0
+CRuntimeClass* TShip::GetRuntimeClass() const {
+  return &g_pClassDescTShip;
+}
+
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
     : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), linkContext0c(0),
@@ -75,8 +85,12 @@ TShip::TShip()
 }
 
 
+// SYNTHETIC: IMPERIALISM 0x0054f5c0
+// TShip::`scalar deleting destructor'
+TShip::~TShip() {}
+
 // FUNCTION: IMPERIALISM 0x0054f640
-void TShip::DestroyAndUnlinkNavyPrimaryOrderNode() {
+void TShip::Free() {
   if (g_pNavyPrimaryOrderListHead == this) {
     g_pNavyPrimaryOrderListHead = this->nextOlder24;
   }
@@ -87,58 +101,36 @@ void TShip::DestroyAndUnlinkNavyPrimaryOrderNode() {
     this->prevNewer28->nextOlder24 = this->nextOlder24;
   }
   displayName18.~CString();
-  operator delete(static_cast<void*>(this));
+  delete this;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
+// FUNCTION: IMPERIALISM 0x0054fab0
+void TShip::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&resourceType04, 2);
+  stream->WriteBytesSlot78(&quantityFlag10, 4);
+  stream->WriteBytesSlot78(&ownerNationSlot14, 2);
+  stream->streamSlotAc(&displayName18);
+  stream->WriteBytesSlot78(&stockLevel1c, 2);
+  stream->WriteBytesSlot78(&field34, 4);
+  stream->WriteBytesSlot78(&field30, 2);
+  short zoneIndex = GetShortAtOffset14OrInvalid(field08);
+  stream->WriteBytesSlot78(&zoneIndex, 2);
+}
 
-// FUNCTION: IMPERIALISM 0x0054f8e0
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
-                                                      int nationSlot, char* displayNameOverride) {
-  if (*NavyZoneOrderDescriptorEnabledFlagPtr(zoneIndex) < 0) {
-    return 0;
-  }
-
-  TShip* shipNode = new TShip();
-
-  if (shipNode == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag();
-    return 0;
-  }
-
-  shipNode->field08 = portZoneContext;
-  shipNode->resourceType04 = zoneIndex;
-  shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
-
-  if (displayNameOverride == 0) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[zoneIndex]), &shipNode->displayName18);
-    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
-         existing = existing->nextOlder24) {
-      if (existing != shipNode &&
-          CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
-              reinterpret_cast<unsigned char*>(
-                  (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
-        RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
-        break;
-      }
-    }
-  } else {
-    CString temp(displayNameOverride);
-    shipNode->displayName18 = temp;
-  }
-
-  shipNode->stockLevel1c = *NavyZoneOrderDescriptorStockCapPtr(zoneIndex);
-
-  if (portZoneContext != 0) {
-    portZoneContext->HandleKeyDown(nationSlot);
-  }
-
-  return shipNode;
+// FUNCTION: IMPERIALISM 0x0054fb50
+void TShip::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&resourceType04, 2);
+  stream->ReadBytes(&quantityFlag10, 4);
+  stream->ReadBytes(&ownerNationSlot14, 2);
+  stream->ReadBytes(&displayName18, 0x20);
+  stream->ReadBytes(&stockLevel1c, 2);
+  stream->ReadBytes(&field34, 4);
+  stream->ReadBytes(&field30, 2);
+  short zoneIndex = 0;
+  stream->ReadBytes(&zoneIndex, 2);
+  field08 = reinterpret_cast<TZone*(__cdecl*)(short)>(FindMapActionContextByNodeId)(zoneIndex);
 }
 
 #if defined(_MSC_VER)

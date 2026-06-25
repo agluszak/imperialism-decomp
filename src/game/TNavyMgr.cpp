@@ -49,7 +49,7 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
       TShip* cursor = node;
       if (node->ownerNationSlot14 == nationSlot) {
         cursor = node->nextOlder24;
-        node->DestroyAndUnlinkNavyPrimaryOrderNode();
+        node->Free();
         node = cursor;
         if (node != 0) {
           continue;

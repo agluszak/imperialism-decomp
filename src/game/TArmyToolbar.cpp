@@ -11,7 +11,7 @@
 #endif
 
 extern "C" {
-char g_pClassDescTArmyToolbar;
+CRuntimeClass g_pClassDescTArmyToolbar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
@@ -92,30 +92,25 @@ TArmyToolbar* __cdecl CreateTArmyToolbarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058dec0
-void* __cdecl GetTArmyToolbarClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTArmyToolbar);
+CRuntimeClass* TArmyToolbar::GetRuntimeClass() const {
+  return &g_pClassDescTArmyToolbar;
 }
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 TArmyToolbar* __fastcall ConstructTArmyToolbarBaseState(TArmyToolbar* toolbar) {
-  (void)toolbar;
-  return new TArmyToolbar();
-}
-
-// FUNCTION: IMPERIALISM 0x0058df10
-TArmyToolbar* __fastcall DestructTArmyToolbarAndMaybeFree(TArmyToolbar* toolbar, int unusedEdx,
-                                                          unsigned char freeSelfFlag) {
-  (void)unusedEdx;
   toolbar->~TArmyToolbar();
-  if ((freeSelfFlag & 1) != 0) {
-    delete toolbar;
-  }
+  new (toolbar) TArmyToolbar();
   return toolbar;
 }
 
+// SYNTHETIC: IMPERIALISM 0x0058df10
+// TArmyToolbar::`scalar deleting destructor'
+TArmyToolbar::~TArmyToolbar() {}
+
 // FUNCTION: IMPERIALISM 0x0058e1c0
-void __stdcall HandleMapContextActionArmyRatioAndModeCommands(int commandId,
-                                                              ArmyCommandPayload* payload) {
+void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  (void)sourceHandler;
+  ArmyCommandPayload* payload = reinterpret_cast<ArmyCommandPayload*>(event);
   unsigned int controlTag = payload->controlTag;
 
   if ((kTagArmyRatioMin <= controlTag) && (controlTag <= kTagArmyRatioMax)) {

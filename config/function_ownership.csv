@@ -2087,7 +2087,7 @@ address|target_cpp|ownership|note
 54f500|src/game/TShip.cpp|manual|marker_sync
 54f5c0|src/game/TShip.cpp|manual|marker_sync
 54f640|src/game/TShip.cpp|manual|marker_sync
-54f8e0|src/game/TShip.cpp|manual|marker_sync
+54f8e0|src/game/tship_navy_order_node.cpp|manual|marker_sync
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
@@ -3243,6 +3243,8 @@ address|target_cpp|ownership|note
 5e6dd6|src/game/CArchive.cpp|manual|marker_sync
 5e6ea2|src/game/CBrush.cpp|manual|marker_sync
 5e7980|src/game/CString.cpp|manual|marker_sync
+5e7f50|src/game/mfc_heap_library.cpp|manual|marker_sync
+5e8310|src/game/mfc_heap_library.cpp|manual|marker_sync
 601b74|src/game/CPlex.cpp|manual|marker_sync
 601b94|src/game/CPlex.cpp|manual|marker_sync
 601baa|src/game/CPtrArray.cpp|manual|marker_sync
@@ -3317,6 +3319,8 @@ address|target_cpp|ownership|note
 606d04|src/game/TTechStorePage.cpp|manual|marker_sync
 606d09|src/game/TTechStorePage.cpp|manual|marker_sync
 606ddd|src/game/CCmdUI.cpp|manual|marker_sync
+606f73|src/game/mfc_heap_library.cpp|manual|marker_sync
+606faf|src/game/mfc_heap_library.cpp|manual|marker_sync
 606fba|src/game/CObject.cpp|manual|marker_sync
 606fc0|src/game/CObject.cpp|manual|marker_sync
 606fd2|src/game/CObject.cpp|manual|marker_sync

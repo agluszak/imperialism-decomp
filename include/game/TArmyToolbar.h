@@ -1,14 +1,20 @@
 #pragma once
 
-#include "game/TUberCluster.h"
+#include "game/TUnitToolbarCluster.h"
+
+struct CRuntimeClass;
 
 // Army map-context toolbar cluster (0x8c bytes).
 // VTABLE: IMPERIALISM 0x00667ad0
-class TArmyToolbar : public TUberCluster {
+class TArmyToolbar : public TUnitToolbarCluster {
 public:
   int field88;
 
-  TArmyToolbar() : TUberCluster(), field88(0) {}
+  TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}
+  ~TArmyToolbar() override;
+
+  CRuntimeClass* GetRuntimeClass() const override;
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 };
 
 ASSERT_SIZE(TArmyToolbar, 0x8c);
