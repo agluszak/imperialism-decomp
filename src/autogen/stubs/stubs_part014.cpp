@@ -27,14 +27,6 @@ undefined4 WrapperFor_ftol_At004e6a40(void)
   return 0;
 }
 
-// ghidra_name CreateAutoGreatPowerNationState
-// ghidra_proto undefined CreateAutoGreatPowerNationState()
-// FUNCTION: IMPERIALISM 0x004e6a70
-undefined4 CreateAutoGreatPowerNationState(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeNationMinisterSubsystemsByPolicyIds
 // ghidra_proto undefined InitializeNationMinisterSubsystemsByPolicyIds()
 // FUNCTION: IMPERIALISM 0x004e6c20

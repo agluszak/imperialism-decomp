@@ -1,7 +1,6 @@
 address|name|size|type|prototype
 401122|thunk_TPictureButton::TPictureButton|5|function|undefined TPictureButton()
 4019ba|thunk_InvalidateMapRegionForOrderEntry|5|function|undefined thunk_InvalidateMapRegionForOrderEntry()
-401e65|thunk_DestructTViewBaseState_005885F0|5|function|void __thiscall thunk_DestructTViewBaseState_005885F0(void)
 4020fe|thunk_ReleaseHashIndexedRecordByHandle|5|function|undefined thunk_ReleaseHashIndexedRecordByHandle()
 40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C|5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
 4024fa|thunk_NoOpQuickDrawLifecycleHookB|5|function|undefined thunk_NoOpQuickDrawLifecycleHookB()

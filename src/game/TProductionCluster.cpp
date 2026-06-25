@@ -38,7 +38,8 @@ CRuntimeClass* TProductionCluster::GetRuntimeClass() const {
 }
 
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {
-  return new TProductionCluster();
+  ::new (static_cast<void*>(cluster)) TProductionCluster();
+  return cluster;
 }
 
 TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,

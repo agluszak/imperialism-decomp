@@ -4,10 +4,7 @@
 
 struct CRuntimeClass;
 
-// Sound subsystem controller — a TEventHandler fork (same construction/teardown pattern as
-// TApplication), not a TView/TControl descendant. Construct only runs the
-// TEventHandler header defaults (InitializeUiResourceEntryBaseHeaderDefaults in the
-// original), then installs vtable 0x668a60. Size 0x84.
+// Sound subsystem controller (TEventHandler descendant). Size 0x84.
 // VTABLE: IMPERIALISM 0x668a60
 class TSoundPlayer : public TEventHandler {
 public:
@@ -27,13 +24,14 @@ public:
   char pad81[0x03];
 
   TSoundPlayer();
+  TSoundPlayer* ConstructTSoundPlayerBaseState();
   CRuntimeClass* GetRuntimeClass() const override;
 
   // TSoundPlayer overrides of TEventHandler slots.
   void Free() override;                                     // 0x07 -> 0x5e51d0
   char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
 
-  // TSoundPlayer-introduced slots (0x25+), matching TApplication fork layout.
+  // TSoundPlayer-introduced slots (0x25+).
   virtual void InitializeSoundSubsystemAndAllocateChannelLists(int param_1); // 0x25 -> 0x5e4e70
   virtual unsigned char ReturnConstantTrue_SoundPredicate();                 // 0x26 -> 0x5e4f60
   virtual unsigned char ReturnConstantFalse_SoundPredicate(int a, int b);    // 0x27 -> 0x5e4fb0

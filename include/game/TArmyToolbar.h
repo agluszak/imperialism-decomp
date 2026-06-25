@@ -13,6 +13,7 @@ public:
   TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}
   ~TArmyToolbar() override;
 
+  TArmyToolbar* ConstructTArmyToolbarBaseState();
   CRuntimeClass* GetRuntimeClass() const override;
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 };

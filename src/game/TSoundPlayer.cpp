@@ -24,7 +24,6 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
-undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void);
 undefined4 InitializePacketHeaderFields_Tag20202020(void);
 undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void);
 undefined4 EnsureCdAudioDeviceHandleInitialized(void);
@@ -73,27 +72,21 @@ CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
   return &g_pClassDescTSoundPlayer;
 }
 
-// Fork-class construction: the binary calls InitializeUiResourceEntryBaseHeaderDefaults
-// (TEventHandler field defaults) then installs the TSoundPlayer vptr — same pattern as
-// TApplication @ 0x00486760, not TControl::TControl().
-TSoundPlayer::TSoundPlayer() {
-  typedef void(__fastcall * InitHeader)(undefined4 * self);
-  reinterpret_cast<InitHeader>(InitializeUiResourceEntryBaseHeaderDefaults)(
-      reinterpret_cast<undefined4*>(this));
-  this->runtimePeerAt6c = 0;
-  this->runtimePeerAt70 = 0;
-  this->stateByte78 = 0;
-  this->stateByte79 = 0;
-  this->stateByte7a = 0;
-  this->stateDword7c = 0;
-}
+TSoundPlayer::TSoundPlayer()
+    : TEventHandler(),
+      runtimePeerAt6c(0),
+      runtimePeerAt70(0),
+      stateByte78(0),
+      stateByte79(0),
+      stateByte7a(0),
+      stateDword7c(0) {}
 
 
 
 // FUNCTION: IMPERIALISM 0x00593370
-TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
-  (void)storage;
-  return new TSoundPlayer();
+TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
+  ::new (static_cast<void*>(this)) TSoundPlayer();
+  return this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005933b0
@@ -103,8 +96,8 @@ TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
 #pragma optimize("", on)
 #endif
 
-// Partial teardown writes the runtime-object base vptr, symmetric with header-only
-// construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
+// Partial teardown writes the runtime-object base vptr, symmetric with TEventHandler
+// construction via the normal base ctor chain.
 
 
 // FUNCTION: IMPERIALISM 0x005933e0

@@ -67,14 +67,6 @@ undefined4 thunk_ReturnConstantTrueQuickDrawFlag(void)
   return 0;
 }
 
-// ghidra_name thunk_AssignStringSharedRefAndReturnThis
-// ghidra_proto undefined thunk_AssignStringSharedRefAndReturnThis()
-// FUNCTION: IMPERIALISM 0x004076b7
-undefined4 thunk_AssignStringSharedRefAndReturnThis(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_RebuildMinorNationDispositionLookupTables
 // ghidra_proto undefined thunk_RebuildMinorNationDispositionLookupTables()
 // FUNCTION: IMPERIALISM 0x004079aa
@@ -99,34 +91,10 @@ undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
   return 0;
 }
 
-// ghidra_name thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
-// ghidra_proto undefined thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation()
-// FUNCTION: IMPERIALISM 0x0040824c
-undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_FindReachableRecruitSpawnTileWithVisitedReset
-// ghidra_proto undefined thunk_FindReachableRecruitSpawnTileWithVisitedReset()
-// FUNCTION: IMPERIALISM 0x00408251
-undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_NormalizeWrappedMapCoord108x60
 // ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
 // FUNCTION: IMPERIALISM 0x00408328
 undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::thunk_ConstructUiCommandTagResourceEntryBase
-// ghidra_proto undefined thunk_ConstructUiCommandTagResourceEntryBase()
-// FUNCTION: IMPERIALISM 0x004087fb
-undefined4 thunk_ConstructUiCommandTagResourceEntryBase(void)
 {
   return 0;
 }

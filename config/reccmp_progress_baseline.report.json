@@ -7,12 +7,6 @@
       "type": 1
     },
     {
-      "address": "0x401730",
-      "matching": 0.0,
-      "name": "thunk_RunControlStringProviderAndDispatchLocalizedMessage",
-      "type": 1
-    },
-    {
       "address": "0x4019ba",
       "matching": 0.0,
       "name": "thunk_InvalidateMapRegionForOrderEntry",
@@ -21,7 +15,7 @@
     {
       "address": "0x401e65",
       "matching": 0.0,
-      "name": "thunk_DestructTViewBaseState_005885F0(class TView *)",
+      "name": "thunk_DestructTViewBaseState_005885F0(void)",
       "type": 1
     },
     {
@@ -34,12 +28,6 @@
       "address": "0x40231a",
       "matching": 0.0,
       "name": "TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C",
-      "type": 1
-    },
-    {
-      "address": "0x4023d3",
-      "matching": 0.0,
-      "name": "thunk_InitializeCityProductionState",
       "type": 1
     },
     {
@@ -121,12 +109,6 @@
       "type": 1
     },
     {
-      "address": "0x403968",
-      "matching": 0.0,
-      "name": "thunk_StepHexTileIndexByDirectionWithWrapRules",
-      "type": 1
-    },
-    {
       "address": "0x403bb6",
       "matching": 0.0,
       "name": "thunk_DrawCenteredGuideLineOnMapDc",
@@ -151,21 +133,9 @@
       "type": 1
     },
     {
-      "address": "0x404e30",
-      "matching": 0.0,
-      "name": "thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry",
-      "type": 1
-    },
-    {
       "address": "0x404e99",
       "matching": 0.0,
       "name": "thunk_CreateMissionObjectByKindAndNodeContext",
-      "type": 1
-    },
-    {
-      "address": "0x4051f0",
-      "matching": 0.0,
-      "name": "thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks",
       "type": 1
     },
     {
@@ -202,18 +172,6 @@
       "address": "0x405e16",
       "matching": 0.0,
       "name": "thunk_RenderTerrainAndMinorNationLegendLabels",
-      "type": 1
-    },
-    {
-      "address": "0x40638e",
-      "matching": 0.0,
-      "name": "thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter",
-      "type": 1
-    },
-    {
-      "address": "0x4064e2",
-      "matching": 0.0,
-      "name": "thunk_ConstructTViewBaseState",
       "type": 1
     },
     {
@@ -271,12 +229,6 @@
       "type": 1
     },
     {
-      "address": "0x4076b7",
-      "matching": 0.0,
-      "name": "thunk_AssignStringSharedRefAndReturnThis",
-      "type": 1
-    },
-    {
       "address": "0x4079aa",
       "matching": 0.0,
       "name": "thunk_RebuildMinorNationDispositionLookupTables",
@@ -301,27 +253,9 @@
       "type": 1
     },
     {
-      "address": "0x40824c",
-      "matching": 0.0,
-      "name": "thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation",
-      "type": 1
-    },
-    {
-      "address": "0x408251",
-      "matching": 0.0,
-      "name": "thunk_FindReachableRecruitSpawnTileWithVisitedReset",
-      "type": 1
-    },
-    {
       "address": "0x408328",
       "matching": 0.0,
       "name": "thunk_NormalizeWrappedMapCoord108x60",
-      "type": 1
-    },
-    {
-      "address": "0x4087fb",
-      "matching": 0.0,
-      "name": "thunk_ConstructUiCommandTagResourceEntryBase",
       "type": 1
     },
     {
@@ -4102,7 +4036,7 @@
     },
     {
       "address": "0x48a100",
-      "matching": 0.2,
+      "matching": 0.15384615384615385,
       "name": "InitializeUiResourceEntryBaseHeaderDefaults",
       "type": 1
     },
@@ -4997,7 +4931,7 @@
     },
     {
       "address": "0x48e520",
-      "matching": 0.3888888888888889,
+      "matching": 0.4444444444444444,
       "name": "TControl::TControl",
       "type": 1
     },
@@ -10874,7 +10808,7 @@
     },
     {
       "address": "0x4d0560",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "ConstructEngineerDialog",
       "type": 1
     },
@@ -11552,7 +11486,7 @@
     },
     {
       "address": "0x4d8cc0",
-      "matching": 0.3648351648351648,
+      "matching": 0.36923076923076925,
       "name": "TGreatPower::InitializeNationStateRuntimeSubsystems",
       "type": 1
     },
@@ -11636,7 +11570,7 @@
     },
     {
       "address": "0x4dab20",
-      "matching": 0.5025906735751295,
+      "matching": 0.5077720207253886,
       "name": "ExecuteNationPendingActionStateMachine",
       "type": 1
     },
@@ -11714,7 +11648,7 @@
     },
     {
       "address": "0x4dc540",
-      "matching": 0.703030303030303,
+      "matching": 0.7272727272727273,
       "name": "TGreatPower::CompareMissionScoreVariantsByMode",
       "type": 1
     },
@@ -11883,7 +11817,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12219,7 +12153,7 @@
     },
     {
       "address": "0x4dfae0",
-      "matching": 0.753968253968254,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::CreateAndQueueFrogCityMarkerForNationTile",
       "type": 1
     },
@@ -12327,7 +12261,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12837,7 +12771,7 @@
     },
     {
       "address": "0x4e6a70",
-      "matching": 0.06060606060606061,
+      "matching": 0.4,
       "name": "CreateAutoGreatPowerNationState",
       "type": 1
     },
@@ -12855,7 +12789,7 @@
     },
     {
       "address": "0x4e6b50",
-      "matching": 0.0625,
+      "matching": 0.625,
       "name": "TAutoGreatPower::ConstructTAutoGreatPowerBaseState",
       "type": 1
     },
@@ -14175,7 +14109,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5238095238095238,
+      "matching": 0.5178571428571429,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -14751,7 +14685,7 @@
     },
     {
       "address": "0x4fec80",
-      "matching": 0.3157894736842105,
+      "matching": 0.3508771929824561,
       "name": "TDisplayMgr::DispatchDisplayManagerControlStringMessage",
       "type": 1
     },
@@ -15717,7 +15651,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18584070796460178,
+      "matching": 0.17876106194690267,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -22264,7 +22198,7 @@
     },
     {
       "address": "0x55fb60",
-      "matching": 0.34285714285714286,
+      "matching": 0.3619047619047619,
       "name": "TZone::SetMapActionContextTargetTileAndRefreshMarkers",
       "type": 1
     },
@@ -22288,13 +22222,13 @@
     },
     {
       "address": "0x55ff70",
-      "matching": 0.37735849056603776,
+      "matching": 0.3849056603773585,
       "name": "TZone::ScoreCoastalTileForContextAndCityStateAffinity",
       "type": 1
     },
     {
       "address": "0x560150",
-      "matching": 0.3532219570405728,
+      "matching": 0.35799522673031026,
       "name": "TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35_35",
       "type": 1
     },
@@ -22642,7 +22576,7 @@
     },
     {
       "address": "0x563990",
-      "matching": 0.6060606060606061,
+      "matching": 0.6147186147186147,
       "name": "TraceTerrainFlowToNearestSeaTile",
       "type": 1
     },
@@ -25048,7 +24982,7 @@
     },
     {
       "address": "0x57ab70",
-      "matching": 0.9411764705882353,
+      "matching": 0.9705882352941176,
       "name": "TTextList::CreateTTextListInstance",
       "type": 1
     },
@@ -25744,7 +25678,8 @@
     },
     {
       "address": "0x583f30",
-      "matching": 0.75,
+      "effective": true,
+      "matching": 0.875,
       "name": "TRightLeftView::ConstructTRightLeftViewBaseState",
       "type": 1
     },
@@ -26441,7 +26376,7 @@
     },
     {
       "address": "0x588580",
-      "matching": 0.9166666666666666,
+      "matching": 1.0,
       "name": "TAmtBar::ConstructBaseState",
       "type": 1
     },
@@ -27035,7 +26970,7 @@
     },
     {
       "address": "0x58c2a0",
-      "matching": 0.9,
+      "matching": 1.0,
       "name": "TNumberedArrowButton::TNumberedArrowButton",
       "type": 1
     },
@@ -27131,7 +27066,7 @@
     },
     {
       "address": "0x58dee0",
-      "matching": 0.5263157894736842,
+      "matching": 0.6666666666666666,
       "name": "TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z",
       "type": 1
     },
@@ -27161,7 +27096,7 @@
     },
     {
       "address": "0x58e3c0",
-      "matching": 0.7142857142857143,
+      "matching": 0.8571428571428571,
       "name": "TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z",
       "type": 1
     },
@@ -27425,7 +27360,7 @@
     },
     {
       "address": "0x593370",
-      "matching": 0.10526315789473684,
+      "matching": 0.45454545454545453,
       "name": "TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z",
       "type": 1
     },
@@ -30329,7 +30264,7 @@
     },
     {
       "address": "0x5b5cb0",
-      "matching": 0.0,
+      "matching": 0.4067796610169492,
       "name": "TInfoBarPictureText::SerializeRecordList_0x0C_WithBlockPool_A",
       "type": 1
     },
@@ -30437,7 +30372,7 @@
     },
     {
       "address": "0x5b66b0",
-      "matching": 0.0,
+      "matching": 0.39080459770114945,
       "name": "TInfoBarText::SerializeRecordList_0x0C_WithBlockPool_A",
       "type": 1
     },

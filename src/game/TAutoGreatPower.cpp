@@ -67,6 +67,8 @@ static __inline int ProposalQueue_ReadCount(void* queue) {
 }
 
 
+
+
 // FUNCTION: IMPERIALISM 0x004e6b10
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
 
@@ -90,7 +92,8 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 
 // FUNCTION: IMPERIALISM 0x004e6b50
 void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
-  return new TAutoGreatPower();
+  ::new (static_cast<void*>(this)) TAutoGreatPower();
+  return this;
 }
 
 

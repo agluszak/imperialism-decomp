@@ -113,6 +113,8 @@ public:
   void* ConstructTAutoGreatPowerBaseState(void);
 };
 
+TGreatPower* CreateAutoGreatPowerNationState(void);
+
 // === BEGIN GENERATED (TAutoGreatPower) — refreshed by `just gen-class TAutoGreatPower`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x00654088 (180 slots), object size 0xb70, base TGreatPower

@@ -1,6 +1,5 @@
 address|target_cpp|ownership|note
 401c0d|src/game/TCapacityOrder.cpp|manual|marker_sync
-401e65|src/game/TAmtBar.cpp|manual|marker_sync
 4021ee|src/game/TSimMgr.cpp|manual|marker_sync
 402d1a|src/game/TSimMgr.cpp|manual|marker_sync
 402eeb|src/game/TUnit.cpp|manual|marker_sync
@@ -293,6 +292,7 @@ address|target_cpp|ownership|note
 489f40|src/game/TEvent.cpp|manual|marker_sync
 48a070|src/game/TEventHandler.cpp|manual|marker_sync
 48a0e0|src/game/TEventHandler.cpp|manual|marker_sync
+48a100|src/game/TEventHandler.cpp|manual|marker_sync
 48a130|src/game/TEventHandler.cpp|manual|marker_sync
 48a1b0|src/game/TEventHandler.cpp|manual|marker_sync
 48a240|src/game/TEventHandler.cpp|manual|marker_sync
@@ -1293,6 +1293,7 @@ address|target_cpp|ownership|note
 4e6680|src/game/TTurnStartEvent.cpp|manual|marker_sync
 4e66f0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e6740|src/game/TLandSaleEvent.cpp|manual|marker_sync
+4e6a70|src/game/tauto_great_power_factory.cpp|manual|marker_sync
 4e6b10|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b30|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b50|src/game/TAutoGreatPower.cpp|manual|marker_sync

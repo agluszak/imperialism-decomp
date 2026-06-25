@@ -97,10 +97,9 @@ CRuntimeClass* TArmyToolbar::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0058dee0
-TArmyToolbar* __fastcall ConstructTArmyToolbarBaseState(TArmyToolbar* toolbar) {
-  toolbar->~TArmyToolbar();
-  new (toolbar) TArmyToolbar();
-  return toolbar;
+TArmyToolbar* TArmyToolbar::ConstructTArmyToolbarBaseState() {
+  ::new (static_cast<void*>(this)) TArmyToolbar();
+  return this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0058df10

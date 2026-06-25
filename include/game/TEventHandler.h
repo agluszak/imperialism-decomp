@@ -33,6 +33,9 @@ public:
 
   static void CreateTEventHandlerInstance(TEventHandler* handler);
 
+  // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
+  void InitializeUiResourceEntryBaseHeaderDefaults();
+
   // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"
   // hierarchy is MFC DECLARE_DYNAMIC rooted at CObject). Every descendant overrides it
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain

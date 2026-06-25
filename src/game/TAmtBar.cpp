@@ -19,13 +19,6 @@ extern "C" CRuntimeClass g_pClassDescTAmtBar = {nullptr, 0, 0, nullptr, nullptr}
 
 
 
-// FUNCTION: IMPERIALISM 0x00401e65
-void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
-  amountBar->~TView();
-}
-
-
-
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   (void)requestedValue;

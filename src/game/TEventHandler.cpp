@@ -45,6 +45,14 @@ CRuntimeClass* TEventHandler::GetRuntimeClass() const {
   return &PTR_s_TEventHandler_00649588;
 }
 
+// Binary helper @ 0x48a100: same header field defaults as TEventHandler().
+// FUNCTION: IMPERIALISM 0x0048a100
+void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults() {
+  field0c = 0;
+  field10 = 0x7fffffff;
+  field14 = 0;
+}
+
 // Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
 // destructor at 0x0048a130 is emitted by the compiler from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0048a130

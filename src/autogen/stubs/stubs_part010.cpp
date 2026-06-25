@@ -2203,14 +2203,6 @@ undefined4 RemoveUiListEntryByOwnerIdAndRecycleStorage(void)
   return 0;
 }
 
-// ghidra_name InitializeUiResourceEntryBaseHeaderDefaults
-// ghidra_proto undefined InitializeUiResourceEntryBaseHeaderDefaults()
-// FUNCTION: IMPERIALISM 0x0048a100
-undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTEventHandlerAndMaybeFree_Impl
 // ghidra_proto undefined DestructTEventHandlerAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0048a160
