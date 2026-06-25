@@ -12,7 +12,8 @@ starting that kind of task.
 ## Skills (how to do each workflow)
 
 - **`decomp-loop`** — the core function-porting loop (promote → shape pass → data
-  pass → build → compare). Its `heuristics.md` is the 85-entry matching playbook.
+  pass → build → compare). Its `heuristics.md` is the running matching playbook
+  (numbered notes + appended lessons).
 - **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
@@ -177,6 +178,15 @@ examples, and rationale: `docs/reference/construction.md`.
 
 ## Type-modeling guardrail
 
+- **Use the correct type, and the real MFC type when the data is one.** Model a field,
+  parameter, or local as the actual type the original used — not `int`, raw
+  `unsigned char[]` storage, or a hand-rolled struct standing in for a known type. When
+  the layout/behaviour is an MFC class, declare it as that MFC type (`CString`,
+  `CPtrList`/`CObList`/`CObArray`/`CTypedPtrList`, `CPoint`/`CRect`/`RECT`, `CWnd`,
+  `CArchive`, `CRuntimeClass`, …) so members construct correctly and call sites use the
+  real API instead of walking protected internals (see the `mfc-collections` skill and
+  construction Hard Rule 5). A `reinterpret_cast` to reach a method is the smell that the
+  underlying type is mismodelled.
 - **Never borrow a type from a neighbouring signature.** A parameter labelled `TEvent*`
   on one method does not make the object passed there a `TEvent`. Confirm the object's
   real class first (its constructor/vtable, `config/recovered_globals.csv`, `symbols.csv`,
