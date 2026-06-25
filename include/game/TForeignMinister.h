@@ -29,7 +29,7 @@ public:
   virtual void MinisterSlot1C();
   virtual void MinisterSlot1D();
   virtual void MinisterSlot1E();
-  virtual void MinisterSlot1F();
+  virtual void MinisterSlot1F(short queueIndex); // byte 0x7c: processes a queued proposal row
   virtual void Call80();
   virtual void MinisterSlot21();
   virtual char MinisterSlot22();

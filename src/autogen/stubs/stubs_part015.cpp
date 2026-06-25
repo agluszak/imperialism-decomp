@@ -419,14 +419,6 @@ undefined4 RecomputeTileStrategicScoreHeatmap(void)
   return 0;
 }
 
-// ghidra_name ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl
-// ghidra_proto undefined ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl()
-// FUNCTION: IMPERIALISM 0x00518470
-undefined4 ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpRuntimeCallback_005184e0
 // ghidra_proto undefined NoOpRuntimeCallback_005184e0()
 // FUNCTION: IMPERIALISM 0x005184e0

@@ -1419,14 +1419,6 @@ undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At005b7d90(void)
   return 0;
 }
 
-// ghidra_name ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl
-// ghidra_proto undefined ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl()
-// FUNCTION: IMPERIALISM 0x005b7f50
-undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I50_005b7fc0
 // ghidra_proto undefined OrphanCallChain_C3_I50_005b7fc0()
 // FUNCTION: IMPERIALISM 0x005b7fc0

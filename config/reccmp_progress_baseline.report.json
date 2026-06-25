@@ -11883,7 +11883,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12141,7 +12141,7 @@
     },
     {
       "address": "0x4de860",
-      "matching": 0.411214953271028,
+      "matching": 0.41198501872659177,
       "name": "TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers",
       "type": 1
     },
@@ -12315,13 +12315,13 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12333,13 +12333,13 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12375,7 +12375,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15717,7 +15717,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.15899955337204108,
+      "matching": 0.15721304153640017,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16581,7 +16581,7 @@
     },
     {
       "address": "0x518470",
-      "matching": 0.0,
+      "matching": 0.9285714285714286,
       "name": "ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl",
       "type": 1
     },
@@ -17931,7 +17931,7 @@
     },
     {
       "address": "0x530fa0",
-      "matching": 0.0,
+      "matching": 0.021505376344086023,
       "name": "TForeignMinister::ValidateProposalSelectionAndQueueEvent1C",
       "type": 1
     },
@@ -30533,7 +30533,7 @@
     },
     {
       "address": "0x5b7f50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl",
       "type": 1
     },

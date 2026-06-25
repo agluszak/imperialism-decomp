@@ -413,6 +413,23 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
 }
 
 
+// FUNCTION: IMPERIALISM 0x00518470
+void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
+  signed char* tileBase = tileOwnershipTable;
+  signed char* tagCursor = tileBase + 4;
+  int tileIndex = 0;
+  do {
+    if (*tagCursor >= 7 && *tagCursor <= 0x16) {
+      signed char* ownerByte = tileOwnershipTable + static_cast<short>(tileIndex) * 0x24 + 0x18;
+      if (*ownerByte == nationSlot) {
+        *ownerByte = -1;
+      }
+    }
+    tagCursor += 0x24;
+    ++tileIndex;
+  } while (tileIndex < 0x1950);
+}
+
 // FUNCTION: IMPERIALISM 0x00518960
 void TMapMgr::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;

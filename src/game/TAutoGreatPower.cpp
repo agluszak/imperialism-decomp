@@ -62,45 +62,6 @@ static __inline void SwapShortArrayBytes(void* base, int count) {
 
 #include "game/TQueueObject.h"
 
-class TMinisterProposalReplayView {
-public:
-  virtual void dummy00() = 0;
-  virtual void dummy01() = 0;
-  virtual void dummy02() = 0;
-  virtual void dummy03() = 0;
-  virtual void dummy04() = 0;
-  virtual void dummy05() = 0;
-  virtual void dummy06() = 0;
-  virtual void dummy07() = 0;
-  virtual void dummy08() = 0;
-  virtual void dummy09() = 0;
-  virtual void dummy0a() = 0;
-  virtual void dummy0b() = 0;
-  virtual void dummy0c() = 0;
-  virtual void dummy0d() = 0;
-  virtual void dummy0e() = 0;
-  virtual void dummy0f() = 0;
-  virtual void dummy10() = 0;
-  virtual void dummy11() = 0;
-  virtual void dummy12() = 0;
-  virtual void dummy13() = 0;
-  virtual void dummy14() = 0;
-  virtual void dummy15() = 0;
-  virtual void dummy16() = 0;
-  virtual void dummy17() = 0;
-  virtual void dummy18() = 0;
-  virtual void dummy19() = 0;
-  virtual void dummy1a() = 0;
-  virtual void dummy1b() = 0;
-  virtual void dummy1c() = 0;
-  virtual void dummy1d() = 0;
-  virtual void dummy1e() = 0;
-  virtual void QueueProposalRowSlot7C(int queueIndex) = 0;
-
-protected:
-  ~TMinisterProposalReplayView() {}
-};
-
 static __inline int ProposalQueue_ReadCount(void* queue) {
   return static_cast<TQueueObject*>(queue)->GetEntryCount();
 }
@@ -472,8 +433,7 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int rowIndex = 1;
   if (ProposalQueue_ReadCount(this->proposalQueue) >= rowIndex) {
     do {
-      reinterpret_cast<TMinisterProposalReplayView*>(this->foreignMinister)
-          ->QueueProposalRowSlot7C(rowIndex);
+      this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
       ++rowIndex;
     } while (rowIndex <= ProposalQueue_ReadCount(this->proposalQueue));
   }

@@ -313,7 +313,7 @@ void TForeignMinister::MinisterSlot1D() {}
 void TForeignMinister::MinisterSlot1B() {}
 
 // FUNCTION: IMPERIALISM 0x00530fa0
-void TForeignMinister::MinisterSlot1F() {}
+void TForeignMinister::MinisterSlot1F(short) {}
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}

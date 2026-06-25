@@ -150,7 +150,11 @@ public:
   // covers the TObject head; tile/city tables are heap-backed pointers below.
   TTerrainStateRecordView* terrainStateTable; // +0x08
   TGlobalMapCityScoreRecord* cityScoreTable;  // +0x0c
-  unsigned char pad10[4];
+  // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
+  // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Compiled at struct offset
+  // +0x0c (cityScoreTable lands at +0x08); previously an unnamed pad. Full record layout
+  // is unknown, so accessed via byte offsets.
+  signed char* tileOwnershipTable;
   int cityScoreTotal;                         // +0x14
   char* scenarioTagText1c;                    // +0x1c
   char hexNeighborWrapHorizontally20;         // +0x20
@@ -175,6 +179,11 @@ public:
   void NotifyCityRecordSlot12C(int cityRecordIndex);
   void LinkRegionToNationSlot134(int regionId, int nationSlot);
   void AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest);
+
+  // Join-empire (mode 0) reset: walk the +0x0c tile table (0x24-byte records, one per
+  // tile) and clear the owner-nation byte (+0x18) wherever it matches nationSlot for
+  // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
+  void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
 
   TMapMgr();
 };

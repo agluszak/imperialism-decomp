@@ -142,10 +142,8 @@ void NoOpNationDiplomacyCallback(void);
 void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
 void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
 void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
-undefined4 ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
-undefined4 ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl(void);
 undefined4 thunk_InitializeCityProductionState(void);
 undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
 undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
@@ -375,10 +373,9 @@ static __inline int ComputeAvailableDiplomacyBudget(const TGreatPower* self) {
   return ClampNonNegative(self->treasuryValue10 + self->diplomacyBudgetBase / 100);
 }
 
-static __inline char IsSpecialNationInteractionResource(short resourceIndex) {
-  return reinterpret_cast<char(__stdcall*)(short)>(
-      ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl)(resourceIndex);
-}
+// Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
+// predicate: returns 1 when the resource index is in [13,16].
+char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
 static __inline TPtrList* AllocateBattleListOwnerWithPtrListSentinel(void) {
   return new TPtrList();
@@ -453,11 +450,6 @@ static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
   return reinterpret_cast<unsigned int(__cdecl*)(void)>(GenerateThreadLocalRandom15)();
 }
 
-static __inline void ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(void* globalMapState,
-                                                                  int nationSlot) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl)(globalMapState, 0, nationSlot);
-}
 
 static __inline void QueueNationPairWarTransition(TDiplomacyMgr* diplomacyManager,
                                                   short sourceNation, short targetNation) {
@@ -3180,7 +3172,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     g_pNavyOrderManager->RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(
         this->nationSlot);
   }
-  ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(g_pGlobalMapState, this->nationSlot);
+  g_pGlobalMapState->ApplyJoinEmpireMode0GlobalDiplomacyReset(this->nationSlot);
 
   TSimMgr* localizationTable = g_pLocalizationTable;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
@@ -5108,3 +5100,17 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
 
 int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
 void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}
+
+// Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";
+// the body is a pure range predicate (no resource delta, no nation totals), renamed by
+// behavior per Hard Rule 6. Genuinely __stdcall (RET 0x4, single stacked short, no ecx);
+// FPO leaf (no ebp frame) so it is wrapped in the frame-pointer-omission pragma.
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x005b7f50
+char __stdcall IsSpecialNationInteractionResource(short resourceIndex) {
+  if (resourceIndex >= 0xD && resourceIndex <= 0x10) {
+    return 1;
+  }
+  return 0;
+}
+#pragma optimize("", on)

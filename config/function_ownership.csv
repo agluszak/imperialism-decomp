@@ -1730,6 +1730,7 @@ address|target_cpp|ownership|note
 5177f0|src/game/TMapMgr.cpp|manual|marker_sync
 5178c0|src/game/TMapMgr.cpp|manual|marker_sync
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
+518470|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync
 519b30|src/game/TMapDialog.cpp|manual|marker_sync
@@ -3076,6 +3077,7 @@ address|target_cpp|ownership|note
 5b7830|src/game/TTown.cpp|manual|marker_sync
 5b7a20|src/game/TDealList.cpp|manual|marker_sync
 5b7a90|src/game/TDealList.cpp|manual|marker_sync
+5b7f50|src/game/TGreatPower.cpp|manual|marker_sync
 5b8d70|src/game/TDealList.cpp|manual|marker_sync
 5b8fe0|src/game/TDealList.cpp|manual|marker_sync
 5b94d0|src/game/TDealList.cpp|manual|marker_sync
