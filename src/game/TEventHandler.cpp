@@ -6,6 +6,7 @@
 #pragma optimize("y", on)
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
+#include "game/TCommand.h"
 #include "game/TFileStream.h"
 #include "game/TView.h"
 #include "game/TApplication.h"
@@ -67,10 +68,10 @@ void TEventHandler::Free() {
     }
   }
   field0c = 0;
-  if (field18 != 0) {
-    reinterpret_cast<TEventHandler*>(field18)->Free();
+  if (resourceOwner != 0) {
+    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
   }
-  field18 = 0;
+  resourceOwner = 0;
   delete this;
 }
 
@@ -124,17 +125,23 @@ void TEventHandler::ForwardParam(int param) {
 // command's payload words (cmd+0x08, cmd+0x0c) plus the command itself, then the command
 // is released via slot 0x07.
 // FUNCTION: IMPERIALISM 0x0048a3b0
-void TEventHandler::vmethod_0013(int* cmd) {
-  reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<TEventHandler*>(cmd[3]),
-                                                  reinterpret_cast<TEvent*>(cmd));
-  if (cmd != 0) {
-    reinterpret_cast<TView*>(cmd)->Free();
+void TEventHandler::DispatchQueuedUiCommandAndRelease(void* payload) {
+  // Polymorphic dispatch slot: this base interprets the opaque payload as a TCommand
+  // (other overrides interpret it differently, e.g. TView passes a RECT). The target
+  // handler dispatches the command's message + source handler, with the command
+  // object itself passed where DoEvent expects a TEvent* (TCommand and TEvent are
+  // distinct classes, hence the single pun cast), then frees it.
+  TCommand* command = static_cast<TCommand*>(payload);
+  command->targetHandler->DispatchEvent(command->dispatchMessage, command->sourceHandler,
+                                        reinterpret_cast<TEvent*>(command));
+  if (command != 0) {
+    command->Free();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a3f0
-void TEventHandler::vmethod_0014(int command) {
-  vmethod_0013(reinterpret_cast<int*>(command));
+void TEventHandler::DispatchUiSelectionToHandler(void* payload) {
+  DispatchQueuedUiCommandAndRelease(payload);
 }
 
 // FUNCTION: IMPERIALISM 0x0048a480
@@ -143,11 +150,11 @@ char TEventHandler::CanHandleCityDialogActionFalse(int action) {
   return 0;
 }
 
-// If the given object is our currently-linked field18 target, detach it both ways.
+// If the given object is our currently-linked resourceOwner target, detach it both ways.
 // FUNCTION: IMPERIALISM 0x0048a4a0
 void TEventHandler::vmethod_0033(int arg) {
-  if (field18 != 0 && field18 == arg) {
-    field18 = 0;
+  if (resourceOwner != 0 && resourceOwner == arg) {
+    resourceOwner = 0;
     *reinterpret_cast<int*>(arg + 8) = 0;
   }
 }
@@ -156,7 +163,7 @@ void TEventHandler::vmethod_0033(int arg) {
 // FUNCTION: IMPERIALISM 0x0048a4d0
 void TEventHandler::SetUiResourceOwner(int owner) {
   if (owner != 0) {
-    field18 = owner;
+    resourceOwner = owner;
     *reinterpret_cast<int*>(owner + 8) = reinterpret_cast<int>(this);
   }
 }

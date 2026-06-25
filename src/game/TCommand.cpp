@@ -8,7 +8,8 @@ CRuntimeClass* TCommand::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00487820
-TCommand::TCommand() : field04(0), field08(0), field0c(0), field10(0), field14(0) {}
+TCommand::TCommand()
+    : commandNumber(0), dispatchMessage(0), sourceHandler(0), targetHandler(0), targetContext(0) {}
 
 // Vtable-shape placeholder bodies (the real slot implementations live elsewhere;
 // these exist so the class emits its native vtable and derived classes can
@@ -19,19 +20,19 @@ TCommand::TCommand() : field04(0), field08(0), field0c(0), field10(0), field14(0
 TCommand::~TCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004878a0
-void TCommand::InitializeRangePair(int arg1, int arg2, int arg3, int arg4, int arg5) {
+void TCommand::InitializeRangePair(int arg1, TEventHandler* arg2, int arg3, int arg4, int arg5) {
   (void)arg3;
   (void)arg4;
   (void)arg5;
-  int resolvedSecond = arg2;
-  if (resolvedSecond == 0) {
-    resolvedSecond = *reinterpret_cast<int*>(0x006a18e0);
+  TEventHandler* resolvedContext = arg2;
+  if (resolvedContext == 0) {
+    resolvedContext = *reinterpret_cast<TEventHandler**>(0x006a18e0);
   }
-  field0c = 0;
-  field08 = arg1;
-  field10 = resolvedSecond;
-  field04 = arg1;
-  field14 = resolvedSecond;
+  sourceHandler = 0;
+  dispatchMessage = arg1;
+  targetHandler = resolvedContext;
+  commandNumber = arg1;
+  targetContext = resolvedContext;
 }
 
 // FUNCTION: IMPERIALISM 0x004878e0

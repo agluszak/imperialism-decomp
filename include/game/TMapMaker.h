@@ -19,8 +19,8 @@ public:
   virtual char GetBoolSlot28();
   virtual void SetControlValue(int value);
   virtual int QueryStepValue();
-  virtual void vmethod_0013(int* cmd);
-  virtual void vmethod_0014(int command);
+  virtual void DispatchQueuedUiCommandAndRelease(void* payload);
+  virtual void DispatchUiSelectionToHandler(void* payload);
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void vmethod_0017(int param);

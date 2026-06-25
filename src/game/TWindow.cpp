@@ -331,7 +331,7 @@ void TWindow::ReturnFromUiSlot63(int arg1, int arg2) {
 }
 
 // Object teardown: destroy/notify the host CMcWindow, free all child controls, detach from
-// the owner, hand off the active-view slot, release the linked field18 target, then delete
+// the owner, hand off the active-view slot, release the linked resourceOwner target, then delete
 // self. Uses the real MFC CWnd/CObject surface (IsKindOf/AssertValid/dtor) directly.
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {
@@ -372,10 +372,10 @@ void TWindow::Free() {
     }
   }
   field0c = 0;
-  if (field18 != 0) {
-    reinterpret_cast<TEventHandler*>(field18)->Free();
+  if (resourceOwner != 0) {
+    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
   }
-  field18 = 0;
+  resourceOwner = 0;
   delete this;
 }
 

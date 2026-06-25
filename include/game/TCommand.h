@@ -5,6 +5,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class TEventHandler;
+
 // TObject-derived turn-event command base. Its constructor (0x00487820) installs
 // the 0x648e28 vtable and zeroes its five payload fields (the trivial TObject
 // base ctor is inlined). The native vtable is the TObject 10-slot shape plus the
@@ -18,18 +20,20 @@ public:
   virtual undefined NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(); // slot 0x0a byte 0x28 0x487900
   virtual undefined OrphanRetStub_00487a00(); // slot 0x0b byte 0x2c 0x487a00
 
-  int field04; // 0x04
-  int field08; // 0x08
-  int field0c; // 0x0c
-  int field10; // 0x10
-  int field14; // 0x14
+  // InitializeRangePair writes commandNumber==dispatchMessage and
+  // targetHandler==targetContext; whether the duplicates ever diverge is unconfirmed.
+  int commandNumber;            // 0x04
+  int dispatchMessage;          // 0x08 value handed to DoEvent as its message id
+  TEventHandler* sourceHandler; // 0x0c DoEvent's sourceHandler argument
+  TEventHandler* targetHandler; // 0x10 handler the command is dispatched on
+  TEventHandler* targetContext; // 0x14
 
   TCommand();
 
-  // 0x004878a0: seeds the range/cursor payload (resolving a default when the
-  // second argument is zero). Only the first two arguments are used; the native
-  // signature is a five-argument thiscall (RET 0x14).
-  void InitializeRangePair(int arg1, int arg2, int arg3, int arg4, int arg5);
+  // 0x004878a0: seeds the command payload (resolving a default context when the
+  // second argument is null). Only the first two arguments are used; the native
+  // signature is a five-argument thiscall (RET 0x14) matching TCommand::ICommand.
+  void InitializeRangePair(int arg1, TEventHandler* arg2, int arg3, int arg4, int arg5);
 
   virtual ~TCommand();
 };

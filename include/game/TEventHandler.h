@@ -26,10 +26,10 @@ public:
   int field0c;
   int field10;
   int field14;
-  int field18;
+  int resourceOwner;
   int controlTag; // 0x1c
 
-  TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), field18(0) {}
+  TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), resourceOwner(0) {}
 
   static void CreateTEventHandlerInstance(TEventHandler* handler);
 
@@ -44,8 +44,8 @@ public:
   virtual char GetBoolSlot28();            // 0x0a 0x48a240 GetCityDialogFlagByte4
   virtual void SetControlValue(int value); // 0x0b 0x48a260 SetCityDialogFlagByte4
   virtual int QueryStepValue();            // 0x0c 0x48a2c0 GetCityDialogValueDwordC
-  virtual void vmethod_0013(int* cmd);     // 0x0d 0x48a3b0
-  virtual void vmethod_0014(int command);  // 0x0e 0x48a3f0
+  virtual void DispatchQueuedUiCommandAndRelease(void* payload);                 // 0x0d 0x48a3b0
+  virtual void DispatchUiSelectionToHandler(void* payload); // 0x0e 0x48a3f0
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event); // 0x0f 0x48a280
   virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,

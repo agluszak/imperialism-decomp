@@ -25,7 +25,7 @@ int TMapMaker::QueryStepValue() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527300
-void TMapMaker::vmethod_0013(int* cmd) {
+void TMapMaker::DispatchQueuedUiCommandAndRelease(void* payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005274d0
@@ -36,7 +36,7 @@ void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEven
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::vmethod_0014(int command) {
+void TMapMaker::DispatchUiSelectionToHandler(void* payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x00527730

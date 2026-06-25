@@ -1,4 +1,5 @@
 #include "decomp_types.h"
+#include "game/diplomacy_globals.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TDisplayMgr.h"
@@ -21,7 +22,7 @@ TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
 TSimMgr* g_pLocalizationTable = 0;
 TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
-void* g_pGlobalUiRootController = 0;
+TApplication* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 TNavyMgr* g_pNavyOrderManager = 0;

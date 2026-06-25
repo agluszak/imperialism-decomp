@@ -91,7 +91,7 @@ void TApplication::TickEachTrackedEntry(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00486b50
-void TApplication::vmethod_0013(int* cmd) {}
+void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {}
 
 // FUNCTION: IMPERIALISM 0x00486ba0
 void TApplication::vmethod_0017(int param) {}

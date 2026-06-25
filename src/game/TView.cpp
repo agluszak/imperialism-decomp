@@ -117,8 +117,8 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
       archive->Read(&value, sizeof(value));
       int tail = field08;
       if (field10 == 0) {
-        int blockBase = AllocateAndLinkBlockHead(&field14, field18, 0xc);
-        int blockCount = field18;
+        int blockBase = AllocateAndLinkBlockHead(&field14, resourceOwner, 0xc);
+        int blockCount = resourceOwner;
         int* node = reinterpret_cast<int*>(blockBase + -8 + blockCount * 0xc);
         if (-1 < blockCount - 1) {
           do {
@@ -162,7 +162,7 @@ CRuntimeClass* TView::GetRuntimeClass() const {
 }
 
 // Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
-// and the base scalar fields (field0c/field10/field14/field18); MSVC then writes this
+// and the base scalar fields (field0c/field10/field14/resourceOwner); MSVC then writes this
 // class's vptr (0x00649858) and constructs TView's own members in declaration order.
 // The scalar fields are member-initializers (not body assignments) so they are emitted
 // before the CString member sharedStringRef is constructed (-> 0x00605797). No manual
@@ -364,10 +364,10 @@ void TView::Free() {
     }
   }
   field0c = 0;
-  if (field18 != 0) {
-    reinterpret_cast<TEventHandler*>(field18)->Free();
+  if (resourceOwner != 0) {
+    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
   }
-  field18 = 0;
+  resourceOwner = 0;
   delete this;
 }
 
@@ -608,8 +608,8 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
 
   if (BindMapQuickDrawDc(bindArg) != 0) {
     ApplyRectSlot110(&clippedRect);
-    if (field18 != 0) {
-      reinterpret_cast<TEventHandler*>(field18)->vmethod_0013(reinterpret_cast<int*>(&clippedRect));
+    if (resourceOwner != 0) {
+      reinterpret_cast<TEventHandler*>(resourceOwner)->DispatchQueuedUiCommandAndRelease(&clippedRect);
     }
     ReleaseMapQuickDrawDc(bindArg);
   }

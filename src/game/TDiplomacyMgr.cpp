@@ -10,7 +10,7 @@
 #include "game/TMinor.h"
 #include "game/TNextTradeCommand.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TTurnEventQueue.h"
+#include "game/TApplication.h"
 #include "game/TStream.h"
 #include "game/turn_event_packets.h"
 #include <new>
@@ -31,9 +31,9 @@ struct ScratchSharedString {
 };
 } // namespace
 
-static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int rangeStart,
-                                                       int rangeEnd) {
-  packet->InitializeRangePair(rangeStart, rangeEnd, 0, 0, 0);
+static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int eventTag,
+                                                       TApplication* owner) {
+  packet->InitializeRangePair(eventTag, owner, 0, 0, 0);
 }
 
 static __inline TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
@@ -775,9 +775,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
     if (propagatedTransition == 0) {
       TNextTradeCommand* packet = new TNextTradeCommand();
-      InitializeRangePairAndResetCursor(packet, kTurnEventTagNext,
-                                        reinterpret_cast<int>(g_pGlobalUiRootController));
-      reinterpret_cast<TTurnEventQueue*>(g_pGlobalUiRootController)->EnqueueSlot38(packet);
+      InitializeRangePairAndResetCursor(packet, kTurnEventTagNext, g_pGlobalUiRootController);
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
     }
   } else {
     bool isLocalizationOne = (g_pLocalizationTable->redrawEnabled == 1);

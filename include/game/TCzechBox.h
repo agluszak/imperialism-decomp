@@ -21,8 +21,8 @@ public:
   // slot 0x0a GetBoolSlot28 inherited unchanged (0x48a240)
   // slot 0x0b SetControlValue inherited unchanged (0x48a260)
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
-  // slot 0x0d vmethod_0013 inherited unchanged (0x48a3b0)
-  // slot 0x0e vmethod_0014 inherited unchanged (0x48a3f0)
+  // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
+  // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00571cb0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)

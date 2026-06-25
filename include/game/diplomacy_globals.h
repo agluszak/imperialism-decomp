@@ -15,6 +15,7 @@ class TInterNationEventQueueManager;
 extern "C" {
 class TGreatPower;
 class TMinor;
+class TApplication;
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
 extern TMinor* g_apSecondaryNationStateSlots[36];
@@ -26,7 +27,7 @@ extern void* g_apNationStates_End;
 extern TSimMgr* g_pLocalizationTable;
 extern TAssetMgr* g_pUiViewManager;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
-extern void* g_pGlobalUiRootController;
+extern TApplication* g_pGlobalUiRootController;
 extern void* g_pGameFlowState;
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;

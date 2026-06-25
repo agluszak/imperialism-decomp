@@ -50,7 +50,6 @@
 #include "game/diplomacy_globals.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TTurnEventQueue.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
@@ -4626,9 +4625,9 @@ void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, 
   packet.payload = payload;
   packet.flags = flags;
 
-  TTurnEventQueue* turnSummaryQueue = reinterpret_cast<TTurnEventQueue*>(this->turnSummaryQueue);
+  TQueueObject* turnSummaryQueue = this->turnSummaryQueue;
   if (turnSummaryQueue != 0) {
-    turnSummaryQueue->EnqueueSlot38(&packet);
+    turnSummaryQueue->AddEntrySlot38(&packet);
   }
 }
 

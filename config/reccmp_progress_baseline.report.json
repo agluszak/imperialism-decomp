@@ -3093,7 +3093,7 @@
     {
       "address": "0x486b50",
       "matching": 0.1111111111111111,
-      "name": "TApplication::vmethod_0013",
+      "name": "TApplication::DispatchQueuedUiCommandAndRelease",
       "type": 1
     },
     {
@@ -12321,7 +12321,7 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12333,13 +12333,13 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12375,7 +12375,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15717,7 +15717,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18761061946902655,
+      "matching": 0.18584070796460178,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17326,7 +17326,7 @@
     {
       "address": "0x527300",
       "matching": 0.034482758620689655,
-      "name": "TMapMaker::vmethod_0013",
+      "name": "TMapMaker::DispatchQueuedUiCommandAndRelease",
       "type": 1
     },
     {
@@ -17338,7 +17338,7 @@
     {
       "address": "0x5275a0",
       "matching": 0.03508771929824561,
-      "name": "TMapMaker::vmethod_0014",
+      "name": "TMapMaker::DispatchUiSelectionToHandler",
       "type": 1
     },
     {
