@@ -391,3 +391,20 @@ not just a marker-gate fail.
   names to `VTableSlotNN`; `render_header` pulls `game/mfc.h` + forward-declares game
   types; `compat.h` carries the Ghidra scalar typedefs. Bodies are the remaining
   per-class decomp-loop work; expect the aligned-100% count to dip until they're ported.
+
+- **Codegen-saturated TU fragility (symmetric x87 FP leaves cannot be pinned).** In a huge
+  TU like `TGreatPower.cpp`, small commutative float leaves of the form
+  `tableA[p->idx] + tableB[q->idx]` (e.g. the `ComputeMinisterSkillFloatSlot8*` family
+  0x4e0590–0x4e0690) sit at a codegen knife-edge: MSVC500 freely reorders the `fld`/`fadd`
+  operands, and which order it picks is sensitive to the *whole* TU. **Any** recompile of
+  that TU — editing the file *or* editing any header it `#include`s (even a one-token
+  virtual-parameter change in `TForeignMinister.h`) — can flip a previously-100% leaf to
+  42.86%. They **cannot be pinned from source**: `double v = A; return v + B;` still emits
+  `fld B; fadd A` because the optimizer reorders across the temporary. Practical
+  consequences: (1) the fake "view" facades and local `reinterpret_cast` bridges in the
+  GreatPower family are *deliberate workarounds* to dispatch/pass-args without recompiling
+  the fragile TU — "cleaning them up" trades those flips for architectural correctness
+  (Hard Rule 11), so batch all such edits into one TU recompile and get maintainer sign-off
+  on the regression; (2) the real de-risking fix is to split the fragile leaves into their
+  own small TU so future edits stop perturbing them. Always run full `just stats` (not just
+  the touched address) after editing a GreatPower-family file or its headers.
