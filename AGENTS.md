@@ -175,6 +175,33 @@ examples, and rationale: `docs/reference/construction.md`.
   `__fastcall` and keep the bridge out of primary method bodies — but first ask whether
   the right fix is to recover the owning class.
 
+## Type-modeling guardrail
+
+- **Never borrow a type from a neighbouring signature.** A parameter labelled `TEvent*`
+  on one method does not make the object passed there a `TEvent`. Confirm the object's
+  real class first (its constructor/vtable, `config/recovered_globals.csv`, `symbols.csv`,
+  or the Mac oracle) before typing or casting. Distinct classes that merely share a layout
+  region or a slot are *not* interchangeable — `PostCommand(TCommand*)` vs
+  `PostAnEvent(TEvent*)` in the Mac evidence proves `TCommand` ≠ `TEvent`, so a
+  `TCommand`→`TEvent*` cast is a genuine type pun, not an identity.
+- **An opaque/polymorphic vtable slot takes `void*`, not one caller's type.** When
+  different overrides interpret the same slot's argument differently (one caller passes a
+  `RECT*`, another a `TCommand*`), type the parameter `void*` and do the interpretation
+  (`static_cast<TCommand*>`) inside each override body. Every call site then converts
+  implicitly (cast-free); confine the one genuine cross-type pun to a single spot in the
+  body. Do not pick one caller's type and force the others to `reinterpret_cast`.
+- **Type pointer-bearing fields as typed pointers** (`TEventHandler* targetHandler`, not
+  `int field10`) and update the init helper's argument to match, so call sites pass real
+  objects via implicit upcast with no cast. Exception: a single offset reused as both an
+  `int` and a pointer in different methods must stay `int`/raw — do not force a pointer
+  type onto a dual-purpose slot.
+- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe.**
+  reccmp pairs by address and these casts compile to nothing, so aligning a C++ identifier
+  to the curated `symbols.csv` name (reuse it — don't invent a third) and tightening types
+  cannot regress a score; confirm with `just compare <addr>`. Update an override's
+  signature in lockstep with the base, or it silently stops overriding (`override` fails to
+  compile, or a new vtable slot is created).
+
 ## Commit-message policy
 
 **Pre-commit verification** (required before every commit):

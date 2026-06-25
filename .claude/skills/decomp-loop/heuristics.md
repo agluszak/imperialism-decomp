@@ -408,3 +408,43 @@ not just a marker-gate fail.
   on the regression; (2) the real de-risking fix is to split the fragile leaves into their
   own small TU so future edits stop perturbing them. Always run full `just stats` (not just
   the touched address) after editing a GreatPower-family file or its headers.
+
+## 17. Type safety: distinct classes, opaque slots, and cast-free call sites
+
+When a `reinterpret_cast` between two *named* classes looks necessary, stop — it is usually
+a modeling error, and the fix removes casts rather than relocating them.
+
+- **Don't infer an object's type from a neighbouring signature.** A method parameter typed
+  `TEvent*` does not make whatever is passed there a `TEvent`. Confirm the object's real
+  class from its constructor/vtable, `config/recovered_globals.csv`, `symbols.csv`, or the
+  Mac oracle *before* typing or casting. Worked example: `ProcessQueuedWarTransitions`
+  builds a `TNextTradeCommand` (a `TCommand`) and routes it through the slot-0x0d dispatcher
+  into `DoEvent`'s `TEvent*` argument. `TCommand` ≠ `TEvent` (Mac evidence:
+  `TApplication::PostCommand(TCommand*)` vs `PostAnEvent(TEvent*)`), so that is a genuine
+  command-as-event pun in the original — not a class identity. Keep that one cast, comment
+  it, and type everything else correctly.
+- **A polymorphic slot's parameter is `void*`.** If different overrides interpret the same
+  vtable slot's argument differently (slot 0x0d: the `TEventHandler` base reads a
+  `TCommand`, but a `TView` draw path passes a `RECT*` to the same slot), the honest base
+  signature is `void* payload`; do the interpretation (`static_cast<TCommand*>(payload)`)
+  inside each override body. Every call site then converts implicitly — `RECT*`, `TCommand*`,
+  `TNextTradeCommand*` all become `void*` with no cast — and the single irreducible pun
+  lives in one body. Picking one caller's type instead forces every other caller to
+  `reinterpret_cast`.
+- **Type pointer-bearing fields as typed pointers.** `TEventHandler* targetHandler` (not
+  `int field10`) plus a typed init-helper argument lets call sites pass real objects by
+  implicit upcast (`TApplication*` → `TEventHandler*`) with zero casts. This is the
+  field-promotion half of Hard Rule 8 applied to the *type*, not just the offset.
+- **But a dual-purpose offset stays raw.** `TEventHandler+0x18` is a resource-owner pointer
+  in the dtor / `SetUiResourceOwner` / detach / draw paths, yet an `int` block-pool count in
+  `TView::SerializeRecordList`. An offset read as both an `int` and a pointer in different
+  methods cannot be a pure pointer — keep it `int`/raw and accept the localized casts; don't
+  force a single pointer type and break the other reading.
+- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral, so verify and
+  proceed fearlessly.** reccmp pairs by address and these casts emit no bytes, so `just
+  compare <addr>` should be byte-identical before/after. Use this to (a) align the generic
+  `vmethodNN` C++ identifier to the curated `symbols.csv` name — reuse that name, don't
+  invent a third — and (b) tighten field/parameter types. One catch: update an override's
+  signature in lockstep with the base, or it silently stops overriding (`override` fails to
+  compile, or MSVC spins up a new vtable slot). The TU-fragility caveat in note 16 still
+  applies if the touched header feeds a codegen-saturated TU.
