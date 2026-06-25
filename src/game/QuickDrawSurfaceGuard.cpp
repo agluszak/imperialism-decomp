@@ -18,7 +18,8 @@ void* g_pReusableQuickDrawSurfaceListHead = 0;
 // FUNCTION: IMPERIALISM 0x00497320
 QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
   if (g_pReusableQuickDrawSurfaceListHead != 0) {
-    surfaceWrapper = reinterpret_cast<int>(g_pReusableQuickDrawSurfaceListHead);
+    surfaceWrapper =
+        reinterpret_cast<ClipStateRegionWrapper*>(g_pReusableQuickDrawSurfaceListHead);
     g_pReusableQuickDrawSurfaceListHead = 0;
     return;
   }
@@ -33,18 +34,23 @@ QuickDrawSurfaceGuard::QuickDrawSurfaceGuard() {
 // FUNCTION: IMPERIALISM 0x00497390
 QuickDrawSurfaceGuard::~QuickDrawSurfaceGuard() {
   if (g_pReusableQuickDrawSurfaceListHead != 0) {
-    int regionWrapper = surfaceWrapper;
+    ClipStateRegionWrapper* regionWrapper = surfaceWrapper;
     if (regionWrapper != 0) {
-      int regionHandle = *reinterpret_cast<int*>(regionWrapper);
+      ClipStateRegionInner* regionHandle = regionWrapper->inner;
       if (regionHandle != 0) {
         reinterpret_cast<void(__cdecl*)()>(WrapperFor_DeleteRegionHandleFromClipState_At00495520)();
-        FreeHeapBufferIfNotNull(regionHandle);
+        delete regionHandle;
+        regionWrapper->inner = 0;
       }
     }
-    FreeHeapBufferIfNotNull(regionWrapper);
+    delete regionWrapper;
     surfaceWrapper = 0;
     return;
   }
-  g_pReusableQuickDrawSurfaceListHead = reinterpret_cast<void*>(surfaceWrapper);
+  g_pReusableQuickDrawSurfaceListHead = surfaceWrapper;
   surfaceWrapper = 0;
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

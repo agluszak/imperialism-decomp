@@ -6,7 +6,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTArmyInfoView = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x00591500
 TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {

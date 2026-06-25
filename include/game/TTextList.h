@@ -4,7 +4,6 @@
 #include "game/TView.h"
 
 struct CRuntimeClass;
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 struct TTextListItem {
   char text[64];
@@ -26,12 +25,6 @@ public:
     totalItems = 0;
     scrollOffset = 0;
     selectedIndex = -1;
-  }
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
   }
 
   static TTextList* CreateTTextListInstance();

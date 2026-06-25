@@ -20,10 +20,8 @@
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
 undefined4 NoOpQuickDrawContextSelectionHook(void);
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
-undefined4 CreateClipStateRegionWrapperObject(void);
-undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
+#include "game/ClipStateRegion.h"
 undefined4 GetRegionBoxToRectIfPresent(void);
 
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
@@ -184,7 +182,7 @@ TView::TView()
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
   delete childList44;
-  FreeHeapBufferIfNotNull(field48);
+  delete[] field48;
 }
 // Recursively dispatch a control event: walk the field44 child list, forward to each
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.
@@ -457,16 +455,22 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     return;
   }
 
-  int* localRegion = reinterpret_cast<int*>(CreateClipStateRegionWrapperObject());
-  if (localRegion == 0 || *localRegion == 0) {
+  ClipStateRegionWrapper* localRegion = CreateClipStateRegionWrapperObject();
+  if (localRegion == 0 || localRegion->inner == 0) {
     return;
   }
 
   void* sourceRegion = 0;
   if (regionWrapper != 0 && *regionWrapper != -0x14) {
-    sourceRegion = *reinterpret_cast<void**>(*regionWrapper + 0x18);
+    ClipStateRegionWrapper* childWrapper =
+        reinterpret_cast<ClipStateRegionWrapper*>(*regionWrapper);
+    if (childWrapper != 0 && childWrapper->inner != 0) {
+      sourceRegion =
+          *reinterpret_cast<void**>(reinterpret_cast<char*>(childWrapper->inner) + 0x18);
+    }
   }
-  void* destRegion = *reinterpret_cast<void**>(*localRegion + 0x18);
+  void* destRegion =
+      *reinterpret_cast<void**>(reinterpret_cast<char*>(localRegion->inner) + 0x18);
   CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
 
   CPoint cachedPos;
@@ -549,11 +553,10 @@ void TView::ReleaseMapQuickDrawDc(int arg) {
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureField48Buffer() {
   if (field48 == 0) {
-    int* buffer = reinterpret_cast<int*>(AllocateWithFallbackHandler(8));
-    if (buffer != 0) {
-      buffer[0] = 0;
-      buffer[1] = 0;
-      field48 = reinterpret_cast<int>(buffer);
+    field48 = new int[2];
+    if (field48 != 0) {
+      field48[0] = 0;
+      field48[1] = 0;
       return;
     }
     field48 = 0;

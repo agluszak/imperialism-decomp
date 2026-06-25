@@ -2,7 +2,6 @@
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
-void FreeHeapBufferIfNotNull(unsigned int ptr_value);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x662e60

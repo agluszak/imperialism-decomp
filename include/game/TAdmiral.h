@@ -6,7 +6,6 @@
 #include "game/TMinor.h"
 #include "game/TObject.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Navy task-force secondary order node (vtable 0x0065c498, eight slots).
 // VTABLE: IMPERIALISM 0x0065c498

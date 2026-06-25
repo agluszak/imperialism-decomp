@@ -27,12 +27,7 @@ CRuntimeClass g_pClassDescTProductionCluster = {nullptr, 0, 0, nullptr, nullptr}
 
 // FUNCTION: IMPERIALISM 0x00586840
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
-  TProductionCluster* cluster = reinterpret_cast<TProductionCluster*>(
-      AllocateWithFallbackHandler(sizeof(TProductionCluster)));
-  if (cluster != 0) {
-    new (cluster) TProductionCluster();
-  }
-  return cluster;
+  return new TProductionCluster();
 }
 
 
@@ -43,15 +38,14 @@ CRuntimeClass* TProductionCluster::GetRuntimeClass() const {
 }
 
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {
-  new (cluster) TProductionCluster();
-  return cluster;
+  return new TProductionCluster();
 }
 
 TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,
                                                            unsigned char freeSelfFlag) {
   cluster->~TProductionCluster();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(cluster));
+    delete cluster;
   }
   return cluster;
 }

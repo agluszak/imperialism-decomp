@@ -2,7 +2,6 @@
 
 #include "game/TInteriorMinister.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_InitializeCityInteriorMinister(void);
 
 // Player city interior minister — derives from TInteriorMinister (shares slots 0x48-0x50)
@@ -87,15 +86,6 @@ public:
   void WriteTo(TStream* stream) override;          // slot 0x14
   void ReadFrom(TStream* stream) override;         // slot 0x18
   void Free() override;                            // slot 0x1c
-
-
-  void* operator new(unsigned int size) {
-    (void)size;
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(0x1c4));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
 };
 
 // === BEGIN GENERATED (TCityInteriorMinister) — refreshed by `just gen-class TCityInteriorMinister`; do not hand-edit ===

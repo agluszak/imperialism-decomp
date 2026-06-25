@@ -1,5 +1,7 @@
 #include "game/TZone.h"
 
+#include <new>
+
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TOcean.h"
@@ -91,7 +93,7 @@ TZone::TZone()
     prev18->next1c = this;
   }
   if (g_pMapActionContextDistanceCache != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(g_pMapActionContextDistanceCache));
+    delete[] static_cast<char*>(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = 0;
   }
 }

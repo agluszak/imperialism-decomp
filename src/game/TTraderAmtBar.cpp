@@ -23,8 +23,6 @@
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
@@ -43,11 +41,7 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058ae30
 TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
-  TTraderAmtBar* amountBar = reinterpret_cast<TTraderAmtBar*>(AllocateWithFallbackHandler(0x68));
-  if (amountBar != 0) {
-    new (amountBar) TTraderAmtBar;
-  }
-  return amountBar;
+  return new TTraderAmtBar();
 }
 
 // FUNCTION: IMPERIALISM 0x0058aed0
@@ -129,7 +123,7 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
 void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

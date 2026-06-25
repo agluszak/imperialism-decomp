@@ -3,8 +3,6 @@
 #include "compat.h"
 #include "game/TPtrList.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-
 // Sorted game list leaf sharing the TPtrList storage layout. Mac CodeWarrior
 // names this as TSortedList, but Windows vtable membership is grounded by the
 // constructor write to 0x00648ee0.
@@ -12,12 +10,6 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 struct TSortedList : public TPtrList {
   CRuntimeClass* GetRuntimeClass() const override;
   TSortedList(); // 0x004a8640: sets vptr + constructs the embedded CPtrList (block size 10)
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
 
   static TSortedList* CreateTSortedListInstance();
 };

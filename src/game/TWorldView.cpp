@@ -7,6 +7,8 @@
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 
+#include <new>
+
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
 undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void);
@@ -33,20 +35,28 @@ struct TToolBarClusterFields {
   void* field98;
 };
 
+struct TOverlayDispatchEventBlock {
+  void* vtable;
+  int commandA;
+  int commandB;
+  TWorldView* view;
+  TWorldView* viewCopy;
+};
+
 void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
-  undefined4* eventBlock = reinterpret_cast<undefined4*>(AllocateWithFallbackHandler(0));
+  TOverlayDispatchEventBlock* eventBlock = new TOverlayDispatchEventBlock();
   if (eventBlock == 0) {
     return;
   }
-  eventBlock[1] = 0;
-  eventBlock[2] = 0;
-  eventBlock[3] = 0;
-  eventBlock[4] = 0;
-  eventBlock[0] = kAddrTEventClassVtable;
-  eventBlock[2] = 0x78;
-  eventBlock[1] = 0x78;
-  eventBlock[3] = reinterpret_cast<undefined4>(self);
-  eventBlock[4] = reinterpret_cast<undefined4>(self);
+  eventBlock->commandA = 0;
+  eventBlock->commandB = 0;
+  eventBlock->view = 0;
+  eventBlock->viewCopy = 0;
+  eventBlock->vtable = reinterpret_cast<void*>(kAddrTEventClassVtable);
+  eventBlock->commandB = 0x78;
+  eventBlock->commandA = 0x78;
+  eventBlock->view = self;
+  eventBlock->viewCopy = self;
   *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(self) + 0x7a) =
       static_cast<unsigned short>(stridedRecord);
   self->DispatchEvent(reinterpret_cast<int>(eventBlock),
@@ -325,14 +335,14 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
 
 // FUNCTION: IMPERIALISM 0x005962a0
 void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
-  undefined4* eventBlock = reinterpret_cast<undefined4*>(AllocateWithFallbackHandler(0));
-  undefined4* eventPtr = 0;
+  TOverlayDispatchEventBlock* eventBlock = new TOverlayDispatchEventBlock();
+  TOverlayDispatchEventBlock* eventPtr = 0;
   if (eventBlock != 0) {
-    eventBlock[1] = 0;
-    eventBlock[2] = 0;
-    eventBlock[3] = 0;
-    eventBlock[4] = 0;
-    eventBlock[0] = kAddrTEventClassVtable;
+    eventBlock->commandA = 0;
+    eventBlock->commandB = 0;
+    eventBlock->view = 0;
+    eventBlock->viewCopy = 0;
+    eventBlock->vtable = reinterpret_cast<void*>(kAddrTEventClassVtable);
     eventPtr = eventBlock;
   }
 
@@ -368,10 +378,10 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   if (eventPtr == 0) {
     return;
   }
-  eventPtr[2] = 0x79;
-  eventPtr[1] = 0x79;
-  eventPtr[3] = reinterpret_cast<undefined4>(this);
-  eventPtr[4] = reinterpret_cast<undefined4>(this);
+  eventPtr->commandB = 0x79;
+  eventPtr->commandA = 0x79;
+  eventPtr->view = this;
+  eventPtr->viewCopy = this;
   DispatchEvent(reinterpret_cast<int>(eventPtr), reinterpret_cast<TEventHandler*>(eventPtr), 0);
 }
 

@@ -6,7 +6,6 @@
 
 extern "C" TSimMgr* g_pLocalizationTable;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Body moved to TUnitOrder::OrphanRetStub_004b5160 for the real vtable owner.
 void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {

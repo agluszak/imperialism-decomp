@@ -33,7 +33,6 @@ extern TGreatPower* g_apNationStates[];
 
 extern char g_szEmptyString[];
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;

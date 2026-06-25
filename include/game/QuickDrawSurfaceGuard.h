@@ -1,11 +1,12 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/ClipStateRegion.h"
 
 extern void* g_pReusableQuickDrawSurfaceListHead;
 
 struct QuickDrawSurfaceGuard {
-  int surfaceWrapper;
+  ClipStateRegionWrapper* surfaceWrapper;
   QuickDrawSurfaceGuard();
   ~QuickDrawSurfaceGuard();
 };

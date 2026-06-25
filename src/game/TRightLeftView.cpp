@@ -11,11 +11,7 @@ CRuntimeClass* TRightLeftView::GetRuntimeClass() const {
 TRightLeftView::~TRightLeftView() {}
 
 // FUNCTION: IMPERIALISM 0x00583f30
-TRightLeftView* TRightLeftView::ConstructTRightLeftViewBaseState() {
-  TControl::TControl();
-  *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + 0x84) = 0;
-  return this;
-}
+TRightLeftView::TRightLeftView() : TControl(), field84(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583fb0
 void TRightLeftView::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {

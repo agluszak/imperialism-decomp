@@ -2,9 +2,6 @@
 
 namespace {
 
-static const unsigned int kOrderTypeToBucketOffsetTableAddr = 0x00698120;
-static const int kOwnerBucketCountsBaseOffset = 0x18;
-
 typedef void(__cdecl* DestroyOrderNodeFn)(void*);
 
 class TaskForceOrderVirtual {
@@ -25,21 +22,21 @@ protected:
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00550670
-int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
-                                                                int compareAttachedFlag) {
+TMapOrderEntry* TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(
+    TMapOrderEntry* candidate, int compareAttachedFlag) {
   if ((char)compareAttachedFlag != '\0') {
     if (attachment != 0) {
-      return reinterpret_cast<int>(candidate);
+      return candidate;
     }
     if (candidate == 0) {
-      return reinterpret_cast<int>(this);
+      return this;
     }
     if (candidate->attached_entity != 0) {
-      return reinterpret_cast<int>(this);
+      return this;
     }
   }
   if (candidate == 0) {
-    return reinterpret_cast<int>(this);
+    return this;
   }
   if (this != 0) {
     int selfAttachment = attachment;
@@ -54,7 +51,7 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
                    *reinterpret_cast<short*>(selfAttachment + 0x10);
     }
     if (preferSelf) {
-      return reinterpret_cast<int>(this);
+      return this;
     }
 
     bool preferCandidate = false;
@@ -69,9 +66,9 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
     if (!preferCandidate) {
       if (order_type != candidate->order_type) {
         if (candidate->order_type <= order_type) {
-          return reinterpret_cast<int>(this);
+          return this;
         }
-        return reinterpret_cast<int>(candidate);
+        return candidate;
       }
       short selfBucket =
           (order_strength / 100 + (order_strength >> 15)) -
@@ -84,16 +81,16 @@ int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* 
               63);
       if (selfBucket != candidateBucket) {
         if (candidateBucket <= selfBucket) {
-          return reinterpret_cast<int>(this);
+          return this;
         }
-        return reinterpret_cast<int>(candidate);
+        return candidate;
       }
       if (candidate->required_count < required_count) {
-        return reinterpret_cast<int>(this);
+        return this;
       }
     }
   }
-  return reinterpret_cast<int>(candidate);
+  return candidate;
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
@@ -107,38 +104,36 @@ void TMapOrderEntry::RemoveNode(int self) {
   if (owner_ctx != 0) {
     TMapOrderChildLinkNode* list_head = owner_ctx->head;
 
-    if ((list_head != 0) && (this != reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr))) {
-      list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));
+    if ((list_head != 0) && (this != list_head->object_ptr)) {
+      list_head = FindMissionOrderNodeById(list_head->next, this);
     }
 
     if (list_head != 0) {
       list_head = owner_ctx->head;
       if (list_head != 0) {
-        if (this == reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)) {
+        if (this == list_head->object_ptr) {
           list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
         } else {
-          RemoveLinkedOrderNodeByValueRecursive(list_head->next, reinterpret_cast<int>(this));
+          RemoveLinkedOrderNodeByValueRecursive(list_head->next, this);
         }
       }
 
       owner_ctx->head = list_head;
 
       const short* order_type_to_bucket_offset =
-          reinterpret_cast<const short*>(kOrderTypeToBucketOffsetTableAddr + order_type * 0x24);
+          reinterpret_cast<const short*>(0x00698120 + order_type * 0x24);
       short bucket_offset = *order_type_to_bucket_offset;
       short* bucket_counter = reinterpret_cast<short*>(
-          reinterpret_cast<char*>(owner_ctx) + kOwnerBucketCountsBaseOffset + bucket_offset * 2);
+          reinterpret_cast<char*>(owner_ctx) + 0x18 + bucket_offset * 2);
       *bucket_counter = *bucket_counter - 1;
     }
 
-    if (this == reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node)) {
+    if (this == owner_ctx->active_node) {
       list_head = owner_ctx->head;
       owner_ctx->active_node = 0;
       for (; list_head != 0; list_head = list_head->next) {
-        int new_head = reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)
-                           ->SelectPreferredMapOrderEntryByPriorityRules(
-                               reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node), 0);
-        owner_ctx->active_node = new_head;
+        owner_ctx->active_node = list_head->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+            owner_ctx->active_node, 0);
       }
     }
 
@@ -154,9 +149,9 @@ void TMapOrderEntry::RemoveNode(int self) {
 
 // FUNCTION: IMPERIALISM 0x00552510
 TMapOrderChildLinkNode* TMapOrderEntry::FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
-                                                                 int child_node_id) {
+                                                                 TMapOrderEntry* child_node) {
   while (node != 0) {
-    if (node->object_ptr == child_node_id) {
+    if (node->object_ptr == child_node) {
       return node;
     }
     node = node->next;
@@ -169,60 +164,58 @@ TMapOrderChildLinkNode*
 TMapOrderEntry::DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node) {
   TMapOrderChildLinkNode* next_node = child_link_node->next;
   if (next_node != 0) {
-    next_node->prev_node_ptr = child_link_node->prev_node_ptr;
+    next_node->prev_link = child_link_node->prev_link;
   }
-  if (child_link_node->prev_node_ptr != 0) {
-    *reinterpret_cast<int*>(child_link_node->prev_node_ptr + 4) =
-        reinterpret_cast<int>(child_link_node->next);
+  if (child_link_node->prev_link != 0) {
+    child_link_node->prev_link->next = child_link_node->next;
   }
 
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(child_link_node));
+  delete child_link_node;
   return next_node;
 }
 
 // FUNCTION: IMPERIALISM 0x005525d0
 void TMapOrderEntry::RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                           int child_node_id) {
+                                                           TMapOrderEntry* child_node) {
   if (node == 0) {
     return;
   }
 
-  if (node->object_ptr == child_node_id) {
+  if (node->object_ptr == child_node) {
     if (node->next != 0) {
-      node->next->prev_node_ptr = node->prev_node_ptr;
+      node->next->prev_link = node->prev_link;
     }
-    if (node->prev_node_ptr != 0) {
-      *reinterpret_cast<int*>(node->prev_node_ptr + 4) = reinterpret_cast<int>(node->next);
+    if (node->prev_link != 0) {
+      node->prev_link->next = node->next;
     }
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(node));
+    delete node;
     return;
   }
 
-  RemoveLinkedOrderNodeByValueRecursive(node->next, child_node_id);
+  RemoveLinkedOrderNodeByValueRecursive(node->next, child_node);
 }
 
 // FUNCTION: IMPERIALISM 0x00552650
 TMapOrderChildLinkNode* TMapOrderEntry::CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                              int child_node_id) {
-  TMapOrderChildLinkNode* new_node = reinterpret_cast<TMapOrderChildLinkNode*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(0x10)));
+                                                              TMapOrderEntry* child_node) {
+  TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode();
   if (new_node == 0) {
     return 0;
   }
 
-  new_node->object_ptr = child_node_id;
+  new_node->object_ptr = child_node;
   new_node->next = next_node;
-  new_node->prev_node_ptr = 0;
+  new_node->prev_link = 0;
   new_node->active_flag = 1;
   new_node->pad_0d = 0;
   new_node->pad_0e = 0;
   new_node->pad_0f = 0;
 
   if (next_node != 0) {
-    next_node->prev_node_ptr = reinterpret_cast<int>(new_node);
+    next_node->prev_link = new_node;
   }
-  if (new_node->prev_node_ptr != 0) {
-    *reinterpret_cast<TMapOrderChildLinkNode**>(new_node->prev_node_ptr + 4) = new_node;
+  if (new_node->prev_link != 0) {
+    new_node->prev_link->next = new_node;
   }
   return new_node;
 }
@@ -235,7 +228,7 @@ TMapOrderChildLinkNode* TMapOrderEntry::PruneDefeatedMapOrderChildrenAndReturnHe
       return 0;
     }
 
-    TMapOrderEntry* child_node = reinterpret_cast<TMapOrderEntry*>(child_link_head->object_ptr);
+    TMapOrderEntry* child_node = child_link_head->object_ptr;
     if (0 < child_node->required_count) {
       break;
     }

@@ -55,7 +55,6 @@ static void ZeroTrackingSlots(TCapacityOrder* order) {
   *reinterpret_cast<short*>(blockCursor) = 0;
 }
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 TCapacityOrder::TCapacityOrder(TCity* city)
     : quantityField04(0), cityField08(city),
@@ -66,11 +65,7 @@ TCapacityOrder::TCapacityOrder(TCity* city)
 }
 
 TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
-  void* storage = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x4c));
-  if (storage == 0) {
-    return 0;
-  }
-  return new (storage) TCapacityOrder(city);
+  return new TCapacityOrder(city);
 }
 
 

@@ -6,9 +6,9 @@
 // VTABLE: IMPERIALISM 0x652d60
 class TEngineerDialog : public TView {
 public:
-  int field60; // 0x60 — header blit surface handle
-  int field64; // 0x64 — footer blit surface handle
-  int field68; // 0x68 — body tile blit surface handle
+  unsigned char* field60; // 0x60 — header blit surface handle
+  unsigned char* field64; // 0x64 — footer blit surface handle
+  unsigned char* field68; // 0x68 — body tile blit surface handle
 
   TEngineerDialog();
   virtual ~TEngineerDialog() override;

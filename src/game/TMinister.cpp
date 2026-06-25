@@ -40,12 +40,7 @@ TMinister::~TMinister() {}
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
   this->ownerContextAt04 = ownerContext;
-  void* storage = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x18));
-  if (storage == 0) {
-    this->field_8 = 0;
-    return;
-  }
-  this->field_8 = new (storage) TMinisterBaseOrderArray();
+  this->field_8 = new TMinisterBaseOrderArray();
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80

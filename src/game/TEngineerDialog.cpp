@@ -31,15 +31,15 @@ TEngineerDialog::~TEngineerDialog() {}
 // FUNCTION: IMPERIALISM 0x004d05e0
 void TEngineerDialog::Free() {
   if (this->field60 != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(this->field60));
-    this->field60 = 0;
+    delete[] field60;
+    field60 = 0;
   }
   if (this->field64 != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(this->field64));
-    this->field64 = 0;
+    delete[] field64;
+    field64 = 0;
   }
   if (this->field68 != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(this->field68));
+    delete[] field68;
     this->field68 = 0;
   }
   TView::Free();

@@ -40,11 +40,7 @@ void TAmtBar::SetBarMetric(int value, int range) {
 
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
-  TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
-  if (amountBar != 0) {
-    new (amountBar) TAmtBar;
-  }
-  return amountBar;
+  return new TAmtBar();
 }
 
 
@@ -106,7 +102,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   short guideValue = 0;
   short fillOrigin;
 
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(
+      reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (this->IsActionable() == 0 || this->Refresh() == 0) {
     return;

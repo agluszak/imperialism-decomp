@@ -9,19 +9,13 @@
 #pragma optimize("y", on)
 #endif
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void);
 
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
 // FUNCTION: IMPERIALISM 0x00486680
 void* __cdecl CreateTApplicationInstance(void) {
-  TApplication* controller = reinterpret_cast<TApplication*>(AllocateWithFallbackHandler(0x48));
-  if (controller == 0) {
-    return 0;
-  }
-  new (controller) TApplication();
-  return controller;
+  return new TApplication();
 }
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.

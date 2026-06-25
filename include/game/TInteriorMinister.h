@@ -2,7 +2,6 @@
 
 #include "game/TMinister.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // AI interior minister branch.
 // VTABLE: IMPERIALISM 0x00650808

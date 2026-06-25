@@ -21,7 +21,6 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
 #include "game/mfc.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);

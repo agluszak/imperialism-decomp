@@ -1,26 +1,24 @@
-// TArmyToolbar wrapper class quad extracted from Ghidra autogen.
-
-#include "decomp_types.h"
-#include "game/TUberCluster.h"
-#include "game/TCivToolbar.h"
+#include "game/TArmyToolbar.h"
 
 #include <new>
 
+#include "game/TCivToolbar.h"
 #include "game/TView.h"
+#include "game/mfc.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
+extern "C" {
+char g_pClassDescTArmyToolbar;
+}
+
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
-struct TShipyardCluster;
 
 namespace {
-
-// GLOBAL: IMPERIALISM 0x667ad0
-char g_vtblTArmyToolbar;
-// GLOBAL: IMPERIALISM 0x6630d0
-char g_pClassDescTArmyToolbar;
 
 const unsigned int kAddrUiRuntimeContext = 0x006A21BC;
 const unsigned int kAddrMapContextActionManager = 0x006A3338;
@@ -31,22 +29,10 @@ const unsigned int kTagArmyModeDefend = 0x64666E64;
 const unsigned int kTagArmyModeLater = 0x6C617472;
 const unsigned int kTagArmyModeDone = 0x646F6E65;
 
-struct ArmyToolbarState {
-  void* vftable;
-  char pad_04[0x88];
-};
-
 struct ArmyCommandPayload {
   void* vftable;
   char pad_04[0x18];
   unsigned int controlTag;
-};
-
-class RuntimeBridge {
-public:
-  static __inline void ConstructTUberClusterObject(TShipyardCluster* self) {
-    new (self) TUberCluster();
-  }
 };
 
 static __inline int* QueryUiRuntimeContextPtr() {
@@ -101,14 +87,8 @@ static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payl
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058de40
-ArmyToolbarState* __cdecl CreateTArmyToolbarInstance(void) {
-  ArmyToolbarState* toolbar =
-      reinterpret_cast<ArmyToolbarState*>(AllocateWithFallbackHandler(0x8c));
-  if (toolbar != 0) {
-    RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TShipyardCluster*>(toolbar));
-    toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
-  }
-  return toolbar;
+TArmyToolbar* __cdecl CreateTArmyToolbarInstance(void) {
+  return new TArmyToolbar();
 }
 
 // FUNCTION: IMPERIALISM 0x0058dec0
@@ -117,26 +97,21 @@ void* __cdecl GetTArmyToolbarClassNamePointer(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058dee0
-ArmyToolbarState* __fastcall ConstructTArmyToolbarBaseState(ArmyToolbarState* toolbar) {
-  RuntimeBridge::ConstructTUberClusterObject(reinterpret_cast<TShipyardCluster*>(toolbar));
-  toolbar->vftable = reinterpret_cast<void*>(&g_vtblTArmyToolbar);
-  return toolbar;
+TArmyToolbar* __fastcall ConstructTArmyToolbarBaseState(TArmyToolbar* toolbar) {
+  (void)toolbar;
+  return new TArmyToolbar();
 }
 
 // FUNCTION: IMPERIALISM 0x0058df10
-ArmyToolbarState* __fastcall DestructTArmyToolbarAndMaybeFree(ArmyToolbarState* toolbar,
-                                                              int unusedEdx,
-                                                              unsigned char freeSelfFlag) {
+TArmyToolbar* __fastcall DestructTArmyToolbarAndMaybeFree(TArmyToolbar* toolbar, int unusedEdx,
+                                                          unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  reinterpret_cast<TView*>(toolbar)->~TView();
+  toolbar->~TArmyToolbar();
   if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)toolbar);
+    delete toolbar;
   }
   return toolbar;
 }
-
-/* Handles map-context action command tags for army ratio adjustments and mode transitions
-   (defend/later/done/garrison), then cycles active map interaction selection when required. */
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
 void __stdcall HandleMapContextActionArmyRatioAndModeCommands(int commandId,
@@ -192,3 +167,7 @@ void __stdcall HandleMapContextActionArmyRatioAndModeCommands(int commandId,
     InvokeActiveCivToolbarCycleMapInteractionSelection();
   }
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

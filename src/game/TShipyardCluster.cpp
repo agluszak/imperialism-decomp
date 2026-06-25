@@ -33,12 +33,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
 
 // FUNCTION: IMPERIALISM 0x0058a4d0
 TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
-  TShipyardCluster* cluster =
-      reinterpret_cast<TShipyardCluster*>(AllocateWithFallbackHandler(sizeof(TShipyardCluster)));
-  if (cluster != 0) {
-    new (cluster) TShipyardCluster();
-  }
-  return cluster;
+  return new TShipyardCluster();
 }
 
 

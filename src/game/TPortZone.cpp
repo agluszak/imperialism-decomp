@@ -10,16 +10,10 @@
 
 extern "C" char g_pClassDescTPortZone = 0;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x005615e0
 TPortZone* TPortZone::CreateTPortZone() {
-  void* allocation = reinterpret_cast<void*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(sizeof(TPortZone))));
-  if (allocation == 0) {
-    return 0;
-  }
-  return new (allocation) TPortZone();
+  return new TPortZone();
 }
 
 TPortZone::TPortZone() : TZone() {

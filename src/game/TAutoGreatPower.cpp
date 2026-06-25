@@ -90,8 +90,7 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 
 // FUNCTION: IMPERIALISM 0x004e6b50
 void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
-  new (this) TAutoGreatPower();
-  return this;
+  return new TAutoGreatPower();
 }
 
 

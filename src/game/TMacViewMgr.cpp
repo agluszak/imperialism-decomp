@@ -1,5 +1,7 @@
 #include "game/TMacViewMgr.h"
 
+#include <new>
+
 #include "game/ClipStateRegion.h"
 #include "game/TAnimation.h"
 #include "game/TAssetMgr.h"
@@ -37,7 +39,6 @@ void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self);
 
 int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 scanBracketExpressions(void);
 undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 AssignStringSharedRefAndReturnThis(void);
@@ -315,9 +316,9 @@ void ReleaseBitmapLoaderHandle(int** loaderHandle) {
   TAnimation* animation = reinterpret_cast<TAnimation*>(*loaderHandle);
   if (animation != 0) {
     animation->WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(animation));
+    delete animation;
   }
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(loaderHandle));
+  delete loaderHandle;
 }
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
@@ -404,8 +405,8 @@ TMacViewMgr::TMacViewMgr() : TObject() {
 }
 
 // FUNCTION: IMPERIALISM 0x00509e10
-undefined TMacViewMgr::VTableSlot26(short tileIndex) {
-  return regionSlots[tileIndex];
+undefined4 TMacViewMgr::VTableSlot26(short tileIndex) {
+  return reinterpret_cast<undefined4>(regionSlots[tileIndex]);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00509e30
@@ -436,7 +437,7 @@ void TMacViewMgr::Free() {
   int index = 0;
   while (index < 0x17) {
     if (regionSlots[index] != 0) {
-      DestroyClipStateRegionWrapperObject(reinterpret_cast<int*>(regionSlots[index]));
+      DestroyClipStateRegionWrapperObject(regionSlots[index]);
       regionSlots[index] = 0;
     }
     ++index;
@@ -444,7 +445,7 @@ void TMacViewMgr::Free() {
   index = 0;
   while (index < 0x180) {
     if (tileStateSlots[index] != 0) {
-      DestroyClipStateRegionWrapperObject(reinterpret_cast<int*>(tileStateSlots[index]));
+      DestroyClipStateRegionWrapperObject(tileStateSlots[index]);
       tileStateSlots[index] = 0;
     }
     ++index;
@@ -914,7 +915,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   }
   pixelBase = reinterpret_cast<int>(MacViewInvoke::GetSurfaceHeaderFromSurfaceObject(surfaceObject));
   pixelBase = pixelBase + strideBytes * 2;
-  scratchBuffer = reinterpret_cast<unsigned char*>(AllocateWithFallbackHandler(0x6540));
+  scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
     MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
                 reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
@@ -976,7 +977,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       copyRow = copyRow + 1;
     }
   }
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(scratchBuffer));
+  delete[] scratchBuffer;
   SetQuickDrawFillColor(0);
   MacViewInvoke::NoOpQuickDrawLifecycleHookB(MacViewInvoke::GetSurfaceObjectAtContextOffset24(atlas670));
   MacViewInvoke::SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
@@ -989,14 +990,14 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
 undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   int tileIndex = 0;
   int tileByteOffset = 0;
-  int* tileSlot = tileStateSlots;
+  ClipStateRegionWrapper** tileSlot = tileStateSlots;
   while (tileByteOffset < 0xfc00) {
     if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] != -1) {
       if (*tileSlot != 0) {
-        DestroyClipStateRegionWrapperObject(reinterpret_cast<int*>(*tileSlot));
+        DestroyClipStateRegionWrapperObject(*tileSlot);
         *tileSlot = 0;
       }
-      *tileSlot = static_cast<int>(CreateClipStateRegionWrapperObject());
+      *tileSlot = CreateClipStateRegionWrapperObject();
       MacViewInvoke::RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl();
       char neighborCount =
           reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset + 0x3a];
@@ -1010,7 +1011,8 @@ undefined TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
           neighborCursor = neighborCursor + 1;
         }
       }
-      MacViewInvoke::WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(*tileSlot);
+      MacViewInvoke::WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(
+          reinterpret_cast<int>(*tileSlot));
     }
     tileByteOffset = tileByteOffset + 0xa8;
     tileIndex = tileIndex + 1;
@@ -1026,25 +1028,27 @@ undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
     MacViewInvoke::DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
-    int regionWrapper = static_cast<int>(CreateClipStateRegionWrapperObject());
+    ClipStateRegionWrapper* regionWrapper = CreateClipStateRegionWrapperObject();
     int nationIndex = 0;
     while (nationIndex < 0x17) {
-      MacViewInvoke::ResetClipRegionAndReadBoundingRect(regionWrapper);
+      MacViewInvoke::ResetClipRegionAndReadBoundingRect(reinterpret_cast<int>(regionWrapper));
       int tileByteOffset = 0;
-      int* tileSlot = tileStateSlots;
+      ClipStateRegionWrapper** tileSlot = tileStateSlots;
       while (tileByteOffset < 0xfc00) {
         if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] ==
             nationIndex) {
-          MacViewInvoke::CombineTwoRegionsIntoDestinationAndUpdateBox(regionWrapper, *tileSlot, regionWrapper);
+          MacViewInvoke::CombineTwoRegionsIntoDestinationAndUpdateBox(
+              reinterpret_cast<int>(regionWrapper), reinterpret_cast<int>(*tileSlot),
+              reinterpret_cast<int>(regionWrapper));
         }
         tileByteOffset = tileByteOffset + 0xa8;
         tileSlot = tileSlot + 1;
       }
-      EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(regionWrapper,
-                                                        static_cast<short>(nationIndex));
+      EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(
+          reinterpret_cast<undefined4>(regionWrapper), static_cast<short>(nationIndex));
       nationIndex = nationIndex + 1;
     }
-    DestroyClipStateRegionWrapperObject(reinterpret_cast<int*>(regionWrapper));
+    DestroyClipStateRegionWrapperObject(regionWrapper);
     RenderTurnEventPalettePreviewSurfaceAndProgress();
   }
   return 0;
@@ -1133,13 +1137,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     MacViewUiInvoke::AssignStringSharedRefAndReturnThis(panel, &scratch38);
     MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
 
-    TMyStaticText* textEntry = reinterpret_cast<TMyStaticText*>(
-        AllocateWithFallbackHandler(static_cast<undefined4>(0x94)));
-    if (textEntry != 0) {
-      textEntry = textEntry->ConstructUiTextResourceEntry_Vtbl0066cbc8();
-    } else {
-      textEntry = 0;
-    }
+    TMyStaticText* textEntry = new TMyStaticText();
 
     int layoutHeight = 0xb;
     int layoutWidth = 0x14;
@@ -1457,11 +1455,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
   leftSource->DispatchUiCommand19ToParent();
 
-  TRightLeftView* leftView = reinterpret_cast<TRightLeftView*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(0x88)));
-  if (leftView != 0) {
-    leftView = leftView->ConstructTRightLeftViewBaseState();
-  }
+  TRightLeftView* leftView = new TRightLeftView();
   MacViewUiInvoke::InitializeUiResourceEntryFrameAndParent(leftView, 0, panel, leftLayout1,
                                                            leftLayout0);
   SetControlCommandTagAt1c(leftView, kTagArrowLeft);
@@ -1472,22 +1466,12 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
   rightSource->DispatchUiCommand19ToParent();
 
-  TRightLeftView* rightView = reinterpret_cast<TRightLeftView*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(0x88)));
-  if (rightView != 0) {
-    rightView = rightView->ConstructTRightLeftViewBaseState();
-  }
+  TRightLeftView* rightView = new TRightLeftView();
   MacViewUiInvoke::InitializeUiResourceEntryFrameAndParent(rightView, 0, panel, rightLayout1,
                                                            rightLayout0);
   SetControlCommandTagAt1c(rightView, kTagArrowRight);
 
-  TMyStaticText* textEntry = reinterpret_cast<TMyStaticText*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(0x94)));
-  if (textEntry != 0) {
-    textEntry = textEntry->ConstructUiTextResourceEntry_Vtbl0066cbc8();
-  } else {
-    textEntry = 0;
-  }
+  TMyStaticText* textEntry = new TMyStaticText();
 
   int textHeight = 0xb;
   int textWidth = 0x14;
@@ -1508,13 +1492,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
 
   if (nationSlot == 0x15 || nationSlot == 0x16) {
-    TMyStaticText* valueEntry = reinterpret_cast<TMyStaticText*>(
-        AllocateWithFallbackHandler(static_cast<undefined4>(0x94)));
-    if (valueEntry != 0) {
-      valueEntry = valueEntry->ConstructUiTextResourceEntry_Vtbl0066cbc8();
-    } else {
-      valueEntry = 0;
-    }
+    TMyStaticText* valueEntry = new TMyStaticText();
 
     int valueHeight = 0xb;
     int valueWidth = 0x14;
@@ -1606,17 +1584,18 @@ undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
 undefined TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                                          short param_2) {
   if (regionSlots[param_2] == 0) {
-    regionSlots[param_2] = static_cast<int>(CreateClipStateRegionWrapperObject());
+    regionSlots[param_2] = CreateClipStateRegionWrapperObject();
   }
-  MacViewInvoke::CombineOptionalSourceRegionIntoDestinationAndUpdateBox(static_cast<int>(param_1),
-                                                         regionSlots[param_2]);
+  MacViewInvoke::CombineOptionalSourceRegionIntoDestinationAndUpdateBox(
+      static_cast<int>(param_1), reinterpret_cast<int>(regionSlots[param_2]));
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
 undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short tileIndex) {
   if (regionSlots[tileIndex] != 0) {
-    return MacViewInvoke::QueryPointInsideHitRegion(0, 0, regionSlots[tileIndex]);
+    return MacViewInvoke::QueryPointInsideHitRegion(0, 0,
+                                                    reinterpret_cast<int>(regionSlots[tileIndex]));
   }
   return 0;
 }
@@ -1627,7 +1606,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   int savedFlags;
   RECT resourceBounds;
   int gworldHandle = param_1;
-  regionSlots[param_1] = static_cast<int>(CreateClipStateRegionWrapperObject());
+  regionSlots[param_1] = CreateClipStateRegionWrapperObject();
   MacViewInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   int** loaderHandle = MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1 + 4000);
   CopyRect(&resourceBounds, reinterpret_cast<RECT*>(reinterpret_cast<char*>(*loaderHandle) + 8));
@@ -1641,9 +1620,12 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
     ReleaseBitmapLoaderHandle(loaderHandle);
   }
   void* surfaceObject = MacViewInvoke::GetSurfaceObjectAtContextOffset24(resourceBounds.right);
-  if (MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject) != 0) {
-    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject);
-    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(regionSlots[param_1], surfaceObject);
+  if (MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
+          reinterpret_cast<int>(regionSlots[param_1]), surfaceObject) != 0) {
+    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
+        reinterpret_cast<int>(regionSlots[param_1]), surfaceObject);
+    MacViewInvoke::RebuildSpriteNonTransparentPolygonRegion(
+        reinterpret_cast<int>(regionSlots[param_1]), surfaceObject);
   }
   int surfaceContext = resourceBounds.right;
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&surfaceContext));

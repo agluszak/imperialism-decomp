@@ -22,7 +22,7 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   RECT destinationRect;
   RECT sourceRect;
@@ -68,7 +68,8 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
       g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
       reinterpret_cast<TQuickDrawSurfaceContext*>(transientContext)->GetBlitSurface(), &sourceRect,
       &destinationRect, 0);
-  reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(
+      reinterpret_cast<int>(surface.surfaceWrapper));
 }
 
 // FUNCTION: IMPERIALISM 0x004a0770

@@ -17,7 +17,6 @@ extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 extern TApplication* g_pApplicationUiRootController;
 
@@ -255,17 +254,14 @@ TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  TEventHandler* header = reinterpret_cast<TEventHandler*>(AllocateWithFallbackHandler(0x20));
+  TEventHandler* header = new TEventHandler();
   if (header == 0) {
     return 0;
   }
-  // MSVC EH partial-construction sentinel sequence (McAppUI.cpp); not ctor emission.
-  *reinterpret_cast<void**>(header) = reinterpret_cast<void*>(0x006485c0);
   header->field04 = field04;
   header->field08 = field08;
   header->field0c = field0c;
   header->controlTag = controlTag;
-  *reinterpret_cast<void**>(header) = reinterpret_cast<void*>(0x006497a0);
   return header;
 }
 

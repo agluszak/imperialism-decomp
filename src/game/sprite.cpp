@@ -2,9 +2,10 @@
 
 #include "decomp_types.h"
 
+#include <new>
+
 typedef unsigned int uint;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x0047c3d0
 int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr) {
@@ -48,7 +49,7 @@ int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr) {
         col_idx = -header_ptr;
       }
       if (col_idx <= scan_offset) {
-        out_pairs = (int*)AllocateWithFallbackHandler((row_idx + 1) * 0x10);
+        out_pairs = new int[(row_idx + 1) * 4];
         *out_pairs = row_idx * 2 + 1;
         pair_count = 1;
         header_ptr = 0;
@@ -163,7 +164,7 @@ int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr) {
       row_idx = row_idx + col_idx;
     }
   }
-  out_pairs = (int*)AllocateWithFallbackHandler((this_ptr + 1) * 0x10);
+  out_pairs = new int[(this_ptr + 1) * 4];
   width = 0;
   *out_pairs = this_ptr * 2 + 1;
   this_ptr = 1;

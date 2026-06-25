@@ -1,5 +1,7 @@
 #include "game/TDisplayMgr.h"
 
+#include <new>
+
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TAssetMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -152,11 +154,10 @@ TDisplayMgr::~TDisplayMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004fe840
 undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
-  TSortedPtrList* list = reinterpret_cast<TSortedPtrList*>(AllocateWithFallbackHandler(0x18));
+  TSortedPtrList* list = new TSortedPtrList();
   if (list == 0) {
     ownerView = 0;
   } else {
-    new (list) TSortedPtrList();
     ownerView = reinterpret_cast<TView*>(list);
     list->relationType = 4;
   }
@@ -196,7 +197,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
 
 // FUNCTION: IMPERIALISM 0x004fea60
 void TDisplayMgr::Free() {
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(g_pPrimaryRenderSurfaceContext));
+  delete g_pPrimaryRenderSurfaceContext;
   g_pPrimaryRenderSurfaceContext = 0;
   if (ownerView != 0) {
     ownerView->CallVoidSlotA0();
@@ -220,7 +221,7 @@ undefined TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab
 
 // FUNCTION: IMPERIALISM 0x004feb50
 void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* param_1) {
-  FreeHeapBufferIfNotNull(*param_1);
+  delete reinterpret_cast<void*>(*param_1);
   *param_1 = 0;
 }
 
@@ -308,7 +309,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   int savedFlags = 0;
   undefined4 savedContext = 0;
   QuickDrawSurfaceGuard surfaceGuard;
-  int clipDescriptor = surfaceGuard.surfaceWrapper;
+  int clipDescriptor = reinterpret_cast<int>(surfaceGuard.surfaceWrapper);
   DisplayMgrInvoke::ApplyHitRegionToClipState(clipDescriptor);
   DisplayMgrInvoke::GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   DisplayMgrInvoke::SetActiveQuickDrawSurfaceContext(

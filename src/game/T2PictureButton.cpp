@@ -6,7 +6,6 @@ extern "C" {
 CRuntimeClass g_pClassDescT2PictureButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x00570b10
 T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {

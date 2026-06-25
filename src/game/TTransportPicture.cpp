@@ -10,7 +10,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTTransportPicture = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x00591d90
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {

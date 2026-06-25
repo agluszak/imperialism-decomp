@@ -33,12 +33,7 @@ const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
-  TIndustryAmtBar* amountBar =
-      reinterpret_cast<TIndustryAmtBar*>(AllocateWithFallbackHandler(0x6c));
-  if (amountBar != 0) {
-    new (amountBar) TIndustryAmtBar;
-  }
-  return amountBar;
+  return new TIndustryAmtBar();
 }
 
 // FUNCTION: IMPERIALISM 0x005891b0
@@ -87,7 +82,7 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
 void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -129,7 +124,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, i
   (void)unusedEdx;
   QuickDrawSurfaceGuard surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

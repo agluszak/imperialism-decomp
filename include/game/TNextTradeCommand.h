@@ -3,7 +3,6 @@
 #include "game/TCommand.h"
 #include <stddef.h>
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // The 'NeXT' (0x4E655854) turn-event command enqueued onto the UI root
 // controller. Real inheritance from TCommand: the base constructor installs the
@@ -32,11 +31,6 @@ public:
   CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5ba3e0
   undefined OrphanRetStub_00487a00() override;     // slot 0x0b 0x5ba4b0
   // slot 0x01 (dtor) overridden by ~TNextTradeCommand below (0x5ba430)
-
-  void* operator new(size_t size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void*) {}
 
   virtual ~TNextTradeCommand();
 };

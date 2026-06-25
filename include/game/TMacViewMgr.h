@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/ClipStateRegion.h"
 #include "game/mfc.h"
 
 class TStream;
@@ -54,12 +55,12 @@ public:
   virtual undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
   virtual undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                                       short param_2); // slot 0x25 0x50d680
-  virtual undefined VTableSlot26(short param_1); // slot 0x26 0x509e10
+  virtual undefined4 VTableSlot26(short param_1); // slot 0x26 0x509e10
 // === END GENERATED DECLS (TMacViewMgr) ===
 
   int field04;
-  int regionSlots[0x17];
-  int tileStateSlots[0x180];
+  ClipStateRegionWrapper* regionSlots[0x17];
+  ClipStateRegionWrapper* tileStateSlots[0x180];
   int padding664;
   int atlas668;
   int atlas66c;

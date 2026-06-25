@@ -7,7 +7,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTWarningView = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x00592860
 TWarningView* __cdecl CreateTWarningViewInstance(void) {

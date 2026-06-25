@@ -3,7 +3,6 @@
 #include "decomp_types.h"
 #include "game/TUnit.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Civilian work-order object (ctor 0x005c28c0 installs vtable 0x0066ee60). The
 // ctor open-codes the inlined base init then writes the derived vptr; modeled as
@@ -33,13 +32,6 @@ public:
   short completionMarker26; // 0x26
 
   TCivUnit();
-
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
 
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
   int IsInIdleSelectionState();

@@ -21,11 +21,7 @@ extern "C" CRuntimeClass g_pClassDescTShipAmtBar = {nullptr, 0, 0, nullptr, null
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
-  TShipAmtBar* amountBar = reinterpret_cast<TShipAmtBar*>(AllocateWithFallbackHandler(0x6c));
-  if (amountBar != 0) {
-    new (amountBar) TShipAmtBar;
-  }
-  return amountBar;
+  return new TShipAmtBar();
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab40
@@ -59,7 +55,7 @@ void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
 void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

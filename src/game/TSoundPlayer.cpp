@@ -24,8 +24,6 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void);
 undefined4 InitializePacketHeaderFields_Tag20202020(void);
 undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void);
@@ -65,11 +63,7 @@ void CallWrapperForFtolImpl(int volume) {
 
 // FUNCTION: IMPERIALISM 0x005932b0
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
-  void* storage = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x84));
-  if (storage == 0) {
-    return 0;
-  }
-  return new (storage) TSoundPlayer();
+  return new TSoundPlayer();
 }
 
 
@@ -98,7 +92,8 @@ TSoundPlayer::TSoundPlayer() {
 
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
-  return new (storage) TSoundPlayer();
+  (void)storage;
+  return new TSoundPlayer();
 }
 
 // SYNTHETIC: IMPERIALISM 0x005933b0
@@ -170,6 +165,20 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
 
 
+namespace {
+
+struct SoundChannelListNode {
+  void* vtable;
+  int field04;
+  int field08;
+  int field0c;
+  int field10;
+  int field14;
+  int field18;
+};
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) {
   InitializePacketHeaderFields_Tag20202020();
@@ -181,27 +190,27 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
     this->RequestDirectSoundInitIfAllowed();
   }
 
-  int* node = reinterpret_cast<int*>(AllocateWithFallbackHandler(0x1c));
+  SoundChannelListNode* node = new SoundChannelListNode();
   if (node != 0) {
-    node[3] = 0;
-    node[4] = 0;
-    node[2] = 0;
-    node[1] = 0;
-    node[5] = 0;
-    node[6] = 10;
-    node[0] = 0; // channel-node vtable &PTR_GetCObjectRuntimeClass_00650a08 (unrecovered)
+    node->vtable = 0;
+    node->field04 = 0;
+    node->field08 = 0;
+    node->field0c = 0;
+    node->field10 = 0;
+    node->field14 = 0;
+    node->field18 = 10;
   }
   this->runtimePeerAt6c = node;
 
-  node = reinterpret_cast<int*>(AllocateWithFallbackHandler(0x1c));
+  node = new SoundChannelListNode();
   if (node != 0) {
-    node[3] = 0;
-    node[4] = 0;
-    node[2] = 0;
-    node[1] = 0;
-    node[5] = 0;
-    node[6] = 10;
-    node[0] = 0; // channel-node vtable &PTR_GetCObjectRuntimeClass_00650a08 (unrecovered)
+    node->vtable = 0;
+    node->field04 = 0;
+    node->field08 = 0;
+    node->field0c = 0;
+    node->field10 = 0;
+    node->field14 = 0;
+    node->field18 = 10;
   }
   this->runtimePeerAt70 = node;
 

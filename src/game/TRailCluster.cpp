@@ -49,12 +49,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
 
 // FUNCTION: IMPERIALISM 0x00589660
 TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
-  TRailCluster* cluster =
-      reinterpret_cast<TRailCluster*>(AllocateWithFallbackHandler(sizeof(TRailCluster)));
-  if (cluster != 0) {
-    new (cluster) TRailCluster();
-  }
-  return cluster;
+  return new TRailCluster();
 }
 
 

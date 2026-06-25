@@ -1,5 +1,7 @@
 #include "game/TOcean.h"
 
+#include <new>
+
 #include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/GameAssert.h"
@@ -22,7 +24,6 @@ extern char g_pClassDescTPortZone;
 extern CRuntimeClass PTR_s_TOcean_0065c630;
 }
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 CallCallbackRepeatedly(void);
 undefined4 thunk_RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 thunk_SelectBestSeedTileForNationFromCostField(void);
@@ -180,7 +181,7 @@ void TOcean::WriteTo(TStream* stream) {
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   int* countHeader;
   TMapNationActionContext* contextBase;
-  undefined4* costField;
+  int* costField;
   int relaxPassCount;
   int nationIndex;
   int contextStride;
@@ -190,8 +191,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
     reinterpret_cast<void(__fastcall*)(TMapNationActionContext*, int, int)>(
         *reinterpret_cast<int*>(contextArray) + 4)(contextArray, 0, 3);
   }
-  countHeader = reinterpret_cast<int*>(AllocateWithFallbackHandler(
-      static_cast<undefined4>(static_cast<int>(static_cast<short>(nationCountArg)) * 0x48 + 4)));
+  countHeader = reinterpret_cast<int*>(new char[static_cast<int>(static_cast<short>(nationCountArg)) * 0x48 + 4]);
   if (countHeader == 0) {
     contextBase = 0;
   } else {
@@ -205,9 +205,9 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   if (contextBase == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  costField = reinterpret_cast<undefined4*>(AllocateWithFallbackHandler(0xca8 * 4));
+  costField = new int[0xca8];
   {
-    undefined4* clearCursor = costField;
+    int* clearCursor = costField;
     for (int clearIndex = 0xca8; clearIndex != 0; clearIndex = clearIndex - 1) {
       *clearCursor = 0;
       clearCursor = clearCursor + 1;
@@ -231,7 +231,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
       contextStride = contextStride + 0x48;
     } while (nationIndex < static_cast<int>(static_cast<short>(nationCountArg)));
   }
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(costField));
+  delete[] costField;
 }
 
 // FUNCTION: IMPERIALISM 0x00563300

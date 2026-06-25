@@ -63,30 +63,17 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054f500
-void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
-  new (this) TObject();
-  resourceType04 = 0;
-  field08 = 0;
-  linkContext0c = 0;
-  linkTag0e = 0;
-  quantityFlag10 = 1;
-  ownerNationSlot14 = static_cast<short>(-1);
-  new (&displayName18) CString();
-  stockLevel1c = 0;
-  pad1e = 0;
-  field20 = 0;
-  nextOlder24 = g_pNavyPrimaryOrderListHead;
-  prevNewer28 = 0;
-  field2c = 0;
-  field30 = 0;
-  field34 = 0;
+TShip::TShip()
+    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), linkContext0c(0),
+      linkTag0e(0), quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)),
+      stockLevel1c(0), pad1e(0), field20(0), nextOlder24(g_pNavyPrimaryOrderListHead),
+      prevNewer28(0), field2c(0), field30(0), field34(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (nextOlder24 != 0) {
     nextOlder24->prevNewer28 = this;
   }
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x0054f640
 void TShip::DestroyAndUnlinkNavyPrimaryOrderNode() {
@@ -100,7 +87,7 @@ void TShip::DestroyAndUnlinkNavyPrimaryOrderNode() {
     this->prevNewer28->nextOlder24 = this->nextOlder24;
   }
   displayName18.~CString();
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(this));
+  operator delete(static_cast<void*>(this));
 }
 
 #if defined(_MSC_VER)
@@ -114,12 +101,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
     return 0;
   }
 
-  void* alloc = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x38));
-  TShip* shipNode = 0;
-  if (alloc != 0) {
-    shipNode = reinterpret_cast<TShip*>(alloc);
-    shipNode->ConstructAndLinkNavyPrimaryOrderNode();
-  }
+  TShip* shipNode = new TShip();
 
   if (shipNode == 0) {
     GAME_FAIL_NIL_POINTER();

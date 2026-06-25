@@ -4,22 +4,26 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
+class TMapOrderEntry;
+
 // Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
-  int object_ptr;
+  TMapOrderEntry* object_ptr;
   TMapOrderChildLinkNode* next;
-  int prev_node_ptr;
+  TMapOrderChildLinkNode* prev_link;
   unsigned char active_flag;
   unsigned char pad_0d;
   unsigned char pad_0e;
   unsigned char pad_0f;
 };
 
+ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
+
 // Per-owner bucket table for active map-order entries (Ghidra: ObjectPoolOwner).
 struct TMapOrderEntryOwnerContext {
   char pad_00[0x10];
   TMapOrderChildLinkNode* head;
-  int active_node;
+  TMapOrderEntry* active_node;
   char bucket_counts_base[0x100];
 };
 
@@ -43,20 +47,20 @@ public:
   char pad_32[0x02];
 
   static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
-                                                          int child_node_id);
+                                                          TMapOrderEntry* child_node);
   static TMapOrderChildLinkNode*
   DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
   static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                    int child_node_id);
+                                                    TMapOrderEntry* child_node);
   static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                       int child_node_id);
+                                                       TMapOrderEntry* child_node);
   static TMapOrderChildLinkNode*
   PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
 
   void RelinkMapOrderQueueNodeBetween(TMapOrderEntry* prev_node, TMapOrderEntry* next_node);
   void DecrementRequiredCount(short decrement);
-  int SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
-                                                  int compareAttachedFlag);
+  TMapOrderEntry* SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
+                                                             int compareAttachedFlag);
   void RemoveNode(int self);
 };
 

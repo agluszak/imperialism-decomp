@@ -5,7 +5,6 @@
 #include "game/TUnit.h"
 #include "game/diplomacy_globals.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 extern "C" char g_szEmptyString[];
 undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void);
 
@@ -31,17 +30,6 @@ public:
   ~TMilitaryUnitOrderState() override;
 
   void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot);
-
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void* operator new(unsigned int size, void* ptr) {
-    (void)size;
-    return ptr;
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
 
   // --- TObject/TUnit overrides ---
   CRuntimeClass* GetRuntimeClass() const override;

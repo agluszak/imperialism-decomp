@@ -5,8 +5,6 @@
 
 #include <new>
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
@@ -20,24 +18,13 @@ public:
 
   TStratReportView();
 
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
 };
 
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058e330
 TStratReportView* __cdecl CreateTStratReportViewInstance(void) {
-  TStratReportView* view =
-      reinterpret_cast<TStratReportView*>(AllocateWithFallbackHandler(sizeof(TStratReportView)));
-  if (view != 0) {
-    ::new (view) TStratReportView();
-  }
-  return view;
+  return new TStratReportView();
 }
 
 // FUNCTION: IMPERIALISM 0x0058e3a0

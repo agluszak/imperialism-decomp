@@ -4,7 +4,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // Forward declarations for types referenced by generated signatures.
 class TObject;
@@ -137,10 +136,6 @@ public:
   int field8C;
 
   TPicture();
-
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
 };
 
 ASSERT_SIZE(TPicture, 0x90);

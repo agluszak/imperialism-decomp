@@ -24,11 +24,7 @@ CRuntimeClass g_pClassDescTRailAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x00589ed0
 TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
-  TRailAmtBar* amountBar = reinterpret_cast<TRailAmtBar*>(AllocateWithFallbackHandler(0x6c));
-  if (amountBar != 0) {
-    new (amountBar) TRailAmtBar;
-  }
-  return amountBar;
+  return new TRailAmtBar();
 }
 
 // FUNCTION: IMPERIALISM 0x00589f70
@@ -103,7 +99,7 @@ void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
 void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
@@ -146,7 +142,7 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, i
   (void)unusedEdx;
   QuickDrawSurfaceGuard surface;
   *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(reinterpret_cast<int>(surface.surfaceWrapper));
 
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();

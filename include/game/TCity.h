@@ -7,8 +7,6 @@
 struct TPtrList;
 class TStream;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
 // LAYOUT: RECOVERED
@@ -122,6 +120,7 @@ public:
   short pad26e;
   TPtrList* trackedOrderList270;     // 0x270 — released via FreePayloadsAndDestroySlot58
   class TQueueObject* eventQueue274; // 0x274 — released via Call24
+  unsigned char pad278[0x2d4 - 0x278];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
@@ -129,11 +128,9 @@ public:
 
   // 0x004b2570: initialize production arrays and build the city entry-object tables.
   void InitializeCityProductionState(int initialProductionMode);
-
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
 };
+
+ASSERT_SIZE(TCity, 0x2d4);
 
 // === BEGIN GENERATED (TCity) — refreshed by `just gen-class TCity`; do not hand-edit ===
 // clang-format off

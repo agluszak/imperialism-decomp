@@ -130,8 +130,6 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMyStaticText 0xCTOR`).
 
   TMyStaticText();
-
-  TMyStaticText* ConstructUiTextResourceEntry_Vtbl0066cbc8();
 };
 
 // === BEGIN GENERATED (TMyStaticText) — refreshed by `just gen-class TMyStaticText`; do not hand-edit ===

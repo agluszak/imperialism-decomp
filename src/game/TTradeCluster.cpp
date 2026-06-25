@@ -92,12 +92,7 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
 
 // FUNCTION: IMPERIALISM 0x00587010
 void* CreateTradeSellControlPanel(void) {
-  TTradeCluster* cluster =
-      reinterpret_cast<TTradeCluster*>(AllocateWithFallbackHandler(sizeof(TTradeCluster)));
-  if (cluster != 0) {
-    new (cluster) TTradeCluster();
-  }
-  return cluster;
+  return new TTradeCluster();
 }
 
 // FUNCTION: IMPERIALISM 0x00587090

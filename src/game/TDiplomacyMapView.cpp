@@ -9,7 +9,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
-#include <new>
+#include "game/ClipStateRegion.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
 #include "game/TControl.h"
@@ -84,9 +84,7 @@ undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
 undefined4 thunk_LoadBmpResourceByIdCached(void);
 undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
-undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
-undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);
 undefined4 SetQuickDrawTextOriginWithContextOffset(void);
@@ -356,7 +354,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
 
 // FUNCTION: IMPERIALISM 0x004f6440
 void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
-  void* region = reinterpret_cast<void*(__cdecl*)()>(CreateClipStateRegionWrapperObject)();
+  ClipStateRegionWrapper* region = CreateClipStateRegionWrapperObject();
 
   short terrainIndex = 0;
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
@@ -372,7 +370,7 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   } while (terrainIndex < 0x17);
 
   this->ApplyClipRegionSlotC4(reinterpret_cast<int>(region));
-  reinterpret_cast<void(__cdecl*)(void*)>(DestroyClipStateRegionWrapperObject)(region);
+  DestroyClipStateRegionWrapperObject(region);
 }
 
 // FUNCTION: IMPERIALISM 0x004f64c0

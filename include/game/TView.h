@@ -25,7 +25,7 @@ public:
   int field3c;
   unsigned char padding_40_to_43[0x04];
   CPtrList* childList44; // 0x44 — child-control list (CObList/CPtrList)
-  int field48;
+  int* field48;
   unsigned char flag4c;
   unsigned char flag4d;
   unsigned short field4e;

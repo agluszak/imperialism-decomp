@@ -60,10 +60,9 @@ static void RecomputeMapOrderOwnerActiveSelection(TMapOrderEntryOwnerContext* ow
   }
   ownerContext->active_node = 0;
   for (TMapOrderChildLinkNode* link = ownerContext->head; link != 0; link = link->next) {
-    TMapOrderEntry* activeEntry = reinterpret_cast<TMapOrderEntry*>(ownerContext->active_node);
-    int preferred = reinterpret_cast<TMapOrderEntry*>(link->object_ptr)
-                        ->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
-    ownerContext->active_node = preferred;
+    TMapOrderEntry* activeEntry = ownerContext->active_node;
+    ownerContext->active_node =
+        link->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
 }
 

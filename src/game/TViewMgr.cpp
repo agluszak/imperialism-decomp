@@ -604,16 +604,16 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
   CDialog dialog;
   reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
 
-  int buffer = AllocateWithFallbackHandler(0x3e);
+  char* buffer = new char[0x3e];
   if (buffer != 0) {
-    CopyHotKeyDialogTemplateToBuffer(buffer);
-    *reinterpret_cast<void**>(reinterpret_cast<char*>(buffer) + 0x118) = &dialog;
+    CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
+    *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
 
     int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
     if (modalResult != 0) {
       g_pLocalizationTable->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(buffer));
+    delete[] buffer;
   }
 }
 

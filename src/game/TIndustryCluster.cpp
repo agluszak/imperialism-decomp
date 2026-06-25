@@ -47,12 +47,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
 
 // FUNCTION: IMPERIALISM 0x00588a30
 TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
-  TIndustryCluster* cluster =
-      reinterpret_cast<TIndustryCluster*>(AllocateWithFallbackHandler(sizeof(TIndustryCluster)));
-  if (cluster != 0) {
-    new (cluster) TIndustryCluster();
-  }
-  return cluster;
+  return new TIndustryCluster();
 }
 
 

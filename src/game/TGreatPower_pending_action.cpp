@@ -13,7 +13,6 @@
 
 #include "decomp_types.h"
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x004d7770
 #pragma optimize("y", on)

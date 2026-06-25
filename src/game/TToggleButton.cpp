@@ -7,7 +7,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTToggleButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 
 

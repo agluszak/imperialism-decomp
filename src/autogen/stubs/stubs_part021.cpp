@@ -3603,6 +3603,22 @@ undefined4 AfxSetNewHandler(void)
   return 0;
 }
 
+// ghidra_name AllocateWithFallbackHandler
+// ghidra_proto undefined AllocateWithFallbackHandler()
+// FUNCTION: IMPERIALISM 0x00606f73
+undefined4 AllocateWithFallbackHandler(void)
+{
+  return 0;
+}
+
+// ghidra_name FreeHeapBufferIfNotNull
+// ghidra_proto undefined FreeHeapBufferIfNotNull()
+// FUNCTION: IMPERIALISM 0x00606faf
+undefined4 FreeHeapBufferIfNotNull(void)
+{
+  return 0;
+}
+
 // ghidra_name CreateObject_606ff2
 // ghidra_proto undefined CreateObject_606ff2()
 // FUNCTION: IMPERIALISM 0x00606ff2

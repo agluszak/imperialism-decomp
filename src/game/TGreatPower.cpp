@@ -136,13 +136,11 @@ void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
 void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
 void NoOpAdvisoryHandlerReturn(void);
 void NoOpDiplomacyWarTransitionCallback(void);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
 void NoOpNationDiplomacyCallback(void);
 void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
 void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
 void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
 undefined4 GenerateThreadLocalRandom15(void);
@@ -511,13 +509,7 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
 
 // FUNCTION: IMPERIALISM 0x004d8950
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
-  void* instance = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x964));
-  if (instance == 0) {
-    return 0;
-  }
-
-  new (instance) TGreatPower();
-  return instance;
+  return new TGreatPower();
 }
 
 // FUNCTION: IMPERIALISM 0x004d89d0
@@ -620,12 +612,11 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   this->diplomacyEligibilityA0 = (static_cast<short>(arg2) == 1) ? 1 : 0;
 
-  void* cityModel = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
+  TCity* cityModel = new TCity();
   if (cityModel != 0) {
-    reinterpret_cast<TCity*>(cityModel)->TCity::TCity();
-    reinterpret_cast<TCity*>(cityModel)->InitializeCityProductionState(arg1);
+    cityModel->InitializeCityProductionState(arg1);
   }
-  this->city = static_cast<TCity*>(cityModel);
+  this->city = cityModel;
 
   void* townMarkerListOwner = AllocateBattleListOwnerWithLinkedSentinel();
   this->townMarkerList = static_cast<TPtrList*>(townMarkerListOwner);
@@ -896,10 +887,9 @@ void TGreatPower::ReadFrom(TStream* stream) {
   if (townCount > 0) {
     int townOrdinal = 1;
     while (townOrdinal <= townCount) {
-      void* townMarker = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
+      TTown* townMarker = new TTown();
       if (townMarker != 0) {
-        reinterpret_cast<TTown*>(townMarker)->TTown::TTown();
-        static_cast<TTown*>(townMarker)->ReadFrom(stream);
+        townMarker->ReadFrom(stream);
         static_cast<TPtrList*>(townMarkerList)->AddTailSlot30(townMarker);
       }
       ++townOrdinal;
@@ -1459,7 +1449,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   if (this->city == 0) {
     return;
   }
-  char* influenceMap = reinterpret_cast<char*>(AllocateWithFallbackHandler(0x1950));
+  char* influenceMap = new char[0x1950];
   if (influenceMap == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryCppPath, 0xa0e);
@@ -1517,7 +1507,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
     *outInfluenceMap = influenceMap;
     return;
   }
-  FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(influenceMap));
+  delete[] influenceMap;
 }
 #pragma optimize("", on)
 

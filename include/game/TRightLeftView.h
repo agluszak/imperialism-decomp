@@ -124,10 +124,12 @@ public:
 // === END GENERATED DECLS (TRightLeftView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRightLeftView 0xCTOR`).
 
-  TRightLeftView();
+  int field84;
 
-  TRightLeftView* ConstructTRightLeftViewBaseState();
+  TRightLeftView();
 };
+
+ASSERT_SIZE(TRightLeftView, 0x88);
 
 // === BEGIN GENERATED (TRightLeftView) — refreshed by `just gen-class TRightLeftView`; do not hand-edit ===
 // clang-format off

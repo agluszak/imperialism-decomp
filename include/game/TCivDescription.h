@@ -4,7 +4,6 @@
 #include "game/TView.h"
 
 struct CRuntimeClass;
-int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 struct Rect32 {
   int left;

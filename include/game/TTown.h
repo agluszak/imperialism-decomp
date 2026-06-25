@@ -5,8 +5,6 @@
 
 struct CRuntimeClass;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-
 // Town/region marker record (0x50 bytes) kept on TGreatPower::townMarkerList.
 // VTABLE: IMPERIALISM 0x0066d7c8
 class TTown : public TObject {
@@ -32,12 +30,7 @@ public:
                             short ownerNation);
   char IsTransportLinkedAndEnabled(void);
 
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
-
   ~TTown() override;
 };
+
+ASSERT_SIZE(TTown, 0x50);

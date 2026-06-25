@@ -1,7 +1,6 @@
 #include "game/mfc.h"
 
 typedef void(__cdecl* TempMapLockCallback)(int);
-typedef int(__cdecl* AllocFallbackCallback)(undefined4);
 
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
@@ -25,27 +24,6 @@ static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
 
 // LIBRARY: IMPERIALISM 0x00606c7c
 // EndWaitCursor
-
-// FUNCTION: IMPERIALISM 0x00606f73
-int AllocateWithFallbackHandler(undefined4 size_bytes) {
-  int module_thread_state = (int)GetOrCreateMfcModuleThreadState();
-  if (module_thread_state == 0) {
-    return 0;
-  }
-
-  AllocFallbackCallback fallback = *(AllocFallbackCallback*)(module_thread_state + 0x28);
-  if (fallback == 0) {
-    return 0;
-  }
-  return fallback(size_bytes);
-}
-
-// FUNCTION: IMPERIALISM 0x00606faf
-void FreeHeapBufferIfNotNull(undefined4 ptr_value) {
-  if (ptr_value != 0) {
-    reinterpret_cast<void(__cdecl*)()>(FreeHeapBlockWithAllocatorTracking)();
-  }
-}
 
 // LIBRARY: IMPERIALISM 0x006067a2
 // CWinApp::ProcessMessageFilter

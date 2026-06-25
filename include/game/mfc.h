@@ -2,6 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
+#include "game/mfc_heap_library.h"
 
 // Retail MFC 4.2 from the MSVC500 toolchain (same nafxcw.lib the game linked).
 #ifndef VC_EXTRALEAN
@@ -20,10 +21,6 @@
 #undef MoveMemory
 #endif
 
-// MFC module-state heap bridges (MfcRuntime.cpp).
-int AllocateWithFallbackHandler(undefined4 size_bytes);
+// Ghidra 0x606f73 / 0x606faf are retail MFC operator new/delete (LIBRARY — see mfc_heap_library.h).
 int AllocateAndLinkBlockHead(int* blockHead, int blockSize, int elementSize);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 GetOrCreateMfcModuleThreadState(void);
-undefined4 FreeHeapBlockWithAllocatorTracking(void);

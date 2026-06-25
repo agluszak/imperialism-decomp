@@ -12,6 +12,10 @@ struct ClipStateRegionInner {
 
 ASSERT_SIZE(ClipStateRegionInner, 0x1c);
 
-undefined4 CreateClipStateRegionWrapperObject(void);
-undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
+struct ClipStateRegionWrapper {
+  ClipStateRegionInner* inner;
+};
+
+ClipStateRegionWrapper* CreateClipStateRegionWrapperObject(void);
+undefined4 DestroyClipStateRegionWrapperObject(ClipStateRegionWrapper* wrapperObject);
 int IntersectRectWrapper(RECT* src1, RECT* src2, RECT* dst);

@@ -31,12 +31,7 @@ undefined4 thunk_BuildUiTextStyleDescriptor(void);
 
 // FUNCTION: IMPERIALISM 0x005713c0
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {
-  TUberCluster* cluster =
-      reinterpret_cast<TUberCluster*>(AllocateWithFallbackHandler(sizeof(TUberCluster)));
-  if (cluster != 0) {
-    new (cluster) TUberCluster();
-  }
-  return cluster;
+  return new TUberCluster();
 }
 
 
