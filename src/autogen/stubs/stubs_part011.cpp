@@ -395,26 +395,10 @@ undefined4 IsSelectableTextOptionEntryIteratorValid(void)
   return 0;
 }
 
-// ghidra_name TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl
-// ghidra_proto undefined InitializeTurnEventDialogFactoryRegistry_Impl()
-// FUNCTION: IMPERIALISM 0x00491ad0
-undefined4 InitializeTurnEventDialogFactoryRegistry_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40
 // ghidra_proto undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40()
 // FUNCTION: IMPERIALISM 0x00491b40
 undefined4 DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40(void)
-{
-  return 0;
-}
-
-// ghidra_name RegisterDialogFactoryCallback
-// ghidra_proto void __thiscall RegisterDialogFactoryCallback(int pFactoryFn)
-// FUNCTION: IMPERIALISM 0x00491be0
-undefined4 RegisterDialogFactoryCallback(void)
 {
   return 0;
 }

@@ -5,6 +5,7 @@
 // drops the VTABLE entity as a duplicate address. This char is only a legacy stand-in
 // referenced by not-yet-ported autogen vptr writes; it carries no reccmp address.
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+char CObjectVtbl_0064b328;
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor.
 // SYNTHETIC: IMPERIALISM 0x00415f00

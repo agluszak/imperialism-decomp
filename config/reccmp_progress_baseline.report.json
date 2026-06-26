@@ -626,7 +626,7 @@
     },
     {
       "address": "0x415fe0",
-      "matching": 0.0007971303308090873,
+      "matching": 0.0007966540529774945,
       "name": "BuildTradeSchoolDialogControls",
       "type": 1
     },
@@ -704,7 +704,7 @@
     },
     {
       "address": "0x41b6d0",
-      "matching": 0.0003499256408013297,
+      "matching": 0.0006996676578625153,
       "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows",
       "type": 1
     },
@@ -800,7 +800,7 @@
     },
     {
       "address": "0x427360",
-      "matching": 0.0021019442984760903,
+      "matching": 0.002098635886673662,
       "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags",
       "type": 1
     },
@@ -860,7 +860,7 @@
     },
     {
       "address": "0x4295a0",
-      "matching": 0.0007331378299120235,
+      "matching": 0.0014654698662758747,
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
       "type": 1
     },
@@ -1052,7 +1052,7 @@
     },
     {
       "address": "0x430c50",
-      "matching": 0.0009199632014719411,
+      "matching": 0.0018386577798207308,
       "name": "InitializeDealBookScreenControlsAndCommandTags",
       "type": 1
     },
@@ -1094,7 +1094,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.0005120983228779926,
+      "matching": 0.0010238034297414896,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -1208,7 +1208,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.0003661662394727206,
+      "matching": 0.0007319304666056725,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -1268,13 +1268,13 @@
     },
     {
       "address": "0x44a810",
-      "matching": 0.009237875288683603,
+      "matching": 0.009174311926605505,
       "name": "BuildTurnEventDialogResources_2508",
       "type": 1
     },
     {
       "address": "0x44af90",
-      "matching": 0.000894254415381176,
+      "matching": 0.0017873100983020554,
       "name": "InitializeJoinSelectorDialogControlsAndNationSlots",
       "type": 1
     },
@@ -1298,7 +1298,7 @@
     },
     {
       "address": "0x44fbc0",
-      "matching": 0.0011176306230790724,
+      "matching": 0.0011166945840312675,
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext",
       "type": 1
     },
@@ -1310,7 +1310,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.0005141388174807198,
+      "matching": 0.0010274852298998202,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1430,7 +1430,7 @@
     },
     {
       "address": "0x45b100",
-      "matching": 0.0020130850528434826,
+      "matching": 0.004020100502512563,
       "name": "InitializeTacticalBattleViewToolbarAndDialogControls",
       "type": 1
     },
@@ -1484,13 +1484,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.0057553956834532375,
+      "matching": 0.0057306590257879654,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.0020898641588296763,
+      "matching": 0.004173187271778821,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -1502,7 +1502,7 @@
     },
     {
       "address": "0x4601b0",
-      "matching": 0.00031928480204342275,
+      "matching": 0.0006384167265182347,
       "name": "InitializeTradeScreenBitmapControls",
       "type": 1
     },
@@ -1526,13 +1526,13 @@
     },
     {
       "address": "0x46fd10",
-      "matching": 0.0008733624454148472,
+      "matching": 0.0008727907484180668,
       "name": "BuildTurnEventDialogResourcesForEvent7DE",
       "type": 1
     },
     {
       "address": "0x4749a0",
-      "matching": 0.047058823529411764,
+      "matching": 0.045454545454545456,
       "name": "BuildUniversityDialogShell",
       "type": 1
     },
@@ -1562,7 +1562,7 @@
     },
     {
       "address": "0x4793c0",
-      "matching": 0.07692307692307693,
+      "matching": 0.17142857142857143,
       "name": "CreateTurnEventDialogFactoryRegistryObject",
       "type": 1
     },
@@ -1580,7 +1580,7 @@
     },
     {
       "address": "0x479480",
-      "matching": 0.041237113402061855,
+      "matching": 0.019801980198019802,
       "name": "InitializeTurnEventDialogFactoryRegistry",
       "type": 1
     },
@@ -1604,7 +1604,7 @@
     },
     {
       "address": "0x479710",
-      "matching": 0.06451612903225806,
+      "matching": 0.35,
       "name": "DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory",
       "type": 1
     },
@@ -5411,14 +5411,38 @@
     },
     {
       "address": "0x491ad0",
-      "matching": 0.15384615384615385,
+      "matching": 0.7272727272727273,
       "name": "TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl",
       "type": 1
     },
     {
+      "address": "0x491b10",
+      "matching": 0.64,
+      "name": "TTurnEventDialogFactoryRegistry::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x491be0",
-      "matching": 0.0,
+      "matching": 0.6857142857142857,
       "name": "RegisterDialogFactoryCallback",
+      "type": 1
+    },
+    {
+      "address": "0x491c80",
+      "matching": 0.4444444444444444,
+      "name": "TCluster::OrphanCallChain_C1_I17_00491c80",
+      "type": 1
+    },
+    {
+      "address": "0x491cc0",
+      "matching": 0.4576271186440678,
+      "name": "TCluster::RunRegisteredDialogFactoriesByEventCode",
+      "type": 1
+    },
+    {
+      "address": "0x491d80",
+      "matching": 0.5507246376811594,
+      "name": "TCluster::InvokeDialogFactoryFromPacket",
       "type": 1
     },
     {
@@ -6757,7 +6781,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.6135693215339233,
+      "matching": 0.611764705882353,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -32484,7 +32508,7 @@
     },
     {
       "address": "0x5df3c0",
-      "matching": 0.16666666666666666,
+      "matching": 0.32,
       "name": "TAssetMgr::ResolveTurnEventDialogNodeByMessageContext",
       "type": 1
     },
@@ -39188,6 +39212,12 @@
       "address": "0x64b0c0",
       "matching": 1.0,
       "name": "TCluster::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64b2e8",
+      "matching": 1.0,
+      "name": "TTurnEventDialogFactoryRegistry::`vftable'",
       "type": 5
     },
     {

@@ -1,6 +1,7 @@
 #include "game/TAssetMgr.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
 
 // FUNCTION: IMPERIALISM 0x005df260
 CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
@@ -25,8 +26,13 @@ void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {
 
 // FUNCTION: IMPERIALISM 0x005df3c0
 TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext) {
-  (void)messageContext;
-  return 0;
+  if (g_pTurnEventDialogFactoryRegistry == nullptr) {
+    EnsureTurnEventDialogFactoryRegistryInitialized();
+  }
+  if (g_pTurnEventDialogFactoryRegistry == nullptr) {
+    return nullptr;
+  }
+  return g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(messageContext);
 }
 
 // FUNCTION: IMPERIALISM 0x005df3f0

@@ -15,6 +15,7 @@ class TView;
 
 #include "game/mfc.h"
 #include "game/TNetMgr.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
 
 extern "C" {
 
@@ -294,3 +295,6 @@ CPtrList g_ModalViewStack;
 // unlinks on teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
 CPtrList g_LiveViewRegistry;
+
+// GLOBAL: IMPERIALISM 0x006a1b24
+TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;

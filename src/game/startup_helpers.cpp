@@ -15,6 +15,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TModalTemplateDialog.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TTurnEventDialogFactoryRegistry.h"
 
 void InitializeStrategicMapViewSystem(TMacViewMgr* self);
 
@@ -179,6 +180,8 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
   TAssetMgr* assetMgr = new TAssetMgr();
   ForwardEnsurePictWvDataGobLoadedBySlot(app->field_50);
   g_pUiViewManager = assetMgr;
+
+  EnsureTurnEventDialogFactoryRegistryInitialized();
 
   TViewMgr* viewMgr = new TViewMgr();
   if (viewMgr != nullptr) {

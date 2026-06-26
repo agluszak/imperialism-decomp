@@ -459,14 +459,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
   return 0;
 }
 
-// ghidra_name BuildTradeSchoolDialogControls
-// ghidra_proto int * __fastcall BuildTradeSchoolDialogControls(dword dwPanelId, short nDialogTypeTag)
-// FUNCTION: IMPERIALISM 0x00415fe0
-undefined4 BuildTradeSchoolDialogControls(void)
-{
-  return 0;
-}
-
 // ghidra_name AllocateUiResourceNode
 // ghidra_proto undefined AllocateUiResourceNode()
 // FUNCTION: IMPERIALISM 0x0041b1c0
@@ -563,14 +555,6 @@ undefined4 PopUiResourcePoolNode(void)
   return 0;
 }
 
-// ghidra_name InitializeIndustryViewTradeMoveControlsAndCommodityRows
-// ghidra_proto undefined InitializeIndustryViewTradeMoveControlsAndCommodityRows()
-// FUNCTION: IMPERIALISM 0x0041b6d0
-undefined4 InitializeIndustryViewTradeMoveControlsAndCommodityRows(void)
-{
-  return 0;
-}
-
 // ghidra_name PushUiLinkedListNodeWithPayload
 // ghidra_proto undefined PushUiLinkedListNodeWithPayload()
 // FUNCTION: IMPERIALISM 0x00426ec0
@@ -635,14 +619,6 @@ undefined4 SetUiResourcePairValues(void)
   return 0;
 }
 
-// ghidra_name InitializeIndustryOverviewPlacardsAndTradeStatusTags
-// ghidra_proto undefined InitializeIndustryOverviewPlacardsAndTradeStatusTags()
-// FUNCTION: IMPERIALISM 0x00427360
-undefined4 InitializeIndustryOverviewPlacardsAndTradeStatusTags(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiCursorTextResourceEntry
 // ghidra_proto undefined ConstructUiCursorTextResourceEntry()
 // FUNCTION: IMPERIALISM 0x00429330
@@ -663,14 +639,6 @@ undefined4 ConstructUiNumericTextEntry(void)
 // ghidra_proto undefined NumericEntryMethod_00409a39()
 // FUNCTION: IMPERIALISM 0x00429530
 undefined4 NumericEntryMethod_00409a39(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEventDialogResourcesForEvent547Or7D8
-// ghidra_proto undefined BuildTurnEventDialogResourcesForEvent547Or7D8()
-// FUNCTION: IMPERIALISM 0x004295a0
-undefined4 BuildTurnEventDialogResourcesForEvent547Or7D8(void)
 {
   return 0;
 }
@@ -851,14 +819,6 @@ undefined4 ConstructUiResourceEntry_Vtbl00640940(void)
   return 0;
 }
 
-// ghidra_name InitializeDealBookScreenControlsAndCommandTags
-// ghidra_proto undefined InitializeDealBookScreenControlsAndCommandTags()
-// FUNCTION: IMPERIALISM 0x00430c50
-undefined4 InitializeDealBookScreenControlsAndCommandTags(void)
-{
-  return 0;
-}
-
 // ghidra_name TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
 // ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At00435590()
 // FUNCTION: IMPERIALISM 0x00435590
@@ -879,14 +839,6 @@ undefined4 WrapperFor_ConstructTPageViewBaseState_At00435610(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()
 // FUNCTION: IMPERIALISM 0x004356e0
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEventDialogUiByCode
-// ghidra_proto int * __fastcall BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode)
-// FUNCTION: IMPERIALISM 0x004357b0
-undefined4 BuildTurnEventDialogUiByCode(void)
 {
   return 0;
 }
@@ -967,14 +919,6 @@ undefined4 ConstructSelectableTextOptionEntry(void)
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_104F(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d9c0
 undefined4 ConstructTurnEventMainPictureEntry_104F(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeArmyNavyReportViewsAndCommandTags
-// ghidra_proto undefined InitializeArmyNavyReportViewsAndCommandTags()
-// FUNCTION: IMPERIALISM 0x0043dbc0
-undefined4 InitializeArmyNavyReportViewsAndCommandTags(void)
 {
   return 0;
 }
@@ -1067,22 +1011,6 @@ undefined4 WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0(void)
   return 0;
 }
 
-// ghidra_name BuildTurnEventDialogResources_2508
-// ghidra_proto undefined BuildTurnEventDialogResources_2508()
-// FUNCTION: IMPERIALISM 0x0044a810
-undefined4 BuildTurnEventDialogResources_2508(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeJoinSelectorDialogControlsAndNationSlots
-// ghidra_proto undefined InitializeJoinSelectorDialogControlsAndNationSlots()
-// FUNCTION: IMPERIALISM 0x0044af90
-undefined4 InitializeJoinSelectorDialogControlsAndNationSlots(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80()
 // FUNCTION: IMPERIALISM 0x0044fa80
@@ -1099,14 +1027,6 @@ undefined4 WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0(void)
   return 0;
 }
 
-// ghidra_name BuildUiResourceTreeByTemplateIdAndBindScreenContext
-// ghidra_proto undefined BuildUiResourceTreeByTemplateIdAndBindScreenContext()
-// FUNCTION: IMPERIALISM 0x0044fbc0
-undefined4 BuildUiResourceTreeByTemplateIdAndBindScreenContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiClickablePictureResourceEntry_Vtbl643A40
 // ghidra_proto undefined ConstructUiClickablePictureResourceEntry_Vtbl643A40()
 // FUNCTION: IMPERIALISM 0x00453800
@@ -1119,14 +1039,6 @@ undefined4 ConstructUiClickablePictureResourceEntry_Vtbl643A40(void)
 // ghidra_proto undefined DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree()
 // FUNCTION: IMPERIALISM 0x00453830
 undefined4 DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGameSetupScreenControlsAndModeTags
-// ghidra_proto undefined InitializeGameSetupScreenControlsAndModeTags()
-// FUNCTION: IMPERIALISM 0x004538a0
-undefined4 InitializeGameSetupScreenControlsAndModeTags(void)
 {
   return 0;
 }
@@ -1243,14 +1155,6 @@ undefined4 SetColorRgbAndClearAlphaByte(void)
   return 0;
 }
 
-// ghidra_name InitializeTacticalBattleViewToolbarAndDialogControls
-// ghidra_proto undefined InitializeTacticalBattleViewToolbarAndDialogControls()
-// FUNCTION: IMPERIALISM 0x0045b100
-undefined4 InitializeTacticalBattleViewToolbarAndDialogControls(void)
-{
-  return 0;
-}
-
 // ghidra_name TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
 // ghidra_proto undefined WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270()
 // FUNCTION: IMPERIALISM 0x0045d270
@@ -1267,34 +1171,10 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
   return 0;
 }
 
-// ghidra_name BuildTurnEventDialogResourcesForEvent898
-// ghidra_proto undefined BuildTurnEventDialogResourcesForEvent898()
-// FUNCTION: IMPERIALISM 0x0045d520
-undefined4 BuildTurnEventDialogResourcesForEvent898(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEventDialogResourcesForEvent8FC
-// ghidra_proto undefined BuildTurnEventDialogResourcesForEvent8FC()
-// FUNCTION: IMPERIALISM 0x0045e0b0
-undefined4 BuildTurnEventDialogResourcesForEvent8FC(void)
-{
-  return 0;
-}
-
 // ghidra_name TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
 // ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
 // FUNCTION: IMPERIALISM 0x004600c0
 undefined4 WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTradeScreenBitmapControls
-// ghidra_proto undefined InitializeTradeScreenBitmapControls()
-// FUNCTION: IMPERIALISM 0x004601b0
-undefined4 InitializeTradeScreenBitmapControls(void)
 {
   return 0;
 }
@@ -1319,22 +1199,6 @@ undefined4 InitializeUiResourceEntries(void)
 // ghidra_proto undefined BuildTradeBoardDialogUiLayoutVariantB()
 // FUNCTION: IMPERIALISM 0x0046baa7
 undefined4 BuildTradeBoardDialogUiLayoutVariantB(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEventDialogResourcesForEvent7DE
-// ghidra_proto undefined BuildTurnEventDialogResourcesForEvent7DE()
-// FUNCTION: IMPERIALISM 0x0046fd10
-undefined4 BuildTurnEventDialogResourcesForEvent7DE(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUniversityDialogShell
-// ghidra_proto int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)
-// FUNCTION: IMPERIALISM 0x004749a0
-undefined4 BuildUniversityDialogShell(void)
 {
   return 0;
 }
@@ -1367,30 +1231,6 @@ undefined4 BuildUniversityRecruitControls(void)
 // ghidra_proto undefined BuildUniversityRecruitmentRows()
 // FUNCTION: IMPERIALISM 0x00475f84
 undefined4 BuildUniversityRecruitmentRows(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTurnEventDialogFactoryRegistryObject
-// ghidra_proto undefined CreateTurnEventDialogFactoryRegistryObject()
-// FUNCTION: IMPERIALISM 0x004793c0
-undefined4 CreateTurnEventDialogFactoryRegistryObject(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTurnEventDialogFactoryRegistry
-// ghidra_proto int * __fastcall InitializeTurnEventDialogFactoryRegistry(int * pFactoryBootstrap)
-// FUNCTION: IMPERIALISM 0x00479480
-undefined4 InitializeTurnEventDialogFactoryRegistry(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory
-// ghidra_proto undefined DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory()
-// FUNCTION: IMPERIALISM 0x00479710
-undefined4 DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory(void)
 {
   return 0;
 }
