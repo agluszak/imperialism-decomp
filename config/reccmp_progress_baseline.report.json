@@ -404,7 +404,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.4006514657980456,
+      "matching": 0.3973941368078176,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -446,13 +446,13 @@
     },
     {
       "address": "0x4138b0",
-      "matching": 0.2,
+      "matching": 0.6,
       "name": "PostCommand100ToMainWindow",
       "type": 1
     },
     {
       "address": "0x413950",
-      "matching": 0.06896551724137931,
+      "matching": 0.425531914893617,
       "name": "HandleStartupCommand100",
       "type": 1
     },
@@ -518,7 +518,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.22530864197530864,
+      "matching": 0.2222222222222222,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -536,7 +536,7 @@
     },
     {
       "address": "0x415090",
-      "matching": 0.3146067415730337,
+      "matching": 0.29473684210526313,
       "name": "ShowAutoResolutionDialogIfNeeded",
       "type": 1
     },
@@ -2726,7 +2726,7 @@
     },
     {
       "address": "0x484fd0",
-      "matching": 0.0,
+      "matching": 0.5714285714285714,
       "name": "DispatchStartupCommand100ToAppSingleton",
       "type": 1
     },
@@ -6643,7 +6643,7 @@
     },
     {
       "address": "0x49d360",
-      "matching": 0.43661971830985913,
+      "matching": 0.4217687074829932,
       "name": "PrepareAndCreateDialogFromTemplateResource",
       "type": 1
     },
@@ -25227,7 +25227,7 @@
     },
     {
       "address": "0x57d970",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TSimMgr::PostMainWindowCommand100ForTurnFlow",
       "type": 1
     },

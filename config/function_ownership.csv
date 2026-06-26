@@ -24,6 +24,9 @@ address|target_cpp|ownership|note
 412dc0|src/game/ImperialismApp.cpp|manual|marker_sync
 413250|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 413780|src/game/ImperialismApp.cpp|manual|marker_sync
+4138b0|src/game/ImperialismApp.cpp|manual|marker_sync
+413950|src/game/ImperialismApp.cpp|manual|marker_sync
+4139f0|src/game/ImperialismApp.cpp|manual|marker_sync
 414770|src/game/TAmbitApplication.cpp|manual|marker_sync
 414850|src/game/startup_paths.cpp|manual|marker_sync
 4149a0|src/game/ImperialismApp.cpp|manual|marker_sync
@@ -150,6 +153,8 @@ address|target_cpp|ownership|note
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 483340|src/game/startup_helpers.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
+484fb0|src/game/ImperialismApp.cpp|manual|marker_sync
+484fd0|src/game/ImperialismApp.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|marker_sync
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync
 485f50|src/game/TObject.cpp|manual|marker_sync

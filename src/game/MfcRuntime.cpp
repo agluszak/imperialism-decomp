@@ -2,7 +2,7 @@
 
 typedef void(__cdecl* TempMapLockCallback)(int);
 
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
+#include "game/ImperialismApp.h"
 
 undefined4 GetOrCreateMfcModuleThreadState(void) {
   return WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();

@@ -1619,22 +1619,6 @@ undefined4 WrapperFor_PreCreateWindow_61cdb3_At00484f70(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_HandleStartupCommand100_At00484fb0
-// ghidra_proto undefined WrapperFor_thunk_HandleStartupCommand100_At00484fb0()
-// FUNCTION: IMPERIALISM 0x00484fb0
-undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchStartupCommand100ToAppSingleton
-// ghidra_proto undefined DispatchStartupCommand100ToAppSingleton()
-// FUNCTION: IMPERIALISM 0x00484fd0
-undefined4 DispatchStartupCommand100ToAppSingleton(void)
-{
-  return 0;
-}
-
 // ghidra_name TryRealizeViewPaletteAndInvalidateWindow
 // ghidra_proto undefined TryRealizeViewPaletteAndInvalidateWindow()
 // FUNCTION: IMPERIALISM 0x00484ff0

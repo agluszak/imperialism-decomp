@@ -227,6 +227,34 @@ extern "C" const char s_GameName_00698010[] = "GameName";
 // GLOBAL: IMPERIALISM 0x0069801c
 extern "C" const char s_PlayerName_0069801c[] = "PlayerName";
 
+// InitInstance registry/profile literals (.rdata pointer table @ 0x0063e038).
+// GLOBAL: IMPERIALISM 0x006941a8
+extern "C" const char s_ProfileLiteralIMPERIALISM_006941A8[] = "IMPERIALISM";
+// GLOBAL: IMPERIALISM 0x006941b8
+extern "C" const char s_ProfileKeyLanguage_006941B8[] = "Language";
+// GLOBAL: IMPERIALISM 0x006941c4
+extern "C" const char s_ProfileKeyAutoRes_006941C4[] = "AutoRes";
+// GLOBAL: IMPERIALISM 0x006941d0
+extern "C" const char s_ProfileSectionSettings_006941D0[] = "Settings";
+// GLOBAL: IMPERIALISM 0x006941dc
+extern "C" const char s_ProfileAppTitleImperialism_006941DC[] = "Imperialism";
+// GLOBAL: IMPERIALISM 0x006941ec
+extern "C" const char s_RegistryCompanyNameSSI_006941EC[] = "SSI";
+// GLOBAL: IMPERIALISM 0x0063e038
+extern "C" const char* const g_pRegistryCompanyKey_0063E038 = s_RegistryCompanyNameSSI_006941EC;
+// GLOBAL: IMPERIALISM 0x0063e03c
+extern "C" const char* const g_pRegistryAppKey_0063E03C = s_ProfileAppTitleImperialism_006941DC;
+// GLOBAL: IMPERIALISM 0x0063e040
+extern "C" const char* const g_pRegistrySettingsSection_0063E040 = s_ProfileSectionSettings_006941D0;
+// GLOBAL: IMPERIALISM 0x0063e044
+extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 = s_ProfileSectionSettings_006941D0;
+// GLOBAL: IMPERIALISM 0x0063e048
+extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
+// GLOBAL: IMPERIALISM 0x0063e04c
+extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLanguage_006941B8;
+// GLOBAL: IMPERIALISM 0x0063e050
+extern "C" const char* const g_pRegistryProfileAppName_0063E050 = s_ProfileLiteralIMPERIALISM_006941A8;
+
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
 #include "decomp_types.h"

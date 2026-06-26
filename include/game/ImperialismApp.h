@@ -25,6 +25,7 @@ public:
   int ShowAutoResolutionDialogIfNeeded();            // 0x00415090
   void ApplyAutoResolutionModeAndPersist(int mode);  // 0x004155b0
   BOOL LoadLanguageResourcesFromIrgFiles();           // 0x004149a0
+  void HandleStartupCommand100();                     // 0x00413950
 
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
   int field_C0;       // 0xC0
@@ -40,3 +41,8 @@ public:
 };
 
 extern ImperialismApp theApp;
+
+void __fastcall PostCommand100ToMainWindow(CWinApp* app);  // 0x004138b0
+void DispatchStartupCommand100ToAppSingleton();            // 0x00484fd0
+undefined4 WrapperFor_thunk_HandleStartupCommand100_At00484fb0();  // 0x00484fb0
+undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();  // 0x004139f0

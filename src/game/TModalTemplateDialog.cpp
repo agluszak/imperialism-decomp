@@ -49,6 +49,9 @@ int TModalTemplateDialog::PrepareAndCreateModalFromTemplate() {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;
     HRSRC resourceInfo = FindResourceA(module, MAKEINTRESOURCEA(resourceTemplateId), RT_DIALOG);
+    if (resourceInfo == nullptr) {
+      return 0;
+    }
     hDialogResource = LoadResource(module, resourceInfo);
   }
   if (hDialogResource != nullptr) {

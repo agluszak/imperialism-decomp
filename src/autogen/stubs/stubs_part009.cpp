@@ -155,30 +155,6 @@ undefined4 ShowDialogTemplate64Modal(void)
   return 0;
 }
 
-// ghidra_name PostCommand100ToMainWindow
-// ghidra_proto undefined PostCommand100ToMainWindow()
-// FUNCTION: IMPERIALISM 0x004138b0
-undefined4 PostCommand100ToMainWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleStartupCommand100
-// ghidra_proto undefined HandleStartupCommand100()
-// FUNCTION: IMPERIALISM 0x00413950
-undefined4 HandleStartupCommand100(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0
-// ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0()
-// FUNCTION: IMPERIALISM 0x004139f0
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_RefreshBackdropOnInputMessages_At00413a20
 // ghidra_proto undefined WrapperFor_RefreshBackdropOnInputMessages_At00413a20()
 // FUNCTION: IMPERIALISM 0x00413a20

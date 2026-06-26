@@ -12,9 +12,6 @@
 extern "C" char g_szEmptyString[];
 extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
 
-// Free helper implemented elsewhere; posts UI command 100 to the main window.
-undefined4 PostCommand100ToMainWindow(void);
-
 extern "C" {
 // TSimMgr's MFC CRuntimeClass descriptor (returned by GetRuntimeClass / vtable slot 0).
 // GLOBAL: IMPERIALISM 0x00662960
@@ -162,7 +159,7 @@ void TSimMgr::IncrementQuarterGateTick2C() {
 
 // FUNCTION: IMPERIALISM 0x0057d970
 void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
-  PostCommand100ToMainWindow();
+  PostCommand100ToMainWindow(DAT_006a1348);
 }
 
 // FUNCTION: IMPERIALISM 0x0057d990
