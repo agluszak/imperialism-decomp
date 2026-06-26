@@ -28,12 +28,9 @@ Tractable (single inheritance, primary vtable, modest override counts):
 
 | Class | vtable | base (vtable) | override slots |
 |---|---|---|---|
-| TPictureNumberText | 0x0066c740 | TNumberText (0x0063e8b0) | 2: 0x00,0x01 (0x5b51c0,0x5b5210) |
-| TNumberText | 0x0063e8b0 | TEditText (0x0064ad90) | 5: 0x00,0x01,0x08,0x79,0x7a (0x491040,0x429530,0x4912b0,0x4910e0,0x4911c0) — prereq for TPictureNumberText |
 | TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
 | TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17 (slot list in `scratchpad/vdiff2.err`) |
 
-Dependency order: TNumberText→TPictureNumberText.
 
 Hard — secondary/aspect-vtable complication (do NOT treat as simple annotate):
 

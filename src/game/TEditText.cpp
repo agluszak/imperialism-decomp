@@ -1,8 +1,38 @@
 #include "game/TEditText.h"
+#include "game/CMcWindow.h"
+#include "game/TObject.h"
 
 // FUNCTION: IMPERIALISM 0x00490380
 CRuntimeClass* TEditText::GetRuntimeClass() const {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004903a0
+TEditText::TEditText() : TStaticText() {
+  this->hasCommandTagResource = 13;
+  CString* textPtr = new CString();
+  *reinterpret_cast<CString**>(&this->text) = textPtr;
+  this->field_94 = nullptr;
+  this->field_98 = 0;
+  this->field_9c = 0xff;
+  this->flag4d = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004904d0
+TEditText::~TEditText() {
+  if (this->field_94 != nullptr) {
+    delete this->field_94;
+    this->field_94 = nullptr;
+  }
+  if (this->field_98 != 0) {
+    delete reinterpret_cast<TObject*>(this->field_98);
+    this->field_98 = 0;
+  }
+  CString* textPtr = *reinterpret_cast<CString**>(&this->text);
+  if (textPtr != nullptr) {
+    textPtr->~CString();
+    free(textPtr);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00490650
@@ -72,9 +102,12 @@ undefined TEditText::OrphanCallChain_C1_I09_0048ff70() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490cf0
-undefined TEditText::InitDialogWindowAndSyncTitleIfChanged() {
-  return 0;
+void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag) {
+  (void)newText;
+  (void)refreshFlag;
 }
+
+
 
 // FUNCTION: IMPERIALISM 0x00490e50
 void TEditText::RecomputeAbsolutePositionRecursive() {
@@ -82,4 +115,4 @@ void TEditText::RecomputeAbsolutePositionRecursive() {
 
 // SYNTHETIC: IMPERIALISM 0x00492f30
 // TEditText::`scalar deleting destructor'
-TEditText::~TEditText() {}
+

@@ -15,6 +15,13 @@ public:
   TStaticText();
   virtual ~TStaticText() override;
 
+  void CopyCityDialogStateFromSource(TView* source);
+
+  void InitializeTextEntryBaseAndOptionalStringResource(TControl* panel, int* offsetLayout,
+                                                        int* sizeLayout, int layoutParam6,
+                                                        int layoutParam7, short stringResourceGroup,
+                                                        short stringResourceIndex);
+
   virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48f870
 
   TObject* ShallowClone() override;                 // 0x20 0x48fc00

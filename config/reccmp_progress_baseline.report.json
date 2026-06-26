@@ -854,14 +854,15 @@
     },
     {
       "address": "0x429500",
-      "matching": 0.2,
-      "name": "ConstructUiNumericTextEntry",
+      "effective": true,
+      "matching": 0.875,
+      "name": "TNumberText::TNumberText",
       "type": 1
     },
     {
       "address": "0x429530",
-      "matching": 0.0,
-      "name": "NumericEntryMethod_00409a39",
+      "matching": 0.64,
+      "name": "TNumberText::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -5147,13 +5148,13 @@
     },
     {
       "address": "0x48fb10",
-      "matching": 0.034482758620689655,
-      "name": "CopyExtendedCityDialogControllerState",
+      "matching": 0.4782608695652174,
+      "name": "TStaticText::CopyCityDialogStateFromSource",
       "type": 1
     },
     {
       "address": "0x48fc00",
-      "matching": 0.37037037037037035,
+      "matching": 0.9285714285714286,
       "name": "TStaticText::ShallowClone",
       "type": 1
     },
@@ -5213,8 +5214,14 @@
     },
     {
       "address": "0x4903a0",
-      "matching": 0.06779661016949153,
-      "name": "TEditText::ConstructUiNumericTextEntryBase",
+      "matching": 0.5714285714285714,
+      "name": "TEditText::TEditText",
+      "type": 1
+    },
+    {
+      "address": "0x4904d0",
+      "matching": 0.6078431372549019,
+      "name": "TEditText::~TEditText",
       "type": 1
     },
     {
@@ -5303,7 +5310,7 @@
     },
     {
       "address": "0x490cf0",
-      "matching": 0.0,
+      "matching": 0.024390243902439025,
       "name": "TEditText::InitDialogWindowAndSyncTitleIfChanged",
       "type": 1
     },
@@ -5322,25 +5329,31 @@
     {
       "address": "0x491040",
       "matching": 0.5,
-      "name": "TNumberText::GetTNumberTextClassNamePointer",
+      "name": "TNumberText::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x491060",
-      "matching": 0.0,
+      "matching": 0.7164179104477612,
       "name": "TNumberText::ConstructTNumberTextBaseState",
       "type": 1
     },
     {
+      "address": "0x4910e0",
+      "matching": 0.4878048780487805,
+      "name": "TNumberText::SetControlValue",
+      "type": 1
+    },
+    {
       "address": "0x4911c0",
-      "matching": 0.058823529411764705,
-      "name": "UpdateControlCachedIntFromWindowText",
+      "matching": 0.6567164179104478,
+      "name": "TNumberText::UpdateControlCachedIntFromWindowText",
       "type": 1
     },
     {
       "address": "0x4912b0",
-      "matching": 0.09523809523809523,
-      "name": "NumericEntryMethod_00407a7c",
+      "matching": 0.95,
+      "name": "TNumberText::ShallowClone",
       "type": 1
     },
     {
@@ -5585,7 +5598,7 @@
     },
     {
       "address": "0x492f30",
-      "matching": 0.64,
+      "matching": 0.72,
       "name": "TEditText::`scalar deleting destructor'",
       "type": 1
     },
@@ -11515,7 +11528,7 @@
     },
     {
       "address": "0x4d8c20",
-      "matching": 0.64,
+      "matching": 0.72,
       "name": "TGreatPower::`scalar deleting destructor'",
       "type": 1
     },
@@ -15716,7 +15729,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17345132743362832,
+      "matching": 0.18230088495575222,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -30197,20 +30210,26 @@
     },
     {
       "address": "0x5b5120",
-      "matching": 0.06060606060606061,
+      "matching": 0.4406779661016949,
       "name": "TPictureNumberText::CreateTPictureNumberTextInstance",
       "type": 1
     },
     {
       "address": "0x5b51c0",
       "matching": 0.5,
-      "name": "TPictureNumberText::GetTPictureNumberTextClassNamePointer",
+      "name": "TPictureNumberText::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5b51e0",
-      "matching": 0.2,
-      "name": "TPictureNumberText::ConstructTPictureNumberTextBaseState",
+      "matching": 0.75,
+      "name": "TPictureNumberText::TPictureNumberText",
+      "type": 1
+    },
+    {
+      "address": "0x5b5210",
+      "matching": 0.64,
+      "name": "TPictureNumberText::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -38819,6 +38838,12 @@
       "type": 5
     },
     {
+      "address": "0x63e8b0",
+      "matching": 1.0,
+      "name": "TNumberText::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x63eb00",
       "matching": 1.0,
       "name": "TInfoBarText::`vftable'",
@@ -40712,6 +40737,12 @@
       "address": "0x66c178",
       "matching": 1.0,
       "name": "TAutomatedPlayDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66c740",
+      "matching": 1.0,
+      "name": "TPictureNumberText::`vftable'",
       "type": 5
     },
     {

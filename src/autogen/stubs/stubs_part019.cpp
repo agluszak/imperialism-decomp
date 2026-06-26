@@ -1171,38 +1171,6 @@ undefined4 UpdateMyNumberTextFromTownValueString(void)
   return 0;
 }
 
-// ghidra_name TPictureNumberText::CreateTPictureNumberTextInstance
-// ghidra_proto undefined CreateTPictureNumberTextInstance()
-// FUNCTION: IMPERIALISM 0x005b5120
-undefined4 CreateTPictureNumberTextInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureNumberText::GetTPictureNumberTextClassNamePointer
-// ghidra_proto undefined GetTPictureNumberTextClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005b51c0
-undefined4 GetTPictureNumberTextClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureNumberText::ConstructTPictureNumberTextBaseState
-// ghidra_proto undefined ConstructTPictureNumberTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b51e0
-undefined4 ConstructTPictureNumberTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureNumberText::DestructTPictureNumberTextAndMaybeFree
-// ghidra_proto undefined DestructTPictureNumberTextAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005b5210
-undefined4 DestructTPictureNumberTextAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TPictureText::CreateTPictureTextInstance
 // ghidra_proto undefined CreateTPictureTextInstance()
 // FUNCTION: IMPERIALISM 0x005b5260

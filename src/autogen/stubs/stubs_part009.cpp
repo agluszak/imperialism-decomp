@@ -643,22 +643,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name ConstructUiNumericTextEntry
-// ghidra_proto undefined ConstructUiNumericTextEntry()
-// FUNCTION: IMPERIALISM 0x00429500
-undefined4 ConstructUiNumericTextEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name NumericEntryMethod_00409a39
-// ghidra_proto undefined NumericEntryMethod_00409a39()
-// FUNCTION: IMPERIALISM 0x00429530
-undefined4 NumericEntryMethod_00409a39(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTurnEventDialogResourcesForEvent547Or7D8
 // ghidra_proto undefined BuildTurnEventDialogResourcesForEvent547Or7D8()
 // FUNCTION: IMPERIALISM 0x004295a0

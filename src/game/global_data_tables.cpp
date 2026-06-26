@@ -54,6 +54,10 @@ CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TWindow_006495e8 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TButton_00649618 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x006496a8
+CRuntimeClass PTR_s_TNumberText_006496a8 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x0066c3c0
+CRuntimeClass PTR_s_TPictureNumberText_0066c3c0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006496d8
 CRuntimeClass PTR_s_TFloatWindow_006496d8 = {nullptr, 0, 0, nullptr, nullptr};

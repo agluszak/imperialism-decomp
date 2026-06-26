@@ -168,8 +168,8 @@ address|name|size|type|prototype
 429470|TControl::AssertCityProductionGlobalStateInitialized|30|function|undefined AssertCityProductionGlobalStateInitialized()
 4294a0|TControl::LogUnhandledDialogMethodAndReturnFalse|21|function|bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)
 4294d0|TStaticText::AssignSharedStringFromField84|19|function|undefined AssignSharedStringFromField84()
-429500|ConstructUiNumericTextEntry|28|function|undefined ConstructUiNumericTextEntry()
-429530|NumericEntryMethod_00409a39|30|function|undefined NumericEntryMethod_00409a39()
+429500|TNumberText::TNumberText|28|function|
+429530|TNumberText::`scalar deleting destructor'|30|function|
 4295a0|BuildTurnEventDialogResourcesForEvent547Or7D8|18275|function|undefined BuildTurnEventDialogResourcesForEvent547Or7D8()
 42d240|InitializeCityTradeDiplomacyUiEntries|946|function|undefined InitializeCityTradeDiplomacyUiEntries()
 42e0b5|BuildOrderStateStaticTextUiResourceEntries|991|function|undefined BuildOrderStateStaticTextUiResourceEntries()
@@ -1054,7 +1054,7 @@ address|name|size|type|prototype
 48f890|TStaticText::TStaticText|198|function|undefined TStaticText()
 48f9a0|TStaticText::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 48f9d0|TMyNumberText::CloneCityDialogStateWithSharedStringInit|254|function|undefined CloneCityDialogStateWithSharedStringInit()
-48fb10|CopyExtendedCityDialogControllerState|184|function|undefined CopyExtendedCityDialogControllerState()
+48fb10|TStaticText::CopyCityDialogStateFromSource|184|function|void __thiscall CopyCityDialogStateFromSource(TView *)
 48fc00|TStaticText::ShallowClone|24|function|undefined ShallowClone()
 48fc30|TStaticText::~TStaticText|146|function|undefined ~TStaticText()
 48fd00|InitializeTextEntryBaseAndOptionalStringResource|261|function|undefined InitializeTextEntryBaseAndOptionalStringResource()
@@ -1065,8 +1065,8 @@ address|name|size|type|prototype
 4900a0|TStaticText::RenderControlStateTextBySelectionCode|273|function|undefined RenderControlStateTextBySelectionCode()
 490210|TEditText::CreateTEditTextInstance|282|function|undefined CreateTEditTextInstance()
 490380|TEditText::GetRuntimeClass|6|function|undefined GetTEditTextClassNamePointer()
-4903a0|TEditText::ConstructUiNumericTextEntryBase|235|function|undefined ConstructUiNumericTextEntryBase()
-4904d0|DestructTEditTextAndMaybeFree|194|function|undefined DestructTEditTextAndMaybeFree()
+4903a0|TEditText::TEditText|235|function|
+4904d0|TEditText::~TEditText|194|function|
 4905e0|WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0|58|function|undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
 490650|TEditText::CallVoidSlotA0|59|function|undefined GetTEventHandlerClassNamePointer(void)
 4906a0|TEditText::ApplyRectSlot110|28|function|undefined InitializeDialogWindowAndRefreshSelectedNationHeaderStatus()
@@ -1085,11 +1085,11 @@ address|name|size|type|prototype
 490cf0|TEditText::InitDialogWindowAndSyncTitleIfChanged|272|function|undefined InitDialogWindowAndSyncTitleIfChanged()
 490e50|TEditText::VTableSlot59|91|function|undefined 'scalar_deleting_destructor'(void)
 490ed0|TNumberText::CreateTNumberTextInstance|288|function|undefined CreateTNumberTextInstance()
-491040|TNumberText::GetTNumberTextClassNamePointer|6|function|undefined GetTNumberTextClassNamePointer()
+491040|TNumberText::GetRuntimeClass|6|function|
 491060|TNumberText::ConstructTNumberTextBaseState|92|function|undefined ConstructTNumberTextBaseState()
-4910e0|TNumberText::DestructTNumberTextAndMaybeFree|161|function|undefined DestructTNumberTextAndMaybeFree()
-4911c0|UpdateControlCachedIntFromWindowText|126|function|undefined UpdateControlCachedIntFromWindowText()
-4912b0|NumericEntryMethod_00407a7c|62|function|undefined NumericEntryMethod_00407a7c()
+4910e0|TNumberText::SetControlValue|161|function|
+4911c0|TNumberText::UpdateControlCachedIntFromWindowText|126|function|
+4912b0|TNumberText::ShallowClone|62|function|
 491300|TCluster::CreateTClusterInstance|175|function|undefined CreateTClusterInstance()
 4913e0|TCluster::GetRuntimeClass|6|function|undefined GetRuntimeClass()
 491400|TCluster::ConstructUiResourceEntryType4B0C0|91|function|undefined ConstructUiResourceEntryType4B0C0()
@@ -5616,9 +5616,9 @@ address|name|size|type|prototype
 5b5000|TMyNumberText::DestructTMyNumberTextAndMaybeFree|30|function|undefined DestructTMyNumberTextAndMaybeFree()
 5b5050|TMyNumberText::UpdateMyNumberTextFromTownValueString|147|function|undefined UpdateMyNumberTextFromTownValueString()
 5b5120|TPictureNumberText::CreateTPictureNumberTextInstance|113|function|undefined CreateTPictureNumberTextInstance()
-5b51c0|TPictureNumberText::GetTPictureNumberTextClassNamePointer|6|function|undefined GetTPictureNumberTextClassNamePointer()
-5b51e0|TPictureNumberText::ConstructTPictureNumberTextBaseState|28|function|undefined ConstructTPictureNumberTextBaseState()
-5b5210|TPictureNumberText::DestructTPictureNumberTextAndMaybeFree|30|function|undefined DestructTPictureNumberTextAndMaybeFree()
+5b51c0|TPictureNumberText::GetRuntimeClass|6|function|
+5b51e0|TPictureNumberText::TPictureNumberText|28|function|
+5b5210|TPictureNumberText::`scalar deleting destructor'|30|function|
 5b5260|TPictureText::CreateTPictureTextInstance|83|function|undefined CreateTPictureTextInstance()
 5b52e0|TPictureText::GetRuntimeClass|6|function|undefined GetTPictureTextClassNamePointer()
 5b5300|TPictureText::ConstructTPictureTextBaseState|18|function|undefined ConstructTPictureTextBaseState()
