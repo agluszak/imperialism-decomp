@@ -621,6 +621,7 @@ targets:
       - TGarrisonView::thunk_DestructTGarrisonViewAndMaybeFree_At00409052
       - TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0
       - TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630
+      - "TGreatPower::~TGreatPower`vtordisp{0, 0}'"
       - THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
       - THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
       - THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40

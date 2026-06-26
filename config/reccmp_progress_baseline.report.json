@@ -3098,7 +3098,7 @@
     },
     {
       "address": "0x487400",
-      "matching": 0.0,
+      "matching": 0.1111111111111111,
       "name": "SetUiColorDescriptorGoldTriplet",
       "type": 1
     },
@@ -5435,20 +5435,44 @@
     },
     {
       "address": "0x491e00",
-      "matching": 0.021052631578947368,
+      "matching": 0.24793388429752067,
       "name": "TFloatWindow::CreateTFloatWindowInstance",
       "type": 1
     },
     {
+      "address": "0x491f90",
+      "matching": 0.5,
+      "name": "TFloatWindow::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x491fb0",
-      "matching": 0.024691358024691357,
-      "name": "TControl::ConstructUiWindowResourceEntryType4B340",
+      "matching": 0.2782608695652174,
+      "name": "TFloatWindow::TFloatWindow",
+      "type": 1
+    },
+    {
+      "address": "0x492110",
+      "matching": 0.64,
+      "name": "TFloatWindow::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x492140",
       "matching": 0.04081632653061224,
       "name": "DestructTWindowAndUnlinkGlobalWindowNode",
+      "type": 1
+    },
+    {
+      "address": "0x492310",
+      "matching": 1.0,
+      "name": "TFloatWindow::GetWindowTypeTag",
+      "type": 1
+    },
+    {
+      "address": "0x492330",
+      "matching": 0.5052631578947369,
+      "name": "TFloatWindow::CallVoidSlotA0",
       "type": 1
     },
     {
@@ -11491,7 +11515,7 @@
     },
     {
       "address": "0x4d8c20",
-      "matching": 0.72,
+      "matching": 0.64,
       "name": "TGreatPower::`scalar deleting destructor'",
       "type": 1
     },
@@ -14012,20 +14036,32 @@
     },
     {
       "address": "0x4f3840",
-      "matching": 0.14814814814814814,
+      "matching": 0.41509433962264153,
       "name": "TRearFloatWindow::CreateTRearFloatWindowInstance",
       "type": 1
     },
     {
       "address": "0x4f38c0",
       "matching": 0.5,
-      "name": "TRearFloatWindow::GetTRearFloatWindowClassNamePointer",
+      "name": "TRearFloatWindow::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4f38e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TRearFloatWindow::ConstructTRearFloatWindowBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x4f3910",
+      "matching": 0.64,
+      "name": "TRearFloatWindow::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x4f3960",
+      "matching": 0.5915492957746479,
+      "name": "TRearFloatWindow::DispatchUiMouseMoveToChildren",
       "type": 1
     },
     {
@@ -39215,6 +39251,12 @@
       "type": 5
     },
     {
+      "address": "0x64b340",
+      "matching": 1.0,
+      "name": "TFloatWindow::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x64be28",
       "matching": 1.0,
       "name": "TDialogView::`vftable'",
@@ -39716,6 +39758,12 @@
       "address": "0x655720",
       "matching": 1.0,
       "name": "TInteriorMinisterView::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x655928",
+      "matching": 1.0,
+      "name": "TRearFloatWindow::`vftable'",
       "type": 5
     },
     {

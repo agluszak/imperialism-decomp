@@ -427,22 +427,6 @@ undefined4 RegisterDialogFactoryCallback(void)
   return 0;
 }
 
-// ghidra_name TFloatWindow::CreateTFloatWindowInstance
-// ghidra_proto undefined CreateTFloatWindowInstance()
-// FUNCTION: IMPERIALISM 0x00491e00
-undefined4 CreateTFloatWindowInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ConstructUiWindowResourceEntryType4B340
-// ghidra_proto undefined ConstructUiWindowResourceEntryType4B340()
-// FUNCTION: IMPERIALISM 0x00491fb0
-undefined4 ConstructUiWindowResourceEntryType4B340(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTWindowAndUnlinkGlobalWindowNode
 // ghidra_proto undefined DestructTWindowAndUnlinkGlobalWindowNode()
 // FUNCTION: IMPERIALISM 0x00492140

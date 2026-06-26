@@ -406,3 +406,5 @@ TObject* TWindow::ShallowClone() {
   AssertMcAppUiInvalidation(g_szMcAppUiHeaderPath_006943CC, 0x51e);
   return 0;
 }
+
+TWindow::TWindow() : TView() {}

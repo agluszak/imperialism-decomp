@@ -1923,14 +1923,6 @@ undefined4 DestructTDialogBehaviorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name SetUiColorDescriptorGoldTriplet
-// ghidra_proto undefined SetUiColorDescriptorGoldTriplet()
-// FUNCTION: IMPERIALISM 0x00487400
-undefined4 SetUiColorDescriptorGoldTriplet(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x00487880

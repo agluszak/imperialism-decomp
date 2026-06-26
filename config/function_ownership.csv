@@ -166,6 +166,7 @@ address|target_cpp|ownership|note
 4872e0|src/game/TBehavior.cpp|manual|marker_sync
 487350|src/game/TDialogBehavior.cpp|manual|marker_sync
 4873b0|src/game/TDialogBehavior.cpp|manual|marker_sync
+487400|src/game/TFloatWindow.cpp|manual|marker_sync
 487430|src/game/TDialogBehavior.cpp|manual|marker_sync
 487470|src/game/TDialogBehavior.cpp|manual|marker_sync
 4874b0|src/game/TDialogBehavior.cpp|manual|marker_sync
@@ -501,10 +502,12 @@ address|target_cpp|ownership|note
 491c80|src/game/TCluster.cpp|manual|marker_sync
 491cc0|src/game/TCluster.cpp|manual|marker_sync
 491d80|src/game/TCluster.cpp|manual|marker_sync
-491f90|src/game/TCluster.cpp|manual|marker_sync
-492110|src/game/TCluster.cpp|manual|marker_sync
-492310|src/game/TCluster.cpp|manual|marker_sync
-492330|src/game/TCluster.cpp|manual|marker_sync
+491e00|src/game/TFloatWindow.cpp|manual|marker_sync
+491f90|src/game/TFloatWindow.cpp|manual|marker_sync
+491fb0|src/game/TFloatWindow.cpp|manual|marker_sync
+492110|src/game/TFloatWindow.cpp|manual|marker_sync
+492310|src/game/TFloatWindow.cpp|manual|marker_sync
+492330|src/game/TFloatWindow.cpp|manual|marker_sync
 4923f0|src/game/CWMgrIterator.cpp|manual|marker_sync
 492440|src/game/CWMgrIterator.cpp|manual|marker_sync
 492470|src/game/CWMgrIterator.cpp|manual|marker_sync
@@ -1481,6 +1484,11 @@ address|target_cpp|ownership|note
 4f3670|src/game/TInteriorMinisterView.cpp|manual|marker_sync
 4f36c0|src/game/TInteriorMinisterView.cpp|manual|marker_sync
 4f3710|src/game/TInteriorMinisterView.cpp|manual|marker_sync
+4f3840|src/game/TRearFloatWindow.cpp|manual|marker_sync
+4f38c0|src/game/TRearFloatWindow.cpp|manual|marker_sync
+4f38e0|src/game/TRearFloatWindow.cpp|manual|marker_sync
+4f3910|src/game/TRearFloatWindow.cpp|manual|marker_sync
+4f3960|src/game/TRearFloatWindow.cpp|manual|marker_sync
 4f5e00|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f5fb0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f6170|src/game/TDiplomacyMapView.cpp|manual|marker_sync

@@ -531,46 +531,6 @@ undefined4 ConstructTInteriorMinisterViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TRearFloatWindow::CreateTRearFloatWindowInstance
-// ghidra_proto undefined CreateTRearFloatWindowInstance()
-// FUNCTION: IMPERIALISM 0x004f3840
-undefined4 CreateTRearFloatWindowInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TRearFloatWindow::GetTRearFloatWindowClassNamePointer
-// ghidra_proto undefined GetTRearFloatWindowClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004f38c0
-undefined4 GetTRearFloatWindowClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TRearFloatWindow::ConstructTRearFloatWindowBaseState
-// ghidra_proto undefined ConstructTRearFloatWindowBaseState()
-// FUNCTION: IMPERIALISM 0x004f38e0
-undefined4 ConstructTRearFloatWindowBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TRearFloatWindow::DestructTRearFloatWindowAndMaybeFree
-// ghidra_proto undefined DestructTRearFloatWindowAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004f3910
-undefined4 DestructTRearFloatWindowAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TRearFloatWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
-// ghidra_proto undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960()
-// FUNCTION: IMPERIALISM 0x004f3960
-undefined4 WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50
 // ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()
 // FUNCTION: IMPERIALISM 0x004f3a50
