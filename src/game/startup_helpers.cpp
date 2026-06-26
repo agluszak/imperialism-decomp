@@ -14,10 +14,10 @@
 #include "game/THelpMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TModalTemplateDialog.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 
 void InitializeStrategicMapViewSystem(TMacViewMgr* self);
 
-extern undefined4 LoadUiStringResourceByGroupAndIndex();
 extern undefined4 scanBracketExpressions();
 
 // Define the global callback pointer
@@ -50,8 +50,9 @@ void* GetMainContextFromActiveThread() {
 }
 
 void InvokeLoadUiStringResourceByGroupAndIndex(CString* dest, int group, int index) {
-  reinterpret_cast<void(__cdecl*)(CString*, int, int)>(LoadUiStringResourceByGroupAndIndex)(
-      dest, group, index);
+  if (g_pModuleLibraryCacheState != nullptr) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(dest, group, index);
+  }
 }
 
 void InvokeScanBracketExpressions(TSimMgr* ctx, CString* out, char* input) {

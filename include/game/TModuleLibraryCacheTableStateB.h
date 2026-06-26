@@ -39,6 +39,11 @@ public:
 
   void ReleaseRecordByHandle(void* handle); // 0x0049a390
 
+  // Load a localized UI string by (group, index) into `out`. Reached via the global
+  // g_pModuleLibraryCacheState from many call sites (e.g. TMultiplayerMgr init, low-disk
+  // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
+  void LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index); // 0x004994c0
+
   void* m_field0;                                         // 0x00
   CMap<WORD, WORD, CacheRecord*, CacheRecord*> m_tableA;   // 0x04 (vtable 0x0064ba80)
   CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)

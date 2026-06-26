@@ -53,6 +53,14 @@ void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults() {
   field14 = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0048a180
+void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
+  field04 = 1;
+  field08 = 1;
+  field0c = packetTag;
+  controlTag = 0x20202020;
+}
+
 // Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
 // destructor at 0x0048a130 is emitted by the compiler from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0048a130

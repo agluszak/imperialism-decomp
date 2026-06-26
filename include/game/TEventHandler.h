@@ -36,6 +36,10 @@ public:
   // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
   void InitializeUiResourceEntryBaseHeaderDefaults();
 
+  // __thiscall packet/event-header field initializer (0x48a180, also reached via ILT 0x40174e).
+  // Writes controlTag (0x1c) = 0x20202020, field04/field08 = 1, field0c = packetTag.
+  void InitializePacketHeaderFields_Tag20202020(int packetTag);
+
   // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"
   // hierarchy is MFC DECLARE_DYNAMIC rooted at CObject). Every descendant overrides it
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain

@@ -2195,14 +2195,6 @@ undefined4 DestructTEventHandlerAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name InitializePacketHeaderFields_Tag20202020
-// ghidra_proto undefined InitializePacketHeaderFields_Tag20202020()
-// FUNCTION: IMPERIALISM 0x0048a180
-undefined4 InitializePacketHeaderFields_Tag20202020(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_GetTickCountDiv16_At0048a410
 // ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
 // FUNCTION: IMPERIALISM 0x0048a410

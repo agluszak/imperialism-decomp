@@ -8,7 +8,7 @@ CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
 }
 
 // FUNCTION: IMPERIALISM 0x005df280
-TAssetMgr::TAssetMgr() : TObject() {}
+TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
 
 // SYNTHETIC: IMPERIALISM 0x005df300
 // TAssetMgr::`scalar deleting destructor'

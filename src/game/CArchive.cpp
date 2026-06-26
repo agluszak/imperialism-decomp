@@ -1,14 +1,5 @@
 #include "game/mfc.h"
 
-extern "C" {
-char g_pClassDescTNetMgr = 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005e33c0
-void* GetTNetMgrClassNamePointer() {
-  return &g_pClassDescTNetMgr;
-}
-
 // LIBRARY: IMPERIALISM 0x005e6d04
 // CArchive::operator<<
 

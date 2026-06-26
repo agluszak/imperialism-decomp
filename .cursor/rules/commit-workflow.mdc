@@ -14,10 +14,13 @@ Before creating any git commit in this repo:
 
 ## When verification fails
 
-- **Caused by your changes** — fix before committing.
+- **Caused by your changes** — fix before committing (**forward**, per AGENTS.md gate-chasing guardrail: real methods, ownership sync, class/vtable fixes — never re-stub promoted callsites).
 - **Unrelated / pre-existing** (e.g. manual commits, marker ordering drift) — do **not** commit
   around the failure. Report what failed, which step, and whether `just stats` shows a
   meaningful regression vs the baseline.
+- **Gate fails after architectural promotion** — do **not** revert typed fields, real
+  methods, or `new T()` to stub casts to green the gate. Fix ownership/vtable/class model
+  or stop uncommitted and report.
 - **`function_out_of_order` (decomplint)** — reorder with
   `uv run python -m tools.workflow.reorder_marked_functions <file.cpp>`.
 

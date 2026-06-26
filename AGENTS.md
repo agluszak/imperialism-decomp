@@ -149,8 +149,68 @@ examples, and rationale: `docs/reference/construction.md`.
     temporary with a removal condition. *(count baseline-tracked by `just antipattern-gate`)*
 11. **Don't corrupt the source model to chase a local score.** A 70% match with correct
     architecture beats a 100% match built on fake source that blocks hierarchy recovery.
+    **This applies to gates too:** a failing `just gates` / `just vtable` with correct
+    source is not permission to revert to stubs — see the gate-chasing guardrail below.
 12. **Evidence required for inheritance** — base edges need constructor/destructor
     sequencing, vtable layout, prefix-layout, or Mac-symbol evidence; never names alone.
+
+## Gate-chasing guardrail (never revert architecture to pass verification)
+
+When `just gates`, `just vtable`, `just build`, or pre-commit checks fail **after** you
+have promoted real C++ shape — typed fields, real methods, `new T()`, typed singleton
+globals — **never undo that work to make verification pass.** Regressing from real
+methods back to `extern undefined4` + `reinterpret_cast` at the callsite is strictly
+worse than a failing gate and is treated as a source-model corruption (construction
+Hard Rule 11).
+
+### Typical failure mode (do not repeat)
+
+1. Port real shape: named fields instead of `this + offset`, `g_pX->Method()` instead of
+   a free-function stub, `new TNetMgr()` instead of a heap shim.
+2. A gate fails (`just vtable`, duplicate `// FUNCTION:`, `antipattern-gate`, link error).
+3. Agent **reverts step 1** — restores stub casts, `new char[]` buffers, or deletes the
+   promoted method — so the gate passes.
+
+Step 3 is **forbidden**. Fix forward or stop and report; never fix backward.
+
+### Fix forward (in order)
+
+1. **Build/link** — missing symbol: promote/own the callee as a real method, or use a
+   genuine LIBRARY symbol (`operator new` at `0x606f73`, not a fake
+   `AllocateWithFallbackHandler` stub). Wrong owner: `just sync-ownership` →
+   `just regen-stubs`.
+2. **Duplicate marker** — one address, one owner; move `// FUNCTION:` to the class that
+   owns the method, sync ownership, regen stubs. Do not delete the manual method.
+3. **`just vtable Class`** — first `new T()` in manual code can expose a pre-existing
+   class-model gap. Fix slot ownership / imports / missing overrides on that class; do
+   **not** stop constructing the class and do **not** re-stub callsites.
+4. **`antipattern-gate`** — prefer `new T()` over explicit `operator new` + placement;
+   prefer real inheritance over bridge thunks. Do not replace `new T()` with stub dispatch.
+
+If none of the above can resolve the gate **without** architectural regression, **stop
+and report** what failed, what you tried, and what class-model work remains. A blocked
+commit with correct source beats a passing commit with reverted stubs.
+
+### Callee classification (pick once, do not flip-flop)
+
+| Evidence | Correct model | Forbidden rollback |
+|----------|---------------|--------------------|
+| `mov ecx, …` / callee uses `[ecx+off]` | Real `__thiscall` method on owning class; `obj->Method()` | `reinterpret_cast` to `__thiscall*` on `undefined4` stub |
+| Vtable dispatch | Real `virtual` on recovered class | Raw `vftable[i]` or `VCall_*` facade |
+| `0x606f73` / `AllocateWithFallbackHandler` in listing | `new T()` (MFC `operator new` LIBRARY in `mfc_heap_library.cpp`) | `new char[n]` + stub ctor cast |
+| `// LIBRARY:` in repo | Link against MFC; no stub definition | Add a fake `undefined4` stub |
+| Genuine `__cdecl` ILT wrapper, no `this` | Hard Rule 9: `extern undefined4` + typed cast at callsite | — |
+
+**Hard Rule 9 applies only to genuine free-function thunks.** It does **not** permit
+re-stubbing a callee you have already verified is `__thiscall` on a recoverable class
+because a gate failed.
+
+### Promotion direction is one-way
+
+Temporary bridges must be **retired**, not restored. Once a callsite uses
+`g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(...)` or
+`new TNetMgr()` / `TNetMgr::ConstructGlobalTurnEventQueueManager(...)`, do not put the
+free-function stub or fake calling-convention cast back to unblock a commit.
 
 ## MSVC500 calling-convention guardrail
 
@@ -223,6 +283,11 @@ examples, and rationale: `docs/reference/construction.md`.
 
 If gates fail or stats regress for reasons unrelated to your edit, stop and report
 rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.
+
+**Never revert promoted real C++ to pass gates** — typed fields, real methods, `new T()`,
+typed globals. See **Gate-chasing guardrail** above. A failing gate with correct source
+must be fixed forward or reported; stub/`reinterpret_cast` rollback is not an acceptable
+gate fix.
 
 - Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
   as historical context only.

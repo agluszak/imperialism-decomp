@@ -9501,6 +9501,9 @@ address|name|size|type|prototype
 698110|g_Task_Force_Order_LookupTable_00698110||global|
 698118|g_Navy_Order_Priority_LookupTable_00698118||global|
 698b10|g_nTurnCooldownSideFlag00698B10||global|
+698b1a|g_anScenarioNationSetupTable_00698B1A||global|
+698010|s_GameName_00698010||global|
+69801c|s_PlayerName_0069801c||global|
 698f58|g_anTargetTileProfileByCivilianClassAndSlot||global|
 6a1344|g_pGlobalUiRootController||global|
 6a1348|DAT_006a1348||global|

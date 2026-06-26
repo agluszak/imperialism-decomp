@@ -27,8 +27,11 @@ public:
   virtual undefined NoOpRuntimeUiCallback_005df410();             // slot 0x0d 0x5df410
   virtual undefined PlayMovieClipAndDispatchTurnStateFollowup();  // slot 0x0e 0x5dfc10
   // === END GENERATED DECLS (TAssetMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr
-  // 0xCTOR`).
+
+  // Shared UI string-reference slots. The ctor (0x5df280) default-constructs all 13 entries
+  // via the EH array-construct helper; the scalar deleting dtor (0x5df300) tears them down
+  // with the matching array-destroy helper. sizeof(TAssetMgr) per RTTI is 0x58.
+  CString sharedTextSlots[0xd];
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);

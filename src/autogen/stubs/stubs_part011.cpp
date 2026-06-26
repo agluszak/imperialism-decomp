@@ -1531,14 +1531,6 @@ undefined4 InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440(void)
   return 0;
 }
 
-// ghidra_name LoadUiStringResourceByGroupAndIndex
-// ghidra_proto undefined LoadUiStringResourceByGroupAndIndex()
-// FUNCTION: IMPERIALISM 0x004994c0
-undefined4 LoadUiStringResourceByGroupAndIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0
 // ghidra_proto undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
 // FUNCTION: IMPERIALISM 0x004995a0

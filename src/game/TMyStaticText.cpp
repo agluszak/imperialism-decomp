@@ -2,14 +2,13 @@
 
 #include "game/CString.h"
 #include "game/TControl.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TStaticText.h"
 #include "game/TViewMgr.h"
 
 extern "C" {
 extern int g_nUiResourceEntryDefaultParam0;
 }
-
-undefined4 LoadUiStringResourceByGroupAndIndex(void);
 
 // FUNCTION: IMPERIALISM 0x0048fd00
 void TMyStaticText::InitializeTextEntryBaseAndOptionalStringResource(
@@ -38,9 +37,8 @@ void TMyStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   field8C = stringResourceIndex;
   if (stringResourceGroup != -1) {
     CString loadedString;
-    reinterpret_cast<void(__cdecl*)(void*, CString*, int, int)>(
-        reinterpret_cast<void (*)()>(LoadUiStringResourceByGroupAndIndex))(
-        g_pUiRuntimeContext, &loadedString, stringResourceGroup, stringResourceIndex);
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+        &loadedString, stringResourceGroup, stringResourceIndex);
     AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
   }
   HandleCursorHoverFallback(0, 0);

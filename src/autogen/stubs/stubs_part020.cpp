@@ -1899,14 +1899,6 @@ undefined4 CreateTNetMgrInstance(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::ConstructGlobalTurnEventQueueManager
-// ghidra_proto undefined ConstructGlobalTurnEventQueueManager()
-// FUNCTION: IMPERIALISM 0x005e33e0
-undefined4 ConstructGlobalTurnEventQueueManager(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4_Secondary
 // ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FEC4_Secondary()
 // FUNCTION: IMPERIALISM 0x005e3430

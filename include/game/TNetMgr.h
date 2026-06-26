@@ -3,13 +3,15 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNetMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNetMgr -> TObject -> CObject.
+// Global turn-event queue manager handle (ConstructGlobalTurnEventQueueManager @ 0x005e33e0
+// only stores vptr 0x0066fa20 on a 4-byte heap block). Plain TObject derivative — no extra
+// bases. recover-class merged the adjacent 0x0066fa50 vtable blob into this class; ignore
+// generated slots 0x0c+ until that extent is corrected.
 // VTABLE: IMPERIALISM 0x0066fa20
 class TNetMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TNetMgr) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5e33c0
-  virtual ~TNetMgr(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TNetMgr();                                    // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -18,20 +20,20 @@ public:
   virtual void Free() override; // slot 0x07 0x5e3470
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual CRuntimeClass * GetRuntimeClass_0c(); // slot 0x0c 0x606fba
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1); // slot 0x0d 0x5e4a30
-  virtual undefined SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1); // slot 0x0e 0x5e4610
-  virtual void AssertValid_0f(); // slot 0x0f 0x412bf0
-  virtual void Dump_10(undefined4 dc); // slot 0x10 0x412c10
-  virtual CRuntimeClass * GetRuntimeClass_12(); // slot 0x12 0x606fba
-  virtual undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1); // slot 0x13 0x5e4a60
-  virtual undefined SerializeDynamicDwordPointerArrayState(CArchive * param_1); // slot 0x14 0x5e4830
-  virtual void AssertValid_15(); // slot 0x15 0x412bf0
-  virtual void Dump_16(undefined4 dc); // slot 0x16 0x412c10
-// === END GENERATED DECLS (TNetMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNetMgr 0xCTOR`).
+  // slot 0x0a null (0x00000000)
+  // slot 0x0b null (0x00000000)
 
   TNetMgr();
+
+  // Placement ctor on a 4-byte heap block (Ghidra: ConstructGlobalTurnEventQueueManager @ 0x005e33e0).
+  static TNetMgr* ConstructGlobalTurnEventQueueManager(TNetMgr* storage);
+
+  // Owned at 0x005e4a30 / 0x005e4610 / 0x005e4830 / 0x005e4a60 — live on the adjacent
+  // 0x0066fa50 vtable used by linked-block-chain subobjects, not on TNetMgr::`vftable'.
+  undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1);
+  undefined SerializeLinkedRecordListWithFreeNodePool(CArchive* param_1);
+  undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1);
+  undefined SerializeDynamicDwordPointerArrayState(CArchive* param_1);
 };
 
 // === BEGIN GENERATED (TNetMgr) — refreshed by `just gen-class TNetMgr`; do not hand-edit ===

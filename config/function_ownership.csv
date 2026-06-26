@@ -309,6 +309,7 @@ address|target_cpp|ownership|note
 48a0e0|src/game/TEventHandler.cpp|manual|marker_sync
 48a100|src/game/TEventHandler.cpp|manual|marker_sync
 48a130|src/game/TEventHandler.cpp|manual|marker_sync
+48a180|src/game/TEventHandler.cpp|manual|marker_sync
 48a1b0|src/game/TEventHandler.cpp|manual|marker_sync
 48a240|src/game/TEventHandler.cpp|manual|marker_sync
 48a260|src/game/TEventHandler.cpp|manual|marker_sync
@@ -544,6 +545,7 @@ address|target_cpp|ownership|note
 498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4992a0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 499380|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+4994c0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
 49d360|src/game/TModalTemplateDialog.cpp|manual|marker_sync
@@ -3263,7 +3265,8 @@ address|target_cpp|ownership|note
 5e23f0|src/game/TMovieView.cpp|manual|marker_sync
 5e2490|src/game/TMovieView.cpp|manual|marker_sync
 5e2520|src/game/TMovieView.cpp|manual|marker_sync
-5e33c0|src/game/CArchive.cpp|manual|marker_sync
+5e33c0|src/game/TNetMgr.cpp|manual|marker_sync
+5e33e0|src/game/TNetMgr.cpp|manual|marker_sync
 5e3400|src/game/TNetMgr.cpp|manual|marker_sync
 5e3470|src/game/TNetMgr.cpp|manual|marker_sync
 5e34f0|src/game/network_error_reporting.cpp|manual|marker_sync

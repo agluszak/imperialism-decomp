@@ -14,6 +14,7 @@ class TControl;
 class TView;
 
 #include "game/mfc.h"
+#include "game/TNetMgr.h"
 
 extern "C" {
 
@@ -199,6 +200,12 @@ int g_NetworkManagerLastError006a5f6c = 0;
 undefined4 DAT_0066ac88 = 0;
 int DAT_006a601c = 0;
 
+// Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
+// GLOBAL: IMPERIALISM 0x00698010
+extern "C" const char s_GameName_00698010[] = "GameName";
+// GLOBAL: IMPERIALISM 0x0069801c
+extern "C" const char s_PlayerName_0069801c[] = "PlayerName";
+
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
 #include "decomp_types.h"
@@ -226,6 +233,16 @@ char DAT_006a43f0 = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 0;
 
+// Per-nation scenario setup table copied into TSimMgr's +0xe8 region by the ctor (0x57b9e0)
+// and by InitializeTurnFlowStateDefaults. The copy loop reads with a -1 short bias (starts at
+// &table[-1]), so the referenced symbol 0x698b1a is one short into the read span. Values
+// recovered from the original binary; sized to cover every short the loop reads.
+// GLOBAL: IMPERIALISM 0x00698b1a
+extern "C" short g_anScenarioNationSetupTable_00698B1A[27] = {
+    0x40f, 0x0,   0x41fc, 0x67, 0x410, 0x0,   0x41f4, 0x67, 0x410, 0x0,
+    0x41e4, 0x67, 0x810,  0x0,  0x41e0, 0x67, 0x810, 0x0,   0x41d4, 0x67,
+    0x411, 0x0,   0x41d0, 0x67, 0x411, 0x0,   0x41cc};
+
 // UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
 // Named so reccmp pairs the direct absolute loads in the TControl ctor.
 int g_nUiResourceEntryDefaultParam0 = 0;
@@ -233,6 +250,11 @@ int g_nUiResourceEntryDefaultParam1 = 0;
 unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 } // extern "C"
+
+// 0x006a6014 — global turn-event-queue manager pointer (built by ConstructGlobalTurnEventQueueManager
+// during multiplayer init, stored here and read by the turn-event dispatch path).
+// GLOBAL: IMPERIALISM 0x006a6014
+TNetMgr* DAT_006a6014 = 0;
 
 #include "game/TApplication.h"
 

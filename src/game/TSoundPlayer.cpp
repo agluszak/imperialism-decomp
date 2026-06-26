@@ -24,7 +24,6 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
-undefined4 InitializePacketHeaderFields_Tag20202020(void);
 undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void);
 undefined4 EnsureCdAudioDeviceHandleInitialized(void);
 undefined4 ClearDirectSoundInitPendingAndResetState_Impl(void);
@@ -174,7 +173,7 @@ struct SoundChannelListNode {
 
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) {
-  InitializePacketHeaderFields_Tag20202020();
+  this->InitializePacketHeaderFields_Tag20202020(0);
   char ok = static_cast<char>(thunk_InitializeDirectSoundDeviceAndChannels());
   this->directSoundInitOkAt20 = static_cast<unsigned char>(ok);
   if (ok == 0) {

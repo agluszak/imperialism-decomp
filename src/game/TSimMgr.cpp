@@ -7,6 +7,11 @@
 #include "game/TCountry.h"
 #include "game/diplomacy_globals.h"
 
+// Shared empty-string literal at 0x006a13a0 and the per-nation scenario setup table at
+// 0x00698b1a, both defined in global_data_tables.cpp.
+extern "C" char g_szEmptyString[];
+extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
+
 // Free helper implemented elsewhere; posts UI command 100 to the main window.
 undefined4 PostCommand100ToMainWindow(void);
 
@@ -35,26 +40,47 @@ CRuntimeClass* TSimMgr::GetRuntimeClass() const {
   return &g_pClassDescTSimMgr;
 }
 
-// Partial port: the real constructor also default-constructs the +0x7c CString[0x17]
-// array and copies the per-nation setup table (DAT_00698b1a) into the +0xe8 short arrays;
-// those remain TODO. Defining the constructor is what forces MSVC to emit TSimMgr's vtable
-// so reccmp can verify the slot layout.
-
 // FUNCTION: IMPERIALISM 0x0057b9e0
-TSimMgr::TSimMgr() {
+TSimMgr::TSimMgr() : sharedTextSlots() {
   turnStateCode = 1;
   mode = 1;
   previousTurnStateCode = 1;
   previousMode = 1;
   field14 = 0;
-  activeNationSlot = -1;
+
+  // Fused loop: fill field15[0..0x16] with 1 AND assign g_szEmptyString to each shared-text
+  // slot. Mirrors the original single do-while at 0x57ba44..0x57ba7b.
+  for (int i = 0; i < 0x17; ++i) {
+    field15[i] = 1;
+    CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
+    sharedTextSlots[i] = empty;     // -> 0x00605a29 CString::operator=
+  }
+
   quarterGateTick2c = 0;
+  activeNationSlot = -1;
   field30 = 7;
   field34 = 0x10;
+
+  // Copy the per-nation scenario setup table (DAT_00698b1a) into the +0xe8 short arrays. The
+  // original reads 4 shorts per iteration at table[-1..2] with stride 4, scattering them to
+  // +0xda/-0xe, +0xe8/0, +0xf6/+0xe, +0x104/+0x1c (then cursor += 2). The writes straddle the
+  // scenarioSetupRows0..3 fields, so the cursor is the raw +0xe8 short pointer (matches ECX=ESI+0xe8).
+  short* destCursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xe8);
+  const short* tableCursor = g_anScenarioNationSetupTable_00698B1A;
+  for (int row = 0; row < 7; ++row) {
+    destCursor[-7] = tableCursor[-1];
+    destCursor[0] = tableCursor[0];
+    destCursor[7] = tableCursor[1];
+    destCursor[14] = tableCursor[2];
+    destCursor += 1;
+    tableCursor += 4;
+  }
+
   fieldd8 = 0;
   field112 = 0;
   stateFlag114 = 0;
-  redrawEnabled = 0;
+  preferenceValues[0] = 0;
+  preferenceValues[1] = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0057bb50

@@ -4042,7 +4042,7 @@
     },
     {
       "address": "0x48a180",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InitializePacketHeaderFields_Tag20202020",
       "type": 1
     },
@@ -5153,7 +5153,7 @@
     },
     {
       "address": "0x48fd00",
-      "matching": 0.6410256410256411,
+      "matching": 0.6233766233766234,
       "name": "InitializeTextEntryBaseAndOptionalStringResource",
       "type": 1
     },
@@ -6235,7 +6235,7 @@
     },
     {
       "address": "0x4994c0",
-      "matching": 0.0,
+      "matching": 0.5773195876288659,
       "name": "LoadUiStringResourceByGroupAndIndex",
       "type": 1
     },
@@ -11816,7 +11816,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -15662,7 +15662,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17345132743362832,
+      "matching": 0.18230088495575222,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -20301,7 +20301,7 @@
     },
     {
       "address": "0x542670",
-      "matching": 0.4409448818897638,
+      "matching": 0.4307692307692308,
       "name": "ConstructMultiplayerManager",
       "type": 1
     },
@@ -20325,7 +20325,7 @@
     },
     {
       "address": "0x542900",
-      "matching": 0.06666666666666667,
+      "matching": 0.34513274336283184,
       "name": "TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext",
       "type": 1
     },
@@ -25095,7 +25095,7 @@
     },
     {
       "address": "0x57b9e0",
-      "matching": 0.3252032520325203,
+      "matching": 0.36477987421383645,
       "name": "TSimMgr::ConstructTurnFlowStateManagerVtable00662a58",
       "type": 1
     },
@@ -32466,7 +32466,7 @@
     },
     {
       "address": "0x5df280",
-      "matching": 0.07142857142857142,
+      "matching": 0.6037735849056604,
       "name": "ConstructUiViewManager",
       "type": 1
     },
@@ -32892,8 +32892,14 @@
     },
     {
       "address": "0x5e33e0",
-      "matching": 0.4,
+      "matching": 0.14285714285714285,
       "name": "TNetMgr::ConstructGlobalTurnEventQueueManager",
+      "type": 1
+    },
+    {
+      "address": "0x5e3400",
+      "matching": 0.64,
+      "name": "TNetMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -40778,6 +40784,12 @@
       "address": "0x66f708",
       "matching": 1.0,
       "name": "TMovieView::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66fa20",
+      "matching": 1.0,
+      "name": "TNetMgr::`vftable'",
       "type": 5
     },
     {

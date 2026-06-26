@@ -1,6 +1,9 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TObject.h"
 
+// Shared empty-string literal at 0x006a13a0 (defined in global_data_tables.cpp).
+extern "C" char g_szEmptyString[];
+
 namespace {
 // "A file required by the program, '%s,' is missing." (original .rdata at 0x00695188).
 const char* const kMissingFileFormat = reinterpret_cast<const char*>(0x00695188);
@@ -73,6 +76,21 @@ BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(LPCST
     AfxMessageBox(message, MB_OK, 0);
   }
   return m_primaryModule != NULL;
+}
+
+// Loads a localized UI string by (group, index) into *out using resource id
+// (group * 100 + index) from the primary data module. On load failure falls back to the
+// shared empty string. Resource id = group*100 + index matches LoadStringA's id arithmetic.
+// FUNCTION: IMPERIALISM 0x004994c0
+void TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
+                                                                         int index) {
+  LPSTR buffer = out->GetBufferSetLength(0x100);
+  int length = LoadStringA(m_primaryModule, index + group * 100, buffer, 0x100);
+  out->ReleaseBuffer(length);
+  if (length == 0) {
+    CString empty(g_szEmptyString);
+    *out = empty;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0049a390

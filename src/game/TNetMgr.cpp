@@ -1,27 +1,43 @@
 #include "game/TNetMgr.h"
 
-void TNetMgr::AssertValid_0f() {}
+#include <new>
 
-void TNetMgr::AssertValid_15() {}
+extern "C" {
+char g_pClassDescTNetMgr = 0;
+}
 
-void TNetMgr::Dump_10(undefined4 dc) {}
+// FUNCTION: IMPERIALISM 0x005e33c0
+CRuntimeClass* TNetMgr::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTNetMgr);
+}
 
-void TNetMgr::Dump_16(undefined4 dc) {}
+TNetMgr::TNetMgr() : TObject() {}
 
-CRuntimeClass* TNetMgr::GetRuntimeClass() const { return 0; }
+// FUNCTION: IMPERIALISM 0x005e33e0
+TNetMgr* TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr* storage) {
+  return new (storage) TNetMgr();
+}
 
 TNetMgr::~TNetMgr() {}
 
 void TNetMgr::Free() {}
 
-undefined TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive * param_1) { return 0; }
+undefined TNetMgr::SerializeLinkedRecordListWithFreeNodePool(CArchive* param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive * param_1) { return 0; }
+undefined TNetMgr::SerializeDynamicDwordPointerArrayState(CArchive* param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1) { return 0; }
+undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1) { return 0; }
-
-CRuntimeClass * TNetMgr::GetRuntimeClass_0c() { return 0; }
-
-CRuntimeClass * TNetMgr::GetRuntimeClass_12() { return 0; }
+undefined TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1) {
+  (void)param_1;
+  return 0;
+}
