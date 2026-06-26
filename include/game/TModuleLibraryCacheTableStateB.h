@@ -19,9 +19,16 @@
 // distinct vtables (0x0064ba80 / 0x0064ba68), i.e. two distinct instantiations; the exact
 // scalar key/value types (which fix the per-instantiation vtable but not the layout) are
 // still provisional pending the resource lookup/insert sites.
+struct CacheRecord {
+  short id;
+  void* pObject;
+  int refCount;
+};
+
 class TModuleLibraryCacheTableStateB {
 public:
   TModuleLibraryCacheTableStateB();
+  ~TModuleLibraryCacheTableStateB(); // 0x00498fe0
 
   // Load a required .gob pack as a DLL datafile into slot `slot` (0..3), freeing any
   // previous handle first; shows the missing-file dialog on failure. Returns nonzero if
@@ -30,9 +37,14 @@ public:
   // Load the primary data library into the dedicated +0x4c slot.      0x00499380
   BOOL LoadPrimaryDataLibraryWithErrorDialog(LPCSTR path);
 
-  void* m_field0;                          // 0x00 (initialized to 0; purpose TBD)
-  CMap<UINT, UINT, void*, void*> m_tableA; // 0x04 (CMap, vtable 0x0064ba80) — K/V provisional
-  CMap<WORD, WORD, void*, void*> m_tableB; // 0x20 (CMap, vtable 0x0064ba68) — K/V provisional
-  HMODULE m_slots[4];                      // 0x3c (gob pack slots 0..3)
-  HMODULE m_primaryModule;                 // 0x4c
+  void ReleaseRecordByHandle(void* handle); // 0x0049a390
+
+  void* m_field0;                                         // 0x00
+  CMap<WORD, WORD, CacheRecord*, CacheRecord*> m_tableA;   // 0x04 (vtable 0x0064ba80)
+  CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)
+  HMODULE m_slots[4];                                     // 0x3c (gob pack slots 0..3)
+  HMODULE m_primaryModule;                                // 0x4c
 };
+
+extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
+

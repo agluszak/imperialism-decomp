@@ -1331,14 +1331,6 @@ undefined4 ComputeRectSpanFromStoredBounds(void)
   return 0;
 }
 
-// ghidra_name SetUiRuntimeContextAndActivateMain
-// ghidra_proto undefined SetUiRuntimeContextAndActivateMain()
-// FUNCTION: IMPERIALISM 0x00483340
-undefined4 SetUiRuntimeContextAndActivateMain(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380
 // ghidra_proto undefined WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380()
 // FUNCTION: IMPERIALISM 0x00483380

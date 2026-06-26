@@ -1523,14 +1523,6 @@ undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00(vo
   return 0;
 }
 
-// ghidra_name TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules
-// ghidra_proto undefined DestructModuleLibraryCacheDualTableAndUnloadModules()
-// FUNCTION: IMPERIALISM 0x00498fe0
-undefined4 DestructModuleLibraryCacheDualTableAndUnloadModules(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440
 // ghidra_proto undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440()
 // FUNCTION: IMPERIALISM 0x00499440
@@ -1599,14 +1591,6 @@ undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void)
 // ghidra_proto undefined DecrementDialogResourceRefCountByShortIdAndCleanup()
 // FUNCTION: IMPERIALISM 0x0049a190
 undefined4 DecrementDialogResourceRefCountByShortIdAndCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseHashIndexedRecordByHandle
-// ghidra_proto undefined ReleaseHashIndexedRecordByHandle()
-// FUNCTION: IMPERIALISM 0x0049a390
-undefined4 ReleaseHashIndexedRecordByHandle(void)
 {
   return 0;
 }
@@ -2139,14 +2123,6 @@ undefined4 OrphanVtableAssignStub_0049cc20(void)
   return 0;
 }
 
-// ghidra_name SetGlobalDword6A2018
-// ghidra_proto undefined SetGlobalDword6A2018()
-// FUNCTION: IMPERIALISM 0x0049cc40
-undefined4 SetGlobalDword6A2018(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AllocateWithFallbackHandler_At0049cc60
 // ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()
 // FUNCTION: IMPERIALISM 0x0049cc60
@@ -2291,66 +2267,10 @@ undefined4 ConstructTNewGameCommandBaseState(void)
   return 0;
 }
 
-// ghidra_name TAmbitApplication::GetTAmbitApplicationClassNamePointer
-// ghidra_proto undefined GetTAmbitApplicationClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0049deb0
-undefined4 GetTAmbitApplicationClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalRuntimeSystemsFromConfig
-// ghidra_proto undefined InitializeGlobalRuntimeSystemsFromConfig()
-// FUNCTION: IMPERIALISM 0x0049ded0
-undefined4 InitializeGlobalRuntimeSystemsFromConfig(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseGlobalUiSystemsAndGameFlowState
-// ghidra_proto undefined ReleaseGlobalUiSystemsAndGameFlowState()
-// FUNCTION: IMPERIALISM 0x0049e1a0
-undefined4 ReleaseGlobalUiSystemsAndGameFlowState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot18_At0049e280()
-// FUNCTION: IMPERIALISM 0x0049e280
-undefined4 WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0()
-// FUNCTION: IMPERIALISM 0x0049e2f0
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// ghidra_proto undefined HandleTurnEventViewportEdgeAutoScroll()
-// FUNCTION: IMPERIALISM 0x0049e320
-undefined4 HandleTurnEventViewportEdgeAutoScroll(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I11_0049e4b0
 // ghidra_proto undefined OrphanCallChain_C1_I11_0049e4b0()
 // FUNCTION: IMPERIALISM 0x0049e4b0
 undefined4 OrphanCallChain_C1_I11_0049e4b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I04_0049e4e0
-// ghidra_proto undefined OrphanCallChain_C1_I04_0049e4e0()
-// FUNCTION: IMPERIALISM 0x0049e4e0
-undefined4 OrphanCallChain_C1_I04_0049e4e0(void)
 {
   return 0;
 }

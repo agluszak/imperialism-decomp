@@ -323,14 +323,6 @@ undefined4 PostTurnEventCodeMessage2420(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_00414770
-// ghidra_proto undefined OrphanRetStub_00414770()
-// FUNCTION: IMPERIALISM 0x00414770
-undefined4 OrphanRetStub_00414770(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850
 // ghidra_proto undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()
 // FUNCTION: IMPERIALISM 0x00414850
@@ -343,14 +335,6 @@ undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850(void)
 // ghidra_proto undefined DetectImperialismInstallDriveAndSetPathPrefix()
 // FUNCTION: IMPERIALISM 0x00414870
 undefined4 DetectImperialismInstallDriveAndSetPathPrefix(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadLanguageResourcesFromIrgFiles
-// ghidra_proto undefined LoadLanguageResourcesFromIrgFiles()
-// FUNCTION: IMPERIALISM 0x004149a0
-undefined4 LoadLanguageResourcesFromIrgFiles(void)
 {
   return 0;
 }
@@ -383,14 +367,6 @@ undefined4 OrphanCallChain_C1_I05_00415050(void)
 // ghidra_proto undefined OrphanCallChain_C1_I05_00415070()
 // FUNCTION: IMPERIALISM 0x00415070
 undefined4 OrphanCallChain_C1_I05_00415070(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowAutoResolutionDialogIfNeeded
-// ghidra_proto undefined ShowAutoResolutionDialogIfNeeded()
-// FUNCTION: IMPERIALISM 0x00415090
-undefined4 ShowAutoResolutionDialogIfNeeded(void)
 {
   return 0;
 }
@@ -455,22 +431,6 @@ undefined4 WrapperFor_GetProfileStringA_At00415540(void)
 // ghidra_proto undefined SetSettingValueInSettingsSection()
 // FUNCTION: IMPERIALISM 0x00415580
 undefined4 SetSettingValueInSettingsSection(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyAutoResolutionModeAndPersist
-// ghidra_proto undefined ApplyAutoResolutionModeAndPersist()
-// FUNCTION: IMPERIALISM 0x004155b0
-undefined4 ApplyAutoResolutionModeAndPersist(void)
-{
-  return 0;
-}
-
-// ghidra_name WarnLowDiskSpaceAndConfirmContinue
-// ghidra_proto undefined WarnLowDiskSpaceAndConfirmContinue()
-// FUNCTION: IMPERIALISM 0x00415760
-undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
 {
   return 0;
 }

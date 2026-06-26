@@ -339,10 +339,10 @@ undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_GetUnitMovementClassId_At004a4550
-// ghidra_proto undefined WrapperFor_thunk_GetUnitMovementClassId_At004a4550()
+// ghidra_name ForwardGetUnitMovementClassId_At004a4550
+// ghidra_proto undefined ForwardGetUnitMovementClassId_At004a4550()
 // FUNCTION: IMPERIALISM 0x004a4550
-undefined4 WrapperFor_thunk_GetUnitMovementClassId_At004a4550(void)
+undefined4 ForwardGetUnitMovementClassId_At004a4550(void)
 {
   return 0;
 }

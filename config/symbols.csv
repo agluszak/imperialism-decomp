@@ -1288,10 +1288,10 @@ address|name|size|type|prototype
 498d60|WrapperFor_CDialog_At00498d60|80|function|undefined WrapperFor_CDialog_At00498d60()
 498dd0|WrapperFor_FreeHeapBufferIfNotNull_At00498dd0|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00498dd0()
 498e00|WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00|31|function|undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00()
-498f60|TModuleLibraryCacheTableStateB_0064BA80::ConstructModuleLibraryCacheDualTableState|87|function|undefined ConstructModuleLibraryCacheDualTableState()
-498fe0|TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules|527|function|undefined DestructModuleLibraryCacheDualTableAndUnloadModules()
-4992a0|TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog|174|function|undefined LoadModuleLibrarySlotWithErrorDialog()
-499380|LoadPrimaryDataLibraryWithErrorDialog|143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()
+498f60|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB|87|function|undefined TModuleLibraryCacheTableStateB()
+498fe0|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB|527|function|undefined ~TModuleLibraryCacheTableStateB()
+4992a0|TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog|174|function|undefined LoadModuleLibrarySlotWithErrorDialog()
+499380|TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog|143|function|undefined LoadPrimaryDataLibraryWithErrorDialog()
 499440|InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440|91|function|undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440()
 4994c0|LoadUiStringResourceByGroupAndIndex|170|function|undefined LoadUiStringResourceByGroupAndIndex()
 4995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0|9|function|undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0()
@@ -1301,7 +1301,7 @@ address|name|size|type|prototype
 499e80|AllocateAndLinkBlockHeadPair_00499e80|434|function|undefined AllocateAndLinkBlockHeadPair_00499e80()
 49a0b0|IncrementDialogResourceRefCountByShortIdInRegistry|70|function|undefined IncrementDialogResourceRefCountByShortIdInRegistry()
 49a190|DecrementDialogResourceRefCountByShortIdAndCleanup|395|function|undefined DecrementDialogResourceRefCountByShortIdAndCleanup()
-49a390|ReleaseHashIndexedRecordByHandle|400|function|undefined ReleaseHashIndexedRecordByHandle()
+49a390|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle|400|function|undefined ReleaseRecordByHandle()
 49a590|LoadLocalizedStringByGroupAndIndexToSharedRef|234|function|undefined LoadLocalizedStringByGroupAndIndexToSharedRef()
 49a6c0|TToolBarCluster::LoadStringOrThrow|227|function|undefined4 __thiscall LoadStringOrThrow(undefined4 this_ptr, int return_value, int string_table_index)
 49a7f0|FilterStringByCharacterTypeFlag4AndAppend|220|function|undefined FilterStringByCharacterTypeFlag4AndAppend()
@@ -8971,7 +8971,7 @@ address|name|size|type|prototype
 64bd90|TAdorner::classRuntimeClass||global|
 64bda8|g_pClassDescTDialogView||global|
 64c0a0|TNewGameCommand::classRuntimeClass||global|
-64c0b8|TAmbitApplication::classRuntimeClass||global|
+64c0b8|TAmbitApplication_classRuntimeClass_0064c0b8||global|
 64c0d0|TAmbitFileBasedDocument::classRuntimeClass||global|
 64c1f0|TAnimation::classRuntimeClass||global|
 64c208|TCivAnimation::classRuntimeClass||global|
@@ -9466,6 +9466,7 @@ address|name|size|type|prototype
 673700|CArchiveException::classRuntimeClass||global|
 6744d0|CToolTipCtrl::classRuntimeClass||global|
 6745d0|CMapStringToPtr::classRuntimeClass||global|
+694150|g_apFontFiles||global|
 69430c|g_szDecimalFormat||global|
 6943cc|g_szMcAppUiHeaderPath_006943CC||global|
 6950ac|g_McAppUiActiveFlag_006950AC||global|
@@ -9502,7 +9503,10 @@ address|name|size|type|prototype
 698b10|g_nTurnCooldownSideFlag00698B10||global|
 698f58|g_anTargetTileProfileByCivilianClassAndSlot||global|
 6a1344|g_pGlobalUiRootController||global|
+6a1348|DAT_006a1348||global|
 6a134c|g_pModuleLibraryCacheState||global|
+6a1350|DAT_006a1350||global|
+6a1354|DAT_006a1354||global|
 6a13a0|g_szEmptyString||global|
 6a141c|g_pUiResourceHead||global|
 6a1420|g_pUiResourceContext||global|
@@ -9534,15 +9538,19 @@ address|name|size|type|prototype
 6a1da8|g_pGlobalClipRegionHandleObject||global|
 6a1dac|g_pScopedMapQuickDrawViewContext||global|
 6a1db4|g_bQuickDrawStrokePairDirty||global|
+6a2018|DAT_006a2018||global|
 6a20f8|g_pLocalizationTable||global|
 6a2148|g_pUiViewManager||global|
+6a2158|g_pDisplayMgr||global|
 6a21a8|g_pStrategicMapViewSystem||global|
 6a21bc|g_pUiRuntimeContext||global|
+6a21c0|DAT_006a21c0||global|
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4||global|
 6a24e8|g_aCityBuildingActionRects||global|
 6a2abc|g_nCityBuildingSlotXOffsetIndex||global|
 6a2ac0|g_nCityBuildingDrawYOffsetIndex||global|
 6a30a8|g_pPrimaryRenderSurfaceContext||global|
+6a327c|g_pLanguageMgr||global|
 6a3338|g_pMapContextActionManager||global|
 6a3ebc|g_pNavySecondaryOrderListHead||global|
 6a3ed8|g_pCachedMapActionContext||global|
@@ -9572,6 +9580,7 @@ address|name|size|type|prototype
 6a44b0|g_pActiveCityDialogLegendSelectionOwner||global|
 6a44b4|g_bCityDialogLegendSelectionInitialized||global|
 6a590c|g_pCursorControlPanel||global|
+6a7fac|g_pGlobalCallback_006a7fac||global|
 653728|g_ApplyIndexedResourceDeltaScale_00653728||global|
 653fd0|g_Compute_Advisory_Zero_00653FD0||global|
 653fe8|g_Compute_Advisory_MinusSix_00653FE8||global|

@@ -1,4 +1,5 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TObject.h"
 
 namespace {
 // "A file required by the program, '%s,' is missing." (original .rdata at 0x00695188).
@@ -15,6 +16,35 @@ TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB() : m_field0(0) {
   m_slots[1] = 0;
   m_slots[2] = 0;
   m_slots[3] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00498fe0
+TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
+  while (m_tableA.GetCount() > 0) {
+    POSITION pos = m_tableA.GetStartPosition();
+    WORD key;
+    CacheRecord* record;
+    m_tableA.GetNextAssoc(pos, key, record);
+
+    if (record->pObject != NULL) {
+      delete reinterpret_cast<TObject*>(record->pObject);
+    }
+    m_tableB.RemoveKey(record);
+    m_tableA.RemoveKey(key);
+    delete record;
+  }
+
+  for (int i = 0; i < 4; ++i) {
+    if (m_slots[i] != NULL) {
+      FreeLibrary(m_slots[i]);
+      m_slots[i] = NULL;
+    }
+  }
+
+  if (m_primaryModule != NULL) {
+    FreeLibrary(m_primaryModule);
+    m_primaryModule = NULL;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004992a0
@@ -43,4 +73,31 @@ BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(LPCST
     AfxMessageBox(message, MB_OK, 0);
   }
   return m_primaryModule != NULL;
+}
+
+// FUNCTION: IMPERIALISM 0x0049a390
+void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
+  CacheRecord* record = static_cast<CacheRecord*>(handle);
+  if (record == NULL)
+    return;
+
+  CacheRecord* foundRecord = NULL;
+  if (!m_tableB.Lookup(handle, foundRecord) || foundRecord != record) {
+    foundRecord = NULL;
+  }
+
+  if (foundRecord != NULL) {
+    record = foundRecord;
+  }
+
+  record->refCount--;
+  if (record->refCount < 1) {
+    if (record->pObject != NULL) {
+      delete reinterpret_cast<TObject*>(record->pObject);
+    }
+
+    m_tableB.RemoveKey(record);
+    m_tableA.RemoveKey(record->id);
+    delete record;
+  }
 }

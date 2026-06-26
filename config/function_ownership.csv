@@ -22,6 +22,11 @@ address|target_cpp|ownership|note
 412dc0|src/game/ImperialismApp.cpp|manual|marker_sync
 413250|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 413780|src/game/ImperialismApp.cpp|manual|marker_sync
+414770|src/game/TAmbitApplication.cpp|manual|marker_sync
+4149a0|src/game/startup_helpers.cpp|manual|marker_sync
+415090|src/game/ImperialismApp.cpp|manual|marker_sync
+4155b0|src/game/ImperialismApp.cpp|manual|marker_sync
+415760|src/game/startup_helpers.cpp|manual|marker_sync
 415ce0|src/game/TObject.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
@@ -113,6 +118,7 @@ address|target_cpp|ownership|note
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
+483340|src/game/startup_helpers.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|marker_sync
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync
@@ -529,8 +535,11 @@ address|target_cpp|ownership|note
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
 498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4992a0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 499380|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49cc40|src/game/startup_helpers.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d6d0|src/game/TAdorner.cpp|manual|marker_sync
 49d790|src/game/TDialogView.cpp|manual|marker_sync
@@ -549,6 +558,13 @@ address|target_cpp|ownership|note
 49ddb0|src/game/TNewGameCommand.cpp|manual|marker_sync
 49ddd0|src/game/TNewGameCommand.cpp|manual|marker_sync
 49de20|src/game/TNewGameCommand.cpp|manual|marker_sync
+49deb0|src/game/TAmbitApplication.cpp|manual|marker_sync
+49ded0|src/game/startup_helpers.cpp|manual|marker_sync
+49e1a0|src/game/TAmbitApplication.cpp|manual|marker_sync
+49e280|src/game/TAmbitApplication.cpp|manual|marker_sync
+49e2f0|src/game/TAmbitApplication.cpp|manual|marker_sync
+49e320|src/game/TAmbitApplication.cpp|manual|marker_sync
+49e4e0|src/game/TAmbitApplication.cpp|manual|marker_sync
 49e5d0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e610|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e660|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
@@ -3253,6 +3269,7 @@ address|target_cpp|ownership|note
 5e6dd6|src/game/CArchive.cpp|manual|marker_sync
 5e6ea2|src/game/CBrush.cpp|manual|marker_sync
 5e7980|src/game/CString.cpp|manual|marker_sync
+5e7a80|src/game/startup_helpers.cpp|manual|marker_sync
 5e7f50|src/game/mfc_heap_library.cpp|manual|marker_sync
 5e8310|src/game/mfc_heap_library.cpp|manual|marker_sync
 5feeb8|src/game/CString.cpp|manual|marker_sync

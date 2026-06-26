@@ -22,6 +22,9 @@ public:
   virtual BOOL InitInstance();  // slot +0x58, 0x00412dc0
   virtual int ExitInstance();   // slot +0x70, 0x00413780
 
+  int ShowAutoResolutionDialogIfNeeded();            // 0x00415090
+  void ApplyAutoResolutionModeAndPersist(int mode);  // 0x004155b0
+
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
   int field_C0;       // 0xC0
   CString field_C4;   // 0xC4
@@ -32,6 +35,7 @@ public:
   CString field_D8;   // 0xD8
   CString field_DC;   // 0xDC
   CString field_E0;   // 0xE0
+  int field_E4;       // 0xE4
 };
 
 extern ImperialismApp theApp;

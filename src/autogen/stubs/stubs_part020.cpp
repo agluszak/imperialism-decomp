@@ -3067,14 +3067,6 @@ undefined4 AppendPointerToGlobalVectorAsStatus(void)
   return 0;
 }
 
-// ghidra_name SetGlobalCallback6A7FACAndReturnPrevious
-// ghidra_proto undefined SetGlobalCallback6A7FACAndReturnPrevious()
-// FUNCTION: IMPERIALISM 0x005e7a80
-undefined4 SetGlobalCallback6A7FACAndReturnPrevious(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeGlobalAllocationFailureCallback
 // ghidra_proto undefined InvokeGlobalAllocationFailureCallback()
 // FUNCTION: IMPERIALISM 0x005e7ac0

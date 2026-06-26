@@ -350,7 +350,7 @@
     },
     {
       "address": "0x412ac0",
-      "matching": 0.5176470588235295,
+      "matching": 0.42696629213483145,
       "name": "ConstructImperialismApplicationSingleton",
       "type": 1
     },
@@ -404,7 +404,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.011695906432748537,
+      "matching": 0.35947712418300654,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -440,7 +440,7 @@
     },
     {
       "address": "0x413780",
-      "matching": 0.02631578947368421,
+      "matching": 0.7948717948717948,
       "name": "ShutdownImperialismApplicationInstance",
       "type": 1
     },
@@ -506,7 +506,7 @@
     },
     {
       "address": "0x414770",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "OrphanRetStub_00414770",
       "type": 1
     },
@@ -518,7 +518,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.01092896174863388,
+      "matching": 0.020618556701030927,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -572,7 +572,7 @@
     },
     {
       "address": "0x4155b0",
-      "matching": 0.021739130434782608,
+      "matching": 0.020833333333333332,
       "name": "ApplyAutoResolutionModeAndPersist",
       "type": 1
     },
@@ -2582,7 +2582,7 @@
     },
     {
       "address": "0x483340",
-      "matching": 0.0,
+      "matching": 0.125,
       "name": "SetUiRuntimeContextAndActivateMain",
       "type": 1
     },
@@ -6206,25 +6206,25 @@
     {
       "address": "0x498f60",
       "matching": 0.6938775510204082,
-      "name": "TModuleLibraryCacheTableStateB_0064BA80::ConstructModuleLibraryCacheDualTableState",
+      "name": "TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB",
       "type": 1
     },
     {
       "address": "0x498fe0",
-      "matching": 0.02040816326530612,
-      "name": "TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules",
+      "matching": 0.361323155216285,
+      "name": "TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB",
       "type": 1
     },
     {
       "address": "0x4992a0",
       "matching": 0.6915887850467289,
-      "name": "TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog",
+      "name": "TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog",
       "type": 1
     },
     {
       "address": "0x499380",
       "matching": 0.651685393258427,
-      "name": "LoadPrimaryDataLibraryWithErrorDialog",
+      "name": "TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog",
       "type": 1
     },
     {
@@ -6277,8 +6277,8 @@
     },
     {
       "address": "0x49a390",
-      "matching": 0.011976047904191617,
-      "name": "ReleaseHashIndexedRecordByHandle",
+      "matching": 0.7741935483870968,
+      "name": "TModuleLibraryCacheTableStateB::ReleaseRecordByHandle",
       "type": 1
     },
     {
@@ -6571,7 +6571,7 @@
     },
     {
       "address": "0x49cc40",
-      "matching": 0.4,
+      "matching": 0.4444444444444444,
       "name": "SetGlobalDword6A2018",
       "type": 1
     },
@@ -6751,19 +6751,19 @@
     },
     {
       "address": "0x49deb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAmbitApplication::GetTAmbitApplicationClassNamePointer",
       "type": 1
     },
     {
       "address": "0x49ded0",
-      "matching": 0.023952095808383235,
+      "matching": 0.012048192771084338,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
     {
       "address": "0x49e1a0",
-      "matching": 0.03571428571428571,
+      "matching": 0.6306306306306306,
       "name": "ReleaseGlobalUiSystemsAndGameFlowState",
       "type": 1
     },
@@ -6775,7 +6775,7 @@
     },
     {
       "address": "0x49e4e0",
-      "matching": 0.0,
+      "matching": 0.46153846153846156,
       "name": "OrphanCallChain_C1_I04_0049e4e0",
       "type": 1
     },
@@ -12248,7 +12248,7 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12260,7 +12260,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12278,7 +12278,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7272727272727273,
+      "matching": 0.6818181818181818,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12308,7 +12308,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -12584,7 +12584,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.4444444444444444,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -15554,7 +15554,7 @@
     },
     {
       "address": "0x50a1a0",
-      "matching": 0.3837638376383764,
+      "matching": 0.39114391143911437,
       "name": "TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722",
       "type": 1
     },
@@ -15584,7 +15584,7 @@
     },
     {
       "address": "0x50a470",
-      "matching": 0.26851851851851855,
+      "matching": 0.25,
       "name": "BuildStrategicMapGaugeAtlasFrom1422And1423",
       "type": 1
     },
@@ -15596,7 +15596,7 @@
     },
     {
       "address": "0x50a820",
-      "matching": 0.3791469194312796,
+      "matching": 0.3886255924170616,
       "name": "BuildStrategicMapTileOverlayStripSurfaces800To807",
       "type": 1
     },
@@ -15692,7 +15692,7 @@
     },
     {
       "address": "0x50d700",
-      "matching": 0.46473029045643155,
+      "matching": 0.4730290456431535,
       "name": "TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext",
       "type": 1
     },
@@ -15716,7 +15716,7 @@
     },
     {
       "address": "0x50d950",
-      "matching": 0.6666666666666666,
+      "matching": 0.7017543859649122,
       "name": "TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950",
       "type": 1
     },
@@ -31968,7 +31968,7 @@
     },
     {
       "address": "0x5d69b0",
-      "matching": 0.2857142857142857,
+      "matching": 0.2751322751322751,
       "name": "TViewMgr::ComputeTurnEventDialogPlacementByCode",
       "type": 1
     },
@@ -33522,7 +33522,7 @@
     },
     {
       "address": "0x5e7a80",
-      "matching": 0.13333333333333333,
+      "matching": 0.8275862068965517,
       "name": "SetGlobalCallback6A7FACAndReturnPrevious",
       "type": 1
     },

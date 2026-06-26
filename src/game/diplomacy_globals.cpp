@@ -10,6 +10,8 @@
 #include "game/TAssetMgr.h"
 #include "game/TMacViewMgr.h"
 
+#include "game/TLanguageMgr.h"
+
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 TDisplayMgr* g_pDisplayMgr = 0;
@@ -21,6 +23,7 @@ TMinor* g_apSecondaryNationStateSlots[36] = {0};
 TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
 TSimMgr* g_pLocalizationTable = 0;
+TLanguageMgr* g_pLanguageMgr = 0;
 TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 TApplication* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
@@ -28,6 +31,10 @@ TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 TNavyMgr* g_pNavyOrderManager = 0;
 int* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
+int DAT_006a21c0 = 0;
+class ImperialismApp* DAT_006a1348 = 0;
+int DAT_006a1350 = 0;
+void* DAT_006a1354 = 0;
 }
 
 TGreatPower* GetNationStateBySlot(short slotId) {
