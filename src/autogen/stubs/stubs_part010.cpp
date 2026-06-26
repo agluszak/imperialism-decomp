@@ -243,14 +243,6 @@ undefined4 OrphanVtableAssignStub_0047dfb0(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateFBWithDualTextState
-// ghidra_proto undefined InitializeDialogTemplateFBWithDualTextState()
-// FUNCTION: IMPERIALISM 0x0047dfd0
-undefined4 InitializeDialogTemplateFBWithDualTextState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047e090
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047e090()
 // FUNCTION: IMPERIALISM 0x0047e090

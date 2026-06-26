@@ -883,14 +883,6 @@ undefined4 PreTranslateInput(void)
   return 0;
 }
 
-// ghidra_name TMovieView::RunModalLoop
-// ghidra_proto undefined RunModalLoop()
-// FUNCTION: IMPERIALISM 0x0060a60a
-undefined4 RunModalLoop(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_Slot30_Target
 // ghidra_proto undefined TMacViewMgr_Slot30_Target()
 // FUNCTION: IMPERIALISM 0x0060a769

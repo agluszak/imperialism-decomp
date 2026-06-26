@@ -2187,30 +2187,6 @@ undefined4 ResetGlobalPair6A2020And6A2024(void)
   return 0;
 }
 
-// ghidra_name PrepareAndCreateDialogFromTemplateResource
-// ghidra_proto undefined PrepareAndCreateDialogFromTemplateResource()
-// FUNCTION: IMPERIALISM 0x0049d360
-undefined4 PrepareAndCreateDialogFromTemplateResource(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::FinalizeModalDialogAndRestoreOwnerFocus
-// ghidra_proto undefined FinalizeModalDialogAndRestoreOwnerFocus()
-// FUNCTION: IMPERIALISM 0x0049d450
-undefined4 FinalizeModalDialogAndRestoreOwnerFocus(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CleanupDialogModalCreateState_At0049d510
-// ghidra_proto undefined WrapperFor_CleanupDialogModalCreateState_At0049d510()
-// FUNCTION: IMPERIALISM 0x0049d510
-undefined4 WrapperFor_CleanupDialogModalCreateState_At0049d510(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdorner::CreateTAdornerInstance
 // ghidra_proto undefined CreateTAdornerInstance()
 // FUNCTION: IMPERIALISM 0x0049d650

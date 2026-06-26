@@ -1,5 +1,7 @@
 #include "game/THelpMgr.h"
 
+THelpMgr::THelpMgr() : TObject() {}
+
 CRuntimeClass* THelpMgr::GetRuntimeClass() const { return 0; }
 
 THelpMgr::~THelpMgr() {}

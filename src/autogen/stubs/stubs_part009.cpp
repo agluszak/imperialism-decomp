@@ -43,14 +43,6 @@ undefined4 ReadOrCreateRegistryStringValueWithFallback(void)
   return 0;
 }
 
-// ghidra_name InvokeAfxThreadVslot7CAndGetValueAtOffset98
-// ghidra_proto undefined InvokeAfxThreadVslot7CAndGetValueAtOffset98()
-// FUNCTION: IMPERIALISM 0x00412a70
-undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpThunkTargetHandler
 // ghidra_proto undefined NoOpThunkTargetHandler()
 // FUNCTION: IMPERIALISM 0x00412aa0
@@ -367,14 +359,6 @@ undefined4 OrphanCallChain_C1_I05_00415050(void)
 // ghidra_proto undefined OrphanCallChain_C1_I05_00415070()
 // FUNCTION: IMPERIALISM 0x00415070
 undefined4 OrphanCallChain_C1_I05_00415070(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyDialogWithListBoxAndHotKeyControl
-// ghidra_proto undefined DestroyDialogWithListBoxAndHotKeyControl()
-// FUNCTION: IMPERIALISM 0x004152e0
-undefined4 DestroyDialogWithListBoxAndHotKeyControl(void)
 {
   return 0;
 }

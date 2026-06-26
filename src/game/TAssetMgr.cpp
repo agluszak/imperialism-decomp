@@ -1,5 +1,7 @@
 #include "game/TAssetMgr.h"
 
+TAssetMgr::TAssetMgr() : TObject() {}
+
 // FUNCTION: IMPERIALISM 0x005df260
 CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
   return 0;

@@ -5,8 +5,38 @@
 #include "game/TAmbitApplication.h"
 #include "game/TSoundPlayer.h"
 #include "game/TDisplayMgr.h"
-#include "game/TStrategicMapViewSystem.h"
+#include "game/TMacViewMgr.h"
 #include "game/TAssetMgr.h"
+#include "game/TView.h"
+#include "game/CString.h"
+#include "game/mfc.h"
+#include "game/CMcWindow.h"
+#include "game/TModalTemplateDialog.h"
+
+extern "C" char g_szEmptyString[];
+
+namespace {
+
+LPCSTR SettingsSection() {
+  return *reinterpret_cast<LPCSTR*>(0x0063e040);
+}
+
+LPCSTR AutoResValueName() {
+  return *reinterpret_cast<LPCSTR*>(0x0063e048);
+}
+
+LPCSTR LanguageValueName() {
+  return *reinterpret_cast<LPCSTR*>(0x0063e04c);
+}
+
+bool IsNullOrEmptyFilename(const CString& fileName) {
+  LPCSTR text = fileName;
+  return text == nullptr || *text == '\0';
+}
+
+const int kAutoResPromptSentinel = 0x29a;
+
+} // namespace
 
 // The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
 // 0x00412d40 (ctor) / 0x00412d70 (dtor).
@@ -47,17 +77,17 @@ ImperialismApp::ImperialismApp()
 BOOL ImperialismApp::InitInstance() {
   DAT_006a1354 = SetGlobalCallback6A7FACAndReturnPrevious(reinterpret_cast<void*>(0x004025f9));
 
-  // Set registry key SSI (stored as indirect pointer).
   LPCSTR companyRegistryKey = *reinterpret_cast<LPCSTR*>(0x0063e038);
   SetRegistryKey(companyRegistryKey);
 
   CCommandLineInfo cmdInfo;
   ParseCommandLine(cmdInfo);
 
-  if (cmdInfo.m_strFileName.IsEmpty() && static_cast<int>(cmdInfo.m_nShellCommand) != 5) {
+  if (IsNullOrEmptyFilename(cmdInfo.m_strFileName) &&
+      static_cast<int>(cmdInfo.m_nShellCommand) != 5) {
     g_pModuleLibraryCacheState = new TModuleLibraryCacheTableStateB();
 
-    if (!LoadLanguageResourcesFromIrgFiles(this, 0)) {
+    if (!LoadLanguageResourcesFromIrgFiles()) {
       return FALSE;
     }
 
@@ -105,42 +135,46 @@ BOOL ImperialismApp::InitInstance() {
     DAT_006a1348 = this;
 
     g_pGlobalUiRootController = new TAmbitApplication();
-    InitializeGlobalRuntimeSystemsFromConfig(g_pGlobalUiRootController, 0);
+    InitializeGlobalRuntimeSystemsFromConfig(
+        static_cast<TAmbitApplication*>(g_pGlobalUiRootController));
 
     g_pSfxPlaybackSystem = new TSoundPlayer();
     g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);
 
-    CWinThread* pThread = AfxGetThread();
-    if (pThread != nullptr && pThread->m_pActiveWnd != nullptr) {
-      SetUiRuntimeContextAndActivateMain(pThread->m_pActiveWnd, 0, g_pDisplayMgr->activeDialog);
-    }
+    TView* mainViewHost =
+        reinterpret_cast<TView*>(InvokeAfxThreadVslot7CAndGetValueAtOffset98());
+    SetUiRuntimeContextAndActivateMain(mainViewHost, g_pDisplayMgr->activeDialog);
 
-    if (!cmdInfo.m_strFileName.IsEmpty()) {
-      if (pThread != nullptr && pThread->m_pActiveWnd != nullptr) {
-        pThread->m_pActiveWnd->SetWindowText(cmdInfo.m_strFileName);
+    if (CompareAnsiStringsWithMbcsAwareness(
+            const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+                static_cast<LPCSTR>(cmdInfo.m_strFileName))),
+            reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
+      void* uiWindow = InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+      if (uiWindow != nullptr) {
+        static_cast<CMcWindow*>(uiWindow)->SetWindowTextOrDelegateToOwner(
+            static_cast<LPCSTR>(cmdInfo.m_strFileName));
       }
     }
 
     PostMessageA(m_pMainWnd->m_hWnd, WM_COMMAND, 100, 0);
     return TRUE;
-  } else {
-    // Registry unregister/register reset branch.
-    HKEY hKeySoftware = NULL;
-    if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &hKeySoftware) == 0) {
-      HKEY hKeyCompany = NULL;
-      LPCSTR companyName = *reinterpret_cast<LPCSTR*>(0x0063e038); // "SSI"
-      if (RegOpenKeyExA(hKeySoftware, companyName, 0, KEY_ALL_ACCESS, &hKeyCompany) == 0) {
-        HKEY hKeyApp = NULL;
-        LPCSTR appName = *reinterpret_cast<LPCSTR*>(0x0063e03c); // "Imperialism"
-        if (RegOpenKeyExA(hKeyCompany, appName, 0, KEY_ALL_ACCESS, &hKeyApp) == 0) {
-          LPCSTR settingsName = *reinterpret_cast<LPCSTR*>(0x0063e040); // "Settings"
-          RegDeleteKeyA(hKeyApp, settingsName);
-          RegCloseKey(hKeyApp);
-        }
-        RegCloseKey(hKeyCompany);
+  }
+
+  HKEY hKeySoftware = NULL;
+  if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &hKeySoftware) == 0) {
+    HKEY hKeyCompany = NULL;
+    LPCSTR companyName = *reinterpret_cast<LPCSTR*>(0x0063e038);
+    if (RegOpenKeyExA(hKeySoftware, companyName, 0, KEY_ALL_ACCESS, &hKeyCompany) == 0) {
+      HKEY hKeyApp = NULL;
+      LPCSTR appName = *reinterpret_cast<LPCSTR*>(0x0063e03c);
+      if (RegOpenKeyExA(hKeyCompany, appName, 0, KEY_ALL_ACCESS, &hKeyApp) == 0) {
+        LPCSTR settingsName = *reinterpret_cast<LPCSTR*>(0x0063e040);
+        RegDeleteKeyA(hKeyApp, settingsName);
+        RegCloseKey(hKeyApp);
       }
-      RegCloseKey(hKeySoftware);
+      RegCloseKey(hKeyCompany);
     }
+    RegCloseKey(hKeySoftware);
   }
 
   return FALSE;
@@ -190,12 +224,147 @@ int ImperialismApp::ExitInstance() {
   return CWinApp::ExitInstance();
 }
 
+// FUNCTION: IMPERIALISM 0x004149a0
+BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
+  CString savedLanguage;
+  savedLanguage = GetProfileString(SettingsSection(), LanguageValueName(), "");
+
+  CCommandLineInfo cmdInfo;
+  ParseCommandLine(cmdInfo);
+
+  CString dataDir;
+  dataDir = reinterpret_cast<LPCSTR>(0x006942a8);
+
+  CString searchPattern;
+  searchPattern = dataDir + reinterpret_cast<LPCSTR>(0x006942fc);
+
+  WIN32_FIND_DATAA findData;
+  HANDLE findHandle = FindFirstFileA(searchPattern, &findData);
+  if (findHandle == INVALID_HANDLE_VALUE) {
+    AfxMessageBox(reinterpret_cast<LPCSTR>(0x006942b4), MB_OK, 0);
+    return FALSE;
+  }
+
+  CString firstLanguageLabel;
+  {
+    CString irgPath = dataDir + findData.cFileName;
+    HMODULE irgModule = LoadLibraryA(irgPath);
+    if (irgModule != nullptr) {
+      char buffer[0x21];
+      LoadStringA(irgModule, 0x1e36, buffer, 0x20);
+      buffer[0x20] = '\0';
+      firstLanguageLabel = buffer;
+      FreeLibrary(irgModule);
+    }
+  }
+  savedLanguage = firstLanguageLabel;
+
+  do {
+    CString irgPath = dataDir + findData.cFileName;
+    HMODULE irgModule = LoadLibraryA(irgPath);
+    if (irgModule != nullptr) {
+      char buffer[0x21];
+      LoadStringA(irgModule, 0x1e36, buffer, 0x20);
+      buffer[0x20] = '\0';
+      CString languageLabel = buffer;
+      if (CompareAnsiStringsWithMbcsAwareness(
+              const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+                  static_cast<LPCSTR>(savedLanguage))),
+              const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+                  static_cast<LPCSTR>(languageLabel)))) == 0) {
+        WriteProfileString(SettingsSection(), LanguageValueName(), savedLanguage);
+
+        LoadStringA(irgModule, 0x1e36, field_CC.GetBuffer(0x20), 0x20);
+        field_CC.ReleaseBuffer();
+        LoadStringA(irgModule, 0x2c6, field_D0.GetBuffer(0x20), 0x20);
+        field_D0.ReleaseBuffer();
+        LoadStringA(irgModule, 0x840, field_D4.GetBuffer(0x20), 0x20);
+        field_D4.ReleaseBuffer();
+        LoadStringA(irgModule, 0x297, field_D8.GetBuffer(0x20), 0x20);
+        field_D8.ReleaseBuffer();
+        LoadStringA(irgModule, 0x80, field_DC.GetBuffer(0x20), 0x20);
+        field_DC.ReleaseBuffer();
+        LoadStringA(irgModule, 0x323, field_E0.GetBuffer(0x20), 0x20);
+        field_E0.ReleaseBuffer();
+
+        const unsigned char* langBytes =
+            reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(field_E0));
+        field_E4 = (static_cast<unsigned int>(langBytes[2]) * 0x100U +
+                    static_cast<unsigned int>(langBytes[1])) *
+                       0x100U +
+                   static_cast<unsigned int>(langBytes[0]);
+      }
+      FreeLibrary(irgModule);
+    }
+  } while (FindNextFileA(findHandle, &findData));
+
+  FindClose(findHandle);
+  return TRUE;
+}
+
 // FUNCTION: IMPERIALISM 0x00415090
 int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
-  return DAT_006a1350;
+  int autoResMode = GetProfileInt(SettingsSection(), AutoResValueName(), kAutoResPromptSentinel);
+
+  CCommandLineInfo cmdInfo;
+  ParseCommandLine(cmdInfo);
+
+  if (cmdInfo.m_bRunAutomated) {
+    autoResMode = 0;
+  }
+  if (cmdInfo.m_bRunEmbedded) {
+    autoResMode = 1;
+  }
+
+  if (cmdInfo.m_bShowSplash || autoResMode == kAutoResPromptSentinel) {
+    TAutoResolutionDialog dialog(nullptr);
+    if (dialog.PrepareAndCreateModalFromTemplate()) {
+      dialog.UpdateData(FALSE);
+      autoResMode = dialog.FinalizeModalDialogAndRestoreOwnerFocus();
+    }
+  }
+
+  WriteProfileInt(SettingsSection(), AutoResValueName(), autoResMode);
+  return autoResMode;
 }
 
 // FUNCTION: IMPERIALISM 0x004155b0
 void ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
-  DAT_006a1350 = mode;
+  if (field_C8 == mode) {
+    return;
+  }
+
+  field_C8 = mode;
+  if (mode == 0) {
+    ChangeDisplaySettingsA(nullptr, 0);
+  } else {
+    DEVMODEA devMode;
+    memset(&devMode, 0, sizeof(devMode));
+    LONG changeResult = -1;
+    DWORD modeIndex = 0;
+    devMode.dmBitsPerPel = 8;
+    devMode.dmPelsWidth = 0x280;
+    devMode.dmPelsHeight = 0x1e0;
+    devMode.dmFields = 0x180000;
+
+    if (EnumDisplaySettingsA(nullptr, modeIndex, &devMode)) {
+      do {
+        if (devMode.dmPelsWidth == 0x280 && devMode.dmBitsPerPel > 7 &&
+            devMode.dmPelsHeight == 0x1e0) {
+          devMode.dmFields = 0x180000;
+          changeResult = ChangeDisplaySettingsA(&devMode, 0);
+          break;
+        }
+        ++modeIndex;
+      } while (EnumDisplaySettingsA(nullptr, modeIndex, &devMode));
+    }
+
+    if (changeResult != 0) {
+      field_C8 = 0;
+    }
+  }
+
+  if (field_C8 == mode) {
+    WriteProfileInt(SettingsSection(), AutoResValueName(), field_C8);
+  }
 }

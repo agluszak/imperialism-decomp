@@ -1,5 +1,19 @@
 #include "game/TMovieView.h"
 
+// FUNCTION: IMPERIALISM 0x0060a60a
+int TMovieView::RunModalLoop(TMovieView* view, unsigned char loopKind) {
+  (void)view;
+  (void)loopKind;
+  MSG msg;
+  while (GetMessage(&msg, nullptr, 0, 0) > 0) {
+    if (AfxGetApp() == nullptr || !AfxGetApp()->PreTranslateMessage(&msg)) {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005e2210
 CRuntimeClass* TMovieView::GetRuntimeClass() const {
   return 0;

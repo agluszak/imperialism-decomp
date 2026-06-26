@@ -1651,14 +1651,6 @@ undefined4 WrapperFor_ftol_At005e1b90(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplate98WithSharedText
-// ghidra_proto undefined InitializeDialogTemplate98WithSharedText()
-// FUNCTION: IMPERIALISM 0x005e1bc0
-undefined4 InitializeDialogTemplate98WithSharedText(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e1c60
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60()
 // FUNCTION: IMPERIALISM 0x005e1c60

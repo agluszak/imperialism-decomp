@@ -128,6 +128,7 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMovieView 0xCTOR`).
 
   TMovieView();
+  static int RunModalLoop(TMovieView* view, unsigned char loopKind);
 };
 
 // === BEGIN GENERATED (TMovieView) — refreshed by `just gen-class TMovieView`; do not hand-edit ===

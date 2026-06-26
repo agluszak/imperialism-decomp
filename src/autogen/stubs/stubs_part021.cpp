@@ -3211,14 +3211,6 @@ undefined4 ConstructObjectVtable0066fc2cWithArgs(void)
   return 0;
 }
 
-// ghidra_name TControl::InitializeDialogTemplateFromId
-// ghidra_proto undefined InitializeDialogTemplateFromId()
-// FUNCTION: IMPERIALISM 0x006050d0
-undefined4 InitializeDialogTemplateFromId(void)
-{
-  return 0;
-}
-
 // ghidra_name PreModal
 // ghidra_proto undefined PreModal()
 // FUNCTION: IMPERIALISM 0x00605144

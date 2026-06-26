@@ -395,7 +395,7 @@ void __fastcall WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60(TMacViewM
 }
 
 // FUNCTION: IMPERIALISM 0x00509f20
-void __fastcall InitializeStrategicMapViewSystem(TMacViewMgr* self) {
+void InitializeStrategicMapViewSystem(TMacViewMgr* self) {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
   self->BuildStrategicMapCommodityIconAtlasFrom700To722();
   self->LoadStrategicMapUnitIconAtlas750();

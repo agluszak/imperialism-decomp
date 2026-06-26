@@ -29,13 +29,13 @@ struct MainViewHostContext {
 const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 } // namespace
 
+#include "game/startup_helpers.h"
+
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
 undefined4 LoadTurnEventCursorByResourceIdOffset1000(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
-// Returns the active AFX thread's main window object (its +0x1c field is the host HWND).
-undefined4 InvokeAfxThreadVslot7CAndGetValueAtOffset98(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 FormatOverlayTerrainLabelText(void);

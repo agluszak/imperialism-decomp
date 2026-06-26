@@ -25,10 +25,12 @@ undefined4 FromHandle(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
 extern "C" char LAB_00409a9d;
 
+
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::QuerySelectedIndexSlotBC() {
   return hasCommandTagResource;
 }
+
 
 // FUNCTION: IMPERIALISM 0x00429470
 void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
@@ -39,6 +41,7 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x004294a0
 char TControl::LogUnhandledDialogMethodAndReturnFalse() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -48,11 +51,13 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 // Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
 // the McAppUI invalidation thunk (file header path, line 0x594) and returns null.
 
+
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
+
 
 // FUNCTION: IMPERIALISM 0x0048e500
 CRuntimeClass* TControl::GetRuntimeClass() const {
@@ -63,6 +68,7 @@ CRuntimeClass* TControl::GetRuntimeClass() const {
 // its CString member), then MSVC writes this class's vptr (0x0064a098). Fields
 // are member-initializers so they emit in declaration order. No manual vtable
 // writes — the // VTABLE: annotation owns 0x0064a098.
+
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
@@ -75,6 +81,7 @@ TControl::TControl()
 
 // SYNTHETIC: IMPERIALISM 0x0048e590
 // TControl::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
@@ -101,6 +108,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1f) {
@@ -121,6 +129,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e7a0
 void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
   commandTagDefaultParam1 = *pictureEntryRef;
@@ -128,6 +137,7 @@ void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool 
     PaintOrInvalidateControl(0);
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
 void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
@@ -138,6 +148,7 @@ void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPicture
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e810
 void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
   if (commandTagResourceByte != static_cast<unsigned char>(enabledState)) {
@@ -147,6 +158,7 @@ void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refres
     }
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x0048e850
 void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
@@ -178,6 +190,7 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
   }
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e940
 char TControl::PointInBoundsAndActionable(CPoint* point) {
   RECT rect;
@@ -188,17 +201,20 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
   return PtInRect(&rect, p);
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
   QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
   reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
 }
 
+
 // FUNCTION: IMPERIALISM 0x0048e9c0
 void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
+
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
 undefined TControl::ReturnZeroFromUiSlot6C() {
@@ -207,6 +223,7 @@ undefined TControl::ReturnZeroFromUiSlot6C() {
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
+
 
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetHasCommandTagResource(int value) {

@@ -24,6 +24,7 @@ public:
 
   int ShowAutoResolutionDialogIfNeeded();            // 0x00415090
   void ApplyAutoResolutionModeAndPersist(int mode);  // 0x004155b0
+  BOOL LoadLanguageResourcesFromIrgFiles();           // 0x004149a0
 
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
   int field_C0;       // 0xC0
