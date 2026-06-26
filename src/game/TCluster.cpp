@@ -84,8 +84,7 @@ int TCluster::GetField84() {
 
 
 // FUNCTION: IMPERIALISM 0x00491790
-void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
-  (void)refreshFlag;
+void TCluster::SetControlClassAndRefresh(int classState) {
   field84 = classState;
   if (childList44 == 0) {
     return;

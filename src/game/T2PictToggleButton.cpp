@@ -40,9 +40,7 @@ T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
 
 // FUNCTION: IMPERIALISM 0x005849b0
-bool T2PictToggleButton::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
+bool T2PictToggleButton::IsSelected() {
   return this->field3c <= this->glyphBase84;
 }
 

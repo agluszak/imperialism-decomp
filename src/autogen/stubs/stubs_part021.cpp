@@ -3390,7 +3390,7 @@ undefined4 GetCCmdTargetMessageMap(void)
 // ghidra_name CCmdTarget::`scalar deleting destructor'
 // ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x00606cbe
-undefined4 ScalarDeletingDestructor(void)
+undefined4 ScalarDeletingDestructor_00606CBE(void)
 {
   return 0;
 }

@@ -5002,6 +5002,12 @@
       "type": 1
     },
     {
+      "address": "0x48eaf0",
+      "matching": 0.5,
+      "name": "TButton::GetRuntimeClass(void)",
+      "type": 1
+    },
+    {
       "address": "0x48eb10",
       "matching": 0.03571428571428571,
       "name": "TCtlMgr::ConstructTCtlMgrBaseState",
@@ -5375,7 +5381,7 @@
     },
     {
       "address": "0x491790",
-      "matching": 0.6,
+      "matching": 0.6222222222222222,
       "name": "TCluster::OrphanCallChain_C2_I51_00491790",
       "type": 1
     },
@@ -5533,6 +5539,12 @@
       "address": "0x492d80",
       "matching": 0.6666666666666666,
       "name": "TWindow::ShallowClone",
+      "type": 1
+    },
+    {
+      "address": "0x492de0",
+      "matching": 0.0,
+      "name": "TButton::`scalar deleting destructor'(void)",
       "type": 1
     },
     {
@@ -23055,7 +23067,7 @@
     },
     {
       "address": "0x5696f0",
-      "matching": 0.05714285714285714,
+      "matching": 0.08571428571428572,
       "name": "TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790",
       "type": 1
     },
@@ -23775,25 +23787,25 @@
     },
     {
       "address": "0x571170",
-      "matching": 0.13978494623655913,
+      "matching": 0.14130434782608695,
       "name": "TToggleButton::HandleEvent",
       "type": 1
     },
     {
       "address": "0x5712a0",
-      "matching": 0.5084745762711864,
+      "matching": 0.6428571428571429,
       "name": "TToggleButton::DispatchUiMouseMoveToChildren",
       "type": 1
     },
     {
       "address": "0x571330",
-      "matching": 0.18181818181818182,
+      "matching": 0.25,
       "name": "TToggleButton::IsSelected",
       "type": 1
     },
     {
       "address": "0x571350",
-      "matching": 0.6779661016949152,
+      "matching": 0.8813559322033898,
       "name": "TToggleButton::Select",
       "type": 1
     },
@@ -25852,7 +25864,7 @@
     },
     {
       "address": "0x584800",
-      "matching": 0.4266666666666667,
+      "matching": 0.8,
       "name": "TBoycottButton::HandleToggleButtonStateChangeAndRefresh",
       "type": 1
     },
@@ -25882,7 +25894,7 @@
     },
     {
       "address": "0x5849b0",
-      "matching": 0.125,
+      "matching": 0.3076923076923077,
       "name": "T2PictToggleButton::IsSelected",
       "type": 1
     },
@@ -26068,7 +26080,7 @@
     },
     {
       "address": "0x586170",
-      "matching": 0.18,
+      "matching": 0.2,
       "name": "TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790",
       "type": 1
     },
@@ -26104,7 +26116,7 @@
     },
     {
       "address": "0x586400",
-      "matching": 0.4835164835164835,
+      "matching": 0.7379679144385026,
       "name": "TStatusButton::HandleEvent",
       "type": 1
     },
@@ -27155,13 +27167,13 @@
     },
     {
       "address": "0x58eb20",
-      "matching": 0.45962732919254656,
+      "matching": 0.46540880503144655,
       "name": "TCivToolbar::RefreshCivilianCommandPanelForSelection",
       "type": 1
     },
     {
       "address": "0x58ec50",
-      "matching": 0.3432343234323432,
+      "matching": 0.3443708609271523,
       "name": "TCivToolbar::RefreshCivilianStackButtonsForTile",
       "type": 1
     },

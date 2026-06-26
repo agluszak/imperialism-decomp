@@ -120,7 +120,7 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
-  virtual void SetControlClassAndRefresh(int classState, int refreshFlag) override; // slot 0x72 0x586170
+  virtual void SetControlClassAndRefresh(int classState) override; // slot 0x72 0x586170
   virtual int IsTradeControlAtMinimum() override; // slot 0x73 0x586150
 // === END GENERATED DECLS (TUnitToolbarCluster) ===
   using TUberCluster::DispatchEvent;

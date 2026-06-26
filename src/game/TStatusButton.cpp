@@ -1,6 +1,4 @@
 #include "game/TStatusButton.h"
-#include "game/ui_widget_thunks.h"
-#include "game/TAmtBar.h"
 #include "game/mfc.h"
 
 CRuntimeClass g_pClassDescTStatusButton = {nullptr, 0, 0, nullptr, nullptr};
@@ -18,56 +16,52 @@ CRuntimeClass* TStatusButton::GetRuntimeClass() const {
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}
 
-int TStatusButton::ControlTag() const {
-  return *reinterpret_cast<const int*>(reinterpret_cast<const char*>(this) + 0x1c);
-}
-
-void* TStatusButton::OwnerPanel() const {
-  return *reinterpret_cast<void* const*>(reinterpret_cast<const char*>(this) + 0x20);
-}
-
 // Destructor is compiler-generated (implicit) from real TButton inheritance.
 // SYNTHETIC: IMPERIALISM 0x005863b0
 // TStatusButton::`scalar deleting destructor'
 
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner;
-extern unsigned char g_bCityDialogLegendSelectionInitialized;
+extern int g_bCityDialogLegendSelectionInitialized;
 
-const int kControlTagBack = 0x6261636b;
-const int kControlTagArms = 0x41726d73;
-const int kControlTagClos = 0x436c6f73;
+const int kControlTagBack = 0x6261636b; // 'back'
+const int kControlTagArms = 0x41726d73; // 'arms'
+const int kControlTagClos = 0x436c6f73; // 'Clos'
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
+  // Two CString scratch locals the original constructs on entry and destroys on exit;
+  // unused in the body but required to reproduce the prologue/epilogue.
+  CString scratchA;
+  CString scratchB;
+
   if (selectedIndex == QuerySelectedIndexSlotBC() && GetBoolSlot28() != '\0') {
-    if (LogUnhandledDialogMethodAndReturnFalse() == '\0') {
-      if (g_pActiveCityDialogLegendSelectionOwner != 0) {
-        reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
-        g_pActiveCityDialogLegendSelectionOwner = 0;
-        g_bCityDialogLegendSelectionInitialized = 0;
-      }
-
-      TAmtBar* backControl = reinterpret_cast<TAmtBar*>(
-          reinterpret_cast<TView*>(OwnerPanel())->ResolveControlByTag(kControlTagBack));
-      if (backControl != 0) {
-        reinterpret_cast<TView*>(backControl)->Free();
-        reinterpret_cast<TView*>(OwnerPanel())->RefreshControl();
-      }
-
-      if (ControlTag() != kControlTagArms && ControlTag() == kControlTagClos) {
-        if (g_pActiveCityDialogLegendSelectionOwner != 0) {
-          reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
-          g_pActiveCityDialogLegendSelectionOwner = 0;
-        }
-        g_bCityDialogLegendSelectionInitialized = 0;
-        TView* ownerPanel = reinterpret_cast<TView*>(OwnerPanel());
-        if (ownerPanel != 0) {
-          ownerPanel->CallVoidSlotA0();
-        }
-      }
-      TControl::HandleEvent(selectedIndex, this, event);
+    if (LogUnhandledDialogMethodAndReturnFalse() != '\0') {
       return;
     }
+
+    if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
+      static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
+      g_pActiveCityDialogLegendSelectionOwner = nullptr;
+      g_bCityDialogLegendSelectionInitialized = 0;
+    }
+
+    TControl* backControl = ownerContext->ResolveControlByTag(kControlTagBack);
+    if (backControl != nullptr) {
+      backControl->Free();
+      ownerContext->RefreshControl();
+    }
+
+    if (controlTag != kControlTagArms && controlTag == kControlTagClos) {
+      if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
+        static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
+        g_pActiveCityDialogLegendSelectionOwner = nullptr;
+      }
+      g_bCityDialogLegendSelectionInitialized = 0;
+      OwnerPanel()->CallVoidSlotA0();
+    }
+
+    TControl::HandleEvent(selectedIndex, this, event);
+    return;
   }
 
   TControl::HandleEvent(selectedIndex, sourceHandler, event);

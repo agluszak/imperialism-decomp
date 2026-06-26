@@ -1,5 +1,6 @@
 #include "game/TToggleButton.h"
 #include "game/TControl.h"
+#include "game/TCluster.h"
 #include "game/mfc.h"
 
 extern "C" {
@@ -110,16 +111,16 @@ char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int a
   bool isFieldWithinLimit = this->IsSelected();
   bool isOwnerWithinLimit = false;
   if (this->ownerContext != nullptr) {
-    isOwnerWithinLimit = reinterpret_cast<TToggleButton*>(this->ownerContext)->IsSelected();
+    isOwnerWithinLimit = static_cast<TToggleButton*>(this->ownerContext)->IsSelected();
   }
   if (!isFieldWithinLimit && !isOwnerWithinLimit) {
     return 1;
   }
   this->Select(!isFieldWithinLimit, 1);
   if (!isFieldWithinLimit) {
-    this->ownerContext->DispatchEvent(0x68, nullptr, nullptr);
+    this->ownerContext->DispatchEvent(0x68, this, nullptr);
   } else {
-    this->ownerContext->DispatchEvent(0x67, nullptr, nullptr);
+    this->ownerContext->DispatchEvent(0x67, this, nullptr);
   }
   return 1;
 }
@@ -128,9 +129,7 @@ char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int a
 
 
 // FUNCTION: IMPERIALISM 0x00571330
-bool TToggleButton::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
+bool TToggleButton::IsSelected() {
   return this->IsActionable();
 }
 
@@ -143,15 +142,11 @@ TToggleButton::~TToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571350
 void TToggleButton::Select(bool isPressed, bool notifyParent) {
-  void** ppuVar1 = reinterpret_cast<void***>(this)[0];
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(ppuVar1[0x29])(
-      this, 0, static_cast<char>(isPressed), static_cast<char>(notifyParent));
+  this->SetEnabled(static_cast<char>(isPressed), static_cast<char>(notifyParent));
   if (static_cast<char>(isPressed) != '\0') {
-    void* pField20 = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x20);
-    int field1c = *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x1c);
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-        *reinterpret_cast<void**>(reinterpret_cast<char*>(pField20) + 0x1c8))(pField20, 0, field1c);
+    // The owner panel is a TCluster; notify it which child tag is now active (slot 0x72).
+    static_cast<TCluster*>(this->ownerContext)->SetControlClassAndRefresh(this->controlTag);
   }
-  reinterpret_cast<void(__cdecl*)()>(ppuVar1[0x3e])();
-  reinterpret_cast<void(__cdecl*)(int)>(ppuVar1[0x45])(0);
+  this->Refresh();
+  this->PaintOrInvalidateControl(0);
 }

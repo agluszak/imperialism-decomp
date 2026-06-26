@@ -163,6 +163,14 @@ undefined4 CreateTCtlMgrInstance(void)
   return 0;
 }
 
+// ghidra_name TButton::GetRuntimeClass
+// ghidra_proto undefined GetRuntimeClass()
+// FUNCTION: IMPERIALISM 0x0048eaf0
+undefined4 GetRuntimeClass(void)
+{
+  return 0;
+}
+
 // ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
 // ghidra_proto undefined ConstructTCtlMgrBaseState()
 // FUNCTION: IMPERIALISM 0x0048eb10
@@ -535,6 +543,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl(void)
 // ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
 // FUNCTION: IMPERIALISM 0x00492db0
 undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
+{
+  return 0;
+}
+
+// ghidra_name TButton::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
+// FUNCTION: IMPERIALISM 0x00492de0
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }

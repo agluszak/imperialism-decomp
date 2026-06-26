@@ -122,7 +122,7 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
-  virtual void SetControlClassAndRefresh(int classState, int refreshFlag) override; // slot 0x72 0x5696f0
+  virtual void SetControlClassAndRefresh(int classState) override; // slot 0x72 0x5696f0
   virtual int IsTradeControlAtMinimum() override; // slot 0x73 0x5696d0
 // === END GENERATED DECLS (TNavyToolbarCluster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyToolbarCluster 0xCTOR`).

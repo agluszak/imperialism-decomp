@@ -450,7 +450,6 @@ address|target_cpp|ownership|note
 48e980|src/game/TControl.cpp|manual|marker_sync
 48e9c0|src/game/TControl.cpp|manual|marker_sync
 48e9e0|src/game/TControl.cpp|manual|marker_sync
-48eaf0|src/game/TButton.cpp|manual|marker_sync
 48ec00|src/game/TButton.cpp|manual|marker_sync
 48ecc0|src/game/TButton.cpp|manual|marker_sync
 48ece0|src/game/TButton.cpp|manual|marker_sync
@@ -521,7 +520,6 @@ address|target_cpp|ownership|note
 492d40|src/game/TWindow.cpp|manual|marker_sync
 492d60|src/game/TWindow.cpp|manual|marker_sync
 492d80|src/game/TWindow.cpp|manual|marker_sync
-492de0|src/game/TButton.cpp|manual|marker_sync
 492f30|src/game/TEditText.cpp|manual|marker_sync
 493470|src/game/CMcWindow.cpp|manual|marker_sync
 4945f0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync

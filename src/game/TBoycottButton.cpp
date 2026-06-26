@@ -1,4 +1,5 @@
 #include "game/TBoycottButton.h"
+#include "game/TCluster.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
@@ -43,15 +44,13 @@ TBoycottButton::TBoycottButton() : TToggleButton() {}
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
-    void* result1 = reinterpret_cast<void* (*)()>(reinterpret_cast<void***>(this)[0][0x16])();
-    void* result2 = reinterpret_cast<void*(__fastcall*)(void*, int, int)>(
-        *reinterpret_cast<void**>(reinterpret_cast<char*>(result1) + 0x94))(result1, 0, 0x636c7573);
-
-    if (result2 == 0) {
+    // OwnerPanel() (slot 0x16) -> the 'clus' control via ResolveControlByTag (slot 0x25).
+    TCluster* clusControl =
+        static_cast<TCluster*>(this->OwnerPanel()->ResolveControlByTag(0x636c7573 /* 'clus' */));
+    if (clusControl == nullptr) {
       GAME_FAIL_NIL_POINTER();
     }
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(*reinterpret_cast<void**>(
-        reinterpret_cast<char*>(result2) + 0x1c8))(result2, 0, 0x20202020);
+    clusControl->SetControlClassAndRefresh(0x20202020 /* '    ' */);
   }
   TToggleButton::Select(isPressed, notifyParent);
 }

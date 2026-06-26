@@ -258,7 +258,8 @@ extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, 
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 
 // GLOBAL: IMPERIALISM 0x006a44b4
-unsigned char g_bCityDialogLegendSelectionInitialized = 0;
+// 4-byte flag (written as a dword by TStatusButton::HandleEvent); BOOL-style int.
+int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
 extern "C" void* g_pCursorControlPanel = nullptr;
