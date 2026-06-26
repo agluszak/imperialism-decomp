@@ -1523,14 +1523,6 @@ undefined4 ResolveBmpResourceHandleWithDefault3B6(void)
   return 0;
 }
 
-// ghidra_name LoadBmpResourceByIdCached
-// ghidra_proto undefined LoadBmpResourceByIdCached()
-// FUNCTION: IMPERIALISM 0x004997e0
-undefined4 LoadBmpResourceByIdCached(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildIndexedBmpResourceById
 // ghidra_proto undefined BuildIndexedBmpResourceById()
 // FUNCTION: IMPERIALISM 0x00499b40

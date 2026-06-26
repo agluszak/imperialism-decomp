@@ -3,6 +3,7 @@
 
 // Shared empty-string literal at 0x006a13a0 (defined in global_data_tables.cpp).
 extern "C" char g_szEmptyString[];
+extern "C" const char s_BmpResourceNameFormat_006951C4[];
 
 namespace {
 // "A file required by the program, '%s,' is missing." (original .rdata at 0x00695188).
@@ -91,6 +92,36 @@ void TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString
     CString empty(g_szEmptyString);
     *out = empty;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004997e0
+void* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(unsigned short bmpId) {
+  CString resourceName;
+  resourceName.Format(s_BmpResourceNameFormat_006951C4, bmpId);
+
+  for (int nameSlotIndex = 0; nameSlotIndex < 4; nameSlotIndex++) {
+    HMODULE module = m_slots[nameSlotIndex];
+    if (module == NULL) {
+      continue;
+    }
+    HBITMAP bitmap = LoadBitmapA(module, resourceName);
+    if (bitmap != NULL) {
+      return reinterpret_cast<void*>(bitmap);
+    }
+  }
+
+  for (int idSlotIndex = 0; idSlotIndex < 4; idSlotIndex++) {
+    HMODULE module = m_slots[idSlotIndex];
+    if (module == NULL) {
+      continue;
+    }
+    HBITMAP bitmap = LoadBitmapA(module, MAKEINTRESOURCE(bmpId));
+    if (bitmap != NULL) {
+      return reinterpret_cast<void*>(bitmap);
+    }
+  }
+
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0049a390

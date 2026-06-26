@@ -491,14 +491,6 @@ undefined4 MapWin32ErrorToCrtErrno(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0
-// ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0()
-// FUNCTION: IMPERIALISM 0x005eada0
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0
 // ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0()
 // FUNCTION: IMPERIALISM 0x005eadb0
@@ -963,14 +955,6 @@ undefined4 WrapperFor_LeaveIndexedCriticalSection_At005edc70(void)
   return 0;
 }
 
-// ghidra_name ConvertBrokenDownLocalTimeToEpochSeconds
-// ghidra_proto undefined ConvertBrokenDownLocalTimeToEpochSeconds()
-// FUNCTION: IMPERIALISM 0x005edcc0
-undefined4 ConvertBrokenDownLocalTimeToEpochSeconds(void)
-{
-  return 0;
-}
-
 // ghidra_name RunLocalExceptionFilterChainAndUnwind
 // ghidra_proto undefined RunLocalExceptionFilterChainAndUnwind()
 // FUNCTION: IMPERIALISM 0x005eddeb
@@ -1131,26 +1115,10 @@ undefined4 ReadUint16FromVaCursorAndAdvance(void)
   return 0;
 }
 
-// ghidra_name EnsureRuntimeLocaleTablesInitializedOnce
-// ghidra_proto undefined EnsureRuntimeLocaleTablesInitializedOnce()
-// FUNCTION: IMPERIALISM 0x005ef5d0
-undefined4 EnsureRuntimeLocaleTablesInitializedOnce(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32
 // ghidra_proto undefined InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32()
 // FUNCTION: IMPERIALISM 0x005ef630
 undefined4 InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32(void)
-{
-  return 0;
-}
-
-// ghidra_name isindst
-// ghidra_proto int __cdecl isindst(tm * _Time)
-// FUNCTION: IMPERIALISM 0x005ef910
-undefined4 isindst(void)
 {
   return 0;
 }

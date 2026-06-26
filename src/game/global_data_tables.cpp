@@ -202,6 +202,25 @@ int g_NetworkManagerLastError006a5f6c = 0;
 undefined4 DAT_0066ac88 = 0;
 int DAT_006a601c = 0;
 
+// InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles, EnsurePictWvDataGobLoadedBySlot).
+// GLOBAL: IMPERIALISM 0x006942a8
+extern "C" const char s_DataDirectoryPath_006942A8[] = "Data/";
+// GLOBAL: IMPERIALISM 0x006942fc
+extern "C" const char s_IrgGlobPattern_006942FC[] = "*.irg";
+// GLOBAL: IMPERIALISM 0x006942b4
+extern "C" const char s_NoLanguageFilesMessage_006942B4[] =
+    "No language files are present. Unable to start Imperialism.";
+// GLOBAL: IMPERIALISM 0x00698bf4
+extern "C" const char s_PictWvGobPathFormat_00698BF4[] = "Data/PictWv%d.gob";
+// GLOBAL: IMPERIALISM 0x0069b810
+extern "C" const char s_MissingFileSuffix_0069B810[] = "' is missing.";
+// GLOBAL: IMPERIALISM 0x0069b820
+extern "C" const char s_MissingFilePrefix_0069B820[] = "A file required by the program, '";
+// GLOBAL: IMPERIALISM 0x006951c4
+extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
+// GLOBAL: IMPERIALISM 0x0069b6b4
+extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
+
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010
 extern "C" const char s_GameName_00698010[] = "GameName";

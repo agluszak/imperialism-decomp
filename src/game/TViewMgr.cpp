@@ -33,7 +33,6 @@ const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
-undefined4 LoadTurnEventCursorByResourceIdOffset1000(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
@@ -85,6 +84,9 @@ const unsigned int kAddrTurnStateSeedLo = 0x006a5b58;
 const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 } // namespace
 
+extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
+
+HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 
 // FUNCTION: IMPERIALISM 0x005d5040
 CRuntimeClass* TViewMgr::GetRuntimeClass() const {
@@ -112,9 +114,16 @@ TViewMgr::~TViewMgr() {}
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 0x36; i++) {
-    this->cursorTable[i] =
-        reinterpret_cast<void*(__cdecl*)(int)>(LoadTurnEventCursorByResourceIdOffset1000)(i + 1000);
+    this->cursorTable[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005d5140
+HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId) {
+  CString cursorName;
+  cursorName.Format(s_TurnEventCursorNameFormat_0069B6B4, cursorResourceId);
+  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+  return LoadCursorA(moduleState->m_hCurrentInstanceHandle, cursorName);
 }
 
 

@@ -44,6 +44,9 @@ public:
   // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
   void LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index); // 0x004994c0
 
+  // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
+  void* LoadBmpResourceByIdCached(unsigned short bmpId);
+
   void* m_field0;                                         // 0x00
   CMap<WORD, WORD, CacheRecord*, CacheRecord*> m_tableA;   // 0x04 (vtable 0x0064ba80)
   CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)

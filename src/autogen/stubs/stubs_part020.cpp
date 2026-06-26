@@ -627,14 +627,6 @@ undefined4 SetTurnEventStateBaseVtable(void)
   return 0;
 }
 
-// ghidra_name LoadTurnEventCursorByResourceIdOffset1000
-// ghidra_proto undefined LoadTurnEventCursorByResourceIdOffset1000()
-// FUNCTION: IMPERIALISM 0x005d5140
-undefined4 LoadTurnEventCursorByResourceIdOffset1000(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTurnEventPaletteByCode
 // ghidra_proto undefined UpdateTurnEventPaletteByCode()
 // FUNCTION: IMPERIALISM 0x005d5710
@@ -3023,38 +3015,6 @@ undefined4 AppendPointerToGlobalVectorAsStatus(void)
 // ghidra_proto undefined InvokeGlobalAllocationFailureCallback()
 // FUNCTION: IMPERIALISM 0x005e7ac0
 undefined4 InvokeGlobalAllocationFailureCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name FindFirstFileAndPopulateFileInfoRecord
-// ghidra_proto undefined FindFirstFileAndPopulateFileInfoRecord()
-// FUNCTION: IMPERIALISM 0x005e7ae0
-undefined4 FindFirstFileAndPopulateFileInfoRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name FindNextFileAndPopulateFileInfoRecord
-// ghidra_proto undefined FindNextFileAndPopulateFileInfoRecord()
-// FUNCTION: IMPERIALISM 0x005e7c10
-undefined4 FindNextFileAndPopulateFileInfoRecord(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30
-// ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30()
-// FUNCTION: IMPERIALISM 0x005e7d30
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertFileTimeToLocalEpochSeconds
-// ghidra_proto undefined ConvertFileTimeToLocalEpochSeconds()
-// FUNCTION: IMPERIALISM 0x005e7d60
-undefined4 ConvertFileTimeToLocalEpochSeconds(void)
 {
   return 0;
 }

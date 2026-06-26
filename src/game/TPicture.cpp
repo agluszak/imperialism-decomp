@@ -1,11 +1,11 @@
 #include "game/TPicture.h"
 
 #include "game/TView.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/mfc.h"
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
 undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void);
-undefined4 thunk_LoadBmpResourceByIdCached(void);
 undefined4 BuildIndexedBmpResourceById(void);
 undefined4 SetPictureResourceIdAndRefresh_Impl(void);
 
@@ -47,8 +47,8 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
   this->ResetPictureResourceEntry();
   this->glyphBase84 = nPictureId;
   if (nPictureId != -1) {
-    this->field8C =
-        reinterpret_cast<int(__cdecl*)(short)>(thunk_LoadBmpResourceByIdCached)(nPictureId);
+    this->field8C = reinterpret_cast<int>(
+        g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId));
   }
   if (this->field8C == 0) {
     reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(this->field34,

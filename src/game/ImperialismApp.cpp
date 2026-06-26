@@ -14,6 +14,9 @@
 #include "game/TModalTemplateDialog.h"
 
 extern "C" char g_szEmptyString[];
+extern "C" const char s_DataDirectoryPath_006942A8[];
+extern "C" const char s_IrgGlobPattern_006942FC[];
+extern "C" const char s_NoLanguageFilesMessage_006942B4[];
 
 namespace {
 
@@ -35,6 +38,12 @@ bool IsNullOrEmptyFilename(const CString& fileName) {
 }
 
 const int kAutoResPromptSentinel = 0x29a;
+
+void LoadLanguageLabelFromIrgModule(HMODULE irgModule, CString& languageLabel) {
+  LPSTR buffer = languageLabel.GetBuffer(0x20);
+  LoadStringA(irgModule, 0x1e36, buffer, 0x20);
+  languageLabel.ReleaseBuffer();
+}
 
 } // namespace
 
@@ -232,41 +241,35 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
   CCommandLineInfo cmdInfo;
   ParseCommandLine(cmdInfo);
 
-  CString dataDir;
-  dataDir = reinterpret_cast<LPCSTR>(0x006942a8);
-
-  CString searchPattern;
-  searchPattern = dataDir + reinterpret_cast<LPCSTR>(0x006942fc);
+  CString dataDir(s_DataDirectoryPath_006942A8);
+  CString searchPattern = dataDir + s_IrgGlobPattern_006942FC;
 
   WIN32_FIND_DATAA findData;
   HANDLE findHandle = FindFirstFileA(searchPattern, &findData);
   if (findHandle == INVALID_HANDLE_VALUE) {
-    AfxMessageBox(reinterpret_cast<LPCSTR>(0x006942b4), MB_OK, 0);
+    AfxMessageBox(s_NoLanguageFilesMessage_006942B4, MB_OK, 0);
     return FALSE;
   }
 
-  CString firstLanguageLabel;
   {
     CString irgPath = dataDir + findData.cFileName;
     HMODULE irgModule = LoadLibraryA(irgPath);
+    CString firstLanguageLabel;
     if (irgModule != nullptr) {
-      char buffer[0x21];
-      LoadStringA(irgModule, 0x1e36, buffer, 0x20);
-      buffer[0x20] = '\0';
-      firstLanguageLabel = buffer;
+      LoadLanguageLabelFromIrgModule(irgModule, firstLanguageLabel);
       FreeLibrary(irgModule);
     }
+    savedLanguage = firstLanguageLabel;
   }
-  savedLanguage = firstLanguageLabel;
+  FindClose(findHandle);
 
-  do {
+  findHandle = FindFirstFileA(searchPattern, &findData);
+  while (findHandle != INVALID_HANDLE_VALUE) {
     CString irgPath = dataDir + findData.cFileName;
     HMODULE irgModule = LoadLibraryA(irgPath);
     if (irgModule != nullptr) {
-      char buffer[0x21];
-      LoadStringA(irgModule, 0x1e36, buffer, 0x20);
-      buffer[0x20] = '\0';
-      CString languageLabel = buffer;
+      CString languageLabel;
+      LoadLanguageLabelFromIrgModule(irgModule, languageLabel);
       if (CompareAnsiStringsWithMbcsAwareness(
               const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
                   static_cast<LPCSTR>(savedLanguage))),
@@ -296,9 +299,13 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       }
       FreeLibrary(irgModule);
     }
-  } while (FindNextFileA(findHandle, &findData));
 
-  FindClose(findHandle);
+    if (FindNextFileA(findHandle, &findData) == 0) {
+      FindClose(findHandle);
+      break;
+    }
+  }
+
   return TRUE;
 }
 

@@ -573,6 +573,7 @@ address|target_cpp|ownership|note
 4992a0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 499380|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4994c0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+4997e0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
 49d360|src/game/TModalTemplateDialog.cpp|manual|marker_sync
@@ -3256,6 +3257,7 @@ address|target_cpp|ownership|note
 5d5060|src/game/TViewMgr.cpp|manual|marker_sync
 5d50b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d5100|src/game/TViewMgr.cpp|manual|marker_sync
+5d5140|src/game/TViewMgr.cpp|manual|marker_sync
 5d51e0|src/game/TViewMgr.cpp|manual|marker_sync
 5d5200|src/game/TViewMgr.cpp|manual|marker_sync
 5d5250|src/game/TViewMgr.cpp|manual|marker_sync
@@ -3324,6 +3326,10 @@ address|target_cpp|ownership|note
 5e6ea2|src/game/CBrush.cpp|manual|marker_sync
 5e7980|src/game/CString.cpp|manual|marker_sync
 5e7a80|src/game/startup_helpers.cpp|manual|marker_sync
+5e7ae0|src/game/crt_io_library.cpp|manual|marker_sync
+5e7c10|src/game/crt_io_library.cpp|manual|marker_sync
+5e7d30|src/game/crt_io_library.cpp|manual|marker_sync
+5e7d60|src/game/crt_io_library.cpp|manual|marker_sync
 5e7f50|src/game/mfc_heap_library.cpp|manual|marker_sync
 5e8310|src/game/mfc_heap_library.cpp|manual|marker_sync
 5e8760|src/game/buffered_stream.cpp|manual|marker_sync
@@ -3335,8 +3341,12 @@ address|target_cpp|ownership|note
 5e9440|src/game/buffered_stream.cpp|manual|marker_sync
 5e9480|src/game/buffered_stream.cpp|manual|marker_sync
 5e95c0|src/game/buffered_stream.cpp|manual|marker_sync
+5eada0|src/game/crt_io_library.cpp|manual|marker_sync
 5edbc0|src/game/buffered_stream.cpp|manual|marker_sync
 5edc30|src/game/buffered_stream.cpp|manual|marker_sync
+5edcc0|src/game/crt_io_library.cpp|manual|marker_sync
+5ef5d0|src/game/crt_io_library.cpp|manual|marker_sync
+5ef910|src/game/crt_io_library.cpp|manual|marker_sync
 5efd50|src/game/buffered_stream.cpp|manual|marker_sync
 5efe50|src/game/buffered_stream.cpp|manual|marker_sync
 5eff10|src/game/buffered_stream.cpp|manual|marker_sync

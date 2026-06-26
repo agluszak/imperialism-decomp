@@ -37,7 +37,7 @@ public:
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
 };
 
-void EnsurePictWvDataGobLoadedBySlot(int languageTag);
+void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 

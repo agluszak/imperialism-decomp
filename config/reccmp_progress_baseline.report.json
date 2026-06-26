@@ -518,7 +518,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.216793893129771,
+      "matching": 0.22530864197530864,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -5093,7 +5093,7 @@
     },
     {
       "address": "0x48f570",
-      "matching": 0.6753246753246753,
+      "matching": 0.7012987012987013,
       "name": "TPicture::SetPictureResourceIdAndRefresh",
       "type": 1
     },
@@ -6271,7 +6271,7 @@
     },
     {
       "address": "0x4997e0",
-      "matching": 0.008298755186721992,
+      "matching": 0.13707165109034267,
       "name": "LoadBmpResourceByIdCached",
       "type": 1
     },
@@ -31914,7 +31914,7 @@
     },
     {
       "address": "0x5d5140",
-      "matching": 0.05555555555555555,
+      "matching": 0.5714285714285714,
       "name": "LoadTurnEventCursorByResourceIdOffset1000",
       "type": 1
     },
@@ -32502,7 +32502,7 @@
     },
     {
       "address": "0x5df3a0",
-      "matching": 0.18181818181818182,
+      "matching": 0.2,
       "name": "ForwardEnsurePictWvDataGobLoadedBySlot",
       "type": 1
     },
@@ -32604,7 +32604,7 @@
     },
     {
       "address": "0x5dff20",
-      "matching": 0.41739130434782606,
+      "matching": 0.4339622641509434,
       "name": "EnsurePictWvDataGobLoadedBySlot",
       "type": 1
     },
@@ -33587,24 +33587,6 @@
       "type": 1
     },
     {
-      "address": "0x5e7ae0",
-      "matching": 0.023529411764705882,
-      "name": "FindFirstFileAndPopulateFileInfoRecord",
-      "type": 1
-    },
-    {
-      "address": "0x5e7c10",
-      "matching": 0.02531645569620253,
-      "name": "FindNextFileAndPopulateFileInfoRecord",
-      "type": 1
-    },
-    {
-      "address": "0x5e7d60",
-      "matching": 0.041666666666666664,
-      "name": "ConvertFileTimeToLocalEpochSeconds",
-      "type": 1
-    },
-    {
       "address": "0x5e7df0",
       "matching": 0.11764705882352941,
       "name": "aullshr",
@@ -34157,12 +34139,6 @@
       "type": 1
     },
     {
-      "address": "0x5edcc0",
-      "matching": 0.025,
-      "name": "ConvertBrokenDownLocalTimeToEpochSeconds",
-      "type": 1
-    },
-    {
       "address": "0x5eddeb",
       "matching": 0.0,
       "name": "RunLocalExceptionFilterChainAndUnwind",
@@ -34217,21 +34193,9 @@
       "type": 1
     },
     {
-      "address": "0x5ef5d0",
-      "matching": 0.11764705882352941,
-      "name": "EnsureRuntimeLocaleTablesInitializedOnce",
-      "type": 1
-    },
-    {
       "address": "0x5ef630",
       "matching": 0.00823045267489712,
       "name": "InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32",
-      "type": 1
-    },
-    {
-      "address": "0x5ef910",
-      "matching": 0.11764705882352941,
-      "name": "isindst",
       "type": 1
     },
     {

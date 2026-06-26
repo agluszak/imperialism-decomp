@@ -55,18 +55,21 @@ undefined TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x005dff20
-void EnsurePictWvDataGobLoadedBySlot(int languageTag) {
-  CString path;
-  path.Format("Data/PictWv%d.gob", languageTag);
+extern "C" const char s_PictWvGobPathFormat_00698BF4[];
+extern "C" const char s_MissingFilePrefix_0069B820[];
+extern "C" const char s_MissingFileSuffix_0069B810[];
 
-  if (g_pModuleLibraryCacheState == 0 ||
-      g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
+// FUNCTION: IMPERIALISM 0x005dff20
+void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag) {
+  CString path;
+  path.Format(s_PictWvGobPathFormat_00698BF4, languageTag);
+
+  if (g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
     return;
   }
 
-  CString prefix("A file required by the program, '");
-  CString message = prefix + path;
-  message += "' is missing.";
+  CString message(s_MissingFilePrefix_0069B820);
+  message += path;
+  message += s_MissingFileSuffix_0069B810;
   AfxMessageBox(message, MB_OK, 0);
 }
