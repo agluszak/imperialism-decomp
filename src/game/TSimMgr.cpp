@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "decomp_types.h"
+#include "game/ImperialismApp.h"
 #include "game/TCountry.h"
 #include "game/diplomacy_globals.h"
 
@@ -15,9 +16,19 @@ extern "C" {
 CRuntimeClass g_pClassDescTSimMgr = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-// FUNCTION: IMPERIALISM 0x00581400
-void InitializeOrLoadEntryArray14AndClampLimits() {}
+// FUNCTION: IMPERIALISM 0x004153a0
+int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
+  CString key;
+  key.Format("Pref%d", index);
+  return DAT_006a1348->GetProfileInt("Settings", key, defaultValue);
+}
 
+// FUNCTION: IMPERIALISM 0x00415440
+void WriteSettingsPrefIntByIndex(int index, int value) {
+  CString key;
+  key.Format("Pref%d", index);
+  DAT_006a1348->WriteProfileInt("Settings", key, value);
+}
 
 // FUNCTION: IMPERIALISM 0x0057b9c0
 CRuntimeClass* TSimMgr::GetRuntimeClass() const {
@@ -31,17 +42,17 @@ CRuntimeClass* TSimMgr::GetRuntimeClass() const {
 
 // FUNCTION: IMPERIALISM 0x0057b9e0
 TSimMgr::TSimMgr() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x4) = 1;
+  turnStateCode = 1;
   mode = 1;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xc) = 1;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x10) = 1;
-  *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x14) = 0;
-  pad2e = static_cast<short>(0xffff);
+  previousTurnStateCode = 1;
+  previousMode = 1;
+  field14 = 0;
+  activeNationSlot = -1;
   quarterGateTick2c = 0;
   field30 = 7;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x34) = 0x10;
-  *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0xd8) = 0;
-  *reinterpret_cast<char*>(reinterpret_cast<char*>(this) + 0x112) = 0;
+  field34 = 0x10;
+  fieldd8 = 0;
+  field112 = 0;
   stateFlag114 = 0;
   redrawEnabled = 0;
 }
@@ -54,26 +65,25 @@ TSimMgr::~TSimMgr() {}
 // (overrides TObject::Free; releases g_pNationInteractionStateManager,
 // g_pDiplomacyTurnStateManager, g_pMapContextActionManager, ... via their own vtables).
 
-
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::InitializeTurnFlowStateDefaults() {
   quarterGateTick2c = 0;
-  pad2e = static_cast<short>(0xffff);
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x14) = 0;
+  activeNationSlot = -1;
+  field14 = 0;
   mode = 1;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x3c) = 0;
+  turnFlowStatusFlags = 0;
   field_64 = 0;
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x6e) = 0;
-  memset(reinterpret_cast<char*>(this) + 0x6f, 0x01, 9);
+  field6e = 0;
+  memset(phaseFlags, 0x01, sizeof(phaseFlags));
   gateFlag7a = 0;
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x78) = 2;
-  *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x79) = 1;
+  field78 = 2;
+  field79 = 1;
   g_apSecondaryNationStateSlots[0x17] = nullptr;
   PostMainWindowCommand100ForTurnFlow();
   runtimeSubsystemIndex = 0;
-  InitializeOrLoadEntryArray14AndClampLimits();
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x6a) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x6c) = 0x77a;
+  InitializeOrLoadEntryArray14AndClampLimits(false);
+  field6a = 0;
+  field6c = 0x77a;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bd20
@@ -88,7 +98,6 @@ void TSimMgr::ReadFrom(TStream*) {}
 
 // FUNCTION: IMPERIALISM 0x0057c230
 void TSimMgr::WriteTo(TStream*) {}
-
 
 // FUNCTION: IMPERIALISM 0x0057c390
 void TSimMgr::RebuildNationStateSlotsNoOp() {}
@@ -109,7 +118,6 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int) {}
 // FUNCTION: IMPERIALISM 0x0057d830
 void TSimMgr::ApplyScenarioVariantSeedForNationSetup() {}
 
-
 // FUNCTION: IMPERIALISM 0x0057d8b0
 short TSimMgr::GetTurnTickSlot3C() {
   return quarterGateTick2c;
@@ -121,22 +129,19 @@ short TSimMgr::GetTurnTickSlot3C() {
 // FUNCTION: IMPERIALISM 0x0057d8d0
 void TSimMgr::CopyScenarioNationSetupIntoFlowState(void*) {}
 
-
 // FUNCTION: IMPERIALISM 0x0057d950
 void TSimMgr::IncrementQuarterGateTick2C() {
   ++quarterGateTick2c;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0057d970
 void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
   PostCommand100ToMainWindow();
 }
 
-
 // FUNCTION: IMPERIALISM 0x0057d990
 void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
-  short nationSlot = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x2e);
+  short nationSlot = activeNationSlot;
   bool allowStateChange;
   if (nationSlot == -1) {
     allowStateChange = false;
@@ -146,7 +151,7 @@ void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
       allowStateChange = false;
     } else {
       if (nationSlot < 7) {
-        short field0e = *reinterpret_cast<short*>(reinterpret_cast<char*>(terrainDescriptor) + 0xe);
+        short field0e = terrainDescriptor->encodedNationSlot;
         if (terrainDescriptor == 0 || field0e < 100 || field0e > 199) {
           allowStateChange = false;
         } else {
@@ -172,10 +177,10 @@ check_turn_state_code:
       return;
     }
   }
-  int previousMode = *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x4);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x4) = turnStateCode;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x10) = mode;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xc) = previousMode;
+  int previousMode = this->turnStateCode;
+  this->turnStateCode = turnStateCode;
+  this->previousMode = mode;
+  previousTurnStateCode = previousMode;
   PostMainWindowCommand100ForTurnFlow();
 }
 
@@ -184,10 +189,9 @@ check_turn_state_code:
 // FUNCTION: IMPERIALISM 0x0057da70
 void TSimMgr::AdvanceGlobalTurnStateMachine() {}
 
-
 // FUNCTION: IMPERIALISM 0x0057f110
 int TSimMgr::IsTurnFlowPhaseOutsideRange4To5() {
-  int phase = *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x4);
+  int phase = turnStateCode;
   return (phase <= 3) || (phase >= 6);
 }
 
@@ -211,16 +215,14 @@ void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution() {}
 // FUNCTION: IMPERIALISM 0x0057f3c0
 void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels() {}
 
-
 // FUNCTION: IMPERIALISM 0x0057f490
 int TSimMgr::ReturnZeroSlot6c() {
   return 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x0057f4b0
 void TSimMgr::MergeTurnFlowStatusFlags(unsigned int flags) {
-  *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x3c) |= flags;
+  turnFlowStatusFlags |= flags;
 }
 
 // TODO: port the "all active nations ready" scan over g_apNationStates.
@@ -268,12 +270,10 @@ void TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString*, short*) {}
 
 #pragma optimize("", on)
 
-
 // FUNCTION: IMPERIALISM 0x005811e0
 int TSimMgr::GetField30(void) {
   return field30;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00581200
 #pragma optimize("y", on)
@@ -282,3 +282,43 @@ void TSimMgr::DecrementField30Value() {
 }
 #pragma optimize("", on)
 
+// FUNCTION: IMPERIALISM 0x00581400
+void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
+  if (writeBack) {
+    for (int writeIndex = 0; writeIndex < 14; ++writeIndex) {
+      WriteSettingsPrefIntByIndex(writeIndex, preferenceValues[writeIndex]);
+    }
+    preferenceValues[12] = 0;
+    preferenceValues[1] = 0;
+    return;
+  }
+
+  for (int initIndex = 0; initIndex < 14; ++initIndex) {
+    preferenceValues[initIndex] = 0x101;
+  }
+  preferenceValues[10] = 0;
+  preferenceValues[0] = 0;
+  preferenceValues[11] = 0;
+  preferenceValues[3] = 0xff;
+  preferenceValues[2] = 100;
+
+  for (int readIndex = 0; readIndex < 14; ++readIndex) {
+    preferenceValues[readIndex] =
+        static_cast<short>(ReadSettingsPrefIntByIndex(readIndex, preferenceValues[readIndex]));
+  }
+
+  if (preferenceValues[3] < 0) {
+    preferenceValues[3] = 0;
+  }
+  if (preferenceValues[2] < 0) {
+    preferenceValues[2] = 0;
+  }
+  if (preferenceValues[3] > 0xff) {
+    preferenceValues[3] = 0xff;
+  }
+  if (preferenceValues[2] > 100) {
+    preferenceValues[2] = 100;
+  }
+  preferenceValues[12] = 0;
+  preferenceValues[1] = 0;
+}

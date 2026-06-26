@@ -67,22 +67,6 @@ undefined4 MoveMemoryOverlapSafe(void)
   return 0;
 }
 
-// ghidra_name ParseSignedIntFromAsciiWithWhitespaceSkip
-// ghidra_proto undefined ParseSignedIntFromAsciiWithWhitespaceSkip()
-// FUNCTION: IMPERIALISM 0x005e8760
-undefined4 ParseSignedIntFromAsciiWithWhitespaceSkip(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseSignedIntAndDiscardResult
-// ghidra_proto undefined ParseSignedIntAndDiscardResult()
-// FUNCTION: IMPERIALISM 0x005e8800
-undefined4 ParseSignedIntAndDiscardResult(void)
-{
-  return 0;
-}
-
 // ghidra_name CheckCharacterTypeFlag4
 // ghidra_proto undefined CheckCharacterTypeFlag4()
 // FUNCTION: IMPERIALISM 0x005e8970
@@ -147,38 +131,6 @@ undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void)
   return 0;
 }
 
-// ghidra_name CloseBufferedStreamAndReleaseResources
-// ghidra_proto undefined CloseBufferedStreamAndReleaseResources()
-// FUNCTION: IMPERIALISM 0x005e9010
-undefined4 CloseBufferedStreamAndReleaseResources(void)
-{
-  return 0;
-}
-
-// ghidra_name FlushCloseAndResetBufferedStream
-// ghidra_proto undefined FlushCloseAndResetBufferedStream()
-// FUNCTION: IMPERIALISM 0x005e9050
-undefined4 FlushCloseAndResetBufferedStream(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenBufferedStreamDescriptorWithModeAndLock
-// ghidra_proto undefined OpenBufferedStreamDescriptorWithModeAndLock()
-// FUNCTION: IMPERIALISM 0x005e90c0
-undefined4 OpenBufferedStreamDescriptorWithModeAndLock(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenBufferedStreamWithMode40
-// ghidra_proto undefined OpenBufferedStreamWithMode40()
-// FUNCTION: IMPERIALISM 0x005e9100
-undefined4 OpenBufferedStreamWithMode40(void)
-{
-  return 0;
-}
-
 // ghidra_name WriteBufferItemsToStreamLocked
 // ghidra_proto undefined WriteBufferItemsToStreamLocked()
 // FUNCTION: IMPERIALISM 0x005e9170
@@ -207,30 +159,6 @@ undefined4 DecodeScenarioTilePaletteMaskWithStreamLock(void)
 // ghidra_proto char * __cdecl strncpy(char * _Dest, char * _Source, size_t _Count)
 // FUNCTION: IMPERIALISM 0x005e9340
 undefined4 strncpy(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadBufferedStreamLocked
-// ghidra_proto undefined ReadBufferedStreamLocked()
-// FUNCTION: IMPERIALISM 0x005e9440
-undefined4 ReadBufferedStreamLocked(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadBufferedStreamCoreUnlocked
-// ghidra_proto undefined ReadBufferedStreamCoreUnlocked()
-// FUNCTION: IMPERIALISM 0x005e9480
-undefined4 ReadBufferedStreamCoreUnlocked(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadNextByteFromBufferedStreamWithLock
-// ghidra_proto undefined ReadNextByteFromBufferedStreamWithLock()
-// FUNCTION: IMPERIALISM 0x005e95c0
-undefined4 ReadNextByteFromBufferedStreamWithLock(void)
 {
   return 0;
 }
@@ -1019,26 +947,10 @@ undefined4 LeaveIndexedCriticalSection(void)
   return 0;
 }
 
-// ghidra_name EnterStreamCriticalSection
-// ghidra_proto undefined EnterStreamCriticalSection()
-// FUNCTION: IMPERIALISM 0x005edbc0
-undefined4 EnterStreamCriticalSection(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00
 // ghidra_proto undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00()
 // FUNCTION: IMPERIALISM 0x005edc00
 undefined4 WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00(void)
-{
-  return 0;
-}
-
-// ghidra_name LeaveStreamCriticalSection
-// ghidra_proto undefined LeaveStreamCriticalSection()
-// FUNCTION: IMPERIALISM 0x005edc30
-undefined4 LeaveStreamCriticalSection(void)
 {
   return 0;
 }
@@ -1259,26 +1171,10 @@ undefined4 ConfigureDstTransitionWindowFromRuleSet(void)
   return 0;
 }
 
-// ghidra_name CloseFileDescriptorWithLock
-// ghidra_proto undefined CloseFileDescriptorWithLock()
-// FUNCTION: IMPERIALISM 0x005efd50
-undefined4 CloseFileDescriptorWithLock(void)
-{
-  return 0;
-}
-
 // ghidra_name CloseOsHandleAndReleaseFileDescriptor
 // ghidra_proto undefined CloseOsHandleAndReleaseFileDescriptor()
 // FUNCTION: IMPERIALISM 0x005efdc0
 undefined4 CloseOsHandleAndReleaseFileDescriptor(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50
-// ghidra_proto undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50()
-// FUNCTION: IMPERIALISM 0x005efe50
-undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50(void)
 {
   return 0;
 }
@@ -1299,34 +1195,10 @@ undefined4 FlushStreamPendingWriteAndOptionalFdSync(void)
   return 0;
 }
 
-// ghidra_name FlushBufferedStreamPendingWrite
-// ghidra_proto undefined FlushBufferedStreamPendingWrite()
-// FUNCTION: IMPERIALISM 0x005eff10
-undefined4 FlushBufferedStreamPendingWrite(void)
-{
-  return 0;
-}
-
 // ghidra_name ProcessFlaggedMapContextEntriesUnderGlobalLock
 // ghidra_proto undefined ProcessFlaggedMapContextEntriesUnderGlobalLock()
 // FUNCTION: IMPERIALISM 0x005eff90
 undefined4 ProcessFlaggedMapContextEntriesUnderGlobalLock(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenFileByModeStringAndInitStreamState
-// ghidra_proto undefined OpenFileByModeStringAndInitStreamState()
-// FUNCTION: IMPERIALISM 0x005f0050
-undefined4 OpenFileByModeStringAndInitStreamState(void)
-{
-  return 0;
-}
-
-// ghidra_name AcquireAndInitializeBufferedStreamSlot
-// ghidra_proto undefined AcquireAndInitializeBufferedStreamSlot()
-// FUNCTION: IMPERIALISM 0x005f0220
-undefined4 AcquireAndInitializeBufferedStreamSlot(void)
 {
   return 0;
 }
@@ -1399,22 +1271,6 @@ undefined4 AppendTileCodeIfValid(void)
 // ghidra_proto undefined ReadNextTileCodeSkippingAttributeMask08()
 // FUNCTION: IMPERIALISM 0x005f1440
 undefined4 ReadNextTileCodeSkippingAttributeMask08(void)
-{
-  return 0;
-}
-
-// ghidra_name RefillBufferedFileStreamAndReadFirstByte
-// ghidra_proto undefined RefillBufferedFileStreamAndReadFirstByte()
-// FUNCTION: IMPERIALISM 0x005f1490
-undefined4 RefillBufferedFileStreamAndReadFirstByte(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadFromFileDescriptorWithLock
-// ghidra_proto undefined ReadFromFileDescriptorWithLock()
-// FUNCTION: IMPERIALISM 0x005f1580
-undefined4 ReadFromFileDescriptorWithLock(void)
 {
   return 0;
 }

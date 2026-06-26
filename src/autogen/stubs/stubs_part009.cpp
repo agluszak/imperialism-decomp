@@ -315,14 +315,6 @@ undefined4 PostTurnEventCodeMessage2420(void)
   return 0;
 }
 
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850
-// ghidra_proto undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()
-// FUNCTION: IMPERIALISM 0x00414850
-undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850(void)
-{
-  return 0;
-}
-
 // ghidra_name DetectImperialismInstallDriveAndSetPathPrefix
 // ghidra_proto undefined DetectImperialismInstallDriveAndSetPathPrefix()
 // FUNCTION: IMPERIALISM 0x00414870
@@ -367,22 +359,6 @@ undefined4 OrphanCallChain_C1_I05_00415070(void)
 // ghidra_proto undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380()
 // FUNCTION: IMPERIALISM 0x00415380
 undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadSettingsPrefIntByIndex
-// ghidra_proto undefined ReadSettingsPrefIntByIndex()
-// FUNCTION: IMPERIALISM 0x004153a0
-undefined4 ReadSettingsPrefIntByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name WriteSettingsPrefIntByIndex
-// ghidra_proto undefined WriteSettingsPrefIntByIndex()
-// FUNCTION: IMPERIALISM 0x00415440
-undefined4 WriteSettingsPrefIntByIndex(void)
 {
   return 0;
 }

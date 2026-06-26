@@ -547,14 +547,6 @@ undefined4 RemoveNationSlotAndNotifyPeers(void)
   return 0;
 }
 
-// ghidra_name InitializeOrLoadEntryArray14AndClampLimits
-// ghidra_proto undefined InitializeOrLoadEntryArray14AndClampLimits()
-// FUNCTION: IMPERIALISM 0x00581400
-undefined4 InitializeOrLoadEntryArray14AndClampLimits(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdatePersistentTopTenNationScores
 // ghidra_proto undefined UpdatePersistentTopTenNationScores()
 // FUNCTION: IMPERIALISM 0x00581510

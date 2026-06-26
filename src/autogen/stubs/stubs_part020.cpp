@@ -587,14 +587,6 @@ undefined4 QueueDeferredUiEventPacket(void)
   return 0;
 }
 
-// ghidra_name ReadLineFromBufferedStreamUntilTerminator
-// ghidra_proto undefined ReadLineFromBufferedStreamUntilTerminator()
-// FUNCTION: IMPERIALISM 0x005d4ba0
-undefined4 ReadLineFromBufferedStreamUntilTerminator(void)
-{
-  return 0;
-}
-
 // ghidra_name TryGetFileMetadataForPath
 // ghidra_proto undefined TryGetFileMetadataForPath()
 // FUNCTION: IMPERIALISM 0x005d4c10
@@ -1391,14 +1383,6 @@ undefined4 BuildScenarioPathForModeAndIndex(void)
 // ghidra_proto undefined AssignScoresDatPathToSharedString()
 // FUNCTION: IMPERIALISM 0x005dfea0
 undefined4 AssignScoresDatPathToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsurePictWvDataGobLoadedBySlot
-// ghidra_proto undefined EnsurePictWvDataGobLoadedBySlot()
-// FUNCTION: IMPERIALISM 0x005dff20
-undefined4 EnsurePictWvDataGobLoadedBySlot(void)
 {
   return 0;
 }

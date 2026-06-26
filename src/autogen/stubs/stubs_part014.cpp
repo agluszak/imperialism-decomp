@@ -1459,42 +1459,10 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
   return 0;
 }
 
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries
-// ghidra_proto undefined LoadNewsTabTexResourcesAndBuildEntries()
-// FUNCTION: IMPERIALISM 0x00507e50
-undefined4 LoadNewsTabTexResourcesAndBuildEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At005082b0
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At005082b0()
-// FUNCTION: IMPERIALISM 0x005082b0
-undefined4 WrapperFor_AllocateWithFallbackHandler_At005082b0(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::BuildMappedSharedStringFromByteStateTable
 // ghidra_proto undefined BuildMappedSharedStringFromByteStateTable()
 // FUNCTION: IMPERIALISM 0x005083f0
 undefined4 BuildMappedSharedStringFromByteStateTable(void)
-{
-  return 0;
-}
-
-// ghidra_name FreeNestedPointerTableRowsAndResetDimensions
-// ghidra_proto undefined FreeNestedPointerTableRowsAndResetDimensions()
-// FUNCTION: IMPERIALISM 0x00508760
-undefined4 FreeNestedPointerTableRowsAndResetDimensions(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadNewsTabTexResourcesAndBuildEntries_Impl
-// ghidra_proto undefined LoadNewsTabTexResourcesAndBuildEntries_Impl()
-// FUNCTION: IMPERIALISM 0x00508800
-undefined4 LoadNewsTabTexResourcesAndBuildEntries_Impl(void)
 {
   return 0;
 }

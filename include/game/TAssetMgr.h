@@ -5,13 +5,13 @@
 
 class TView;
 
-// TODO(manifest): describe TAssetMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TAssetMgr -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x0066f508
+// TODO(manifest): describe TAssetMgr and its role. Base edge (TObject) recovered from RTTI
+// CRuntimeClass chain: TAssetMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x0066f508
 class TAssetMgr : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TAssetMgr) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TAssetMgr) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5df260
-  virtual ~TAssetMgr(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TAssetMgr();                                    // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -20,19 +20,22 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual TView* ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
-  virtual undefined NoOpRuntimeUiCallback_005df780(); // slot 0x0b 0x5df780
-  virtual undefined NoOpRuntimeUiCallback_005df3f0(); // slot 0x0c 0x5df3f0
-  virtual undefined NoOpRuntimeUiCallback_005df410(); // slot 0x0d 0x5df410
-  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup(); // slot 0x0e 0x5dfc10
-// === END GENERATED DECLS (TAssetMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr 0xCTOR`).
+  virtual TView*
+  ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
+  virtual undefined NoOpRuntimeUiCallback_005df780();             // slot 0x0b 0x5df780
+  virtual undefined NoOpRuntimeUiCallback_005df3f0();             // slot 0x0c 0x5df3f0
+  virtual undefined NoOpRuntimeUiCallback_005df410();             // slot 0x0d 0x5df410
+  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup();  // slot 0x0e 0x5dfc10
+  // === END GENERATED DECLS (TAssetMgr) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr
+  // 0xCTOR`).
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
 };
 
-// FUNCTION: IMPERIALISM 0x005df3a0
+void EnsurePictWvDataGobLoadedBySlot(int languageTag);
+
 void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 // === BEGIN GENERATED (TAssetMgr) — refreshed by `just gen-class TAssetMgr`; do not hand-edit ===

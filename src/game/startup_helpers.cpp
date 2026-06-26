@@ -71,8 +71,8 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
   totalBytes.QuadPart = 0;
   totalFreeBytes.QuadPart = 0;
 
-  typedef BOOL(WINAPI* GetDiskFreeSpaceExProc)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER,
-                                               PULARGE_INTEGER);
+  typedef BOOL(WINAPI * GetDiskFreeSpaceExProc)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER,
+                                                PULARGE_INTEGER);
   HMODULE kernel32 = LoadLibraryA("KERNEL32.DLL");
   if (kernel32 != 0) {
     GetDiskFreeSpaceExProc getDiskFreeSpaceEx =
@@ -99,6 +99,11 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00412a70
+void* GetMainViewHostFromActiveThread() {
+  return GetObjectValueAtOffset98(GetMainContextFromActiveThread());
+}
+
 // FUNCTION: IMPERIALISM 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue() {
   const UINT dirSize = GetWindowsDirectoryA(nullptr, 0);
@@ -123,8 +128,8 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   CString formattedText;
   CString scratch;
   InvokeLoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
-  FormatStringWithVarArgsToSharedRef(
-      &scratch, reinterpret_cast<const char*>(kAddrDecimalFormat), freeMegabytes);
+  FormatStringWithVarArgsToSharedRef(&scratch, reinterpret_cast<const char*>(kAddrDecimalFormat),
+                                     freeMegabytes);
   InvokeScanBracketExpressions(g_pLocalizationTable, &formattedText, templateText.GetBuffer(0));
 
   TLowDiskWarningDialog dialog(nullptr);
@@ -162,7 +167,7 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
     g_pLanguageMgr = new TLanguageMgr();
   }
 
-  ReloadPreplutNewsTableAndResources(app->field_50);
+  g_pLanguageMgr->ReloadPreplutNewsTableAndResources(app->field_50);
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
@@ -210,11 +215,6 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
     reinterpret_cast<TMultiplayerMgr*>(g_pGameFlowState)
         ->InitializeMultiplayerManagerForSessionContext(CString());
   }
-}
-
-// FUNCTION: IMPERIALISM 0x00412a70
-void* GetMainViewHostFromActiveThread() {
-  return GetObjectValueAtOffset98(GetMainContextFromActiveThread());
 }
 
 // FUNCTION: IMPERIALISM 0x005e7a80

@@ -1,17 +1,14 @@
 #include "game/TAssetMgr.h"
 
-// FUNCTION: IMPERIALISM 0x005dff20
-void EnsurePictWvDataGobLoadedBySlot(int languageTag) {
-  (void)languageTag;
-}
-
-// FUNCTION: IMPERIALISM 0x005df280
-TAssetMgr::TAssetMgr() : TObject() {}
+#include "game/TModuleLibraryCacheTableStateB.h"
 
 // FUNCTION: IMPERIALISM 0x005df260
 CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x005df280
+TAssetMgr::TAssetMgr() : TObject() {}
 
 // SYNTHETIC: IMPERIALISM 0x005df300
 // TAssetMgr::`scalar deleting destructor'
@@ -50,4 +47,20 @@ undefined TAssetMgr::NoOpRuntimeUiCallback_005df780() {
 // FUNCTION: IMPERIALISM 0x005dfc10
 undefined TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005dff20
+void EnsurePictWvDataGobLoadedBySlot(int languageTag) {
+  CString path;
+  path.Format("Data/PictWv%d.gob", languageTag);
+
+  if (g_pModuleLibraryCacheState == 0 ||
+      g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
+    return;
+  }
+
+  CString prefix("A file required by the program, '");
+  CString message = prefix + path;
+  message += "' is missing.";
+  AfxMessageBox(message, MB_OK, 0);
 }
