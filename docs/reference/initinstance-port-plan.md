@@ -13,7 +13,7 @@ be a real, correctly-typed declaration before the body can compile cleanly (no
   `field_D0` = slot-0 data-lib path, `field_D8` = primary-lib path. `theApp` global defined.
 - **`InitInstance @ 0x00412dc0`** — real body in `ImperialismApp.cpp`: registry branch, module cache,
   language load, auto-resolution, fonts, doc template, shell command, runtime subsystem init,
-  `InvokeAfxThreadVslot7CAndGetValueAtOffset98`, `SetUiRuntimeContextAndActivateMain`, title text,
+  `GetMainViewHostFromActiveThread`, `SetUiRuntimeContextAndActivateMain`, title text,
   startup `WM_COMMAND` 100. Match score still ~36% (CCommandLineInfo inlining, empty-string check).
 - **`ExitInstance @ 0x00413780`** — real body: display restore, `g_pDisplayMgr` (`DAT_006a2158`) first,
   module cache delete, strategic map / UI view / SFX / root controller teardown, clip-region reset,
@@ -26,18 +26,29 @@ be a real, correctly-typed declaration before the body can compile cleanly (no
   in `InitializeGlobalRuntimeSystemsFromConfig`, freed first in `ExitInstance`.
 - **`ApplyAutoResolutionModeAndPersist @ 0x004155b0`** — real body: `ChangeDisplaySettingsA`,
   `WriteProfileInt`, updates `field_C8`.
-- **`ShowAutoResolutionDialogIfNeeded @ 0x00415090`** — registry/cmdline gating + dialog helper calls
-  (modal dialog class still stub-backed via `InitializeDialogTemplateFBWithDualTextState` /
-  `PrepareAndCreateDialogFromTemplateResource`).
+- **`ShowAutoResolutionDialogIfNeeded @ 0x00415090`** — uses `TAutoResolutionDialog` +
+  `TModalTemplateDialog` modal helpers (`PrepareAndCreateModalFromTemplate` /
+  `FinalizeModalDialogAndRestoreOwnerFocus`).
 - **`LoadLanguageResourcesFromIrgFiles @ 0x004149a0`** — `ImperialismApp` method: enumerates `Data/*.irg`,
   loads strings into `field_CC..field_E4` (leaf file helpers still stub-backed).
 - **Startup helpers** in `startup_helpers.cpp` / `startup_helpers.h`:
-  - `InitializeGlobalRuntimeSystemsFromConfig @ 0x0049ded0` — real orchestration (leaf ctors/factories
-    still stub-backed where not yet promoted).
+  - `InitializeGlobalRuntimeSystemsFromConfig @ 0x0049ded0` — real orchestration: constructs
+    `TLanguageMgr`, `TSimMgr`, `TAssetMgr`, `TViewMgr`, `TDisplayMgr`, `TMacViewMgr`, `THelpMgr`,
+    and `TMultiplayerMgr` (via `Config::InitDefaults`), then calls
+    `InitializeMultiplayerManagerForSessionContext`.
   - `SetUiRuntimeContextAndActivateMain @ 0x00483340` — real body.
-  - `InvokeAfxThreadVslot7CAndGetValueAtOffset98 @ 0x00412a70` — real body.
-  - `SetGlobalCallback6A7FACAndReturnPrevious`, `SetGlobalDword6A2018`, `WarnLowDiskSpaceAndConfirmContinue`
-    (warn still stub).
+  - `GetMainViewHostFromActiveThread @ 0x00412a70` — real body (Afx thread main window + offset `+0x98`).
+  - `SetGlobalCallback6A7FACAndReturnPrevious`, `SetGlobalDword6A2018`.
+  - `WarnLowDiskSpaceAndConfirmContinue @ 0x00415760` — disk-space check + `TLowDiskWarningDialog`
+    (template `0x98`).
+- **Manager ctors / init** promoted to real methods:
+  - `TLanguageMgr::TLanguageMgr @ 0x507c60`, `ReloadPreplutNewsTableAndResources @ 0x5086a0`
+    (partial — leaf reload helpers still TODO).
+  - `THelpMgr::THelpMgr @ 0x5005e0`, `InitializeHelpManagerIndexArrayAndState @ 0x500680`.
+  - `TAssetMgr::TAssetMgr @ 0x5df280`, `ForwardEnsurePictWvDataGobLoadedBySlot @ 0x5df3a0`.
+  - `TMultiplayerMgr::TMultiplayerMgr @ 0x542670` (partial — CString table init still TODO).
+  - `TSimMgr::InitializeTurnFlowStateDefaults @ 0x57bbf0`.
+  - `g_pHelpMgr` typed in `diplomacy_globals.h` (was raw `0x006a21b8`).
 - `CString::Format` (`0x5ff15e`) and `AfxMessageBox` (`0x6185e4`) recognized as real MFC and
   LIBRARY-annotated. Call them directly.
 
@@ -62,31 +73,30 @@ heuristics note **18** (MFC convention/access traps + CMap), memory
 Hand-inlined `CMap` hash walk in `~TModuleLibraryCacheTableStateB` vs public `RemoveKey`/`GetNextAssoc`.
 Only pursue if chasing map-teardown shape; functional teardown is present.
 
-### B. Auto-resolution dialog class — port plan leaf
-`ShowAutoResolutionDialogIfNeeded` still delegates modal UI to stubbed
-`InitializeDialogTemplateFBWithDualTextState` / `PrepareAndCreateDialogFromTemplateResource` and
-unpromoted `TControl` modal helpers. Promote the dialog template-FB class for higher match on
-`0x00415090`.
+### B. Auto-resolution dialog class — done
+`TAutoResolutionDialog` / `TModalTemplateDialog` wired in `ShowAutoResolutionDialogIfNeeded`.
 
-### C. Startup factory leaves (inside `InitializeGlobalRuntimeSystemsFromConfig`)
-Still stub-backed where not yet owned: `ConstructTLanguageMgrBaseState`, `ConstructUiViewManager`,
-`InitializeTurnFlowStateDefaults`, `ReloadPreplutNewsTableAndResources`,
-`ForwardEnsurePictWvDataGobLoadedBySlot`, `ConstructTHelpMgrBaseState`, Config post-init slot `+0x94`.
-Real orchestration and globals wiring are in place; promote each factory as needed.
+### C. Startup factory leaves — largely done
+Orchestration uses real `new` + method calls. Remaining leaf depth:
+- `ReloadPreplutNewsTableAndResources` reload helpers (`FreeNestedPointerTableRowsAndResetDimensions`,
+  `LoadNewsTabTexResourcesAndBuildEntries`).
+- `TMultiplayerMgr` ctor CString table initialization (`CallCallbackRepeatedly` cluster).
+- `EnsurePictWvDataGobLoadedBySlot @ 0x5dff20` body (forwarder wired).
+- `InitializeOrLoadEntryArray14AndClampLimits @ 0x581400` body (stub).
 
 ### D. InitInstance residual match (~36%)
 - `CCommandLineInfo` member pokes (partially unavoidable MSVC inlining divergence).
 - `CompareAnsiStringsWithMbcsAwareness` vs `g_szEmptyString` for title path — wired; filename-null
   branch uses `m_pchData == nullptr` vs `IsEmpty()`.
-- Register allocation around `InvokeAfxThreadVslot7CAndGetValueAtOffset98` / `SetWindowTextOrDelegateToOwner`
+- Register allocation around `GetMainViewHostFromActiveThread` / `SetWindowTextOrDelegateToOwner`
   (compiler choice — do not chase).
 
 ### E. ExitInstance residual match (~79%)
 - Register allocation (`ebp` vs `edi`) — out of scope.
 - `ReleaseGlobalClipRegionHandleListAndReset` — present.
 
-### F. `WarnLowDiskSpaceAndConfirmContinue @ 0x00415760`
-Still returns `TRUE` unconditionally; real body shows template `0x98` low-disk dialog.
+### F. Low-disk warning — done
+`WarnLowDiskSpaceAndConfirmContinue` uses `TLowDiskWarningDialog` (template `0x98`).
 
 ## Workflow & verification (per target)
 
