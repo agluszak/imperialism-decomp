@@ -3,12 +3,31 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
-#include "game/CPtrArray.h"
 #include "game/CString.h"
 #include "game/TObject.h"
+#include "game/stretch.h"
 
 struct CRuntimeClass;
 class TStream;
+class TZone;
+struct TZonePrimaryNeighborTag;
+struct TZoneSecondaryNeighborTag;
+
+// Mac symbols expose a project-local stretch<T> family. Windows TZone embeds two
+// stretch-like secondary subobjects whose vfptrs point into the TZone vtable group.
+// VTABLE: IMPERIALISM 0x0065c74c
+class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborTag> {
+public:
+  TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e8e0
+  void Add(TZone* zone) override;                  // 0x55ead0
+};
+
+// VTABLE: IMPERIALISM 0x0065c748
+class TZoneSecondaryNeighborStretch : public stretch<TZone*, TZoneSecondaryNeighborTag> {
+public:
+  TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e9c0
+  void Add(TZone* zone) override;                  // 0x55eba0
+};
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
 // Per-nation seed contexts in TOcean use the first 0x48 bytes of this layout.
@@ -44,11 +63,10 @@ public:
   virtual void SetMapOrderUiFlag(int flag);                        // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
-  // Original vtable slots 0x1c..0x1f, kept as non-virtual (paired by address).
-  int* GetOrAppendUniqueZonePointerInPrimaryArray(TZone* zone);   // 0x55e8e0
-  int* GetOrAppendUniqueZonePointerInSecondaryArray(TZone* zone);   // 0x55e9c0
-  void AppendZonePointerToPrimaryArray(TZone* zone);              // 0x55ead0
-  void AppendZonePointerToSecondaryArray(TZone* zone);            // 0x55eba0
+  // The original table group continues with two embedded stretch<TZone*> member vtables
+  // at +0x24/+0x34, then TPortZone. Those stretch bodies are implemented in TZone.cpp.
+  void AppendZonePointerToPrimaryArray(TZone* zone) { primaryNeighbors.Add(zone); }
+  void AppendZonePointerToSecondaryArray(TZone* zone) { secondaryNeighbors.Add(zone); }
 
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
   void GenerateZoneStatusCodeIfUnset();                            // 0x55f5c0
@@ -67,10 +85,8 @@ public:
   TZone* next1c;                  // +0x1c newer link
   short field20;                  // +0x20 active tile index
   char pad22[2];                  // +0x22
-  CPtrArray primaryZonePointers;  // +0x24 embedded MFC ptr array (m_pData @ +0x28)
-  void* field38;                  // +0x38 secondary zone-pointer heap (CPtrArray POD tail)
-  int field3c;                    // +0x3c secondary m_nMaxSize
-  int field40;                    // +0x40 secondary m_nSize / HandleKeyDown slot count
+  TZonePrimaryNeighborStretch primaryNeighbors;     // +0x24
+  TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
   short field44;                  // +0x44
   int field48;                    // +0x48 TPortZone tile index (past base TZone 0x48 extent)
 
@@ -89,16 +105,19 @@ public:
   TZone* GetNextPortZone();
   static TZone* FindPortZoneByTile(short nTileIndex);
 
-  int*& PrimaryZoneHeapData() {
-    return *reinterpret_cast<int**>(reinterpret_cast<char*>(this) + 0x28);
+  TZone**& PrimaryZoneHeapData() {
+    return primaryNeighbors.Data();
   }
   int& PrimaryZoneHeapCapacity() {
-    return *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x2c);
+    return primaryNeighbors.Capacity();
   }
   int& PrimaryZoneHeapSize() {
-    return *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x30);
+    return primaryNeighbors.Count();
   }
 };
+
+ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
+ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
 
 extern TZone* g_pMapActionContextListHead;
 

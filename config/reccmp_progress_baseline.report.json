@@ -7302,6 +7302,12 @@
       "type": 1
     },
     {
+      "address": "0x4a4550",
+      "matching": 0.0,
+      "name": "ForwardGetUnitMovementClassId_At004a4550",
+      "type": 1
+    },
+    {
       "address": "0x4a45e0",
       "matching": 0.0,
       "name": "SetActiveProvinceSelection",
@@ -11221,7 +11227,7 @@
     },
     {
       "address": "0x4d71b0",
-      "matching": 0.5482517482517483,
+      "matching": 0.5426573426573427,
       "name": "TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities",
       "type": 1
     },
@@ -11641,7 +11647,7 @@
     },
     {
       "address": "0x4dc540",
-      "matching": 0.7272727272727273,
+      "matching": 0.7151515151515152,
       "name": "TGreatPower::CompareMissionScoreVariantsByMode",
       "type": 1
     },
@@ -12068,7 +12074,7 @@
     },
     {
       "address": "0x4de860",
-      "matching": 0.41198501872659177,
+      "matching": 0.40823970037453183,
       "name": "TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers",
       "type": 1
     },
@@ -12254,7 +12260,7 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12272,7 +12278,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6818181818181818,
+      "matching": 0.7272727272727273,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13076,7 +13082,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.6787878787878788,
+      "matching": 0.6666666666666666,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -15644,7 +15650,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.1752212389380531,
+      "matching": 0.17699115044247787,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16299,7 +16305,7 @@
     {
       "address": "0x515d60",
       "matching": 0.2222222222222222,
-      "name": "TMapMgr::WrapperFor_thunk_GetUnitMovementClassId_At00515d60",
+      "name": "TMapMgr::ApplyUnitMovementClassForTileIfValid",
       "type": 1
     },
     {
@@ -16341,7 +16347,7 @@
     {
       "address": "0x515f80",
       "matching": 0.0273972602739726,
-      "name": "TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80",
+      "name": "TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags",
       "type": 1
     },
     {
@@ -16466,7 +16472,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -16652,7 +16658,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2857142857142857,
+      "matching": 0.29545454545454547,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -19551,7 +19557,7 @@
     },
     {
       "address": "0x53e6e0",
-      "matching": 0.20971867007672634,
+      "matching": 0.20565552699228792,
       "name": "ComputeDefendProvinceMissionCrossNationSupportVectorScore",
       "type": 1
     },
@@ -22035,7 +22041,7 @@
     },
     {
       "address": "0x55e700",
-      "matching": 0.6,
+      "matching": 0.6776859504132231,
       "name": "TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList",
       "type": 1
     },
@@ -22077,25 +22083,25 @@
     },
     {
       "address": "0x55e8e0",
-      "matching": 0.24742268041237114,
+      "matching": 0.3125,
       "name": "TZone::GetOrAppendUniqueZonePointerInPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55e9c0",
-      "matching": 0.11428571428571428,
+      "matching": 0.3125,
       "name": "TZone::GetOrAppendUniqueZonePointerInSecondaryArray",
       "type": 1
     },
     {
       "address": "0x55ead0",
-      "matching": 0.1111111111111111,
+      "matching": 0.6521739130434783,
       "name": "TZone::AppendZonePointerToPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55eba0",
-      "matching": 0.1509433962264151,
+      "matching": 0.6521739130434783,
       "name": "TZone::AppendZonePointerToSecondaryArray",
       "type": 1
     },
@@ -22509,7 +22515,7 @@
     },
     {
       "address": "0x562d90",
-      "matching": 0.5051546391752577,
+      "matching": 0.4742268041237113,
       "name": "InputState::InitializeMapActionContextsForNationCountUsingCostField",
       "type": 1
     },
@@ -39908,6 +39914,18 @@
       "address": "0x65c6d8",
       "matching": 1.0,
       "name": "TZone::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65c748",
+      "matching": 1.0,
+      "name": "TZoneSecondaryNeighborStretch::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65c74c",
+      "matching": 1.0,
+      "name": "TZonePrimaryNeighborStretch::`vftable'",
       "type": 5
     },
     {

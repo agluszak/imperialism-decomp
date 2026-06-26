@@ -328,12 +328,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
                   ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
               if (grownArray == 0) {
                 portZone->PrimaryZoneHeapData() =
-                    static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                    static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
                         ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(),
                                                                   4));
                 portZone->PrimaryZoneHeapCapacity() = 1;
               } else {
-                portZone->PrimaryZoneHeapData() = static_cast<int*>(grownArray);
+                portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);
                 portZone->PrimaryZoneHeapCapacity() = 2;
               }
             }
@@ -341,7 +341,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
               portZone->PrimaryZoneHeapSize() = 1;
             }
             CreateNavyPrimaryOrderNodeAndAssignDisplayName(
-                3, reinterpret_cast<TZone*>(portZone->PrimaryZoneHeapData()[0]), this->nationSlot, 0);
+                3, portZone->PrimaryZoneHeapData()[0], this->nationSlot, 0);
           }
         }
       }
@@ -809,4 +809,3 @@ void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}
-

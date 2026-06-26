@@ -16,7 +16,7 @@ class TShip : public TObject {
 public:
   short resourceType04;
   short pad06;
-  void* field08;
+  TZone* field08;
   short linkContext0c;
   short linkTag0e;
   int quantityFlag10;

@@ -117,8 +117,8 @@ public:
   virtual undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1); // slot 0x28 0x5159b0
   virtual undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1); // slot 0x29 0x515b10
   virtual undefined UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1); // slot 0x2a 0x50fca0
-  virtual undefined WrapperFor_thunk_GetUnitMovementClassId_At00515d60(int param_1); // slot 0x2b 0x515d60
-  virtual undefined WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80(int param_1, int param_2); // slot 0x2c 0x515f80
+  virtual undefined ApplyUnitMovementClassForTileIfValid(int param_1); // slot 0x2b 0x515d60
+  virtual undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2); // slot 0x2c 0x515f80
   virtual undefined OrphanRetStub_00515de0(); // slot 0x2d 0x515de0
   virtual undefined DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1, undefined4 param_2); // slot 0x2e 0x513290
   virtual undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2); // slot 0x2f 0x516090
@@ -249,8 +249,8 @@ extern TMapMgr* g_pGlobalMapState;
 //   slot 0x28  byte 0xa0  0x005159b0  override  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
 //   slot 0x29  byte 0xa4  0x00515b10  override  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
 //   slot 0x2a  byte 0xa8  0x0050fca0  override  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority
-//   slot 0x2b  byte 0xac  0x00515d60  override  WrapperFor_thunk_GetUnitMovementClassId_At00515d60
-//   slot 0x2c  byte 0xb0  0x00515f80  override  WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80
+//   slot 0x2b  byte 0xac  0x00515d60  override  ApplyUnitMovementClassForTileIfValid
+//   slot 0x2c  byte 0xb0  0x00515f80  override  SetRegionTileSubtypeAndRefreshNeighborFlags
 //   slot 0x2d  byte 0xb4  0x00515de0  override  OrphanRetStub_00515de0
 //   slot 0x2e  byte 0xb8  0x00513290  override  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
 //   slot 0x2f  byte 0xbc  0x00516090  override  OrphanLeaf_NoCall_Ins27_00516090

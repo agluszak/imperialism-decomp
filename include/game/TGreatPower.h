@@ -15,6 +15,7 @@ class TDefenseMinister;
 class TCityInteriorMinister;
 class TQueueObject;
 class TCity;
+class TZone;
 
 // Nation object: inherits the intermediate base TCountry (identity strings, nation-slot
 // metrics, military-unit + owned-region lists), itself a TObject.
@@ -399,7 +400,8 @@ public:
 
   static void* CreateTGreatPowerInstance(void);
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
-  void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);
+  void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, TZone* portZoneContext,
+                                                      int arg4);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AbsorbCityNeedVectorSlotFC(short* needVector);

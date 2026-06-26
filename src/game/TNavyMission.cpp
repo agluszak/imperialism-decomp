@@ -3,6 +3,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/diplomacy_globals.h"
 #include "game/TShip.h"
+#include "game/TZone.h"
 
 extern "C" {
 extern float g_Recompute_Nation_Order_LookupTable_0065A9E8;
@@ -21,7 +22,7 @@ namespace {
 
 struct NavyPrimaryOrderNode {
   char pad00[8];
-  int nodeContext08;
+  TZone* nodeContext08;
   char pad0c[8];
   short sourceNation14;
   char pad16[6];
@@ -72,8 +73,8 @@ void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* v
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005389f0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
-                                                                               int nodeContext) {
+float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(
+    int sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (NavyPrimaryOrderNode* orderNode =
            reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());
@@ -93,7 +94,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
 
 // FUNCTION: IMPERIALISM 0x00538bf0
 float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
-                                                                                int nodeContext) {
+                                                                                TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (NavyPrimaryOrderNode* orderNode =
            reinterpret_cast<NavyPrimaryOrderNode*>(GetNavyPrimaryOrderListHead());

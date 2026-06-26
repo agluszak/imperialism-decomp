@@ -27,49 +27,33 @@ void DeleteUnlinkedZone(TZone* zone) {
   delete zone;
 }
 
-int* ZonePointerSlotAddress(TZone* zone, int index) {
-  return &reinterpret_cast<int*>(*reinterpret_cast<void**>(reinterpret_cast<char*>(zone) + 0x28))
-              [index];
+void* ReallocateStretchEntries(TZone** entries, int sizeBytes) {
+  return reinterpret_cast<void*(__cdecl*)(void*, int)>(ReallocateHeapBlockWithAllocatorTracking)(
+      entries, sizeBytes);
 }
 
-void AppendZonePointerToSecondaryPod(TZone* zone, TZone* entry) {
-  void** data = reinterpret_cast<void**>(&zone->field38);
-  int* maxSize = &zone->field3c;
-  int* size = &zone->field40;
-  int slotIndex = *size;
-  if (*maxSize <= slotIndex) {
+template <typename TStretch>
+void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
+  int slotIndex = list->Count();
+  if (list->Capacity() <= slotIndex) {
     int nextCapacity = slotIndex + 1;
     unsigned int doubledCapacity = static_cast<unsigned int>(nextCapacity * 2);
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(*data, nextCapacity * 8);
+    void* grownBuffer = ReallocateStretchEntries(list->Data(), nextCapacity * 8);
     if (grownBuffer == 0) {
-      *data = reinterpret_cast<void*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(*data, nextCapacity * 4));
-      *maxSize = nextCapacity;
+      list->Data() = static_cast<TZone**>(ReallocateStretchEntries(list->Data(), nextCapacity * 4));
+      list->Capacity() = nextCapacity;
     } else {
-      *data = grownBuffer;
-      *maxSize = static_cast<int>(doubledCapacity);
+      list->Data() = static_cast<TZone**>(grownBuffer);
+      list->Capacity() = static_cast<int>(doubledCapacity);
     }
   }
-  if (*size <= slotIndex) {
-    *size = slotIndex + 1;
+  if (list->Count() <= slotIndex) {
+    list->Count() = slotIndex + 1;
   }
-  reinterpret_cast<void**>(*data)[slotIndex] = entry;
-}
-
-int* GetOrAppendUniqueZonePointerInSecondaryPod(TZone* zone, TZone* entry) {
-  void** data = reinterpret_cast<void**>(zone->field38);
-  int count = zone->field40;
-  for (int index = 0; index < count; ++index) {
-    if (reinterpret_cast<TZone*>(data[index]) == entry) {
-      return &reinterpret_cast<int*>(data)[index];
-    }
-  }
-  AppendZonePointerToSecondaryPod(zone, entry);
-  return &reinterpret_cast<int*>(reinterpret_cast<void**>(zone->field38))[zone->field40 - 1];
+  list->Data()[slotIndex] = entry;
 }
 
 } // namespace
@@ -115,9 +99,7 @@ CRuntimeClass* TZone::GetRuntimeClass() const {
 TZone::TZone()
     : field04(-1), displayName(), field0c(-1), field10(0), field12(-1), field14(0),
       prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), field20(-1),
-      primaryZonePointers(), field38(0), field3c(0), field40(0), field44(0), field48(0) {
-  *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x34) =
-      reinterpret_cast<void*>(0x0065c748);
+      primaryNeighbors(), secondaryNeighbors(), field44(0), field48(0) {
   field14 = static_cast<short>(g_nMapActionContextCount);
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
   g_pMapActionContextListHead = this;
@@ -164,30 +146,37 @@ bool TZone::HasZoneActiveChildCount(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
-int* TZone::GetOrAppendUniqueZonePointerInPrimaryArray(TZone* zone) {
-  int count = primaryZonePointers.GetSize();
+TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
+  int count = GetSize();
   for (int index = 0; index < count; ++index) {
-    if (reinterpret_cast<TZone*>(primaryZonePointers.GetAt(index)) == zone) {
-      return ZonePointerSlotAddress(this, index);
+    if (GetAt(index) == zone) {
+      return &ElementAt(index);
     }
   }
-  primaryZonePointers.SetAtGrow(count, zone);
-  return ZonePointerSlotAddress(this, count);
+  Add(zone);
+  return &ElementAt(count);
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
-int* TZone::GetOrAppendUniqueZonePointerInSecondaryArray(TZone* zone) {
-  return GetOrAppendUniqueZonePointerInSecondaryPod(this, zone);
+TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
+  int count = GetSize();
+  for (int index = 0; index < count; ++index) {
+    if (GetAt(index) == zone) {
+      return &ElementAt(index);
+    }
+  }
+  Add(zone);
+  return &ElementAt(count);
 }
 
 // FUNCTION: IMPERIALISM 0x0055ead0
-void TZone::AppendZonePointerToPrimaryArray(TZone* zone) {
-  primaryZonePointers.SetAtGrow(primaryZonePointers.GetSize(), zone);
+void TZonePrimaryNeighborStretch::Add(TZone* zone) {
+  AppendZonePointerToStretch(this, zone);
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
-void TZone::AppendZonePointerToSecondaryArray(TZone* zone) {
-  AppendZonePointerToSecondaryPod(this, zone);
+void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
+  AppendZonePointerToStretch(this, zone);
 }
 
 // FUNCTION: IMPERIALISM 0x0055ec60
@@ -561,4 +550,3 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
 
   return 0;
 }
-

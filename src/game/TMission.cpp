@@ -13,7 +13,7 @@ extern CRuntimeClass PTR_s_TMission_00697848;
 extern float g_MissionDefaultScore_0065a468;
 }
 
-undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
+undefined4 CreateMissionObjectByKindAndNodeContext(void);
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
@@ -148,12 +148,11 @@ CRuntimeClass* TMission::GetRuntimeClass() const {
   return &PTR_s_TMission_00697848;
 }
 
-// Factory (0x5350d0). TEMP: forwards to the stub until the concrete mission ctors use
-// real inheritance (plan step 4 — switch to a real new-by-kind switch).
-void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2, int arg3,
-                                           int arg4) {
+void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
+                                           TZone* portZoneContext, int arg4) {
   return reinterpret_cast<void*(__cdecl*)(int, int, int, int, int)>(
-      thunk_CreateMissionObjectByKindAndNodeContext)(sourceNation, missionKind, arg2, arg3, arg4);
+      CreateMissionObjectByKindAndNodeContext)(sourceNation, missionKind, arg2,
+                                               reinterpret_cast<int>(portZoneContext), arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x00535020

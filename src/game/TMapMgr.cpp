@@ -127,11 +127,11 @@ undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int 
 
 undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1) { return 0; }
 
-undefined TMapMgr::WrapperFor_thunk_GetUnitMovementClassId_At00515d60(int param_1) { return 0; }
+undefined TMapMgr::ApplyUnitMovementClassForTileIfValid(int param_1) { return 0; }
 
 undefined TMapMgr::OrphanRetStub_00515de0() { return 0; }
 
-undefined TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80(int param_1, int param_2) { return 0; }
+undefined TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2) { return 0; }
 
 undefined TMapMgr::OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2) { return 0; }
 
@@ -530,10 +530,10 @@ void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
     return;
   }
   int entryIndex = 0;
-  int primarySize = portZone->primaryZonePointers.GetSize();
+  int primarySize = portZone->primaryNeighbors.GetSize();
   if (primarySize != 0) {
     for (; entryIndex < primarySize; ++entryIndex) {
-      if (reinterpret_cast<TZone*>(portZone->primaryZonePointers.GetAt(entryIndex)) == contextZone) {
+      if (portZone->primaryNeighbors.GetAt(entryIndex) == contextZone) {
         return;
       }
     }

@@ -20,7 +20,6 @@ undefined4 ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(void);
 undefined4 TileHasMovementClassId(void);
 undefined4 AreAllLinkedEntriesTerrainFlagBit2Clear(void);
 undefined4 GetCityActionGateValueFromOrderTemplate(void);
-undefined4 thunk_GetUnitMovementClassId(void);
 
 namespace {
 
@@ -56,9 +55,8 @@ float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
                 accum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
 
-void AccumulatePriorityVectorFromStationedUnit(void* unitNode, float* vector) {
-  short movementClassId =
-      reinterpret_cast<short(__cdecl*)(void*)>(thunk_GetUnitMovementClassId)(unitNode);
+void AccumulatePriorityVectorFromStationedUnit(TStationedUnitNode* unitNode, float* vector) {
+  short movementClassId = unitNode->GetUnitMovementClassId();
   if (movementClassId <= 0) {
     return;
   }
@@ -105,8 +103,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
                    unit = unit->next14) {
                 short gateValue = reinterpret_cast<short(__cdecl*)(void)>(
                     GetCityActionGateValueFromOrderTemplate)();
-                short movementClassId =
-                    reinterpret_cast<short(__cdecl*)(void*)>(thunk_GetUnitMovementClassId)(unit);
+                short movementClassId = unit->GetUnitMovementClassId();
                 if (gateValue > 0) {
                   int remainingBudget = remainingBudgetByNation[candidateNationIndex];
                   if (movementClassId < remainingBudget) {
@@ -123,8 +120,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
         } else {
           for (TStationedUnitNode* unit = StationedUnitChainAt(regionIndex); unit != 0;
                unit = unit->next14) {
-            short movementClassId =
-                reinterpret_cast<short(__cdecl*)(void*)>(thunk_GetUnitMovementClassId)(unit);
+            short movementClassId = unit->GetUnitMovementClassId();
             if (movementClassId > 0) {
               reinterpret_cast<void(__cdecl*)(void*, float*, int, int)>(
                   AccumulateUnitOrderPriorityVectorContribution)(unit, vector, 0x3f800000,

@@ -26,8 +26,8 @@ extern CRuntimeClass PTR_s_TOcean_0065c630;
 }
 
 undefined4 CallCallbackRepeatedly(void);
-undefined4 thunk_RelaxMapTileCostFieldByNeighborTerrain(void);
-undefined4 thunk_SelectBestSeedTileForNationFromCostField(void);
+undefined4 RelaxMapTileCostFieldByNeighborTerrain(void);
+undefined4 SelectBestSeedTileForNationFromCostField(void);
 
 namespace {
 
@@ -76,8 +76,8 @@ void TZone::HandleKeyDown(int key_id) {
   unsigned int uSlotIndex;
   unsigned int uSlotCountLocal;
   int* piSlotEntry;
-  int** slotTable = reinterpret_cast<int**>(field38);
-  unsigned int slotCount = static_cast<unsigned int>(field40);
+  int** slotTable = reinterpret_cast<int**>(secondaryNeighbors.Data());
+  unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
   if ((field10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
     field10 = static_cast<unsigned short>(field10 | (1U << ((unsigned char)key_id & 0x1f)));
@@ -211,18 +211,18 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
       clearCursor = clearCursor + 1;
     }
   }
-  relaxPassCount = reinterpret_cast<int(__cdecl*)(int)>(
-      thunk_RelaxMapTileCostFieldByNeighborTerrain)(reinterpret_cast<int>(costField));
+  relaxPassCount =
+      reinterpret_cast<int(__cdecl*)(int*)>(RelaxMapTileCostFieldByNeighborTerrain)(costField);
   while (relaxPassCount != 0) {
-    relaxPassCount = reinterpret_cast<int(__cdecl*)(int)>(
-        thunk_RelaxMapTileCostFieldByNeighborTerrain)(reinterpret_cast<int>(costField));
+    relaxPassCount =
+        reinterpret_cast<int(__cdecl*)(int*)>(RelaxMapTileCostFieldByNeighborTerrain)(costField);
   }
   nationIndex = 0;
   if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
     contextStride = 0;
     do {
-      reinterpret_cast<void(__cdecl*)(int, int)>(thunk_SelectBestSeedTileForNationFromCostField)(
-          reinterpret_cast<int>(costField), nationIndex + 0x17);
+      reinterpret_cast<int(__cdecl*)(int*, int)>(SelectBestSeedTileForNationFromCostField)(
+          costField, nationIndex + 0x17);
       reinterpret_cast<TZone*>(reinterpret_cast<char*>(contextArray) + contextStride)
           ->SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17, 0xffff);
       nationIndex = nationIndex + 1;

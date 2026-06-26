@@ -140,8 +140,7 @@ void NoOpNationDiplomacyCallback(void);
 void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
 void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
 void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
-undefined4 thunk_QueueInterNationEventRecordDeduped(void);
-undefined4 thunk_RebuildMinorNationDispositionLookupTables(void);
+undefined4 RebuildMinorNationDispositionLookupTables(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
@@ -1837,10 +1836,10 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
       if (resizedEntries == 0) {
         resizedEntries =
             ReallocateBufferWithAllocatorTracking(portZoneContext->PrimaryZoneHeapData(), 4);
-        portZoneContext->PrimaryZoneHeapData() = static_cast<int*>(resizedEntries);
+        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
         portZoneContext->PrimaryZoneHeapCapacity() = 1;
       } else {
-        portZoneContext->PrimaryZoneHeapData() = static_cast<int*>(resizedEntries);
+        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
         portZoneContext->PrimaryZoneHeapCapacity() = 2;
       }
     }
@@ -1848,7 +1847,7 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
       portZoneContext->PrimaryZoneHeapSize() = 1;
     }
 
-    int firstEntry = portZoneContext->PrimaryZoneHeapData()[0];
+    TZone* firstEntry = portZoneContext->PrimaryZoneHeapData()[0];
 
     float exactSourceScore =
         TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(this->nationSlot,
@@ -3025,7 +3024,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7,
                                                                         '\0');
   }
-  reinterpret_cast<void(__cdecl*)(void)>(thunk_RebuildMinorNationDispositionLookupTables)();
+  reinterpret_cast<void(__cdecl*)(void)>(RebuildMinorNationDispositionLookupTables)();
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
 
@@ -4673,8 +4672,8 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e8540
-void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3,
-                                                                 int arg4) {
+void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2,
+                                                                 TZone* portZoneContext, int arg4) {
   const unsigned char kNodeStateAvailable = 1;
   const unsigned char kNodeStateQueued = 2;
 
@@ -4682,7 +4681,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     return;
   }
 
-  if ((arg3 != 0) && (arg4 == -1)) {
+  if ((portZoneContext != 0) && (arg4 == -1)) {
     short index = GetShortAtOffset14OrInvalidValue();
     if (this->portZoneStateFlags[index] != kNodeStateAvailable) {
       return;
@@ -4690,13 +4689,14 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   }
 
   int missionKind = arg1;
-  if ((arg3 != 0) && (arg2 == -1) && (arg4 == -1) && (arg1 != 4)) {
+  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) && (arg1 != 4)) {
     missionKind = 3;
     arg4 = -1;
   }
 
   void* missionObj =
-      TMission::CreateByKindAndNodeContext(this->nationSlot, missionKind, arg2, arg3, arg4);
+      TMission::CreateByKindAndNodeContext(this->nationSlot, missionKind, arg2, portZoneContext,
+                                           arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);
@@ -4708,13 +4708,13 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   if (arg2 != -1) {
     this->mapNodeStateFlags[arg2] = kNodeStateQueued;
   }
-  if (arg3 != 0) {
-    if (arg3 == -1) {
+  if (portZoneContext != 0) {
+    if (portZoneContext == reinterpret_cast<TZone*>(-1)) {
       short index = GetShortAtOffset14OrInvalidValue();
       this->portZoneStateFlags[index] = kNodeStateQueued;
     }
-    if (arg3 != -1) {
-      this->mapNodeStateFlags[arg3] = kNodeStateQueued;
+    if (portZoneContext != reinterpret_cast<TZone*>(-1)) {
+      this->mapNodeStateFlags[reinterpret_cast<int>(portZoneContext)] = kNodeStateQueued;
     }
   }
 }

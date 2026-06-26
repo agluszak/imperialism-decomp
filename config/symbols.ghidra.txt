@@ -2108,7 +2108,7 @@ ComputeSelectedTileCityActionGateSum 4A41D0 f
 TArmyMgr::OrphanCallChain_C1_I34_004a4260 4A4260 f
 ActivateFirstIdleTacticalUnitByCategoryAtTile 4A43F0 f
 ActivateFirstActiveTacticalUnitByCategoryAtTile 4A4490 f
-WrapperFor_thunk_GetUnitMovementClassId_At004a4550 4A4550 f
+ForwardGetUnitMovementClassId_At004a4550 4A4550 f
 SetActiveProvinceSelection 4A45E0 f
 ClearProvinceSelectionHighlightsForNation 4A46D0 f
 FindNextSelectableProvinceForNation 4A4760 f
@@ -3828,14 +3828,14 @@ TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability 515720 f
 TMapMgr::OrphanLeaf_NoCall_Ins69_00515890 515890 f
 TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA 5159B0 f
 TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB 515B10 f
-TMapMgr::WrapperFor_thunk_GetUnitMovementClassId_At00515d60 515D60 f
+TMapMgr::ApplyUnitMovementClassForTileIfValid 515D60 f
 ClearPerTileByte0FForAllMapTiles 515DB0 f
 TMapMgr::OrphanRetStub_00515de0 515DE0 f
 InputState::SetMapTileStateByteAndNotifyObserver 515E00 f
 TileHasMovementClassId 515E50 f
 AssignSharedStringFromIndexedA8EntryNameField 515EC0 f
 SetGlobalMapCellSharedLabel 515F40 f
-TMapMgr::WrapperFor_thunk_ResolveRegionTileSubtypeCodeForTileIndex_At00515f80 515F80 f
+TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags 515F80 f
 TMapMgr::OrphanLeaf_NoCall_Ins27_00516090 516090 f
 TMapMgr::OrphanLeaf_NoCall_Ins18_00516100 516100 f
 TMapMgr::OrphanLeaf_NoCall_Ins14_00516150 516150 f

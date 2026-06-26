@@ -858,22 +858,21 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
         ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
     if (grownArray == 0) {
-      portZone->PrimaryZoneHeapData() = static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
           ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4));
       portZone->PrimaryZoneHeapCapacity() = 1;
     } else {
-      portZone->PrimaryZoneHeapData() = static_cast<int*>(grownArray);
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);
       portZone->PrimaryZoneHeapCapacity() = 2;
     }
   }
   if (portZone->PrimaryZoneHeapSize() == 0) {
     portZone->PrimaryZoneHeapSize() = 1;
   }
-  void* firstOrder = reinterpret_cast<void*>(portZone->PrimaryZoneHeapData()[0]);
+  TZone* firstOrder = portZone->PrimaryZoneHeapData()[0];
   short portZoneId = GetShortAtOffset14OrInvalidValue();
   this->portZoneStateFlags[portZoneId] = 1;
-  this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, reinterpret_cast<int>(firstOrder),
-                                                       -1);
+  this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, firstOrder, -1);
 }
 
 

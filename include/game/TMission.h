@@ -6,6 +6,7 @@
 #include "game/TObject.h"
 
 class CArchive;
+class TZone;
 
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
 // CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
@@ -35,7 +36,8 @@ public:
 
   // Factory (0x5350d0). TEMP: still forwards to the stub until the concrete mission
   // ctors use real inheritance (plan step 4).
-  static void* CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2, int arg3,
+  static void* CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
+                                          TZone* portZoneContext,
                                           int arg4);
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
