@@ -2259,14 +2259,6 @@ undefined4 ConstructTNewGameCommandBaseState(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I11_0049e4b0
-// ghidra_proto undefined OrphanCallChain_C1_I11_0049e4b0()
-// FUNCTION: IMPERIALISM 0x0049e4b0
-undefined4 OrphanCallChain_C1_I11_0049e4b0(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndQueueTurnEventPacketTagGWEN
 // ghidra_proto undefined CreateAndQueueTurnEventPacketTagGWEN()
 // FUNCTION: IMPERIALISM 0x0049e500

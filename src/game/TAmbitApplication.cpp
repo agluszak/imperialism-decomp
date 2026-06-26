@@ -22,6 +22,10 @@ extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
 
 
 
+// SYNTHETIC: IMPERIALISM 0x004135f0
+// TAmbitApplication::`scalar deleting destructor'
+TAmbitApplication::~TAmbitApplication() {}
+
 // FUNCTION: IMPERIALISM 0x00414770
 void TAmbitApplication::VTableSlot2C() {
   // OrphanRetStub
@@ -39,8 +43,6 @@ TAmbitApplication::TAmbitApplication() : TApplication() {
   field_4c = 0;
   field_50 = 0;
 }
-
-TAmbitApplication::~TAmbitApplication() {}
 
 
 
@@ -291,6 +293,13 @@ void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
 
 
 
+
+// FUNCTION: IMPERIALISM 0x0049e4b0
+void TAmbitApplication::ForwardParam(int param) {
+  if (g_pDisplayMgr != nullptr && g_pDisplayMgr->activeDialog != nullptr) {
+    g_pDisplayMgr->activeDialog->ForwardParam(param);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0049e4e0
 void TAmbitApplication::VTableSlot2D(void* param_1) {

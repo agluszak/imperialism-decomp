@@ -123,14 +123,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004135f0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004135f0()
-// FUNCTION: IMPERIALISM 0x004135f0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004135f0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004136c0
 // ghidra_proto undefined OrphanRetStub_004136c0()
 // FUNCTION: IMPERIALISM 0x004136c0

@@ -421,6 +421,12 @@
       "type": 1
     },
     {
+      "address": "0x4135f0",
+      "matching": 0.64,
+      "name": "TAmbitApplication::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x4136c0",
       "matching": 0.0,
       "name": "OrphanRetStub_004136c0",
@@ -6781,7 +6787,7 @@
     },
     {
       "address": "0x49e4b0",
-      "matching": 0.0,
+      "matching": 0.64,
       "name": "OrphanCallChain_C1_I11_0049e4b0",
       "type": 1
     },
@@ -31878,7 +31884,7 @@
     },
     {
       "address": "0x5d5060",
-      "matching": 0.9285714285714286,
+      "matching": 1.0,
       "name": "TViewMgr::ConstructGlobalTurnEventState",
       "type": 1
     },
@@ -38771,6 +38777,12 @@
       "type": 1
     },
     {
+      "address": "0x63e398",
+      "matching": 1.0,
+      "name": "TAmbitApplication::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x63eb00",
       "matching": 1.0,
       "name": "TInfoBarText::`vftable'",
@@ -39098,6 +39110,12 @@
       "address": "0x648d60",
       "matching": 1.0,
       "name": "TBehavior::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x648da8",
+      "matching": 1.0,
+      "name": "TDialogBehavior::`vftable'",
       "type": 5
     },
     {
@@ -40781,9 +40799,21 @@
       "type": 5
     },
     {
+      "address": "0x66f120",
+      "matching": 1.0,
+      "name": "TViewMgr::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x66f2f0",
       "matching": 1.0,
       "name": "TModalMessageCommand::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66f508",
+      "matching": 1.0,
+      "name": "TAssetMgr::`vftable'",
       "type": 5
     },
     {

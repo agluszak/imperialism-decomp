@@ -75,7 +75,7 @@ address|name|size|type|prototype
 4133d0|ParseDirectionTokenAndSetMovementFlags|299|function|undefined ParseDirectionTokenAndSetMovementFlags()
 413550|WrapperFor_FreeHeapBufferIfNotNull_At00413550|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550()
 413580|WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl|71|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl()
-4135f0|WrapperFor_FreeHeapBufferIfNotNull_At004135f0|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004135f0()
+4135f0|TAmbitApplication::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4136c0|OrphanRetStub_004136c0|3|function|undefined OrphanRetStub_004136c0()
 4136e0|OrphanVtableAssignStub_004136e0|6|function|undefined OrphanVtableAssignStub_004136e0()
 413700|ShowDialogTemplate64Modal|94|function|undefined ShowDialogTemplate64Modal()

@@ -4,7 +4,8 @@
 #include "game/mfc.h"
 
 // TODO(manifest): describe TCivMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TCivMgr -> TObject -> CObject. VTABLE: IMPERIALISM 0x00653248
+// CRuntimeClass chain: TCivMgr -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TCivMgr) — refreshed by recover-class; do not hand-edit ===
