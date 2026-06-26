@@ -1,0 +1,46 @@
+#include "game/TModuleLibraryCacheTableStateB.h"
+
+namespace {
+// "A file required by the program, '%s,' is missing." (original .rdata at 0x00695188).
+const char* const kMissingFileFormat = reinterpret_cast<const char*>(0x00695188);
+} // namespace
+
+// Both embedded CMap members default-construct (hash size 17, block size 10); the leading
+// m_field0 is zeroed first (declaration order), matching the original's [obj]=0 then map A,
+// map B init sequence.
+// FUNCTION: IMPERIALISM 0x00498f60
+TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB() : m_field0(0) {
+  m_primaryModule = 0;
+  m_slots[0] = 0;
+  m_slots[1] = 0;
+  m_slots[2] = 0;
+  m_slots[3] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004992a0
+BOOL TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
+  if (m_slots[slot] != NULL) {
+    FreeLibrary(m_slots[slot]);
+    m_slots[slot] = NULL;
+  }
+  m_slots[slot] = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
+  if (m_slots[slot] == NULL) {
+    // The original inlines the error path here; the local CString is what gives this
+    // function its SEH frame.
+    CString message;
+    message.Format(kMissingFileFormat, path);
+    AfxMessageBox(message, MB_OK, 0);
+  }
+  return m_slots[slot] != NULL;
+}
+
+// FUNCTION: IMPERIALISM 0x00499380
+BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(LPCSTR path) {
+  m_primaryModule = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
+  if (m_primaryModule == NULL) {
+    CString message;
+    message.Format(kMissingFileFormat, path);
+    AfxMessageBox(message, MB_OK, 0);
+  }
+  return m_primaryModule != NULL;
+}

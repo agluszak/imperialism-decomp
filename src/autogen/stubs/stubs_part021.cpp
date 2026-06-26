@@ -2715,14 +2715,6 @@ undefined4 FindCharIndexInStringPtrOrMinusOne(void)
   return 0;
 }
 
-// ghidra_name FormatStringWithVarArgsToSharedRef
-// ghidra_proto undefined FormatStringWithVarArgsToSharedRef()
-// FUNCTION: IMPERIALISM 0x005ff15e
-undefined4 FormatStringWithVarArgsToSharedRef(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatMessageFromLoadedResourceOrThrowMfcException
 // ghidra_proto undefined FormatMessageFromLoadedResourceOrThrowMfcException()
 // FUNCTION: IMPERIALISM 0x005ff206

@@ -1102,7 +1102,7 @@ undefined4 thunk_DestructTViewBaseState_00587110(void)
 // ghidra_name thunk_DestructTViewBaseState_005885F0
 // ghidra_proto void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)
 // FUNCTION: IMPERIALISM 0x005885f0
-undefined4 thunk_DestructTViewBaseState_005885F0_005885F0(void)
+undefined4 thunk_DestructTViewBaseState_005885F0(void)
 {
   return 0;
 }

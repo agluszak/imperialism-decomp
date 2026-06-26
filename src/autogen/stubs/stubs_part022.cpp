@@ -2595,14 +2595,6 @@ undefined4 OrphanRetStub_0059add0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-// ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4()
-// FUNCTION: IMPERIALISM 0x006185e4
-undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatResourceStringAndDispatchViaThreadState
 // ghidra_proto undefined FormatResourceStringAndDispatchViaThreadState()
 // FUNCTION: IMPERIALISM 0x00618605

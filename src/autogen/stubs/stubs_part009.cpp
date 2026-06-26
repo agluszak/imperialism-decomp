@@ -59,14 +59,6 @@ undefined4 NoOpThunkTargetHandler(void)
   return 0;
 }
 
-// ghidra_name ConstructImperialismApplicationSingleton
-// ghidra_proto undefined ConstructImperialismApplicationSingleton()
-// FUNCTION: IMPERIALISM 0x00412ac0
-undefined4 ConstructImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseImperialismApplicationSingleton
 // ghidra_proto undefined ReleaseImperialismApplicationSingleton()
 // FUNCTION: IMPERIALISM 0x00412c30
@@ -103,14 +95,6 @@ undefined4 DestroyImperialismAppSingletonGlobal(void)
 // ghidra_proto undefined OrphanCallChain_C1_I05_00412d90()
 // FUNCTION: IMPERIALISM 0x00412d90
 undefined4 OrphanCallChain_C1_I05_00412d90(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeImperialismApplicationInstance
-// ghidra_proto undefined InitializeImperialismApplicationInstance()
-// FUNCTION: IMPERIALISM 0x00412dc0
-undefined4 InitializeImperialismApplicationInstance(void)
 {
   return 0;
 }
@@ -175,14 +159,6 @@ undefined4 OrphanVtableAssignStub_004136e0(void)
 // ghidra_proto undefined ShowDialogTemplate64Modal()
 // FUNCTION: IMPERIALISM 0x00413700
 undefined4 ShowDialogTemplate64Modal(void)
-{
-  return 0;
-}
-
-// ghidra_name ShutdownImperialismApplicationInstance
-// ghidra_proto undefined ShutdownImperialismApplicationInstance()
-// FUNCTION: IMPERIALISM 0x00413780
-undefined4 ShutdownImperialismApplicationInstance(void)
 {
   return 0;
 }

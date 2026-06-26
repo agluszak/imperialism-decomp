@@ -19,14 +19,6 @@ undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_DestructTViewBaseState_005885F0
-// ghidra_proto void __thiscall thunk_DestructTViewBaseState_005885F0(void)
-// FUNCTION: IMPERIALISM 0x00401e65
-undefined4 thunk_DestructTViewBaseState_005885F0(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReleaseHashIndexedRecordByHandle
 // ghidra_proto undefined thunk_ReleaseHashIndexedRecordByHandle()
 // FUNCTION: IMPERIALISM 0x004020fe

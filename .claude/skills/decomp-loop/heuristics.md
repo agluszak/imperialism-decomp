@@ -448,3 +448,52 @@ a modeling error, and the fix removes casts rather than relocating them.
   signature in lockstep with the base, or it silently stops overriding (`override` fails to
   compile, or MSVC spins up a new vtable slot). The TU-fragility caveat in note 16 still
   applies if the touched header feeds a codegen-saturated TU.
+
+## 18. MFC convention/access traps + CMap embedded tables (extends 15/16)
+
+When you reach an MFC-surface helper, three traps make it look like game code that needs
+modeling/casting when it is really a real MFC method to call directly (see note 15):
+
+- **`AFX_CDECL` varargs members look like `__thiscall` but are `__cdecl`.** MFC's variadic
+  members (`CString::Format`, `CString::FormatMessage`, `AfxTrace`, …) are declared
+  `AFX_CDECL` = `__cdecl`, so the hidden `this` arrives as the **first stack arg**, not in
+  `ECX`. A leaf that does `MOV ECX,[ESP+4]` (load arg0 into ecx) then `CALL <thiscall helper>`
+  is such a member forwarding `this` to a thiscall internal — **not** a `__cdecl` free
+  function with an explicit object param, and **not** something to port. Worked example:
+  `0x5ff15e` "FormatStringWithVarArgsToSharedRef" *is* `CString::Format(LPCTSTR,...)` (it
+  loads `this`=dest from `[ESP+4]`, then calls the protected `FormatV` @0x5feeb8). Fix: call
+  `cstr.Format(fmt, arg)` directly and `// LIBRARY:`-annotate the addr — no wrapper, no cast.
+  Contrast with the real-thiscall rule in note 15 (this in `ECX` *on entry* = method).
+- **A tiny forwarder into a protected/AfxGetApp path is the library function itself.**
+  `0x6185e4` calls `AfxGetModuleState()->m_pCurrentWinApp->DoMessageBox(p1,p2,p3)` (vtbl+0x94)
+  — `DoMessageBox` is **protected**, so a free function *cannot* call it; only the library
+  fn can. That tells you `0x6185e4` **is** `AfxMessageBox(LPCTSTR,UINT,UINT)`. Call
+  `AfxMessageBox(...)` directly + LIBRARY-annotate. Same tell for any "wrapper" that touches
+  protected MFC members.
+- **Verify access/convention against the docker image's `afx.h`, not modern docs.** MFC 4.2
+  differs from current `CStringT` (learn.microsoft.com). e.g. `CString::FormatV` is
+  **protected** in this MFC (afx.h ~line 599) though public in modern docs — so a free
+  function genuinely can't call `FormatV`, which is *why* `Format` (the public AFX_CDECL
+  member) is the right entry. Find it:
+  `find / -path '*msvc/mfc/include/afx.h'` under the docker overlay, then grep the member +
+  surrounding `public:`/`protected:`.
+- **Embedded CMap tables (extends 16).** A subobject laid out
+  `{vtbl, m_pHashTable, m_nHashTableSize=0x11, m_nCount, m_pFreeList, m_pBlocks,
+  m_nBlockSize=0xa}` (0x1c bytes) is an MFC **`CMap<>` template specialization** when its
+  vtable slot 0 is the *inherited* `CObject::GetRuntimeClass` (the concrete `CMapStringToPtr`/
+  `CMapPtrToPtr` have their **own** `classRuntimeClass`, so a derived getter). Confirm K/V are
+  scalar by reading the map's destructor — if it frees only the hash buffer + plex chain with
+  **no per-element key/value destruction**, both K and V are scalar (rules out `CString` keys).
+  Model the field as a real `CMap<K,ARG_K,V,ARG_V>` member: the genuine CMap default ctor then
+  emits the exact `size=17/block=10` field-init **byte-for-byte** (much better than hand
+  writes), and the owner ctor is `: m_field0(0), m_tableA(), m_tableB()`. Two *different*
+  embedded vtables ⇒ two *distinct* instantiations (different K/V); exact scalar args fix the
+  per-instantiation vtable but not the layout, so they can stay provisional (well-commented).
+  Worked example: `TModuleLibraryCacheTableStateB` @0x498f60 (see [[imperialismapp-keystone-initinstance]]).
+- **First-time linkage of an MFC fn causes reccmp re-pairing wobble.** Calling a nafxcw
+  function the build never linked before (the stubs are `return 0`, they don't pull it in)
+  adds that code and shifts the MFC layout, so reccmp re-pairs nearby LIBRARY functions and a
+  handful swing ±1-2pp (a big single-fn drop like `CString::CString -68pp` is a *mis-pairing
+  artifact* — recompiled simple ctor matched to a different original ctor, not a real loss).
+  Aggregate stays ~flat; refresh the baseline. Don't chase these or revert clean real-MFC
+  calls to avoid them.

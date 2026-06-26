@@ -1523,34 +1523,10 @@ undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00(vo
   return 0;
 }
 
-// ghidra_name TModuleLibraryCacheTableStateB_0064BA80::ConstructModuleLibraryCacheDualTableState
-// ghidra_proto undefined ConstructModuleLibraryCacheDualTableState()
-// FUNCTION: IMPERIALISM 0x00498f60
-undefined4 ConstructModuleLibraryCacheDualTableState(void)
-{
-  return 0;
-}
-
 // ghidra_name TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules
 // ghidra_proto undefined DestructModuleLibraryCacheDualTableAndUnloadModules()
 // FUNCTION: IMPERIALISM 0x00498fe0
 undefined4 DestructModuleLibraryCacheDualTableAndUnloadModules(void)
-{
-  return 0;
-}
-
-// ghidra_name TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog
-// ghidra_proto undefined LoadModuleLibrarySlotWithErrorDialog()
-// FUNCTION: IMPERIALISM 0x004992a0
-undefined4 LoadModuleLibrarySlotWithErrorDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadPrimaryDataLibraryWithErrorDialog
-// ghidra_proto undefined LoadPrimaryDataLibraryWithErrorDialog()
-// FUNCTION: IMPERIALISM 0x00499380
-undefined4 LoadPrimaryDataLibraryWithErrorDialog(void)
 {
   return 0;
 }

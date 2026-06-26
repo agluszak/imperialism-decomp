@@ -144,3 +144,6 @@ int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) 
 
 // LIBRARY: IMPERIALISM 0x00605dec
 // CString::LockBuffer
+
+// LIBRARY: IMPERIALISM 0x005ff15e
+// CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV

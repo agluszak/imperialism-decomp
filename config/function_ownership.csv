@@ -15,10 +15,13 @@ address|target_cpp|ownership|note
 407f4a|src/game/TCivDescription.cpp|manual|marker_sync
 40853f|src/game/TSimMgr.cpp|manual|marker_sync
 409868|src/game/TSortedPtrList.cpp|manual|marker_sync
+412ac0|src/game/ImperialismApp.cpp|manual|marker_sync
 412bd0|src/game/CObject.cpp|manual|marker_sync
 412bf0|src/game/CObject.cpp|manual|marker_sync
 412c10|src/game/CObject.cpp|manual|marker_sync
+412dc0|src/game/ImperialismApp.cpp|manual|marker_sync
 413250|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+413780|src/game/ImperialismApp.cpp|manual|marker_sync
 415ce0|src/game/TObject.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
@@ -525,6 +528,9 @@ address|target_cpp|ownership|note
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
+498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+4992a0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+499380|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d6d0|src/game/TAdorner.cpp|manual|marker_sync
 49d790|src/game/TDialogView.cpp|manual|marker_sync
@@ -3246,6 +3252,8 @@ address|target_cpp|ownership|note
 5e7980|src/game/CString.cpp|manual|marker_sync
 5e7f50|src/game/mfc_heap_library.cpp|manual|marker_sync
 5e8310|src/game/mfc_heap_library.cpp|manual|marker_sync
+5feeb8|src/game/CString.cpp|manual|marker_sync
+5ff15e|src/game/CString.cpp|manual|marker_sync
 601b74|src/game/CPlex.cpp|manual|marker_sync
 601b94|src/game/CPlex.cpp|manual|marker_sync
 601baa|src/game/CPtrArray.cpp|manual|marker_sync
@@ -3366,6 +3374,7 @@ address|target_cpp|ownership|note
 613803|src/game/CClientDC.cpp|manual|marker_sync
 613a4c|src/game/ClipStateRegion.cpp|manual|marker_sync
 61852a|src/game/MfcRuntime.cpp|manual|marker_sync
+6185e4|src/game/MfcRuntime.cpp|manual|marker_sync
 618704|src/game/MfcRuntime.cpp|manual|marker_sync
 61873c|src/game/MfcRuntime.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync

@@ -58,6 +58,9 @@ static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
 // LIBRARY: IMPERIALISM 0x0061852a
 // CWinApp::DoMessageBox
 
+// LIBRARY: IMPERIALISM 0x006185e4
+// AfxMessageBox (LPCTSTR, UINT, UINT) — forwards to AfxGetApp()->DoMessageBox
+
 // LIBRARY: IMPERIALISM 0x00618704
 // CWinApp::CloseAllDocuments_618704
 

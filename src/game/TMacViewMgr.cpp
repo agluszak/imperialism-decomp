@@ -40,7 +40,6 @@ void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self);
 int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
 undefined4 scanBracketExpressions(void);
-undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 AssignStringSharedRefAndReturnThis(void);
 undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void);
 undefined4 BuildUiTextStyleDescriptor(void);
@@ -48,8 +47,7 @@ undefined4 BuildUiTextStyleDescriptor(void);
 namespace MacViewUiInvoke {
 
 static void FormatStringWithVarArgsToSharedRef(CString* dest, const char* format, int value) {
-  reinterpret_cast<void(__cdecl*)(CString*, const char*, int)>(
-      reinterpret_cast<void (*)()>(FormatStringWithVarArgsToSharedRef))(dest, format, value);
+  dest->Format(format, value);
 }
 
 static CString* AssignStringSharedRefAndReturnThis(TView* view, CString* sharedString) {

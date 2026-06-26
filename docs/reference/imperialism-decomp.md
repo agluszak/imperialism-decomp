@@ -54,6 +54,48 @@
   - `-> thunk_AdvanceGlobalTurnStateMachine @ 0x00403b0c`
   - `-> AdvanceGlobalTurnStateMachine @ 0x0057da70`.
 
+### Application Object (`ImperialismApp : CWinApp`)
+
+The `theApp` singleton (`DAT_006a1210`, vtable `0x0063e2d0`, ctor `0x00412ac0`) is a retail-MFC
+`CWinApp` subclass. Modeled in `include/game/ImperialismApp.h` / `src/game/ImperialismApp.cpp`
+with real inheritance (no `// VTABLE:` annotation — the original's MFC was built without OLE, so
+its `CCmdTarget`/`CWinApp` vtable lacks the OLE slots retail `nafxcw.lib` emits; that divergence
+is accepted, not faked). Subclass fields begin at `+0xC0`: `int field_C0`, `CString field_C4`,
+`int field_C8` (display-mode-changed flag, checked first in ExitInstance), then six `CString`s
+(`field_CC`…`field_E0`). `field_D0` = slot-0 data-lib path, `field_D8` = primary-data-lib path.
+
+- **`InitInstance @ 0x00412dc0`** (vtable slot +0x58; Ghidra mislabels it `CMainFrame::OnEndPrintPreview`):
+  `SetRegistryKey(*(LPCSTR*)0x0063e038)` → `CCommandLineInfo` + `ParseCommandLine` → (if not the
+  registry-unregister path) construct `g_pModuleLibraryCacheState` (asset loader, below), load
+  language `.irg` resources, load the primary data lib + `Data/PictPaid.gob` (slot 1) +
+  `Data/PictUniv.gob` (slot 3), `AddFontResourceA("data\WeBeBd__.ttf")`, broadcast `WM_FONTCHANGE`,
+  `new CSingleDocTemplate(0x80, &CAmbitDocument::classRuntimeClass /*0x63e7f8*/, &TMacViewMgr_RuntimeClass
+  /*0x648628*/, &CIncludeView::classRuntimeClass /*0x6481c8*/)` → `AddDocTemplate` → `ProcessShellCommand`
+  (creates+shows the frame), construct `g_pGlobalUiRootController` (`TAmbitApplication`, vtable `0x63e398`),
+  `g_pSfxPlaybackSystem` (`TSoundPlayer`, `InitializeSoundSubsystem(0xf)`), then
+  `PostMessageA(mainWnd, WM_COMMAND, 100, 0)`.
+- **`ExitInstance @ 0x00413780`** (vtable slot +0x70): restore display mode if `field_C8`, then free the
+  global subsystems via their slot-+0x1c destroy virtual — `DAT_006a2158`, `g_pModuleLibraryCacheState`
+  (`0x6a134c`), `g_pStrategicMapViewSystem` (`0x6a21a8`), `g_pUiViewManager` (`0x6a2148`, `TAssetMgr`),
+  `g_pSfxPlaybackSystem` (`0x6a43ec`, `TSoundPlayer`), `g_pGlobalUiRootController` (`0x6a1344`,
+  `TApplication`) — `RemoveFontResourceA` the custom fonts, broadcast `WM_FONTCHANGE`, chain to
+  `CWinApp::ExitInstance`.
+
+### Asset Loader — `.gob` packs as DLL datafiles
+
+The data packs (`.gob`) are loaded as **Windows DLL datafiles**, then resources are pulled via the
+Win32 resource API. Owned by `g_pModuleLibraryCacheState` (`0x006a134c`), class
+`TModuleLibraryCacheTableStateB` (ctor `0x00498f60`; secondary tables at `+0x04` vtable `0x0064ba80`
+and `+0x24` vtable `0x0064ba68` — embedded resource-index sub-tables).
+
+- **`LoadModuleLibrarySlotWithErrorDialog @ 0x004992a0`** — `FreeLibrary` the old handle in the slot,
+  then `LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE)` into the per-slot `HMODULE` array at
+  `this + 0x3c + slot*4` (slots 0,1,3 used). On failure formats `"A file required by the program…"`
+  and shows the missing-file dialog. Returns nonzero if the slot handle is valid.
+- **`LoadPrimaryDataLibraryWithErrorDialog @ 0x00499380`** — same `LoadLibraryExA` datafile load, but
+  stores the `HMODULE` at the fixed `+0x4c` slot.
+- Localization text comes from `LoadLanguageResourcesFromIrgFiles @ 0x004149a0` (`.irg` files).
+
 ## City Screen Building/Icon Mapping
 
 ### Slot ID to Building Type

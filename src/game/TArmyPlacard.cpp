@@ -57,7 +57,6 @@ bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
   return true;
 }
 
-undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
@@ -75,9 +74,8 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
 
   if (this->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
-    reinterpret_cast<void(__cdecl*)(int*, const char*, int)>(FormatStringWithVarArgsToSharedRef)(
-        sharedStringRefPtr, reinterpret_cast<const char*>(kAddrDecimalFormat),
-        static_cast<int>(this->glyph90));
+    sharedStringRef.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(this->glyph90));
 
     short textWidth = static_cast<short>(
         reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
