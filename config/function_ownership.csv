@@ -1738,6 +1738,7 @@ address|target_cpp|ownership|note
 5177d0|src/game/TMapMgr.cpp|manual|marker_sync
 5177f0|src/game/TMapMgr.cpp|manual|marker_sync
 5178c0|src/game/TMapMgr.cpp|manual|marker_sync
+5178f0|src/game/TMapMgr.cpp|manual|marker_sync
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2142,6 +2143,7 @@ address|target_cpp|ownership|note
 55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
 55e360|src/game/TMapMgr.cpp|manual|marker_sync
+55e550|src/game/TMapMgr.cpp|manual|marker_sync
 55e6e0|src/game/TZone.cpp|manual|marker_sync
 55e700|src/game/TZone.cpp|manual|marker_sync
 55e820|src/game/TZone.cpp|manual|marker_sync
@@ -2170,6 +2172,7 @@ address|target_cpp|ownership|note
 55fef0|src/game/TZone.cpp|manual|marker_sync
 55ff70|src/game/TZone.cpp|manual|marker_sync
 560150|src/game/TZone.cpp|manual|marker_sync
+560470|src/game/TMapMgr.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
 5615e0|src/game/TPortZone.cpp|manual|marker_sync
 561660|src/game/TPortZone.cpp|manual|marker_sync

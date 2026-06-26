@@ -371,14 +371,6 @@ undefined4 SetGlobalMapCellSharedLabel(void)
   return 0;
 }
 
-// ghidra_name ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
-// ghidra_proto undefined ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()
-// FUNCTION: IMPERIALISM 0x005178f0
-undefined4 ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00517d40
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00517d40()
 // FUNCTION: IMPERIALISM 0x00517d40

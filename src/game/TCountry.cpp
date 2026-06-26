@@ -323,24 +323,25 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = static_cast<TZone*>(
                 g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort));
-            if (portZone->portZoneEntryCount2c == 0) {
+            if (portZone->PrimaryZoneHeapCapacity() == 0) {
               void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);
+                  ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
               if (grownArray == 0) {
-                portZone->portZoneEntries28 =
+                portZone->PrimaryZoneHeapData() =
                     static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                        ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
-                portZone->portZoneEntryCount2c = 1;
+                        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(),
+                                                                  4));
+                portZone->PrimaryZoneHeapCapacity() = 1;
               } else {
-                portZone->portZoneEntries28 = static_cast<int*>(grownArray);
-                portZone->portZoneEntryCount2c = 2;
+                portZone->PrimaryZoneHeapData() = static_cast<int*>(grownArray);
+                portZone->PrimaryZoneHeapCapacity() = 2;
               }
             }
-            if (portZone->portZoneActiveEntryCount30 == 0) {
-              portZone->portZoneActiveEntryCount30 = 1;
+            if (portZone->PrimaryZoneHeapSize() == 0) {
+              portZone->PrimaryZoneHeapSize() = 1;
             }
             CreateNavyPrimaryOrderNodeAndAssignDisplayName(
-                3, reinterpret_cast<TZone*>(portZone->portZoneEntries28[0]), this->nationSlot, 0);
+                3, reinterpret_cast<TZone*>(portZone->PrimaryZoneHeapData()[0]), this->nationSlot, 0);
           }
         }
       }

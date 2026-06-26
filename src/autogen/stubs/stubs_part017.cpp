@@ -579,14 +579,6 @@ undefined4 WrapperFor_ftol_At0055e330(void)
   return 0;
 }
 
-// ghidra_name StepHexRowColByDirectionWithWrapRules
-// ghidra_proto undefined StepHexRowColByDirectionWithWrapRules()
-// FUNCTION: IMPERIALISM 0x0055e550
-undefined4 StepHexRowColByDirectionWithWrapRules(void)
-{
-  return 0;
-}
-
 // ghidra_name TZone::CreateTZone
 // ghidra_proto undefined CreateTZone()
 // FUNCTION: IMPERIALISM 0x0055e660
@@ -631,14 +623,6 @@ undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
 // ghidra_proto undefined ResizePointerArrayCapacityByRequestedCount()
 // FUNCTION: IMPERIALISM 0x0055fae0
 undefined4 ResizePointerArrayCapacityByRequestedCount(void)
-{
-  return 0;
-}
-
-// ghidra_name AdvanceSpiralSearchStateAndStepHexCoordinates
-// ghidra_proto undefined AdvanceSpiralSearchStateAndStepHexCoordinates()
-// FUNCTION: IMPERIALISM 0x00560470
-undefined4 AdvanceSpiralSearchStateAndStepHexCoordinates(void)
 {
   return 0;
 }

@@ -11,6 +11,7 @@
 #include "game/TZone.h"
 #include "game/TGreatPower.h"
 #include "game/diplomacy_globals.h"
+#include "game/TMapUberPicture.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
@@ -52,18 +53,17 @@ TOcean g_anchorTOceanInstance;
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00515e00
-void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  char* tileArrayBase = reinterpret_cast<char*>(
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
-  tileArrayBase[0x16 + static_cast<short>(tileIndex) * 0x24] = static_cast<char>(stateByte);
-  if (g_pUiRuntimeContext != 0) {
-    void** observerSlot =
-        reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf0);
-    if (*observerSlot != 0) {
-      reinterpret_cast<void(__fastcall*)(void*, int)>(*reinterpret_cast<int*>(
-          *reinterpret_cast<int*>(*observerSlot) + 0x1d8))(*observerSlot, tileIndex);
-    }
+void NotifyMapUberPictureTileMarker(short tileIndex) {
+  if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
+    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(
+        static_cast<short>(tileIndex));
   }
+}
+
+void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
+  g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].pad16 =
+      static_cast<unsigned char>(stateByte);
+  NotifyMapUberPictureTileMarker(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fc40
@@ -114,9 +114,8 @@ void TZone::HandleKeyDown(int key_id) {
           if ((field10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = GetActiveNationSlotTile();
             SetMapTileStateByteAndNotifyObserver(sVarSlotId, key_id % 7 + 7);
-            *reinterpret_cast<unsigned short*>(
-                *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc) + 0x1a +
-                sVarSlotId * 0x24) = 0xffff;
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(
+                &g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) = 0xffff;
           }
           key_id = key_id + 1;
           nSlotsRemaining = nSlotsRemaining - 1;
@@ -124,9 +123,8 @@ void TZone::HandleKeyDown(int key_id) {
       } else {
         sVarSlotId = GetActiveNationSlotTile();
         SetMapTileStateByteAndNotifyObserver(sVarSlotId, 7);
-        *reinterpret_cast<unsigned short*>(
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc) + 0x1a +
-            sVarSlotId * 0x24) = 0xffff;
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(
+            &g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) = 0xffff;
       }
     }
   }
@@ -238,6 +236,19 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
   return reinterpret_cast<TZone*>(reinterpret_cast<char*>(this->contextArray) +
                                   (static_cast<int>(nationCode) - 0x17) * 0x48);
+}
+
+TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
+  TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
+  signed char terrainClass = static_cast<signed char>(terrainRecord.pad16);
+  if (terrainClass == 3 || terrainClass == 0x0e) {
+    return TZone::FindPortZoneByTile(seaTileIndex);
+  }
+  signed char nationCode = terrainRecord.ownerNationTag04;
+  if (nationCode < 0x17) {
+    return 0;
+  }
+  return GetMapActionContextEntryByNationCodeOffset17(static_cast<short>(nationCode));
 }
 
 // FUNCTION: IMPERIALISM 0x005634a0

@@ -1831,24 +1831,24 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   } else {
     TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(this->nationSlot);
 
-    if (portZoneContext->portZoneEntryCount2c <= 0) {
+    if (portZoneContext->PrimaryZoneHeapCapacity() <= 0) {
       void* resizedEntries =
-          ReallocateBufferWithAllocatorTracking(portZoneContext->portZoneEntries28, 8);
+          ReallocateBufferWithAllocatorTracking(portZoneContext->PrimaryZoneHeapData(), 8);
       if (resizedEntries == 0) {
         resizedEntries =
-            ReallocateBufferWithAllocatorTracking(portZoneContext->portZoneEntries28, 4);
-        portZoneContext->portZoneEntries28 = static_cast<int*>(resizedEntries);
-        portZoneContext->portZoneEntryCount2c = 1;
+            ReallocateBufferWithAllocatorTracking(portZoneContext->PrimaryZoneHeapData(), 4);
+        portZoneContext->PrimaryZoneHeapData() = static_cast<int*>(resizedEntries);
+        portZoneContext->PrimaryZoneHeapCapacity() = 1;
       } else {
-        portZoneContext->portZoneEntries28 = static_cast<int*>(resizedEntries);
-        portZoneContext->portZoneEntryCount2c = 2;
+        portZoneContext->PrimaryZoneHeapData() = static_cast<int*>(resizedEntries);
+        portZoneContext->PrimaryZoneHeapCapacity() = 2;
       }
     }
-    if (portZoneContext->portZoneActiveEntryCount30 <= 0) {
-      portZoneContext->portZoneActiveEntryCount30 = 1;
+    if (portZoneContext->PrimaryZoneHeapSize() <= 0) {
+      portZoneContext->PrimaryZoneHeapSize() = 1;
     }
 
-    int firstEntry = portZoneContext->portZoneEntries28[0];
+    int firstEntry = portZoneContext->PrimaryZoneHeapData()[0];
 
     float exactSourceScore =
         TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(this->nationSlot,

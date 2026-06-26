@@ -129,7 +129,7 @@ public:
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined OrphanRetStub_0045d2a0() override; // slot 0x74 0x5977a0
   virtual undefined OrphanLeaf_NoCall_Ins09_00598950(); // slot 0x75 0x598950
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1); // slot 0x76 0x598870
+  virtual void InvalidateTileMarkerChain(short tileIndex); // slot 0x76 0x598870
   virtual undefined OrphanCallChain_C2_I18_005988c0(); // slot 0x77 0x5988c0
   virtual undefined OrphanCallChain_C2_I14_00598990(); // slot 0x78 0x598990
   virtual undefined OrphanCallChain_C2_I16_005989d0(); // slot 0x79 0x5989d0

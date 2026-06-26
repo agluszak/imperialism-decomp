@@ -61,6 +61,14 @@ struct TGlobalMapCityScoreRecord {
   unsigned char padA0[0xA8 - 0xA0];
 };
 
+struct HexSpiralSearchState {
+  int row;
+  int col;
+  int ring;
+  int direction;
+  int stepInRing;
+};
+
 // TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
@@ -163,6 +171,11 @@ public:
                                             char wrapHorizontally);
   static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
   static short StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction);
+  static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
+  static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
+  static short TileIndexFromRowCol(int row, int col);
+
+  short ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);

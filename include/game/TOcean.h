@@ -38,9 +38,14 @@ public:
 
   TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);
 
+  // Resolves port-zone or per-nation map-action context for a sea/coastal tile.
+  TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
+
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   void* FindPortZoneBySelectedTile(TCity* city);
 };
+
+void NotifyMapUberPictureTileMarker(short tileIndex);
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);

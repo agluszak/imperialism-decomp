@@ -56,7 +56,10 @@ undefined TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
 
 undefined TMapMgr::DispatchTurnEvent7DDForActiveNation() { return 0; }
 
-undefined TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) { return 0; }
+undefined TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(undefined4 param_1) {
+  ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
+  return 0;
+}
 
 undefined TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1, short param_2) { return 0; }
 
@@ -382,6 +385,165 @@ void TMapMgr::AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex,
                                        cityRecordIndex * 0xa8 + 0xa4);
 }
 
+// FUNCTION: IMPERIALISM 0x005178f0
+short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType,
+                                                                        char wrapBias) {
+  char* tileTable = reinterpret_cast<char*>(terrainStateTable);
+  char* cityTable = reinterpret_cast<char*>(cityScoreTable);
+  unsigned int colSum = 0;
+  int rowSum = 0;
+  unsigned int tileCount = 0;
+  int westCount = 0;
+  unsigned int eastCount = 0;
+
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    int tileByteOffset = tileIndex * 0x24;
+    char terrainTag = tileTable[tileByteOffset + 4];
+    if (terrainTag != terrainType) {
+      continue;
+    }
+    char includeTile = 1;
+    if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0 &&
+        g_apTerrainTypeDescriptorTable[terrainType]->ownerNationSlot != static_cast<short>(-1)) {
+      short nationSlot = g_apTerrainTypeDescriptorTable[terrainType]->ownerNationSlot;
+      short tileCityLink =
+          *reinterpret_cast<short*>(tileTable + tileByteOffset + 0x14);
+      char tileCityByte =
+          cityTable[0xa3 + static_cast<int>(tileCityLink) * 0xa8];
+      short nationTileCityLink = *reinterpret_cast<short*>(
+          tileTable + nationSlot * 0x24 + 0x14);
+      char nationCityByte =
+          cityTable[0xa3 + static_cast<int>(nationTileCityLink) * 0xa8];
+      if (tileCityByte != nationCityByte) {
+        includeTile = 0;
+      }
+    }
+    if (includeTile == 0) {
+      continue;
+    }
+    int tileCol = tileIndex % 0x6c;
+    if (tileCol < 0x19) {
+      westCount = westCount + 1;
+    }
+    if (tileCol > 0x53) {
+      eastCount = eastCount + 1;
+    }
+    colSum = colSum + static_cast<unsigned int>(tileCol);
+    rowSum = rowSum + tileIndex / 0x6c;
+    tileCount = tileCount + 1;
+  }
+
+  char applyWrapBias = 0;
+  if (westCount >= 1 && static_cast<int>(eastCount) >= 1) {
+    applyWrapBias = 1;
+    if (wrapBias == 0) {
+      tileCount = 0;
+      rowSum = 0;
+      colSum = 0;
+      for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+        if (tileTable[tileIndex * 0x24 + 4] != terrainType) {
+          continue;
+        }
+        int tileCol = tileIndex % 0x6c;
+        if (tileCol < 0x36 && westCount < static_cast<int>(eastCount)) {
+          tileCol = 0x6b;
+        }
+        if (tileCol > 0x36 && static_cast<int>(eastCount) < westCount) {
+          tileCol = 0;
+        }
+        colSum = colSum + static_cast<unsigned int>(tileCol);
+        rowSum = rowSum + tileIndex / 0x6c;
+        tileCount = tileCount + 1;
+      }
+    } else if (wrapBias != 0) {
+      colSum = colSum + static_cast<unsigned int>(westCount * 0x6c);
+    }
+  }
+
+  if (tileCount != 0) {
+    return static_cast<short>(((static_cast<int>(colSum) / static_cast<int>(tileCount)) % 0x6c) +
+                              (rowSum / static_cast<int>(tileCount)) * 0x6c);
+  }
+
+  short fallbackTile = -1;
+  if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0) {
+    TPtrList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
+    if (ownedRegions != 0 && ownedRegions->GetCountSlot48() > 0) {
+      int lastMatch = -1;
+      for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+        if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == terrainType) {
+          lastMatch = tileIndex;
+        }
+      }
+      fallbackTile = static_cast<short>(lastMatch);
+    }
+  }
+  return fallbackTile;
+}
+
+static const unsigned int kAddrTerrainFlowTypeRemapTable = 0x0065c632;
+static const unsigned int kAddrTerrainFlowDirectionTable = 0x0065c668;
+
+namespace {
+
+short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed) {
+  short seaTileIndex = -1;
+  short tileWalkIndex = portTileIndex;
+  for (int attempt = 0; attempt < 6; ++attempt) {
+    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
+        portTileIndex, static_cast<short>(tileWalkIndex % 6));
+    ++tileWalkIndex;
+    if (candidateTile == -1) {
+      continue;
+    }
+    TTerrainStateRecordView& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
+    if (candidateRecord.pad00[0] != 5) {
+      continue;
+    }
+    char allNeighborsMatchNation = 1;
+    for (int neighborDirection = 0; neighborDirection < 6; ++neighborDirection) {
+      short neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(
+          candidateTile, static_cast<short>(neighborDirection));
+      if (neighborTile == -1) {
+        continue;
+      }
+      signed char neighborNation =
+          g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      if (neighborNation < 0x17 && neighborNation != nationSeed) {
+        allNeighborsMatchNation = 0;
+        break;
+      }
+    }
+    if (allNeighborsMatchNation != 0) {
+      seaTileIndex = candidateTile;
+      break;
+    }
+  }
+  if (seaTileIndex == -1) {
+    seaTileIndex = TraceTerrainFlowToNearestSeaTile(portTileIndex);
+  }
+  return seaTileIndex;
+}
+
+void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
+  if (contextZone == 0 || portZone == 0) {
+    return;
+  }
+  int entryIndex = 0;
+  int primarySize = portZone->primaryZonePointers.GetSize();
+  if (primarySize != 0) {
+    for (; entryIndex < primarySize; ++entryIndex) {
+      if (reinterpret_cast<TZone*>(portZone->primaryZonePointers.GetAt(entryIndex)) == contextZone) {
+        return;
+      }
+    }
+  }
+  portZone->AppendZonePointerToPrimaryArray(contextZone);
+  contextZone->AppendZonePointerToSecondaryArray(portZone);
+}
+
+} // namespace
+
 
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
@@ -470,83 +632,66 @@ short TMapMgr::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
   return static_cast<short>(col + static_cast<int>(row) * 0x6c);
 }
 
-static const unsigned int kAddrTerrainFlowTypeRemapTable = 0x0065c632;
-static const unsigned int kAddrTerrainFlowDirectionTable = 0x0065c668;
-
-namespace {
-
-TZone* ResolveLinkedMapActionContextForSeaTile(short seaTileIndex) {
-  TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
-  signed char terrainClass =
-      *reinterpret_cast<signed char*>(reinterpret_cast<char*>(&terrainRecord) + 0x16);
-  if (terrainClass == 3 || terrainClass == 0x0e) {
-    return TZone::FindPortZoneByTile(seaTileIndex);
+// FUNCTION: IMPERIALISM 0x0055e550
+bool TMapMgr::StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction) {
+  if ((direction == 4) || ((direction > 2) && (((*row) & 1) == 0))) {
+    int nextCol = *col - 1;
+    *col = nextCol;
+    if (nextCol < 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+        return false;
+      }
+      *col = 0x6b;
+    }
+  } else if ((direction == 1) || ((direction < 3) && (((*row) & 1) != 0))) {
+    int nextCol = *col + 1;
+    *col = nextCol;
+    if (nextCol > 0x6b) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+        return false;
+      }
+      *col = 0;
+    }
   }
-  signed char nationCode = terrainRecord.ownerNationTag04;
-  if (nationCode < 0x17) {
-    return 0;
+  if ((direction == 5) || (direction == 0)) {
+    int nextRow = *row - 1;
+    *row = nextRow;
+    if (nextRow < 0) {
+      return false;
+    }
+  } else if ((direction == 3) || (direction == 2)) {
+    int nextRow = *row + 1;
+    *row = nextRow;
+    if (nextRow > 0x3b) {
+      return false;
+    }
   }
-  return g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
-      static_cast<short>(nationCode));
+  return true;
 }
 
-short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed) {
-  short seaTileIndex = -1;
-  short tileWalkIndex = portTileIndex;
-  for (int attempt = 0; attempt < 6; ++attempt) {
-    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-        portTileIndex, static_cast<short>(tileWalkIndex % 6));
-    ++tileWalkIndex;
-    if (candidateTile == -1) {
-      continue;
-    }
-    TTerrainStateRecordView& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
-    if (candidateRecord.pad00[0] != 5) {
-      continue;
-    }
-    char allNeighborsMatchNation = 1;
-    for (int neighborDirection = 0; neighborDirection < 6; ++neighborDirection) {
-      short neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(
-          candidateTile, static_cast<short>(neighborDirection));
-      if (neighborTile == -1) {
-        continue;
-      }
-      signed char neighborNation =
-          g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      if (neighborNation < 0x17 && neighborNation != nationSeed) {
-        allNeighborsMatchNation = 0;
-        break;
-      }
-    }
-    if (allNeighborsMatchNation != 0) {
-      seaTileIndex = candidateTile;
-      break;
+// FUNCTION: IMPERIALISM 0x00560470
+void TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(HexSpiralSearchState* state) {
+  int stepInRing = state->stepInRing + 1;
+  state->stepInRing = stepInRing;
+  if (state->ring <= stepInRing) {
+    int direction = state->direction + 1;
+    state->stepInRing = 0;
+    state->direction = direction;
+    if (direction > 5) {
+      state->ring = state->ring + 1;
+      state->direction = 0;
+      TMapMgr::StepHexRowColByDirectionWithWrapRules(&state->row, &state->col, 4);
     }
   }
-  if (seaTileIndex == -1) {
-    seaTileIndex = TraceTerrainFlowToNearestSeaTile(portTileIndex);
-  }
-  return seaTileIndex;
+  TMapMgr::StepHexRowColByDirectionWithWrapRules(&state->row, &state->col, state->direction);
 }
 
-void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
-  if (contextZone == 0 || portZone == 0) {
-    return;
+short TMapMgr::TileIndexFromRowCol(int row, int col) {
+  if ((row < 0) || (row > 0x3b) || (col < 0) || (col > 0x6b)) {
+    return -1;
   }
-  unsigned int entryIndex = 0;
-  if (portZone->portZoneActiveEntryCount30 != 0) {
-    for (; entryIndex < static_cast<unsigned int>(portZone->portZoneActiveEntryCount30);
-         ++entryIndex) {
-      if (reinterpret_cast<TZone*>(portZone->portZoneEntries28[entryIndex]) == contextZone) {
-        return;
-      }
-    }
-  }
-  portZone->AppendZonePointerToPrimaryArray();
-  contextZone->AppendZonePointerToSecondaryArray();
+  return static_cast<short>(col + row * 0x6c);
 }
-
-} // namespace
 
 
 // FUNCTION: IMPERIALISM 0x005635e0
@@ -575,7 +720,7 @@ void EnsurePortZoneForTile(short nTileIndex) {
   portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
 
   short seaTileIndex = FindSeaTileForPortZoneCreation(nTileIndex, nationSeed);
-  TZone* linkedContext = ResolveLinkedMapActionContextForSeaTile(seaTileIndex);
+  TZone* linkedContext = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(seaTileIndex);
   LinkPortZoneToContextIfMissing(portZone, linkedContext);
 
   SetMapTileStateByteAndNotifyObserver(static_cast<int>(seaTileIndex), 3);

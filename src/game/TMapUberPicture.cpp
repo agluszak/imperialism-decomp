@@ -39,8 +39,8 @@ undefined TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
-undefined TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1) {
-  return 0;
+void TMapUberPicture::InvalidateTileMarkerChain(short tileIndex) {
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005988c0

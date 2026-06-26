@@ -115,7 +115,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         pCiv->SetOrderModeSlot34(7, pCiv->field_6);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
           g_pUiRuntimeContext->mapUberPictureF0
-              ->WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(nTileIndex);
+              ->InvalidateTileMarkerChain(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
         actionFinalized = true;
@@ -146,7 +146,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         pCiv->SetOrderModeSlot34(12, pCiv->field_6);
         if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
           g_pUiRuntimeContext->mapUberPictureF0
-              ->WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(nTileIndex);
+              ->InvalidateTileMarkerChain(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
         actionFinalized = true;

@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
+#include "game/CPtrArray.h"
 #include "game/CString.h"
 #include "game/TObject.h"
 
@@ -44,10 +45,10 @@ public:
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   // Original vtable slots 0x1c..0x1f, kept as non-virtual (paired by address).
-  undefined GetOrAppendUniqueZonePointerInSecondaryArray();        // 0x55e9c0
-  undefined GetOrAppendUniqueZonePointerInPrimaryArray();          // 0x55e8e0
-  undefined AppendZonePointerToPrimaryArray();                     // 0x55ead0
-  undefined AppendZonePointerToSecondaryArray();                   // 0x55eba0
+  int* GetOrAppendUniqueZonePointerInPrimaryArray(TZone* zone);   // 0x55e8e0
+  int* GetOrAppendUniqueZonePointerInSecondaryArray(TZone* zone);   // 0x55e9c0
+  void AppendZonePointerToPrimaryArray(TZone* zone);              // 0x55ead0
+  void AppendZonePointerToSecondaryArray(TZone* zone);            // 0x55eba0
 
   // Non-virtual helpers (real bodies in TZone.cpp; not TZone vtable slots).
   void GenerateZoneStatusCodeIfUnset();                            // 0x55f5c0
@@ -55,7 +56,8 @@ public:
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 
   short field04;                  // +0x04
-  char pad06[6];                  // +0x06
+  char pad06[2];                  // +0x06
+  CString displayName;            // +0x08
   int field0c;                    // +0x0c tile / terrain id storage
   unsigned short field10;         // +0x10 (key mask in nation context slices)
   short field12;                  // +0x12 seed nation id arg
@@ -65,17 +67,12 @@ public:
   TZone* next1c;                  // +0x1c newer link
   short field20;                  // +0x20 active tile index
   char pad22[2];                  // +0x22
-  void* field24;                  // +0x24 primary array thunk ptr
-  int* portZoneEntries28;         // +0x28 — per-nation port-zone entry vector (0x004dbf00 path)
-  int portZoneEntryCount2c;       // +0x2c
-  int portZoneActiveEntryCount30; // +0x30
-  void* field34;                  // +0x34 secondary array thunk ptr
-  void* field38;                  // +0x38 slot-table pointer in HandleKeyDown paths
-  int field3c;                    // +0x3c
-  int field40;                    // +0x40 slot-table count in HandleKeyDown paths
-  int field44;                    // +0x44
-  int field48;                    // +0x48 map tile index (also used as short in some paths)
-  CString displayName;            // EH member; ctor initializes via empty shared-string ref
+  CPtrArray primaryZonePointers;  // +0x24 embedded MFC ptr array (m_pData @ +0x28)
+  void* field38;                  // +0x38 secondary zone-pointer heap (CPtrArray POD tail)
+  int field3c;                    // +0x3c secondary m_nMaxSize
+  int field40;                    // +0x40 secondary m_nSize / HandleKeyDown slot count
+  short field44;                  // +0x44
+  int field48;                    // +0x48 TPortZone tile index (past base TZone 0x48 extent)
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
@@ -91,6 +88,16 @@ public:
   static TZone* GetFirstPortZone();
   TZone* GetNextPortZone();
   static TZone* FindPortZoneByTile(short nTileIndex);
+
+  int*& PrimaryZoneHeapData() {
+    return *reinterpret_cast<int**>(reinterpret_cast<char*>(this) + 0x28);
+  }
+  int& PrimaryZoneHeapCapacity() {
+    return *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x2c);
+  }
+  int& PrimaryZoneHeapSize() {
+    return *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x30);
+  }
 };
 
 extern TZone* g_pMapActionContextListHead;

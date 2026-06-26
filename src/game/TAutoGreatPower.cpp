@@ -854,22 +854,22 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     } while (ordinal <= regionList->GetCountSlot48());
   }
   TZone* portZone = TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
-  if (portZone->portZoneEntryCount2c == 0) {
+  if (portZone->PrimaryZoneHeapCapacity() == 0) {
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);
+        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
     if (grownArray == 0) {
-      portZone->portZoneEntries28 = static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
-      portZone->portZoneEntryCount2c = 1;
+      portZone->PrimaryZoneHeapData() = static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4));
+      portZone->PrimaryZoneHeapCapacity() = 1;
     } else {
-      portZone->portZoneEntries28 = static_cast<int*>(grownArray);
-      portZone->portZoneEntryCount2c = 2;
+      portZone->PrimaryZoneHeapData() = static_cast<int*>(grownArray);
+      portZone->PrimaryZoneHeapCapacity() = 2;
     }
   }
-  if (portZone->portZoneActiveEntryCount30 == 0) {
-    portZone->portZoneActiveEntryCount30 = 1;
+  if (portZone->PrimaryZoneHeapSize() == 0) {
+    portZone->PrimaryZoneHeapSize() = 1;
   }
-  void* firstOrder = reinterpret_cast<void*>(portZone->portZoneEntries28[0]);
+  void* firstOrder = reinterpret_cast<void*>(portZone->PrimaryZoneHeapData()[0]);
   short portZoneId = GetShortAtOffset14OrInvalidValue();
   this->portZoneStateFlags[portZoneId] = 1;
   this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, reinterpret_cast<int>(firstOrder),
