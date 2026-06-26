@@ -548,7 +548,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   host->mainView->QueryBounds(&mainBounds);
   (void)mainBounds; // original makes the call but discards the result
 
-  char* afxWindow = reinterpret_cast<char*>(InvokeAfxThreadVslot7CAndGetValueAtOffset98());
+  char* afxWindow = reinterpret_cast<char*>(GetMainViewHostFromActiveThread());
   RECT clientRect;
   GetClientRect(*reinterpret_cast<HWND*>(afxWindow + 0x1c), &clientRect);
 

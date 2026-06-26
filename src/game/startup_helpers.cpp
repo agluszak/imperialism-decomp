@@ -12,33 +12,13 @@
 #include "game/diplomacy_globals.h"
 #include "game/config.h"
 #include "game/THelpMgr.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TModalTemplateDialog.h"
 
 void InitializeStrategicMapViewSystem(TMacViewMgr* self);
 
-// Leaf factory helpers — minimal local bodies until each address is promoted.
-TLanguageMgr* ConstructTLanguageMgrBaseState(TLanguageMgr* self) {
-  return self;
-}
-
-void ReloadPreplutNewsTableAndResources(int languageTag) {
-  (void)languageTag;
-}
-
-void InitializeTurnFlowStateDefaults(TSimMgr* sim) {
-  (void)sim;
-}
-
-TAssetMgr* ConstructUiViewManager(TAssetMgr* self) {
-  return self;
-}
-
-void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
-  (void)languageTag;
-}
-
-THelpMgr* ConstructTHelpMgrBaseState(THelpMgr* self) {
-  return self;
-}
+extern undefined4 LoadUiStringResourceByGroupAndIndex();
+extern undefined4 scanBracketExpressions();
 
 // Define the global callback pointer
 // GLOBAL: IMPERIALISM 0x006a7fac
@@ -49,6 +29,8 @@ extern "C" void* g_pGlobalCallback_006a7fac = nullptr;
 extern "C" int DAT_006a2018 = 0;
 
 namespace {
+
+const unsigned int kAddrDecimalFormat = 0x0069430c;
 
 void* GetObjectValueAtOffset98(void* object) {
   if (object == nullptr) {
@@ -67,11 +49,91 @@ void* GetMainContextFromActiveThread() {
   return thread->m_pMainWnd;
 }
 
+void InvokeLoadUiStringResourceByGroupAndIndex(CString* dest, int group, int index) {
+  reinterpret_cast<void(__cdecl*)(CString*, int, int)>(LoadUiStringResourceByGroupAndIndex)(
+      dest, group, index);
+}
+
+void InvokeScanBracketExpressions(TSimMgr* ctx, CString* out, char* input) {
+  reinterpret_cast<void(__stdcall*)(TSimMgr*, CString*, char*)>(scanBracketExpressions)(ctx, out,
+                                                                                        input);
+}
+
+void FormatStringWithVarArgsToSharedRef(CString* dest, const char* format, int value) {
+  dest->Format(format, value);
+}
+
+int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
+  ULARGE_INTEGER freeBytesAvailable;
+  ULARGE_INTEGER totalBytes;
+  ULARGE_INTEGER totalFreeBytes;
+  freeBytesAvailable.QuadPart = 0;
+  totalBytes.QuadPart = 0;
+  totalFreeBytes.QuadPart = 0;
+
+  typedef BOOL(WINAPI* GetDiskFreeSpaceExProc)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER,
+                                               PULARGE_INTEGER);
+  HMODULE kernel32 = LoadLibraryA("KERNEL32.DLL");
+  if (kernel32 != 0) {
+    GetDiskFreeSpaceExProc getDiskFreeSpaceEx =
+        (GetDiskFreeSpaceExProc)GetProcAddress(kernel32, "GetDiskFreeSpaceExA");
+    if (getDiskFreeSpaceEx != 0 &&
+        getDiskFreeSpaceEx(windowsDirectory, &freeBytesAvailable, &totalBytes, &totalFreeBytes)) {
+      FreeLibrary(kernel32);
+      return (int)(freeBytesAvailable.QuadPart / (1024UL * 1024UL));
+    }
+    FreeLibrary(kernel32);
+  }
+
+  DWORD sectorsPerCluster = 0;
+  DWORD bytesPerSector = 0;
+  DWORD numberOfFreeClusters = 0;
+  DWORD totalClusters = 0;
+  if (!GetDiskFreeSpaceA(windowsDirectory, &sectorsPerCluster, &bytesPerSector,
+                         &numberOfFreeClusters, &totalClusters)) {
+    return 0x7fffffff;
+  }
+  const DWORD freeBytes = sectorsPerCluster * bytesPerSector * numberOfFreeClusters;
+  return (int)(freeBytes / (1024UL * 1024UL));
+}
+
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue() {
-  return TRUE;
+  const UINT dirSize = GetWindowsDirectoryA(nullptr, 0);
+  if (dirSize == 0) {
+    return TRUE;
+  }
+
+  CString windowsDirectory;
+  LPSTR buffer = windowsDirectory.GetBuffer(dirSize);
+  if (GetWindowsDirectoryA(buffer, dirSize) == 0) {
+    windowsDirectory.ReleaseBuffer(0);
+    return TRUE;
+  }
+  windowsDirectory.ReleaseBuffer(-1);
+
+  const int freeMegabytes = QueryFreeDiskMegabytesOnWindowsVolume(windowsDirectory);
+  if (freeMegabytes >= 0x19) {
+    return TRUE;
+  }
+
+  CString templateText;
+  CString formattedText;
+  CString scratch;
+  InvokeLoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
+  FormatStringWithVarArgsToSharedRef(
+      &scratch, reinterpret_cast<const char*>(kAddrDecimalFormat), freeMegabytes);
+  InvokeScanBracketExpressions(g_pLocalizationTable, &formattedText, templateText.GetBuffer(0));
+
+  TLowDiskWarningDialog dialog(nullptr);
+  dialog.SetPromptText(formattedText);
+  if (!dialog.PrepareAndCreateModalFromTemplate()) {
+    return FALSE;
+  }
+  dialog.UpdateData(FALSE);
+  return dialog.FinalizeModalDialogAndRestoreOwnerFocus() == 1 ? TRUE : FALSE;
 }
 
 // FUNCTION: IMPERIALISM 0x00483340
@@ -97,26 +159,18 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
   app->field_50 = theApp.field_E4;
 
   if (g_pLanguageMgr == nullptr) {
-    TLanguageMgr* languageMgr = new TLanguageMgr();
-    if (languageMgr == nullptr) {
-      g_pLanguageMgr = nullptr;
-    } else {
-      g_pLanguageMgr = ConstructTLanguageMgrBaseState(languageMgr);
-    }
+    g_pLanguageMgr = new TLanguageMgr();
   }
 
   ReloadPreplutNewsTableAndResources(app->field_50);
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
-    InitializeTurnFlowStateDefaults(simMgr);
+    simMgr->InitializeTurnFlowStateDefaults();
   }
   g_pLocalizationTable = simMgr;
 
   TAssetMgr* assetMgr = new TAssetMgr();
-  if (assetMgr != nullptr) {
-    assetMgr = ConstructUiViewManager(assetMgr);
-  }
   ForwardEnsurePictWvDataGobLoadedBySlot(app->field_50);
   g_pUiViewManager = assetMgr;
 
@@ -138,17 +192,11 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
   }
   g_pStrategicMapViewSystem = mapView;
 
-  THelpMgr** helpMgrSlot = reinterpret_cast<THelpMgr**>(0x006a21b8);
-  if (*helpMgrSlot == nullptr) {
-    THelpMgr* helpMgr = new THelpMgr();
-    if (helpMgr == nullptr) {
-      *helpMgrSlot = nullptr;
-    } else {
-      *helpMgrSlot = ConstructTHelpMgrBaseState(helpMgr);
-    }
+  if (g_pHelpMgr == nullptr) {
+    g_pHelpMgr = new THelpMgr();
   }
-  if (*helpMgrSlot != nullptr) {
-    (*helpMgrSlot)->InitializeHelpManagerIndexArrayAndState();
+  if (g_pHelpMgr != nullptr) {
+    g_pHelpMgr->InitializeHelpManagerIndexArrayAndState();
   }
 
   if (g_pGameFlowState != nullptr) {
@@ -158,10 +206,14 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
 
   Config configScratch;
   g_pGameFlowState = configScratch.InitDefaults();
+  if (g_pGameFlowState != nullptr) {
+    reinterpret_cast<TMultiplayerMgr*>(g_pGameFlowState)
+        ->InitializeMultiplayerManagerForSessionContext(CString());
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00412a70
-void* InvokeAfxThreadVslot7CAndGetValueAtOffset98() {
+void* GetMainViewHostFromActiveThread() {
   return GetObjectValueAtOffset98(GetMainContextFromActiveThread());
 }
 

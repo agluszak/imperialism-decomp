@@ -1,5 +1,11 @@
 #include "game/TAssetMgr.h"
 
+// FUNCTION: IMPERIALISM 0x005dff20
+void EnsurePictWvDataGobLoadedBySlot(int languageTag) {
+  (void)languageTag;
+}
+
+// FUNCTION: IMPERIALISM 0x005df280
 TAssetMgr::TAssetMgr() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x005df260
@@ -11,7 +17,15 @@ CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
 // TAssetMgr::`scalar deleting destructor'
 TAssetMgr::~TAssetMgr() {}
 
-// Forwards to the runtime view registry (slot 0x0a of g_dat_006a1b24); body still a stub.
+// FUNCTION: IMPERIALISM 0x005df3a0
+void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
+  EnsurePictWvDataGobLoadedBySlot(languageTag);
+}
+
+void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {
+  EnsurePictWvDataGobLoadedBySlot(languageTag);
+}
+
 // FUNCTION: IMPERIALISM 0x005df3c0
 TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext) {
   (void)messageContext;

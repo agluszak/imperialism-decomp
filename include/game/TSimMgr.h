@@ -66,6 +66,7 @@ public:
   // --- non-virtual helpers ---
   int GetField30();
   void DecrementField30Value();
+  void InitializeTurnFlowStateDefaults();
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pLocalizationTable; do not rename or move) ---

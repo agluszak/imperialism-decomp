@@ -419,14 +419,6 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::InitializeTurnFlowStateDefaults
-// ghidra_proto undefined InitializeTurnFlowStateDefaults()
-// FUNCTION: IMPERIALISM 0x0057bbf0
-undefined4 InitializeTurnFlowStateDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildGlobalOrderManagersAndCapabilityState
 // ghidra_proto undefined RebuildGlobalOrderManagersAndCapabilityState()
 // FUNCTION: IMPERIALISM 0x0057c3b0

@@ -1,30 +1,60 @@
 #include "game/TMultiplayerMgr.h"
 
-int TMultiplayerMgr::OrphanTiny_ReturnZero_0048a730_14(CityDialogController * pDialog) { return 0; }
+int TMultiplayerMgr::OrphanTiny_ReturnZero_0048a730_14(CityDialogController* pDialog) {
+  (void)pDialog;
+  return 0;
+}
 
-void TMultiplayerMgr::VTableSlot15(int value) {}
+void TMultiplayerMgr::VTableSlot15(int value) { (void)value; }
 
-byte TMultiplayerMgr::GetTEventHandlerClassNamePointer_0a(CityDialogController * pDialog) { return 0; }
+byte TMultiplayerMgr::GetTEventHandlerClassNamePointer_0a(CityDialogController* pDialog) {
+  (void)pDialog;
+  return 0;
+}
 
-void TMultiplayerMgr::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue) {}
+void TMultiplayerMgr::ReleaseRuntimeSelectionOwnerAndDestroyObject(char flagValue) { (void)flagValue; }
 
-undefined TMultiplayerMgr::OrphanRetStub_0059add0_0f(undefined4 param_1, undefined4 param_2, undefined4 param_3) { return 0; }
+undefined TMultiplayerMgr::OrphanRetStub_0059add0_0f(undefined4 param_1, undefined4 param_2,
+                                                       undefined4 param_3) {
+  (void)param_1;
+  (void)param_2;
+  (void)param_3;
+  return 0;
+}
 
-int TMultiplayerMgr::UpdateControlCachedIntFromWindowText(CityDialogController * pDialog) { return 0; }
+int TMultiplayerMgr::UpdateControlCachedIntFromWindowText(CityDialogController* pDialog) {
+  (void)pDialog;
+  return 0;
+}
 
 undefined TMultiplayerMgr::OrphanTiny_ReturnZero_0048a730_10() { return 0; }
 
-undefined TMultiplayerMgr::VTableSlot11(undefined4 param_1) { return 0; }
+undefined TMultiplayerMgr::VTableSlot11(undefined4 param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TMultiplayerMgr::OrphanTiny_ReturnZero_0048a730_12(undefined4 param_1) { return 0; }
+undefined TMultiplayerMgr::OrphanTiny_ReturnZero_0048a730_12(undefined4 param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TMultiplayerMgr::OrphanRetStub_0059add0_0d(int * param_1) { return 0; }
+undefined TMultiplayerMgr::OrphanRetStub_0059add0_0d(int* param_1) {
+  (void)param_1;
+  return 0;
+}
 
 undefined TMultiplayerMgr::OrphanCallChain_C11_I88_004874b0_0e() { return 0; }
 
-undefined TMultiplayerMgr::VTableSlot23(int param_1) { return 0; }
+undefined TMultiplayerMgr::VTableSlot23(int param_1) {
+  (void)param_1;
+  return 0;
+}
 
-undefined TMultiplayerMgr::OrphanCallChain_C11_I88_004874b0_24(int param_1) { return 0; }
+undefined TMultiplayerMgr::OrphanCallChain_C11_I88_004874b0_24(int param_1) {
+  (void)param_1;
+  return 0;
+}
 
 undefined TMultiplayerMgr::GetTEventHandlerClassNamePointer_22() { return 0; }
 
@@ -58,12 +88,18 @@ CRuntimeClass* TMultiplayerMgr::GetRuntimeClass() const { return 0; }
 
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
-undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(CString param_1) { return 0; }
+undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(CString param_1) {
+  (void)param_1;
+  return 0;
+}
 
 void TMultiplayerMgr::Free() {}
 
-void TMultiplayerMgr::ReadFrom(TStream* stream) {}
+void TMultiplayerMgr::ReadFrom(TStream* stream) { (void)stream; }
 
-void TMultiplayerMgr::WriteTo(TStream* stream) {}
+void TMultiplayerMgr::WriteTo(TStream* stream) { (void)stream; }
 
 undefined TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue() { return 0; }
+
+// FUNCTION: IMPERIALISM 0x00542670
+TMultiplayerMgr::TMultiplayerMgr() : TObject() {}

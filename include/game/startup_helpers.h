@@ -27,4 +27,4 @@ void SetUiRuntimeContextAndActivateMain(TView* mainViewHost, TView* activeDialog
 extern "C++" undefined4 ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
 
 // 0x00412a70 — AfxGetThread virtual +0x7c then read *(obj+0x98).
-void* InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+void* GetMainViewHostFromActiveThread();

@@ -29,7 +29,11 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAssetMgr 0xCTOR`).
 
   TAssetMgr();
+  void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
 };
+
+// FUNCTION: IMPERIALISM 0x005df3a0
+void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 // === BEGIN GENERATED (TAssetMgr) — refreshed by `just gen-class TAssetMgr`; do not hand-edit ===
 // clang-format off

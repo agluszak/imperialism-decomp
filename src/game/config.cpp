@@ -1,8 +1,8 @@
 #include "game/config.h"
 
-undefined4 ConstructMultiplayerManager(void);
+#include "game/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00405529
 int* Config::InitDefaults() {
-  return (int*)ConstructMultiplayerManager();
+  return reinterpret_cast<int*>(new TMultiplayerMgr());
 }

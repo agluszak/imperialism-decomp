@@ -1083,14 +1083,6 @@ undefined4 WrapperFor_ftol_At00500520(void)
   return 0;
 }
 
-// ghidra_name THelpMgr::ConstructTHelpMgrBaseState
-// ghidra_proto undefined ConstructTHelpMgrBaseState()
-// FUNCTION: IMPERIALISM 0x005005e0
-undefined4 ConstructTHelpMgrBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTHelpMgrAndMaybeFree_Impl
 // ghidra_proto undefined DestructTHelpMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x00500660
@@ -1459,14 +1451,6 @@ undefined4 CreateTLanguageMgrInstance(void)
   return 0;
 }
 
-// ghidra_name TLanguageMgr::ConstructTLanguageMgrBaseState
-// ghidra_proto undefined ConstructTLanguageMgrBaseState()
-// FUNCTION: IMPERIALISM 0x00507c60
-undefined4 ConstructTLanguageMgrBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0()
 // FUNCTION: IMPERIALISM 0x00507db0
@@ -1495,14 +1479,6 @@ undefined4 WrapperFor_AllocateWithFallbackHandler_At005082b0(void)
 // ghidra_proto undefined BuildMappedSharedStringFromByteStateTable()
 // FUNCTION: IMPERIALISM 0x005083f0
 undefined4 BuildMappedSharedStringFromByteStateTable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReloadPreplutNewsTableAndResources
-// ghidra_proto undefined ReloadPreplutNewsTableAndResources()
-// FUNCTION: IMPERIALISM 0x005086a0
-undefined4 ReloadPreplutNewsTableAndResources(void)
 {
   return 0;
 }

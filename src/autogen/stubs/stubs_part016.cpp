@@ -1795,14 +1795,6 @@ undefined4 AllocateAndInitConfigDefaultsObjectF8(void)
   return 0;
 }
 
-// ghidra_name ConstructMultiplayerManager
-// ghidra_proto undefined4 * __fastcall ConstructMultiplayerManager(astruct_11 * this_obj)
-// FUNCTION: IMPERIALISM 0x00542670
-undefined4 ConstructMultiplayerManager(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializePointerPairToNull
 // ghidra_proto undefined InitializePointerPairToNull()
 // FUNCTION: IMPERIALISM 0x005427a0

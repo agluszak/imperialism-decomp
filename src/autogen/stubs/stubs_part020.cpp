@@ -1283,26 +1283,10 @@ undefined4 CreateTAssetMgrInstance(void)
   return 0;
 }
 
-// ghidra_name ConstructUiViewManager
-// ghidra_proto void * __fastcall ConstructUiViewManager(void * pUiViewManager)
-// FUNCTION: IMPERIALISM 0x005df280
-undefined4 ConstructUiViewManager(void)
-{
-  return 0;
-}
-
 // ghidra_name TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
 // ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
 // FUNCTION: IMPERIALISM 0x005df330
 undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardEnsurePictWvDataGobLoadedBySlot
-// ghidra_proto undefined ForwardEnsurePictWvDataGobLoadedBySlot()
-// FUNCTION: IMPERIALISM 0x005df3a0
-undefined4 ForwardEnsurePictWvDataGobLoadedBySlot(void)
 {
   return 0;
 }

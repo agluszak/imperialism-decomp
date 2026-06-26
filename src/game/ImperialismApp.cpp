@@ -142,14 +142,14 @@ BOOL ImperialismApp::InitInstance() {
     g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);
 
     TView* mainViewHost =
-        reinterpret_cast<TView*>(InvokeAfxThreadVslot7CAndGetValueAtOffset98());
+        reinterpret_cast<TView*>(GetMainViewHostFromActiveThread());
     SetUiRuntimeContextAndActivateMain(mainViewHost, g_pDisplayMgr->activeDialog);
 
     if (CompareAnsiStringsWithMbcsAwareness(
             const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
                 static_cast<LPCSTR>(cmdInfo.m_strFileName))),
             reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
-      void* uiWindow = InvokeAfxThreadVslot7CAndGetValueAtOffset98();
+      void* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
         static_cast<CMcWindow*>(uiWindow)->SetWindowTextOrDelegateToOwner(
             static_cast<LPCSTR>(cmdInfo.m_strFileName));

@@ -11,6 +11,7 @@
 #include "game/TMacViewMgr.h"
 
 #include "game/TLanguageMgr.h"
+#include "game/THelpMgr.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
@@ -24,6 +25,7 @@ TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
 TSimMgr* g_pLocalizationTable = 0;
 TLanguageMgr* g_pLanguageMgr = 0;
+THelpMgr* g_pHelpMgr = 0;
 TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 TApplication* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;

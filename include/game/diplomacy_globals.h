@@ -13,6 +13,7 @@ class TAssetMgr;
 class TInterNationEventQueueManager;
 
 class TLanguageMgr;
+class THelpMgr;
 
 extern "C" {
 class TGreatPower;
@@ -28,6 +29,7 @@ extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern TSimMgr* g_pLocalizationTable;
 extern TLanguageMgr* g_pLanguageMgr;
+extern THelpMgr* g_pHelpMgr;
 extern TAssetMgr* g_pUiViewManager;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;
