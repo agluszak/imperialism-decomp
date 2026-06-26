@@ -14,6 +14,7 @@ class TControl;
 class TView;
 
 #include "game/mfc.h"
+#include "game/mcappui_globals.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
@@ -298,3 +299,7 @@ CPtrList g_LiveViewRegistry;
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
+
+// GLOBAL: IMPERIALISM 0x006a141c / 0x006a1420 — UI resource tree builder state.
+TView* g_pUiResourceHead = nullptr;
+TView* g_pUiResourceContext = nullptr;

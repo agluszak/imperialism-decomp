@@ -499,14 +499,6 @@ undefined4 SetUiResourceContextStringCode(void)
   return 0;
 }
 
-// ghidra_name ZeroUiResourceContextStyleBytes
-// ghidra_proto undefined ZeroUiResourceContextStyleBytes()
-// FUNCTION: IMPERIALISM 0x0041b420
-undefined4 ZeroUiResourceContextStyleBytes(void)
-{
-  return 0;
-}
-
 // ghidra_name SetUiResourceLayoutValues
 // ghidra_proto undefined SetUiResourceLayoutValues()
 // FUNCTION: IMPERIALISM 0x0041b450
@@ -1263,22 +1255,6 @@ undefined4 WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960(voi
 // ghidra_proto undefined CreateParentDirectoryAndRunArchiveOperation_Mode1012()
 // FUNCTION: IMPERIALISM 0x00479990
 undefined4 CreateParentDirectoryAndRunArchiveOperation_Mode1012(void)
-{
-  return 0;
-}
-
-// ghidra_name PopUiResourcePoolNode_00479A80
-// ghidra_proto undefined PopUiResourcePoolNode_00479A80()
-// FUNCTION: IMPERIALISM 0x00479a80
-undefined4 PopUiResourcePoolNode_00479A80(void)
-{
-  return 0;
-}
-
-// ghidra_name PushUiResourcePoolNode
-// ghidra_proto undefined PushUiResourcePoolNode()
-// FUNCTION: IMPERIALISM 0x00479b00
-undefined4 PushUiResourcePoolNode(void)
 {
   return 0;
 }

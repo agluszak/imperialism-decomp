@@ -1,5 +1,6 @@
 address|target_cpp|ownership|note
 401c0d|src/game/TCapacityOrder.cpp|manual|marker_sync
+402072|src/game/ui_resource_pool.cpp|manual|marker_sync
 4021ee|src/game/TSimMgr.cpp|manual|marker_sync
 402d1a|src/game/TSimMgr.cpp|manual|marker_sync
 402eeb|src/game/TUnit.cpp|manual|marker_sync
@@ -37,6 +38,7 @@ address|target_cpp|ownership|note
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
 415f00|src/game/CObject.cpp|manual|marker_sync
 415fe0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+41b420|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b6d0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 427200|src/game/TView.cpp|manual|marker_sync
 427220|src/game/TView.cpp|manual|marker_sync
@@ -139,6 +141,8 @@ address|target_cpp|ownership|note
 4798b0|src/game/TObject.cpp|manual|marker_sync
 4798d0|src/game/TObject.cpp|manual|marker_sync
 4798f0|src/game/ArchiveStreamAdapter.cpp|manual|marker_sync
+479a80|src/game/ui_resource_pool.cpp|manual|marker_sync
+479b00|src/game/ui_resource_pool.cpp|manual|marker_sync
 479be0|src/game/TView.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
@@ -560,6 +564,7 @@ address|target_cpp|ownership|note
 495b40|src/game/quickdraw_globals.cpp|manual|marker_sync
 495b70|src/game/TAnimation.cpp|manual|marker_sync
 495c00|src/game/TAnimation.cpp|manual|marker_sync
+4972a0|src/game/TDisplayMgr.cpp|manual|marker_sync
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
@@ -1598,7 +1603,7 @@ address|target_cpp|ownership|note
 4ff700|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff780|src/game/TFuzzySet.cpp|manual|marker_sync
 4ffbf0|src/game/TGameWindow.cpp|manual|marker_sync
-4ffc10|src/game/TGreatPower.cpp|manual|marker_sync
+4ffc10|src/game/TGameWindow.cpp|manual|marker_sync
 4ffc60|src/game/TGameWindow.cpp|manual|marker_sync
 4ffcb0|src/game/TGameWindow.cpp|manual|marker_sync
 4ffd10|src/game/TGameWindow.cpp|manual|marker_sync

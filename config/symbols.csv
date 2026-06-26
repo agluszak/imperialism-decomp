@@ -2909,7 +2909,7 @@ address|name|size|type|prototype
 4ffb00|WrapperFor_ftol_At004ffb00|30|function|undefined WrapperFor_ftol_At004ffb00()
 4ffb30|TGameWindow::CreateTGameWindowInstance|137|function|undefined CreateTGameWindowInstance()
 4ffbf0|TGameWindow::GetRuntimeClass|6|function|undefined GetTGameWindowClassNamePointer()
-4ffc10|TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive|53|function|undefined ConstructTurnOrderNavigationWindowEntryViewportAdaptive()
+4ffc10|TGameWindow::TGameWindow|53|function|TGameWindow::TGameWindow()
 4ffc60|TGameWindow::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4ffcb0|TGameWindow::DispatchSlot9CToLinkedChildren|34|function|undefined OrphanCallChain_C11_I88_004874b0(void)
 4ffd10|TGameWindow::DispatchUiMouseMoveToChildren|28|function|undefined SetForeignMinisterReadyFlag14(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)

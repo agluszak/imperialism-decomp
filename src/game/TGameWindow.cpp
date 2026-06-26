@@ -105,6 +105,15 @@ CRuntimeClass* TGameWindow::GetRuntimeClass() const {
   return &PTR_s_TGameWindow_00656a30;
 }
 
+// FUNCTION: IMPERIALISM 0x004ffc10
+TGameWindow::TGameWindow() {
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa0) = 0;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xa2) = 0x14;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa4) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa8) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xac) = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004ffc60
 // TGameWindow::`scalar deleting destructor'
 // The teardown runs through the real TWindow base destructor (registry/modal unlink) via
@@ -276,16 +285,4 @@ void TGameWindow::Free() {
   if (g_pDisplayMgr != 0) {
     g_pDisplayMgr->activeDialog = 0;
   }
-}
-
-void TGameWindow::InitViewportAdaptiveTurnOrderNavTail() {
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa0) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0xa2) = 0x14;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa4) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xa8) = 0;
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xac) = 0;
-}
-
-void TGameWindow::InitViewportAdaptiveTurnOrderNavTailAt(void* objectBytes) {
-  static_cast<TGameWindow*>(objectBytes)->InitViewportAdaptiveTurnOrderNavTail();
 }

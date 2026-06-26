@@ -22,7 +22,6 @@ extern CRuntimeClass classRuntimeClass;
 
 undefined4 AssignStringSharedRefAndReturnThis(void);
 undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
-undefined4 InitializeTurnOrderNavigationDialogByViewportSize_Impl(void);
 undefined4 InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void);
 undefined4 NoOpCallback_00498ca0(void);
 undefined4 ApplyHitRegionToClipState(void);
@@ -43,11 +42,6 @@ static void AssignStringSharedRefAndReturnThis(TView* view, CString* dest, CStri
 static int* InitializeGlobalRectDefaultsIfUninitialized() {
   return reinterpret_cast<int*(__cdecl*)()>(
       reinterpret_cast<void (*)()>(::InitializeGlobalRectDefaultsIfUninitialized))();
-}
-
-static int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
-  return reinterpret_cast<int(__cdecl*)(int)>(
-      reinterpret_cast<void (*)()>(::InitializeTurnOrderNavigationDialogByViewportSize_Impl))(arg);
 }
 
 static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outContext,
@@ -136,6 +130,12 @@ static void AssignGlobalCStringFromLiteral(unsigned int globalAddress,
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x004972a0
+int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
+  (void)arg;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004fe780
 CRuntimeClass* TDisplayMgr::GetRuntimeClass() const {
   return &classRuntimeClass;
@@ -190,7 +190,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
     DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0xb0);
   }
   activeDialog = dialogRoot;
-  field18 = DisplayMgrInvoke::InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
+  field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
   EnsurePrimaryRenderSurfaceContextAllocated();
   return 0;
 }

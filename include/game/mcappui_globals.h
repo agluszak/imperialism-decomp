@@ -71,3 +71,9 @@ extern char g_szUGameWindowSourcePath_00696bc0[];
 extern int g_McAppUiFlag_006A143C;
 
 } // extern "C"
+
+class TView;
+
+// Active root of the in-progress UI resource tree and the entry currently being registered.
+extern TView* g_pUiResourceHead;
+extern TView* g_pUiResourceContext;

@@ -135,7 +135,6 @@ void ApplyIndexedResourceDeltaAndAdjustNationTotals(void);
 void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
 void NoOpAdvisoryHandlerReturn(void);
 void NoOpDiplomacyWarTransitionCallback(void);
-void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
 void NoOpNationDiplomacyCallback(void);
 void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
 void ApplyJoinEmpireMode0GlobalDiplomacyReset(void);
@@ -4956,12 +4955,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   }
 
   return compositeScore;
-}
-
-// FUNCTION: IMPERIALISM 0x004ffc10
-void TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void) {
-  // Ghidra attributes this TGameWindow tail-init entry to TGreatPower; receiver is TGameWindow storage.
-  TGameWindow::InitViewportAdaptiveTurnOrderNavTailAt(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00540ac0

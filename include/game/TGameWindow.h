@@ -24,9 +24,6 @@ public:
   unsigned char turnNavTail[0x1e4 - 0xa0];
 
   TGameWindow();
-  void InitViewportAdaptiveTurnOrderNavTail();
-
-  static void InitViewportAdaptiveTurnOrderNavTailAt(void* objectBytes);
 };
 
 // === BEGIN GENERATED (TGameWindow) — refreshed by `just gen-class TGameWindow`; do not hand-edit ===

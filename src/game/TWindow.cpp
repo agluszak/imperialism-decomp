@@ -20,6 +20,8 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
+TWindow::TWindow() : TView() {}
+
 // FUNCTION: IMPERIALISM 0x0048d220
 CRuntimeClass* TWindow::GetRuntimeClass() const {
   return &PTR_s_TWindow_006495e8;

@@ -662,7 +662,7 @@
     },
     {
       "address": "0x41b420",
-      "matching": 0.15384615384615385,
+      "matching": 0.8,
       "name": "ZeroUiResourceContextStyleBytes",
       "type": 1
     },
@@ -1094,7 +1094,7 @@
     },
     {
       "address": "0x4357b0",
-      "matching": 0.0010238034297414896,
+      "matching": 0.0020410766679423396,
       "name": "BuildTurnEventDialogUiByCode",
       "type": 1
     },
@@ -1640,7 +1640,7 @@
     },
     {
       "address": "0x479a80",
-      "matching": 0.04878048780487805,
+      "matching": 0.05,
       "name": "PopUiResourcePoolNode_00479A80",
       "type": 1
     },
@@ -4336,7 +4336,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -6031,7 +6031,7 @@
     },
     {
       "address": "0x4972a0",
-      "matching": 1.0,
+      "matching": 0.5714285714285714,
       "name": "InitializeTurnOrderNavigationDialogByViewportSize_Impl",
       "type": 1
     },
@@ -11629,7 +11629,7 @@
     },
     {
       "address": "0x4dbac0",
-      "matching": 0.9696969696969697,
+      "matching": 0.9545454545454546,
       "name": "TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive",
       "type": 1
     },
@@ -12272,19 +12272,19 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12302,7 +12302,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.6363636363636364,
+      "matching": 0.6818181818181818,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12332,7 +12332,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14666,7 +14666,7 @@
     },
     {
       "address": "0x4fe840",
-      "matching": 0.4072398190045249,
+      "matching": 0.416289592760181,
       "name": "TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize",
       "type": 1
     },
@@ -14852,8 +14852,8 @@
     },
     {
       "address": "0x4ffc10",
-      "matching": 0.11764705882352941,
-      "name": "TGreatPower::ConstructTurnOrderNavigationWindowEntryViewportAdaptive",
+      "matching": 0.8461538461538461,
+      "name": "TGameWindow::TGameWindow",
       "type": 1
     },
     {
@@ -15686,7 +15686,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18230088495575222,
+      "matching": 0.17345132743362832,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },

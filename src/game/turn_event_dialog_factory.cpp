@@ -1,6 +1,71 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
+#include "game/TGameWindow.h"
 #include "game/TView.h"
+#include "game/mcappui_globals.h"
+
+extern void PushUiResourcePoolNode(void);
+extern void PopUiResourcePoolNode_00479A80(void);
+extern unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer);
+
+namespace {
+
+const unsigned int kControlTagWind = 0x57494e44u;
+
+TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int height,
+                                      unsigned short layoutModeWord) {
+  TGameWindow* window = new TGameWindow();
+  if (window == 0) {
+    return 0;
+  }
+
+  if (g_pUiResourceHead == 0) {
+    g_pUiResourceHead = window;
+  }
+  g_pUiResourceContext = window;
+
+  PushUiResourcePoolNode();
+
+  int offsetLayout[2] = {offsetX, offsetY};
+  int sizeLayout[2] = {width, height};
+  window->InitializeUiResourceEntryFrameAndParent(0, 0, offsetLayout, sizeLayout, 0, 0, 1);
+
+  window->controlTag = static_cast<int>(kControlTagWind);
+  window->field3c = 0;
+  window->SetEnabled(1, 0);
+  window->SetState(width, 0);
+  window->flag4c = 1;
+  window->flag4d = 1;
+
+  if (window->field48 != 0) {
+    delete[] window->field48;
+    window->field48 = 0;
+  }
+  window->EnsureField48Buffer();
+  if (window->field48 != 0) {
+    ZeroUiResourceContextStyleBytes(reinterpret_cast<unsigned char*>(window->field48));
+    window->field48[1] = 0;
+    window->field48[0] = 0xffffff;
+  }
+
+  char* bytes = reinterpret_cast<char*>(window);
+  bytes[0x6d] = 0;
+  bytes[0x6e] = 1;
+  bytes[0x6f] = 1;
+  bytes[0x71] = 1;
+  *reinterpret_cast<unsigned short*>(bytes + 0x60) = layoutModeWord;
+  *reinterpret_cast<unsigned short*>(bytes + 0x9c) = 8;
+
+  g_pUiResourceContext = 0;
+  PopUiResourcePoolNode_00479A80();
+
+  if (g_pUiResourceHead != 0) {
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(0);
+  }
+  return g_pUiResourceHead;
+}
+
+} // namespace
 
 // Turn-event dialog factory callbacks registered by InitializeTurnEventDialogFactoryRegistry.
 // Each is invoked as factory(0, nEventCode) from RunRegisteredDialogFactoriesByEventCode.
@@ -45,8 +110,16 @@ TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(int nContextSlot, 
 // FUNCTION: IMPERIALISM 0x004357b0
 TView* __cdecl BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode) {
   (void)nContextSlot;
-  (void)nEventCode;
-  return nullptr;
+  g_pUiResourceHead = 0;
+
+  switch (static_cast<unsigned short>(nEventCode)) {
+  case 0x7d1:
+    return BuildTurnOrderNavigationWindow(5, 0x32, 0x258, 400, 2);
+  case 0x7d2:
+    return BuildTurnOrderNavigationWindow(0, 0x28, 0x280, 0x1e0, 4);
+  default:
+    return nullptr;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0043dbc0

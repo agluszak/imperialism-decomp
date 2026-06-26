@@ -1219,14 +1219,6 @@ undefined4 InitializeGlobalRectDefaultsIfUninitialized(void)
   return 0;
 }
 
-// ghidra_name InitializeTurnOrderNavigationDialogByViewportSize_Impl
-// ghidra_proto undefined InitializeTurnOrderNavigationDialogByViewportSize_Impl()
-// FUNCTION: IMPERIALISM 0x004972a0
-undefined4 InitializeTurnOrderNavigationDialogByViewportSize_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnConstantTrueQuickDrawFlag
 // ghidra_proto undefined ReturnConstantTrueQuickDrawFlag()
 // FUNCTION: IMPERIALISM 0x004972c0

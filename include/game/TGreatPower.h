@@ -419,7 +419,6 @@ public:
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
-  void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
 
   TCity* GetCityState(void) {
     return city;
