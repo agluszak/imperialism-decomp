@@ -30,9 +30,7 @@ void TUpDownPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState,
 }
 
 // FUNCTION: IMPERIALISM 0x00571690
-bool TUpDownPictureButton::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
+bool TUpDownPictureButton::IsSelected() {
   OwnerPanel()->InvokeSlot13C();
   return true;
 }

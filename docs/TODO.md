@@ -29,23 +29,48 @@ Tractable (single inheritance, primary vtable, modest override counts):
 | Class | vtable | base (vtable) | override slots |
 |---|---|---|---|
 | TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
-| TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17 (slot list in `scratchpad/vdiff2.err`) |
+
+Note: `TShipOrder` is not a mechanical scaffold in the current tree: slots
+0x11/0x12/0x0c/0x0b/0x0d/0x10 currently resolve to addresses already manually
+owned by `src/game/TCapacityOrder.cpp` (0x004b85a0, 0x004b8630, 0x004b86d0,
+0x004b8800, 0x004b8970, 0x004b8b80). Recover it by first deciding whether those
+bodies need to move to a shared production-order subtype/helper or whether the
+RTTI vtable chain resolved a sibling table; do not duplicate `// FUNCTION:`
+markers under `TShipOrder`.
+
+Done:
+
+| Class | vtable | base (vtable) | override slots |
+|---|---|---|---|
+| TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17: 0x00,0x01,0x07,0x0f,0x35,0x37,0x44,0x47,0x68,0x74,0x75,0x76,0x77,0x78,0x79,0x7a,0x7b |
+
+`TCityProductionView` recovered 2026-06-27 as a real
+`TNoHilitePicture` subclass with 15 manually owned function bodies moved out of
+generated stubs; `just vtable TCityProductionView` passes (one vtable found).
 
 
-Hard — secondary/aspect-vtable complication (do NOT treat as simple annotate):
+Done:
 
-- **TDiplomacyMapView** (base TPicture, size 0x24c8). The RTTI-resolved vtable
-  **0x0066f16c is NOT the primary TObject-rooted vtable** — its slot 0x02 is
-  `GetPendingTurnOverlayCode` (0x5d6c10), not the inherited `Serialize`
-  (0x485e90). It is a ~50-slot **turn-event dispatch (secondary) vtable**. The
-  primary TView-style vtable is elsewhere and must be located first
-  (`vtable_extent.py` + the descriptor getter chain) before annotating. Has
-  `src/game/TDiplomacyMapView.cpp` already.
-- **TBattleReportView** (base TDiplomacyMapView, size 0x24d0). RTTI-resolved
-  **0x0063efa8 IS a full 122-slot primary vtable** (slot 0x02 = `Serialize`),
-  so it and TDiplomacyMapView's secondary are mismatched vtable *kinds*; the
-  122-slot diff vs 0x66f16c is apples-to-oranges. Recover TDiplomacyMapView's
-  primary+secondary first, then this one.
+- **TDiplomacyMapView** recovered 2026-06-27 as a real `TPicture` subclass with
+  primary vtable **0x00655b68**. Constructor listing calls `TPicture::TPicture`
+  (`0x0048efc0`), not `TPictureButton`; this keeps slot 0x73 as an introduced
+  one-argument legend/render virtual instead of conflicting with
+  `TPictureButton::IsSelected()`. The stale 0x0066f16c vtable row was renamed
+  to `g_TViewMgrTurnEventDispatchTable` as a data boundary; it is a turn-event
+  dispatch/data table or RTTI-resolver mis-hop, not an object vtable. `just
+  vtable TDiplomacyMapView` passes.
+
+Hard:
+
+- **TBattleReportView** (base TDiplomacyMapView, size 0x24d0). Constructor
+  evidence calls the TDiplomacyMapView base-state constructor, initializes a
+  small derived tail at offset 0x24c8, then writes the complete-object vfptr to
+  **0x0063efa8**. Treat this as derived from TDiplomacyMapView's 0x00655b68
+  table; do not compare it against 0x0066f16c. Open issue: slot 0x01 points at
+  the generic heap-free helper `0x00430a30` rather than a normal class
+  scalar-deleting destructor, while slot 0x07 points at the class cleanup body
+  `0x004ad560`. Audit that destructor/Free slot shape before adding a C++ class
+  header, rather than forcing a fake destructor model.
 
 ### Cat D — RTTI vtable addr disagrees with our current annotation
 
@@ -62,42 +87,22 @@ Hard — secondary/aspect-vtable complication (do NOT treat as simple annotate):
   100%↔42.86% on recompile — see memory [[tgreatpower-tu-codegen-fragility]]).
   Investigate read-only; do not annotate without isolating the TU risk.
 
-## `IsSelected` (slot 0x73) per-branch arity reconciliation
+## `IsSelected` (slot 0x73) per-branch arity reconciliation — DONE 2026-06-27
 
-Slot 0x73 (`IsSelected`, offset 0x1cc) is **not a single shared virtual** — it is
-introduced independently by several `TPicture` subclasses, each with its **own arity**.
-Batch-disassembling the bodies (via `tools.ghidra.listing_one`, classify by `RET imm`)
-gave:
+Slot 0x73 (`IsSelected`, offset 0x1cc) is **not a single shared virtual**. The
+source now models the verified branch arities:
 
-| Class | Body addr | `RET` | Arity |
-|---|---|---|---|
-| TToggleButton | 0x571330 | tail-JMP | 0-arg ✅ fixed |
-| T2PictToggleButton | 0x5849b0 | RET 0 | 0-arg ✅ fixed |
-| TPictureButton | 0x5708c0 | RET 0 | 0-arg — **paradox, see below** |
-| TTransportPicture | 0x5921c0 | RET 0 | 0-arg — pending |
-| TUpDownPictureButton | 0x571690 | tail-JMP | TBD (need caller evidence) |
-| TCivReport | 0x590cb0 | RET 0x4 | 1-arg — pending |
-| TCombatReportView | 0x58c950 | RET 0x4 | 1-arg — pending |
-| TArmyInfoView / TArmyPlacard / THQButton / TPlacard | … | RET 0x8 | 2-arg (already correct) |
+| Branch | Body addr | Verified arity |
+|---|---:|---:|
+| TToggleButton / T2PictToggleButton | 0x571330 / 0x5849b0 | 0 |
+| TPictureButton (+ inherited button subclasses) | 0x5708c0 | 0 |
+| TUpDownPictureButton (+ TCivilianButton, TTextPictureButton, TRadioPictureButton, TMadnessButton, TCzechBox) | 0x571690 | 0 |
+| TCivReport / TCombatReportView | 0x590cb0 / 0x58c950 | 1 |
+| TArmyInfoView / TArmyPlacard / THQButton / TPlacard | varied | 2 |
 
-**Done:** TToggleButton branch (TToggleButton + T2PictToggleButton override; TBoycottButton
-and TPictureRadioButton inherit) changed from the wrong `IsSelected(short=-1, bool=true)` to
-the real 0-arg `IsSelected()`.
-
-**Remaining work — must verify each branch's call sites against its body before flipping
-(unlike TToggleButton, these branches have real arg-passing callers):**
-
-- **TPictureButton branch paradox:** body `0x5708c0` is `RET 0` (0-arg) yet
-  `src/game/TPictureButton.cpp:29` calls `this->IsSelected(-1, true)` (2-arg). Disassemble
-  the line-29 call site (and the other inheritors: TCloseButton, TOnOffRadioButton,
-  TAlwaysPictureButton, T2PictureButton, TScrollerButton, TClosePicture) to decide the real
-  arity, then fix the introducing class + all overrides + call sites together.
-- **TCivReport / TCombatReportView:** bodies are `RET 0x4` (1-arg) but declared 2-arg —
-  change to `IsSelected(<one arg>)` and fix callers.
-- **TUpDownPictureButton branch** (+ TCivilianButton, TTextPictureButton, TRadioPictureButton,
-  TMadnessButton, TCzechBox): body `0x571690` is a tail-JMP (arity ambiguous from the body) —
-  determine arity from call sites.
-
-Note: the bodies that are pure tail-`JMP` forwarders (e.g. `0x571330`) are codegen-capped by
-call-vs-jmp regardless of arity; the arity fix's value is in the **callers** (it removes the
-spurious default-arg pushes), not the 8-byte forwarder body itself.
+Verification notes: Ghidra listing showed `TPictureButton::IsSelected` returns
+with plain `RET`; `TUpDownPictureButton::SetControlStateFlagAndMaybeRefresh`
+calls slot 0x1cc with no argument pushes; `TCivReport` and
+`TCombatReportView` both return with `RET 0x4`. `just build` passed, and
+filtered `just vtable` checks for `TPictureButton`, `TUpDownPictureButton`,
+`TCivReport`, and `TCombatReportView` were 100%.

@@ -1,5 +1,6 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
+#include "game/TCityProductionView.h"
 #include "game/diplomacy_globals.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
@@ -11,23 +12,10 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
-#include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-struct TCityProductionViewLayout {
-  void* vftable;
-  char pad_04[0xa2];
-  unsigned char needsRefreshAtA6;
-  char pad_a7;
-  short currentMonthAtA8;
-  short currentWeekAtAa;
-
-  void RenderViewIntoPrimaryRenderContextWithTemporaryClip(int unusedArg1, int unusedArg2);
-  void RenderNationHeaderDateLabelWithPeriodicRefresh();
-};
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
@@ -53,8 +41,42 @@ struct RuntimeLocalTime {
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
 
+// FUNCTION: IMPERIALISM 0x004ba2c0
+CRuntimeClass* TCityProductionView::GetRuntimeClass() const {
+  return 0;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004ba360
+// TCityProductionView::`scalar deleting destructor'
+TCityProductionView::~TCityProductionView() {}
+
+// FUNCTION: IMPERIALISM 0x004ba3b0
+void TCityProductionView::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x004ba740
+void TCityProductionView::Free() {}
+
+// FUNCTION: IMPERIALISM 0x004ba7b0
+void TCityProductionView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+}
+
+// FUNCTION: IMPERIALISM 0x004bac50
+void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
+    RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context,
+    undefined4 flags) {
+  (void)sourceRect;
+  (void)surface;
+  (void)offsetY;
+  (void)offsetX;
+  (void)context;
+  (void)flags;
+}
+
 // FUNCTION: IMPERIALISM 0x004badd0
-void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh() {
+void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   TGreatPower* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
   void* subObject = 0;
   if (nationState != 0) {
@@ -111,16 +133,56 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
       static_cast<short>(offset_x2 + originX), static_cast<short>(offset_y2 + sVar2));
 }
 
-// FUNCTION: IMPERIALISM 0x004bc9b0
-void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(
-    int unusedArg1, int unusedArg2) {
-  (void)unusedArg1;
-  (void)unusedArg2;
+// FUNCTION: IMPERIALISM 0x004bafa0
+void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                                              int hitArg) {
+  (void)point;
+  (void)hitArg;
+}
 
+// FUNCTION: IMPERIALISM 0x004bb7a0
+void TCityProductionView::InitializeCityProductionDialog() {}
+
+// FUNCTION: IMPERIALISM 0x004bc0b0
+void TCityProductionView::UpdateCityProductionDialogCommodityValueControls() {}
+
+// FUNCTION: IMPERIALISM 0x004bc500
+void TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators() {}
+
+// FUNCTION: IMPERIALISM 0x004bc610
+void TCityProductionView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  (void)commandId;
+  (void)sourceHandler;
+  (void)event;
+}
+
+// FUNCTION: IMPERIALISM 0x004bc660
+void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                               int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+}
+
+// FUNCTION: IMPERIALISM 0x004bc870
+void TCityProductionView::DispatchPictureResourceCommand(int eventType, void* eventSender,
+                                                         void* eventDataA, void* eventDataB) {
+  (void)eventType;
+  (void)eventSender;
+  (void)eventDataA;
+  (void)eventDataB;
+}
+
+// FUNCTION: IMPERIALISM 0x004bc910
+void TCityProductionView::OrphanCallChain_C5_I49_004bc910() {}
+
+// FUNCTION: IMPERIALISM 0x004bc9b0
+void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() {
   QuickDrawSurfaceGuard surface;
 
   RECT boundsRecord;
-  reinterpret_cast<TView*>(this)->QueryBounds(&boundsRecord);
+  this->QueryBounds(&boundsRecord);
 
   RECT clipRect;
   clipRect.left = boundsRecord.left;
@@ -140,9 +202,12 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
   reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(&clipRect);
 
   needsRefreshAtA6 = 1;
-  reinterpret_cast<TView*>(this)->ApplyRectSlot110(reinterpret_cast<RECT*>(&boundsRecord.top));
+  this->ApplyRectSlot110(reinterpret_cast<RECT*>(&boundsRecord.top));
 
   reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
       previousSurface, contextFlags);
   SnapshotHitRegionToClipCache(0);
 }
+
+// FUNCTION: IMPERIALISM 0x004bcaf0
+void TCityProductionView::RefreshCityDialogSummaryValues() {}

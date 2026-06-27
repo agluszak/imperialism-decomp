@@ -1,6 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/TDiplomacyMapView.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
@@ -19,55 +20,8 @@
 #pragma optimize("y", on)
 #endif
 
-#define DUMMY_VIRTUAL(n) virtual void Dummy##n() = 0;
-
-struct TDiplomacyMapViewLayout {
-  DUMMY_VIRTUAL(0)
-  DUMMY_VIRTUAL(1)
-  DUMMY_VIRTUAL(2)
-  DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(
-      7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12)
-      DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17)
-          DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22)
-              DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24) DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26)
-                  DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29) DUMMY_VIRTUAL(30)
-                      DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34)
-                          DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38)
-                              DUMMY_VIRTUAL(39) DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41)
-                                  DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44)
-                                      DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
-                                          DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
-                                              int region) = 0; // slot 49 (0xC4)
-  DUMMY_VIRTUAL(50) DUMMY_VIRTUAL(51) DUMMY_VIRTUAL(52) DUMMY_VIRTUAL(53) DUMMY_VIRTUAL(54) DUMMY_VIRTUAL(55) DUMMY_VIRTUAL(56) DUMMY_VIRTUAL(57) DUMMY_VIRTUAL(58) DUMMY_VIRTUAL(59) DUMMY_VIRTUAL(60) DUMMY_VIRTUAL(61) DUMMY_VIRTUAL(62) DUMMY_VIRTUAL(63) DUMMY_VIRTUAL(64) DUMMY_VIRTUAL(65) DUMMY_VIRTUAL(66) DUMMY_VIRTUAL(67) DUMMY_VIRTUAL(68) DUMMY_VIRTUAL(69) DUMMY_VIRTUAL(70) DUMMY_VIRTUAL(71) DUMMY_VIRTUAL(72) DUMMY_VIRTUAL(73) DUMMY_VIRTUAL(74) DUMMY_VIRTUAL(75) DUMMY_VIRTUAL(76) DUMMY_VIRTUAL(77) DUMMY_VIRTUAL(78) DUMMY_VIRTUAL(79) DUMMY_VIRTUAL(80) DUMMY_VIRTUAL(81)
-  virtual void TransformScreenPointToLocalSlot148(CPoint* outLocal, CPoint* screenPoint) = 0; // 0x148
-  DUMMY_VIRTUAL(82) DUMMY_VIRTUAL(83) DUMMY_VIRTUAL(84) DUMMY_VIRTUAL(85) DUMMY_VIRTUAL(86) DUMMY_VIRTUAL(87) DUMMY_VIRTUAL(88) DUMMY_VIRTUAL(89) DUMMY_VIRTUAL(90) DUMMY_VIRTUAL(91) DUMMY_VIRTUAL(92) DUMMY_VIRTUAL(93) DUMMY_VIRTUAL(94) DUMMY_VIRTUAL(95) DUMMY_VIRTUAL(96) DUMMY_VIRTUAL(97) DUMMY_VIRTUAL(98) DUMMY_VIRTUAL(99) DUMMY_VIRTUAL(100) DUMMY_VIRTUAL(101) DUMMY_VIRTUAL(102) DUMMY_VIRTUAL(103) DUMMY_VIRTUAL(104) DUMMY_VIRTUAL(105) DUMMY_VIRTUAL(106) DUMMY_VIRTUAL(107) DUMMY_VIRTUAL(108) DUMMY_VIRTUAL(109) DUMMY_VIRTUAL(110) DUMMY_VIRTUAL(111) DUMMY_VIRTUAL(112) DUMMY_VIRTUAL(113) DUMMY_VIRTUAL(114) DUMMY_VIRTUAL(115) DUMMY_VIRTUAL(116) DUMMY_VIRTUAL(117) DUMMY_VIRTUAL(118) DUMMY_VIRTUAL(119)
-  virtual void DrawTerrainLegendSlot1E0(int terrainIndex, int labelSelector) = 0; // 0x1e0
-
-  char pad_04[0x94];
-  short frameRegionSelectorAt98;
-  char pad_9a[0x48a];
-  int legendSurfaceModeAt524;
-
-  void RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect);
-  void RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot, const RECT* presentRect);
-  void RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot, const RECT* presentRect);
-  void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId);
-  void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
-  void BuildCombinedTerrainTypeRegionMaskAndDispatch();
-  void RenderDiplomacyPendingPolicyIconsAndFrames();
-  int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
-  void UpdateDiplomacyMapHoverCursorFromActionSelection(CPoint* clickPoint, void* dispatchArg);
-  void ForwardCityDialogParamToActiveChildOrBase(void* param);
-  void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
-  void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
-  void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId,
-                                                             TEventHandler* panelEvent,
-                                                             void* extra);
-
-protected:
-  ~TDiplomacyMapViewLayout() {}
-};
-
+undefined4 CallCallbackRepeatedly(void);
+undefined4 InvokeCallbackNTimesWithSehGuard(void);
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 undefined4 thunk_GetSurfaceObjectAtContextOffset24(void);
@@ -125,6 +79,62 @@ struct ModuleLibraryCacheState {
   void ReleaseRecordByHandle(int handle);
 };
 
+// FUNCTION: IMPERIALISM 0x004f3b60
+CRuntimeClass* TDiplomacyMapView::GetRuntimeClass() const {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004f3b80
+TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
+  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(CallCallbackRepeatedly)(
+      reinterpret_cast<char*>(this) + 0x1eac, 0x14, 0x17, reinterpret_cast<void*>(0x00408436));
+  reinterpret_cast<void(__stdcall*)(void*, int, int, void*)>(CallCallbackRepeatedly)(
+      reinterpret_cast<char*>(this) + 0x2078, 0x30, 0x17, reinterpret_cast<void*>(0x00404d5e));
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x94) = 0;
+  frameRegionSelectorAt98 = 0;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x90) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x9c) = 0;
+  legendSurfaceModeAt524 = 6;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xb8) = 0;
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0x28) = 1;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004f3c90
+// TDiplomacyMapView::`scalar deleting destructor'
+TDiplomacyMapView::~TDiplomacyMapView() {
+  reinterpret_cast<void(__cdecl*)(void*, int, int, void*)>(InvokeCallbackNTimesWithSehGuard)(
+      reinterpret_cast<char*>(this) + 0x2078, 0x30, 0x17, reinterpret_cast<void*>(0x004038a0));
+  reinterpret_cast<void(__cdecl*)(void*, int, int, void*)>(InvokeCallbackNTimesWithSehGuard)(
+      reinterpret_cast<char*>(this) + 0x1eac, 0x14, 0x17, reinterpret_cast<void*>(0x004077bb));
+}
+
+// FUNCTION: IMPERIALISM 0x004f3d60
+void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x004f3e30
+void TDiplomacyMapView::CallVoidSlotA0() {
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0xb8) = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004f3e60
+void TDiplomacyMapView::Free() {}
+
+// FUNCTION: IMPERIALISM 0x004f48c0
+void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+}
+
+// FUNCTION: IMPERIALISM 0x004f5410
+void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                             int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+}
+
 // GLOBAL: IMPERIALISM 0x6a134c
 extern "C" ModuleLibraryCacheState* g_pModuleLibraryCacheState = 0;
 
@@ -143,7 +153,7 @@ void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColo
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
-int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
+int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
   char* self = reinterpret_cast<char*>(this);
   char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
   if ((initFlags & 1) == 0) {
@@ -166,8 +176,7 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoi
     return 0;
   }
 
-  CPoint localPoint;
-  this->TransformScreenPointToLocalSlot148(&localPoint, clickPoint);
+  CPoint localPoint = this->TransformPointViaSlot138(clickPoint);
 
   int terrainIndex = 0;
   int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
@@ -197,8 +206,8 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004f5fb0
-void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(CPoint* clickPoint,
-                                                                               void* dispatchArg) {
+void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* clickPoint,
+                                                                            int dispatchArg) {
   char* self = reinterpret_cast<char*>(this);
   CPoint localPoint;
   localPoint.x = clickPoint->x;
@@ -268,11 +277,17 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(C
   }
 
   reinterpret_cast<TControl*>(this)->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
-      clickPoint, reinterpret_cast<int>(dispatchArg));
+      clickPoint, dispatchArg);
+}
+
+// FUNCTION: IMPERIALISM 0x004f5f90
+void TDiplomacyMapView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+  (void)point;
+  (void)hitArg;
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170
-void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
+void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
   reinterpret_cast<TView*>(this)->QueryBounds(const_cast<RECT*>(presentRect));
 
@@ -299,7 +314,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     short terrainIndex = 0;
     do {
       if (*terrainDescriptors != 0) {
-        this->DrawTerrainLegendSlot1E0(terrainIndex, terrainIndex + 0x258);
+        this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, terrainIndex + 0x258);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       terrainDescriptors = terrainDescriptors + 1;
@@ -311,7 +326,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable) + 7;
     do {
       if (*terrainDescriptors != 0) {
-        this->DrawTerrainLegendSlot1E0(terrainIndex, 0x2bb);
+        this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, 0x2bb);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       terrainDescriptors = terrainDescriptors + 1;
@@ -353,15 +368,15 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
 }
 
 // FUNCTION: IMPERIALISM 0x004f6440
-void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
+void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   ClipStateRegionWrapper* region = CreateClipStateRegionWrapperObject();
 
   short terrainIndex = 0;
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      void* frameRegion =
-          reinterpret_cast<void*>(g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
+      void* frameRegion = reinterpret_cast<void*>(
+          g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
       reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
           CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
     }
@@ -369,13 +384,13 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
     terrainDescriptors = terrainDescriptors + 1;
   } while (terrainIndex < 0x17);
 
-  this->ApplyClipRegionSlotC4(reinterpret_cast<int>(region));
+  this->ForwardMapViewVirtualC4IfPresent(reinterpret_cast<int>(region));
   DestroyClipStateRegionWrapperObject(region);
 }
 
 // FUNCTION: IMPERIALISM 0x004f64c0
-void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
-                                                                        const RECT* presentRect) {
+void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
+                                                                  const RECT* presentRect) {
   int* previousSurface = 0;
   int maskState[2] = {0, 0};
   int contextFlags = 0;
@@ -513,9 +528,12 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004f6820
+void TDiplomacyMapView::OrphanLeaf_NoCall_Ins05_004f6820() {}
+
 // FUNCTION: IMPERIALISM 0x004f6840
-void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
-                                                                        const RECT* presentRect) {
+void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
+                                                                  const RECT* presentRect) {
   CString str1;
   CString str2;
   CString str3;
@@ -588,7 +606,7 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
 }
 
 // FUNCTION: IMPERIALISM 0x004f6b10
-void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
+void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
   int maskState[2];
   maskState[0] = 0;
   maskState[1] = 0;
@@ -608,8 +626,7 @@ void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
-void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
-                                                                        int bmpId) {
+void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId) {
   TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
@@ -681,8 +698,8 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
-void TDiplomacyMapViewLayout::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
-                                                             void* arg4) {
+void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
+                                                       void* arg4) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
   void* child = *reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0xb4);
@@ -691,8 +708,7 @@ void TDiplomacyMapViewLayout::InvalidateAndRunChildWaitSheet(void* arg1, void* a
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
-void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2,
-                                                                   void* arg3) {
+void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
   TControl* child = *reinterpret_cast<TControl**>(reinterpret_cast<char*>(this) + 0xb4);
@@ -700,8 +716,7 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
-void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForward(
-    int commandId, TEventHandler* panelEvent, void* extra) {
+void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TEvent* extra) {
   if (commandId == 0x14) {
     int tabIndex = 0;
     int* tagTable = reinterpret_cast<int*>(0x00696978);
@@ -718,26 +733,25 @@ void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForw
       return;
     }
   } else {
-    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent,
-                                                             reinterpret_cast<TEvent*>(extra));
+    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent, extra);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130
-void TDiplomacyMapViewLayout::ForwardCityDialogParamToActiveChildOrBase(void* param) {
+void TDiplomacyMapView::ForwardParam(int param) {
   char* self = reinterpret_cast<char*>(this);
   if (*reinterpret_cast<int*>(self + 0xb8) == 5) {
     TControl* child = *reinterpret_cast<TControl**>(self + 0xb4);
-    child->ForwardParam(reinterpret_cast<int>(param));
+    child->ForwardParam(param);
     return;
   }
   // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
   // ILT thunk at 0x401d61 -> 0x48a380); the qualified call forces static dispatch.
-  reinterpret_cast<TEventHandler*>(this)->TEventHandler::ForwardParam(reinterpret_cast<int>(param));
+  reinterpret_cast<TEventHandler*>(this)->TEventHandler::ForwardParam(param);
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0
-void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
+void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
   ResetQuickDrawStrokeState();
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
 

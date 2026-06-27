@@ -6,9 +6,9 @@
 // VTABLE: IMPERIALISM 0x65e6f8
 class TPictureButton : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TPictureButton) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TPictureButton) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
-  virtual ~TPictureButton() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TPictureButton() override;                      // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -120,11 +120,12 @@ public:
   // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override; // slot 0x70 0x570870
+  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
+                                                  bool refreshNow) override; // slot 0x70 0x570870
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x5708c0
-// === END GENERATED DECLS (TPictureButton) ===
+  virtual bool IsSelected(); // slot 0x73 0x5708c0
+                             // === END GENERATED DECLS (TPictureButton) ===
   short glyph90;
   short timingWord92;
 
@@ -133,7 +134,8 @@ public:
 
 ASSERT_SIZE(TPictureButton, 0x94);
 
-// === BEGIN GENERATED (TPictureButton) — refreshed by `just gen-class TPictureButton`; do not hand-edit ===
+// === BEGIN GENERATED (TPictureButton) — refreshed by `just gen-class TPictureButton`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x0065e6f8 (116 slots), object size 0x94, base TPicture
 //   slot 0x00  byte 0x00  0x005707d0  override  GetTEventHandlerClassNamePointer
