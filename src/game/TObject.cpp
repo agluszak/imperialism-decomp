@@ -6,10 +6,7 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00694eb8
-CRuntimeClass PTR_s_TObject_00694eb8 = {nullptr, 0, 0, nullptr, nullptr};
-}
+IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {
@@ -35,11 +32,6 @@ void TObject::Free() {
 // FUNCTION: IMPERIALISM 0x004798d0
 TObject* TObject::ShallowClone() {
   return ShallowFree();
-}
-
-// FUNCTION: IMPERIALISM 0x00485e20
-CRuntimeClass* TObject::GetRuntimeClass() const {
-  return &PTR_s_TObject_00694eb8;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00484990

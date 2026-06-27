@@ -9,7 +9,8 @@ class TStream;
 // VTABLE: IMPERIALISM 0x006485c0
 class TObject : public CObject {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_SERIAL(TObject)
+
   void Serialize(CArchive& archive) override;
   virtual void WriteTo(TStream* stream);
   virtual void ReadFrom(TStream* stream);

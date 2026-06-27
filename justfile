@@ -309,9 +309,10 @@ build:
     "{{docker_image}}"
 
 # Run the recompiled Imperialism.exe under Wine from the retail install directory.
-# ORIGINAL_BINARY in .env must point at your legally obtained Imperialism.exe;
-# its parent directory must contain Data/ and the other game assets. Build first
-# with `just build`. Override WINEDEBUG in the environment for Wine tracing.
+# ORIGINAL_BINARY in .env must point at an immutable copy of your legally
+# obtained Imperialism.exe; its parent directory must contain Data/ and the
+# other game assets. Build first with `just build`. Override WINEDEBUG in the
+# environment for Wine tracing.
 run *args:
   #!/usr/bin/env bash
   set -euo pipefail
