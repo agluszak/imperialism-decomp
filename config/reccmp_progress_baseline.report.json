@@ -524,7 +524,7 @@
     },
     {
       "address": "0x4149a0",
-      "matching": 0.2222222222222222,
+      "matching": 0.22530864197530864,
       "name": "LoadLanguageResourcesFromIrgFiles",
       "type": 1
     },
@@ -1701,8 +1701,8 @@
     },
     {
       "address": "0x479f40",
-      "matching": 0.15384615384615385,
-      "name": "ConstructBitmapSurfaceStateAndResetResources",
+      "matching": 0.7843137254901961,
+      "name": "CDib::CDib",
       "type": 1
     },
     {
@@ -1731,8 +1731,8 @@
     },
     {
       "address": "0x47a3e0",
-      "matching": 0.0,
-      "name": "CopyOffset10PointPairToOutOrZero",
+      "matching": 0.5806451612903226,
+      "name": "CDib::CopyBitmapDimensionsToPoint",
       "type": 1
     },
     {
@@ -1869,8 +1869,8 @@
     },
     {
       "address": "0x47c080",
-      "matching": 0.02564102564102564,
-      "name": "LoadBitmapResourceAndInitializeSurfaceState",
+      "matching": 0.5641025641025641,
+      "name": "CDib::LoadBitmapResourceAndInitializeSurfaceState",
       "type": 1
     },
     {
@@ -5137,7 +5137,7 @@
     },
     {
       "address": "0x48f570",
-      "matching": 0.7012987012987013,
+      "matching": 0.7317073170731707,
       "name": "TPicture::SetPictureResourceIdAndRefresh",
       "type": 1
     },
@@ -6027,7 +6027,7 @@
     },
     {
       "address": "0x495b70",
-      "matching": 0.045454545454545456,
+      "matching": 0.5316455696202531,
       "name": "TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize",
       "type": 1
     },
@@ -6321,7 +6321,7 @@
     },
     {
       "address": "0x498fe0",
-      "matching": 0.361323155216285,
+      "matching": 0.36363636363636365,
       "name": "TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB",
       "type": 1
     },
@@ -6357,14 +6357,14 @@
     },
     {
       "address": "0x4997e0",
-      "matching": 0.13707165109034267,
-      "name": "LoadBmpResourceByIdCached",
+      "matching": 0.23076923076923078,
+      "name": "TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached",
       "type": 1
     },
     {
       "address": "0x499b40",
-      "matching": 0.008547008547008548,
-      "name": "BuildIndexedBmpResourceById",
+      "matching": 0.28628230616302186,
+      "name": "TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById",
       "type": 1
     },
     {
@@ -6387,7 +6387,7 @@
     },
     {
       "address": "0x49a390",
-      "matching": 0.7741935483870968,
+      "matching": 0.7928994082840237,
       "name": "TModuleLibraryCacheTableStateB::ReleaseRecordByHandle",
       "type": 1
     },
@@ -15820,7 +15820,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18053097345132743,
+      "matching": 0.18230088495575222,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },

@@ -1,13 +1,28 @@
 #include "game/TAnimation.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
-undefined TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {
-  return 0;
+void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {
+  if (bitmapResource == NULL) {
+    bitmapResource = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(bitmapResourceId);
+    if (bitmapResource == NULL) {
+      bitmapResource =
+          g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(bitmapResourceId, 0x42, 0x42, 0);
+    }
+  }
+
+  CPoint bitmapSize;
+  CPoint* copiedSize = bitmapResource->CopyBitmapDimensionsToPoint(&bitmapSize);
+  bitmapRect.left = 0;
+  bitmapRect.top = 0;
+  bitmapRect.right = copiedSize->x;
+  bitmapRect.bottom = copiedSize->y;
 }
 
 // FUNCTION: IMPERIALISM 0x00495c00
-undefined TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() {
+undefined
+TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() {
   return 0;
 }
 

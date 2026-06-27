@@ -17,6 +17,16 @@ CRuntimeClass* CDib::GetRuntimeClass() const {
 // SYNTHETIC: IMPERIALISM 0x00479fb0
 // CDib::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00479f40
+CDib::CDib() : CObject() {
+  m_hBitmap = NULL;
+  m_infoOwnMode = 0;
+  m_dibBitsOwned = 0;
+  m_hFileMapping = NULL;
+  m_hPalette = NULL;
+  Release();
+}
+
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {
   m_hBitmap = NULL;
@@ -91,6 +101,19 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
 // FUNCTION: IMPERIALISM 0x0047a370
 CDib::~CDib() {
   Release();
+}
+
+// FUNCTION: IMPERIALISM 0x0047a3e0
+CPoint* CDib::CopyBitmapDimensionsToPoint(CPoint* out) {
+  if (m_pInfoHeader == NULL) {
+    out->x = 0;
+    out->y = 0;
+    return out;
+  }
+
+  out->x = m_pInfoHeader->bmiHeader.biWidth;
+  out->y = m_pInfoHeader->bmiHeader.biHeight;
+  return out;
 }
 
 // FUNCTION: IMPERIALISM 0x0047ae20
@@ -262,4 +285,59 @@ void CDib::Release() {
   m_hFileMapping = NULL;
   m_hBitmap = NULL;
   m_hPalette = NULL;
+}
+
+// FUNCTION: IMPERIALISM 0x0047c080
+int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module) {
+  HRSRC resourceInfo = FindResourceA(module, resourceName, RT_BITMAP);
+  if (resourceInfo == NULL) {
+    return 0;
+  }
+
+  HGLOBAL resource = LoadResource(module, resourceInfo);
+  Release();
+  m_hGlobalInfo = NULL;
+  m_infoOwnMode = 0;
+  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(resource);
+
+  if (m_pInfoHeader->bmiHeader.biClrUsed == 0) {
+    switch (m_pInfoHeader->bmiHeader.biBitCount) {
+    case 1:
+      m_paletteCount = 2;
+      break;
+    case 4:
+      m_paletteCount = 0x10;
+      break;
+    case 8:
+      m_paletteCount = 0x100;
+      break;
+    case 0x10:
+    case 0x18:
+    case 0x20:
+      m_paletteCount = 0;
+      break;
+    }
+  } else {
+    m_paletteCount = m_pInfoHeader->bmiHeader.biClrUsed;
+  }
+
+  m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits = static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biWidth) *
+                           m_pInfoHeader->bmiHeader.biBitCount;
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords = rowDwords + 1;
+    }
+    int rows = m_pInfoHeader->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * 4 * rows;
+  }
+
+  m_colorTablePixels = m_pInfoHeader->bmiColors;
+  m_dibBits = reinterpret_cast<BYTE*>(m_colorTablePixels) + m_paletteCount * sizeof(RGBQUAD);
+  BuildPaletteFromRgbQuadBuffer();
+  return 1;
 }

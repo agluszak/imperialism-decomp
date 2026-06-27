@@ -29,6 +29,7 @@ public:
   void* m_mappedView;        // 0x30  MapViewOfFile base
   HPALETTE m_hPalette;       // 0x34  palette built from the color table (DeleteObject)
 
+  CDib();                                    // 0x00479f40
   CDib(int width, int height, int bitDepth); // 0x00479fe0
 
   CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x00479ed0
@@ -45,6 +46,10 @@ public:
   int BuildPaletteFromRgbQuadBuffer();
   // Convert a LOGPALETTE's entries into the surface's RGBQUAD color table. 0x0047b0c0
   void CopyRgbQuadTableFrom(const LOGPALETTE* source);
+  // Copy bitmap width/height into a point, or zero it if no header is attached. 0x0047a3e0
+  CPoint* CopyBitmapDimensionsToPoint(CPoint* out);
+  // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
+  int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
 
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.
   void Write(CFile* file); // 0x0047b9f0

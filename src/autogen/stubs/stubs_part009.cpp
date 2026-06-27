@@ -1259,26 +1259,10 @@ undefined4 WrapperFor_AFX_CLASSINIT_At00479ef0(void)
   return 0;
 }
 
-// ghidra_name ConstructBitmapSurfaceStateAndResetResources
-// ghidra_proto undefined ConstructBitmapSurfaceStateAndResetResources()
-// FUNCTION: IMPERIALISM 0x00479f40
-undefined4 ConstructBitmapSurfaceStateAndResetResources(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructBitmapBlitBufferFromSourceDescriptor
 // ghidra_proto undefined ConstructBitmapBlitBufferFromSourceDescriptor()
 // FUNCTION: IMPERIALISM 0x0047a200
 undefined4 ConstructBitmapBlitBufferFromSourceDescriptor(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyOffset10PointPairToOutOrZero
-// ghidra_proto undefined CopyOffset10PointPairToOutOrZero()
-// FUNCTION: IMPERIALISM 0x0047a3e0
-undefined4 CopyOffset10PointPairToOutOrZero(void)
 {
   return 0;
 }
@@ -1431,14 +1415,6 @@ undefined4 BlitSurfaceRectSkippingTransparentColor(void)
 // ghidra_proto undefined LoadBmpResourceByIdCached_Impl()
 // FUNCTION: IMPERIALISM 0x0047bf90
 undefined4 LoadBmpResourceByIdCached_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadBitmapResourceAndInitializeSurfaceState
-// ghidra_proto undefined LoadBitmapResourceAndInitializeSurfaceState()
-// FUNCTION: IMPERIALISM 0x0047c080
-undefined4 LoadBitmapResourceAndInitializeSurfaceState(void)
 {
   return 0;
 }

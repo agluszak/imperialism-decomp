@@ -610,12 +610,12 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
-  char* bmpHandle = static_cast<char*>(
-      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId)));
+  CDib* bmpHandle =
+      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
 
   unsigned char* maskCursor = maskRun->maskBytesAt00;
   if (maskCursor != 0) {
-    int srcRowWidth = *reinterpret_cast<int*>(*reinterpret_cast<int*>(bmpHandle + 0x10) + 4);
+    int srcRowWidth = bmpHandle->m_pInfoHeader->bmiHeader.biWidth;
     int srcRowAdvance = (((srcRowWidth + 3) & 0xfffffffc) - maskRun->rightAt0c) + maskRun->leftAt04;
     int surfaceHeight = *reinterpret_cast<int*>(
         *reinterpret_cast<int*>(
@@ -629,7 +629,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
     unsigned char* destCursor = reinterpret_cast<unsigned char*>(
         ((surfaceHeight - row) - 1) * rowStride + surfaceCtx->field00 + maskRun->leftAt04);
     int destRowAdvance = (maskRun->leftAt04 - maskRun->rightAt0c) - rowStride;
-    unsigned char* srcCursor = *reinterpret_cast<unsigned char**>(bmpHandle + 0xc);
+    unsigned char* srcCursor = static_cast<unsigned char*>(bmpHandle->m_dibBits);
 
     if (row < maskRun->bottomAt10) {
       do {

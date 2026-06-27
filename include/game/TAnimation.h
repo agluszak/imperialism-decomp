@@ -1,15 +1,16 @@
 #pragma once
 
+#include "game/CDib.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TAnimation and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TAnimation -> TObject -> CObject.
-// VTABLE: IMPERIALISM 0x0064c300
+// TODO(manifest): describe TAnimation and its role. Base edge (TObject) recovered from RTTI
+// CRuntimeClass chain: TAnimation -> TObject -> CObject. VTABLE: IMPERIALISM 0x0064c300
 class TAnimation : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x49f0a0
-  virtual ~TAnimation(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TAnimation();                                   // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -18,19 +19,28 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140(); // slot 0x0a 0x49f140
-  virtual undefined RenderBattleReportInsetWithPaletteShift(); // slot 0x0b 0x49f190
+  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140();  // slot 0x0a 0x49f140
+  virtual undefined RenderBattleReportInsetWithPaletteShift();               // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
   // These three are regular (non-virtual) methods — the orig TAnimation vtable
   // ends at byte 0x30; declaring them virtual appended 3 phantom slots.
-  undefined EnsureBitmapResourceLoadedAndCopyRectSize(); // 0x495b70
-  undefined WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(); // 0x495c00
+  void EnsureBitmapResourceLoadedAndCopyRectSize(); // 0x495b70
+  undefined
+  WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();     // 0x495c00
   undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(); // 0x4a1100
-// === END GENERATED DECLS (TAnimation) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimation 0xCTOR`).
+  // === END GENERATED DECLS (TAnimation) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimation
+  // 0xCTOR`).
+  int field04;
+  RECT bitmapRect;
+  CDib* bitmapResource;
+  short bitmapResourceId;
+  unsigned char field1e[0x0e];
 
   TAnimation();
 };
+
+ASSERT_SIZE(TAnimation, 0x2c);
 
 // === BEGIN GENERATED (TAnimation) — refreshed by `just gen-class TAnimation`; do not hand-edit ===
 // clang-format off

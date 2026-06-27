@@ -2,6 +2,8 @@
 
 #include "compat.h"
 #include "decomp_types.h"
+#include "game/CDib.h"
+#include "game/CDibPal.h"
 #include "game/mfc.h"
 #include <afxtempl.h>
 
@@ -21,7 +23,7 @@
 // still provisional pending the resource lookup/insert sites.
 struct CacheRecord {
   short id;
-  void* pObject;
+  CObject* pObject;
   int refCount;
 };
 
@@ -45,14 +47,16 @@ public:
   void LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index); // 0x004994c0
 
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
-  void* LoadBmpResourceByIdCached(unsigned short bmpId);
+  CDib* LoadBmpResourceByIdCached(unsigned short bmpId);
 
-  void* m_field0;                                         // 0x00
+  // Build an indexed 8-bit CDib fallback and cache it by resource id. 0x00499b40
+  CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
+
+  CDibPal* m_dibPalette;                                   // 0x00 global DIB palette companion
   CMap<WORD, WORD, CacheRecord*, CacheRecord*> m_tableA;   // 0x04 (vtable 0x0064ba80)
   CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)
-  HMODULE m_slots[4];                                     // 0x3c (gob pack slots 0..3)
-  HMODULE m_primaryModule;                                // 0x4c
+  HMODULE m_slots[4];                                      // 0x3c (gob pack slots 0..3)
+  HMODULE m_primaryModule;                                 // 0x4c
 };
 
 extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
-

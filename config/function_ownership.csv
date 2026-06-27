@@ -151,9 +151,11 @@ address|target_cpp|ownership|note
 479b00|src/game/ui_resource_pool.cpp|manual|marker_sync
 479be0|src/game/TView.cpp|manual|marker_sync
 479ed0|src/game/CDib.cpp|manual|marker_sync
+479f40|src/game/CDib.cpp|manual|marker_sync
 479fb0|src/game/CDib.cpp|manual|marker_sync
 479fe0|src/game/CDib.cpp|manual|marker_sync
 47a370|src/game/CDib.cpp|manual|marker_sync
+47a3e0|src/game/CDib.cpp|manual|marker_sync
 47ae20|src/game/CDib.cpp|manual|marker_sync
 47ae90|src/game/CDib.cpp|manual|marker_sync
 47b0c0|src/game/CDib.cpp|manual|marker_sync
@@ -161,6 +163,7 @@ address|target_cpp|ownership|note
 47b9f0|src/game/CDib.cpp|manual|marker_sync
 47bb10|src/game/CDib.cpp|manual|marker_sync
 47bca0|src/game/CDib.cpp|manual|marker_sync
+47c080|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
@@ -607,6 +610,7 @@ address|target_cpp|ownership|note
 499380|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4994c0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4997e0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+499b40|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49c240|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
@@ -3571,5 +3575,6 @@ address|target_cpp|ownership|note
 622b58|src/game/MfcRuntime.cpp|manual|marker_sync
 623523|src/game/MfcRuntime.cpp|manual|marker_sync
 623886|src/game/MfcRuntime.cpp|manual|marker_sync
+623a9a|src/game/CPalette.cpp|manual|marker_sync
 623b3a|src/game/CPtrList.cpp|manual|marker_sync
 624e73|src/game/MfcRuntime.cpp|manual|marker_sync
