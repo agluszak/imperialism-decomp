@@ -150,6 +150,7 @@ address|target_cpp|ownership|note
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
+47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 483340|src/game/startup_helpers.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
@@ -581,8 +582,8 @@ address|target_cpp|ownership|note
 4997e0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
-49d360|src/game/TModalTemplateDialog.cpp|manual|marker_sync
-49d450|src/game/TModalTemplateDialog.cpp|manual|marker_sync
+49d360|src/game/TControl.cpp|manual|marker_sync
+49d450|src/game/TControl.cpp|manual|marker_sync
 49d510|src/game/TModalTemplateDialog.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d6d0|src/game/TAdorner.cpp|manual|marker_sync
@@ -3392,7 +3393,7 @@ address|target_cpp|ownership|note
 6034e4|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 60356b|src/game/CMapPtrToPtr.cpp|manual|marker_sync
 6035bb|src/game/CMapPtrToPtr.cpp|manual|marker_sync
-6050d0|src/game/TModalTemplateDialog.cpp|manual|marker_sync
+6050d0|src/game/TControl.cpp|manual|marker_sync
 605791|src/game/CString.cpp|manual|marker_sync
 605797|src/game/CString.cpp|manual|marker_sync
 6057a7|src/game/CString.cpp|manual|marker_sync

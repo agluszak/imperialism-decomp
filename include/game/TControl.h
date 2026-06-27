@@ -8,8 +8,27 @@ struct TControlPictureRectState {
   short value2;
 };
 
+// TControl layout prefix through +0x73 (field70). Template modal controllers and dual-text
+// dialog variants share this prefix; tails at +0x74 differ by dialog class.
+class TControlTemplatePrefix : public TView {
+public:
+  TControlTemplatePrefix* InitializeDialogTemplateFromId(UINT templateId, void* initParam);
+  int PrepareAndCreateModalFromTemplate();
+  int FinalizeModalDialogAndRestoreOwnerFocus();
+
+protected:
+  TControlTemplatePrefix();
+
+  int hasCommandTagResource;
+  unsigned char commandTagResourceByte;
+  unsigned char padding_65_to_67[3];
+  int field68;
+  int field6C;
+  int field70;
+};
+
 // VTABLE: IMPERIALISM 0x64a098
-class TControl : public TView {
+class TControl : public TControlTemplatePrefix {
 public:
   // === BEGIN GENERATED DECLS (TControl) — refreshed by recover-class; do not hand-edit ===
   virtual ~TControl(); // slot 0x01 (scalar deleting destructor)
@@ -130,10 +149,7 @@ public:
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
                                                   bool refreshNow); // slot 0x70 0x48e810
   // === END GENERATED DECLS (TControl) ===
-  int hasCommandTagResource;
-  unsigned char commandTagResourceByte;
-  unsigned char padding_65_to_67[3];
-  RECT contentMargins68;
+  int field74;
   int commandTagDefaultParam0;
   int commandTagDefaultParam1;
   unsigned short commandTagDefaultParam2;

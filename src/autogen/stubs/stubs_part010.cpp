@@ -251,14 +251,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047e090(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0
-// ghidra_proto undefined WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0()
-// FUNCTION: IMPERIALISM 0x0047e0c0
-undefined4 WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanVtableAssignStub_0047e100
 // ghidra_proto undefined OrphanVtableAssignStub_0047e100()
 // FUNCTION: IMPERIALISM 0x0047e100

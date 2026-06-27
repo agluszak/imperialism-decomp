@@ -8,6 +8,7 @@
 #include "game/TControl.h"
 #include "game/ClipStateRegion.h"
 #include "game/TTEView.h"
+#include "game/TMovieView.h"
 #include "game/mcappui_globals.h"
 #include "game/ui_widget_thunks.h"
 #include "game/ui_invalidation_guard.h"
@@ -64,16 +65,12 @@ CRuntimeClass* TControl::GetRuntimeClass() const {
   return &PTR_s_TControl_00649600;
 }
 
-// Real ctor: the TView base ctor runs first (constructs the TView subobject +
-// its CString member), then MSVC writes this class's vptr (0x0064a098). Fields
-// are member-initializers so they emit in declaration order. No manual vtable
-// writes — the // VTABLE: annotation owns 0x0064a098.
-
+TControlTemplatePrefix::TControlTemplatePrefix()
+    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), field68(0), field6C(0), field70(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), contentMargins68(),
-      commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
+    : TControlTemplatePrefix(), field74(0), commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
       commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
       commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
 
@@ -205,7 +202,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
   QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
-  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
+  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
 }
 
 
@@ -221,6 +218,71 @@ undefined TControl::ReturnZeroFromUiSlot6C() {
   return 0;
 }
 
+namespace {
+
+HWND ResolvePreModalOwner() {
+  if (AfxGetApp() == nullptr || AfxGetApp()->m_pMainWnd == nullptr) {
+    return nullptr;
+  }
+  return AfxGetApp()->m_pMainWnd->GetSafeHwnd();
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x0049d360
+int TControlTemplatePrefix::PrepareAndCreateModalFromTemplate() {
+  void* lockedTemplateBytes = field48;
+  field70 = reinterpret_cast<int>(childList44);
+  const UINT resourceTemplateId =
+      static_cast<UINT>(*reinterpret_cast<int*>(padding_40_to_43));
+  if (resourceTemplateId != 0) {
+    AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+    HMODULE module = moduleState->m_hCurrentInstanceHandle;
+    HRSRC resourceInfo = FindResourceA(module, MAKEINTRESOURCEA(resourceTemplateId), RT_DIALOG);
+    if (resourceInfo == nullptr) {
+      return 0;
+    }
+    field70 = reinterpret_cast<int>(LoadResource(module, resourceInfo));
+  }
+  if (reinterpret_cast<HGLOBAL>(field70) != nullptr) {
+    lockedTemplateBytes = LockResource(reinterpret_cast<HGLOBAL>(field70));
+  }
+  if (lockedTemplateBytes == nullptr) {
+    return 0;
+  }
+
+  field6C = reinterpret_cast<int>(ResolvePreModalOwner());
+  field68 = 0;
+  if (field6C != 0 && IsWindowEnabled(reinterpret_cast<HWND>(field6C))) {
+    EnableWindow(reinterpret_cast<HWND>(field6C), FALSE);
+    field68 = 1;
+  }
+  hasCommandTagResource = reinterpret_cast<int>(
+      ::CreateDialogIndirectA(AfxGetInstanceHandle(), static_cast<LPCDLGTEMPLATE>(lockedTemplateBytes),
+                            reinterpret_cast<HWND>(field6C), nullptr));
+  field5c = 1;
+  return reinterpret_cast<HWND>(hasCommandTagResource) != nullptr ? 1 : 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0049d450
+int TControlTemplatePrefix::FinalizeModalDialogAndRestoreOwnerFocus() {
+  if (field68 != 0) {
+    EnableWindow(reinterpret_cast<HWND>(field6C), TRUE);
+  }
+  if (field6C != 0) {
+    HWND activeWindow = GetActiveWindow();
+    if (activeWindow == reinterpret_cast<HWND>(hasCommandTagResource)) {
+      SetActiveWindow(reinterpret_cast<HWND>(field6C));
+    }
+  }
+  const int result = field2c;
+  commandTagResourceByte = 1;
+  padding_65_to_67[0] = 0;
+  padding_65_to_67[1] = 0;
+  padding_65_to_67[2] = 0;
+  return result;
+}
+
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
@@ -231,3 +293,20 @@ void TControl::SetHasCommandTagResource(int value) {
 }
 
 TControl::~TControl() {}
+
+// FUNCTION: IMPERIALISM 0x006050d0
+TControlTemplatePrefix* TControlTemplatePrefix::InitializeDialogTemplateFromId(UINT templateId,
+                                                                               void* initParam) {
+  sharedStringRef.~CString();
+  memset(&field3c, 0, 0x20);
+  new (&sharedStringRef) CString();
+  nativeWindow50 = reinterpret_cast<CWnd*>(initParam);
+  field3c = static_cast<int>(templateId);
+  *reinterpret_cast<int*>(padding_40_to_43) = static_cast<int>(templateId & 0xffff);
+  field5c = 0;
+  hasCommandTagResource = 0;
+  field68 = 0;
+  field6C = 0;
+  field70 = 0;
+  return this;
+}

@@ -36,11 +36,6 @@ protected:
   CString promptText;
 };
 
-class TAutoResolutionDialog : public TModalTemplateDialog {
-public:
-  explicit TAutoResolutionDialog(void* initParam = nullptr);
-};
-
 class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:
   explicit TLowDiskWarningDialog(void* initParam = nullptr);

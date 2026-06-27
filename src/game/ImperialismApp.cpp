@@ -12,7 +12,7 @@
 #include "game/CString.h"
 #include "game/mfc.h"
 #include "game/CMcWindow.h"
-#include "game/TModalTemplateDialog.h"
+#include "game/TAutoResolutionDialog.h"
 
 extern "C" char g_szEmptyString[];
 extern "C" const char s_DataDirectoryPath_006942A8[];

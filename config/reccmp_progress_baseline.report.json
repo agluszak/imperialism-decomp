@@ -536,7 +536,7 @@
     },
     {
       "address": "0x415090",
-      "matching": 0.29473684210526313,
+      "matching": 0.29591836734693877,
       "name": "ShowAutoResolutionDialogIfNeeded",
       "type": 1
     },
@@ -2036,7 +2036,7 @@
     },
     {
       "address": "0x47dfd0",
-      "matching": 0.5,
+      "matching": 0.4634146341463415,
       "name": "InitializeDialogTemplateFBWithDualTextState",
       "type": 1
     },
@@ -4336,7 +4336,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -4924,7 +4924,7 @@
     },
     {
       "address": "0x48e520",
-      "matching": 0.4444444444444444,
+      "matching": 0.34285714285714286,
       "name": "TControl::TControl",
       "type": 1
     },
@@ -6643,13 +6643,13 @@
     },
     {
       "address": "0x49d360",
-      "matching": 0.4217687074829932,
+      "matching": 0.4966442953020134,
       "name": "PrepareAndCreateDialogFromTemplateResource",
       "type": 1
     },
     {
       "address": "0x49d450",
-      "matching": 0.4375,
+      "matching": 0.42105263157894735,
       "name": "TControl::FinalizeModalDialogAndRestoreOwnerFocus",
       "type": 1
     },
@@ -11629,7 +11629,7 @@
     },
     {
       "address": "0x4dbac0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9696969696969697,
       "name": "TGreatPower::MarkConnectedOwnedRegionsInMaskRecursive",
       "type": 1
     },
@@ -12278,25 +12278,25 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12332,7 +12332,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13010,7 +13010,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.5408805031446541,
+      "matching": 0.5283018867924528,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -13022,7 +13022,7 @@
     },
     {
       "address": "0x4e8750",
-      "matching": 0.2857142857142857,
+      "matching": 0.2892857142857143,
       "name": "TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric",
       "type": 1
     },
@@ -15686,7 +15686,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17345132743362832,
+      "matching": 0.17699115044247787,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -25239,7 +25239,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.001644736842105263,
+      "matching": 0.04956629491945477,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -26663,7 +26663,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.4729064039408867,
+      "matching": 0.45320197044334976,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -32688,7 +32688,7 @@
     },
     {
       "address": "0x5e1bc0",
-      "matching": 0.40540540540540543,
+      "matching": 0.3783783783783784,
       "name": "InitializeDialogTemplate98WithSharedText",
       "type": 1
     },
@@ -35622,7 +35622,7 @@
     },
     {
       "address": "0x6050d0",
-      "matching": 0.20408163265306123,
+      "matching": 0.25,
       "name": "TControl::InitializeDialogTemplateFromId",
       "type": 1
     },
@@ -37783,7 +37783,13 @@
     {
       "address": "0x618a40",
       "matching": 0.0,
-      "name": "DDX_Text",
+      "name": "DDX_Text(void)",
+      "type": 1
+    },
+    {
+      "address": "0x618b21",
+      "matching": 0.02564102564102564,
+      "name": "AfxSimpleScanf(void)",
       "type": 1
     },
     {
@@ -37825,13 +37831,25 @@
     {
       "address": "0x618d0f",
       "matching": 0.0,
-      "name": "DDX_Check",
+      "name": "DDX_Check(void)",
       "type": 1
     },
     {
       "address": "0x618d61",
       "matching": 0.031746031746031744,
-      "name": "DDX_Radio",
+      "name": "DDX_Radio(void)",
+      "type": 1
+    },
+    {
+      "address": "0x618df2",
+      "matching": 0.9811320754716981,
+      "name": "DDX_LBString",
+      "type": 1
+    },
+    {
+      "address": "0x618e72",
+      "matching": 0.7037037037037037,
+      "name": "DDX_LBStringExact",
       "type": 1
     },
     {
@@ -37843,13 +37861,13 @@
     {
       "address": "0x618ec3",
       "matching": 0.0,
-      "name": "DDX_CBString",
+      "name": "DDX_CBString(void)",
       "type": 1
     },
     {
       "address": "0x618f43",
       "matching": 0.0,
-      "name": "DDX_CBStringExact",
+      "name": "DDX_CBStringExact(void)",
       "type": 1
     },
     {
@@ -37867,31 +37885,43 @@
     {
       "address": "0x619053",
       "matching": 0.0,
-      "name": "DDV_MinMaxByte",
+      "name": "DDV_MinMaxByte(void)",
       "type": 1
     },
     {
       "address": "0x619083",
       "matching": 0.0,
-      "name": "FailMinMaxWithFormat",
+      "name": "FailMinMaxWithFormat(void)",
       "type": 1
     },
     {
       "address": "0x619116",
       "matching": 0.0,
-      "name": "DDV_MinMaxShort",
+      "name": "DDV_MinMaxShort(void)",
       "type": 1
     },
     {
       "address": "0x6191f9",
       "matching": 0.0,
-      "name": "DDV_MaxChars",
+      "name": "DDV_MaxChars(void)",
       "type": 1
     },
     {
       "address": "0x6192a1",
       "matching": 0.0,
-      "name": "DDX_Control",
+      "name": "DDX_Control(void)",
+      "type": 1
+    },
+    {
+      "address": "0x6192ed",
+      "matching": 0.0,
+      "name": "AfxFailMaxChars(void)",
+      "type": 1
+    },
+    {
+      "address": "0x619365",
+      "matching": 0.06060606060606061,
+      "name": "AfxFailRadio(void)",
       "type": 1
     },
     {

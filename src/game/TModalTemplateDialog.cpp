@@ -1,17 +1,8 @@
 #include "game/TModalTemplateDialog.h"
 
+#include <new.h>
+
 #include "game/TMovieView.h"
-
-namespace {
-
-HWND ResolvePreModalOwner() {
-  if (AfxGetApp() == nullptr || AfxGetApp()->m_pMainWnd == nullptr) {
-    return nullptr;
-  }
-  return AfxGetApp()->m_pMainWnd->GetSafeHwnd();
-}
-
-} // namespace
 
 TModalTemplateDialog::TModalTemplateDialog()
     : TControl(), resourceTemplateId(0), templateInitContext(nullptr), lockedTemplateBytes(nullptr),
@@ -40,42 +31,31 @@ BOOL TModalTemplateDialog::UpdateData(BOOL saveAndValidate) {
   return result;
 }
 
-// FUNCTION: IMPERIALISM 0x0049d360
-int TModalTemplateDialog::PrepareAndCreateModalFromTemplate() {
-  lockedTemplateBytes = field48;
-  templateSourceCopy = reinterpret_cast<int>(childList44);
-  hDialogResource = reinterpret_cast<HGLOBAL>(templateSourceCopy);
-  if (resourceTemplateId != 0) {
-    AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-    HMODULE module = moduleState->m_hCurrentInstanceHandle;
-    HRSRC resourceInfo = FindResourceA(module, MAKEINTRESOURCEA(resourceTemplateId), RT_DIALOG);
-    if (resourceInfo == nullptr) {
-      return 0;
-    }
-    hDialogResource = LoadResource(module, resourceInfo);
-  }
-  if (hDialogResource != nullptr) {
-    lockedTemplateBytes = LockResource(hDialogResource);
-  }
-  if (lockedTemplateBytes == nullptr) {
-    return 0;
-  }
-
-  hOwnerWindow = ResolvePreModalOwner();
+TControl* TModalTemplateDialog::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
+  TControlTemplatePrefix::InitializeDialogTemplateFromId(templateId, initParam);
+  templateInitContext = initParam;
+  resourceTemplateId = templateId & 0xffff;
+  modalCreated = 0;
+  hModalDialog = nullptr;
   ownerWasDisabled = 0;
-  if (hOwnerWindow != nullptr && IsWindowEnabled(hOwnerWindow)) {
-    EnableWindow(hOwnerWindow, FALSE);
-    ownerWasDisabled = 1;
-  }
-  hModalDialog = ::CreateDialogIndirectA(AfxGetInstanceHandle(),
-                                         static_cast<LPCDLGTEMPLATE>(lockedTemplateBytes),
-                                         hOwnerWindow, nullptr);
-  field5c = 1;
-  modalCreated = 1;
-  return hModalDialog != nullptr ? 1 : 0;
+  hOwnerWindow = nullptr;
+  hDialogResource = nullptr;
+  lockedTemplateBytes = nullptr;
+  return this;
 }
 
-// FUNCTION: IMPERIALISM 0x0049d450
+int TModalTemplateDialog::PrepareAndCreateModalFromTemplate() {
+  const int result = TControlTemplatePrefix::PrepareAndCreateModalFromTemplate();
+  lockedTemplateBytes = field48;
+  templateSourceCopy = reinterpret_cast<int>(childList44);
+  hDialogResource = reinterpret_cast<HGLOBAL>(field70);
+  hOwnerWindow = reinterpret_cast<HWND>(field6C);
+  ownerWasDisabled = field68;
+  hModalDialog = reinterpret_cast<HWND>(hasCommandTagResource);
+  modalCreated = field5c;
+  return result;
+}
+
 int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
   if (modalCreated == 0) {
     CallVoidSlotA0();
@@ -96,21 +76,10 @@ int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
                                   SWP_HIDEWINDOW | SWP_NOSENDCHANGING);
     }
   }
-  if (ownerWasDisabled != 0) {
-    EnableWindow(hOwnerWindow, TRUE);
-  }
-  if (hOwnerWindow != nullptr) {
-    HWND activeWindow = GetActiveWindow();
-    CWnd* dialogWnd = CWnd::FromHandlePermanent(hModalDialog);
-    if (dialogWnd != nullptr && activeWindow == dialogWnd->m_hWnd) {
-      SetActiveWindow(hOwnerWindow);
-    }
-  }
-  const int result = field2c;
-  commandTagResourceByte = 1;
-  padding_65_to_67[0] = 0;
-  padding_65_to_67[1] = 0;
-  padding_65_to_67[2] = 0;
+  const int result = TControlTemplatePrefix::FinalizeModalDialogAndRestoreOwnerFocus();
+  hModalDialog = nullptr;
+  ownerWasDisabled = 0;
+  modalCreated = 0;
   return result;
 }
 
@@ -126,19 +95,4 @@ void TModalTemplateDialog::CleanupModalCreateState() {
     modalCreated = 0;
     field5c = 0;
   }
-}
-
-// FUNCTION: IMPERIALISM 0x006050d0
-TControl* TModalTemplateDialog::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
-  memset(&field3c, 0, 0x20);
-  templateInitContext = initParam;
-  field3c = static_cast<int>(templateId);
-  resourceTemplateId = templateId & 0xffff;
-  modalCreated = 0;
-  hModalDialog = nullptr;
-  ownerWasDisabled = 0;
-  hOwnerWindow = nullptr;
-  hDialogResource = nullptr;
-  lockedTemplateBytes = nullptr;
-  return this;
 }
