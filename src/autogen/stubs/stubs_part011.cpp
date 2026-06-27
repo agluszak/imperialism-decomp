@@ -1947,14 +1947,6 @@ undefined4 InitializeDirectSoundDeviceAndChannels_Impl(void)
   return 0;
 }
 
-// ghidra_name UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl
-// ghidra_proto undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl()
-// FUNCTION: IMPERIALISM 0x0049c240
-undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290
 // ghidra_proto undefined Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290()
 // FUNCTION: IMPERIALISM 0x0049c290
@@ -1975,14 +1967,6 @@ undefined4 LoadWaveResourceByNumericIdAndBuildBuffer(void)
 // ghidra_proto undefined ReadWaveDataAndFormatViaLoaderWithRetry()
 // FUNCTION: IMPERIALISM 0x0049c720
 undefined4 ReadWaveDataAndFormatViaLoaderWithRetry(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ftol_At005e5020_Impl
-// ghidra_proto undefined WrapperFor_ftol_At005e5020_Impl()
-// FUNCTION: IMPERIALISM 0x0049c850
-undefined4 WrapperFor_ftol_At005e5020_Impl(void)
 {
   return 0;
 }

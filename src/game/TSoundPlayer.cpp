@@ -4,6 +4,7 @@
 #include "game/diplomacy_globals.h"
 #include "game/TApplication.h"
 #include "game/TSoundChannelNode.h"
+#include "game/TSoundResourceManager.h"
 
 #include <new>
 #include <math.h>
@@ -37,34 +38,19 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 static int DAT_006a60f8 = 0;
 
 undefined4 LoadWaveResourceByNumericIdAndBuildBuffer(void);
-undefined4 UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl(void);
-undefined4 WrapperFor_ftol_At005e5020_Impl(void);
 
 namespace {
 int CallLoadWaveResource(int sfxToken, int slot) {
-  typedef int (__fastcall *LoadWaveFunc)(void*, int, int, int);
-  return reinterpret_cast<LoadWaveFunc>(LoadWaveResourceByNumericIdAndBuildBuffer)(reinterpret_cast<void*>(0x6a60c0), 0, sfxToken, slot);
-}
-
-void CallUpdateLocalizationAudio(int slot) {
-  typedef void (__fastcall *UpdateLocFunc)(void*, int, int);
-  reinterpret_cast<UpdateLocFunc>(UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl)(reinterpret_cast<void*>(0x6a60c0), 0, slot);
-}
-
-void CallWrapperForFtolImpl(int volume) {
-  typedef void (__fastcall *FtolImplFunc)(void*, int, int);
-  reinterpret_cast<FtolImplFunc>(WrapperFor_ftol_At005e5020_Impl)(reinterpret_cast<void*>(0x6a60c0), 0, volume);
+  typedef int(__fastcall * LoadWaveFunc)(void*, int, int, int);
+  return reinterpret_cast<LoadWaveFunc>(LoadWaveResourceByNumericIdAndBuildBuffer)(
+      reinterpret_cast<void*>(0x6a60c0), 0, sfxToken, slot);
 }
 } // namespace
-
-
 
 // FUNCTION: IMPERIALISM 0x005932b0
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
   return new TSoundPlayer();
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00593350
 CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
@@ -72,15 +58,8 @@ CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
 }
 
 TSoundPlayer::TSoundPlayer()
-    : TEventHandler(),
-      runtimePeerAt6c(0),
-      runtimePeerAt70(0),
-      stateByte78(0),
-      stateByte79(0),
-      stateByte7a(0),
-      stateDword7c(0) {}
-
-
+    : TEventHandler(), runtimePeerAt6c(0), runtimePeerAt70(0), stateByte78(0), stateByte79(0),
+      stateByte7a(0), stateDword7c(0) {}
 
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
@@ -98,14 +77,12 @@ TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
 // Partial teardown writes the runtime-object base vptr, symmetric with TEventHandler
 // construction via the normal base ctor chain.
 
-
 // FUNCTION: IMPERIALISM 0x005933e0
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
   *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 }
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
-
 
 // FUNCTION: IMPERIALISM 0x00593400
 char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
@@ -121,7 +98,8 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   }
 
   if (this->stateByte80 != 0 && this->stateDword7c == 0) {
-    int n = static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
+    int n =
+        static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
     if (n > 0) {
       static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->StopOrResetActivePlaybackSlot30();
       static_cast<TSoundChannelNode*>(this->runtimePeerAt70)->StopOrResetActivePlaybackSlot30();
@@ -155,7 +133,6 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
 }
 
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
-
 
 namespace {
 
@@ -214,15 +191,12 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
       ->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x005e4f60
 unsigned char TSoundPlayer::ReturnConstantTrue_SoundPredicate() {
   return 1;
 }
 
 // Slot 0x28 — kick off DirectSound init if the device is available.
-
 
 // FUNCTION: IMPERIALISM 0x005e4f80
 void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
@@ -232,8 +206,6 @@ void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x005e4fb0
 unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
   (void)a;
@@ -242,7 +214,6 @@ unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
 }
 
 // Slot 0x29 — clear the pending flag and tear down the partial init.
-
 
 // FUNCTION: IMPERIALISM 0x005e4fd0
 void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
@@ -254,7 +225,7 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 void TSoundPlayer::NotifyGlobalAudioObjectsViaVslot48() {
   for (int offset = 4; offset < 0x1c; offset += 4) {
     void* obj = *reinterpret_cast<void**>(0x006a60c0 + offset);
-    typedef void (__stdcall *VirtualFunc)(void*);
+    typedef void(__stdcall * VirtualFunc)(void*);
     VirtualFunc* vtable = *reinterpret_cast<VirtualFunc**>(obj);
     vtable[18](obj);
   }
@@ -271,19 +242,18 @@ void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1) {
     if (volume < -9999) {
       volume = -9999;
     }
-    CallWrapperForFtolImpl(volume);
+    g_soundResourceManager.SetChannelVolumesUntilAccepted(volume);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005e50a0
-void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {
-}
+void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {}
 
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
 
-
 // FUNCTION: IMPERIALISM 0x005e50c0
-int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2, int param_3, int param_4) {
+int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2,
+                                                                       int param_3, int param_4) {
   if (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x4c) == 0) {
     return 0;
   }
@@ -292,7 +262,7 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxTo
     DAT_006a60f8 = 0;
   }
   if (CallLoadWaveResource(sfxToken, slot) != 0) {
-    CallUpdateLocalizationAudio(slot);
+    g_soundResourceManager.UpdateLocalizationAudioSlot(slot);
   }
   return 0;
 }
@@ -301,7 +271,6 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxTo
 void TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
   this->UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, param_2, param_3, 1);
 }
-
 
 // FUNCTION: IMPERIALISM 0x005e51d0
 void TSoundPlayer::Free() {
@@ -318,4 +287,3 @@ void TSoundPlayer::Free() {
   ForwardMciCommand808ToDevice();
   TEventHandler::Free();
 }
-

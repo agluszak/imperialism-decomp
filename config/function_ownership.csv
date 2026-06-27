@@ -581,6 +581,8 @@ address|target_cpp|ownership|note
 4994c0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4997e0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49c240|src/game/TSoundResourceManager.cpp|manual|marker_sync
+49c850|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49cc40|src/game/startup_helpers.cpp|manual|marker_sync
 49d360|src/game/TControl.cpp|manual|marker_sync
 49d450|src/game/TControl.cpp|manual|marker_sync
