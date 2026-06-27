@@ -15,6 +15,7 @@ class TView;
 
 #include "game/mfc.h"
 #include "game/mcappui_globals.h"
+#include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
@@ -364,3 +365,34 @@ TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
 // GLOBAL: IMPERIALISM 0x006a141c / 0x006a1420 — UI resource tree builder state.
 TView* g_pUiResourceHead = nullptr;
 TView* g_pUiResourceContext = nullptr;
+
+// GLOBAL: IMPERIALISM 0x006a1d18
+GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x006a1dc0
+GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord = nullptr;
+
+// UDisplayMgr font-name literals and runtime CString slots (InitializeTurnOrderNavigationDialog).
+// GLOBAL: IMPERIALISM 0x00695150
+extern "C" const char g_szUiFontLiteralBelweBdBt[] = "Belwe Bd BT";
+// GLOBAL: IMPERIALISM 0x00696b6c
+extern "C" const char g_szUiFontLiteralPalatino[] = "Palatino";
+// GLOBAL: IMPERIALISM 0x00696b78
+extern "C" const char g_szUiFontLiteralBelweLight[] = "L Belwe Light";
+
+// GLOBAL: IMPERIALISM 0x00694fc8
+extern "C" const char g_szUiNilPointerMessage[] = "Nil Pointer";
+// GLOBAL: IMPERIALISM 0x00694fd8
+extern "C" const char g_szUiFailureMessage[] = "Failure";
+
+// GLOBAL: IMPERIALISM 0x006a3060
+CString g_cstrUiFontBelweLight;
+// GLOBAL: IMPERIALISM 0x006a3080
+CString g_cstrUiFontPalatino;
+// GLOBAL: IMPERIALISM 0x006a30a4
+CString g_cstrUiFontBelweBdBt;
+
+// One-shot invalidation-flag assert gates (UDisplayMgr.cpp lines 471/495).
+// GLOBAL: IMPERIALISM 0x006a30ac
+int g_nUiInvalidationAssertFlagLine471 = 0;
+// GLOBAL: IMPERIALISM 0x006a30b0
+int g_nUiInvalidationAssertFlagLine495 = 0;

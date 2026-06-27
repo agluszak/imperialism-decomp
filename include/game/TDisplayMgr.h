@@ -59,6 +59,17 @@ public:
 
 extern TDisplayMgr* g_pDisplayMgr;
 
+extern "C" const char g_szUiFontLiteralBelweBdBt[];
+extern "C" const char g_szUiFontLiteralPalatino[];
+extern "C" const char g_szUiFontLiteralBelweLight[];
+extern "C" const char g_szUiNilPointerMessage[];
+extern "C" const char g_szUiFailureMessage[];
+extern CString g_cstrUiFontBelweLight;
+extern CString g_cstrUiFontPalatino;
+extern CString g_cstrUiFontBelweBdBt;
+extern int g_nUiInvalidationAssertFlagLine471;
+extern int g_nUiInvalidationAssertFlagLine495;
+
 // === BEGIN GENERATED (TDisplayMgr) — refreshed by `just gen-class TDisplayMgr`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x00656680 (23 slots), object size 0x24, base TObject

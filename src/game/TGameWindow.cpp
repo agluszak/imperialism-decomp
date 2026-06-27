@@ -7,6 +7,7 @@
 #include "game/UiRuntimeContext.h"
 #include "game/diplomacy_globals.h"
 #include "game/mfc.h"
+#include "game/startup_helpers.h"
 
 extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
 
@@ -15,7 +16,6 @@ undefined4 ConsumeFirstPendingAbilityUnlock(void);
 undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
 undefined4 SendMessage808IfSelectionStateActive(void);
-undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
 
 namespace {
 
@@ -71,11 +71,6 @@ static void SelectAndActivatePendingEventForCurrentViewGate() {
 static void SendMessage808IfSelectionStateActiveGate() {
   reinterpret_cast<void(__cdecl*)(void)>(
       reinterpret_cast<void (*)()>(::SendMessage808IfSelectionStateActive))();
-}
-
-static int* InitializeGlobalRectDefaultsIfUninitializedGate() {
-  return reinterpret_cast<int*(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::InitializeGlobalRectDefaultsIfUninitialized))();
 }
 
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
@@ -252,9 +247,11 @@ undefined TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
       *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0xe) == 0x7d1) {
     RECT boundsRect;
     CaptureLayoutF0(reinterpret_cast<int*>(&boundsRect), 0);
-    int* rectDefaults = GameWindowInvoke::InitializeGlobalRectDefaultsIfUninitializedGate();
+    GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
+        InitializeGlobalRectDefaultsIfUninitialized();
+    GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
     RECT globalRect;
-    CopyRect(&globalRect, reinterpret_cast<RECT*>(rectDefaults + 1));
+    CopyRect(&globalRect, reinterpret_cast<RECT*>(&rectRecord->left));
     boundsRect.top = globalRect.top;
     boundsRect.bottom = globalRect.bottom;
     boundsRect.right = globalRect.right;

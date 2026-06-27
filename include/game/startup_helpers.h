@@ -6,6 +6,17 @@
 class TAmbitApplication;
 class TView;
 
+struct GlobalViewportRectDefaultsRecord {
+  int field0;
+  int left;
+  int top;
+  int right;
+  int bottom;
+};
+
+extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
+extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
+
 extern "C" {
 // 0x005e7a80
 void* SetGlobalCallback6A7FACAndReturnPrevious(void* callback);
@@ -28,3 +39,6 @@ extern "C++" undefined4 ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
 
 // 0x00412a70 — AfxGetThread virtual +0x7c then read *(obj+0x98).
 void* GetMainViewHostFromActiveThread();
+
+// 0x00497230 — lazily seeds default 640x480 viewport rect globals.
+GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();

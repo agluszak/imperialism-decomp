@@ -177,8 +177,15 @@ address|target_cpp|ownership|note
 484990|src/game/TObject.cpp|manual|marker_sync
 484af0|src/game/CMainFrame.cpp|manual|marker_sync
 484bf0|src/game/CMainFrame.cpp|manual|marker_sync
+484c70|src/game/CMainFrame.cpp|manual|marker_sync
+484d00|src/game/CMainFrame.cpp|manual|marker_sync
+484d70|src/game/CMainFrame.cpp|manual|marker_sync
+484f70|src/game/CMainFrame.cpp|manual|marker_sync
 484fb0|src/game/ImperialismApp.cpp|manual|marker_sync
 484fd0|src/game/ImperialismApp.cpp|manual|marker_sync
+484ff0|src/game/CMainFrame.cpp|manual|marker_sync
+485110|src/game/CMainFrame.cpp|manual|marker_sync
+485180|src/game/CMainFrame.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|mfc_runtime_macro
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync
 485f50|src/game/TObject.cpp|manual|marker_sync
@@ -603,6 +610,7 @@ address|target_cpp|ownership|note
 495b40|src/game/quickdraw_globals.cpp|manual|marker_sync
 495b70|src/game/TAnimation.cpp|manual|marker_sync
 495c00|src/game/TAnimation.cpp|manual|marker_sync
+497230|src/game/startup_helpers.cpp|manual|marker_sync
 4972a0|src/game/TDisplayMgr.cpp|manual|marker_sync
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync

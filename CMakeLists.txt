@@ -51,6 +51,12 @@ if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     target_link_libraries(Imperialism PRIVATE gdi32 user32)
 endif()
 
+if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
+    target_sources(Imperialism PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/imperialism_game.rc"
+    )
+endif()
+
 # Groundwork for the retail-MFC migration (see docs/worklog.md 2026-06-16 and
 # tools/mfc/gen_library_annotations.py). When ON, link the statically-linked retail
 # MFC (nafxcw.lib, byte-identical to the original) plus the Win32 import libs MFC

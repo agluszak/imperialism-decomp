@@ -155,6 +155,19 @@ void SetUiRuntimeContextAndActivateMain(TView* mainViewHost, TView* activeDialog
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00497230
+GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
+  if (g_pGlobalViewportRectDefaultsRecord == nullptr) {
+    g_globalViewportRectDefaultsRecord.field0 = 0;
+    g_globalViewportRectDefaultsRecord.left = 0;
+    g_globalViewportRectDefaultsRecord.top = 0;
+    g_globalViewportRectDefaultsRecord.right = 0x280;
+    g_globalViewportRectDefaultsRecord.bottom = 0x1e0;
+    g_pGlobalViewportRectDefaultsRecord = &g_globalViewportRectDefaultsRecord;
+  }
+  return &g_pGlobalViewportRectDefaultsRecord;
+}
+
 // FUNCTION: IMPERIALISM 0x0049cc40
 void SetGlobalDword6A2018(int value) {
   DAT_006a2018 = value;

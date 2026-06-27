@@ -1139,14 +1139,6 @@ undefined4 BlitRectWithOptionalTransparency(void)
   return 0;
 }
 
-// ghidra_name InitializeGlobalRectDefaultsIfUninitialized
-// ghidra_proto undefined InitializeGlobalRectDefaultsIfUninitialized()
-// FUNCTION: IMPERIALISM 0x00497230
-undefined4 InitializeGlobalRectDefaultsIfUninitialized(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnConstantTrueQuickDrawFlag
 // ghidra_proto undefined ReturnConstantTrueQuickDrawFlag()
 // FUNCTION: IMPERIALISM 0x004972c0

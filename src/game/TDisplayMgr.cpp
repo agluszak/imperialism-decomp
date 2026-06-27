@@ -3,6 +3,7 @@
 #include <new>
 
 #include "game/QuickDrawSurfaceGuard.h"
+#include "game/startup_helpers.h"
 #include "game/TAssetMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSortedPtrList.h"
@@ -21,7 +22,6 @@ extern CRuntimeClass classRuntimeClass;
 }
 
 undefined4 AssignStringSharedRefAndReturnThis(void);
-undefined4 InitializeGlobalRectDefaultsIfUninitialized(void);
 undefined4 InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void);
 undefined4 NoOpCallback_00498ca0(void);
 undefined4 ApplyHitRegionToClipState(void);
@@ -37,11 +37,6 @@ namespace DisplayMgrInvoke {
 static void AssignStringSharedRefAndReturnThis(TView* view, CString* dest, CString* sharedSource) {
   reinterpret_cast<void(__cdecl*)(TView*, CString*, CString*)>(
       reinterpret_cast<void (*)()>(::AssignStringSharedRefAndReturnThis))(view, dest, sharedSource);
-}
-
-static int* InitializeGlobalRectDefaultsIfUninitialized() {
-  return reinterpret_cast<int*(__cdecl*)()>(
-      reinterpret_cast<void (*)()>(::InitializeGlobalRectDefaultsIfUninitialized))();
 }
 
 static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outContext,
@@ -107,25 +102,13 @@ static void FailUiAssert(const char* sourceFile, int line) {
 namespace {
 
 const char* kSourceFileUDisplayMgr = "D:\\Ambit\\Cross\\UDisplayMgr.cpp";
-const unsigned int kAddrStrNilPointer = 0x00694fc8u;
-const unsigned int kAddrStrFailure = 0x00694fd8u;
-const unsigned int kAddrStrBelweBdBt = 0x00695150u;
-const unsigned int kAddrStrLBelweLight = 0x00696b78u;
-const unsigned int kAddrStrPalatino = 0x00696b6cu;
-const unsigned int kAddrCStringGlobalBelwe = 0x006a30a4u;
-const unsigned int kAddrCStringGlobalBelweLight = 0x006a3060u;
-const unsigned int kAddrCStringGlobalPalatino = 0x006a3080u;
-const unsigned int kAddrAssertFlagLine471 = 0x006a30acu;
-const unsigned int kAddrAssertFlagLine495 = 0x006a30b0u;
 const unsigned int kControlTagMain = 0x6d61696eu;
 const unsigned int kTagOkOkOk = 0x6f6b6f6bu;
 const int kClass99WindowId = 99;
 
-static void AssignGlobalCStringFromLiteral(unsigned int globalAddress,
-                                           unsigned int literalAddress) {
-  CString local;
-  local = reinterpret_cast<const char*>(literalAddress);
-  *reinterpret_cast<CString*>(globalAddress) = local;
+static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* literal) {
+  CString local(literal);
+  globalSlot = local;
 }
 
 } // namespace
@@ -160,17 +143,17 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
 
   dialogActiveFlag = 0;
 
-  AssignGlobalCStringFromLiteral(kAddrCStringGlobalBelwe, kAddrStrBelweBdBt);
-  AssignGlobalCStringFromLiteral(kAddrCStringGlobalBelweLight, kAddrStrLBelweLight);
-  AssignGlobalCStringFromLiteral(kAddrCStringGlobalPalatino, kAddrStrPalatino);
+  AssignUiFontGlobalFromLiteral(g_cstrUiFontBelweBdBt, g_szUiFontLiteralBelweBdBt);
+  AssignUiFontGlobalFromLiteral(g_cstrUiFontBelweLight, g_szUiFontLiteralBelweLight);
+  AssignUiFontGlobalFromLiteral(g_cstrUiFontPalatino, g_szUiFontLiteralPalatino);
 
-  int* rectDefaults = DisplayMgrInvoke::InitializeGlobalRectDefaultsIfUninitialized();
-  char* rectRecord = reinterpret_cast<char*>(*rectDefaults);
+  GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
+      InitializeGlobalRectDefaultsIfUninitialized();
+  GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
   RECT viewportRect;
-  CopyRect(&viewportRect, reinterpret_cast<RECT*>(rectRecord + 4));
-  int width = *reinterpret_cast<int*>(rectRecord + 0xc) - *reinterpret_cast<int*>(rectRecord + 0x4);
-  int height =
-      *reinterpret_cast<int*>(rectRecord + 0x10) - *reinterpret_cast<int*>(rectRecord + 0x8);
+  CopyRect(&viewportRect, reinterpret_cast<RECT*>(&rectRecord->left));
+  int width = rectRecord->right - rectRecord->left;
+  int height = rectRecord->bottom - rectRecord->top;
   if (width < 0x281 && height < 0x1e1) {
     eventCode0e = 0x7d1;
   } else {
@@ -181,8 +164,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
 
   TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(eventCode0e);
   if (dialogRoot == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0xb0);
   }
   activeDialog = dialogRoot;
@@ -243,7 +225,7 @@ undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0() {
 
 // FUNCTION: IMPERIALISM 0x004fec20
 undefined TDisplayMgr::AssertUDisplayMgrLine471() {
-  if (*reinterpret_cast<int*>(kAddrAssertFlagLine471) == 0) {
+  if (g_nUiInvalidationAssertFlagLine471 == 0) {
     DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x1d7);
   }
   return 0;
@@ -251,7 +233,7 @@ undefined TDisplayMgr::AssertUDisplayMgrLine471() {
 
 // FUNCTION: IMPERIALISM 0x004fec50
 undefined TDisplayMgr::AssertUDisplayMgrLine495() {
-  if (*reinterpret_cast<int*>(kAddrAssertFlagLine495) == 0) {
+  if (g_nUiInvalidationAssertFlagLine495 == 0) {
     DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x1ef);
   }
   return 0;
@@ -316,8 +298,7 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
 
   TControl* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     DisplayMgrInvoke::FailUiAssert(kSourceFileUDisplayMgr, 0x28a);
     return 0;
   }

@@ -13,7 +13,8 @@ TAssetMgr::~TAssetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005df3a0
 void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
-  EnsurePictWvDataGobLoadedBySlot(languageTag);
+  (void)languageTag;
+  EnsurePictWvDataGobLoadedBySlot(0);
 }
 
 void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {

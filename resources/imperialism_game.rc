@@ -1,0 +1,16 @@
+// SDI document template resources (id 128 / 0x80) for CSingleDocTemplate::LoadFrame.
+// Retail binds MENU, ACCELERATOR, GROUP_ICON, and BITMAP to id 128; this minimal
+// script satisfies LoadFrame's FindResource/LoadMenu/LoadAccelTable path.
+// Startup dialogs 152 (0x98) and 251 (0xfb) are separate InitInstance prompts.
+
+128 MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit", 57665
+    END
+END
+
+128 ACCELERATOR
+BEGIN
+END

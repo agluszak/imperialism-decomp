@@ -311,6 +311,10 @@ build:
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
 
+# Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
+resource-check:
+  uv run python -m tools.workflow.pe_resources check "{{build_dir}}/Imperialism.exe" --menu-id 128
+
 # Run the recompiled Imperialism.exe under Wine from the retail install directory.
 # ORIGINAL_BINARY in .env must point at an immutable copy of your legally
 # obtained Imperialism.exe; its parent directory must contain Data/ and the

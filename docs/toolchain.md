@@ -83,6 +83,22 @@ Interpretation:
 
 ## Experiment Log Template
 
+## PE resources (SDI template id 0x80)
+
+Retail `Imperialism.exe` embeds a `.rsrc` section; the recomp must too or
+`CFrameWnd::LoadFrame(0x80, …)` fails before view creation.
+
+- Hand-maintained script: `resources/imperialism_game.rc` (MENU + ACCELERATOR id
+  128). CMake adds it to the `Imperialism` target when `MSVC AND NOT
+  IMPERIALISM_LINT_COMPILE_ONLY`; Wine `rc.exe` emits
+  `imperialism_game.rc.res` and `link` merges `.rsrc`.
+- Inventory/extract helper (reads `ORIGINAL_BINARY`, does not commit retail
+  blobs): `uv run python -m tools.workflow.pe_resources inventory|extract-rc|check`.
+- Gate: `just resource-check` asserts the built PE has `.rsrc` and MENU 128.
+
+Full retail fidelity (GROUP_ICON/BITMAP 128, DIALOG 152/251) can be grafted
+later from `ORIGINAL_BINARY` once binary-to-RC conversion is wired.
+
 - Date:
 - Compiler:
 - Linker:

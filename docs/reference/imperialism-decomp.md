@@ -103,10 +103,32 @@ string table `0xF104` is not resolved. Backtrace: `InitInstance` →
 show `CAmbitDocument::CreateObject` and `CMainFrame::CreateObject`/ctor run;
 `CIncludeView::CreateObject` is not reached — failure is on the **frame**
 (`CDocTemplate::CreateNewFrame` / `LoadFrame`) path, not the document factory.
-Likely causes: missing SDI template resource id `0x80` (neither retail nor recomp
-PE embeds `.rsrc`; menu/accel may be external), incomplete `CMainFrame` window
-creation, and/or Wine resource/string-table gaps. Native Windows smoke remains
-the acceptance check.
+Likely causes: recomp PE lacked `.rsrc` (retail embeds SDI template id **`0x80`**
+/ 128 — see resource map below), incomplete `CMainFrame` window creation
+(`PreCreateWindow` / `OnCreate` still stubbed), and/or Wine MFC string-table gaps.
+Native Windows smoke remains the acceptance check.
+
+**Retail EXE `.rsrc` inventory (id 128 / SDI template, LANG 1033):**
+
+| Type | Id | Size | Role |
+|------|-----|------|------|
+| MENU | 128 | 0x45a | `LoadFrame` → `LoadMenu` / frame chrome |
+| ACCELERATOR | 128 | 0x10 | `LoadFrame` → `LoadAccelTable` |
+| GROUP_ICON | 128 | 0x22 | Frame icon group |
+| BITMAP | 128 | 0x158 | Toolbar/chrome bitmap (DIB resource) |
+| TYPE241 | 128 | 0xc | Unknown custom type |
+
+**Other startup dialog ids (LANG 1033):**
+
+| Type | Id | Hex | Size |
+|------|-----|-----|------|
+| DIALOG | 152 | 0x98 | 0xba | Low-disk prompt (`initinstance-port-plan.md`) |
+| DIALOG | 251 | 0xfb | 0xf0 | Auto-resolution prompt |
+
+Recomp build links `resources/imperialism_game.rc` (minimal MENU+ACCEL id 128) via
+MSVC `rc.exe` so `CFrameWnd::LoadFrame(0x80, …)` can resolve template resources.
+Full retail fidelity (GROUP_ICON, BITMAP, dialogs) can be grafted later from
+`ORIGINAL_BINARY` using `uv run python -m tools.workflow.pe_resources inventory`.
 
 - **`ExitInstance @ 0x00413780`** (vtable slot +0x70): restore display mode if `field_C8`, then free the
   global subsystems via their slot-+0x1c destroy virtual — `DAT_006a2158`, `g_pModuleLibraryCacheState`

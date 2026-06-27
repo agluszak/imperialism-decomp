@@ -1531,66 +1531,10 @@ undefined4 OrphanDeadLeaf_NoRefs_00484c10(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::DestroyTMacViewMgrObject
-// ghidra_proto undefined DestroyTMacViewMgrObject()
-// FUNCTION: IMPERIALISM 0x00484c70
-undefined4 DestroyTMacViewMgrObject(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl
-// ghidra_proto undefined TMacViewMgr_OnMsg_WM_CREATE_Impl()
-// FUNCTION: IMPERIALISM 0x00484d00
-undefined4 TMacViewMgr_OnMsg_WM_CREATE_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name ConfigureTopLevelWindowStyleAndPlacement
-// ghidra_proto undefined ConfigureTopLevelWindowStyleAndPlacement()
-// FUNCTION: IMPERIALISM 0x00484d70
-undefined4 ConfigureTopLevelWindowStyleAndPlacement(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::WrapperFor_PreCreateWindow_61cdb3_At00484f70
-// ghidra_proto undefined WrapperFor_PreCreateWindow_61cdb3_At00484f70()
-// FUNCTION: IMPERIALISM 0x00484f70
-undefined4 WrapperFor_PreCreateWindow_61cdb3_At00484f70(void)
-{
-  return 0;
-}
-
-// ghidra_name TryRealizeViewPaletteAndInvalidateWindow
-// ghidra_proto undefined TryRealizeViewPaletteAndInvalidateWindow()
-// FUNCTION: IMPERIALISM 0x00484ff0
-undefined4 TryRealizeViewPaletteAndInvalidateWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110
-// ghidra_proto undefined WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110()
-// FUNCTION: IMPERIALISM 0x00485110
-undefined4 WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485110(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150
 // ghidra_proto undefined WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150()
 // FUNCTION: IMPERIALISM 0x00485150
 undefined4 WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl
-// ghidra_proto undefined TMacViewMgr_OnCommand_ID_8009_Impl()
-// FUNCTION: IMPERIALISM 0x00485180
-undefined4 TMacViewMgr_OnCommand_ID_8009_Impl(void)
 {
   return 0;
 }
