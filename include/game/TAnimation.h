@@ -39,6 +39,8 @@ public:
   TAnimation();
 };
 
+int** WrapperFor_AllocateWithFallbackHandler_At004a1130(unsigned short resourceId);
+
 ASSERT_SIZE(TAnimation, 0x2c);
 
 // === BEGIN GENERATED (TAnimation) — refreshed by `just gen-class TAnimation`; do not hand-edit ===

@@ -2,6 +2,7 @@
 
 #include <new>
 
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/ClipStateRegion.h"
 #include "game/TAnimation.h"
 #include "game/TAssetMgr.h"
@@ -127,40 +128,28 @@ struct MacViewInvoke {
   }
 
   static void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* ctx, int* flags) {
-    extern undefined4 GetActiveQuickDrawSurfaceContextAndFlags(void);
-    reinterpret_cast<void(__cdecl*)(undefined4*, undefined4*)>(
-        reinterpret_cast<void (*)()>(GetActiveQuickDrawSurfaceContextAndFlags))(
-        ctx, reinterpret_cast<undefined4*>(flags));
+    ::GetActiveQuickDrawSurfaceContextAndFlags(ctx, reinterpret_cast<undefined4*>(flags));
   }
 
   static void SetActiveQuickDrawSurfaceContext(undefined4 ctx, int flags) {
-    extern undefined4 SetActiveQuickDrawSurfaceContext(void);
-    reinterpret_cast<void(__cdecl*)(undefined4, int)>(
-        reinterpret_cast<void (*)()>(SetActiveQuickDrawSurfaceContext))(ctx, flags);
+    ::SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(ctx),
+                                       static_cast<undefined4>(flags));
   }
 
   static void* GetSurfaceObjectAtContextOffset24(int context) {
-    extern undefined4 GetSurfaceObjectAtContextOffset24(void);
-    return reinterpret_cast<void*(__cdecl*)(int)>(
-        reinterpret_cast<void (*)()>(GetSurfaceObjectAtContextOffset24))(context);
+    return reinterpret_cast<void*>(::GetSurfaceObjectAtContextOffset24(context));
   }
 
   static void ReturnConstantTrueQuickDrawFlag(void* surface) {
-    extern undefined4 ReturnConstantTrueQuickDrawFlag(void);
-    reinterpret_cast<void(__cdecl*)(void*)>(
-        reinterpret_cast<void (*)()>(ReturnConstantTrueQuickDrawFlag))(surface);
+    ::ReturnConstantTrueQuickDrawFlag(surface);
   }
 
   static void* GetSurfaceHeaderFromSurfaceObject(void* surface) {
-    extern undefined4 GetSurfaceHeaderFromSurfaceObject(void);
-    return reinterpret_cast<void*(__cdecl*)(void*)>(
-        reinterpret_cast<void (*)()>(GetSurfaceHeaderFromSurfaceObject))(surface);
+    return ::GetSurfaceHeaderFromSurfaceObject(surface);
   }
 
   static void NoOpQuickDrawLifecycleHookB(void* surface) {
-    extern undefined4 NoOpQuickDrawLifecycleHookB(void);
-    reinterpret_cast<void(__cdecl*)(void*)>(
-        reinterpret_cast<void (*)()>(NoOpQuickDrawLifecycleHookB))(surface);
+    ::NoOpQuickDrawLifecycleHookB(surface);
   }
 
   static void CombineOptionalSourceRegionIntoDestinationAndUpdateBox(int srcRegion, int dstRegion) {
@@ -170,22 +159,17 @@ struct MacViewInvoke {
   }
 
   static int** WrapperFor_AllocateWithFallbackHandler_At004a1130(int resourceId) {
-    extern undefined4 WrapperFor_AllocateWithFallbackHandler_At004a1130(void);
-    return reinterpret_cast<int**(__cdecl*)(int)>(reinterpret_cast<void (*)()>(
-        WrapperFor_AllocateWithFallbackHandler_At004a1130))(resourceId);
+    return ::WrapperFor_AllocateWithFallbackHandler_At004a1130(static_cast<unsigned short>(resourceId));
   }
 
   static void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(int** handle,
                                                                                  RECT* bounds) {
-    extern undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(void);
-    reinterpret_cast<void(__cdecl*)(int**, RECT*)>(reinterpret_cast<void (*)()>(
-        WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40))(handle, bounds);
+    ::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(handle, bounds);
   }
 
   static int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(int resourceId) {
-    extern undefined4 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(void);
-    return reinterpret_cast<int(__cdecl*)(int)>(reinterpret_cast<void (*)()>(
-        LoadBitmapResourceSurfaceAndRestoreQuickDrawContext))(resourceId);
+    return ::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
+        static_cast<unsigned short>(resourceId));
   }
 
   static void NoOpRuntimeCallback_00497c00(int** handle) {
@@ -283,12 +267,15 @@ void FreeHeapBufferField(int* field) {
 }
 
 void ReleaseBitmapLoaderHandle(int** loaderHandle) {
-  TAnimation* animation = reinterpret_cast<TAnimation*>(*loaderHandle);
-  if (animation != 0) {
-    animation->WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
-    delete animation;
+  if (loaderHandle == nullptr) {
+    return;
   }
-  delete loaderHandle;
+  TAnimation* animation = reinterpret_cast<TAnimation*>(*loaderHandle);
+  if (animation != nullptr) {
+    animation->WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
+    ::operator delete(animation);
+  }
+  ::operator delete(loaderHandle);
 }
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
@@ -494,8 +481,9 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   dstCursor = reinterpret_cast<undefined4*>(pixelBuffer) - 2;
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
-    int** loaderHandle = MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
-    if (*loaderHandle != 0) {
+    int** loaderHandle =
+        MacViewInvoke::WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
+    if (loaderHandle != nullptr && *loaderHandle != 0) {
       dstCursor = dstCursor + 2;
       CopySpriteSurfaceToStrideBuffer(reinterpret_cast<int*>(loaderHandle), dstCursor,
                                       static_cast<short>(stridePixels));

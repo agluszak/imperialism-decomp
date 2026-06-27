@@ -171,14 +171,6 @@ undefined4 WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(void)
   return 0;
 }
 
-// ghidra_name LoadBitmapResourceSurfaceAndRestoreQuickDrawContext
-// ghidra_proto undefined LoadBitmapResourceSurfaceAndRestoreQuickDrawContext()
-// FUNCTION: IMPERIALISM 0x005c3b70
-undefined4 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(void)
-{
-  return 0;
-}
-
 // ghidra_name MapUiThemeCodeToStyleFlags
 // ghidra_proto undefined MapUiThemeCodeToStyleFlags()
 // FUNCTION: IMPERIALISM 0x005c3d20

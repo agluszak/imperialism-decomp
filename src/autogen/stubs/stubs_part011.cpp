@@ -1019,86 +1019,6 @@ undefined4 ApplyRectClipRegionToGlobalClipState(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
-// ghidra_proto undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40()
-// FUNCTION: IMPERIALISM 0x00495c40
-undefined4 WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBitmapSurfaceFromResourceDescriptor
-// ghidra_proto undefined InitializeBitmapSurfaceFromResourceDescriptor()
-// FUNCTION: IMPERIALISM 0x00495d00
-undefined4 InitializeBitmapSurfaceFromResourceDescriptor(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBitmapDescriptorRecordState
-// ghidra_proto undefined InitializeBitmapDescriptorRecordState()
-// FUNCTION: IMPERIALISM 0x00495e20
-undefined4 InitializeBitmapDescriptorRecordState(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBitmapDescriptorNodeFromResourceSurface
-// ghidra_proto undefined InitializeBitmapDescriptorNodeFromResourceSurface()
-// FUNCTION: IMPERIALISM 0x00495eb0
-undefined4 InitializeBitmapDescriptorNodeFromResourceSurface(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00495fd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00495fd0()
-// FUNCTION: IMPERIALISM 0x00495fd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00495fd0(void)
-{
-  return 0;
-}
-
-// ghidra_name SetActiveQuickDrawSurfaceContext_Impl
-// ghidra_proto undefined SetActiveQuickDrawSurfaceContext_Impl()
-// FUNCTION: IMPERIALISM 0x00496090
-undefined4 SetActiveQuickDrawSurfaceContext_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name SetActiveQuickDrawSurfaceContext
-// ghidra_proto undefined SetActiveQuickDrawSurfaceContext()
-// FUNCTION: IMPERIALISM 0x004961b0
-undefined4 SetActiveQuickDrawSurfaceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name GetActiveQuickDrawSurfaceContextAndFlags
-// ghidra_proto undefined GetActiveQuickDrawSurfaceContextAndFlags()
-// FUNCTION: IMPERIALISM 0x00496270
-undefined4 GetActiveQuickDrawSurfaceContextAndFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name GetSurfaceObjectAtContextOffset24
-// ghidra_proto undefined GetSurfaceObjectAtContextOffset24()
-// FUNCTION: IMPERIALISM 0x004962a0
-undefined4 GetSurfaceObjectAtContextOffset24(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeBitmapDescriptorRecordAndLoadSurfaceNode
-// ghidra_proto undefined InitializeBitmapDescriptorRecordAndLoadSurfaceNode()
-// FUNCTION: IMPERIALISM 0x004962c0
-undefined4 InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00496420
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00496420()
 // FUNCTION: IMPERIALISM 0x00496420
@@ -1135,30 +1055,6 @@ undefined4 BlitBitmapResourceToTemporaryCompatibleDcAndPresent(void)
 // ghidra_proto void __stdcall BlitRectWithOptionalTransparency(astruct_17 * srcSurface, astruct_18 * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, astruct_19 * renderCtx)
 // FUNCTION: IMPERIALISM 0x00496d40
 undefined4 BlitRectWithOptionalTransparency(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantTrueQuickDrawFlag
-// ghidra_proto undefined ReturnConstantTrueQuickDrawFlag()
-// FUNCTION: IMPERIALISM 0x004972c0
-undefined4 ReturnConstantTrueQuickDrawFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpQuickDrawLifecycleHookB
-// ghidra_proto undefined NoOpQuickDrawLifecycleHookB()
-// FUNCTION: IMPERIALISM 0x004972e0
-undefined4 NoOpQuickDrawLifecycleHookB(void)
-{
-  return 0;
-}
-
-// ghidra_name GetSurfaceHeaderFromSurfaceObject
-// ghidra_proto undefined GetSurfaceHeaderFromSurfaceObject()
-// FUNCTION: IMPERIALISM 0x00497300
-undefined4 GetSurfaceHeaderFromSurfaceObject(void)
 {
   return 0;
 }

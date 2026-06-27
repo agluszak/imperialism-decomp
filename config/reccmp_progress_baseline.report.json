@@ -6067,49 +6067,49 @@
     },
     {
       "address": "0x495d00",
-      "matching": 0.0273972602739726,
+      "matching": 0.0963855421686747,
       "name": "InitializeBitmapSurfaceFromResourceDescriptor",
       "type": 1
     },
     {
       "address": "0x495e20",
-      "matching": 0.04878048780487805,
+      "matching": 0.0425531914893617,
       "name": "InitializeBitmapDescriptorRecordState",
       "type": 1
     },
     {
       "address": "0x495eb0",
-      "matching": 0.02531645569620253,
+      "matching": 0.08791208791208792,
       "name": "InitializeBitmapDescriptorNodeFromResourceSurface",
       "type": 1
     },
     {
       "address": "0x496090",
-      "matching": 0.043478260869565216,
+      "matching": 0.4421052631578947,
       "name": "SetActiveQuickDrawSurfaceContext_Impl",
       "type": 1
     },
     {
       "address": "0x4961b0",
-      "matching": 0.047619047619047616,
+      "matching": 0.651685393258427,
       "name": "SetActiveQuickDrawSurfaceContext",
       "type": 1
     },
     {
       "address": "0x496270",
-      "matching": 0.2222222222222222,
+      "matching": 0.5882352941176471,
       "name": "GetActiveQuickDrawSurfaceContextAndFlags",
       "type": 1
     },
     {
       "address": "0x4962a0",
-      "matching": 0.4,
+      "matching": 0.4444444444444444,
       "name": "GetSurfaceObjectAtContextOffset24",
       "type": 1
     },
     {
       "address": "0x4962c0",
-      "matching": 0.043010752688172046,
+      "matching": 0.16129032258064516,
       "name": "InitializeBitmapDescriptorRecordAndLoadSurfaceNode",
       "type": 1
     },
@@ -6151,19 +6151,19 @@
     },
     {
       "address": "0x4972c0",
-      "matching": 0.5,
+      "matching": 0.5714285714285714,
       "name": "ReturnConstantTrueQuickDrawFlag",
       "type": 1
     },
     {
       "address": "0x4972e0",
-      "matching": 0.6666666666666666,
+      "matching": 0.4,
       "name": "NoOpQuickDrawLifecycleHookB",
       "type": 1
     },
     {
       "address": "0x497300",
-      "matching": 0.3333333333333333,
+      "matching": 0.2,
       "name": "GetSurfaceHeaderFromSurfaceObject",
       "type": 1
     },
@@ -15818,7 +15818,7 @@
     },
     {
       "address": "0x50a1a0",
-      "matching": 0.39114391143911437,
+      "matching": 0.3663003663003663,
       "name": "TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722",
       "type": 1
     },
@@ -15854,7 +15854,7 @@
     },
     {
       "address": "0x50a6a0",
-      "matching": 0.5263157894736842,
+      "matching": 0.5443786982248521,
       "name": "RefreshCityCapabilityUiHandlesForActiveNation",
       "type": 1
     },
@@ -15914,7 +15914,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.1752212389380531,
+      "matching": 0.18230088495575222,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -31840,7 +31840,7 @@
     },
     {
       "address": "0x5c3b70",
-      "matching": 0.017391304347826087,
+      "matching": 0.18666666666666668,
       "name": "LoadBitmapResourceSurfaceAndRestoreQuickDrawContext",
       "type": 1
     },

@@ -2,6 +2,7 @@
 
 #include <new>
 
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/startup_helpers.h"
 #include "game/TAssetMgr.h"
@@ -22,15 +23,9 @@ extern CRuntimeClass classRuntimeClass;
 }
 
 undefined4 AssignStringSharedRefAndReturnThis(void);
-undefined4 InitializeBitmapDescriptorRecordAndLoadSurfaceNode(void);
 undefined4 NoOpCallback_00498ca0(void);
 undefined4 ApplyHitRegionToClipState(void);
-undefined4 GetActiveQuickDrawSurfaceContextAndFlags(void);
-undefined4 SetActiveQuickDrawSurfaceContext(void);
-undefined4 GetSurfaceObjectAtContextOffset24(void);
-undefined4 ReturnConstantTrueQuickDrawFlag(void);
 undefined4 ApplyRectClipRegionToGlobalClipState(void);
-undefined4 NoOpQuickDrawLifecycleHookB(void);
 
 namespace DisplayMgrInvoke {
 
@@ -43,9 +38,9 @@ static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outC
                                                                 int elementSize, RECT* bounds,
                                                                 int hintField18, int arg4,
                                                                 int arg5) {
-  return reinterpret_cast<short(__cdecl*)(undefined4*, int, RECT*, int, int, int)>(
-      reinterpret_cast<void (*)()>(::InitializeBitmapDescriptorRecordAndLoadSurfaceNode))(
-      outContext, elementSize, bounds, hintField18, arg4, arg5);
+  return ::InitializeBitmapDescriptorRecordAndLoadSurfaceNode(
+      reinterpret_cast<int*>(outContext), static_cast<short>(elementSize), bounds, hintField18,
+      arg4, arg5);
 }
 
 static void NoOpCallback_00498ca0(void* fieldPtr) {
@@ -59,23 +54,20 @@ static void ApplyHitRegionToClipState(int clipDescriptor) {
 }
 
 static void GetActiveQuickDrawSurfaceContextAndFlags(undefined4* ctx, int* flags) {
-  reinterpret_cast<void(__cdecl*)(undefined4*, int*)>(
-      reinterpret_cast<void (*)()>(::GetActiveQuickDrawSurfaceContextAndFlags))(ctx, flags);
+  ::GetActiveQuickDrawSurfaceContextAndFlags(ctx, reinterpret_cast<undefined4*>(flags));
 }
 
 static void SetActiveQuickDrawSurfaceContext(undefined4 ctx, int flags) {
-  reinterpret_cast<void(__cdecl*)(undefined4, int)>(
-      reinterpret_cast<void (*)()>(::SetActiveQuickDrawSurfaceContext))(ctx, flags);
+  ::SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(ctx),
+                                     static_cast<undefined4>(flags));
 }
 
 static void* GetSurfaceObjectAtContextOffset24(undefined4 ctx) {
-  return reinterpret_cast<void*(__cdecl*)(undefined4)>(
-      reinterpret_cast<void (*)()>(::GetSurfaceObjectAtContextOffset24))(ctx);
+  return reinterpret_cast<void*>(::GetSurfaceObjectAtContextOffset24(static_cast<int>(ctx)));
 }
 
 static void ReturnConstantTrueQuickDrawFlag(void* surface) {
-  reinterpret_cast<void(__cdecl*)(void*)>(
-      reinterpret_cast<void (*)()>(::ReturnConstantTrueQuickDrawFlag))(surface);
+  ::ReturnConstantTrueQuickDrawFlag(surface);
 }
 
 static void ApplyRectClipRegionToGlobalClipState(RECT* rectBuffer) {
@@ -84,8 +76,7 @@ static void ApplyRectClipRegionToGlobalClipState(RECT* rectBuffer) {
 }
 
 static void NoOpQuickDrawLifecycleHookB(void* surface) {
-  reinterpret_cast<void(__cdecl*)(void*)>(
-      reinterpret_cast<void (*)()>(::NoOpQuickDrawLifecycleHookB))(surface);
+  ::NoOpQuickDrawLifecycleHookB(surface);
 }
 
 static void InvokeSnapshotHitRegionToClipCache(int clipDescriptor) {

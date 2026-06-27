@@ -1,4 +1,7 @@
 #include "game/TAnimation.h"
+
+#include <string.h>
+
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -53,4 +56,23 @@ undefined TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle() {
 // FUNCTION: IMPERIALISM 0x004a1100
 undefined TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004a1130
+int** WrapperFor_AllocateWithFallbackHandler_At004a1130(unsigned short resourceId) {
+  int** handleSlot = static_cast<int**>(::operator new(sizeof(TAnimation*)));
+  void* loaderMemory = ::operator new(0x20);
+  if (loaderMemory == nullptr) {
+    *handleSlot = nullptr;
+    return handleSlot;
+  }
+
+  memset(loaderMemory, 0, 0x20);
+  TAnimation* loader = reinterpret_cast<TAnimation*>(loaderMemory);
+  loader->field04 = 0;
+  loader->bitmapResource = nullptr;
+  loader->bitmapResourceId = static_cast<short>(resourceId);
+  loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+  *handleSlot = reinterpret_cast<int*>(loader);
+  return handleSlot;
 }

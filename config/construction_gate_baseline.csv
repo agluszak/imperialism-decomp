@@ -5,8 +5,11 @@ include/game/TInfoBarText.h|0|0|0|0|1|0|1
 include/game/TProductionCluster.h|0|0|0|0|1|0|1
 src/game/CDib.cpp|0|0|0|0|0|7|7
 src/game/CDocument.cpp|0|0|0|0|1|0|1
+src/game/TAnimation.cpp|0|0|0|0|0|2|2
 src/game/TFocusAnimation.cpp|0|0|0|0|1|0|1
 src/game/TInfoBarPictureText.cpp|0|0|0|0|1|0|1
 src/game/TInfoBarText.cpp|0|0|0|0|1|0|1
+src/game/TMacViewMgr.cpp|0|0|0|0|0|2|2
 src/game/TProductionCluster.cpp|0|0|0|0|1|0|1
+src/game/bitmap_descriptor_helpers.cpp|0|0|0|0|0|9|9
 src/game/tauto_great_power_factory.cpp|0|0|0|0|0|1|1

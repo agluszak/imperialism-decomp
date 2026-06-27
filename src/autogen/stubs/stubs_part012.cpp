@@ -171,14 +171,6 @@ undefined4 CallObjectOffset24Vslot54IfPresent(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At004a1130
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At004a1130()
-// FUNCTION: IMPERIALISM 0x004a1130
-undefined4 WrapperFor_AllocateWithFallbackHandler_At004a1130(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004a1260
 // ghidra_proto undefined WrapperFor_ftol_At004a1260()
 // FUNCTION: IMPERIALISM 0x004a1260

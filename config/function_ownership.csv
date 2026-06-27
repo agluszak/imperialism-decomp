@@ -610,8 +610,21 @@ address|target_cpp|ownership|note
 495b40|src/game/quickdraw_globals.cpp|manual|marker_sync
 495b70|src/game/TAnimation.cpp|manual|marker_sync
 495c00|src/game/TAnimation.cpp|manual|marker_sync
+495c40|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+495d00|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+495e20|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+495eb0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+495fd0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+496090|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+4961b0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+496270|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+4962a0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+4962c0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 497230|src/game/startup_helpers.cpp|manual|marker_sync
 4972a0|src/game/TDisplayMgr.cpp|manual|marker_sync
+4972c0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+4972e0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+497300|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 497320|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 497390|src/game/QuickDrawSurfaceGuard.cpp|manual|marker_sync
 498bb0|src/game/ClipStateRegion.cpp|manual|marker_sync
@@ -700,6 +713,7 @@ address|target_cpp|ownership|note
 4a0e50|src/game/TAnimator.cpp|manual|marker_sync
 4a0fa0|src/game/TAnimator.cpp|manual|marker_sync
 4a1100|src/game/TAnimation.cpp|manual|marker_sync
+4a1130|src/game/TAnimation.cpp|manual|marker_sync
 4a1850|src/game/TArmyMgr.cpp|manual|mfc_runtime_macro
 4a18a0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1a00|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -3348,6 +3362,7 @@ address|target_cpp|ownership|note
 5c31c0|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3200|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3490|src/game/TStationedUnitNode.cpp|manual|marker_sync
+5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5d4410|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
