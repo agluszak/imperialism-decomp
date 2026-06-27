@@ -1,9 +1,7 @@
 #include "game/TInfoBarBehavior.h"
+IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
-// FUNCTION: IMPERIALISM 0x004b0d10
-CRuntimeClass* TInfoBarBehavior::GetRuntimeClass() const {
-  return 0;
-}
+TInfoBarBehavior::TInfoBarBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0da0
 // TInfoBarBehavior::`scalar deleting destructor'

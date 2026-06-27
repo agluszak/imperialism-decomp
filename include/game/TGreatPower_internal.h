@@ -6,12 +6,12 @@
 #include "game/TMinor.h"
 #include "game/TShip.h"
 #include "game/TZone.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 
 class TGreatPower;
 class TSimMgr;
 
-int SumMilitaryUnitPowerWeights(TPtrList* unitList);
+int SumMilitaryUnitPowerWeights(TSortedList* unitList);
 float SumAlliedArmyScoreFactors(int targetNation);
 float SumAlliedNavyScoreFactors(int targetNation);
 short* GetRelationStandingRowForNation(short nationSlot);

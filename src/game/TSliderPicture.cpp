@@ -1,9 +1,7 @@
 #include "game/TSliderPicture.h"
+IMPLEMENT_DYNCREATE(TSliderPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00573a00
-CRuntimeClass* TSliderPicture::GetRuntimeClass() const {
-  return 0;
-}
+TSliderPicture::TSliderPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00573a50
 // TSliderPicture::`scalar deleting destructor'

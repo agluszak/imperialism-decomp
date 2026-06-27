@@ -6,11 +6,7 @@
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
 undefined4 SetPictureResourceIdAndRefresh_Impl(void);
-
-// FUNCTION: IMPERIALISM 0x0048efa0
-CRuntimeClass* TPicture::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0
 TPicture::TPicture() : TControl() {}

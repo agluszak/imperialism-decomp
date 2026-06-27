@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059b390
 // TArmyTacUnit::`scalar deleting destructor'
 TArmyTacUnit::~TArmyTacUnit() {}
+IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
-// FUNCTION: IMPERIALISM 0x005a5f00
-CRuntimeClass* TArmyTacUnit::GetRuntimeClass() const {
-  return 0;
-}
+TArmyTacUnit::TArmyTacUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005a6120
 undefined TArmyTacUnit::OrphanTiny_ReturnZero_005a5d40() {

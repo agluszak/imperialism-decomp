@@ -26,10 +26,7 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   delimiter = 0x20;
   field30 = 6;
 }
-
-CRuntimeClass* TLanguageMgr::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 TLanguageMgr::~TLanguageMgr() {}
 

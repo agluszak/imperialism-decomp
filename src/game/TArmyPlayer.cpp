@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059b140
 // TArmyPlayer::`scalar deleting destructor'
 TArmyPlayer::~TArmyPlayer() {}
+IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
-// FUNCTION: IMPERIALISM 0x0059b190
-CRuntimeClass* TArmyPlayer::GetRuntimeClass() const {
-  return 0;
-}
+TArmyPlayer::TArmyPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059b3e0
 undefined TArmyPlayer::OrphanRetStub_0059add0() {

@@ -58,22 +58,15 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 #pragma optimize("y", on)
 #endif
 
-
 // FUNCTION: IMPERIALISM 0x004e3660
 void* TMinor::CreateTMinorInstance() {
   return new TMinor();
 }
-
-
-// FUNCTION: IMPERIALISM 0x004e36f0
-CRuntimeClass* TMinor::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTMinor);
-}
+IMPLEMENT_DYNCREATE(TMinor, TCountry)
 
 void* TMinor::GetTMinorClassNamePointer() {
   return reinterpret_cast<void*>(kAddrClassDescTMinor);
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e3710
 TMinor::TMinor() {
@@ -84,7 +77,6 @@ TMinor::TMinor() {
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
 TMinor::~TMinor() {}
-
 
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
@@ -116,7 +108,6 @@ void TMinor::ReadFrom(TStream* stream) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4390
 void TMinor::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
@@ -139,12 +130,10 @@ void TMinor::WriteTo(TStream* stream) {
                        0x17);
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e45f0
 char TMinor::ReturnFalseNationStateCapabilityFlag90(int arg) {
   return (arg > 0xc && arg < 0x11) ? 1 : 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e4630
 int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
@@ -156,18 +145,15 @@ int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   return sum;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4660
 short TMinor::GetDiplomacyExternalStateByTarget(short nationSlot) {
   return this->needCurrentByType[nationSlot];
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4680
 short TMinor::QueryNationMetricBySlot7C(short metricSlot) {
   return this->diplomacyPolicyByNation[metricSlot];
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e46a0
 void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
@@ -188,7 +174,6 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
   }
   nation->diplomacyCounterA2 = 2;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e49b0
 void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -268,7 +253,6 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
     majorNation->AddAmountToAidAllocationMatrixCellAndTotal(amount, resourceSlot, this->nationSlot);
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e4bd0
 void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
@@ -371,7 +355,6 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4ee0
 bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCode) {
   if (policyCode <= 0xc || policyCode >= 0x11) {
@@ -386,7 +369,6 @@ bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCod
   return false;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4f50
 char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                            int arg4) {
@@ -398,7 +380,6 @@ char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, i
       this->nationSlot, arg1, arg2, arg3, arg4, 1, 0);
   return 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e4fa0
 void TMinor::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
@@ -459,7 +440,6 @@ void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e4ff0
 char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) {
   if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
@@ -492,7 +472,6 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short
   }
   return canPropose;
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e50d0
 void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
@@ -548,7 +527,6 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e5300
 void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
   (void)sourceNation;
@@ -557,7 +535,6 @@ void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
     this->QueueInterNationEvent17ForState300AffectedNations();
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e5340
 void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
@@ -713,7 +690,6 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
                                                                     targetNationSlot, 0);
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e59d0
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   short decodedSlot =
@@ -724,7 +700,6 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot,
@@ -781,7 +756,6 @@ int ResolveDiplomacyMaskOwnerNationSlot(const TMinor* minor, short provinceId) {
 
 } // namespace
 
-
 // FUNCTION: IMPERIALISM 0x004e5ac0
 void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   char* tileArrayBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
@@ -823,7 +797,6 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
 #pragma optimize("", on)
 #endif
 #pragma optimize("y", on)
-
 
 // FUNCTION: IMPERIALISM 0x004e5be0
 void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
@@ -869,7 +842,6 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
     }
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x004e5d90
 void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId) {
@@ -920,10 +892,9 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e6040
 void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot) {
-  TPtrList* destinationManager =
+  TSortedList* destinationManager =
       g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList44;
   if (this->ownedRegionList == 0 || destinationManager == 0 || this->militaryUnitList44 == 0) {
     return;
@@ -958,7 +929,6 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
     ownedCount = this->ownedRegionList->GetCountSlot48();
   }
 }
-
 
 namespace {
 
@@ -1094,10 +1064,9 @@ void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e6520
 void TMinor::RelinkTileUnitsToCountryOrderManager(int destinationNationSlot) {
-  TPtrList* destinationManager =
+  TSortedList* destinationManager =
       g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList44;
   if (destinationManager == 0 || this->militaryUnitList44 == 0) {
     return;

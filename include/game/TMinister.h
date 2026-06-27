@@ -17,7 +17,7 @@ public:
   void InitializeBaseOrderArray(undefined4 ownerContext);
   virtual ~TMinister(); // slot 1 — body @ 0x0052ebd0 (DestructTMinister)
 
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0
+  DECLARE_DYNCREATE(TMinister)
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)
   void WriteTo(TStream* stream) override;  // 5 (0x14)
   void ReadFrom(TStream* stream) override; // 6 (0x18)

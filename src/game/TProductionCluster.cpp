@@ -20,22 +20,13 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662f20
-CRuntimeClass g_pClassDescTProductionCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00586840
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
   return new TProductionCluster();
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x00586900
-CRuntimeClass* TProductionCluster::GetRuntimeClass() const {
-  return &g_pClassDescTProductionCluster;
-}
+IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {
   ::new (static_cast<void*>(cluster)) TProductionCluster();
@@ -51,17 +42,12 @@ TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* c
   return cluster;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
     : TUberCluster(), field88(0), field8c(0), field8e(0), field90(0), field94(0) {}
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00586970
 // TProductionCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -72,14 +58,10 @@ void TProductionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler
   this->TCluster::HandleEvent(commandId, sourceHandler, event);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00586a60
 void TProductionCluster::ApplyMoveValue(int value) {
   field8c = value;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00586a80
 int TProductionCluster::GetControlFlag(int value90, int value94) {
@@ -88,13 +70,10 @@ int TProductionCluster::GetControlFlag(int value90, int value94) {
   return 0;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00586ab0
 int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
   field8e = (int)boundEntry;
   return 0;
 }
-
 
 TProductionCluster::~TProductionCluster() {}

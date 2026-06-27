@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x00657c60
 class TIconSlider : public TIconBar {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TIconSlider)
   virtual ~TIconSlider();
 
   virtual void NoOpUiLifecycleHook(int arg) override;

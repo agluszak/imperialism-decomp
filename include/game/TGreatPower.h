@@ -4,7 +4,7 @@
 #include "game/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/TCountry.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 
 struct CRuntimeClass;
 class TStream;
@@ -24,8 +24,7 @@ class TGreatPower : public TCountry {
 public:
   // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
-  CRuntimeClass* GetRuntimeClass() const override;
-  // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
+  DECLARE_DYNCREATE(TGreatPower)
   // 0x004d8c50 tears down the two identity CStrings.
   ~TGreatPower() override;
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
@@ -351,8 +350,8 @@ public:
   TQueueObject* diplomacyTrackedSlots[0x11];
   // 0x894 — city production state; same object used as TCity in diplomacy paths.
   TCity* city;
-  TPtrList* townMarkerList;
-  TPtrList* trackedObjectList;
+  TSortedList* townMarkerList;
+  TSortedList* trackedObjectList;
   unsigned char candidateNationFlags[0x17];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
@@ -377,7 +376,7 @@ public:
   unsigned char field904;
   unsigned char pad_905[3];
   TQueueObject* turnSummaryQueue;
-  TPtrList* missionNodeQueue;
+  TSortedList* missionNodeQueue;
   int field910;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[0x17];
@@ -387,7 +386,7 @@ public:
   short actionMetricByQuarter[6];
   unsigned char mapNodeStateFlags[0x180];
   unsigned char portZoneStateFlags[0x70];
-  TPtrList* missionQueue;
+  TSortedList* missionQueue;
 
   // (All thunk_*_At0040xxxx member wrappers retired: those addresses are pure ILT
   // `jmp` stubs from incremental linking, not real functions. Callsites now call the

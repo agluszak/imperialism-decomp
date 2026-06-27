@@ -1,9 +1,7 @@
 #include "game/TTextPictureButton.h"
+IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
-// FUNCTION: IMPERIALISM 0x005725b0
-CRuntimeClass* TTextPictureButton::GetRuntimeClass() const {
-  return 0;
-}
+TTextPictureButton::TTextPictureButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572670
 // TTextPictureButton::`scalar deleting destructor'

@@ -12,7 +12,7 @@ public:
   TAmbitApplication();
   virtual ~TAmbitApplication() override;
 
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00, 0x0049deb0
+  DECLARE_DYNCREATE(TAmbitApplication)
   virtual void WriteTo(TStream* stream) override;           // slot 0x05, 0x0049e2f0
   virtual void ReadFrom(TStream* stream) override;          // slot 0x06, 0x0049e280
   virtual void Free() override;                             // slot 0x07, 0x0049e1a0

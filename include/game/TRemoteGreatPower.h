@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0065ba80
 class TRemoteGreatPower : public TGreatPower {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TRemoteGreatPower)
   ~TRemoteGreatPower();
 
   char ShouldDispatchImmediatelySlot28(void) override;

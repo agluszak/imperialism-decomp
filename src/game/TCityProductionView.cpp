@@ -40,11 +40,9 @@ struct RuntimeLocalTime {
 
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
+IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x004ba2c0
-CRuntimeClass* TCityProductionView::GetRuntimeClass() const {
-  return 0;
-}
+TCityProductionView::TCityProductionView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ba360
 // TCityProductionView::`scalar deleting destructor'

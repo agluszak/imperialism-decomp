@@ -1,9 +1,7 @@
 #include "game/TNoHilitePicture.h"
+IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00572b10
-CRuntimeClass* TNoHilitePicture::GetRuntimeClass() const {
-  return 0;
-}
+TNoHilitePicture::TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572b60
 // TNoHilitePicture::`scalar deleting destructor'

@@ -1,9 +1,7 @@
 #include "game/TIncludeView.h"
+IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
-// FUNCTION: IMPERIALISM 0x0048cd50
-CRuntimeClass* TIncludeView::GetRuntimeClass() const {
-  return 0;
-}
+TIncludeView::TIncludeView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0048ce40
 // TIncludeView::`scalar deleting destructor'

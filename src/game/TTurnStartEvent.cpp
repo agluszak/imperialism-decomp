@@ -3,5 +3,6 @@
 undefined TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() { return 0; }
 
 TTurnStartEvent::~TTurnStartEvent() {}
+IMPLEMENT_DYNCREATE(TTurnStartEvent, TObject)
 
-CRuntimeClass* TTurnStartEvent::GetRuntimeClass() const { return 0; }
+TTurnStartEvent::TTurnStartEvent() {}

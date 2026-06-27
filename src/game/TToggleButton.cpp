@@ -5,41 +5,21 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e598
-CRuntimeClass g_pClassDescTToggleButton = {nullptr, 0, 0, nullptr, nullptr};
 }
-
-
-
-
 
 // FUNCTION: IMPERIALISM 0x00571050
 TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
   return new TToggleButton();
 }
-
-
-
-
-// FUNCTION: IMPERIALISM 0x005710d0
-CRuntimeClass* TToggleButton::GetRuntimeClass() const {
-  return &g_pClassDescTToggleButton;
-}
-
-
-
+IMPLEMENT_DYNCREATE(TToggleButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005710f0
 TToggleButton::TToggleButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-
-
-
 // SYNTHETIC: IMPERIALISM 0x00571120
 // TToggleButton::`scalar deleting destructor'
-
-
 
 // FUNCTION: IMPERIALISM 0x00571170
 void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -96,9 +76,6 @@ void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005712a0
 char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   (void)point;
@@ -125,20 +102,12 @@ char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int a
   return 1;
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x00571330
 bool TToggleButton::IsSelected() {
   return this->IsActionable();
 }
 
-
-
 TToggleButton::~TToggleButton() {}
-
-
-
 
 // FUNCTION: IMPERIALISM 0x00571350
 void TToggleButton::Select(bool isPressed, bool notifyParent) {

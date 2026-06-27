@@ -12,7 +12,7 @@ struct TTextListItem {
 // VTABLE: IMPERIALISM 0x00644778
 class TTextList : public TView {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TTextList)
   TTextListItem items[64];
   int totalItems;
   int scrollOffset;
@@ -20,12 +20,7 @@ public:
   short itemHeight;
   char padding_106e[2];
 
-  TTextList() : TView() {
-    itemHeight = 0x10;
-    totalItems = 0;
-    scrollOffset = 0;
-    selectedIndex = -1;
-  }
+  TTextList();
 
   static TTextList* CreateTTextListInstance();
 

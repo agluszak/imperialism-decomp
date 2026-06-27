@@ -1,9 +1,7 @@
 #include "game/TTradeScreenPicture.h"
+IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005ba700
-CRuntimeClass* TTradeScreenPicture::GetRuntimeClass() const {
-  return 0;
-}
+TTradeScreenPicture::TTradeScreenPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ba750
 // TTradeScreenPicture::`scalar deleting destructor'

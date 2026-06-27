@@ -1,9 +1,7 @@
 #include "game/TWarehouseView.h"
+IMPLEMENT_DYNCREATE(TWarehouseView, TBuildingView)
 
-// FUNCTION: IMPERIALISM 0x004c7290
-CRuntimeClass* TWarehouseView::GetRuntimeClass() const {
-  return 0;
-}
+TWarehouseView::TWarehouseView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c72e0
 // TWarehouseView::`scalar deleting destructor'

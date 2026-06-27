@@ -1,9 +1,7 @@
 #include "game/THelpPicture.h"
+IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00503c70
-CRuntimeClass* THelpPicture::GetRuntimeClass() const {
-  return 0;
-}
+THelpPicture::THelpPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00503cc0
 // THelpPicture::`scalar deleting destructor'

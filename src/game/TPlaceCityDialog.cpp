@@ -1,9 +1,7 @@
 #include "game/TPlaceCityDialog.h"
+IMPLEMENT_DYNCREATE(TPlaceCityDialog, TPicture)
 
-// FUNCTION: IMPERIALISM 0x004d17e0
-CRuntimeClass* TPlaceCityDialog::GetRuntimeClass() const {
-  return 0;
-}
+TPlaceCityDialog::TPlaceCityDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d1830
 // TPlaceCityDialog::`scalar deleting destructor'

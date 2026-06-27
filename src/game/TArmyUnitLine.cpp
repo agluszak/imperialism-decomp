@@ -1,9 +1,7 @@
 #include "game/TArmyUnitLine.h"
+IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x004a8d10
-CRuntimeClass* TArmyUnitLine::GetRuntimeClass() const {
-  return 0;
-}
+TArmyUnitLine::TArmyUnitLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8d60
 // TArmyUnitLine::`scalar deleting destructor'

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b4020
 // TMinorTreatyDialog::`scalar deleting destructor'
 TMinorTreatyDialog::~TMinorTreatyDialog() {}
+IMPLEMENT_DYNCREATE(TMinorTreatyDialog, TDialogView)
 
-// FUNCTION: IMPERIALISM 0x005b4070
-CRuntimeClass* TMinorTreatyDialog::GetRuntimeClass() const {
-  return 0;
-}
+TMinorTreatyDialog::TMinorTreatyDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b4090
 undefined TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState() {

@@ -1,9 +1,7 @@
 #include "game/TCitySiteView.h"
+IMPLEMENT_DYNCREATE(TCitySiteView, TMapDialog)
 
-// FUNCTION: IMPERIALISM 0x0051be90
-CRuntimeClass* TCitySiteView::GetRuntimeClass() const {
-  return 0;
-}
+TCitySiteView::TCitySiteView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051bfa0
 // TCitySiteView::`scalar deleting destructor'

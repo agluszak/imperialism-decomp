@@ -15,7 +15,7 @@ struct Rect32 {
 // VTABLE: IMPERIALISM 0x6431B0
 class TCivDescription : public TView {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCivDescription)
   virtual ~TCivDescription();
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x58f550

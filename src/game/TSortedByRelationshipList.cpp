@@ -5,19 +5,11 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-CRuntimeClass g_pClassDescTSortedByRelationshipList = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 // FUNCTION: IMPERIALISM 0x004ee4b0
 TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshipListInstance() {
   return new TSortedByRelationshipList();
 }
-
-// FUNCTION: IMPERIALISM 0x004ee520
-CRuntimeClass* TSortedByRelationshipList::GetRuntimeClass() const {
-  return &g_pClassDescTSortedByRelationshipList;
-}
+IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004ee540
 TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}

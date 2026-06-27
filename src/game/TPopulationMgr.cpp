@@ -1,6 +1,7 @@
 #include "game/TPopulationMgr.h"
+IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
-CRuntimeClass* TPopulationMgr::GetRuntimeClass() const { return 0; }
+TPopulationMgr::TPopulationMgr() {}
 
 TPopulationMgr::~TPopulationMgr() {}
 

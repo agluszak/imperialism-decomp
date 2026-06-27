@@ -66,9 +66,7 @@ public:
   ~TApplication() override;
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
-  virtual CRuntimeClass* GetRuntimeClass() const override;
-
-  // vtable index 0x26 (0x00486880): store the active modal view pointer.
+  DECLARE_DYNCREATE(TApplication)
   // vtable index 0x27 (0x004868a0): load the active modal view pointer.
   // vtable index 0x28 (0x00486990): viewport-edge auto-scroll hook; no-op in the original
   // (RET 0xc — takes 3 stack args). Kept as a real virtual so descendants can override.

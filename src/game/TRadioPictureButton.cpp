@@ -1,11 +1,7 @@
 #include "game/TRadioPictureButton.h"
 #include "game/TAmtBar.h"
 #include "game/TControl.h"
-
-// FUNCTION: IMPERIALISM 0x005717a0
-CRuntimeClass* TRadioPictureButton::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005717c0
 TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {

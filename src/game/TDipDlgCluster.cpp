@@ -1,9 +1,7 @@
 #include "game/TDipDlgCluster.h"
+IMPLEMENT_DYNCREATE(TDipDlgCluster, TUberCluster)
 
-// FUNCTION: IMPERIALISM 0x005840c0
-CRuntimeClass* TDipDlgCluster::GetRuntimeClass() const {
-  return 0;
-}
+TDipDlgCluster::TDipDlgCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584110
 // TDipDlgCluster::`scalar deleting destructor'

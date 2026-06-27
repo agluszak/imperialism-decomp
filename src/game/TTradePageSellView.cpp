@@ -3,8 +3,6 @@
 // SYNTHETIC: IMPERIALISM 0x004355c0
 // TTradePageSellView::`scalar deleting destructor'
 TTradePageSellView::~TTradePageSellView() {}
+IMPLEMENT_DYNCREATE(TTradePageSellView, TPageView)
 
-// FUNCTION: IMPERIALISM 0x005bcc10
-CRuntimeClass* TTradePageSellView::GetRuntimeClass() const {
-  return 0;
-}
+TTradePageSellView::TTradePageSellView() {}

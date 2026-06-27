@@ -125,7 +125,7 @@ public:
   char pad_90_to_93[0x04];
 
   TWarningView();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TWarningView)
   void NoOpUiLifecycleHook(int arg) override;
 };
 

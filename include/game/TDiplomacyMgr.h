@@ -18,7 +18,7 @@ enum {
 // VTABLE: IMPERIALISM 0x00654d90
 class TDiplomacyMgr : public TObject {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TDiplomacyMgr)
   ~TDiplomacyMgr() override;
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)

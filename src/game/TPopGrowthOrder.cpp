@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
 TPopGrowthOrder::~TPopGrowthOrder() {}
+IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 
-// FUNCTION: IMPERIALISM 0x004b8140
-CRuntimeClass* TPopGrowthOrder::GetRuntimeClass() const {
-  return 0;
-}
+TPopGrowthOrder::TPopGrowthOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b8160
 undefined TPopGrowthOrder::ConstructTPopGrowthOrderBaseState() {

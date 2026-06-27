@@ -1,9 +1,7 @@
 #include "game/TMilitaryPageView.h"
+IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
-// FUNCTION: IMPERIALISM 0x00564900
-CRuntimeClass* TMilitaryPageView::GetRuntimeClass() const {
-  return 0;
-}
+TMilitaryPageView::TMilitaryPageView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00564950
 // TMilitaryPageView::`scalar deleting destructor'

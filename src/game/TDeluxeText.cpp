@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
 TDeluxeText::~TDeluxeText() {}
+IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
-// FUNCTION: IMPERIALISM 0x005b5fd0
-CRuntimeClass* TDeluxeText::GetRuntimeClass() const {
-  return 0;
-}
+TDeluxeText::TDeluxeText() {}
 
 // FUNCTION: IMPERIALISM 0x005b6060
 void TDeluxeText::NoOpUiLifecycleHook(int arg) {

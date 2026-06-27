@@ -1,9 +1,7 @@
 #include "game/TBackgroundPicture.h"
+IMPLEMENT_DYNCREATE(TBackgroundPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00572c60
-CRuntimeClass* TBackgroundPicture::GetRuntimeClass() const {
-  return 0;
-}
+TBackgroundPicture::TBackgroundPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572cb0
 // TBackgroundPicture::`scalar deleting destructor'

@@ -23,7 +23,7 @@ public:
 // === END GENERATED DECLS (TBehavior) ===
   TBehavior();
 
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TBehavior)
   virtual void SetDword08(undefined4 value);     // slot 0x0a byte 0x28 0x487280
   virtual unsigned char GetFlag0C();             // slot 0x0b byte 0x2c 0x4872a0
   virtual void SetFlag0C(unsigned char value);   // slot 0x0c byte 0x30 0x4872c0

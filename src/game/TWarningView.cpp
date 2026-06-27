@@ -4,19 +4,13 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663178
-CRuntimeClass g_pClassDescTWarningView = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 // FUNCTION: IMPERIALISM 0x00592860
 TWarningView* __cdecl CreateTWarningViewInstance(void) {
   return new TWarningView();
 }
-
-// FUNCTION: IMPERIALISM 0x005928e0
-CRuntimeClass* TWarningView::GetRuntimeClass() const {
-  return &g_pClassDescTWarningView;
-}
+IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00592900
 TWarningView::TWarningView() : TPicture() {}

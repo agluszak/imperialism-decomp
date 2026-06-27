@@ -23,11 +23,9 @@ extern int g_adwEngineerRailBuildCostByTerrainType[16];
 undefined4 PumpUiMessagesAndBackgroundTasks(void);
 undefined4 GetTickCountDiv16(void);
 undefined4 scanBracketExpressions(void);
+IMPLEMENT_DYNCREATE(TCivMgr, TObject)
 
-// FUNCTION: IMPERIALISM 0x004d2030
-CRuntimeClass* TCivMgr::GetRuntimeClass() const {
-  return 0;
-}
+TCivMgr::TCivMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d2070
 // TCivMgr::`scalar deleting destructor'

@@ -1,9 +1,7 @@
 #include "game/THotspotBehavior.h"
+IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 
-// FUNCTION: IMPERIALISM 0x004b0b60
-CRuntimeClass* THotspotBehavior::GetRuntimeClass() const {
-  return 0;
-}
+THotspotBehavior::THotspotBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0bb0
 // THotspotBehavior::`scalar deleting destructor'

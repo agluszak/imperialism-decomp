@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004304d0
 // TInfoPanelView::`scalar deleting destructor'
 TInfoPanelView::~TInfoPanelView() {}
+IMPLEMENT_DYNCREATE(TInfoPanelView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004f9ff0
-CRuntimeClass* TInfoPanelView::GetRuntimeClass() const {
-  return 0;
-}
+TInfoPanelView::TInfoPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004fa010
 void TInfoPanelView::NoOpUiLifecycleHook(int arg) {

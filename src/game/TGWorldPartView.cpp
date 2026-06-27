@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045b030
 // TGWorldPartView::`scalar deleting destructor'
 TGWorldPartView::~TGWorldPartView() {}
+IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 
-// FUNCTION: IMPERIALISM 0x004ac860
-CRuntimeClass* TGWorldPartView::GetRuntimeClass() const {
-  return 0;
-}
+TGWorldPartView::TGWorldPartView() {}
 
 // FUNCTION: IMPERIALISM 0x004ac880
 void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {

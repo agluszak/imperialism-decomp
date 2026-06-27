@@ -15,7 +15,7 @@ public:
   short field_9c;      // 0x9c
   short padding_9e;    // 0x9e
 
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TEditText)
   virtual ~TEditText();
 
   void Free() override;

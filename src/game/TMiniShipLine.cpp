@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00569b60
 // TMiniShipLine::`scalar deleting destructor'
 TMiniShipLine::~TMiniShipLine() {}
+IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x00569c20
-CRuntimeClass* TMiniShipLine::GetRuntimeClass() const {
-  return 0;
-}
+TMiniShipLine::TMiniShipLine() {}
 
 // FUNCTION: IMPERIALISM 0x00569c80
 undefined TMiniShipLine::OrphanRetStub_0056f460() {

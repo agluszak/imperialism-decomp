@@ -19,6 +19,9 @@ class CString;
 // VTABLE: IMPERIALISM 0x00649140
 class TStream : public TObject {
 public:
+  DECLARE_DYNCREATE(TStream)
+  TStream();
+public:
   virtual ~TStream();
   // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
   // are inherited from TObject unchanged; 0x1c (Free) is overridden below.

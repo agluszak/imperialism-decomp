@@ -7,11 +7,7 @@ extern "C" CRuntimeClass PTR_s_TRearFloatWindow_00654f30;
 TView* TRearFloatWindow::CreateTRearFloatWindowInstance() {
   return new TRearFloatWindow();
 }
-
-// FUNCTION: IMPERIALISM 0x004f38c0
-CRuntimeClass* TRearFloatWindow::GetRuntimeClass() const {
-  return &PTR_s_TRearFloatWindow_00654f30;
-}
+IMPLEMENT_DYNCREATE(TRearFloatWindow, TFloatWindow)
 
 // FUNCTION: IMPERIALISM 0x004f38e0
 TRearFloatWindow::TRearFloatWindow() : TFloatWindow() {

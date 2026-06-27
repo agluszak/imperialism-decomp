@@ -5,14 +5,14 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TMilitaryUnit.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 #include "game/diplomacy_globals.h"
 
 extern "C" {
 extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
 }
 
-int SumMilitaryUnitPowerWeights(TPtrList* unitList) {
+int SumMilitaryUnitPowerWeights(TSortedList* unitList) {
   int powerSum = 0;
   CIterator unitIter(unitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();

@@ -13,7 +13,7 @@ public:
   TEngineerDialog();
   virtual ~TEngineerDialog() override;
 
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x4d0540
+  DECLARE_DYNCREATE(TEngineerDialog)
   void Free() override;                                    // 0x1c 0x4d05e0
   void ApplyRectSlot110(RECT* rectBuffer) override;        // 0x110 0x4d0650
 };

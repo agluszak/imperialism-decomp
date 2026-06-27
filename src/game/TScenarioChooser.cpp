@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045ae90
 // TScenarioChooser::`scalar deleting destructor'
 TScenarioChooser::~TScenarioChooser() {}
+IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00579b60
-CRuntimeClass* TScenarioChooser::GetRuntimeClass() const {
-  return 0;
-}
+TScenarioChooser::TScenarioChooser() {}
 
 // FUNCTION: IMPERIALISM 0x00579b80
 void TScenarioChooser::NoOpUiLifecycleHook(int arg) {

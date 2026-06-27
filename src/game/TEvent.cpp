@@ -1,10 +1,9 @@
 #include "game/TEvent.h"
 
-extern "C" CRuntimeClass classRuntimeClass = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass* TEvent::GetRuntimeClass() const {
-  return &classRuntimeClass;
-}
+IMPLEMENT_DYNCREATE(TEvent, TObject)
+
+TEvent::TEvent() : commandNumber(0), dispatchMessage(0), sourceHandler(0), targetHandler(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00492c70
 // TEvent::`scalar deleting destructor'
-
+TEvent::~TEvent() {}

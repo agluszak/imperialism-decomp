@@ -10,10 +10,6 @@
 
 #include <new>
 
-extern "C" {
-CRuntimeClass g_pClassDescTMinister = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 namespace {
 
 struct MinisterTerrainPreferenceEntry {
@@ -22,11 +18,7 @@ struct MinisterTerrainPreferenceEntry {
 };
 
 } // namespace
-
-// FUNCTION: IMPERIALISM 0x0052eb60
-CRuntimeClass* TMinister::GetRuntimeClass() const {
-  return &g_pClassDescTMinister;
-}
+IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
 TMinister::TMinister() : ownerContextAt04(0), field_8(0), skillIndexC(0) {}

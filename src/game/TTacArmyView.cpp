@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045d310
 // TTacArmyView::`scalar deleting destructor'
 TTacArmyView::~TTacArmyView() {}
+IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
-// FUNCTION: IMPERIALISM 0x005a9d70
-CRuntimeClass* TTacArmyView::GetRuntimeClass() const {
-  return 0;
-}
+TTacArmyView::TTacArmyView() {}
 
 // FUNCTION: IMPERIALISM 0x005aa2e0
 void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {

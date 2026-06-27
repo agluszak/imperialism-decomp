@@ -1,9 +1,7 @@
 #include "game/TShipyardView.h"
+IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
-// FUNCTION: IMPERIALISM 0x004c82a0
-CRuntimeClass* TShipyardView::GetRuntimeClass() const {
-  return 0;
-}
+TShipyardView::TShipyardView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c82f0
 // TShipyardView::`scalar deleting destructor'

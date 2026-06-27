@@ -1,9 +1,7 @@
 #include "game/TGameSetupPicture.h"
+IMPLEMENT_DYNCREATE(TGameSetupPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00575840
-CRuntimeClass* TGameSetupPicture::GetRuntimeClass() const {
-  return 0;
-}
+TGameSetupPicture::TGameSetupPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00575890
 // TGameSetupPicture::`scalar deleting destructor'

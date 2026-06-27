@@ -1,8 +1,9 @@
 #include "game/TDocument.h"
 
 TDocument::~TDocument() {}
+IMPLEMENT_DYNCREATE(TDocument, TObject)
 
-CRuntimeClass* TDocument::GetRuntimeClass() const { return 0; }
+TDocument::TDocument() {}
 
 undefined TDocument::OrphanRetStub_00486530() { return 0; }
 

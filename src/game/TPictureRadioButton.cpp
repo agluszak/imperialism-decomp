@@ -1,9 +1,7 @@
 #include "game/TPictureRadioButton.h"
+IMPLEMENT_DYNCREATE(TPictureRadioButton, TToggleButton)
 
-// FUNCTION: IMPERIALISM 0x00570d40
-CRuntimeClass* TPictureRadioButton::GetRuntimeClass() const {
-  return 0;
-}
+TPictureRadioButton::TPictureRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00570d90
 // TPictureRadioButton::`scalar deleting destructor'

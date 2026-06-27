@@ -14,8 +14,7 @@ public:
 
   TPlacard();
   virtual ~TPlacard() override;
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TPlacard)
   void NoOpUiLifecycleHook(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual bool IsSelected(short value = -1, bool refreshNow = true);

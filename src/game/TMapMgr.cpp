@@ -1,7 +1,7 @@
 #include "game/TMapMgr.h"
 
 #include "game/CString.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
 #include "game/TPortZone.h"
@@ -23,8 +23,9 @@ short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   return reinterpret_cast<Func>(0x00512dd0)(sourceTile, destTile);
 }
 }
+IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
-CRuntimeClass* TMapMgr::GetRuntimeClass() const { return 0; }
+TMapMgr::TMapMgr() {}
 
 TMapMgr::~TMapMgr() {}
 
@@ -173,7 +174,6 @@ undefined TMapMgr::GetMapImprovementTileSpriteOffset(short param_1) { return 0; 
 
 undefined TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0() { return 0; }
 
-
 // FUNCTION: IMPERIALISM 0x00512b50
 void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                                     char wrapHorizontally) {
@@ -233,7 +233,6 @@ void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTile
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x00512cc0
 short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction) {
   int tile = static_cast<int>(tileIndex);
@@ -281,7 +280,6 @@ short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short 
   }
   return static_cast<short>(result);
 }
-
 
 // FUNCTION: IMPERIALISM 0x00513200
 int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
@@ -355,7 +353,6 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIn
 
 } // namespace
 
-
 // FUNCTION: IMPERIALISM 0x00513ff0
 void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation) {
   (void)ownerNation;
@@ -365,7 +362,6 @@ void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short des
   terrainStateTable[sourceTile].railFlags17 += pTable2[(dir + 3) * 2];
   terrainStateTable[destTile].railFlags17 += pTable8[((dir + 3) % 6) * 2];
 }
-
 
 // FUNCTION: IMPERIALISM 0x00514c80
 short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
@@ -377,7 +373,6 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
   return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
                                                     allowActiveFlag2);
 }
-
 
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignSharedStringFromIndexedA8EntryNameField(int cityRecordIndex, CString* dest) {
@@ -467,7 +462,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
 
   short fallbackTile = -1;
   if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0) {
-    TPtrList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
+    TSortedList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
     if (ownedRegions != 0 && ownedRegions->GetCountSlot48() > 0) {
       int lastMatch = -1;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -544,10 +539,9 @@ void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
 
 } // namespace
 
-
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
-  TPtrList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
+  TSortedList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
   if (regionList->GetCountSlot48() < 1) {
     return 0;
   }
@@ -574,7 +568,6 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x00518470
 void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
   signed char* tileBase = tileOwnershipTable;
@@ -596,7 +589,6 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
 void TMapMgr::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0055e360
 short TMapMgr::StepHexTileIndexByDirectionWithWrapRules(short tileIndex,
@@ -693,7 +685,6 @@ short TMapMgr::TileIndexFromRowCol(int row, int col) {
   return static_cast<short>(col + row * 0x6c);
 }
 
-
 // FUNCTION: IMPERIALISM 0x005635e0
 void EnsurePortZoneForTile(short nTileIndex) {
   if (g_pGlobalMapState == 0) {
@@ -727,7 +718,6 @@ void EnsurePortZoneForTile(short nTileIndex) {
   portZone->field0c = static_cast<int>(seaTileIndex);
   portZone->field20 = portZone->GetActiveNationSlotTile();
 }
-
 
 // FUNCTION: IMPERIALISM 0x00563990
 short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
@@ -788,7 +778,6 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
   }
   return -1;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00564240
 void RemovePortZoneByTile(short nTileIndex) {

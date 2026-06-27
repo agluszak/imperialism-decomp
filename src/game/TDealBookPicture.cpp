@@ -1,9 +1,7 @@
 #include "game/TDealBookPicture.h"
+IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005baba0
-CRuntimeClass* TDealBookPicture::GetRuntimeClass() const {
-  return 0;
-}
+TDealBookPicture::TDealBookPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'

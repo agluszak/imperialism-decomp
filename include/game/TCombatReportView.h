@@ -131,8 +131,7 @@ public:
   short reportValue;
 
   TCombatReportView();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // Destructor is compiler-generated (implicit virtual dtor).
+  DECLARE_DYNCREATE(TCombatReportView)
   void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual bool IsSelected(void* reportRecord);
 };

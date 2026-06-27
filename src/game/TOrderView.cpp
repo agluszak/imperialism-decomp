@@ -1,9 +1,7 @@
 #include "game/TOrderView.h"
+IMPLEMENT_DYNCREATE(TOrderView, TView)
 
-// FUNCTION: IMPERIALISM 0x00506a60
-CRuntimeClass* TOrderView::GetRuntimeClass() const {
-  return 0;
-}
+TOrderView::TOrderView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00506ab0
 // TOrderView::`scalar deleting destructor'

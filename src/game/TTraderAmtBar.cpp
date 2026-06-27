@@ -25,8 +25,6 @@ undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 
 namespace {
-
-extern "C" CRuntimeClass g_pClassDescTTraderAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {
@@ -43,11 +41,7 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
   return new TTraderAmtBar();
 }
-
-// FUNCTION: IMPERIALISM 0x0058aed0
-CRuntimeClass* TTraderAmtBar::GetRuntimeClass() const {
-  return &g_pClassDescTTraderAmtBar;
-}
+IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058af30

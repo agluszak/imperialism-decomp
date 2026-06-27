@@ -1,9 +1,7 @@
 #include "game/TMapUberPicture.h"
+IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
-// FUNCTION: IMPERIALISM 0x005969c0
-CRuntimeClass* TMapUberPicture::GetRuntimeClass() const {
-  return 0;
-}
+TMapUberPicture::TMapUberPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'

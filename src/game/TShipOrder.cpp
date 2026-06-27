@@ -7,8 +7,6 @@
 #include "game/TZone.h"
 
 // GLOBAL: IMPERIALISM 0x0064f428
-CRuntimeClass g_pClassDescTShipOrder = {nullptr, 0, 0, nullptr, nullptr};
-
 extern char g_industryActionCostWeightResCode09;
 extern char g_industryActionCostWeightResCode08;
 extern char g_industryActionCostWeightResCode10;
@@ -47,11 +45,7 @@ TShipOrder::TShipOrder()
       resourceTypeIndex48(0), field4a(0) {
   ZeroShipOrderTrackingSlots(this);
 }
-
-// FUNCTION: IMPERIALISM 0x004b84a0
-CRuntimeClass* TShipOrder::GetRuntimeClass() const {
-  return &g_pClassDescTShipOrder;
-}
+IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b84e0
 // TShipOrder::`scalar deleting destructor'

@@ -135,11 +135,7 @@ int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
   (void)arg;
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004fe780
-CRuntimeClass* TDisplayMgr::GetRuntimeClass() const {
-  return &classRuntimeClass;
-}
+IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()

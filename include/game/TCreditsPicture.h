@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x00642d58
 class TCreditsPicture : public TPicture {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCreditsPicture)
   virtual ~TCreditsPicture();
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;

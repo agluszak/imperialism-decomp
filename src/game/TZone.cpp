@@ -89,11 +89,7 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   }
   return destObject;
 }
-
-// FUNCTION: IMPERIALISM 0x0055e6e0
-CRuntimeClass* TZone::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTZone);
-}
+IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()

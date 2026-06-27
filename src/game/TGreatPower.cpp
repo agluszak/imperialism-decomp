@@ -161,7 +161,7 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedList.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 
 static const unsigned int kAddrUiRuntimeContextPtr = 0x006A21BC;
 static const unsigned int kAddrNationInteractionStateManagerPtr = 0x006A43CC;
@@ -283,7 +283,7 @@ static __inline int CPtrArray_GetCount(const CPtrArray* list) {
   return list->GetSize();
 }
 
-static __inline short IndexAndRankList_GetShortValueByOrdinal1Based(TIndexAndRankList* list,
+static __inline short IndexAndRankList_GetShortValueByOrdinal1Based(TSortedPtrList* list,
                                                                     int ordinal) {
   short* value = static_cast<short*>(list->GetEntrySlot2C(ordinal));
   return (value != 0) ? *value : static_cast<short>(-1);
@@ -362,11 +362,11 @@ static __inline int ComputeAvailableDiplomacyBudget(const TGreatPower* self) {
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
-static __inline TPtrList* AllocateBattleListOwnerWithPtrListSentinel(void) {
-  return new TPtrList();
+static __inline TSortedList* AllocateBattleListOwnerWithPtrListSentinel(void) {
+  return new TSortedList();
 }
 
-static __inline TPtrList* AllocateBattleListOwnerWithLinkedSentinel(void) {
+static __inline TSortedList* AllocateBattleListOwnerWithLinkedSentinel(void) {
   // The original allocates a TSortedList and runs its real ctor (0x004a8640). Construct
   // one directly instead of faking the ctor via an __fastcall dummy-edx bridge.
   return new TSortedList();
@@ -430,7 +430,6 @@ static __inline void* ReallocateBufferWithAllocatorTracking(void* buffer, int si
 static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
   return reinterpret_cast<unsigned int(__cdecl*)(void)>(GenerateThreadLocalRandom15)();
 }
-
 
 static __inline void QueueNationPairWarTransition(TDiplomacyMgr* diplomacyManager,
                                                   short sourceNation, short targetNation) {
@@ -508,11 +507,7 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
   return new TGreatPower();
 }
-
-// FUNCTION: IMPERIALISM 0x004d89d0
-CRuntimeClass* TGreatPower::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTGreatPower);
-}
+IMPLEMENT_DYNCREATE(TGreatPower, TCountry)
 
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
@@ -616,7 +611,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   this->city = cityModel;
 
   void* townMarkerListOwner = AllocateBattleListOwnerWithLinkedSentinel();
-  this->townMarkerList = static_cast<TPtrList*>(townMarkerListOwner);
+  this->townMarkerList = static_cast<TSortedList*>(townMarkerListOwner);
 
   this->grantTotalCost = 0;
   this->needCapA6 = 0x0F;
@@ -661,7 +656,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   }
 
   void* trackedObjectList = AllocateBattleListOwnerWithPtrListSentinel();
-  this->trackedObjectList = static_cast<TPtrList*>(trackedObjectList);
+  this->trackedObjectList = static_cast<TSortedList*>(trackedObjectList);
 
   int candidateIndex = 0;
   while (candidateIndex < kNationSlotCount) {
@@ -675,7 +670,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
       reinterpret_cast<TQueueObject*>(AllocateSortedByRelationshipListWithMode(8));
 
   void* missionNodeQueue = AllocateBattleListOwnerWithPtrListSentinel();
-  this->missionNodeQueue = static_cast<TPtrList*>(missionNodeQueue);
+  this->missionNodeQueue = static_cast<TSortedList*>(missionNodeQueue);
   this->pendingAidTotal = 0;
 }
 
@@ -872,11 +867,11 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
 
   void* townMarkerList = this->townMarkerList;
-  int hasItems = static_cast<TPtrList*>(townMarkerList)->GetCountSlot48();
+  int hasItems = static_cast<TSortedList*>(townMarkerList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TPtrList*>(townMarkerList)->FreePayloadsSlot54();
+    static_cast<TSortedList*>(townMarkerList)->FreePayloadsSlot54();
   }
-  static_cast<TPtrList*>(townMarkerList)->ReadFrom(stream);
+  static_cast<TSortedList*>(townMarkerList)->ReadFrom(stream);
 
   int townCount = 0;
   static_cast<TStream*>(stream)->ReadBytes(&townCount, 4);
@@ -887,7 +882,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       TTown* townMarker = new TTown();
       if (townMarker != 0) {
         townMarker->ReadFrom(stream);
-        static_cast<TPtrList*>(townMarkerList)->AddTailSlot30(townMarker);
+        static_cast<TSortedList*>(townMarkerList)->AddTailSlot30(townMarker);
       }
       ++townOrdinal;
     }
@@ -895,15 +890,15 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (townCount > 0) {
     this->city->AdoptSelectedOrderSlot44(
-        static_cast<TPtrList*>(townMarkerList)->GetEntryByOrdinalSlot4C());
+        static_cast<TSortedList*>(townMarkerList)->GetEntryByOrdinalSlot4C());
   }
 
   void* trackedObjectList = this->trackedObjectList;
-  hasItems = static_cast<TPtrList*>(trackedObjectList)->GetCountSlot48();
+  hasItems = static_cast<TSortedList*>(trackedObjectList)->GetCountSlot48();
   if (hasItems != 0) {
-    static_cast<TPtrList*>(trackedObjectList)->FreePayloadsSlot54();
+    static_cast<TSortedList*>(trackedObjectList)->FreePayloadsSlot54();
   }
-  static_cast<TPtrList*>(trackedObjectList)->ReadFrom(stream);
+  static_cast<TSortedList*>(trackedObjectList)->ReadFrom(stream);
 
   int unusedOrderCount = 0;
   static_cast<TStream*>(stream)->ReadBytes(&unusedOrderCount, 4);
@@ -927,7 +922,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x0E) {
     void* missionNodeQueue = this->missionNodeQueue;
-    static_cast<TPtrList*>(missionNodeQueue)->ReadFrom(stream);
+    static_cast<TSortedList*>(missionNodeQueue)->ReadFrom(stream);
 
     int nodeCount = 0;
     static_cast<TStream*>(stream)->ReadBytes(&nodeCount, 4);
@@ -937,7 +932,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
         unsigned char hasNode = 0;
         char markerOk = static_cast<TStream*>(stream)->ReadByte(&hasNode);
         if (markerOk != 0) {
-          static_cast<TPtrList*>(missionNodeQueue)->AddTailSlot30(0);
+          static_cast<TSortedList*>(missionNodeQueue)->AddTailSlot30(0);
         }
         ++nodeOrdinal;
       }
@@ -1230,7 +1225,7 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
        nodeIter.More(); node = static_cast<TMission*>(nodeIter.Advance())) {
     node->DispatchMissionNodeSlot28();
   }
-  static_cast<TPtrList*>(this->missionNodeQueue)->FreePayloadsSlot54();
+  static_cast<TSortedList*>(this->missionNodeQueue)->FreePayloadsSlot54();
 }
 #pragma optimize("", on)
 
@@ -1617,7 +1612,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
 // FUNCTION: IMPERIALISM 0x004dbf00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
-  TPtrList* regionList = this->ownedRegionList;
+  TSortedList* regionList = this->ownedRegionList;
   if (regionList == 0) {
     return;
   }
@@ -1948,7 +1943,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
     return;
   }
 
-  TPtrList* townMarkerList = this->townMarkerList;
+  TSortedList* townMarkerList = this->townMarkerList;
   if (townMarkerList == 0) {
     return;
   }
@@ -2999,7 +2994,7 @@ void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
 
 // FUNCTION: IMPERIALISM 0x004de810
 void TGreatPower::NotifyWarResetSlotA5(void) {
-  TPtrList* trackedList = this->trackedObjectList;
+  TSortedList* trackedList = this->trackedObjectList;
   if (trackedList == 0) {
     return;
   }
@@ -3715,9 +3710,9 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
       short innerPriority =
           g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryInner)->orderType];
       if (innerPriority < outerPriority) {
-        static_cast<TPtrList*>(this->trackedObjectList)
+        static_cast<TSortedList*>(this->trackedObjectList)
             ->SetAtOrdinalSlot60(outer, &entryInner, 1);
-        static_cast<TPtrList*>(this->trackedObjectList)
+        static_cast<TSortedList*>(this->trackedObjectList)
             ->SetAtOrdinalSlot60(inner, &entryOuter, 1);
         entryOuter = entryInner;
         outerPriority = innerPriority;
@@ -4416,7 +4411,7 @@ void TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks(int targetNation
 // FUNCTION: IMPERIALISM 0x004e2500
 void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   TMapMgr* globalMapState = g_pGlobalMapState;
-  TPtrList* filteredList = this->trackedObjectList;
+  TSortedList* filteredList = this->trackedObjectList;
   for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
     TTrackedObjectListEntry* entry =
         static_cast<TTrackedObjectListEntry*>(filteredList->GetEntryByOrdinalSlot4C(index));
@@ -4436,7 +4431,7 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
     }
   }
 
-  TPtrList* unassignedList = this->militaryUnitList44;
+  TSortedList* unassignedList = this->militaryUnitList44;
   for (int unassignedIndex = unassignedList->GetCountSlot48(); unassignedIndex != 0;
        --unassignedIndex) {
     TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
@@ -4642,7 +4637,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   TQueueObject* summaryQueue = this->turnSummaryQueue;
-  int queueCount = reinterpret_cast<TPtrList*>(summaryQueue)->GetCountSlot48();
+  int queueCount = reinterpret_cast<TSortedList*>(summaryQueue)->GetCountSlot48();
   if (queueCount <= 0) {
     return;
   }
@@ -4707,7 +4702,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);
   }
 
-  TPtrList* missionQueue = this->missionQueue;
+  TSortedList* missionQueue = this->missionQueue;
   missionQueue->AddTailSlot30(missionObj);
 
   if (arg2 != -1) {
@@ -5068,8 +5063,6 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
   orderObject->InitializeCivWorkOrderState(workOrderType, ownerNationSlot,
                                            static_cast<int>(cityOwnerTag));
 }
-
-
 
 int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
 void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}

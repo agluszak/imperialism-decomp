@@ -333,12 +333,7 @@ struct GoldDialogControl : public TControl {
 };
 
 }  // namespace
-
-
-// FUNCTION: IMPERIALISM 0x00509c80
-CRuntimeClass* TMacViewMgr::GetRuntimeClass() const {
-  return &classRuntimeClass;
-}
+IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
 TMacViewMgr::TMacViewMgr() : TObject() {
@@ -538,7 +533,6 @@ undefined TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
   atlas684 = MacViewInvoke::LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
   return 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0050a470
 void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self) {

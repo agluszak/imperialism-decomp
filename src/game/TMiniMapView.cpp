@@ -1,9 +1,7 @@
 #include "game/TMiniMapView.h"
+IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
-// FUNCTION: IMPERIALISM 0x0059a360
-CRuntimeClass* TMiniMapView::GetRuntimeClass() const {
-  return 0;
-}
+TMiniMapView::TMiniMapView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059a3f0
 // TMiniMapView::`scalar deleting destructor'

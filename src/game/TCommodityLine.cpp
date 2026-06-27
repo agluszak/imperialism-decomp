@@ -1,9 +1,7 @@
 #include "game/TCommodityLine.h"
+IMPLEMENT_DYNCREATE(TCommodityLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x005c14a0
-CRuntimeClass* TCommodityLine::GetRuntimeClass() const {
-  return 0;
-}
+TCommodityLine::TCommodityLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c14f0
 // TCommodityLine::`scalar deleting destructor'

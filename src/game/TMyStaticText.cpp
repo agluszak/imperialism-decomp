@@ -10,13 +10,7 @@ extern int g_nUiResourceEntryDefaultParam0;
 }
 
 undefined4 LoadUiStringResourceByGroupAndIndex(void);
-
-
-
-// FUNCTION: IMPERIALISM 0x005b5400
-CRuntimeClass* TMyStaticText::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TMyStaticText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x005b5420
 TMyStaticText::TMyStaticText() : TStaticText() {}

@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00656a98
 class TGameWindow : public TWindow {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TGameWindow)
   virtual ~TGameWindow();
 
   virtual void Free() override;

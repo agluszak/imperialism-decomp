@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
 TScrollBarView::~TScrollBarView() {}
+IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 
-// FUNCTION: IMPERIALISM 0x00574490
-CRuntimeClass* TScrollBarView::GetRuntimeClass() const {
-  return 0;
-}
+TScrollBarView::TScrollBarView() {}
 
 // FUNCTION: IMPERIALISM 0x005746e0
 void TScrollBarView::Free() {

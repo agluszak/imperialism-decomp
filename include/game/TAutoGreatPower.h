@@ -5,8 +5,7 @@
 // VTABLE: IMPERIALISM 0x00654088
 class TAutoGreatPower : public TGreatPower {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
-  // The auto-tracked list lives at +0xb60 — that is the base header's tail field
+  DECLARE_DYNCREATE(TAutoGreatPower)
   // `missionQueue` (the whole 0x964+ tail block is TAutoGreatPower-only data that is
   // still declared on TGreatPower; see worklog 2026-06-10).
 

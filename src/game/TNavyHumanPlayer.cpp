@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059ef20
 // TNavyHumanPlayer::`scalar deleting destructor'
 TNavyHumanPlayer::~TNavyHumanPlayer() {}
+IMPLEMENT_DYNCREATE(TNavyHumanPlayer, TNavyPlayer)
 
-// FUNCTION: IMPERIALISM 0x0059ef70
-CRuntimeClass* TNavyHumanPlayer::GetRuntimeClass() const {
-  return 0;
-}
+TNavyHumanPlayer::TNavyHumanPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059efc0
 undefined TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState() {

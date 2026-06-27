@@ -4,8 +4,6 @@
 namespace {
 
 // GLOBAL: IMPERIALISM 0x662f38
-extern "C" CRuntimeClass g_pClassDescTClosePicture = {nullptr, 0, 0, nullptr, nullptr};
-
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00586ad0
@@ -14,11 +12,7 @@ TClosePicture* __cdecl CreateTClosePictureInstance(void) {
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x662f38).
-
-// FUNCTION: IMPERIALISM 0x00586b50
-CRuntimeClass* TClosePicture::GetRuntimeClass() const {
-  return &g_pClassDescTClosePicture;
-}
+IMPLEMENT_DYNCREATE(TClosePicture, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00586b70
 TClosePicture::TClosePicture() : TPictureButton() {}

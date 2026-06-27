@@ -1,9 +1,7 @@
 #include "game/TMegaPicture.h"
+IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00573170
-CRuntimeClass* TMegaPicture::GetRuntimeClass() const {
-  return 0;
-}
+TMegaPicture::TMegaPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005731d0
 // TMegaPicture::`scalar deleting destructor'

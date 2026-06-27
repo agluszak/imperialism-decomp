@@ -12,7 +12,7 @@
 class TUnit : public TObject {
 public:
   // --- TObject overrides ---
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
+  DECLARE_DYNCREATE(TUnit)
   ~TUnit() override; // slot 0x04
 
   // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
@@ -47,13 +47,7 @@ public:
   // header-inline so MSVC folds it into each subclass ctor and dead-store-
   // eliminates the base vptr write, leaving the single derived vptr write the
   // originals emit.
-  TUnit() {
-    field_10 = 0;
-    nextOnTile = 0;
-    field_6 = static_cast<short>(0xffff);
-    field_8 = 0;
-    field_1C = 0;
-  }
+  TUnit();
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                          short nOrderOwnerNationId, short arg3);

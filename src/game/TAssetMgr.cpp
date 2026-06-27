@@ -2,11 +2,7 @@
 
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
-
-// FUNCTION: IMPERIALISM 0x005df260
-CRuntimeClass* TAssetMgr::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280
 TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}

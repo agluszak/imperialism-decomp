@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x006591d0
 class TCitySiteView : public TMapDialog {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCitySiteView)
   virtual ~TCitySiteView();
 
   virtual void NoOpUiLifecycleHook(int arg) override;

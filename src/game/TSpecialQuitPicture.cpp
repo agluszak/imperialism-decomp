@@ -8,11 +8,9 @@ undefined TSpecialQuitPicture::OrphanRetStub_0045acb0() {
 // SYNTHETIC: IMPERIALISM 0x0045acd0
 // TSpecialQuitPicture::`scalar deleting destructor'
 TSpecialQuitPicture::~TSpecialQuitPicture() {}
+IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005b47f0
-CRuntimeClass* TSpecialQuitPicture::GetRuntimeClass() const {
-  return 0;
-}
+TSpecialQuitPicture::TSpecialQuitPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005b4810
 void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0044fab0
 // TJoinSelectorDialog::`scalar deleting destructor'
 TJoinSelectorDialog::~TJoinSelectorDialog() {}
+IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x0054e710
-CRuntimeClass* TJoinSelectorDialog::GetRuntimeClass() const {
-  return 0;
-}
+TJoinSelectorDialog::TJoinSelectorDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054e730
 void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {

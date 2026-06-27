@@ -1,9 +1,7 @@
 #include "game/TShipPlacard.h"
+IMPLEMENT_DYNCREATE(TShipPlacard, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00569250
-CRuntimeClass* TShipPlacard::GetRuntimeClass() const {
-  return 0;
-}
+TShipPlacard::TShipPlacard() {}
 
 // SYNTHETIC: IMPERIALISM 0x005692a0
 // TShipPlacard::`scalar deleting destructor'

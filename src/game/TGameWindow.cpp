@@ -99,11 +99,7 @@ static void PlayClickSfx7000() {
 }
 
 } // namespace GameWindowInvoke
-
-// FUNCTION: IMPERIALISM 0x004ffbf0
-CRuntimeClass* TGameWindow::GetRuntimeClass() const {
-  return &PTR_s_TGameWindow_00656a30;
-}
+IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x004ffc10
 TGameWindow::TGameWindow() {

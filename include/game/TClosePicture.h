@@ -125,7 +125,7 @@ public:
   TClosePicture();
   virtual ~TClosePicture() override;
 
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x586b50 (override)
+  DECLARE_DYNCREATE(TClosePicture)
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                          int arg4) override;
 };

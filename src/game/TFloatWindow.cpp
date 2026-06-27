@@ -19,11 +19,7 @@ void __fastcall SetUiColorDescriptorGoldTriplet(int param_1, int param_2, int pa
 TView* TFloatWindow::CreateTFloatWindowInstance() {
   return new TFloatWindow();
 }
-
-// FUNCTION: IMPERIALISM 0x00491f90
-CRuntimeClass* TFloatWindow::GetRuntimeClass() const {
-  return &PTR_s_TFloatWindow_006496d8;
-}
+IMPLEMENT_DYNCREATE(TFloatWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00491fb0
 TFloatWindow::TFloatWindow() : TWindow() {

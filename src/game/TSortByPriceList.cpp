@@ -1,26 +1,19 @@
 #include "game/TSortByPriceList.h"
 #include "game/mfc.h"
 
+IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
+
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-extern "C" {
-CRuntimeClass g_pClassDescTSortByPriceList = {nullptr, 0, 0, nullptr, nullptr};
-}
 
 // FUNCTION: IMPERIALISM 0x00534680
 TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
   return new TSortByPriceList();
 }
 
-// FUNCTION: IMPERIALISM 0x005346f0
-CRuntimeClass* TSortByPriceList::GetRuntimeClass() const {
-  return &g_pClassDescTSortByPriceList;
-}
-
 // FUNCTION: IMPERIALISM 0x00534710
-TSortByPriceList::TSortByPriceList() : TIndexAndRankList() {}
+TSortByPriceList::TSortByPriceList() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00534740

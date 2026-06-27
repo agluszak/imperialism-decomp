@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
 TStatusPicture::~TStatusPicture() {}
+IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00593f00
-CRuntimeClass* TStatusPicture::GetRuntimeClass() const {
-  return 0;
-}
+TStatusPicture::TStatusPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00593f20
 void TStatusPicture::NoOpUiLifecycleHook(int arg) {

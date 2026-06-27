@@ -10,10 +10,6 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-CRuntimeClass g_pClassDescTArmyToolbar = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
@@ -90,11 +86,9 @@ static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payl
 TArmyToolbar* __cdecl CreateTArmyToolbarInstance(void) {
   return new TArmyToolbar();
 }
+IMPLEMENT_DYNCREATE(TArmyToolbar, TUnitToolbarCluster)
 
-// FUNCTION: IMPERIALISM 0x0058dec0
-CRuntimeClass* TArmyToolbar::GetRuntimeClass() const {
-  return &g_pClassDescTArmyToolbar;
-}
+TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 TArmyToolbar* TArmyToolbar::ConstructTArmyToolbarBaseState() {

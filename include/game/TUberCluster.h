@@ -126,8 +126,7 @@ public:
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   void DispatchRuntimeApplyMoveValue(int value);
   TUberCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TUberCluster)
   void InitializeTradeMoveAndBarControls(unsigned int styleSeed = 0);
 };
 

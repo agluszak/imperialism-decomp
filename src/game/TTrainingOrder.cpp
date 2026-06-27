@@ -1,9 +1,7 @@
 #include "game/TTrainingOrder.h"
+IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
-// FUNCTION: IMPERIALISM 0x004b6a90
-CRuntimeClass* TTrainingOrder::GetRuntimeClass() const {
-  return 0;
-}
+TTrainingOrder::TTrainingOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b6ad0
 // TTrainingOrder::`scalar deleting destructor'

@@ -1,17 +1,10 @@
 #include "game/TStatusButton.h"
 #include "game/mfc.h"
-
-CRuntimeClass g_pClassDescTStatusButton = {nullptr, 0, 0, nullptr, nullptr};
-
 // FUNCTION: IMPERIALISM 0x00586280
 TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
   return new TStatusButton();
 }
-
-// FUNCTION: IMPERIALISM 0x00586310
-CRuntimeClass* TStatusButton::GetRuntimeClass() const {
-  return &g_pClassDescTStatusButton;
-}
+IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}

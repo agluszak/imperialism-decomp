@@ -31,11 +31,9 @@ void TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCle
 // SYNTHETIC: IMPERIALISM 0x0049f050
 // TAnimation::`scalar deleting destructor'
 TAnimation::~TAnimation() {}
+IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
-// FUNCTION: IMPERIALISM 0x0049f0a0
-CRuntimeClass* TAnimation::GetRuntimeClass() const {
-  return 0;
-}
+TAnimation::TAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x0049f140
 undefined TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {

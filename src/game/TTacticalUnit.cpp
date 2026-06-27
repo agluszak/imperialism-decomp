@@ -23,11 +23,9 @@ undefined TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0() {
 // SYNTHETIC: IMPERIALISM 0x005a5dc0
 // TTacticalUnit::`scalar deleting destructor'
 TTacticalUnit::~TTacticalUnit() {}
+IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
-// FUNCTION: IMPERIALISM 0x005a5e10
-CRuntimeClass* TTacticalUnit::GetRuntimeClass() const {
-  return 0;
-}
+TTacticalUnit::TTacticalUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005a5e70
 undefined TTacticalUnit::VTableSlot0E(int param_1) {

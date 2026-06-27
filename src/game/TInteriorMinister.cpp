@@ -2,10 +2,6 @@
 
 #include "game/TStream.h"
 
-extern "C" {
-CRuntimeClass g_pClassDescTInteriorMinister = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -19,11 +15,7 @@ void TInteriorMinister::InteriorSlot1E() {}
 
 // FUNCTION: IMPERIALISM 0x004be190
 void TInteriorMinister::InteriorSlot1F() {}
-
-// FUNCTION: IMPERIALISM 0x004be1b0
-CRuntimeClass* TInteriorMinister::GetRuntimeClass() const {
-  return &g_pClassDescTInteriorMinister;
-}
+IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004be1d0
 TInteriorMinister::TInteriorMinister() : TMinister() {}

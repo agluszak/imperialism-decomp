@@ -8,8 +8,6 @@ undefined TCancelGameOptionsCommand::OrphanRetStub_00487a00() {
 // SYNTHETIC: IMPERIALISM 0x00542560
 // TCancelGameOptionsCommand::`scalar deleting destructor'
 TCancelGameOptionsCommand::~TCancelGameOptionsCommand() {}
+IMPLEMENT_DYNCREATE(TCancelGameOptionsCommand, TCommand)
 
-// FUNCTION: IMPERIALISM 0x005425b0
-CRuntimeClass* TCancelGameOptionsCommand::GetRuntimeClass() const {
-  return 0;
-}
+TCancelGameOptionsCommand::TCancelGameOptionsCommand() {}

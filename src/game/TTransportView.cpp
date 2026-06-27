@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004bd370
 // TTransportView::`scalar deleting destructor'
 TTransportView::~TTransportView() {}
+IMPLEMENT_DYNCREATE(TTransportView, TView)
 
-// FUNCTION: IMPERIALISM 0x004bd3c0
-CRuntimeClass* TTransportView::GetRuntimeClass() const {
-  return 0;
-}
+TTransportView::TTransportView() {}
 
 // FUNCTION: IMPERIALISM 0x004bd3e0
 undefined TTransportView::ApplyCityDialogMinisterValues() {

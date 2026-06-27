@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004fdf50
 // TFrameRadioView::`scalar deleting destructor'
 TFrameRadioView::~TFrameRadioView() {}
+IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 
-// FUNCTION: IMPERIALISM 0x004fdfa0
-CRuntimeClass* TFrameRadioView::GetRuntimeClass() const {
-  return 0;
-}
+TFrameRadioView::TFrameRadioView() {}
 
 // FUNCTION: IMPERIALISM 0x004fdfc0
 void TFrameRadioView::ApplyRectSlot110(RECT* rectBuffer) {

@@ -6,9 +6,6 @@
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"
 #include "game/mfc.h"
-
-CRuntimeClass g_pClassDescTCivilianButton = {nullptr, 0, 0, nullptr, nullptr};
-
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 
 #if defined(_MSC_VER)
@@ -19,11 +16,7 @@ const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 void* __cdecl CreateTCivilianButtonInstance(void) {
   return new TCivilianButton();
 }
-
-// FUNCTION: IMPERIALISM 0x0058b3c0
-CRuntimeClass* TCivilianButton::GetRuntimeClass() const {
-  return &g_pClassDescTCivilianButton;
-}
+IMPLEMENT_DYNCREATE(TCivilianButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x0058b3e0
 TCivilianButton::TCivilianButton() : TRadioPictureButton() {

@@ -43,7 +43,7 @@ class TZone : public TObject {
 public:
   // vtable 0x0065c6d8 — slots 0x00..0x16. Slots 0x02..0x04 (Serialize/AssertValid/
   // Dump) and 0x08..0x09 (ShallowClone/ShallowFree) come from TObject/CObject.
-  CRuntimeClass* GetRuntimeClass() const override;                 // slot 0x00 0x55e6e0
+  DECLARE_DYNCREATE(TZone)
   ~TZone() override;                                               // slot 0x01 scalar dtor 0x562880
   void WriteTo(TStream* stream) override;                          // slot 0x05 0x55eff0
   void ReadFrom(TStream* stream) override;                         // slot 0x06 0x55ed20

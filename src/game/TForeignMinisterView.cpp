@@ -1,9 +1,7 @@
 #include "game/TForeignMinisterView.h"
+IMPLEMENT_DYNCREATE(TForeignMinisterView, TMinisterView)
 
-// FUNCTION: IMPERIALISM 0x004f2fb0
-CRuntimeClass* TForeignMinisterView::GetRuntimeClass() const {
-  return 0;
-}
+TForeignMinisterView::TForeignMinisterView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004f3000
 // TForeignMinisterView::`scalar deleting destructor'

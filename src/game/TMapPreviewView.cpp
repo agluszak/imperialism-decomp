@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d5c0
 // TMapPreviewView::`scalar deleting destructor'
 TMapPreviewView::~TMapPreviewView() {}
+IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 
-// FUNCTION: IMPERIALISM 0x00578830
-CRuntimeClass* TMapPreviewView::GetRuntimeClass() const {
-  return 0;
-}
+TMapPreviewView::TMapPreviewView() {}
 
 // FUNCTION: IMPERIALISM 0x00578850
 void TMapPreviewView::NoOpUiLifecycleHook(int arg) {

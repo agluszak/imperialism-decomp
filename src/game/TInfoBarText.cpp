@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
 TInfoBarText::~TInfoBarText() {}
+IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
-// FUNCTION: IMPERIALISM 0x005b6690
-CRuntimeClass* TInfoBarText::GetRuntimeClass() const {
-  return 0;
-}
+TInfoBarText::TInfoBarText() {}
 
 // FUNCTION: IMPERIALISM 0x005b66b0
 undefined TInfoBarText::ConstructTInfoBarTextBaseState(RECT* layoutRect) {

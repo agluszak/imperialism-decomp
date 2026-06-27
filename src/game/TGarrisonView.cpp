@@ -1,9 +1,7 @@
 #include "game/TGarrisonView.h"
+IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
-// FUNCTION: IMPERIALISM 0x004a87f0
-CRuntimeClass* TGarrisonView::GetRuntimeClass() const {
-  return 0;
-}
+TGarrisonView::TGarrisonView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8840
 // TGarrisonView::`scalar deleting destructor'

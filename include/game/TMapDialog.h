@@ -5,7 +5,7 @@
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TMapDialog)
   virtual ~TMapDialog();
 
   // slot 0x07 — 0x00519c90: release map-dialog quickdraw surface (+0x350) and child state.

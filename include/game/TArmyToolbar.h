@@ -10,11 +10,11 @@ class TArmyToolbar : public TUnitToolbarCluster {
 public:
   int field88;
 
-  TArmyToolbar() : TUnitToolbarCluster(), field88(0) {}
+  TArmyToolbar();
   ~TArmyToolbar() override;
 
   TArmyToolbar* ConstructTArmyToolbarBaseState();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TArmyToolbar)
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 };
 

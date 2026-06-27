@@ -6,7 +6,7 @@
 class TSteelCityMinister : public TCityInteriorMinister {
 public:
   TSteelCityMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TSteelCityMinister)
   void CityInteriorSlot20() override; // slot 0x80 priority preset
 };
 
@@ -14,7 +14,7 @@ public:
 class TShipBuilderCityMinister : public TCityInteriorMinister {
 public:
   TShipBuilderCityMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TShipBuilderCityMinister)
   void CityInteriorSlot20() override; // slot 0x80 priority preset
 };
 
@@ -22,7 +22,7 @@ public:
 class TEvenCityMinister : public TCityInteriorMinister {
 public:
   TEvenCityMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TEvenCityMinister)
   void CityInteriorSlot20() override; // slot 0x80 priority preset
 };
 
@@ -30,6 +30,6 @@ public:
 class TRailCityMinister : public TCityInteriorMinister {
 public:
   TRailCityMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TRailCityMinister)
   void CityInteriorSlot20() override; // slot 0x80 priority preset
 };

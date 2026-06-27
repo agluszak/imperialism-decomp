@@ -1,11 +1,7 @@
 #include "game/TEditText.h"
 #include "game/CMcWindow.h"
 #include "game/TObject.h"
-
-// FUNCTION: IMPERIALISM 0x00490380
-CRuntimeClass* TEditText::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
@@ -106,8 +102,6 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
   (void)newText;
   (void)refreshFlag;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00490e50
 void TEditText::RecomputeAbsolutePositionRecursive() {

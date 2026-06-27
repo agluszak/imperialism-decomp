@@ -14,11 +14,6 @@
 #pragma optimize("y", on)
 
 undefined4 ftol(void);
-
-extern "C" CRuntimeClass g_pClassDescTAmtBar = {nullptr, 0, 0, nullptr, nullptr};
-
-
-
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   (void)requestedValue;
@@ -29,21 +24,11 @@ void TAmtBar::SetBarMetric(int value, int range) {
   UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
   return new TAmtBar();
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x00588560
-CRuntimeClass* TAmtBar::GetRuntimeClass() const {
-  return &g_pClassDescTAmtBar;
-}
-
-
+IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
 // FUNCTION: IMPERIALISM 0x00588580
 TAmtBar::TAmtBar()
@@ -51,18 +36,13 @@ TAmtBar::TAmtBar()
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-
-
 // SYNTHETIC: IMPERIALISM 0x005885c0
 // TAmtBar::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x00588610
 void TAmtBar::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00588630
 void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
@@ -72,15 +52,11 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
   this->InvokeSlot13C();
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00588670
 void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   InvokeSlot1A8();
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00588690
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
@@ -146,8 +122,6 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   int clipDescriptorHead = 0;
   SnapshotHitRegionToClipCache(&clipDescriptorHead);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00588950
 void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430350
 // TTreatiesView::`scalar deleting destructor'
 TTreatiesView::~TTreatiesView() {}
+IMPLEMENT_DYNCREATE(TTreatiesView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004f7aa0
-CRuntimeClass* TTreatiesView::GetRuntimeClass() const {
-  return 0;
-}
+TTreatiesView::TTreatiesView() {}
 
 // FUNCTION: IMPERIALISM 0x004f7ac0
 void TTreatiesView::NoOpUiLifecycleHook(int arg) {

@@ -17,23 +17,13 @@
 #include "decomp_types.h"
 
 extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
-
-
-
-// FUNCTION: IMPERIALISM 0x004913e0
-CRuntimeClass* TCluster::GetRuntimeClass() const {
-  return &PTR_s_TCluster_006496c0;
-}
-
-
+IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
   this->hasCommandTagResource = 5;
   this->field84 = 0x20202020;
 }
-
-
 
 // SYNTHETIC: IMPERIALISM 0x00491480
 // TCluster::`scalar deleting destructor'
@@ -74,14 +64,10 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00491770
 int TCluster::GetField84() {
   return this->field84;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00491790
 void TCluster::SetControlClassAndRefresh(int classState) {
@@ -101,8 +87,6 @@ void TCluster::SetControlClassAndRefresh(int classState) {
     }
   }
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004918a0
 TObject* TCluster::ShallowClone() {

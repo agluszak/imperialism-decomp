@@ -1,9 +1,7 @@
 #include "game/TNumberedIcon.h"
+IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
-// FUNCTION: IMPERIALISM 0x00507380
-CRuntimeClass* TNumberedIcon::GetRuntimeClass() const {
-  return 0;
-}
+TNumberedIcon::TNumberedIcon() {}
 
 // SYNTHETIC: IMPERIALISM 0x005073d0
 // TNumberedIcon::`scalar deleting destructor'

@@ -11,7 +11,7 @@ public:
   TForeignMinister();
   void InitializeStateAndCounters();
 
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TForeignMinister)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short DispatchNationStateEventCode10(short nationSlot) override;

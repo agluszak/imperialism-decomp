@@ -125,8 +125,7 @@ public:
   virtual void ApplyMoveValue(int value); // slot 0x74 0x5866b0
 // === END GENERATED DECLS (TCityBarCluster) ===
   TCityBarCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TCityBarCluster)
   static TCityBarCluster* CreateInstance();
 
   void UpdateTradeSummaryMetricControlsFromRecord(int recordContext);

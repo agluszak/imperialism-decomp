@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x0065b728
 class TClientGreatPower : public TGreatPower {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TClientGreatPower)
   ~TClientGreatPower();
 
   // slot 0x26 — 0x005412b0

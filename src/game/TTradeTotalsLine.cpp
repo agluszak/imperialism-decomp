@@ -1,9 +1,7 @@
 #include "game/TTradeTotalsLine.h"
+IMPLEMENT_DYNCREATE(TTradeTotalsLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x005c18e0
-CRuntimeClass* TTradeTotalsLine::GetRuntimeClass() const {
-  return 0;
-}
+TTradeTotalsLine::TTradeTotalsLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c1930
 // TTradeTotalsLine::`scalar deleting destructor'

@@ -249,7 +249,15 @@ def class_body(text: str, cls: str) -> str | None:
     return None
 
 
-def has_default_constructor_available(header_text: str, cls: str) -> bool:
+def has_default_constructor_declaration(header_text: str, cls: str) -> bool:
+    """Return True if the class has (or can synthesize) a default constructor.
+
+    A default constructor is available when:
+    - no constructors are declared at all (compiler synthesises one), OR
+    - at least one constructor takes no required arguments (no args, or all
+      args have defaults).
+    Inline-defined constructors in the header count as declarations here.
+    """
     body = class_body(header_text, cls)
     if body is None:
         return False
@@ -257,13 +265,50 @@ def has_default_constructor_available(header_text: str, cls: str) -> bool:
     constructor_re = re.compile(rf"(?m)^\s*(?:explicit\s+)?{re.escape(cls)}\s*\((?P<args>[^)]*)\)")
     constructors = list(constructor_re.finditer(body))
     if not constructors:
-        return True
+        return True  # compiler will synthesise a default ctor
 
     for constructor in constructors:
         args = constructor.group("args").strip()
         if not args or args == "void":
             return True
     return False
+
+
+# Keep the old name as an alias used by make_candidate
+has_default_constructor_available = has_default_constructor_declaration
+
+
+def source_defines_default_constructor(source_text: str, cls: str) -> bool:
+    """Return True if source_text contains an out-of-line definition of cls::cls()."""
+    ctor_re = re.compile(
+        rf"(?m)^\s*{re.escape(cls)}::{re.escape(cls)}\s*\([^)]*\)\s*(?::|{{)"
+    )
+    return bool(ctor_re.search(source_text))
+
+
+def header_has_inline_ctor_body(header_text: str, cls: str) -> bool:
+    """Return True if the header defines the default constructor with a body inline."""
+    body = class_body(header_text, cls)
+    if body is None:
+        return False
+    # Match ClassName(...) { or ClassName(...) : base(...) {
+    inline_re = re.compile(
+        rf"(?s)\b{re.escape(cls)}\s*\([^)]*\)\s*(?::[^{{]*)?{{"
+    )
+    return bool(inline_re.search(body))
+
+
+def inject_default_constructor(text: str, cls: str) -> str:
+    """Insert ClassName::ClassName() {} after the IMPLEMENT macro for cls."""
+    impl_re = re.compile(
+        rf"(\bIMPLEMENT_(?:DYNCREATE|SERIAL|DYNAMIC)\s*\(\s*{re.escape(cls)}\s*,[^)]*\))",
+        re.MULTILINE,
+    )
+    m = impl_re.search(text)
+    if not m:
+        return text
+    insert_pos = m.end()
+    return text[:insert_pos] + f"\n\n{cls}::{cls}() {{}}" + text[insert_pos:]
 
 
 def find_source(repo_root: Path, record: RuntimeRecord) -> tuple[Path | None, str | None]:
@@ -516,6 +561,19 @@ def apply_candidates(candidates: list[Candidate]) -> tuple[int, int]:
         for candidate in path_candidates:
             text, ok = replace_source_impl(text, candidate)
             changed = changed or ok
+
+            # Inject a no-arg constructor body when DYNCREATE/SERIAL needs
+            # `new ClassName` but no out-of-line definition exists yet and the
+            # header doesn't have an inline body either.
+            if (
+                ok
+                and candidate.macro_kind in {"DYNCREATE", "SERIAL"}
+                and not source_defines_default_constructor(text, candidate.record.class_name)
+                and not header_has_inline_ctor_body(read_text(candidate.header_path), candidate.record.class_name)
+            ):
+                text = inject_default_constructor(text, candidate.record.class_name)
+                changed = True
+
         if write_text_if_changed(path, text):
             source_edits += 1
         elif changed:

@@ -25,9 +25,7 @@ public:
 
   TSoundPlayer();
   TSoundPlayer* ConstructTSoundPlayerBaseState();
-  CRuntimeClass* GetRuntimeClass() const override;
-
-  // TSoundPlayer overrides of TEventHandler slots.
+  DECLARE_DYNCREATE(TSoundPlayer)
   void Free() override;                                     // 0x07 -> 0x5e51d0
   char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
 

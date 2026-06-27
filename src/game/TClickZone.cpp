@@ -4,11 +4,9 @@
 undefined TClickZone::OrphanRetStub_005723d0() {
   return 0;
 }
+IMPLEMENT_DYNCREATE(TClickZone, TControl)
 
-// FUNCTION: IMPERIALISM 0x005723f0
-CRuntimeClass* TClickZone::GetRuntimeClass() const {
-  return 0;
-}
+TClickZone::TClickZone() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572440
 // TClickZone::`scalar deleting destructor'

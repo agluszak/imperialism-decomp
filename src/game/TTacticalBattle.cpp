@@ -3,8 +3,9 @@
 undefined TTacticalBattle::OrphanRetStub_0059f710() { return 0; }
 
 undefined TTacticalBattle::CreateTTacticalBattleInstance() { return 0; }
+IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 
-CRuntimeClass* TTacticalBattle::GetRuntimeClass() const { return 0; }
+TTacticalBattle::TTacticalBattle() {}
 
 TTacticalBattle::~TTacticalBattle() {}
 

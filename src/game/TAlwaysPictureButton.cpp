@@ -3,19 +3,13 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e550
-CRuntimeClass g_pClassDescTAlwaysPictureButton = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 // FUNCTION: IMPERIALISM 0x00570950
 TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
   return new TAlwaysPictureButton();
 }
-
-// FUNCTION: IMPERIALISM 0x005709d0
-CRuntimeClass* TAlwaysPictureButton::GetRuntimeClass() const {
-  return &g_pClassDescTAlwaysPictureButton;
-}
+IMPLEMENT_DYNCREATE(TAlwaysPictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005709f0
 TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}

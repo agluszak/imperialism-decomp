@@ -126,8 +126,7 @@ public:
   // slot 0x74 Select — declared in hand section (0x584800)
 // === END GENERATED DECLS (TBoycottButton) ===
   TBoycottButton();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // ~TBoycottButton is compiler-generated (implicit virtual dtor).
+  DECLARE_DYNCREATE(TBoycottButton)
 
   void Select(bool isPressed, bool notifyParent) override; // slot 0x1d0
 };

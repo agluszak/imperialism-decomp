@@ -3,11 +3,7 @@
 #include "game/TStream.h"
 
 extern "C" char g_pClassDescTCivUnit = 0;
-
-// FUNCTION: IMPERIALISM 0x005c28a0
-CRuntimeClass* TCivUnit::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCivUnit);
-}
+IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

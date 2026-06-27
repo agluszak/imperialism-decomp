@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x0066ad28
 class TTechMgr : public TObject {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TTechMgr)
   void Free() override;
   unsigned char pad000[0x193];
   unsigned char hasProductionOrder193;

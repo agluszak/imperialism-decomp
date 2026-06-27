@@ -1,9 +1,7 @@
 #include "game/TArmoryView.h"
+IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
-// FUNCTION: IMPERIALISM 0x004ced80
-CRuntimeClass* TArmoryView::GetRuntimeClass() const {
-  return 0;
-}
+TArmoryView::TArmoryView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cedd0
 // TArmoryView::`scalar deleting destructor'

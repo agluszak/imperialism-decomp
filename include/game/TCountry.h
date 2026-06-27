@@ -4,7 +4,7 @@
 #include "game/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/TObject.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 
 class TStream;
 
@@ -19,7 +19,7 @@ enum { kTerrainTypeDescriptorTableCount = 23 };
 // VTABLE: IMPERIALISM 0x00653868
 class TCountry : public TObject {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCountry)
   ~TCountry() override;
 
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
@@ -84,7 +84,7 @@ public:
   short field42;
   // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
   // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
-  TPtrList* militaryUnitList44;
+  TSortedList* militaryUnitList44;
   // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
   // type's entry after assigning "<ordinal> <type name>").
   short unitNameOrdinalByType[0x1e];
@@ -95,12 +95,12 @@ public:
   // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
   // 4 bytes at 0x88 (ownerNationSlot + pad).
   int serializedField8c;
-  TPtrList* ownedRegionList;
+  TSortedList* ownedRegionList;
 
   // Defined inline so MSVC inlines the two CString-member constructions (and the
   // resulting EH frame) into derived ctors, matching the original TGreatPower ctor
   // which inlines the TCountry base construction rather than calling 0x004d67d0.
-  TCountry() {}
+  TCountry();
 };
 
 // Nation terrain rows: major slots hold TGreatPower*, minor slots hold TMinor*.

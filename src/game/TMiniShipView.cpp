@@ -8,11 +8,9 @@ undefined TMiniShipView::OrphanRetStub_00569d50() {
 // SYNTHETIC: IMPERIALISM 0x00569d70
 // TMiniShipView::`scalar deleting destructor'
 TMiniShipView::~TMiniShipView() {}
+IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 
-// FUNCTION: IMPERIALISM 0x00569e40
-CRuntimeClass* TMiniShipView::GetRuntimeClass() const {
-  return 0;
-}
+TMiniShipView::TMiniShipView() {}
 
 // FUNCTION: IMPERIALISM 0x00569eb0
 void TMiniShipView::ApplyRectSlot110(RECT* rectBuffer) {

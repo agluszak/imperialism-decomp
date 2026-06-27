@@ -11,11 +11,7 @@ TNextTradeCommand::TNextTradeCommand() : TCommand() {}
 // SYNTHETIC: IMPERIALISM 0x005ba430
 // TNextTradeCommand::`scalar deleting destructor'
 TNextTradeCommand::~TNextTradeCommand() {}
-
-// FUNCTION: IMPERIALISM 0x005ba3e0
-CRuntimeClass* TNextTradeCommand::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TNextTradeCommand, TCommand)
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
 undefined TNextTradeCommand::OrphanRetStub_00487a00() {

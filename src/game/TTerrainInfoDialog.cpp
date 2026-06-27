@@ -1,9 +1,7 @@
 #include "game/TTerrainInfoDialog.h"
+IMPLEMENT_DYNCREATE(TTerrainInfoDialog, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x0051b120
-CRuntimeClass* TTerrainInfoDialog::GetRuntimeClass() const {
-  return 0;
-}
+TTerrainInfoDialog::TTerrainInfoDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051b170
 // TTerrainInfoDialog::`scalar deleting destructor'

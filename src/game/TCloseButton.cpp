@@ -1,9 +1,7 @@
 #include "game/TCloseButton.h"
+IMPLEMENT_DYNCREATE(TCloseButton, TPictureButton)
 
-// FUNCTION: IMPERIALISM 0x00584ad0
-CRuntimeClass* TCloseButton::GetRuntimeClass() const {
-  return 0;
-}
+TCloseButton::TCloseButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584b20
 // TCloseButton::`scalar deleting destructor'

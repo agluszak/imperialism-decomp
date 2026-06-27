@@ -1,6 +1,7 @@
 #include "game/TFuzzySet.h"
+IMPLEMENT_DYNCREATE(TFuzzySet, TObject)
 
-CRuntimeClass* TFuzzySet::GetRuntimeClass() const { return 0; }
+TFuzzySet::TFuzzySet() {}
 
 TFuzzySet::~TFuzzySet() {}
 

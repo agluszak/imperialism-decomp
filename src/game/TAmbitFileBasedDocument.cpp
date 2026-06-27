@@ -1,9 +1,7 @@
 #include "game/TAmbitFileBasedDocument.h"
+IMPLEMENT_DYNCREATE(TAmbitFileBasedDocument, TFileBasedDocument)
 
-// FUNCTION: IMPERIALISM 0x0049e5d0
-CRuntimeClass* TAmbitFileBasedDocument::GetRuntimeClass() const {
-  return 0;
-}
+TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049e610
 // TAmbitFileBasedDocument::`scalar deleting destructor'

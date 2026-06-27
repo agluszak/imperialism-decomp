@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005b2d30
 // TRelationshipDialog::`scalar deleting destructor'
 TRelationshipDialog::~TRelationshipDialog() {}
+IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 
-// FUNCTION: IMPERIALISM 0x005b2d80
-CRuntimeClass* TRelationshipDialog::GetRuntimeClass() const {
-  return 0;
-}
+TRelationshipDialog::TRelationshipDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b2da0
 void TRelationshipDialog::CallVoidSlotA0() {

@@ -22,7 +22,7 @@ public:
                                                         int layoutParam7, short stringResourceGroup,
                                                         short stringResourceIndex);
 
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48f870
+  DECLARE_DYNCREATE(TStaticText)
 
   TObject* ShallowClone() override;                 // 0x20 0x48fc00
   void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x48ffb0

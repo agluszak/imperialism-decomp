@@ -8,11 +8,9 @@ undefined TMiniCivView::OrphanRetStub_004ab800() {
 // SYNTHETIC: IMPERIALISM 0x004ab820
 // TMiniCivView::`scalar deleting destructor'
 TMiniCivView::~TMiniCivView() {}
+IMPLEMENT_DYNCREATE(TMiniCivView, TControl)
 
-// FUNCTION: IMPERIALISM 0x004ab950
-CRuntimeClass* TMiniCivView::GetRuntimeClass() const {
-  return 0;
-}
+TMiniCivView::TMiniCivView() {}
 
 // FUNCTION: IMPERIALISM 0x004ac000
 void TMiniCivView::ApplyRectSlot110(RECT* rectBuffer) {

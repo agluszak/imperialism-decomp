@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430b00
 // TBattleDetailBook::`scalar deleting destructor'
 TBattleDetailBook::~TBattleDetailBook() {}
+IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 
-// FUNCTION: IMPERIALISM 0x004aea70
-CRuntimeClass* TBattleDetailBook::GetRuntimeClass() const {
-  return 0;
-}
+TBattleDetailBook::TBattleDetailBook() {}
 
 // FUNCTION: IMPERIALISM 0x004aea90
 void TBattleDetailBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

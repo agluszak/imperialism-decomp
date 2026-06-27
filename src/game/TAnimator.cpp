@@ -1,9 +1,7 @@
 #include "game/TAnimator.h"
+IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
-// FUNCTION: IMPERIALISM 0x004a0a80
-CRuntimeClass* TAnimator::GetRuntimeClass() const {
-  return 0;
-}
+TAnimator::TAnimator() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a0ad0
 // TAnimator::`scalar deleting destructor'

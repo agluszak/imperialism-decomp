@@ -13,8 +13,7 @@ public:
   short value86;
 
   TNumberedArrowButton();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TNumberedArrowButton)
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                            int hitArg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;

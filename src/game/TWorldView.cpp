@@ -78,11 +78,9 @@ short TWorldView::QueryMinusOneWordSlot77() {
 void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   (void)arg1;
 }
+IMPLEMENT_DYNCREATE(TWorldView, TView)
 
-// FUNCTION: IMPERIALISM 0x00594fe0
-CRuntimeClass* TWorldView::GetRuntimeClass() const {
-  return 0;
-}
+TWorldView::TWorldView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00595040
 // TWorldView::`scalar deleting destructor'

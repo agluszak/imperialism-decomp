@@ -7,11 +7,10 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTNapoleonMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTBismarckMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTPirateMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTDefenderMinister = {nullptr, 0, 0, nullptr, nullptr};
-CRuntimeClass g_pClassDescTBullyMinister = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass g_pClassDescTBismarckMinister = {nullptr, 0, 0, nullptr, nullptr
+}
+
+;
 }
 
 // NOTE: NoOpForeignMinisterUtilityStub (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
@@ -22,11 +21,7 @@ CRuntimeClass g_pClassDescTBullyMinister = {nullptr, 0, 0, nullptr, nullptr};
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
 undefined TNapoleonMinister::CreateTDefenseMinisterInstance() { return 0; }
-
-// FUNCTION: IMPERIALISM 0x004ed4c0
-CRuntimeClass* TNapoleonMinister::GetRuntimeClass() const {
-  return &g_pClassDescTNapoleonMinister;
-}
+IMPLEMENT_DYNCREATE(TNapoleonMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed4e0
 TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
@@ -44,11 +39,7 @@ undefined TBismarckMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004ed7f0
-CRuntimeClass* TBismarckMinister::GetRuntimeClass() const {
-  return &g_pClassDescTBismarckMinister;
-}
+IMPLEMENT_DYNCREATE(TBismarckMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed810
 TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
@@ -66,11 +57,7 @@ undefined TPirateMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004edae0
-CRuntimeClass* TPirateMinister::GetRuntimeClass() const {
-  return &g_pClassDescTPirateMinister;
-}
+IMPLEMENT_DYNCREATE(TPirateMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edb00
 TPirateMinister::TPirateMinister() : TDefenseMinister() {}
@@ -88,11 +75,7 @@ undefined TDefenderMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004eddc0
-CRuntimeClass* TDefenderMinister::GetRuntimeClass() const {
-  return &g_pClassDescTDefenderMinister;
-}
+IMPLEMENT_DYNCREATE(TDefenderMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edde0
 TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
@@ -110,11 +93,7 @@ undefined TBullyMinister::CreateTDefenseMinisterInstance() {
   // Partial port: original returns a float aggressiveness multiplier.
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004ee0b0
-CRuntimeClass* TBullyMinister::GetRuntimeClass() const {
-  return &g_pClassDescTBullyMinister;
-}
+IMPLEMENT_DYNCREATE(TBullyMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ee0d0
 TBullyMinister::TBullyMinister() : TDefenseMinister() {}

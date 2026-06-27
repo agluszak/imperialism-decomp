@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045afb0
 // TGameScorePicture::`scalar deleting destructor'
 TGameScorePicture::~TGameScorePicture() {}
+IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x0057b080
-CRuntimeClass* TGameScorePicture::GetRuntimeClass() const {
-  return 0;
-}
+TGameScorePicture::TGameScorePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0057b0a0
 void TGameScorePicture::NoOpUiLifecycleHook(int arg) {

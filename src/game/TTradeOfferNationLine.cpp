@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005bcf70
 // TTradeOfferNationLine::`scalar deleting destructor'
 TTradeOfferNationLine::~TTradeOfferNationLine() {}
+IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x005bd030
-CRuntimeClass* TTradeOfferNationLine::GetRuntimeClass() const {
-  return 0;
-}
+TTradeOfferNationLine::TTradeOfferNationLine() {}
 
 // FUNCTION: IMPERIALISM 0x005bd090
 undefined TTradeOfferNationLine::OrphanRetStub_0056f460() {

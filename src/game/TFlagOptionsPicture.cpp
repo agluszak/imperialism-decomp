@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043da10
 // TFlagOptionsPicture::`scalar deleting destructor'
 TFlagOptionsPicture::~TFlagOptionsPicture() {}
+IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0056b290
-CRuntimeClass* TFlagOptionsPicture::GetRuntimeClass() const {
-  return 0;
-}
+TFlagOptionsPicture::TFlagOptionsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056b2b0
 void TFlagOptionsPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }

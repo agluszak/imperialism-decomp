@@ -8,11 +8,9 @@ undefined TCreditsPicture::OrphanRetStub_0043d9f0() {
 // SYNTHETIC: IMPERIALISM 0x0043dad0
 // TCreditsPicture::`scalar deleting destructor'
 TCreditsPicture::~TCreditsPicture() {}
+IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0056ee30
-CRuntimeClass* TCreditsPicture::GetRuntimeClass() const {
-  return 0;
-}
+TCreditsPicture::TCreditsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056ee50
 void TCreditsPicture::NoOpUiLifecycleHook(int arg) {

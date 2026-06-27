@@ -6,6 +6,8 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 #pragma intrinsic(strlen)
 #endif
 
+IMPLEMENT_DYNCREATE(TStream, TObject)
+
 // MFC-style serialization foundation: compiled favor-size in the original.
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)
@@ -16,6 +18,7 @@ extern "C" unsigned int __cdecl strlen(const char* s);
 // ported in a follow-up). These make TStream concrete so the typed accessors
 // below — and the concrete stream subclasses — can be instantiated.
 // ---------------------------------------------------------------------------
+TStream::TStream() {}
 TStream::~TStream() {}
 
 // FUNCTION: IMPERIALISM 0x00488a80

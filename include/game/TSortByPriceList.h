@@ -1,18 +1,15 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TIndexAndRankList.h"
+#include "game/TSortedPtrList.h"
 
-struct CRuntimeClass;
+// Base recovered from CRuntimeClass descriptor: TSortByPriceList -> TSortedPtrList -> CPtrArray.
 // VTABLE: IMPERIALISM 0x00659ef0
-class TSortByPriceList : public TIndexAndRankList {
+class TSortByPriceList : public TSortedPtrList {
 public:
-  int reserved14;
+  DECLARE_DYNCREATE(TSortByPriceList)
 
-  // 0x00534710: real ctor; compiler emits the 0x659ef0 vtable write.
   TSortByPriceList();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // Destructor is compiler-generated (implicit virtual dtor).
   static TSortByPriceList* AllocateAndConstructTSortByPriceList();
 };
 

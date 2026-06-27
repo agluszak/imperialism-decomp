@@ -96,11 +96,9 @@ void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
+IMPLEMENT_DYNCREATE(TCountry, TObject)
 
-// FUNCTION: IMPERIALISM 0x004d67b0
-CRuntimeClass* TCountry::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTCountry);
-}
+TCountry::TCountry() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d6850
 // TCountry::`scalar deleting destructor'
@@ -132,7 +130,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
 
-  this->militaryUnitList44 = new TPtrList();
+  this->militaryUnitList44 = new TSortedList();
 
   int ordinalIndex = 0;
   do {
@@ -141,7 +139,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   } while (ordinalIndex < 0xf);
   this->unitNameCounter84 = 1;
 
-  TPtrList* ownedRegions = new TPtrList();
+  TSortedList* ownedRegions = new TSortedList();
   for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) ==
         nationSlot) {
@@ -623,7 +621,7 @@ int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
 // FUNCTION: IMPERIALISM 0x004d83c0
 int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   int sum = 0;
-  TPtrList* linkedList = this->ownedRegionList;
+  TSortedList* linkedList = this->ownedRegionList;
   if (linkedList == 0) {
     return 0;
   }

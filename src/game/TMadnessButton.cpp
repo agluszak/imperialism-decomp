@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'
 TMadnessButton::~TMadnessButton() {}
+IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
 
-// FUNCTION: IMPERIALISM 0x0054ead0
-CRuntimeClass* TMadnessButton::GetRuntimeClass() const {
-  return 0;
-}
+TMadnessButton::TMadnessButton() {}
 
 // FUNCTION: IMPERIALISM 0x0054eaf0
 void TMadnessButton::NoOpUiLifecycleHook(int arg) {

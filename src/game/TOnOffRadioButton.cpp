@@ -1,9 +1,7 @@
 #include "game/TOnOffRadioButton.h"
+IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
-// FUNCTION: IMPERIALISM 0x005719d0
-CRuntimeClass* TOnOffRadioButton::GetRuntimeClass() const {
-  return 0;
-}
+TOnOffRadioButton::TOnOffRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571a30
 // TOnOffRadioButton::`scalar deleting destructor'

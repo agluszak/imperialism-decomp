@@ -11,8 +11,7 @@ public:
 
   TIndustryAmtBar();
   // ~TIndustryAmtBar is compiler-generated (implicit virtual dtor).
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TIndustryAmtBar)
   void NoOpUiLifecycleHook(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
 };

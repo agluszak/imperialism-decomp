@@ -3,8 +3,6 @@
 // SYNTHETIC: IMPERIALISM 0x00435710
 // TNewspaperView::`scalar deleting destructor'
 TNewspaperView::~TNewspaperView() {}
+IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0055d1e0
-CRuntimeClass* TNewspaperView::GetRuntimeClass() const {
-  return 0;
-}
+TNewspaperView::TNewspaperView() {}

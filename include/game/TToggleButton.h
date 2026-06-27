@@ -127,7 +127,7 @@ public:
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x74 0x571350
 // === END GENERATED DECLS (TToggleButton) ===
   TToggleButton();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TToggleButton)
 };
 
 ASSERT_SIZE(TToggleButton, 0x90);

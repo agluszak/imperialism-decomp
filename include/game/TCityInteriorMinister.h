@@ -82,7 +82,7 @@ public:
   TCityInteriorMinister();
   void InitializeCityInteriorState();
 
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
+  DECLARE_DYNCREATE(TCityInteriorMinister)
   void WriteTo(TStream* stream) override;          // slot 0x14
   void ReadFrom(TStream* stream) override;         // slot 0x18
   void Free() override;                            // slot 0x1c

@@ -124,8 +124,7 @@ public:
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
 // === END GENERATED DECLS (TAlwaysPictureButton) ===
   TAlwaysPictureButton();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // ~TAlwaysPictureButton is compiler-generated (implicit virtual dtor).
+  DECLARE_DYNCREATE(TAlwaysPictureButton)
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0
 };

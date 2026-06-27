@@ -64,7 +64,7 @@ public:
   // clang-format on
   ArchiveStreamAdapter* backingArchiveOrStream;
 
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TFileStream)
   TFileStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 

@@ -152,11 +152,9 @@ void TZone::HandleKeyDown(int key_id) {
 // TOcean::`scalar deleting destructor'
 
 TOcean::~TOcean() {}
+IMPLEMENT_DYNCREATE(TOcean, TObject)
 
-// FUNCTION: IMPERIALISM 0x00562190
-CRuntimeClass* TOcean::GetRuntimeClass() const {
-  return &PTR_s_TOcean_0065c630;
-}
+TOcean::TOcean() {}
 
 // Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
 // real body is a follow-up port; stub keeps the vtable slot owned/paired. This

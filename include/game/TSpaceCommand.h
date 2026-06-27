@@ -8,7 +8,7 @@
 class TSpaceCommand : public TCommand {
 public:
 // === BEGIN GENERATED DECLS (TSpaceCommand) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x575260
+  DECLARE_DYNCREATE(TSpaceCommand)
   virtual ~TSpaceCommand(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -21,7 +21,8 @@ public:
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual undefined OrphanRetStub_00487a00() override; // slot 0x0b 0x5751f0
 // === END GENERATED DECLS (TSpaceCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSpaceCommand 0xCTOR`).
+  int pad18;           // +0x18 (purpose unknown)
+  int commandTag1c;    // +0x1c — four-char tag identifying interaction type (e.g. "plus"/"minu")
 
   TSpaceCommand();
 };

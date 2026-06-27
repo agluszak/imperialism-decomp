@@ -17,10 +17,7 @@ extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
 extern "C" {
 // TSimMgr's MFC CRuntimeClass descriptor (returned by GetRuntimeClass / vtable slot 0).
 // GLOBAL: IMPERIALISM 0x00662960
-CRuntimeClass g_pClassDescTSimMgr = {nullptr, 0, 0, nullptr, nullptr};
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
@@ -29,23 +26,13 @@ int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
   return DAT_006a1348->GetProfileInt("Settings", key, defaultValue);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00415440
 void WriteSettingsPrefIntByIndex(int index, int value) {
   CString key;
   key.Format("Pref%d", index);
   DAT_006a1348->WriteProfileInt("Settings", key, value);
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x0057b9c0
-CRuntimeClass* TSimMgr::GetRuntimeClass() const {
-  return &g_pClassDescTSimMgr;
-}
-
-
+IMPLEMENT_DYNCREATE(TSimMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0057b9e0
 TSimMgr::TSimMgr() : sharedTextSlots() {
@@ -98,8 +85,6 @@ TSimMgr::~TSimMgr() {}
 // (overrides TObject::Free; releases g_pNationInteractionStateManager,
 // g_pDiplomacyTurnStateManager, g_pMapContextActionManager, ... via their own vtables).
 
-
-
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::InitializeTurnFlowStateDefaults() {
   quarterGateTick2c = 0;
@@ -121,26 +106,18 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   field6c = 0x77a;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x0057bd20
 void TSimMgr::Free() {}
 
 // TODO: port scenario-state initialization / nation-system rebuild (overrides TObject::ReadFrom).
-
-
 
 // FUNCTION: IMPERIALISM 0x0057bea0
 void TSimMgr::ReadFrom(TStream*) {}
 
 // TODO: port the field serialization writer (overrides TObject::WriteTo).
 
-
-
 // FUNCTION: IMPERIALISM 0x0057c230
 void TSimMgr::WriteTo(TStream*) {}
-
-
 
 // FUNCTION: IMPERIALISM 0x0057c390
 void TSimMgr::RebuildNationStateSlotsNoOp() {}
@@ -148,26 +125,18 @@ void TSimMgr::RebuildNationStateSlotsNoOp() {}
 // TODO: port primary nation-state slot rebuild (allocates TGreatPower / proxy / remote
 // variants and rebinds the display/name tables).
 
-
-
 // FUNCTION: IMPERIALISM 0x0057cda0
 void TSimMgr::RebuildPrimaryNationStateForSlot(int, char) {}
 
 // TODO: port secondary (minor) nation-state slot rebuild.
-
-
 
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::RebuildSecondaryNationStateForSlot(int) {}
 
 // TODO: port scenario-variant RNG seeding for nation setup.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057d830
 void TSimMgr::ApplyScenarioVariantSeedForNationSetup() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
 short TSimMgr::GetTurnTickSlot3C() {
@@ -177,26 +146,18 @@ short TSimMgr::GetTurnTickSlot3C() {
 // TODO: port the copy of the scenario nation-setup buffer into flow state (writes the
 // per-nation short arrays around +0xe8 and the +0x112 direct-map flag).
 
-
-
 // FUNCTION: IMPERIALISM 0x0057d8d0
 void TSimMgr::CopyScenarioNationSetupIntoFlowState(void*) {}
-
-
 
 // FUNCTION: IMPERIALISM 0x0057d950
 void TSimMgr::IncrementQuarterGateTick2C() {
   ++quarterGateTick2c;
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x0057d970
 void TSimMgr::PostMainWindowCommand100ForTurnFlow() {
   PostCommand100ToMainWindow(DAT_006a1348);
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x0057d990
 void TSimMgr::SetGlobalTurnStateCodeIfAllowed(int turnStateCode) {
@@ -255,40 +216,28 @@ int TSimMgr::IsTurnFlowPhaseOutsideRange4To5() {
 
 // TODO: port refresh of the eligible-nation turn-phase handlers.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f140
 void TSimMgr::RefreshEligibleNationTurnPhaseHandlers() {}
 
 // TODO: port dispatch of the eligible-nation turn callback (+0x158).
-
-
 
 // FUNCTION: IMPERIALISM 0x0057f200
 void TSimMgr::DispatchEligibleNationTurnCallback158() {}
 
 // TODO: port refresh of map systems / order-execution preparation.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f280
 void TSimMgr::RefreshMapSystemsAndPrepareOrderExecution() {}
 
 // TODO: port dispatch of turn event 2134 and nation-panel refresh.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f3c0
 void TSimMgr::DispatchTurnEvent2134AndRefreshNationPanels() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x0057f490
 int TSimMgr::ReturnZeroSlot6c() {
   return 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x0057f4b0
 void TSimMgr::MergeTurnFlowStatusFlags(unsigned int flags) {
@@ -297,8 +246,6 @@ void TSimMgr::MergeTurnFlowStatusFlags(unsigned int flags) {
 
 // TODO: port the "all active nations ready" scan over g_apNationStates.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AreAllActiveNationsReady() {
   return 0;
@@ -306,35 +253,25 @@ int TSimMgr::AreAllActiveNationsReady() {
 
 // TODO: port clearing of the per-nation ready flags.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f530
 void TSimMgr::ClearActiveNationReadyFlags() {}
 
 // TODO: port signed-integer formatting with thousands separators.
-
-
 
 // FUNCTION: IMPERIALISM 0x0057f5b0
 void TSimMgr::FormatIntegerString(int, CString*) {}
 
 // TODO: port the shared-string-from-bracket-expression formatter.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057f8f0
 void TSimMgr::FormatOrdinalString(int, CString*) {}
 
 // TODO: port the scenario-variant format trigger.
 
-
-
 // FUNCTION: IMPERIALISM 0x0057fe90
 void TSimMgr::TriggerScenarioVariantFormatSlot7c() {}
 
 // TODO: port reseeding of the thread-local RNG from the wall clock.
-
-
 
 // FUNCTION: IMPERIALISM 0x0057fec0
 void TSimMgr::ReseedThreadLocalRandom() {}
@@ -342,28 +279,20 @@ void TSimMgr::ReseedThreadLocalRandom() {}
 // TODO: port the UI string loader (forwards to the app-context string resource lookup at
 // 0x6a134c with offset+1).
 
-
-
 // FUNCTION: IMPERIALISM 0x00580760
 void TSimMgr::GetString(short, short, CString*) {}
 
 // TODO: port diplomacy-notice text formatting by policy / grant code.
-
-
 
 // FUNCTION: IMPERIALISM 0x00580790
 void TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString*, short*) {}
 
 #pragma optimize("", on)
 
-
-
 // FUNCTION: IMPERIALISM 0x005811e0
 int TSimMgr::GetField30(void) {
   return field30;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00581200
 #pragma optimize("y", on)
@@ -371,8 +300,6 @@ void TSimMgr::DecrementField30Value() {
   --field30;
 }
 #pragma optimize("", on)
-
-
 
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {

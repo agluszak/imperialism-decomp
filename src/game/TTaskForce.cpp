@@ -1,6 +1,7 @@
 #include "game/TTaskForce.h"
+IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
-CRuntimeClass* TTaskForce::GetRuntimeClass() const { return 0; }
+TTaskForce::TTaskForce() {}
 
 TTaskForce::~TTaskForce() {}
 

@@ -8,7 +8,7 @@
 class TOnOffRadioButton : public TPictureButton {
 public:
 // === BEGIN GENERATED DECLS (TOnOffRadioButton) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5719d0
+  DECLARE_DYNCREATE(TOnOffRadioButton)
   virtual ~TOnOffRadioButton(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)

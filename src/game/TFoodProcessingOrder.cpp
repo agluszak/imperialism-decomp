@@ -1,9 +1,7 @@
 #include "game/TFoodProcessingOrder.h"
+IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
 
-// FUNCTION: IMPERIALISM 0x004b7df0
-CRuntimeClass* TFoodProcessingOrder::GetRuntimeClass() const {
-  return 0;
-}
+TFoodProcessingOrder::TFoodProcessingOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b7e30
 // TFoodProcessingOrder::`scalar deleting destructor'

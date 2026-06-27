@@ -1,9 +1,7 @@
 #include "game/TIndustryView.h"
+IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
-// FUNCTION: IMPERIALISM 0x004cc770
-CRuntimeClass* TIndustryView::GetRuntimeClass() const {
-  return 0;
-}
+TIndustryView::TIndustryView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cc7d0
 // TIndustryView::`scalar deleting destructor'

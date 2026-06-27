@@ -1,9 +1,7 @@
 #include "game/TDropShadowText.h"
+IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
-// FUNCTION: IMPERIALISM 0x005b5570
-CRuntimeClass* TDropShadowText::GetRuntimeClass() const {
-  return 0;
-}
+TDropShadowText::TDropShadowText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5600
 // TDropShadowText::`scalar deleting destructor'

@@ -3,5 +3,6 @@
 undefined TSpaceCommand::OrphanRetStub_00487a00() { return 0; }
 
 TSpaceCommand::~TSpaceCommand() {}
+IMPLEMENT_DYNCREATE(TSpaceCommand, TCommand)
 
-CRuntimeClass* TSpaceCommand::GetRuntimeClass() const { return 0; }
+TSpaceCommand::TSpaceCommand() {}

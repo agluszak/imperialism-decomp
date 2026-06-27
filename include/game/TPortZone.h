@@ -14,7 +14,7 @@ public:
 
   // TPortZone overrides TZone vtable slots (table ends at slot 0x16, same as TZone).
   // The PortZone-specific body addresses are given per slot.
-  CRuntimeClass* GetRuntimeClass() const override;                          // slot 0x00 0x5617d0
+  DECLARE_DYNCREATE(TPortZone)
   void WriteTo(TStream* stream) override;                                   // slot 0x05 0x561820
   void ReadFrom(TStream* stream) override;                                  // slot 0x06 0x5617f0
   void Free() override;                                                     // slot 0x07 0x561a70

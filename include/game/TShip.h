@@ -35,7 +35,7 @@ public:
   TShip();
   ~TShip() override;
 
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TShip)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   void Free() override;

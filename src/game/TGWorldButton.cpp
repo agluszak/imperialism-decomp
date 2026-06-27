@@ -1,9 +1,7 @@
 #include "game/TGWorldButton.h"
+IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 
-// FUNCTION: IMPERIALISM 0x00572110
-CRuntimeClass* TGWorldButton::GetRuntimeClass() const {
-  return 0;
-}
+TGWorldButton::TGWorldButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572160
 // TGWorldButton::`scalar deleting destructor'

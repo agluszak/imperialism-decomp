@@ -80,11 +80,9 @@ void TRemoteGreatPower::NoOpTailStateHookSlot2B8(int arg) {
 // SYNTHETIC: IMPERIALISM 0x00541a80
 // TRemoteGreatPower::`scalar deleting destructor'
 TRemoteGreatPower::~TRemoteGreatPower() {}
+IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 
-// FUNCTION: IMPERIALISM 0x00541b20
-CRuntimeClass* TRemoteGreatPower::GetRuntimeClass() const {
-  return 0;
-}
+TRemoteGreatPower::TRemoteGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x00541b40
 void TRemoteGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {

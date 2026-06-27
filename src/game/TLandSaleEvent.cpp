@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004d49a0
 // TLandSaleEvent::`scalar deleting destructor'
 TLandSaleEvent::~TLandSaleEvent() {}
+IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
-// FUNCTION: IMPERIALISM 0x004e66f0
-CRuntimeClass* TLandSaleEvent::GetRuntimeClass() const {
-  return 0;
-}
+TLandSaleEvent::TLandSaleEvent() {}
 
 // FUNCTION: IMPERIALISM 0x004e6740
 undefined TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {

@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TNapoleonMinister : public TDefenseMinister {
 public:
   TNapoleonMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TNapoleonMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
@@ -17,7 +17,7 @@ public:
 class TBismarckMinister : public TDefenseMinister {
 public:
   TBismarckMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TBismarckMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
@@ -26,7 +26,7 @@ public:
 class TPirateMinister : public TDefenseMinister {
 public:
   TPirateMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TPirateMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
@@ -35,7 +35,7 @@ public:
 class TDefenderMinister : public TDefenseMinister {
 public:
   TDefenderMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TDefenderMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };
@@ -44,7 +44,7 @@ public:
 class TBullyMinister : public TDefenseMinister {
 public:
   TBullyMinister();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TBullyMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
   undefined CreateTDefenseMinisterInstance() override;
 };

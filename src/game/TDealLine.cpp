@@ -1,9 +1,7 @@
 #include "game/TDealLine.h"
+IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x005c0d60
-CRuntimeClass* TDealLine::GetRuntimeClass() const {
-  return 0;
-}
+TDealLine::TDealLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c0db0
 // TDealLine::`scalar deleting destructor'

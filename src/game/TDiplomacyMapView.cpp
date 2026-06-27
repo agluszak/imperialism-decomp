@@ -70,11 +70,7 @@ struct DiplomacyMaskBufferRun {
 struct DiplomacyPackedColorRun {
   void AppendPackedColorDword(int surface, int packedColor);
 };
-
-// FUNCTION: IMPERIALISM 0x004f3b60
-CRuntimeClass* TDiplomacyMapView::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004f3b80
 TDiplomacyMapView::TDiplomacyMapView() : TPicture() {

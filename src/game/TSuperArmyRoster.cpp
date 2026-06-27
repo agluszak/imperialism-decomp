@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004aa4d0
 // TSuperArmyRoster::`scalar deleting destructor'
 TSuperArmyRoster::~TSuperArmyRoster() {}
+IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 
-// FUNCTION: IMPERIALISM 0x004aa520
-CRuntimeClass* TSuperArmyRoster::GetRuntimeClass() const {
-  return 0;
-}
+TSuperArmyRoster::TSuperArmyRoster() {}
 
 // FUNCTION: IMPERIALISM 0x004aa540
 undefined TSuperArmyRoster::ConstructTSuperArmyRosterBaseState() {

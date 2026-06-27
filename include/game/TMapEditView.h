@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x006594e8
 class TMapEditView : public TMapDialog {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TMapEditView)
   virtual ~TMapEditView();
 
   virtual void ForwardParam(int param) override;

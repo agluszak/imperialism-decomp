@@ -6,10 +6,6 @@
 #include "game/TStream.h"
 #include "game/TMission.h"
 
-extern "C" {
-CRuntimeClass g_pClassDescTDefenseMinister = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -18,11 +14,7 @@ CRuntimeClass g_pClassDescTDefenseMinister = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
 undefined TDefenseMinister::CreateTDefenseMinisterInstance() { return 0; }
-
-// FUNCTION: IMPERIALISM 0x004ec0c0
-CRuntimeClass* TDefenseMinister::GetRuntimeClass() const {
-  return &g_pClassDescTDefenseMinister;
-}
+IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004ec0e0
 TDefenseMinister::TDefenseMinister() : TMinister() {}

@@ -1,9 +1,7 @@
 #include "game/TPageView.h"
+IMPLEMENT_DYNCREATE(TPageView, TView)
 
-// FUNCTION: IMPERIALISM 0x0056f9a0
-CRuntimeClass* TPageView::GetRuntimeClass() const {
-  return 0;
-}
+TPageView::TPageView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0056fa00
 // TPageView::`scalar deleting destructor'

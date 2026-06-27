@@ -1,9 +1,7 @@
 #include "game/TTacticalBattleView.h"
+IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
-// FUNCTION: IMPERIALISM 0x005a8330
-CRuntimeClass* TTacticalBattleView::GetRuntimeClass() const {
-  return 0;
-}
+TTacticalBattleView::TTacticalBattleView() {}
 
 // FUNCTION: IMPERIALISM 0x005a83c0
 undefined TTacticalBattleView::OrphanRetStub_005a83c0() {

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005bdaf0
 // TTradeBidNationView::`scalar deleting destructor'
 TTradeBidNationView::~TTradeBidNationView() {}
+IMPLEMENT_DYNCREATE(TTradeBidNationView, TView)
 
-// FUNCTION: IMPERIALISM 0x005bdbb0
-CRuntimeClass* TTradeBidNationView::GetRuntimeClass() const {
-  return 0;
-}
+TTradeBidNationView::TTradeBidNationView() {}
 
 // FUNCTION: IMPERIALISM 0x005bdc20
 void TTradeBidNationView::ApplyRectSlot110(RECT* rectBuffer) {

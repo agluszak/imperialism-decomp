@@ -8,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x0065d020
 class TOceanDialog : public TWorldView {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TOceanDialog)
   virtual ~TOceanDialog();
 
   virtual void NoOpUiLifecycleHook(int arg) override;

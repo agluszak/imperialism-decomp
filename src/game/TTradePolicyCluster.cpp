@@ -1,9 +1,7 @@
 #include "game/TTradePolicyCluster.h"
+IMPLEMENT_DYNCREATE(TTradePolicyCluster, TUberCluster)
 
-// FUNCTION: IMPERIALISM 0x00584280
-CRuntimeClass* TTradePolicyCluster::GetRuntimeClass() const {
-  return 0;
-}
+TTradePolicyCluster::TTradePolicyCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005842d0
 // TTradePolicyCluster::`scalar deleting destructor'

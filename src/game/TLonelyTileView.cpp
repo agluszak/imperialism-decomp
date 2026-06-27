@@ -1,9 +1,7 @@
 #include "game/TLonelyTileView.h"
+IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
-// FUNCTION: IMPERIALISM 0x00505ac0
-CRuntimeClass* TLonelyTileView::GetRuntimeClass() const {
-  return 0;
-}
+TLonelyTileView::TLonelyTileView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00505b10
 // TLonelyTileView::`scalar deleting destructor'

@@ -10,7 +10,7 @@
 // VTABLE: IMPERIALISM 0x00655b68
 class TDiplomacyMapView : public TPicture {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4f3b60
+  DECLARE_DYNCREATE(TDiplomacyMapView)
   virtual ~TDiplomacyMapView() override;                   // slot 0x01 scalar deleting dtor
   void Free() override;                                    // slot 0x07 0x4f3e60
   void HandleEvent(int commandId, TEventHandler* sourceHandler,

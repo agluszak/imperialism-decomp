@@ -11,7 +11,6 @@
 
 typedef void* hwnd_t;
 
-
 extern "C" {
 char g_pClassDescTFileStream = 0;
 }
@@ -28,11 +27,7 @@ static __inline void FailNilPointer(int line) {
 static __inline CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
-
-// FUNCTION: IMPERIALISM 0x004890f0
-CRuntimeClass* TFileStream::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTFileStream);
-}
+IMPLEMENT_DYNCREATE(TFileStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x00489110
 TFileStream::TFileStream() {

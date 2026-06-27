@@ -12,7 +12,6 @@
 #pragma optimize("y", on)
 #endif
 
-
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0064f338
 char g_pClassDescTCity = 0;
@@ -22,11 +21,7 @@ char g_Sanitize_City_Counter_Value_006A24D4 = 0;
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
-
-// FUNCTION: IMPERIALISM 0x004b2490
-CRuntimeClass* TCity::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTCity);
-}
+IMPLEMENT_DYNCREATE(TCity, TObject)
 
 // FUNCTION: IMPERIALISM 0x004b24b0
 TCity::TCity() {

@@ -1,6 +1,7 @@
 #include "game/TTask.h"
+IMPLEMENT_DYNCREATE(TTask, TObject)
 
-CRuntimeClass* TTask::GetRuntimeClass() const { return 0; }
+TTask::TTask() {}
 
 TTask::~TTask() {}
 

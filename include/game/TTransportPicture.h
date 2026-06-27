@@ -15,8 +15,7 @@ public:
 
   TTransportPicture();
   virtual ~TTransportPicture() override;
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TTransportPicture)
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual bool IsSelected(short value = -1, bool refreshNow = true);

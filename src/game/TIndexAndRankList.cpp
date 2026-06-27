@@ -6,9 +6,7 @@
 #pragma optimize("ys", on)
 #endif
 
-extern "C" {
-CRuntimeClass g_pClassDescTIndexAndRankList = {nullptr, 0, 0, nullptr, nullptr};
-}
+IMPLEMENT_DYNCREATE(TIndexAndRankList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004880a0
 void TIndexAndRankList::ResetPtrListRecordsSlot1C() {}
@@ -56,12 +54,7 @@ void TIndexAndRankList::PushPairSlot40(void* pair) {
   (void)pair;
 }
 
-// FUNCTION: IMPERIALISM 0x00534850
-CRuntimeClass* TIndexAndRankList::GetRuntimeClass() const {
-  return &g_pClassDescTIndexAndRankList;
-}
-
-TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
+TIndexAndRankList::TIndexAndRankList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005348a0
 // TIndexAndRankList::`scalar deleting destructor'

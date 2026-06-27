@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004fe240
 // TScoreGraph::`scalar deleting destructor'
 TScoreGraph::~TScoreGraph() {}
+IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 
-// FUNCTION: IMPERIALISM 0x004fe290
-CRuntimeClass* TScoreGraph::GetRuntimeClass() const {
-  return 0;
-}
+TScoreGraph::TScoreGraph() {}
 
 // FUNCTION: IMPERIALISM 0x004fe2b0
 void TScoreGraph::NoOpUiLifecycleHook(int arg) {

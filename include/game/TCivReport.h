@@ -124,8 +124,7 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // === END GENERATED DECLS (TCivReport) ===
   TCivReport();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // ~TCivReport is compiler-generated (implicit virtual dtor).
+  DECLARE_DYNCREATE(TCivReport)
   virtual bool IsSelected(void* reportRecord);
 };
 

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004ab620
 // TMiniCivLine::`scalar deleting destructor'
 TMiniCivLine::~TMiniCivLine() {}
+IMPLEMENT_DYNCREATE(TMiniCivLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x004ab6e0
-CRuntimeClass* TMiniCivLine::GetRuntimeClass() const {
-  return 0;
-}
+TMiniCivLine::TMiniCivLine() {}
 
 // FUNCTION: IMPERIALISM 0x004ab740
 undefined TMiniCivLine::OrphanRetStub_0056f460() {

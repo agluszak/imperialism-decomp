@@ -124,8 +124,7 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TArmyInfoView) ===
   TArmyInfoView();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // ~TArmyInfoView is compiler-generated (implicit virtual dtor).
+  DECLARE_DYNCREATE(TArmyInfoView)
   virtual bool IsSelected(short value = -1, bool refreshNow = true);
 };
 

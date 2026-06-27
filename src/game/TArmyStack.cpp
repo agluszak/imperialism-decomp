@@ -1,9 +1,7 @@
 #include "game/TArmyStack.h"
+IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
-// FUNCTION: IMPERIALISM 0x004a76d0
-CRuntimeClass* TArmyStack::GetRuntimeClass() const {
-  return 0;
-}
+TArmyStack::TArmyStack() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a7720
 // TArmyStack::`scalar deleting destructor'

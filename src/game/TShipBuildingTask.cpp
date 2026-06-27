@@ -1,9 +1,7 @@
 #include "game/TShipBuildingTask.h"
+IMPLEMENT_DYNCREATE(TShipBuildingTask, TCityTask)
 
-// FUNCTION: IMPERIALISM 0x005ae680
-CRuntimeClass* TShipBuildingTask::GetRuntimeClass() const {
-  return 0;
-}
+TShipBuildingTask::TShipBuildingTask() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ae6c0
 // TShipBuildingTask::`scalar deleting destructor'

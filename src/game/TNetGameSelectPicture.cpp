@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00576b20
 // TNetGameSelectPicture::`scalar deleting destructor'
 TNetGameSelectPicture::~TNetGameSelectPicture() {}
+IMPLEMENT_DYNCREATE(TNetGameSelectPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00576b70
-CRuntimeClass* TNetGameSelectPicture::GetRuntimeClass() const {
-  return 0;
-}
+TNetGameSelectPicture::TNetGameSelectPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576b90
 void TNetGameSelectPicture::NoOpUiLifecycleHook(int arg) {

@@ -1,9 +1,7 @@
 #include "game/TCzechBox.h"
+IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
-// FUNCTION: IMPERIALISM 0x00571c00
-CRuntimeClass* TCzechBox::GetRuntimeClass() const {
-  return 0;
-}
+TCzechBox::TCzechBox() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571c60
 // TCzechBox::`scalar deleting destructor'

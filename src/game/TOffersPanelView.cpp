@@ -1,9 +1,7 @@
 #include "game/TOffersPanelView.h"
+IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004f8f50
-CRuntimeClass* TOffersPanelView::GetRuntimeClass() const {
-  return 0;
-}
+TOffersPanelView::TOffersPanelView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004f8fa0
 // TOffersPanelView::`scalar deleting destructor'

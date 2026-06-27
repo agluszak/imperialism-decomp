@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0066b380
 class TGameSetupDialog : public TDialogView {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TGameSetupDialog)
   ~TGameSetupDialog();
 
   virtual undefined OrphanRetStub_005b2860();

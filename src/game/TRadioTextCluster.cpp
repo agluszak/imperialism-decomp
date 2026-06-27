@@ -1,9 +1,7 @@
 #include "game/TRadioTextCluster.h"
+IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
-// FUNCTION: IMPERIALISM 0x00579680
-CRuntimeClass* TRadioTextCluster::GetRuntimeClass() const {
-  return 0;
-}
+TRadioTextCluster::TRadioTextCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005796f0
 // TRadioTextCluster::`scalar deleting destructor'

@@ -3,8 +3,6 @@
 // SYNTHETIC: IMPERIALISM 0x004ac650
 // TSwapperDaddyView::`scalar deleting destructor'
 TSwapperDaddyView::~TSwapperDaddyView() {}
+IMPLEMENT_DYNCREATE(TSwapperDaddyView, TView)
 
-// FUNCTION: IMPERIALISM 0x004ac6a0
-CRuntimeClass* TSwapperDaddyView::GetRuntimeClass() const {
-  return 0;
-}
+TSwapperDaddyView::TSwapperDaddyView() {}

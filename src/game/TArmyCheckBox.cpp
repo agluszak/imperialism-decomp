@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a9400
 // TArmyCheckBox::`scalar deleting destructor'
 TArmyCheckBox::~TArmyCheckBox() {}
+IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 
-// FUNCTION: IMPERIALISM 0x004a9fc0
-CRuntimeClass* TArmyCheckBox::GetRuntimeClass() const {
-  return 0;
-}
+TArmyCheckBox::TArmyCheckBox() {}
 
 // FUNCTION: IMPERIALISM 0x004aa030
 undefined TArmyCheckBox::VTableSlot73(char param_1) {

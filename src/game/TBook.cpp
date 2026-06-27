@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430280
 // TBook::`scalar deleting destructor'
 TBook::~TBook() {}
+IMPLEMENT_DYNCREATE(TBook, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0056f540
-CRuntimeClass* TBook::GetRuntimeClass() const {
-  return 0;
-}
+TBook::TBook() {}
 
 // FUNCTION: IMPERIALISM 0x0056f560
 void TBook::NoOpUiLifecycleHook(int arg) {

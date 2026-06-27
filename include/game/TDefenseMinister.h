@@ -19,7 +19,7 @@ public:
   TDefenseMinister();
   void InitializeBaseOrderArrayMetrics();
 
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0 (0x4ec0c0)
+  DECLARE_DYNCREATE(TDefenseMinister)
   void WriteTo(TStream* stream) override;          // 5 (0x4ec1d0)
   void ReadFrom(TStream* stream) override;         // 6 (0x4ec2f0)
   short DispatchNationStateEventCode10(short nationSlot) override; // 0x0a (0x4ec3d0)

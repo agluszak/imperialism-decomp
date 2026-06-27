@@ -1,9 +1,7 @@
 #include "game/TArmyMgr.h"
+IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
-// FUNCTION: IMPERIALISM 0x004a1850
-CRuntimeClass* TArmyMgr::GetRuntimeClass() const {
-  return 0;
-}
+TArmyMgr::TArmyMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a18a0
 // TArmyMgr::`scalar deleting destructor'

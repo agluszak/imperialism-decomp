@@ -1,9 +1,7 @@
 #include "game/TBuildingExpansionView.h"
+IMPLEMENT_DYNCREATE(TBuildingExpansionView, TPicture)
 
-// FUNCTION: IMPERIALISM 0x004ce500
-CRuntimeClass* TBuildingExpansionView::GetRuntimeClass() const {
-  return 0;
-}
+TBuildingExpansionView::TBuildingExpansionView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ce550
 // TBuildingExpansionView::`scalar deleting destructor'

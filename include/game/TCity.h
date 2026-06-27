@@ -4,7 +4,7 @@
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
 
-struct TPtrList;
+class TSortedList;
 class TStream;
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
@@ -20,7 +20,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 // === END GENERATED DECLS (TCity) ===
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCity)
   ~TCity() override;
 
   // slots 0x05–0x07 — TObject stream lifecycle (bodies 0x004b35d0 / 0x004b30a0 / 0x004b3a60).
@@ -141,7 +141,7 @@ public:
   short production24c[0x10];              // 0x24C — slot 0x1a outAccum
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
-  TPtrList* trackedOrderList270;     // 0x270 — released via FreePayloadsAndDestroySlot58
+  TSortedList* trackedOrderList270;     // 0x270 — released via FreePayloadsAndDestroySlot58
   class TQueueObject* eventQueue274; // 0x274 — released via Call24
   unsigned char pad278[0x2d4 - 0x278];
 

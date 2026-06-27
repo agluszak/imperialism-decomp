@@ -1,4 +1,5 @@
 #include "game/CIterator.h"
+#include "game/TSortedList.h"
 
 #pragma optimize("y", on) // omit frame pointer, as in the original bodies
 

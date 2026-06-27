@@ -10,11 +10,9 @@ char THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(void) {
 // SYNTHETIC: IMPERIALISM 0x00540f40
 // THostGreatPower::`scalar deleting destructor'
 THostGreatPower::~THostGreatPower() {}
+IMPLEMENT_DYNCREATE(THostGreatPower, TGreatPower)
 
-// FUNCTION: IMPERIALISM 0x00540fe0
-CRuntimeClass* THostGreatPower::GetRuntimeClass() const {
-  return 0;
-}
+THostGreatPower::THostGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x00541000
 void THostGreatPower::ReadFrom(TStream* stream) {

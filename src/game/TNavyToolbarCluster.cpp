@@ -1,9 +1,7 @@
 #include "game/TNavyToolbarCluster.h"
+IMPLEMENT_DYNCREATE(TNavyToolbarCluster, TUberCluster)
 
-// FUNCTION: IMPERIALISM 0x005694b0
-CRuntimeClass* TNavyToolbarCluster::GetRuntimeClass() const {
-  return 0;
-}
+TNavyToolbarCluster::TNavyToolbarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00569500
 // TNavyToolbarCluster::`scalar deleting destructor'

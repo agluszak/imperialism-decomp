@@ -3,8 +3,6 @@
 // SYNTHETIC: IMPERIALISM 0x00460140
 // TTechHistoryView::`scalar deleting destructor'
 TTechHistoryView::~TTechHistoryView() {}
+IMPLEMENT_DYNCREATE(TTechHistoryView, TView)
 
-// FUNCTION: IMPERIALISM 0x005b22a0
-CRuntimeClass* TTechHistoryView::GetRuntimeClass() const {
-  return 0;
-}
+TTechHistoryView::TTechHistoryView() {}

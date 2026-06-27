@@ -2,11 +2,9 @@
 #include "game/ui_runtime_globals.h"
 
 extern "C" char g_pClassDescTDialogView;
+IMPLEMENT_DYNCREATE(TDialogView, TView)
 
-// FUNCTION: IMPERIALISM 0x0049d790
-CRuntimeClass* TDialogView::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTDialogView);
-}
+TDialogView::TDialogView() {}
 
 // Slot 0x42 override: pulse the global UI-invalidation flag off and back to its prior
 // value (a no-op refresh barrier), rather than TView's field48-buffer allocation.

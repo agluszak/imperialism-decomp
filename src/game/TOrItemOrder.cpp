@@ -1,9 +1,7 @@
 #include "game/TOrItemOrder.h"
+IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
 
-// FUNCTION: IMPERIALISM 0x004b57e0
-CRuntimeClass* TOrItemOrder::GetRuntimeClass() const {
-  return 0;
-}
+TOrItemOrder::TOrItemOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b5820
 // TOrItemOrder::`scalar deleting destructor'

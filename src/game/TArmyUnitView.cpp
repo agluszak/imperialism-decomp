@@ -1,9 +1,7 @@
 #include "game/TArmyUnitView.h"
+IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
-// FUNCTION: IMPERIALISM 0x004a94c0
-CRuntimeClass* TArmyUnitView::GetRuntimeClass() const {
-  return 0;
-}
+TArmyUnitView::TArmyUnitView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a9510
 // TArmyUnitView::`scalar deleting destructor'

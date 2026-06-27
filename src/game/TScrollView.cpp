@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d7f0
 // TScrollView::`scalar deleting destructor'
 TScrollView::~TScrollView() {}
+IMPLEMENT_DYNCREATE(TScrollView, TView)
 
-// FUNCTION: IMPERIALISM 0x00573c90
-CRuntimeClass* TScrollView::GetRuntimeClass() const {
-  return 0;
-}
+TScrollView::TScrollView() {}
 
 // FUNCTION: IMPERIALISM 0x00573ce0
 void TScrollView::NoOpUiLifecycleHook(int arg) {

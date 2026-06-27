@@ -130,7 +130,7 @@ public:
 
   TCivilianButton();
   virtual ~TCivilianButton() override;
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCivilianButton)
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
   void SetSelectionAndEnableByMappedValue(int selectedValue);

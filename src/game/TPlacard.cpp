@@ -3,18 +3,11 @@
 #include "game/TControl.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
-
-CRuntimeClass g_pClassDescTPlacard = {nullptr, 0, 0, nullptr, nullptr};
-
 // FUNCTION: IMPERIALISM 0x0058b960
 void* __cdecl CreateTPlacardInstance(void) {
   return new TPlacard();
 }
-
-// FUNCTION: IMPERIALISM 0x0058b9f0
-CRuntimeClass* TPlacard::GetRuntimeClass() const {
-  return &g_pClassDescTPlacard;
-}
+IMPLEMENT_DYNCREATE(TPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058ba10
 TPlacard::TPlacard() : TPicture() {

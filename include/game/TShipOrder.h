@@ -10,7 +10,7 @@ class TCity;
 // VTABLE: IMPERIALISM 0x0064f738
 class TShipOrder : public TProductionOrder {
 public:
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4b84a0
+  DECLARE_DYNCREATE(TShipOrder)
   ~TShipOrder() override;                          // slot 0x01 (scalar deleting destructor)
 
   bool SetQuantity(short quantity) override;                      // slot 0x0b 0x4b8800

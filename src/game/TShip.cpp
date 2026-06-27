@@ -18,7 +18,6 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 extern char g_industryActionCostWeightResCode10;
-CRuntimeClass g_pClassDescTShip = {nullptr, 0, 0, nullptr, nullptr};
 char g_ResourceDescriptorWeightWord0Base0069811c[0x24 * 64] = {0};
 
 extern "C" {
@@ -66,11 +65,7 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   }
   return sum;
 }
-
-// FUNCTION: IMPERIALISM 0x0054f4e0
-CRuntimeClass* TShip::GetRuntimeClass() const {
-  return &g_pClassDescTShip;
-}
+IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
@@ -83,7 +78,6 @@ TShip::TShip()
     nextOlder24->prevNewer28 = this;
   }
 }
-
 
 // SYNTHETIC: IMPERIALISM 0x0054f5c0
 // TShip::`scalar deleting destructor'

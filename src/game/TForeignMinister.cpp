@@ -15,10 +15,6 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" {
-CRuntimeClass g_pClassDescTForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
-}
-
 extern undefined4 GenerateThreadLocalRandom15(void);
 
 static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
@@ -26,11 +22,7 @@ static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
 }
 
 static const short kPrimaryNationUnset = static_cast<short>(0xfff6);
-
-// FUNCTION: IMPERIALISM 0x0052f050
-CRuntimeClass* TForeignMinister::GetRuntimeClass() const {
-  return &g_pClassDescTForeignMinister;
-}
+IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070
 TForeignMinister::TForeignMinister() : TMinister() {

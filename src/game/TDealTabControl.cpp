@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00435540
 // TDealTabControl::`scalar deleting destructor'
 TDealTabControl::~TDealTabControl() {}
+IMPLEMENT_DYNCREATE(TDealTabControl, TControl)
 
-// FUNCTION: IMPERIALISM 0x005bc760
-CRuntimeClass* TDealTabControl::GetRuntimeClass() const {
-  return 0;
-}
+TDealTabControl::TDealTabControl() {}
 
 // FUNCTION: IMPERIALISM 0x005bc780
 undefined TDealTabControl::ConstructTDealTabControlBaseState() {

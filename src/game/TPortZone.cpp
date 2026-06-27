@@ -10,7 +10,6 @@
 
 extern "C" char g_pClassDescTPortZone = 0;
 
-
 // FUNCTION: IMPERIALISM 0x005615e0
 TPortZone* TPortZone::CreateTPortZone() {
   return new TPortZone();
@@ -43,10 +42,7 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
 TPortZone::~TPortZone() {}
 
 // slot 0x00 — GetRuntimeClass override.
-// FUNCTION: IMPERIALISM 0x005617d0
-CRuntimeClass* TPortZone::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
-}
+IMPLEMENT_DYNCREATE(TPortZone, TZone)
 
 // slot 0x06 — TZone::ReadFrom override.
 // FUNCTION: IMPERIALISM 0x005617f0

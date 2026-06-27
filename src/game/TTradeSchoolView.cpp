@@ -1,9 +1,7 @@
 #include "game/TTradeSchoolView.h"
+IMPLEMENT_DYNCREATE(TTradeSchoolView, TIndustryView)
 
-// FUNCTION: IMPERIALISM 0x004cd820
-CRuntimeClass* TTradeSchoolView::GetRuntimeClass() const {
-  return 0;
-}
+TTradeSchoolView::TTradeSchoolView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cd880
 // TTradeSchoolView::`scalar deleting destructor'

@@ -1,6 +1,7 @@
 #include "game/TLaborPool.h"
+IMPLEMENT_DYNCREATE(TLaborPool, TObject)
 
-CRuntimeClass* TLaborPool::GetRuntimeClass() const { return 0; }
+TLaborPool::TLaborPool() {}
 
 TLaborPool::~TLaborPool() {}
 

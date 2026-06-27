@@ -6,8 +6,7 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
-
-CRuntimeClass* TNavyMgr::GetRuntimeClass() const { return 0; }
+IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 TNavyMgr::TNavyMgr() : orderListHead04(0) {}
 

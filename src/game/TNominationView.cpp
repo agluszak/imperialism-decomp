@@ -8,11 +8,9 @@ undefined TNominationView::OrphanRetStub_004305c0() {
 // SYNTHETIC: IMPERIALISM 0x004305e0
 // TNominationView::`scalar deleting destructor'
 TNominationView::~TNominationView() {}
+IMPLEMENT_DYNCREATE(TNominationView, TPicture)
 
-// FUNCTION: IMPERIALISM 0x004fb760
-CRuntimeClass* TNominationView::GetRuntimeClass() const {
-  return 0;
-}
+TNominationView::TNominationView() {}
 
 // FUNCTION: IMPERIALISM 0x004fb780
 void TNominationView::NoOpUiLifecycleHook(int arg) {

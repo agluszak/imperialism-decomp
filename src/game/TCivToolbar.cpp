@@ -26,9 +26,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663100
-CRuntimeClass g_pClassDescTCivToolbar = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \
@@ -57,11 +55,7 @@ const unsigned int kTagGarrison = 0x67617272;
 TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
   return new TCivToolbar();
 }
-
-// FUNCTION: IMPERIALISM 0x0058ea80
-CRuntimeClass* TCivToolbar::GetRuntimeClass() const {
-  return &g_pClassDescTCivToolbar;
-}
+IMPLEMENT_DYNCREATE(TCivToolbar, TCluster)
 
 // FUNCTION: IMPERIALISM 0x0058eaa0
 TCivToolbar::TCivToolbar() {}

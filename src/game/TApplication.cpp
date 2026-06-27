@@ -19,11 +19,7 @@ void* __cdecl CreateTApplicationInstance(void) {
 }
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
-
-// FUNCTION: IMPERIALISM 0x00486740
-CRuntimeClass* TApplication::GetRuntimeClass() const {
-  return &PTR_s_TApplication_00648af8;
-}
+IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043daa0
 // TRadioText::`scalar deleting destructor'
 TRadioText::~TRadioText() {}
+IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
 
-// FUNCTION: IMPERIALISM 0x00579470
-CRuntimeClass* TRadioText::GetRuntimeClass() const {
-  return 0;
-}
+TRadioText::TRadioText() {}
 
 // FUNCTION: IMPERIALISM 0x00579490
 void TRadioText::NoOpUiLifecycleHook(int arg) {

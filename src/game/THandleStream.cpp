@@ -7,11 +7,7 @@
 extern "C" {
 char g_pClassDescTHandleStream = 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004895c0
-CRuntimeClass* THandleStream::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTHandleStream);
-}
+IMPLEMENT_DYNCREATE(THandleStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x004895e0
 THandleStream::THandleStream() {

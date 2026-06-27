@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430450
 // TTradePanelView::`scalar deleting destructor'
 TTradePanelView::~TTradePanelView() {}
+IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004f8760
-CRuntimeClass* TTradePanelView::GetRuntimeClass() const {
-  return 0;
-}
+TTradePanelView::TTradePanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8780
 void TTradePanelView::NoOpUiLifecycleHook(int arg) {

@@ -1,9 +1,7 @@
 #include "game/TIconSlider.h"
+IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
-// FUNCTION: IMPERIALISM 0x005063a0
-CRuntimeClass* TIconSlider::GetRuntimeClass() const {
-  return 0;
-}
+TIconSlider::TIconSlider() {}
 
 // SYNTHETIC: IMPERIALISM 0x00506430
 // TIconSlider::`scalar deleting destructor'

@@ -1,9 +1,7 @@
 #include "game/TTaskList.h"
+IMPLEMENT_DYNCREATE(TTaskList, TList)
 
-// FUNCTION: IMPERIALISM 0x005aeb70
-CRuntimeClass* TTaskList::GetRuntimeClass() const {
-  return 0;
-}
+TTaskList::TTaskList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005aec00
 // TTaskList::`scalar deleting destructor'

@@ -9,7 +9,7 @@ class TInteriorMinister : public TMinister {
 public:
   TInteriorMinister();
 
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TInteriorMinister)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short DispatchNationStateEventCode10(short nationSlot) override;

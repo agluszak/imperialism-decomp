@@ -1,11 +1,7 @@
 #include "game/TItemOrder.h"
 
 TItemOrder::TItemOrder() {}
-
-// FUNCTION: IMPERIALISM 0x004b5200
-CRuntimeClass* TItemOrder::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b5240
 // TItemOrder::`scalar deleting destructor'

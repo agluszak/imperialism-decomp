@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
 TLoadSavePicture::~TLoadSavePicture() {}
+IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0056bca0
-CRuntimeClass* TLoadSavePicture::GetRuntimeClass() const {
-  return 0;
-}
+TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::NoOpUiLifecycleHook(int arg) {

@@ -1,9 +1,7 @@
 #include "game/TUnitsView.h"
+IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
-// FUNCTION: IMPERIALISM 0x004c7fb0
-CRuntimeClass* TUnitsView::GetRuntimeClass() const {
-  return 0;
-}
+TUnitsView::TUnitsView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c8000
 // TUnitsView::`scalar deleting destructor'

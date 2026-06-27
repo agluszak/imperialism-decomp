@@ -7,19 +7,13 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663160
-CRuntimeClass g_pClassDescTTransportPicture = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 // FUNCTION: IMPERIALISM 0x00591d90
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
   return new TTransportPicture();
 }
-
-// FUNCTION: IMPERIALISM 0x00591e50
-CRuntimeClass* TTransportPicture::GetRuntimeClass() const {
-  return &g_pClassDescTTransportPicture;
-}
+IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()

@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004bcfd0
 // TRailheadDialog::`scalar deleting destructor'
 TRailheadDialog::~TRailheadDialog() {}
+IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 
-// FUNCTION: IMPERIALISM 0x004bd020
-CRuntimeClass* TRailheadDialog::GetRuntimeClass() const {
-  return 0;
-}
+TRailheadDialog::TRailheadDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004bd040
 undefined TRailheadDialog::ConstructTRailheadDialogBaseState() {

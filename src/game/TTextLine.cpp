@@ -1,9 +1,7 @@
 #include "game/TTextLine.h"
+IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x00570270
-CRuntimeClass* TTextLine::GetRuntimeClass() const {
-  return 0;
-}
+TTextLine::TTextLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x00570310
 // TTextLine::`scalar deleting destructor'

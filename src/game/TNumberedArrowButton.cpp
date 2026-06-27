@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/trade_quickdraw.h"
-CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullptr};
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
@@ -62,11 +61,7 @@ void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
 TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
   return new TNumberedArrowButton();
 }
-
-// FUNCTION: IMPERIALISM 0x0058c280
-CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() const {
-  return &g_pClassDescTNumberedArrowButton;
-}
+IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
 TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}

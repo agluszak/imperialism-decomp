@@ -1,17 +1,15 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TIndexAndRankList.h"
+#include "game/TSortedPtrList.h"
 
-struct CRuntimeClass;
+// Base recovered from CRuntimeClass descriptor: TProvinceDesirabilityList -> TSortedPtrList -> CPtrArray.
 // VTABLE: IMPERIALISM 0x00653810
-class TProvinceDesirabilityList : public TIndexAndRankList {
+class TProvinceDesirabilityList : public TSortedPtrList {
 public:
-  short relationType;
-  short pad16;
+  DECLARE_DYNCREATE(TProvinceDesirabilityList)
 
   TProvinceDesirabilityList();
-  CRuntimeClass* GetRuntimeClass() const override;
   static TProvinceDesirabilityList* CreateTProvinceDesirabilityListInstance();
 };
 

@@ -1,9 +1,7 @@
 #include "game/TColorKeyPicture.h"
+IMPLEMENT_DYNCREATE(TColorKeyPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00572dc0
-CRuntimeClass* TColorKeyPicture::GetRuntimeClass() const {
-  return 0;
-}
+TColorKeyPicture::TColorKeyPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572e10
 // TColorKeyPicture::`scalar deleting destructor'

@@ -8,11 +8,9 @@ undefined THighScoresPicture::UniversityDialogMethod_00405623() {
 // SYNTHETIC: IMPERIALISM 0x0045adc0
 // THighScoresPicture::`scalar deleting destructor'
 THighScoresPicture::~THighScoresPicture() {}
+IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00575300
-CRuntimeClass* THighScoresPicture::GetRuntimeClass() const {
-  return 0;
-}
+THighScoresPicture::THighScoresPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00575320
 void THighScoresPicture::NoOpUiLifecycleHook(int arg) {

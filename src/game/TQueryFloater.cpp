@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0043d6a0
 // TQueryFloater::`scalar deleting destructor'
 TQueryFloater::~TQueryFloater() {}
+IMPLEMENT_DYNCREATE(TQueryFloater, TPicture)
 
-// FUNCTION: IMPERIALISM 0x0056e8c0
-CRuntimeClass* TQueryFloater::GetRuntimeClass() const {
-  return 0;
-}
+TQueryFloater::TQueryFloater() {}
 
 // FUNCTION: IMPERIALISM 0x0056e8e0
 void TQueryFloater::NoOpUiLifecycleHook(int arg) {

@@ -129,8 +129,7 @@ public:
   short valueAt8c;
   short valueAt8e;
   TAmtBarCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TAmtBarCluster)
   static TAmtBarCluster* CreateInstance();
 };
 

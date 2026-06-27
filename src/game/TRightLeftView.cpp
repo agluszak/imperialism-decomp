@@ -1,10 +1,6 @@
 #include "game/TRightLeftView.h"
 #include "game/TControl.h"
-
-// FUNCTION: IMPERIALISM 0x00583f10
-CRuntimeClass* TRightLeftView::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
 // SYNTHETIC: IMPERIALISM 0x00583f60
 // TRightLeftView::`scalar deleting destructor'

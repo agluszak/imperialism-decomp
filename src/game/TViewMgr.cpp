@@ -87,12 +87,7 @@ const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
-
-// FUNCTION: IMPERIALISM 0x005d5040
-CRuntimeClass* TViewMgr::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTViewMgr);
-}
-
+IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
@@ -110,7 +105,6 @@ TViewMgr::TViewMgr() : TObject() {
 // TViewMgr::`scalar deleting destructor'
 TViewMgr::~TViewMgr() {}
 
-
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 0x36; i++) {
@@ -126,12 +120,10 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId) {
   return LoadCursorA(moduleState->m_hCurrentInstanceHandle, cursorName);
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d51e0
 void TViewMgr::Free() {
   delete this;
 }
-
 
 // FUNCTION: IMPERIALISM 0x005d5200
 void TViewMgr::ReadFrom(TStream* stream) {
@@ -143,7 +135,6 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->field10 = 0;
   this->mapUberPictureF0 = 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x005d5250
 void TViewMgr::WriteTo(TStream* stream) {
@@ -313,20 +304,17 @@ case_3b:
   return 0x20;
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(paletteIndex);
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
 }
-
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
@@ -380,7 +368,6 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
   switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 8)) {
@@ -406,7 +393,6 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
     return 2;
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x005d5a70
 undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString) {
@@ -549,7 +535,6 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   reinterpret_cast<void(__cdecl*)(void)>(RunNationInfoModalAndReturnNonCancel)();
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d69b0
 void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
   MainViewHostContext* host = *reinterpret_cast<MainViewHostContext**>(kAddrMainViewHostPtr);
@@ -586,7 +571,6 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   outPlacement->y = (designHeight - dlgHeight) / 2 + clientRect.top + margin;
 }
 
-
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   MainViewHostContext* host = *reinterpret_cast<MainViewHostContext**>(kAddrMainViewHostPtr);
@@ -606,7 +590,6 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
         g_pUiRuntimeContext->GetActiveNationId());
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {

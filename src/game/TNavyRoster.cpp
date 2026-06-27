@@ -1,9 +1,7 @@
 #include "game/TNavyRoster.h"
+IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
-// FUNCTION: IMPERIALISM 0x00564d00
-CRuntimeClass* TNavyRoster::GetRuntimeClass() const {
-  return 0;
-}
+TNavyRoster::TNavyRoster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00564d70
 // TNavyRoster::`scalar deleting destructor'

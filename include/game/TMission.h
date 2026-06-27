@@ -41,7 +41,7 @@ public:
                                           int arg4);
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x534fb0
+  DECLARE_SERIAL(TMission)
   virtual ~TMission();                                     // 0x01 dtor 0x535080 / ??_G 0x535050
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 

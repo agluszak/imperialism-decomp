@@ -24,9 +24,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662fb0
-CRuntimeClass g_pClassDescTIndustryAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
@@ -35,11 +33,7 @@ const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
   return new TIndustryAmtBar();
 }
-
-// FUNCTION: IMPERIALISM 0x005891b0
-CRuntimeClass* TIndustryAmtBar::GetRuntimeClass() const {
-  return &g_pClassDescTIndustryAmtBar;
-}
+IMPLEMENT_DYNCREATE(TIndustryAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x005891d0
 TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}

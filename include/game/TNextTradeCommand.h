@@ -28,7 +28,7 @@ public:
 // === END GENERATED DECLS (TNextTradeCommand) ===
   TNextTradeCommand();
 
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5ba3e0
+  DECLARE_DYNCREATE(TNextTradeCommand)
   undefined OrphanRetStub_00487a00() override;     // slot 0x0b 0x5ba4b0
   // slot 0x01 (dtor) overridden by ~TNextTradeCommand below (0x5ba430)
 

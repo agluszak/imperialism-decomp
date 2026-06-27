@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045d360
 // TTacticalToolbar::`scalar deleting destructor'
 TTacticalToolbar::~TTacticalToolbar() {}
+IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 
-// FUNCTION: IMPERIALISM 0x005ac820
-CRuntimeClass* TTacticalToolbar::GetRuntimeClass() const {
-  return 0;
-}
+TTacticalToolbar::TTacticalToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ac840
 void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {

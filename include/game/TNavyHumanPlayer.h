@@ -8,7 +8,7 @@
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
 // === BEGIN GENERATED DECLS (TNavyHumanPlayer) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x59ef70
+  DECLARE_DYNCREATE(TNavyHumanPlayer)
   virtual ~TNavyHumanPlayer(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)

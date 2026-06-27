@@ -1,9 +1,7 @@
 #include "game/TToolBarCluster.h"
+IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
-// FUNCTION: IMPERIALISM 0x00584e00
-CRuntimeClass* TToolBarCluster::GetRuntimeClass() const {
-  return 0;
-}
+TToolBarCluster::TToolBarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584e50
 // TToolBarCluster::`scalar deleting destructor'

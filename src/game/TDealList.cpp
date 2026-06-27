@@ -1,5 +1,6 @@
 #include "decomp_types.h"
 #include "game/TDealList.h"
+#include "game/TIndexAndRankList.h"
 
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
@@ -65,7 +66,7 @@ void TDealList::InitializeNationInteractionStateManagerDefaults() {
     *reinterpret_cast<int*>(rowCursor + 0x14) = 0;
     *reinterpret_cast<short*>(rowCursor + 0x1a) = presetValue;
 
-    TSortedPtrList* list = new TSortedPtrList();
+    TIndexAndRankList* list = new TIndexAndRankList();
     list->relationType = 0x10;
     *listCursor = list;
 
@@ -183,11 +184,7 @@ short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int cate
   }
   return resolvedCode;
 }
-
-// FUNCTION: IMPERIALISM 0x005ba1a0
-CRuntimeClass* TDealList::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TDealList, TSortedPtrList)
 
 // SYNTHETIC: IMPERIALISM 0x005ba1f0
 // TDealList::`scalar deleting destructor'

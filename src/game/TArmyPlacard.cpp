@@ -4,25 +4,12 @@
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TTechMgr.h"
-#include "game/TEvent.h"
-
-CRuntimeClass g_pClassDescTArmyPlacard = {nullptr, 0, 0, nullptr, nullptr};
-
-
-
+#include "game/TSpaceCommand.h"
 // FUNCTION: IMPERIALISM 0x0058be30
 void* __cdecl CreateTArmyPlacardInstance(void) {
   return new TArmyPlacard();
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x0058beb0
-CRuntimeClass* TArmyPlacard::GetRuntimeClass() const {
-  return &g_pClassDescTArmyPlacard;
-}
-
-
+IMPLEMENT_DYNCREATE(TArmyPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058bed0
 TArmyPlacard::TArmyPlacard() : TPicture() {
@@ -31,12 +18,8 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-
-
 // SYNTHETIC: IMPERIALISM 0x0058bf00
 // TArmyPlacard::`scalar deleting destructor'
-
-
 
 // FUNCTION: IMPERIALISM 0x0058bf50
 bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
@@ -61,8 +44,6 @@ undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
 const unsigned int kAddrDecimalFormat = 0x0069430C;
-
-
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
 void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
@@ -102,15 +83,14 @@ undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 
 const unsigned int kAddrMapContextActionManager = 0x006a3338;
 
-
-
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)sourceHandler;
   int* mapContextActionManager = *reinterpret_cast<int**>(kAddrMapContextActionManager);
-  if (event != nullptr) {
-    if (event->commandTag1c == 0x706c7573) { // "plus"
+  TSpaceCommand* spaceEvent = static_cast<TSpaceCommand*>(event);
+  if (spaceEvent != nullptr) {
+    if (spaceEvent->commandTag1c == 0x706c7573) { // "plus"
       short categoryId = this->controlTag - 0x6330;
       short tileIndex =
           *reinterpret_cast<short*>(reinterpret_cast<char*>(mapContextActionManager) + 0x31c);
@@ -119,7 +99,7 @@ void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       this->IsSelected(unitId, true);
       return;
     }
-    if (event->commandTag1c == 0x6d696e75) { // "minu"
+    if (spaceEvent->commandTag1c == 0x6d696e75) { // "minu"
       short categoryId = this->controlTag - 0x6330;
       short tileIndex =
           *reinterpret_cast<short*>(reinterpret_cast<char*>(mapContextActionManager) + 0x31c);
@@ -129,6 +109,5 @@ void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   }
 }
-
 
 TArmyPlacard::~TArmyPlacard() {}

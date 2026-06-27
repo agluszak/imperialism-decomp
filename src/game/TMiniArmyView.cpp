@@ -8,11 +8,9 @@ undefined TMiniArmyView::OrphanRetStub_004aad20() {
 // SYNTHETIC: IMPERIALISM 0x004aad40
 // TMiniArmyView::`scalar deleting destructor'
 TMiniArmyView::~TMiniArmyView() {}
+IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 
-// FUNCTION: IMPERIALISM 0x004aae10
-CRuntimeClass* TMiniArmyView::GetRuntimeClass() const {
-  return 0;
-}
+TMiniArmyView::TMiniArmyView() {}
 
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {

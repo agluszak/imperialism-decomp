@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x005653b0
 // TShipView::`scalar deleting destructor'
 TShipView::~TShipView() {}
+IMPLEMENT_DYNCREATE(TShipView, TView)
 
-// FUNCTION: IMPERIALISM 0x00565470
-CRuntimeClass* TShipView::GetRuntimeClass() const {
-  return 0;
-}
+TShipView::TShipView() {}
 
 // FUNCTION: IMPERIALISM 0x005654e0
 void TShipView::ApplyRectSlot110(RECT* rectBuffer) {

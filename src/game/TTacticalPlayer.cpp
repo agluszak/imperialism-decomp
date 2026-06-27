@@ -13,8 +13,9 @@ undefined TTacticalPlayer::TArmyTacUnit_VtblSlot04() { return 0; }
 undefined TTacticalPlayer::OrphanRetStub_0059ae10() { return 0; }
 
 TTacticalPlayer::~TTacticalPlayer() {}
+IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 
-CRuntimeClass* TTacticalPlayer::GetRuntimeClass() const { return 0; }
+TTacticalPlayer::TTacticalPlayer() {}
 
 void TTacticalPlayer::Free() {}
 

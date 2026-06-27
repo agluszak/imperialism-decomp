@@ -29,7 +29,7 @@ public:
   int resourceOwner;
   int controlTag; // 0x1c
 
-  TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), resourceOwner(0) {}
+  TEventHandler();
 
   static void CreateTEventHandlerInstance(TEventHandler* handler);
 

@@ -11,7 +11,7 @@ public:
   int field_a4;        // 0xa4
   int field_a8;        // 0xa8
 
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 (0x491040)
+  DECLARE_DYNCREATE(TNumberText)
   ~TNumberText() override;                         // slot 0x01 (0x429530)
   TObject* ShallowClone() override;                // slot 0x08 (0x4912b0)
 

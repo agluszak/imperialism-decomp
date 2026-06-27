@@ -14,11 +14,7 @@ TNumberText::TNumberText() : TEditText() {
 // SYNTHETIC: IMPERIALISM 0x00429530
 // TNumberText::`scalar deleting destructor'
 TNumberText::~TNumberText() {}
-
-// FUNCTION: IMPERIALISM 0x00491040
-CRuntimeClass* TNumberText::GetRuntimeClass() const {
-  return &PTR_s_TNumberText_006496a8;
-}
+IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060
 void TNumberText::ConstructTNumberTextBaseState(TControl* panel, int* offsetLayout, int* sizeLayout, int val, int field_a4_val, int field_a8_val) {

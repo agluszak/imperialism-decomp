@@ -8,13 +8,7 @@
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-CRuntimeClass g_pClassDescTEngineerDialog = {nullptr, 0, 0, nullptr, nullptr};
-
-// FUNCTION: IMPERIALISM 0x004d0540
-CRuntimeClass* TEngineerDialog::GetRuntimeClass() const {
-  return &g_pClassDescTEngineerDialog;
-}
+IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560
 TEngineerDialog::TEngineerDialog() {

@@ -1,9 +1,7 @@
 #include "game/TAdorner.h"
+IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
-// FUNCTION: IMPERIALISM 0x0049d6d0
-CRuntimeClass* TAdorner::GetRuntimeClass() const {
-  return 0;
-}
+TAdorner::TAdorner() {}
 
 // FUNCTION: IMPERIALISM 0x0049d900
 undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900() {

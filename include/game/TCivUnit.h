@@ -12,7 +12,7 @@
 class TCivUnit : public TUnit {
 public:
 // === BEGIN GENERATED DECLS (TCivUnit) — refreshed by recover-class; do not hand-edit ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x5c28a0
+  DECLARE_DYNCREATE(TCivUnit)
   virtual ~TCivUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)

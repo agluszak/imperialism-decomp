@@ -4,7 +4,6 @@
 
 extern "C" CRuntimeClass PTR_s_TDlgWindow_00656a48;
 
-
 // Application/document-root pointer @ 0x6a2158; its +0x0a field gates the line-0x27f assert.
 static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 
@@ -13,11 +12,9 @@ static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
+IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
-// FUNCTION: IMPERIALISM 0x00500300
-CRuntimeClass* TDlgWindow::GetRuntimeClass() const {
-  return &PTR_s_TDlgWindow_00656a48;
-}
+TDlgWindow::TDlgWindow() {}
 
 // SYNTHETIC: IMPERIALISM 0x00500350
 // TDlgWindow::`scalar deleting destructor'

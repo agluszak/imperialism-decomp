@@ -1,6 +1,7 @@
 #include "game/TLineData.h"
+IMPLEMENT_DYNCREATE(TLineData, TObject)
 
-CRuntimeClass* TLineData::GetRuntimeClass() const { return 0; }
+TLineData::TLineData() {}
 
 TLineData::~TLineData() {}
 

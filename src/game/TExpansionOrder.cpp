@@ -1,9 +1,7 @@
 #include "game/TExpansionOrder.h"
+IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
 
-// FUNCTION: IMPERIALISM 0x004b8f80
-CRuntimeClass* TExpansionOrder::GetRuntimeClass() const {
-  return 0;
-}
+TExpansionOrder::TExpansionOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b8fc0
 // TExpansionOrder::`scalar deleting destructor'

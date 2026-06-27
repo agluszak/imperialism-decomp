@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004bd810
 // TNewTownView::`scalar deleting destructor'
 TNewTownView::~TNewTownView() {}
+IMPLEMENT_DYNCREATE(TNewTownView, TView)
 
-// FUNCTION: IMPERIALISM 0x004bd860
-CRuntimeClass* TNewTownView::GetRuntimeClass() const {
-  return 0;
-}
+TNewTownView::TNewTownView() {}
 
 // FUNCTION: IMPERIALISM 0x004bd880
 undefined TNewTownView::BuildCityDialogMinisterControls() {

@@ -142,11 +142,7 @@ char TMission::ReturnFalseSlot98() {
 void TMission::AssertValid(CArchive* archive) const {
   (void)archive;
 }
-
-// FUNCTION: IMPERIALISM 0x00534fb0
-CRuntimeClass* TMission::GetRuntimeClass() const {
-  return &PTR_s_TMission_00697848;
-}
+IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
                                            TZone* portZoneContext, int arg4) {

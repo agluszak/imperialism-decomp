@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'
 TArmyBattle::~TArmyBattle() {}
+IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 
-// FUNCTION: IMPERIALISM 0x005a4750
-CRuntimeClass* TArmyBattle::GetRuntimeClass() const {
-  return 0;
-}
+TArmyBattle::TArmyBattle() {}
 
 // FUNCTION: IMPERIALISM 0x005a4990
 void TArmyBattle::ReadFrom(TStream* stream) {

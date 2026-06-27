@@ -12,7 +12,6 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTTextList = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTTextList = 0;
 }
 
@@ -29,10 +28,13 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 TTextList* TTextList::CreateTTextListInstance() {
   return new TTextList();
 }
+IMPLEMENT_DYNCREATE(TTextList, TView)
 
-// FUNCTION: IMPERIALISM 0x0057ac30
-CRuntimeClass* TTextList::GetRuntimeClass() const {
-  return &g_pClassDescTTextList;
+TTextList::TTextList() : TView() {
+  itemHeight = 0x10;
+  totalItems = 0;
+  scrollOffset = 0;
+  selectedIndex = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0057acc0

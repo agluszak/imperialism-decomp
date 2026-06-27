@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004303d0
 // TGrantsView::`scalar deleting destructor'
 TGrantsView::~TGrantsView() {}
+IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004f8060
-CRuntimeClass* TGrantsView::GetRuntimeClass() const {
-  return 0;
-}
+TGrantsView::TGrantsView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8080
 void TGrantsView::NoOpUiLifecycleHook(int arg) {

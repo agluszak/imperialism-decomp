@@ -1,8 +1,7 @@
 #include "game/TProductionOrder.h"
 
 TProductionOrder::TProductionOrder() {}
-
-CRuntimeClass* TProductionOrder::GetRuntimeClass() const { return 0; }
+IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 
 TProductionOrder::~TProductionOrder() {}
 

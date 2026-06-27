@@ -1,5 +1,6 @@
 #include "game/TFuzzyVar.h"
+IMPLEMENT_DYNCREATE(TFuzzyVar, TObject)
 
-CRuntimeClass* TFuzzyVar::GetRuntimeClass() const { return 0; }
+TFuzzyVar::TFuzzyVar() {}
 
 TFuzzyVar::~TFuzzyVar() {}

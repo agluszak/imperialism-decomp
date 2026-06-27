@@ -10,7 +10,7 @@ class TAnimator;
 // VTABLE: IMPERIALISM 0x0063efa8
 class TBattleReportView : public TDiplomacyMapView {
 public:
-  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4acb40
+  DECLARE_DYNCREATE(TBattleReportView)
   ~TBattleReportView() override;                   // slot 0x01 scalar deleting dtor
 
   void Free() override; // slot 0x07 0x4ad560

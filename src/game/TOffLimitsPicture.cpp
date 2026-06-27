@@ -1,9 +1,7 @@
 #include "game/TOffLimitsPicture.h"
+IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005737b0
-CRuntimeClass* TOffLimitsPicture::GetRuntimeClass() const {
-  return 0;
-}
+TOffLimitsPicture::TOffLimitsPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00573800
 // TOffLimitsPicture::`scalar deleting destructor'

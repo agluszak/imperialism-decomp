@@ -1,9 +1,7 @@
 #include "game/TMovieView.h"
+IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005e2210
-CRuntimeClass* TMovieView::GetRuntimeClass() const {
-  return 0;
-}
+TMovieView::TMovieView() {}
 
 // SYNTHETIC: IMPERIALISM 0x005e22f0
 // TMovieView::`scalar deleting destructor'

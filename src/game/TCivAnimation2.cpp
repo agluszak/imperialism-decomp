@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0049f630
 // TCivAnimation2::`scalar deleting destructor'
 TCivAnimation2::~TCivAnimation2() {}
+IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 
-// FUNCTION: IMPERIALISM 0x0049f680
-CRuntimeClass* TCivAnimation2::GetRuntimeClass() const {
-  return 0;
-}
+TCivAnimation2::TCivAnimation2() {}
 
 // FUNCTION: IMPERIALISM 0x0049f7c0
 undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {

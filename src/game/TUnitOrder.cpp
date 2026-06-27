@@ -5,11 +5,9 @@
 #include "game/TSimMgr.h"
 
 extern "C" TSimMgr* g_pLocalizationTable;
+IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 
-// FUNCTION: IMPERIALISM 0x004b6f50
-CRuntimeClass* TUnitOrder::GetRuntimeClass() const {
-  return 0;
-}
+TUnitOrder::TUnitOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b6f90
 // TUnitOrder::`scalar deleting destructor'

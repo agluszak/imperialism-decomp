@@ -12,8 +12,7 @@ public:
   static void* CreateTMinorInstance();
   static void* GetTMinorClassNamePointer();
 
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TMinor)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
 

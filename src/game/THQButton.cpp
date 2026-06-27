@@ -8,35 +8,16 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/mfc.h"
-
-CRuntimeClass g_pClassDescTHQButton = {nullptr, 0, 0, nullptr, nullptr};
-
-
-
-
 // FUNCTION: IMPERIALISM 0x0058b5c0
 void* __cdecl CreateTHQButtonInstance(void) {
   return new THQButton();
 }
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0058b640
-CRuntimeClass* THQButton::GetRuntimeClass() const {
-  return &g_pClassDescTHQButton;
-}
-
-
-
+IMPLEMENT_DYNCREATE(THQButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058b660
 THQButton::THQButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-
-
 
 // SYNTHETIC: IMPERIALISM 0x0058b690
 // THQButton::`scalar deleting destructor'
@@ -52,9 +33,6 @@ void THQButton::NoOpUiLifecycleHook(int arg) {
   glyph94 = (short)(glyph + 2);
   glyph96 = (short)(glyph + 3);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x0058b750
 void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
@@ -84,9 +62,6 @@ void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refre
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x0058b7f0
 void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
@@ -107,9 +82,6 @@ void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   }
   control->InvokeSlot1CC(1, 1);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x0058b890
 bool THQButton::IsSelected(short value, bool refreshNow) {

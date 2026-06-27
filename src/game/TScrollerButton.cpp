@@ -1,9 +1,7 @@
 #include "game/TScrollerButton.h"
+IMPLEMENT_DYNCREATE(TScrollerButton, TPictureButton)
 
-// FUNCTION: IMPERIALISM 0x00574f20
-CRuntimeClass* TScrollerButton::GetRuntimeClass() const {
-  return 0;
-}
+TScrollerButton::TScrollerButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00574f70
 // TScrollerButton::`scalar deleting destructor'

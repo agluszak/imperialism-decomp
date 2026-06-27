@@ -60,8 +60,7 @@ THelpMgr::THelpMgr() : TObject() {
   field18 = 0;
   indexList = nullptr;
 }
-
-CRuntimeClass* THelpMgr::GetRuntimeClass() const { return 0; }
+IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 THelpMgr::~THelpMgr() {}
 

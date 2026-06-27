@@ -1,9 +1,7 @@
 #include "game/TPictureLine.h"
+IMPLEMENT_DYNCREATE(TPictureLine, TLineData)
 
-// FUNCTION: IMPERIALISM 0x00570060
-CRuntimeClass* TPictureLine::GetRuntimeClass() const {
-  return 0;
-}
+TPictureLine::TPictureLine() {}
 
 // SYNTHETIC: IMPERIALISM 0x005700a0
 // TPictureLine::`scalar deleting destructor'

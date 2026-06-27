@@ -3,12 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045ad70
 // TTEView::`scalar deleting destructor'
 TTEView::~TTEView() {}
+IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 
-// FUNCTION: IMPERIALISM 0x00486030
-CRuntimeClass* TTEView::GetRuntimeClass() const {
-  return 0;
-}
-
+TTEView::TTEView() {}
 
 // FUNCTION: IMPERIALISM 0x0061f342
 void TTEView::DeflateRect(RECT* margins) {

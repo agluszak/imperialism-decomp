@@ -9,8 +9,7 @@ extern "C" CRuntimeClass g_pClassDescTStatusButton;
 class TStatusButton : public TButton {
 public:
   TStatusButton();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TStatusButton)
   void HandleEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) override;
 };
 

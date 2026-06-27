@@ -3,11 +3,7 @@
 #include "game/TView.h"
 
 const unsigned int kAddrSfxPlaybackSystem = 0x006a4510;
-
-// FUNCTION: IMPERIALISM 0x00571580
-CRuntimeClass* TUpDownPictureButton::GetRuntimeClass() const {
-  return 0;
-}
+IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
 // SYNTHETIC: IMPERIALISM 0x005715d0
 // TUpDownPictureButton::`scalar deleting destructor'

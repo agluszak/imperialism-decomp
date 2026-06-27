@@ -138,7 +138,7 @@ public:
   int field94;
 
   TProductionCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TProductionCluster)
 };
 
 ASSERT_SIZE(TProductionCluster, 0x98);

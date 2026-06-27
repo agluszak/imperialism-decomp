@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0045d430
 // TTacticalAdiosPicture::`scalar deleting destructor'
 TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
+IMPLEMENT_DYNCREATE(TTacticalAdiosPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005ad4b0
-CRuntimeClass* TTacticalAdiosPicture::GetRuntimeClass() const {
-  return 0;
-}
+TTacticalAdiosPicture::TTacticalAdiosPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005ad4d0
 void TTacticalAdiosPicture::NoOpUiLifecycleHook(int arg) {

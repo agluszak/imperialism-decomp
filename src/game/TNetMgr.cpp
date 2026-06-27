@@ -5,11 +5,7 @@
 extern "C" {
 char g_pClassDescTNetMgr = 0;
 }
-
-// FUNCTION: IMPERIALISM 0x005e33c0
-CRuntimeClass* TNetMgr::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTNetMgr);
-}
+IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
 TNetMgr::TNetMgr() : TObject() {}
 

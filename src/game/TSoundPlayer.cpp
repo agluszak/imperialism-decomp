@@ -15,7 +15,6 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00668a18
-CRuntimeClass g_pClassDescTSoundPlayer = {nullptr, 0, 0, nullptr, nullptr};
 extern double DAT_0066fad0;
 }
 
@@ -51,11 +50,7 @@ int CallLoadWaveResource(int sfxToken, int slot) {
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
   return new TSoundPlayer();
 }
-
-// FUNCTION: IMPERIALISM 0x00593350
-CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
-  return &g_pClassDescTSoundPlayer;
-}
+IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 
 TSoundPlayer::TSoundPlayer()
     : TEventHandler(), runtimePeerAt6c(0), runtimePeerAt70(0), stateByte78(0), stateByte79(0),

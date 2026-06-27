@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430570
 // TCouncilPanelView::`scalar deleting destructor'
 TCouncilPanelView::~TCouncilPanelView() {}
+IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
 
-// FUNCTION: IMPERIALISM 0x004fb010
-CRuntimeClass* TCouncilPanelView::GetRuntimeClass() const {
-  return 0;
-}
+TCouncilPanelView::TCouncilPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004fb030
 void TCouncilPanelView::ApplyRectSlot110(RECT* rectBuffer) {

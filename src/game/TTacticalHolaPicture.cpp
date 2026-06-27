@@ -3,8 +3,6 @@
 // SYNTHETIC: IMPERIALISM 0x0045d4b0
 // TTacticalHolaPicture::`scalar deleting destructor'
 TTacticalHolaPicture::~TTacticalHolaPicture() {}
+IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005ad740
-CRuntimeClass* TTacticalHolaPicture::GetRuntimeClass() const {
-  return 0;
-}
+TTacticalHolaPicture::TTacticalHolaPicture() {}

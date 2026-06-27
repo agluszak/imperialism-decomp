@@ -1,9 +1,7 @@
 #include "game/TPurchaseCluster.h"
+IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
-// FUNCTION: IMPERIALISM 0x004cc3a0
-CRuntimeClass* TPurchaseCluster::GetRuntimeClass() const {
-  return 0;
-}
+TPurchaseCluster::TPurchaseCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cc3f0
 // TPurchaseCluster::`scalar deleting destructor'

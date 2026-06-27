@@ -8,16 +8,11 @@ extern "C" {
 extern int g_nUiResourceEntryDefaultParam0;
 }
 
-
-
-
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-CRuntimeClass g_pClassDescTStaticText = {nullptr, 0, 0, nullptr, nullptr};
-
 // FUNCTION: IMPERIALISM 0x004294d0
 undefined TStaticText::AssignSharedStringFromField84() {
   return 0;
@@ -29,10 +24,7 @@ void* __cdecl CreateTStaticTextInstance(void) {
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
-// FUNCTION: IMPERIALISM 0x0048F870
-CRuntimeClass* TStaticText::GetRuntimeClass() const {
-  return &g_pClassDescTStaticText;
-}
+IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()

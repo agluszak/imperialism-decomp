@@ -126,7 +126,7 @@ public:
 // === END GENERATED DECLS (T2PictureButton) ===
   T2PictureButton();
   virtual ~T2PictureButton() override;
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(T2PictureButton)
 };
 
 ASSERT_SIZE(T2PictureButton, 0x94);

@@ -124,8 +124,7 @@ public:
 // === END GENERATED DECLS (T2PictToggleButton) ===
   T2PictToggleButton();
   virtual ~T2PictToggleButton() override;
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(T2PictToggleButton)
   bool IsSelected() override; // slot 0x73 0x1cc
   void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x1d0
 };

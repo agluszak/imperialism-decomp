@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x00430900
 // TMapKey::`scalar deleting destructor'
 TMapKey::~TMapKey() {}
+IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 
-// FUNCTION: IMPERIALISM 0x004fca70
-CRuntimeClass* TMapKey::GetRuntimeClass() const {
-  return 0;
-}
+TMapKey::TMapKey() {}
 
 // FUNCTION: IMPERIALISM 0x004fcac0
 void TMapKey::NoOpUiLifecycleHook(int arg) {

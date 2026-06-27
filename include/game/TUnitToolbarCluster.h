@@ -126,8 +126,7 @@ public:
   using TUberCluster::DispatchEvent;
 
   TUnitToolbarCluster();
-  CRuntimeClass* GetRuntimeClass() const override;
-
+  DECLARE_DYNCREATE(TUnitToolbarCluster)
   static TUnitToolbarCluster* CreateInstance();
 };
 

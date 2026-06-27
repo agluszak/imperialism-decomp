@@ -14,13 +14,11 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663118
-CRuntimeClass g_pClassDescTCivDescription = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
 #include "game/mfc.h"
-
 
 undefined4 thunk_RefreshCivilianTargetLegendBySelectedClass(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
@@ -89,11 +87,7 @@ TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
 }
-
-// FUNCTION: IMPERIALISM 0x0058f0f0
-CRuntimeClass* TCivDescription::GetRuntimeClass() const {
-  return &g_pClassDescTCivDescription;
-}
+IMPLEMENT_DYNCREATE(TCivDescription, TView)
 
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
 
@@ -172,7 +166,7 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
   do {
     if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) !=
         0) {
-      TPtrList* ownerNationProvinceCollection =
+      TSortedList* ownerNationProvinceCollection =
           g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
       provinceCount = ownerNationProvinceCollection->GetCountSlot48();
       if (0 < provinceCount) {
@@ -246,7 +240,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(
   int provinceTileIndex;
   char* tableBase;
   short tileProfileId;
-  TPtrList* ownerNationProvinceCollection;
+  TSortedList* ownerNationProvinceCollection;
   int provinceCount;
  
   provinceOrdinal = 1;

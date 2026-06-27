@@ -3,8 +3,6 @@
 #include "game/TAnimator.h"
 
 // GLOBAL: IMPERIALISM 0x0064dc80
-CRuntimeClass g_pClassDescTBattleReportView = {nullptr, 0, 0, nullptr, nullptr};
-
 // GLOBAL: IMPERIALISM 0x006a43e0
 extern "C" TAnimator* g_pUiAnimator = 0;
 
@@ -14,11 +12,7 @@ TBattleReportView::TBattleReportView()
 // SYNTHETIC: IMPERIALISM 0x00430a30
 // TBattleReportView::`scalar deleting destructor'
 TBattleReportView::~TBattleReportView() {}
-
-// FUNCTION: IMPERIALISM 0x004acb40
-CRuntimeClass* TBattleReportView::GetRuntimeClass() const {
-  return &g_pClassDescTBattleReportView;
-}
+IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 
 // FUNCTION: IMPERIALISM 0x004acb60
 void TBattleReportView::NoOpUiLifecycleHook(int arg) {

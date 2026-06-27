@@ -7,11 +7,7 @@
 #endif
 
 extern "C" char g_pClassDescTBehavior;
-
-// FUNCTION: IMPERIALISM 0x004871c0
-CRuntimeClass* TBehavior::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTBehavior);
-}
+IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0
 TBehavior::TBehavior() : TObject() {

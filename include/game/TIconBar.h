@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x00657a28
 class TIconBar : public TNoHilitePicture {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TIconBar)
   virtual ~TIconBar();
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;

@@ -1,6 +1,7 @@
 #include "game/TNextMoveCommand.h"
+IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 
-CRuntimeClass* TNextMoveCommand::GetRuntimeClass() const { return 0; }
+TNextMoveCommand::TNextMoveCommand() {}
 
 TNextMoveCommand::~TNextMoveCommand() {}
 

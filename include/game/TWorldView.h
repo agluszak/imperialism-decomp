@@ -18,7 +18,7 @@ public:
   unsigned short field78;
   unsigned short field7a;
 
-  virtual CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TWorldView)
   virtual ~TWorldView();
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;

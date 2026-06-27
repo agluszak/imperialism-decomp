@@ -3,19 +3,13 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663148
-CRuntimeClass g_pClassDescTArmyInfoView = {nullptr, 0, 0, nullptr, nullptr};
 }
-
 
 // FUNCTION: IMPERIALISM 0x00591500
 TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
   return new TArmyInfoView();
 }
-
-// FUNCTION: IMPERIALISM 0x00591580
-CRuntimeClass* TArmyInfoView::GetRuntimeClass() const {
-  return &g_pClassDescTArmyInfoView;
-}
+IMPLEMENT_DYNCREATE(TArmyInfoView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005915a0
 TArmyInfoView::TArmyInfoView() : TPicture() {}

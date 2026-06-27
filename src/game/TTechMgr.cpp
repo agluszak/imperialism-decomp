@@ -9,10 +9,9 @@ extern int DAT_006a601c;
 undefined4 RecomputeGlobalCapabilityAverages(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
+IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
-CRuntimeClass* TTechMgr::GetRuntimeClass() const {
-  return 0;
-}
+TTechMgr::TTechMgr() {}
 
 void TTechMgr::Free() {}
 

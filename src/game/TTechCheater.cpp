@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x004b18f0
 // TTechCheater::`scalar deleting destructor'
 TTechCheater::~TTechCheater() {}
+IMPLEMENT_DYNCREATE(TTechCheater, TCheater)
 
-// FUNCTION: IMPERIALISM 0x004b1940
-CRuntimeClass* TTechCheater::GetRuntimeClass() const {
-  return 0;
-}
+TTechCheater::TTechCheater() {}
 
 // FUNCTION: IMPERIALISM 0x004b1990
 undefined TTechCheater::OrphanRetStub_004b1410() {

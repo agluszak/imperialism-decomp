@@ -15,13 +15,6 @@ extern "C" CRuntimeClass TAmbitApplication_classRuntimeClass_0064c0b8 = {
     "TAmbitApplication", sizeof(TAmbitApplication), 0xffff, nullptr, nullptr, nullptr
 };
 
-
-
-
-
-
-
-
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
 TAmbitApplication::~TAmbitApplication() {}
@@ -31,37 +24,12 @@ void TAmbitApplication::VTableSlot2C() {
   // OrphanRetStub
 }
 
-
-
-
-
-
-
-
 TAmbitApplication::TAmbitApplication() : TApplication() {
   field_48 = 0;
   field_4c = 0;
   field_50 = 0;
 }
-
-
-
-
-
-
-
-
-// FUNCTION: IMPERIALISM 0x0049deb0
-CRuntimeClass* TAmbitApplication::GetRuntimeClass() const {
-  return &TAmbitApplication_classRuntimeClass_0064c0b8;
-}
-
-
-
-
-
-
-
+IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 
 // FUNCTION: IMPERIALISM 0x0049e1a0
 void TAmbitApplication::Free() {
@@ -103,13 +71,6 @@ extern "C" int __cdecl InvokeAfxThreadAndCallSecondaryRefresh();
 unsigned int __cdecl GetTickCountDiv16();
 extern "C" int DAT_006a21c0;
 
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x0049e280
 void TAmbitApplication::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
@@ -122,25 +83,11 @@ void TAmbitApplication::ReadFrom(TStream* stream) {
   }
 }
 
-
-
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x0049e2f0
 void TAmbitApplication::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&field_50, 4);
 }
-
-
-
-
-
-
-
 
 // FUNCTION: IMPERIALISM 0x0049e320
 void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
@@ -286,13 +233,6 @@ void TAmbitApplication::VTableSlot2B(int arg1, int arg2, int arg3) {
   }
   TApplication::HandleTurnEventViewportEdgeAutoScroll(arg1, arg2, arg3);
 }
-
-
-
-
-
-
-
 
 // FUNCTION: IMPERIALISM 0x0049e4b0
 void TAmbitApplication::ForwardParam(int param) {

@@ -115,8 +115,7 @@ public:
   short auxValueB;          // 0x66
 
   TAmtBar();
-  CRuntimeClass* GetRuntimeClass() const override;
-  // Destructor is compiler-generated (implicit virtual dtor from TView).
+  DECLARE_DYNCREATE(TAmtBar)
 
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).
   void NoOpUiLifecycleHook(int arg) override;

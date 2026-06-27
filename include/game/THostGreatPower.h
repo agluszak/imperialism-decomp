@@ -9,7 +9,7 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0065b3d0
 class THostGreatPower : public TGreatPower {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(THostGreatPower)
   ~THostGreatPower();
 
   void WriteTo(TStream* stream) override;

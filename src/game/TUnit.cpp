@@ -7,7 +7,6 @@
 #include "game/TStream.h"
 #include "game/ui_invalidation_guard.h"
 
-
 extern "C" char g_pClassDescTUnit = 0;
 
 static const unsigned int kAddrSaveFormatVersion = 0x00695278;
@@ -40,10 +39,14 @@ void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnit* order, int unused
 
 // FUNCTION: IMPERIALISM 0x005c2470
 void TUnit::DetachUnitOrderFromOwnerAndReset() {}
+IMPLEMENT_DYNCREATE(TUnit, TObject)
 
-// FUNCTION: IMPERIALISM 0x005c2490
-CRuntimeClass* TUnit::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTUnit);
+TUnit::TUnit() {
+  field_10 = 0;
+  nextOnTile = 0;
+  field_6 = static_cast<short>(0xffff);
+  field_8 = 0;
+  field_1C = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005c24e0

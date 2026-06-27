@@ -1,11 +1,9 @@
 #include "game/TDialogBehavior.h"
 
 extern "C" char g_pClassDescTDialogBehavior;
+IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
-// FUNCTION: IMPERIALISM 0x00487350
-CRuntimeClass* TDialogBehavior::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTDialogBehavior);
-}
+TDialogBehavior::TDialogBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'

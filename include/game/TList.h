@@ -1,14 +1,15 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TPtrList.h"
+#include "game/TSortedList.h"
 
-// Concrete game list leaf: TObject vfptr at +0, CPtrList state at +4 through
-// TPtrList, and the TList virtual interface (vtable 0x648f78).
+// Concrete game list leaf; vtable 0x648f78.
+// Base recovered from CRuntimeClass descriptor: TList -> TSortedList -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648f78
-struct TList : public TPtrList {
-  CRuntimeClass* GetRuntimeClass() const override;
-  TList() {}
+class TList : public TSortedList {
+public:
+  DECLARE_DYNCREATE(TList)
+  TList();
 
   static TList* CreateTListInstance();
 };

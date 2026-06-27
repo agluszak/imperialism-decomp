@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0044a720
 // TShipFractionCluster::`scalar deleting destructor'
 TShipFractionCluster::~TShipFractionCluster() {}
+IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 
-// FUNCTION: IMPERIALISM 0x00568d50
-CRuntimeClass* TShipFractionCluster::GetRuntimeClass() const {
-  return 0;
-}
+TShipFractionCluster::TShipFractionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00568d70
 void TShipFractionCluster::NoOpUiLifecycleHook(int arg) {

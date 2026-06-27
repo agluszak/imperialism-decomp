@@ -1,9 +1,7 @@
 #include "game/TTradeOrderPicture.h"
+IMPLEMENT_DYNCREATE(TTradeOrderPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00584460
-CRuntimeClass* TTradeOrderPicture::GetRuntimeClass() const {
-  return 0;
-}
+TTradeOrderPicture::TTradeOrderPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005844b0
 // TTradeOrderPicture::`scalar deleting destructor'

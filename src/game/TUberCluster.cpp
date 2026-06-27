@@ -14,7 +14,6 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e5b0
-CRuntimeClass g_pClassDescTUberCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern void FailNilPointerInUSmallViews(int line);
@@ -27,32 +26,19 @@ undefined4 thunk_BuildUiTextStyleDescriptor(void);
 
 #include <new>
 
-
-
 // FUNCTION: IMPERIALISM 0x005713c0
 TUberCluster* __cdecl CreateTUberClusterInstance(void) {
   return new TUberCluster();
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x00571440
-CRuntimeClass* TUberCluster::GetRuntimeClass() const {
-  return &g_pClassDescTUberCluster;
-}
-
-
+IMPLEMENT_DYNCREATE(TUberCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x00571460
 TUberCluster::TUberCluster() : TCluster() {}
 
 // The scalar deleting destructor is compiler-generated from the inherited virtual dtor.
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00571490
 // TUberCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x005714e0
 int TUberCluster::IsTradeControlAtMinimum() {

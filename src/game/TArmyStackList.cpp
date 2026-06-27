@@ -1,9 +1,7 @@
 #include "game/TArmyStackList.h"
+IMPLEMENT_DYNCREATE(TArmyStackList, TSortedList)
 
-// FUNCTION: IMPERIALISM 0x004a8430
-CRuntimeClass* TArmyStackList::GetRuntimeClass() const {
-  return 0;
-}
+TArmyStackList::TArmyStackList() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a84c0
 // TArmyStackList::`scalar deleting destructor'

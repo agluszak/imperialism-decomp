@@ -6,7 +6,7 @@
 class TFloatWindow : public TWindow {
 public:
   // === BEGIN GENERATED DECLS (TFloatWindow) ===
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x491f90
+  DECLARE_DYNCREATE(TFloatWindow)
   virtual ~TFloatWindow() override;                        // slot 0x01 (scalar deleting destructor)
   virtual void CallVoidSlotA0() override;                 // slot 0x28 0x492330
   virtual int GetWindowTypeTag();                         // slot 0x77 0x492310

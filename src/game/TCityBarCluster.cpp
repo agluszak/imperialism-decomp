@@ -15,7 +15,6 @@
 #include <new>
 
 extern "C" {
-CRuntimeClass g_pClassDescTCityBarCluster = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTCityBarCluster = 0;
 }
 
@@ -27,11 +26,7 @@ undefined4 thunk_DestructEngineerDialogBaseState(void);
 TCityBarCluster* TCityBarCluster::CreateInstance() {
   return new TCityBarCluster();
 }
-
-// FUNCTION: IMPERIALISM 0x00586610
-CRuntimeClass* TCityBarCluster::GetRuntimeClass() const {
-  return &g_pClassDescTCityBarCluster;
-}
+IMPLEMENT_DYNCREATE(TCityBarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586630
 TCityBarCluster::TCityBarCluster() : TUberCluster() {}

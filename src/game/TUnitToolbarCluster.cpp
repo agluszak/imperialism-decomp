@@ -19,34 +19,20 @@
 #include "game/mfc.h"
 
 extern "C" {
-CRuntimeClass g_pClassDescTUnitToolbarCluster = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTUnitToolbarCluster = 0;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00585f70
 TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
   return new TUnitToolbarCluster();
 }
-
-
-
-// FUNCTION: IMPERIALISM 0x00585ff0
-CRuntimeClass* TUnitToolbarCluster::GetRuntimeClass() const {
-  return &g_pClassDescTUnitToolbarCluster;
-}
-
-
+IMPLEMENT_DYNCREATE(TUnitToolbarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586010
 TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 
-
-
 // SYNTHETIC: IMPERIALISM 0x00586040
 // TUnitToolbarCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x00586090
 void TUnitToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -67,14 +53,10 @@ void TUnitToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandle
   mainControl->HandleEvent(0, 0, 0);
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x00586150
 int TUnitToolbarCluster::IsTradeControlAtMinimum() {
   return 1;
 }
-
-
 
 // FUNCTION: IMPERIALISM 0x00586170
 void TUnitToolbarCluster::SetControlClassAndRefresh(int classState) {
@@ -89,6 +71,5 @@ void TUnitToolbarCluster::SetControlClassAndRefresh(int classState) {
 
   resourceControl->HandleEvent(0, 0, 0);
 }
-
 
 TUnitToolbarCluster::~TUnitToolbarCluster() {}

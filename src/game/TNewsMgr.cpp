@@ -1,8 +1,9 @@
 #include "game/TNewsMgr.h"
 
 TNewsMgr::~TNewsMgr() {}
+IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 
-CRuntimeClass* TNewsMgr::GetRuntimeClass() const { return 0; }
+TNewsMgr::TNewsMgr() {}
 
 void TNewsMgr::Free() {}
 

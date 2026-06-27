@@ -9,7 +9,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x0066d7c8
 class TTown : public TObject {
 public:
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TTown)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   // slot 0x1c Free inherited unchanged (TObject::Free @ 0x004798b0)

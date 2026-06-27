@@ -8,11 +8,9 @@ undefined TMapUberUberPicture::OrphanRetStub_0045d2a0() {
 // SYNTHETIC: IMPERIALISM 0x0045d2c0
 // TMapUberUberPicture::`scalar deleting destructor'
 TMapUberUberPicture::~TMapUberUberPicture() {}
+IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 
-// FUNCTION: IMPERIALISM 0x005967f0
-CRuntimeClass* TMapUberUberPicture::GetRuntimeClass() const {
-  return 0;
-}
+TMapUberUberPicture::TMapUberUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596810
 void TMapUberUberPicture::NoOpUiLifecycleHook(int arg) {

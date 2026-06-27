@@ -1,9 +1,7 @@
 #include "game/TOceanDialog.h"
+IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
-// FUNCTION: IMPERIALISM 0x00565e70
-CRuntimeClass* TOceanDialog::GetRuntimeClass() const {
-  return 0;
-}
+TOceanDialog::TOceanDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0
 // TOceanDialog::`scalar deleting destructor'

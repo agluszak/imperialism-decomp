@@ -8,11 +8,9 @@ undefined TPanelView::OrphanRetStub_00430550() {
 // SYNTHETIC: IMPERIALISM 0x004f7970
 // TPanelView::`scalar deleting destructor'
 TPanelView::~TPanelView() {}
+IMPLEMENT_DYNCREATE(TPanelView, TView)
 
-// FUNCTION: IMPERIALISM 0x004f79c0
-CRuntimeClass* TPanelView::GetRuntimeClass() const {
-  return 0;
-}
+TPanelView::TPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f79e0
 void TPanelView::NoOpUiLifecycleHook(int arg) {

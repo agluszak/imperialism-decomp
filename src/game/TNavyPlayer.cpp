@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0059ebb0
 // TNavyPlayer::`scalar deleting destructor'
 TNavyPlayer::~TNavyPlayer() {}
+IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
-// FUNCTION: IMPERIALISM 0x0059ec00
-CRuntimeClass* TNavyPlayer::GetRuntimeClass() const {
-  return 0;
-}
+TNavyPlayer::TNavyPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059edd0
 undefined TNavyPlayer::OrphanRetStub_0059add0() {

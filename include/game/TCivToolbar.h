@@ -128,7 +128,7 @@ public:
   short pad_8a;
 
   TCivToolbar();
-  CRuntimeClass* GetRuntimeClass() const override;
+  DECLARE_DYNCREATE(TCivToolbar)
   void RefreshCivilianCommandPanelForSelection(class TCivUnit* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
   void CycleMapInteractionSelectionAfterHandledClick();

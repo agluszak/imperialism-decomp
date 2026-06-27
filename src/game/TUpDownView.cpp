@@ -1,9 +1,7 @@
 #include "game/TUpDownView.h"
+IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 
-// FUNCTION: IMPERIALISM 0x00583d30
-CRuntimeClass* TUpDownView::GetRuntimeClass() const {
-  return 0;
-}
+TUpDownView::TUpDownView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00583d80
 // TUpDownView::`scalar deleting destructor'

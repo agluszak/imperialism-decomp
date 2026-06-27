@@ -1,18 +1,11 @@
 #include "game/TCombatReportView.h"
 #include "game/mfc.h"
 #include "game/TControl.h"
-
-CRuntimeClass g_pClassDescTCombatReportView = {nullptr, 0, 0, nullptr, nullptr};
-
 // FUNCTION: IMPERIALISM 0x0058c830
 void* __cdecl CreateTCombatReportViewInstance(void) {
   return new TCombatReportView();
 }
-
-// FUNCTION: IMPERIALISM 0x0058c8b0
-CRuntimeClass* TCombatReportView::GetRuntimeClass() const {
-  return &g_pClassDescTCombatReportView;
-}
+IMPLEMENT_DYNCREATE(TCombatReportView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058c8d0
 TCombatReportView::TCombatReportView() : TPicture() {}

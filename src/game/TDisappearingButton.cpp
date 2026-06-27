@@ -1,9 +1,7 @@
 #include "game/TDisappearingButton.h"
+IMPLEMENT_DYNCREATE(TDisappearingButton, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00568ba0
-CRuntimeClass* TDisappearingButton::GetRuntimeClass() const {
-  return 0;
-}
+TDisappearingButton::TDisappearingButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00568bf0
 // TDisappearingButton::`scalar deleting destructor'

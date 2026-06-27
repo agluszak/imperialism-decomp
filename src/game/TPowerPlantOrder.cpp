@@ -1,9 +1,7 @@
 #include "game/TPowerPlantOrder.h"
+IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 
-// FUNCTION: IMPERIALISM 0x004b7a20
-CRuntimeClass* TPowerPlantOrder::GetRuntimeClass() const {
-  return 0;
-}
+TPowerPlantOrder::TPowerPlantOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b7a60
 // TPowerPlantOrder::`scalar deleting destructor'

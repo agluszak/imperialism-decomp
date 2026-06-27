@@ -10,7 +10,7 @@
 // VTABLE: IMPERIALISM 0x0064fc20
 class TCityProductionView : public TNoHilitePicture {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4ba2c0
+  DECLARE_DYNCREATE(TCityProductionView)
   virtual ~TCityProductionView() override;                 // slot 0x01 (scalar deleting destructor)
   void Free() override; // slot 0x07 0x4ba740 ReleaseCityBuildingControls
   void HandleEvent(int commandId, TEventHandler* sourceHandler,

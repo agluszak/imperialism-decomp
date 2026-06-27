@@ -1,9 +1,7 @@
 #include "game/TSetupRandomMapPicture.h"
+IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x00576d60
-CRuntimeClass* TSetupRandomMapPicture::GetRuntimeClass() const {
-  return 0;
-}
+TSetupRandomMapPicture::TSetupRandomMapPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00576e00
 // TSetupRandomMapPicture::`scalar deleting destructor'

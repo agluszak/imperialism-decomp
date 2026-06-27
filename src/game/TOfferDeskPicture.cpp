@@ -1,9 +1,7 @@
 #include "game/TOfferDeskPicture.h"
+IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005be550
-CRuntimeClass* TOfferDeskPicture::GetRuntimeClass() const {
-  return 0;
-}
+TOfferDeskPicture::TOfferDeskPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005be5b0
 // TOfferDeskPicture::`scalar deleting destructor'

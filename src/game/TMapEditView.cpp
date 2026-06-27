@@ -3,11 +3,9 @@
 // SYNTHETIC: IMPERIALISM 0x0051cbf0
 // TMapEditView::`scalar deleting destructor'
 TMapEditView::~TMapEditView() {}
+IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 
-// FUNCTION: IMPERIALISM 0x0051cc40
-CRuntimeClass* TMapEditView::GetRuntimeClass() const {
-  return 0;
-}
+TMapEditView::TMapEditView() {}
 
 // FUNCTION: IMPERIALISM 0x0051cc60
 void TMapEditView::NoOpUiLifecycleHook(int arg) {

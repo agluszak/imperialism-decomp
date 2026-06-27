@@ -2,11 +2,7 @@
 #include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TPictureButton_0065e538;
-
-// FUNCTION: IMPERIALISM 0x005707d0
-CRuntimeClass* TPictureButton::GetRuntimeClass() const {
-  return &PTR_s_TPictureButton_0065e538;
-}
+IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005707f0
 TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}

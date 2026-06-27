@@ -1,9 +1,7 @@
 #include "game/TPictureText.h"
+IMPLEMENT_DYNCREATE(TPictureText, TStaticText)
 
-// FUNCTION: IMPERIALISM 0x005b52e0
-CRuntimeClass* TPictureText::GetRuntimeClass() const {
-  return 0;
-}
+TPictureText::TPictureText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5330
 // TPictureText::`scalar deleting destructor'

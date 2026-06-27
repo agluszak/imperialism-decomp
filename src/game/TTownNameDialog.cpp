@@ -1,9 +1,7 @@
 #include "game/TTownNameDialog.h"
+IMPLEMENT_DYNCREATE(TTownNameDialog, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x0051baf0
-CRuntimeClass* TTownNameDialog::GetRuntimeClass() const {
-  return 0;
-}
+TTownNameDialog::TTownNameDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051bb40
 // TTownNameDialog::`scalar deleting destructor'

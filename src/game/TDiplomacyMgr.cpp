@@ -69,11 +69,7 @@ short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
 int TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot) {
   return IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot));
 }
-
-// FUNCTION: IMPERIALISM 0x004ee6a0
-CRuntimeClass* TDiplomacyMgr::GetRuntimeClass() const {
-  return &TDiplomacyMgr_classRuntimeClass_00654cd0;
-}
+IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004ee6c0
 TDiplomacyMgr*
