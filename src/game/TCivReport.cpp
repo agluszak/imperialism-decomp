@@ -1,9 +1,6 @@
 #include "game/TCivReport.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663130
-}
 
 // FUNCTION: IMPERIALISM 0x00590b90
 TCivReport* __cdecl CreateTCivReportInstance(void) {

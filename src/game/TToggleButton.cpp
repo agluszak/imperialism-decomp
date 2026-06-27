@@ -3,9 +3,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x0065e598
-}
 
 // FUNCTION: IMPERIALISM 0x00571050
 TToggleButton* __cdecl CreateTToggleButtonInstance(void) {

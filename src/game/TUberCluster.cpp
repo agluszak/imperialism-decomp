@@ -12,9 +12,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x0065e5b0
-}
 
 extern void FailNilPointerInUSmallViews(int line);
 extern const int kAssertLineMoveBarInitNil;

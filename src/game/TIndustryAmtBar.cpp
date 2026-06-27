@@ -22,9 +22,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662fb0
-}
 
 const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
 const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;

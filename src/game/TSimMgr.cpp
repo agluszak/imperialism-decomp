@@ -14,10 +14,6 @@
 extern "C" char g_szEmptyString[];
 extern "C" short g_anScenarioNationSetupTable_00698B1A[27];
 
-extern "C" {
-// TSimMgr's MFC CRuntimeClass descriptor (returned by GetRuntimeClass / vtable slot 0).
-// GLOBAL: IMPERIALISM 0x00662960
-}
 
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {

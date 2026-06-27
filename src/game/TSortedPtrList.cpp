@@ -6,31 +6,7 @@ IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-// FUNCTION: IMPERIALISM 0x00488400
-TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
-  return new TSortedPtrList();
-}
-
-// SYNTHETIC: IMPERIALISM 0x00488390
-// TSortedPtrList::`scalar deleting destructor'
-TSortedPtrList::~TSortedPtrList() {}
-
-TSortedPtrList::TSortedPtrList() {}
-
-#if defined(_MSC_VER)
 #pragma optimize("ys", on)
-#endif
-
-// List-operation virtuals (vtable 0x00649068 slots 0x14-0x40). These are
-// TSortedPtrList's own slot implementations; TIndexAndRankList and the other
-// derived list classes inherit them unchanged.
-
-// FUNCTION: IMPERIALISM 0x005e1f10
-void TSortedPtrList::slot14(void*) {}
-
-// FUNCTION: IMPERIALISM 0x005e1e50
-void TSortedPtrList::slot18() {}
 
 // FUNCTION: IMPERIALISM 0x004880a0
 void TSortedPtrList::ResetPtrListRecordsSlot1C() {}
@@ -81,3 +57,31 @@ void TSortedPtrList::PushPairSlot40(void* pair) {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+#pragma optimize("y", on)
+
+// SYNTHETIC: IMPERIALISM 0x00488390
+// TSortedPtrList::`scalar deleting destructor'
+TSortedPtrList::~TSortedPtrList() {}
+
+TSortedPtrList::TSortedPtrList() {}
+
+#if defined(_MSC_VER)
+#pragma optimize("ys", on)
+#endif
+#pragma optimize("y", on)
+
+// FUNCTION: IMPERIALISM 0x00488400
+TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
+  return new TSortedPtrList();
+}
+#pragma optimize("ys", on)
+
+// FUNCTION: IMPERIALISM 0x005e1e50
+void TSortedPtrList::slot18() {}
+
+// List-operation virtuals (vtable 0x00649068 slots 0x14-0x40). These are
+// TSortedPtrList's own slot implementations; TIndexAndRankList and the other
+// derived list classes inherit them unchanged.
+
+// FUNCTION: IMPERIALISM 0x005e1f10
+void TSortedPtrList::slot14(void*) {}

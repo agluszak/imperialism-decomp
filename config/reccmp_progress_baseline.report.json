@@ -1592,51 +1592,15 @@
       "type": 1
     },
     {
-      "address": "0x479440",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetTScrollerClassNamePointer",
-      "type": 1
-    },
-    {
-      "address": "0x479460",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogValueDwordC",
-      "type": 1
-    },
-    {
       "address": "0x479480",
       "matching": 0.019801980198019802,
       "name": "InitializeTurnEventDialogFactoryRegistry",
       "type": 1
     },
     {
-      "address": "0x4796a0",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogZeroValue",
-      "type": 1
-    },
-    {
-      "address": "0x4796c0",
-      "matching": 0.25,
-      "name": "TTechStorePage::VTableSlot9D",
-      "type": 1
-    },
-    {
-      "address": "0x4796e0",
-      "matching": 0.0,
-      "name": "TTechStorePage::VTableSlot85",
-      "type": 1
-    },
-    {
       "address": "0x479710",
       "matching": 0.35,
       "name": "DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory",
-      "type": 1
-    },
-    {
-      "address": "0x4797d0",
-      "matching": 0.034482758620689655,
-      "name": "TTechStorePage::Serialize",
       "type": 1
     },
     {
@@ -3400,7 +3364,7 @@
     },
     {
       "address": "0x488400",
-      "matching": 0.4489795918367347,
+      "matching": 0.23809523809523808,
       "name": "TSortedPtrList::ConstructTSortedPtrListBaseState",
       "type": 1
     },
@@ -36231,36 +36195,6 @@
       "type": 1
     },
     {
-      "address": "0x606c4e",
-      "matching": 0.0,
-      "name": "TTechStorePage::CloseCityDialogChildrenAndReleaseSelf",
-      "type": 1
-    },
-    {
-      "address": "0x606c54",
-      "matching": 0.0,
-      "name": "TTechStorePage::CloneEngineerDialogStateToNewInstance",
-      "type": 1
-    },
-    {
-      "address": "0x606c59",
-      "matching": 1.0,
-      "name": "TTechStorePage::ShallowFree",
-      "type": 1
-    },
-    {
-      "address": "0x606c5c",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogFlagByte4",
-      "type": 1
-    },
-    {
-      "address": "0x606c5f",
-      "matching": 0.0,
-      "name": "TTechStorePage::SetCityDialogFlagByte4",
-      "type": 1
-    },
-    {
       "address": "0x606c91",
       "matching": 0.2222222222222222,
       "name": "RestoreWaitCursor",
@@ -36273,63 +36207,9 @@
       "type": 1
     },
     {
-      "address": "0x606cac",
-      "matching": 0.5,
-      "name": "TTechStorePage::DispatchUiSelectionToHandler",
-      "type": 1
-    },
-    {
-      "address": "0x606cb2",
-      "matching": 0.5,
-      "name": "TTechStorePage::ForwardNotifyParamToPrimaryChildSlot44",
-      "type": 1
-    },
-    {
-      "address": "0x606cb8",
-      "matching": 0.5,
-      "name": "TTechStorePage::DispatchUiCommandToHandler",
-      "type": 1
-    },
-    {
       "address": "0x606cbe",
       "matching": 0.08333333333333333,
       "name": "CCmdTarget::`scalar deleting destructor'(void)",
-      "type": 1
-    },
-    {
-      "address": "0x606cf0",
-      "matching": 0.4,
-      "name": "TTechStorePage::ForwardCityDialogParamToChildSlot48",
-      "type": 1
-    },
-    {
-      "address": "0x606cf4",
-      "matching": 0.2857142857142857,
-      "name": "TTechStorePage::CanHandleCityDialogActionFalse",
-      "type": 1
-    },
-    {
-      "address": "0x606cf9",
-      "matching": 0.0,
-      "name": "TTechStorePage::HandleEvent",
-      "type": 1
-    },
-    {
-      "address": "0x606cff",
-      "matching": 0.3333333333333333,
-      "name": "TTechStorePage::SetCityDialogValueDword10",
-      "type": 1
-    },
-    {
-      "address": "0x606d04",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogValueDword10",
-      "type": 1
-    },
-    {
-      "address": "0x606d09",
-      "matching": 0.5,
-      "name": "TTechStorePage::DispatchQueuedUiCommandAndRelease",
       "type": 1
     },
     {
@@ -37335,18 +37215,6 @@
       "type": 1
     },
     {
-      "address": "0x610a57",
-      "matching": 0.0,
-      "name": "TTechStorePage::ReadFrom",
-      "type": 1
-    },
-    {
-      "address": "0x610a80",
-      "matching": 0.0,
-      "name": "TTechStorePage::GetCityDialogValueViaChildSlot58",
-      "type": 1
-    },
-    {
       "address": "0x610a9e",
       "matching": 0.0,
       "name": "DispatchVirtual84OrA8_ByControlState",
@@ -37356,12 +37224,6 @@
       "address": "0x610c08",
       "matching": 0.0,
       "name": "NoOpVirtualStub_00610c08",
-      "type": 1
-    },
-    {
-      "address": "0x610c0b",
-      "matching": 0.1276595744680851,
-      "name": "TTechStorePage::CanStartCityProductionActionFalse",
       "type": 1
     },
     {
@@ -37434,12 +37296,6 @@
       "address": "0x61180f",
       "matching": 0.6666666666666666,
       "name": "NoOpVirtualStub_0061180f",
-      "type": 1
-    },
-    {
-      "address": "0x6118ed",
-      "matching": 0.18181818181818182,
-      "name": "TTechStorePage::WriteTo",
       "type": 1
     },
     {
@@ -39442,7 +39298,7 @@
     },
     {
       "address": "0x645ca8",
-      "matching": 0.9272727272727272,
+      "matching": 1.0,
       "name": "TTechStorePage::`vftable'",
       "type": 5
     },

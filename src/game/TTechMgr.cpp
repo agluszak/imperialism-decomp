@@ -15,16 +15,6 @@ TTechMgr::TTechMgr() {}
 
 TTechMgr::~TTechMgr() {}
 
-// FUNCTION: IMPERIALISM 0x005af710
-void TTechMgr::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-// FUNCTION: IMPERIALISM 0x005af460
-void TTechMgr::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
 // FUNCTION: IMPERIALISM 0x005aef80
 void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 
@@ -171,4 +161,14 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   } while (local_c != reinterpret_cast<undefined4*>(0));
   *(undefined4*)(self + 0x264) = DAT_0066ac88;
   RecomputeGlobalCapabilityAverages();
+}
+
+// FUNCTION: IMPERIALISM 0x005af460
+void TTechMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x005af710
+void TTechMgr::WriteTo(TStream* stream) {
+  (void)stream;
 }

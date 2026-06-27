@@ -24,9 +24,6 @@
 #include "game/TViewMgr.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663100
-}
 
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \

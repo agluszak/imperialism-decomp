@@ -33,21 +33,6 @@ void TProxyGreatPower::AddToNationMetricAtField10(int amount) {}
 // FUNCTION: IMPERIALISM 0x00540aa0
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
-// FUNCTION: IMPERIALISM 0x00540b80
-void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {}
-
-// FUNCTION: IMPERIALISM 0x00540ba0
-char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                                     int arg4) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00540c20
-void TProxyGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {}
-
-// FUNCTION: IMPERIALISM 0x00540c70
-void TProxyGreatPower::AddNodeToMissionNodeQueue(void* node) {}
-
 // FUNCTION: IMPERIALISM 0x00540ac0
 void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
                                                                  short targetNationId) {
@@ -76,6 +61,21 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalC
   packetPayload.routing.SetPayloadNationIdFromSlotIndex(static_cast<int>(this->nationSlot));
   packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
 }
+
+// FUNCTION: IMPERIALISM 0x00540b80
+void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {}
+
+// FUNCTION: IMPERIALISM 0x00540ba0
+char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                                     int arg4) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00540c20
+void TProxyGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {}
+
+// FUNCTION: IMPERIALISM 0x00540c70
+void TProxyGreatPower::AddNodeToMissionNodeQueue(void* node) {}
 
 // FUNCTION: IMPERIALISM 0x00540cb0
 void TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {}

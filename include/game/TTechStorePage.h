@@ -6,11 +6,12 @@
 // Forward declarations for types referenced by generated signatures.
 class CityDialogController;
 
-// TODO(manifest): describe TTechStorePage and its role. Base edge (TPageView) recovered from RTTI CRuntimeClass chain: TTechStorePage -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
+// TODO(manifest): describe TTechStorePage and its role. Base edge (TPageView) recovered from RTTI
+// CRuntimeClass chain: TTechStorePage -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00645ca8
 class TTechStorePage : public TPageView {
 public:
-// === BEGIN GENERATED DECLS (TTechStorePage) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTechStorePage) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTechStorePage)
   virtual ~TTechStorePage(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,39 +122,23 @@ public:
   // slot 0x6b OrphanCallChain_C8_I82_0056fc80 inherited unchanged (0x56fc80)
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
-  virtual undefined GetTScrollerClassNamePointer(); // slot 0x84 0x479440
-  virtual undefined VTableSlot85(); // slot 0x85 0x4796e0
-  virtual void Serialize(CArchive& archive) override; // slot 0x86 0x4797d0
-  // slot 0x87 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x88 Dump inherited unchanged (0x412c10)
-  void WriteTo(TStream* stream) override; // slot 0x89 0x6118ed
-  void ReadFrom(TStream* stream) override; // slot 0x8a 0x610a57
-  virtual undefined CloseCityDialogChildrenAndReleaseSelf(); // slot 0x8b 0x606c4e
-  virtual undefined CloneEngineerDialogStateToNewInstance(); // slot 0x8c 0x606c54
-  virtual TObject* ShallowFree() override; // slot 0x8d 0x606c59
-  virtual undefined GetCityDialogFlagByte4(); // slot 0x8e 0x606c5c
-  virtual undefined SetCityDialogFlagByte4(); // slot 0x8f 0x606c5f
-  virtual undefined GetCityDialogValueDwordC(); // slot 0x90 0x479460
-  virtual undefined DispatchQueuedUiCommandAndRelease(); // slot 0x91 0x606d09
-  virtual undefined DispatchUiSelectionToHandler(); // slot 0x92 0x606cac
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x93 0x606cf9
-  virtual undefined DispatchUiCommandToHandler(); // slot 0x94 0x606cb8
-  virtual undefined ForwardNotifyParamToPrimaryChildSlot44(); // slot 0x95 0x606cb2
-  virtual undefined ForwardCityDialogParamToChildSlot48(); // slot 0x96 0x606cf0
-  char CanHandleCityDialogActionFalse(int action) override; // slot 0x97 0x606cf4
-  virtual int GetCityDialogValueDword10() override; // slot 0x98 0x606d04
-  void SetCityDialogValueDword10(int value) override; // slot 0x99 0x606cff
-  virtual undefined GetCityDialogValueViaChildSlot58(); // slot 0x9a 0x610a80
-  virtual undefined CanStartCityProductionActionFalse(undefined4 param_1, int param_2); // slot 0x9b 0x610c0b
-  virtual undefined GetCityDialogZeroValue(); // slot 0x9c 0x4796a0
-  virtual undefined VTableSlot9D(undefined4 param_1); // slot 0x9d 0x4796c0
-// === END GENERATED DECLS (TTechStorePage) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTechStorePage 0xCTOR`).
+  // NOTE: TTechStorePage's vtable (0x645ca8) is a TPageView clone — only slot 0x00
+  // (GetRuntimeClass, via DECLARE_DYNCREATE) and slot 0x01/0x04 (scalar deleting
+  // destructor) differ; every other slot is inherited unchanged from TPageView.
+  // The auto-recovery over-read past the four null terminator slots (0x80-0x83) into
+  // the adjacent TScroller vtable and mislabeled TScroller's TObject/TEventHandler
+  // virtuals (GetRuntimeClass/Serialize/WriteTo/ReadFrom/ShallowFree/HandleEvent/...)
+  // as TTechStorePage slots 0x84-0x9d. Those declarations were removed; the bodies at
+  // 0x479440/0x4796xx etc. belong to TScroller, not TTechStorePage.
+  // === END GENERATED DECLS (TTechStorePage) ===
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TTechStorePage
+  // 0xCTOR`).
 
   TTechStorePage();
 };
 
-// === BEGIN GENERATED (TTechStorePage) — refreshed by `just gen-class TTechStorePage`; do not hand-edit ===
+// === BEGIN GENERATED (TTechStorePage) — refreshed by `just gen-class TTechStorePage`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x00645ca8 (158 slots), object size 0x84, base TPageView
 //   slot 0x00  byte 0x00  0x005b0ef0  override  GetTEventHandlerClassNamePointer

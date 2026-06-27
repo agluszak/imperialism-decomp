@@ -3,9 +3,6 @@
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x662e60
-}
 
 // FUNCTION: IMPERIALISM 0x005846e0
 TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {

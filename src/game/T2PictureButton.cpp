@@ -1,9 +1,6 @@
 #include "game/T2PictureButton.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x0065e568
-}
 
 // FUNCTION: IMPERIALISM 0x00570b10
 T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {

@@ -1,9 +1,6 @@
 #include "game/TAlwaysPictureButton.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x0065e550
-}
 
 // FUNCTION: IMPERIALISM 0x00570950
 TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {

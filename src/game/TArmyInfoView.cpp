@@ -1,9 +1,6 @@
 #include "game/TArmyInfoView.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663148
-}
 
 // FUNCTION: IMPERIALISM 0x00591500
 TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {

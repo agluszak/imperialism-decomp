@@ -5,9 +5,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/diplomacy_globals.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663160
-}
 
 // FUNCTION: IMPERIALISM 0x00591d90
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {

@@ -9,22 +9,6 @@ TSortedList* TSortedList::CreateTSortedListInstance() {
   return new TSortedList();
 }
 
-// SYNTHETIC: IMPERIALISM 0x004888f0
-// TSortedList::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-// FUNCTION: IMPERIALISM 0x004a8640
-TSortedList::TSortedList() {}
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-void TSortedList::ConstructTSortedListBaseState(int blockSize) {
-  new (&this->listState) CPtrList(blockSize);
-}
-
 // FUNCTION: IMPERIALISM 0x00487b30
 int TSortedList::VirtualSlot6C() {
   return 0;
@@ -170,4 +154,20 @@ void TSortedList::SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFla
   if (pos != NULL) {
     this->listState.SetAt(pos, *entryPtr);
   }
+}
+
+// SYNTHETIC: IMPERIALISM 0x004888f0
+// TSortedList::`scalar deleting destructor'
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+// FUNCTION: IMPERIALISM 0x004a8640
+TSortedList::TSortedList() {}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
+void TSortedList::ConstructTSortedListBaseState(int blockSize) {
+  new (&this->listState) CPtrList(blockSize);
 }

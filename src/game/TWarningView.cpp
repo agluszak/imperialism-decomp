@@ -2,9 +2,6 @@
 #include "game/mfc.h"
 #include "game/TControl.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663178
-}
 
 // FUNCTION: IMPERIALISM 0x00592860
 TWarningView* __cdecl CreateTWarningViewInstance(void) {

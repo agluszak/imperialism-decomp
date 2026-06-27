@@ -34,22 +34,16 @@ int TStream::streamSlot28() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00488e30
-void TStream::streamSlot2c() {}
-
 // FUNCTION: IMPERIALISM 0x00488af0
 int TStream::streamSlot30() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00488e50
-void TStream::streamSlot34() {}
+// FUNCTION: IMPERIALISM 0x00488b10
+void TStream::AssertMcAppStreamLine304() {}
 
 // FUNCTION: IMPERIALISM 0x00488b40
 void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
-
-// FUNCTION: IMPERIALISM 0x00488b10
-void TStream::AssertMcAppStreamLine304() {}
 
 // FUNCTION: IMPERIALISM 0x00488b60
 int TStream::ReadInteger() {
@@ -123,6 +117,12 @@ void TStream::streamSlot74() {} // TODO: 0x00488dd0
 
 // FUNCTION: IMPERIALISM 0x00488e00
 void TStream::AssertMcAppStreamLine596() {}
+
+// FUNCTION: IMPERIALISM 0x00488e30
+void TStream::streamSlot2c() {}
+
+// FUNCTION: IMPERIALISM 0x00488e50
+void TStream::streamSlot34() {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
 void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)

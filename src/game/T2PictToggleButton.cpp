@@ -1,9 +1,6 @@
 #include "game/T2PictToggleButton.h"
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662e78
-}
 
 // FUNCTION: IMPERIALISM 0x00584890
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {

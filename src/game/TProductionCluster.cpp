@@ -18,9 +18,6 @@
 
 #include "game/mfc.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00662f20
-}
 
 // FUNCTION: IMPERIALISM 0x00586840
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {

@@ -1,10 +1,6 @@
 #include "game/TAmtBar.h"
 #include "game/TClosePicture.h"
 
-namespace {
-
-// GLOBAL: IMPERIALISM 0x662f38
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00586ad0
 TClosePicture* __cdecl CreateTClosePictureInstance(void) {

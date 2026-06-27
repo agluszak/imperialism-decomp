@@ -12,9 +12,6 @@
 #include "game/TView.h"
 #include "game/CString.h"
 
-extern "C" {
-// GLOBAL: IMPERIALISM 0x00663118
-}
 
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
