@@ -25,6 +25,12 @@ starting that kind of task.
   override, stub-in-slot, imported-thunk). Separate from `class-recovery`, which
   reconstructs an unknown layout/inheritance in the first place.
 
+## IMPORTANT
+- ghidra uses unreliable, placeholder names and calling conventions. Almost every method
+  in this project should be a thiscall belonging to a proper class
+- code coming from MFC/other Windows libraries MUST NOT be modelled/ported. Use // LIBRARY annotations for it
+- ILT thunks must not be used at all - they should be completely ignored. Use the target methods instead.
+
 ## Docs (the durable record)
 
 - Git history — clear commit messages are the durable execution record for what
