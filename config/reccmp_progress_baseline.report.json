@@ -2073,14 +2073,27 @@
     },
     {
       "address": "0x47e360",
-      "matching": 0.25,
-      "name": "InitializePaletteHolderVtableAndReset",
+      "effective": true,
+      "matching": 0.8333333333333334,
+      "name": "CDibPal::CDibPal",
+      "type": 1
+    },
+    {
+      "address": "0x47e390",
+      "matching": 0.72,
+      "name": "CDibPal::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x47e3c0",
+      "matching": 0.6545454545454545,
+      "name": "CDibPal::~CDibPal",
       "type": 1
     },
     {
       "address": "0x47e440",
-      "matching": 0.02564102564102564,
-      "name": "BuildPaletteFromBitmapColorTable",
+      "matching": 0.5793103448275863,
+      "name": "CDibPal::BuildPaletteFromBitmapColorTable",
       "type": 1
     },
     {
@@ -38724,6 +38737,12 @@
       "type": 1
     },
     {
+      "address": "0x623a9a",
+      "matching": 0.5,
+      "name": "CPalette::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x623adf",
       "matching": 0.0,
       "name": "thunk_InitializeRuntimeClassVtablePointer_0066FEC4_VariantC",
@@ -39231,6 +39250,12 @@
       "address": "0x645fc8",
       "matching": 1.0,
       "name": "CDib::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646a68",
+      "matching": 1.0,
+      "name": "CDibPal::`vftable'",
       "type": 5
     },
     {

@@ -267,38 +267,6 @@ undefined4 RefreshNewGameCommandWindowTextAndData(void)
   return 0;
 }
 
-// ghidra_name InitializePaletteHolderVtableAndReset
-// ghidra_proto undefined InitializePaletteHolderVtableAndReset()
-// FUNCTION: IMPERIALISM 0x0047e360
-undefined4 InitializePaletteHolderVtableAndReset(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047e390
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047e390()
-// FUNCTION: IMPERIALISM 0x0047e390
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047e390(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047e390_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047e390_Impl()
-// FUNCTION: IMPERIALISM 0x0047e3c0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047e390_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildPaletteFromBitmapColorTable
-// ghidra_proto undefined BuildPaletteFromBitmapColorTable()
-// FUNCTION: IMPERIALISM 0x0047e440
-undefined4 BuildPaletteFromBitmapColorTable(void)
-{
-  return 0;
-}
-
 // ghidra_name DrawPalettePreviewGridRectanglesToViewDc
 // ghidra_proto undefined DrawPalettePreviewGridRectanglesToViewDc()
 // FUNCTION: IMPERIALISM 0x0047e590
