@@ -6,6 +6,7 @@
 class TMapDialog : public TWorldView {
 public:
   DECLARE_DYNCREATE(TMapDialog)
+  TMapDialog();
   virtual ~TMapDialog();
 
   // slot 0x07 — 0x00519c90: release map-dialog quickdraw surface (+0x350) and child state.

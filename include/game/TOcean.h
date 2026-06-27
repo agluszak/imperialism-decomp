@@ -14,6 +14,7 @@ class TCity;
 // VTABLE: IMPERIALISM 0x0065c7c8
 class TOcean : public TObject {
 public:
+  TOcean();
 // === BEGIN GENERATED DECLS (TOcean) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean(); // slot 0x01 (scalar deleting destructor)

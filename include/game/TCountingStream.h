@@ -70,7 +70,7 @@ public:
   void streamSlot2c() override;
   int streamSlot30() override;
   void streamSlot34() override;
-  void ReadBytes(void* buffer, int sizeBytes) override;
+  // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytesSlot78(void* data, int length) override;
 };
 

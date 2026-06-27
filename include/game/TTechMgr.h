@@ -7,7 +7,9 @@
 class TTechMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TTechMgr)
-  void Free() override;
+  TTechMgr();
+  void WriteTo(TStream* stream) override;  // slot 0x14 (0x005af710)
+  void ReadFrom(TStream* stream) override; // slot 0x18 (0x005af460)
   unsigned char pad000[0x193];
   unsigned char hasProductionOrder193;
   unsigned char pad194[0x1a5 - 0x194];

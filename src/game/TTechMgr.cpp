@@ -13,9 +13,17 @@ IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
 TTechMgr::TTechMgr() {}
 
-void TTechMgr::Free() {}
-
 TTechMgr::~TTechMgr() {}
+
+// FUNCTION: IMPERIALISM 0x005af710
+void TTechMgr::WriteTo(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x005af460
+void TTechMgr::ReadFrom(TStream* stream) {
+  (void)stream;
+}
 
 // FUNCTION: IMPERIALISM 0x005aef80
 void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}

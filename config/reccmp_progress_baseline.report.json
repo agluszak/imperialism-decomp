@@ -1419,7 +1419,7 @@
     },
     {
       "address": "0x45af30",
-      "matching": 0.64,
+      "matching": 0.8181818181818182,
       "name": "TTextList::`scalar deleting destructor'",
       "type": 1
     },
@@ -1511,6 +1511,12 @@
       "address": "0x45e0b0",
       "matching": 0.004173187271778821,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
+      "type": 1
+    },
+    {
+      "address": "0x4600f0",
+      "matching": 0.64,
+      "name": "TTechStorePage::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -2704,7 +2710,7 @@
     },
     {
       "address": "0x484990",
-      "matching": 0.64,
+      "matching": 0.8181818181818182,
       "name": "TObject::`scalar deleting destructor'",
       "type": 1
     },
@@ -2848,7 +2854,7 @@
     },
     {
       "address": "0x485e90",
-      "matching": 0.4367816091954023,
+      "matching": 0.4044943820224719,
       "name": "TObject::Serialize",
       "type": 1
     },
@@ -2878,7 +2884,7 @@
     },
     {
       "address": "0x486030",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTEView::GetRuntimeClass",
       "type": 1
     },
@@ -2919,6 +2925,12 @@
       "type": 1
     },
     {
+      "address": "0x486350",
+      "matching": 0.64,
+      "name": "TDocument::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x486380",
       "matching": 0.5,
       "name": "TDocument::CreateTDocumentInstance",
@@ -2926,7 +2938,7 @@
     },
     {
       "address": "0x4863a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDocument::GetRuntimeClass",
       "type": 1
     },
@@ -2944,7 +2956,7 @@
     },
     {
       "address": "0x486440",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFileBasedDocument::GetRuntimeClass",
       "type": 1
     },
@@ -2980,7 +2992,7 @@
     },
     {
       "address": "0x486630",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCommandHandler::GetRuntimeClass",
       "type": 1
     },
@@ -2998,7 +3010,7 @@
     },
     {
       "address": "0x486740",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TApplication::GetRuntimeClass",
       "type": 1
     },
@@ -3076,7 +3088,7 @@
     },
     {
       "address": "0x4871e0",
-      "matching": 1.0,
+      "matching": 0.125,
       "name": "TBehavior::ConstructTBehaviorBaseState",
       "type": 1
     },
@@ -3172,8 +3184,7 @@
     },
     {
       "address": "0x487820",
-      "effective": true,
-      "matching": 0.8888888888888888,
+      "matching": 0.11764705882352941,
       "name": "TCommand::ConstructTurnEventPacketBase",
       "type": 1
     },
@@ -3215,20 +3226,20 @@
     },
     {
       "address": "0x487a90",
-      "matching": 0.4230769230769231,
+      "matching": 0.39285714285714285,
       "name": "TSortedList::CreateTSortedListInstance",
       "type": 1
     },
     {
       "address": "0x487b10",
-      "matching": 1.0,
-      "name": "TSortedList::GetTSortedListClassNamePointer",
+      "matching": 0.5,
+      "name": "TSortedList::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x487b30",
       "matching": 0.0,
-      "name": "TSortedList::ConstructTSortedListBaseState",
+      "name": "TSortedList::ConstructTSortedListBaseState(void)",
       "type": 1
     },
     {
@@ -3263,14 +3274,14 @@
     },
     {
       "address": "0x487e50",
-      "matching": 0.9642857142857143,
+      "matching": 0.39285714285714285,
       "name": "TList::CreateTListInstance",
       "type": 1
     },
     {
       "address": "0x487ed0",
-      "matching": 1.0,
-      "name": "TList::GetTListClassNamePointer",
+      "matching": 0.5,
+      "name": "TList::GetRuntimeClass",
       "type": 1
     },
     {
@@ -3376,6 +3387,18 @@
       "type": 1
     },
     {
+      "address": "0x488390",
+      "matching": 0.8181818181818182,
+      "name": "TSortedPtrList::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x4883e0",
+      "matching": 0.5,
+      "name": "TSortedPtrList::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x488400",
       "matching": 0.4489795918367347,
       "name": "TSortedPtrList::ConstructTSortedPtrListBaseState",
@@ -3389,8 +3412,8 @@
     },
     {
       "address": "0x4884c0",
-      "matching": 0.8181818181818182,
-      "name": "TSortedPtrList::`scalar deleting destructor'",
+      "matching": 0.64,
+      "name": "TPtrList::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -3401,80 +3424,80 @@
     },
     {
       "address": "0x488510",
-      "matching": 0.5,
-      "name": "TPtrList::GetTPtrListClassNamePointer(void)",
+      "matching": 1.0,
+      "name": "TPtrList::GetTPtrListClassNamePointer",
       "type": 1
     },
     {
       "address": "0x4885d0",
-      "matching": 1.0,
-      "name": "TPtrList::AddHeadSlot28",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddHeadSlot28(void *)",
       "type": 1
     },
     {
       "address": "0x4885f0",
-      "matching": 1.0,
-      "name": "TPtrList::AddHeadSlot2C",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddHeadSlot2C(void *, int, int)",
       "type": 1
     },
     {
       "address": "0x488610",
-      "matching": 1.0,
-      "name": "TPtrList::AddTailSlot30",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddTailSlot30(void *)",
       "type": 1
     },
     {
       "address": "0x488630",
-      "matching": 1.0,
-      "name": "TPtrList::AddTailSlot34",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddTailSlot34(void *, int, int)",
       "type": 1
     },
     {
       "address": "0x488650",
-      "matching": 1.0,
-      "name": "TPtrList::AddTailSlot38",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddTailSlot38(void *)",
       "type": 1
     },
     {
       "address": "0x488670",
       "matching": 1.0,
-      "name": "TPtrList::RemoveTailSlot3C",
+      "name": "TPtrList::RemoveTailSlot3C(void)",
       "type": 1
     },
     {
       "address": "0x488690",
-      "matching": 1.0,
-      "name": "TPtrList::AddTailSlot40",
+      "matching": 0.6153846153846154,
+      "name": "TPtrList::AddTailSlot40(void *)",
       "type": 1
     },
     {
       "address": "0x4886b0",
       "matching": 1.0,
-      "name": "TPtrList::RemoveHeadSlot44",
+      "name": "TPtrList::RemoveHeadSlot44(void)",
       "type": 1
     },
     {
       "address": "0x4886d0",
       "matching": 1.0,
-      "name": "TPtrList::GetCountSlot48",
+      "name": "TPtrList::GetCountSlot48(void)",
       "type": 1
     },
     {
       "address": "0x4886f0",
-      "matching": 0.7777777777777778,
-      "name": "TPtrList::GetEntryByOrdinalSlot4C",
+      "matching": 0.5454545454545454,
+      "name": "TPtrList::GetEntryByOrdinalSlot4C(int)",
       "type": 1
     },
     {
       "address": "0x488720",
-      "matching": 0.9230769230769231,
-      "name": "TPtrList::RemoveAtOrdinalSlot50",
+      "matching": 0.7586206896551724,
+      "name": "TPtrList::RemoveAtOrdinalSlot50(int)",
       "type": 1
     },
     {
       "address": "0x488750",
       "matching": 0.42105263157894735,
-      "name": "TPtrList::FreePayloadsSlot54",
+      "name": "TPtrList::FreePayloadsSlot54(void)",
       "type": 1
     },
     {
@@ -3486,31 +3509,31 @@
     {
       "address": "0x4887b0",
       "matching": 1.0,
-      "name": "TPtrList::FreePayloadsAndDestroySlot58",
+      "name": "TPtrList::FreePayloadsAndDestroySlot58(void)",
       "type": 1
     },
     {
       "address": "0x4887e0",
       "matching": 1.0,
-      "name": "TPtrList::RemoveAllSlot5C",
+      "name": "TPtrList::RemoveAllSlot5C(void)",
       "type": 1
     },
     {
       "address": "0x488800",
-      "matching": 1.0,
+      "matching": 0.4,
       "name": "OrphanRetStub_00488800",
       "type": 1
     },
     {
       "address": "0x488820",
-      "matching": 1.0,
+      "matching": 0.4,
       "name": "OrphanRetStub_00488820",
       "type": 1
     },
     {
       "address": "0x488840",
-      "matching": 0.9,
-      "name": "TPtrList::SetAtOrdinalSlot60",
+      "matching": 0.6086956521739131,
+      "name": "TPtrList::SetAtOrdinalSlot60(int, void **, int)",
       "type": 1
     },
     {
@@ -3538,8 +3561,20 @@
       "type": 1
     },
     {
+      "address": "0x4889d0",
+      "matching": 0.5,
+      "name": "TStream::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x488a10",
+      "matching": 0.6363636363636364,
+      "name": "TStream::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x488a80",
-      "matching": 0.5625,
+      "matching": 0.5,
       "name": "TStream::OrphanCallChain_C2_I15_00488a80",
       "type": 1
     },
@@ -3547,6 +3582,18 @@
       "address": "0x488ab0",
       "matching": 0.2857142857142857,
       "name": "TStream::Free",
+      "type": 1
+    },
+    {
+      "address": "0x488ad0",
+      "matching": 1.0,
+      "name": "TStream::OrphanTiny_ReturnZero_00488ad0",
+      "type": 1
+    },
+    {
+      "address": "0x488af0",
+      "matching": 1.0,
+      "name": "TStream::OrphanTiny_ReturnZero_00488af0",
       "type": 1
     },
     {
@@ -3558,7 +3605,7 @@
     {
       "address": "0x488b40",
       "matching": 1.0,
-      "name": "TCountingStream::ReadBytes",
+      "name": "TStream::ReadBytes",
       "type": 1
     },
     {
@@ -3649,6 +3696,18 @@
       "address": "0x488e00",
       "matching": 0.0,
       "name": "TStream::AssertMcAppStreamLine596",
+      "type": 1
+    },
+    {
+      "address": "0x488e30",
+      "matching": 0.0,
+      "name": "TStream::OrphanRetStub_00488e30",
+      "type": 1
+    },
+    {
+      "address": "0x488e50",
+      "matching": 0.0,
+      "name": "TStream::OrphanRetStub_00488e50",
       "type": 1
     },
     {
@@ -3755,7 +3814,7 @@
     },
     {
       "address": "0x489110",
-      "matching": 1.0,
+      "matching": 0.16666666666666666,
       "name": "TFileStream::ConstructTFileStreamBaseState",
       "type": 1
     },
@@ -3845,8 +3904,7 @@
     },
     {
       "address": "0x489410",
-      "effective": true,
-      "matching": 0.8333333333333334,
+      "matching": 0.125,
       "name": "TCountingStream::ConstructTCountingStreamBaseState",
       "type": 1
     },
@@ -3912,7 +3970,7 @@
     },
     {
       "address": "0x4895e0",
-      "matching": 1.0,
+      "matching": 0.09090909090909091,
       "name": "THandleStream::ConstructTHandleStreamBaseState",
       "type": 1
     },
@@ -4062,7 +4120,7 @@
     },
     {
       "address": "0x48a0e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TEventHandler::GetRuntimeClass",
       "type": 1
     },
@@ -4242,7 +4300,7 @@
     },
     {
       "address": "0x48a7c0",
-      "matching": 0.5573770491803278,
+      "matching": 0.4722222222222222,
       "name": "TEventHandler::ShallowClone",
       "type": 1
     },
@@ -4254,13 +4312,13 @@
     },
     {
       "address": "0x48a8c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TView::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x48a8e0",
-      "matching": 0.9,
+      "matching": 0.7631578947368421,
       "name": "TView::ConstructTViewBaseState",
       "type": 1
     },
@@ -4698,7 +4756,7 @@
     },
     {
       "address": "0x48cd50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TIncludeView::GetRuntimeClass",
       "type": 1
     },
@@ -4734,7 +4792,7 @@
     },
     {
       "address": "0x48d220",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TWindow::GetRuntimeClass",
       "type": 1
     },
@@ -4956,7 +5014,7 @@
     },
     {
       "address": "0x48e500",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TControl::GetRuntimeClass",
       "type": 1
     },
@@ -5035,7 +5093,7 @@
     },
     {
       "address": "0x48ea00",
-      "matching": 0.03636363636363636,
+      "matching": 0.32098765432098764,
       "name": "TCtlMgr::CreateTCtlMgrInstance",
       "type": 1
     },
@@ -5095,7 +5153,7 @@
     },
     {
       "address": "0x48efa0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPicture::GetRuntimeClass",
       "type": 1
     },
@@ -5239,7 +5297,7 @@
     },
     {
       "address": "0x490380",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TEditText::GetRuntimeClass",
       "type": 1
     },
@@ -5359,7 +5417,7 @@
     },
     {
       "address": "0x491040",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNumberText::GetRuntimeClass",
       "type": 1
     },
@@ -5395,7 +5453,7 @@
     },
     {
       "address": "0x4913e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCluster::GetRuntimeClass",
       "type": 1
     },
@@ -5467,7 +5525,7 @@
     },
     {
       "address": "0x491ad0",
-      "matching": 0.7272727272727273,
+      "matching": 0.07692307692307693,
       "name": "TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl",
       "type": 1
     },
@@ -5509,7 +5567,7 @@
     },
     {
       "address": "0x491f90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFloatWindow::GetRuntimeClass",
       "type": 1
     },
@@ -5595,6 +5653,12 @@
       "address": "0x4925e0",
       "matching": 0.05714285714285714,
       "name": "DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x492c70",
+      "matching": 0.64,
+      "name": "TEvent::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -6327,13 +6391,13 @@
     },
     {
       "address": "0x4992a0",
-      "matching": 0.6915887850467289,
+      "matching": 0.7102803738317757,
       "name": "TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog",
       "type": 1
     },
     {
       "address": "0x499380",
-      "matching": 0.651685393258427,
+      "matching": 0.5714285714285714,
       "name": "TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog",
       "type": 1
     },
@@ -6753,7 +6817,7 @@
     },
     {
       "address": "0x49d6d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAdorner::GetRuntimeClass",
       "type": 1
     },
@@ -6836,6 +6900,12 @@
       "type": 1
     },
     {
+      "address": "0x49dab0",
+      "matching": 0.64,
+      "name": "TAdorner::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x49dd40",
       "matching": 0.14814814814814814,
       "name": "CreateTurnEventPacket_Vtbl0064c130",
@@ -6855,14 +6925,14 @@
     },
     {
       "address": "0x49de20",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNewGameCommand::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x49deb0",
       "matching": 1.0,
-      "name": "TAmbitApplication::GetTAmbitApplicationClassNamePointer",
+      "name": "TAmbitApplication::GetRuntimeClass",
       "type": 1
     },
     {
@@ -6897,7 +6967,7 @@
     },
     {
       "address": "0x49e5d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAmbitFileBasedDocument::GetRuntimeClass",
       "type": 1
     },
@@ -6950,6 +7020,12 @@
       "type": 1
     },
     {
+      "address": "0x49f050",
+      "matching": 0.64,
+      "name": "TAnimation::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x49f080",
       "matching": 0.5,
       "name": "TAnimation::CreateTAnimationInstance",
@@ -6957,7 +7033,7 @@
     },
     {
       "address": "0x49f0a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAnimation::GetRuntimeClass",
       "type": 1
     },
@@ -6999,7 +7075,7 @@
     },
     {
       "address": "0x49f4d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCivAnimation::GetRuntimeClass",
       "type": 1
     },
@@ -7023,7 +7099,7 @@
     },
     {
       "address": "0x49f680",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCivAnimation2::GetRuntimeClass",
       "type": 1
     },
@@ -7077,7 +7153,7 @@
     },
     {
       "address": "0x49ff70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCouncilTickerAnimation::GetRuntimeClass",
       "type": 1
     },
@@ -7137,7 +7213,7 @@
     },
     {
       "address": "0x4a0a80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAnimator::GetRuntimeClass",
       "type": 1
     },
@@ -7239,7 +7315,7 @@
     },
     {
       "address": "0x4a1850",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyMgr::GetRuntimeClass",
       "type": 1
     },
@@ -7247,6 +7323,12 @@
       "address": "0x4a1870",
       "matching": 0.2857142857142857,
       "name": "ConstructMapContextActionManager",
+      "type": 1
+    },
+    {
+      "address": "0x4a18a0",
+      "matching": 0.64,
+      "name": "TArmyMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -7557,7 +7639,7 @@
     },
     {
       "address": "0x4a76d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyStack::GetRuntimeClass",
       "type": 1
     },
@@ -7565,6 +7647,12 @@
       "address": "0x4a76f0",
       "matching": 0.25,
       "name": "TArmyStack::ConstructTArmyStackBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x4a7720",
+      "matching": 0.64,
+      "name": "TArmyStack::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -7623,7 +7711,7 @@
     },
     {
       "address": "0x4a8430",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyStackList::GetRuntimeClass",
       "type": 1
     },
@@ -7653,7 +7741,7 @@
     },
     {
       "address": "0x4a87f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGarrisonView::GetRuntimeClass",
       "type": 1
     },
@@ -7689,7 +7777,7 @@
     },
     {
       "address": "0x4a8d10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyUnitLine::GetRuntimeClass",
       "type": 1
     },
@@ -7725,7 +7813,7 @@
     },
     {
       "address": "0x4a94c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyUnitView::GetRuntimeClass",
       "type": 1
     },
@@ -7767,7 +7855,7 @@
     },
     {
       "address": "0x4a9fc0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyCheckBox::GetRuntimeClass",
       "type": 1
     },
@@ -7851,7 +7939,7 @@
     },
     {
       "address": "0x4aa520",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSuperArmyRoster::GetRuntimeClass",
       "type": 1
     },
@@ -7881,7 +7969,7 @@
     },
     {
       "address": "0x4aa900",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniArmyLine::GetRuntimeClass",
       "type": 1
     },
@@ -7911,7 +7999,7 @@
     },
     {
       "address": "0x4aae10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniArmyView::GetRuntimeClass",
       "type": 1
     },
@@ -7941,7 +8029,7 @@
     },
     {
       "address": "0x4ab450",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSuperCivRoster::GetRuntimeClass",
       "type": 1
     },
@@ -7965,7 +8053,7 @@
     },
     {
       "address": "0x4ab6e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniCivLine::GetRuntimeClass",
       "type": 1
     },
@@ -7995,7 +8083,7 @@
     },
     {
       "address": "0x4ab950",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniCivView::GetRuntimeClass",
       "type": 1
     },
@@ -8037,7 +8125,7 @@
     },
     {
       "address": "0x4ac6a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSwapperDaddyView::GetRuntimeClass",
       "type": 1
     },
@@ -8055,7 +8143,7 @@
     },
     {
       "address": "0x4ac860",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGWorldPartView::GetRuntimeClass",
       "type": 1
     },
@@ -8079,7 +8167,7 @@
     },
     {
       "address": "0x4ac9a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TIdleMeAnimation::GetRuntimeClass",
       "type": 1
     },
@@ -8103,7 +8191,7 @@
     },
     {
       "address": "0x4acb40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBattleReportView::GetRuntimeClass",
       "type": 1
     },
@@ -8175,7 +8263,7 @@
     },
     {
       "address": "0x4aea70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBattleDetailBook::GetRuntimeClass",
       "type": 1
     },
@@ -8193,7 +8281,7 @@
     },
     {
       "address": "0x4aeba0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyBoyView::GetRuntimeClass",
       "type": 1
     },
@@ -8211,7 +8299,7 @@
     },
     {
       "address": "0x4af090",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyBoyView::GetRuntimeClass",
       "type": 1
     },
@@ -8229,7 +8317,7 @@
     },
     {
       "address": "0x4af760",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMerchantBoyView::GetRuntimeClass",
       "type": 1
     },
@@ -8247,7 +8335,7 @@
     },
     {
       "address": "0x4af9d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TItemBoyView::GetRuntimeClass",
       "type": 1
     },
@@ -8271,7 +8359,7 @@
     },
     {
       "address": "0x4afd80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInterruptusView::GetRuntimeClass",
       "type": 1
     },
@@ -8295,7 +8383,7 @@
     },
     {
       "address": "0x4b0020",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBatRepDetLine::GetRuntimeClass",
       "type": 1
     },
@@ -8313,7 +8401,7 @@
     },
     {
       "address": "0x4b06d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBattleUnitsView::GetRuntimeClass",
       "type": 1
     },
@@ -8337,7 +8425,7 @@
     },
     {
       "address": "0x4b0b60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "THotspotBehavior::GetRuntimeClass",
       "type": 1
     },
@@ -8361,7 +8449,7 @@
     },
     {
       "address": "0x4b0d10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInfoBarBehavior::GetRuntimeClass",
       "type": 1
     },
@@ -8397,7 +8485,7 @@
     },
     {
       "address": "0x4b1080",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDropShadowTextBehavior::GetRuntimeClass",
       "type": 1
     },
@@ -8439,7 +8527,7 @@
     },
     {
       "address": "0x4b1480",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCheater::GetRuntimeClass",
       "type": 1
     },
@@ -8469,7 +8557,7 @@
     },
     {
       "address": "0x4b1940",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechCheater::GetRuntimeClass",
       "type": 1
     },
@@ -8493,7 +8581,7 @@
     },
     {
       "address": "0x4b1a70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGPCheater::GetRuntimeClass",
       "type": 1
     },
@@ -8511,8 +8599,14 @@
     },
     {
       "address": "0x4b2110",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLaborPool::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4b2160",
+      "matching": 0.64,
+      "name": "TLaborPool::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -8541,13 +8635,13 @@
     },
     {
       "address": "0x4b2490",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCity::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4b24b0",
-      "matching": 1.0,
+      "matching": 0.22727272727272727,
       "name": "TCity::TCity",
       "type": 1
     },
@@ -8757,7 +8851,7 @@
     },
     {
       "address": "0x4b4ee0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TProductionOrder::GetRuntimeClass",
       "type": 1
     },
@@ -8829,7 +8923,7 @@
     },
     {
       "address": "0x4b5200",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TItemOrder::GetRuntimeClass",
       "type": 1
     },
@@ -8889,7 +8983,7 @@
     },
     {
       "address": "0x4b57e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOrItemOrder::GetRuntimeClass",
       "type": 1
     },
@@ -8919,8 +9013,14 @@
     },
     {
       "address": "0x4b5b70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPopulationMgr::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4b5bb0",
+      "matching": 0.64,
+      "name": "TPopulationMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -9015,7 +9115,7 @@
     },
     {
       "address": "0x4b6a90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTrainingOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9063,7 +9163,7 @@
     },
     {
       "address": "0x4b6f50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUnitOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9123,7 +9223,7 @@
     },
     {
       "address": "0x4b7a20",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPowerPlantOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9183,7 +9283,7 @@
     },
     {
       "address": "0x4b7df0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFoodProcessingOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9231,7 +9331,7 @@
     },
     {
       "address": "0x4b8140",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPopGrowthOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9273,8 +9373,8 @@
     },
     {
       "address": "0x4b84a0",
-      "matching": 0.5,
-      "name": "TShipOrder::GetTShipOrderClassNamePointer",
+      "matching": 1.0,
+      "name": "TShipOrder::GetRuntimeClass",
       "type": 1
     },
     {
@@ -9357,7 +9457,7 @@
     },
     {
       "address": "0x4b8f80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TExpansionOrder::GetRuntimeClass",
       "type": 1
     },
@@ -9435,8 +9535,8 @@
     },
     {
       "address": "0x4ba2c0",
-      "matching": 0.5,
-      "name": "TCityProductionView::GetTCityProductionViewClassNamePointer",
+      "matching": 1.0,
+      "name": "TCityProductionView::GetRuntimeClass",
       "type": 1
     },
     {
@@ -9543,7 +9643,7 @@
     },
     {
       "address": "0x4bd020",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRailheadDialog::GetRuntimeClass",
       "type": 1
     },
@@ -9573,7 +9673,7 @@
     },
     {
       "address": "0x4bd3c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTransportView::GetRuntimeClass",
       "type": 1
     },
@@ -9603,7 +9703,7 @@
     },
     {
       "address": "0x4bd860",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNewTownView::GetRuntimeClass",
       "type": 1
     },
@@ -9651,7 +9751,7 @@
     },
     {
       "address": "0x4be1b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInteriorMinister::GetRuntimeClass",
       "type": 1
     },
@@ -9789,7 +9889,7 @@
     },
     {
       "address": "0x4be820",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCityInteriorMinister::GetRuntimeClass",
       "type": 1
     },
@@ -10143,8 +10243,8 @@
     },
     {
       "address": "0x4c59c0",
-      "matching": 0.5,
-      "name": "TSteelCityMinister::GetTSteelCityMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TSteelCityMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -10173,8 +10273,8 @@
     },
     {
       "address": "0x4c5cc0",
-      "matching": 0.5,
-      "name": "TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TShipBuilderCityMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -10203,8 +10303,8 @@
     },
     {
       "address": "0x4c5fc0",
-      "matching": 0.5,
-      "name": "TEvenCityMinister::GetTEvenCityMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TEvenCityMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -10233,8 +10333,8 @@
     },
     {
       "address": "0x4c62d0",
-      "matching": 0.5,
-      "name": "TRailCityMinister::GetTRailCityMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TRailCityMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -10317,7 +10417,7 @@
     },
     {
       "address": "0x4c6e90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBuildingView::GetRuntimeClass",
       "type": 1
     },
@@ -10377,7 +10477,7 @@
     },
     {
       "address": "0x4c7290",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TWarehouseView::GetRuntimeClass",
       "type": 1
     },
@@ -10419,7 +10519,7 @@
     },
     {
       "address": "0x4c7fb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUnitsView::GetRuntimeClass",
       "type": 1
     },
@@ -10449,7 +10549,7 @@
     },
     {
       "address": "0x4c82a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipyardView::GetRuntimeClass",
       "type": 1
     },
@@ -10539,7 +10639,7 @@
     },
     {
       "address": "0x4c9e10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBuildingConstructionView::GetRuntimeClass",
       "type": 1
     },
@@ -10593,7 +10693,7 @@
     },
     {
       "address": "0x4cac40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUniversityView::GetRuntimeClass",
       "type": 1
     },
@@ -10665,7 +10765,7 @@
     },
     {
       "address": "0x4cc3a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPurchaseCluster::GetRuntimeClass",
       "type": 1
     },
@@ -10719,7 +10819,7 @@
     },
     {
       "address": "0x4cc770",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TIndustryView::GetRuntimeClass",
       "type": 1
     },
@@ -10767,7 +10867,7 @@
     },
     {
       "address": "0x4cd820",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeSchoolView::GetRuntimeClass",
       "type": 1
     },
@@ -10839,7 +10939,7 @@
     },
     {
       "address": "0x4ce500",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBuildingExpansionView::GetRuntimeClass",
       "type": 1
     },
@@ -10875,7 +10975,7 @@
     },
     {
       "address": "0x4ced80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmoryView::GetRuntimeClass",
       "type": 1
     },
@@ -10941,7 +11041,7 @@
     },
     {
       "address": "0x4d0540",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TEngineerDialog::GetRuntimeClass",
       "type": 1
     },
@@ -10977,7 +11077,7 @@
     },
     {
       "address": "0x4d17e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPlaceCityDialog::GetRuntimeClass",
       "type": 1
     },
@@ -11013,8 +11113,14 @@
     },
     {
       "address": "0x4d2030",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCivMgr::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4d2070",
+      "matching": 0.8181818181818182,
+      "name": "TCivMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -11241,13 +11347,13 @@
     },
     {
       "address": "0x4d6570",
-      "matching": 1.0,
+      "matching": 0.5,
       "name": "TProvinceDesirabilityList::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4d6590",
-      "matching": 0.7058823529411765,
+      "matching": 0.8571428571428571,
       "name": "ConstructObArrayWithVtable653810",
       "type": 1
     },
@@ -11301,8 +11407,14 @@
     },
     {
       "address": "0x4d67b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCountry::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4d67d0",
+      "matching": 0.6122448979591837,
+      "name": "TCountry::TCountry",
       "type": 1
     },
     {
@@ -11313,7 +11425,7 @@
     },
     {
       "address": "0x4d68f0",
-      "matching": 0.34328358208955223,
+      "matching": 0.29118773946360155,
       "name": "InitializeNationStateIdentityAndOwnedRegionList",
       "type": 1
     },
@@ -11583,13 +11695,13 @@
     },
     {
       "address": "0x4d89d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGreatPower::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4d89f0",
-      "matching": 0.4411764705882353,
+      "matching": 0.18947368421052632,
       "name": "TGreatPower::TGreatPower(void)",
       "type": 1
     },
@@ -11625,7 +11737,7 @@
     },
     {
       "address": "0x4d8cc0",
-      "matching": 0.36923076923076925,
+      "matching": 0.3108108108108108,
       "name": "TGreatPower::InitializeNationStateRuntimeSubsystems",
       "type": 1
     },
@@ -11956,7 +12068,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12100,7 +12212,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.6526315789473685,
+      "matching": 0.9894736842105263,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12388,13 +12500,13 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12406,7 +12518,7 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12442,13 +12554,13 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.24242424242424243,
+      "matching": 0.2222222222222222,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -12682,13 +12794,13 @@
     },
     {
       "address": "0x4e36f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinor::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4e3710",
-      "matching": 0.8936170212765957,
+      "matching": 0.3870967741935484,
       "name": "TMinor::TMinor",
       "type": 1
     },
@@ -12879,6 +12991,12 @@
       "type": 1
     },
     {
+      "address": "0x4e6630",
+      "matching": 0.64,
+      "name": "TTurnStartEvent::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x4e6660",
       "matching": 0.5,
       "name": "TTurnStartEvent::CreateTTurnStartEventInstance",
@@ -12886,13 +13004,13 @@
     },
     {
       "address": "0x4e6680",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTurnStartEvent::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4e66f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLandSaleEvent::GetRuntimeClass",
       "type": 1
     },
@@ -12922,7 +13040,7 @@
     },
     {
       "address": "0x4e6b30",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAutoGreatPower::GetRuntimeClass",
       "type": 1
     },
@@ -13126,7 +13244,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.5283018867924528,
+      "matching": 0.5157232704402516,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -13336,7 +13454,7 @@
     },
     {
       "address": "0x4ec0c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDefenseMinister::GetRuntimeClass",
       "type": 1
     },
@@ -13426,8 +13544,8 @@
     },
     {
       "address": "0x4ed4c0",
-      "matching": 0.5,
-      "name": "TNapoleonMinister::GetTNapoleonMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TNapoleonMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13468,8 +13586,8 @@
     },
     {
       "address": "0x4ed7f0",
-      "matching": 0.5,
-      "name": "TBismarckMinister::GetTBismarckMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TBismarckMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13510,8 +13628,8 @@
     },
     {
       "address": "0x4edae0",
-      "matching": 0.5,
-      "name": "TPirateMinister::GetTPirateMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TPirateMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13552,8 +13670,8 @@
     },
     {
       "address": "0x4eddc0",
-      "matching": 0.5,
-      "name": "TDefenderMinister::GetTDefenderMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TDefenderMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13594,8 +13712,8 @@
     },
     {
       "address": "0x4ee0b0",
-      "matching": 0.5,
-      "name": "TBullyMinister::GetTBullyMinisterClassNamePointer",
+      "matching": 1.0,
+      "name": "TBullyMinister::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13660,8 +13778,8 @@
     },
     {
       "address": "0x4ee6a0",
-      "matching": 0.5,
-      "name": "TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer",
+      "matching": 1.0,
+      "name": "TDiplomacyMgr::GetRuntimeClass",
       "type": 1
     },
     {
@@ -13978,7 +14096,7 @@
     },
     {
       "address": "0x4f2c40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinisterView::GetRuntimeClass",
       "type": 1
     },
@@ -14038,7 +14156,7 @@
     },
     {
       "address": "0x4f2fb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TForeignMinisterView::GetRuntimeClass",
       "type": 1
     },
@@ -14080,7 +14198,7 @@
     },
     {
       "address": "0x4f32d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDefenseMinisterView::GetRuntimeClass",
       "type": 1
     },
@@ -14110,7 +14228,7 @@
     },
     {
       "address": "0x4f3670",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInteriorMinisterView::GetRuntimeClass",
       "type": 1
     },
@@ -14140,7 +14258,7 @@
     },
     {
       "address": "0x4f38c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRearFloatWindow::GetRuntimeClass",
       "type": 1
     },
@@ -14176,8 +14294,8 @@
     },
     {
       "address": "0x4f3b60",
-      "matching": 0.5,
-      "name": "TDiplomacyMapView::GetTDiplomacyMapViewClassNamePointer",
+      "matching": 1.0,
+      "name": "TDiplomacyMapView::GetRuntimeClass",
       "type": 1
     },
     {
@@ -14350,7 +14468,7 @@
     },
     {
       "address": "0x4f79c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPanelView::GetRuntimeClass",
       "type": 1
     },
@@ -14368,7 +14486,7 @@
     },
     {
       "address": "0x4f7aa0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTreatiesView::GetRuntimeClass",
       "type": 1
     },
@@ -14404,7 +14522,7 @@
     },
     {
       "address": "0x4f8060",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGrantsView::GetRuntimeClass",
       "type": 1
     },
@@ -14440,7 +14558,7 @@
     },
     {
       "address": "0x4f8760",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradePanelView::GetRuntimeClass",
       "type": 1
     },
@@ -14476,7 +14594,7 @@
     },
     {
       "address": "0x4f8f50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOffersPanelView::GetRuntimeClass",
       "type": 1
     },
@@ -14536,7 +14654,7 @@
     },
     {
       "address": "0x4f9ff0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInfoPanelView::GetRuntimeClass",
       "type": 1
     },
@@ -14578,7 +14696,7 @@
     },
     {
       "address": "0x4fb010",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCouncilPanelView::GetRuntimeClass",
       "type": 1
     },
@@ -14596,7 +14714,7 @@
     },
     {
       "address": "0x4fb760",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNominationView::GetRuntimeClass",
       "type": 1
     },
@@ -14656,7 +14774,7 @@
     },
     {
       "address": "0x4fca70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapKey::GetRuntimeClass",
       "type": 1
     },
@@ -14716,7 +14834,7 @@
     },
     {
       "address": "0x4fdfa0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFrameRadioView::GetRuntimeClass",
       "type": 1
     },
@@ -14752,7 +14870,7 @@
     },
     {
       "address": "0x4fe290",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScoreGraph::GetRuntimeClass",
       "type": 1
     },
@@ -14782,13 +14900,13 @@
     },
     {
       "address": "0x4fe780",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDisplayMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4fe7a0",
-      "matching": 0.6153846153846154,
+      "matching": 0.046511627906976744,
       "name": "TDisplayMgr::InitializeMapTileRuntimeStateEntry",
       "type": 1
     },
@@ -14902,7 +15020,7 @@
     },
     {
       "address": "0x4ff1a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TColorFill::GetRuntimeClass",
       "type": 1
     },
@@ -14920,7 +15038,7 @@
     },
     {
       "address": "0x4ff2d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGWorldPeeker::GetRuntimeClass",
       "type": 1
     },
@@ -14932,8 +15050,14 @@
     },
     {
       "address": "0x4ff490",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFuzzyVar::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4ff4d0",
+      "matching": 0.64,
+      "name": "TFuzzyVar::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -14944,7 +15068,7 @@
     },
     {
       "address": "0x4ff6c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFuzzySet::GetRuntimeClass",
       "type": 1
     },
@@ -14952,6 +15076,12 @@
       "address": "0x4ff6e0",
       "matching": 0.4,
       "name": "TFuzzySet::ConstructTFuzzySetBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x4ff700",
+      "matching": 0.64,
+      "name": "TFuzzySet::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -14980,7 +15110,7 @@
     },
     {
       "address": "0x4ffbf0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameWindow::GetRuntimeClass",
       "type": 1
     },
@@ -15052,7 +15182,7 @@
     },
     {
       "address": "0x500300",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDlgWindow::GetRuntimeClass",
       "type": 1
     },
@@ -15076,13 +15206,13 @@
     },
     {
       "address": "0x5005c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "THelpMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5005e0",
-      "matching": 0.4,
+      "matching": 0.05128205128205128,
       "name": "THelpMgr::ConstructTHelpMgrBaseState",
       "type": 1
     },
@@ -15220,7 +15350,7 @@
     },
     {
       "address": "0x503c70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "THelpPicture::GetRuntimeClass",
       "type": 1
     },
@@ -15316,7 +15446,7 @@
     },
     {
       "address": "0x504e70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTerrainHelpPicture::GetRuntimeClass",
       "type": 1
     },
@@ -15346,7 +15476,7 @@
     },
     {
       "address": "0x505ac0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLonelyTileView::GetRuntimeClass",
       "type": 1
     },
@@ -15376,7 +15506,7 @@
     },
     {
       "address": "0x505fd0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TIconBar::GetRuntimeClass",
       "type": 1
     },
@@ -15430,7 +15560,7 @@
     },
     {
       "address": "0x5063a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TIconSlider::GetRuntimeClass",
       "type": 1
     },
@@ -15508,7 +15638,7 @@
     },
     {
       "address": "0x506a60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOrderView::GetRuntimeClass",
       "type": 1
     },
@@ -15550,7 +15680,7 @@
     },
     {
       "address": "0x507380",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNumberedIcon::GetRuntimeClass",
       "type": 1
     },
@@ -15622,13 +15752,13 @@
     },
     {
       "address": "0x507c40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLanguageMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x507c60",
-      "matching": 0.42201834862385323,
+      "matching": 0.4036697247706422,
       "name": "TLanguageMgr::ConstructTLanguageMgrBaseState",
       "type": 1
     },
@@ -15676,13 +15806,13 @@
     },
     {
       "address": "0x509c80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMacViewMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x509ca0",
-      "matching": 0.7801418439716312,
+      "matching": 0.7746478873239436,
       "name": "ConstructStrategicMapViewSystem",
       "type": 1
     },
@@ -15928,7 +16058,7 @@
     },
     {
       "address": "0x50e3b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapMgr::GetRuntimeClass",
       "type": 1
     },
@@ -15936,6 +16066,12 @@
       "address": "0x50e3d0",
       "matching": 0.0625,
       "name": "ConstructGlobalMapState",
+      "type": 1
+    },
+    {
+      "address": "0x50e460",
+      "matching": 0.8181818181818182,
+      "name": "TMapMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -16780,7 +16916,7 @@
     },
     {
       "address": "0x519b30",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapDialog::GetRuntimeClass",
       "type": 1
     },
@@ -16888,7 +17024,7 @@
     },
     {
       "address": "0x51b120",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTerrainInfoDialog::GetRuntimeClass",
       "type": 1
     },
@@ -16918,7 +17054,7 @@
     },
     {
       "address": "0x51baf0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTownNameDialog::GetRuntimeClass",
       "type": 1
     },
@@ -16954,7 +17090,7 @@
     },
     {
       "address": "0x51be90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCitySiteView::GetRuntimeClass",
       "type": 1
     },
@@ -17020,7 +17156,7 @@
     },
     {
       "address": "0x51cc40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapEditView::GetRuntimeClass",
       "type": 1
     },
@@ -17770,13 +17906,13 @@
     },
     {
       "address": "0x52eb60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinister::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x52eb80",
-      "matching": 0.5454545454545454,
+      "matching": 0.13333333333333333,
       "name": "TMinister::ConstructTMinister",
       "type": 1
     },
@@ -17794,7 +17930,7 @@
     },
     {
       "address": "0x52ebf0",
-      "matching": 0.30303030303030304,
+      "matching": 0.3333333333333333,
       "name": "InitializeTMinisterBaseOrderArray",
       "type": 1
     },
@@ -17866,7 +18002,7 @@
     },
     {
       "address": "0x52f050",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TForeignMinister::GetRuntimeClass",
       "type": 1
     },
@@ -18394,7 +18530,7 @@
     },
     {
       "address": "0x5346f0",
-      "matching": 1.0,
+      "matching": 0.5,
       "name": "TSortByPriceList::GetRuntimeClass",
       "type": 1
     },
@@ -18412,7 +18548,7 @@
     },
     {
       "address": "0x534770",
-      "matching": 1.0,
+      "matching": 0.0,
       "name": "TSortByPriceList::~TSortByPriceList",
       "type": 1
     },
@@ -18629,13 +18765,12 @@
     {
       "address": "0x534fb0",
       "matching": 1.0,
-      "name": "TMission::GetTMissionClassNamePointer",
+      "name": "TMission::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x535020",
-      "effective": true,
-      "matching": 0.8333333333333334,
+      "matching": 0.125,
       "name": "TMission::ConstructTMission",
       "type": 1
     },
@@ -20002,6 +20137,12 @@
       "type": 1
     },
     {
+      "address": "0x540940",
+      "matching": 0.64,
+      "name": "TProxyGreatPower::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x540970",
       "matching": 0.08695652173913043,
       "name": "TProxyGreatPower::DestructTProxyGreatPower",
@@ -20009,7 +20150,7 @@
     },
     {
       "address": "0x5409e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TProxyGreatPower::GetRuntimeClass",
       "type": 1
     },
@@ -20099,7 +20240,7 @@
     },
     {
       "address": "0x540fe0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "THostGreatPower::GetRuntimeClass",
       "type": 1
     },
@@ -20165,7 +20306,7 @@
     },
     {
       "address": "0x541390",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TClientGreatPower::GetRuntimeClass",
       "type": 1
     },
@@ -20333,7 +20474,7 @@
     },
     {
       "address": "0x541b20",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRemoteGreatPower::GetRuntimeClass",
       "type": 1
     },
@@ -20441,7 +20582,7 @@
     },
     {
       "address": "0x5425b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCancelGameOptionsCommand::GetRuntimeClass",
       "type": 1
     },
@@ -20459,7 +20600,7 @@
     },
     {
       "address": "0x542670",
-      "matching": 0.4307692307692308,
+      "matching": 0.4444444444444444,
       "name": "ConstructMultiplayerManager",
       "type": 1
     },
@@ -20843,7 +20984,7 @@
     },
     {
       "address": "0x54b0d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPoseMessageDialog::GetRuntimeClass",
       "type": 1
     },
@@ -21005,7 +21146,7 @@
     },
     {
       "address": "0x54d6d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLoungeDialog::GetRuntimeClass",
       "type": 1
     },
@@ -21053,7 +21194,7 @@
     },
     {
       "address": "0x54e710",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TJoinSelectorDialog::GetRuntimeClass",
       "type": 1
     },
@@ -21089,7 +21230,7 @@
     },
     {
       "address": "0x54ead0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMadnessButton::GetRuntimeClass",
       "type": 1
     },
@@ -21113,7 +21254,7 @@
     },
     {
       "address": "0x54eca0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMultiMessagePicture::GetRuntimeClass",
       "type": 1
     },
@@ -21143,13 +21284,13 @@
     },
     {
       "address": "0x54f4e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShip::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x54f500",
-      "matching": 0.8941176470588236,
+      "matching": 0.8705882352941177,
       "name": "TShip::ConstructAndLinkNavyPrimaryOrderNode",
       "type": 1
     },
@@ -21419,7 +21560,7 @@
     },
     {
       "address": "0x551430",
-      "matching": 0.7555555555555555,
+      "matching": 0.7407407407407407,
       "name": "TAdmiral::TAdmiral",
       "type": 1
     },
@@ -21533,7 +21674,7 @@
     },
     {
       "address": "0x5527e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTaskForce::GetRuntimeClass",
       "type": 1
     },
@@ -21541,6 +21682,12 @@
       "address": "0x552800",
       "matching": 0.0,
       "name": "TTaskForce::ConstructTTaskForce",
+      "type": 1
+    },
+    {
+      "address": "0x552870",
+      "matching": 0.64,
+      "name": "TTaskForce::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -21851,7 +21998,7 @@
     },
     {
       "address": "0x556570",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyMgr::GetRuntimeClass",
       "type": 1
     },
@@ -22060,8 +22207,14 @@
       "type": 1
     },
     {
+      "address": "0x55b6a0",
+      "matching": 0.64,
+      "name": "TNewsMgr::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x55b6f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNewsMgr::GetRuntimeClass",
       "type": 1
     },
@@ -22151,7 +22304,7 @@
     },
     {
       "address": "0x55d1e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNewspaperView::GetRuntimeClass",
       "type": 1
     },
@@ -22217,7 +22370,7 @@
     },
     {
       "address": "0x55e700",
-      "matching": 0.6776859504132231,
+      "matching": 0.6611570247933884,
       "name": "TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList",
       "type": 1
     },
@@ -22536,7 +22689,7 @@
     {
       "address": "0x5617d0",
       "matching": 1.0,
-      "name": "TPortZone::GetTPortZoneClassNamePointer",
+      "name": "TPortZone::GetRuntimeClass",
       "type": 1
     },
     {
@@ -22637,7 +22790,7 @@
     },
     {
       "address": "0x562190",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOcean::GetRuntimeClass",
       "type": 1
     },
@@ -22733,7 +22886,7 @@
     },
     {
       "address": "0x5634a0",
-      "matching": 0.6458333333333334,
+      "matching": 0.6041666666666666,
       "name": "FindPortZoneBySelectedTile",
       "type": 1
     },
@@ -22817,7 +22970,7 @@
     },
     {
       "address": "0x564900",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMilitaryPageView::GetRuntimeClass",
       "type": 1
     },
@@ -22859,7 +23012,7 @@
     },
     {
       "address": "0x564d00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyRoster::GetRuntimeClass",
       "type": 1
     },
@@ -22901,7 +23054,7 @@
     },
     {
       "address": "0x5650a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipLine::GetRuntimeClass",
       "type": 1
     },
@@ -22925,7 +23078,7 @@
     },
     {
       "address": "0x565470",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipView::GetRuntimeClass",
       "type": 1
     },
@@ -22961,7 +23114,7 @@
     },
     {
       "address": "0x565e70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOceanDialog::GetRuntimeClass",
       "type": 1
     },
@@ -23087,7 +23240,7 @@
     },
     {
       "address": "0x568ba0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDisappearingButton::GetRuntimeClass",
       "type": 1
     },
@@ -23123,7 +23276,7 @@
     },
     {
       "address": "0x568d50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipFractionCluster::GetRuntimeClass",
       "type": 1
     },
@@ -23153,7 +23306,7 @@
     },
     {
       "address": "0x569250",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipPlacard::GetRuntimeClass",
       "type": 1
     },
@@ -23183,7 +23336,7 @@
     },
     {
       "address": "0x5694b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyToolbarCluster::GetRuntimeClass",
       "type": 1
     },
@@ -23231,7 +23384,7 @@
     },
     {
       "address": "0x5698c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSuperNavyRoster::GetRuntimeClass",
       "type": 1
     },
@@ -23255,7 +23408,7 @@
     },
     {
       "address": "0x569c20",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniShipLine::GetRuntimeClass",
       "type": 1
     },
@@ -23285,7 +23438,7 @@
     },
     {
       "address": "0x569e40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniShipView::GetRuntimeClass",
       "type": 1
     },
@@ -23309,7 +23462,7 @@
     },
     {
       "address": "0x56a590",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGamePreferencesPicture::GetRuntimeClass",
       "type": 1
     },
@@ -23345,7 +23498,7 @@
     },
     {
       "address": "0x56b290",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TFlagOptionsPicture::GetRuntimeClass",
       "type": 1
     },
@@ -23375,7 +23528,7 @@
     },
     {
       "address": "0x56b850",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameInfoPicture::GetRuntimeClass",
       "type": 1
     },
@@ -23399,7 +23552,7 @@
     },
     {
       "address": "0x56bca0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLoadSavePicture::GetRuntimeClass",
       "type": 1
     },
@@ -23501,7 +23654,7 @@
     },
     {
       "address": "0x56e8c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TQueryFloater::GetRuntimeClass",
       "type": 1
     },
@@ -23525,7 +23678,7 @@
     },
     {
       "address": "0x56ee30",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCreditsPicture::GetRuntimeClass",
       "type": 1
     },
@@ -23549,7 +23702,7 @@
     },
     {
       "address": "0x56f390",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TLineData::GetRuntimeClass",
       "type": 1
     },
@@ -23557,6 +23710,12 @@
       "address": "0x56f3b0",
       "matching": 0.4,
       "name": "TLineData::ConstructTLineDataBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x56f3d0",
+      "matching": 0.64,
+      "name": "TLineData::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -23585,7 +23744,7 @@
     },
     {
       "address": "0x56f540",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBook::GetRuntimeClass",
       "type": 1
     },
@@ -23615,7 +23774,7 @@
     },
     {
       "address": "0x56f830",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPageCorner::GetRuntimeClass",
       "type": 1
     },
@@ -23633,7 +23792,7 @@
     },
     {
       "address": "0x56f9a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPageView::GetRuntimeClass",
       "type": 1
     },
@@ -23699,7 +23858,7 @@
     },
     {
       "address": "0x570060",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPictureLine::GetRuntimeClass",
       "type": 1
     },
@@ -23723,7 +23882,7 @@
     },
     {
       "address": "0x570270",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTextLine::GetRuntimeClass",
       "type": 1
     },
@@ -23765,7 +23924,7 @@
     },
     {
       "address": "0x5707d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPictureButton::GetRuntimeClass",
       "type": 1
     },
@@ -23873,7 +24032,7 @@
     },
     {
       "address": "0x570d40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPictureRadioButton::GetRuntimeClass",
       "type": 1
     },
@@ -23993,7 +24152,7 @@
     },
     {
       "address": "0x571580",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUpDownPictureButton::GetRuntimeClass",
       "type": 1
     },
@@ -24035,7 +24194,7 @@
     },
     {
       "address": "0x5717a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRadioPictureButton::GetRuntimeClass",
       "type": 1
     },
@@ -24065,7 +24224,7 @@
     },
     {
       "address": "0x5719d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOnOffRadioButton::GetRuntimeClass",
       "type": 1
     },
@@ -24101,7 +24260,7 @@
     },
     {
       "address": "0x571c00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCzechBox::GetRuntimeClass",
       "type": 1
     },
@@ -24173,7 +24332,7 @@
     },
     {
       "address": "0x571f50",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TColorKeyButton::GetRuntimeClass",
       "type": 1
     },
@@ -24209,7 +24368,7 @@
     },
     {
       "address": "0x572110",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGWorldButton::GetRuntimeClass",
       "type": 1
     },
@@ -24251,7 +24410,7 @@
     },
     {
       "address": "0x5723f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TClickZone::GetRuntimeClass",
       "type": 1
     },
@@ -24281,7 +24440,7 @@
     },
     {
       "address": "0x5725b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTextPictureButton::GetRuntimeClass",
       "type": 1
     },
@@ -24311,7 +24470,7 @@
     },
     {
       "address": "0x572b10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNoHilitePicture::GetRuntimeClass",
       "type": 1
     },
@@ -24341,7 +24500,7 @@
     },
     {
       "address": "0x572c60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TBackgroundPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24371,7 +24530,7 @@
     },
     {
       "address": "0x572dc0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TColorKeyPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24413,7 +24572,7 @@
     },
     {
       "address": "0x573170",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMegaPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24467,7 +24626,7 @@
     },
     {
       "address": "0x5737b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOffLimitsPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24515,7 +24674,7 @@
     },
     {
       "address": "0x573a00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSliderPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24545,7 +24704,7 @@
     },
     {
       "address": "0x573c90",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScrollView::GetRuntimeClass",
       "type": 1
     },
@@ -24599,7 +24758,7 @@
     },
     {
       "address": "0x574490",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScrollBarView::GetRuntimeClass",
       "type": 1
     },
@@ -24653,7 +24812,7 @@
     },
     {
       "address": "0x574f20",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScrollerButton::GetRuntimeClass",
       "type": 1
     },
@@ -24707,7 +24866,7 @@
     },
     {
       "address": "0x575260",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSpaceCommand::GetRuntimeClass",
       "type": 1
     },
@@ -24719,7 +24878,7 @@
     },
     {
       "address": "0x575300",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "THighScoresPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24749,7 +24908,7 @@
     },
     {
       "address": "0x575840",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameSetupPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24785,7 +24944,7 @@
     },
     {
       "address": "0x575f10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameSetupMultiplayerPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24821,7 +24980,7 @@
     },
     {
       "address": "0x576980",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNetSelectPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24851,7 +25010,7 @@
     },
     {
       "address": "0x576b70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNetGameSelectPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24875,7 +25034,7 @@
     },
     {
       "address": "0x576d60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSetupRandomMapPicture::GetRuntimeClass",
       "type": 1
     },
@@ -24977,7 +25136,7 @@
     },
     {
       "address": "0x578830",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapPreviewView::GetRuntimeClass",
       "type": 1
     },
@@ -25025,7 +25184,7 @@
     },
     {
       "address": "0x579470",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRadioText::GetRuntimeClass",
       "type": 1
     },
@@ -25055,7 +25214,7 @@
     },
     {
       "address": "0x579680",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRadioTextCluster::GetRuntimeClass",
       "type": 1
     },
@@ -25109,7 +25268,7 @@
     },
     {
       "address": "0x579b60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TScenarioChooser::GetRuntimeClass",
       "type": 1
     },
@@ -25157,7 +25316,7 @@
     },
     {
       "address": "0x57ab70",
-      "matching": 0.9705882352941176,
+      "matching": 0.5172413793103449,
       "name": "TTextList::CreateTTextListInstance",
       "type": 1
     },
@@ -25187,7 +25346,7 @@
     },
     {
       "address": "0x57b080",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameScorePicture::GetRuntimeClass",
       "type": 1
     },
@@ -25223,7 +25382,7 @@
     },
     {
       "address": "0x57b740",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSelectoText::GetRuntimeClass",
       "type": 1
     },
@@ -25253,7 +25412,7 @@
     },
     {
       "address": "0x57b9e0",
-      "matching": 0.36477987421383645,
+      "matching": 0.3522012578616352,
       "name": "TSimMgr::ConstructTurnFlowStateManagerVtable00662a58",
       "type": 1
     },
@@ -25763,7 +25922,7 @@
     },
     {
       "address": "0x583950",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArrowsControl::GetRuntimeClass",
       "type": 1
     },
@@ -25811,7 +25970,7 @@
     },
     {
       "address": "0x583d30",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUpDownView::GetRuntimeClass",
       "type": 1
     },
@@ -25847,7 +26006,7 @@
     },
     {
       "address": "0x583f10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRightLeftView::GetRuntimeClass",
       "type": 1
     },
@@ -25884,7 +26043,7 @@
     },
     {
       "address": "0x5840c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDipDlgCluster::GetRuntimeClass",
       "type": 1
     },
@@ -25920,7 +26079,7 @@
     },
     {
       "address": "0x584280",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradePolicyCluster::GetRuntimeClass",
       "type": 1
     },
@@ -25956,7 +26115,7 @@
     },
     {
       "address": "0x584460",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeOrderPicture::GetRuntimeClass",
       "type": 1
     },
@@ -26058,7 +26217,7 @@
     },
     {
       "address": "0x584ad0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCloseButton::GetRuntimeClass",
       "type": 1
     },
@@ -26088,7 +26247,7 @@
     },
     {
       "address": "0x584c40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCloseParentButton::GetRuntimeClass",
       "type": 1
     },
@@ -26124,7 +26283,7 @@
     },
     {
       "address": "0x584e00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TToolBarCluster::GetRuntimeClass",
       "type": 1
     },
@@ -26689,7 +26848,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.4406779661016949,
+      "matching": 0.42016806722689076,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27229,13 +27388,13 @@
     },
     {
       "address": "0x58de40",
-      "matching": 0.6428571428571429,
+      "matching": 0.4489795918367347,
       "name": "TArmyToolbar::?CreateTArmyToolbarInstance@@YAPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@XZ",
       "type": 1
     },
     {
       "address": "0x58dec0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyToolbar::GetRuntimeClass",
       "type": 1
     },
@@ -27247,7 +27406,7 @@
     },
     {
       "address": "0x58df10",
-      "matching": 0.64,
+      "matching": 0.8181818181818182,
       "name": "TArmyToolbar::`scalar deleting destructor'",
       "type": 1
     },
@@ -27613,7 +27772,7 @@
     },
     {
       "address": "0x593f00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TStatusPicture::GetRuntimeClass",
       "type": 1
     },
@@ -27667,7 +27826,7 @@
     },
     {
       "address": "0x594fe0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TWorldView::GetRuntimeClass",
       "type": 1
     },
@@ -27841,7 +28000,7 @@
     },
     {
       "address": "0x5967f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapUberUberPicture::GetRuntimeClass",
       "type": 1
     },
@@ -27865,7 +28024,7 @@
     },
     {
       "address": "0x5969c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapUberPicture::GetRuntimeClass",
       "type": 1
     },
@@ -28117,7 +28276,7 @@
     },
     {
       "address": "0x59a360",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMiniMapView::GetRuntimeClass",
       "type": 1
     },
@@ -28182,6 +28341,12 @@
       "type": 1
     },
     {
+      "address": "0x59ae30",
+      "matching": 0.64,
+      "name": "TTacticalPlayer::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x59ae60",
       "matching": 0.5,
       "name": "TTacticalPlayer::CreateTTacticalPlayerInstance",
@@ -28189,7 +28354,7 @@
     },
     {
       "address": "0x59ae80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalPlayer::GetRuntimeClass",
       "type": 1
     },
@@ -28249,7 +28414,7 @@
     },
     {
       "address": "0x59b190",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyPlayer::GetRuntimeClass",
       "type": 1
     },
@@ -28579,7 +28744,7 @@
     },
     {
       "address": "0x59ec00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyPlayer::GetRuntimeClass",
       "type": 1
     },
@@ -28627,7 +28792,7 @@
     },
     {
       "address": "0x59ef70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyHumanPlayer::GetRuntimeClass",
       "type": 1
     },
@@ -28651,7 +28816,7 @@
     },
     {
       "address": "0x59f0c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyAutoPlayer::GetRuntimeClass",
       "type": 1
     },
@@ -28687,7 +28852,7 @@
     },
     {
       "address": "0x59f750",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalBattle::GetRuntimeClass",
       "type": 1
     },
@@ -28695,6 +28860,12 @@
       "address": "0x59f770",
       "matching": 0.15384615384615385,
       "name": "TTacticalBattle::ConstructTTacticalBattleBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x59f7a0",
+      "matching": 0.64,
+      "name": "TTacticalBattle::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -29029,7 +29200,7 @@
     },
     {
       "address": "0x5a4750",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyBattle::GetRuntimeClass",
       "type": 1
     },
@@ -29095,7 +29266,7 @@
     },
     {
       "address": "0x5a5520",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyBattle::GetRuntimeClass",
       "type": 1
     },
@@ -29172,6 +29343,12 @@
       "type": 1
     },
     {
+      "address": "0x5a5dc0",
+      "matching": 0.64,
+      "name": "TTacticalUnit::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x5a5df0",
       "matching": 0.5,
       "name": "TTacticalUnit::CreateTTacticalUnitInstance",
@@ -29179,7 +29356,7 @@
     },
     {
       "address": "0x5a5e10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalUnit::GetRuntimeClass",
       "type": 1
     },
@@ -29203,7 +29380,7 @@
     },
     {
       "address": "0x5a5f00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TArmyTacUnit::GetRuntimeClass",
       "type": 1
     },
@@ -29245,7 +29422,7 @@
     },
     {
       "address": "0x5a6270",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNavyTacUnit::GetRuntimeClass",
       "type": 1
     },
@@ -29287,7 +29464,7 @@
     },
     {
       "address": "0x5a6540",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNextMoveCommand::GetRuntimeClass",
       "type": 1
     },
@@ -29329,7 +29506,7 @@
     },
     {
       "address": "0x5a8330",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalBattleView::GetRuntimeClass",
       "type": 1
     },
@@ -29497,7 +29674,7 @@
     },
     {
       "address": "0x5a9d70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacArmyView::GetRuntimeClass",
       "type": 1
     },
@@ -29539,7 +29716,7 @@
     },
     {
       "address": "0x5ac820",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalToolbar::GetRuntimeClass",
       "type": 1
     },
@@ -29605,7 +29782,7 @@
     },
     {
       "address": "0x5ad160",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacNavyToolbar::GetRuntimeClass",
       "type": 1
     },
@@ -29629,7 +29806,7 @@
     },
     {
       "address": "0x5ad380",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacMapUberPicture::GetRuntimeClass",
       "type": 1
     },
@@ -29653,7 +29830,7 @@
     },
     {
       "address": "0x5ad4b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalAdiosPicture::GetRuntimeClass",
       "type": 1
     },
@@ -29677,7 +29854,7 @@
     },
     {
       "address": "0x5ad740",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTacticalHolaPicture::GetRuntimeClass",
       "type": 1
     },
@@ -29689,8 +29866,14 @@
     },
     {
       "address": "0x5adb70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTask::GetRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x5adbb0",
+      "matching": 0.64,
+      "name": "TTask::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -29713,7 +29896,7 @@
     },
     {
       "address": "0x5add00",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCityTask::GetRuntimeClass",
       "type": 1
     },
@@ -29791,7 +29974,7 @@
     },
     {
       "address": "0x5ae680",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TShipBuildingTask::GetRuntimeClass",
       "type": 1
     },
@@ -29845,7 +30028,7 @@
     },
     {
       "address": "0x5aeb70",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTaskList::GetRuntimeClass",
       "type": 1
     },
@@ -29887,7 +30070,7 @@
     },
     {
       "address": "0x5aef60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechMgr::GetRuntimeClass",
       "type": 1
     },
@@ -29895,6 +30078,12 @@
       "address": "0x5aef80",
       "matching": 0.5,
       "name": "ConstructCityOrderCapabilityStateVtable",
+      "type": 1
+    },
+    {
+      "address": "0x5aefa0",
+      "matching": 0.64,
+      "name": "TTechMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -29907,6 +30096,18 @@
       "address": "0x5af330",
       "matching": 0.05,
       "name": "GenerateRandomCapabilityPrioritySlots",
+      "type": 1
+    },
+    {
+      "address": "0x5af460",
+      "matching": 0.029556650246305417,
+      "name": "TTechMgr::ReadFrom",
+      "type": 1
+    },
+    {
+      "address": "0x5af710",
+      "matching": 0.03508771929824561,
+      "name": "TTechMgr::WriteTo",
       "type": 1
     },
     {
@@ -29995,7 +30196,7 @@
     },
     {
       "address": "0x5b0ef0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechStorePage::GetRuntimeClass",
       "type": 1
     },
@@ -30019,7 +30220,7 @@
     },
     {
       "address": "0x5b1100",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechItemLine::GetRuntimeClass",
       "type": 1
     },
@@ -30043,7 +30244,7 @@
     },
     {
       "address": "0x5b12c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechItemView::GetRuntimeClass",
       "type": 1
     },
@@ -30067,7 +30268,7 @@
     },
     {
       "address": "0x5b22a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTechHistoryView::GetRuntimeClass",
       "type": 1
     },
@@ -30085,7 +30286,7 @@
     },
     {
       "address": "0x5b2820",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGameSetupDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30103,7 +30304,7 @@
     },
     {
       "address": "0x5b2950",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMapEditCluster::GetRuntimeClass",
       "type": 1
     },
@@ -30121,7 +30322,7 @@
     },
     {
       "address": "0x5b2a80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinorTradeBidsDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30139,7 +30340,7 @@
     },
     {
       "address": "0x5b2d80",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TRelationshipDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30169,7 +30370,7 @@
     },
     {
       "address": "0x5b33e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinorRelationshipDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30199,7 +30400,7 @@
     },
     {
       "address": "0x5b3bc0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TGPTreatyDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30217,7 +30418,7 @@
     },
     {
       "address": "0x5b4070",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMinorTreatyDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30235,7 +30436,7 @@
     },
     {
       "address": "0x5b46a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAutomatedPlayDialog::GetRuntimeClass",
       "type": 1
     },
@@ -30253,7 +30454,7 @@
     },
     {
       "address": "0x5b47f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TSpecialQuitPicture::GetRuntimeClass",
       "type": 1
     },
@@ -30307,7 +30508,7 @@
     },
     {
       "address": "0x5b51c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPictureNumberText::GetRuntimeClass",
       "type": 1
     },
@@ -30331,7 +30532,7 @@
     },
     {
       "address": "0x5b52e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TPictureText::GetRuntimeClass",
       "type": 1
     },
@@ -30355,7 +30556,7 @@
     },
     {
       "address": "0x5b5400",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMyStaticText::GetRuntimeClass",
       "type": 1
     },
@@ -30379,7 +30580,7 @@
     },
     {
       "address": "0x5b5570",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDropShadowText::GetRuntimeClass",
       "type": 1
     },
@@ -30433,7 +30634,7 @@
     },
     {
       "address": "0x5b5bb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInfoBarPictureText::GetRuntimeClass",
       "type": 1
     },
@@ -30463,7 +30664,7 @@
     },
     {
       "address": "0x5b5fd0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDeluxeText::GetRuntimeClass",
       "type": 1
     },
@@ -30547,7 +30748,7 @@
     },
     {
       "address": "0x5b6690",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TInfoBarText::GetRuntimeClass",
       "type": 1
     },
@@ -30583,7 +30784,7 @@
     },
     {
       "address": "0x5b69e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNoHiliteText::GetRuntimeClass",
       "type": 1
     },
@@ -30607,13 +30808,13 @@
     },
     {
       "address": "0x5b6c40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTown::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5b6c60",
-      "matching": 1.0,
+      "matching": 0.11764705882352941,
       "name": "TTown::TTown",
       "type": 1
     },
@@ -30847,7 +31048,7 @@
     },
     {
       "address": "0x5ba1a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDealList::GetRuntimeClass",
       "type": 1
     },
@@ -30883,7 +31084,7 @@
     },
     {
       "address": "0x5ba3e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TNextTradeCommand::GetRuntimeClass",
       "type": 1
     },
@@ -30919,7 +31120,7 @@
     },
     {
       "address": "0x5ba700",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeScreenPicture::GetRuntimeClass",
       "type": 1
     },
@@ -30949,7 +31150,7 @@
     },
     {
       "address": "0x5baba0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDealBookPicture::GetRuntimeClass",
       "type": 1
     },
@@ -31003,7 +31204,7 @@
     },
     {
       "address": "0x5bc760",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDealTabControl::GetRuntimeClass",
       "type": 1
     },
@@ -31039,7 +31240,7 @@
     },
     {
       "address": "0x5bcc10",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradePageSellView::GetRuntimeClass",
       "type": 1
     },
@@ -31063,7 +31264,7 @@
     },
     {
       "address": "0x5bd030",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeOfferNationLine::GetRuntimeClass",
       "type": 1
     },
@@ -31087,7 +31288,7 @@
     },
     {
       "address": "0x5bd260",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeOfferNationView::GetRuntimeClass",
       "type": 1
     },
@@ -31105,7 +31306,7 @@
     },
     {
       "address": "0x5bd670",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradePageBuyView::GetRuntimeClass",
       "type": 1
     },
@@ -31129,7 +31330,7 @@
     },
     {
       "address": "0x5bd9c0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeBidNationLine::GetRuntimeClass",
       "type": 1
     },
@@ -31153,7 +31354,7 @@
     },
     {
       "address": "0x5bdbb0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeBidNationView::GetRuntimeClass",
       "type": 1
     },
@@ -31171,7 +31372,7 @@
     },
     {
       "address": "0x5bded0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeBookView::GetRuntimeClass",
       "type": 1
     },
@@ -31207,7 +31408,7 @@
     },
     {
       "address": "0x5be550",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOfferDeskPicture::GetRuntimeClass",
       "type": 1
     },
@@ -31279,7 +31480,7 @@
     },
     {
       "address": "0x5c0d60",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TDealLine::GetRuntimeClass",
       "type": 1
     },
@@ -31309,7 +31510,7 @@
     },
     {
       "address": "0x5c14a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCommodityLine::GetRuntimeClass",
       "type": 1
     },
@@ -31339,7 +31540,7 @@
     },
     {
       "address": "0x5c18e0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeTotalsLine::GetRuntimeClass",
       "type": 1
     },
@@ -31369,7 +31570,7 @@
     },
     {
       "address": "0x5c1af0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TTradeTotalsView::GetRuntimeClass",
       "type": 1
     },
@@ -31399,7 +31600,7 @@
     },
     {
       "address": "0x5c2490",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TUnit::GetRuntimeClass",
       "type": 1
     },
@@ -31459,14 +31660,13 @@
     },
     {
       "address": "0x5c28a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TCivUnit::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5c28c0",
-      "effective": true,
-      "matching": 0.8888888888888888,
+      "matching": 0.125,
       "name": "TCivUnit::TCivUnit",
       "type": 1
     },
@@ -31556,7 +31756,7 @@
     },
     {
       "address": "0x5c2df0",
-      "matching": 0.9292929292929293,
+      "matching": 0.6808510638297872,
       "name": "TMilitaryUnitOrderState::TMilitaryUnitOrderState",
       "type": 1
     },
@@ -32024,13 +32224,13 @@
     },
     {
       "address": "0x5d5040",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TViewMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5d5060",
-      "matching": 1.0,
+      "matching": 0.0625,
       "name": "TViewMgr::ConstructGlobalTurnEventState",
       "type": 1
     },
@@ -32474,7 +32674,7 @@
     },
     {
       "address": "0x5dcdd0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TModalMessageCommand::GetRuntimeClass",
       "type": 1
     },
@@ -32624,13 +32824,13 @@
     },
     {
       "address": "0x5df260",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TAssetMgr::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x5df280",
-      "matching": 0.6415094339622641,
+      "matching": 0.6037735849056604,
       "name": "ConstructUiViewManager",
       "type": 1
     },
@@ -32882,7 +33082,7 @@
     },
     {
       "address": "0x5e2210",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TMovieView::GetRuntimeClass",
       "type": 1
     },
@@ -33051,7 +33251,7 @@
     {
       "address": "0x5e33c0",
       "matching": 1.0,
-      "name": "TNetMgr::GetTNetMgrClassNamePointer",
+      "name": "TNetMgr::GetRuntimeClass",
       "type": 1
     },
     {
@@ -39241,6 +39441,12 @@
       "type": 5
     },
     {
+      "address": "0x645ca8",
+      "matching": 0.9272727272727272,
+      "name": "TTechStorePage::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x645f98",
       "matching": 1.0,
       "name": "ArchiveStreamAdapter::`vftable'",
@@ -39262,6 +39468,12 @@
       "address": "0x6485c0",
       "matching": 1.0,
       "name": "TObject::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x648a60",
+      "matching": 1.0,
+      "name": "TDocument::`vftable'",
       "type": 5
     },
     {
@@ -39313,9 +39525,15 @@
       "type": 5
     },
     {
-      "address": "0x649068",
+      "address": "0x649010",
       "matching": 1.0,
       "name": "TSortedPtrList::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x649140",
+      "matching": 1.0,
+      "name": "TStream::`vftable'",
       "type": 5
     },
     {
@@ -39403,6 +39621,12 @@
       "type": 5
     },
     {
+      "address": "0x64bdd0",
+      "matching": 1.0,
+      "name": "TAdorner::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x64be28",
       "matching": 1.0,
       "name": "TDialogView::`vftable'",
@@ -39445,9 +39669,21 @@
       "type": 5
     },
     {
+      "address": "0x64c928",
+      "matching": 1.0,
+      "name": "TArmyMgr::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x64c9a0",
       "matching": 1.0,
       "name": "TArmyStackList::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64ca38",
+      "matching": 1.0,
+      "name": "TArmyStack::`vftable'",
       "type": 5
     },
     {
@@ -39601,6 +39837,12 @@
       "type": 5
     },
     {
+      "address": "0x64f540",
+      "matching": 1.0,
+      "name": "TLaborPool::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x64f580",
       "matching": 1.0,
       "name": "TCity::`vftable'",
@@ -39664,6 +39906,12 @@
       "address": "0x64f958",
       "matching": 1.0,
       "name": "TItemOrder::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64f9b0",
+      "matching": 1.0,
+      "name": "TPopulationMgr::`vftable'",
       "type": 5
     },
     {
@@ -39811,6 +40059,12 @@
       "type": 5
     },
     {
+      "address": "0x653248",
+      "matching": 1.0,
+      "name": "TCivMgr::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x653290",
       "matching": 1.0,
       "name": "TLandSaleEvent::`vftable'",
@@ -39838,6 +40092,12 @@
       "address": "0x653c90",
       "matching": 1.0,
       "name": "TMinor::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x653d90",
+      "matching": 1.0,
+      "name": "TTurnStartEvent::`vftable'",
       "type": 5
     },
     {
@@ -39973,6 +40233,18 @@
       "type": 5
     },
     {
+      "address": "0x656998",
+      "matching": 1.0,
+      "name": "TFuzzyVar::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6569c8",
+      "matching": 1.0,
+      "name": "TFuzzySet::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x656a98",
       "matching": 1.0,
       "name": "TGameWindow::`vftable'",
@@ -40030,6 +40302,12 @@
       "address": "0x658660",
       "matching": 1.0,
       "name": "TMacViewMgr::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6587e0",
+      "matching": 1.0,
+      "name": "TMapMgr::`vftable'",
       "type": 5
     },
     {
@@ -40129,6 +40407,12 @@
       "type": 5
     },
     {
+      "address": "0x65b078",
+      "matching": 0.9606741573033708,
+      "name": "TProxyGreatPower::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x65b3d0",
       "matching": 1.0,
       "name": "THostGreatPower::`vftable'",
@@ -40177,6 +40461,12 @@
       "type": 5
     },
     {
+      "address": "0x65c468",
+      "matching": 1.0,
+      "name": "TTaskForce::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x65c498",
       "matching": 1.0,
       "name": "TAdmiral::`vftable'",
@@ -40186,6 +40476,12 @@
       "address": "0x65c4c8",
       "matching": 1.0,
       "name": "TNavyMgr::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65c598",
+      "matching": 1.0,
+      "name": "TNewsMgr::`vftable'",
       "type": 5
     },
     {
@@ -40288,6 +40584,12 @@
       "address": "0x65def8",
       "matching": 1.0,
       "name": "TGameInfoPicture::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x65e230",
+      "matching": 1.0,
+      "name": "TLineData::`vftable'",
       "type": 5
     },
     {
@@ -40741,6 +41043,12 @@
       "type": 5
     },
     {
+      "address": "0x669598",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x6695f0",
       "matching": 1.0,
       "name": "TArmyPlayer::`vftable'",
@@ -40777,6 +41085,12 @@
       "type": 5
     },
     {
+      "address": "0x66a088",
+      "matching": 1.0,
+      "name": "TTacticalBattle::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x66a100",
       "matching": 1.0,
       "name": "TNextMoveCommand::`vftable'",
@@ -40789,6 +41103,12 @@
       "type": 5
     },
     {
+      "address": "0x66a1b8",
+      "matching": 1.0,
+      "name": "TTacticalUnit::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x66a380",
       "matching": 1.0,
       "name": "TTacticalBattleView::`vftable'",
@@ -40798,6 +41118,12 @@
       "address": "0x66a5a0",
       "matching": 1.0,
       "name": "TTacNavyToolbar::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66a970",
+      "matching": 1.0,
+      "name": "TTask::`vftable'",
       "type": 5
     },
     {
@@ -40816,6 +41142,12 @@
       "address": "0x66aa48",
       "matching": 1.0,
       "name": "TTaskList::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66ad28",
+      "matching": 1.0,
+      "name": "TTechMgr::`vftable'",
       "type": 5
     },
     {
@@ -41053,6 +41385,6 @@
       "type": 1
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }

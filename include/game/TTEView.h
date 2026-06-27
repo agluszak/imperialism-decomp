@@ -6,6 +6,7 @@
 // VTABLE: IMPERIALISM 0x00644308
 class TTEView : public TStaticText {
 public:
+  TTEView();
 // === BEGIN GENERATED DECLS (TTEView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTEView)
   virtual ~TTEView(); // slot 0x01 (scalar deleting destructor)

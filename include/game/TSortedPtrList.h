@@ -7,9 +7,11 @@
 
 struct CRuntimeClass;
 
-// CPtrArray-derived sorted pointer list base (vtable 0x00649068).
+// CPtrArray-derived sorted pointer list base (vtable 0x00649010, GetRuntimeClass
+// 0x004883e0 returns the "TSortedPtrList" CRuntimeClass descriptor). The derived
+// TPtrList owns vtable 0x00649068.
 // Base recovered from CRuntimeClass descriptor: TSortedPtrList -> CPtrArray -> CObject.
-// VTABLE: IMPERIALISM 0x00649068
+// VTABLE: IMPERIALISM 0x00649010
 class TSortedPtrList : public CPtrArray {
 public:
   DECLARE_DYNCREATE(TSortedPtrList)

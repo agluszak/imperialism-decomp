@@ -28,15 +28,25 @@ char TStream::streamSlot38() {
 
 // FUNCTION: IMPERIALISM 0x00488ab0
 void TStream::Free() {} // slot 0x1c override
+
+// FUNCTION: IMPERIALISM 0x00488ad0
 int TStream::streamSlot28() {
   return 0;
-} // TODO
-void TStream::streamSlot2c() {} // TODO
+}
+
+// FUNCTION: IMPERIALISM 0x00488e30
+void TStream::streamSlot2c() {}
+
+// FUNCTION: IMPERIALISM 0x00488af0
 int TStream::streamSlot30() {
   return 0;
-} // TODO
-void TStream::streamSlot34() {}        // TODO
-void TStream::ReadBytes(void*, int) {} // TODO: primitive (subclass overrides)
+}
+
+// FUNCTION: IMPERIALISM 0x00488e50
+void TStream::streamSlot34() {}
+
+// FUNCTION: IMPERIALISM 0x00488b40
+void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
 
 // FUNCTION: IMPERIALISM 0x00488b10
 void TStream::AssertMcAppStreamLine304() {}

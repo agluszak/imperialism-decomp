@@ -11,6 +11,7 @@ class TStream;
 class TPtrList : public TSortedPtrList {
 public:
   DECLARE_DYNCREATE(TPtrList)
+  TPtrList();
 
   // Overrides of TSortedPtrList slots (0x28-0x40):
   virtual POSITION AddHeadSlot28(void* item);

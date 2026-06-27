@@ -10,6 +10,7 @@ class TStream;
 class TObject : public CObject {
 public:
   DECLARE_SERIAL(TObject)
+  TObject();
 
   void Serialize(CArchive& archive) override;
   virtual void WriteTo(TStream* stream);

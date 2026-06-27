@@ -8,12 +8,10 @@ extern "C" {
 char g_pClassDescTCountingStream = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00488b40
-void TCountingStream::ReadBytes(void* buffer, int sizeBytes) {
-  (void)buffer;
-  (void)sizeBytes;
-}
 IMPLEMENT_DYNCREATE(TCountingStream, TStream)
+
+// ReadBytes (slot 0x3c, 0x00488b40) is inherited unchanged from TStream;
+// TCountingStream only overrides the byte-counting write path (WriteBytesSlot78).
 
 // FUNCTION: IMPERIALISM 0x00489410
 TCountingStream::TCountingStream() {

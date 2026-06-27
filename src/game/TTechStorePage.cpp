@@ -2,6 +2,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004600f0
 // TTechStorePage::`scalar deleting destructor'
+TTechStorePage::~TTechStorePage() {}
 
 // FUNCTION: IMPERIALISM 0x00479440
 undefined TTechStorePage::GetTScrollerClassNamePointer() {

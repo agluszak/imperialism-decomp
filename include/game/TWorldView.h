@@ -19,6 +19,7 @@ public:
   unsigned short field7a;
 
   DECLARE_DYNCREATE(TWorldView)
+  TWorldView();
   virtual ~TWorldView();
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
