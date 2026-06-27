@@ -7,24 +7,7 @@
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TViewMgr.h"
-#include "game/advance_turn_state_machine_cases.h"
 #include "game/diplomacy_globals.h"
-
-extern "C" char DAT_006a43f0;
-extern "C" char DAT_006a43c0;
-extern "C" short g_nTurnCooldownDeferCounter006A43C4;
-
-extern undefined4 RebuildGlobalOrderManagersAndCapabilityState(void);
-extern undefined4 RebuildMapContextAndGlobalMapState(void);
-extern undefined4 RebuildNationStateSlotsAndAvailability(void);
-extern undefined4 ConfigureTurnResumeStateAndNationMask(void);
-extern undefined4 RefreshNationAdvisorLabelStrings(void);
-extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
-extern undefined4 ShowTurnAlertsForActiveNation(void);
-extern undefined4 PostTurnEventCodeMessage2420(void);
-extern undefined4 SyncNationField790FromLocalizationStateId(void);
-extern undefined4 UpdatePersistentTopTenNationScores(void);
-extern undefined4 RefreshHelpManagerForTurnAdvance(void);
 
 // Shared empty-string literal at 0x006a13a0 and the per-nation scenario setup table at
 // 0x00698b1a, both defined in global_data_tables.cpp.
@@ -260,76 +243,9 @@ check_turn_state_code:
   PostMainWindowCommand100ForTurnFlow();
 }
 
-// FUNCTION: IMPERIALISM 0x0057da70
-void TSimMgr::AdvanceGlobalTurnStateMachine() {
-  if (turnStateCode == 0x10 && g_nTurnCooldownDeferCounter006A43C4 > 0) {
-    --g_nTurnCooldownDeferCounter006A43C4;
-  }
-  previousTurnStateCode = turnStateCode;
-
-  switch (turnStateCode) {
-  case 1:
-    turnStateCode = 3;
-    if (DAT_006a43c0 == 0) {
-      if (g_pUiRuntimeContext != nullptr) {
-        g_pUiRuntimeContext->DispatchTurnEventSlot4C(0, 0);
-      }
-      break;
-    }
-    if (g_pUiRuntimeContext != nullptr) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
-    }
-    break;
-
-  case 2:
-    turnStateCode = 0x10;
-    AdvanceGlobalTurnStateMachineCase2RefreshNationSlots(this);
-    if (DAT_006a43f0 == 0) {
-      if (stateFlag114 == 0) {
-        if (redrawEnabled == 0) {
-          RefreshNationAdvisorLabelStrings();
-        }
-      } else {
-        ProcessTurnInstructionStreamAndFinalizePhase();
-      }
-    }
-    RefreshHelpManagerForTurnAdvance();
-    if (redrawEnabled != 0) {
-      ConfigureTurnResumeStateAndNationMask();
-      turnStateCode = 0x13;
-      PostMainWindowCommand100ForTurnFlow();
-      break;
-    }
-    PostMainWindowCommand100ForTurnFlow();
-    break;
-
-  case 3:
-    turnStateCode = 2;
-    if (field112 != 0) {
-      RebuildGlobalOrderManagersAndCapabilityState();
-      RebuildMapContextAndGlobalMapState();
-    }
-    if (DAT_006a43f0 != 0) {
-      break;
-    }
-    RebuildNationStateSlotsAndAvailability();
-    if (field34 < 2 && stateFlag114 == 0) {
-      if (g_pUiRuntimeContext != nullptr) {
-        g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
-      }
-    } else {
-      PostMainWindowCommand100ForTurnFlow();
-    }
-    break;
-
-#include "advance_turn_state_machine_switch.inc"
-
-  default:
-    break;
-  }
-}
-
-
+// TSimMgr::AdvanceGlobalTurnStateMachine (0x0057da70) is defined in its own translation unit,
+// src/game/TSimMgr_AdvanceGlobalTurnStateMachine.cpp, so its large inline switch body does not
+// perturb the codegen of the methods in this file.
 
 // FUNCTION: IMPERIALISM 0x0057f110
 int TSimMgr::IsTurnFlowPhaseOutsideRange4To5() {

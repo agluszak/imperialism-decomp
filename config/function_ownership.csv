@@ -2575,7 +2575,7 @@ address|target_cpp|ownership|note
 57d950|src/game/TSimMgr.cpp|manual|marker_sync
 57d970|src/game/TSimMgr.cpp|manual|marker_sync
 57d990|src/game/TSimMgr.cpp|manual|marker_sync
-57da70|src/game/TSimMgr.cpp|manual|marker_sync
+57da70|src/game/TSimMgr_AdvanceGlobalTurnStateMachine.cpp|manual|marker_sync
 57f110|src/game/TSimMgr.cpp|manual|marker_sync
 57f140|src/game/TSimMgr.cpp|manual|marker_sync
 57f200|src/game/TSimMgr.cpp|manual|marker_sync
