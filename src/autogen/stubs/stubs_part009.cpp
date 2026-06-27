@@ -803,18 +803,10 @@ undefined4 ConstructUiColorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430a30()
-// FUNCTION: IMPERIALISM 0x00430a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl()
+// ghidra_name TBattleReportView::DestructTBattleReportViewBaseState
+// ghidra_proto undefined DestructTBattleReportViewBaseState()
 // FUNCTION: IMPERIALISM 0x00430a60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
+undefined4 DestructTBattleReportViewBaseState(void)
 {
   return 0;
 }

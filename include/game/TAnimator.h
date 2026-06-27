@@ -6,19 +6,20 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TAnimator and its role. Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain: TAnimator -> TEventHandler -> TObject -> CObject.
+// TODO(manifest): describe TAnimator and its role. Base edge (TEventHandler) recovered from RTTI
+// CRuntimeClass chain: TAnimator -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c4e8
 class TAnimator : public TEventHandler {
 public:
-// === BEGIN GENERATED DECLS (TAnimator) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TAnimator) — refreshed by recover-class; do not hand-edit ===
   virtual CRuntimeClass* GetRuntimeClass() const override; // slot 0x00 0x4a0a80
-  virtual ~TAnimator(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TAnimator();                                    // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
-  virtual void WriteTo(TStream* stream) override; // slot 0x05 0x4a0e50
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a0e50
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
-  virtual void Free() override; // slot 0x07 0x4a0dc0
+  virtual void Free() override;                    // slot 0x07 0x4a0dc0
   // slot 0x08 ShallowClone inherited unchanged (0x48a7c0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a GetBoolSlot28 inherited unchanged (0x48a240)
@@ -49,8 +50,10 @@ public:
   // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
-// === END GENERATED DECLS (TAnimator) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimator 0xCTOR`).
+                                                       // === END GENERATED DECLS (TAnimator) ===
+  void RemoveUiTransientRegistryObjectByTag(int tag);
+  // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimator
+  // 0xCTOR`).
 
   TAnimator();
 };

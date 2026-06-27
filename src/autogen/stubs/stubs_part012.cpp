@@ -171,14 +171,6 @@ undefined4 CallObjectOffset24Vslot54IfPresent(void)
   return 0;
 }
 
-// ghidra_name TBattleReportView::RemoveUiTransientRegistryObjectByTag
-// ghidra_proto undefined RemoveUiTransientRegistryObjectByTag()
-// FUNCTION: IMPERIALISM 0x004a0fa0
-undefined4 RemoveUiTransientRegistryObjectByTag(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AllocateWithFallbackHandler_At004a1130
 // ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At004a1130()
 // FUNCTION: IMPERIALISM 0x004a1130
@@ -891,46 +883,6 @@ undefined4 CreateTBattleReportViewInstance(void)
   return 0;
 }
 
-// ghidra_name TBattleReportView::GetTBattleReportViewClassNamePointer
-// ghidra_proto undefined GetTBattleReportViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004acb40
-undefined4 GetTBattleReportViewClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::ConstructTBattleReportViewBaseState
-// ghidra_proto undefined ConstructTBattleReportViewBaseState()
-// FUNCTION: IMPERIALISM 0x004acb60
-undefined4 ConstructTBattleReportViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::DestructTBattleReportViewAndMaybeFree
-// ghidra_proto undefined DestructTBattleReportViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ad560
-undefined4 DestructTBattleReportViewAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::RenderBlinkingMapActionIndicatorByTick
-// ghidra_proto undefined RenderBlinkingMapActionIndicatorByTick()
-// FUNCTION: IMPERIALISM 0x004ad5a0
-undefined4 RenderBlinkingMapActionIndicatorByTick(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleUnitsView::HandleMapContextPrevNextInfoCommands
-// ghidra_proto undefined HandleMapContextPrevNextInfoCommands()
-// FUNCTION: IMPERIALISM 0x004ad7a0
-undefined4 HandleMapContextPrevNextInfoCommands(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeOutSharedStringWithEmptyRefAndCopyBuffer
 // ghidra_proto undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()
 // FUNCTION: IMPERIALISM 0x004adc40
@@ -939,42 +891,10 @@ undefined4 InitializeOutSharedStringWithEmptyRefAndCopyBuffer(void)
   return 0;
 }
 
-// ghidra_name TBattleReportView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80
-// ghidra_proto undefined WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80()
-// FUNCTION: IMPERIALISM 0x004adc80
-undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004adc80(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels_At004adcb0
-// ghidra_proto undefined WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels_At004adcb0()
-// FUNCTION: IMPERIALISM 0x004adcb0
-undefined4 WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoLabels_At004adcb0(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00
-// ghidra_proto undefined WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00()
-// FUNCTION: IMPERIALISM 0x004ade00
-undefined4 WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl
 // ghidra_proto undefined WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl()
 // FUNCTION: IMPERIALISM 0x004ade30
 undefined4 WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
-// ghidra_proto undefined RefreshMapContextSelectionPanelAndInfoLabels()
-// FUNCTION: IMPERIALISM 0x004adfc0
-undefined4 RefreshMapContextSelectionPanelAndInfoLabels(void)
 {
   return 0;
 }

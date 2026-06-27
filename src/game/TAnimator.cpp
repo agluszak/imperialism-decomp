@@ -20,13 +20,15 @@ char TAnimator::CanHandleCityDialogActionFalse(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0dc0
-void TAnimator::Free() {
-}
+void TAnimator::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004a0e10
-void TAnimator::ReadFrom(TStream* stream) {
-}
+void TAnimator::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a0e50
-void TAnimator::WriteTo(TStream* stream) {
+void TAnimator::WriteTo(TStream* stream) {}
+
+// FUNCTION: IMPERIALISM 0x004a0fa0
+void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
+  (void)tag;
 }

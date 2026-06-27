@@ -32,8 +32,16 @@ Done:
 
 | Class | vtable | base (vtable) | override slots |
 |---|---|---|---|
+| TBattleReportView | 0x0063efa8 | TDiplomacyMapView (0x00655b68) | 9: 0x00,0x01,0x07,0x0f,0x13,0x35,0x37,0x44,0x47 |
 | TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
 | TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17: 0x00,0x01,0x07,0x0f,0x35,0x37,0x44,0x47,0x68,0x74,0x75,0x76,0x77,0x78,0x79,0x7a,0x7b |
+
+`TBattleReportView` recovered 2026-06-27 as a real
+`TDiplomacyMapView` subclass with primary vtable **0x0063efa8** and size
+0x24d0. Slot 0x01 is modeled as the real scalar-deleting destructor at
+0x00430a30; the class cleanup at 0x004ad560 is the slot 0x07 `Free()` override
+that releases the transient registry object through the real `TAnimator`
+receiver. `just vtable TBattleReportView` passes.
 
 `TShipOrder` recovered 2026-06-27 as a real `TProductionOrder` subclass with
 its slots moved out of the temporary `TCapacityOrder` ownership. The shared city
@@ -59,15 +67,7 @@ Done:
 
 Hard:
 
-- **TBattleReportView** (base TDiplomacyMapView, size 0x24d0). Constructor
-  evidence calls the TDiplomacyMapView base-state constructor, initializes a
-  small derived tail at offset 0x24c8, then writes the complete-object vfptr to
-  **0x0063efa8**. Treat this as derived from TDiplomacyMapView's 0x00655b68
-  table; do not compare it against 0x0066f16c. Open issue: slot 0x01 points at
-  the generic heap-free helper `0x00430a30` rather than a normal class
-  scalar-deleting destructor, while slot 0x07 points at the class cleanup body
-  `0x004ad560`. Audit that destructor/Free slot shape before adding a C++ class
-  header, rather than forcing a fake destructor model.
+None currently.
 
 ### Cat D — RTTI vtable addr disagrees with our current annotation
 

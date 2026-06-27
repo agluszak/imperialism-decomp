@@ -1022,6 +1022,18 @@
       "type": 1
     },
     {
+      "address": "0x430a30",
+      "matching": 0.64,
+      "name": "TBattleReportView::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x430a60",
+      "matching": 0.06060606060606061,
+      "name": "TBattleReportView::DestructTBattleReportViewBaseState",
+      "type": 1
+    },
+    {
       "address": "0x430b00",
       "matching": 0.64,
       "name": "TBattleDetailBook::`scalar deleting destructor'",
@@ -7160,8 +7172,8 @@
     },
     {
       "address": "0x4a0fa0",
-      "matching": 0.0,
-      "name": "TBattleReportView::RemoveUiTransientRegistryObjectByTag",
+      "matching": 0.03571428571428571,
+      "name": "TAnimator::RemoveUiTransientRegistryObjectByTag",
       "type": 1
     },
     {
@@ -8049,25 +8061,31 @@
     {
       "address": "0x4acb40",
       "matching": 0.5,
-      "name": "TBattleReportView::GetTBattleReportViewClassNamePointer",
+      "name": "TBattleReportView::GetRuntimeClass",
       "type": 1
     },
     {
       "address": "0x4acb60",
-      "matching": 0.0030303030303030303,
-      "name": "TBattleReportView::ConstructTBattleReportViewBaseState",
+      "matching": 0.00906344410876133,
+      "name": "TBattleReportView::NoOpUiLifecycleHook",
+      "type": 1
+    },
+    {
+      "address": "0x4ad560",
+      "matching": 1.0,
+      "name": "TBattleReportView::Free",
       "type": 1
     },
     {
       "address": "0x4ad5a0",
-      "matching": 0.0,
-      "name": "TBattleReportView::RenderBlinkingMapActionIndicatorByTick",
+      "matching": 0.05263157894736842,
+      "name": "TBattleReportView::CanHandleCityDialogActionFalse",
       "type": 1
     },
     {
       "address": "0x4ad7a0",
-      "matching": 0.0,
-      "name": "TBattleUnitsView::HandleMapContextPrevNextInfoCommands",
+      "matching": 0.02027027027027027,
+      "name": "TBattleReportView::HandleEvent",
       "type": 1
     },
     {
@@ -8077,8 +8095,26 @@
       "type": 1
     },
     {
+      "address": "0x4adc80",
+      "matching": 0.2,
+      "name": "TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback",
+      "type": 1
+    },
+    {
+      "address": "0x4adcb0",
+      "matching": 0.11538461538461539,
+      "name": "TBattleReportView::BeginMouseCaptureAndStartRepeatTimer",
+      "type": 1
+    },
+    {
+      "address": "0x4ade00",
+      "matching": 0.21052631578947367,
+      "name": "TBattleReportView::ApplyRectSlot110",
+      "type": 1
+    },
+    {
       "address": "0x4adfc0",
-      "matching": 0.0034602076124567475,
+      "matching": 0.010344827586206896,
       "name": "TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels",
       "type": 1
     },
@@ -38865,6 +38901,12 @@
       "address": "0x63ed78",
       "matching": 1.0,
       "name": "TNominationView::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x63efa8",
+      "matching": 1.0,
+      "name": "TBattleReportView::`vftable'",
       "type": 5
     },
     {
