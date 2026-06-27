@@ -39,6 +39,7 @@ public:
   // Load the primary data library into the dedicated +0x4c slot.      0x00499380
   BOOL LoadPrimaryDataLibraryWithErrorDialog(LPCSTR path);
 
+  void ReleaseRecordById(short id);         // 0x0049a190
   void ReleaseRecordByHandle(void* handle); // 0x0049a390
 
   // Load a localized UI string by (group, index) into `out`. Reached via the global

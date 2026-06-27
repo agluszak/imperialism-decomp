@@ -23,27 +23,12 @@ Almost every cast-hidden callee here is a real `__thiscall` method — model the
   - `UpdateLocalizationAudioSlot` @ 0x49c240 (54.90%)
   - `SetChannelVolumesUntilAccepted` @ 0x49c850 (68.75%)
 
-### Next: bitmap loader keystone (most tractable)
-Port **`BuildIndexedBmpResourceById` @ 0x499b40** as a real 4-arg `__thiscall` method on the
-*existing* `TModuleLibraryCacheTableStateB`:
-`void* BuildIndexedBmpResourceById(short id, int w, int h, int flag)` (callsite evidence:
-`cache->BuildIndexedBmpResourceById(field1c, 0x42, 0x42, 0)`; callee does `RET 0x10` = 4 args).
-- 642-byte body; sub-callees: `AllocateBitmapSurfaceHeaderAndPixelBuffer`,
-  `BuildPaletteFromBitmapColorTable`, `InitializePaletteHolderVtableAndReset`,
-  `FindShortKeyHashNodeAndOutputBucketIndex`, `RemoveHashIndexedRecordByShortKey`,
-  `BuildIndexedBmpResourceById_Impl` @ 0x49b190. `AllocateWithFallbackHandler(n)` = MFC
-  `operator new` (`new T()`), not a stub.
-- Unblocks (then port / de-cast):
-  - **`TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize` @ 0x495b70** — currently a stub
-    (`src/game/TAnimation.cpp`); clean once the cache method exists. Body calls
-    `cache->LoadBmpResourceByIdCached(field1c)`, `cache->BuildIndexedBmpResourceById(field1c,
-    0x42, 0x42, 0)`, then `CopyOffset10PointPairToOutOrZero` into fields +0x08..+0x14.
-  - **`TPicture::SetPictureResourceIdAndRefresh` @ 0x48f570** casts in `src/game/TPicture.cpp`:
-    `BuildIndexedBmpResourceById`, `SetPictureResourceIdAndRefresh_Impl` @ 0x48f610, and the
-    decrement-refcount thunk (`thunk_DecrementDialogResourceRefCountByShortIdAndCleanup`).
-    Note: this callsite uses a shared stack-frame across `_Impl` (0x408d73→0x48f610) and the
-    bmp builder — the 4 args are laid out by the `_Impl` setup. Messier than TAnimation; do it
-    after the cache method + TAnimation.
+### Next: picture resource tail
+The bitmap cache keystone is now typed: `BuildIndexedBmpResourceById` @ 0x499b40 and
+`ReleaseRecordById` @ 0x49a190 are real `TModuleLibraryCacheTableStateB` methods, and
+`TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize` @ 0x495b70 uses the typed cache API.
+The remaining `TPicture::SetPictureResourceIdAndRefresh` @ 0x48f570 cast is the shared-frame
+`SetPictureResourceIdAndRefresh_Impl` @ 0x48f610 thunk/setup path.
 
 ### Next: wave sub-system (largest)
 Remove TSoundPlayer's remaining fastcall cast (`CallLoadWaveResource`) by porting

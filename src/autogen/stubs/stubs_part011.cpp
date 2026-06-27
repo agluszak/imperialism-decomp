@@ -1475,14 +1475,6 @@ undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void)
   return 0;
 }
 
-// ghidra_name DecrementDialogResourceRefCountByShortIdAndCleanup
-// ghidra_proto undefined DecrementDialogResourceRefCountByShortIdAndCleanup()
-// FUNCTION: IMPERIALISM 0x0049a190
-undefined4 DecrementDialogResourceRefCountByShortIdAndCleanup(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadLocalizedStringByGroupAndIndexToSharedRef
 // ghidra_proto undefined LoadLocalizedStringByGroupAndIndexToSharedRef()
 // FUNCTION: IMPERIALISM 0x0049a590

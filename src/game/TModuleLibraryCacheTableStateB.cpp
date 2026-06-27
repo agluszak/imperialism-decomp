@@ -206,6 +206,23 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
   return dib;
 }
 
+// FUNCTION: IMPERIALISM 0x0049a190
+void TModuleLibraryCacheTableStateB::ReleaseRecordById(short id) {
+  CacheRecord* record = NULL;
+  m_tableA.Lookup(static_cast<WORD>(id), record);
+
+  record->refCount--;
+  if (record->refCount < 1) {
+    if (record->pObject != NULL) {
+      delete record->pObject;
+    }
+
+    m_tableB.RemoveKey(record->pObject);
+    m_tableA.RemoveKey(record->id);
+    delete record;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0049a390
 void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
   if (handle == NULL) {

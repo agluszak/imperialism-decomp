@@ -21,9 +21,11 @@ void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {
 }
 
 // FUNCTION: IMPERIALISM 0x00495c00
-undefined
-TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() {
-  return 0;
+void TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() {
+  if (bitmapResource != NULL) {
+    g_pModuleLibraryCacheState->ReleaseRecordById(bitmapResourceId);
+  }
+  bitmapResource = NULL;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0049f050

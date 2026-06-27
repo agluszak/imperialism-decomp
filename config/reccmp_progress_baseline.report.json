@@ -5131,7 +5131,7 @@
     },
     {
       "address": "0x48f520",
-      "matching": 0.7586206896551724,
+      "matching": 0.8275862068965517,
       "name": "TPicture::ResetPictureResourceEntry",
       "type": 1
     },
@@ -6033,7 +6033,7 @@
     },
     {
       "address": "0x495c00",
-      "matching": 0.14285714285714285,
+      "matching": 0.9166666666666666,
       "name": "TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00",
       "type": 1
     },
@@ -6381,8 +6381,8 @@
     },
     {
       "address": "0x49a190",
-      "matching": 0.012121212121212121,
-      "name": "DecrementDialogResourceRefCountByShortIdAndCleanup",
+      "matching": 0.7621951219512195,
+      "name": "TModuleLibraryCacheTableStateB::ReleaseRecordById",
       "type": 1
     },
     {

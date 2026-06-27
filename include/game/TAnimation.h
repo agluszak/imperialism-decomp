@@ -24,10 +24,9 @@ public:
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
   // These three are regular (non-virtual) methods — the orig TAnimation vtable
   // ends at byte 0x30; declaring them virtual appended 3 phantom slots.
-  void EnsureBitmapResourceLoadedAndCopyRectSize(); // 0x495b70
-  undefined
-  WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();     // 0x495c00
-  undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(); // 0x4a1100
+  void EnsureBitmapResourceLoadedAndCopyRectSize();                                      // 0x495b70
+  void WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(); // 0x495c00
+  undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100();  // 0x4a1100
   // === END GENERATED DECLS (TAnimation) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimation
   // 0xCTOR`).

@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
-undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void);
 undefined4 SetPictureResourceIdAndRefresh_Impl(void);
 
 // FUNCTION: IMPERIALISM 0x0048efa0
@@ -32,8 +31,7 @@ void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0048f520
 void TPicture::ResetPictureResourceEntry() {
   if (this->glyphBase84 != -1) {
-    reinterpret_cast<void(__cdecl*)(short)>(
-        thunk_DecrementDialogResourceRefCountByShortIdAndCleanup)(this->glyphBase84);
+    g_pModuleLibraryCacheState->ReleaseRecordById(this->glyphBase84);
   }
   this->glyphBase84 = -1;
   this->bitmapId = 0;
