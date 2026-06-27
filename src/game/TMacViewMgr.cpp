@@ -1172,10 +1172,10 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->GetString(0x2735, 2, &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(0);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[0] - city->fieldB6[1]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(
           &formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-          static_cast<int>(city->fieldB6[0]) + static_cast<int>(city->fieldB6[1]));
+          static_cast<int>(city->cityStockCottonB6) + static_cast<int>(city->cityStockWoolB8));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatProduction, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 0, &displayText);
@@ -1187,13 +1187,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(4);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[2]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[2]));
+                                                          static_cast<int>(city->cityStockTimberBA));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 4, &displayText);
-      formatFieldValue = city->fieldB6[2];
+      formatFieldValue = city->cityStockTimberBA;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1205,13 +1205,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(2);
-      deficitCount = static_cast<short>(production - city->fieldB6[nationSlot]);
+      deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[nationSlot]));
+                                                          static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production);
       g_pLocalizationTable->GetString(0x2719, 2, &displayText);
-      formatFieldValue = city->fieldB6[nationSlot];
+      formatFieldValue = (&city->cityStockCottonB6)[nationSlot];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1234,13 +1234,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(6);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[6]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[6]));
+                                                          static_cast<int>(city->cityStockOilC2));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 6, &displayText);
-      formatFieldValue = city->fieldB6[6];
+      formatFieldValue = city->cityStockOilC2;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1251,13 +1251,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(1);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[8]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[8]));
+                                                          static_cast<int>(city->cityStockFabricC6));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 1, &displayText);
-      formatFieldValue = city->fieldB6[8];
+      formatFieldValue = city->cityStockFabricC6;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1268,13 +1268,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(5);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[9]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[9]));
+                                                          static_cast<int>(city->cityStockLumberC8));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 5, &displayText);
-      formatFieldValue = city->fieldB6[9];
+      formatFieldValue = city->cityStockLumberC8;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1285,13 +1285,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(3);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[0xb]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[0xb]));
+                                                          static_cast<int>(city->cityStockSteelCC));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 3, &displayText);
-      formatFieldValue = city->fieldB6[0xb];
+      formatFieldValue = city->cityStockSteelCC;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1302,13 +1302,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(0xb);
-      deficitCount = static_cast<short>(production * 2 - city->fieldB6[0xc]);
+      deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->fieldB6[0xc]));
+                                                          static_cast<int>(city->cityStockFuelCE));
       MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                           production * 2);
       g_pLocalizationTable->GetString(0x2719, 0xb, &displayText);
-      formatFieldValue = city->fieldB6[0xc];
+      formatFieldValue = city->cityStockFuelCE;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1337,9 +1337,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     short summaryValue = summary[nationSlot];
     MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(summaryValue));
-    deficitCount = static_cast<short>(summaryValue - city->fieldB6[nationSlot]);
+    deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
     MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatCurrent, reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(city->fieldB6[nationSlot]));
+                                                        static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
     g_pLocalizationTable->GetString(0x2735, 7, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     displayText = bracketScratch;
@@ -1357,9 +1357,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     short summaryValue = summary[0x14];
     MacViewUiInvoke::FormatStringWithVarArgsToSharedRef(&formatTarget, reinterpret_cast<const char*>(kAddrDecimalFormat),
                                                         static_cast<int>(summaryValue));
-    deficitCount = static_cast<short>(summaryValue - city->fieldB6[0x13] - city->fieldB6[0x14]);
+    deficitCount = static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
     formatFieldValue =
-        static_cast<short>(city->fieldB6[0x13] + city->fieldB6[0x14]);
+        static_cast<short>(city->cityStockFishDC + city->cityStockLivestockDE);
     showArrowWidgets = 1;
     useProductionTailPath = true;
   }

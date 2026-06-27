@@ -158,7 +158,7 @@ int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
 
 
 // FUNCTION: IMPERIALISM 0x004e4660
-short TMinor::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
+short TMinor::GetDiplomacyExternalStateByTarget(short nationSlot) {
   return this->needCurrentByType[nationSlot];
 }
 

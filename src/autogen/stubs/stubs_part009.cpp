@@ -123,14 +123,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004135f0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004135f0()
-// FUNCTION: IMPERIALISM 0x004135f0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004135f0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004136c0
 // ghidra_proto undefined OrphanRetStub_004136c0()
 // FUNCTION: IMPERIALISM 0x004136c0
@@ -595,22 +587,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name ConstructUiNumericTextEntry
-// ghidra_proto undefined ConstructUiNumericTextEntry()
-// FUNCTION: IMPERIALISM 0x00429500
-undefined4 ConstructUiNumericTextEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name NumericEntryMethod_00409a39
-// ghidra_proto undefined NumericEntryMethod_00409a39()
-// FUNCTION: IMPERIALISM 0x00429530
-undefined4 NumericEntryMethod_00409a39(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityTradeDiplomacyUiEntries
 // ghidra_proto undefined InitializeCityTradeDiplomacyUiEntries()
 // FUNCTION: IMPERIALISM 0x0042d240
@@ -763,18 +739,10 @@ undefined4 ConstructUiColorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430a30()
-// FUNCTION: IMPERIALISM 0x00430a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl()
+// ghidra_name TBattleReportView::DestructTBattleReportViewBaseState
+// ghidra_proto undefined DestructTBattleReportViewBaseState()
 // FUNCTION: IMPERIALISM 0x00430a60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
+undefined4 DestructTBattleReportViewBaseState(void)
 {
   return 0;
 }

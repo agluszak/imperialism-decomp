@@ -5,9 +5,16 @@
 
 class CityDialogController;
 
+class CMcWindow;
+
 // VTABLE: IMPERIALISM 0x0064ad90
 class TEditText : public TStaticText {
 public:
+  CMcWindow* field_94; // 0x94
+  int field_98;        // 0x98
+  short field_9c;      // 0x9c
+  short padding_9e;    // 0x9e
+
   virtual CRuntimeClass* GetRuntimeClass() const override;
   virtual ~TEditText();
 
@@ -26,7 +33,7 @@ public:
   undefined OrphanCallChain_C1_I09_0048ff70() override;
   virtual undefined SetEditSelectionAndScrollCaret();
   virtual undefined WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1);
-  virtual undefined InitDialogWindowAndSyncTitleIfChanged();
+  virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);
 
   TEditText();
 };

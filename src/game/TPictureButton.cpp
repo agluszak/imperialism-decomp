@@ -26,15 +26,13 @@ void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool 
     this->commandTagResourceByte = enabledState;
     this->SetEnabled(enabledState, true);
     if (refreshNow) {
-      this->IsSelected(-1, true);
+      this->IsSelected();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005708c0
-bool TPictureButton::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
+bool TPictureButton::IsSelected() {
   RECT rect;
   this->BuildRectFromSlot158(&rect);
   return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,

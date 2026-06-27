@@ -122,7 +122,7 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual int GetField84(); // slot 0x71 0x491770
-  virtual void SetControlClassAndRefresh(int classState, int refreshFlag); // slot 0x72 0x491790
+  virtual void SetControlClassAndRefresh(int classState); // slot 0x72 0x491790 (1 arg; RET 4)
 // === END GENERATED DECLS (TCluster) ===
   int field84;
 

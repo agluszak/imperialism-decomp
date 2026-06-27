@@ -17,22 +17,22 @@ undefined TItemOrder::InitializeCityProductionState_Impl_At004b5290(int param_1,
 }
 
 // FUNCTION: IMPERIALISM 0x004b5310
-undefined TItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0() {
+short TItemOrder::MaxOrder() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b53d0
-undefined TItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1) {
+bool TItemOrder::SetQuantity(short param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5510
-undefined TItemOrder::CreateTItemOrderInstance() {
+undefined TItemOrder::FillOrderSheet() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5580
-undefined TItemOrder::OrphanRetStub_004b5160() {
+undefined TItemOrder::CommitIfPending() {
   return 0;
 }
 

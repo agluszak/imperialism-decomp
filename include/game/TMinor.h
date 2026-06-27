@@ -24,7 +24,7 @@ public:
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
   int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
-  short GetDiplomacyExternalStateB6ByTarget(short nationSlot) override;
+  short GetDiplomacyExternalStateByTarget(short nationSlot) override;
   short QueryNationMetricBySlot7C(short metricSlot) override;
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
@@ -115,7 +115,7 @@ ASSERT_SIZE(TMinor, 0x2cc);
 //   slot 0x1b  byte 0x6c  0x004d7e90  inherited OrphanRetStub_004d7e90
 //   slot 0x1c  byte 0x70  0x004e4630  override  OrphanLeaf_NoCall_Ins02_004d7ee0
 //   slot 0x1d  byte 0x74  0x004d7f00  inherited OrphanLeaf_NoCall_Ins02_004d7f00
-//   slot 0x1e  byte 0x78  0x004e4660  override  OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x1e  byte 0x78  0x004e4660  override  GetDiplomacyExternalStateByTarget
 //   slot 0x1f  byte 0x7c  0x004e4680  override  OrphanLeaf_NoCall_Ins02_004d7f40
 //   slot 0x20  byte 0x80  0x004e49b0  override  OrphanRetStub_004d7fa0
 //   slot 0x21  byte 0x84  0x004e4ee0  override  OrphanLeaf_NoCall_Ins02_004d7fc0

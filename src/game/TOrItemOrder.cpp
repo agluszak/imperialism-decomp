@@ -15,11 +15,11 @@ undefined TOrItemOrder::InitializeCityProductionState_Impl_At004b5870(int param_
 }
 
 // FUNCTION: IMPERIALISM 0x004b58f0
-undefined TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0() {
+short TOrItemOrder::MaxOrder() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5990
-undefined TOrItemOrder::OrphanCallChain_C1_I16_004b5100(short param_1) {
+bool TOrItemOrder::SetQuantity(short param_1) {
   return 0;
 }

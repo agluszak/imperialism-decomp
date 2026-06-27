@@ -18,7 +18,6 @@ int TNavyToolbarCluster::IsTradeControlAtMinimum() {
 }
 
 // FUNCTION: IMPERIALISM 0x005696f0
-void TNavyToolbarCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
+void TNavyToolbarCluster::SetControlClassAndRefresh(int classState) {
   (void)classState;
-  (void)refreshFlag;
 }

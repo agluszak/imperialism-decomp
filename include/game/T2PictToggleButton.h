@@ -126,7 +126,7 @@ public:
   virtual ~T2PictToggleButton() override;
   CRuntimeClass* GetRuntimeClass() const override;
 
-  bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x73 0x1cc
+  bool IsSelected() override; // slot 0x73 0x1cc
   void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x1d0
 };
 

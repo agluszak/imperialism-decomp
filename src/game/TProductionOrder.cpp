@@ -12,13 +12,13 @@ void TProductionOrder::WriteTo(TStream* stream) {}
 
 void TProductionOrder::ReadFrom(TStream* stream) {}
 
-undefined TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0() { return 0; }
+short TProductionOrder::MaxOrder() { return 0; }
 
-undefined TProductionOrder::OrphanCallChain_C1_I16_004b5100(short param_1) { return 0; }
+bool TProductionOrder::SetQuantity(short param_1) { return 0; }
 
 undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop() { return 0; }
 
-undefined TProductionOrder::OrphanRetStub_004b5160() { return 0; }
+undefined TProductionOrder::CommitIfPending() { return 0; }
 
 // Slot 0x3c (Mac: Produce) — clears the OrderSheet working buffers. The body lives
 // in TProductionOrder's own vtable region; TCityOrderItem (TCapacityOrder's parallel
@@ -38,4 +38,4 @@ undefined TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4* pa
   return 0;
 }
 
-undefined TProductionOrder::CreateTItemOrderInstance() { return 0; }
+undefined TProductionOrder::FillOrderSheet() { return 0; }

@@ -82,7 +82,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
     unitControl->SetEnabled(0, 1);
   } else {
     reinterpret_cast<TCluster*>(unitControl)
-        ->SetControlClassAndRefresh(this->civilianClassId + 0x438, 1);
+        ->SetControlClassAndRefresh(this->civilianClassId + 0x438);
     unitControl->SetEnabled(1, 1);
   }
 
@@ -158,7 +158,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->controlTag;
   }
-  reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag, 0);
+  reinterpret_cast<TCluster*>(this)->SetControlClassAndRefresh(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
   stackButton = this->ResolveControlByTag(0x64666e64);

@@ -77,8 +77,7 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 
 
 // FUNCTION: IMPERIALISM 0x00586170
-void TUnitToolbarCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
-  (void)refreshFlag;
+void TUnitToolbarCluster::SetControlClassAndRefresh(int classState) {
   *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x84) = classState;
 
   TControl* resourceControl =

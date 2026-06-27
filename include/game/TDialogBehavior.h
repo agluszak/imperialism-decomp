@@ -4,8 +4,8 @@
 #include "game/mfc.h"
 
 // TODO(manifest): describe TDialogBehavior and its role. Base edge (TBehavior) recovered from RTTI
-// CRuntimeClass chain: TDialogBehavior -> TBehavior -> TObject -> CObject. VTABLE: IMPERIALISM
-// 0x00648da8
+// CRuntimeClass chain: TDialogBehavior -> TBehavior -> TObject -> CObject.
+// VTABLE: IMPERIALISM 0x00648da8
 class TDialogBehavior : public TBehavior {
 public:
   // === BEGIN GENERATED DECLS (TDialogBehavior) — refreshed by recover-class; do not hand-edit ===

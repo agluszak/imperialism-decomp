@@ -26,8 +26,7 @@ TCivReport::TCivReport() : TPicture() {}
 TCivReport::~TCivReport() {}
 
 // FUNCTION: IMPERIALISM 0x00590cb0
-bool TCivReport::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
+bool TCivReport::IsSelected(void* reportRecord) {
+  (void)reportRecord;
   return false;
 }

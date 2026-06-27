@@ -125,7 +125,7 @@ void TCity::Call2C() {
   } else {
     this->lowProductionFlag7c = 0;
   }
-  this->ownerNationAc->AbsorbCityNeedVectorSlotFC(this->fieldB6);
+  this->ownerNationAc->AbsorbCityNeedVectorSlotFC(&this->cityStockCottonB6);
 }
 
 undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void); // 0x004b3e70 -> 0x00550d80
@@ -203,7 +203,7 @@ void TCity::RefreshOrderStateSlot0C() {
 
 // FUNCTION: IMPERIALISM 0x004b3fb0
 void TCity::AddNeedVectorSplitSlot34(short* needVector) {
-  short* needCursor = this->fieldB6;
+  short* needCursor = &this->cityStockCottonB6;
   int count = 7;
   short* sourceCursor = needVector;
   do {
@@ -213,7 +213,7 @@ void TCity::AddNeedVectorSplitSlot34(short* needVector) {
     --count;
   } while (count != 0);
   sourceCursor = needVector + 7;
-  needCursor = &this->fieldB6[7];
+  needCursor = &this->cityStockCannedFoodC4;
   count = 6;
   do {
     *needCursor = static_cast<short>(*needCursor + *sourceCursor);
@@ -221,7 +221,7 @@ void TCity::AddNeedVectorSplitSlot34(short* needVector) {
     ++needCursor;
     --count;
   } while (count != 0);
-  needCursor = &this->fieldB6[0x0d];
+  needCursor = &this->cityStockClothingD0;
   sourceCursor = needVector + 0x0d;
   count = 4;
   do {
@@ -234,7 +234,7 @@ void TCity::AddNeedVectorSplitSlot34(short* needVector) {
 
 // FUNCTION: IMPERIALISM 0x004b4040
 void TCity::AddNeedVectorSlot3C(short* amounts) {
-  short* needCursor = this->fieldB6;
+  short* needCursor = &this->cityStockCottonB6;
   int count = 0x17;
   do {
     short amount = *amounts;
@@ -243,14 +243,14 @@ void TCity::AddNeedVectorSlot3C(short* amounts) {
     ++needCursor;
     --count;
   } while (count != 0);
-  this->fieldB6[0x16] = 0;
-  this->fieldB6[0x15] = 0;
+  this->cityStockGoldE2 = 0;
+  this->cityStockGemsE0 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4090
 void TCity::AddOwnerNeedTargetsSlot38() {
   int count = 0x17;
-  short* needCursor = this->fieldB6;
+  short* needCursor = &this->cityStockCottonB6;
   short* targetCursor = this->ownerNationAc->needTargetByType;
   do {
     *needCursor = static_cast<short>(*needCursor + *targetCursor);
@@ -258,8 +258,8 @@ void TCity::AddOwnerNeedTargetsSlot38() {
     ++needCursor;
     ++targetCursor;
   } while (count != 0);
-  this->fieldB6[0x16] = 0;
-  this->fieldB6[0x15] = 0;
+  this->cityStockGoldE2 = 0;
+  this->cityStockGemsE0 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b40e0
@@ -273,7 +273,8 @@ short TCity::AllocateNeedFromOwnerSlot4C(short needIndex, short amount) {
   if (static_cast<short>(owner->needCapA6 - owner->needsOverCapFlag) < amount) {
     amount = static_cast<short>(owner->needCapA6 - owner->needsOverCapFlag);
   }
-  this->fieldB6[needIndex] = static_cast<short>(this->fieldB6[needIndex] + amount);
+  (&this->cityStockCottonB6)[needIndex] =
+      static_cast<short>((&this->cityStockCottonB6)[needIndex] + amount);
   this->ownerNationAc->UpdateNeedTargetAndAccumulateOverCap(
       needIndex, static_cast<short>(owner->needTargetByType[needIndex] + amount));
   return amount;
@@ -282,7 +283,7 @@ short TCity::AllocateNeedFromOwnerSlot4C(short needIndex, short amount) {
 // FUNCTION: IMPERIALISM 0x004b4180
 void TCity::Refresh80() {
   int count = 0x17;
-  short* needCursor = this->fieldB6;
+  short* needCursor = &this->cityStockCottonB6;
   do {
     if (*needCursor < 0) {
       char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();

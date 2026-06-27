@@ -163,6 +163,14 @@ undefined4 CreateTCtlMgrInstance(void)
   return 0;
 }
 
+// ghidra_name TButton::GetRuntimeClass
+// ghidra_proto undefined GetRuntimeClass()
+// FUNCTION: IMPERIALISM 0x0048eaf0
+undefined4 GetRuntimeClass(void)
+{
+  return 0;
+}
+
 // ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
 // ghidra_proto undefined ConstructTCtlMgrBaseState()
 // FUNCTION: IMPERIALISM 0x0048eb10
@@ -243,14 +251,6 @@ undefined4 CloneCityDialogStateWithSharedStringInit(void)
   return 0;
 }
 
-// ghidra_name CopyExtendedCityDialogControllerState
-// ghidra_proto undefined CopyExtendedCityDialogControllerState()
-// FUNCTION: IMPERIALISM 0x0048fb10
-undefined4 CopyExtendedCityDialogControllerState(void)
-{
-  return 0;
-}
-
 // ghidra_name TStaticText::~TStaticText
 // ghidra_proto undefined ~TStaticText()
 // FUNCTION: IMPERIALISM 0x0048fc30
@@ -267,22 +267,6 @@ undefined4 CreateTEditTextInstance(void)
   return 0;
 }
 
-// ghidra_name TEditText::ConstructUiNumericTextEntryBase
-// ghidra_proto undefined ConstructUiNumericTextEntryBase()
-// FUNCTION: IMPERIALISM 0x004903a0
-undefined4 ConstructUiNumericTextEntryBase(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTEditTextAndMaybeFree
-// ghidra_proto undefined DestructTEditTextAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004904d0
-undefined4 DestructTEditTextAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
 // ghidra_proto undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
 // FUNCTION: IMPERIALISM 0x004905e0
@@ -295,46 +279,6 @@ undefined4 WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At0
 // ghidra_proto undefined CreateTNumberTextInstance()
 // FUNCTION: IMPERIALISM 0x00490ed0
 undefined4 CreateTNumberTextInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberText::GetTNumberTextClassNamePointer
-// ghidra_proto undefined GetTNumberTextClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00491040
-undefined4 GetTNumberTextClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberText::ConstructTNumberTextBaseState
-// ghidra_proto undefined ConstructTNumberTextBaseState()
-// FUNCTION: IMPERIALISM 0x00491060
-undefined4 ConstructTNumberTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberText::DestructTNumberTextAndMaybeFree
-// ghidra_proto undefined DestructTNumberTextAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004910e0
-undefined4 DestructTNumberTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateControlCachedIntFromWindowText
-// ghidra_proto undefined UpdateControlCachedIntFromWindowText()
-// FUNCTION: IMPERIALISM 0x004911c0
-undefined4 UpdateControlCachedIntFromWindowText(void)
-{
-  return 0;
-}
-
-// ghidra_name NumericEntryMethod_00407a7c
-// ghidra_proto undefined NumericEntryMethod_00407a7c()
-// FUNCTION: IMPERIALISM 0x004912b0
-undefined4 NumericEntryMethod_00407a7c(void)
 {
   return 0;
 }
@@ -399,22 +343,6 @@ undefined4 IsSelectableTextOptionEntryIteratorValid(void)
 // ghidra_proto undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40()
 // FUNCTION: IMPERIALISM 0x00491b40
 undefined4 DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40(void)
-{
-  return 0;
-}
-
-// ghidra_name TFloatWindow::CreateTFloatWindowInstance
-// ghidra_proto undefined CreateTFloatWindowInstance()
-// FUNCTION: IMPERIALISM 0x00491e00
-undefined4 CreateTFloatWindowInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ConstructUiWindowResourceEntryType4B340
-// ghidra_proto undefined ConstructUiWindowResourceEntryType4B340()
-// FUNCTION: IMPERIALISM 0x00491fb0
-undefined4 ConstructUiWindowResourceEntryType4B340(void)
 {
   return 0;
 }
@@ -519,6 +447,14 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl(void)
 // ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
 // FUNCTION: IMPERIALISM 0x00492db0
 undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
+{
+  return 0;
+}
+
+// ghidra_name TButton::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
+// FUNCTION: IMPERIALISM 0x00492de0
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }
@@ -2183,14 +2119,6 @@ undefined4 CreateTNewGameCommandInstance(void)
 // ghidra_proto undefined ConstructTNewGameCommandBaseState()
 // FUNCTION: IMPERIALISM 0x0049de40
 undefined4 ConstructTNewGameCommandBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I11_0049e4b0
-// ghidra_proto undefined OrphanCallChain_C1_I11_0049e4b0()
-// FUNCTION: IMPERIALISM 0x0049e4b0
-undefined4 OrphanCallChain_C1_I11_0049e4b0(void)
 {
   return 0;
 }

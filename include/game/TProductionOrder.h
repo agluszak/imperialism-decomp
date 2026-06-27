@@ -22,12 +22,12 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeBasicCityOrderContext(int param_1, undefined2 param_2); // slot 0x0a 0x4b4f70
-  virtual undefined OrphanCallChain_C1_I16_004b5100(short param_1); // slot 0x0b 0x4b5100
-  virtual undefined OrphanLeaf_NoCall_Ins02_004b50e0(); // slot 0x0c 0x4b50e0
-  virtual undefined OrphanRetStub_004b5160(); // slot 0x0d 0x4b5160
+  virtual bool SetQuantity(short param_1); // slot 0x0b 0x4b5100
+  virtual short MaxOrder(); // slot 0x0c 0x4b50e0
+  virtual undefined CommitIfPending(); // slot 0x0d 0x4b5160
   virtual undefined ResetCityOrderItemDerivedStateNoop(); // slot 0x0e 0x4b5140
   virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1); // slot 0x0f 0x4b5180
-  virtual undefined CreateTItemOrderInstance(); // slot 0x10 0x4b51b0
+  virtual undefined FillOrderSheet(); // slot 0x10 0x4b51b0
 // === END GENERATED DECLS (TProductionOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TProductionOrder 0xCTOR`).
 
@@ -48,12 +48,12 @@ public:
 //   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
 //   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
 //   slot 0x0a  byte 0x28  0x004b4f70  override  InitializeBasicCityOrderContext
-//   slot 0x0b  byte 0x2c  0x004b5100  override  OrphanCallChain_C1_I16_004b5100
-//   slot 0x0c  byte 0x30  0x004b50e0  override  OrphanLeaf_NoCall_Ins02_004b50e0
-//   slot 0x0d  byte 0x34  0x004b5160  override  OrphanRetStub_004b5160
+//   slot 0x0b  byte 0x2c  0x004b5100  override  SetQuantity
+//   slot 0x0c  byte 0x30  0x004b50e0  override  MaxOrder
+//   slot 0x0d  byte 0x34  0x004b5160  override  CommitIfPending
 //   slot 0x0e  byte 0x38  0x004b5140  override  ResetCityOrderItemDerivedStateNoop
 //   slot 0x0f  byte 0x3c  0x004b5180  override  InitializeCityOrderItemWorkingBuffers
-//   slot 0x10  byte 0x40  0x004b51b0  override  CreateTItemOrderInstance
+//   slot 0x10  byte 0x40  0x004b51b0  override  FillOrderSheet
 // object size 0x4c (RTTI) unverified against the header layout;
 // set curated.layout.size_verified to emit a sizeof static_assert.
 // clang-format on

@@ -57,10 +57,18 @@ CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TWindow_006495e8 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TButton_00649618 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x006496a8
+CRuntimeClass PTR_s_TNumberText_006496a8 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x0066c3c0
+CRuntimeClass PTR_s_TPictureNumberText_0066c3c0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x006496d8
+CRuntimeClass PTR_s_TFloatWindow_006496d8 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TPictureButton_0065e538 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00656a30
 CRuntimeClass PTR_s_TGameWindow_00656a30 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x00654f30
+CRuntimeClass PTR_s_TRearFloatWindow_00654f30 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00656a48
 CRuntimeClass PTR_s_TDlgWindow_00656a48 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00697848
@@ -158,7 +166,7 @@ double g_Compute_Advisory_Hundred_00654000 = 100.0;
 double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
-// the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
+// the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
 // GLOBAL: IMPERIALISM 0x0066fad0
@@ -331,7 +339,8 @@ extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, 
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 
 // GLOBAL: IMPERIALISM 0x006a44b4
-unsigned char g_bCityDialogLegendSelectionInitialized = 0;
+// 4-byte flag (written as a dword by TStatusButton::HandleEvent); BOOL-style int.
+int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
 extern "C" void* g_pCursorControlPanel = nullptr;

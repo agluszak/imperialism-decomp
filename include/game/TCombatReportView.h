@@ -9,7 +9,8 @@ extern "C" CRuntimeClass g_pClassDescTCombatReportView;
 // VTABLE: IMPERIALISM 0x6678a0
 class TCombatReportView : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TCombatReportView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCombatReportView) — refreshed by recover-class; do not hand-edit
+  // ===
   virtual ~TCombatReportView(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -24,7 +25,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0058d950
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0058d950
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -123,7 +125,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TCombatReportView) ===
+  // === END GENERATED DECLS (TCombatReportView) ===
   short glyph90;
   short field92;
   short reportValue;
@@ -132,10 +134,11 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor).
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  virtual bool IsSelected(short value = -1, bool refreshNow = true);
+  virtual bool IsSelected(void* reportRecord);
 };
 
-// === BEGIN GENERATED (TCombatReportView) — refreshed by `just gen-class TCombatReportView`; do not hand-edit ===
+// === BEGIN GENERATED (TCombatReportView) — refreshed by `just gen-class TCombatReportView`; do not
+// hand-edit ===
 // clang-format off
 // vtable @ 0x006678a0 (116 slots), object size 0xa0, base TPicture
 //   slot 0x00  byte 0x00  0x0058c8b0  override  GetTEventHandlerClassNamePointer

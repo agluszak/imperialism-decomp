@@ -509,7 +509,7 @@ int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
 short TCountry::GetDiplomacyCounterA2(void) { return 0; }
 
 // FUNCTION: IMPERIALISM 0x004d7f20
-short TCountry::GetDiplomacyExternalStateB6ByTarget(short nationSlot) {
+short TCountry::GetDiplomacyExternalStateByTarget(short nationSlot) {
   (void)nationSlot;
   return 0;
 }
