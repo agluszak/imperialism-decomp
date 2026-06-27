@@ -6,6 +6,9 @@
 #include "game/TAmbitApplication.h"
 #include "game/TSoundPlayer.h"
 #include "game/TDisplayMgr.h"
+#include "game/CAmbitDocument.h"
+#include "game/CIncludeView.h"
+#include "game/CMainFrame.h"
 #include "game/TMacViewMgr.h"
 #include "game/TAssetMgr.h"
 #include "game/TView.h"
@@ -57,31 +60,9 @@ void LoadLanguageLabelFromIrgModule(HMODULE irgModule, CString& languageLabel) {
 // 0x00412d40 (ctor) / 0x00412d70 (dtor).
 ImperialismApp theApp;
 
-// Declarations of MFC document/view runtime classes referenced by InitInstance.
-class CAmbitDocument : public CDocument {
-public:
-  static CRuntimeClass classRuntimeClass;
-};
-class CIncludeView : public CView {
-public:
-  static CRuntimeClass classRuntimeClass;
-};
-
 // GLOBAL: IMPERIALISM 0x00694150
 extern "C" LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
                                      "data\\AntquaB.ttf", nullptr};
-
-// GLOBAL: IMPERIALISM 0x0063e7f8
-CRuntimeClass CAmbitDocument::classRuntimeClass = {
-    "CAmbitDocument", sizeof(CAmbitDocument), 0xffff, nullptr, nullptr, nullptr};
-
-// GLOBAL: IMPERIALISM 0x006481c8
-CRuntimeClass CIncludeView::classRuntimeClass = {
-    "CIncludeView", sizeof(CIncludeView), 0xffff, nullptr, nullptr, nullptr};
-
-// GLOBAL: IMPERIALISM 0x00648628
-extern "C" CRuntimeClass TMacViewMgr_RuntimeClass = {
-    "TMacViewMgr", sizeof(TMacViewMgr), 0xffff, nullptr, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
@@ -134,8 +115,8 @@ BOOL ImperialismApp::InitInstance() {
     SetGlobalDword6A2018(cmdInfo.m_nShellCommand);
 
     CSingleDocTemplate* pDocTemplate =
-        new CSingleDocTemplate(0x80, &CAmbitDocument::classRuntimeClass, &TMacViewMgr_RuntimeClass,
-                               &CIncludeView::classRuntimeClass);
+        new CSingleDocTemplate(0x80, RUNTIME_CLASS(CAmbitDocument), RUNTIME_CLASS(CMainFrame),
+                               RUNTIME_CLASS(CIncludeView));
     AddDocTemplate(pDocTemplate);
 
     if (!WarnLowDiskSpaceAndConfirmContinue()) {
@@ -155,13 +136,12 @@ BOOL ImperialismApp::InitInstance() {
     g_pSfxPlaybackSystem = new TSoundPlayer();
     g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);
 
-    TView* mainViewHost =
-        reinterpret_cast<TView*>(GetMainViewHostFromActiveThread());
+    TView* mainViewHost = reinterpret_cast<TView*>(GetMainViewHostFromActiveThread());
     SetUiRuntimeContextAndActivateMain(mainViewHost, g_pDisplayMgr->activeDialog);
 
     if (CompareAnsiStringsWithMbcsAwareness(
-            const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                static_cast<LPCSTR>(cmdInfo.m_strFileName))),
+            const_cast<unsigned char*>(
+                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(cmdInfo.m_strFileName))),
             reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
       void* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
@@ -180,8 +160,8 @@ BOOL ImperialismApp::InitInstance() {
     if (RegOpenKeyExA(hKeySoftware, g_pRegistryCompanyKey_0063E038, 0, KEY_ALL_ACCESS,
                       &hKeyCompany) == 0) {
       HKEY hKeyApp = NULL;
-      if (RegOpenKeyExA(hKeyCompany, g_pRegistryAppKey_0063E03C, 0, KEY_ALL_ACCESS,
-                        &hKeyApp) == 0) {
+      if (RegOpenKeyExA(hKeyCompany, g_pRegistryAppKey_0063E03C, 0, KEY_ALL_ACCESS, &hKeyApp) ==
+          0) {
         RegDeleteKeyA(hKeyApp, g_pRegistrySettingsSection_0063E040);
         RegCloseKey(hKeyApp);
       }
@@ -302,8 +282,8 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       CString languageLabel;
       LoadLanguageLabelFromIrgModule(irgModule, languageLabel);
       if (CompareAnsiStringsWithMbcsAwareness(
-              const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                  static_cast<LPCSTR>(savedLanguage))),
+              const_cast<unsigned char*>(
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(savedLanguage))),
               const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
                   static_cast<LPCSTR>(languageLabel)))) == 0) {
         WriteProfileString(SettingsSection(), LanguageValueName(), savedLanguage);
@@ -355,8 +335,7 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
   }
 
   if (cmdInfo.m_bShowSplash || autoResMode == kAutoResPromptSentinel) {
-    HRSRC dialogResource =
-        FindResourceA(AfxGetInstanceHandle(), MAKEINTRESOURCEA(0xfb), RT_DIALOG);
+    HRSRC dialogResource = FindResourceA(AfxGetInstanceHandle(), MAKEINTRESOURCEA(0xfb), RT_DIALOG);
     if (dialogResource != nullptr) {
       TAutoResolutionDialog dialog(nullptr);
       if (dialog.PrepareAndCreateModalFromTemplate()) {

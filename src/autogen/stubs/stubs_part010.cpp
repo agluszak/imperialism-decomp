@@ -1507,14 +1507,6 @@ undefined4 WrapperFor_ftol_At00484ac0(void)
   return 0;
 }
 
-// ghidra_name CreateTMacViewMgrObject
-// ghidra_proto undefined CreateTMacViewMgrObject()
-// FUNCTION: IMPERIALISM 0x00484af0
-undefined4 CreateTMacViewMgrObject(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::GetTMacViewMgrRuntimeClass
 // ghidra_proto undefined GetTMacViewMgrRuntimeClass()
 // FUNCTION: IMPERIALISM 0x00484bb0
@@ -1527,14 +1519,6 @@ undefined4 GetTMacViewMgrRuntimeClass(void)
 // ghidra_proto undefined GetTMacViewMgrMessageMap()
 // FUNCTION: IMPERIALISM 0x00484bd0
 undefined4 GetTMacViewMgrMessageMap(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::ConstructTMacViewMgrInPlace
-// ghidra_proto undefined ConstructTMacViewMgrInPlace()
-// FUNCTION: IMPERIALISM 0x00484bf0
-undefined4 ConstructTMacViewMgrInPlace(void)
 {
   return 0;
 }

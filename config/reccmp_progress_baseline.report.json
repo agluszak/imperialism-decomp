@@ -404,7 +404,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.3973941368078176,
+      "matching": 0.39087947882736157,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -2686,7 +2686,7 @@
     },
     {
       "address": "0x484af0",
-      "matching": 0.05555555555555555,
+      "matching": 0.3488372093023256,
       "name": "CreateTMacViewMgrObject",
       "type": 1
     },
@@ -2704,7 +2704,7 @@
     },
     {
       "address": "0x484bf0",
-      "matching": 0.2222222222222222,
+      "matching": 0.5263157894736842,
       "name": "TMacViewMgr::ConstructTMacViewMgrInPlace",
       "type": 1
     },
@@ -15914,7 +15914,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18053097345132743,
+      "matching": 0.18230088495575222,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },

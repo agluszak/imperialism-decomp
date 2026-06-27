@@ -8927,7 +8927,7 @@ address|name|size|type|prototype
 645f40|CUserException::vftable||global|
 6481c8|CIncludeView::classRuntimeClass||global|
 648524|CFrameWnd::vftable||global|
-648628|TMacViewMgr_RuntimeClass||global|
+648628|CMainFrame::classCMainFrame||global|Ghidra: TMacViewMgr_RuntimeClass; m_lpszClassName=CMainFrame
 648640|TMacViewMgr_MessageMapDescriptor||global|
 648648|TMacViewMgr_MessageMapEntries||global|
 6487c8|TMacViewMgr_OnCommand100_MsgEntry||global|
@@ -9142,7 +9142,7 @@ address|name|size|type|prototype
 6579b8|TNumberedIcon::classTNumberedIcon||global|
 6579d0|TNumberedItem::classRuntimeClass||global|
 658560|TLanguageMgr::classTLanguageMgr||global|
-658610|TMacViewMgr::classTMacViewMgr||global|
+658610|TMacViewMgr::classTMacViewMgr||global|m_lpszClassName=TMacViewMgr; strategic map @ g_pStrategicMapViewSystem
 6586e0|g_vtblStrategicMapViewSystem_DrawUnitIcon||global|
 6586e4|g_vtblStrategicMapViewSystem_DrawUnitIconOverlay||global|
 658788|TMapMgr::classTMapMgr||global|

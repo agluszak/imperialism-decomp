@@ -26,10 +26,6 @@
 #include "game/turn_flow_cooldown.h"
 #include "decomp_types.h"
 
-extern "C" {
-extern CRuntimeClass classRuntimeClass;
-}
-
 void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* field);
 
 void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self);
@@ -333,6 +329,8 @@ struct GoldDialogControl : public TControl {
 };
 
 }  // namespace
+
+// GLOBAL: IMPERIALISM 0x00658610
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0

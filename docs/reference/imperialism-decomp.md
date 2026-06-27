@@ -39,10 +39,13 @@
 
 - `InitializeImperialismApplicationInstance @ 0x00412dc0` posts:
   - `PostMessageA(mainWndHwnd, 0x111, 100, 0)`.
-- Runtime class/message map anchors for main startup window class:
-  - `TMacViewMgr_RuntimeClass @ 0x00648628` (class-name string: `TMacViewMgr`)
-  - `TMacViewMgr_MessageMapDescriptor @ 0x00648640`
+- Runtime class/message map anchors for the SDI main frame (`CMainFrame : CFrameWnd`):
+  - `CMainFrame` runtime descriptor @ `0x00648628` (`m_lpszClassName`: **`CMainFrame`**; Ghidra
+    provisional label: `TMacViewMgr_RuntimeClass`)
+  - `TMacViewMgr_MessageMapDescriptor @ 0x00648640` (Ghidra bucket name; owned by **`CMainFrame`**)
   - `TMacViewMgr_OnCommand100_MsgEntry @ 0x006487c8`
+- Strategic map singleton uses a separate runtime descriptor @ `0x00658610` (`m_lpszClassName`:
+  **`TMacViewMgr`**, base `TObject`; global `g_pStrategicMapViewSystem`).
 - Exact message-map entry decode at `0x006487c8`:
   - `nMessage=0x111`, `nCode=0`, `nID=100`, `nLastID=100`, `nSig=0x0C`, `pfn=0x0040132A`.
 - Resolved handler chain:
@@ -69,11 +72,42 @@ is accepted, not faked). Subclass fields begin at `+0xC0`: `int field_C0`, `CStr
   registry-unregister path) construct `g_pModuleLibraryCacheState` (asset loader, below), load
   language `.irg` resources, load the primary data lib + `Data/PictPaid.gob` (slot 1) +
   `Data/PictUniv.gob` (slot 3), `AddFontResourceA("data\WeBeBd__.ttf")`, broadcast `WM_FONTCHANGE`,
-  `new CSingleDocTemplate(0x80, &CAmbitDocument::classRuntimeClass /*0x63e7f8*/, &TMacViewMgr_RuntimeClass
-  /*0x648628*/, &CIncludeView::classRuntimeClass /*0x6481c8*/)` → `AddDocTemplate` → `ProcessShellCommand`
+  `new CSingleDocTemplate(0x80, &CAmbitDocument::classRuntimeClass /*0x63e7f8*/,
+  &CMainFrame::classCMainFrame /*0x648628*/, &CIncludeView::classRuntimeClass /*0x6481c8*/)` →
+  `AddDocTemplate` → `ProcessShellCommand`
   (creates+shows the frame), construct `g_pGlobalUiRootController` (`TAmbitApplication`, vtable `0x63e398`),
   `g_pSfxPlaybackSystem` (`TSoundPlayer`, `InitializeSoundSubsystem(0xf)`), then
   `PostMessageA(mainWnd, WM_COMMAND, 100, 0)`.
+
+### SDI doc-template runtime classes (CRuntimeClass-authoritative names)
+
+Manual C++ names follow `m_lpszClassName` from the retail `CRuntimeClass` descriptor, not
+provisional Ghidra bucket labels:
+
+| Descriptor @ | `m_lpszClassName` | Base | `m_nObjectSize` | Manual source |
+|---|---|---|---|---|
+| `0x648628` | `CMainFrame` | `CFrameWnd` | `0xD0` | `CMainFrame.h` / `CMainFrame.cpp` |
+| `0x658610` | `TMacViewMgr` | `TObject` | `0xD84` | strategic map singleton |
+| `0x63e7f8` | `CAmbitDocument` | `CDocument` | `0x54` | shell; deepen fields incrementally |
+| `0x6481c8` | `CIncludeView` | `CView` | `0x94` | shell; not `TIncludeView` @ `0x6495d0` |
+
+Ghidra labels the frame descriptor `TMacViewMgr_RuntimeClass` and message-map globals
+`TMacViewMgr_MessageMap*`; those belong to **`CMainFrame`**.
+
+**OpenDocumentFile / `0xF104` (Wine smoke, 2026-06):** After wiring non-null
+`CreateObject` for doc/frame/view, `ProcessShellCommand` still fails in
+`CSingleDocTemplate::OpenDocumentFile` (`docsingl.cpp:137`) with
+`AfxMessageBox(AFX_IDP_FAILED_TO_CREATE_DOC)` — empty body under Wine because
+string table `0xF104` is not resolved. Backtrace: `InitInstance` →
+`ProcessShellCommand` → `CDocManager::OnFileNew` → `OpenDocumentFile`. Breakpoints
+show `CAmbitDocument::CreateObject` and `CMainFrame::CreateObject`/ctor run;
+`CIncludeView::CreateObject` is not reached — failure is on the **frame**
+(`CDocTemplate::CreateNewFrame` / `LoadFrame`) path, not the document factory.
+Likely causes: missing SDI template resource id `0x80` (neither retail nor recomp
+PE embeds `.rsrc`; menu/accel may be external), incomplete `CMainFrame` window
+creation, and/or Wine resource/string-table gaps. Native Windows smoke remains
+the acceptance check.
+
 - **`ExitInstance @ 0x00413780`** (vtable slot +0x70): restore display mode if `field_C8`, then free the
   global subsystems via their slot-+0x1c destroy virtual — `DAT_006a2158`, `g_pModuleLibraryCacheState`
   (`0x6a134c`), `g_pStrategicMapViewSystem` (`0x6a21a8`), `g_pUiViewManager` (`0x6a2148`, `TAssetMgr`),
