@@ -46,4 +46,8 @@ vendor/ghidra/*.rep.bak
 vendor/ghidra/imperialism-decomp/
 vendor/ghidra/imperialism-decomp.rep/
 
+# Local MSVC 5.0 header mirror for agent/reference use.
+# Populate with `just vendor-msvc500-headers`.
+vendor/msvc500/headers/
+
 scratch

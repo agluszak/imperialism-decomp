@@ -45,6 +45,10 @@ starting that kind of task.
   `uv run python -m tools...`; never bare `python`. `.env` holds only machine-specific
   paths (`GHIDRA_INSTALL_DIR`, `ORIGINAL_BINARY`, optional `MACOS_IMPERIALISM_DUMP`);
   see `.env.example`. Everything else is a constant in the `justfile`.
+- **MSVC/MFC headers are available locally for reference.** Populate the gitignored
+  mirror with `just vendor-msvc500-headers`, then inspect
+  `vendor/msvc500/headers/{include,mfc/include,atl/include}` instead of guessing MFC
+  signatures or collection layouts.
 - **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
   a decompile or a name: `just ghidra-listing 0xADDR`, `just ghidra-vtable-dump`,
   `just scan-cdecl-thiscall`, plus decompile via the `ghidra` skill. Prefer this over

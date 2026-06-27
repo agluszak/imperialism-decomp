@@ -101,6 +101,9 @@ prune-ilt-thunks *args:
 correct-scalar-dtors *args:
   uv run python -m tools.workflow.correct_scalar_dtors {{args}}
 
+vendor-msvc500-headers *args:
+  uv run python -m tools.workflow.vendor_msvc500_headers {{args}}
+
 import-ghidra *args: _require-ghidra-install
   file_in_project="{{GHIDRA_PROGRAM_NAME}}"; \
   [[ "$file_in_project" == /* ]] || file_in_project="/$file_in_project"; \
