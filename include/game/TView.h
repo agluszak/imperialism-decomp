@@ -46,10 +46,10 @@ public:
   void SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48a8c0 (override)
-  void Free() override;                                    // 0x07
-  TObject* ShallowClone() override;                        // 0x08 0x48bfd0
-  virtual class TView* OwnerPanel() override;              // 0x16 0x48b180
+  DECLARE_DYNCREATE(TView)
+  void Free() override;                       // 0x07
+  TObject* ShallowClone() override;           // 0x08 0x48bfd0
+  virtual class TView* OwnerPanel() override; // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
@@ -95,17 +95,17 @@ public:
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4); // 0x47
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4);       // 0x48 0x48c590
+                                                         int arg4); // 0x48 0x48c590
   virtual char HandleMouseCommandToSelf(CPoint* point, int arg2, int arg3,
-                                        int arg4); // 0x49
-  virtual void QueryContentBounds(RECT* boundsOut);                       // 0x4a 0x427260
-  virtual void QueryBounds(RECT* boundsOut);                              // 0x4b 0x427290
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect);     // 0x4c 0x4272d0
-  virtual void TranslatePointToParentChain4D(int* point = 0);             // 0x4d 0x48ba80
-  virtual void TranslatePointToParentChain4E(int* point = 0);             // 0x4e 0x48ba40
-  virtual void InvokeSlot13C();                                           // 0x4f 0x48b700
-  virtual void OffsetRectByControlPosition(RECT* rect);                   // 0x50 0x48bb00
-  virtual void UpdateAfterBitmapChange(int unknownFlag);                  // 0x51
+                                        int arg4);                    // 0x49
+  virtual void QueryContentBounds(RECT* boundsOut);                   // 0x4a 0x427260
+  virtual void QueryBounds(RECT* boundsOut);                          // 0x4b 0x427290
+  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect); // 0x4c 0x4272d0
+  virtual void TranslatePointToParentChain4D(int* point = 0);         // 0x4d 0x48ba80
+  virtual void TranslatePointToParentChain4E(int* point = 0);         // 0x4e 0x48ba40
+  virtual void InvokeSlot13C();                                       // 0x4f 0x48b700
+  virtual void OffsetRectByControlPosition(RECT* rect);               // 0x50 0x48bb00
+  virtual void UpdateAfterBitmapChange(int unknownFlag);              // 0x51
   virtual CPoint TransformPointViaSlot138(CPoint* inPoint);
   virtual RECT TransformRectViaSlot148(RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
@@ -114,8 +114,8 @@ public:
   virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
   virtual RECT* BuildRectFromSlot158(RECT* rectOut);
   virtual void RecomputeAbsolutePositionRecursive();
-  virtual void ApplyBounds(RECT* newBounds, int modeFlag); // 0x5a 0x48c380
-  virtual char PointInBoundsAndActionable(CPoint* point);  // 0x5b 0x48c6d0
+  virtual void ApplyBounds(RECT* newBounds, int modeFlag);       // 0x5a 0x48c380
+  virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
   virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetField54();

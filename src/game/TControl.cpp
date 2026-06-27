@@ -26,12 +26,10 @@ undefined4 FromHandle(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
 extern "C" char LAB_00409a9d;
 
-
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::QuerySelectedIndexSlotBC() {
   return hasCommandTagResource;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00429470
 void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
@@ -42,7 +40,6 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x004294a0
 char TControl::LogUnhandledDialogMethodAndReturnFalse() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -52,25 +49,21 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 // Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
 // the McAppUI invalidation thunk (file header path, line 0x594) and returns null.
 
-
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
   TemporarilyClearAndRestoreUiInvalidationFlag();
   return 0;
 }
+IMPLEMENT_DYNCREATE(TControl, TView)
 
-
-// FUNCTION: IMPERIALISM 0x0048e500
-CRuntimeClass* TControl::GetRuntimeClass() const {
-  return &PTR_s_TControl_00649600;
-}
-
-TControlTemplatePrefix::TControlTemplatePrefix()
-    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), field68(0), field6C(0), field70(0) {}
+TModalTemplateDialogBase::TModalTemplateDialogBase()
+    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), field68(0), field6C(0),
+      field70(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TControlTemplatePrefix(), field74(0), commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
+    : TModalTemplateDialogBase(), field74(0),
+      commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
       commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
       commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
 
@@ -78,7 +71,6 @@ TControl::TControl()
 
 // SYNTHETIC: IMPERIALISM 0x0048e590
 // TControl::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
@@ -105,7 +97,6 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1f) {
@@ -126,7 +117,6 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e7a0
 void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
   commandTagDefaultParam1 = *pictureEntryRef;
@@ -134,7 +124,6 @@ void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool 
     PaintOrInvalidateControl(0);
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
 void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
@@ -145,7 +134,6 @@ void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPicture
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e810
 void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
   if (commandTagResourceByte != static_cast<unsigned char>(enabledState)) {
@@ -155,7 +143,6 @@ void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refres
     }
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x0048e850
 void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
@@ -187,7 +174,6 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
   }
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e940
 char TControl::PointInBoundsAndActionable(CPoint* point) {
   RECT rect;
@@ -198,20 +184,17 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
   return PtInRect(&rect, p);
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
   QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
   reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
 }
 
-
 // FUNCTION: IMPERIALISM 0x0048e9c0
 void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
 undefined TControl::ReturnZeroFromUiSlot6C() {
@@ -230,11 +213,10 @@ HWND ResolvePreModalOwner() {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0049d360
-int TControlTemplatePrefix::PrepareAndCreateModalFromTemplate() {
+int TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate() {
   void* lockedTemplateBytes = field48;
   field70 = reinterpret_cast<int>(childList44);
-  const UINT resourceTemplateId =
-      static_cast<UINT>(*reinterpret_cast<int*>(padding_40_to_43));
+  const UINT resourceTemplateId = static_cast<UINT>(*reinterpret_cast<int*>(padding_40_to_43));
   if (resourceTemplateId != 0) {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;
@@ -257,15 +239,15 @@ int TControlTemplatePrefix::PrepareAndCreateModalFromTemplate() {
     EnableWindow(reinterpret_cast<HWND>(field6C), FALSE);
     field68 = 1;
   }
-  hasCommandTagResource = reinterpret_cast<int>(
-      ::CreateDialogIndirectA(AfxGetInstanceHandle(), static_cast<LPCDLGTEMPLATE>(lockedTemplateBytes),
-                            reinterpret_cast<HWND>(field6C), nullptr));
+  hasCommandTagResource = reinterpret_cast<int>(::CreateDialogIndirectA(
+      AfxGetInstanceHandle(), static_cast<LPCDLGTEMPLATE>(lockedTemplateBytes),
+      reinterpret_cast<HWND>(field6C), nullptr));
   field5c = 1;
   return reinterpret_cast<HWND>(hasCommandTagResource) != nullptr ? 1 : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d450
-int TControlTemplatePrefix::FinalizeModalDialogAndRestoreOwnerFocus() {
+int TModalTemplateDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
   if (field68 != 0) {
     EnableWindow(reinterpret_cast<HWND>(field6C), TRUE);
   }
@@ -286,7 +268,6 @@ int TControlTemplatePrefix::FinalizeModalDialogAndRestoreOwnerFocus() {
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
-
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetHasCommandTagResource(int value) {
   hasCommandTagResource = value;
@@ -295,8 +276,8 @@ void TControl::SetHasCommandTagResource(int value) {
 TControl::~TControl() {}
 
 // FUNCTION: IMPERIALISM 0x006050d0
-TControlTemplatePrefix* TControlTemplatePrefix::InitializeDialogTemplateFromId(UINT templateId,
-                                                                               void* initParam) {
+TModalTemplateDialogBase*
+TModalTemplateDialogBase::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
   sharedStringRef.~CString();
   memset(&field3c, 0, 0x20);
   new (&sharedStringRef) CString();

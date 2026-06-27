@@ -8,16 +8,14 @@ struct TControlPictureRectState {
   short value2;
 };
 
-// TControl layout prefix through +0x73 (field70). Template modal controllers and dual-text
-// dialog variants share this prefix; tails at +0x74 differ by dialog class.
-class TControlTemplatePrefix : public TView {
+class TModalTemplateDialogBase : public TView {
 public:
-  TControlTemplatePrefix* InitializeDialogTemplateFromId(UINT templateId, void* initParam);
+  TModalTemplateDialogBase* InitializeDialogTemplateFromId(UINT templateId, void* initParam);
   int PrepareAndCreateModalFromTemplate();
   int FinalizeModalDialogAndRestoreOwnerFocus();
 
 protected:
-  TControlTemplatePrefix();
+  TModalTemplateDialogBase();
 
   int hasCommandTagResource;
   unsigned char commandTagResourceByte;
@@ -28,7 +26,7 @@ protected:
 };
 
 // VTABLE: IMPERIALISM 0x64a098
-class TControl : public TControlTemplatePrefix {
+class TControl : public TModalTemplateDialogBase {
 public:
   // === BEGIN GENERATED DECLS (TControl) — refreshed by recover-class; do not hand-edit ===
   virtual ~TControl(); // slot 0x01 (scalar deleting destructor)
@@ -132,9 +130,8 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB); // slot 0x68 0x48e850
-  virtual void
-  DeserializeCityProductionQueueCommand(int* boundsBuffer); // slot 0x69 0x48e980
+                                              void* eventDataB);         // slot 0x68 0x48e850
+  virtual void DeserializeCityProductionQueueCommand(int* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0
@@ -142,10 +139,9 @@ public:
   virtual void
   SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                     char refreshNow); // slot 0x6d 0x48e7d0
-  virtual void
-  SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef,
-                                        bool refreshNow); // slot 0x6e 0x48e7a0
-  virtual char LogUnhandledDialogMethodAndReturnFalse();  // slot 0x6f 0x4294a0
+  virtual void SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef,
+                                                     bool refreshNow); // slot 0x6e 0x48e7a0
+  virtual char LogUnhandledDialogMethodAndReturnFalse();               // slot 0x6f 0x4294a0
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
                                                   bool refreshNow); // slot 0x70 0x48e810
   // === END GENERATED DECLS (TControl) ===
@@ -156,7 +152,7 @@ public:
   unsigned char padding_82[2];
 
   TControl();
-  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48e500 (override)
+  DECLARE_DYNCREATE(TControl)
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.
   TObject* ShallowClone() override;

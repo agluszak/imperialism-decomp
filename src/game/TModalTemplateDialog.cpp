@@ -32,7 +32,7 @@ BOOL TModalTemplateDialog::UpdateData(BOOL saveAndValidate) {
 }
 
 TControl* TModalTemplateDialog::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
-  TControlTemplatePrefix::InitializeDialogTemplateFromId(templateId, initParam);
+  TModalTemplateDialogBase::InitializeDialogTemplateFromId(templateId, initParam);
   templateInitContext = initParam;
   resourceTemplateId = templateId & 0xffff;
   modalCreated = 0;
@@ -45,7 +45,7 @@ TControl* TModalTemplateDialog::InitializeDialogTemplateFromId(UINT templateId, 
 }
 
 int TModalTemplateDialog::PrepareAndCreateModalFromTemplate() {
-  const int result = TControlTemplatePrefix::PrepareAndCreateModalFromTemplate();
+  const int result = TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate();
   lockedTemplateBytes = field48;
   templateSourceCopy = reinterpret_cast<int>(childList44);
   hDialogResource = reinterpret_cast<HGLOBAL>(field70);
@@ -76,7 +76,7 @@ int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
                                   SWP_HIDEWINDOW | SWP_NOSENDCHANGING);
     }
   }
-  const int result = TControlTemplatePrefix::FinalizeModalDialogAndRestoreOwnerFocus();
+  const int result = TModalTemplateDialogBase::FinalizeModalDialogAndRestoreOwnerFocus();
   hModalDialog = nullptr;
   ownerWasDisabled = 0;
   modalCreated = 0;

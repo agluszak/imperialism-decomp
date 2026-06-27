@@ -230,6 +230,42 @@ def find_header(repo_root: Path, record: RuntimeRecord) -> tuple[Path | None, st
     return path, None
 
 
+def class_body(text: str, cls: str) -> str | None:
+    match = re.search(rf"\bclass\s+{re.escape(cls)}\s*:\s*public\s+[A-Za-z_][A-Za-z0-9_]*", text)
+    if match is None:
+        return None
+    brace = text.find("{", match.end())
+    if brace < 0:
+        return None
+    depth = 0
+    for index in range(brace, len(text)):
+        char = text[index]
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[brace + 1 : index]
+    return None
+
+
+def has_default_constructor_available(header_text: str, cls: str) -> bool:
+    body = class_body(header_text, cls)
+    if body is None:
+        return False
+
+    constructor_re = re.compile(rf"(?m)^\s*(?:explicit\s+)?{re.escape(cls)}\s*\((?P<args>[^)]*)\)")
+    constructors = list(constructor_re.finditer(body))
+    if not constructors:
+        return True
+
+    for constructor in constructors:
+        args = constructor.group("args").strip()
+        if not args or args == "void":
+            return True
+    return False
+
+
 def find_source(repo_root: Path, record: RuntimeRecord) -> tuple[Path | None, str | None]:
     cls = re.escape(record.class_name)
     method_re = re.compile(rf"\bCRuntimeClass\s*\*\s*{cls}::GetRuntimeClass\s*\(\s*\)\s*const\b")
@@ -258,11 +294,15 @@ def make_candidate(repo_root: Path, record: RuntimeRecord) -> Candidate | Skip:
     header_path, header_error = find_header(repo_root, record)
     if header_path is None:
         return Skip(record.class_name, header_error or "header not found")
+    header_text = read_text(header_path)
+    if choose_macro(record) in {"SERIAL", "DYNCREATE"} and not has_default_constructor_available(
+        header_text, record.class_name
+    ):
+        return Skip(record.class_name, "no visible default constructor for MFC CreateObject")
     source_path, source_error = find_source(repo_root, record)
     if source_path is None:
         return Skip(record.class_name, source_error or "source not found")
 
-    header_text = read_text(header_path)
     decl_match = re.search(
         rf"\bDECLARE_(DYNAMIC|DYNCREATE|SERIAL)\s*\(\s*{re.escape(record.class_name)}\s*\)",
         header_text,

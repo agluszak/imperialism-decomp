@@ -18,7 +18,6 @@ extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
-
 extern TApplication* g_pApplicationUiRootController;
 
 // FUNCTION: IMPERIALISM 0x00415d50
@@ -39,11 +38,7 @@ void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
     entry->Free();
   }
 }
-
-// FUNCTION: IMPERIALISM 0x0048a0e0
-CRuntimeClass* TEventHandler::GetRuntimeClass() const {
-  return &PTR_s_TEventHandler_00649588;
-}
+IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
 // Binary helper @ 0x48a100: same header field defaults as TEventHandler().
 // FUNCTION: IMPERIALISM 0x0048a100

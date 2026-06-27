@@ -6,7 +6,7 @@ namespace {
 
 #define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
 
-TG_LAYOUT_ASSERT(TControlTemplatePrefix_Size_0x74, sizeof(TControlTemplatePrefix) == 0x74);
+TG_LAYOUT_ASSERT(TModalTemplateDialogBase_Size_0x74, sizeof(TModalTemplateDialogBase) == 0x74);
 TG_LAYOUT_ASSERT(TAutoResolutionDialog_Offset_primaryDialogControl_0x74,
                  offsetof(TAutoResolutionDialog, primaryDialogControl) == 0x74);
 TG_LAYOUT_ASSERT(TAutoResolutionDialog_Offset_secondaryDialogControl_0xb0,
@@ -22,7 +22,7 @@ TG_LAYOUT_ASSERT(CWnd_EmbedSize_0x3c, sizeof(CWnd) == 0x3c);
 
 // FUNCTION: IMPERIALISM 0x0047dfd0
 TAutoResolutionDialog::TAutoResolutionDialog(void* initParam)
-    : TControlTemplatePrefix(), primaryDialogControl(), secondaryDialogControl(),
+    : TModalTemplateDialogBase(), primaryDialogControl(), secondaryDialogControl(),
       autoResolutionCheckState(0) {
   InitializeDialogTemplateFromId(0xfb, initParam);
   field5c = 0;

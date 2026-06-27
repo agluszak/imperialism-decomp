@@ -156,10 +156,7 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
 }
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
-// FUNCTION: IMPERIALISM 0x0048a8c0
-CRuntimeClass* TView::GetRuntimeClass() const {
-  return &PTR_s_TView_006495a0;
-}
+IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
 // and the base scalar fields (field0c/field10/field14/resourceOwner); MSVC then writes this
@@ -486,12 +483,10 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     ClipStateRegionWrapper* childWrapper =
         reinterpret_cast<ClipStateRegionWrapper*>(*regionWrapper);
     if (childWrapper != 0 && childWrapper->inner != 0) {
-      sourceRegion =
-          *reinterpret_cast<void**>(reinterpret_cast<char*>(childWrapper->inner) + 0x18);
+      sourceRegion = *reinterpret_cast<void**>(reinterpret_cast<char*>(childWrapper->inner) + 0x18);
     }
   }
-  void* destRegion =
-      *reinterpret_cast<void**>(reinterpret_cast<char*>(localRegion->inner) + 0x18);
+  void* destRegion = *reinterpret_cast<void**>(reinterpret_cast<char*>(localRegion->inner) + 0x18);
   CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
 
   CPoint cachedPos;
@@ -609,7 +604,8 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
   if (BindMapQuickDrawDc(bindArg) != 0) {
     ApplyRectSlot110(&clippedRect);
     if (resourceOwner != 0) {
-      reinterpret_cast<TEventHandler*>(resourceOwner)->DispatchQueuedUiCommandAndRelease(&clippedRect);
+      reinterpret_cast<TEventHandler*>(resourceOwner)
+          ->DispatchQueuedUiCommandAndRelease(&clippedRect);
     }
     ReleaseMapQuickDrawDc(bindArg);
   }

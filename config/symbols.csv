@@ -8948,12 +8948,12 @@ address|name|size|type|prototype
 6490f8|g_pClassDescTCountingStream||global|
 649110|g_pClassDescTHandleStream||global|
 649570|TEvent::classRuntimeClass||global|
-649588|TEventHandler::classRuntimeClass||global|
-6495a0|TView::classRuntimeClass||global|
+649588|TEventHandler::classTEventHandler||global|
+6495a0|TView::classTView||global|
 6495b8|TScroller::classRuntimeClass||global|
 6495d0|TIncludeView::classRuntimeClass||global|
 6495e8|TWindow::classRuntimeClass||global|
-649600|TControl::classRuntimeClass||global|
+649600|TControl::classTControl||global|
 649618|TCtlMgr::classRuntimeClass||global|
 649630|TButton::classRuntimeClass||global|
 649648|TRadio::classRuntimeClass||global|
