@@ -1147,6 +1147,12 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 }
 #pragma optimize("", on)
 
+void TGreatPower::RefreshNationCivilianWorkOrdersForTurn(CString param_2, char* param_3) {
+  (void)param_2;
+  (void)param_3;
+  // TODO: promote body @ 0x004dfd30
+}
+
 // FUNCTION: IMPERIALISM 0x004da8a0
 #pragma optimize("y", on)
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {

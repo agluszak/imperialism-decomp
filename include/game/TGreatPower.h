@@ -91,6 +91,7 @@ public:
   // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
   // constructs queued land/navy/civ order objects (body 0x004dab20).
   virtual void ExecuteNationPendingActionStateMachine(void);
+  void RefreshNationCivilianWorkOrdersForTurn(CString param_2, char* param_3);
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
   virtual char HasTrackedOrderOfType7(void);
