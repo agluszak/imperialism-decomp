@@ -61,11 +61,14 @@ TForeignMinister* foreignMinister;  // starts at TGreatPower+0x94 via curated.la
 TCity* city;
 ```
 
-### 4. Range naming the field (legacy)
+### 4. Split a recovered contiguous block into named fields
 
 ```cpp
-// 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2.
-short fieldB6[0x17];
+// 0xB6..0xE4; city commodity stock/need counters.
+short cityStockCottonB6;
+short cityStockWoolB8;
+// ...
+short cityStockGoldE2;
 ```
 
 ## Pad fields

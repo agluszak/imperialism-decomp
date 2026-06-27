@@ -71,7 +71,7 @@ public:
                                                      int slotIndex) override;
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
   void OrphanRetStub_004dcc30(void) override;
-  // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city fieldB6.
+  // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city stock.
   void ClearDiplomacyState1c6Block(void) override;
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
   void BeginTurnDiplomacyPrePassSlot1c8() override;

@@ -31,18 +31,18 @@ public:
   // slot 0x0a — body 0x004b3b40 (528B, unported).
   virtual void Call28();
   // slot 0x0b — body 0x004b3de0: refresh the low-stock/low-summary flags and push
-  // fieldB6 to the owner (TGreatPower slot 0x3f).
+  // city stock counters to the owner (TGreatPower slot 0x3f).
   virtual void Call2C();
   // slot 0x0c — body 0x004b3e70: dispatch pending build/ship orders to the owner
   // (slot 0xb0) then tick every owned order object (vt+0x34).
   virtual void RefreshOrderStateSlot0C();
-  // slot 0x0d — body 0x004b3fb0: add a 17-entry need vector into the fieldB6 block
-  // (split 7/6/4 across fieldB6/fieldC4/fieldD0).
+  // slot 0x0d — body 0x004b3fb0: add a 17-entry need vector into the city stock block
+  // (split 7/6/4 across the city stock block).
   virtual void AddNeedVectorSplitSlot34(short* needVector);
-  // slot 0x0e — body 0x004b4090: fieldB6[i] += owner->needTargetByType[i]; clears
+  // slot 0x0e — body 0x004b4090: city stock counter += owner->needTargetByType[i]; clears
   // relationNeedSlotE0/E2.
   virtual void AddOwnerNeedTargetsSlot38();
-  // slot 0x0f — body 0x004b4040: fieldB6[i] += amounts[i]; clears E0/E2.
+  // slot 0x0f — body 0x004b4040: city stock counter += amounts[i]; clears E0/E2.
   virtual void AddNeedVectorSlot3C(short* amounts);
   // slot 0x10 — body 0x004b4580 (247B, unported): create the Altown city object.
   virtual void CreateAltownCityObject();
@@ -54,7 +54,7 @@ public:
   virtual void WriteQueuePairSlot48(short low, short high);
   // slot 0x13 — body 0x004b40e0: allocate up to `amount` of a need from the owner's
   // current-over-target surplus (capped by needCapA6 - overCap), accumulate into
-  // fieldB6 and push the new target (TGreatPower slot 0x45).
+  // city stock and push the new target (TGreatPower slot 0x45).
   virtual short AllocateNeedFromOwnerSlot4C(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
   virtual void ForwardQueueSlot20Slot50(void* message = 0);
@@ -84,7 +84,7 @@ public:
   virtual short IsBasicResourceSlot78(short resourceSlot);
   // slot 0x1f — body 0x004b4210.
   virtual void NoOpCitySlot7C();
-  // slot 0x20 — body 0x004b4180: clamp negative fieldB6 entries to 0 (asserting via
+  // slot 0x20 — body 0x004b4180: clamp negative city stock entries to 0 (asserting via
   // UCity.cpp:0x47f unless replaying).
   virtual void Refresh80();
 
@@ -105,8 +105,31 @@ public:
   // +0xb0 — currently selected order; its +0x14 tile id drives the port-zone lookup
   void* selectedOrderB0; // +0xb0
   unsigned char pad_b4[0xB6 - 0xB4];
-  // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
-  short fieldB6[0x17];
+  // 0xB6..0xE4 — city commodity stock/need counters, commodity order:
+  // Cotton..Gold (bitmap ids 700..722 / strings 17077..17099).
+  short cityStockCottonB6;
+  short cityStockWoolB8;
+  short cityStockTimberBA;
+  short cityStockCoalBC;
+  short cityStockIronBE;
+  short cityStockHorsesC0;
+  short cityStockOilC2;
+  short cityStockCannedFoodC4;
+  short cityStockFabricC6;
+  short cityStockLumberC8;
+  short cityStockPaperCA;
+  short cityStockSteelCC;
+  short cityStockFuelCE;
+  short cityStockClothingD0;
+  short cityStockFurnitureD2;
+  short cityStockHardwareD4;
+  short cityStockArmsD6;
+  short cityStockGrainD8;
+  short cityStockFruitDA;
+  short cityStockFishDC;
+  short cityStockLivestockDE;
+  short cityStockGemsE0;
+  short cityStockGoldE2;
   // +0xe4..+0x1d8 — owned order objects, released through slot 0x1c on teardown.
   void* orderSlotsE4[0x3D];
   TPopulationMgr* productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)

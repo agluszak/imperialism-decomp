@@ -55,7 +55,7 @@ public:
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
   int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
   short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
-  short GetDiplomacyExternalStateB6ByTarget(short nationSlot) override;        // slot 0x1e
+  short GetDiplomacyExternalStateByTarget(short nationSlot) override;        // slot 0x1e
   short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
@@ -109,7 +109,7 @@ public:
   virtual void NotifyCitySlot2C(void);
   virtual void OrphanRetStub_004dcc30(void);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
-  // into the city's fieldB6 relation deltas, maxes six production-order entries to
+  // into the city stock relation deltas, maxes six production-order entries to
   // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
   // slot 0x3a or 0x3b.
   virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TCity* mgr);
@@ -131,8 +131,8 @@ public:
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
   virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
-  virtual void ApplyDiplomacyState222ToCityFieldB6AndClear(void);      // slot 0x41
-  virtual void ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void); // slot 0x42
+  virtual void ApplyDiplomacyState222ToCityStockAndClear(void);      // slot 0x41
+  virtual void ApplyRelationDeltaToCityStockAndUpdateState1f4(void); // slot 0x42
 
   // ---- resource needs / aid allocation ----
   virtual void ApplyNationResourceNeedTargetsToOrderState(void);
@@ -179,11 +179,11 @@ public:
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
   virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
-  virtual void SetCityFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
-  virtual void AddToCityFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
+  virtual void SetCityStockCounterAndRefresh(short targetSlot, short value);   // slot 0x63
+  virtual void AddToCityStockCounterAndRefresh(short targetSlot, short value); // slot 0x64
   // slot 0x65 — body 0x004dd7f0: per-order-kind production metric (city building
   // production doubled per kind; kind 7 sums the city summary record minus four
-  // city fieldB6 counters, clamped at 0).
+  // city stock counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
   virtual void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation);   // slot 0x19c
@@ -459,7 +459,7 @@ public:
 //   slot 0x1b  byte 0x6c  0x004dda20  override  OrphanRetStub_004d7e90
 //   slot 0x1c  byte 0x70  0x004dda60  override  OrphanLeaf_NoCall_Ins02_004d7ee0
 //   slot 0x1d  byte 0x74  0x004d8c00  override  OrphanLeaf_NoCall_Ins02_004d7f00
-//   slot 0x1e  byte 0x78  0x004dd740  override  OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x1e  byte 0x78  0x004dd740  override  GetDiplomacyExternalStateByTarget
 //   slot 0x1f  byte 0x7c  0x004ddb20  override  OrphanLeaf_NoCall_Ins02_004d7f40
 //   slot 0x20  byte 0x80  0x004ddc30  override  OrphanRetStub_004d7fa0
 //   slot 0x21  byte 0x84  0x004ddd50  override  OrphanLeaf_NoCall_Ins02_004d7fc0
@@ -494,8 +494,8 @@ public:
 //   slot 0x3e  byte 0xf8  0x004e01b0  new       OrphanLeaf_NoCall_Ins06_004d87b0
 //   slot 0x3f  byte 0xfc  0x004dca80  new       SelectCandidateTilesWithLowGroundUnitCount
 //   slot 0x40  byte 0x100  0x004dcaa0  new       OrphanLeaf_NoCall_Ins07_004d8920
-//   slot 0x41  byte 0x104  0x004dcc50  new       ApplyJoinEmpireModeForTargetNation
-//   slot 0x42  byte 0x108  0x004dcca0  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x41  byte 0x104  0x004dcc50  new       ApplyDiplomacyState222ToCityStockAndClear
+//   slot 0x42  byte 0x108  0x004dcca0  new       ApplyRelationDeltaToCityStockAndUpdateState1f4
 //   slot 0x43  byte 0x10c  0x004dcd10  new       ApplyJoinEmpireMode1TargetTransition
 //   slot 0x44  byte 0x110  0x004dce10  new       OrphanLeaf_NoCall_Ins06_004d87b0
 //   slot 0x45  byte 0x114  0x004dcdd0  new       SelectCandidateTilesWithLowGroundUnitCount
@@ -528,8 +528,8 @@ public:
 //   slot 0x60  byte 0x180  0x004dd430  new       AdvanceNationPendingActionStateMachine
 //   slot 0x61  byte 0x184  0x004dd470  new       DispatchNationPendingActionEventCodes
 //   slot 0x62  byte 0x188  0x004dd4e0  new       SetNationPendingActionStateAndPayload
-//   slot 0x63  byte 0x18c  0x004dd770  new       QueueNationOrderManagerPayloadObject
-//   slot 0x64  byte 0x190  0x004dd7b0  new       ClearQueuedNationOrdersAndResetOrderManager
+//   slot 0x63  byte 0x18c  0x004dd770  new       SetCityStockCounterAndRefresh
+//   slot 0x64  byte 0x190  0x004dd7b0  new       AddToCityStockCounterAndRefresh
 //   slot 0x65  byte 0x194  0x004dd7f0  new       OrphanCallChain_C1_I42_004dd7f0
 //   slot 0x66  byte 0x198  0x004dda40  new       ExecuteNationPendingActionStateMachine
 //   slot 0x67  byte 0x19c  0x004dda90  new       HasQueuedCivWorkOrderType7

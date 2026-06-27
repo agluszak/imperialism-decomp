@@ -1379,34 +1379,10 @@ undefined4 DestructTFoodProcessingOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TShipOrder::GetTShipOrderClassNamePointer
-// ghidra_proto undefined GetTShipOrderClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004b84a0
-undefined4 GetTShipOrderClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TShipOrder::ConstructTShipOrderBaseState
-// ghidra_proto undefined ConstructTShipOrderBaseState()
-// FUNCTION: IMPERIALISM 0x004b84e0
-undefined4 ConstructTShipOrderBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipOrder::DestructTShipOrderAndMaybeFree
 // ghidra_proto undefined DestructTShipOrderAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b8510
 undefined4 DestructTShipOrderAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name CommitQueuedNavyOrdersAndUpdateTierByCapability
-// ghidra_proto undefined CommitQueuedNavyOrdersAndUpdateTierByCapability()
-// FUNCTION: IMPERIALISM 0x004b89a0
-undefined4 CommitQueuedNavyOrdersAndUpdateTierByCapability(void)
 {
   return 0;
 }

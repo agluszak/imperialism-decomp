@@ -15,17 +15,17 @@ undefined TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80(in
 }
 
 // FUNCTION: IMPERIALISM 0x004b7ed0
-undefined TFoodProcessingOrder::OrphanLeaf_NoCall_Ins02_004b50e0() {
+short TFoodProcessingOrder::MaxOrder() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7f50
-undefined TFoodProcessingOrder::OrphanCallChain_C1_I16_004b5100(short param_1) {
+bool TFoodProcessingOrder::SetQuantity(short param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8060
-undefined TFoodProcessingOrder::OrphanRetStub_004b5160() {
+undefined TFoodProcessingOrder::CommitIfPending() {
   return 0;
 }
 
@@ -35,6 +35,6 @@ undefined TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b80c0
-undefined TFoodProcessingOrder::CreateTItemOrderInstance() {
+undefined TFoodProcessingOrder::FillOrderSheet() {
   return 0;
 }

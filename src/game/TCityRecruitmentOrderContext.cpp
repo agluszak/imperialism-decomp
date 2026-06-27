@@ -7,7 +7,7 @@
 extern "C" TSimMgr* g_pLocalizationTable;
 
 
-// Body moved to TUnitOrder::OrphanRetStub_004b5160 for the real vtable owner.
+// Body moved to TUnitOrder::CommitIfPending for the real vtable owner.
 void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   short pendingDelta = this->pendingDelta;
   if (pendingDelta <= 0 || this->cityContext == 0) {

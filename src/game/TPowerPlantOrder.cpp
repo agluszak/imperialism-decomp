@@ -15,17 +15,17 @@ undefined TPowerPlantOrder::InitializeCityProductionState_Impl() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b00
-undefined TPowerPlantOrder::OrphanLeaf_NoCall_Ins02_004b50e0() {
+short TPowerPlantOrder::MaxOrder() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
-undefined TPowerPlantOrder::OrphanCallChain_C1_I16_004b5100(short param_1) {
+bool TPowerPlantOrder::SetQuantity(short param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c20
-undefined TPowerPlantOrder::OrphanRetStub_004b5160() {
+undefined TPowerPlantOrder::CommitIfPending() {
   return 0;
 }
 
@@ -35,7 +35,7 @@ undefined TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c90
-undefined TPowerPlantOrder::CreateTItemOrderInstance() {
+undefined TPowerPlantOrder::FillOrderSheet() {
   return 0;
 }
 

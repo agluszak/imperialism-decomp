@@ -163,7 +163,7 @@ double g_Compute_Advisory_Hundred_00654000 = 100.0;
 double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
-// the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
+// the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
 // GLOBAL: IMPERIALISM 0x0066fad0

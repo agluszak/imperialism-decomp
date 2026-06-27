@@ -26,23 +26,20 @@ verify it isn't COMDAT-folded across vtables first, à la TAmbitApplication).
 
 Tractable (single inheritance, primary vtable, modest override counts):
 
-| Class | vtable | base (vtable) | override slots |
-|---|---|---|---|
-| TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
-
-Note: `TShipOrder` is not a mechanical scaffold in the current tree: slots
-0x11/0x12/0x0c/0x0b/0x0d/0x10 currently resolve to addresses already manually
-owned by `src/game/TCapacityOrder.cpp` (0x004b85a0, 0x004b8630, 0x004b86d0,
-0x004b8800, 0x004b8970, 0x004b8b80). Recover it by first deciding whether those
-bodies need to move to a shared production-order subtype/helper or whether the
-RTTI vtable chain resolved a sibling table; do not duplicate `// FUNCTION:`
-markers under `TShipOrder`.
+None currently.
 
 Done:
 
 | Class | vtable | base (vtable) | override slots |
 |---|---|---|---|
+| TShipOrder | 0x0064f738 | TProductionOrder (0x0064fa18) | 9: 0x00,0x01,0x0b,0x0c,0x0d,0x10,0x11,0x12,0x13 |
 | TCityProductionView | 0x0064fc20 | TNoHilitePicture (0x006606e8) | 17: 0x00,0x01,0x07,0x0f,0x35,0x37,0x44,0x47,0x68,0x74,0x75,0x76,0x77,0x78,0x79,0x7a,0x7b |
+
+`TShipOrder` recovered 2026-06-27 as a real `TProductionOrder` subclass with
+its slots moved out of the temporary `TCapacityOrder` ownership. The shared city
+stock block is now modeled as named `TCity::cityStock*` commodity fields rather
+than the old offset-array/offset-helper surface; `just vtable TShipOrder` and
+`just vtable TCapacityOrder` both pass.
 
 `TCityProductionView` recovered 2026-06-27 as a real
 `TNoHilitePicture` subclass with 15 manually owned function bodies moved out of

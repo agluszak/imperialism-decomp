@@ -1096,12 +1096,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
-      cityPtr->fieldB6[10] = cityPtr->fieldB6[10] + 10;
+      cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
       cityPtr->Refresh80();
       UiRuntime_QueueTurnStatusPrompt(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
-      cityPtr->fieldB6[10] = cityPtr->fieldB6[10] + 10;
+      cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
       cityPtr->Refresh80();
       UiRuntime_QueueTurnStatusPrompt(7, -1);
     }
@@ -1297,7 +1297,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       continue;
     }
 
-    short* relationDeltaPtr = &cityPtr->fieldB6[nationSlot];
+    short* relationDeltaPtr = (&cityPtr->cityStockCottonB6) + nationSlot;
     short relationDelta = *relationDeltaPtr;
     if (relationDelta > 0) {
       *relationDeltaPtr = 0;
@@ -2048,17 +2048,17 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
 void TGreatPower::OrphanRetStub_004dcc30(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcc50
-void TGreatPower::ApplyDiplomacyState222ToCityFieldB6AndClear(void) {
+void TGreatPower::ApplyDiplomacyState222ToCityStockAndClear(void) {
   for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    this->AddToCityFieldB6AndRefresh(nationSlot, this->diplomacyState222[nationSlot]);
+    this->AddToCityStockCounterAndRefresh(nationSlot, this->diplomacyState222[nationSlot]);
     this->diplomacyState222[nationSlot] = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004dcca0
-void TGreatPower::ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void) {
+void TGreatPower::ApplyRelationDeltaToCityStockAndUpdateState1f4(void) {
   for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    this->AddToCityFieldB6AndRefresh(nationSlot, this->relationDeltaCurrent[nationSlot]);
+    this->AddToCityStockCounterAndRefresh(nationSlot, this->relationDeltaCurrent[nationSlot]);
     if (this->diplomacyState250[nationSlot] == -1 && this->relationDeltaCurrent[nationSlot] == 0) {
       this->diplomacyState1f4[nationSlot] =
           static_cast<short>(this->diplomacyState1f4[nationSlot] + 1);
@@ -2075,19 +2075,19 @@ void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
 
   TCity* cityPtr = this->city;
   if (cityPtr != 0) {
-    cityPtr->fieldB6[0x15] = 0;
+    cityPtr->cityStockGemsE0 = 0;
     cityPtr->Refresh80();
   }
 
   this->AddToNationMetricAtField10(static_cast<int>(this->needTargetByType[0x16]) * 200);
 
   if (cityPtr != 0) {
-    cityPtr->fieldB6[0x16] = 0;
+    cityPtr->cityStockGoldE2 = 0;
     cityPtr->Refresh80();
   }
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
-    this->AddToCityFieldB6AndRefresh(static_cast<short>(needIndex),
+    this->AddToCityStockCounterAndRefresh(static_cast<short>(needIndex),
                                      this->needTargetByType[needIndex]);
   }
 }
@@ -2141,10 +2141,10 @@ void TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcf60
 short TGreatPower::TryDecayRelationNeedScores9AndB(void) {
-  if (this->GetDiplomacyExternalStateB6ByTarget(9) != 0) {
-    if (this->GetDiplomacyExternalStateB6ByTarget(0xb) != 0) {
-      this->AddToCityFieldB6AndRefresh(9, -1);
-      this->AddToCityFieldB6AndRefresh(0xb, -1);
+  if (this->GetDiplomacyExternalStateByTarget(9) != 0) {
+    if (this->GetDiplomacyExternalStateByTarget(0xb) != 0) {
+      this->AddToCityStockCounterAndRefresh(9, -1);
+      this->AddToCityStockCounterAndRefresh(0xb, -1);
       this->needCapA6 = static_cast<short>(this->needCapA6 + 1);
       return 1;
     }
@@ -2154,10 +2154,10 @@ short TGreatPower::TryDecayRelationNeedScores9AndB(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcfd0
 short TGreatPower::TryDecayRelationNeedScores9And8(void) {
-  if (this->GetDiplomacyExternalStateB6ByTarget(9) > 2) {
-    if (this->GetDiplomacyExternalStateB6ByTarget(8) != 0) {
-      this->AddToCityFieldB6AndRefresh(9, -3);
-      this->AddToCityFieldB6AndRefresh(8, -1);
+  if (this->GetDiplomacyExternalStateByTarget(9) > 2) {
+    if (this->GetDiplomacyExternalStateByTarget(8) != 0) {
+      this->AddToCityStockCounterAndRefresh(9, -3);
+      this->AddToCityStockCounterAndRefresh(8, -1);
       this->tradeCapacity = static_cast<short>(this->tradeCapacity + 1);
       return 1;
     }
@@ -2232,9 +2232,9 @@ void TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
     }
     this->diplomacyState1c6[nationIndex] = snapshotValue;
 
-    short needScore = this->GetDiplomacyExternalStateB6ByTarget(nationIndex);
+    short needScore = this->GetDiplomacyExternalStateByTarget(nationIndex);
     if (needScore < this->diplomacyState1c6[nationIndex]) {
-      this->diplomacyState1c6[nationIndex] = this->GetDiplomacyExternalStateB6ByTarget(nationIndex);
+      this->diplomacyState1c6[nationIndex] = this->GetDiplomacyExternalStateByTarget(nationIndex);
     }
 
     for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
@@ -2252,9 +2252,9 @@ void TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
     }
     this->diplomacyState1c6[nationIndex] = snapshotValue;
 
-    short needScore = this->GetDiplomacyExternalStateB6ByTarget(nationIndex);
+    short needScore = this->GetDiplomacyExternalStateByTarget(nationIndex);
     if (needScore < this->diplomacyState1c6[nationIndex]) {
-      this->diplomacyState1c6[nationIndex] = this->GetDiplomacyExternalStateB6ByTarget(nationIndex);
+      this->diplomacyState1c6[nationIndex] = this->GetDiplomacyExternalStateByTarget(nationIndex);
     }
 
     for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
@@ -2419,25 +2419,25 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd740
-short TGreatPower::GetDiplomacyExternalStateB6ByTarget(short targetNationSlot) {
+short TGreatPower::GetDiplomacyExternalStateByTarget(short targetNationSlot) {
   TCity* cityPtr = this->city;
   if (cityPtr == 0) {
     return 0;
   }
-  return cityPtr->fieldB6[targetNationSlot];
+  return (&cityPtr->cityStockCottonB6)[targetNationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x004dd770
-void TGreatPower::SetCityFieldB6AndRefresh(short targetSlot, short value) {
+void TGreatPower::SetCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  cityPtr->fieldB6[targetSlot] = value;
+  (&cityPtr->cityStockCottonB6)[targetSlot] = value;
   cityPtr->Refresh80();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
-void TGreatPower::AddToCityFieldB6AndRefresh(short targetSlot, short value) {
+void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  cityPtr->fieldB6[targetSlot] = static_cast<short>(cityPtr->fieldB6[targetSlot] + value);
+  (&cityPtr->cityStockCottonB6)[targetSlot] = static_cast<short>((&cityPtr->cityStockCottonB6)[targetSlot] + value);
   cityPtr->Refresh80();
 }
 #pragma optimize("", on)
@@ -2483,10 +2483,10 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     short* summary = this->city->GetCitySummaryRecordSlot74();
     TCity* city = this->city;
     short available =
-        static_cast<short>(((((summary[0x14] + summary[0x12] + summary[0x11]) - city->fieldB6[7]) -
-                             city->fieldB6[0x14]) -
-                            city->fieldB6[0x11]) -
-                           city->fieldB6[0x12]);
+        static_cast<short>(((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -
+                             city->cityStockLivestockDE) -
+                            city->cityStockGrainD8) -
+                           city->cityStockFruitDA);
     if (available >= 0) {
       return static_cast<unsigned short>(available);
     }
@@ -3573,7 +3573,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
-    mgr->fieldB6[static_cast<short>(needIndex)] = presetRow[needIndex];
+    (&mgr->cityStockCottonB6)[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->Refresh80();
   }
   mgr->productionAccum1fc[8] += 999 - mgr->productionOrderTable1dc[8];
@@ -3854,7 +3854,7 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
     productionCap = scenarioCap;
   }
   int budget = productionCap;
-  short metricCap = this->GetDiplomacyExternalStateB6ByTarget(0x10);
+  short metricCap = this->GetDiplomacyExternalStateByTarget(0x10);
   if (static_cast<int>(metricCap) <= budget) {
     budget = metricCap;
   }

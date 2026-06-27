@@ -22,22 +22,22 @@ void TUnitOrder::InitializeCityRecruitmentOrderContext(
     short nWorkforceMode, byte bSpecialistMode) {}
 
 // FUNCTION: IMPERIALISM 0x004b7080
-undefined TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0() {
+short TUnitOrder::MaxOrder() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7210
-undefined TUnitOrder::OrphanCallChain_C1_I16_004b5100(short param_1) {
+bool TUnitOrder::SetQuantity(short param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7320
-undefined TUnitOrder::CreateTItemOrderInstance() {
+undefined TUnitOrder::FillOrderSheet() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b73b0
-undefined TUnitOrder::OrphanRetStub_004b5160() {
+undefined TUnitOrder::CommitIfPending() {
   unsigned char* raw = reinterpret_cast<unsigned char*>(this);
   short* pendingDeltaRef = reinterpret_cast<short*>(raw + 0x04);
   short pendingDelta = *pendingDeltaRef;

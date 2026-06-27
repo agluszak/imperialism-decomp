@@ -261,8 +261,8 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
     }
   } else if (static_cast<short>(needSlot) != 5) {
     short metricCap = 10;
-    if (this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot)) < 10) {
-      metricCap = this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot));
+    if (this->GetDiplomacyExternalStateByTarget(static_cast<short>(needSlot)) < 10) {
+      metricCap = this->GetDiplomacyExternalStateByTarget(static_cast<short>(needSlot));
     }
     if (this->tradeCapacity < metricCap) {
       metricCap = this->tradeCapacity;
@@ -273,9 +273,9 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
     this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
     return;
   }
-  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 &&
+  if (this->GetDiplomacyExternalStateByTarget(5) != 0 &&
       this->QueryNationMetricBySlot7C(5) != -1) {
-    short metric = this->GetDiplomacyExternalStateB6ByTarget(5);
+    short metric = this->GetDiplomacyExternalStateByTarget(5);
     int assignAmount = (metric != 1) + 1;
     if (this->tradeCapacity < static_cast<short>(assignAmount)) {
       assignAmount = this->tradeCapacity;
@@ -370,14 +370,14 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
     for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
       short pending = *pendingMetric;
       if (pending > 0) {
-        short current = this->GetDiplomacyExternalStateB6ByTarget(needSlot);
+        short current = this->GetDiplomacyExternalStateByTarget(needSlot);
         short remaining;
         if (current < pending) {
           remaining = 0;
         } else {
           remaining = static_cast<short>(current - pending);
         }
-        this->SetCityFieldB6AndRefresh(needSlot, remaining);
+        this->SetCityStockCounterAndRefresh(needSlot, remaining);
       }
       *pendingMetric = 0;
       ++pendingMetric;

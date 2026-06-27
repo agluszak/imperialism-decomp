@@ -70,7 +70,7 @@ void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0052ed20
 short TMinister::DispatchNationStateEventCode10(short nationSlot) {
-  return g_apNationStates[nationSlot]->GetDiplomacyExternalStateB6ByTarget(0x10);
+  return g_apNationStates[nationSlot]->GetDiplomacyExternalStateByTarget(0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed50

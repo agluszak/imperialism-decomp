@@ -49,7 +49,7 @@ public:
   virtual void DecrementDiplomacyCounterA2ByValue(int delta);
   virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
   virtual short GetDiplomacyCounterA2(void);
-  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);
+  virtual short GetDiplomacyExternalStateByTarget(short nationSlot);
   virtual short QueryNationMetricBySlot7C(short metricSlot);
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                               int multiplier);
@@ -148,7 +148,7 @@ ASSERT_SIZE(TCountry, 0x94);
 //   slot 0x1b  byte 0x6c  0x004d7e90  new       OrphanRetStub_004d7e90
 //   slot 0x1c  byte 0x70  0x004d7ee0  new       OrphanLeaf_NoCall_Ins02_004d7ee0
 //   slot 0x1d  byte 0x74  0x004d7f00  new       OrphanLeaf_NoCall_Ins02_004d7f00
-//   slot 0x1e  byte 0x78  0x004d7f20  new       OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x1e  byte 0x78  0x004d7f20  new       GetDiplomacyExternalStateByTarget
 //   slot 0x1f  byte 0x7c  0x004d7f40  new       OrphanLeaf_NoCall_Ins02_004d7f40
 //   slot 0x20  byte 0x80  0x004d7fa0  new       OrphanRetStub_004d7fa0
 //   slot 0x21  byte 0x84  0x004d7fc0  new       OrphanLeaf_NoCall_Ins02_004d7fc0
