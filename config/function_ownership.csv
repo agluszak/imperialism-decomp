@@ -2148,7 +2148,7 @@ address|target_cpp|ownership|note
 5409e0|src/game/TProxyGreatPower.cpp|manual|mfc_runtime_macro
 540a00|src/game/TProxyGreatPower.cpp|manual|marker_sync
 540aa0|src/game/TProxyGreatPower.cpp|manual|marker_sync
-540ac0|src/game/TGreatPower.cpp|manual|marker_sync
+540ac0|src/game/TProxyGreatPower.cpp|manual|marker_sync
 540b80|src/game/TProxyGreatPower.cpp|manual|marker_sync
 540ba0|src/game/TProxyGreatPower.cpp|manual|marker_sync
 540c20|src/game/TProxyGreatPower.cpp|manual|marker_sync

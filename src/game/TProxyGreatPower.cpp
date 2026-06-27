@@ -1,4 +1,7 @@
 #include "game/TProxyGreatPower.h"
+#include "game/TTurnEventPacket.h"
+#include "game/TUiRuntimeContext.h"
+#include "game/UiRuntimeContext.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
 char TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98() {
@@ -6,7 +9,7 @@ char TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98() {
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-undefined TProxyGreatPower::ReturnFalseNationStateCapabilityFlagA0() {
+char TProxyGreatPower::ShouldDispatchImmediatelySlot28(void) {
   return 0;
 }
 
@@ -34,29 +37,55 @@ void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {}
 
 // FUNCTION: IMPERIALISM 0x00540ba0
-undefined TProxyGreatPower::ReturnFalseNationStateActionStub() {
+char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                                     int arg4) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00540c20
-undefined TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920() {
-  return 0;
-}
+void TProxyGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {}
 
 // FUNCTION: IMPERIALISM 0x00540c70
-undefined TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f() {
-  return 0;
+void TProxyGreatPower::AddNodeToMissionNodeQueue(void* node) {}
+
+// FUNCTION: IMPERIALISM 0x00540ac0
+void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
+                                                                 short targetNationId) {
+  struct TurnEvent16PacketPayload {
+    TTurnEventPacketRoutingPrefix routing;
+    int packetTag;
+    unsigned char activeNationId;
+    unsigned char padAfterActiveNation;
+    short sourceNation;
+    short proposalCode;
+    short targetNationId;
+  };
+
+  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
+
+  TurnEvent16PacketPayload packetPayload;
+  packetPayload.packetTag = 0x74696D65;
+  packetPayload.activeNationId =
+      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
+  packetPayload.sourceNation = this->nationSlot;
+  packetPayload.routing.eventCode = 0x16;
+  packetPayload.routing.payloadSize = 0x20;
+  packetPayload.proposalCode = proposalCode;
+  packetPayload.targetNationId = targetNationId;
+
+  packetPayload.routing.SetPayloadNationIdFromSlotIndex(static_cast<int>(this->nationSlot));
+  packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00540cb0
 void TProxyGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC() {}
 
 // FUNCTION: IMPERIALISM 0x00540cf0
-undefined TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1() {
+int TProxyGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00540dc0
-undefined TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback() {
+int TProxyGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
   return 0;
 }

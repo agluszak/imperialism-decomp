@@ -43,18 +43,18 @@ public:
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
   void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) override;
-  void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
+  void
+  SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot,
-                                                     int policyCode) override;
+  void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
   int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
   short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
-  short GetDiplomacyExternalStateByTarget(short nationSlot) override;        // slot 0x1e
+  short GetDiplomacyExternalStateByTarget(short nationSlot) override;          // slot 0x1e
   short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
@@ -414,8 +414,6 @@ public:
                                                       int selectedNationSlot);
   char ContainsPointerArrayEntryMatchingByteKey(short nationSlotKey);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(int proposalCode,
-                                                                       int targetNationId);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
@@ -425,7 +423,8 @@ public:
   }
 };
 
-// === BEGIN GENERATED (TGreatPower) — refreshed by `just gen-class TGreatPower`; do not hand-edit ===
+// === BEGIN GENERATED (TGreatPower) — refreshed by `just gen-class TGreatPower`; do not hand-edit
+// ===
 // clang-format off
 // vtable @ 0x00653938 (178 slots), object size 0x964, base TCountry
 //   slot 0x00  byte 0x00  0x004d89d0  override  GetTCountryClassNamePointer

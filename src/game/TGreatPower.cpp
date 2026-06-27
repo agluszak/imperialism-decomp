@@ -465,8 +465,7 @@ extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 
 // Each dispatch reloads the UI-context global, as the original does.
 static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payload) {
-  g_pUiRuntimeContext
-      ->QueueTurnStatusPromptSlot3C(promptIndex, payload);
+  g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(promptIndex, payload);
 }
 
 // View of the city commodity record's step-value virtual (slot 0x30 on the record's
@@ -1221,8 +1220,8 @@ void TGreatPower::AddNodeToMissionNodeQueue(void* node) {
 #pragma optimize("y", on)
 void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
   CIterator nodeIter(this->missionNodeQueue);
-  for (TMission* node = static_cast<TMission*>(nodeIter.Reset());
-       nodeIter.More(); node = static_cast<TMission*>(nodeIter.Advance())) {
+  for (TMission* node = static_cast<TMission*>(nodeIter.Reset()); nodeIter.More();
+       node = static_cast<TMission*>(nodeIter.Advance())) {
     node->DispatchMissionNodeSlot28();
   }
   static_cast<TSortedList*>(this->missionNodeQueue)->FreePayloadsSlot54();
@@ -1485,8 +1484,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
     if ((influenceMap[marker->regionId14] == 0 || marker->activeFlag4f == 0) &&
-        (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() == 0 ||
-         homeLinked == 0)) {
+        (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() == 0 || homeLinked == 0)) {
       marker->transportLinkedFlag4c = 0;
     } else {
       marker->transportLinkedFlag4c = 1;
@@ -1496,8 +1494,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   if (outInfluenceMap != 0) {
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0) {
-      if (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() != 0 &&
-          homeLinked != 0) {
+      if (static_cast<TTown*>(marker)->IsTransportLinkedAndEnabled() != 0 && homeLinked != 0) {
         influenceMap[marker->regionId14] = 1;
       }
       marker = static_cast<TTown*>(markerCursor.Advance());
@@ -1521,8 +1518,7 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
     char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits06;
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
-        short neighbor =
-            TMapMgr::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
+        short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
         if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
@@ -2088,7 +2084,7 @@ void TGreatPower::ApplyNationResourceNeedTargetsToOrderState(void) {
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
     this->AddToCityStockCounterAndRefresh(static_cast<short>(needIndex),
-                                     this->needTargetByType[needIndex]);
+                                          this->needTargetByType[needIndex]);
   }
 }
 
@@ -2437,7 +2433,8 @@ void TGreatPower::SetCityStockCounterAndRefresh(short targetSlot, short value) {
 // FUNCTION: IMPERIALISM 0x004dd7b0
 void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  (&cityPtr->cityStockCottonB6)[targetSlot] = static_cast<short>((&cityPtr->cityStockCottonB6)[targetSlot] + value);
+  (&cityPtr->cityStockCottonB6)[targetSlot] =
+      static_cast<short>((&cityPtr->cityStockCottonB6)[targetSlot] + value);
   cityPtr->Refresh80();
 }
 #pragma optimize("", on)
@@ -2482,11 +2479,11 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
   case 7: {
     short* summary = this->city->GetCitySummaryRecordSlot74();
     TCity* city = this->city;
-    short available =
-        static_cast<short>(((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -
-                             city->cityStockLivestockDE) -
-                            city->cityStockGrainD8) -
-                           city->cityStockFruitDA);
+    short available = static_cast<short>(
+        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -
+          city->cityStockLivestockDE) -
+         city->cityStockGrainD8) -
+        city->cityStockFruitDA);
     if (available >= 0) {
       return static_cast<unsigned short>(available);
     }
@@ -3210,7 +3207,7 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
       }
     } else {
       CreateAndSendTurnEvent13_NationAndNineDwords(static_cast<int>(this->nationSlot),
-                                                     reinterpret_cast<int*>(&payload));
+                                                   reinterpret_cast<int*>(&payload));
     }
   }
 
@@ -3703,8 +3700,7 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
   int total = orderCount;
   for (int outer = 1; outer < total; ++outer) {
     void* entryOuter = this->trackedObjectList->GetEntryByOrdinalSlot4C(outer);
-    short outerPriority =
-        g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryOuter)->orderType];
+    short outerPriority = g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryOuter)->orderType];
     for (int inner = outer + 1; inner <= total; ++inner) {
       void* entryInner = this->trackedObjectList->GetEntryByOrdinalSlot4C(inner);
       short innerPriority =
@@ -4694,9 +4690,8 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     arg4 = -1;
   }
 
-  void* missionObj =
-      TMission::CreateByKindAndNodeContext(this->nationSlot, missionKind, arg2, portZoneContext,
-                                           arg4);
+  void* missionObj = TMission::CreateByKindAndNodeContext(this->nationSlot, missionKind, arg2,
+                                                          portZoneContext, arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);
@@ -4958,36 +4953,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   return compositeScore;
 }
 
-// FUNCTION: IMPERIALISM 0x00540ac0
-void TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(
-    int proposalCode, int targetNationId) {
-  struct TurnEvent16PacketPayload {
-    TTurnEventPacketRoutingPrefix routing;
-    int packetTag;
-    unsigned char activeNationId;
-    unsigned char padAfterActiveNation;
-    short sourceNation;
-    short proposalCode;
-    short targetNationId;
-  };
-
-  this->QueueDiplomacyProposalCodeForTargetNation(static_cast<short>(proposalCode),
-                                                  static_cast<short>(targetNationId));
-
-  TurnEvent16PacketPayload packetPayload;
-  packetPayload.packetTag = 0x74696D65;
-  packetPayload.activeNationId =
-      static_cast<unsigned char>(g_pUiRuntimeContext->GetActiveNationId());
-  packetPayload.sourceNation = this->nationSlot;
-  packetPayload.routing.eventCode = 0x16;
-  packetPayload.routing.payloadSize = 0x20;
-  packetPayload.proposalCode = static_cast<short>(proposalCode);
-  packetPayload.targetNationId = static_cast<short>(targetNationId);
-
-  packetPayload.routing.SetPayloadNationIdFromSlotIndex(static_cast<int>(this->nationSlot));
-  packetPayload.routing.EnqueueOrSendTurnEventPacketToNation(0);
-}
-
 // FUNCTION: IMPERIALISM 0x0055f140
 unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
   TMapMgr* globalMapState = g_pGlobalMapState;
@@ -5017,8 +4982,7 @@ unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
 
 // FUNCTION: IMPERIALISM 0x0055f4d0
 char TGreatPower::ContainsPointerArrayEntryMatchingByteKey(short nationSlotKey) {
-  unsigned int entryCount =
-      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x40);
+  unsigned int entryCount = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x40);
   if (entryCount == 0) {
     return 0;
   }
@@ -5064,8 +5028,10 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
                                            static_cast<int>(cityOwnerTag));
 }
 
-int TGreatPower::GetMultiplierSlot21C(void) { return 0; }
-void TGreatPower::AbsorbCityNeedVectorSlotFC(short *) {}
+int TGreatPower::GetMultiplierSlot21C(void) {
+  return 0;
+}
+void TGreatPower::AbsorbCityNeedVectorSlotFC(short*) {}
 
 // Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";
 // the body is a pure range predicate (no resource delta, no nation totals), renamed by

@@ -12068,7 +12068,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12506,13 +12506,13 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12524,7 +12524,7 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12560,7 +12560,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15950,7 +15950,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.18230088495575222,
+      "matching": 0.18053097345132743,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -20168,7 +20168,7 @@
     },
     {
       "address": "0x540ac0",
-      "matching": 0.4266666666666667,
+      "matching": 0.40540540540540543,
       "name": "TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16",
       "type": 1
     },
@@ -20180,19 +20180,19 @@
     },
     {
       "address": "0x540ba0",
-      "matching": 0.04878048780487805,
+      "matching": 0.045454545454545456,
       "name": "TProxyGreatPower::ReturnFalseNationStateActionStub",
       "type": 1
     },
     {
       "address": "0x540c20",
-      "matching": 0.0,
+      "matching": 0.07142857142857142,
       "name": "TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920",
       "type": 1
     },
     {
       "address": "0x540c70",
-      "matching": 0.0,
+      "matching": 0.11764705882352941,
       "name": "TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f",
       "type": 1
     },
@@ -20204,13 +20204,13 @@
     },
     {
       "address": "0x540cf0",
-      "matching": 0.0,
+      "matching": 0.1,
       "name": "TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1",
       "type": 1
     },
     {
       "address": "0x540dc0",
-      "matching": 0.0,
+      "matching": 0.09523809523809523,
       "name": "TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback",
       "type": 1
     },
@@ -26848,7 +26848,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.42016806722689076,
+      "matching": 0.4406779661016949,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -40408,7 +40408,7 @@
     },
     {
       "address": "0x65b078",
-      "matching": 0.9606741573033708,
+      "matching": 1.0,
       "name": "TProxyGreatPower::`vftable'",
       "type": 5
     },
