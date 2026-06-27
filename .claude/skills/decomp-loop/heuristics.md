@@ -497,3 +497,28 @@ modeling/casting when it is really a real MFC method to call directly (see note 
   artifact* — recompiled simple ctor matched to a different original ctor, not a real loss).
   Aggregate stays ~flat; refresh the baseline. Don't chase these or revert clean real-MFC
   calls to avoid them.
+
+## 19. Monolithic functions must be ported as one inline body — never split into separate-TU helpers
+
+A big original function (e.g. a switch-based dispatcher) is a *single* function at one
+address. The build uses `/Ob1`, which only inlines `inline`-marked functions and never
+inlines across translation units (no LTCG). So if you decompose the case bodies into
+plain free functions in another `.cpp`, the recompiled body becomes a thin sequence of
+`CALL`s and can never match the inline original — a 4 KB dispatcher stuck at ~5%.
+
+- **Inline the bodies into the one function.** Put the per-case code textually inside the
+  function (an `#include "..._switch.inc"` fragment between `case` labels works well). Wrap
+  each case in its own `{ }` so per-case locals don't collide — MSVC500 leaks `for`-init
+  vars to the enclosing block (Hard Rule 10), and braces give each case a fresh block.
+- **Genuine helpers go file-scope `static inline`** so `/Ob1` can fold them back in; trivial
+  one-line wrappers are best expanded at the call site.
+- **Isolate a large/disruptive function in its own TU.** Adding the inline switch + its
+  extra includes to a shared `.cpp` perturbed that TU's codegen and regressed 9 neighbours
+  (incl. a `vftable` 100→60% and two fns →0%) — the TU-codegen-fragility lever
+  ([[tgreatpower-tu-codegen-fragility]]) cuts both ways. A class method can be *defined* in a
+  separate `.cpp` (`src/game/<Class>_<Method>.cpp`); reccmp pairs by address, so this is free
+  and keeps the neighbours byte-stable. Worked example: `TSimMgr::AdvanceGlobalTurnStateMachine`
+  @0x0057da70 (4.96%→9.55%, zero neighbour regressions) in its own TU.
+- Remaining gap on such a function is then ordinary matching work (e.g. the original hoists a
+  single function-scope `CString` at entry, pinning `this` in `ebx`; a per-case local `CString`
+  shifts register allocation across the whole body).
