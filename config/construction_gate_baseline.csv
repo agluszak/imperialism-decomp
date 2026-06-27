@@ -3,6 +3,7 @@ include/game/TFocusAnimation.h|0|0|0|0|1|0|1
 include/game/TInfoBarPictureText.h|0|0|0|0|1|0|1
 include/game/TInfoBarText.h|0|0|0|0|1|0|1
 include/game/TProductionCluster.h|0|0|0|0|1|0|1
+src/game/CDib.cpp|0|0|0|0|0|7|7
 src/game/CDocument.cpp|0|0|0|0|1|0|1
 src/game/TFocusAnimation.cpp|0|0|0|0|1|0|1
 src/game/TInfoBarPictureText.cpp|0|0|0|0|1|0|1

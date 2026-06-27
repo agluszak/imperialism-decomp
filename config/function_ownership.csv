@@ -150,6 +150,17 @@ address|target_cpp|ownership|note
 479a80|src/game/ui_resource_pool.cpp|manual|marker_sync
 479b00|src/game/ui_resource_pool.cpp|manual|marker_sync
 479be0|src/game/TView.cpp|manual|marker_sync
+479ed0|src/game/CDib.cpp|manual|marker_sync
+479fb0|src/game/CDib.cpp|manual|marker_sync
+479fe0|src/game/CDib.cpp|manual|marker_sync
+47a370|src/game/CDib.cpp|manual|marker_sync
+47ae20|src/game/CDib.cpp|manual|marker_sync
+47ae90|src/game/CDib.cpp|manual|marker_sync
+47b0c0|src/game/CDib.cpp|manual|marker_sync
+47b6d0|src/game/CDib.cpp|manual|marker_sync
+47b9f0|src/game/CDib.cpp|manual|marker_sync
+47bb10|src/game/CDib.cpp|manual|marker_sync
+47bca0|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync

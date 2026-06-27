@@ -1695,8 +1695,8 @@
     },
     {
       "address": "0x479ed0",
-      "matching": 0.5,
-      "name": "TObject::OrphanVtableAssignStub_00479ed0",
+      "matching": 1.0,
+      "name": "CDib::GetRuntimeClass",
       "type": 1
     },
     {
@@ -1706,8 +1706,14 @@
       "type": 1
     },
     {
+      "address": "0x479fb0",
+      "matching": 0.72,
+      "name": "CDib::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x479fe0",
-      "matching": 0.016,
+      "matching": 0.4529616724738676,
       "name": "AllocateBitmapSurfaceHeaderAndPixelBuffer",
       "type": 1
     },
@@ -1719,7 +1725,7 @@
     },
     {
       "address": "0x47a370",
-      "matching": 0.1,
+      "matching": 0.6666666666666666,
       "name": "DestructBitmapSurfaceStateAndRestoreRuntimeClass",
       "type": 1
     },
@@ -1785,13 +1791,13 @@
     },
     {
       "address": "0x47ae20",
-      "matching": 0.06451612903225806,
+      "matching": 0.5333333333333333,
       "name": "EnsureBitmapSurfaceDibSectionCreated",
       "type": 1
     },
     {
       "address": "0x47ae90",
-      "matching": 0.06779661016949153,
+      "matching": 0.6776859504132231,
       "name": "BuildPaletteFromRgbQuadBuffer",
       "type": 1
     },
@@ -1803,7 +1809,7 @@
     },
     {
       "address": "0x47b0c0",
-      "matching": 0.0,
+      "matching": 0.4482758620689655,
       "name": "CopyRgbQuadTableToBitmapSurfacePalette",
       "type": 1
     },
@@ -1821,25 +1827,25 @@
     },
     {
       "address": "0x47b6d0",
-      "matching": 0.011428571428571429,
+      "matching": 0.38323353293413176,
       "name": "ReadBitmapStreamIntoSurfaceState",
       "type": 1
     },
     {
       "address": "0x47b9f0",
-      "matching": 0.0,
+      "matching": 0.5,
       "name": "WriteBmpHeaderAndDataOffsetToStreamWithSehGuard",
       "type": 1
     },
     {
       "address": "0x47bb10",
-      "matching": 0.0,
+      "matching": 0.8076923076923077,
       "name": "ReadBitmapStreamStateAndWriteBmpHeaderThunk",
       "type": 1
     },
     {
       "address": "0x47bca0",
-      "matching": 0.02857142857142857,
+      "matching": 0.9705882352941176,
       "name": "ReleaseBitmapSurfaceResourcesAndResetState",
       "type": 1
     },
@@ -39219,6 +39225,12 @@
       "address": "0x645f98",
       "matching": 1.0,
       "name": "ArchiveStreamAdapter::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x645fc8",
+      "matching": 1.0,
+      "name": "CDib::`vftable'",
       "type": 5
     },
     {

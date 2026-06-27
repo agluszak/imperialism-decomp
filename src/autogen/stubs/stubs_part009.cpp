@@ -1251,14 +1251,6 @@ undefined4 WrapperFor_AllocateWithFallbackHandler_At00479e40(void)
   return 0;
 }
 
-// ghidra_name TObject::OrphanVtableAssignStub_00479ed0
-// ghidra_proto undefined OrphanVtableAssignStub_00479ed0()
-// FUNCTION: IMPERIALISM 0x00479ed0
-undefined4 OrphanVtableAssignStub_00479ed0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00479ef0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00479ef0()
 // FUNCTION: IMPERIALISM 0x00479ef0
@@ -1275,34 +1267,10 @@ undefined4 ConstructBitmapSurfaceStateAndResetResources(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00479fb0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00479fb0()
-// FUNCTION: IMPERIALISM 0x00479fb0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00479fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name AllocateBitmapSurfaceHeaderAndPixelBuffer
-// ghidra_proto undefined AllocateBitmapSurfaceHeaderAndPixelBuffer()
-// FUNCTION: IMPERIALISM 0x00479fe0
-undefined4 AllocateBitmapSurfaceHeaderAndPixelBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructBitmapBlitBufferFromSourceDescriptor
 // ghidra_proto undefined ConstructBitmapBlitBufferFromSourceDescriptor()
 // FUNCTION: IMPERIALISM 0x0047a200
 undefined4 ConstructBitmapBlitBufferFromSourceDescriptor(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructBitmapSurfaceStateAndRestoreRuntimeClass
-// ghidra_proto undefined DestructBitmapSurfaceStateAndRestoreRuntimeClass()
-// FUNCTION: IMPERIALISM 0x0047a370
-undefined4 DestructBitmapSurfaceStateAndRestoreRuntimeClass(void)
 {
   return 0;
 }
@@ -1387,34 +1355,10 @@ undefined4 StretchDibitsWithCopiedPaletteTable(void)
   return 0;
 }
 
-// ghidra_name EnsureBitmapSurfaceDibSectionCreated
-// ghidra_proto undefined EnsureBitmapSurfaceDibSectionCreated()
-// FUNCTION: IMPERIALISM 0x0047ae20
-undefined4 EnsureBitmapSurfaceDibSectionCreated(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildPaletteFromRgbQuadBuffer
-// ghidra_proto undefined BuildPaletteFromRgbQuadBuffer()
-// FUNCTION: IMPERIALISM 0x0047ae90
-undefined4 BuildPaletteFromRgbQuadBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl
 // ghidra_proto undefined ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl()
 // FUNCTION: IMPERIALISM 0x0047af60
 undefined4 ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyRgbQuadTableToBitmapSurfacePalette
-// ghidra_proto undefined CopyRgbQuadTableToBitmapSurfacePalette()
-// FUNCTION: IMPERIALISM 0x0047b0c0
-undefined4 CopyRgbQuadTableToBitmapSurfacePalette(void)
 {
   return 0;
 }
@@ -1463,38 +1407,6 @@ undefined4 thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d(
 // ghidra_proto undefined WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d()
 // FUNCTION: IMPERIALISM 0x0047b55d
 undefined4 WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadBitmapStreamIntoSurfaceState
-// ghidra_proto undefined ReadBitmapStreamIntoSurfaceState()
-// FUNCTION: IMPERIALISM 0x0047b6d0
-undefined4 ReadBitmapStreamIntoSurfaceState(void)
-{
-  return 0;
-}
-
-// ghidra_name WriteBmpHeaderAndDataOffsetToStreamWithSehGuard
-// ghidra_proto undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()
-// FUNCTION: IMPERIALISM 0x0047b9f0
-undefined4 WriteBmpHeaderAndDataOffsetToStreamWithSehGuard(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadBitmapStreamStateAndWriteBmpHeaderThunk
-// ghidra_proto undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()
-// FUNCTION: IMPERIALISM 0x0047bb10
-undefined4 ReadBitmapStreamStateAndWriteBmpHeaderThunk(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseBitmapSurfaceResourcesAndResetState
-// ghidra_proto undefined ReleaseBitmapSurfaceResourcesAndResetState()
-// FUNCTION: IMPERIALISM 0x0047bca0
-undefined4 ReleaseBitmapSurfaceResourcesAndResetState(void)
 {
   return 0;
 }
