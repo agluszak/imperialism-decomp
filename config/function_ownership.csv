@@ -177,7 +177,7 @@ address|target_cpp|ownership|note
 484990|src/game/TObject.cpp|manual|marker_sync
 484fb0|src/game/ImperialismApp.cpp|manual|marker_sync
 484fd0|src/game/ImperialismApp.cpp|manual|marker_sync
-485e20|src/game/TObject.cpp|manual|marker_sync
+485e20|src/game/TObject.cpp|manual|mfc_runtime_macro
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync
 485f50|src/game/TObject.cpp|manual|marker_sync
 485f70|src/game/TObject.cpp|manual|marker_sync

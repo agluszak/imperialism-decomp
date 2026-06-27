@@ -191,6 +191,9 @@ ghidra-datatype-audit *args: _require-ghidra-install
 apply-tview-datatype: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes --classes TEventHandler,TView
 
+mfc-runtime-macros *args:
+  uv run python -m tools.workflow.mfc_runtime_macros {{args}}
+
 w32dasm-report: _require-ghidra-install
   uv run python -m tools.w32dasm.parse_alf
   uv run python -m tools.w32dasm.compare_alf_ghidra
