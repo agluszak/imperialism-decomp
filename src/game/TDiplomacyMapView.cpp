@@ -14,6 +14,7 @@
 #include "game/TStrategicMapViewSystem.h"
 #include "game/TControl.h"
 #include "game/TGlobalMapState.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -25,23 +26,42 @@ struct TDiplomacyMapViewLayout {
   DUMMY_VIRTUAL(0)
   DUMMY_VIRTUAL(1)
   DUMMY_VIRTUAL(2)
-  DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(
-      7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12)
-      DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17)
-          DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22)
-              DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24) DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26)
-                  DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29) DUMMY_VIRTUAL(30)
-                      DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34)
-                          DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38)
-                              DUMMY_VIRTUAL(39) DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41)
-                                  DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44)
-                                      DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
+  DUMMY_VIRTUAL(3)
+  DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(7) DUMMY_VIRTUAL(
+      8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12) DUMMY_VIRTUAL(13)
+      DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17) DUMMY_VIRTUAL(18)
+          DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22) DUMMY_VIRTUAL(23)
+              DUMMY_VIRTUAL(24) DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26) DUMMY_VIRTUAL(27)
+                  DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29) DUMMY_VIRTUAL(30) DUMMY_VIRTUAL(31)
+                      DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34) DUMMY_VIRTUAL(35)
+                          DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38) DUMMY_VIRTUAL(39)
+                              DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41) DUMMY_VIRTUAL(42)
+                                  DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44) DUMMY_VIRTUAL(45)
+                                      DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
                                           DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
                                               int region) = 0; // slot 49 (0xC4)
-  DUMMY_VIRTUAL(50) DUMMY_VIRTUAL(51) DUMMY_VIRTUAL(52) DUMMY_VIRTUAL(53) DUMMY_VIRTUAL(54) DUMMY_VIRTUAL(55) DUMMY_VIRTUAL(56) DUMMY_VIRTUAL(57) DUMMY_VIRTUAL(58) DUMMY_VIRTUAL(59) DUMMY_VIRTUAL(60) DUMMY_VIRTUAL(61) DUMMY_VIRTUAL(62) DUMMY_VIRTUAL(63) DUMMY_VIRTUAL(64) DUMMY_VIRTUAL(65) DUMMY_VIRTUAL(66) DUMMY_VIRTUAL(67) DUMMY_VIRTUAL(68) DUMMY_VIRTUAL(69) DUMMY_VIRTUAL(70) DUMMY_VIRTUAL(71) DUMMY_VIRTUAL(72) DUMMY_VIRTUAL(73) DUMMY_VIRTUAL(74) DUMMY_VIRTUAL(75) DUMMY_VIRTUAL(76) DUMMY_VIRTUAL(77) DUMMY_VIRTUAL(78) DUMMY_VIRTUAL(79) DUMMY_VIRTUAL(80) DUMMY_VIRTUAL(81)
-  virtual void TransformScreenPointToLocalSlot148(CPoint* outLocal, CPoint* screenPoint) = 0; // 0x148
-  DUMMY_VIRTUAL(82) DUMMY_VIRTUAL(83) DUMMY_VIRTUAL(84) DUMMY_VIRTUAL(85) DUMMY_VIRTUAL(86) DUMMY_VIRTUAL(87) DUMMY_VIRTUAL(88) DUMMY_VIRTUAL(89) DUMMY_VIRTUAL(90) DUMMY_VIRTUAL(91) DUMMY_VIRTUAL(92) DUMMY_VIRTUAL(93) DUMMY_VIRTUAL(94) DUMMY_VIRTUAL(95) DUMMY_VIRTUAL(96) DUMMY_VIRTUAL(97) DUMMY_VIRTUAL(98) DUMMY_VIRTUAL(99) DUMMY_VIRTUAL(100) DUMMY_VIRTUAL(101) DUMMY_VIRTUAL(102) DUMMY_VIRTUAL(103) DUMMY_VIRTUAL(104) DUMMY_VIRTUAL(105) DUMMY_VIRTUAL(106) DUMMY_VIRTUAL(107) DUMMY_VIRTUAL(108) DUMMY_VIRTUAL(109) DUMMY_VIRTUAL(110) DUMMY_VIRTUAL(111) DUMMY_VIRTUAL(112) DUMMY_VIRTUAL(113) DUMMY_VIRTUAL(114) DUMMY_VIRTUAL(115) DUMMY_VIRTUAL(116) DUMMY_VIRTUAL(117) DUMMY_VIRTUAL(118) DUMMY_VIRTUAL(119)
-  virtual void DrawTerrainLegendSlot1E0(int terrainIndex, int labelSelector) = 0; // 0x1e0
+  DUMMY_VIRTUAL(50)
+  DUMMY_VIRTUAL(51) DUMMY_VIRTUAL(52) DUMMY_VIRTUAL(53) DUMMY_VIRTUAL(54) DUMMY_VIRTUAL(55)
+      DUMMY_VIRTUAL(56) DUMMY_VIRTUAL(57) DUMMY_VIRTUAL(58) DUMMY_VIRTUAL(59) DUMMY_VIRTUAL(60)
+          DUMMY_VIRTUAL(61) DUMMY_VIRTUAL(62) DUMMY_VIRTUAL(63) DUMMY_VIRTUAL(64) DUMMY_VIRTUAL(65)
+              DUMMY_VIRTUAL(66) DUMMY_VIRTUAL(67) DUMMY_VIRTUAL(68) DUMMY_VIRTUAL(69)
+                  DUMMY_VIRTUAL(70) DUMMY_VIRTUAL(71) DUMMY_VIRTUAL(72) DUMMY_VIRTUAL(73)
+                      DUMMY_VIRTUAL(74) DUMMY_VIRTUAL(75) DUMMY_VIRTUAL(76) DUMMY_VIRTUAL(77)
+                          DUMMY_VIRTUAL(78) DUMMY_VIRTUAL(79) DUMMY_VIRTUAL(80)
+                              DUMMY_VIRTUAL(81) virtual void TransformScreenPointToLocalSlot148(
+                                  CPoint* outLocal, CPoint* screenPoint) = 0; // 0x148
+  DUMMY_VIRTUAL(82)
+  DUMMY_VIRTUAL(83) DUMMY_VIRTUAL(84) DUMMY_VIRTUAL(85) DUMMY_VIRTUAL(86) DUMMY_VIRTUAL(87)
+      DUMMY_VIRTUAL(88) DUMMY_VIRTUAL(89) DUMMY_VIRTUAL(90) DUMMY_VIRTUAL(91) DUMMY_VIRTUAL(92)
+          DUMMY_VIRTUAL(93) DUMMY_VIRTUAL(94) DUMMY_VIRTUAL(95) DUMMY_VIRTUAL(96) DUMMY_VIRTUAL(97)
+              DUMMY_VIRTUAL(98) DUMMY_VIRTUAL(99) DUMMY_VIRTUAL(100) DUMMY_VIRTUAL(101)
+                  DUMMY_VIRTUAL(102) DUMMY_VIRTUAL(103) DUMMY_VIRTUAL(104) DUMMY_VIRTUAL(105)
+                      DUMMY_VIRTUAL(106) DUMMY_VIRTUAL(107) DUMMY_VIRTUAL(108) DUMMY_VIRTUAL(109)
+                          DUMMY_VIRTUAL(110) DUMMY_VIRTUAL(111) DUMMY_VIRTUAL(112)
+                              DUMMY_VIRTUAL(113) DUMMY_VIRTUAL(114) DUMMY_VIRTUAL(115)
+                                  DUMMY_VIRTUAL(116) DUMMY_VIRTUAL(117) DUMMY_VIRTUAL(118)
+                                      DUMMY_VIRTUAL(119) virtual void DrawTerrainLegendSlot1E0(
+                                          int terrainIndex, int labelSelector) = 0; // 0x1e0
 
   char pad_04[0x94];
   short frameRegionSelectorAt98;
@@ -82,8 +102,6 @@ undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 thunk_SetUiResourceContextTagWord(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
-undefined4 thunk_LoadBmpResourceByIdCached(void);
-undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);
@@ -117,25 +135,6 @@ struct DiplomacyMaskBufferRun {
 struct DiplomacyPackedColorRun {
   void AppendPackedColorDword(int surface, int packedColor);
 };
-
-// Cached BMP/library record manager at global `g_pModuleLibraryCacheState` (0x6a134c).
-// Records are loaded by id and released by handle through the hash-indexed cache.
-struct ModuleLibraryCacheState {
-  int LoadBmpResourceById(int bmpId);
-  void ReleaseRecordByHandle(int handle);
-};
-
-// GLOBAL: IMPERIALISM 0x6a134c
-extern "C" ModuleLibraryCacheState* g_pModuleLibraryCacheState = 0;
-
-int ModuleLibraryCacheState::LoadBmpResourceById(int bmpId) {
-  return reinterpret_cast<int(__cdecl*)(void*, int)>(thunk_LoadBmpResourceByIdCached)(this, bmpId);
-}
-
-void ModuleLibraryCacheState::ReleaseRecordByHandle(int handle) {
-  reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_ReleaseHashIndexedRecordByHandle)(this,
-                                                                                       handle);
-}
 
 void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColor) {
   reinterpret_cast<void(__cdecl*)(void*, int, int)>(thunk_AppendPackedColorDwordToMaskBuffers)(
@@ -360,8 +359,8 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      void* frameRegion =
-          reinterpret_cast<void*>(g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
+      void* frameRegion = reinterpret_cast<void*>(
+          g_pStrategicMapViewSystem->VTableSlot26(static_cast<short>(terrainIndex)));
       reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
           CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
     }
@@ -613,7 +612,8 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
-  int bmpHandle = g_pModuleLibraryCacheState->LoadBmpResourceById(bmpId);
+  char* bmpHandle = static_cast<char*>(
+      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId)));
 
   unsigned char* maskCursor = maskRun->maskBytesAt00;
   if (maskCursor != 0) {

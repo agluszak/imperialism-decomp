@@ -10,6 +10,9 @@ namespace {
 const char* const kMissingFileFormat = reinterpret_cast<const char*>(0x00695188);
 } // namespace
 
+// GLOBAL: IMPERIALISM 0x6a134c
+extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
+
 // Both embedded CMap members default-construct (hash size 17, block size 10); the leading
 // m_field0 is zeroed first (declaration order), matching the original's [obj]=0 then map A,
 // map B init sequence.
