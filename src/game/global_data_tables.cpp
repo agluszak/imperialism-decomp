@@ -224,6 +224,9 @@ extern "C" const char s_PictWvGobPathFormat_00698BF4[] = "Data/PictWv%d.gob";
 extern "C" const char s_MissingFileSuffix_0069B810[] = "' is missing.";
 // GLOBAL: IMPERIALISM 0x0069b820
 extern "C" const char s_MissingFilePrefix_0069B820[] = "A file required by the program, '";
+// GLOBAL: IMPERIALISM 0x00695188
+extern "C" const char s_MissingRequiredFileFormat_00695188[] =
+    "A file required by the program, '%s,' is missing.";
 // GLOBAL: IMPERIALISM 0x006951c4
 extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 // GLOBAL: IMPERIALISM 0x0069b6b4

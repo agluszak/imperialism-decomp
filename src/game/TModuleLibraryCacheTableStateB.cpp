@@ -3,11 +3,7 @@
 // Shared empty-string literal at 0x006a13a0 (defined in global_data_tables.cpp).
 extern "C" char g_szEmptyString[];
 extern "C" const char s_BmpResourceNameFormat_006951C4[];
-
-namespace {
-// "A file required by the program, '%s,' is missing." (original .rdata at 0x00695188).
-const char* const kMissingFileFormat = reinterpret_cast<const char*>(0x00695188);
-} // namespace
+extern "C" const char s_MissingRequiredFileFormat_00695188[];
 
 // GLOBAL: IMPERIALISM 0x6a134c
 extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
@@ -64,19 +60,19 @@ BOOL TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog(LPCSTR
     // The original inlines the error path here; the local CString is what gives this
     // function its SEH frame.
     CString message;
-    message.Format(kMissingFileFormat, path);
-    AfxMessageBox(message, MB_OK, 0);
+    message.Format(s_MissingRequiredFileFormat_00695188, static_cast<LPCTSTR>(path));
+    AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
   }
   return m_slots[slot] != NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00499380
-BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(LPCSTR path) {
+BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(const CString& path) {
   m_primaryModule = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
   if (m_primaryModule == NULL) {
     CString message;
-    message.Format(kMissingFileFormat, path);
-    AfxMessageBox(message, MB_OK, 0);
+    message.Format(s_MissingRequiredFileFormat_00695188, static_cast<LPCTSTR>(path));
+    AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
   }
   return m_primaryModule != NULL;
 }

@@ -71,5 +71,5 @@ void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag) {
   CString message(s_MissingFilePrefix_0069B820);
   message += path;
   message += s_MissingFileSuffix_0069B810;
-  AfxMessageBox(message, MB_OK, 0);
+  AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
 }

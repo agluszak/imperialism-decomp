@@ -308,6 +308,51 @@ build:
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
 
+# Run the recompiled Imperialism.exe under Wine from the retail install directory.
+# ORIGINAL_BINARY in .env must point at your legally obtained Imperialism.exe;
+# its parent directory must contain Data/ and the other game assets. Build first
+# with `just build`. Override WINEDEBUG in the environment for Wine tracing.
+run *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env to your retail Imperialism.exe}"
+  game_dir="$(cd "$(dirname "$ORIGINAL_BINARY")" && pwd)"
+  recomp="{{justfile_directory()}}/{{build_dir}}/Imperialism.exe"
+  if [[ ! -f "$recomp" ]]; then
+    echo "Missing $recomp — run 'just build' first." >&2
+    exit 1
+  fi
+  if [[ ! -d "$game_dir/Data" ]]; then
+    echo "Missing $game_dir/Data — set ORIGINAL_BINARY to a full game install." >&2
+    exit 1
+  fi
+  export WINEDEBUG="${WINEDEBUG--all}"
+  cd "$game_dir"
+  exec wine "$recomp" "$@"
+
+# Run the recomp under winedbg from the retail install directory. By default breaks
+# on MessageBoxA, continues, prints a backtrace, and quits — useful for tracing
+# startup failures (empty error boxes, InitInstance bailouts). Override the
+# script: DEBUG_SCRIPT=$'break SomeSymbol\ncont\nbt\nquit\n' just debug
+debug *args:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env to your retail Imperialism.exe}"
+  game_dir="$(cd "$(dirname "$ORIGINAL_BINARY")" && pwd)"
+  recomp="{{justfile_directory()}}/{{build_dir}}/Imperialism.exe"
+  if [[ ! -f "$recomp" ]]; then
+    echo "Missing $recomp — run 'just build' first." >&2
+    exit 1
+  fi
+  if [[ ! -d "$game_dir/Data" ]]; then
+    echo "Missing $game_dir/Data — set ORIGINAL_BINARY to a full game install." >&2
+    exit 1
+  fi
+  export WINEDEBUG="${WINEDEBUG--all}"
+  cd "$game_dir"
+  script="${DEBUG_SCRIPT:-$'break MessageBoxA\ncont\nbt\nquit\n'}"
+  printf '%s' "$script" | winedbg "$recomp" "$@"
+
 detect:
   (cd "{{build_dir}}" && uv run reccmp-project detect --what recompiled)
 

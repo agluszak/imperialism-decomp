@@ -37,7 +37,7 @@ public:
   // the resulting slot handle is valid.
   BOOL LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot); // 0x004992a0
   // Load the primary data library into the dedicated +0x4c slot.      0x00499380
-  BOOL LoadPrimaryDataLibraryWithErrorDialog(LPCSTR path);
+  BOOL LoadPrimaryDataLibraryWithErrorDialog(const CString& path);
 
   void ReleaseRecordById(short id);         // 0x0049a190
   void ReleaseRecordByHandle(void* handle); // 0x0049a390

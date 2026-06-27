@@ -33,14 +33,59 @@ The remaining `TPicture::SetPictureResourceIdAndRefresh` @ 0x48f570 cast is the 
 ### Next: wave sub-system (largest)
 Remove TSoundPlayer's remaining fastcall cast (`CallLoadWaveResource`) by porting
 **`LoadWaveResourceByNumericIdAndBuildBuffer` @ 0x49c430** as a `TSoundResourceManager` method.
-Blocked on recovering the wave sub-system it calls (both are `__thiscall`):
-- `ReadWaveDataAndFormatViaLoaderWithRetry` @ 0x49c720 (thiscall — needs `this`; likely the
-  wave-descriptor `local_64`).
-- `LoadWaveDataAndFormatFromFilePath` @ 0x5e10c0 (6-arg, `MMRESULT`, Win32 MMIO wave parser;
-  MMIO/Global* are LIBRARY — call directly).
-- The `local_64..local_58` locals form a wave-format descriptor struct; model it to call the
-  thiscall helper without a cast. The wave module handle is `TSoundResourceManager::m_module`
-  (+0x30); resource type tag `"MEM "` (0x204d454d).
+
+Current source surface:
+- `include/game/TSoundResourceManager.h` already declares
+  `int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot);`
+  but `0x49c430` is still stub-owned.
+- `src/game/TSoundPlayer.cpp` still has `CallLoadWaveResource`, which casts the `(void)` stub
+  to a fake `__fastcall(void*, int, int, int)` and passes raw manager address `0x6a60c0`.
+  Replace that helper with:
+  `g_soundResourceManager.LoadWaveResourceByNumericIdAndBuildBuffer(sfxToken, slot)`.
+
+Recovered evidence from listings:
+
+| Address | Evidence | Source model |
+|---------|----------|--------------|
+| `0x49c430` | saves `ECX`, reads args at stack, `RET 0x8`, reads `this + 0x30` | `TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot)` |
+| `0x49c720` | saves `ECX` in `EBX`, indexes `[this + slot * 4 + 0x04]`, reads `[this + 0x24]`, `RET 0x8` | `TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot)` |
+| `0x5e10c0` | 6 pushed args from `0x49c430`; consumes file/resource descriptor and fills wave data/format pointers | free helper `LoadWaveDataAndFormatFromFilePath(...)`; do not model Win32 MMIO/Global APIs |
+
+Porting checklist:
+1. Add a small local wave-load descriptor type in `TSoundResourceManager.cpp` for the stack locals
+   currently decompiled as `local_64..local_58`:
+   - two scalar fields at descriptor offsets `+0x00`, `+0x04`;
+   - locked data pointer at `+0x08`;
+   - format/data pointer at `+0x0c` (verify exact names from `0x5e10c0` before widening).
+2. Add the resource-backed loader descriptor used at `0x49c579..0x49c5e7`:
+   - zeroes `0x12` dwords starting at the local resource descriptor;
+   - writes resource type tag `0x204d454d` (`"MEM "`);
+   - stores `LoadResource(m_module, hResInfo)` and `SizeofResource(m_module, hResInfo)`;
+   - calls `LoadWaveDataAndFormatFromFilePath(0, &desc.field0, &desc.field4, &desc.data,
+     &desc.format, &resourceDesc)`.
+3. Declare only real helpers:
+   - `LoadWaveDataAndFormatFromFilePath` as a free helper with its six verified stack args;
+   - Win32/CRT/MFC calls (`FindResourceA`, `LoadResource`, `SizeofResource`, `GlobalHandle`,
+     `GlobalUnlock`, `GlobalFree`, `CString`) as existing library/MFC APIs, not game stubs.
+4. Port `0x49c720` in the same batch if `0x49c430` needs it for a cast-free body. This function
+   is a `TSoundResourceManager` method, not a free function: it uses `this->m_channels[slot]` and
+   manager field `+0x24`.
+5. Before adding more `TAudioChannel` declarations, verify the channel ABI from the listing.
+   The new slots used by `0x49c720` (`0x2c`, `0x4c`, `0x50`) push the channel pointer explicitly
+   before calling through the vtable, which may be DirectSound/COM-style rather than the normal
+   C++ virtual shape currently used for slots `0x30`, `0x34`, and `0x3c`. Do not paper this over
+   with a `reinterpret_cast`; recover the receiver shape or stop with the blocker documented.
+6. Once both methods are real, update:
+   - `config/symbols.csv` rows for `0x49c430` and `0x49c720`;
+   - `config/function_ownership.csv` via `just sync-ownership`;
+   - generated stubs via `just regen-stubs`;
+   - `src/game/TSoundPlayer.cpp` to delete `LoadWaveResourceByNumericIdAndBuildBuffer(void)` and
+     `CallLoadWaveResource`.
+7. Verification loop:
+   - `just sync-ownership && just regen-stubs && just build`
+   - `just format-check include/game/TSoundResourceManager.h src/game/TSoundResourceManager.cpp src/game/TSoundPlayer.cpp`
+   - `just compare 0x0049c430 0x0049c720 0x005e50c0`
+   - `just build && just gates && just stats`
 
 ### Init-chain shape passes (Phase 2 — low risk, no casts, no new classes)
 Raise already-ported init functions (pure shape/data passes), most tractable first:
