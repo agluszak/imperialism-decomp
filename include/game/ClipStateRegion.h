@@ -4,6 +4,8 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
+class TBitmapResourceLoader;
+
 struct ClipStateRegionInner {
   RECT boundingBox; // +0x00 region bounding rect (written by GetRgnBox)
   int attachRegistered; // +0x10
@@ -34,4 +36,4 @@ void RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl(void);
 void DrawFrameRectOrUpdateClipRegion(RECT* rect);
 void WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(ClipStateRegionWrapper* dst);
 int RebuildSpriteNonTransparentPolygonRegion(ClipStateRegionWrapper* region, void* spriteSurface);
-undefined4 NoOpRuntimeCallback_00497c00(int** handle);
+undefined4 NoOpRuntimeCallback_00497c00(TBitmapResourceLoader** handle);

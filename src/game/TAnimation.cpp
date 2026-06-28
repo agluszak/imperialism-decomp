@@ -1,12 +1,10 @@
 #include "game/TAnimation.h"
 
-#include <string.h>
-
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
-void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {
+void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
   if (bitmapResource == NULL) {
     bitmapResource = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(bitmapResourceId);
     if (bitmapResource == NULL) {
@@ -24,7 +22,7 @@ void TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize() {
 }
 
 // FUNCTION: IMPERIALISM 0x00495c00
-void TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00() {
+void TBitmapResourceLoader::ReleaseBitmapResource() {
   if (bitmapResource != NULL) {
     g_pModuleLibraryCacheState->ReleaseRecordById(bitmapResourceId);
   }
@@ -54,25 +52,15 @@ undefined TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a1100
-undefined TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100() {
+undefined TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a1130
-int** WrapperFor_AllocateWithFallbackHandler_At004a1130(unsigned short resourceId) {
-  int** handleSlot = static_cast<int**>(::operator new(sizeof(TAnimation*)));
-  void* loaderMemory = ::operator new(0x20);
-  if (loaderMemory == nullptr) {
-    *handleSlot = nullptr;
-    return handleSlot;
-  }
-
-  memset(loaderMemory, 0, 0x20);
-  TAnimation* loader = reinterpret_cast<TAnimation*>(loaderMemory);
-  loader->field04 = 0;
-  loader->bitmapResource = nullptr;
-  loader->bitmapResourceId = static_cast<short>(resourceId);
-  loader->EnsureBitmapResourceLoadedAndCopyRectSize();
-  *handleSlot = reinterpret_cast<int*>(loader);
+TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId) {
+  TBitmapResourceLoader** handleSlot =
+      static_cast<TBitmapResourceLoader**>(::operator new(sizeof(TBitmapResourceLoader*)));
+  TBitmapResourceLoader* loader = new TBitmapResourceLoader(resourceId);
+  *handleSlot = loader;
   return handleSlot;
 }

@@ -32,15 +32,11 @@ static void StretchDibitsFromCdibToDc(CDib* dib, CDC* dcWrapper, int x, int y) {
                 dib->m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
 }
 
-static void ReleaseBitmapLoaderHandle(int** loaderHandle) {
+static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
   }
-  TAnimation* animation = reinterpret_cast<TAnimation*>(*loaderHandle);
-  if (animation != nullptr) {
-    animation->WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
-    ::operator delete(animation);
-  }
+  delete *loaderHandle;
   ::operator delete(loaderHandle);
 }
 
@@ -156,10 +152,16 @@ static bool InitializeBitmapDescriptorNodeFromResourceSurface(
 
 } // namespace
 
-// GLOBAL: IMPERIALISM 0x006950f8
-TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+
+// Statically initialized to the sentinel address (the dword at 0x006950f8 holds
+// 0x006a1ca0 in the original), not null — the restore path in
+// BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
+// SetActiveQuickDrawSurfaceContext and would otherwise restore a null context.
+// GLOBAL: IMPERIALISM 0x006950f8
+TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead =
+    &g_defaultQuickDrawSurfaceSentinel;
 // GLOBAL: IMPERIALISM 0x006a1da0
 CDC* g_pQuickDrawMemoryDc = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1dbc
@@ -168,8 +170,7 @@ HGDIOBJ g_hQuickDrawSavedBitmap = nullptr;
 int g_nActiveQuickDrawSurfaceFlags = 0;
 
 // FUNCTION: IMPERIALISM 0x00495c40
-void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(int** handle,
-                                                                        RECT* bounds) {
+void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds) {
   CDC* dcTarget = g_pQuickDrawMemoryDc;
   if (dcTarget == nullptr && g_pScopedMapQuickDrawDcHandleObject != nullptr) {
     dcTarget = static_cast<CDC*>(g_pScopedMapQuickDrawDcHandleObject);
@@ -178,7 +179,7 @@ void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(int** ha
     return;
   }
 
-  TAnimation* loader = reinterpret_cast<TAnimation*>(*handle);
+  TBitmapResourceLoader* loader = *handle;
   if (loader == nullptr || loader->bitmapResource == nullptr || dcTarget == nullptr) {
     return;
   }
@@ -314,10 +315,14 @@ void NoOpQuickDrawLifecycleHookB(void* surfaceObject) {
   (void)surfaceObject;
 }
 
+// Frameless (FPO) in the original; force FPO locally so /Oy- doesn't add an ebp
+// frame (heuristics #2).
+#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x00497300
 void* GetSurfaceHeaderFromSurfaceObject(void* surfaceObject) {
-  return *reinterpret_cast<void**>(surfaceObject);
+  return **reinterpret_cast<void***>(surfaceObject);
 }
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x005c3b70
 int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
@@ -325,9 +330,8 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
   undefined4 savedFlags = 0;
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
 
-  int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(resourceId);
-  TAnimation* loader =
-      loaderHandle != nullptr ? reinterpret_cast<TAnimation*>(*loaderHandle) : nullptr;
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
+  TBitmapResourceLoader* loader = loaderHandle != nullptr ? *loaderHandle : nullptr;
   if (loader == nullptr) {
     ::operator delete(loaderHandle);
     return 0;
@@ -336,8 +340,7 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
   RECT bitmapRect = loader->bitmapRect;
   int outContext = 0;
   if (g_pDisplayMgr != nullptr) {
-    g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-        reinterpret_cast<undefined4*>(&outContext), 8, &bitmapRect);
+    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&outContext, 8, &bitmapRect);
   }
   if (outContext == 0) {
     ReleaseBitmapLoaderHandle(loaderHandle);
@@ -350,9 +353,9 @@ int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceI
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
 
   loader->EnsureBitmapResourceLoadedAndCopyRectSize();
-  loader->field04 |= 1;
+  loader->flags |= 1;
   ResetQuickDrawStrokeState();
-  WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &bitmapRect);
+  BlitBitmapResourceLoaderToActiveDc(loaderHandle, &bitmapRect);
 
   ReleaseBitmapLoaderHandle(loaderHandle);
 

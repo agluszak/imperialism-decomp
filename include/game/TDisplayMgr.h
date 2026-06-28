@@ -21,8 +21,8 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeTurnOrderNavigationDialogByViewportSize(); // slot 0x0a 0x4fe840
-  virtual undefined Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      undefined4* outContext, int elementSize, RECT* bounds); // slot 0x0b 0x4feab0
+  virtual undefined InitializeBitmapSurfaceContextWithRetry(int* outContext, short bitDepth,
+                                                            RECT* bounds); // slot 0x0b 0x4feab0
   virtual undefined EnsurePrimaryRenderSurfaceContextAllocated(); // slot 0x0c 0x4feb80
   virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(); // slot 0x0d 0x4febd0
   virtual undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00(); // slot 0x0e 0x4fed00
@@ -84,7 +84,7 @@ extern int g_nUiInvalidationAssertFlagLine495;
 //   slot 0x08  byte 0x20  0x004798d0  inherited ShallowClone
 //   slot 0x09  byte 0x24  0x00415ce0  inherited ShallowFree
 //   slot 0x0a  byte 0x28  0x004fe840  override  InitializeTurnOrderNavigationDialogByViewportSize
-//   slot 0x0b  byte 0x2c  0x004feab0  override  Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0
+//   slot 0x0b  byte 0x2c  0x004feab0  override  InitializeBitmapSurfaceContextWithRetry
 //   slot 0x0c  byte 0x30  0x004feb80  override  EnsurePrimaryRenderSurfaceContextAllocated
 //   slot 0x0d  byte 0x34  0x004febd0  override  WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0
 //   slot 0x0e  byte 0x38  0x004fed00  override  WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00

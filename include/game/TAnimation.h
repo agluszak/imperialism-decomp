@@ -4,6 +4,39 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+struct TBitmapResourceLoaderState {
+  unsigned char flags;
+  unsigned char pad05[3];
+  RECT bitmapRect;
+  CDib* bitmapResource;
+  short bitmapResourceId;
+  short pad1e;
+
+  explicit TBitmapResourceLoaderState(unsigned short resourceId)
+      : flags(0), bitmapResource(nullptr), bitmapResourceId(static_cast<short>(resourceId)) {}
+};
+
+// Lightweight bitmap loader allocated by CreateBitmapResourceLoaderHandle.
+// VTABLE: IMPERIALISM 0x0064c340
+class TBitmapResourceLoader : public TBitmapResourceLoaderState {
+public:
+  explicit TBitmapResourceLoader(unsigned short resourceId)
+      : TBitmapResourceLoaderState(resourceId) {
+    EnsureBitmapResourceLoadedAndCopyRectSize();
+  }
+
+  ~TBitmapResourceLoader() {
+    ReleaseBitmapResource();
+  }
+
+  virtual void EnsureBitmapResourceLoadedAndCopyRectSize(); // slot 0x00 0x495b70
+  virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
+  virtual undefined TemporarilyClearAndRestoreUiInvalidationFlag(); // slot 0x02 0x4a1100
+};
+
+ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
+ASSERT_SIZE(TBitmapResourceLoader, 0x20);
+
 // TODO(manifest): describe TAnimation and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TAnimation -> TObject -> CObject. VTABLE: IMPERIALISM 0x0064c300
 class TAnimation : public TObject {
@@ -22,11 +55,6 @@ public:
   virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140();  // slot 0x0a 0x49f140
   virtual undefined RenderBattleReportInsetWithPaletteShift();               // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
-  // These three are regular (non-virtual) methods — the orig TAnimation vtable
-  // ends at byte 0x30; declaring them virtual appended 3 phantom slots.
-  void EnsureBitmapResourceLoadedAndCopyRectSize();                                      // 0x495b70
-  void WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(); // 0x495c00
-  undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100();  // 0x4a1100
   // === END GENERATED DECLS (TAnimation) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TAnimation
   // 0xCTOR`).
@@ -39,7 +67,7 @@ public:
   TAnimation();
 };
 
-int** WrapperFor_AllocateWithFallbackHandler_At004a1130(unsigned short resourceId);
+TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId);
 
 ASSERT_SIZE(TAnimation, 0x2c);
 
@@ -63,7 +91,7 @@ ASSERT_SIZE(TAnimation, 0x2c);
 //   slot 0x0e  byte 0x38  0x00000000  null      (null)
 //   slot 0x0f  byte 0x3c  0x00000000  null      (null)
 //   slot 0x10  byte 0x40  0x00495b70  override  EnsureBitmapResourceLoadedAndCopyRectSize
-//   slot 0x11  byte 0x44  0x00495c00  override  WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+//   slot 0x11  byte 0x44  0x00495c00  override  ReleaseBitmapResource
 //   slot 0x12  byte 0x48  0x004a1100  override  WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
 // object size 0x2c (RTTI) unverified against the header layout;
 // set curated.layout.size_verified to emit a sizeof static_assert.

@@ -34,15 +34,6 @@ static void AssignStringSharedRefAndReturnThis(TView* view, CString* dest, CStri
       reinterpret_cast<void (*)()>(::AssignStringSharedRefAndReturnThis))(view, dest, sharedSource);
 }
 
-static short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(undefined4* outContext,
-                                                                int elementSize, RECT* bounds,
-                                                                int hintField18, int arg4,
-                                                                int arg5) {
-  return ::InitializeBitmapDescriptorRecordAndLoadSurfaceNode(
-      reinterpret_cast<int*>(outContext), static_cast<short>(elementSize), bounds, hintField18,
-      arg4, arg5);
-}
-
 static void NoOpCallback_00498ca0(void* fieldPtr) {
   reinterpret_cast<void(__cdecl*)(void*)>(reinterpret_cast<void (*)()>(::NoOpCallback_00498ca0))(
       fieldPtr);
@@ -175,15 +166,13 @@ void TDisplayMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004feab0
-undefined TDisplayMgr::Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-    undefined4* outContext, int elementSize, RECT* bounds) {
-  short result = DisplayMgrInvoke::InitializeBitmapDescriptorRecordAndLoadSurfaceNode(
-      outContext, elementSize, bounds, field18, 0, 0);
+undefined TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(int* outContext, short bitDepth,
+                                                               RECT* bounds) {
+  short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds,
+                                                                    field18, 0, 0);
   if (result != 0) {
-    DisplayMgrInvoke::InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, elementSize,
-                                                                         bounds, field18, 0, 0);
-    DisplayMgrInvoke::InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, elementSize,
-                                                                         bounds, field18, 0, 0);
+    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
+    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(outContext, bitDepth, bounds, field18, 0, 0);
   }
   return 0;
 }
@@ -198,8 +187,8 @@ void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* param_1) {
 undefined TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
   if (g_pPrimaryRenderSurfaceContext == 0) {
     RECT bounds = {-64, -64, 0x280, 0x220};
-    Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-        reinterpret_cast<undefined4*>(&g_pPrimaryRenderSurfaceContext), 8, &bounds);
+    InitializeBitmapSurfaceContextWithRetry(reinterpret_cast<int*>(&g_pPrimaryRenderSurfaceContext),
+                                            8, &bounds);
   }
   return 0;
 }

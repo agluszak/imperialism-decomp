@@ -6,6 +6,7 @@
 #include "game/mfc.h"
 
 class TStream;
+class TBitmapResourceLoader;
 
 // Strategic map view / render system (singleton g_pStrategicMapViewSystem @ 0x006a21a8).
 // VTABLE: IMPERIALISM 0x00658660
@@ -57,7 +58,8 @@ public:
   virtual void DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOverlayIconId,
                                                short nVariantRow, short nDstX,
                                                short nYShift); // slot 0x21 0x50df40
-  virtual undefined CopySpriteSurfaceToStrideBuffer(int* param_1, undefined4* param_2,
+  virtual undefined CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
+                                                    undefined4* param_2,
                                                     short param_3); // slot 0x22 0x50d9e0
   virtual undefined
   RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700

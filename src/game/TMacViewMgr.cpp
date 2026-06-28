@@ -95,11 +95,6 @@ static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWra
   return IsPointInsideHitRegion(&point, reinterpret_cast<int>(region));
 }
 
-static void InvokeRebuildSurfaceRowsWithTemporaryRowBuffer(void) {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(RebuildSurfaceRowsWithTemporaryRowBuffer))();
-}
-
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
   reinterpret_cast<void(__cdecl*)(short, int)>(
       reinterpret_cast<void (*)()>(BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
@@ -114,22 +109,18 @@ void FreeHeapBufferField(int* field) {
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(field));
 }
 
-void ReleaseBitmapLoaderHandle(int** loaderHandle) {
+void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
   }
-  TAnimation* animation = reinterpret_cast<TAnimation*>(*loaderHandle);
-  if (animation != nullptr) {
-    animation->WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
-    ::operator delete(animation);
-  }
+  delete *loaderHandle;
   ::operator delete(loaderHandle);
 }
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
-  int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(resourceId);
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
   if (*loaderHandle != 0) {
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, dstRect);
+    BlitBitmapResourceLoaderToActiveDc(loaderHandle, dstRect);
   }
   ReleaseBitmapLoaderHandle(loaderHandle);
 }
@@ -419,8 +410,7 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x2e0;
   atlasBounds.bottom = 0x18;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas674), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas674, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas674),
                                    savedFlags);
@@ -445,11 +435,10 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   dstCursor = reinterpret_cast<undefined4*>(pixelBuffer) - 2;
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
-    int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
+    TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
     if (loaderHandle != nullptr && *loaderHandle != 0) {
       dstCursor = dstCursor + 2;
-      CopySpriteSurfaceToStrideBuffer(reinterpret_cast<int*>(loaderHandle), dstCursor,
-                                      static_cast<short>(stridePixels));
+      CopySpriteSurfaceToStrideBuffer(loaderHandle, dstCursor, static_cast<short>(stridePixels));
     }
     ReleaseBitmapLoaderHandle(loaderHandle);
     commodityIndex = commodityIndex + 1;
@@ -493,8 +482,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x500;
   atlasBounds.bottom = 0x10;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas688), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas688, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas688),
                                    savedFlags);
@@ -548,26 +536,33 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   stripIndex = 0;
   while (stripIndex < 8) {
-    int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(stripIndex + 800);
+    TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(stripIndex + 800);
     if (*loaderHandle == 0) {
       return;
     }
+    TBitmapResourceLoader* loader = *loaderHandle;
     RECT resourceBounds;
-    CopyRect(&resourceBounds, reinterpret_cast<RECT*>(*loaderHandle + 8));
-    g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-        reinterpret_cast<undefined4*>(&atlas694[stripIndex]), 8, &resourceBounds);
+    CopyRect(&resourceBounds, &loader->bitmapRect);
+    g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas694[stripIndex], 8,
+                                                           &resourceBounds);
     SetActiveQuickDrawSurfaceContext(
         reinterpret_cast<TQuickDrawSurfaceContext*>(atlas694[stripIndex]), savedFlags);
     ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     NoOpRuntimeCallback_00497c00(loaderHandle);
     if (*loaderHandle != 0) {
+      loader = *loaderHandle;
+      loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+      loader->flags |= 1;
       ResetQuickDrawStrokeState();
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle,
-                                                                         &resourceBounds);
+      BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
       if (stripIndex == 0) {
-        InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
+        RebuildSurfaceRowsWithTemporaryRowBuffer();
       }
-      ReleaseBitmapLoaderHandle(loaderHandle);
+      loader = *loaderHandle;
+      loader->ReleaseBitmapResource();
+      loader->flags &= 0xfe;
+      delete loader;
+      ::operator delete(loaderHandle);
     }
     NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
@@ -589,8 +584,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.top = 0;
   atlasBounds.right = 0xcc0;
   atlasBounds.bottom = 0x40;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas668), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas668, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas668),
                                    savedFlags);
@@ -652,8 +646,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
                                    savedFlags);
 
   atlasBounds.right = 0xa80;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas66c), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas66c, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas66c),
                                    savedFlags);
@@ -723,12 +716,10 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 
   atlasBounds.right = 0xd7;
   atlasBounds.bottom = 0x78;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas670), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas670, 8, &atlasBounds);
   atlasBounds.right = 0x90;
   atlasBounds.bottom = 0x26;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas6b4), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b4, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b4),
                                    savedFlags);
@@ -757,8 +748,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.top = 0;
   atlasBounds.right = 0;
   atlasBounds.bottom = 0;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&atlas6b8), 8, &atlasBounds);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&atlas6b8, 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b8),
                                    savedFlags);
@@ -926,7 +916,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas670));
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
                                    savedFlags);
-  InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
+  RebuildSurfaceRowsWithTemporaryRowBuffer();
   reinterpret_cast<unsigned char*>(g_pGlobalMapState)[4] = 1;
   return 0;
 }
@@ -1535,18 +1525,16 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   int gworldHandle = param_1;
   regionSlots[param_1] = CreateClipStateRegionWrapperObject();
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1 + 4000);
-  CopyRect(&resourceBounds, reinterpret_cast<RECT*>(reinterpret_cast<char*>(*loaderHandle) + 8));
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
-      reinterpret_cast<undefined4*>(&gworldHandle), 1, &resourceBounds);
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(param_1 + 4000);
+  CopyRect(&resourceBounds, &(*loaderHandle)->bitmapRect);
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&gworldHandle, 1, &resourceBounds);
   SetActiveQuickDrawSurfaceContext(
       reinterpret_cast<TQuickDrawSurfaceContext*>(resourceBounds.right), savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
   NoOpRuntimeCallback_00497c00(loaderHandle);
   if (*loaderHandle != 0) {
     ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle,
-                                                                       &resourceBounds);
+    BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
     ReleaseBitmapLoaderHandle(loaderHandle);
   }
   void* surfaceObject = GetSurfaceObjectAtContextOffset24(resourceBounds.right);
@@ -1604,9 +1592,9 @@ undefined TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(
 }
 
 // FUNCTION: IMPERIALISM 0x0050d9e0
-undefined TMacViewMgr::CopySpriteSurfaceToStrideBuffer(int* param_1, undefined4* param_2,
-                                                       short param_3) {
-  int spriteHeader = *reinterpret_cast<int*>(param_1[0] + 0x18);
+undefined TMacViewMgr::CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
+                                                       undefined4* param_2, short param_3) {
+  int spriteHeader = *reinterpret_cast<int*>((*loaderHandle)->bitmapResource);
   undefined4* srcRow = *reinterpret_cast<undefined4**>(spriteHeader + 0xc);
   short srcStridePacked =
       *reinterpret_cast<short*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);

@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 class CDib;
+class TBitmapResourceLoader;
 struct TQuickDrawSurfaceContext;
 
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
@@ -21,6 +22,5 @@ short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(int* outContext, short 
                                                          int arg5);
 unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject);
 void NoOpQuickDrawLifecycleHookB(void* surfaceObject);
-void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(int** handle,
-                                                                        RECT* bounds);
+void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);
 int LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId);

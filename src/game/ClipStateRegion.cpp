@@ -77,7 +77,7 @@ void CombineOptionalSourceRegionIntoDestinationAndUpdateBox(ClipStateRegionWrapp
 }
 
 // FUNCTION: IMPERIALISM 0x00497c00
-undefined4 NoOpRuntimeCallback_00497c00(int** handle) {
+undefined4 NoOpRuntimeCallback_00497c00(TBitmapResourceLoader** handle) {
   (void)handle;
   return 0;
 }
