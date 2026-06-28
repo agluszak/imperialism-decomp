@@ -971,14 +971,6 @@ undefined4 SelectAndActivatePendingEventForCurrentView(void)
   return 0;
 }
 
-// ghidra_name HandlePostDispatchTurnStateEventUpdates
-// ghidra_proto undefined HandlePostDispatchTurnStateEventUpdates()
-// FUNCTION: IMPERIALISM 0x005011a0
-undefined4 HandlePostDispatchTurnStateEventUpdates(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnStateSpecialAdvisoriesAndReturnCount
 // ghidra_proto undefined DispatchTurnStateSpecialAdvisoriesAndReturnCount()
 // FUNCTION: IMPERIALISM 0x00501270
@@ -1011,14 +1003,6 @@ undefined4 ShowTurnAlertsForActiveNation(void)
   return 0;
 }
 
-// ghidra_name HandlePendingEventActivationByCode
-// ghidra_proto undefined HandlePendingEventActivationByCode()
-// FUNCTION: IMPERIALISM 0x005031c0
-undefined4 HandlePendingEventActivationByCode(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectAndActivatePendingEventType1A0A
 // ghidra_proto undefined SelectAndActivatePendingEventType1A0A()
 // FUNCTION: IMPERIALISM 0x00503320
@@ -1031,22 +1015,6 @@ undefined4 SelectAndActivatePendingEventType1A0A(void)
 // ghidra_proto undefined SelectAndActivatePendingEventTypeOffsetFrom1A0B()
 // FUNCTION: IMPERIALISM 0x00503370
 undefined4 SelectAndActivatePendingEventTypeOffsetFrom1A0B(void)
-{
-  return 0;
-}
-
-// ghidra_name HandlePostPendingEventActivationNoOp
-// ghidra_proto undefined HandlePostPendingEventActivationNoOp()
-// FUNCTION: IMPERIALISM 0x00503400
-undefined4 HandlePostPendingEventActivationNoOp(void)
-{
-  return 0;
-}
-
-// ghidra_name ActivatePendingEventAndRefreshView
-// ghidra_proto undefined ActivatePendingEventAndRefreshView()
-// FUNCTION: IMPERIALISM 0x00503420
-undefined4 ActivatePendingEventAndRefreshView(void)
 {
   return 0;
 }

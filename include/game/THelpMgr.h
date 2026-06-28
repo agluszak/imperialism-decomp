@@ -6,6 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TSortedPtrList;
+class TView;
 
 // Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (relationType 0xe).
 struct HelpSetRecord {
@@ -39,9 +40,15 @@ public:
   virtual undefined InitializeHelpManagerIndexArrayAndState(); // slot 0x0a 0x500680
   virtual undefined OrphanCallChain_C1_I22_00500f10(); // slot 0x0b 0x500f10
 // === END GENERATED DECLS (THelpMgr) ===
+
+  void HandlePostDispatchTurnStateEventUpdates();
+  char HandlePendingEventActivationByCode(short eventCode);
+  void HandlePostPendingEventActivationNoOp(short eventCode);
+  void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
+
   TSortedPtrList* indexList;
-  int field8;
-  int fieldC;
+  TView* pendingDialogView8;
+  TView* pendingDialogViewC;
   int field10;
   int field14;
   short field18;

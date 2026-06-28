@@ -215,7 +215,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     break;
   }
   case 0x67:
-    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(-1);
+    g_pUiRuntimeContext->AddPendingTurnOverlayCode(-1);
     if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
@@ -230,7 +230,7 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
     }
     break;
   case 0x68:
-    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(1);
+    g_pUiRuntimeContext->AddPendingTurnOverlayCode(1);
     if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));

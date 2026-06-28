@@ -8,9 +8,9 @@ extern void PushUiResourcePoolNode(void);
 extern void PopUiResourcePoolNode_00479A80(void);
 extern unsigned char* ZeroUiResourceContextStyleBytes(unsigned char* buffer);
 
-namespace {
+#include "game/ui_control_tags.h"
 
-const unsigned int kControlTagWind = 0x57494e44u;
+namespace {
 
 TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int height,
                                       unsigned short layoutModeWord) {
