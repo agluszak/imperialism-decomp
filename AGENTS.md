@@ -26,6 +26,7 @@ starting that kind of task.
   reconstructs an unknown layout/inheritance in the first place.
 
 ## IMPORTANT
+- Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
 - ghidra uses unreliable, placeholder names and calling conventions. Almost every method
   in this project should be a thiscall belonging to a proper class
 - code coming from MFC/other Windows libraries MUST NOT be modelled/ported. Use // LIBRARY annotations for it
