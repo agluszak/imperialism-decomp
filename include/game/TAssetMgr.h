@@ -46,7 +46,7 @@ public:
 
 void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
 
-void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
+void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 // === BEGIN GENERATED (TAssetMgr) — refreshed by `just gen-class TAssetMgr`; do not hand-edit ===
 // clang-format off

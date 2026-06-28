@@ -323,10 +323,14 @@ TMacViewMgr::TMacViewMgr() : TObject() {
   }
 }
 
+// Frameless getter (FPO) in the original; force FPO locally so /Oy- doesn't add an ebp
+// frame (heuristics #2).
+#pragma optimize("y", on)
 // FUNCTION: IMPERIALISM 0x00509e10
 ClipStateRegionWrapper* TMacViewMgr::GetClipRegionSlotByIndex(short index) {
   return regionSlots[index];
 }
+#pragma optimize("", on)
 
 // SYNTHETIC: IMPERIALISM 0x00509e30
 // TMacViewMgr::`scalar deleting destructor'

@@ -6901,7 +6901,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.6253687315634219,
+      "matching": 0.6272189349112426,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -15782,7 +15782,7 @@
     },
     {
       "address": "0x509e10",
-      "matching": 0.4444444444444444,
+      "matching": 1.0,
       "name": "TMacViewMgr::GetClipRegionSlotByIndex",
       "type": 1
     },
@@ -32806,25 +32806,25 @@
     },
     {
       "address": "0x5df3a0",
-      "matching": 0.4444444444444444,
+      "matching": 1.0,
       "name": "ForwardEnsurePictWvDataGobLoadedBySlot",
       "type": 1
     },
     {
       "address": "0x5df3c0",
-      "matching": 0.7058823529411765,
+      "matching": 1.0,
       "name": "TAssetMgr::ResolveTurnEventDialogNodeByMessageContext",
       "type": 1
     },
     {
       "address": "0x5df3f0",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df3f0",
       "type": 1
     },
     {
       "address": "0x5df410",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df410",
       "type": 1
     },
@@ -32866,7 +32866,7 @@
     },
     {
       "address": "0x5df780",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df780",
       "type": 1
     },
