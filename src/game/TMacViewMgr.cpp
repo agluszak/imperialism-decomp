@@ -1594,7 +1594,7 @@ undefined TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950(
 // FUNCTION: IMPERIALISM 0x0050d9e0
 undefined TMacViewMgr::CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
                                                        undefined4* param_2, short param_3) {
-  int spriteHeader = *reinterpret_cast<int*>((*loaderHandle)->bitmapResource);
+  int spriteHeader = reinterpret_cast<int>((*loaderHandle)->bitmapResource);
   undefined4* srcRow = *reinterpret_cast<undefined4**>(spriteHeader + 0xc);
   short srcStridePacked =
       *reinterpret_cast<short*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);

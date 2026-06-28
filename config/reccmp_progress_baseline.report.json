@@ -15980,7 +15980,7 @@
     },
     {
       "address": "0x50d9e0",
-      "matching": 0.15517241379310345,
+      "matching": 0.1391304347826087,
       "name": "TMacViewMgr::CopySpriteSurfaceToStrideBuffer",
       "type": 1
     },
@@ -32394,6 +32394,12 @@
       "address": "0x5d71b0",
       "matching": 0.0,
       "name": "TViewMgr::InvokeMainWidgetMethod1CCWithArgs",
+      "type": 1
+    },
+    {
+      "address": "0x5d7240",
+      "matching": 0.22304147465437787,
+      "name": "LinkedListQueryOwner::DispatchGlobalTurnEventCode",
       "type": 1
     },
     {
