@@ -180,11 +180,11 @@ undefined4 MapUiThemeCodeToStyleFlags(void)
 }
 
 // ghidra_name BuildUiTextStyleDescriptor
-// ghidra_proto undefined BuildUiTextStyleDescriptor()
+// ghidra_proto void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x005c3e80
-undefined4 BuildUiTextStyleDescriptor(void)
+void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)
 {
-  return 0;
+  return;
 }
 
 // ghidra_name InitializeUiTextStyleDescriptor

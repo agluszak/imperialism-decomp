@@ -84,6 +84,11 @@ public:
   int fieldD80;
 
   TMacViewMgr();
+  void InitializeStrategicMapViewSystem();
+  void BuildStrategicMapGaugeAtlasFrom1422And1423();
+  void RefreshCityCapabilityUiHandlesForActiveNation();
+  void BuildStrategicMapTileOverlayStripSurfaces800To807();
+  void ReloadBitmap244AndRefreshUiCaches();
 };
 
 extern TMacViewMgr* g_pStrategicMapViewSystem;

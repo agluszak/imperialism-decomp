@@ -7,6 +7,12 @@ struct StrategicMapCallbackRecord {
   ~StrategicMapCallbackRecord();
 
   void AppendPackedColorDword(int surface, int packedColor);
+  unsigned char* EnsureOpcodeBufferByteAtIndex(int index);
+  void AppendOpcodeByte(int value);
+  void AppendOpcodeBytePair(int value);
+  void FinalizeOpcodeBufferAlignment();
+  void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, int width, int height,
+                                                   int surface, int transparentPixel);
 
   int dispatchTable00;
   char* ownedBuffer04;

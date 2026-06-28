@@ -492,11 +492,11 @@ undefined4 FormatFloatToLocalizedSharedString(void)
 }
 
 // ghidra_name scanBracketExpressions
-// ghidra_proto void __stdcall scanBracketExpressions(void * ctx, void * out_or_state, char * input_str)
+// ghidra_proto void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)
 // FUNCTION: IMPERIALISM 0x0057fef0
-undefined4 scanBracketExpressions(void)
+void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)
 {
-  return 0;
+  return;
 }
 
 // ghidra_name BuildUiMessageTextFromBracketTemplate

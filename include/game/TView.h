@@ -41,7 +41,7 @@ public:
                                                int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
-  void EnableAndProcessFlag(const CString& sharedString);
+  void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
   void SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive);
 

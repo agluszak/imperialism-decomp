@@ -4582,8 +4582,8 @@
     },
     {
       "address": "0x48c220",
-      "matching": 0.8333333333333334,
-      "name": "EnableAndProcessFlag",
+      "matching": 0.3333333333333333,
+      "name": "TView::EnableAndProcessFlag",
       "type": 1
     },
     {
@@ -6901,7 +6901,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.611764705882353,
+      "matching": 0.6194690265486725,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -11257,8 +11257,8 @@
     },
     {
       "address": "0x4d4e40",
-      "matching": 0.0,
-      "name": "EnsureDynamicPointerArrayCapacityForIndex",
+      "matching": 0.18181818181818182,
+      "name": "StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex",
       "type": 1
     },
     {
@@ -11269,26 +11269,26 @@
     },
     {
       "address": "0x4d5090",
-      "matching": 0.0,
-      "name": "BuildBitmapMaskOpcodeBufferFromResourceRows",
+      "matching": 0.10426540284360189,
+      "name": "StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows",
       "type": 1
     },
     {
       "address": "0x4d5580",
-      "matching": 0.0,
-      "name": "AppendByteToGrowableBuffer",
+      "matching": 0.14285714285714285,
+      "name": "StrategicMapCallbackRecord::AppendOpcodeByte",
       "type": 1
     },
     {
       "address": "0x4d5610",
-      "matching": 0.0,
-      "name": "AppendBytePairToGrowableBuffer",
+      "matching": 0.16326530612244897,
+      "name": "StrategicMapCallbackRecord::AppendOpcodeBytePair",
       "type": 1
     },
     {
       "address": "0x4d5720",
-      "matching": 0.012195121951219513,
-      "name": "FinalizeDiplomacyHitMaskOpcodeBufferAlignment",
+      "matching": 0.11827956989247312,
+      "name": "StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment",
       "type": 1
     },
     {
@@ -15794,8 +15794,8 @@
     },
     {
       "address": "0x509f20",
-      "matching": 0.8076923076923077,
-      "name": "InitializeStrategicMapViewSystem",
+      "matching": 0.9795918367346939,
+      "name": "TMacViewMgr::InitializeStrategicMapViewSystem",
       "type": 1
     },
     {
@@ -15849,31 +15849,31 @@
     {
       "address": "0x50a470",
       "matching": 0.25,
-      "name": "BuildStrategicMapGaugeAtlasFrom1422And1423",
+      "name": "TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423",
       "type": 1
     },
     {
       "address": "0x50a6a0",
       "matching": 0.5443786982248521,
-      "name": "RefreshCityCapabilityUiHandlesForActiveNation",
+      "name": "TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation",
       "type": 1
     },
     {
       "address": "0x50a820",
       "matching": 0.3791469194312796,
-      "name": "BuildStrategicMapTileOverlayStripSurfaces800To807",
+      "name": "TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807",
       "type": 1
     },
     {
       "address": "0x50a9f0",
-      "matching": 0.1466992665036675,
+      "matching": 0.15896188158961883,
       "name": "TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext",
       "type": 1
     },
     {
       "address": "0x50b5b0",
       "matching": 0.7868852459016393,
-      "name": "ReloadBitmap244AndRefreshUiCaches",
+      "name": "TMacViewMgr::ReloadBitmap244AndRefreshUiCaches",
       "type": 1
     },
     {
@@ -15914,7 +15914,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17876106194690267,
+      "matching": 0.17132711939636042,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -25598,7 +25598,7 @@
     },
     {
       "address": "0x57fef0",
-      "matching": 0.021052631578947368,
+      "matching": 0.061855670103092786,
       "name": "scanBracketExpressions",
       "type": 1
     },
@@ -31852,7 +31852,7 @@
     },
     {
       "address": "0x5c3e80",
-      "matching": 0.045454545454545456,
+      "matching": 0.043478260869565216,
       "name": "BuildUiTextStyleDescriptor",
       "type": 1
     },
@@ -32308,7 +32308,7 @@
     },
     {
       "address": "0x5d6480",
-      "matching": 0.13267813267813267,
+      "matching": 0.13202933985330073,
       "name": "TViewMgr::BuildAndShowTurnOverlayByMode",
       "type": 1
     },
@@ -33966,18 +33966,6 @@
       "address": "0x5e8c20",
       "matching": 0.10526315789473684,
       "name": "ProbeStackPagesForLargeFrameAllocation",
-      "type": 1
-    },
-    {
-      "address": "0x5e8c50",
-      "matching": 0.0,
-      "name": "CallCallbackRepeatedly",
-      "type": 1
-    },
-    {
-      "address": "0x5e8cc8",
-      "matching": 0.16666666666666666,
-      "name": "SehCleanup_CallCallbackRepeatedly",
       "type": 1
     },
     {

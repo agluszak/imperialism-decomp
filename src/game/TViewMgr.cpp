@@ -10,6 +10,7 @@
 #include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
 #include "game/ui_invalidation_guard.h"
 #include "game/turn_event_packets.h"
+#include "game/localization_text_helpers.h"
 
 #include <new>
 
@@ -44,7 +45,6 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
 undefined4 DoModal_6051b9(void);
-undefined4 scanBracketExpressions(void);
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node (a
 // TView-family panel; the concrete class is registry-driven) and its 'GOLD' child
@@ -448,9 +448,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 0:
     g_pLocalizationTable->GetString(0, 0, &scratchA);
     g_pLocalizationTable->GetString(0x2716, 0, &templateText);
-    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
-        g_pLocalizationTable, &formattedText,
-        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
     if (contextArg == 8) {
       resourceId = 0x2515;
     } else if (contextArg == 9) {
@@ -478,9 +476,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 4:
     g_pGlobalMapState->AssignSharedStringFromIndexedA8EntryNameField(contextArg, &formattedText);
     g_pLocalizationTable->GetString(0, 0, &templateText);
-    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
-        g_pLocalizationTable, &formattedText,
-        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 5:
@@ -491,9 +487,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 6:
     reinterpret_cast<void(__cdecl*)(void)>(LoadNationDisplayNameSharedRefFromField8)();
     g_pLocalizationTable->GetString(0, 0, &templateText);
-    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
-        g_pLocalizationTable, &formattedText,
-        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x250e;
     break;
   case 7:
@@ -512,9 +506,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 0xa:
     reinterpret_cast<void(__cdecl*)(void)>(FormatOverlayTerrainLabelText)();
     g_pLocalizationTable->GetString(0, 0, &templateText);
-    reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
-        g_pLocalizationTable, &formattedText,
-        const_cast<char*>(static_cast<LPCSTR>(templateText)));
+    scanBracketExpressions(g_pLocalizationTable, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x2512;
     break;
   default:
@@ -707,4 +699,3 @@ void TViewMgr::UiRuntimeSlotD8() {}
 int TViewMgr::ShowConstructionOptionsDialog() {
   return 0;
 }
-

@@ -828,7 +828,7 @@ void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c220
-void TView::EnableAndProcessFlag(const CString& sharedString) {
+void TView::EnableAndProcessFlag(CString sharedString) {
   field5c = 1;
   sharedStringRef = sharedString;
 }

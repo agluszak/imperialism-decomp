@@ -811,14 +811,6 @@ undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0(void)
   return 0;
 }
 
-// ghidra_name EnsureDynamicPointerArrayCapacityForIndex
-// ghidra_proto undefined EnsureDynamicPointerArrayCapacityForIndex()
-// FUNCTION: IMPERIALISM 0x004d4e40
-undefined4 EnsureDynamicPointerArrayCapacityForIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0
 // ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()
 // FUNCTION: IMPERIALISM 0x004d4ed0
@@ -839,38 +831,6 @@ undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50(void)
 // ghidra_proto undefined AppendCallbackGeneratedByteToGrowableBuffer()
 // FUNCTION: IMPERIALISM 0x004d4ff0
 undefined4 AppendCallbackGeneratedByteToGrowableBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildBitmapMaskOpcodeBufferFromResourceRows
-// ghidra_proto undefined BuildBitmapMaskOpcodeBufferFromResourceRows()
-// FUNCTION: IMPERIALISM 0x004d5090
-undefined4 BuildBitmapMaskOpcodeBufferFromResourceRows(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendByteToGrowableBuffer
-// ghidra_proto undefined AppendByteToGrowableBuffer()
-// FUNCTION: IMPERIALISM 0x004d5580
-undefined4 AppendByteToGrowableBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendBytePairToGrowableBuffer
-// ghidra_proto undefined AppendBytePairToGrowableBuffer()
-// FUNCTION: IMPERIALISM 0x004d5610
-undefined4 AppendBytePairToGrowableBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name FinalizeDiplomacyHitMaskOpcodeBufferAlignment
-// ghidra_proto undefined FinalizeDiplomacyHitMaskOpcodeBufferAlignment()
-// FUNCTION: IMPERIALISM 0x004d5720
-undefined4 FinalizeDiplomacyHitMaskOpcodeBufferAlignment(void)
 {
   return 0;
 }

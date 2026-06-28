@@ -1212,6 +1212,11 @@ address|target_cpp|ownership|note
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d4b90|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d4e40|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d5090|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d5580|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d5610|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d5720|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d6500|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6570|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6590|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
@@ -3462,6 +3467,8 @@ address|target_cpp|ownership|note
 5e8310|src/game/mfc_heap_library.cpp|manual|marker_sync
 5e8760|src/game/buffered_stream.cpp|manual|marker_sync
 5e8800|src/game/buffered_stream.cpp|manual|marker_sync
+5e8c50|src/game/compiler_runtime.cpp|manual|compiler_helper_do_not_stub
+5e8cc8|src/game/compiler_runtime.cpp|manual|compiler_helper_do_not_stub
 5e9010|src/game/buffered_stream.cpp|manual|marker_sync
 5e9050|src/game/buffered_stream.cpp|manual|marker_sync
 5e90c0|src/game/buffered_stream.cpp|manual|marker_sync

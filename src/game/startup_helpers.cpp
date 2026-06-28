@@ -16,10 +16,7 @@
 #include "game/TModalTemplateDialog.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
-
-void InitializeStrategicMapViewSystem(TMacViewMgr* self);
-
-extern undefined4 scanBracketExpressions();
+#include "game/localization_text_helpers.h"
 
 // Define the global callback pointer
 // GLOBAL: IMPERIALISM 0x006a7fac
@@ -57,8 +54,7 @@ void InvokeLoadUiStringResourceByGroupAndIndex(CString* dest, int group, int ind
 }
 
 void InvokeScanBracketExpressions(TSimMgr* ctx, CString* out, char* input) {
-  reinterpret_cast<void(__stdcall*)(TSimMgr*, CString*, char*)>(scanBracketExpressions)(ctx, out,
-                                                                                        input);
+  scanBracketExpressions(ctx, out, input);
 }
 
 void FormatStringWithVarArgsToSharedRef(CString* dest, const char* format, int value) {
@@ -210,7 +206,7 @@ void InitializeGlobalRuntimeSystemsFromConfig(TAmbitApplication* app) {
 
   TMacViewMgr* mapView = new TMacViewMgr();
   if (mapView != nullptr) {
-    InitializeStrategicMapViewSystem(mapView);
+    mapView->InitializeStrategicMapViewSystem();
   }
   g_pStrategicMapViewSystem = mapView;
 

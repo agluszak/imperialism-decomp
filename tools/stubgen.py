@@ -191,7 +191,13 @@ def prototype_usable(proto: str) -> bool:
 
 
 def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
-    whitelist = {"IsPointInsideHitRegion", "AssertQuickDrawFlag6A1DCCNonZero", "AssertQuickDrawFlag6A1DC8NonZero"}
+    whitelist = {
+        "IsPointInsideHitRegion",
+        "AssertQuickDrawFlag6A1DCCNonZero",
+        "AssertQuickDrawFlag6A1DC8NonZero",
+        "scanBracketExpressions",
+        "BuildUiTextStyleDescriptor",
+    }
     force_prototype = ident in whitelist or function_name_from_prototype(prototype) in whitelist
     if (use_prototypes or force_prototype) and prototype and prototype_usable(prototype):
         candidate = prototype.rstrip().rstrip(";")

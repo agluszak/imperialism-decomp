@@ -14,6 +14,7 @@
 #include "game/TGreatPower.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
+#include "game/localization_text_helpers.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -22,7 +23,6 @@ extern short g_awEngineerFortBuildCostByLevel[8];
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
 }
 undefined4 GetTickCountDiv16(void);
-undefined4 scanBracketExpressions(void);
 IMPLEMENT_DYNCREATE(TCivMgr, TObject)
 
 TCivMgr::TCivMgr() {}
@@ -73,10 +73,9 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
         g_pLocalizationTable->FormatIntegerString(cost, &costString);
         g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
-        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(
-            scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText,
-                                    static_cast<LPCSTR>(pszTemplateText),
-                                    static_cast<LPCSTR>(costString));
+        scanBracketExpressions(g_pLocalizationTable, &pszFormattedText,
+                               static_cast<LPCSTR>(pszTemplateText),
+                               static_cast<LPCSTR>(costString));
 
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
@@ -100,10 +99,9 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
         g_pLocalizationTable->FormatIntegerString(3000, &costString);
         g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
-        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(
-            scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText,
-                                    static_cast<LPCSTR>(pszTemplateText),
-                                    static_cast<LPCSTR>(costString));
+        scanBracketExpressions(g_pLocalizationTable, &pszFormattedText,
+                               static_cast<LPCSTR>(pszTemplateText),
+                               static_cast<LPCSTR>(costString));
 
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
@@ -131,10 +129,9 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
         g_pLocalizationTable->FormatIntegerString(2000, &costString);
         g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
-        reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(
-            scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText,
-                                    static_cast<LPCSTR>(pszTemplateText),
-                                    static_cast<LPCSTR>(costString));
+        scanBracketExpressions(g_pLocalizationTable, &pszFormattedText,
+                               static_cast<LPCSTR>(pszTemplateText),
+                               static_cast<LPCSTR>(costString));
 
         reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
             ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);
@@ -166,10 +163,9 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
       g_pLocalizationTable->FormatIntegerString(cost, &costString);
       g_pLocalizationTable->GetString(0x2745, 8, &pszTemplateText);
-      reinterpret_cast<void(__cdecl*)(TSimMgr*, CString*, const char*, const char*)>(
-          scanBracketExpressions)(g_pLocalizationTable, &pszFormattedText,
-                                  static_cast<LPCSTR>(pszTemplateText),
-                                  static_cast<LPCSTR>(costString));
+      scanBracketExpressions(g_pLocalizationTable, &pszFormattedText,
+                             static_cast<LPCSTR>(pszTemplateText),
+                             static_cast<LPCSTR>(costString));
 
       reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
           ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pszFormattedText);

@@ -99,22 +99,6 @@ undefined4 ProbeStackPagesForLargeFrameAllocation(void)
   return 0;
 }
 
-// ghidra_name CallCallbackRepeatedly
-// ghidra_proto void __stdcall CallCallbackRepeatedly(undefined4 param_1, undefined4 param_2, int iteration_count, undefined * callback)
-// FUNCTION: IMPERIALISM 0x005e8c50
-undefined4 CallCallbackRepeatedly(void)
-{
-  return 0;
-}
-
-// ghidra_name SehCleanup_CallCallbackRepeatedly
-// ghidra_proto undefined SehCleanup_CallCallbackRepeatedly()
-// FUNCTION: IMPERIALISM 0x005e8cc8
-undefined4 SehCleanup_CallCallbackRepeatedly(void)
-{
-  return 0;
-}
-
 // ghidra_name ConvertEpochSecondsToLocalTmWithDstAdjust
 // ghidra_proto undefined ConvertEpochSecondsToLocalTmWithDstAdjust()
 // FUNCTION: IMPERIALISM 0x005e8cf0

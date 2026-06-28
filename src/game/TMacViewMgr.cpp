@@ -5,7 +5,6 @@
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/ClipStateRegion.h"
 #include "game/TAnimation.h"
-#include "game/TAnimation.h"
 #include "game/TAssetMgr.h"
 #include "game/TCity.h"
 #include "game/TControl.h"
@@ -17,9 +16,11 @@
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TTechMgr.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/diplomacy_globals.h"
+#include "game/localization_text_helpers.h"
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_invalidation_guard.h"
@@ -27,44 +28,16 @@
 #include "game/mfc.h"
 #include "game/turn_flow_cooldown.h"
 #include "decomp_types.h"
+#include <string.h>
 
 void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(undefined4* field);
 
-void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self);
-void __fastcall RefreshCityCapabilityUiHandlesForActiveNation(TMacViewMgr* self);
-void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* self);
-void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self);
-
 int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
 
-undefined4 scanBracketExpressions(void);
-undefined4 AssignStringSharedRefAndReturnThis(void);
-undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void);
-undefined4 BuildUiTextStyleDescriptor(void);
+void __cdecl BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int arg3);
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
-undefined4 BuildBitmapMaskOpcodeBufferFromResourceRows(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
 undefined4 CallObjectOffset24Vslot54IfPresent(void);
-
-namespace MacViewUiInvoke {
-
-static CString* AssignStringSharedRefAndReturnThis(TView* view, CString* sharedString) {
-  return reinterpret_cast<CString*(__cdecl*)(TView*, CString*)>(
-      reinterpret_cast<void (*)()>(AssignStringSharedRefAndReturnThis))(view, sharedString);
-}
-
-static void InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup(void) {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(RunEnableAndProcessFlagWithScopedSharedStringCleanup))();
-}
-
-static void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int arg3) {
-  reinterpret_cast<void(__cdecl*)(void*, int, int, int)>(
-      reinterpret_cast<void (*)()>(BuildUiTextStyleDescriptor))(styleDescriptor, unused, arg2,
-                                                                 arg3);
-}
-
-} // namespace MacViewUiInvoke
 
 namespace {
 
@@ -111,14 +84,8 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
   layout1[1] = srcView->field38;
 }
 
-static void SetControlCommandTagAt1c(TControl* control, unsigned int tag) {
-  *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(control) + 0x1c) = tag;
-}
-
 static void ScanBracketExpressionsInto(CString* dest, const CString& templateText) {
-  reinterpret_cast<void(__stdcall*)(void*, void*, char*)>(scanBracketExpressions)(
-      g_pLocalizationTable, dest,
-      const_cast<char*>(static_cast<LPCSTR>(templateText)));
+  scanBracketExpressions(g_pLocalizationTable, dest, static_cast<LPCSTR>(templateText));
 }
 
 static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWrapper* region) {
@@ -131,11 +98,6 @@ static undefined4 QueryPointInsideHitRegion(short x, short y, ClipStateRegionWra
 static void InvokeRebuildSurfaceRowsWithTemporaryRowBuffer(void) {
   reinterpret_cast<void(__cdecl*)(void)>(
       reinterpret_cast<void (*)()>(RebuildSurfaceRowsWithTemporaryRowBuffer))();
-}
-
-static void InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(int a, int b, int c, int d, int e) {
-  reinterpret_cast<void(__cdecl*)(int, int, int, int, int)>(reinterpret_cast<void (*)()>(
-      BuildBitmapMaskOpcodeBufferFromResourceRows))(a, b, c, d, e);
 }
 
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
@@ -231,6 +193,100 @@ StrategicMapCallbackRecord::StrategicMapCallbackRecord() {
   field2c = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004d4e40
+unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int index) {
+  if (index >= field08) {
+    int required = index + 1;
+    int newCapacity = required + required;
+    if (newCapacity < required) {
+      newCapacity = required;
+    }
+
+    char* newBuffer = new char[newCapacity];
+    if (ownedBuffer04 != 0 && field0c > 0) {
+      memcpy(newBuffer, ownedBuffer04, field0c);
+    }
+    delete[] ownedBuffer04;
+    ownedBuffer04 = newBuffer;
+    field08 = newCapacity;
+  }
+
+  if (index >= field0c) {
+    field0c = index + 1;
+  }
+  return reinterpret_cast<unsigned char*>(ownedBuffer04 + index);
+}
+
+// FUNCTION: IMPERIALISM 0x004d5090
+void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
+    int resourceId,
+    int width,
+    int height,
+    int surface,
+    int transparentPixel) {
+  field2c = surface;
+
+  CDib* dib =
+      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(resourceId));
+  unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
+  int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
+  int skippedPixels = 0;
+
+  int y = 0;
+  while (y < height) {
+    int x = 0;
+    while (x < width) {
+      unsigned char pixel = row[x];
+      if (pixel == static_cast<unsigned char>(transparentPixel)) {
+        skippedPixels = skippedPixels + 1;
+      } else {
+        if (skippedPixels > 0x7f) {
+          AppendOpcodeByte(0x05);
+          AppendOpcodeBytePair(skippedPixels >> 0x10);
+          AppendOpcodeBytePair(skippedPixels);
+          skippedPixels = 0;
+        }
+        AppendOpcodeByte(0xc6);
+        AppendOpcodeByte(0x40);
+        AppendOpcodeByte(skippedPixels);
+        AppendOpcodeByte(pixel);
+        skippedPixels = 0;
+      }
+      x = x + 1;
+    }
+    row = row + sourceRowStride;
+    y = y + 1;
+  }
+
+  g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(resourceId));
+  AppendOpcodeByte(0xc3);
+  FinalizeOpcodeBufferAlignment();
+}
+
+// FUNCTION: IMPERIALISM 0x004d5580
+void StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
+  int index = field10;
+  field10 = index + 1;
+  *EnsureOpcodeBufferByteAtIndex(index) = static_cast<unsigned char>(value);
+}
+
+// FUNCTION: IMPERIALISM 0x004d5610
+void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
+  AppendOpcodeByte((value >> 8) & 0xff);
+  AppendOpcodeByte(value & 0xff);
+}
+
+// FUNCTION: IMPERIALISM 0x004d5720
+void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
+  while (((reinterpret_cast<unsigned int>(ownedBuffer04) + field14) & 3) != 0) {
+    AppendOpcodeByte(0);
+    field14 = (field14 + 1) & 3;
+  }
+  if (field14 != 0) {
+    field18 = 1;
+  }
+}
+
 // GLOBAL: IMPERIALISM 0x00658610
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
@@ -279,15 +335,15 @@ undefined4 TMacViewMgr::VTableSlot26(short tileIndex) {
 TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20
-void InitializeStrategicMapViewSystem(TMacViewMgr* self) {
+void TMacViewMgr::InitializeStrategicMapViewSystem() {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
-  self->BuildStrategicMapCommodityIconAtlasFrom700To722();
-  self->LoadStrategicMapUnitIconAtlas750();
-  self->LoadStrategicMapUnitOverlayAtlas751();
-  self->LoadStrategicMapOverlayAtlas8699();
-  BuildStrategicMapGaugeAtlasFrom1422And1423(self);
-  RefreshCityCapabilityUiHandlesForActiveNation(self);
-  BuildStrategicMapTileOverlayStripSurfaces800To807(self);
+  BuildStrategicMapCommodityIconAtlasFrom700To722();
+  LoadStrategicMapUnitIconAtlas750();
+  LoadStrategicMapUnitOverlayAtlas751();
+  LoadStrategicMapOverlayAtlas8699();
+  BuildStrategicMapGaugeAtlasFrom1422And1423();
+  RefreshCityCapabilityUiHandlesForActiveNation();
+  BuildStrategicMapTileOverlayStripSurfaces800To807();
 }
 
 // FUNCTION: IMPERIALISM 0x00509f70
@@ -336,7 +392,7 @@ void TMacViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   RebuildMapTileNeighborHighlightPolygonsForAllTiles();
   RenderTurnEventPalettePreviewSurfaceAndProgress();
-  RefreshCityCapabilityUiHandlesForActiveNation(this);
+  RefreshCityCapabilityUiHandlesForActiveNation();
 }
 
 // FUNCTION: IMPERIALISM 0x0050a180
@@ -425,7 +481,7 @@ undefined TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050a470
-void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self) {
+void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   RECT atlasBounds;
   undefined4 savedContext;
   undefined4 savedFlags;
@@ -433,32 +489,33 @@ void __fastcall BuildStrategicMapGaugeAtlasFrom1422And1423(TMacViewMgr* self) {
   atlasBounds.top = 0;
   atlasBounds.right = 0x500;
   atlasBounds.bottom = 0x10;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&self->atlas688), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas688), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(self->atlas688), savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(self->atlas688));
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas688), savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas688));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58e, &atlasBounds);
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58f, &atlasBounds);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(self->atlas688));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas688));
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a6a0
-void __fastcall RefreshCityCapabilityUiHandlesForActiveNation(TMacViewMgr* self) {
+void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   short nationId;
   unsigned int variant;
   if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
     return;
   }
-  if (self == 0 || g_pCityOrderCapabilityState == 0) {
+  if (this == 0 || g_pCityOrderCapabilityState == 0) {
     return;
   }
-  if (self->atlas68c != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas68c));
+  if (atlas68c != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas68c));
   }
-  if (self->atlas690 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas690));
+  if (atlas690 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas690));
   }
   nationId = g_pUiRuntimeContext->GetActiveNationId();
   if (nationId < 0) {
@@ -472,13 +529,13 @@ void __fastcall RefreshCityCapabilityUiHandlesForActiveNation(TMacViewMgr* self)
     variant = 2;
   }
   nationId = g_pUiRuntimeContext->GetActiveNationId();
-  self->atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
+  atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
   nationId = g_pUiRuntimeContext->GetActiveNationId();
-  self->atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
+  atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a820
-void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* self) {
+void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
   undefined4 savedContext;
   undefined4 savedFlags;
   int stripIndex;
@@ -491,10 +548,10 @@ void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* s
     }
     RECT resourceBounds;
     CopyRect(&resourceBounds, reinterpret_cast<RECT*>(*loaderHandle + 8));
-    g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&self->atlas694[stripIndex]), 8,
-                                &resourceBounds);
-    SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(self->atlas694[stripIndex]), savedFlags);
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
+    g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+        reinterpret_cast<undefined4*>(&atlas694[stripIndex]), 8, &resourceBounds);
+    SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas694[stripIndex]), savedFlags);
+    ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     NoOpRuntimeCallback_00497c00(loaderHandle);
     if (*loaderHandle != 0) {
       ResetQuickDrawStrokeState();
@@ -504,7 +561,7 @@ void __fastcall BuildStrategicMapTileOverlayStripSurfaces800To807(TMacViewMgr* s
       }
       ReleaseBitmapLoaderHandle(loaderHandle);
     }
-    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(self->atlas694[stripIndex]));
+    NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
   }
   SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
@@ -692,34 +749,54 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 
   index = 0;
   while (index < 0x10) {
-    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40, 0x1680, 0x10);
+    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(
+        index + 0x2740,
+        0x40,
+        0x40,
+        0x1680,
+        0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(resourceId, 0x40, 0x40, 0x1680, 0x10);
+    callbackB3c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+        resourceId - 0x26,
+        0x40,
+        0x40,
+        0x1680,
+        0x10);
+    callbackC5c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+        resourceId,
+        0x40,
+        0x40,
+        0x1680,
+        0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    InvokeBuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40, 0x1680, 0x10);
+    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(
+        index + 0x2756,
+        0x40,
+        0x40,
+        0x1680,
+        0x10);
     index = index + 1;
   }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
-void __fastcall ReloadBitmap244AndRefreshUiCaches(TMacViewMgr* self) {
+void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
-  if (self->atlas6b8 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas6b8));
+  if (atlas6b8 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
   }
-  self->atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
-  if (self->atlas688 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&self->atlas688));
+  atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
+  if (atlas688 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas688));
   }
-  self->LoadStrategicMapOverlayAtlas8699();
+  LoadStrategicMapOverlayAtlas8699();
 }
 
 // FUNCTION: IMPERIALISM 0x0050b640
@@ -989,8 +1066,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   if (nationSlot == static_cast<word>(-1)) {
     TControl* panel = ResolveTaggedPanelOrFail(hostView, kTagCityProductionTotal);
     g_pLocalizationTable->GetString(0x2735, 0, &scratch38);
-    MacViewUiInvoke::AssignStringSharedRefAndReturnThis(panel, &scratch38);
-    MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    panel->EnableAndProcessFlag(scratch38);
 
     TMyStaticText* textEntry = new TMyStaticText();
 
@@ -1003,14 +1079,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
                                                                 5, 5, -1, 0);
 
     TControlPictureRectState styleDescriptor;
-    MacViewUiInvoke::BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
     textEntry->OrphanCallChain_C1_I09_0048ff70();
-    SetControlCommandTagAt1c(textEntry, kTagDetailText);
+    textEntry->controlTag = kTagDetailText;
 
     g_pLocalizationTable->GetString(0x2735, 1, &scratch38);
-    MacViewUiInvoke::AssignStringSharedRefAndReturnThis(textEntry, &scratch38);
-    MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
+    textEntry->EnableAndProcessFlag(scratch38);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
     SetPanelShortField(panel, 0x94, nation != 0 ? nation->needsOverCapFlag : 0);
@@ -1291,8 +1366,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     SetPanelShortField(panel, 0x98, deficitCount);
   }
 
-  MacViewUiInvoke::AssignStringSharedRefAndReturnThis(panel, &displayText);
-  MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
+  panel->EnableAndProcessFlag(displayText);
 
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
@@ -1311,7 +1385,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   TRightLeftView* leftView = new TRightLeftView();
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
-  SetControlCommandTagAt1c(leftView, kTagArrowLeft);
+  leftView->controlTag = kTagArrowLeft;
 
   TControl* rightSource = ResolveTaggedChildOrFail(panel, kTagArrowRight);
   int rightLayout0[2];
@@ -1321,7 +1395,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   TRightLeftView* rightView = new TRightLeftView();
   rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);
-  SetControlCommandTagAt1c(rightView, kTagArrowRight);
+  rightView->controlTag = kTagArrowRight;
 
   TMyStaticText* textEntry = new TMyStaticText();
 
@@ -1334,14 +1408,13 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
                                                               0);
 
   TControlPictureRectState styleDescriptor;
-  MacViewUiInvoke::BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
   textEntry->OrphanCallChain_C1_I09_0048ff70();
-  SetControlCommandTagAt1c(textEntry, kTagDetailText);
+  textEntry->controlTag = kTagDetailText;
 
   g_pLocalizationTable->GetString(0x2735, 4, &scratch38);
-  MacViewUiInvoke::AssignStringSharedRefAndReturnThis(textEntry, &scratch38);
-  MacViewUiInvoke::InvokeRunEnableAndProcessFlagWithScopedSharedStringCleanup();
+  textEntry->EnableAndProcessFlag(scratch38);
 
   if (nationSlot == 0x15 || nationSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
@@ -1354,7 +1427,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
                                                                -1, 0);
     valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
     valueEntry->OrphanCallChain_C1_I09_0048ff70();
-    SetControlCommandTagAt1c(valueEntry, kTagDetailValue);
+    valueEntry->controlTag = kTagDetailValue;
   }
 
   SetPanelShortField(panel, 0x92, static_cast<short>(nationSlot));
@@ -1367,10 +1440,10 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 undefined TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
   TView* dialog = reinterpret_cast<TView*>(field04);
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, 0);
-  short completionFlag = *reinterpret_cast<short*>(reinterpret_cast<char*>(dialog) + 0x14);
+  short completionFlag = static_cast<short>(dialog->field14);
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
-    completionFlag = *reinterpret_cast<short*>(reinterpret_cast<char*>(dialog) + 0x14);
+    completionFlag = static_cast<short>(dialog->field14);
   }
   return 0;
 }
@@ -1388,7 +1461,7 @@ undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 pa
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_3, param_1);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(dialog) + 0x3c) = 0x65;
+  dialog->field3c = 0x65;
   dialog->DispatchSlot9C();
   return 0;
 }
@@ -1405,7 +1478,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, unde
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_1, param_1);
-  *reinterpret_cast<int*>(reinterpret_cast<char*>(dialog) + 0x3c) = 0x65;
+  dialog->field3c = 0x65;
   dialog->InvokeSlotF0WithPair(static_cast<short>(reinterpret_cast<int>(this)),
                                static_cast<short>(param_1));
   dialog->DispatchSlot9C();
