@@ -5,6 +5,7 @@
 #include "game/TObject.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
+#include "game/global_data_tables.h"
 
 class TCity;
 
@@ -50,9 +51,6 @@ void NotifyMapUberPictureTileMarker(short tileIndex);
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);
-
-// GLOBAL: IMPERIALISM 0x006a3fbc
-extern TOcean* g_pActiveMapOrderContext;
 
 // === BEGIN GENERATED (TOcean) — refreshed by `just gen-class TOcean`; do not hand-edit ===
 // clang-format off

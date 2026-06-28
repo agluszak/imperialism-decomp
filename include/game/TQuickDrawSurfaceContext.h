@@ -31,9 +31,8 @@ struct TQuickDrawSurfaceContext {
   }
 };
 
-// GLOBAL: IMPERIALISM 0x006a1d60
+// Address markers: src/game/quickdraw_surface_context.cpp.
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
-// GLOBAL: IMPERIALISM 0x006a30a8
 extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
 
 undefined4 BlitRectWithOptionalTransparency(void);

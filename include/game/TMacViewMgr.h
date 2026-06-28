@@ -103,7 +103,7 @@ public:
   void ReloadBitmap244AndRefreshUiCaches();
 };
 
-extern TMacViewMgr* g_pStrategicMapViewSystem;
+// g_pStrategicMapViewSystem — see game/global_data_tables.h.
 
 // === BEGIN GENERATED (TMacViewMgr) — refreshed by `just gen-class TMacViewMgr`; do not hand-edit
 // ===

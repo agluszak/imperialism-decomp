@@ -1,16 +1,4 @@
 #pragma once
 
-// reccmp LIBRARY annotations for retail MFC operator new/delete (nafxcw.lib).
-#if 0
-// LIBRARY: IMPERIALISM 0x005e7f50
-// FreeHeapBlockWithAllocatorTracking
-
-// LIBRARY: IMPERIALISM 0x005e8310
-// AllocateWithGlobalNewMode
-
-// LIBRARY: IMPERIALISM 0x00606f73
-// operator new
-
-// LIBRARY: IMPERIALISM 0x00606faf
-// operator delete
-#endif
+// reccmp `// LIBRARY:` address markers for retail MFC operator new/delete live in
+// src/game/mfc_heap_library.cpp only (one marker per address).

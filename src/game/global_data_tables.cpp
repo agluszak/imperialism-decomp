@@ -304,6 +304,7 @@ double DAT_0066fad0 = -0.092;
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 // Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
 TZone* g_pMapActionContextListHead = 0;
+// GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;

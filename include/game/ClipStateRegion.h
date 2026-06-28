@@ -19,7 +19,7 @@ struct ClipStateRegionWrapper {
 };
 
 // Temporary scratch region handle used while rebuilding map-tile clip regions.
-// GLOBAL: IMPERIALISM 0x006a1da4
+// Address marker: src/game/ClipStateRegion.cpp (g_pTempMapTileClipRegion).
 extern HGDIOBJ g_pTempMapTileClipRegion;
 
 ClipStateRegionWrapper* CreateClipStateRegionWrapperObject(void);

@@ -4,6 +4,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/TCommandHandler.h"
+#include "game/global_data_tables.h"
 #include <afxtempl.h>
 
 class TView;
@@ -89,8 +90,6 @@ public:
 };
 
 ASSERT_SIZE(TApplication, 0x48);
-
-extern TApplication* g_pApplicationUiRootController;
 
 // === BEGIN GENERATED (TApplication) — refreshed by `just gen-class TApplication`; do not hand-edit
 // ===

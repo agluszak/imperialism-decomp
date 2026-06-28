@@ -27,9 +27,6 @@ public:
   TNavyMgr();
 };
 
-// GLOBAL: IMPERIALISM 0x006a43e4
-extern TNavyMgr* g_pNavyOrderManager;
-
 // === BEGIN GENERATED (TNavyMgr) — refreshed by `just gen-class TNavyMgr`; do not hand-edit ===
 // clang-format off
 // vtable @ 0x0065c4c8 (10 slots), object size 0x10, base TObject

@@ -501,6 +501,11 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
   return reinterpret_cast<int*>(&self->ownerNationSlot);
 }
 
+// FUNCTION: IMPERIALISM 0x004d7a40
+void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
+  *destString = identitySharedString1;
+}
+
 // FUNCTION: IMPERIALISM 0x004d8950
 void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
   return new TGreatPower();
@@ -5045,8 +5050,3 @@ char __stdcall IsSpecialNationInteractionResource(short resourceIndex) {
   return 0;
 }
 #pragma optimize("", on)
-
-// FUNCTION: IMPERIALISM 0x004d7a40
-void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
-  *destString = identitySharedString1;
-}

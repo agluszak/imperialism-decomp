@@ -6,6 +6,7 @@
 #include "game/CString.h"
 #include "game/TObject.h"
 #include "game/stretch.h"
+#include "game/global_data_tables.h"
 
 struct CRuntimeClass;
 class TStream;
@@ -118,8 +119,6 @@ public:
 ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZone, 0x48);
-
-extern TZone* g_pMapActionContextListHead;
 
 // === BEGIN GENERATED (TZone) — refreshed by `just gen-class TZone`; do not hand-edit ===
 // clang-format off

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TEventHandler.h"
+#include "game/global_data_tables.h"
 
 struct CRuntimeClass;
 
@@ -43,4 +44,3 @@ public:
 };
 
 TSoundPlayer* CreateTSoundPlayerInstance(void);
-extern TSoundPlayer* g_pSfxPlaybackSystem;

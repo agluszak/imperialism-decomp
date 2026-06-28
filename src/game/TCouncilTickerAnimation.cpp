@@ -73,11 +73,6 @@ IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 
 TCouncilTickerAnimation::TCouncilTickerAnimation() {}
 
-// FUNCTION: IMPERIALISM 0x0049ffe0
-undefined TCouncilTickerAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x0049ff90
 void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(void* hostPanel,
                                                                         int tickMode) {
@@ -93,6 +88,11 @@ void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(void* ho
   *reinterpret_cast<unsigned int*>(objectBytes + 0x20) = 0;
   *reinterpret_cast<unsigned int*>(objectBytes + 0x24) = 0;
   *reinterpret_cast<unsigned int*>(objectBytes + 0x28) = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0049ffe0
+undefined TCouncilTickerAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004fc2e0

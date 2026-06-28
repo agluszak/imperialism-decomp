@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCivUnit.h"
+#include "game/global_data_tables.h"
 
 class TSelectedCivilianOrderState {
 public:
@@ -11,5 +12,3 @@ public:
   void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
   void ShowDisbandCivilianConfirmationDialog();
 };
-
-extern "C" TSelectedCivilianOrderState* g_pSelectedCivilianOrderState;

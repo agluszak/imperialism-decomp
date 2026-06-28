@@ -103,9 +103,7 @@ public:
   TCountry();
 };
 
-// Nation terrain rows: major slots hold TGreatPower*, minor slots hold TMinor*.
-// GLOBAL: IMPERIALISM 0x006a4310
-extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+// g_apTerrainTypeDescriptorTable — see game/global_data_tables.h.
 
 // Nation-slot decode and linked-node scoring helpers (terrain table rows are TCountry*).
 int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot);

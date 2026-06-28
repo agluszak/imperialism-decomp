@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/global_data_tables.h"
 
 class TView;
 
@@ -49,8 +50,6 @@ public:
   int blockPoolHead;          // +0x18
   int blockPoolCapacity;      // +0x1c
 };
-
-extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
 void EnsureTurnEventDialogFactoryRegistryInitialized();
 

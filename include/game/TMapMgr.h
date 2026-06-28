@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/global_data_tables.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;
@@ -200,8 +201,6 @@ public:
 
   TMapMgr();
 };
-
-extern TMapMgr* g_pGlobalMapState;
 
 // === BEGIN GENERATED (TMapMgr) — refreshed by `just gen-class TMapMgr`; do not hand-edit ===
 // clang-format off

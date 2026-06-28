@@ -5,6 +5,7 @@
 #include "game/CDib.h"
 #include "game/TAnimation.h"
 #include "game/TDisplayMgr.h"
+#include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/quickdraw_globals.h"
