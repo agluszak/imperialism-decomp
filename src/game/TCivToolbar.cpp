@@ -16,33 +16,25 @@
 #include "game/mfc.h"
 #include "game/TUiRuntimeContext.h"
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
+#include "game/ui_control_tags.h"
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/ui_invalidation_guard.h"
 
-
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \
     GAME_FAIL_NIL_POINTER();                                                                       \
     reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
-        TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
-                                                            line);                                 \
+        TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp", line);  \
   }
-
-undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 
 namespace {
 
-const unsigned int kTagStackSlotMin = 0x73746B30;
-const unsigned int kTagStackSlotMax = 0x73746B35;
-const unsigned int kTagDone = 0x646F6E65;
-const unsigned int kTagDefend = 0x64666E64;
-const unsigned int kTagLater = 0x6C617472;
-const unsigned int kTagGarrison = 0x67617272;
+undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 
 } // namespace
 

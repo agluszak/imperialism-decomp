@@ -5,6 +5,7 @@
 #include "game/TCivToolbar.h"
 #include "game/TView.h"
 #include "game/mfc.h"
+#include "game/ui_control_tags.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -18,12 +19,6 @@ namespace {
 
 const unsigned int kAddrUiRuntimeContext = 0x006A21BC;
 const unsigned int kAddrMapContextActionManager = 0x006A3338;
-const unsigned int kTagArmyRatioMin = 0x61727230;
-const unsigned int kTagArmyRatioMax = 0x61727239;
-const unsigned int kTagArmyModeGarrison = 0x67617272;
-const unsigned int kTagArmyModeDefend = 0x64666E64;
-const unsigned int kTagArmyModeLater = 0x6C617472;
-const unsigned int kTagArmyModeDone = 0x646F6E65;
 
 struct ArmyCommandPayload {
   void* vftable;

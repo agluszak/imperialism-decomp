@@ -1,7 +1,7 @@
 #include "game/TMinor.h"
 
 #include "game/CIterator.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TCivUnit.h"

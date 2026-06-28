@@ -2,7 +2,7 @@
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/ui_invalidation_guard.h"

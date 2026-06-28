@@ -1,19 +1,19 @@
 #include "game/TViewMgr.h"
 #include "game/TAssetMgr.h"
-#include "game/TSoundPlayer.h"  // g_pSfxPlaybackSystem
-#include "game/TMacViewMgr.h"   // g_pStrategicMapViewSystem
-#include "game/TIncludeView.h"  // turn-event UI entry packet ('Incl')
-#include "game/CWMgrIterator.h" // window-registry traversal for the full (code-0) refresh
+#include "game/TSoundPlayer.h"      // g_pSfxPlaybackSystem
+#include "game/TMacViewMgr.h"       // g_pStrategicMapViewSystem
+#include "game/TIncludeView.h"      // turn-event UI entry packet ('Incl')
+#include "game/CWMgrIterator.h"     // window-registry traversal for the full (code-0) refresh
 #include "game/quickdraw_globals.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
-#include "game/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/TToolBarCluster.h"   // pulls TView/TControl/TCluster chain for main-view dispatch
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
-#include "game/diplomacy_globals.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
+#include "game/global_data_tables.h" // g_pGameFlowState, g_pLocalizationTable, g_apNationStates
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
-#include "game/TDisplayMgr.h"        // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
+#include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
 #include "game/THelpMgr.h"
 #include "game/TWindow.h"
 #include "game/ui_control_tags.h"
@@ -33,7 +33,7 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 TViewMgr* g_pUiRuntimeContext = 0;
 
 // TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pLocalizationTable / turn-state
-// manager). Included via diplomacy_globals.h.
+// manager). Included via global_data_tables.h.
 
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
@@ -93,9 +93,6 @@ extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
   this->fieldEc = 0;
@@ -112,18 +109,12 @@ TViewMgr::TViewMgr() : TObject() {
 // TViewMgr::`scalar deleting destructor'
 TViewMgr::~TViewMgr() {}
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 0x36; i++) {
     this->cursorTable[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
   }
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d5140
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId) {
@@ -133,16 +124,10 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId) {
   return LoadCursorA(moduleState->m_hCurrentInstanceHandle, cursorName);
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d51e0
 void TViewMgr::Free() {
   delete this;
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d5200
 void TViewMgr::ReadFrom(TStream* stream) {
@@ -155,9 +140,6 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->mapUberPictureF0 = 0;
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5250
 void TViewMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
@@ -166,9 +148,6 @@ void TViewMgr::WriteTo(TStream* stream) {
 short TViewMgr::GetActiveNationId(void) {
   return *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x2e);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d5270
 int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
@@ -329,26 +308,17 @@ int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
   return 0x20;
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(paletteIndex);
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
@@ -358,16 +328,14 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e5));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage,
-                g_szUiFailureMessage, 0x30);
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
         TemporarilyClearAndRestoreUiInvalidationFlag)(
         reinterpret_cast<const char*>(kAddrStrSourceFile), 0x223);
   }
   node->ShowTurnEventDialog(1);
   if (node->ResolveControlByTag(0x444c4f47) == nullptr) { // 'GOLD'
-    MessageBoxA(nullptr, g_szUiNilPointerMessage,
-                g_szUiFailureMessage, 0x30);
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
         TemporarilyClearAndRestoreUiInvalidationFlag)(
         reinterpret_cast<const char*>(kAddrStrSourceFile), 0x227);
@@ -401,9 +369,6 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
   switch (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 8)) {
@@ -430,9 +395,6 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d5a70
 undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString) {
   int overlayMode = this->ClassifyTurnStateForOverlayMode();
@@ -440,9 +402,6 @@ undefined4 TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage(CString
   ::new ((void*)&stackMessage) CString(*messageString);
   return this->DispatchLocalizedUiMessageWithTemplateA13A0(overlayMode, &stackMessage);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d5b00
 undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode,
@@ -456,9 +415,6 @@ undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode
   (void)messageLocal;
   return this->DispatchLocalizedUiMessageWithTemplate(3);
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d5c40
 undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind) {
@@ -480,9 +436,6 @@ static void CopyHotKeyDialogTemplateToBuffer(int buffer) {
     src += 4;
   }
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d6480
 void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
@@ -574,9 +527,6 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   reinterpret_cast<void(__cdecl*)(void)>(RunNationInfoModalAndReturnNonCancel)();
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d69b0
 void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
   RECT mainBounds;
@@ -612,10 +562,6 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   outPlacement->y = (designHeight - dlgHeight) / 2 + clientRect.top + margin;
 }
 
-
-
-
-
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -635,24 +581,15 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d6bf0
 void TViewMgr::AddPendingTurnOverlayCode(int modeValue) {
   fieldEc = static_cast<short>(fieldEc + static_cast<short>(modeValue));
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d6c10
 short TViewMgr::GetPendingTurnOverlayCode() {
   return fieldEc;
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d6c30
 void TViewMgr::UiRuntimeSlot58() {
@@ -666,8 +603,8 @@ void TViewMgr::UiRuntimeSlot58() {
     TControl* control = mainView->ResolveControlByTag(tag);
     if (control != nullptr) {
       control->AssertValid();
-      g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(
-          reinterpret_cast<int*>(control), iconIndex, nationId);
+      g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(reinterpret_cast<int*>(control),
+                                                                 iconIndex, nationId);
     }
   }
   TGreatPower* nation = g_apNationStates[nationId];
@@ -676,16 +613,10 @@ void TViewMgr::UiRuntimeSlot58() {
   }
 }
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d6e30
 void TViewMgr::UiRuntimeSlot8C(int arg) {
   (void)arg;
 }
-
-
-
 
 // FUNCTION: IMPERIALISM 0x005d7190
 void TViewMgr::UiRuntimeSlotD4(int arg) {
@@ -716,9 +647,6 @@ void DispatchPostTurnStateUpdatesTail() {
 }
 } // namespace
 
-
-
-
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -731,10 +659,18 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
   if (newCode != this->currentTurnEventCode) {
     switch (static_cast<short>(g_pLocalizationTable->mode)) {
-    case 0x67: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b); break;
-    case 0x68: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5c); break;
-    case 0x69: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5e); break;
-    case 0x6a: g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5d); break;
+    case 0x67:
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b);
+      break;
+    case 0x68:
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5c);
+      break;
+    case 0x69:
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5e);
+      break;
+    case 0x6a:
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5d);
+      break;
     }
   }
 
@@ -761,7 +697,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x4c) =
+        0;
     this->currentTurnEventCode = 0;
     *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDisplayMgr) + 0x1c) = 0;
     mainView->CallVoidSlotA0();
@@ -855,11 +792,21 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       }
     } else if (newCode < 0x7d9) {
       switch (newCode) {
-      case 0x5dd: this->UiRuntimeSlotFC(); break;
-      case 0x5de: this->UiRuntimeSlot100(); break;
-      case 0x5df: this->UiRuntimeSlot104(); break;
-      case 0x5e0: this->UiRuntimeSlot108(); break;
-      case 0x7d8: this->UiRuntimeSlot6C(); break;
+      case 0x5dd:
+        this->UiRuntimeSlotFC();
+        break;
+      case 0x5de:
+        this->UiRuntimeSlot100();
+        break;
+      case 0x5df:
+        this->UiRuntimeSlot104();
+        break;
+      case 0x5e0:
+        this->UiRuntimeSlot108();
+        break;
+      case 0x7d8:
+        this->UiRuntimeSlot6C();
+        break;
       }
     } else if (newCode > 0x898) {
       if (newCode == 0xed8 || newCode == 0xf3c) {
@@ -881,12 +828,24 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       this->UiRuntimeSlotBC();
     } else {
       switch (newCode) {
-      case 0x7d9: this->UiRuntimeSlotBC(); break;
-      case 0x7da: this->UiRuntimeSlot5C(); break;
-      case 0x7db: this->UiRuntimeSlotA8(); break;
-      case 0x7dd: this->UiRuntimeSlot50(static_cast<int>(secondary)); break;
-      case 0x7de: this->UiRuntimeSlot84(); break;
-      case 0x7e0: this->UiRuntimeSlot50(static_cast<int>(secondary)); break;
+      case 0x7d9:
+        this->UiRuntimeSlotBC();
+        break;
+      case 0x7da:
+        this->UiRuntimeSlot5C();
+        break;
+      case 0x7db:
+        this->UiRuntimeSlotA8();
+        break;
+      case 0x7dd:
+        this->UiRuntimeSlot50(static_cast<int>(secondary));
+        break;
+      case 0x7de:
+        this->UiRuntimeSlot84();
+        break;
+      case 0x7e0:
+        this->UiRuntimeSlot50(static_cast<int>(secondary));
+        break;
       }
     }
   } else if (newCode == 0x3c0) {
@@ -897,12 +856,8 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   DispatchPostTurnStateUpdatesTail();
 }
 
-
-
 // FUNCTION: IMPERIALISM 0x005d7c40
 void TViewMgr::UiRuntimeSlotA4() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
 void TViewMgr::UiRuntimeSlotA8() {}
@@ -915,29 +870,22 @@ void TViewMgr::UiRuntimeSlotB4() {}
 
 void TViewMgr::UiRuntimeSlotB8() {}
 
-
-
+// Loads cursor/main panel resources, configures cursor code range (0x2B6C..0x2B67), and refreshes
+// main panel via thunk_FUN_004FC2E0.
 // FUNCTION: IMPERIALISM 0x005d7fc0
+void TDiplomacyMapView::_scalar_deleting_destructor_() {
+  code* pcVar1;
+  TCouncilTickerAnimation* this_00;
 
-/* Loads cursor/main panel resources, configures cursor code range (0x2B6C..0x2B67), and refreshes
-   main panel via thunk_FUN_004FC2E0. */
-
-void TDiplomacyMapView::_scalar_deleting_destructor_()
-
-{
-  code *pcVar1;
-  TCouncilTickerAnimation *this_00;
-  
-  pcVar1 = *(code **)(**(int **)(DAT_006a2158 + 4) + 0x94);
-  g_pCursorControlPanel = (TControl *)(*pcVar1)(0x63757273);
+  pcVar1 = *(code**)(**(int**)(DAT_006a2158 + 4) + 0x94);
+  g_pCursorControlPanel = (TControl*)(*pcVar1)(0x63757273);
   (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
-  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c,0x2b67);
-  this_00 = (TCouncilTickerAnimation *)(*pcVar1)(0x6d61696e);
+  (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6c, 0x2b67);
+  this_00 = (TCouncilTickerAnimation*)(*pcVar1)(0x6d61696e);
   (*this_00->vftable->AssertValid)();
   TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(this_00);
   return;
 }
-
 
 // FUNCTION: IMPERIALISM 0x005d8040
 void TViewMgr::UiRuntimeSlot6C() {}
@@ -951,8 +899,6 @@ void TViewMgr::UiRuntimeSlot78() {}
 void TViewMgr::UiRuntimeSlot7C() {}
 
 void TViewMgr::UiRuntimeSlot80() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::UiRuntimeSlot84() {}
@@ -986,16 +932,12 @@ void TViewMgr::UiRuntimeSlot9C() {}
 
 void TViewMgr::UiRuntimeSlotA0() {}
 
-
-
 // FUNCTION: IMPERIALISM 0x005d8dd0
 void TViewMgr::UiRuntimeSlot5C() {}
 
 void TViewMgr::UiRuntimeSlot60() {}
 
 void TViewMgr::UiRuntimeSlot64() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {}
@@ -1007,8 +949,6 @@ void TViewMgr::UiRuntimeSlotC4() {}
 void TViewMgr::UiRuntimeSlotC8() {}
 
 void TViewMgr::UiRuntimeSlotCC() {}
-
-
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
 void TViewMgr::UiRuntimeSlotD0() {}
@@ -1033,8 +973,6 @@ void TViewMgr::UiRuntimeSlot108() {}
 void TViewMgr::UiRuntimeSlot10C() {}
 void TViewMgr::UiRuntimeSlot110() {}
 
-
-
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
   CDialog dialog;
@@ -1052,4 +990,3 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     delete[] buffer;
   }
 }
-

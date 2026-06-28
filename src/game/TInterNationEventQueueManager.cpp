@@ -1,6 +1,6 @@
 #include "game/TInterNationEventQueueManager.h"
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
 #include "game/turn_event_packets.h"

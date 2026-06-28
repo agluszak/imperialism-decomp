@@ -3,7 +3,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TStationedUnitNode.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 extern "C" {
 extern float g_Recompute_Nation_Order_LookupTable_0065A9E8;

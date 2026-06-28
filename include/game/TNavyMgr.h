@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 class TStream;
 

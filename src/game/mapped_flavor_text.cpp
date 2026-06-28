@@ -1,7 +1,7 @@
 #include "game/mapped_flavor_text.h"
 
 #include "game/CString.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 
 #if defined(_MSC_VER)

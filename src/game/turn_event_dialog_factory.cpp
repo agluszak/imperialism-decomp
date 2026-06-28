@@ -2,7 +2,7 @@
 
 #include "game/TGameWindow.h"
 #include "game/TView.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 
 extern void PushUiResourcePoolNode(void);
 extern void PopUiResourcePoolNode_00479A80(void);

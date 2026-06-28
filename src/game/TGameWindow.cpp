@@ -5,9 +5,10 @@
 #include "game/TSimMgr.h"
 #include "game/TView.h"
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/startup_helpers.h"
+#include "game/ui_control_tags.h"
 
 extern "C" CRuntimeClass PTR_s_TGameWindow_00656a30;
 
@@ -19,10 +20,7 @@ undefined4 SendMessage808IfSelectionStateActive(void);
 
 namespace {
 
-const unsigned int kTagMain = 0x6d61696e;
-const unsigned int kTagQuery = 0x71756572;
 const unsigned int kAddrSfxPlaybackSystem = 0x006a43ec;
-const unsigned int kAddrHelpRuntimeGate = 0x006a21b8;
 const short kUiCommandHandledMarker = 0x29a;
 
 struct TurnOrderNavCommandEvent {
@@ -78,9 +76,8 @@ static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
   if (uiRuntime == 0) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int)>(
-      *reinterpret_cast<void**>(reinterpret_cast<char*>(*reinterpret_cast<void**>(uiRuntime)) + 0x88))(
-      abilityIndex);
+  reinterpret_cast<void(__cdecl*)(int)>(*reinterpret_cast<void**>(
+      reinterpret_cast<char*>(*reinterpret_cast<void**>(uiRuntime)) + 0x88))(abilityIndex);
 }
 
 static void PlayClickSfx7000() {
@@ -88,9 +85,8 @@ static void PlayClickSfx7000() {
   if (sfxPlayer == 0) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      *reinterpret_cast<void**>(reinterpret_cast<char*>(*reinterpret_cast<void**>(sfxPlayer)) + 0xb8))(
-      7000, 0, 1);
+  reinterpret_cast<void(__cdecl*)(int, int, int)>(*reinterpret_cast<void**>(
+      reinterpret_cast<char*>(*reinterpret_cast<void**>(sfxPlayer)) + 0xb8))(7000, 0, 1);
 }
 
 } // namespace GameWindowInvoke
@@ -148,7 +144,7 @@ void TGameWindow::ForwardParam(int param) {
   short commandCode = commandEvent->commandCode;
   if (commandCode == 0x68 || commandCode == 0x48) {
     if (mainControl->ResolveControlByTag(kTagQuery) != 0) {
-      if (*reinterpret_cast<int*>(kAddrHelpRuntimeGate) != 0) {
+      if (g_pHelpMgr != 0) {
         GameWindowInvoke::PlayClickSfx7000();
         if (QueryUiRuntimeEventCode() == 0x7dd) {
           GameWindowInvoke::DispatchUiRuntimeMessage101AAndRefreshActiveViewGate();

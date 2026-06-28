@@ -9,7 +9,7 @@
 #include "game/TSimMgr.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/config.h"
 #include "game/THelpMgr.h"
 #include "game/TMultiplayerMgr.h"

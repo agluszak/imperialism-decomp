@@ -7,7 +7,7 @@
 #pragma optimize("y", on)
 #endif
 
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TMinor.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 extern "C" char g_pClassDescTAdmiral = 0;

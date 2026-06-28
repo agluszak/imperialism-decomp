@@ -3,7 +3,7 @@
 #include "game/TAdmiral.h"
 #include "game/TZone.h"
 #include "game/GameAssert.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
 

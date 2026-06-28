@@ -1,7 +1,7 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
 #include "game/TCityProductionView.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TView.h"
@@ -23,7 +23,6 @@ undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);
 undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor);
 
-#include "game/diplomacy_globals.h"
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};

@@ -3,7 +3,7 @@
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 
 
 // FUNCTION: IMPERIALISM 0x00591d90

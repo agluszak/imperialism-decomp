@@ -5,7 +5,7 @@
 #include "game/TWindow.h"
 #include "game/TViewMgr.h"
 #include "game/TDisplayMgr.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TMilitaryUnitOrderState.h"
 

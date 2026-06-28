@@ -15,7 +15,7 @@
 #include "game/TMinor.h"
 #include "game/TSortedList.h"
 #include "game/TCity.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TZone.h"
 #include <new>
 

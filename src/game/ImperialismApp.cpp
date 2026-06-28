@@ -1,6 +1,6 @@
 #include "game/ImperialismApp.h"
 #include "game/startup_helpers.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TAmbitApplication.h"

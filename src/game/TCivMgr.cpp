@@ -8,7 +8,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TUiRuntimeContext.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"

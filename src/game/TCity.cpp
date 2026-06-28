@@ -4,7 +4,7 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TQueueObject.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 

@@ -1,10 +1,9 @@
 #include "game/TCountry.h"
 
 #include "game/CString.h"
-#include "game/diplomacy_globals.h"
+#include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 
-#include "game/diplomacy_globals.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -18,7 +17,6 @@
 #include "game/TShip.h"
 #include "game/TUnit.h"
 #include "game/TZone.h"
-#include "game/diplomacy_globals.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/nation_stream_serialization.h"
 #include "game/turn_event_packets.h"

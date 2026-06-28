@@ -9,7 +9,7 @@
 #include "game/ClipStateRegion.h"
 #include "game/TTEView.h"
 #include "game/TMovieView.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ui_widget_thunks.h"
 #include "game/ui_invalidation_guard.h"
 

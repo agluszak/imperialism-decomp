@@ -1,5 +1,5 @@
 #include "game/TDialogView.h"
-#include "game/ui_runtime_globals.h"
+#include "game/global_data_tables.h"
 
 extern "C" char g_pClassDescTDialogView;
 IMPLEMENT_DYNCREATE(TDialogView, TView)

@@ -2,7 +2,7 @@
 
 #include "game/TView.h"
 #include "game/mfc.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 
 extern char CObjectVtbl_0064b328;
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

@@ -3,7 +3,7 @@
 #include "game/TApplication.h"
 #include "game/TDialogBehavior.h"
 #include "game/CWMgrIterator.h"
-#include "game/mcappui_globals.h"
+#include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
