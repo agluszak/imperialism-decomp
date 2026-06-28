@@ -7,6 +7,7 @@
 class TStream;
 class TToolBarClusterVtbl;
 class TView;
+class TEventHandler;
 
 // TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TViewMgr -> TObject -> CObject.
@@ -38,13 +39,13 @@ public:
 
   // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
   virtual void DispatchTurnEventSlot4C(short eventCode, int payload);              // 0x4c
-  virtual void UiRuntimeSlot50();                                                  // 0x50
-  virtual short QueryUiScreenModeSlot54();                                         // 0x54
+  virtual void UiRuntimeSlot50(int payload);                                         // 0x50
+  virtual short GetPendingTurnOverlayCode();                                       // 0x54
   virtual void UiRuntimeSlot58();                                                  // 0x58
   virtual void UiRuntimeSlot5C();                                                  // 0x5c
   virtual void UiRuntimeSlot60();                                                  // 0x60
   virtual void UiRuntimeSlot64();                                                  // 0x64
-  virtual void ApplyUiRuntimeSlot68(int modeValue);                                // 0x68
+  virtual void AddPendingTurnOverlayCode(int modeValue);                           // 0x68
   virtual void UiRuntimeSlot6C();                                                    // 0x6c
   virtual void UiRuntimeSlot70();                                                    // 0x70
   virtual void UiRuntimeSlot74();                                                    // 0x74
@@ -62,7 +63,7 @@ public:
                                       int targetNation);                           // 0x98
   virtual void UiRuntimeSlot9C();                                                    // 0x9c
   virtual void UiRuntimeSlotA0();                                                    // 0xa0
-  virtual void UiRuntimeSlotA4();                                                    // 0xa4
+  virtual void UiRuntimeSlotA4(int payload, TEventHandler* waitTarget);              // 0xa4
   virtual void UiRuntimeSlotA8();                                                    // 0xa8
   virtual void RefreshCityProductionUiSlotAc();                                    // 0xac
   virtual void UiRuntimeSlotB0();                                                    // 0xb0

@@ -1693,6 +1693,7 @@ address|target_cpp|ownership|note
 4fb760|src/game/TNominationView.cpp|manual|mfc_runtime_macro
 4fb780|src/game/TNominationView.cpp|manual|marker_sync
 4fb990|src/game/TNominationView.cpp|manual|marker_sync
+4fc2e0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 4fca70|src/game/TMapKey.cpp|manual|mfc_runtime_macro
 4fcac0|src/game/TMapKey.cpp|manual|marker_sync
 4fcf80|src/game/TMapKey.cpp|manual|marker_sync
@@ -1757,7 +1758,11 @@ address|target_cpp|ownership|note
 500f50|src/game/THelpMgr.cpp|manual|marker_sync
 500fe0|src/game/THelpMgr.cpp|manual|marker_sync
 501070|src/game/THelpMgr.cpp|manual|marker_sync
+5011a0|src/game/THelpMgr.cpp|manual|marker_sync
+5031c0|src/game/THelpMgr.cpp|manual|marker_sync
 5033e0|src/game/diplomacy_policy_hooks.cpp|manual|marker_sync
+503400|src/game/THelpMgr.cpp|manual|marker_sync
+503420|src/game/THelpMgr.cpp|manual|marker_sync
 503c70|src/game/THelpPicture.cpp|manual|mfc_runtime_macro
 503cc0|src/game/THelpPicture.cpp|manual|marker_sync
 503d10|src/game/THelpPicture.cpp|manual|marker_sync
@@ -2708,6 +2713,7 @@ address|target_cpp|ownership|note
 57f3c0|src/game/TSimMgr.cpp|manual|marker_sync
 57f490|src/game/TSimMgr.cpp|manual|marker_sync
 57f4b0|src/game/TSimMgr.cpp|manual|marker_sync
+57f4d0|src/game/TSimMgr.cpp|manual|marker_sync
 57f4f0|src/game/TSimMgr.cpp|manual|marker_sync
 57f530|src/game/TSimMgr.cpp|manual|marker_sync
 57f5b0|src/game/TSimMgr.cpp|manual|marker_sync
@@ -3410,9 +3416,18 @@ address|target_cpp|ownership|note
 5d6b70|src/game/TViewMgr.cpp|manual|marker_sync
 5d6bf0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6c10|src/game/TViewMgr.cpp|manual|marker_sync
+5d6c30|src/game/TViewMgr.cpp|manual|marker_sync
 5d6e30|src/game/TViewMgr.cpp|manual|marker_sync
 5d7190|src/game/TViewMgr.cpp|manual|marker_sync
 5d7240|src/game/TViewMgr.cpp|manual|marker_sync
+5d7c40|src/game/TViewMgr.cpp|manual|marker_sync
+5d7cb0|src/game/TViewMgr.cpp|manual|marker_sync
+5d7fc0|src/game/TViewMgr.cpp|manual|marker_sync
+5d8040|src/game/TViewMgr.cpp|manual|marker_sync
+5d83b0|src/game/TViewMgr.cpp|manual|marker_sync
+5d8dd0|src/game/TViewMgr.cpp|manual|marker_sync
+5da360|src/game/TViewMgr.cpp|manual|marker_sync
+5dc1e0|src/game/TViewMgr.cpp|manual|marker_sync
 5dcaa0|src/game/TViewMgr.cpp|manual|marker_sync
 5dcd10|src/game/TModalMessageCommand.cpp|manual|marker_sync
 5dcd50|src/game/TModalMessageCommand.cpp|manual|marker_sync

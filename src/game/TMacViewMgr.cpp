@@ -41,8 +41,6 @@ undefined4 CallObjectOffset24Vslot54IfPresent(void);
 
 namespace {
 
-const unsigned int kAddrStrNilPointer = 0x00694fc8;
-const unsigned int kAddrStrFailure = 0x00694fd8;
 const unsigned int kAddrStrategicMapOverlaySourceRowByIconId = 0x00696d20;
 const unsigned int kAddrDecimalFormat = 0x0069430c;
 
@@ -59,8 +57,7 @@ static void SetPanelShortField(TControl* panel, int offset, short value) {
 static TControl* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
   TControl* panel = hostView->ResolveControlByTag(tag);
   if (panel == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   return panel;
@@ -69,8 +66,7 @@ static TControl* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
 static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
   TControl* child = panel->ResolveControlByTag(tag);
   if (child == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   return child;
@@ -849,8 +845,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   pixelBase = pixelBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   {
@@ -1019,8 +1014,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, s
   }
   sellControl = controlView->ResolveControlByTag(0x53656c6c);
   if (sellControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   if (sellCount < 0) {
@@ -1049,8 +1043,7 @@ undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C() {
   TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
   if (dialog == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   dialog->DispatchSlot9C();
@@ -1448,8 +1441,7 @@ undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 pa
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_3, param_1);
@@ -1465,8 +1457,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, unde
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_1, param_1);
@@ -1484,8 +1475,7 @@ undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1CC(reinterpret_cast<int>(this), static_cast<int>(param_1), param_1);
@@ -1577,8 +1567,7 @@ void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950() {
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(hostView->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
-    MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
-                reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->gold71();

@@ -1,6 +1,13 @@
 #include "game/THelpMgr.h"
 
-#include "game/TSortedPtrList.h"
+#include "game/TSimMgr.h"
+#include "game/TGreatPower.h"
+#include "game/TWindow.h"
+#include "game/TViewMgr.h"
+#include "game/TDisplayMgr.h"
+#include "game/diplomacy_globals.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/TMilitaryUnitOrderState.h"
 
 extern "C" char DAT_006a43f0;
 
@@ -46,8 +53,8 @@ static const int kHelpSetIndexBootstrapRecordCount =
 
 // FUNCTION: IMPERIALISM 0x005005e0
 THelpMgr::THelpMgr() : TObject() {
-  field8 = 0;
-  fieldC = 0;
+  pendingDialogView8 = 0;
+  pendingDialogViewC = 0;
   helpIndexReady = 0;
   field1a = 0;
   field1e = 0;
@@ -88,4 +95,121 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
     }
   }
   return 0;
+}
+
+namespace {
+
+short DispatchTurnStateSpecialAdvisoriesAndReturnCount() { return 0; }
+
+void ShowPeriodicCapabilityReminderIfNeeded() {}
+
+char ShowPeriodicNationComparisonAdvisoryIfNeeded() { return 0; }
+
+void ReleasePendingHelpDialogView(TView** dialogView) {
+  if (*dialogView != 0) {
+    static_cast<TWindow*>(*dialogView)->OrphanCallChain_C2_I10_0048e120();
+    *dialogView = 0;
+  }
+}
+
+int GetSortedPtrListEntryCount(TSortedPtrList* list) {
+  return *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 0x8);
+}
+
+short ReadLocalizationFlowMode() {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x8);
+}
+
+short ReadLocalizationTurnGateFlag58() {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x58);
+}
+
+short ReadLocalizationPendingEventGate5c() {
+  return *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pLocalizationTable) + 0x5c);
+}
+
+} // namespace
+
+extern "C" short g_nTurnFlowNationComparisonAdvisoryTick;
+
+// FUNCTION: IMPERIALISM 0x005011a0
+void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
+  const short nationId = g_pUiRuntimeContext->GetActiveNationId();
+  const int flowMode = ReadLocalizationFlowMode();
+  if (flowMode == 0xf) {
+    TGreatPower* nation = g_apNationStates[nationId];
+    if (nation != 0) {
+      nation->DispatchPendingStatusPrompts();
+      nation->BuildGreatPowerTurnMessageSummaryAndDispatch();
+    }
+    if (ReadLocalizationTurnGateFlag58() != 0) {
+      if (DispatchTurnStateSpecialAdvisoriesAndReturnCount() < 2) {
+        ShowPeriodicCapabilityReminderIfNeeded();
+      }
+    }
+  } else if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
+    const short currentTurn = g_pLocalizationTable->GetTurnTickSlot3C();
+    if (g_nTurnFlowNationComparisonAdvisoryTick < currentTurn) {
+      if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
+        g_nTurnFlowNationComparisonAdvisoryTick = currentTurn;
+      }
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005031c0
+char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
+  char activateCandidate = 0;
+  bool nationAlreadyCurrent = false;
+  HelpSetRecord* pendingEntry = 0;
+
+  if (eventCode != 0x7dd && eventCode != 0x3b8) {
+    ReleasePendingHelpDialogView(&pendingDialogViewC);
+  }
+
+  if (ReadLocalizationPendingEventGate5c() == 0) {
+    ReleasePendingHelpDialogView(&pendingDialogView8);
+  } else {
+    if (eventCode != 0x2103 || DAT_006a43f0 == 0) {
+      int index = 1;
+      while (!nationAlreadyCurrent && activateCandidate == 0) {
+        if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
+          break;
+        }
+        HelpSetRecord* entry =
+            static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
+        if (entry->contextId == eventCode) {
+          const short activeNation = g_pUiRuntimeContext->GetActiveNationId();
+          if (entry->rank == activeNation) {
+            nationAlreadyCurrent = true;
+          } else if (entry->flagByte == 0) {
+            activateCandidate = 1;
+            pendingEntry = entry;
+          }
+        }
+        index++;
+      }
+    }
+    if (activateCandidate != 0 && !nationAlreadyCurrent) {
+      ActivatePendingEventAndRefreshView(pendingEntry);
+      return activateCandidate;
+    }
+    ReleasePendingHelpDialogView(&pendingDialogView8);
+  }
+  return activateCandidate;
+}
+
+// FUNCTION: IMPERIALISM 0x00503400
+void THelpMgr::HandlePostPendingEventActivationNoOp(short eventCode) {
+  (void)eventCode;
+}
+
+// FUNCTION: IMPERIALISM 0x00503420
+void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
+  if (pendingEntry == 0) {
+    return;
+  }
+  pendingEntry->flagByte = 1;
+  pendingEntry->rank = g_pUiRuntimeContext->GetActiveNationId();
+  // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }

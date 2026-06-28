@@ -379,6 +379,9 @@ extern "C" const char g_szUiFontLiteralPalatino[] = "Palatino";
 // GLOBAL: IMPERIALISM 0x00696b78
 extern "C" const char g_szUiFontLiteralBelweLight[] = "L Belwe Light";
 
+// GLOBAL: IMPERIALISM 0x006a31bc
+extern "C" short g_nTurnFlowNationComparisonAdvisoryTick = 0;
+
 // GLOBAL: IMPERIALISM 0x00694fc8
 extern "C" const char g_szUiNilPointerMessage[] = "Nil Pointer";
 // GLOBAL: IMPERIALISM 0x00694fd8

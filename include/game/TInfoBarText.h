@@ -137,7 +137,8 @@ public:
   // slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
   virtual undefined DestructTInfoBarTextAndMaybeFree(); // slot 0x7f 0x5b6770
   virtual undefined ConstructTInfoBarTextBaseState(RECT* param_1); // slot 0x80 0x5b66b0
-  virtual undefined InitializeMapHintTextStyleAndThemeFlags(); // slot 0x81 0x5b6840
+  virtual undefined InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
+                                                            int styleSecondary); // slot 0x81 0x5b6840
   virtual undefined OrphanCallChain_C1_I05_005b6810(); // slot 0x82 0x5b6810
 // === END GENERATED DECLS (TInfoBarText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarText 0xCTOR`).

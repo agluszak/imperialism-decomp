@@ -61,6 +61,32 @@ not one of the two rebuild tags (`'Wpam'` / `'Wnrt'`), so the next advancement w
 is to recover the concrete window/dialog factory path that creates those tagged
 nodes and the follow-up turn-event handlers that populate them.
 
+### `'Wpam'` / `'Wnrt'` tag provenance (2026-06)
+
+Static search shows **no** C++ assignment of `0x6d617057` / `0x74726e57` in manual
+source or autogen exports. The tags are four-character UI control names embedded in
+turn-event dialog resources; they appear on child nodes when
+`TView::InitializeUiResourceEntryFrameAndParent` / `RegisterUiResourceEntry` parses
+a template during a turn-event factory callback.
+
+Known wired factory today: `BuildTurnOrderNavigationWindow` in
+`turn_event_dialog_factory.cpp` sets `kControlTagWind` (`'WIND'`) on `TGameWindow`
+instances — matching the live registry node seen at startup. Map-panel tags
+(`'Wpam'` / `'Wnrt'`) are expected from **unported** factories in the same registry
+(`BuildTurnEventDialogResourcesForEvent547Or7D8`, `BuildTurnEventDialogUiByCode`, and
+`TIncludeView::BuildTurnEventFactoryPacket`) once turn codes `0x7d8`–`0x7de` run
+through the cross-code path.
+
+Next trace targets:
+
+1. Port `TIncludeView::BuildTurnEventFactoryPacket` (`0x48cf10`) — builds the `'Incl'`
+   packet and invokes registered factories by event code.
+2. Port `BuildTurnEventDialogResourcesForEvent547Or7D8` (`0x4295a0`) — likely creates
+   strategic-map panel controls for diplomacy/map turn events.
+3. Confirm rebuilt nodes are `TWindow`-lineage (slot byte `0x1d0` =
+   `TWindow::OrphanCallChain_C2_I10_0048e120`) via vtable dump on first `'Wpam'`
+   registry hit after a non-zero turn event.
+
 ## Source-model evidence
 
 The source used to be asymmetric:

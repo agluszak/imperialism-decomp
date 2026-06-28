@@ -27,11 +27,15 @@ undefined TInfoBarText::DestructTInfoBarTextAndMaybeFree() {
 
 // FUNCTION: IMPERIALISM 0x005b6810
 undefined TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
+  InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6840
-undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags() {
+undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
+                                                                int styleSecondary) {
+  (void)stylePrimary;
+  (void)styleSecondary;
   return 0;
 }
 

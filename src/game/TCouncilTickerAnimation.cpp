@@ -11,3 +11,6 @@ TCouncilTickerAnimation::TCouncilTickerAnimation() {}
 undefined TCouncilTickerAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x004fc2e0
+void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() {}

@@ -21,5 +21,5 @@ void FailNilPointerInUSmallViews(int line) {
 }
 
 int QueryUiScreenModeRaw(UiRuntimeContext* runtimeContext) {
-  return runtimeContext->QueryUiScreenModeSlot54();
+  return runtimeContext->GetPendingTurnOverlayCode();
 }

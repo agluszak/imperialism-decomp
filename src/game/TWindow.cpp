@@ -14,11 +14,12 @@ extern CPtrList g_ModalViewStack;
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0(void);
 
 // FUNCTION: IMPERIALISM 0x00487400
-void __fastcall SetUiColorDescriptorGoldTriplet(int descriptor, int flag, int colorA, int colorB) {
-  *reinterpret_cast<unsigned char*>(descriptor + 0x10) = static_cast<unsigned char>(flag);
-  *reinterpret_cast<int*>(descriptor + 4) = 0x646c6f67; // 'gold'
-  *reinterpret_cast<int*>(descriptor + 0x14) = colorA;
-  *reinterpret_cast<int*>(descriptor + 0x18) = colorB;
+void SetUiColorDescriptorGoldTriplet(TDialogBehavior* descriptor, int flag, int colorA,
+                                     int colorB) {
+  descriptor->field_0x4 = 0x646c6f67; // 'gold'
+  descriptor->field10 = static_cast<unsigned char>(flag);
+  descriptor->defaultCommandCode = colorA;
+  descriptor->cancelCommandCode = colorB;
 }
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
@@ -31,8 +32,7 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
 // FUNCTION: IMPERIALISM 0x0048d500
 TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
   g_LiveViewRegistry.AddHead(this);
-  SetUiColorDescriptorGoldTriplet(reinterpret_cast<int>(&dialogBehavior), 1, 0x20202020,
-                                  0x20202020);
+  SetUiColorDescriptorGoldTriplet(&dialogBehavior, 1, 0x20202020, 0x20202020);
   field64 = this;
   dialogBehavior.SetDword08(reinterpret_cast<int>(this));
 }
@@ -282,10 +282,9 @@ void TWindow::CallVoidSlotA0() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e120
-undefined TWindow::OrphanCallChain_C2_I10_0048e120() {
+void TWindow::OrphanCallChain_C2_I10_0048e120() {
   CallVoidSlotA0();
   Free();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048e150

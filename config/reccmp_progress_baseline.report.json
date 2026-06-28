@@ -3106,7 +3106,7 @@
     },
     {
       "address": "0x487400",
-      "matching": 0.1111111111111111,
+      "matching": 0.0,
       "name": "SetUiColorDescriptorGoldTriplet",
       "type": 1
     },
@@ -4798,7 +4798,7 @@
     },
     {
       "address": "0x48d500",
-      "matching": 0.33613445378151263,
+      "matching": 0.35,
       "name": "TControl::ConstructUiWindowResourceEntryBase",
       "type": 1
     },
@@ -4924,7 +4924,7 @@
     },
     {
       "address": "0x48e120",
-      "matching": 0.9523809523809523,
+      "matching": 1.0,
       "name": "TWindow::OrphanCallChain_C2_I10_0048e120",
       "type": 1
     },
@@ -12026,7 +12026,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -14714,7 +14714,7 @@
     },
     {
       "address": "0x4fc2e0",
-      "matching": 0.020942408376963352,
+      "matching": 0.010526315789473684,
       "name": "TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker",
       "type": 1
     },
@@ -15218,7 +15218,7 @@
     },
     {
       "address": "0x5011a0",
-      "matching": 0.04081632653061224,
+      "matching": 0.17204301075268819,
       "name": "HandlePostDispatchTurnStateEventUpdates",
       "type": 1
     },
@@ -15248,7 +15248,7 @@
     },
     {
       "address": "0x5031c0",
-      "matching": 0.02040816326530612,
+      "matching": 0.10752688172043011,
       "name": "HandlePendingEventActivationByCode",
       "type": 1
     },
@@ -15272,13 +15272,13 @@
     },
     {
       "address": "0x503400",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "HandlePostPendingEventActivationNoOp",
       "type": 1
     },
     {
       "address": "0x503420",
-      "matching": 0.0,
+      "matching": 0.0547945205479452,
       "name": "ActivatePendingEventAndRefreshView",
       "type": 1
     },
@@ -15872,7 +15872,7 @@
     },
     {
       "address": "0x50b640",
-      "matching": 0.3833718244803695,
+      "matching": 0.39260969976905313,
       "name": "TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress",
       "type": 1
     },
@@ -15896,19 +15896,19 @@
     },
     {
       "address": "0x50bc50",
-      "matching": 0.4892703862660944,
+      "matching": 0.5064377682403434,
       "name": "TMacViewMgr::SyncSellTaggedChildControlWithNationState",
       "type": 1
     },
     {
       "address": "0x50be30",
-      "matching": 0.5333333333333333,
+      "matching": 0.6222222222222222,
       "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C",
       "type": 1
     },
     {
       "address": "0x50bea0",
-      "matching": 0.17132711939636042,
+      "matching": 0.16955170883266754,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -15920,19 +15920,19 @@
     },
     {
       "address": "0x50d360",
-      "matching": 0.4166666666666667,
+      "matching": 0.45,
       "name": "TMacViewMgr::CreateCityBuildingDialogBySlot",
       "type": 1
     },
     {
       "address": "0x50d470",
-      "matching": 0.32116788321167883,
+      "matching": 0.35036496350364965,
       "name": "TMacViewMgr::OrphanCallChain_C10_I80_0050d470",
       "type": 1
     },
     {
       "address": "0x50d5b0",
-      "matching": 0.5321100917431193,
+      "matching": 0.5688073394495413,
       "name": "TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0",
       "type": 1
     },
@@ -15974,7 +15974,7 @@
     },
     {
       "address": "0x50d950",
-      "matching": 0.6785714285714286,
+      "matching": 0.75,
       "name": "TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950",
       "type": 1
     },
@@ -25543,12 +25543,6 @@
       "type": 1
     },
     {
-      "address": "0x57f4d0",
-      "matching": 0.0,
-      "name": "TestTurnFlowStatusFlagMask",
-      "type": 1
-    },
-    {
       "address": "0x57f4f0",
       "matching": 0.11764705882352941,
       "name": "TSimMgr::OrphanLeaf_NoCall_Ins15_0057f4f0",
@@ -30718,13 +30712,13 @@
     },
     {
       "address": "0x5b6810",
-      "matching": 0.2857142857142857,
+      "matching": 0.9090909090909091,
       "name": "TInfoBarText::Dump",
       "type": 1
     },
     {
       "address": "0x5b6840",
-      "matching": 0.0,
+      "matching": 0.08823529411764706,
       "name": "TInfoBarText::AssertValid",
       "type": 1
     },
@@ -32260,7 +32254,7 @@
     },
     {
       "address": "0x5d57b0",
-      "matching": 0.5673076923076923,
+      "matching": 0.6057692307692307,
       "name": "TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog",
       "type": 1
     },
@@ -32302,7 +32296,7 @@
     },
     {
       "address": "0x5d6480",
-      "matching": 0.13202933985330073,
+      "matching": 0.13267813267813267,
       "name": "TViewMgr::BuildAndShowTurnOverlayByMode",
       "type": 1
     },
@@ -32332,7 +32326,7 @@
     },
     {
       "address": "0x5d6c30",
-      "matching": 0.041666666666666664,
+      "matching": 0.32,
       "name": "TViewMgr::RefreshStrategicMapStatusIconsForActiveNation",
       "type": 1
     },
@@ -32398,19 +32392,19 @@
     },
     {
       "address": "0x5d7240",
-      "matching": 0.22304147465437787,
+      "matching": 0.1846435100548446,
       "name": "LinkedListQueryOwner::DispatchGlobalTurnEventCode",
       "type": 1
     },
     {
       "address": "0x5d7c40",
-      "matching": 0.0,
+      "matching": 0.5238095238095238,
       "name": "DispatchTurnEvent3B8AndWaitForCompletion",
       "type": 1
     },
     {
       "address": "0x5d7cb0",
-      "matching": 0.011764705882352941,
+      "matching": 0.11965811965811966,
       "name": "HandleTurnEvent7DB_SelectCityAndRefreshView",
       "type": 1
     },
@@ -32428,19 +32422,19 @@
     },
     {
       "address": "0x5d7fc0",
-      "matching": 0.0,
+      "matching": 0.05555555555555555,
       "name": "SetCursorRangeAndRefreshMainPanel",
       "type": 1
     },
     {
       "address": "0x5d8040",
-      "matching": 0.0,
+      "matching": 0.1078838174273859,
       "name": "HandleTurnEvent7D8_ActivateDiplomacyMapView",
       "type": 1
     },
     {
       "address": "0x5d83b0",
-      "matching": 0.0,
+      "matching": 0.1267605633802817,
       "name": "HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary",
       "type": 1
     },
@@ -32470,7 +32464,7 @@
     },
     {
       "address": "0x5d8dd0",
-      "matching": 0.0,
+      "matching": 0.02099737532808399,
       "name": "HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor",
       "type": 1
     },
@@ -32488,7 +32482,7 @@
     },
     {
       "address": "0x5da360",
-      "matching": 0.0,
+      "matching": 0.012036108324974924,
       "name": "HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
       "type": 1
     },
@@ -32572,7 +32566,7 @@
     },
     {
       "address": "0x5dc1e0",
-      "matching": 0.016260162601626018,
+      "matching": 0.09929078014184398,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotD0",
       "type": 1
     },

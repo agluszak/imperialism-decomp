@@ -24,6 +24,8 @@ public:
 // === END GENERATED DECLS (TCouncilTickerAnimation) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCouncilTickerAnimation 0xCTOR`).
 
+  void InitializeDiplomacyCouncilViewControlsAndTicker();
+
   TCouncilTickerAnimation();
 };
 

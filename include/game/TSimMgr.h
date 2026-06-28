@@ -64,6 +64,10 @@ public:
   virtual void FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString* dest,
                                                             short* codes); // 0x88 0x00580790
 
+  char TestTurnFlowStatusFlagMask(unsigned int mask) {
+    return (turnFlowStatusFlags & mask) != 0;
+  }
+
   // --- non-virtual helpers ---
   int GetField30();
   void DecrementField30Value();

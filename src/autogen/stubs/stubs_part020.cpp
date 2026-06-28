@@ -643,14 +643,6 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::RefreshStrategicMapStatusIconsForActiveNation
-// ghidra_proto undefined RefreshStrategicMapStatusIconsForActiveNation()
-// FUNCTION: IMPERIALISM 0x005d6c30
-undefined4 RefreshStrategicMapStatusIconsForActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventDialogFactorySlot70
 // ghidra_proto undefined HandleTurnEventDialogFactorySlot70()
 // FUNCTION: IMPERIALISM 0x005d6cd0
@@ -715,22 +707,6 @@ undefined4 InvokeMainWidgetMethod1CCWithArgs(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnEvent3B8AndWaitForCompletion
-// ghidra_proto undefined DispatchTurnEvent3B8AndWaitForCompletion()
-// FUNCTION: IMPERIALISM 0x005d7c40
-undefined4 DispatchTurnEvent3B8AndWaitForCompletion(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEvent7DB_SelectCityAndRefreshView
-// ghidra_proto undefined HandleTurnEvent7DB_SelectCityAndRefreshView()
-// FUNCTION: IMPERIALISM 0x005d7cb0
-undefined4 HandleTurnEvent7DB_SelectCityAndRefreshView(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeStrategicMapViewMethod5C
 // ghidra_proto undefined InvokeStrategicMapViewMethod5C()
 // FUNCTION: IMPERIALISM 0x005d7f70
@@ -743,30 +719,6 @@ undefined4 InvokeStrategicMapViewMethod5C(void)
 // ghidra_proto undefined InvokeStrategicMapViewMethod60()
 // FUNCTION: IMPERIALISM 0x005d7f90
 undefined4 InvokeStrategicMapViewMethod60(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCursorRangeAndRefreshMainPanel
-// ghidra_proto undefined SetCursorRangeAndRefreshMainPanel()
-// FUNCTION: IMPERIALISM 0x005d7fc0
-undefined4 SetCursorRangeAndRefreshMainPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEvent7D8_ActivateDiplomacyMapView
-// ghidra_proto undefined HandleTurnEvent7D8_ActivateDiplomacyMapView()
-// FUNCTION: IMPERIALISM 0x005d8040
-undefined4 HandleTurnEvent7D8_ActivateDiplomacyMapView(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
-// ghidra_proto undefined HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()
-// FUNCTION: IMPERIALISM 0x005d83b0
-undefined4 HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
 {
   return 0;
 }
@@ -803,14 +755,6 @@ undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
-// ghidra_proto undefined HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor()
-// FUNCTION: IMPERIALISM 0x005d8dd0
-undefined4 HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventVtableSlot60ActivateMainDialog
 // ghidra_proto undefined HandleTurnEventVtableSlot60ActivateMainDialog()
 // FUNCTION: IMPERIALISM 0x005da040
@@ -823,14 +767,6 @@ undefined4 HandleTurnEventVtableSlot60ActivateMainDialog(void)
 // ghidra_proto undefined HandleTurnEvent2260_RefreshMainHudTitles()
 // FUNCTION: IMPERIALISM 0x005da180
 undefined4 HandleTurnEvent2260_RefreshMainHudTitles(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons
-// ghidra_proto undefined HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()
-// FUNCTION: IMPERIALISM 0x005da360
-undefined4 HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(void)
 {
   return 0;
 }
@@ -935,14 +871,6 @@ undefined4 InvokeStrategicMapViewMethod74(void)
 // ghidra_proto undefined InvokeStrategicMapViewMethod70()
 // FUNCTION: IMPERIALISM 0x005dc1c0
 undefined4 InvokeStrategicMapViewMethod70(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleTurnEventDialogFactorySlotD0
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotD0()
-// FUNCTION: IMPERIALISM 0x005dc1e0
-undefined4 HandleTurnEventDialogFactorySlotD0(void)
 {
   return 0;
 }

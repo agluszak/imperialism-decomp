@@ -467,14 +467,6 @@ undefined4 IsNationProfileInMinorRange100To199(void)
   return 0;
 }
 
-// ghidra_name TestTurnFlowStatusFlagMask
-// ghidra_proto undefined TestTurnFlowStatusFlagMask()
-// FUNCTION: IMPERIALISM 0x0057f4d0
-undefined4 TestTurnFlowStatusFlagMask(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570
 // ghidra_proto undefined WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570()
 // FUNCTION: IMPERIALISM 0x0057f570
