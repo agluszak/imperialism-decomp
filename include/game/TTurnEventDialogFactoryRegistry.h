@@ -24,7 +24,8 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 
-  virtual TView* ResolveDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x491c80
+  virtual TView* ResolveDialogNodeByMessageContext(int messageContext,
+                                                   int contextSlot); // slot 0x0a 0x491c80
   virtual TView* InvokeDialogFactoryFromPacket(int nContextId, TView* pEventPacket, int nEventCode,
                                                int* pAnchorPoint); // slot 0x0b 0x491d80
   virtual TView* RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,

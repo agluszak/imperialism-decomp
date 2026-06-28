@@ -8,7 +8,8 @@ extern char CObjectVtbl_0064b328;
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
 TView* __cdecl BuildTradeSchoolDialogControls(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(int nContextSlot, int nEventCode);
+TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(int nContextSlot,
+                                                                    int nEventCode);
 TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(int nContextSlot,
                                                                        int nEventCode);
 TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(int nContextSlot, int nEventCode);
@@ -17,9 +18,11 @@ TView* __cdecl BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode);
 TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(int nContextSlot, int nEventCode);
 TView* __cdecl BuildTurnEventDialogResources_2508(int nContextSlot, int nEventCode);
 TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(int nContextSlot, int nEventCode);
-TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(int nContextSlot, int nEventCode);
+TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(int nContextSlot,
+                                                                   int nEventCode);
 TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(int nContextSlot, int nEventCode);
-TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(int nContextSlot, int nEventCode);
+TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(int nContextSlot,
+                                                                    int nEventCode);
 TView* __cdecl BuildTurnEventDialogResourcesForEvent898(int nContextSlot, int nEventCode);
 TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(int nContextSlot, int nEventCode);
 TView* __cdecl InitializeTradeScreenBitmapControls(int nContextSlot, int nEventCode);
@@ -55,14 +58,8 @@ static void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistr
 
 // FUNCTION: IMPERIALISM 0x00491ad0
 TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry()
-    : TObject(),
-      runtimeClassSentinel(&CObjectVtbl_0064b328),
-      listHead(nullptr),
-      listTail(nullptr),
-      registeredCount(0),
-      freeList(nullptr),
-      blockPoolHead(0),
-      blockPoolCapacity(10) {}
+    : TObject(), runtimeClassSentinel(&CObjectVtbl_0064b328), listHead(nullptr), listTail(nullptr),
+      registeredCount(0), freeList(nullptr), blockPoolHead(0), blockPoolCapacity(10) {}
 
 // SYNTHETIC: IMPERIALISM 0x00491b10
 // TTurnEventDialogFactoryRegistry::`scalar deleting destructor'
@@ -91,8 +88,7 @@ void TTurnEventDialogFactoryRegistry::RegisterDialogFactoryCallback(
   if (freeList == nullptr) {
     const int blockBase =
         AllocateAndLinkBlockHead(&blockPoolHead, blockPoolCapacity, sizeof(CallbackNode));
-    CallbackNode* node =
-        (CallbackNode*)(blockBase - 8 + blockPoolCapacity * sizeof(CallbackNode));
+    CallbackNode* node = (CallbackNode*)(blockBase - 8 + blockPoolCapacity * sizeof(CallbackNode));
     int remaining;
     for (remaining = blockPoolCapacity - 1; remaining >= 0; --remaining) {
       node->next = freeList;
@@ -118,9 +114,10 @@ void TTurnEventDialogFactoryRegistry::RegisterDialogFactoryCallback(
 }
 
 // FUNCTION: IMPERIALISM 0x00491c80
-TView* TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(int messageContext) {
+TView* TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(int messageContext,
+                                                                          int contextSlot) {
   int anchor[2] = {0, 0};
-  return InvokeDialogFactoryFromPacket(messageContext, nullptr, 0, anchor);
+  return InvokeDialogFactoryFromPacket(contextSlot, nullptr, messageContext, anchor);
 }
 
 void EnsureTurnEventDialogFactoryRegistryInitialized() {
@@ -132,8 +129,10 @@ void EnsureTurnEventDialogFactoryRegistryInitialized() {
 }
 
 // FUNCTION: IMPERIALISM 0x00491cc0
-TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
-    int nContextId, TView* pEventPacket, int nEventCode, int* pAnchorPoint) {
+TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(int nContextId,
+                                                                                TView* pEventPacket,
+                                                                                int nEventCode,
+                                                                                int* pAnchorPoint) {
   (void)nContextId;
   TView* result = nullptr;
   CallbackNode* node = listHead;
@@ -164,8 +163,10 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
 }
 
 // FUNCTION: IMPERIALISM 0x00491d80
-TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(
-    int nContextId, TView* pEventPacket, int nEventCode, int* pAnchorPoint) {
+TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(int nContextId,
+                                                                      TView* pEventPacket,
+                                                                      int nEventCode,
+                                                                      int* pAnchorPoint) {
   const int savedFlag = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = 0;
   TView* result =

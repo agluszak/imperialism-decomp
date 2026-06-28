@@ -101,8 +101,8 @@ static void InvokeRebuildSurfaceRowsWithTemporaryRowBuffer(void) {
 }
 
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
-  reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void (*)()>(
-      BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
+  reinterpret_cast<void(__cdecl*)(short, int)>(
+      reinterpret_cast<void (*)()>(BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
 }
 
 static void InvokeCallObjectOffset24Vslot54IfPresent(void) {
@@ -163,7 +163,7 @@ struct GoldDialogControl : public TControl {
   virtual void InvokeSlot1D0OneParam(void* content);
 };
 
-}  // namespace
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x00430750
 StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {
@@ -218,16 +218,14 @@ unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int ind
 }
 
 // FUNCTION: IMPERIALISM 0x004d5090
-void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
-    int resourceId,
-    int width,
-    int height,
-    int surface,
-    int transparentPixel) {
+void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId,
+                                                                             int width, int height,
+                                                                             int surface,
+                                                                             int transparentPixel) {
   field2c = surface;
 
-  CDib* dib =
-      g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(static_cast<unsigned short>(resourceId));
+  CDib* dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
+      static_cast<unsigned short>(resourceId));
   unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
   int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
   int skippedPixels = 0;
@@ -336,7 +334,7 @@ TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20
 void TMacViewMgr::InitializeStrategicMapViewSystem() {
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
+  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   BuildStrategicMapCommodityIconAtlasFrom700To722();
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
@@ -417,9 +415,11 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x2e0;
   atlasBounds.bottom = 0x18;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas674), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas674), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas674), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas674),
+                                   savedFlags);
   atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas674));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
   ResetQuickDrawStrokeState();
@@ -441,8 +441,7 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   dstCursor = reinterpret_cast<undefined4*>(pixelBuffer) - 2;
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
-    int** loaderHandle =
-        WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
+    int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(commodityIndex + 700);
     if (loaderHandle != nullptr && *loaderHandle != 0) {
       dstCursor = dstCursor + 2;
       CopySpriteSurfaceToStrideBuffer(reinterpret_cast<int*>(loaderHandle), dstCursor,
@@ -452,7 +451,8 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
     commodityIndex = commodityIndex + 1;
   }
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas674));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
   return 0;
 }
 
@@ -492,13 +492,15 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
       reinterpret_cast<undefined4*>(&atlas688), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas688), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas688),
+                                   savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas688));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58e, &atlasBounds);
   ResolveAndBlitBitmapResourceToActiveAtlas(0x58f, &atlasBounds);
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas688));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a6a0
@@ -521,7 +523,7 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (nationId < 0) {
     return;
   }
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
+  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   nationId = g_pUiRuntimeContext->GetActiveNationId();
   variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].flag != 0;
   nationId = g_pUiRuntimeContext->GetActiveNationId();
@@ -550,12 +552,14 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
     CopyRect(&resourceBounds, reinterpret_cast<RECT*>(*loaderHandle + 8));
     g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
         reinterpret_cast<undefined4*>(&atlas694[stripIndex]), 8, &resourceBounds);
-    SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas694[stripIndex]), savedFlags);
+    SetActiveQuickDrawSurfaceContext(
+        reinterpret_cast<TQuickDrawSurfaceContext*>(atlas694[stripIndex]), savedFlags);
     ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     NoOpRuntimeCallback_00497c00(loaderHandle);
     if (*loaderHandle != 0) {
       ResetQuickDrawStrokeState();
-      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
+      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle,
+                                                                         &resourceBounds);
       if (stripIndex == 0) {
         InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
       }
@@ -564,7 +568,8 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
     NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas694[stripIndex]));
     stripIndex = stripIndex + 1;
   }
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a9f0
@@ -580,9 +585,11 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.top = 0;
   atlasBounds.right = 0xcc0;
   atlasBounds.bottom = 0x40;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas668), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas668), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas668), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas668),
+                                   savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas668));
   ResetQuickDrawStrokeState();
   dstX = 0;
@@ -637,12 +644,15 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
   }
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas668));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 
   atlasBounds.right = 0xa80;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas66c), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas66c), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas66c), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas66c),
+                                   savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas66c));
   ResetQuickDrawStrokeState();
   dstX = 0x40;
@@ -704,16 +714,20 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     index = index + 1;
   }
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas66c));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 
   atlasBounds.right = 0xd7;
   atlasBounds.bottom = 0x78;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas670), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas670), 8, &atlasBounds);
   atlasBounds.right = 0x90;
   atlasBounds.bottom = 0x26;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas6b4), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas6b4), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b4), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b4),
+                                   savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b4));
   ResetQuickDrawStrokeState();
   dstX = 0;
@@ -729,7 +743,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
     resourceId = resourceId + 1;
   }
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b4));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 
   if (atlas6b8 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
@@ -738,49 +753,36 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   atlasBounds.top = 0;
   atlasBounds.right = 0;
   atlasBounds.bottom = 0;
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&atlas6b8), 8, &atlasBounds);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&atlas6b8), 8, &atlasBounds);
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b8), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas6b8),
+                                   savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(atlas6b8));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x244, &atlasBounds);
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas6b8));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
 
   index = 0;
   while (index < 0x10) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        index + 0x2740,
-        0x40,
-        0x40,
-        0x1680,
-        0x10);
+    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40,
+                                                                   0x1680, 0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
     callbackB3c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        resourceId - 0x26,
-        0x40,
-        0x40,
-        0x1680,
-        0x10);
+        resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
     callbackC5c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        resourceId,
-        0x40,
-        0x40,
-        0x1680,
-        0x10);
+        resourceId, 0x40, 0x40, 0x1680, 0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        index + 0x2756,
-        0x40,
-        0x40,
-        0x1680,
-        0x10);
+    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40,
+                                                                   0x1680, 0x10);
     index = index + 1;
   }
   return 0;
@@ -788,7 +790,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
-  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0();
+  g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   if (atlas6b8 != 0) {
     WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&atlas6b8));
   }
@@ -817,7 +819,8 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   fillRect.right = 0xd7;
   fillRect.bottom = 0x78;
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas670), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(atlas670),
+                                   savedFlags);
   surfaceObject = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(atlas670));
   ReturnConstantTrueQuickDrawFlag(surfaceObject);
   ResetQuickDrawStrokeState();
@@ -834,8 +837,8 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       if (terrainCode == 0) {
         terrainCode = 0x3e;
       }
-      paletteByte =
-          static_cast<unsigned char>(g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(terrainCode));
+      paletteByte = static_cast<unsigned char>(
+          g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(terrainCode));
       *reinterpret_cast<unsigned char*>(pixelBase + colOffset) = paletteByte;
       *reinterpret_cast<unsigned char*>(pixelBase + colOffset + 1) = paletteByte;
       *reinterpret_cast<unsigned char*>(pixelBase + strideBytes + colOffset) = paletteByte;
@@ -860,7 +863,8 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* srcCursor = reinterpret_cast<unsigned char*>(pixelBase + copyRow * strideBytes);
+      unsigned char* srcCursor =
+          reinterpret_cast<unsigned char*>(pixelBase + copyRow * strideBytes);
       int copyCol = 0;
       while (copyCol < 0xd8) {
         *scratchCursor = srcCursor[copyCol];
@@ -902,7 +906,8 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* dstCursor = reinterpret_cast<unsigned char*>(pixelBase + copyRow * strideBytes);
+      unsigned char* dstCursor =
+          reinterpret_cast<unsigned char*>(pixelBase + copyRow * strideBytes);
       int copyCol = 0;
       while (copyCol < 0xd8) {
         dstCursor[copyCol] = scratchCursor[0];
@@ -915,7 +920,8 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   delete[] scratchBuffer;
   SetQuickDrawFillColor(0);
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(atlas670));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
   InvokeRebuildSurfaceRowsWithTemporaryRowBuffer();
   reinterpret_cast<unsigned char*>(g_pGlobalMapState)[4] = 1;
   return 0;
@@ -976,8 +982,8 @@ undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
         tileByteOffset = tileByteOffset + 0xa8;
         tileSlot = tileSlot + 1;
       }
-      EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(
-          reinterpret_cast<undefined4>(regionWrapper), static_cast<short>(nationIndex));
+      EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(reinterpret_cast<undefined4>(regionWrapper),
+                                                        static_cast<short>(nationIndex));
       nationIndex = nationIndex + 1;
     }
     DestroyClipStateRegionWrapperObject(regionWrapper);
@@ -988,7 +994,7 @@ undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
 undefined TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0(int* param_1, undefined4 param_2,
-                                                         short param_3) {
+                                                       short param_3) {
   CityOrderSource* orderSource = reinterpret_cast<CityOrderSource*>(param_1);
   if (orderSource->QuerySellModeFlag1D8() != 0) {
     g_apNationStates[param_3]->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(param_2),
@@ -1046,8 +1052,8 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, s
 
 // FUNCTION: IMPERIALISM 0x0050be30
 undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C() {
-  TurnEventDialogView* dialog =
-      reinterpret_cast<TurnEventDialogView*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
+  TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
   if (dialog == 0) {
     MessageBoxA(0, reinterpret_cast<const char*>(kAddrStrNilPointer),
                 reinterpret_cast<const char*>(kAddrStrFailure), 0x30);
@@ -1121,18 +1127,17 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   switch (nationSlot) {
   case 0:
-    needTarget =
-        static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
-    needCurrent =
-        static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
+    needTarget = static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
+    needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
     g_pLocalizationTable->GetString(0x2735, 2, &formatTarget);
     {
       int production = city->GetBuildingProductionValueBySlot(0);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-          static_cast<int>(city->cityStockCottonB6) + static_cast<int>(city->cityStockWoolB8));
-      formatProduction.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      deficitCount =
+          static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockCottonB6) +
+                               static_cast<int>(city->cityStockWoolB8));
+      formatProduction.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 0, &displayText);
     }
     break;
@@ -1143,10 +1148,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockTimberBA));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockTimberBA));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 4, &displayText);
       formatFieldValue = city->cityStockTimberBA;
       showArrowWidgets = 1;
@@ -1161,10 +1165,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production);
       g_pLocalizationTable->GetString(0x2719, 2, &displayText);
       formatFieldValue = (&city->cityStockCottonB6)[nationSlot];
       showArrowWidgets = 1;
@@ -1175,10 +1178,10 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(needCurrent));
-    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(needTarget));
+    formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                         static_cast<int>(needCurrent));
+    formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                        static_cast<int>(needTarget));
     g_pLocalizationTable->GetString(0x2719, 1, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
@@ -1190,10 +1193,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockOilC2));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockOilC2));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 6, &displayText);
       formatFieldValue = city->cityStockOilC2;
       showArrowWidgets = 1;
@@ -1207,10 +1209,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockFabricC6));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockFabricC6));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 1, &displayText);
       formatFieldValue = city->cityStockFabricC6;
       showArrowWidgets = 1;
@@ -1224,10 +1225,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockLumberC8));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockLumberC8));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 5, &displayText);
       formatFieldValue = city->cityStockLumberC8;
       showArrowWidgets = 1;
@@ -1241,10 +1241,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockSteelCC));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockSteelCC));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 3, &displayText);
       formatFieldValue = city->cityStockSteelCC;
       showArrowWidgets = 1;
@@ -1258,10 +1257,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     {
       int production = city->GetBuildingProductionValueBySlot(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
-      formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          static_cast<int>(city->cityStockFuelCE));
-      formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                          production * 2);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>(city->cityStockFuelCE));
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), production * 2);
       g_pLocalizationTable->GetString(0x2719, 0xb, &displayText);
       formatFieldValue = city->cityStockFuelCE;
       showArrowWidgets = 1;
@@ -1274,10 +1272,10 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(needCurrent));
-    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(needTarget));
+    formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                         static_cast<int>(needCurrent));
+    formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                        static_cast<int>(needTarget));
     g_pLocalizationTable->GetString(0x2719, 8, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
@@ -1287,37 +1285,38 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     needTarget = nation->needTargetByType[nationSlot];
     needCurrent = nation->needCurrentByType[nationSlot];
     g_pLocalizationTable->FormatOrdinalString(static_cast<int>(nationSlot), &formatTarget);
-  {
-    short* summary = city->GetCitySummaryRecordSlot74();
-    short summaryValue = summary[nationSlot];
-    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(summaryValue));
-    deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
-    formatCurrent.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
-    g_pLocalizationTable->GetString(0x2735, 7, &displayText);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
-    displayText = bracketScratch;
-    showArrowWidgets = 1;
-    useSummaryPath = true;
-  }
+    {
+      short* summary = city->GetCitySummaryRecordSlot74();
+      short summaryValue = summary[nationSlot];
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                          static_cast<int>(summaryValue));
+      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
+      formatCurrent.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                           static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
+      g_pLocalizationTable->GetString(0x2735, 7, &displayText);
+      ScanBracketExpressionsInto(&bracketScratch, displayText);
+      displayText = bracketScratch;
+      showArrowWidgets = 1;
+      useSummaryPath = true;
+    }
     break;
   case 0x13:
-    needTarget = static_cast<short>(nation->needTargetByType[0x13] + nation->needTargetByType[0x14]);
+    needTarget =
+        static_cast<short>(nation->needTargetByType[0x13] + nation->needTargetByType[0x14]);
     needCurrent =
         static_cast<short>(nation->needCurrentByType[0x13] + nation->needCurrentByType[0x14]);
     g_pLocalizationTable->GetString(0x2735, 3, &formatTarget);
-  {
-    short* summary = city->GetCitySummaryRecordSlot74();
-    short summaryValue = summary[0x14];
-    formatTarget.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(summaryValue));
-    deficitCount = static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
-    formatFieldValue =
-        static_cast<short>(city->cityStockFishDC + city->cityStockLivestockDE);
-    showArrowWidgets = 1;
-    useProductionTailPath = true;
-  }
+    {
+      short* summary = city->GetCitySummaryRecordSlot74();
+      short summaryValue = summary[0x14];
+      formatTarget.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                          static_cast<int>(summaryValue));
+      deficitCount =
+          static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
+      formatFieldValue = static_cast<short>(city->cityStockFishDC + city->cityStockLivestockDE);
+      showArrowWidgets = 1;
+      useProductionTailPath = true;
+    }
     break;
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
@@ -1350,8 +1349,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     displayText = bracketScratch;
   } else if (!useSummaryPath) {
     if (useProductionTailPath) {
-      formatField.Format( reinterpret_cast<const char*>(kAddrDecimalFormat),
-                                                        static_cast<int>(formatFieldValue));
+      formatField.Format(reinterpret_cast<const char*>(kAddrDecimalFormat),
+                         static_cast<int>(formatFieldValue));
     }
     g_pLocalizationTable->GetString(0x2735, 7, &formatTarget);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1404,8 +1403,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   int textPos = 0x98;
   int textAnchor = 0x46;
   int textOuter = 0x12;
-  textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5, -1,
-                                                              0);
+  textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5,
+                                                              -1, 0);
 
   TControlPictureRectState styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1423,8 +1422,8 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int valueWidth = 0x14;
     int valuePos = 0x3c;
     int valueAnchor = 0x32;
-    valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5, 5,
-                                                               -1, 0);
+    valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
+                                                                 5, -1, 0);
     valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
     valueEntry->OrphanCallChain_C1_I09_0048ff70();
     valueEntry->controlTag = kTagDetailValue;
@@ -1534,13 +1533,16 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
   int** loaderHandle = WrapperFor_AllocateWithFallbackHandler_At004a1130(param_1 + 4000);
   CopyRect(&resourceBounds, reinterpret_cast<RECT*>(reinterpret_cast<char*>(*loaderHandle) + 8));
-  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(reinterpret_cast<undefined4*>(&gworldHandle), 1, &resourceBounds);
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(resourceBounds.right), savedFlags);
+  g_pDisplayMgr->Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0(
+      reinterpret_cast<undefined4*>(&gworldHandle), 1, &resourceBounds);
+  SetActiveQuickDrawSurfaceContext(
+      reinterpret_cast<TQuickDrawSurfaceContext*>(resourceBounds.right), savedFlags);
   ReturnConstantTrueQuickDrawFlag(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
   NoOpRuntimeCallback_00497c00(loaderHandle);
   if (*loaderHandle != 0) {
     ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle, &resourceBounds);
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(loaderHandle,
+                                                                       &resourceBounds);
     ReleaseBitmapLoaderHandle(loaderHandle);
   }
   void* surfaceObject = GetSurfaceObjectAtContextOffset24(resourceBounds.right);
@@ -1551,7 +1553,8 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
   int surfaceContext = resourceBounds.right;
   WrapperFor_FreeHeapBufferIfNotNull_At004feb50(reinterpret_cast<undefined4*>(&surfaceContext));
   NoOpQuickDrawLifecycleHookB(GetSurfaceObjectAtContextOffset24(resourceBounds.right));
-  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext), savedFlags);
+  SetActiveQuickDrawSurfaceContext(reinterpret_cast<TQuickDrawSurfaceContext*>(savedContext),
+                                   savedFlags);
   return 0;
 }
 
@@ -1601,8 +1604,10 @@ undefined TMacViewMgr::CopySpriteSurfaceToStrideBuffer(int* param_1, undefined4*
                                                        short param_3) {
   int spriteHeader = *reinterpret_cast<int*>(param_1[0] + 0x18);
   undefined4* srcRow = *reinterpret_cast<undefined4**>(spriteHeader + 0xc);
-  short srcStridePacked = *reinterpret_cast<short*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);
-  unsigned int rowWidth = *reinterpret_cast<unsigned int*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);
+  short srcStridePacked =
+      *reinterpret_cast<short*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);
+  unsigned int rowWidth =
+      *reinterpret_cast<unsigned int*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 4);
   int rowCount = *reinterpret_cast<int*>(*reinterpret_cast<int*>(spriteHeader + 0x10) + 8);
   if (rowCount < 1) {
     rowCount = -rowCount;
@@ -1634,7 +1639,7 @@ undefined TMacViewMgr::CopySpriteSurfaceToStrideBuffer(int* param_1, undefined4*
 
 // FUNCTION: IMPERIALISM 0x0050da80
 undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, short param_2,
-                                                                short param_3, short param_4) {
+                                                               short param_3, short param_4) {
   int* atlasSurface;
   short srcRowOffset;
   if (param_2 < 100) {
@@ -1654,38 +1659,70 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, sho
   char* dstRow = reinterpret_cast<char*>(dstPixels + param_4 * dstStrideBytes + param_3);
   int rowsRemaining = 0x18;
   do {
-    if (srcRow[0] != '\x10') dstRow[0] = srcRow[0];
-    if (srcRow[1] != '\x10') dstRow[1] = srcRow[1];
-    if (srcRow[2] != '\x10') dstRow[2] = srcRow[2];
-    if (srcRow[3] != '\x10') dstRow[3] = srcRow[3];
-    if (srcRow[4] != '\x10') dstRow[4] = srcRow[4];
-    if (srcRow[5] != '\x10') dstRow[5] = srcRow[5];
-    if (srcRow[6] != '\x10') dstRow[6] = srcRow[6];
-    if (srcRow[7] != '\x10') dstRow[7] = srcRow[7];
-    if (srcRow[8] != '\x10') dstRow[8] = srcRow[8];
-    if (srcRow[9] != '\x10') dstRow[9] = srcRow[9];
-    if (srcRow[10] != '\x10') dstRow[10] = srcRow[10];
-    if (srcRow[0x0b] != '\x10') dstRow[0x0b] = srcRow[0x0b];
-    if (srcRow[0x0c] != '\x10') dstRow[0x0c] = srcRow[0x0c];
-    if (srcRow[0x0d] != '\x10') dstRow[0x0d] = srcRow[0x0d];
-    if (srcRow[0x0e] != '\x10') dstRow[0x0e] = srcRow[0x0e];
-    if (srcRow[0x0f] != '\x10') dstRow[0x0f] = srcRow[0x0f];
-    if (srcRow[0x10] != '\x10') dstRow[0x10] = srcRow[0x10];
-    if (srcRow[0x11] != '\x10') dstRow[0x11] = srcRow[0x11];
-    if (srcRow[0x12] != '\x10') dstRow[0x12] = srcRow[0x12];
-    if (srcRow[0x13] != '\x10') dstRow[0x13] = srcRow[0x13];
-    if (srcRow[0x14] != '\x10') dstRow[0x14] = srcRow[0x14];
-    if (srcRow[0x15] != '\x10') dstRow[0x15] = srcRow[0x15];
-    if (srcRow[0x16] != '\x10') dstRow[0x16] = srcRow[0x16];
-    if (srcRow[0x17] != '\x10') dstRow[0x17] = srcRow[0x17];
-    if (srcRow[0x18] != '\x10') dstRow[0x18] = srcRow[0x18];
-    if (srcRow[0x19] != '\x10') dstRow[0x19] = srcRow[0x19];
-    if (srcRow[0x1a] != '\x10') dstRow[0x1a] = srcRow[0x1a];
-    if (srcRow[0x1b] != '\x10') dstRow[0x1b] = srcRow[0x1b];
-    if (srcRow[0x1c] != '\x10') dstRow[0x1c] = srcRow[0x1c];
-    if (srcRow[0x1d] != '\x10') dstRow[0x1d] = srcRow[0x1d];
-    if (srcRow[0x1e] != '\x10') dstRow[0x1e] = srcRow[0x1e];
-    if (srcRow[0x1f] != '\x10') dstRow[0x1f] = srcRow[0x1f];
+    if (srcRow[0] != '\x10')
+      dstRow[0] = srcRow[0];
+    if (srcRow[1] != '\x10')
+      dstRow[1] = srcRow[1];
+    if (srcRow[2] != '\x10')
+      dstRow[2] = srcRow[2];
+    if (srcRow[3] != '\x10')
+      dstRow[3] = srcRow[3];
+    if (srcRow[4] != '\x10')
+      dstRow[4] = srcRow[4];
+    if (srcRow[5] != '\x10')
+      dstRow[5] = srcRow[5];
+    if (srcRow[6] != '\x10')
+      dstRow[6] = srcRow[6];
+    if (srcRow[7] != '\x10')
+      dstRow[7] = srcRow[7];
+    if (srcRow[8] != '\x10')
+      dstRow[8] = srcRow[8];
+    if (srcRow[9] != '\x10')
+      dstRow[9] = srcRow[9];
+    if (srcRow[10] != '\x10')
+      dstRow[10] = srcRow[10];
+    if (srcRow[0x0b] != '\x10')
+      dstRow[0x0b] = srcRow[0x0b];
+    if (srcRow[0x0c] != '\x10')
+      dstRow[0x0c] = srcRow[0x0c];
+    if (srcRow[0x0d] != '\x10')
+      dstRow[0x0d] = srcRow[0x0d];
+    if (srcRow[0x0e] != '\x10')
+      dstRow[0x0e] = srcRow[0x0e];
+    if (srcRow[0x0f] != '\x10')
+      dstRow[0x0f] = srcRow[0x0f];
+    if (srcRow[0x10] != '\x10')
+      dstRow[0x10] = srcRow[0x10];
+    if (srcRow[0x11] != '\x10')
+      dstRow[0x11] = srcRow[0x11];
+    if (srcRow[0x12] != '\x10')
+      dstRow[0x12] = srcRow[0x12];
+    if (srcRow[0x13] != '\x10')
+      dstRow[0x13] = srcRow[0x13];
+    if (srcRow[0x14] != '\x10')
+      dstRow[0x14] = srcRow[0x14];
+    if (srcRow[0x15] != '\x10')
+      dstRow[0x15] = srcRow[0x15];
+    if (srcRow[0x16] != '\x10')
+      dstRow[0x16] = srcRow[0x16];
+    if (srcRow[0x17] != '\x10')
+      dstRow[0x17] = srcRow[0x17];
+    if (srcRow[0x18] != '\x10')
+      dstRow[0x18] = srcRow[0x18];
+    if (srcRow[0x19] != '\x10')
+      dstRow[0x19] = srcRow[0x19];
+    if (srcRow[0x1a] != '\x10')
+      dstRow[0x1a] = srcRow[0x1a];
+    if (srcRow[0x1b] != '\x10')
+      dstRow[0x1b] = srcRow[0x1b];
+    if (srcRow[0x1c] != '\x10')
+      dstRow[0x1c] = srcRow[0x1c];
+    if (srcRow[0x1d] != '\x10')
+      dstRow[0x1d] = srcRow[0x1d];
+    if (srcRow[0x1e] != '\x10')
+      dstRow[0x1e] = srcRow[0x1e];
+    if (srcRow[0x1f] != '\x10')
+      dstRow[0x1f] = srcRow[0x1f];
     rowsRemaining = rowsRemaining - 1;
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
@@ -1697,8 +1734,7 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(int* param_1, sho
 // FUNCTION: IMPERIALISM 0x0050dd40
 void TMacViewMgr::DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant, short nDstX,
                                            short nYShift) {
-  int* atlasSurface =
-      reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitIconAtlas));
+  int* atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitIconAtlas));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
   int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   ushort srcStrideRaw = *reinterpret_cast<ushort*>(*atlasSurface + 4);
@@ -1707,28 +1743,47 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(int* pDstSurface, short nIconVariant,
       static_cast<int>(static_cast<short>(*reinterpret_cast<ushort*>(*pDstSurface + 4) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + static_cast<short>(nIconVariant * 0x14));
   char* dstRow = reinterpret_cast<char*>(dstPixels + (0x28 - nYShift) * dstStrideBytes +
-                                       static_cast<int>(nDstX));
+                                         static_cast<int>(nDstX));
   int rowsRemaining = 0x18;
   do {
-    if (srcRow[0] != '\x10') dstRow[0] = srcRow[0];
-    if (srcRow[1] != '\x10') dstRow[1] = srcRow[1];
-    if (srcRow[2] != '\x10') dstRow[2] = srcRow[2];
-    if (srcRow[3] != '\x10') dstRow[3] = srcRow[3];
-    if (srcRow[4] != '\x10') dstRow[4] = srcRow[4];
-    if (srcRow[5] != '\x10') dstRow[5] = srcRow[5];
-    if (srcRow[6] != '\x10') dstRow[6] = srcRow[6];
-    if (srcRow[7] != '\x10') dstRow[7] = srcRow[7];
-    if (srcRow[8] != '\x10') dstRow[8] = srcRow[8];
-    if (srcRow[9] != '\x10') dstRow[9] = srcRow[9];
-    if (srcRow[0x0b] != '\x10') dstRow[0x0b] = srcRow[0x0b];
-    if (srcRow[0x0c] != '\x10') dstRow[0x0c] = srcRow[0x0c];
-    if (srcRow[0x0d] != '\x10') dstRow[0x0d] = srcRow[0x0d];
-    if (srcRow[0x0e] != '\x10') dstRow[0x0e] = srcRow[0x0e];
-    if (srcRow[0x0f] != '\x10') dstRow[0x0f] = srcRow[0x0f];
-    if (srcRow[0x10] != '\x10') dstRow[0x10] = srcRow[0x10];
-    if (srcRow[0x11] != '\x10') dstRow[0x11] = srcRow[0x11];
-    if (srcRow[0x12] != '\x10') dstRow[0x12] = srcRow[0x12];
-    if (srcRow[0x13] != '\x10') dstRow[0x13] = srcRow[0x13];
+    if (srcRow[0] != '\x10')
+      dstRow[0] = srcRow[0];
+    if (srcRow[1] != '\x10')
+      dstRow[1] = srcRow[1];
+    if (srcRow[2] != '\x10')
+      dstRow[2] = srcRow[2];
+    if (srcRow[3] != '\x10')
+      dstRow[3] = srcRow[3];
+    if (srcRow[4] != '\x10')
+      dstRow[4] = srcRow[4];
+    if (srcRow[5] != '\x10')
+      dstRow[5] = srcRow[5];
+    if (srcRow[6] != '\x10')
+      dstRow[6] = srcRow[6];
+    if (srcRow[7] != '\x10')
+      dstRow[7] = srcRow[7];
+    if (srcRow[8] != '\x10')
+      dstRow[8] = srcRow[8];
+    if (srcRow[9] != '\x10')
+      dstRow[9] = srcRow[9];
+    if (srcRow[0x0b] != '\x10')
+      dstRow[0x0b] = srcRow[0x0b];
+    if (srcRow[0x0c] != '\x10')
+      dstRow[0x0c] = srcRow[0x0c];
+    if (srcRow[0x0d] != '\x10')
+      dstRow[0x0d] = srcRow[0x0d];
+    if (srcRow[0x0e] != '\x10')
+      dstRow[0x0e] = srcRow[0x0e];
+    if (srcRow[0x0f] != '\x10')
+      dstRow[0x0f] = srcRow[0x0f];
+    if (srcRow[0x10] != '\x10')
+      dstRow[0x10] = srcRow[0x10];
+    if (srcRow[0x11] != '\x10')
+      dstRow[0x11] = srcRow[0x11];
+    if (srcRow[0x12] != '\x10')
+      dstRow[0x12] = srcRow[0x12];
+    if (srcRow[0x13] != '\x10')
+      dstRow[0x13] = srcRow[0x13];
     rowsRemaining = rowsRemaining - 1;
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
@@ -1747,8 +1802,7 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOver
   if (overlaySourceRow < 0) {
     return;
   }
-  int* atlasSurface =
-      reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitOverlayAtlas));
+  int* atlasSurface = reinterpret_cast<int*>(GetSurfaceObjectAtContextOffset24(unitOverlayAtlas));
   ReturnConstantTrueQuickDrawFlag(atlasSurface);
   int srcPixels = reinterpret_cast<int>(GetSurfaceHeaderFromSurfaceObject(atlasSurface));
   ushort srcStrideRaw = *reinterpret_cast<ushort*>(*atlasSurface + 4);
@@ -1757,7 +1811,7 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(int* pDstSurface, ushort wOver
       static_cast<int>(static_cast<short>(*reinterpret_cast<ushort*>(*pDstSurface + 4) & 0x3fff));
   char* srcRow = reinterpret_cast<char*>(srcPixels + overlaySourceRow * (srcStrideRaw & 0x3fff));
   char* dstRow = reinterpret_cast<char*>(dstPixels + (0x28 - nYShift) * dstStrideBytes +
-                                       static_cast<int>(nDstX));
+                                         static_cast<int>(nDstX));
   int rowsRemaining = 0x1a;
   do {
     int colsRemaining = 0x26;

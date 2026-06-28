@@ -5488,12 +5488,6 @@
       "type": 1
     },
     {
-      "address": "0x491ad0",
-      "matching": 0.07692307692307693,
-      "name": "TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl",
-      "type": 1
-    },
-    {
       "address": "0x491b10",
       "matching": 0.64,
       "name": "TTurnEventDialogFactoryRegistry::`scalar deleting destructor'",
@@ -5503,12 +5497,6 @@
       "address": "0x491be0",
       "matching": 0.6857142857142857,
       "name": "RegisterDialogFactoryCallback",
-      "type": 1
-    },
-    {
-      "address": "0x491c80",
-      "matching": 0.4444444444444444,
-      "name": "TCluster::OrphanCallChain_C1_I17_00491c80",
       "type": 1
     },
     {
@@ -6901,7 +6889,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.6194690265486725,
+      "matching": 0.6253687315634219,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -15794,7 +15782,7 @@
     },
     {
       "address": "0x509f20",
-      "matching": 0.9795918367346939,
+      "matching": 1.0,
       "name": "TMacViewMgr::InitializeStrategicMapViewSystem",
       "type": 1
     },
@@ -15854,7 +15842,7 @@
     },
     {
       "address": "0x50a6a0",
-      "matching": 0.5443786982248521,
+      "matching": 0.5529411764705883,
       "name": "TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation",
       "type": 1
     },
@@ -15872,7 +15860,7 @@
     },
     {
       "address": "0x50b5b0",
-      "matching": 0.7868852459016393,
+      "matching": 0.8064516129032258,
       "name": "TMacViewMgr::ReloadBitmap244AndRefreshUiCaches",
       "type": 1
     },
@@ -15908,14 +15896,8 @@
     },
     {
       "address": "0x50be30",
-      "matching": 0.5333333333333333,
-      "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C",
-      "type": 1
-    },
-    {
-      "address": "0x50bea0",
-      "matching": 0.17132711939636042,
-      "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
+      "matching": 0.01584507042253521,
+      "name": "TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(unsigned short)",
       "type": 1
     },
     {
@@ -15998,14 +15980,8 @@
     },
     {
       "address": "0x50dd40",
-      "matching": 0.31921824104234525,
-      "name": "TMacViewMgr::DrawStrategicMapUnitIcon",
-      "type": 1
-    },
-    {
-      "address": "0x50df40",
-      "matching": 0.10191082802547771,
-      "name": "TMacViewMgr::DrawStrategicMapUnitIconOverlay",
+      "matching": 0.078125,
+      "name": "TMacViewMgr::DrawStrategicMapUnitIcon(int *, unsigned short, short, short, short)",
       "type": 1
     },
     {
@@ -32794,7 +32770,7 @@
     },
     {
       "address": "0x5df280",
-      "matching": 0.6037735849056604,
+      "matching": 0.6415094339622641,
       "name": "ConstructUiViewManager",
       "type": 1
     },
@@ -32812,19 +32788,19 @@
     },
     {
       "address": "0x5df3c0",
-      "matching": 0.32,
+      "matching": 0.7058823529411765,
       "name": "TAssetMgr::ResolveTurnEventDialogNodeByMessageContext",
       "type": 1
     },
     {
       "address": "0x5df3f0",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df3f0",
       "type": 1
     },
     {
       "address": "0x5df410",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df410",
       "type": 1
     },
@@ -32866,7 +32842,7 @@
     },
     {
       "address": "0x5df780",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "TAssetMgr::NoOpRuntimeUiCallback_005df780",
       "type": 1
     },
@@ -32890,7 +32866,7 @@
     },
     {
       "address": "0x5dfc10",
-      "matching": 0.0,
+      "matching": 0.02666666666666667,
       "name": "TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup",
       "type": 1
     },
@@ -39454,7 +39430,7 @@
     },
     {
       "address": "0x64b2e8",
-      "matching": 1.0,
+      "matching": 0.9230769230769231,
       "name": "TTurnEventDialogFactoryRegistry::`vftable'",
       "type": 5
     },
@@ -40144,7 +40120,7 @@
     },
     {
       "address": "0x658660",
-      "matching": 1.0,
+      "matching": 0.9375,
       "name": "TMacViewMgr::`vftable'",
       "type": 5
     },

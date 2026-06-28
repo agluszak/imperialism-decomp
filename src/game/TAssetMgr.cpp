@@ -23,33 +23,35 @@ void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {
 
 // FUNCTION: IMPERIALISM 0x005df3c0
 TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext) {
-  if (g_pTurnEventDialogFactoryRegistry == nullptr) {
-    EnsureTurnEventDialogFactoryRegistryInitialized();
-  }
-  if (g_pTurnEventDialogFactoryRegistry == nullptr) {
-    return nullptr;
-  }
-  return g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(messageContext);
+  return g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(messageContext, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005df3f0
-undefined TAssetMgr::NoOpRuntimeUiCallback_005df3f0() {
-  return 0;
+void TAssetMgr::NoOpRuntimeUiCallback_005df3f0(int arg) {
+  (void)arg;
 }
 
 // FUNCTION: IMPERIALISM 0x005df410
-undefined TAssetMgr::NoOpRuntimeUiCallback_005df410() {
-  return 0;
+void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
+  (void)arg;
 }
 
 // FUNCTION: IMPERIALISM 0x005df780
-undefined TAssetMgr::NoOpRuntimeUiCallback_005df780() {
-  return 0;
+void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
+  (void)arg;
 }
 
+// Builds "Movies\<movieName>" (+ install-drive prefix), stashes followupEventCode in the
+// UI-runtime context, then tries to play the clip via the message-499 detach helper and
+// posts the turn-state followup. Left as a signature-correct stub: a faithful body needs
+// ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix (0x414870) promoted to a
+// real method first — it depends on the __thiscall helper 0x5feba9, which is still a free
+// stub, so porting it now would require a forbidden calling-convention cast.
 // FUNCTION: IMPERIALISM 0x005dfc10
-undefined TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup() {
-  return 0;
+void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
+                                                          int followupEventCode) {
+  (void)movieName;
+  (void)followupEventCode;
 }
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];

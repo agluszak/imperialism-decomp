@@ -12,7 +12,7 @@ class TAssetMgr : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TAssetMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAssetMgr)
-  virtual ~TAssetMgr();                                    // slot 0x01 (scalar deleting destructor)
+  virtual ~TAssetMgr(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -23,16 +23,22 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual TView*
   ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
-  virtual undefined NoOpRuntimeUiCallback_005df780();             // slot 0x0b 0x5df780
-  virtual undefined NoOpRuntimeUiCallback_005df3f0();             // slot 0x0c 0x5df3f0
-  virtual undefined NoOpRuntimeUiCallback_005df410();             // slot 0x0d 0x5df410
-  virtual undefined PlayMovieClipAndDispatchTurnStateFollowup();  // slot 0x0e 0x5dfc10
+  virtual void NoOpRuntimeUiCallback_005df780(int arg);           // slot 0x0b 0x5df780
+  virtual void NoOpRuntimeUiCallback_005df3f0(int arg);           // slot 0x0c 0x5df3f0
+  virtual void NoOpRuntimeUiCallback_005df410(int arg);           // slot 0x0d 0x5df410
+  virtual void
+  PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
+                                            int followupEventCode); // slot 0x0e 0x5dfc10
   // === END GENERATED DECLS (TAssetMgr) ===
 
-  // Shared UI string-reference slots. The ctor (0x5df280) default-constructs all 13 entries
-  // via the EH array-construct helper; the scalar deleting dtor (0x5df300) tears them down
-  // with the matching array-destroy helper. sizeof(TAssetMgr) per RTTI is 0x58.
-  CString sharedTextSlots[0xd];
+  // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at
+  // offset 0x20, preceded by an as-yet-unidentified 0x1c-byte region and followed by one
+  // trailing word; sizeof(TAssetMgr) per RTTI is 0x58. The ctor default-constructs all 13
+  // entries via the EH array-construct helper; the scalar deleting dtor (0x5df300) tears
+  // them down with the matching array-destroy helper.
+  int unknownRegion04[7];       // +0x04 .. 0x20 (purpose not yet recovered)
+  CString sharedTextSlots[0xd]; // +0x20 .. 0x54
+  int unknown54;                // +0x54
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
